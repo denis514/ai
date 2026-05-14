@@ -11,9 +11,9 @@ export default function CookieBanner({ onAccept, onDecline }) {
         </div>
 
         <p className="cookie-banner__text">
-          Мы используем <strong>Google Analytics</strong>, чтобы понимать, как пользователи
-          взаимодействуют с сайтом. Данные анонимны и не передаются третьим лицам.
-          Технические данные (статус входа) хранятся локально и не отправляются.
+          We use <strong>Google Analytics</strong> to understand how visitors interact
+          with the site. Data is anonymous and never shared with third parties.
+          Session data (login status) is stored locally and never transmitted.
         </p>
 
         <div className="cookie-banner__actions">
@@ -21,13 +21,13 @@ export default function CookieBanner({ onAccept, onDecline }) {
             className="cookie-banner__btn cookie-banner__btn--accept"
             onClick={onAccept}
           >
-            Принять
+            Accept
           </button>
           <button
             className="cookie-banner__btn cookie-banner__btn--decline"
             onClick={onDecline}
           >
-            Отклонить
+            Decline
           </button>
         </div>
 
