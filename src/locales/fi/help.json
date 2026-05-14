@@ -1,0 +1,224 @@
+{
+  "title": "Apu",
+  "subtitle": "Pikaopas — miten käyttää Atlasta ja karttaa",
+  "sectionsAria": "Apuosiot",
+  "empty": "Osio on tyhjä",
+  "sections": [
+    {
+      "id": "map-basics",
+      "title": "Miten kartta toimii",
+      "icon": "brain",
+      "items": [
+        {
+          "id": "what-is-atlas",
+          "q": "Mikä Claude Atlas on?",
+          "a": "Interaktiivinen tietokartta Claudesta — solmut (käsitteet), kategoriat (värit), yhteydet niiden välillä. Ei artikkeli: jokainen solmu on atomaarinen yksikkö \"mitä / miksi / milloin / miten / esimerkki / virheet\".",
+          "actions": [
+            { "type": "open-node", "id": "b-claude", "label": "Avaa \"Mikä Claude on\"" }
+          ]
+        },
+        {
+          "id": "what-is-node",
+          "q": "Mikä on solmu?",
+          "a": "Lyhyttä aihetta esittävä lohko — yksi käsite: idea, ominaisuus tai kaava. Jokaisella solmulla on yksityiskohdat: mikä se on, miksi se on tärkeä, milloin sitä käyttää, miten se vaikuttaa tulokseen, esimerkkipyyntö ja yleiset virheet.",
+          "actions": [
+            { "type": "open-node", "id": "b-models", "label": "Esimerkki: \"Malliperhe\"" }
+          ]
+        },
+        {
+          "id": "categories",
+          "q": "Miksi eri värit (kategoriat)?",
+          "a": "5 väriä = 5 aihetta: Perusasiat, Asetukset, Automaatio, Promptit, Agenttiskenaariot. Näet heti, mihin tyyppiin solmu kuuluu. \"Kategoria: Kaikki\" -siru yläosassa keskellä suodattaa kategorian mukaan.",
+          "actions": []
+        },
+        {
+          "id": "connections",
+          "q": "Miten lukea solmujen välisiä yhteyksiä?",
+          "a": "Viivat = liittyy. Ohut = hierarkia (vanhempi → lapsi). Katkoviiva / korostus = ristilinkit haarojen välillä, jotka kannattaa lukea yhdessä. Oikeanpuoleisessa paneelissa on solmukohtainen \"Liittyy\"-lohko.",
+          "actions": [
+            { "type": "open-node", "id": "b-first-steps", "label": "Avaa \"Ensimmäiset askeleet\"" }
+          ]
+        },
+        {
+          "id": "levels",
+          "q": "Mitä Beginner / Intermediate / Expert -tasot tarkoittavat?",
+          "a": "Näkyvyyssiivut vaikeusasteen mukaan. Beginner näyttää vain perushaarat (5), Intermediate lisää 4 lisää, Expert näyttää koko kartan (12). Vaihda Profile → Taso.",
+          "actions": [
+            { "type": "open-section", "id": "profile", "label": "Missä vaihtaa →" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Navigointi ja haku",
+      "icon": "search",
+      "items": [
+        {
+          "id": "expand-collapse",
+          "q": "Miten laajentaa tai sulkea solmu?",
+          "a": "Klikkaa solmua — vaihtaa sen lasten näkyvyyden. Klikkaa uudelleen — takaisin. Kanvaasin alaosassa olevat painikkeet: \"Laajenna kaikki\" / \"Sulje kaikki\" massatoimintoihin.",
+          "actions": []
+        },
+        {
+          "id": "cmdk",
+          "q": "Mikä on Cmd+K?",
+          "a": "Pika-command palette: ⌘+K (mac) tai Ctrl+K (Windows). Yksi haku solmujen, oppituntien ja prompttien kesken. ↑↓ siirtymiseen, Enter avaamiseen, Esc sulkemiseen.",
+          "actions": []
+        },
+        {
+          "id": "search",
+          "q": "Miten hakea kartalta?",
+          "a": "Suurennuslasin kuvake otsikon vasemmassa yläkulmassa — klikkaus avaa kentän. Kirjoittaminen korostaa osumat ja avaa automaattisesti niiden esivanhemmat. Esc tyhjentää haun.",
+          "actions": []
+        },
+        {
+          "id": "filters",
+          "q": "Miten suodattaa kategorian mukaan?",
+          "a": "\"Kategoria: Kaikki\" -siru ylhäällä keskellä. Klikkaus — dropdown viidellä kategorialla. Valitun kategorian ulkopuoliset solmut himmenevät. \"Kaikki\" — poistaa suodattimen.",
+          "actions": []
+        },
+        {
+          "id": "pan-zoom",
+          "q": "Pan ja zoom?",
+          "a": "Vedä kanvaasia hiirellä/trackpadilla siirtääksesi. Hiiren rulla tai trackpadin nipistys — zoom. Alaosan painikkeet: \"−\" / \"+\" / \"Sovita\" (fit-to-screen) / \"Nollaa\" (100 %, keskelle).",
+          "actions": []
+        }
+      ]
+    },
+    {
+      "id": "learning",
+      "title": "Opiskelu",
+      "icon": "graduation",
+      "items": [
+        {
+          "id": "tutorial-vs-path",
+          "q": "Oppitunti vs polku — mikä ero?",
+          "a": "Oppitunti = vaiheittainen harjoitus yhdestä aiheesta (5–10 vaihetta, 10–30 min). Polku = sarja 4–8 oppituntia ja solmua, joka johtaa konkreettiseen tavoitteeseen (esim. \"Tyhjästä Claude Code:en\").",
+          "actions": [
+            { "type": "open-courses", "label": "Avaa Opiskelu" }
+          ]
+        },
+        {
+          "id": "where-to-start",
+          "q": "Mistä aloittelijan kannattaa aloittaa?",
+          "a": "Polku \"Tyhjästä Claude Code:en\" — 6 askelta, ~90 min. Kattaa: mikä Claude on → terminaali → kansiot → Claude Code:n asennus → ensimmäinen /init → ensimmäinen oikea pyyntö.",
+          "actions": [
+            { "type": "open-tutorial", "id": "first-project", "label": "Aloita \"Ensimmäinen projekti\"" }
+          ]
+        },
+        {
+          "id": "progress",
+          "q": "Missä näen edistymiseni?",
+          "a": "Profile (oikea ylä) → osio \"Claude-oppitunnit\". Edistymispalkki + \"N käynnissä\" -laskuri. Edistyminen tallennetaan paikallisesti selaimeen (localStorage).",
+          "actions": []
+        },
+        {
+          "id": "after-path",
+          "q": "Mitä tehdä polun suorittamisen jälkeen?",
+          "a": "Jokainen oppitunti päättyy \"Mitä seuraavaksi\" -lohkoon, jossa on suosituksia: seuraavat oppitunnit, liittyvät pohjat, syventävät solmut. Opiskelu → välilehti \"Polut\" — kaikki saatavilla olevat reitit.",
+          "actions": [
+            { "type": "open-courses", "label": "Kaikki polut" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bookmarks",
+      "title": "Kirjanmerkit ja merkinnät",
+      "icon": "bookmark",
+      "items": [
+        {
+          "id": "add-bookmark",
+          "q": "Miten lisätä solmu kirjanmerkkeihin?",
+          "a": "Klikkaa solmua → oikealle aukeaa DetailPanel → kirjanmerkki-kuvake paneelin otsikossa. Yksi klikkaus — lisää, toinen — poistaa. Kuvake vaihtuu \"täytetyksi\", kun on kirjanmerkkeissä.",
+          "actions": []
+        },
+        {
+          "id": "viewed-review",
+          "q": "Mitä merkinnät \"Katsottu\" ja \"Palaa myöhemmin\" tarkoittavat?",
+          "a": "DetailPanel:issa otsikon alla on kaksi painiketta: \"Katsottu\" = ymmärsin; \"Palaa myöhemmin\" = pitää lukea uudelleen. Henkilökohtaiset merkintäsi, jotta et eksy toistokäynneillä.",
+          "actions": []
+        },
+        {
+          "id": "see-collections",
+          "q": "Missä näen kokoelmani?",
+          "a": "Profile → osio \"Kartta\": kolme laskuria — Katsottu / Palaa / Kirjanmerkit. Minkä tahansa luvun klikkaaminen korostaa vastaavat solmut suoraan kartalla ja avaa niiden esivanhemmat.",
+          "actions": []
+        },
+        {
+          "id": "clear-highlight",
+          "q": "Miten poistaa korostus kartalta?",
+          "a": "Paina Esc. Se tyhjentää profiilin tilaston klikkauksesta laukaistun väliaikaisen korostuksen. Kartta palaa normaalitilaan.",
+          "actions": []
+        }
+      ]
+    },
+    {
+      "id": "profile",
+      "title": "Profiili ja tiedot",
+      "icon": "user",
+      "items": [
+        {
+          "id": "change-lang",
+          "q": "Missä vaihtaa kieli?",
+          "a": "Profile (oikea ylä → käyttäjäkuvake) → osio \"Kieli\". Saatavilla: RU / EN / FI. Kieli tallennetaan URL:ään ja localStorage:en — säilyy uudelleenlatauksessa.",
+          "actions": []
+        },
+        {
+          "id": "change-level",
+          "q": "Miten vaihtaa taso?",
+          "a": "Profile → osio \"Taso\": Beginner / Intermediate / Expert. Ohjaa, mitkä kartan haarat ovat näkyvissä oletuksena. Expertin alapuolella osa kartasta on piilotettu.",
+          "actions": []
+        },
+        {
+          "id": "streak",
+          "q": "Mikä on streak?",
+          "a": "Peräkkäiset päivät, jolloin käyt Atlas:issa. Käyt tänään eilen jälkeen = streak +1. Jätä päivä väliin — nollautuu. Profile näyttää nykyisen streakin ja päivien kokonaismäärän.",
+          "actions": []
+        },
+        {
+          "id": "export",
+          "q": "Mikä on edistymisen vienti?",
+          "a": "Profile → osio \"Tiedot\" → \"Vie edistyminen\" lataa JSON:in, jossa ovat kaikki kirjanmerkkisi, merkintäsi ja oppituntien edistyminen. \"Tuo\" palauttaa sen toiselle laitteelle.",
+          "actions": []
+        }
+      ]
+    },
+    {
+      "id": "prompts",
+      "title": "Prompt-pohjat",
+      "icon": "books",
+      "items": [
+        {
+          "id": "what-is-library",
+          "q": "Mikä on prompt-kirjasto?",
+          "a": "42 valmista promptia 9 kategoriassa ja 3 vaikeustasolla. Avaa → täytä konteksti [paikkamerkkeihin] → lähetä Claudelle. Nämä ovat perusajatusmuodot — kopioi, mukauta, käytä uudelleen.",
+          "actions": [
+            { "type": "open-library", "label": "Avaa Kirjasto" }
+          ]
+        },
+        {
+          "id": "adapt-template",
+          "q": "Miten mukauttaa pohja omaan tehtävään?",
+          "a": "Älä kopioi sellaisenaan. Korvaa [hakasulkeissa] olevat paikkamerkit omilla tiedoillasi: tuote, yleisö, konteksti. Muutoin Claude vastaa yleisellä tasolla. \"Prompt-tekniikat\" -oppitunti syventyy aiheeseen.",
+          "actions": [
+            { "type": "open-tutorial", "id": "prompting-techniques", "label": "Aloita oppitunti" }
+          ]
+        },
+        {
+          "id": "categories-explained",
+          "q": "Mitä pohjien kategoriat tarkoittavat?",
+          "a": "Analytiikka, sisältö, kehitys, oppiminen, tutkimus jne. — tavanomaiset työtehtävät. Suodata kategorian mukaan Kirjaston yläosassa löytääksesi tarvitsemasi nopeasti kaikkien 42 selaamisen sijaan.",
+          "actions": []
+        },
+        {
+          "id": "levels-explained",
+          "q": "Mitä pohjien tasot tarkoittavat?",
+          "a": "Beginner — yksinkertaiset muodot (rooli + tehtävä + muoto). Intermediate — esimerkein ja rajoituksin. Expert — edistyneet tekniikat: XML-tagit, Chain of Thought, Few-shot. Tasosuodatin on Kirjaston yläosassa vasemmalla.",
+          "actions": []
+        }
+      ]
+    }
+  ]
+}

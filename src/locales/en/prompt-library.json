@@ -1,0 +1,263 @@
+{
+  "categories": {
+    "start": {
+      "label": "Getting started",
+      "description": "First contact with AI — basic prompt forms. Master in a day."
+    },
+    "writing": {
+      "label": "Writing & editing",
+      "description": "Write, rewrite, shorten, change tone, format."
+    },
+    "analysis": {
+      "label": "Analysis & research",
+      "description": "Unpack a document, compare, run a structural analysis."
+    },
+    "code": {
+      "label": "Code & development",
+      "description": "Explain, debug, refactor, review, design."
+    },
+    "learn": {
+      "label": "Learning & explanation",
+      "description": "Master a topic, take notes, build a learning plan."
+    },
+    "creative": {
+      "label": "Creative & ideas",
+      "description": "Brainstorm, naming, unconventional angles."
+    },
+    "productivity": {
+      "label": "Productivity",
+      "description": "Decomposition, decision-making, pre-mortem."
+    },
+    "business": {
+      "label": "Business & marketing",
+      "description": "Positioning, personas, sales copy, competitive analysis."
+    },
+    "prompting": {
+      "label": "Prompt engineering",
+      "description": "Advanced techniques: CoT, Few-shot, self-critique, schema output."
+    }
+  },
+  "levels": {
+    "beginner": {
+      "label": "Beginner"
+    },
+    "intermediate": {
+      "label": "Intermediate"
+    },
+    "advanced": {
+      "label": "Expert"
+    }
+  },
+  "templates": {
+    "start-role-task": {
+      "title": "Role + task",
+      "description": "The most basic prompt form. Assign a role and give one task.",
+      "text": "You are — {{role}} (e.g.: data analyst, technical writer, product expert, lawyer).\n\nTask: {{what_to_do}}.\n\nResponse format: {{format}} (e.g. bulleted list, table, paragraph up to 200 words)."
+    },
+    "start-explain-simple": {
+      "title": "Explain in simple terms",
+      "description": "Turn a complex topic into a clear explanation through analogies.",
+      "text": "Explain {{topic}} in simple terms, as if to a 10-year-old.\n\nRequirements:\n- use analogies from everyday life\n- no terms without explanation\n- maximum 4 short paragraphs\n- at the end — 1 sentence «why I should know this»."
+    },
+    "start-compare-two": {
+      "title": "Compare two options",
+      "description": "Structured comparison by criteria with a final recommendation.",
+      "text": "Compare {{option_A}} and {{option_B}} by criteria: {{criteria_comma_separated}}.\n\nResponse format:\n1. Table: criterion | {{A}} | {{B}}\n2. Short conclusion: what to pick for my case — {{my_case}}\n3. What is NOT important (what can be ignored)."
+    },
+    "start-give-options": {
+      "title": "Give several options",
+      "description": "Get a spectrum of approaches instead of a single «right» answer.",
+      "text": "Suggest {{N}} options: {{what_exactly}}.\n\nFor each option:\n- essence in 1 sentence\n- key plus\n- key minus\n\nAt the end — which one you'd pick in my context: {{context}}, and why."
+    },
+    "start-step-by-step": {
+      "title": "Step-by-step instructions",
+      "description": "Unfold a task into a clear sequence of steps.",
+      "text": "I want: {{goal}}.\n\nGive a step-by-step instruction:\n- number the steps\n- each step — one concrete action, not a general idea\n- after each step — how to verify it's done\n- at the end — typical mistakes on this path."
+    },
+    "writing-shorten": {
+      "title": "Shorten text",
+      "description": "Compress text N times while keeping all important thoughts.",
+      "text": "Rewrite this text {{N}} times shorter, keeping all key ideas:\n\n{{text}}\n\nOutput format: one paragraph without fluff, active voice, none of «you could say that», «in some sense»."
+    },
+    "writing-tone-change": {
+      "title": "Change tone and style",
+      "description": "Rewrite a message in the desired style, preserving meaning.",
+      "text": "Rewrite this text in style: {{style}} (e.g. friendly, professional, academic, conversational).\n\nKeep the meaning, change the tone.\nLength: {{length}}.\nAudience: {{target_audience}}.\n\nText:\n{{source_text}}"
+    },
+    "writing-markdown": {
+      "title": "Structure into Markdown",
+      "description": "Turn raw text into a structured markdown document.",
+      "text": "Take this raw text and format it as markdown:\n\n- split into meaningful sections with H2/H3\n- key claims — as bulleted lists\n- important terms — bold\n- if there's a comparison — a table\n- at the end — a short summary (3-5 bullets)\n\nText:\n{{text}}"
+    },
+    "writing-editor-review": {
+      "title": "Editorial review",
+      "description": "Get honest critique of text as from an experienced editor.",
+      "text": "You are an experienced editor. Read this text and give a tough but constructive review.\n\nResponse structure:\n1. 3 main problems (structure / clarity / style)\n2. Specific edits in the form «quote → how to rewrite»\n3. What works well in the text (at least 1 point)\n4. Overall rating from 1 to 10 with rationale\n\nText:\n{{text}}"
+    },
+    "writing-slides": {
+      "title": "Slides from material",
+      "description": "Turn material into a presentation structure.",
+      "text": "Take this material and make a structure for a presentation of {{N}} slides.\n\nEach slide:\n- title (short, useful for the audience)\n- 3-5 bullets\n- (optional) one quote or number\n\nNarrative logic: problem → cause → solution → outcome.\nLast slide — CTA: {{what_to_do_after}}.\n\nMaterial:\n{{material}}"
+    },
+    "analysis-structure-doc": {
+      "title": "Unpack a document",
+      "description": "Extract the essential from a long document.",
+      "text": "Read this document and return:\n\n1. **Main idea** in one sentence.\n2. **5 key claims** in order of importance.\n3. **3 main conclusions** — what follows from this.\n4. **What remains unclear** or needs clarification.\n\nDocument:\n{{document}}"
+    },
+    "analysis-compare": {
+      "title": "Comparative analysis",
+      "description": "Compare several sources / approaches / solutions.",
+      "text": "Run a comparative analysis: {{what_we_compare}}.\n\nSources:\n{{sources_one_per_line}}\n\nResponse structure:\n1. Summary of each source in 1-2 sentences.\n2. **Points of agreement** — where everyone converges.\n3. **Points of divergence** — where they contradict each other.\n4. **Blind spots** — what no one mentioned.\n5. My working conclusion after the analysis."
+    },
+    "analysis-swot": {
+      "title": "SWOT analysis",
+      "description": "Classic framework for assessing strengths/weaknesses/opportunities/threats.",
+      "text": "Run a SWOT analysis for: {{subject}}.\n\nStrengths — internal strengths.\nWeaknesses — internal weak spots.\nOpportunities — external opportunities.\nThreats — external threats.\n\nRules:\n- 3-5 items in each quadrant\n- each item — concrete, no fluff\n- at the end: 3 priority actions for the next month."
+    },
+    "analysis-deep-dive": {
+      "title": "Deep dive into a topic",
+      "description": "Full structural analysis of a concept with a 6-point scheme.",
+      "text": "Do a deep dive: {{topic}}.\n\nStructure:\n1. **What it is** — definition without fluff.\n2. **Why it works** — mechanism, reason for existence.\n3. **When to apply** — conditions and signals that it fits.\n4. **When NOT to apply** — anti-patterns and counter-signals.\n5. **Alternatives and trade-offs** — what's nearby, how it differs.\n6. **What to read next** — 3-5 sources."
+    },
+    "analysis-first-principles": {
+      "title": "First principles",
+      "description": "Tackle the task from base truths, discarding inherited approaches.",
+      "text": "Approach the task via First Principles: {{task}}.\n\nSteps:\n1. **Discard** common approaches and analogies.\n2. **Reduce** the task to base truths — what do we know for sure?\n3. **Build** a solution from these truths, without looking at «how it's usually done».\n4. **Compare** the result with the traditional approach.\n5. **Explain** why the first is fundamentally better or worse."
+    },
+    "code-explain": {
+      "title": "Explain code",
+      "description": "Understand what unfamiliar code does.",
+      "text": "Explain what this code does:\n\n```{{language}}\n{{code}}\n```\n\nExplanation structure:\n1. What it does in one sentence.\n2. Block by block — what and why (for each block 1-2 lines).\n3. Possible issues or edge cases.\n4. How it can be improved (2-3 points)."
+    },
+    "code-find-bug": {
+      "title": "Find the bug",
+      "description": "Localize the cause of incorrect behavior.",
+      "text": "This code doesn't work as expected.\n\nCode:\n```{{language}}\n{{code}}\n```\n\nExpected behavior: {{what_should}}.\nActual behavior: {{what_happens}}.\n\nFind:\n1. The cause (explain the mechanism).\n2. The minimal fix.\n3. Why exactly it broke this way — what in the code led astray."
+    },
+    "code-refactor": {
+      "title": "Refactor",
+      "description": "Improve readability without changing behavior.",
+      "text": "Refactor this code:\n\n```{{language}}\n{{code}}\n```\n\nGoals:\n- readability\n- minimum abstractions (don't beautify for the sake of beauty)\n- without changing external behavior\n- without new dependencies\n\nShow the changed code and a list of edits in the form «was → became → why»."
+    },
+    "code-review": {
+      "title": "Code review",
+      "description": "Get a code review at the level of an experienced developer.",
+      "text": "Run a code review as an experienced developer:\n\n```{{language}}\n{{code}}\n```\n\nResponse format:\n- **🔴 Critical** — bugs, security, deadlocks\n- **🟡 Important** — readability, perf, potential issues\n- **🟢 Optional** — style, minor improvements\n\nEach point: line quote + concrete suggestion.\nAt the end — overall readiness to merge (ready / needs changes / redo)."
+    },
+    "code-architecture": {
+      "title": "Architectural decision",
+      "description": "Design a solution to a task considering constraints.",
+      "text": "Design a solution for: {{task}}.\n\nConstraints: {{constraints_budget_perf_team}}.\n\nReturn:\n1. **2-3 architecture options** — each described in 3-5 sentences.\n2. **Trade-offs** of each option (complexity vs flexibility vs performance).\n3. **Recommendation** for my constraints with rationale.\n4. **What NOT to do** — anti-patterns for this class of tasks.\n5. **Growth points** — what's easy to extend later."
+    },
+    "learn-5-levels": {
+      "title": "5 levels of explanation",
+      "description": "Explain a concept at 5 different levels of depth.",
+      "text": "Explain {{concept}} at 5 levels of depth:\n\n1. **To a 5-year-old child** — through play and analogy.\n2. **To a 15-year-old teen** — without formulas, with life examples.\n3. **To a 20-year-old student** — with basic terminology.\n4. **To a professional from an adjacent field** — assuming literacy.\n5. **To an expert in the topic** — nuances, edge cases, debates.\n\nEach level — 1 paragraph, no more than 5 sentences."
+    },
+    "learn-notes": {
+      "title": "Notes from an article or video",
+      "description": "Get structured notes from material.",
+      "text": "Make notes:\n\n{{material_or_link}}\n\nStructure:\n- **Main idea** in one sentence.\n- **5-7 key claims** in order of appearance.\n- **3-4 striking quotes** (1-2 sentences each).\n- **What to apply to me** in my context: {{my_context}}.\n- **What NOT to apply** — caveats and limitations."
+    },
+    "learn-roadmap": {
+      "title": "Learning plan",
+      "description": "Build a personal roadmap to master a topic.",
+      "text": "I want to learn: {{what_I_learn}}.\nMy current level: {{level}} (beginner / I know the basics / intermediate / experienced).\nAvailable time: {{hours}} hours per week.\nFinal goal: {{what_I_should_be_able_to_do_at_the_end}}.\n\nMake a roadmap for {{N}} weeks:\n- **Each week** — topic + expected outcome.\n- **Resources** — 1-2 books/courses/articles per week (no made-up names).\n- **Final project** to cement skills.\n- **Checkpoints** — where to realize I'm falling behind and need to go back."
+    },
+    "learn-socratic": {
+      "title": "Socratic dialogue",
+      "description": "Don't get answers; arrive at understanding through questions.",
+      "text": "Run a Socratic dialogue with me on the topic: {{topic}}.\n\nRules:\n- ask questions that help me arrive at understanding myself\n- don't give direct answers, guide with questions\n- one question at a time\n- wait for my answer before the next\n- if I'm wrong — ask a question that exposes the contradiction\n- after 8-10 questions, make a mini-summary: what understanding we reached."
+    },
+    "creative-brainstorm": {
+      "title": "Brainstorm",
+      "description": "Generate many ideas without quality filtering at the start.",
+      "text": "Give {{N}} ideas for: {{task}}.\n\nContext: {{context}}.\n\nRules:\n- don't filter at the generation stage — give both obvious and strange ones\n- no self-censorship\n- 1 line per idea, don't unfold\n\nAfter the list — **final selection: 3 most promising** with one-line rationale."
+    },
+    "creative-naming": {
+      "title": "Names and naming",
+      "description": "Generate name options with rationale.",
+      "text": "Suggest 10 names for: {{what}}.\n\nParameters:\n- **Style**: {{short / sonorous / meaningful / abstract / descriptive}}\n- **Target audience**: {{audience}}\n- **What I do NOT want** (bans): {{what_not_want}}\n- **Brand tone**: {{tone}}\n\nFor each name: the name itself + 1 line of rationale + potential risk (short/ambiguous/taken)."
+    },
+    "creative-lateral": {
+      "title": "Lateral thinking",
+      "description": "Generate solutions from 5 different professional angles.",
+      "text": "Take the task: {{task}}.\n\nGenerate solutions from 5 different angles:\n1. **Engineer** — what they'd do by logic and efficiency.\n2. **Artist** — what they'd do through form and emotion.\n3. **Child** — what they'd do naively, without frames.\n4. **Philosopher** — what they'd do by redefining the task.\n5. **Business strategist** — what they'd do from an ROI standpoint.\n\nAt the end — **synthesis**: the best elements from each angle combined into one solution."
+    },
+    "creative-reversed": {
+      "title": "Reversed brainstorm",
+      "description": "Understand how to guarantee failure — and invert.",
+      "text": "Topic: {{task}}.\n\nDo a reversed brainstorm. Instead of «how to solve» — «how to GUARANTEE failure» of this task.\n\nSteps:\n1. Give 10 concrete ways to break everything.\n2. **Invert each one** — you'll get a list of what's critical to do right.\n3. Highlight 3 least obvious inversions — those that don't come to mind through direct thinking."
+    },
+    "productivity-decompose": {
+      "title": "Task decomposition",
+      "description": "Break a big task into executable sub-tasks.",
+      "text": "Break the task into sub-tasks:\n\n**Big task**: {{task}}\n**Deadline**: {{when}}\n**Available resources**: {{resources}}\n\nGive 5-10 sub-tasks with properties:\n- each executable in < 1 day of work\n- dependencies between them (what must be ready first)\n- tag «critical» / «can wait»\n- time estimate per each\n\nAt the end — critical path: minimal sequence to the result."
+    },
+    "productivity-decision": {
+      "title": "Decision making",
+      "description": "Structured thinking about a fork in the road with weighted criteria.",
+      "text": "Help me make a decision: {{fork}}.\n\nContext: {{what_is_known_about_situation}}.\nWhat matters to me: {{criteria}}.\n\nResponse structure:\n1. **3-5 factors** that actually affect the outcome.\n2. **Weights** of the factors (which is more important, which less).\n3. **How each option manifests** by each factor (table or list).\n4. **Recommendation** with rationale.\n5. **Main risks** of the chosen option and how to mitigate them."
+    },
+    "productivity-premortem": {
+      "title": "Pre-mortem",
+      "description": "Find causes of potential failure in advance.",
+      "text": "Project / decision: {{project}}.\n\nRun a pre-mortem: imagine that **in 3 months** the project failed completely.\n\nDescribe:\n1. **5 most likely failure causes**, sorted by descending probability.\n2. **For each** — what to do NOW to prevent it (one concrete action).\n3. **Early warning**: what signal will indicate this cause has started working.\n4. **Point of no return** — after which event mitigation is no longer possible."
+    },
+    "business-positioning": {
+      "title": "Product positioning",
+      "description": "Tight product description for a target audience.",
+      "text": "Describe the product:\n\n**Product**: {{what}}\n**Target audience**: {{who}}\n**Main pain of the audience**: {{pain}}\n\nFormat:\n- **One-line positioning**: «{{product}} helps {{who}} {{what_to_get}} without {{what_to_avoid}}.»\n- **3 key benefits** (not features — benefits).\n- **3 use cases** with a concrete scenario.\n- **What distinguishes** from 2-3 nearest alternatives.\n- **Whom it's NOT for** (important for focus)."
+    },
+    "business-persona": {
+      "title": "Customer persona",
+      "description": "Detailed portrait of the ideal customer.",
+      "text": "Build a customer persona for: {{product}}.\n\nStructure:\n- **Demographics** — age, income, geography, role.\n- **Psychographics** — values, fears, desires.\n- **One day in the life** — typical scenario where our pain appears.\n- **Purchase triggers** — what'll make them buy now, not in a year.\n- **Objections and fears** — what stops them from buying.\n- **Where to find them** — channels, communities, media.\n- **First-person quote** — how they would describe their pain themselves."
+    },
+    "business-email-sequence": {
+      "title": "Email sequence",
+      "description": "A sequence of emails for a specific goal.",
+      "text": "Write an email sequence of {{N}} emails for: {{goal}}.\n\nContext: subscriber just signed up, expectation — {{what_they_expect}}.\nBrand tone: {{tone}}.\n\nFor each email:\n- **Email goal** — what should happen after reading.\n- **Subject line** — the hook that gets it opened.\n- **Body** — short, readable, active voice.\n- **CTA** — one concrete action.\n- **How many days** after the previous one.\n\nNo exaggeration or manipulation — only value."
+    },
+    "business-competition": {
+      "title": "Competitive analysis",
+      "description": "Map of competitors and points of differentiation.",
+      "text": "Do a competitive analysis:\n\n**Me**: {{my_product_positioning}}\n**Competitors**: {{list_3_5}}\n\nFor each competitor:\n- **Positioning** in one line.\n- **Key features** (3-5).\n- **Strengths** (where they're truly good).\n- **Weaknesses** (where they fall short).\n- **Pricing** (approximate range).\n\nAt the end:\n- **Where I have a chance to stand out** — 2-3 free «hills».\n- **3 strategic moves** for the next quarter.\n- **What I will NOT do** — anti-strategy."
+    },
+    "prompting-improve": {
+      "title": "Improve my prompt",
+      "description": "Get an improved version of your prompt with explanation.",
+      "text": "Here's my current prompt:\n\n```\n{{current_prompt}}\n```\n\nWhat I get as output: {{what_I_get}}.\nWhat I want to get: {{what_I_want}}.\n\nRewrite the prompt so that:\n- there's an explicit role\n- the task is single and concrete\n- the output format is unambiguous\n- there are clear «what NOT to do» constraints\n\nAt the end:\n- show a **diff** of old and new\n- explain **each change** in one line."
+    },
+    "prompting-cot": {
+      "title": "Chain of Thought",
+      "description": "Force the model to reason step by step before answering.",
+      "text": "Task: {{task}}.\n\nBefore giving the final answer, reason out loud step by step:\n1. **What exactly is being asked** — rephrase the task in your own words.\n2. **What information is important** for the solution.\n3. **What steps** lead to the answer.\n4. **What risks** or alternative paths.\n\nAfter reasoning — the final answer in format: {{format}}.\n\nIf at any step data is missing — ask a clarifying question, don't invent."
+    },
+    "prompting-few-shot": {
+      "title": "Few-shot examples",
+      "description": "Give the model several examples to imitate the pattern.",
+      "text": "Task: {{task}}.\n\nHere are examples of correct execution:\n\n**Example 1**\nInput: {{input_example_1}}\nOutput: {{output_example_1}}\n\n**Example 2**\nInput: {{input_example_2}}\nOutput: {{output_example_2}}\n\n**Example 3**\nInput: {{input_example_3}}\nOutput: {{output_example_3}}\n\nNow process using the same pattern:\nInput: {{real_input}}\nOutput:"
+    },
+    "prompting-self-critique": {
+      "title": "Self-critique loop",
+      "description": "First an answer, then critique, then an improved answer.",
+      "text": "Task: {{task}}.\n\nWork in three passes:\n1. **First version** of the answer — as it came to mind, without long deliberation.\n2. **Critique of your own answer** — where it's weak, what you missed, which assumptions are shaky.\n3. **Second version** — improved, taking critique into account.\n4. **Diff**: what exactly changed and why this is better.\n\nDon't skip step 2 — even if the first answer seems good."
+    },
+    "prompting-tree-of-thought": {
+      "title": "Tree of Thought",
+      "description": "Generate several approaches, evaluate, pick the best.",
+      "text": "Complex task: {{task}}.\n\n«Tree of thought» approach:\n1. **Generate 3 different approaches** to the solution (not variants within one approach — exactly different ones).\n2. **Brief evaluation** of each: plus / minus / typical outcome.\n3. **Pick the best** for my context: {{context}}.\n4. **Unfold the chosen one** into a concrete solution.\n5. **Explain why the rejected ones are bad** — so I also see why they're worse.\n\nGoal — not the fastest answer, but the most considered one."
+    },
+    "prompting-schema": {
+      "title": "Output schema (JSON)",
+      "description": "Force the model to return strictly structured JSON.",
+      "text": "Task: {{task}}.\n\nReturn the response **strictly in JSON** by the schema:\n\n```json\n{\n  \"summary\": \"1-2 sentences, general gist\",\n  \"details\": [\n    \"Detail 1\",\n    \"Detail 2\",\n    \"Detail 3\"\n  ],\n  \"risks\": [\n    {\"risk\": \"...\", \"severity\": \"low|medium|high\"}\n  ],\n  \"next_actions\": [\n    {\"action\": \"...\", \"priority\": \"low|medium|high\", \"owner\": \"...\"}\n  ]\n}\n```\n\nStrict rules:\n- no markdown in the response\n- no comments outside JSON\n- if data is missing — field `null`, not omission."
+    },
+    "prompting-constraints": {
+      "title": "Prompt by constraints",
+      "description": "Describe the task through constraints, not positive requirements.",
+      "text": "Task: {{task}}.\n\nI formulate via **constraints**, not via a description of the ideal result.\n\nWhat must NOT be in the response:\n- {{ban_1}}\n- {{ban_2}}\n- {{ban_3}}\n\nWhat must be preserved across all options:\n- {{invariant_1}}\n- {{invariant_2}}\n\nGive 3 solutions, each of which satisfies all bans and invariants.\nAt the end — which of the three you consider best and why."
+    }
+  }
+}

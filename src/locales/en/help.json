@@ -1,0 +1,224 @@
+{
+  "title": "Help",
+  "subtitle": "Quick FAQ — how to use Atlas and the map",
+  "sectionsAria": "Help sections",
+  "empty": "Section is empty",
+  "sections": [
+    {
+      "id": "map-basics",
+      "title": "How the map works",
+      "icon": "brain",
+      "items": [
+        {
+          "id": "what-is-atlas",
+          "q": "What is Claude Atlas?",
+          "a": "An interactive knowledge map about Claude — nodes (concepts), categories (colors), connections between them. Not an article: every node is an atomic unit of \"what / why / when / how / example / mistakes\".",
+          "actions": [
+            { "type": "open-node", "id": "b-claude", "label": "Open \"What Claude is\"" }
+          ]
+        },
+        {
+          "id": "what-is-node",
+          "q": "What is a node?",
+          "a": "A block with a short topic — one concept: an idea, feature, or pattern. Every node has details: what it is, why it matters, when to use it, how it affects results, an example request, and common mistakes.",
+          "actions": [
+            { "type": "open-node", "id": "b-models", "label": "Example: \"Model family\"" }
+          ]
+        },
+        {
+          "id": "categories",
+          "q": "Why different colors (categories)?",
+          "a": "5 colors = 5 topics: Basics, Configuration, Automation, Prompts, Agent scenarios. Lets you instantly see which type a node belongs to. The \"Category: All\" chip on top center filters by category.",
+          "actions": []
+        },
+        {
+          "id": "connections",
+          "q": "How to read the connections between nodes?",
+          "a": "Lines = related. Thin = hierarchy (parent → child). Dashed / accent = cross-links between branches that are worth reading together. The right-side panel shows a \"Related\" block per node.",
+          "actions": [
+            { "type": "open-node", "id": "b-first-steps", "label": "Open \"First steps\"" }
+          ]
+        },
+        {
+          "id": "levels",
+          "q": "What are Beginner / Intermediate / Expert levels?",
+          "a": "Visibility slices by difficulty. Beginner shows only basic branches (5), Intermediate adds 4 more, Expert shows the full map (12). Change it in Profile → Level.",
+          "actions": [
+            { "type": "open-section", "id": "profile", "label": "Where to change →" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Navigation and search",
+      "icon": "search",
+      "items": [
+        {
+          "id": "expand-collapse",
+          "q": "How to expand or collapse a node?",
+          "a": "Click a node — toggles its children. Click again — back. Buttons at the bottom of the canvas: \"Expand all\" / \"Collapse all\" for bulk operations.",
+          "actions": []
+        },
+        {
+          "id": "cmdk",
+          "q": "What is Cmd+K?",
+          "a": "Quick command palette: ⌘+K (mac) or Ctrl+K (Windows). One search across nodes, tutorials, and prompts. ↑↓ to move, Enter to open, Esc to close.",
+          "actions": []
+        },
+        {
+          "id": "search",
+          "q": "How to search the map?",
+          "a": "The magnifier icon in the top-left header — click expands an input. Typing highlights matching nodes and auto-expands their ancestors. Esc clears the search.",
+          "actions": []
+        },
+        {
+          "id": "filters",
+          "q": "How to filter by category?",
+          "a": "The \"Category: All\" chip on top center. Click — dropdown with 5 categories. Nodes outside the chosen category become dim. \"All\" — removes the filter.",
+          "actions": []
+        },
+        {
+          "id": "pan-zoom",
+          "q": "Pan and zoom?",
+          "a": "Drag the canvas with mouse/trackpad to pan. Mouse wheel or trackpad pinch — zoom. Buttons at the bottom: \"−\" / \"+\" / \"Fit\" (fit-to-screen) / \"Reset\" (100%, centered).",
+          "actions": []
+        }
+      ]
+    },
+    {
+      "id": "learning",
+      "title": "Learning",
+      "icon": "graduation",
+      "items": [
+        {
+          "id": "tutorial-vs-path",
+          "q": "Tutorial vs. path — what's the difference?",
+          "a": "A tutorial = step-by-step practice on one topic (5–10 steps, 10–30 min). A path = a sequence of 4–8 tutorials and nodes that leads to a specific goal (e.g., \"From zero to Claude Code\").",
+          "actions": [
+            { "type": "open-courses", "label": "Open Learning" }
+          ]
+        },
+        {
+          "id": "where-to-start",
+          "q": "Where should a beginner start?",
+          "a": "The \"From zero to Claude Code\" path — 6 steps, ~90 min. Covers: what Claude is → terminal → folders → installing Claude Code → first /init → first real prompt.",
+          "actions": [
+            { "type": "open-tutorial", "id": "first-project", "label": "Start \"First project\"" }
+          ]
+        },
+        {
+          "id": "progress",
+          "q": "Where can I see my progress?",
+          "a": "Profile (top-right) → \"Claude tutorials\" section. Progress bar + \"N in progress\" counter. Progress is stored locally in the browser (localStorage).",
+          "actions": []
+        },
+        {
+          "id": "after-path",
+          "q": "What to do after finishing a path?",
+          "a": "Every tutorial ends with a \"What's next\" block with recommendations: next tutorials, related templates, deeper nodes. In Learning → Paths tab — all available routes.",
+          "actions": [
+            { "type": "open-courses", "label": "All paths" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bookmarks",
+      "title": "Bookmarks and notes",
+      "icon": "bookmark",
+      "items": [
+        {
+          "id": "add-bookmark",
+          "q": "How to bookmark a node?",
+          "a": "Click a node → the DetailPanel opens on the right → bookmark icon in the panel header. One click — add, click again — remove. The icon switches to \"filled\" when bookmarked.",
+          "actions": []
+        },
+        {
+          "id": "viewed-review",
+          "q": "What are the \"Viewed\" and \"Return later\" marks?",
+          "a": "In the DetailPanel under the title there are two buttons: \"Viewed\" = I got it; \"Return later\" = need to reread. Your personal flags so you don't get lost on repeat passes.",
+          "actions": []
+        },
+        {
+          "id": "see-collections",
+          "q": "Where can I see my collections?",
+          "a": "Profile → \"Map\" section: three counters — Viewed / Return later / Bookmarks. Clicking any number highlights the matching nodes directly on the map and expands their ancestors.",
+          "actions": []
+        },
+        {
+          "id": "clear-highlight",
+          "q": "How to clear the highlight from the map?",
+          "a": "Press Esc. That clears the temporary highlight triggered by clicking a profile stat. The map returns to normal mode.",
+          "actions": []
+        }
+      ]
+    },
+    {
+      "id": "profile",
+      "title": "Profile and data",
+      "icon": "user",
+      "items": [
+        {
+          "id": "change-lang",
+          "q": "Where to change the language?",
+          "a": "Profile (top-right → user icon) → \"Language\" section. Available: RU / EN / FI. The locale is saved in the URL and localStorage — survives reload.",
+          "actions": []
+        },
+        {
+          "id": "change-level",
+          "q": "How to change the level?",
+          "a": "Profile → \"Level\" section: Beginner / Intermediate / Expert. Controls which map branches are visible by default. Below Expert some of the map is hidden.",
+          "actions": []
+        },
+        {
+          "id": "streak",
+          "q": "What is a streak?",
+          "a": "Consecutive days you visit Atlas. Visit today after yesterday = streak +1. Miss a day — it resets. Profile shows current streak and total days.",
+          "actions": []
+        },
+        {
+          "id": "export",
+          "q": "What is progress export?",
+          "a": "Profile → \"Data\" section → \"Export progress\" downloads a JSON with all your bookmarks, marks, and tutorial progress. \"Import\" restores it on another device.",
+          "actions": []
+        }
+      ]
+    },
+    {
+      "id": "prompts",
+      "title": "Prompt templates",
+      "icon": "books",
+      "items": [
+        {
+          "id": "what-is-library",
+          "q": "What is the prompt library?",
+          "a": "42 ready prompts across 9 categories and 3 difficulty levels. Open → fill in your context in [placeholders] → send to Claude. These are basic thinking forms — copy, adapt, reuse.",
+          "actions": [
+            { "type": "open-library", "label": "Open Library" }
+          ]
+        },
+        {
+          "id": "adapt-template",
+          "q": "How to adapt a template to your task?",
+          "a": "Don't copy as-is. Replace the [bracketed] placeholders with your data: product, audience, context. Otherwise Claude answers generically. The \"Prompt techniques\" tutorial digs deeper.",
+          "actions": [
+            { "type": "open-tutorial", "id": "prompting-techniques", "label": "Start the tutorial" }
+          ]
+        },
+        {
+          "id": "categories-explained",
+          "q": "What do the template categories mean?",
+          "a": "Analytics, content, development, learning, research, etc. — standard work tasks. Filter by category at the top of the Library to quickly find what you need instead of scrolling all 42.",
+          "actions": []
+        },
+        {
+          "id": "levels-explained",
+          "q": "What do the template levels mean?",
+          "a": "Beginner — simple forms (role + task + format). Intermediate — with examples and constraints. Expert — advanced techniques: XML tags, Chain of Thought, Few-shot. Level filter is at the top-left of the Library.",
+          "actions": []
+        }
+      ]
+    }
+  ]
+}

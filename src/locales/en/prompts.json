@@ -1,0 +1,52 @@
+{
+  "create-project": {
+    "title": "Create a Project",
+    "description": "Template for setting up a new Project in claude.ai",
+    "text": "Help me set up a new Project in claude.ai for my task.\n\nContext:\n- Topic / domain: [fill in yours]\n- Who I am: [role]\n- Audience for responses: [who I'm using it for]\n\nGenerate for the Project:\n1. Name (short, clear).\n2. Description (1-2 sentences).\n3. Custom Instructions:\n   - Claude's role\n   - response style (length, format, tone)\n   - 3-5 rules / taboos\n   - output format for a typical request\n4. List of 5 files / documents worth uploading to the project.\n5. Example first request to verify everything works.\n\nResponse format: sections with headings, no fluff."
+  },
+  "create-artifact": {
+    "title": "Create an Artifact",
+    "description": "A solid interactive prototype with a single prompt",
+    "text": "Make an interactive Artifact (HTML + Tailwind, no external libraries).\n\nWhat we're building: [prototype description — e.g.: input form, dashboard, comparison screen]\nAudience: [who will use it]\nDevice: mobile-first, but correct on desktop.\n\nRequirements:\n- semantic HTML\n- Tailwind CSS via CDN\n- interactivity via native JS (no React/Vue)\n- baseline accessibility: aria-label, contrast ≥ 4.5:1, focus\n- 2-3 states (idle, loading, success / error)\n- comments in code only where logic is non-obvious\n\nShow a preview so I can check immediately."
+  },
+  "create-skill": {
+    "title": "Create a Skill",
+    "description": "SKILL.md template for skill-creator",
+    "text": "Create a Skill for a recurring task.\n\nTask: [describe the recurring process]\nWhen to trigger: [keywords or situations]\nWhat Claude should do: [step by step]\n\nGenerate:\n1. SKILL.md:\n   - name (kebab-case)\n   - description (so Claude knows exactly when to activate — concrete triggers)\n   - role / context\n   - step-by-step workflow (5-8 steps)\n   - final output format\n2. templates/output.md — final answer template.\n3. Input example and output example.\n4. 3 situations where the Skill should NOT activate (anti-triggers).\n\nThe key thing — a precise description; activation depends on it."
+  },
+  "create-claudemd": {
+    "title": "Create CLAUDE.md",
+    "description": "Project instructions file for Claude Code",
+    "text": "Generate CLAUDE.md for my project.\n\nStack: [languages, frameworks, libraries]\nProject type: [web-app / CLI / library / monorepo]\nTeam: [solo / 2-5 / more]\n\nInclude sections:\n1. Brief about the project (2-3 lines) — only what's non-obvious from package.json.\n2. Stack and versions.\n3. Code conventions: naming, folder structure, imports.\n4. Testing: framework, how to run, coverage requirements.\n5. Linting and formatting: commands, rules.\n6. Forbidden (taboos): patterns, libraries, approaches.\n7. Entry points: key files and their purpose.\n8. Links to external systems (issue tracker, docs, design tools) — if any.\n\nStyle: terse, no fluff. Only what Claude can't figure out from the code itself."
+  },
+  "expert-audit": {
+    "title": "Run an expert audit",
+    "description": "Deep audit of your material against a checklist",
+    "text": "Run an expert audit on the material.\n\nWhat we're auditing: [document / screen / process / code — whatever you have]\nMaterial's goal: [what it should do or show]\nAudience: [whom it's for]\nDomain: [where you work — product / marketing / development / process / other]\n\nChecklist (adapt items to your domain):\n1. Structure and hierarchy: what's scannable in 5 seconds.\n2. Key action / goal: clarity, wording, visibility.\n3. Accessibility / clarity: for the target audience without preparation.\n4. User load: number of fields / steps / decisions.\n5. Trust: confirmations, sources, transparency.\n6. Robustness: what breaks under awkward conditions.\n7. Performance / efficiency: how quickly the outcome is reached.\n8. Risks: where you can lose a user / outcome.\n\nOutput format (for each issue):\n- What: [one line]\n- Impact: [high / medium / low + why]\n- Recommendation: [concrete action]\n\nAt the end — top-5 actions by priority."
+  },
+  "html-prototype": {
+    "title": "Create an HTML prototype",
+    "description": "Prototype in pure HTML/CSS, ready to review",
+    "text": "Make an HTML prototype in a single file.\n\nWhat: [e.g. onboarding screen]\nScenario: [what the user does step by step]\nTone: [strict B2B / friendly B2C / minimal]\n\nTechnical requirements:\n- one index.html — nothing external besides Tailwind CDN\n- three states (where applicable): empty, filled, error\n- mobile-first, breaks gracefully down to 320px\n- accessible semantics: label, aria-*, hidden descriptions\n- no lorem ipsum — write meaningful placeholder text\n- comments in HTML only when doing something non-trivial\n\nFormat as an Artifact so I can open the preview."
+  },
+  "consistency-audit": {
+    "title": "Consistency audit",
+    "description": "Find duplicates, anomalies and discrepancies in a system",
+    "text": "Check the system's consistency.\n\nWhat system: [e.g.: design system, code library, document templates, content style, processes]\nSources: [links to files / repository / description]\nWhat matters now: [concrete aspect — pick 2-3 most important]\n\nCheck:\n1. Base units (colors / variables / terms / templates): duplicates, shades, usage outside the standard.\n2. Sizes and parameters: number of variants; any «magic» values.\n3. Structure and grid: alignment with the accepted system; anomalies.\n4. Repeating elements with different implementations.\n5. Accessibility / clarity for the target audience.\n6. Naming: consistency, clarity.\n\nFor each finding:\n- What\n- Where (file / section / component)\n- Severity\n- What to do\n\nAt the end — top-3 systemic problems (not pointwise)."
+  },
+  "dev-task": {
+    "title": "Prepare a task for a developer",
+    "description": "User story with AC, risks and an estimate",
+    "text": "Turn an idea into a task for a developer.\n\nIdea: [short description]\nBusiness context: [why this is needed]\nConstraints: [deadlines, stack, dependencies]\n\nGenerate:\n1. User story (As a … I want … so that …).\n2. Acceptance Criteria — Given/When/Then, 4-7 items.\n3. Technical notes: what we touch, what we do NOT touch.\n4. Edge cases and negative scenarios.\n5. Risks and blockers.\n6. Dependencies (other tickets, teams).\n7. Size estimate (XS/S/M/L/XL) with rationale.\n8. Definition of Done.\n\nFormat: markdown, ready to paste into your task tracker."
+  },
+  "create-agent": {
+    "title": "Create an agent",
+    "description": "Subagent in Claude Code for a recurring task",
+    "text": "Make a spec for a new Subagent in Claude Code.\n\nAgent's goal: [what it does]\nWhen to call: [triggers from the user's prompt]\nTool access: [Read / Edit / Bash / Web... — what's needed, no more]\n\nDescribe:\n1. Name (kebab-case).\n2. Description — so the parent agent knows when to delegate.\n3. System prompt (role, context, constraints).\n4. Workflow: step by step, what the agent does.\n5. Report format to the parent (short, structured).\n6. Anti-patterns: what the agent does NOT do.\n7. Example of a good call and a bad call.\n\nThe key thing — description; it decides whether the agent activates."
+  },
+  "improve-prompt": {
+    "title": "Improve a prompt",
+    "description": "Turn a weak request into a working one",
+    "text": "Improve my prompt.\n\nMy current prompt:\n\"\"\"\n[paste here]\n\"\"\"\n\nWhat I want as output:\n[describe the ideal answer]\n\nDo:\n1. Diagnostic: what's weak in the current prompt (context / role / task / format / constraints).\n2. Rewrite the prompt by structure: context → role → task → format → constraints → example.\n3. Add 1-2 Few-shot examples if they help.\n4. Explain what changes you made and why.\n5. Provide a «short» version (1 paragraph) and a «full» one (structured).\n\nGoal — the same request with an improved prompt consistently yields a higher-quality answer."
+  }
+}

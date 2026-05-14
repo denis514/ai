@@ -1,0 +1,52 @@
+{
+  "create-project": {
+    "title": "Luo Project",
+    "description": "Malli uuden Projectin asettamiseen Claude.ai:ssa",
+    "text": "Auta asettamaan uusi Project Claude.ai:ssa tehtävääni varten.\n\nKonteksti:\n- Aihe / aihealue: [täytä omasi]\n- Kuka olen: [rooli]\n- Vastausten yleisö: [kenelle käytän]\n\nGeneroi Projectille:\n1. Nimi (lyhyt, selkeä).\n2. Kuvaus (1-2 lausetta).\n3. Custom Instructions:\n   - Clauden rooli\n   - vastauksen tyyli (pituus, muoto, sävy)\n   - 3-5 sääntöä/tabua\n   - tyypillisen pyynnön ulostulon muoto\n4. Lista 5 tiedostosta/dokumentista, jotka kannattaa ladata projektiin.\n5. Esimerkki ensimmäisestä pyynnöstä, jolla tarkistaa, että kaikki toimii.\n\nVastauksen muoto: osiot otsikoilla, ilman höttöä."
+  },
+  "create-artifact": {
+    "title": "Luo Artifact",
+    "description": "Laadukas interaktiivinen prototyyppi yhdellä promptilla",
+    "text": "Tee interaktiivinen Artifact (HTML + Tailwind, ilman ulkoisia kirjastoja).\n\nMitä rakennetaan: [prototyypin kuvaus — esim: syöttölomake, dashboard, vaihtoehtojen vertailunäyttö]\nYleisö: [kenelle tarkoitettu]\nLaite: mobile-first, mutta toimii oikein desktopilla.\n\nVaatimukset:\n- semanttinen HTML\n- Tailwind CSS CDN:n kautta\n- interaktiivisuus natiivilla JS:llä (ilman Reactia/Vueta)\n- perussaavutettavuus: aria-label, kontrastit ≥ 4.5:1, fokus\n- 2-3 tilaa (idle, loading, success / error)\n- kommentit koodissa vain siellä, missä logiikka ei ole ilmeistä\n\nNäytä preview, jotta voin heti tarkistaa."
+  },
+  "create-skill": {
+    "title": "Luo Skill",
+    "description": "SKILL.md-malli skill-creatorille",
+    "text": "Luo Skill toistuvaa tehtävää varten.\n\nTehtävä: [kuvaa toistuva prosessi]\nMilloin laukaista: [avainsanat tai tilanteet]\nMitä Clauden pitää tehdä: [askel askeleelta]\n\nGeneroi:\n1. SKILL.md:\n   - name (kebab-case)\n   - description (niin että Claude tietää tarkasti, milloin aktivoida — konkreettiset triggerit)\n   - rooli / konteksti\n   - vaiheittainen workflow (5-8 askelta)\n   - lopullisen ulostulon muoto\n2. templates/output.md — lopullisen vastauksen malli.\n3. Esimerkki syötteestä ja esimerkki ulostulosta.\n4. 3 tilannetta, joissa Skill EI saa aktivoitua (anti-triggers).\n\nTärkein on tarkka description — siitä riippuu laukaisu."
+  },
+  "create-claudemd": {
+    "title": "Luo CLAUDE.md",
+    "description": "Projektin ohjetiedosto Claude Codelle",
+    "text": "Generoi CLAUDE.md projektilleni.\n\nPino: [kielet, kehykset, kirjastot]\nProjektityyppi: [web-sovellus / CLI / kirjasto / monorepo]\nTiimi: [solo / 2-5 / enemmän]\n\nSisällytä osiot:\n1. Lyhyesti projektista (2-3 riviä) — vain se, mikä ei ole ilmeistä package.jsonista.\n2. Pino ja versiot.\n3. Koodikonventiot: nimeäminen, kansiorakenne, importit.\n4. Testaus: kehys, miten ajaa, kattavuusvaatimukset.\n5. Linttaus ja muotoilu: komennot, säännöt.\n6. Kielletty (tabu): kuviot, kirjastot, lähestymistavat.\n7. Sisääntulopisteet: keskeiset tiedostot ja mihin niitä tarvitaan.\n8. Linkit ulkoisiin järjestelmiin (tehtävänseuranta, dokumentaatio, suunnittelutyökalut) — jos on.\n\nTyyli: tiiviisti, ilman höttöä. Vain se, mitä Claude ei voi saada koodista itse."
+  },
+  "expert-audit": {
+    "title": "Tee asiantuntija-auditointi",
+    "description": "Syväauditointi materiaalillesi tarkistuslistan mukaan",
+    "text": "Tee asiantuntija-auditointi materiaalille.\n\nMitä auditoidaan: [dokumentti / näyttö / prosessi / koodi — mikä sinulla on]\nMateriaalin tavoite: [mitä sen pitää tehdä tai näyttää]\nYleisö: [kenelle se on tarkoitettu]\nAihealue: [missä työskentelet — tuote / markkinointi / kehitys / prosessi / muu]\n\nTarkistuslista (sovita kohdat omalle alueellesi):\n1. Rakenne ja hierarkia: mikä luetaan 5 sekunnissa.\n2. Keskeinen toiminto / tavoite: selkeys, muotoilu, näkyvyys.\n3. Saavutettavuus / ymmärrettävyys: kohdeyleisölle ilman valmistautumista.\n4. Käyttäjän kuorma: kenttien / askelten / päätösten määrä.\n5. Luottamus: vahvistukset, lähteet, läpinäkyvyys.\n6. Kestävyys: mikä menee rikki epämukavissa olosuhteissa.\n7. Tehokkuus: kuinka nopeasti tulos saavutetaan.\n8. Riskit: missä voi menettää käyttäjän / tuloksen.\n\nUlostulon muoto (jokaiselle ongelmalle):\n- Mitä: [yksi rivi]\n- Vaikutus: [korkea / keskitaso / matala + miksi]\n- Suositus: [konkreettinen toimenpide]\n\nLopussa — top-5 toimenpidettä prioriteetin mukaan."
+  },
+  "html-prototype": {
+    "title": "Luo HTML-prototyyppi",
+    "description": "Prototyyppi puhtaalla HTML/CSS:llä, valmis tarkistettavaksi",
+    "text": "Tee HTML-prototyyppi yhdessä tiedostossa.\n\nMitä: [esim. onboarding-näyttö]\nSkenaario: [mitä käyttäjä tekee askel askeleelta]\nSävy: [tiukka B2B / ystävällinen B2C / minimalismi]\n\nTekniset vaatimukset:\n- yksi index.html — ei mitään ulkoista paitsi Tailwind CDN\n- kolme tilaa (jos sovellettavissa): tyhjä, täytetty, virhe\n- mobile-first, hajoaa kauniisti 320px asti\n- saavutettava semantiikka: label, aria-*, piilotetut kuvaukset\n- ei lorem ipsumia — kirjoita merkityksellistä placeholder-tekstiä\n- kommentit HTML:ssä vain jos teet jotain epätriviaalia\n\nMuotoile Artifactiksi, jotta avaan previewin."
+  },
+  "consistency-audit": {
+    "title": "Konsistenssiauditointi",
+    "description": "Löydä duplikaatit, anomaliat ja epäsuhdat järjestelmässä",
+    "text": "Tarkista järjestelmän konsistenssi.\n\nMikä järjestelmä: [esim: design-järjestelmä, koodikirjasto, dokumenttimallit, sisältötyyli, prosessit]\nLähteet: [linkit tiedostoihin / repositorioon / kuvaukseen]\nMikä on nyt tärkeää: [konkreettinen näkökulma — valitse 2-3 tärkeintä]\n\nTarkista:\n1. Perusyksiköt (värit / muuttujat / termit / mallit): duplikaatit, sävyt, käyttö standardin ulkopuolella.\n2. Koot ja parametrit: vaihtoehtojen määrä; onko «taikalukuja».\n3. Rakenne ja ruudukko: yhteensopivuus järjestelmän kanssa; anomaliat.\n4. Toistuvat elementit eri toteutusvaihtoehdoilla.\n5. Saavutettavuus / ymmärrettävyys kohdeyleisölle.\n6. Nimeäminen: konsistenssi, ymmärrettävyys.\n\nJokaiseen löytöön:\n- Mitä\n- Missä (tiedosto / osio / komponentti)\n- Vakavuus\n- Mitä tehdä\n\nLopussa — top-3 järjestelmäongelmaa (ei pistemäisiä)."
+  },
+  "dev-task": {
+    "title": "Valmistele tehtävä kehittäjälle",
+    "description": "User story AC:n, riskien ja arvion kanssa",
+    "text": "Muuta idea kehittäjän tehtäväksi.\n\nIdea: [lyhyt kuvaus]\nLiiketoiminnan konteksti: [miksi tämä tarvitaan]\nRajoitukset: [aikataulut, pino, riippuvuudet]\n\nGeneroi:\n1. User story (As a … I want … so that …).\n2. Acceptance Criteria — Given/When/Then, 4-7 kohtaa.\n3. Tekniset huomiot: mihin kosketaan, mihin EI kosketa.\n4. Reunatapaukset ja negatiiviset skenaariot.\n5. Riskit ja esteet.\n6. Riippuvuudet (muut tiketit, tiimit).\n7. Koon arvio (XS/S/M/L/XL) perusteluineen.\n8. Definition of Done.\n\nMuoto: markdown, valmis tehtävänseurantajärjestelmään liittämiseen."
+  },
+  "create-agent": {
+    "title": "Luo agentti",
+    "description": "Subagent Claude Codeen toistuvaa tehtävää varten",
+    "text": "Tee spec uudelle Subagentille Claude Codessa.\n\nAgentin tavoite: [mitä se tekee]\nMilloin kutsua: [triggerit käyttäjän promptista]\nTyökalujen käyttö: [Read / Edit / Bash / Web... — mitä tarvitaan, ei enempää]\n\nKuvaile:\n1. Nimi (kebab-case).\n2. Description — niin että vanhempi agentti tietää, milloin delegoida.\n3. Järjestelmäprompti (rooli, konteksti, rajoitukset).\n4. Workflow: askel askeleelta, mitä agentti tekee.\n5. Raportin muoto vanhemmalle (lyhyt, jäsennelty).\n6. Anti-patterns: mitä agentti EI tee.\n7. Esimerkki hyvästä ja huonosta kutsusta.\n\nTärkein on description — se ratkaisee, aktivoituuko agentti."
+  },
+  "improve-prompt": {
+    "title": "Paranna promptia",
+    "description": "Muuta heikko pyyntö toimivaksi",
+    "text": "Paranna promptiani.\n\nNykyinen promptini:\n\"\"\"\n[liitä tähän]\n\"\"\"\n\nMitä haluan saada ulostuloksi:\n[kuvaile ihanteellinen vastaus]\n\nTee:\n1. Diagnoosi: mikä nykyisessä promptissa on heikkoa (konteksti / rooli / tehtävä / muoto / rajoitukset).\n2. Kirjoita prompti uudelleen rakenteen mukaan: konteksti → rooli → tehtävä → muoto → rajoitukset → esimerkki.\n3. Lisää 1-2 Few-shot-esimerkkiä, jos ne auttavat.\n4. Selitä, mitä muutoksia teit ja miksi.\n5. Anna versio «lyhyt» (1 kappale) ja «täysi» (jäsennelty).\n\nTavoite — sama pyyntö parannetulla promptilla antaa tasaisesti laadukkaamman vastauksen."
+  }
+}

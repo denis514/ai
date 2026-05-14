@@ -1,0 +1,263 @@
+{
+  "categories": {
+    "start": {
+      "label": "Alku",
+      "description": "Ensimmäinen kontakti AI:n kanssa — pyynnön perusmuodot. Hallitse päivässä."
+    },
+    "writing": {
+      "label": "Kirjoittaminen ja editointi",
+      "description": "Kirjoita, kirjoita uudelleen, lyhennä, vaihda sävy, muotoile."
+    },
+    "analysis": {
+      "label": "Analyysi ja tutkimus",
+      "description": "Pura dokumentti, vertaile, tee rakenteellinen analyysi."
+    },
+    "code": {
+      "label": "Koodi ja kehitys",
+      "description": "Selitä, debuggaa, refaktoroi, tee review, suunnittele."
+    },
+    "learn": {
+      "label": "Oppiminen ja selittäminen",
+      "description": "Opi aihe, tee muistiinpanot, rakenna oppimissuunnitelma."
+    },
+    "creative": {
+      "label": "Luovuus ja ideat",
+      "description": "Aivoriihi, nimeäminen, epätavalliset näkökulmat."
+    },
+    "productivity": {
+      "label": "Tuottavuus",
+      "description": "Pilkkominen, päätöksenteko, pre-mortem."
+    },
+    "business": {
+      "label": "Liiketoiminta ja markkinointi",
+      "description": "Asemointi, persoonat, myyntitekstit, kilpailija-analyysi."
+    },
+    "prompting": {
+      "label": "Prompt engineering",
+      "description": "Edistyneet tekniikat: CoT, Few-shot, self-critique, schema output."
+    }
+  },
+  "levels": {
+    "beginner": {
+      "label": "Aloittelija"
+    },
+    "intermediate": {
+      "label": "Edistynyt"
+    },
+    "advanced": {
+      "label": "Asiantuntija"
+    }
+  },
+  "templates": {
+    "start-role-task": {
+      "title": "Rooli + tehtävä",
+      "description": "Promptin perusmuoto. Anna rooli ja yksi tehtävä.",
+      "text": "Olet — {{rooli}} (esim: data-analyytikko, tekninen kirjoittaja, tuoteasiantuntija, juristi).\n\nTehtävä: {{mitä_pitää_tehdä}}.\n\nVastauksen muoto: {{muoto}} (esim. luettelo, taulukko, kappale enintään 200 sanaa)."
+    },
+    "start-explain-simple": {
+      "title": "Selitä yksinkertaisesti",
+      "description": "Muuta vaikea aihe selkeäksi selitykseksi analogioiden kautta.",
+      "text": "Selitä {{aihe}} yksinkertaisesti, kuin selittäisit 10-vuotiaalle lapselle.\n\nVaatimukset:\n- käytä analogioita arkielämästä\n- ei termejä ilman selitystä\n- enintään 4 lyhyttä kappaletta\n- lopussa — 1 lause «miksi minun pitäisi tietää tämä»."
+    },
+    "start-compare-two": {
+      "title": "Vertaile kahta vaihtoehtoa",
+      "description": "Rakenteellinen vertailu kriteerien perusteella ja lopullinen suositus.",
+      "text": "Vertaile {{vaihtoehto_A}} ja {{vaihtoehto_B}} kriteereillä: {{kriteerit_pilkulla}}.\n\nVastauksen muoto:\n1. Taulukko: kriteeri | {{A}} | {{B}}\n2. Lyhyt johtopäätös: mitä valita tilanteeseeni — {{tilanne}}\n3. Mikä EI ole tärkeää (mistä voi jättää huomiotta)."
+    },
+    "start-give-options": {
+      "title": "Anna useita vaihtoehtoja",
+      "description": "Hae yhden «oikean» vastauksen sijasta lähestymistapojen kirjoa.",
+      "text": "Ehdota {{N}} vaihtoehtoa: {{mitä_tarkalleen}}.\n\nJokaiselle vaihtoehdolle:\n- ydin yhdellä lauseella\n- avainetu\n- avainhaitta\n\nLopussa — minkä valitsisit tilanteessani: {{konteksti}}, ja miksi."
+    },
+    "start-step-by-step": {
+      "title": "Vaiheittainen ohje",
+      "description": "Avaa tehtävä selkeäksi vaihesarjaksi.",
+      "text": "Haluan: {{tavoite}}.\n\nAnna vaiheittainen ohje:\n- numeroi vaiheet\n- jokainen vaihe — yksi konkreettinen toimenpide, ei yleisidea\n- jokaisen vaiheen jälkeen — miten tarkistaa, että se on suoritettu\n- lopussa — tyypilliset virheet tällä polulla."
+    },
+    "writing-shorten": {
+      "title": "Lyhennä teksti",
+      "description": "Tiivistä teksti N-kertaisesti säilyttäen kaikki tärkeät ajatukset.",
+      "text": "Kirjoita tämä teksti uudelleen {{N}} kertaa lyhyemmäksi säilyttäen kaikki avainajatukset:\n\n{{teksti}}\n\nUlostulon muoto: yksi kappale ilman höttöä, aktiivimuoto, ei sanoja «voidaan sanoa että», «tavallaan»."
+    },
+    "writing-tone-change": {
+      "title": "Vaihda sävy ja tyyli",
+      "description": "Kirjoita viesti uudelleen halutussa tyylissä, säilyttäen merkityksen.",
+      "text": "Kirjoita tämä teksti uudelleen tyylissä: {{tyyli}} (esim. ystävällinen, ammattimainen, akateeminen, puhekielinen).\n\nSäilytä merkitys, vaihda äänensävy.\nPituus: {{pituus}}.\nYleisö: {{kohdeyleisö}}.\n\nTeksti:\n{{lähtöteksti}}"
+    },
+    "writing-markdown": {
+      "title": "Rakenna Markdowniksi",
+      "description": "Muuta raaka teksti rakenteiseksi markdown-dokumentiksi.",
+      "text": "Ota tämä raaka teksti ja muotoile markdowniksi:\n\n- jaa merkityksellisiin osioihin H2/H3:lla\n- avainväittämät — luettelolistoiksi\n- tärkeät termit — bold\n- jos on vertailu — taulukko\n- lopussa — lyhyt summary (3-5 bulletia)\n\nTeksti:\n{{teksti}}"
+    },
+    "writing-editor-review": {
+      "title": "Toimittajan review",
+      "description": "Saa rehellinen kritiikki tekstistä kuin kokeneelta toimittajalta.",
+      "text": "Olet kokenut toimittaja. Lue tämä teksti ja anna tiukka mutta rakentava review.\n\nVastauksen rakenne:\n1. 3 pääongelmaa (rakenne / selkeys / tyyli)\n2. Konkreettiset korjaukset muodossa «sitaatti → miten kirjoittaa uudelleen»\n3. Mikä tekstissä toimii hyvin (vähintään 1 kohta)\n4. Yleisarvosana 1-10 perusteluineen\n\nTeksti:\n{{teksti}}"
+    },
+    "writing-slides": {
+      "title": "Diat materiaalista",
+      "description": "Muuta materiaali esityksen rakenteeksi.",
+      "text": "Ota tämä materiaali ja tee rakenne {{N}} dian esitykseen.\n\nJokainen dia:\n- otsikko (lyhyt, yleisön hyödyksi)\n- 3-5 bulletia\n- (valinnainen) yksi sitaatti tai luku\n\nKerronnan logiikka: ongelma → syy → ratkaisu → tulos.\nViimeinen dia — CTA: {{mitä_pitää_tehdä_jälkeen}}.\n\nMateriaali:\n{{materiaali}}"
+    },
+    "analysis-structure-doc": {
+      "title": "Pura dokumentti",
+      "description": "Poimi pitkästä dokumentista olennainen.",
+      "text": "Lue tämä dokumentti ja palauta:\n\n1. **Pääajatus** yhdellä lauseella.\n2. **5 avainväittämää** tärkeysjärjestyksessä.\n3. **3 keskeistä johtopäätöstä** — mitä tästä seuraa.\n4. **Mitä jäi epäselväksi** tai vaatii tarkennusta.\n\nDokumentti:\n{{dokumentti}}"
+    },
+    "analysis-compare": {
+      "title": "Vertaileva analyysi",
+      "description": "Vertaa useita lähteitä / lähestymistapoja / ratkaisuja.",
+      "text": "Tee vertaileva analyysi: {{mitä_vertaillaan}}.\n\nLähteet:\n{{lähteet_riveittäin}}\n\nVastauksen rakenne:\n1. Summary jokaisesta lähteestä 1-2 lauseella.\n2. **Yhteisymmärrys** — missä kaikki ovat samaa mieltä.\n3. **Erimielisyydet** — missä ovat ristiriidassa keskenään.\n4. **Sokeat pisteet** — mitä kukaan ei maininnut.\n5. Oma työjohtopäätökseni analyysin jälkeen."
+    },
+    "analysis-swot": {
+      "title": "SWOT-analyysi",
+      "description": "Klassinen kehys vahvuuksien/heikkouksien/mahdollisuuksien/uhkien arvioimiseen.",
+      "text": "Tee SWOT-analyysi: {{analyysin_kohde}}.\n\nStrengths — sisäiset vahvuudet.\nWeaknesses — sisäiset heikkoudet.\nOpportunities — ulkoiset mahdollisuudet.\nThreats — ulkoiset uhat.\n\nSäännöt:\n- 3-5 kohtaa jokaisessa neljänneksessä\n- jokainen kohta — konkreettisesti, ilman höttöä\n- lopussa: 3 ensisijaista toimenpidettä lähimmän kuukauden ajalle."
+    },
+    "analysis-deep-dive": {
+      "title": "Aiheen syväanalyysi",
+      "description": "Täydellinen rakenteellinen käsitteen analyysi 6-kohtaisella kaavalla.",
+      "text": "Tee syväanalyysi: {{aihe}}.\n\nRakenne:\n1. **Mitä tämä on** — määritelmä ilman höttöä.\n2. **Miksi tämä toimii** — mekanismi, olemassaolon syy.\n3. **Milloin käyttää** — ehdot ja merkit, jotka osoittavat sopivuutta.\n4. **Milloin EI käyttää** — anti-pattern-mallit ja vasta-merkit.\n5. **Vaihtoehdot ja trade-offit** — mitä on lähistöllä, miten eroaa.\n6. **Mitä lukea seuraavaksi** — 3-5 lähdettä."
+    },
+    "analysis-first-principles": {
+      "title": "First principles",
+      "description": "Lähesty tehtävää perusperiaatteista lähtien, hyläten perityt lähestymistavat.",
+      "text": "Lähesty tehtävää First Principlesin kautta: {{tehtävä}}.\n\nVaiheet:\n1. **Hylkää** yleiset lähestymistavat ja analogiat.\n2. **Pelkistä** tehtävä perusperiaatteisiin — mitä tiedämme varmasti?\n3. **Rakenna** ratkaisu näistä periaatteista, katsomatta «miten on tapana».\n4. **Vertaa** tulosta perinteiseen lähestymistapaan.\n5. **Selitä**, miksi ensimmäinen on periaatteellisesti parempi tai huonompi."
+    },
+    "code-explain": {
+      "title": "Selitä koodi",
+      "description": "Ymmärrä, mitä tuntematon koodi tekee.",
+      "text": "Selitä, mitä tämä koodi tekee:\n\n```{{kieli}}\n{{koodi}}\n```\n\nSelityksen rakenne:\n1. Mitä tekee yhdellä lauseella.\n2. Lohkoittain — mitä ja miksi (jokaiselle lohkolle 1-2 riviä).\n3. Mahdolliset ongelmat tai edge case -tapaukset.\n4. Miten voi parantaa (2-3 kohtaa)."
+    },
+    "code-find-bug": {
+      "title": "Etsi bugi",
+      "description": "Paikanna väärän käyttäytymisen syy.",
+      "text": "Tämä koodi ei toimi odotetusti.\n\nKoodi:\n```{{kieli}}\n{{koodi}}\n```\n\nOdotettu käyttäytyminen: {{mitä_pitäisi}}.\nTodellinen käyttäytyminen: {{mitä_saa}}.\n\nLöydä:\n1. Syy (selitä mekanismi).\n2. Minimaalinen fix.\n3. Miksi tarkalleen näin rikkoutui — mikä koodissa johti harhaan."
+    },
+    "code-refactor": {
+      "title": "Refaktorointi",
+      "description": "Paranna luettavuutta muuttamatta käyttäytymistä.",
+      "text": "Refaktoroi tämä koodi:\n\n```{{kieli}}\n{{koodi}}\n```\n\nTavoitteet:\n- luettavuus\n- minimi abstraktioita (älä tee kauniisti kauneuden vuoksi)\n- muuttamatta ulkoista käyttäytymistä\n- ilman uusia riippuvuuksia\n\nNäytä muutettu koodi ja muutosten lista muodossa «oli → on → miksi»."
+    },
+    "code-review": {
+      "title": "Code review",
+      "description": "Saa kokeneen kehittäjän tasoinen code review.",
+      "text": "Tee code review kuin kokenut kehittäjä:\n\n```{{kieli}}\n{{koodi}}\n```\n\nVastauksen muoto:\n- **🔴 Kriittinen** — bugit, security, deadlockit\n- **🟡 Tärkeä** — luettavuus, perf, mahdolliset ongelmat\n- **🟢 Valinnainen** — tyyli, pienet parannukset\n\nJokainen kohta: rivin sitaatti + konkreettinen ehdotus.\nLopussa — yleisarvio mergeen valmiudesta (valmis / vaatii korjauksia / tehdä uudelleen)."
+    },
+    "code-architecture": {
+      "title": "Arkkitehtoninen ratkaisu",
+      "description": "Suunnittele ratkaisu tehtävälle rajoitteet huomioiden.",
+      "text": "Suunnittele ratkaisu: {{tehtävä}}.\n\nRajoitukset: {{rajoitukset_budjetti_suorituskyky_tiimi}}.\n\nPalauta:\n1. **2-3 arkkitehtuurivaihtoehtoa** — jokaisen kuvaus 3-5 lauseessa.\n2. **Trade-offit** jokaisesta vaihtoehdosta (monimutkaisuus vs joustavuus vs suorituskyky).\n3. **Suositus** rajoituksiini perusteluineen.\n4. **Mitä EI tehdä** — anti-pattern-mallit tämän luokan tehtäville.\n5. **Kasvupisteet** — mikä on helppo laajentaa myöhemmin."
+    },
+    "learn-5-levels": {
+      "title": "5 selitystasoa",
+      "description": "Selitä käsite 5 eri syvyystasolla.",
+      "text": "Selitä {{käsite}} 5 syvyystasolla:\n\n1. **5-vuotiaalle lapselle** — pelin ja analogian kautta.\n2. **15-vuotiaalle teinille** — ilman kaavoja, esimerkein elämästä.\n3. **20-vuotiaalle opiskelijalle** — perusterminologialla.\n4. **Lähialan ammattilaiselle** — olettaen lukutaitoisuuden.\n5. **Aiheen asiantuntijalle** — nyanssit, reunatapaukset, kiistat.\n\nJokainen taso — 1 kappale, enintään 5 lausetta."
+    },
+    "learn-notes": {
+      "title": "Artikkelin tai videon muistiinpanot",
+      "description": "Saa materiaalin jäsennelty tiivistelmä.",
+      "text": "Tee muistiinpanot:\n\n{{materiaali_tai_linkki}}\n\nRakenne:\n- **Pääajatus** yhdellä lauseella.\n- **5-7 avainväittämää** esiintymisjärjestyksessä.\n- **3-4 osuvaa sitaattia** (1-2 lausetta kukin).\n- **Mitä soveltaa minulle** kontekstissani: {{konteksti}}.\n- **Mitä EI soveltaa** — varaukset ja rajoitukset."
+    },
+    "learn-roadmap": {
+      "title": "Oppimissuunnitelma",
+      "description": "Rakenna henkilökohtainen roadmap aiheen hallitsemiseen.",
+      "text": "Haluan oppia: {{mitä_opin}}.\nNykyinen tasoni: {{taso}} (aloittelija / osaan perusteet / keskitaso / kokenut).\nKäytettävissä oleva aika: {{tunnit}} tuntia viikossa.\nLopullinen tavoite: {{mitä_pitäisi_osata_lopussa}}.\n\nTee roadmap {{N}} viikolle:\n- **Joka viikko** — aihe + odotettu tulos.\n- **Resurssit** — 1-2 kirjaa/kurssia/artikkelia viikossa (ei keksittyjä nimiä).\n- **Lopullinen projekti** taitojen kiinnittämiseksi.\n- **Tarkistuspisteet** — missä voi ymmärtää, että olen jäänyt jälkeen ja pitää palata."
+    },
+    "learn-socratic": {
+      "title": "Sokraattinen dialogi",
+      "description": "Ei saada vastauksia, vaan tulla ymmärrykseen kysymysten kautta.",
+      "text": "Käy kanssani sokraattinen dialogi aiheesta: {{aihe}}.\n\nSäännöt:\n- esitä kysymyksiä, jotka auttavat minua itse pääsemään ymmärrykseen\n- älä anna suoria vastauksia, ohjaa kysymyksillä\n- yksi kysymys kerrallaan\n- odota vastaustani ennen seuraavaa\n- jos olen väärässä — esitä kysymys, joka paljastaa ristiriidan\n- 8-10 kysymyksen jälkeen tee mini-yhteenveto: mihin ymmärrykseen tulimme."
+    },
+    "creative-brainstorm": {
+      "title": "Aivoriihi",
+      "description": "Generoi paljon ideoita ilman laatusuodatusta alussa.",
+      "text": "Anna {{N}} ideaa: {{tehtävä}}.\n\nKonteksti: {{konteksti}}.\n\nSäännöt:\n- älä suodata generointivaiheessa — anna sekä ilmeisiä että outoja\n- ei itsesensuuria\n- 1 rivi per idea, älä avaa\n\nListan jälkeen — **lopullinen valinta: 3 lupaavinta** perusteluineen yhdellä rivillä."
+    },
+    "creative-naming": {
+      "title": "Nimet ja nimeäminen",
+      "description": "Generoi nimivaihtoehdot perusteluineen.",
+      "text": "Ehdota 10 nimeä: {{mille}}.\n\nParametrit:\n- **Tyyli**: {{lyhyt / kuulas / merkityksellinen / abstrakti / kuvaileva}}\n- **Kohdeyleisö**: {{kohdeyleisö}}\n- **Mitä EI haluta** (kiellot): {{mitä_ei_haluta}}\n- **Brändin sävy**: {{sävy}}\n\nJokaiselle nimelle: itse nimi + 1 rivi perustelua + mahdollinen riski (lyhyt/kaksimerkityksinen/varattu)."
+    },
+    "creative-lateral": {
+      "title": "Lateraalinen ajattelu",
+      "description": "Generoi ratkaisuja 5 eri ammatillisesta näkökulmasta.",
+      "text": "Ota tehtävä: {{tehtävä}}.\n\nGeneroi ratkaisuja 5 eri näkökulmasta:\n1. **Insinööri** — mitä hän tekee logiikan ja tehokkuuden mukaan.\n2. **Taiteilija** — mitä hän tekee muodon ja tunteen kautta.\n3. **Lapsi** — mitä hän tekee naiivisti ja ilman raameja.\n4. **Filosofi** — mitä hän tekee tehtävän uudelleenmäärittelyn kautta.\n5. **Liiketoimintastrategi** — mitä hän tekee ROI-näkökulmasta.\n\nLopussa — **synteesi**: jokaisen näkökulman parhaat elementit yhdistettynä yhdeksi ratkaisuksi."
+    },
+    "creative-reversed": {
+      "title": "Reversed brainstorm",
+      "description": "Ymmärrä, miten taatusti epäonnistua — ja invertoi.",
+      "text": "Aihe: {{tehtävä}}.\n\nTee reversed brainstorm. «Miten ratkaista»:n sijaan — «miten TAATUSTI epäonnistua» tässä tehtävässä.\n\nVaiheet:\n1. Anna 10 konkreettista tapaa rikkoa kaikki.\n2. **Invertoi jokainen** — saat listan siitä, mikä on kriittisen tärkeää tehdä oikein.\n3. Korosta 3 epäilmeisintä inversiota — ne, jotka eivät tule mieleen suoralla ajattelulla."
+    },
+    "productivity-decompose": {
+      "title": "Tehtävän pilkkominen",
+      "description": "Pilko iso tehtävä suoritettaviin osatehtäviin.",
+      "text": "Pilko tehtävä osatehtäviin:\n\n**Iso tehtävä**: {{tehtävä}}\n**Deadline**: {{milloin}}\n**Käytettävissä olevat resurssit**: {{resurssit}}\n\nAnna 5-10 osatehtävää ominaisuuksilla:\n- jokainen suoritettavissa < 1 päivässä työssä\n- riippuvuudet niiden välillä (mitä pitää olla valmiina aiemmin)\n- merkintä «kriittinen» / «voi lykätä»\n- aika-arvio jokaiseen\n\nLopussa — kriittinen polku: minimaalinen sekvenssi tulokseen."
+    },
+    "productivity-decision": {
+      "title": "Päätöksenteko",
+      "description": "Rakenteellinen risteyksen pohdinta kriteerien painoineen.",
+      "text": "Auta tekemään päätös: {{risteys}}.\n\nKonteksti: {{mitä_tilanteesta_tiedetään}}.\nMikä on minulle tärkeää: {{kriteerit}}.\n\nVastauksen rakenne:\n1. **3-5 tekijää**, jotka todella vaikuttavat lopputulokseen.\n2. **Painot** tekijöille (mikä on tärkeämpää, mikä vähemmän).\n3. **Miten jokainen vaihtoehto ilmenee** jokaisella tekijällä (taulukko tai lista).\n4. **Suositus** perusteluineen.\n5. **Pääriskit** valitusta vaihtoehdosta ja niiden mitigaatio."
+    },
+    "productivity-premortem": {
+      "title": "Pre-mortem",
+      "description": "Löydä mahdollisen epäonnistumisen syyt etukäteen.",
+      "text": "Projekti / päätös: {{projekti}}.\n\nTee pre-mortem: kuvittele, että **3 kuukauden päästä** projekti epäonnistui täysin.\n\nKuvaile:\n1. **5 todennäköisintä epäonnistumisen syytä**, todennäköisyysjärjestyksessä laskevasti.\n2. **Jokaiselle** — mitä tehdä NYT sen estämiseksi (yksi konkreettinen toimenpide).\n3. **Varhainen varoitus**: mikä signaali kertoo, että tämä syy on jo alkanut vaikuttaa.\n4. **Paluuton piste** — minkä tapahtuman jälkeen mitigaatio ei ole enää mahdollista."
+    },
+    "business-positioning": {
+      "title": "Tuotteen asemointi",
+      "description": "Tiivis tuotekuvaus kohdeyleisölle.",
+      "text": "Kuvaile tuote:\n\n**Tuote**: {{mikä}}\n**Kohdeyleisö**: {{kenelle}}\n**Kohdeyleisön pääkipupiste**: {{kipu}}\n\nMuoto:\n- **Yhden rivin asemointi**: «{{tuote}} auttaa {{kenelle}} {{mitä_saa}} ilman {{mistä_välttyä}}.»\n- **3 avainetua** (ei feature, vaan etu).\n- **3 käyttötapausta** konkreettisella skenaariolla.\n- **Mikä erottaa** 2-3 lähimmästä vaihtoehdosta.\n- **Kenelle EI sovi** (tärkeää fokukselle)."
+    },
+    "business-persona": {
+      "title": "Asiakaspersoona",
+      "description": "Yksityiskohtainen ihanteellisen asiakkaan profiili.",
+      "text": "Rakenna asiakaspersoona: {{tuote}}.\n\nRakenne:\n- **Demografia** — ikä, tulot, sijainti, työnimike.\n- **Psykografia** — arvot, pelot, halut.\n- **Yksi päivä elämästä** — tyypillinen skenaario, jossa kipumme ilmenee.\n- **Ostotriggerit** — mikä saa ostamaan nyt, ei vuoden päästä.\n- **Vastalauseet ja pelot** — mikä estää ostamasta.\n- **Mistä hänet löytää** — kanavat, yhteisöt, media.\n- **Sitaatti ensimmäisessä persoonassa** — miten hän itse kuvaisi kipuaan."
+    },
+    "business-email-sequence": {
+      "title": "Email-ketju",
+      "description": "Sähköpostisarja konkreettista tavoitetta varten.",
+      "text": "Kirjoita email-sarja {{N}} viestistä: {{tavoite}}.\n\nKonteksti: tilaaja juuri tilasi, odotus — {{mitä_odottaa}}.\nBrändin sävy: {{sävy}}.\n\nJokaiselle viestille:\n- **Viestin tavoite** — mitä lukemisen jälkeen pitäisi tapahtua.\n- **Subject line** — koukku, jolla avataan.\n- **Runko** — lyhyt, luettavissa, aktiivimuoto.\n- **CTA** — yksi konkreettinen toimenpide.\n- **Kuinka monen päivän** kuluttua edellisestä.\n\nIlman liioittelua ja manipulointia — vain hyötyä."
+    },
+    "business-competition": {
+      "title": "Kilpailija-analyysi",
+      "description": "Kilpailijoiden kartta ja differointipisteet.",
+      "text": "Tee kilpailija-analyysi:\n\n**Minä**: {{tuotteeni_asemointi}}\n**Kilpailijat**: {{lista_3_5_kpl}}\n\nJokaiselle kilpailijalle:\n- **Asemointi** yhdellä rivillä.\n- **Avainfeaturet** (3-5 kpl).\n- **Vahvuudet** (missä he ovat todella hyviä).\n- **Heikkoudet** (missä he eivät yllä).\n- **Hinnoittelu** (likimääräinen vaihteluväli).\n\nLopussa:\n- **Missä minulla on tilaisuus erottua** — 2-3 vapaata «kukkulaa».\n- **3 strategista liikettä** lähimmälle neljännekselle.\n- **Mitä EN tee** — anti-strategia."
+    },
+    "prompting-improve": {
+      "title": "Improve my prompt",
+      "description": "Saa promptin parannettu versio selityksineen.",
+      "text": "Tässä nykyinen promptini:\n\n```\n{{nykyinen_prompti}}\n```\n\nMitä saan ulostulona: {{mitä_saan}}.\nMitä haluan saada: {{mitä_haluan}}.\n\nKirjoita prompti uudelleen niin, että:\n- rooli on selkeä\n- tehtävä on yksi ja konkreettinen\n- ulostulon muoto on yksiselitteinen\n- on selkeät rajoitukset «mitä EI tehdä»\n\nLopussa:\n- näytä **diff** vanhasta ja uudesta\n- selitä **jokainen muutos** yhdellä rivillä."
+    },
+    "prompting-cot": {
+      "title": "Chain of Thought",
+      "description": "Pakota malli päättelemään vaiheittain ennen vastausta.",
+      "text": "Tehtävä: {{tehtävä}}.\n\nEnnen lopullisen vastauksen antamista päättele ääneen vaiheittain:\n1. **Mitä tarkalleen kysytään** — muotoile tehtävä omin sanoin.\n2. **Mikä tieto on tärkeää** ratkaisulle.\n3. **Mitkä vaiheet** johtavat vastaukseen.\n4. **Mitkä riskit** tai vaihtoehtoiset polut.\n\nPäättelyjen jälkeen — lopullinen vastaus muodossa: {{muoto}}.\n\nJos jossain vaiheessa puuttuu dataa — esitä tarkentava kysymys, älä keksi."
+    },
+    "prompting-few-shot": {
+      "title": "Few-shot examples",
+      "description": "Anna mallille useita esimerkkejä kuvion jäljittelemiseen.",
+      "text": "Tehtävä: {{tehtävä}}.\n\nTässä esimerkit oikeasta suorituksesta:\n\n**Esimerkki 1**\nSyöte: {{syöte_esim_1}}\nUlostulo: {{ulostulo_esim_1}}\n\n**Esimerkki 2**\nSyöte: {{syöte_esim_2}}\nUlostulo: {{ulostulo_esim_2}}\n\n**Esimerkki 3**\nSyöte: {{syöte_esim_3}}\nUlostulo: {{ulostulo_esim_3}}\n\nKäsittele nyt samalla kuviolla:\nSyöte: {{todellinen_syöte}}\nUlostulo:"
+    },
+    "prompting-self-critique": {
+      "title": "Self-critique loop",
+      "description": "Ensin vastaus, sitten kritiikki, sitten parannettu vastaus.",
+      "text": "Tehtävä: {{tehtävä}}.\n\nToimi kolmessa vaiheessa:\n1. **Ensimmäinen versio** vastauksesta — kuten tuli mieleen, ilman pitkää pohdintaa.\n2. **Oman vastauksen kritiikki** — missä on heikkoa, mitä jäi huomaamatta, mitkä oletukset ovat hatarat.\n3. **Toinen versio** — parannettu, kritiikki huomioiden.\n4. **Diff**: mitä tarkalleen muuttui ja miksi tämä on parempi.\n\nÄlä ohita vaihetta 2 — vaikka ensimmäinen vastaus näyttäisi hyvältä."
+    },
+    "prompting-tree-of-thought": {
+      "title": "Tree of Thought",
+      "description": "Generoi useita lähestymistapoja, arvioi, valitse paras.",
+      "text": "Vaikea tehtävä: {{tehtävä}}.\n\nLähestymistapa «ajatuspuu»:\n1. **Generoi 3 erilaista lähestymistapaa** ratkaisuun (ei vaihtoehtoja yhden lähestymistavan sisällä — nimenomaan erilaisia).\n2. **Lyhyt arvio** jokaisesta: plus / miinus / tyypillinen lopputulos.\n3. **Valitse paras** kontekstiini: {{konteksti}}.\n4. **Avaa valittu** konkreettiseen ratkaisuun.\n5. **Selitä, miksi hylätyt ovat huonoja** — jotta minäkin näen, miksi ne ovat huonompia.\n\nTavoite — ei nopein vastaus, vaan harkituin."
+    },
+    "prompting-schema": {
+      "title": "Output schema (JSON)",
+      "description": "Pakota malli palauttamaan tiukasti strukturoitu JSON.",
+      "text": "Tehtävä: {{tehtävä}}.\n\nPalauta vastaus **tiukasti JSONina** kaavalla:\n\n```json\n{\n  \"summary\": \"1-2 lausetta, yleisesite\",\n  \"details\": [\n    \"Yksityiskohta 1\",\n    \"Yksityiskohta 2\",\n    \"Yksityiskohta 3\"\n  ],\n  \"risks\": [\n    {\"risk\": \"...\", \"severity\": \"low|medium|high\"}\n  ],\n  \"next_actions\": [\n    {\"action\": \"...\", \"priority\": \"low|medium|high\", \"owner\": \"...\"}\n  ]\n}\n```\n\nTiukat säännöt:\n- ei mitään markdownia vastauksessa\n- ei kommentteja JSONin ulkopuolella\n- jos dataa ei riitä — kenttä `null`, ei poisjättö."
+    },
+    "prompting-constraints": {
+      "title": "Prompt by constraints",
+      "description": "Kuvaile tehtävä rajoitusten kautta, ei positiivisten vaatimusten.",
+      "text": "Tehtävä: {{tehtävä}}.\n\nMuotoilen **rajoitusten** kautta, en ihanteellisen tuloksen kuvauksen kautta.\n\nMitä EI saa olla vastauksessa:\n- {{kielto_1}}\n- {{kielto_2}}\n- {{kielto_3}}\n\nMitä pitää säilyä kaikissa vaihtoehdoissa:\n- {{invariantti_1}}\n- {{invariantti_2}}\n\nAnna 3 ratkaisua, joista jokainen täyttää kaikki kiellot ja invariantit.\nLopussa — minkä kolmesta pidät parhaana ja miksi."
+    }
+  }
+}
