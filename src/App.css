@@ -361,63 +361,25 @@
   transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
-/* ── Mastercard spinner ── */
+/* ── Infinity spinner ── */
 .pg__spinner {
-  position: relative;
-  width: 40px;
-  height: 18px;
-  margin: 32px auto 28px;
-  animation: pg-spinner-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 28px auto 20px;
+  animation: pg-spinner-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes pg-spinner-enter {
-  from { opacity: 0; transform: scale(0.6); }
+  from { opacity: 0; transform: scale(0.7); }
   to   { opacity: 1; transform: scale(1); }
 }
 
-.pg__spinner-dot {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  margin-left: -9px;
+.pg__inf-svg {
+  width: 96px;
+  height: 42px;
+  overflow: visible;
 }
-
-/* Оранжевый (Claude) — стартует слева */
-.pg__spinner-dot--a {
-  background: #d97757;
-  animation: pg-swap-a 1.1s ease-in-out infinite;
-  z-index: 2;
-}
-
-/* Чёрный — стартует справа */
-.pg__spinner-dot--b {
-  background: #111111;
-  animation: pg-swap-b 1.1s ease-in-out infinite;
-  z-index: 1;
-}
-
-/* Оранжевый: идёт влево → вправо → влево */
-@keyframes pg-swap-a {
-  0%   { transform: translateX(-11px); z-index: 2; }
-  49%  { z-index: 2; }
-  50%  { z-index: 0; }
-  100% { transform: translateX( 11px); z-index: 0; }
-}
-
-/* Чёрный: идёт вправо → влево → вправо */
-@keyframes pg-swap-b {
-  0%   { transform: translateX( 11px); z-index: 1; }
-  49%  { z-index: 1; }
-  50%  { z-index: 3; }
-  100% { transform: translateX(-11px); z-index: 3; }
-}
-
-/* Чередование направления на каждой итерации */
-.pg__spinner-dot--a { animation-direction: alternate; }
-.pg__spinner-dot--b { animation-direction: alternate-reverse; }
 
 /* Login card */
 .pg__card {
