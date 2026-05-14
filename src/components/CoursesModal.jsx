@@ -273,6 +273,8 @@ function stepIcon(step) {
   return 'sparkles';
 }
 
+const LEVEL_ORDER = { beginner: 0, intermediate: 1, advanced: 2, expert: 3 };
+
 function PathsList({ paths, progressApi, nodeProgressApi, onNavigate }) {
   const t = useT();
   const { locale } = useLocale();
@@ -283,9 +285,13 @@ function PathsList({ paths, progressApi, nodeProgressApi, onNavigate }) {
     prompt: t('courses.kind.prompt')
   };
 
+  const sorted = [...paths].sort(
+    (a, b) => (LEVEL_ORDER[a.level] ?? 99) - (LEVEL_ORDER[b.level] ?? 99)
+  );
+
   return (
     <div className="paths-list">
-      {paths.map(path => {
+      {sorted.map(path => {
         const total = path.steps.length;
         const done = path.steps.filter(s => isStepDone(s, { progressApi, nodeProgressApi })).length;
         const percent = Math.round((done / total) * 100);
