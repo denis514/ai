@@ -15,6 +15,7 @@ export default function MindmapNode({
   isExpanded, isSelected, isMatched, isDimmed,
   hasTutorial, tutorialDone, tutorialStarted,
   nodeStatus,
+  isNew, newType,
   onToggle, onSelect
 }) {
   const t = useT();
@@ -99,6 +100,12 @@ export default function MindmapNode({
           title={`${childrenCount} ${isExpanded ? '(раскрыто)' : '(нажми, чтобы раскрыть)'}`}
         >
           {childrenCount}
+        </span>
+      )}
+
+      {isNew && !isRoot && (
+        <span className={`mm-node__new-badge mm-node__new-badge--${newType || 'new'}`}>
+          {newType === 'updated' ? 'upd' : 'new'}
         </span>
       )}
     </div>

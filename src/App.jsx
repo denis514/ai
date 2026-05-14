@@ -23,6 +23,7 @@ import { useTutorialProgress } from './hooks/useTutorialProgress.js';
 import { useHashRoute } from './hooks/useHashRoute.js';
 import { useBookmarks } from './hooks/useBookmarks.js';
 import { useNodeProgress } from './hooks/useNodeProgress.js';
+import { useWhatsNew } from './hooks/useWhatsNew.js';
 import { useLocale } from './i18n/LocaleContext.jsx';
 import { STRINGS } from './i18n/strings.js';
 import PasswordGate from './components/PasswordGate.jsx';
@@ -183,6 +184,7 @@ function AppInner() {
   const progressApi = useTutorialProgress();
   const bookmarksApi = useBookmarks();
   const nodeProgressApi = useNodeProgress();
+  const { isNew, newType, markSeen } = useWhatsNew();
   const activityApi = useActivityLog();
   const identityApi = useUserIdentity();
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -322,7 +324,8 @@ function AppInner() {
 
   const onSelect = useCallback((node) => {
     setRoute({ type: 'node', id: node.id });
-  }, [setRoute]);
+    markSeen(node.id);
+  }, [setRoute, markSeen]);
 
   // При смене выбранного узла — раскрываем всех предков, чтобы узел стал
   // видимым на карте (важно для глубоких ссылок: Cmd+K, learning paths,
@@ -433,6 +436,8 @@ function AppInner() {
           onSelect={onSelect}
           tutorialState={tutorialState}
           nodeStatusOf={nodeProgressApi.getStatus}
+          isNewNode={isNew}
+          newTypeOf={newType}
         />
 
         <DetailPanel
