@@ -106,16 +106,7 @@ function searchTree(root, query, category, searchableById) {
   return { matched, ancestors, active: hasQuery || hasCat };
 }
 
-export default function App() {
-  const [authed, setAuthed] = useState(() => localStorage.getItem('ca_auth') === '1');
-
-  const handleUnlock = () => {
-    localStorage.setItem('ca_auth', '1');
-    setAuthed(true);
-  };
-
-  if (!authed) return <PasswordGate onUnlock={handleUnlock} />;
-
+function AppInner() {
   // Локаль — нужна для поискового индекса (контент в текущей локали).
   const { locale } = useLocale();
 
@@ -562,4 +553,16 @@ export default function App() {
       )}
     </div>
   );
+}
+
+export default function App() {
+  const [authed, setAuthed] = useState(() => localStorage.getItem('ca_auth') === '1');
+
+  const handleUnlock = () => {
+    localStorage.setItem('ca_auth', '1');
+    setAuthed(true);
+  };
+
+  if (!authed) return <PasswordGate onUnlock={handleUnlock} />;
+  return <AppInner />;
 }
