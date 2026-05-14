@@ -4,6 +4,114 @@
    ============================================================ */
 
 /* ============================================================
+   CookieBanner
+   ============================================================ */
+.cookie-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: calc(100% - 32px);
+  max-width: 600px;
+  animation: cookie-slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cookie-slide-up {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.cookie-banner__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.cookie-banner__icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #f4f4f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+}
+
+.cookie-banner__text {
+  flex: 1;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #555;
+  margin: 0;
+}
+
+.cookie-banner__text strong {
+  color: #111;
+  font-weight: 600;
+}
+
+.cookie-banner__actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+}
+
+.cookie-banner__btn {
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.cookie-banner__btn:active {
+  transform: scale(0.96);
+}
+
+.cookie-banner__btn--accept {
+  background: #111111;
+  color: #ffffff;
+}
+
+.cookie-banner__btn--accept:hover {
+  opacity: 0.85;
+}
+
+.cookie-banner__btn--decline {
+  background: #f0f0ee;
+  color: #555;
+}
+
+.cookie-banner__btn--decline:hover {
+  background: #e8e8e5;
+}
+
+@media (max-width: 520px) {
+  .cookie-banner__inner {
+    flex-wrap: wrap;
+  }
+  .cookie-banner__icon {
+    display: none;
+  }
+  .cookie-banner__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* ============================================================
    PasswordGate
    ============================================================ */
 .pg {

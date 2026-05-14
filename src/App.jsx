@@ -26,7 +26,23 @@ import { useNodeProgress } from './hooks/useNodeProgress.js';
 import { useLocale } from './i18n/LocaleContext.jsx';
 import { STRINGS } from './i18n/strings.js';
 import PasswordGate from './components/PasswordGate.jsx';
+import CookieBanner from './components/CookieBanner.jsx';
 import './App.css';
+
+const GA_ID = 'G-GLRHYG2JVK';
+
+function loadGA() {
+  if (window.__ga_loaded) return;
+  window.__ga_loaded = true;
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_ID);
+}
 
 function collectAllIds(node, acc = new Set()) {
   acc.add(node.id);
@@ -557,12 +573,39 @@ function AppInner() {
 
 export default function App() {
   const [authed, setAuthed] = useState(() => localStorage.getItem('ca_auth') === '1');
+  const [consent, setConsent] = useState(() => localStorage.getItem('ca_consent'));
+  // consent: null = не решил, 'yes' = принял, 'no' = отклонил
+
+  // Если ранее уже принял — загружаем GA сразу при монтировании
+  useEffect(() => {
+    if (consent === 'yes') loadGA();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleAccept = () => {
+    localStorage.setItem('ca_consent', 'yes');
+    setConsent('yes');
+    loadGA();
+  };
+
+  const handleDecline = () => {
+    localStorage.setItem('ca_consent', 'no');
+    setConsent('no');
+  };
 
   const handleUnlock = () => {
     localStorage.setItem('ca_auth', '1');
     setAuthed(true);
   };
 
-  if (!authed) return <PasswordGate onUnlock={handleUnlock} />;
-  return <AppInner />;
+  return (
+    <>
+      {!authed
+        ? <PasswordGate onUnlock={handleUnlock} />
+        : <AppInner />
+      }
+      {consent === null && (
+        <CookieBanner onAccept={handleAccept} onDecline={handleDecline} />
+      )}
+    </>
+  );
 }
