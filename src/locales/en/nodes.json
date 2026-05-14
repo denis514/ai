@@ -37,12 +37,12 @@
   },
   "b-models": {
     "title": "Model family",
-    "what": "Opus — flagship for complex tasks. Sonnet — price/quality balance. Haiku — fast and cheap.",
-    "why": "So you don't pay for Opus where Haiku will do, and vice versa.",
-    "when": "Outline → Haiku. Audit, architecture, research → Opus. Everyday tasks → Sonnet.",
-    "impact": "The right choice saves 5-10× tokens and speeds up the response manyfold.",
-    "example": "Give me 3 options for a document structure — I'll pick, and you'll format the final one (draft in Haiku, final in Sonnet).",
-    "mistakes": "Using one model «for everything». Either slow and expensive, or shallow."
+    "what": "Claude Opus 4.7 — most capable for complex reasoning and agentic coding. Sonnet 4.6 — frontier intelligence at scale for coding and enterprise. Haiku 4.5 — fastest model with near-frontier intelligence.",
+    "why": "Each model trades capability for speed and cost. Picking wrong wastes money or quality.",
+    "when": "Haiku 4.5 for quick drafts, classification, high-volume. Sonnet 4.6 for everyday coding and workflows. Opus 4.7 for hard research, architecture, long multi-step agentic tasks.",
+    "impact": "Correct model choice saves 5-10× in tokens and latency without losing quality.",
+    "example": "Draft outline with Haiku 4.5, code generation with Sonnet 4.6, final architectural review with Opus 4.7.",
+    "mistakes": "Using Opus 4.7 for every call — expensive and slow. Using Haiku 4.5 for complex reasoning — shallow results."
   },
   "b-context": {
     "title": "Context window",
@@ -280,12 +280,12 @@
   },
   "cap-computer": {
     "title": "Computer use",
-    "what": "Claude can control the computer: see the screen, move the cursor, type. Available via API in «Computer use» mode, for Anthropic-developed agents.",
-    "why": "To automate actions in GUI applications without an API.",
-    "when": "When automation is needed in legacy software without an API, or for complex multi-step UI scenarios.",
-    "impact": "Opens a class of automations not available through standard integrations.",
-    "example": "Write a Computer use agent that checks and closes 10 tickets in the admin panel.",
-    "mistakes": "Running Computer use in production without a sandbox or supervision — high risk of unwanted actions."
+    "what": "Claude can control a computer: see the screen via screenshots, move the cursor, click, and type. Available via API with claude-sonnet-4-6 and higher. Uses tools: screenshot, click, type, scroll.",
+    "why": "Automates GUI workflows in software that has no API — legacy systems, web apps, desktop tools.",
+    "when": "When a task requires interacting with a UI that cannot be scripted any other way.",
+    "impact": "Unlocks a class of automations previously requiring human operators.",
+    "example": "Agent that opens a web admin panel, finds overdue tickets, and closes them one by one.",
+    "mistakes": "Running Computer use without a sandboxed VM in production — risk of unintended actions on real systems."
   },
   "cap-tools": {
     "title": "Tool use",
@@ -1105,5 +1105,23 @@
     "impact": "Less misalignment with the team — tasks are clear and uniform.",
     "example": "Agent pm-assistant: task statement → User story + AC + risks + size estimate.",
     "mistakes": "Replacing stakeholder interviews with generation — hypotheses ≠ user needs."
+  },
+  "cap-thinking": {
+    "title": "Extended Thinking",
+    "what": "Claude reasons step-by-step in a hidden «thinking» block before answering. The model explores approaches, checks itself, and only then forms the final response. Available on Opus 4.7 and Sonnet 4.6 via API.",
+    "why": "Hard problems (math, logic, multi-step planning) solved much better with explicit internal reasoning than direct answer generation.",
+    "when": "Complex analysis, multi-step proofs, architectural decisions, debugging tricky bugs, strategy planning.",
+    "impact": "Significantly higher accuracy on hard tasks. Thinking is visible — you can inspect the reasoning chain.",
+    "example": "Send a prompt with thinking enabled: Claude explores 3 approaches in the thinking block, picks the best, then delivers the answer.",
+    "mistakes": "Enabling thinking for simple tasks — wastes tokens and adds latency with no benefit."
+  },
+  "ag-managed": {
+    "title": "Claude Managed Agents",
+    "what": "Official Anthropic product: a ready-made, configurable agent harness that runs in managed cloud infrastructure. Handles long-running tasks asynchronously — you submit a task, the agent runs, you poll for results.",
+    "why": "Building a reliable agent loop from scratch (retries, timeouts, state, observability) takes weeks. Managed Agents provides this out of the box.",
+    "when": "Long-running tasks (minutes to hours), asynchronous work, production agent deployments that need reliability and scalability.",
+    "impact": "Cuts agent infrastructure work from weeks to hours. Production-grade reliability without custom DevOps.",
+    "example": "Submit a task: \"research this topic and write a report\". Managed Agent runs, uses web search and file tools, returns structured results when done.",
+    "mistakes": "Using Managed Agents for simple single-turn tasks — overkill. Use the Messages API directly for those."
   }
 }

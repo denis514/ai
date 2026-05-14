@@ -391,6 +391,15 @@ export const mindmapData = {
             "cap-files",
             "cap-tools"
           ]
+        },
+        {
+          "id": "cap-thinking",
+          "icon": "brain",
+          "category": "основы",
+          "relatedIds": [
+            "b-models",
+            "cap-tools"
+          ]
         }
       ]
     },
@@ -826,6 +835,16 @@ export const mindmapData = {
           "id": "ag-pm",
           "icon": "chart",
           "category": "агенты"
+        },
+        {
+          "id": "ag-managed",
+          "icon": "rocket",
+          "category": "агенты",
+          "relatedIds": [
+            "ag-principles",
+            "mcp",
+            "cap-tools"
+          ]
         }
       ]
     }

@@ -36,13 +36,13 @@
     "mistakes": "Sekoittaa Anthropic OpenAI:n tai Googlen kanssa. Ne ovat kilpailijoita eri filosofialla ja tuotteilla."
   },
   "b-models": {
-    "title": "Malliperhe",
-    "what": "Opus — lippulaiva vaikeisiin tehtäviin. Sonnet — hinta-laatu-tasapaino. Haiku — nopea ja halpa.",
-    "why": "Jotta et maksa Opuksesta siellä, missä Haiku riittää, ja päinvastoin.",
-    "when": "Outline → Haiku. Auditointi, arkkitehtuuri, tutkimus → Opus. Päivittäiset tehtävät → Sonnet.",
-    "impact": "Oikea valinta säästää 5-10× tokenia ja nopeuttaa vastausta moninkertaisesti.",
-    "example": "Anna 3 vaihtoehtoa dokumentin rakenteelle — valitsen, ja viimeistelet lopullisen (luonnos Haikussa, lopullinen Sonnetissa).",
-    "mistakes": "Käyttää yhtä mallia «kaikkeen». Tämä on joko hidasta ja kallista, tai pinnallista."
+    "title": "Malliperheen",
+    "what": "Claude Opus 4.7 — tehokkain monimutkaisen päättelyn ja agenttiohjelmoinnin tehtäviin. Sonnet 4.6 — huipputason älykkyys koodaukseen ja yrityskäyttöön. Haiku 4.5 — nopein malli lähes huipputason älykkyyden kanssa.",
+    "why": "Jokainen malli tasapainottaa kykyä, nopeutta ja kustannuksia. Väärä valinta tuhlaaa rahaa tai tuottaa pintapuolisia tuloksia.",
+    "when": "Haiku 4.5 — nopeat luonnokset, luokittelu, suuret volyymit. Sonnet 4.6 — päivittäinen koodaus ja työnkulut. Opus 4.7 — vaativa tutkimus, arkkitehtuuri, pitkät monivaiheisit agenttihtävät.",
+    "impact": "Oikea mallin valinta säästää 5-10× tokeneita ja latenssia laadun kärsimättä.",
+    "example": "Luonnoksen rakenne — Haiku 4.5, koodin generointi — Sonnet 4.6, lopullinen arkkitehtuuriarviointi — Opus 4.7.",
+    "mistakes": "Opus 4.7:n käyttö jokaiseen pyyntöön — kallista ja hidasta. Haiku 4.5:n käyttö monimutkaiseen päättelyyn — pintapuoliset tulokset."
   },
   "b-context": {
     "title": "Konteksti-ikkuna",
@@ -280,12 +280,12 @@
   },
   "cap-computer": {
     "title": "Computer use",
-    "what": "Claude voi ohjata tietokonetta: nähdä näytön, liikuttaa kursoria, kirjoittaa. Saatavilla API:n kautta «computer use» -tilassa, Anthropic-developed-agenteille.",
-    "why": "Jotta voi automatisoida toimintoja GUI-sovelluksissa, joissa ei ole API:ta.",
-    "when": "Kun tarvitaan automaatio legacy-softassa ilman API:ta tai monimutkaisiin monivaiheisiin UI-skenaarioihin.",
-    "impact": "Avaa automaatioluokan, joka ei ole saavutettavissa tavallisten integraatioiden kautta.",
-    "example": "Kirjoita Computer use -agentti, joka tarkistaa ja sulkee 10 tikettiä admin-paneelissa.",
-    "mistakes": "Käyttää Computer usea prodissa ilman sandboxia tai supervisionia — korkea ei-toivottujen toimien riski."
+    "what": "Claude voi ohjata tietokonetta: nähdä näytön kuvakaappausten kautta, liikuttaa kursoria, klikata ja kirjoittaa. Saatavilla API:n kautta claude-sonnet-4-6:sta ylöspäin. Työkalut: screenshot, click, type, scroll.",
+    "why": "Automatisoi GUI-työnkulut ohjelmistoissa, joissa ei ole API:a — vanhat järjestelmät, verkkosovellukset, työpöytätyökalut.",
+    "when": "Kun tehtävä vaatii vuorovaikutusta käyttöliittymän kanssa, jota ei voi muuten skriptata.",
+    "impact": "Avaa luokan automaatioita, jotka aiemmin vaativat ihmisoperaattoria.",
+    "example": "Agentti avaa verkko-hallintapaneelin, löytää erääntyneet tiketit ja sulkee ne yksitellen.",
+    "mistakes": "Computer usen ajaminen ilman hiekkalaatikkoa tuotannossa — riski tahattomista toiminnoista reaaliaikaisissa järjestelmissä."
   },
   "cap-tools": {
     "title": "Tool use",
@@ -1105,5 +1105,23 @@
     "impact": "Vähemmän misalignmentia tiimin kanssa — tehtävät ovat selkeitä ja yhtenäisiä.",
     "example": "Agent pm-assistant: tehtävän väittämä → User story + AC + riskit + koon arvio.",
     "mistakes": "Korvata sidosryhmä-haastatteluja generoinnilla — hypoteesit ≠ käyttäjien tarpeet."
+  },
+  "cap-thinking": {
+    "title": "Extended Thinking",
+    "what": "Claude päättelee askel askeleelta piilotetussa \"ajattelu\"-lohkossa ennen vastaamista. Malli tutkii lähestymistapoja, tarkistaa itsensä ja muodostaa vasta sitten lopullisen vastauksen. Saatavilla Opus 4.7:ssa ja Sonnet 4.6:ssa API:n kautta.",
+    "why": "Vaikeat ongelmat (matematiikka, logiikka, monivaiheinen suunnittelu) ratkaistaan paljon paremmin eksplisiittisellä sisäisellä päättelyllä.",
+    "when": "Monimutkainen analyysi, monivaiheinen todistaminen, arkkitehtuuripäätökset, vaikeiden bugien debuggaus, strateginen suunnittelu.",
+    "impact": "Merkittävästi parempi tarkkuus vaikeissa tehtävissä. Ajattelu on näkyvää — voit tarkastella päättelyketjua.",
+    "example": "Lähetä kehote ajattelun ollessa käytössä: Claude tutkii 3 lähestymistapaa ajattelulohkossa, valitsee parhaan, antaa sitten vastauksen.",
+    "mistakes": "Ajattelun käyttöönotto yksinkertaisissa tehtävissä — tuhlaa tokeneita ja lisää latenssia ilman hyötyä."
+  },
+  "ag-managed": {
+    "title": "Claude Managed Agents",
+    "what": "Anthropicin virallinen tuote: valmis, konfiguroitava agenttikehys hallitussa pilvi-infrastruktuurissa. Käsittelee pitkäkestoisia tehtäviä asynkronisesti — lähetät tehtävän, agentti työskentelee, kyselyt tulokset.",
+    "why": "Luotettavan agenttikierron rakentaminen alusta (uudelleenyritykset, aikakatkaisut, tila, havaittavuus) vie viikkoja. Managed Agents tarjoaa tämän valmiina.",
+    "when": "Pitkäkestoiset tehtävät (minuuteista tunteihin), asynkroninen työ, tuotantoagentin käyttöönotot luotettavuusvaatimuksilla.",
+    "impact": "Vähentää agentti-infrastruktuurin rakentamisen viikoista tunteihin. Tuotantotason luotettavuus ilman mukautettua DevOpsia.",
+    "example": "Lähetät tehtävän: \"tutki aihe ja kirjoita raportti\". Managed Agent työskentelee, käyttää web-hakua ja tiedostotyökaluja, palauttaa jäsennellyn tuloksen.",
+    "mistakes": "Managed Agentsin käyttö yksinkertaisiin kertaluonteisiin tehtäviin — ylimitoitettu. Käytä niihin suoraan Messages API:a."
   }
 }
