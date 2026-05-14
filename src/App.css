@@ -308,10 +308,17 @@
     rgba(0,0,0,0.6) 220px,
     black 400px
   );
-  transition: opacity 0.9s ease;
+  transition: opacity 0.35s ease;
 }
 
+/* ── Unlocking state: все слои тают, фон становится белым ── */
+.pg--unlocking {
+  background: #f7f7f5;
+  transition: background 0.35s ease;
+}
+.pg--unlocking .pg__bg   { opacity: 0; transition: opacity 0.35s ease; }
 .pg--unlocking .pg__blur { opacity: 0; }
+.pg--unlocking .pg__glow { opacity: 0; transition: opacity 0.35s ease; }
 
 /* Ignition: shooting star arrives */
 .pg__node--lit {
@@ -344,11 +351,58 @@
   );
 }
 
-/* Unlock animation */
+/* Unlock: карточка остаётся видимой, показывает спиннер */
 .pg--unlocking .pg__card {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(1.06);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  box-shadow: none;
+  border-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+/* ── Mastercard spinner ── */
+.pg__spinner {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin: 32px auto 28px;
+  animation:
+    pg-orbit 1.1s linear infinite,
+    pg-spinner-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pg-spinner-enter {
+  from { opacity: 0; transform: scale(0.6) rotate(0deg); }
+  to   { opacity: 1; transform: scale(1)   rotate(0deg); }
+}
+
+@keyframes pg-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.pg__spinner-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -9px;
+  margin-left: -9px;
+}
+
+.pg__spinner-dot--a {
+  background: #d97757;
+  opacity: 0.92;
+  transform: translateX(-7px);
+}
+
+.pg__spinner-dot--b {
+  background: #b85535;
+  opacity: 0.78;
+  transform: translateX(7px);
 }
 
 /* Login card */
@@ -530,6 +584,12 @@
   width: 100%;
   background: var(--bg);
   color: var(--text);
+  animation: app-fadein 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes app-fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .app__main {

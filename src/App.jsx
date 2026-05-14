@@ -26,7 +26,6 @@ import { useNodeProgress } from './hooks/useNodeProgress.js';
 import { useLocale } from './i18n/LocaleContext.jsx';
 import { STRINGS } from './i18n/strings.js';
 import PasswordGate from './components/PasswordGate.jsx';
-import LoadingScreen from './components/LoadingScreen.jsx';
 import CookieBanner from './components/CookieBanner.jsx';
 import './App.css';
 
@@ -572,11 +571,8 @@ function AppInner() {
   );
 }
 
-// phase: 'gate' | 'loading' | 'app'
 export default function App() {
-  const [phase, setPhase] = useState(() =>
-    localStorage.getItem('ca_auth') === '1' ? 'app' : 'gate'
-  );
+  const [authed, setAuthed] = useState(() => localStorage.getItem('ca_auth') === '1');
   const [consent, setConsent] = useState(() => localStorage.getItem('ca_consent'));
 
   // Если ранее уже принял — загружаем GA сразу при монтировании
@@ -597,17 +593,15 @@ export default function App() {
 
   const handleUnlock = () => {
     localStorage.setItem('ca_auth', '1');
-    setPhase('loading');
+    setAuthed(true);
   };
-
-  const handleLoadDone = () => setPhase('app');
 
   return (
     <>
-      {phase === 'gate'    && <PasswordGate onUnlock={handleUnlock} />}
-      {phase === 'loading' && <LoadingScreen onDone={handleLoadDone} />}
-      {phase === 'app'     && <AppInner />}
-
+      {!authed
+        ? <PasswordGate onUnlock={handleUnlock} />
+        : <AppInner />
+      }
       {consent === null && (
         <CookieBanner onAccept={handleAccept} onDecline={handleDecline} />
       )}

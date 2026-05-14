@@ -110,7 +110,7 @@ export default function PasswordGate({ onUnlock }) {
     e.preventDefault();
     if (value === PASSWORD) {
       setUnlocking(true);
-      setTimeout(() => onUnlock(), 900);
+      setTimeout(() => onUnlock(), 1600);
     } else {
       setError(true);
       setValue('');
@@ -175,19 +175,27 @@ export default function PasswordGate({ onUnlock }) {
         <h1 className="pg__title">Claude Atlas</h1>
         <p className="pg__subtitle">Enter password to continue</p>
 
-        <input
-          type="password"
-          className="pg__input"
-          placeholder="Password"
-          value={value}
-          onChange={e => setValue(e.target.value)}
-          autoFocus
-          autoComplete="current-password"
-        />
-
-        <button type="submit" className="pg__btn">
-          {ENTER_LABELS[labelIdx]} →
-        </button>
+        {unlocking ? (
+          <div className="pg__spinner">
+            <div className="pg__spinner-dot pg__spinner-dot--a" />
+            <div className="pg__spinner-dot pg__spinner-dot--b" />
+          </div>
+        ) : (
+          <>
+            <input
+              type="password"
+              className="pg__input"
+              placeholder="Password"
+              value={value}
+              onChange={e => setValue(e.target.value)}
+              autoFocus
+              autoComplete="current-password"
+            />
+            <button type="submit" className="pg__btn">
+              {ENTER_LABELS[labelIdx]} →
+            </button>
+          </>
+        )}
       </form>
     </div>
   );
