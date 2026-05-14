@@ -49,5 +49,8 @@ export function useWhatsNew() {
     });
   }, []);
 
-  return { isNew, newType, markSeen };
+  // Множество id узлов, которые сейчас помечены как новые/обновлённые
+  const newIds = Object.keys(WHATS_NEW).filter(id => isNew(id));
+
+  return { isNew, newType, markSeen, newIds };
 }

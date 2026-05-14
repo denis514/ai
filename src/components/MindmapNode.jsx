@@ -15,7 +15,7 @@ export default function MindmapNode({
   isExpanded, isSelected, isMatched, isDimmed,
   hasTutorial, tutorialDone, tutorialStarted,
   nodeStatus,
-  isNew, newType,
+  isNew, newType, hasNewInside,
   onToggle, onSelect
 }) {
   const t = useT();
@@ -107,6 +107,10 @@ export default function MindmapNode({
         <span className={`mm-node__new-badge mm-node__new-badge--${newType || 'new'}`}>
           {newType === 'updated' ? 'upd' : 'new'}
         </span>
+      )}
+
+      {!isNew && hasNewInside && !isRoot && (
+        <span className="mm-node__new-dot" title="Contains new or updated content" />
       )}
     </div>
   );

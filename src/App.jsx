@@ -184,7 +184,17 @@ function AppInner() {
   const progressApi = useTutorialProgress();
   const bookmarksApi = useBookmarks();
   const nodeProgressApi = useNodeProgress();
-  const { isNew, newType, markSeen } = useWhatsNew();
+  const { isNew, newType, markSeen, newIds } = useWhatsNew();
+
+  // Предки всех новых узлов — чтобы показывать бейдж на свёрнутых ветках
+  const newAncestorIds = useMemo(() => {
+    const acc = new Set();
+    for (const id of newIds) {
+      const path = findAncestorPath(mindmapData, id) || [];
+      path.forEach(a => acc.add(a));
+    }
+    return acc;
+  }, [newIds]);
   const activityApi = useActivityLog();
   const identityApi = useUserIdentity();
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -438,6 +448,7 @@ function AppInner() {
           nodeStatusOf={nodeProgressApi.getStatus}
           isNewNode={isNew}
           newTypeOf={newType}
+          hasNewInside={id => newAncestorIds.has(id)}
         />
 
         <DetailPanel

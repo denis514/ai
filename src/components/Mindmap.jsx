@@ -12,7 +12,7 @@ function buildEdgePath(from, to) {
 }
 
 const Mindmap = forwardRef(function Mindmap(
-  { root, expandedIds, selectedId, matchedIds, searchActive, onToggle, onSelect, tutorialState, nodeStatusOf, isNewNode, newTypeOf },
+  { root, expandedIds, selectedId, matchedIds, searchActive, onToggle, onSelect, tutorialState, nodeStatusOf, isNewNode, newTypeOf, hasNewInside },
   ref
 ) {
   const containerRef = useRef(null);
@@ -89,6 +89,7 @@ const Mindmap = forwardRef(function Mindmap(
               nodeStatus={nodeStatus}
               isNew={isNewNode ? isNewNode(node.id) : false}
               newType={newTypeOf ? newTypeOf(node.id) : null}
+              hasNewInside={hasNewInside ? hasNewInside(node.id) : false}
               onToggle={onToggle}
               onSelect={onSelect}
             />
