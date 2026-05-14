@@ -177,30 +177,8 @@ export default function PasswordGate({ onUnlock }) {
 
         {unlocking ? (
           <div className="pg__spinner">
-            <svg className="pg__inf-svg" viewBox="-68 -30 136 60" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <filter id="inf-glow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feDropShadow dx="0" dy="0" stdDeviation="3.5" floodColor="#d97757" floodOpacity="0.55" />
-                </filter>
-              </defs>
-              {/* Track */}
-              <path
-                d="M0,0 C14,-24 52,-24 52,0 C52,24 14,24 0,0 C-14,-24 -52,-24 -52,0 C-52,24 -14,24 0,0"
-                fill="none"
-                stroke="#d97757"
-                strokeWidth="2.5"
-                strokeOpacity="0.18"
-                strokeLinecap="round"
-              />
-              {/* Rolling dot */}
-              <circle r="7" fill="white" stroke="#d97757" strokeWidth="2" filter="url(#inf-glow)">
-                <animateMotion
-                  dur="2.2s"
-                  repeatCount="indefinite"
-                  path="M0,0 C14,-24 52,-24 52,0 C52,24 14,24 0,0 C-14,-24 -52,-24 -52,0 C-52,24 -14,24 0,0"
-                />
-              </circle>
-            </svg>
+            <div className="pg__spinner-dot pg__spinner-dot--a" />
+            <div className="pg__spinner-dot pg__spinner-dot--b" />
           </div>
         ) : (
           <>

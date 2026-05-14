@@ -361,24 +361,54 @@
   transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
-/* ── Infinity spinner ── */
+/* ── Mastercard swap spinner ── */
 .pg__spinner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  width: 46px;
+  height: 18px;
   margin: 28px auto 20px;
-  animation: pg-spinner-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: pg-spinner-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes pg-spinner-enter {
-  from { opacity: 0; transform: scale(0.7); }
+  from { opacity: 0; transform: scale(0.6); }
   to   { opacity: 1; transform: scale(1); }
 }
 
-.pg__inf-svg {
-  width: 96px;
-  height: 42px;
-  overflow: visible;
+.pg__spinner-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -9px;
+}
+
+/* Оранжевый — стартует слева, уходит вправо, дышит */
+.pg__spinner-dot--a {
+  background: #d97757;
+  animation: pg-dot-a 1.3s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  z-index: 2;
+}
+
+/* Чёрный — стартует справа, уходит влево, дышит */
+.pg__spinner-dot--b {
+  background: #111111;
+  animation: pg-dot-b 1.3s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  z-index: 1;
+}
+
+@keyframes pg-dot-a {
+  0%   { transform: translateX(-14px) scale(1.14); } /* слева — раздут */
+  50%  { transform: translateX(  0px) scale(0.86); } /* центр — сжат */
+  100% { transform: translateX( 14px) scale(1.14); } /* справа — раздут */
+}
+
+@keyframes pg-dot-b {
+  0%   { transform: translateX( 14px) scale(1.14); } /* справа — раздут */
+  50%  { transform: translateX(  0px) scale(0.86); } /* центр — сжат */
+  100% { transform: translateX(-14px) scale(1.14); } /* слева — раздут */
 }
 
 /* Login card */
