@@ -110,7 +110,9 @@ export default function MindmapNode({
       )}
 
       {!isNew && hasNewInside && !isRoot && (
-        <span className="mm-node__new-dot" title="Contains new or updated content" />
+        <span className="mm-node__new-badge mm-node__new-badge--new mm-node__new-badge--inside">
+          new
+        </span>
       )}
     </div>
   );
