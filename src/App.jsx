@@ -25,6 +25,7 @@ import { useBookmarks } from './hooks/useBookmarks.js';
 import { useNodeProgress } from './hooks/useNodeProgress.js';
 import { useLocale } from './i18n/LocaleContext.jsx';
 import { STRINGS } from './i18n/strings.js';
+import PasswordGate from './components/PasswordGate.jsx';
 import './App.css';
 
 function collectAllIds(node, acc = new Set()) {
@@ -106,6 +107,15 @@ function searchTree(root, query, category, searchableById) {
 }
 
 export default function App() {
+  const [authed, setAuthed] = useState(() => localStorage.getItem('ca_auth') === '1');
+
+  const handleUnlock = () => {
+    localStorage.setItem('ca_auth', '1');
+    setAuthed(true);
+  };
+
+  if (!authed) return <PasswordGate onUnlock={handleUnlock} />;
+
   // Локаль — нужна для поискового индекса (контент в текущей локали).
   const { locale } = useLocale();
 
