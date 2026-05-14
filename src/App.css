@@ -4,6 +4,112 @@
    ============================================================ */
 
 /* ============================================================
+   LoadingScreen
+   ============================================================ */
+.ls {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #f7f7f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  animation: ls-enter 0.5s ease both;
+}
+
+@keyframes ls-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ls--exiting {
+  animation: ls-exit 0.6s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes ls-exit {
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.04); }
+}
+
+/* Ripple rings */
+.ls__rings {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.ls__ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(217, 119, 87, 0.35);
+  animation: ls-ripple 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+
+.ls__ring--1 { width: 120px; height: 120px; animation-delay: 0s;    }
+.ls__ring--2 { width: 120px; height: 120px; animation-delay: 0.7s;  }
+.ls__ring--3 { width: 120px; height: 120px; animation-delay: 1.4s;  }
+
+@keyframes ls-ripple {
+  0%   { transform: scale(0.6); opacity: 0.9; }
+  70%  { opacity: 0.15; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
+/* Center logo */
+.ls__logo {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+  background: var(--accent, #d97757);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(217, 119, 87, 0.35);
+  animation: ls-logo-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@keyframes ls-logo-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Text block */
+.ls__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  animation: ls-text-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+
+@keyframes ls-text-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ls__title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  color: #111;
+  margin: 0;
+}
+
+.ls__subtitle {
+  font-size: 13.5px;
+  color: #999;
+  margin: 0;
+  letter-spacing: 0.1px;
+}
+
+/* ============================================================
    CookieBanner
    ============================================================ */
 .cookie-banner {
