@@ -36,13 +36,12 @@
     "mistakes": "Sekoittaa Anthropic OpenAI:n tai Googlen kanssa. Ne ovat kilpailijoita eri filosofialla ja tuotteilla."
   },
   "b-models": {
-    "title": "Malliperheen",
-    "what": "Claude Opus 4.7 — tehokkain monimutkaisen päättelyn ja agenttiohjelmoinnin tehtäviin. Sonnet 4.6 — huipputason älykkyys koodaukseen ja yrityskäyttöön. Haiku 4.5 — nopein malli lähes huipputason älykkyyden kanssa.",
+    "what": "Claude Opus — lippulaivamalli kaikkein monimutkaisimpiin tehtäviin. Sonnet — paras tasapaino kyvykkyyden ja nopeuden välillä. Haiku — nopein ja kevyin malli.",
     "why": "Jokainen malli tasapainottaa kykyä, nopeutta ja kustannuksia. Väärä valinta tuhlaaa rahaa tai tuottaa pintapuolisia tuloksia.",
-    "when": "Haiku 4.5 — nopeat luonnokset, luokittelu, suuret volyymit. Sonnet 4.6 — päivittäinen koodaus ja työnkulut. Opus 4.7 — vaativa tutkimus, arkkitehtuuri, pitkät monivaiheisit agenttihtävät.",
-    "impact": "Oikea mallin valinta säästää 5-10× tokeneita ja latenssia laadun kärsimättä.",
-    "example": "Luonnoksen rakenne — Haiku 4.5, koodin generointi — Sonnet 4.6, lopullinen arkkitehtuuriarviointi — Opus 4.7.",
-    "mistakes": "Opus 4.7:n käyttö jokaiseen pyyntöön — kallista ja hidasta. Haiku 4.5:n käyttö monimutkaiseen päättelyyn — pintapuoliset tulokset."
+    "when": "Haiku — nopeat luonnokset, luokittelu, suuret volyymit. Sonnet — päivittäinen koodaus ja työnkulut. Opus — vaativa tutkimus, arkkitehtuuri, pitkät monivaiheisit agenttihtävät.",
+    "impact": "Oikea mallin valinta säästää tokeneita ja latenssia laadun kärsimättä.",
+    "example": "Luonnoksen rakenne — Haiku, koodin generointi — Sonnet, lopullinen arkkitehtuuriarviointi — Opus.",
+    "mistakes": "Opuksen käyttö jokaiseen pyyntöön — kallista ja hidasta. Haikun käyttö monimutkaiseen päättelyyn — pintapuoliset tulokset."
   },
   "b-context": {
     "title": "Konteksti-ikkuna",
@@ -279,8 +278,7 @@
     "mistakes": "Tallentaa Memoryyn kertaluonteista — roskaa pitkäaikaismuistiin. Käytä pysyviin faktoihin."
   },
   "cap-computer": {
-    "title": "Computer use",
-    "what": "Claude voi ohjata tietokonetta: nähdä näytön kuvakaappausten kautta, liikuttaa kursoria, klikata ja kirjoittaa. Saatavilla API:n kautta claude-sonnet-4-6:sta ylöspäin. Työkalut: screenshot, click, type, scroll.",
+    "what": "Claude voi ohjata tietokonetta: nähdä näytön kuvakaappausten kautta, liikuttaa kursoria, klikata ja kirjoittaa. Saatavilla API:n kautta Sonnetista ylöspäin. Työkalut: screenshot, click, type, scroll.",
     "why": "Automatisoi GUI-työnkulut ohjelmistoissa, joissa ei ole API:a — vanhat järjestelmät, verkkosovellukset, työpöytätyökalut.",
     "when": "Kun tehtävä vaatii vuorovaikutusta käyttöliittymän kanssa, jota ei voi muuten skriptata.",
     "impact": "Avaa luokan automaatioita, jotka aiemmin vaativat ihmisoperaattoria.",
@@ -523,7 +521,7 @@
   },
   "cc-tty-modes": {
     "title": "Toimintatilat",
-    "what": "Tilat: tavallinen chat, Plan mode (vain suunnittelu ilman muutoksia), fast mode (Opus 4.6 nopeammin).",
+    "what": "Tilat: tavallinen chat, Plan mode (vain suunnittelu ilman muutoksia), fast mode (Haiku — nopeammin).",
     "why": "Erilaisille tehtäville — eri vapaus: vaaralliseen muutokseen tarvitaan Plan, rutiiniin — fast.",
     "when": "Plan — ennen suuria muutoksia. Fast — päivittäiseen työhön ja nopeisiin korjauksiin.",
     "impact": "Plan suojaa tarpeettomilta muutoksilta. Fast — säästää aikaa yksinkertaisissa tehtävissä.",
@@ -1107,12 +1105,11 @@
     "mistakes": "Korvata sidosryhmä-haastatteluja generoinnilla — hypoteesit ≠ käyttäjien tarpeet."
   },
   "cap-thinking": {
-    "title": "Extended Thinking",
-    "what": "Claude päättelee askel askeleelta piilotetussa \"ajattelu\"-lohkossa ennen vastaamista. Malli tutkii lähestymistapoja, tarkistaa itsensä ja muodostaa vasta sitten lopullisen vastauksen. Saatavilla Opus 4.7:ssa ja Sonnet 4.6:ssa API:n kautta.",
+    "what": "Claude päättelee askel askeleelta piilotetussa ajattelulohkossa ennen vastaamista. Malli tutkii lähestymistapoja, tarkistaa itsensä ja muodostaa vasta sitten lopullisen vastauksen. Saatavilla Opuksessa ja Sonnetissa API:n kautta.",
     "why": "Vaikeat ongelmat (matematiikka, logiikka, monivaiheinen suunnittelu) ratkaistaan paljon paremmin eksplisiittisellä sisäisellä päättelyllä.",
     "when": "Monimutkainen analyysi, monivaiheinen todistaminen, arkkitehtuuripäätökset, vaikeiden bugien debuggaus, strateginen suunnittelu.",
-    "impact": "Merkittävästi parempi tarkkuus vaikeissa tehtävissä. Ajattelu on näkyvää — voit tarkastella päättelyketjua.",
-    "example": "Lähetä kehote ajattelun ollessa käytössä: Claude tutkii 3 lähestymistapaa ajattelulohkossa, valitsee parhaan, antaa sitten vastauksen.",
+    "impact": "Merkittävästi parempi tarkkuus vaikeissa tehtävissä. Ajattelulohko on näkyvä — voit tarkastella päättelyketjua.",
+    "example": "Lähetä kehote ajattelun ollessa käytössä: Claude tutkii lähestymistapoja ajattelulohkossa, valitsee parhaan, antaa sitten vastauksen.",
     "mistakes": "Ajattelun käyttöönotto yksinkertaisissa tehtävissä — tuhlaa tokeneita ja lisää latenssia ilman hyötyä."
   },
   "ag-managed": {

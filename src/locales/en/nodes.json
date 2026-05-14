@@ -36,13 +36,12 @@
     "mistakes": "Confusing Anthropic with OpenAI/Google. They're competitors with different philosophies and products."
   },
   "b-models": {
-    "title": "Model family",
-    "what": "Claude Opus 4.7 — most capable for complex reasoning and agentic coding. Sonnet 4.6 — frontier intelligence at scale for coding and enterprise. Haiku 4.5 — fastest model with near-frontier intelligence.",
+    "what": "Claude Opus — flagship model for the most complex tasks. Sonnet — the best balance of capability and speed. Haiku — the fastest and lightest model.",
     "why": "Each model trades capability for speed and cost. Picking wrong wastes money or quality.",
-    "when": "Haiku 4.5 for quick drafts, classification, high-volume. Sonnet 4.6 for everyday coding and workflows. Opus 4.7 for hard research, architecture, long multi-step agentic tasks.",
-    "impact": "Correct model choice saves 5-10× in tokens and latency without losing quality.",
-    "example": "Draft outline with Haiku 4.5, code generation with Sonnet 4.6, final architectural review with Opus 4.7.",
-    "mistakes": "Using Opus 4.7 for every call — expensive and slow. Using Haiku 4.5 for complex reasoning — shallow results."
+    "when": "Haiku for quick drafts, classification, high-volume tasks. Sonnet for everyday coding and workflows. Opus for hard research, architecture, and long multi-step agentic tasks.",
+    "impact": "Correct model choice saves significant tokens and latency without losing quality.",
+    "example": "Draft outline with Haiku, code generation with Sonnet, final architectural review with Opus.",
+    "mistakes": "Using Opus for every call — expensive and slow. Using Haiku for complex reasoning — shallow results."
   },
   "b-context": {
     "title": "Context window",
@@ -279,9 +278,8 @@
     "mistakes": "Putting one-off info into Memory — junk in long-term memory. Use for stable facts."
   },
   "cap-computer": {
-    "title": "Computer use",
-    "what": "Claude can control a computer: see the screen via screenshots, move the cursor, click, and type. Available via API with claude-sonnet-4-6 and higher. Uses tools: screenshot, click, type, scroll.",
-    "why": "Automates GUI workflows in software that has no API — legacy systems, web apps, desktop tools.",
+    "what": "Claude can control a computer: see the screen via screenshots, move the cursor, click, and type. Available via API on Sonnet and higher. Uses tools: screenshot, click, type, scroll.",
+    "why": "Automates GUI workflows in software with no API — legacy systems, web apps, desktop tools.",
     "when": "When a task requires interacting with a UI that cannot be scripted any other way.",
     "impact": "Unlocks a class of automations previously requiring human operators.",
     "example": "Agent that opens a web admin panel, finds overdue tickets, and closes them one by one.",
@@ -523,7 +521,7 @@
   },
   "cc-tty-modes": {
     "title": "Operating modes",
-    "what": "Modes: regular chat, plan mode (planning only, no edits), fast mode (Opus 4.6 faster).",
+    "what": "Modes: regular chat, Plan mode (planning only, no edits), fast mode (Haiku — faster responses).",
     "why": "Different tasks — different freedom: a dangerous edit needs Plan, routine needs fast.",
     "when": "Plan — before major changes. Fast — for everyday work and quick edits.",
     "impact": "Plan protects against unnecessary edits. Fast — saves time on simple tasks.",
@@ -1107,12 +1105,11 @@
     "mistakes": "Replacing stakeholder interviews with generation — hypotheses ≠ user needs."
   },
   "cap-thinking": {
-    "title": "Extended Thinking",
-    "what": "Claude reasons step-by-step in a hidden «thinking» block before answering. The model explores approaches, checks itself, and only then forms the final response. Available on Opus 4.7 and Sonnet 4.6 via API.",
-    "why": "Hard problems (math, logic, multi-step planning) solved much better with explicit internal reasoning than direct answer generation.",
+    "what": "Claude reasons step-by-step in a hidden thinking block before answering. The model explores approaches, checks itself, and only then forms the final response. Available on Opus and Sonnet via API.",
+    "why": "Hard problems (math, logic, multi-step planning) solved much better with explicit internal reasoning.",
     "when": "Complex analysis, multi-step proofs, architectural decisions, debugging tricky bugs, strategy planning.",
-    "impact": "Significantly higher accuracy on hard tasks. Thinking is visible — you can inspect the reasoning chain.",
-    "example": "Send a prompt with thinking enabled: Claude explores 3 approaches in the thinking block, picks the best, then delivers the answer.",
+    "impact": "Significantly higher accuracy on hard tasks. The thinking block is visible — you can inspect the reasoning chain.",
+    "example": "Send a prompt with thinking enabled: Claude explores approaches in the thinking block, picks the best, then delivers the answer.",
     "mistakes": "Enabling thinking for simple tasks — wastes tokens and adds latency with no benefit."
   },
   "ag-managed": {
