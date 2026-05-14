@@ -105,13 +105,13 @@ export default function MindmapNode({
 
       {isNew && !isRoot && (
         <span className={`mm-node__new-badge mm-node__new-badge--${newType || 'new'}`}>
-          {newType === 'updated' ? 'upd' : 'new'}
+          {newType === 'updated' ? t('node.badgeUpdated') : t('node.badgeNew')}
         </span>
       )}
 
       {!isNew && hasNewInside && !isRoot && (
         <span className="mm-node__new-badge mm-node__new-badge--new mm-node__new-badge--inside">
-          new
+          {t('node.badgeNew')}
         </span>
       )}
     </div>
