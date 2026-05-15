@@ -1120,5 +1120,86 @@
     "impact": "Cuts agent infrastructure work from weeks to hours. Production-grade reliability without custom DevOps.",
     "example": "Submit a task: \"research this topic and write a report\". Managed Agent runs, uses web search and file tools, returns structured results when done.",
     "mistakes": "Using Managed Agents for simple single-turn tasks — overkill. Use the Messages API directly for those."
+  },
+  "cc-grp-session": {
+    "title": "Session management",
+    "what": "/clear — new session. /compact — summarize context to free space. /resume — continue a previous session. /rename — name the current conversation. /background — keep running after terminal closes. /branch — fork conversation at current point. /rewind — restore code and chat to earlier state. /export — save conversation to file. /copy — copy last response. /recap — one-line session summary. /desktop — move to Claude Desktop. /teleport — resume from claude.ai. /remote-control — control session from phone. /exit — close CLI.",
+    "why": "Sessions are persistent — you can pause, resume, fork, and export any conversation. Understanding session commands prevents losing context.",
+    "when": "Long coding sessions, switching devices, saving progress, recovering from mistakes with /rewind.",
+    "impact": "Never lose work. Resume complex multi-hour tasks. Fork experiments without breaking the main session.",
+    "example": "/branch before a risky refactor → experiment freely → if it fails, original session intact.",
+    "mistakes": "Using /clear when you meant /compact — /clear deletes context, /compact summarizes it."
+  },
+  "cc-grp-context": {
+    "title": "Context and code",
+    "what": "/add-dir — add a directory to Claude's working context. /context — visualize current context usage as a grid. /memory — edit CLAUDE.md memory files. /diff — view uncommitted changes and per-turn diffs. /focus — show only prompt, tool summary, and final response. /goal — set a goal and keep working until condition met. /init — generate CLAUDE.md for current project.",
+    "why": "Claude's context window is finite. These commands let you control what Claude sees and focus its attention.",
+    "when": "Large codebases (add only relevant dirs), long sessions (monitor with /context), starting new projects (/init).",
+    "impact": "Better answers, fewer hallucinations, faster responses — Claude sees exactly what it needs.",
+    "example": "/add-dir src/components → Claude now reads all component files without you referencing each one.",
+    "mistakes": "Adding the entire repo when only one folder is relevant — wastes context and slows Claude down."
+  },
+  "cc-grp-model": {
+    "title": "Model and limits",
+    "what": "/model — switch the AI model for current session. /fast — toggle fast mode (uses Haiku). /effort — set effort level for model usage. /advisor — consult a stronger model at key moments. /upgrade — upgrade to Max for higher limits. /usage — show session cost, plan usage, activity stats. /status — show Claude Code version, model, account, API connectivity. /extra-usage — configure extra usage when limits hit.",
+    "why": "Different tasks need different models. Switching mid-session saves cost without losing context.",
+    "when": "Use /fast for quick edits, /model for architecture work, /usage to track spend, /status to diagnose connection issues.",
+    "impact": "Significant cost savings. Correct model for each task. Never hit limits unexpectedly.",
+    "example": "/fast for writing tests → /model Opus for the tricky algorithm → back to /fast for cleanup.",
+    "mistakes": "Never checking /usage — unexpected bill at end of month."
+  },
+  "cc-grp-ui": {
+    "title": "Interface and appearance",
+    "what": "/color — set prompt bar color for this session. /theme — change the overall theme. /tui — set terminal UI renderer (default or fullscreen). /terminal-setup — enable Option+Enter for newlines and visual bell. /voice — toggle voice mode. /focus — show minimal output (prompt + summary + response only). /radio — Claude FM lo-fi background music. /stickers — order physical Claude Code stickers.",
+    "why": "A comfortable interface reduces friction during long coding sessions.",
+    "when": "/theme and /color for visual clarity. /terminal-setup once after install. /focus when output is too noisy.",
+    "impact": "Less cognitive load. Better readability in long sessions.",
+    "example": "/theme dark + /color #d97757 → visually distinct Claude terminal from other windows.",
+    "mistakes": "Skipping /terminal-setup — Option+Enter won't work for multi-line prompts on macOS."
+  },
+  "cc-grp-config": {
+    "title": "Configuration and settings",
+    "what": "/config — open the config panel. /keybindings — open or create keybindings config file. /permissions — manage allow and deny tool permission rules. /privacy-settings — view and update privacy settings. /update-config — configure settings.json via natural language. /sandbox — configure sandbox for tool execution. /remote-env — configure default remote environment.",
+    "why": "Permissions and keybindings are core to safe, efficient Claude Code usage. Misconfigured permissions = constant approval prompts.",
+    "when": "/permissions after first install to allowlist common tools. /keybindings to set Cmd+Enter as submit. /config for one-stop settings overview.",
+    "impact": "Fewer interruptions, faster workflow, safer execution.",
+    "example": "/permissions → allow 'Bash(npm run *)' → Claude can run npm scripts without asking every time.",
+    "mistakes": "Allowing all bash commands globally — security risk. Be specific: 'Bash(npm run *)' not 'Bash(*)'."
+  },
+  "cc-grp-integrations": {
+    "title": "Integrations",
+    "what": "/mcp — manage MCP servers (add, remove, list). /ide — manage IDE integrations (VS Code, JetBrains) and show status. /chrome — Claude in Chrome beta settings. /hooks — view hook configurations for tool events. /plugin — manage Claude Code plugins. /reload-plugins — activate pending plugin changes. /agents — manage agent configurations. /install-github-app — set up Claude GitHub Actions. /install-slack-app — install Claude Slack app. /web-setup — setup Claude Code on the web.",
+    "why": "Integrations extend Claude Code into your full development workflow — IDE, GitHub, Slack, browser.",
+    "when": "/ide after installing VS Code extension. /mcp to connect databases or APIs. /hooks for pre/post-tool automation.",
+    "impact": "Claude works inside your existing tools instead of alongside them.",
+    "example": "/ide → VS Code integration active → Claude sees open files and inline diagnostics automatically.",
+    "mistakes": "/reload-plugins not called after adding a plugin — new plugin won't activate until next session."
+  },
+  "cc-grp-automation": {
+    "title": "Automation and AI tasks",
+    "what": "/plan — enable plan mode or view current session plan. /autofix-pr — monitor and autofix issues with current PR. /tasks — list and manage background tasks. /loop — run a prompt or command on recurring interval. /schedule — create scheduled remote agent routines. /batch — plan a large-scale change, execute across 5-30 parallel worktree agents. /ultraplan — draft a plan on the web for editing and approval. /ultrareview — deep bug finding ($5-20, runs on web). /goal — set a completion condition and keep working until met. /background — continue session in background.",
+    "why": "These commands turn Claude from a chat assistant into an autonomous worker that runs tasks while you focus elsewhere.",
+    "when": "/loop for recurring tasks. /batch for large refactors across many files. /schedule for nightly automation. /ultrareview before major releases.",
+    "impact": "Hours of work compressed into background tasks. Claude handles parallelism you couldn't manage manually.",
+    "example": "/batch 'add JSDoc to all functions in src/' → 20 parallel agents, each opens a PR for their file group.",
+    "mistakes": "Running /batch without /plan first — always approve the plan before parallel execution."
+  },
+  "cc-grp-quality": {
+    "title": "Code quality and review",
+    "what": "/review — review a pull request with structured analysis. /security-review — security review of pending branch changes. /simplify — review changed code for reuse, quality, efficiency. /debug — enable debug logging for session diagnostics. /fewer-permission-prompts — scan transcripts, build allowlist to reduce permission interruptions. /diff — view uncommitted changes and per-turn diffs.",
+    "why": "These are the quality gates before shipping. Claude catches what linters miss: logic errors, security issues, over-engineering.",
+    "when": "Before every PR merge: /review. Before deploy: /security-review. After a long session: /simplify.",
+    "impact": "Fewer bugs in production. Cleaner code. Security issues caught before they ship.",
+    "example": "/review → Claude lists issues by severity: Critical (SQL injection risk), Warning (no error handling), Info (rename for clarity).",
+    "mistakes": "Using /review as a rubber stamp — read the output carefully, especially Critical items."
+  },
+  "cc-grp-help": {
+    "title": "Help, learning and account",
+    "what": "/help — show all available commands. /powerup — discover Claude Code features through quick interactive lessons. /release-notes — view what's new. /btw — ask a side question without interrupting main task. /insights — analyze your Claude Code session patterns. /skills — list available installed skills. /team-onboarding — generate a guide for teammates. /login / /logout — account management. /feedback — submit feedback to Anthropic. /doctor — diagnose installation issues. /mobile — QR code for mobile app.",
+    "why": "Onboarding and ongoing learning. /btw and /insights are underused gems.",
+    "when": "/doctor when something breaks. /powerup when starting out. /btw for quick questions mid-task. /insights weekly to see your usage patterns.",
+    "impact": "/btw alone saves dozens of context-breaking interruptions per day.",
+    "example": "Mid-refactor: /btw what does the Builder pattern solve? → Claude answers briefly → main task continues.",
+    "mistakes": "Never running /doctor when CLI behaves strangely — it catches 90% of common issues instantly."
   }
 }

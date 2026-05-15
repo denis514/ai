@@ -1120,5 +1120,86 @@
     "impact": "Vähentää agentti-infrastruktuurin rakentamisen viikoista tunteihin. Tuotantotason luotettavuus ilman mukautettua DevOpsia.",
     "example": "Lähetät tehtävän: \"tutki aihe ja kirjoita raportti\". Managed Agent työskentelee, käyttää web-hakua ja tiedostotyökaluja, palauttaa jäsennellyn tuloksen.",
     "mistakes": "Managed Agentsin käyttö yksinkertaisiin kertaluonteisiin tehtäviin — ylimitoitettu. Käytä niihin suoraan Messages API:a."
+  },
+  "cc-grp-session": {
+    "title": "Istunnonhallinta",
+    "what": "/clear — uusi istunto. /compact — tiivistä konteksti historian säilyttäen. /resume — jatka edellistä istuntoa. /rename — nimeä keskustelu. /background — jatka terminaalin sulkemisen jälkeen. /branch — haaruta keskustelu nykyisestä kohdasta. /rewind — palauta koodi ja chat aiempaan tilaan. /export — tallenna keskustelu tiedostoon. /copy — kopioi viimeisin vastaus. /recap — lyhyt istunnon yhteenveto. /desktop — siirrä Claude Desktopiin. /teleport — jatka claude.ai:sta. /remote-control — hallitse puhelimelta. /exit — sulje CLI.",
+    "why": "Istunnot ovat pysyviä — niitä voi keskeyttää, jatkaa, haarauttaa ja viedä ulos. Istuntokomentojen ymmärtäminen estää kontekstin menetyksen.",
+    "when": "Pitkät koodaussessiot, laitteen vaihto, edistymisen tallentaminen, virheiden palautus /rewindillä.",
+    "impact": "Et koskaan menetä työtä. Monimutkaisten tehtävien jatkaminen. Kokeilu ilman riskiä /branchilla.",
+    "example": "/branch ennen riskialtista refaktorointia → kokeile vapaasti → jos epäonnistuu, pääistunto koskematon.",
+    "mistakes": "/clearin käyttö /compactin sijaan — /clear poistaa kontekstin, /compact tiivistää sen."
+  },
+  "cc-grp-context": {
+    "title": "Konteksti ja koodi",
+    "what": "/add-dir — lisää hakemisto Clauden kontekstiin. /context — visualisoi kontekstin käyttö ruudukkoina. /memory — muokkaa CLAUDE.md-muistitiedostoja. /diff — näytä sitoutumattomat muutokset. /focus — näytä vain kehote, työkaluyhteenveto ja vastaus. /goal — aseta tavoite ja jatka kunnes se täyttyy. /init — luo CLAUDE.md projektille.",
+    "why": "Konteksti-ikkuna on rajallinen. Nämä komennot hallitsevat mitä Claude näkee ja mihin sen huomio kohdistuu.",
+    "when": "Suuret koodipohjat (lisää vain tarvittavat hakemistot), pitkät sessiot (/context seuranta), projektin aloitus (/init).",
+    "impact": "Paremmat vastaukset, vähemmän hallusinaatioita, nopeampi toiminta.",
+    "example": "/add-dir src/components → Claude lukee kaikki komponentit automaattisesti.",
+    "mistakes": "Koko repositorion lisääminen kun tarvitaan vain yksi kansio — tuhlaa kontekstia."
+  },
+  "cc-grp-model": {
+    "title": "Malli ja rajat",
+    "what": "/model — vaihda AI-malli istunnolle. /fast — pikamodi (Haiku). /effort — aseta mallin vaivannäön taso. /advisor — konsultoi vahvempaa mallia avainhetkillä. /upgrade — päivitä Max-tilaukselle. /usage — näytä istunnon kustannukset ja tilastot. /status — versio, malli, tili, API-yhteys. /extra-usage — lisäkäyttö rajojen saavuttaessa.",
+    "why": "Eri tehtävät tarvitsevat eri malleja. Mallin vaihto kesken istunnon säästää kustannuksia ilman kontekstin menetystä.",
+    "when": "/fast nopeisiin muokkauksiin, /model arkkitehtuuriin, /usage kulujen seurantaan.",
+    "impact": "Merkittävät kustannussäästöt. Oikea malli jokaiseen tehtävään.",
+    "example": "/fast testien kirjoittamiseen → /model Opus monimutkaiseen algoritmiin → takaisin /fastiin siivoukseen.",
+    "mistakes": "Ei koskaan tarkisteta /usagea — yllättävä lasku kuun lopussa."
+  },
+  "cc-grp-ui": {
+    "title": "Käyttöliittymä ja ulkoasu",
+    "what": "/color — kehoterivin väri istunnolle. /theme — yleinen teema. /tui — terminaalin UI-renderer. /terminal-setup — Option+Enter rivinvaihdolle. /voice — äänitila. /focus — minimaalinen näyttö. /radio — Claude FM lo-fi taustamusiikki. /stickers — tilaa Claude Code -tarroja.",
+    "why": "Mukava käyttöliittymä vähentää kitkaa pitkissä koodaussessioissa.",
+    "when": "/terminal-setup kerran asennuksen jälkeen. /focus kun tulostus on liian meluisaa.",
+    "impact": "Vähemmän kognitiivista kuormaa. Parempi luettavuus.",
+    "example": "/theme dark + /color → Claude-terminaali erottuu visuaalisesti muista ikkunoista.",
+    "mistakes": "/terminal-setupin ohittaminen — Option+Enter ei toimi macOS:llä monirivisiille kehotteille."
+  },
+  "cc-grp-config": {
+    "title": "Konfigurointi ja asetukset",
+    "what": "/config — avaa asetuspaneeli. /keybindings — näppäinmääritykset. /permissions — hallitse työkalujen lupa-sääntöjä. /privacy-settings — tietosuoja-asetukset. /update-config — settings.json luonnollisella kielellä. /sandbox — hiekkalaatikon konfigurointi. /remote-env — etäympäristön oletusasetus.",
+    "why": "Luvat ja näppäimistöoikotiet ovat turvallisen ja tehokkaan käytön perusta.",
+    "when": "/permissions asennuksen jälkeen. /keybindings Cmd+Enter lähetykseen. /config yleiskatsaukseen.",
+    "impact": "Vähemmän keskeytyksiä, nopeampi työnkulku, turvallisempi suoritus.",
+    "example": "/permissions → salli 'Bash(npm run *)' → Claude ajaa npm-skriptit ilman vahvistusta.",
+    "mistakes": "Kaikkien bash-komentojen salliminen globaalisti — tietoturvariski."
+  },
+  "cc-grp-integrations": {
+    "title": "Integraatiot",
+    "what": "/mcp — MCP-palvelinten hallinta. /ide — IDE-integraatiot (VS Code, JetBrains). /chrome — Claude Chrome -asetukset. /hooks — koukun konfiguraatiot. /plugin — liitännäisten hallinta. /reload-plugins — aktivoi liitännäismuutokset. /agents — agenttien hallinta. /install-github-app — GitHub Actions -asennus. /install-slack-app — Slack-asennus. /web-setup — web-asennus.",
+    "why": "Integraatiot laajentavat Claude Coden koko kehitystyönkulkuun.",
+    "when": "/ide VS Code -laajennuksen jälkeen. /mcp tietokantojen tai API:en liittämiseen.",
+    "impact": "Claude toimii työkalujesi sisällä niiden rinnalla toimimisen sijaan.",
+    "example": "/ide → VS Code-integraatio aktiivinen → Claude näkee avoimet tiedostot automaattisesti.",
+    "mistakes": "/reload-pluginsin unohtaminen liitännäisen lisäämisen jälkeen."
+  },
+  "cc-grp-automation": {
+    "title": "Automaatio ja AI-tehtävät",
+    "what": "/plan — suunnittelutila. /autofix-pr — seuraa ja korjaa PR-ongelmat automaattisesti. /tasks — taustatehtävien hallinta. /loop — toista komento aikataululla. /schedule — luo ajastettuja etäagenttirutiineja. /batch — suuri muutos 5-30 rinnakkaisella agentilla. /ultraplan — suunnitelman luonnos webissä. /ultrareview — syvä virheiden etsintä ($5-20, webissä). /goal — tavoite ja jatkuva työ täyttymiseen asti.",
+    "why": "Nämä komennot muuttavat Clauden chat-assistentista autonomiseksi työntekijäksi.",
+    "when": "/loop toistuviin tehtäviin. /batch suuriin refaktorointeihin. /schedule yöautomaatioon.",
+    "impact": "Tunnit työtä taustatehtävinä. Claude hallitsee rinnakkaisuuden mitä et yksin hallitsisi.",
+    "example": "/batch 'lisää JSDoc kaikkiin funktioihin src/:ssä' → 20 rinnakkaista agenttia, jokainen avaa PR:n.",
+    "mistakes": "/batchin ajaminen ilman /plania — hyväksy aina suunnitelma ennen rinnakkaista suoritusta."
+  },
+  "cc-grp-quality": {
+    "title": "Koodin laatu ja katselmointi",
+    "what": "/review — pull requestin katselmointi. /security-review — tietoturvatarkastus. /simplify — koodin laadun ja tehokkuuden tarkistus. /debug — debug-lokitus diagnoosia varten. /fewer-permission-prompts — rakenna allowlist lupakeskeytysten vähentämiseksi. /diff — sitoutumattomat muutokset.",
+    "why": "Nämä ovat laadun portit ennen toimitusta. Claude löytää mitä linttaajat missaavat.",
+    "when": "Ennen jokaista PR-yhdistämistä: /review. Ennen käyttöönottoa: /security-review. Pitkän session jälkeen: /simplify.",
+    "impact": "Vähemmän bugeja tuotannossa. Puhtaampi koodi. Tietoturvaongelmat ennen toimitusta.",
+    "example": "/review → Claude listaa ongelmat vakavuuden mukaan: Kriittinen, Varoitus, Info.",
+    "mistakes": "/reviewin käyttäminen muodollisuutena — lue tuloste huolellisesti."
+  },
+  "cc-grp-help": {
+    "title": "Ohje, oppiminen ja tili",
+    "what": "/help — näytä kaikki komennot. /powerup — interaktiiviset oppitunnit. /release-notes — uudet ominaisuudet. /btw — nopea sivukysymys keskeyttämättä. /insights — sessioanalytiikka. /skills — asennetut taidot. /team-onboarding — tiimin perehdytysopas. /login / /logout — tilinhallinta. /feedback — palaute Anthropicille. /doctor — asennuksen diagnoosi. /mobile — QR-koodi mobiilisovellukseen.",
+    "why": "Perehdytys ja jatkuva oppiminen. /btw ja /insights ovat aliarvostettuja helmiä.",
+    "when": "/doctor kun jokin menee rikki. /powerup aloittaessa. /btw nopeisiin kysymyksiin tehtävän keskellä.",
+    "impact": "/btw yksinään säästää kymmeniä kontekstia rikkovia keskeytyksiä päivässä.",
+    "example": "Refaktoroinnin keskellä: /btw mitä Builder-malli ratkaisee? → Claude vastaa lyhyesti → päätehtävä jatkuu.",
+    "mistakes": "/doctorin käyttämättä jättäminen kun CLI käyttäytyy oudosti — se ratkaisee 90% yleisistä ongelmista."
   }
 }

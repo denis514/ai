@@ -659,48 +659,48 @@ export const mindmapData = {
           "category": "автоматизация",
           "children": [
             {
-              "id": "cc-cmd-init",
-              "icon": "sparkles",
+              "id": "cc-grp-session",
+              "icon": "repeat",
               "category": "автоматизация"
             },
             {
-              "id": "cc-cmd-clear",
-              "icon": "close",
+              "id": "cc-grp-context",
+              "icon": "folder",
               "category": "автоматизация"
             },
             {
-              "id": "cc-cmd-compact",
-              "icon": "archive",
-              "category": "автоматизация"
-            },
-            {
-              "id": "cc-cmd-model",
+              "id": "cc-grp-model",
               "icon": "mixer",
               "category": "автоматизация"
             },
             {
-              "id": "cc-cmd-permissions",
-              "icon": "shield",
+              "id": "cc-grp-ui",
+              "icon": "paint",
               "category": "автоматизация"
             },
             {
-              "id": "cc-cmd-agents",
-              "icon": "robot",
+              "id": "cc-grp-config",
+              "icon": "settings",
               "category": "автоматизация"
             },
             {
-              "id": "cc-cmd-mcp",
+              "id": "cc-grp-integrations",
               "icon": "plug",
               "category": "автоматизация"
             },
             {
-              "id": "cc-cmd-review",
-              "icon": "search",
+              "id": "cc-grp-automation",
+              "icon": "rocket",
               "category": "автоматизация"
             },
             {
-              "id": "cc-cmd-custom",
-              "icon": "tools",
+              "id": "cc-grp-quality",
+              "icon": "microscope",
+              "category": "автоматизация"
+            },
+            {
+              "id": "cc-grp-help",
+              "icon": "question",
               "category": "автоматизация"
             }
           ]

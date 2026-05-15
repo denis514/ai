@@ -10,6 +10,15 @@
  *   2. Деплой — лейбл появится у всех пользователей.
  */
 export const WHATS_NEW = {
+  'cc-grp-session':      { date: '2026-05-15', type: 'new' },
+  'cc-grp-context':      { date: '2026-05-15', type: 'new' },
+  'cc-grp-model':        { date: '2026-05-15', type: 'new' },
+  'cc-grp-ui':           { date: '2026-05-15', type: 'new' },
+  'cc-grp-config':       { date: '2026-05-15', type: 'new' },
+  'cc-grp-integrations': { date: '2026-05-15', type: 'new' },
+  'cc-grp-automation':   { date: '2026-05-15', type: 'new' },
+  'cc-grp-quality':      { date: '2026-05-15', type: 'new' },
+  'cc-grp-help':         { date: '2026-05-15', type: 'new' },
   'cap-thinking': { date: '2026-05-14', type: 'new'     },
   'ag-managed':   { date: '2026-05-14', type: 'new'     },
   'b-models':     { date: '2026-05-14', type: 'updated' },
