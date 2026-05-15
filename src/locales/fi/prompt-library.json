@@ -255,7 +255,7 @@
       "text": "Tehtävä: {{tehtävä}}.\n\nPalauta vastaus **tiukasti JSONina** kaavalla:\n\n```json\n{\n  \"summary\": \"1-2 lausetta, yleisesite\",\n  \"details\": [\n    \"Yksityiskohta 1\",\n    \"Yksityiskohta 2\",\n    \"Yksityiskohta 3\"\n  ],\n  \"risks\": [\n    {\"risk\": \"...\", \"severity\": \"low|medium|high\"}\n  ],\n  \"next_actions\": [\n    {\"action\": \"...\", \"priority\": \"low|medium|high\", \"owner\": \"...\"}\n  ]\n}\n```\n\nTiukat säännöt:\n- ei mitään markdownia vastauksessa\n- ei kommentteja JSONin ulkopuolella\n- jos dataa ei riitä — kenttä `null`, ei poisjättö."
     },
     "prompting-constraints": {
-      "title": "Prompt by constraints",
+      "title": "Kehote rajoitteilla",
       "description": "Kuvaile tehtävä rajoitusten kautta, ei positiivisten vaatimusten.",
       "text": "Tehtävä: {{tehtävä}}.\n\nMuotoilen **rajoitusten** kautta, en ihanteellisen tuloksen kuvauksen kautta.\n\nMitä EI saa olla vastauksessa:\n- {{kielto_1}}\n- {{kielto_2}}\n- {{kielto_3}}\n\nMitä pitää säilyä kaikissa vaihtoehdoissa:\n- {{invariantti_1}}\n- {{invariantti_2}}\n\nAnna 3 ratkaisua, joista jokainen täyttää kaikki kiellot ja invariantit.\nLopussa — minkä kolmesta pidät parhaana ja miksi."
     }
