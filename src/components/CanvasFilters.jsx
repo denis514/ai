@@ -3,6 +3,9 @@ import { FILTER_CATEGORIES, CATEGORIES } from '../data/mindmapData.js';
 import { useMediaQuery } from '../hooks/useMediaQuery.js';
 import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
+import WhatsNewPanel from './WhatsNewPanel.jsx';
+import { useWhatsNew } from '../hooks/useWhatsNew.js';
+import { WHATS_NEW } from '../data/whatsNew.js';
 
 // Локализованный label для категории.
 // Для 'all' (псевдо-категория фильтра) и реальных id ('основы' и т.п.)
@@ -19,28 +22,33 @@ function categoryLabel(t, id) {
  *   721-1350px — pill-кнопка с текущей категорией → popover-меню
  *   ≤720px — скрыт (на mobile живёт в TL FAB-меню)
  */
-export default function CanvasFilters({ category, onCategory }) {
+export default function CanvasFilters({ category, onCategory, onSelectNode }) {
   const t = useT();
   const isCompact = useMediaQuery('(max-width: 1350px)');
   const [open, setOpen] = useState(false);
+  const [updatesOpen, setUpdatesOpen] = useState(false);
   const containerRef = useRef(null);
+  const updatesRef = useRef(null);
+  const { isNew } = useWhatsNew();
+  const unseenCount = Object.keys(WHATS_NEW).filter(id => isNew(id)).length;
 
-  // Click-outside / Esc — закрыть popover
+  // Click-outside / Esc — закрыть popovers
   useEffect(() => {
-    if (!open) return;
+    if (!open && !updatesOpen) return;
     const onClick = (e) => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setOpen(false);
-      }
+      if (containerRef.current && !containerRef.current.contains(e.target)) setOpen(false);
+      if (updatesRef.current && !updatesRef.current.contains(e.target)) setUpdatesOpen(false);
     };
-    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    const onKey = (e) => {
+      if (e.key === 'Escape') { setOpen(false); setUpdatesOpen(false); }
+    };
     document.addEventListener('mousedown', onClick);
     window.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('mousedown', onClick);
       window.removeEventListener('keydown', onKey);
     };
-  }, [open]);
+  }, [open, updatesOpen]);
 
   // Горизонтальный режим (>1350px)
   if (!isCompact) {
@@ -64,6 +72,27 @@ export default function CanvasFilters({ category, onCategory }) {
               </button>
             );
           })}
+
+          {/* Updates button */}
+          <div className="canvas-filters__updates-wrap" ref={updatesRef}>
+            <button
+              type="button"
+              className={`chip canvas-filters__updates-btn ${updatesOpen ? 'is-active' : ''}`}
+              onClick={() => setUpdatesOpen(v => !v)}
+            >
+              <Icon name="flash" size={13} strokeWidth={1.75} />
+              {t('category.updatesBtn')}
+              {unseenCount > 0 && (
+                <span className="canvas-filters__updates-dot">{unseenCount}</span>
+              )}
+            </button>
+            {updatesOpen && (
+              <WhatsNewPanel
+                onSelectNode={onSelectNode}
+                onClose={() => setUpdatesOpen(false)}
+              />
+            )}
+          </div>
         </div>
       </div>
     );
@@ -75,6 +104,27 @@ export default function CanvasFilters({ category, onCategory }) {
 
   return (
     <div className="canvas-filters canvas-filters--compact" ref={containerRef}>
+      {/* Updates button compact */}
+      <div className="canvas-filters__updates-wrap" ref={updatesRef}>
+        <button
+          type="button"
+          className={`chip canvas-filters__updates-btn ${updatesOpen ? 'is-active' : ''}`}
+          onClick={() => { setUpdatesOpen(v => !v); setOpen(false); }}
+        >
+          <Icon name="flash" size={13} strokeWidth={1.75} />
+          {t('category.updatesBtn')}
+          {unseenCount > 0 && (
+            <span className="canvas-filters__updates-dot">{unseenCount}</span>
+          )}
+        </button>
+        {updatesOpen && (
+          <WhatsNewPanel
+            onSelectNode={onSelectNode}
+            onClose={() => setUpdatesOpen(false)}
+          />
+        )}
+      </div>
+
       <button
         type="button"
         className={`canvas-filters__toggle ${open ? 'is-open' : ''}`}

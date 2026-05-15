@@ -5,6 +5,9 @@ import { readyPrompts } from '../data/prompts.js';
 import { FILTER_CATEGORIES, CATEGORIES } from '../data/mindmapData.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getLocalizedFeaturedPrompt } from '../i18n/usePrompt.js';
+import WhatsNewPanel from './WhatsNewPanel.jsx';
+import { useWhatsNew } from '../hooks/useWhatsNew.js';
+import { WHATS_NEW } from '../data/whatsNew.js';
 
 /**
  * MobileFab — 4 FAB-кнопки в углах canvas (только mobile).
@@ -14,12 +17,15 @@ export default function MobileFab({
   category, onCategory,
   onFit, onReset, onExpandAll, onCollapseAll,
   onOpenCourses, onOpenLibrary,
-  onOpenPrompt
+  onOpenPrompt, onSelectNode
 }) {
   const t = useT();
   const { locale } = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
   const [promptsOpen, setPromptsOpen] = useState(false);
+  const [updatesOpen, setUpdatesOpen] = useState(false);
+  const { isNew } = useWhatsNew();
+  const unseenCount = Object.keys(WHATS_NEW).filter(id => isNew(id)).length;
 
   useEffect(() => {
     const onResize = () => {
@@ -172,6 +178,18 @@ export default function MobileFab({
             <button
               type="button"
               className="fab-menu__big-action"
+              onClick={() => { setMenuOpen(false); setUpdatesOpen(true); }}
+            >
+              <Icon name="flash" size={18} strokeWidth={1.5} />
+              <span>{t('category.updatesBtn')}</span>
+              {unseenCount > 0 && (
+                <span className="canvas-filters__updates-dot">{unseenCount}</span>
+              )}
+              <Icon name="arrow-right" size={14} strokeWidth={1.5} />
+            </button>
+            <button
+              type="button"
+              className="fab-menu__big-action"
               onClick={() => { setMenuOpen(false); onOpenCourses(); }}
             >
               <Icon name="graduation" size={18} strokeWidth={1.5} />
@@ -180,6 +198,20 @@ export default function MobileFab({
             </button>
           </div>
         </div>
+      </BottomSheet>
+
+      {/* Updates bottom sheet (mobile) */}
+      <BottomSheet
+        isOpen={updatesOpen}
+        onClose={() => setUpdatesOpen(false)}
+        title={t('category.updatesTitle')}
+        icon="flash"
+        className="bsheet--updates"
+      >
+        <WhatsNewPanel
+          onSelectNode={(id) => { onSelectNode?.(id); setUpdatesOpen(false); }}
+          onClose={() => setUpdatesOpen(false)}
+        />
       </BottomSheet>
 
       <BottomSheet

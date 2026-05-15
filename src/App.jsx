@@ -493,7 +493,11 @@ function AppInner() {
           onStartTutorial={onStartTutorial}
         />
 
-        <CanvasFilters category={category} onCategory={setCategory} />
+        <CanvasFilters
+          category={category}
+          onCategory={setCategory}
+          onSelectNode={(id) => setRoute({ type: 'node', id })}
+        />
 
         <WelcomeCard
           progressApi={progressApi}
@@ -575,6 +579,7 @@ function AppInner() {
         onOpenCourses={onOpenCourses}
         onOpenLibrary={onOpenLibrary}
         onOpenPrompt={setFeaturedPrompt}
+        onSelectNode={(id) => setRoute({ type: 'node', id })}
       />
 
       {featuredPrompt && (
