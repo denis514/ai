@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { mindmapData, CATEGORIES } from './data/mindmapData.js';
-import { tutorials, tutorialIds } from './data/tutorials.js';
+import { tutorials, tutorialIds, tutorialByNodeId } from './data/tutorials.js';
 import CanvasHeader from './components/CanvasHeader.jsx';
 import Mindmap from './components/Mindmap.jsx';
 import DetailPanel from './components/DetailPanel.jsx';
@@ -380,9 +380,10 @@ function AppInner() {
   }, [zoomLevel]);
 
   // Tutorial state — для подсветки узлов с обучением
-  const tutorialState = useCallback((id) => {
-    if (!tutorials[id]) return null;
-    const p = progressApi.getProgress(id);
+  const tutorialState = useCallback((nodeId) => {
+    const tutKey = tutorialByNodeId[nodeId];
+    if (!tutKey) return null;
+    const p = progressApi.getProgress(tutKey);
     return {
       has: true,
       done: !!p.completedAt,
@@ -393,8 +394,9 @@ function AppInner() {
   // Сводка для тулбара
   const tutorialsCompleted = tutorialIds.filter(id => progressApi.isCompleted(id)).length;
 
-  const onStartTutorial = useCallback((nodeId) => {
-    setRoute({ type: 'tutorial', id: nodeId });
+  // Принимает tutorial KEY (не nodeId). Используется из DetailPanel, CoursesModal, WelcomeCard.
+  const onStartTutorial = useCallback((tutorialKey) => {
+    setRoute({ type: 'tutorial', id: tutorialKey });
   }, [setRoute]);
 
   const onOpenCourses  = useCallback(() => setRoute({ type: 'courses' }), [setRoute]);

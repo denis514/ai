@@ -768,3 +768,17 @@ export const tutorials = {
 
 // Список ID всех туториалов для подсчёта прогресса.
 export const tutorialIds = Object.keys(tutorials);
+
+/**
+ * Обратный индекс: nodeId → tutorial key.
+ * Приоритет: ключ, совпадающий с nodeId (точное совпадение), иначе последний в списке.
+ * Используется в DetailPanel, tutorialState и onStartTutorial.
+ */
+export const tutorialByNodeId = Object.entries(tutorials).reduce((acc, [key, t]) => {
+  // Exact match (key === nodeId) always wins.
+  // If no exact match yet, last processed wins (allows 'welcome' to overwrite 'intro' for b-claude).
+  if (!acc[t.nodeId] || key === t.nodeId || acc[t.nodeId] !== t.nodeId) {
+    acc[t.nodeId] = key;
+  }
+  return acc;
+}, {});

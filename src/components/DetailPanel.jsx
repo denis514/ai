@@ -4,7 +4,7 @@ import Icon from './Icon.jsx';
 import BottomSheet from './BottomSheet.jsx';
 import { useIsMobile } from '../hooks/useIsMobile.js';
 import { CATEGORIES, getRelatedNodes } from '../data/mindmapData.js';
-import { tutorials } from '../data/tutorials.js';
+import { tutorials, tutorialByNodeId } from '../data/tutorials.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getNodeContent } from '../i18n/useNode.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
@@ -59,11 +59,11 @@ export default function DetailPanel({
     }
   };
 
-  // tutorials[node.id] возвращает структурный объект; для отображения
-  // totalTime берём из локализованного.
-  const tutorial = tutorials[node.id];
-  const tutorialLocalized = tutorial ? getLocalizedTutorial(node.id, locale) : null;
-  const tProgress = tutorial && progressApi ? progressApi.getProgress(node.id) : null;
+  // Находим туториал через обратный индекс nodeId→key, а не tutorials[node.id].
+  const tutKey = tutorialByNodeId[node.id];
+  const tutorial = tutKey ? tutorials[tutKey] : null;
+  const tutorialLocalized = tutKey ? getLocalizedTutorial(tutKey, locale) : null;
+  const tProgress = tutKey && progressApi ? progressApi.getProgress(tutKey) : null;
   const tDone = !!tProgress?.completedAt;
   const tStarted = !!tProgress && (tProgress.completedSteps?.length > 0 || tProgress.lastStepIndex > 0);
   const tStepsTotal = tutorial ? tutorial.steps.length : 0;
@@ -131,7 +131,7 @@ export default function DetailPanel({
         <button
           type="button"
           className={`detail__tutorial-cta ${tDone ? 'is-done' : tStarted ? 'is-started' : ''}`}
-          onClick={() => onStartTutorial(node.id)}
+          onClick={() => onStartTutorial(tutKey)}
         >
           <span className="detail__tutorial-cta__icon" aria-hidden="true">
             <Icon name={tDone ? 'check' : 'graduation'} size={20} strokeWidth={1.5} />
@@ -343,7 +343,7 @@ export default function DetailPanel({
           <button
             type="button"
             className={`detail__tutorial-cta ${tDone ? 'is-done' : tStarted ? 'is-started' : ''}`}
-            onClick={() => onStartTutorial(node.id)}
+            onClick={() => onStartTutorial(tutKey)}
           >
             <span className="detail__tutorial-cta__icon" aria-hidden="true">
               <Icon name={tDone ? 'check' : 'graduation'} size={20} strokeWidth={1.5} />

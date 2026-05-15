@@ -195,9 +195,8 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
                 isMobile={isMobile}
                 onBack={() => setSelectedTutorialId(null)}
                 onStart={() => {
-                  const sel = tutorials[selectedTutorialKey];
                   setSelectedTutorialId(null);
-                  if (sel) onOpen(sel.nodeId);
+                  onOpen(selectedTutorialKey); // передаём ключ туториала, не nodeId
                 }}
                 onOpenNode={(id) => {
                   setSelectedTutorialId(null);
