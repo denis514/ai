@@ -28,6 +28,7 @@ import { useLocale } from './i18n/LocaleContext.jsx';
 import { STRINGS } from './i18n/strings.js';
 import PasswordGate from './components/PasswordGate.jsx';
 import CookieBanner from './components/CookieBanner.jsx';
+import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import './App.css';
 
 const GA_ID = 'G-GLRHYG2JVK';
@@ -199,6 +200,7 @@ function AppInner() {
   const identityApi = useUserIdentity();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [featuredPrompt, setFeaturedPrompt] = useState(null);
+  const [archiveOpen, setArchiveOpen] = useState(false);
 
   // Cmd+K / Ctrl+K → открыть command palette
   useEffect(() => {
@@ -497,6 +499,7 @@ function AppInner() {
           category={category}
           onCategory={setCategory}
           onSelectNode={(id) => setRoute({ type: 'node', id })}
+          onOpenArchive={() => setArchiveOpen(true)}
         />
 
         <WelcomeCard
@@ -580,12 +583,20 @@ function AppInner() {
         onOpenLibrary={onOpenLibrary}
         onOpenPrompt={setFeaturedPrompt}
         onSelectNode={(id) => setRoute({ type: 'node', id })}
+        onOpenArchive={() => setArchiveOpen(true)}
       />
 
       {featuredPrompt && (
         <PromptModal
           prompt={featuredPrompt}
           onClose={() => setFeaturedPrompt(null)}
+        />
+      )}
+
+      {archiveOpen && (
+        <UpdatesArchiveModal
+          onSelectNode={(id) => { setRoute({ type: 'node', id }); setArchiveOpen(false); }}
+          onClose={() => setArchiveOpen(false)}
         />
       )}
     </div>

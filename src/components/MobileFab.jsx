@@ -17,7 +17,7 @@ export default function MobileFab({
   category, onCategory,
   onFit, onReset, onExpandAll, onCollapseAll,
   onOpenCourses, onOpenLibrary,
-  onOpenPrompt, onSelectNode
+  onOpenPrompt, onSelectNode, onOpenArchive
 }) {
   const t = useT();
   const { locale } = useLocale();
@@ -215,6 +215,7 @@ export default function MobileFab({
         <WhatsNewPanel
           onSelectNode={(id) => { onSelectNode?.(id); setUpdatesOpen(false); }}
           onClose={() => setUpdatesOpen(false)}
+          onOpenArchive={() => { setUpdatesOpen(false); onOpenArchive?.(); }}
         />
       </BottomSheet>
 

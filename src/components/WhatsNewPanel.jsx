@@ -4,7 +4,6 @@ import { nodeIndex } from '../data/mindmapData.js';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { useWhatsNew } from '../hooks/useWhatsNew.js';
 import { useLocale } from '../i18n/LocaleContext.jsx';
-import UpdatesArchiveModal from './UpdatesArchiveModal.jsx';
 
 const TTL_DAYS = 60;
 const MAX_SHOWN = 10;
@@ -14,11 +13,10 @@ function isWithinTTL(dateStr) {
   return age <= TTL_DAYS;
 }
 
-export default function WhatsNewPanel({ onSelectNode, onClose }) {
+export default function WhatsNewPanel({ onSelectNode, onClose, onOpenArchive }) {
   const t = useT();
   const { locale } = useLocale();
   const { isNew, markSeen } = useWhatsNew();
-  const [archiveOpen, setArchiveOpen] = React.useState(false);
 
   const [titles, setTitles] = React.useState({});
   React.useEffect(() => {
@@ -105,18 +103,11 @@ export default function WhatsNewPanel({ onSelectNode, onClose }) {
         <button
           type="button"
           className="wn-panel__archive-btn"
-          onClick={() => setArchiveOpen(true)}
+          onClick={() => { onClose?.(); onOpenArchive?.(); }}
         >
           {t('category.updatesArchiveBtn')}
         </button>
       </div>
-
-      {archiveOpen && (
-        <UpdatesArchiveModal
-          onSelectNode={(id) => { onSelectNode(id); setArchiveOpen(false); }}
-          onClose={() => setArchiveOpen(false)}
-        />
-      )}
     </div>
   );
 }

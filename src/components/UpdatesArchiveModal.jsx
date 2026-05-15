@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { WHATS_NEW } from '../data/whatsNew.js';
 import { nodeIndex } from '../data/mindmapData.js';
-import { useT } from '../i18n/LocaleContext.jsx';
-import { useLocale } from '../i18n/LocaleContext.jsx';
+import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useWhatsNew } from '../hooks/useWhatsNew.js';
 import Icon from './Icon.jsx';
 
@@ -25,7 +24,6 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
     }).catch(() => {});
   }, [locale]);
 
-  // Esc to close
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
@@ -45,8 +43,7 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
   };
 
   const formatDate = (dateStr) => {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString(
+    return new Date(dateStr).toLocaleDateString(
       locale === 'ru' ? 'ru-RU' : locale === 'fi' ? 'fi-FI' : 'en-GB',
       { day: 'numeric', month: 'long', year: 'numeric' }
     );
@@ -57,27 +54,37 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
     .replace('{total}', totalPages);
 
   return (
-    <div className="ua-overlay" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="ua-modal" role="dialog" aria-modal="true" aria-label={t('category.updatesArchiveTitle')}>
+    <div
+      className="courses-overlay"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="archive-modal">
 
-        {/* Header */}
-        <div className="ua-modal__header">
-          <div className="ua-modal__header-left">
-            <Icon name="archive" size={16} strokeWidth={1.5} />
-            <h2 className="ua-modal__title">{t('category.updatesArchiveTitle')}</h2>
-            <span className="ua-modal__total">{allEntries.length}</span>
+        {/* Header — same structure as help-modal__head */}
+        <div className="archive-modal__head">
+          <div className="help-modal__head-icon">
+            <Icon name="archive" size={20} strokeWidth={1.5} />
           </div>
-          <button type="button" className="ua-modal__close" onClick={onClose} aria-label="Close">
+          <div className="help-modal__head-text">
+            <h2>{t('category.updatesArchiveTitle')}</h2>
+            <p>{t('category.updatesPeriod')} · {allEntries.length} {t('category.updatesBtn').toLowerCase()}</p>
+          </div>
+          <button
+            type="button"
+            className="help-modal__close"
+            onClick={onClose}
+            aria-label={t('common.close')}
+          >
             <Icon name="close" size={16} strokeWidth={1.75} />
           </button>
         </div>
 
-        {/* List */}
-        <div className="ua-modal__body">
+        {/* Body */}
+        <div className="archive-modal__body">
           {allEntries.length === 0 ? (
-            <p className="ua-modal__empty">{t('category.updatesArchiveEmpty')}</p>
+            <p className="archive-modal__empty">{t('category.updatesArchiveEmpty')}</p>
           ) : (
-            <ul className="ua-modal__list">
+            <ul className="archive-modal__list">
               {pageEntries.map(([id, entry]) => {
                 if (!nodeIndex[id]) return null;
                 const unseen = isNew(id);
@@ -85,15 +92,17 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
                   <li key={id}>
                     <button
                       type="button"
-                      className={`ua-modal__item ${unseen ? 'is-unseen' : ''}`}
+                      className={`archive-modal__item ${unseen ? 'is-unseen' : ''}`}
                       onClick={() => handleSelect(id)}
                     >
                       <span className={`wn-panel__badge wn-panel__badge--${entry.type}`}>
                         {entry.type === 'new' ? t('category.updatesNew') : t('category.updatesUpdated')}
                       </span>
-                      <span className="ua-modal__item-title">{titles[id] || id}</span>
-                      <span className="ua-modal__item-date">{formatDate(entry.date)}</span>
-                      <Icon name="arrow-right" size={13} strokeWidth={1.5} className="ua-modal__item-arrow" />
+                      <span className="archive-modal__item-title">
+                        {titles[id] || id}
+                      </span>
+                      <span className="archive-modal__item-date">{formatDate(entry.date)}</span>
+                      <Icon name="arrow-right" size={13} strokeWidth={1.5} className="archive-modal__item-arrow" />
                     </button>
                   </li>
                 );
@@ -104,25 +113,21 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="ua-modal__pagination">
+          <div className="archive-modal__pagination">
             <button
               type="button"
-              className="ua-modal__page-btn"
+              className="archive-modal__page-btn"
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
-              aria-label="Previous page"
             >
               <Icon name="arrow-left" size={14} strokeWidth={1.75} />
             </button>
-
-            <span className="ua-modal__page-label">{pageLabel}</span>
-
+            <span className="archive-modal__page-label">{pageLabel}</span>
             <button
               type="button"
-              className="ua-modal__page-btn"
+              className="archive-modal__page-btn"
               onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              aria-label="Next page"
             >
               <Icon name="arrow-right" size={14} strokeWidth={1.75} />
             </button>
