@@ -5,6 +5,8 @@ import { initialFromName, colorFromName } from '../hooks/useUserIdentity.js';
 import { useLocale, useT } from '../i18n/LocaleContext.jsx';
 import { LOCALE_LABEL, LOCALE_SHORT } from '../i18n/config.js';
 
+const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
+
 const STORAGE_KEYS = [
   'claude-mindmap:bookmarks:v1',
   'claude-mindmap:node-progress:v1',
@@ -34,6 +36,7 @@ export default function ProfilePanel({
 }) {
   const t = useT();
   const { locale, setLocale, locales } = useLocale();
+  const [langOpen, setLangOpen] = useState(false);
 
   // ===== Name editing =====
   const [editingName, setEditingName] = useState(!identityApi?.isSet);
@@ -214,22 +217,11 @@ export default function ProfilePanel({
         )}
       </header>
 
-      {/* LANGUAGE SWITCHER */}
-      <section className="profile-panel__section">
-        <h4>{t('profile.language')}</h4>
-        <div className="profile-panel__level-row">
-          {locales.map((code) => (
-            <button
-              key={code}
-              type="button"
-              className={`profile-panel__level-btn ${locale === code ? 'is-active' : ''}`}
-              onClick={() => setLocale(code)}
-              title={LOCALE_LABEL[code]}
-            >
-              {LOCALE_SHORT[code]} · {LOCALE_LABEL[code]}
-            </button>
-          ))}
-        </div>
+      {/* PRO TEASER — под именем */}
+      <section className="profile-panel__pro">
+        <span className="profile-panel__pro-badge">{t('common.soon')}</span>
+        <strong>{t('profile.pro.title')}</strong>
+        <p>{t('profile.pro.desc')}</p>
       </section>
 
       {/* LEVEL SWITCHER */}
@@ -393,12 +385,38 @@ export default function ProfilePanel({
         </div>
       </section>
 
-      {/* PRO TEASER */}
-      <section className="profile-panel__pro">
-        <span className="profile-panel__pro-badge">{t('common.soon')}</span>
-        <strong>{t('profile.pro.title')}</strong>
-        <p>{t('profile.pro.desc')}</p>
-      </section>
+      {/* LANGUAGE PICKER — bottom right flag dropdown */}
+      <div className="profile-panel__lang-bar">
+        <div className="profile-panel__lang-picker">
+          <button
+            type="button"
+            className={`profile-panel__lang-btn ${langOpen ? 'is-open' : ''}`}
+            onClick={() => setLangOpen(v => !v)}
+            aria-haspopup="listbox"
+            aria-expanded={langOpen}
+          >
+            <span className="profile-panel__lang-flag">{LOCALE_FLAG[locale]}</span>
+            <span className="profile-panel__lang-label">{LOCALE_LABEL[locale]}</span>
+            <Icon name="expand" size={12} strokeWidth={2} />
+          </button>
+          {langOpen && (
+            <ul className="profile-panel__lang-dropdown" role="listbox">
+              {locales.map((code) => (
+                <li key={code} role="option" aria-selected={locale === code}>
+                  <button
+                    type="button"
+                    className={`profile-panel__lang-option ${locale === code ? 'is-active' : ''}`}
+                    onClick={() => { setLocale(code); setLangOpen(false); }}
+                  >
+                    <span>{LOCALE_FLAG[code]}</span>
+                    <span>{LOCALE_LABEL[code]}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
