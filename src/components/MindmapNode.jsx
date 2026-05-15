@@ -67,11 +67,15 @@ export default function MindmapNode({
           <Icon name={node.icon} size={18} strokeWidth={1.5} />
         </span>
       )}
+      {isRoot && (
+        <span className="mm-node__icon mm-node__icon--root" aria-hidden="true">
+          <Icon name={node.icon} size={26} strokeWidth={1.75} />
+        </span>
+      )}
 
-      {isRoot
-        ? <span className="mm-node__root-label">{t(`nodes.${node.id}.title`)}</span>
-        : <span className="mm-node__title">{t(`nodes.${node.id}.title`)}</span>
-      }
+      {!isRoot && (
+        <span className="mm-node__title">{t(`nodes.${node.id}.title`)}</span>
+      )}
 
       {hasTutorial && (() => {
         const label = tutorialDone
