@@ -5,13 +5,12 @@ import { useT } from '../i18n/LocaleContext.jsx';
 import { useWhatsNew } from '../hooks/useWhatsNew.js';
 import { useLocale } from '../i18n/LocaleContext.jsx';
 
-function getNodeTitle(id, locale) {
-  try {
-    // Dynamic import won't work synchronously — use a pre-loaded map instead
-    return null;
-  } catch {
-    return null;
-  }
+const TTL_DAYS = 60;
+const MAX_SHOWN = 10;
+
+function isWithinTTL(dateStr) {
+  const age = (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24);
+  return age <= TTL_DAYS;
 }
 
 export default function WhatsNewPanel({ onSelectNode, onClose }) {
@@ -19,7 +18,6 @@ export default function WhatsNewPanel({ onSelectNode, onClose }) {
   const { locale } = useLocale();
   const { isNew, markSeen } = useWhatsNew();
 
-  // Load node titles from locale
   const [titles, setTitles] = React.useState({});
   React.useEffect(() => {
     import(`../locales/${locale}/nodes.json`).then(m => {
@@ -31,11 +29,13 @@ export default function WhatsNewPanel({ onSelectNode, onClose }) {
     }).catch(() => {});
   }, [locale]);
 
-  const entries = Object.entries(WHATS_NEW).sort((a, b) => {
-    // new before updated, then by date desc
-    if (a[1].type !== b[1].type) return a[1].type === 'new' ? -1 : 1;
-    return b[1].date.localeCompare(a[1].date);
-  });
+  // Filter by TTL, sort by date desc, cap at MAX_SHOWN
+  const allEntries = Object.entries(WHATS_NEW)
+    .filter(([, entry]) => isWithinTTL(entry.date))
+    .sort((a, b) => b[1].date.localeCompare(a[1].date));
+
+  const entries = allEntries.slice(0, MAX_SHOWN);
+  const hiddenCount = allEntries.length - entries.length;
 
   const handleSelect = (id) => {
     markSeen(id);
@@ -45,45 +45,58 @@ export default function WhatsNewPanel({ onSelectNode, onClose }) {
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
-    return d.toLocaleDateString(locale === 'ru' ? 'ru-RU' : locale === 'fi' ? 'fi-FI' : 'en-GB', {
-      day: 'numeric', month: 'short'
-    });
+    return d.toLocaleDateString(
+      locale === 'ru' ? 'ru-RU' : locale === 'fi' ? 'fi-FI' : 'en-GB',
+      { day: 'numeric', month: 'short' }
+    );
   };
 
   return (
     <div className="wn-panel">
       <div className="wn-panel__header">
-        <span className="wn-panel__title">{t('category.updatesTitle')}</span>
-        <span className="wn-panel__count">{entries.length}</span>
+        <div className="wn-panel__header-text">
+          <span className="wn-panel__title">{t('category.updatesTitle')}</span>
+          <span className="wn-panel__period">{t('category.updatesPeriod')}</span>
+        </div>
+        {entries.length > 0 && (
+          <span className="wn-panel__count">{entries.length}</span>
+        )}
       </div>
 
       {entries.length === 0 ? (
         <p className="wn-panel__empty">{t('category.updatesEmpty')}</p>
       ) : (
-        <ul className="wn-panel__list">
-          {entries.map(([id, entry]) => {
-            const unseen = isNew(id);
-            const node = nodeIndex[id];
-            if (!node) return null;
-            return (
-              <li key={id}>
-                <button
-                  type="button"
-                  className={`wn-panel__item ${unseen ? 'is-unseen' : ''}`}
-                  onClick={() => handleSelect(id)}
-                >
-                  <span className={`wn-panel__badge wn-panel__badge--${entry.type}`}>
-                    {entry.type === 'new' ? t('category.updatesNew') : t('category.updatesUpdated')}
-                  </span>
-                  <span className="wn-panel__item-title">
-                    {titles[id] || id}
-                  </span>
-                  <span className="wn-panel__item-date">{formatDate(entry.date)}</span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <>
+          <ul className="wn-panel__list">
+            {entries.map(([id, entry]) => {
+              const unseen = isNew(id);
+              if (!nodeIndex[id]) return null;
+              return (
+                <li key={id}>
+                  <button
+                    type="button"
+                    className={`wn-panel__item ${unseen ? 'is-unseen' : ''}`}
+                    onClick={() => handleSelect(id)}
+                  >
+                    <span className={`wn-panel__badge wn-panel__badge--${entry.type}`}>
+                      {entry.type === 'new' ? t('category.updatesNew') : t('category.updatesUpdated')}
+                    </span>
+                    <span className="wn-panel__item-title">
+                      {titles[id] || id}
+                    </span>
+                    <span className="wn-panel__item-date">{formatDate(entry.date)}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          {hiddenCount > 0 && (
+            <p className="wn-panel__more">
+              {t('category.updatesMore').replace('{n}', hiddenCount)}
+            </p>
+          )}
+        </>
       )}
     </div>
   );

@@ -25,7 +25,11 @@ export default function MobileFab({
   const [promptsOpen, setPromptsOpen] = useState(false);
   const [updatesOpen, setUpdatesOpen] = useState(false);
   const { isNew } = useWhatsNew();
-  const unseenCount = Object.keys(WHATS_NEW).filter(id => isNew(id)).length;
+  const TTL_DAYS = 60;
+  const unseenCount = Object.entries(WHATS_NEW).filter(([id, e]) => {
+    const age = (Date.now() - new Date(e.date).getTime()) / (1000 * 60 * 60 * 24);
+    return age <= TTL_DAYS && isNew(id);
+  }).length;
 
   useEffect(() => {
     const onResize = () => {
