@@ -1,4 +1,130 @@
 {
+  "claude-setup": {
+    "title": "Set up Claude for the first time",
+    "subtitle": "15 minutes that improve every future conversation",
+    "totalTime": "15 min",
+    "whatItIs": "A step-by-step walkthrough of every setting a beginner needs to configure on day one: plan, Custom Instructions, Memory, Privacy, and first Project. Do this once — it changes how Claude responds to you forever.",
+    "approach": "Don't skip Privacy settings. Don't write vague Custom Instructions like 'be helpful'. Be specific: your role, your stack, your format preferences. The more concrete, the more Claude adapts.",
+    "outcomes": [
+      "Configured Custom Instructions that improve every chat",
+      "Understand Memory — when it helps and when to skip it",
+      "Privacy set according to your preferences",
+      "First Project created with instructions and files",
+      "Know the difference between web, Desktop, and Claude Code"
+    ],
+    "applyIn": [
+      {
+        "title": "Every chat from now on",
+        "description": "After setup, Claude knows your role and preferences without you repeating yourself."
+      },
+      {
+        "title": "Team onboarding",
+        "description": "Share your Custom Instructions template — your team gets consistent quality from day one."
+      },
+      {
+        "title": "Before switching plans",
+        "description": "Understand what Free vs Pro gives you before paying."
+      }
+    ],
+    "pitfalls": [
+      "Writing vague instructions like 'be professional' — they don't change anything.",
+      "Skipping Privacy settings — data may be used for training by default.",
+      "Creating a Project for every task — one general Project is enough to start."
+    ],
+    "exercises": [
+      {
+        "question": "Open a new chat after setup and ask Claude: 'Who do you think I am based on my instructions?' Check if the answer matches your real role.",
+        "hint": "If Claude's description is vague, your About me needs more specifics."
+      },
+      {
+        "question": "Compare: run the same prompt in a fresh chat (no instructions) vs a configured chat. What changed?",
+        "hint": "The difference in quality IS the value of setup."
+      }
+    ],
+    "steps": {
+      "cs-1": {
+        "title": "Choose your plan",
+        "time": "2 min",
+        "why": "Before configuring anything, confirm you're on the right plan. Free limits hit fast during active use.",
+        "instructions": [
+          "Go to claude.ai → click your avatar (top right) → Settings → Account.",
+          "Check your current plan: Free / Pro / Team.",
+          "Free: limited daily usage, Sonnet/Haiku models only. Pro ($20/mo): Opus access, higher limits, all features.",
+          "Rule: use Free for 1 week. If you hit limits daily → upgrade to Pro."
+        ],
+        "validate": "You know your current plan and whether it fits your usage.",
+        "tip": "Don't upgrade immediately. Use Free for a week as a diagnostic — you'll know exactly what limits you actually hit."
+      },
+      "cs-2": {
+        "title": "Fill in 'About me' (Custom Instructions)",
+        "time": "4 min",
+        "why": "This tells Claude who you are. Without it, every answer is generic. With it, every answer is tailored to your role.",
+        "instructions": [
+          "Settings → Profile → Custom Instructions → 'About me' field.",
+          "Write: your role, industry, main tasks, audience, technical stack.",
+          "Keep it under 1500 characters. Dense > long.",
+          "Avoid: 'I am a kind person'. Write what changes answers: 'I am a senior iOS developer working on fintech apps.'"
+        ],
+        "example": "I'm a [role] at [company type], working on [main product/domain].\nMy main tasks: [task 1], [task 2], [task 3].\nAudience for my output: [who reads your work].\nTech stack: [languages, frameworks, tools].\nWorking language: [language].",
+        "validate": "The field is saved. Open a new chat and ask: 'What do you know about me?' — Claude should reflect your role.",
+        "tip": "The most useful thing to add is your tech stack. Without it, Claude gives generic recommendations."
+      },
+      "cs-3": {
+        "title": "Fill in 'How to respond'",
+        "time": "3 min",
+        "why": "Controls format, tone, length. The difference between needing to rewrite every answer vs using it directly.",
+        "instructions": [
+          "Same Settings → Custom Instructions → 'How to respond' field.",
+          "Specify: language, format (bullets/prose), length, tone, and what NOT to do.",
+          "Save and test on a real task."
+        ],
+        "example": "Always respond in [language].\n\nFormat:\n- Lead with the key point, then details.\n- Use bullet points for lists.\n- Max H3 headings — don't over-structure.\n\nLength: exactly what's needed. If 3 sentences work, don't write 10.\n\nTone: professional but not dry. No filler phrases like 'Great question!'.\n\nDon't:\n- Repeat my question back to me.\n- Add disclaimers in obvious cases.\n- Use emojis unless I start.",
+        "validate": "New chats follow your format and tone without extra prompting.",
+        "tip": "Every time an answer annoys you — add a rule. Your instructions improve through real use."
+      },
+      "cs-4": {
+        "title": "Configure Memory",
+        "time": "2 min",
+        "why": "Memory lets Claude remember facts across conversations. Useful for recurring context — but not a replacement for Custom Instructions.",
+        "instructions": [
+          "Settings → Profile → Memory (if available on your plan).",
+          "Enable Memory if you want Claude to remember things you tell it across sessions.",
+          "You can view and delete what Claude remembers at any time.",
+          "Note: Memory works in claude.ai chats. For Claude Desktop, memory is available via MCP memory server."
+        ],
+        "validate": "You know whether Memory is on or off and understand what it stores.",
+        "tip": "Memory is additive — Claude stores things you mention. It won't override your Custom Instructions. Think of it as a sticky notepad."
+      },
+      "cs-5": {
+        "title": "Set Privacy settings",
+        "time": "1 min",
+        "why": "By default, Anthropic may use your conversations to improve models. If you work with sensitive data, opt out.",
+        "instructions": [
+          "Settings → Privacy.",
+          "Find 'Improve Claude for everyone' or similar training data option.",
+          "Toggle OFF if you don't want your conversations used for model training.",
+          "Pro and Team plans have stronger privacy defaults than Free."
+        ],
+        "validate": "Privacy setting matches your preference. You know what data Anthropic stores.",
+        "tip": "This doesn't affect Claude's quality for you — it only affects whether Anthropic uses your data for future training."
+      },
+      "cs-6": {
+        "title": "Create your first Project",
+        "time": "3 min",
+        "why": "Projects give Claude persistent context, files, and specialized instructions for a specific domain of work. Better than repeating context every chat.",
+        "instructions": [
+          "In the left sidebar → click 'New Project'.",
+          "Name it by domain: 'Work', 'Coding', 'Writing', etc.",
+          "Add Project Instructions: paste a specialized version of your Custom Instructions for this domain.",
+          "Upload 1-3 reference files if relevant (style guide, codebase docs, templates).",
+          "Open a chat inside the Project — Claude now operates in this specialized context."
+        ],
+        "example": "Project: 'Code Review'\nInstructions: You are a senior code reviewer for our React/TypeScript codebase. Focus on: type safety, component reusability, performance. Flag: any direct DOM manipulation, missing error boundaries, unhandled promises. Format: bullet list by severity (Critical / Warning / Info).",
+        "validate": "Project created with instructions. Test: ask 'who are you?' inside the Project — Claude should describe the specialized role.",
+        "tip": "Don't create a project for every task. Start with 1-2 that match your most frequent work contexts."
+      }
+    }
+  },
   "basics": {
     "title": "Освоить основы Claude",
     "subtitle": "Модели, контекст, системный промпт — на практике",

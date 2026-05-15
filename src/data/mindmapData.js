@@ -221,6 +221,18 @@ export const mindmapData = {
           ]
         },
         {
+          "id": "pl-web-setup",
+          "icon": "globe",
+          "category": "основы",
+          "relatedIds": ["i-global", "projects", "pl-plans"]
+        },
+        {
+          "id": "pl-desktop",
+          "icon": "laptop",
+          "category": "основы",
+          "relatedIds": ["mcp", "pl-platforms", "pl-compare"]
+        },
+        {
           "id": "pl-privacy",
           "icon": "lock",
           "category": "основы"

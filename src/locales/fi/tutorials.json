@@ -1,4 +1,130 @@
 {
+  "claude-setup": {
+    "title": "Asenna Claude oikein ensimmäisellä kerralla",
+    "subtitle": "15 minuuttia jotka parantavat kaikkia tulevia keskusteluja",
+    "totalTime": "15 min",
+    "whatItIs": "Vaiheittainen opas jokaiselle asetukselle jonka aloittelijan tulee tehdä ensimmäisenä päivänä: tilaus, Custom Instructions, Memory, Privacy ja ensimmäinen Project. Tee tämä kerran — se muuttaa pysyvästi miten Claude vastaa sinulle.",
+    "approach": "Älä ohita Privacy-asetuksia. Älä kirjoita epämääräisiä Custom Instructions kuten 'ole hyödyllinen'. Ole tarkka: roolisi, teknologiapinosi, muotoilemieltymyksesi. Mitä tarkempi, sitä enemmän Claude mukautuu.",
+    "outcomes": [
+      "Custom Instructions konfiguroitu parantamaan jokaista chattia",
+      "Ymmärrät Memoryn — milloin se auttaa ja milloin ohittaa",
+      "Privacy asetettu mieltymystesi mukaan",
+      "Ensimmäinen Project luotu ohjeilla ja tiedostoilla",
+      "Tiedät eron web-, Desktop- ja Claude Code -versioiden välillä"
+    ],
+    "applyIn": [
+      {
+        "title": "Jokainen chat tästä lähtien",
+        "description": "Asennuksen jälkeen Claude tuntee roolisi ja mieltymyksesi ilman toistoa."
+      },
+      {
+        "title": "Tiimin perehdytys",
+        "description": "Jaa Custom Instructions -mallisi — tiimisi saa yhtenäisen laadun ensimmäisestä päivästä."
+      },
+      {
+        "title": "Ennen tilauksen vaihtamista",
+        "description": "Ymmärrä mitä Free vs Pro tarjoaa ennen maksamista."
+      }
+    ],
+    "pitfalls": [
+      "Epämääräisten ohjeiden kirjoittaminen kuten 'ole ammattimainen' — ne eivät muuta mitään.",
+      "Tietosuoja-asetusten ohittaminen — tietoja saatetaan käyttää koulutukseen oletuksena.",
+      "Projektin luominen jokaiselle tehtävälle — yksi yleinen Project riittää aloittamiseen."
+    ],
+    "exercises": [
+      {
+        "question": "Avaa uusi chat asennuksen jälkeen ja kysy Claudelta: 'Kuka luulet minun olevan ohjeideni perusteella?' Tarkista vastaako vastaus todellista rooliasi.",
+        "hint": "Jos Clauden kuvaus on epämääräinen, About me -kenttä tarvitsee enemmän yksityiskohtia."
+      },
+      {
+        "question": "Vertaa: aja sama kehote puhtaassa chatissa (ei ohjeita) vs konfiguroidussa chatissa. Mitä muuttui?",
+        "hint": "Laadun ero ON asennuksen arvo."
+      }
+    ],
+    "steps": {
+      "cs-1": {
+        "title": "Valitse tilauksesi",
+        "time": "2 min",
+        "why": "Ennen kuin konfiguroit mitään, varmista että olet oikealla tilauksella. Free-rajat täyttyvät nopeasti aktiivisessa käytössä.",
+        "instructions": [
+          "Mene claude.ai → klikkaa avatariasi (oikeassa yläkulmassa) → Settings → Account.",
+          "Tarkista nykyinen tilauksesi: Free / Pro / Team.",
+          "Free: rajallinen päivittäinen käyttö, vain Sonnet/Haiku. Pro ($20/kk): Opus-pääsy, korkeammat rajat, kaikki ominaisuudet.",
+          "Sääntö: käytä Freeä viikon. Jos törmäät päivittäin rajoihin → päivitä Prohon."
+        ],
+        "validate": "Tiedät nykyisen tilauksesi ja onko se sopiva käyttöösi.",
+        "tip": "Älä päivitä heti. Käytä Freeä viikon diagnostiikkana — tiedät tarkalleen mihin rajoihin oikeasti törmäät."
+      },
+      "cs-2": {
+        "title": "Täytä 'About me' (Custom Instructions)",
+        "time": "4 min",
+        "why": "Tämä kertoo Claudelle kuka olet. Ilman tätä vastaukset ovat yleisiä. Tämän kanssa jokainen vastaus on räätälöity roolillesi.",
+        "instructions": [
+          "Settings → Profile → Custom Instructions → 'About me' -kenttä.",
+          "Kirjoita: roolisi, toimialasi, päätehtäväsi, yleisösi, teknologiapinosi.",
+          "Pidä se alle 1500 merkissä. Tiiviys > pituus.",
+          "Vältä: 'Olen kiltti ihminen'. Kirjoita mikä muuttaa vastauksia: 'Olen senior iOS-kehittäjä fintech-alalla'."
+        ],
+        "example": "Olen [rooli] [yritystyypissä], työskentelen [päätuote/toimiala].\nPäätehtäväni: [tehtävä 1], [tehtävä 2], [tehtävä 3].\nTulosteni yleisö: [kuka lukee työtäsi].\nTeknologiapino: [kielet, kehykset, työkalut].\nTyökieli: [kieli].",
+        "validate": "Kenttä on tallennettu. Avaa uusi chat ja kysy: 'Mitä tiedät minusta?' — Clauden tulisi heijastaa roolisi.",
+        "tip": "Hyödyllisin lisättävä on teknologiapinosi. Ilman sitä Claude antaa yleisiä suosituksia."
+      },
+      "cs-3": {
+        "title": "Täytä 'How to respond'",
+        "time": "3 min",
+        "why": "Hallitsee muotoa, sävyä, pituutta. Ero sen välillä tarvitsetko kirjoittaa jokainen vastaus uudelleen vai voitko käyttää suoraan.",
+        "instructions": [
+          "Settings → Custom Instructions → 'How to respond' -kenttä.",
+          "Määrittele: kieli, muoto (listat/proosa), pituus, sävy ja mitä EI tehdä.",
+          "Tallenna ja testaa oikealla tehtävällä."
+        ],
+        "example": "Vastaa aina suomeksi.\n\nMuoto:\n- Aloita pääkohdalla, sitten yksityiskohdat.\n- Käytä luettelomerkkejä listauksissa.\n- Enintään H3-otsikot.\n\nPituus: täsmälleen sen verran kuin tarvitaan.\n\nSävy: ammattimainen muttei kuiva. Ei täytefraasei kuten 'Loistava kysymys!'.\n\nÄlä:\n- Toista kysymystäni.\n- Lisää ilmeisiä vastuuvapauslausekkeita.\n- Käytä emojeja ellei itse aloita.",
+        "validate": "Uudet chatit noudattavat muotoasi ja sävyäsi ilman lisäohjeita.",
+        "tip": "Aina kun vastaus ärsyttää — lisää sääntö. Ohjeet paranevat todellisen käytön myötä."
+      },
+      "cs-4": {
+        "title": "Konfiguroi Memory",
+        "time": "2 min",
+        "why": "Memory antaa Clauden muistaa asioita eri sessioiden välillä. Hyödyllinen toistuvalle kontekstille — muttei Custom Instructionsin korvike.",
+        "instructions": [
+          "Settings → Profile → Memory (jos saatavilla tilauksellasi).",
+          "Ota Memory käyttöön jos haluat Clauden muistavan mitä kerrot sille eri sessioissa.",
+          "Voit milloin tahansa katsoa ja poistaa mitä Claude on muistanut.",
+          "Huom: Memory toimii claude.ai-chateissa. Claude Desktopissa muisti on saatavilla MCP memory -palvelimen kautta."
+        ],
+        "validate": "Tiedät onko Memory päällä vai pois ja ymmärrät mitä se tallentaa.",
+        "tip": "Memory on additiivinen — Claude tallentaa mitä mainitset. Se ei ohita Custom Instructionsia. Ajattele sitä muistilapukkana."
+      },
+      "cs-5": {
+        "title": "Aseta Privacy-asetukset",
+        "time": "1 min",
+        "why": "Oletuksena Anthropic saattaa käyttää keskustelujasi mallien parantamiseen. Jos työskentelet arkaluonteisen datan kanssa, kieltäydy.",
+        "instructions": [
+          "Settings → Privacy.",
+          "Etsi 'Improve Claude for everyone' tai vastaava koulutusdata-vaihtoehto.",
+          "Kytke POIS jos et halua keskustelujesi käytettävän mallin koulutukseen.",
+          "Pro- ja Team-tilauksilla on tiukemmat tietosuoja-oletukset kuin Freessä."
+        ],
+        "validate": "Privacy-asetus vastaa mieltymyksiäsi. Tiedät mitä tietoja Anthropic tallentaa.",
+        "tip": "Tämä ei vaikuta Clauden laatuun sinulle — vain siihen käyttääkö Anthropic tietojasi tulevaan koulutukseen."
+      },
+      "cs-6": {
+        "title": "Luo ensimmäinen Project",
+        "time": "3 min",
+        "why": "Projects antavat Claudelle pysyvän kontekstin, tiedostot ja erikoistuneet ohjeet tietylle työn alueelle. Parempi kuin kontekstin toistaminen jokaisessa chatissa.",
+        "instructions": [
+          "Vasemmassa sivupalkissa → klikkaa 'New Project'.",
+          "Nimeä toimialan mukaan: 'Työ', 'Koodaus', 'Kirjoittaminen' jne.",
+          "Lisää Project Instructions: liitä erikoistunut versio Custom Instructionsistasi tälle toimialalle.",
+          "Lataa 1-3 viitetiedostoa tarvittaessa (tyyliopas, koodausdokumentaatio, mallit).",
+          "Avaa chat Projectin sisällä — Claude toimii tässä erikoistuneessa kontekstissa."
+        ],
+        "example": "Project: 'Koodikatselmointi'\nOhjeet: Olet senior code reviewer React/TypeScript-koodikannallemme. Fokus: tyyppiturvallisuus, komponenttien uudelleenkäytettävyys, suorituskyky. Merkitse: suorat DOM-manipulaatiot, puuttuvat error boundaryt, käsittelemättömät promiset. Muoto: luettelo vakavuuden mukaan (Kriittinen / Varoitus / Info).",
+        "validate": "Project luotu ohjeilla. Testi: kysy 'kuka olet?' Projectin sisällä — Clauden tulisi kuvata erikoistunut rooli.",
+        "tip": "Älä luo Projectia jokaiselle tehtävälle. Aloita 1-2:lla jotka vastaavat yleisimpiä työkontekstejasi."
+      }
+    }
+  },
   "basics": {
     "title": "Hallitse Clauden perusasiat",
     "subtitle": "Mallit, konteksti, järjestelmäkehote — käytännössä",

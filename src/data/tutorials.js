@@ -4,6 +4,22 @@
 // Резолвинг через useTutorialContent() из src/i18n/.
 
 export const tutorials = {
+  "claude-setup": {
+    "nodeId": "platform",
+    "icon": "sparkles",
+    "level": "beginner",
+    "prerequisites": [],
+    "relatedPrompts": ["start-role-task"],
+    "next": ["projects", "instructions", "basics"],
+    "steps": [
+      { "id": "cs-1" },
+      { "id": "cs-2" },
+      { "id": "cs-3" },
+      { "id": "cs-4" },
+      { "id": "cs-5" },
+      { "id": "cs-6" }
+    ]
+  },
   "basics": {
     "nodeId": "basics",
     "icon": "brain",

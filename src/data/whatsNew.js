@@ -10,6 +10,8 @@
  *   2. Деплой — лейбл появится у всех пользователей.
  */
 export const WHATS_NEW = {
+  'pl-web-setup': { date: '2026-05-15', type: 'new' },
+  'pl-desktop':   { date: '2026-05-15', type: 'new' },
   'cc-grp-session':      { date: '2026-05-15', type: 'new' },
   'cc-grp-context':      { date: '2026-05-15', type: 'new' },
   'cc-grp-model':        { date: '2026-05-15', type: 'new' },
