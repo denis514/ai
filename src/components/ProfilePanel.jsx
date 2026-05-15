@@ -397,6 +397,7 @@ export default function ProfilePanel({
           >
             <span className="profile-panel__lang-flag">{LOCALE_FLAG[locale]}</span>
             <span className="profile-panel__lang-label">{LOCALE_LABEL[locale]}</span>
+            <Icon name="arrow-down" size={12} strokeWidth={2} />
           </button>
           {langOpen && (
             <ul className="profile-panel__lang-dropdown" role="listbox">
