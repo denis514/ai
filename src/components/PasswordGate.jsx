@@ -3,7 +3,17 @@ import Icon from './Icon.jsx';
 
 const ENTER_LABELS = ['Enter', '入力', 'Syötä', 'Войти', '입력', 'Entrar', 'Entrer'];
 
-const PASSWORD = 'clever';
+const PASSWORD_HASH = import.meta.env.VITE_PASSWORD_HASH;
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(str)
+  );
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
 
 const NODES = [
   { id: 'root', x: 50, y: 50, label: 'Claude',             isRoot: true },
@@ -106,9 +116,10 @@ export default function PasswordGate({ onUnlock }) {
     });
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (value === PASSWORD) {
+    const hash = await sha256(value);
+    if (hash === PASSWORD_HASH) {
       setUnlocking(true);
       setTimeout(() => onUnlock(), 1600);
     } else {
