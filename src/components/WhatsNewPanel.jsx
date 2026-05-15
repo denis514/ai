@@ -6,7 +6,7 @@ import { useWhatsNew } from '../hooks/useWhatsNew.js';
 import { useLocale } from '../i18n/LocaleContext.jsx';
 
 const TTL_DAYS = 60;
-const MAX_SHOWN = 10;
+const MAX_SHOWN = 20;
 
 function isWithinTTL(dateStr) {
   const age = (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24);
