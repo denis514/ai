@@ -6,7 +6,7 @@ import { useT } from '../i18n/LocaleContext.jsx';
  * CanvasHeader — плавающая шапка в левом-верхнем углу canvas (desktop).
  *
  * Состав:
- *   - Логотип «Claude Atlas» + chevron-кнопка → раскрывает dropdown:
+ *   - Логотип «Atlas» + chevron-кнопка → раскрывает dropdown:
  *       · Библиотека
  *       · Обучение (с бейджем completed/total)
  *       · ─── divider
@@ -79,7 +79,7 @@ export default function CanvasHeader({
           <span className="canvas-header__logo" aria-hidden="true">
             <Icon name="sparkles" size={18} strokeWidth={1.5} />
           </span>
-          <strong>Claude Atlas</strong>
+          <strong>Atlas</strong>
           <span className="canvas-header__chevron" aria-hidden="true">
             <Icon
               name={menuOpen ? 'arrow-up' : 'arrow-down'}

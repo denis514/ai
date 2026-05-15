@@ -28,7 +28,7 @@ export default function LoadingScreen({ onDone }) {
 
       {/* Text */}
       <div className="ls__text">
-        <h1 className="ls__title">Claude Atlas</h1>
+        <h1 className="ls__title">Atlas</h1>
         <p className="ls__subtitle">Your knowledge map is loading…</p>
       </div>
 

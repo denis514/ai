@@ -183,7 +183,7 @@ export default function PasswordGate({ onUnlock }) {
           <Icon name="sparkles" size={22} strokeWidth={1.5} />
         </div>
 
-        <h1 className="pg__title">Claude Atlas</h1>
+        <h1 className="pg__title">Atlas</h1>
         <p className="pg__subtitle">Enter password to continue</p>
 
         {unlocking ? (
