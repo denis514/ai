@@ -1,33 +1,30 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 import { getProfile, createProfile } from '../services/profileService.js';
+import { syncLocalToSupabase, isSyncDone, markSyncDone } from '../services/syncService.js';
 
 const AuthContext = createContext(null);
 
-/**
- * AuthProvider — оборачивает всё приложение.
- * Предоставляет:
- *   user     — объект Supabase Auth User (или null)
- *   profile  — строка из таблицы profiles (или null)
- *   loading  — true пока идёт проверка сессии при загрузке
- *   signOut  — функция выхода
- *   refreshProfile — перечитать профиль из БД
- */
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser]       = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Загрузить/создать профиль для userId
+  // isNewUser: true если пользователь только что зарегистрировался
+  // Используется для показа Welcome онбординга
+  const [isNewUser, setIsNewUser] = useState(false);
+
+  // Загрузить профиль; если не существует — создать (новый пользователь)
   const loadProfile = useCallback(async (userId, email) => {
     const { data } = await getProfile(userId);
     if (data) {
       setProfile(data);
+      return false; // не новый пользователь
     } else {
-      // Новый пользователь — создаём запись
       await createProfile(userId, email);
       const { data: fresh } = await getProfile(userId);
       setProfile(fresh);
+      return true; // новый пользователь
     }
   }, []);
 
@@ -42,50 +39,73 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);
+    setIsNewUser(false);
+  }, []);
+
+  // Запустить sync localStorage → Supabase (один раз на аккаунт)
+  const runSync = useCallback(async (userId) => {
+    if (isSyncDone(userId)) return;
+    const { synced, errors } = await syncLocalToSupabase(userId);
+    if (errors.length === 0 || synced > 0) {
+      markSyncDone(userId);
+    }
+    if (import.meta.env.DEV) {
+      console.log(`[Atlas sync] synced ${synced} items`, errors.length ? errors : '');
+    }
   }, []);
 
   useEffect(() => {
     if (!supabase) {
-      // Supabase не сконфигурирован — работаем в offline режиме
       setLoading(false);
       return;
     }
 
-    // Восстановить сессию при загрузке страницы
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Восстановить сессию при загрузке
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       const u = session?.user ?? null;
       setUser(u);
       if (u) {
-        loadProfile(u.id, u.email).finally(() => setLoading(false));
-      } else {
-        setLoading(false);
+        const isNew = await loadProfile(u.id, u.email);
+        setIsNewUser(isNew);
+        // Sync только для не-новых пользователей при восстановлении сессии
+        if (!isNew) runSync(u.id);
       }
+      setLoading(false);
     });
 
-    // Слушаем смены состояния авторизации (логин через Magic Link, выход)
+    // Слушаем смены auth state
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         const u = session?.user ?? null;
         setUser(u);
+
         if (u) {
-          await loadProfile(u.id, u.email);
+          const isNew = await loadProfile(u.id, u.email);
+          // SIGNED_IN после Magic Link — показать онбординг если новый
+          if (event === 'SIGNED_IN') {
+            setIsNewUser(isNew);
+            runSync(u.id);
+          }
         } else {
           setProfile(null);
+          setIsNewUser(false);
         }
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [loadProfile]);
+  }, [loadProfile, runSync]);
 
   const value = {
-    user,           // supabase User object | null
-    profile,        // наш profiles row | null
-    loading,        // true пока сессия восстанавливается
+    user,
+    profile,
+    loading,
     isLoggedIn: !!user,
+    isNewUser,
+    dismissOnboarding: () => setIsNewUser(false),
     signOut: handleSignOut,
     refreshProfile,
-    setProfile,     // для локальных оптимистичных обновлений
+    setProfile,
   };
 
   return (
@@ -95,10 +115,6 @@ export function AuthProvider({ children }) {
   );
 }
 
-/**
- * useAuth — хук для любого компонента.
- * Возвращает { user, profile, loading, isLoggedIn, signOut, refreshProfile }
- */
 export function useAuth() {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used inside <AuthProvider>');

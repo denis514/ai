@@ -1826,6 +1826,179 @@
   }
 }
 
+/* =====================================================
+   WELCOME ONBOARDING
+   ===================================================== */
+.onboarding-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 16px;
+  animation: fadeIn .35s ease;
+}
+.onboarding-overlay.is-entering {
+  animation: fadeOut .5s ease forwards;
+}
+@keyframes fadeOut {
+  to { opacity: 0; transform: scale(1.03); }
+}
+
+.onboarding-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 32px 96px rgba(0,0,0,0.5);
+  width: 100%;
+  max-width: 480px;
+  padding: 36px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: slide-up .3s ease;
+}
+
+.onboarding-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.onboarding-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), #f59e0b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.onboarding-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+.onboarding-header p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 340px;
+  line-height: 1.5;
+}
+
+/* Level cards */
+.onboarding-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.onboarding-level {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .15s, background .15s;
+  position: relative;
+}
+.onboarding-level:hover {
+  border-color: var(--lvl-color, var(--accent));
+  background: color-mix(in srgb, var(--lvl-color, var(--accent)) 6%, transparent);
+}
+.onboarding-level.is-selected {
+  border-color: var(--lvl-color, var(--accent));
+  background: color-mix(in srgb, var(--lvl-color, var(--accent)) 10%, transparent);
+}
+.onboarding-level__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--lvl-color, var(--accent)) 15%, transparent);
+  color: var(--lvl-color, var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.onboarding-level__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.onboarding-level__text strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.onboarding-level__text span {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.onboarding-level__check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--lvl-color, var(--accent));
+}
+.onboarding-level.is-selected .onboarding-level__check {
+  background: var(--lvl-color, var(--accent));
+  border-color: var(--lvl-color, var(--accent));
+  color: #fff;
+}
+
+/* Enter button */
+.onboarding-enter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+}
+.onboarding-enter:hover:not(:disabled) { opacity: 0.9; }
+.onboarding-enter:active:not(:disabled) { transform: scale(0.98); }
+.onboarding-enter:disabled { opacity: 0.6; cursor: not-allowed; }
+.onboarding-enter.is-loading { opacity: 0.7; }
+
+.onboarding-hint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .onboarding-card { padding: 28px 20px 24px; border-radius: 16px; }
+  .onboarding-header h1 { font-size: 19px; }
+}
+
 .profile-fab__dropdown {
   position: absolute;
   top: calc(100% + 8px);

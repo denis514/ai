@@ -25,10 +25,12 @@ import { useBookmarks } from './hooks/useBookmarks.js';
 import { useNodeProgress } from './hooks/useNodeProgress.js';
 import { useWhatsNew } from './hooks/useWhatsNew.js';
 import { useLocale } from './i18n/LocaleContext.jsx';
+import { useAuth } from './context/AuthContext.jsx';
 import { STRINGS } from './i18n/strings.js';
 import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import AuthModal from './components/AuthModal.jsx';
+import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
 import './App.css';
 
 const GA_ID = 'G-GLRHYG2JVK';
@@ -127,6 +129,7 @@ function searchTree(root, query, category, searchableById) {
 function AppInner() {
   // Локаль — нужна для поискового индекса (контент в текущей локали).
   const { locale } = useLocale();
+  const { isNewUser, dismissOnboarding } = useAuth();
 
   // Global user level — определяет дефолтный набор раскрытых веток
   const { level, setLevel } = useLevelFilter();
@@ -613,6 +616,17 @@ function AppInner() {
 
       {authOpen && (
         <AuthModal onClose={() => setAuthOpen(false)} />
+      )}
+
+      {/* Welcome онбординг — показывается после первого логина */}
+      {isNewUser && (
+        <WelcomeOnboarding
+          onSelectLevel={(lvl) => {
+            setLevel(lvl);
+            setExpandedIds(collectIdsForLevel(mindmapData, lvl));
+          }}
+          onDismiss={dismissOnboarding}
+        />
       )}
     </div>
   );

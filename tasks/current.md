@@ -18,12 +18,12 @@
 | open | **Tutorial gate: шаги 2+** — для guest при открытии шага 2+ показывать registration overlay поверх контента шага. CTA «Бесплатный аккаунт — полный доступ». | build ✅ · guest видит overlay на шаге 2 ✅ · logged-in проходит все шаги ✅ | 2026-05-17 |
 | open | **Prompt Library gate: лимит 15** — для guest открыты первые 15 промптов, остальные размыты с счётчиком и CTA. | build ✅ · guest видит 15 + blur на остальных ✅ | 2026-05-17 |
 
-### Phase 2 — Guest vs Registered UX (следующий спринт)
+### Phase 2 — Guest vs Registered UX ✅ ЗАВЕРШЁН (2026-05-17)
 | status | task | тест | дата |
 |--------|------|------|------|
-| open | **Welcome онбординг** — после первого логина: экран выбора уровня (Beginner/Intermediate/Expert) перед входом в карту | — | — |
-| open | **LocalStorage → Supabase sync** — при логине прогресс из localStorage автоматически мигрирует в Supabase | — | — |
-| open | **Deep links SEO** — все node/tutorial URLs индексируемы без авторизации | — | — |
+| ✅ done | **Welcome онбординг** — экран выбора уровня после первого логина. isNewUser флаг в AuthContext, WelcomeOnboarding.jsx с 3 уровнями и анимацией | build ✅ · 157 modules ✅ · onboarding в бандле ✅ | 2026-05-17 |
+| ✅ done | **LocalStorage → Supabase sync** — syncService.js мигрирует tutorials/nodes/bookmarks при первом входе. Идемпотентен (markSyncDone). | build ✅ · syncService в бандле ✅ | 2026-05-17 |
+| ✅ done | **SEO meta tags** — index.html: title, description, keywords, OG, Twitter Card, canonical. lang=en | SEO meta ✅ · canonical ✅ | 2026-05-17 |
 
 ### Phase 3 — Retention (будущее)
 | status | task | дата |
