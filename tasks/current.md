@@ -45,7 +45,7 @@
 
 | status | task | skill | дата |
 |--------|------|-------|------|
-| open | **i18n Phase 5** — перевести узлы/туториалы/промпты/paths RU→EN и RU→FI | `translate-to-finnish` | 2026-05-17 |
+| ✅ done | **i18n Phase 5** — все файлы локализации clean (нет RU текста в EN/FI). Переведены troubleshoot ключи (25 штук) в EN+FI tutorials. Nodes, prompts, paths, ui — уже были clean. | build ✅ · audit ✅ | 2026-05-17 |
 | open | **Аудит устаревших узлов** — `cap-computer`, `b-knowledge`, `pl-platforms` | `content-gap-auditor` | 2026-05-17 |
 | open | **Audience tracks в CoursesModal** — фильтр For Everyone / Business / Developers | `react-knowledge-ui` | 2026-05-17 |
 | open | **Learning Paths: For Business + For Educators** | `ai-pedagogy-architect` | 2026-05-17 |
