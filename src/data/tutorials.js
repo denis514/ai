@@ -4,6 +4,21 @@
 // Резолвинг через useTutorialContent() из src/i18n/.
 
 export const tutorials = {
+  "ai-limitations": {
+    "nodeId": "cap-limitations",
+    "icon": "shield",
+    "level": "beginner",
+    "prerequisites": ["basics"],
+    "relatedPrompts": [],
+    "next": ["prompting", "claude-setup"],
+    "steps": [
+      { "id": "al-1" },
+      { "id": "al-2" },
+      { "id": "al-3" },
+      { "id": "al-4" },
+      { "id": "al-5" }
+    ]
+  },
   "claude-cowork": {
     "nodeId": "pl-cowork",
     "icon": "robot",

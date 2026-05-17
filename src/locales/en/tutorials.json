@@ -3193,5 +3193,124 @@
         "tip": "Say what is wrong ('the images folder is missing PDF files that have images embedded'), not how to fix it. Claude will figure out the correction."
       }
     }
+  },
+  "ai-limitations": {
+    "title": "Claude's capabilities and limits",
+    "subtitle": "What Claude knows, what it doesn't, and how to work with both",
+    "totalTime": "12 min",
+    "whatItIs": "A practical guide to Claude's real boundaries. You will learn why Claude sometimes says wrong things confidently, what it literally cannot do, how the context window affects long sessions, and — most importantly — five strategies that turn limitations into non-issues.",
+    "approach": "Do not skip this tutorial thinking limitations are someone else's problem. Every user eventually hits them. The goal is not to avoid Claude but to use it in ways that make its limits irrelevant.",
+    "outcomes": [
+      "Understand what a knowledge cutoff means and when it matters",
+      "Recognize hallucinations before they cause problems",
+      "Know what Claude structurally cannot do (and what it can with tools)",
+      "Understand why long chats degrade in quality",
+      "Have 5 concrete strategies to work around limitations"
+    ],
+    "applyIn": [
+      {
+        "title": "Fact-sensitive work",
+        "description": "Legal, medical, financial, scientific — always verify Claude's factual claims against primary sources."
+      },
+      {
+        "title": "Research and writing",
+        "description": "Use Claude for structure, reasoning, and drafting. Use web search or original sources for current facts."
+      },
+      {
+        "title": "Long projects",
+        "description": "Break multi-day work into separate sessions or use Projects to maintain consistent context."
+      }
+    ],
+    "pitfalls": [
+      "Trusting Claude's confident tone as evidence of accuracy — confidence and correctness are independent.",
+      "Asking about events after the training cutoff without enabling web search.",
+      "Running a 50-message conversation and wondering why quality drops — the context window is finite."
+    ],
+    "exercises": [
+      {
+        "question": "Ask Claude: 'What happened in the news this week?' Then ask: 'What is your training knowledge cutoff?' Compare the two answers. What does this tell you about when to use web search?",
+        "hint": "Notice if Claude attempts an answer to the first question or declines. Either response tells you something about how to prompt it correctly."
+      },
+      {
+        "question": "Ask Claude a question on a niche topic you know well. Deliberately look for one plausible-sounding detail that might be wrong. Can you spot it?",
+        "hint": "The goal is not to catch Claude — it is to practice the habit of Discernment from the 4D Framework."
+      }
+    ],
+    "steps": {
+      "al-1": {
+        "title": "The knowledge cutoff",
+        "time": "2 min",
+        "why": "Claude was trained on data up to a fixed date (~early 2026 for current models). It has no awareness of anything after that. This is not a bug — it is how language models work.",
+        "instructions": [
+          "Understand: Claude's knowledge is a snapshot, not a live connection to the internet.",
+          "Claude Opus 4.7 has a training cutoff of approximately January 2026.",
+          "Asking about events after the cutoff: Claude will either refuse, say it doesn't know, or — in the worst case — hallucinate a plausible-sounding answer.",
+          "Solution: enable web search in claude.ai (the globe icon in the input bar) for any question involving recent events, current prices, live data, or recent news."
+        ],
+        "validate": "You know when to turn on web search and why.",
+        "tip": "When in doubt about whether something is within Claude's cutoff, ask: 'Is this within your training data, or should I enable web search?' Claude will tell you honestly."
+      },
+      "al-2": {
+        "title": "Hallucinations — what they are and why they happen",
+        "time": "3 min",
+        "why": "Claude can state incorrect facts with complete confidence. This is called a hallucination. It is the most dangerous limitation for users who do not know about it.",
+        "instructions": [
+          "A hallucination happens when Claude 'fills a gap' in its knowledge with a plausible-sounding but false answer. The training process optimizes for helpfulness — and sometimes that means generating a confident answer instead of admitting uncertainty.",
+          "Hallucinations are more common on: niche topics, specific statistics and numbers, citations and paper references, recent events, and long chains of reasoning.",
+          "They are less common on: well-documented mainstream topics, general reasoning, coding, and math (though math errors do happen).",
+          "The key signal is NOT Claude's tone — a hallucinated answer sounds exactly as confident as a correct one.",
+          "Strategy: for any factual claim that matters, verify it in a primary source (official docs, papers, news)."
+        ],
+        "validate": "You understand that confident tone does not equal accurate content.",
+        "tip": "Ask Claude to flag its uncertainty: add 'If you are not sure about any fact, say so explicitly' to your prompt. This helps — though it does not eliminate hallucinations entirely.",
+        "troubleshoot": {
+          "How do I know if Claude is hallucinating?": "You often cannot tell from the response alone. The only reliable check is external verification. Treat Claude's factual claims as 'probably correct, needs spot-checking on anything that matters.'",
+          "Claude said it is confident — does that mean it's right?": "No. Confidence and accuracy are independent. Claude can be confident and wrong, or uncertain and right. Always verify facts that have real consequences."
+        }
+      },
+      "al-3": {
+        "title": "The context window — why long chats degrade",
+        "time": "2 min",
+        "why": "Claude can only 'see' a fixed amount of text at once. When a conversation exceeds this limit, older messages fall out — Claude starts to lose track of earlier context, instructions, and decisions.",
+        "instructions": [
+          "The context window is the total amount of text Claude can process at one time — your messages plus its responses.",
+          "As a conversation grows, earlier content gradually becomes invisible to Claude.",
+          "Signs of context degradation: Claude repeats things you already discussed, contradicts earlier decisions, asks for information you already provided, or gives shallower answers.",
+          "Solutions: use /compact in Claude Code to summarize context without losing history. In claude.ai, start a new chat for each distinct topic. Use Projects — they maintain persistent instructions even across separate chats."
+        ],
+        "validate": "You know why multi-hour conversations in one chat produce worse results than shorter focused sessions.",
+        "tip": "For long projects, use a Project with clear instructions rather than one endless chat. The Project instructions are always in context — your accumulated chat history is not."
+      },
+      "al-4": {
+        "title": "What Claude structurally cannot do",
+        "time": "2 min",
+        "why": "Some limitations are architectural — no workaround exists, or a specific tool is required. Knowing these prevents frustration.",
+        "instructions": [
+          "Cannot generate images — Claude produces text only. For images, use a dedicated image generation tool (DALL-E, Midjourney, etc.).",
+          "Cannot browse the internet by default — web search must be explicitly enabled.",
+          "Cannot take actions in other apps — unless Computer Use (Desktop, API) or an MCP integration is active.",
+          "Cannot remember across chats by default — use Memory (in settings) or Projects for persistence.",
+          "Cannot access real-time data (stock prices, weather, live scores) — enable web search or use an integration.",
+          "Cannot 'learn' from your correction permanently — corrections apply only to the current session unless saved to Custom Instructions or Memory."
+        ],
+        "validate": "You know which limitations require a tool (web search, MCP, Computer Use) vs which are structural.",
+        "tip": "Most 'cannot' items have a workaround via tools. Before assuming Claude can't do something, check if enabling web search, MCP, or Cowork would solve it."
+      },
+      "al-5": {
+        "title": "Five strategies to work with limitations",
+        "time": "3 min",
+        "why": "Knowing limitations without strategies is just anxiety. These five approaches handle the vast majority of limitation-related problems.",
+        "instructions": [
+          "1. Enable web search for anything time-sensitive or fact-specific — the globe icon in claude.ai chat input.",
+          "2. Ask Claude to flag uncertainty — add 'flag anything you are not confident about' to prompts that require factual accuracy.",
+          "3. Verify what matters — treat Claude's output as a strong first draft, not a final source. Spot-check key facts.",
+          "4. Use Projects instead of long chats — persistent instructions, fresh context each session, no context window degradation.",
+          "5. Break large tasks — instead of one 3-hour session, run three 45-minute sessions with clear handoffs between them."
+        ],
+        "example": "Research task without strategies: one long chat, no web search, no verification → potential hallucinations, context degradation.\n\nWith strategies: Project with your research context, web search enabled, Claude flags uncertainty, you verify key statistics, each session has a clear scope → reliable, high-quality output.",
+        "validate": "You have a mental checklist: web search on/off? Uncertainty flagging in prompt? Verification plan? Project or long chat?",
+        "tip": "The 4D Framework's Discernment step IS this checklist. Limitations are not Claude's problem to solve — they are yours to design around."
+      }
+    }
   }
 }

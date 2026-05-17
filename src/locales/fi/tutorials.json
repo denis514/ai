@@ -3201,5 +3201,124 @@
         "tip": "Sano mikä on väärin ('images-kansiosta puuttuvat PDF-tiedostot joissa on upotettuja kuvia'), älä miten korjata. Claude keksii korjauksen."
       }
     }
+  },
+  "ai-limitations": {
+    "title": "Clauden kyvyt ja rajoitukset",
+    "subtitle": "Mitä Claude tietää, mitä ei, ja miten toimia molemmissa tapauksissa",
+    "totalTime": "12 min",
+    "whatItIs": "Käytännöllinen opas Clauden todellisiin rajoihin. Opit miksi Claude joskus sanoo vääriä asioita varmasti, mitä se kirjaimellisesti ei voi tehdä, miten konteksti-ikkuna vaikuttaa pitkiin sessioihin, ja — tärkeimpänä — viisi strategiaa jotka muuttavat rajoitukset merkityksettömiksi.",
+    "approach": "Älä ohita tätä opetusohjelmaa ajatellen että rajoitukset ovat jonkun muun ongelma. Jokainen käyttäjä törmää niihin ennemmin tai myöhemmin. Tavoite ei ole välttää Claudea vaan käyttää sitä tavoin jotka tekevät rajoituksista merkityksettömiä.",
+    "outcomes": [
+      "Ymmärrät mitä tiedon katkaisuajankohta tarkoittaa ja milloin sillä on merkitystä",
+      "Tunnistat hallusinaatiot ennen kuin ne aiheuttavat ongelmia",
+      "Tiedät mitä Claude rakenteellisesti ei voi tehdä (ja mitä voi työkaluilla)",
+      "Ymmärrät miksi pitkät chatit heikkenevät laadultaan",
+      "Sinulla on 5 konkreettista strategiaa rajoitusten kanssa työskentelyyn"
+    ],
+    "applyIn": [
+      {
+        "title": "Faktoihin perustuva työ",
+        "description": "Oikeudellinen, lääketieteellinen, taloudellinen, tieteellinen — tarkista aina Clauden faktoihin perustuvat väitteet ensisijaisista lähteistä."
+      },
+      {
+        "title": "Tutkimus ja kirjoittaminen",
+        "description": "Käytä Claudea rakenteeseen, päättelyyn ja luonnosteluun. Käytä web-hakua tai alkuperäislähteitä nykyisten faktojen tarkistamiseen."
+      },
+      {
+        "title": "Pitkät projektit",
+        "description": "Jaa monipäiväinen työ erillisiin sessioihin tai käytä Projects-toimintoa yhtenäisen kontekstin ylläpitämiseksi."
+      }
+    ],
+    "pitfalls": [
+      "Clauden varman sävyn pitäminen todisteena tarkkuudesta — varmuus ja oikeellisuus ovat riippumattomia.",
+      "Katkaisuajankohdan jälkeisten tapahtumien kysyminen ilman web-hakua.",
+      "50 viestin keskustelun käyminen ja ihmetteleminen miksi laatu laskee — konteksti-ikkuna on rajallinen."
+    ],
+    "exercises": [
+      {
+        "question": "Kysy Claudelta: 'Mitä tapahtui uutisissa tällä viikolla?' Kysy sitten: 'Mikä on koulutustietosi katkaisuajankohta?' Vertaa vastauksia. Mitä tämä kertoo siitä milloin käyttää web-hakua?",
+        "hint": "Huomaa yrittääkö Claude vastata ensimmäiseen kysymykseen vai kieltäytyykö. Kumpikin vastaus kertoo jotain oikeasta kehottamisesta."
+      },
+      {
+        "question": "Kysy Claudelta kapeasta aiheesta jonka itse tunnet hyvin. Etsi tarkoituksella yksi uskottavan kuuloinen yksityiskohta joka saattaa olla väärä. Löydätkö sen?",
+        "hint": "Tavoite ei ole napata Claude — vaan harjoitella 4D-viitekehyksen Discernment-tapaa."
+      }
+    ],
+    "steps": {
+      "al-1": {
+        "title": "Tiedon katkaisuajankohta",
+        "time": "2 min",
+        "why": "Claude on koulutettu tietoon kiinteään päivämäärään asti (~alkuvuosi 2026 nykyisille malleille). Sillä ei ole tietoisuutta mistään sen jälkeen. Tämä ei ole vika — näin kielimallit toimivat.",
+        "instructions": [
+          "Ymmärrä: Clauden tieto on tilannekuva, ei reaaliaikainen yhteys internetiin.",
+          "Claude Opus 4.7:n koulutustiedon katkaisuajankohta on noin tammikuu 2026.",
+          "Katkaisuajankohdan jälkeisten tapahtumien kysyminen: Claude joko kieltäytyy, sanoo ettei tiedä, tai — pahimmassa tapauksessa — tuottaa uskottavan kuuloisen hallusinaation.",
+          "Ratkaisu: ota web-haku käyttöön claude.ai:ssa (maapallon kuvake syöttöpalkissa) kaikille kysymyksille jotka koskevat viimeaikaisia tapahtumia, nykyisiä hintoja, reaaliaikaista dataa tai tuoreita uutisia."
+        ],
+        "validate": "Tiedät milloin ottaa web-haku käyttöön ja miksi.",
+        "tip": "Jos et ole varma onko jokin Clauden koulutustiedon piirissä, kysy: 'Onko tämä koulutustietosi piirissä, vai pitäisikö minun ottaa web-haku käyttöön?' Claude kertoo rehellisesti."
+      },
+      "al-2": {
+        "title": "Hallusinaatiot — mitä ne ovat ja miksi niitä tapahtuu",
+        "time": "3 min",
+        "why": "Claude voi väittää virheellisiä faktoja täydellä varmuudella. Tätä kutsutaan hallusinaatioksi. Se on vaarallisin rajoitus käyttäjille jotka eivät tiedä siitä.",
+        "instructions": [
+          "Hallusinaatio tapahtuu kun Claude 'täyttää aukon' tiedossaan uskottavan kuuloisella mutta väärällä vastauksella. Koulutus optimoi hyödyllisyyttä — ja joskus se tarkoittaa varmaa vastausta epävarmuuden myöntämisen sijaan.",
+          "Hallusinaatiot ovat yleisempiä: kapeissa aiheissa, tietyissä tilastoissa ja numeroissa, lähdeviitteissä, viimeaikaisissa tapahtumissa ja pitkissä päättelyketjuissa.",
+          "Harvinaisempia: hyvin dokumentoiduissa valtavirta-aiheissa, yleisessä päättelyssä, koodauksessa ja matematiikassa (vaikka virheitä tapahtuu).",
+          "Tärkeä huomio: EI Clauden sävy. Hallusinoitu vastaus kuulostaa yhtä varmalta kuin oikea.",
+          "Strategia: tarkista kaikki faktoihin perustuvat väitteet jotka ovat tärkeitä ensisijaisesta lähteestä."
+        ],
+        "validate": "Ymmärrät että varma sävy ei tarkoita tarkkaa sisältöä.",
+        "tip": "Pyydä Claudea merkitsemään epävarmuus: lisää 'Jos et ole varma jostakin faktasta, sano se eksplisiittisesti' kehotteisiin jotka vaativat faktuaalista tarkkuutta.",
+        "troubleshoot": {
+          "Miten tiedän hallusinoiko Claude?": "Et usein pysty päättelemään pelkästä vastauksesta. Ainoa luotettava tarkistus on ulkoinen vahvistus. Suhtaudu Clauden faktoihin kuten 'todennäköisesti oikein, tarvitsee pistotarkistuksen tärkeissä asioissa'.",
+          "Claude sanoi olevansa varma — tarkoittaako se että se on oikeassa?": "Ei. Varmuus ja tarkkuus ovat riippumattomia. Claude voi olla varma ja väärässä, tai epävarma ja oikeassa. Tarkista aina faktat joilla on todellisia seurauksia."
+        }
+      },
+      "al-3": {
+        "title": "Konteksti-ikkuna — miksi pitkät chatit heikkenevät",
+        "time": "2 min",
+        "why": "Claude voi 'nähdä' vain kiinteän määrän tekstiä kerrallaan. Kun keskustelu ylittää tämän rajan, vanhemmat viestit putoavat pois — Claude alkaa menettää aiemman kontekstin, ohjeet ja päätökset.",
+        "instructions": [
+          "Konteksti-ikkuna on kokonaismäärä tekstiä jonka Claude voi käsitellä kerrallaan — viestisi plus sen vastaukset.",
+          "Keskustelun kasvaessa aiempi sisältö muuttuu vähitellen näkymättömäksi Claudelle.",
+          "Kontekstin heikkenemisen merkit: Claude toistaa jo käsiteltyjä asioita, ristiriidassa aiempien päätösten kanssa, pyytää tietoja jotka olet jo toimittanut, tai antaa pinnallisempia vastauksia.",
+          "Ratkaisut: käytä /compact Claude Codessa kontekstin tiivistämiseen historian säilyttäen. claude.ai:ssa aloita uusi chat jokaiselle erilliselle aiheelle. Käytä Projects — ne ylläpitävät pysyviä ohjeita jopa erillisten chattien välillä."
+        ],
+        "validate": "Tiedät miksi monen tunnin keskustelut yhdessä chatissa tuottavat huonompia tuloksia kuin lyhyemmät fokusoidut sessiot.",
+        "tip": "Pitkissä projekteissa käytä Projectia selkeillä ohjeilla loputtoman chatin sijaan. Project-ohjeet ovat aina kontekstissa — kertynyt chat-historia ei."
+      },
+      "al-4": {
+        "title": "Mitä Claude rakenteellisesti ei voi tehdä",
+        "time": "2 min",
+        "why": "Jotkut rajoitukset ovat arkkitehtuurisia — kiertotietä ei ole, tai tarvitaan tietty työkalu. Niiden tunteminen estää turhautumisen.",
+        "instructions": [
+          "Ei voi luoda kuvia — Claude tuottaa vain tekstiä. Kuviin käytä erillistä kuvangenerointityökalua (DALL-E, Midjourney jne.).",
+          "Ei voi selata internetiä oletuksena — web-haku on otettava nimenomaisesti käyttöön.",
+          "Ei voi suorittaa toimintoja muissa sovelluksissa — ilman Computer Use (Desktop, API) tai MCP-integraatiota.",
+          "Ei muista chattien välillä oletuksena — käytä Memory (asetuksissa) tai Projects pysyvyyteen.",
+          "Ei pääse reaaliaikaiseen dataan (osakehinnat, sää, urheilutulokset) — ota web-haku käyttöön tai käytä integraatiota.",
+          "Ei 'opi' korjauksistasi pysyvästi — korjaukset koskevat vain nykyistä sessiota ellei tallennettu Custom Instructions tai Memory -toimintoon."
+        ],
+        "validate": "Tiedät mitkä rajoitukset vaativat työkalun (web-haku, MCP, Computer Use) ja mitkä ovat rakenteellisia.",
+        "tip": "Useimmilla 'ei voi' -kohdilla on kiertotie työkalujen kautta. Ennen kuin oletan Clauden olevan kykenemätön johonkin, tarkista ratkaisisiko web-haun, MCP:n tai Coworkin käyttöönotto ongelman."
+      },
+      "al-5": {
+        "title": "Viisi strategiaa rajoitusten kanssa toimimiseen",
+        "time": "3 min",
+        "why": "Rajoitusten tunteminen ilman strategioita on vain ahdistusta. Nämä viisi lähestymistapaa käsittelevät valtaosan rajoituksiin liittyvistä ongelmista.",
+        "instructions": [
+          "1. Ota web-haku käyttöön kaikelle aikaherkälle tai faktoihin perustuvalle — maapallon kuvake claude.ai:n syöttökentässä.",
+          "2. Pyydä Claudea merkitsemään epävarmuus — lisää 'merkitse kaikki missä et ole varma' kehotteisiin jotka vaativat faktuaalista tarkkuutta.",
+          "3. Tarkista tärkeät asiat — suhtaudu Clauden tulosteeseen vahvana luonnoksena, ei lopullisena lähteenä. Pistotarkista keskeiset faktat.",
+          "4. Käytä Projects pitkien chattien sijaan — pysyvät ohjeet, tuore konteksti joka sessiossa, ei konteksti-ikkunan heikkenemistä.",
+          "5. Jaa suuret tehtävät — kolmen 45 minuutin session sijaan yksi 3 tunnin sessio tuottaa huonomman tuloksen."
+        ],
+        "example": "Tutkimustehtävä ilman strategioita: yksi pitkä chat, ei web-hakua, ei tarkistusta → mahdolliset hallusinaatiot, kontekstin heikkeneminen.\n\nStrategioiden kanssa: Project tutkimuskontekstilla, web-haku käytössä, Claude merkitsee epävarmuuden, tarkistat keskeiset tilastot, jokaisella sessiolla selkeä laajuus → luotettava, laadukas tulos.",
+        "validate": "Sinulla on mielessä tarkistuslista: web-haku päällä/pois? Epävarmuuden merkintä kehotteessa? Tarkistussuunnitelma? Project vai pitkä chat?",
+        "tip": "4D-viitekehyksen Discernment-vaihe ON tämä tarkistuslista. Rajoitukset eivät ole Clauden ongelma ratkaistavaksi — ne ovat sinun suunniteltavaksi."
+      }
+    }
   }
 }
