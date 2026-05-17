@@ -4,6 +4,7 @@ import { mindmapData } from '../data/mindmapData.js';
 import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { useTutorialContent } from '../i18n/useTutorial.js';
+import { useAuth } from '../context/AuthContext.jsx';
 
 function findNodeById(root, id) {
   if (!root) return null;
@@ -97,6 +98,7 @@ export default function TutorialModal({
   progressApi
 }) {
   const t = useT();
+  const { isLoggedIn } = useAuth();
   // Локализованный туториал — структура из tutorials.js + текст из локали.
   const tut = useTutorialContent(tutorialId);
 
@@ -316,7 +318,23 @@ export default function TutorialModal({
           </nav>
 
           <main className="tut-main" ref={scrollRef}>
-            <div className="tut-step">
+            {/* Gate для guest: шаги 2+ заблокированы */}
+            {!isLoggedIn && activeIdx > 0 && (
+              <div className="tut-gate">
+                <div className="tut-gate__icon"><Icon name="lock" size={28} strokeWidth={1.25} /></div>
+                <h3>{t('auth.gateTutorial')}</h3>
+                <p>{t('tutorial.gateDesc')}</p>
+                <button
+                  type="button"
+                  className="tut-gate__btn"
+                  onClick={() => document.dispatchEvent(new CustomEvent('atlas:open-auth'))}
+                >
+                  {t('auth.signIn')} →
+                </button>
+                <span className="tut-gate__hint">{t('tutorial.gateHint')}</span>
+              </div>
+            )}
+            <div className={`tut-step ${!isLoggedIn && activeIdx > 0 ? 'tut-step--blurred' : ''}`}>
               <div className="tut-step__head">
                 <span className="tut-step__num">{t('tutorial.stepLabel', { n: activeIdx + 1 })}</span>
                 <span className="tut-step__time">

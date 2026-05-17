@@ -8,6 +8,7 @@ import { tutorials, tutorialByNodeId } from '../data/tutorials.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getNodeContent } from '../i18n/useNode.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
+import { useAuth } from '../context/AuthContext.jsx';
 
 export default function DetailPanel({
   node,
@@ -22,6 +23,7 @@ export default function DetailPanel({
 }) {
   const t = useT();
   const { locale } = useLocale();
+  const { isLoggedIn } = useAuth();
   const [copied, setCopied] = useState(false);
   const isMobile = useIsMobile();
 
@@ -172,20 +174,37 @@ export default function DetailPanel({
             {t('detail.sections.example')}
             <Tooltip label={t('detail.tooltips.example')} />
           </h3>
-          <div className="detail__example">
-            <pre>{d.example}</pre>
-            <button
-              type="button"
-              className={`copy-btn ${copied ? 'is-copied' : ''}`}
-              onClick={copy}
-            >
-              {copied ? (
-                <>
-                  <Icon name="check" size={14} strokeWidth={1.75} /> {t('common.copied')}
-                </>
-              ) : t('common.copy')}
-            </button>
-          </div>
+          {isLoggedIn ? (
+            <div className="detail__example">
+              <pre>{d.example}</pre>
+              <button
+                type="button"
+                className={`copy-btn ${copied ? 'is-copied' : ''}`}
+                onClick={copy}
+              >
+                {copied ? (
+                  <><Icon name="check" size={14} strokeWidth={1.75} /> {t('common.copied')}</>
+                ) : t('common.copy')}
+              </button>
+            </div>
+          ) : (
+            <div className="detail__example-gate">
+              <div className="detail__example-blur" aria-hidden="true">
+                <pre>{d.example}</pre>
+              </div>
+              <div className="detail__example-cta">
+                <Icon name="lock" size={18} strokeWidth={1.5} />
+                <span>{t('auth.gateExample')}</span>
+                <button
+                  type="button"
+                  className="detail__example-cta-btn"
+                  onClick={() => document.dispatchEvent(new CustomEvent('atlas:open-auth'))}
+                >
+                  {t('auth.signIn')}
+                </button>
+              </div>
+            </div>
+          )}
         </section>
       )}
 

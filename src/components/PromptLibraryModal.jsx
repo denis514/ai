@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './Icon.jsx';
 import PromptModal from './PromptModal.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 import {
   PROMPT_CATEGORIES,
   PROMPT_LEVELS,
@@ -24,6 +25,8 @@ export default function PromptLibraryModal({
 }) {
   const t = useT();
   const { locale } = useLocale();
+  const { isLoggedIn } = useAuth();
+  const GUEST_LIMIT = 15;
   const LEVEL_FILTERS = [
     { id: 'all',          label: t('library.level.all') },
     { id: 'beginner',     label: t('level.beginner') },
@@ -253,16 +256,24 @@ export default function PromptLibraryModal({
               </div>
             ) : (
               <div className="lib-grid">
-                {filtered.map(p => {
+                {filtered.map((p, idx) => {
                   const lvl = localizedLevels[p.level];
                   const cat = localizedCategories[p.category];
+                  const isLocked = !isLoggedIn && idx >= GUEST_LIMIT;
                   return (
                     <button
                       key={p.id}
                       type="button"
-                      className="lib-card"
-                      onClick={() => setOpenPrompt(p)}
+                      className={`lib-card ${isLocked ? 'lib-card--locked' : ''}`}
+                      onClick={() => {
+                        if (isLocked) {
+                          document.dispatchEvent(new CustomEvent('atlas:open-auth'));
+                        } else {
+                          setOpenPrompt(p);
+                        }
+                      }}
                       data-prompt-id={p.id}
+                      title={isLocked ? t('auth.gatePrompts') : undefined}
                     >
                       <div className="lib-card__head">
                         <span className="lib-card__icon" aria-hidden="true">
@@ -308,9 +319,15 @@ export default function PromptLibraryModal({
                           {cat.label}
                         </span>
                       )}
-                      <span className="lib-card__cta" aria-hidden="true">
-                        {t('library.cta')} <Icon name="arrow-right" size={14} strokeWidth={1.5} />
-                      </span>
+                      {isLocked ? (
+                        <span className="lib-card__lock" aria-hidden="true">
+                          <Icon name="lock" size={14} strokeWidth={1.5} /> {t('auth.signIn')}
+                        </span>
+                      ) : (
+                        <span className="lib-card__cta" aria-hidden="true">
+                          {t('library.cta')} <Icon name="arrow-right" size={14} strokeWidth={1.5} />
+                        </span>
+                      )}
                     </button>
                   );
                 })}

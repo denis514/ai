@@ -26,7 +26,6 @@ import { useNodeProgress } from './hooks/useNodeProgress.js';
 import { useWhatsNew } from './hooks/useWhatsNew.js';
 import { useLocale } from './i18n/LocaleContext.jsx';
 import { STRINGS } from './i18n/strings.js';
-import PasswordGate from './components/PasswordGate.jsx';
 import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import AuthModal from './components/AuthModal.jsx';
@@ -214,6 +213,13 @@ function AppInner() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  // Глобальное событие atlas:open-auth — открывает AuthModal из любого компонента
+  useEffect(() => {
+    const handler = () => setAuthOpen(true);
+    document.addEventListener('atlas:open-auth', handler);
+    return () => document.removeEventListener('atlas:open-auth', handler);
   }, []);
 
   // ===== Prev/Next: плоский список видимых узлов по DFS =====
@@ -613,7 +619,6 @@ function AppInner() {
 }
 
 export default function App() {
-  const [authed, setAuthed] = useState(() => localStorage.getItem('ca_auth') === '1');
   const [consent, setConsent] = useState(() => localStorage.getItem('ca_consent'));
 
   // Если ранее уже принял — загружаем GA сразу при монтировании
@@ -632,17 +637,9 @@ export default function App() {
     setConsent('no');
   };
 
-  const handleUnlock = () => {
-    localStorage.setItem('ca_auth', '1');
-    setAuthed(true);
-  };
-
   return (
     <>
-      {!authed
-        ? <PasswordGate onUnlock={handleUnlock} />
-        : <AppInner />
-      }
+      <AppInner />
       {consent === null && (
         <CookieBanner onAccept={handleAccept} onDecline={handleDecline} />
       )}

@@ -1,32 +1,70 @@
 # Current Tasks
 
-Активная работа. До 5 задач одновременно. Закрытые удаляются (история — в git).
+Активная работа. До 5 задач одновременно.
+**Правило:** каждая задача завершается только после build ✅ + визуальной проверки ✅.
 
-| status | task | skill / workflow | дата открытия |
-|--------|------|------------------|---------------|
-| open | **Аудит-спринт C: i18n Phase 5** — перевести контент узлов, туториалов, промптов и paths из RU → EN и RU → FI. Сейчас EN/FI файлы содержат RU-текст. Узлы: `locales/{en,fi}/nodes.json` (~130 узлов × 7 полей). Туториалы: `locales/{en,fi}/tutorials.json` (~21 tutorial). Промпты: `locales/{en,fi}/{prompts,prompt-library}.json`. Paths: `locales/{en,fi}/paths.json`. Выполнять через skill `translate-to-finnish` (для FI) и прямым переводом (для EN) | `translate-to-finnish` | 2026-05-17 |
-| open | **Аудит устаревших узлов** — обновить содержимое 3 узлов по deprecate-watch: `cap-computer` (Computer Use — актуальный статус GA/beta), `b-knowledge` (knowledge cutoff текущих моделей), `pl-platforms` (актуальные платформы и версии). Правки в `locales/ru/nodes.json` + `locales/en/nodes.json` | `content-gap-auditor` | 2026-05-17 |
-| open | **Audience tracks в CoursesModal** — добавить фильтр/таб по аудитории (For Everyone / For Business / For Developers) в модалку «Обучение». Courses и Paths должны фильтроваться по тегу `audience`. Требует: добавить поле `audience` в структуру туториалов и paths, UI-фильтр в CoursesModal | `react-knowledge-ui` | 2026-05-17 |
-| open | **Learning Paths: For Business + For Educators** — добавить 2 новых маршрута в `src/data/learningPaths.js` и `locales/{ru,en,fi}/paths.json`. For Business (beginner): claude-setup → pl-cowork → pl-integrations → prompting → scenarios. For Educators (intermediate): ai-limitations → cap-thinking → prompting-techniques → subagents → agents | `ai-pedagogy-architect` | 2026-05-17 |
+---
 
-## Сделано в этой сессии (2026-05-17) ✅
-- Password gate (SHA-256, VITE_PASSWORD_HASH), Mastercard spinner
-- Cookie consent + GA4 conditional loading
-- Atlas rebrand (убрали «Claude» из UI)
-- What's New badge system (TTL 60 дней, max 10, archive modal)
-- 9 узлов cc-grp-* (Claude Code slash groups)
-- Узлы: pl-web-setup, pl-desktop, pl-cowork, pl-integrations, cap-limitations, pr-4d, pl-api
-- Tutorial routing bug fix (tutorialByNodeId reverse index)
-- i18n Phase 5 partial: 18 EN tutorials переведены с RU на EN
-- Tutorial claude-setup (6 шагов, EN/RU/FI)
-- Tutorial claude-cowork (5 шагов, EN/RU/FI)
-- Tutorial ai-limitations (5 шагов, EN/RU/FI)
-- Tutorial api-basics (6 шагов, EN/RU/FI) + узел pl-api
-- Updates archive modal в стиле глобальных модалок
-- Compact filters (всегда dropdown, без wide mode)
-- ProfilePanel: language picker как dropdown с флагами + chevron
+## 🚀 Access Strategy — Active Sprint (2026-05-17)
 
-## Заметки
-- Перед началом задачи: переведи `status` в `in_progress` и обнови дату.
-- После завершения: удали из этого файла. История — в коммитах.
-- Если задача забуксовала > 2 дней — переноси в `backlog.md` или открой обсуждение.
+Новая стратегия: **Open Ecosystem with Gated Depth**.
+Карта открыта для всех. Регистрация = прогресс + синхронизация. Премиум = AI-глубина.
+
+### Phase 1 — Открыть карту, убрать пароль
+| status | task | тест | дата |
+|--------|------|------|------|
+| in_progress | **Убрать PasswordGate** — перевести в dev-only или удалить. MainMap открыт без пароля. ProfileFab показывает «Войти» для guest. | build ✅ · сайт открывается без пароля ✅ · Auth работает ✅ | 2026-05-17 |
+| open | **Guest lock: example field** — в Node Detail panel поле `example` для guest = blur + иконка замка + CTA «Войди, чтобы видеть примеры». Для logged-in — как сейчас. | build ✅ · guest видит blur ✅ · logged-in видит пример ✅ | 2026-05-17 |
+| open | **Tutorial gate: шаги 2+** — для guest при открытии шага 2+ показывать registration overlay поверх контента шага. CTA «Бесплатный аккаунт — полный доступ». | build ✅ · guest видит overlay на шаге 2 ✅ · logged-in проходит все шаги ✅ | 2026-05-17 |
+| open | **Prompt Library gate: лимит 15** — для guest открыты первые 15 промптов, остальные размыты с счётчиком и CTA. | build ✅ · guest видит 15 + blur на остальных ✅ | 2026-05-17 |
+
+### Phase 2 — Guest vs Registered UX (следующий спринт)
+| status | task | тест | дата |
+|--------|------|------|------|
+| open | **Welcome онбординг** — после первого логина: экран выбора уровня (Beginner/Intermediate/Expert) перед входом в карту | — | — |
+| open | **LocalStorage → Supabase sync** — при логине прогресс из localStorage автоматически мигрирует в Supabase | — | — |
+| open | **Deep links SEO** — все node/tutorial URLs индексируемы без авторизации | — | — |
+
+### Phase 3 — Retention (будущее)
+| status | task | дата |
+|--------|------|------|
+| open | Улучшенный Profile: streak, достижения, визуальная статистика | — |
+| open | Progress sync across devices | — |
+
+### Phase 4 — Premium foundation (будущее)
+| status | task | дата |
+|--------|------|------|
+| open | Pricing page / premium CTA | — |
+| open | Stripe / Lemon Squeezy интеграция | — |
+| open | Personal Scenarios для premium | — |
+
+---
+
+## Остальные открытые задачи
+
+| status | task | skill | дата |
+|--------|------|-------|------|
+| open | **i18n Phase 5** — перевести узлы/туториалы/промпты/paths RU→EN и RU→FI | `translate-to-finnish` | 2026-05-17 |
+| open | **Аудит устаревших узлов** — `cap-computer`, `b-knowledge`, `pl-platforms` | `content-gap-auditor` | 2026-05-17 |
+| open | **Audience tracks в CoursesModal** — фильтр For Everyone / Business / Developers | `react-knowledge-ui` | 2026-05-17 |
+| open | **Learning Paths: For Business + For Educators** | `ai-pedagogy-architect` | 2026-05-17 |
+
+---
+
+## Сделано ✅
+- Password gate (SHA-256) + Mastercard spinner
+- Cookie consent + GA4
+- Atlas rebrand
+- What's New badge system + archive modal
+- Узлы: pl-web-setup, pl-desktop, pl-cowork, pl-integrations, cap-limitations, pr-4d, pl-api, 9× cc-grp-*
+- Tutorial routing bug fix
+- Tutorials: claude-setup, claude-cowork, ai-limitations, api-basics (EN/RU/FI)
+- i18n Phase 1–4 + 18 EN tutorials переведены
+- Supabase Auth Phase 1: Magic Link + GDPR + profiles + RLS
+- Privacy Policy EN/RU/FI
+- vercel.json routing fix
+
+## Правила работы
+- Каждая задача: build ✅ → preview/test ✅ → commit → push
+- Обновлять этот файл после каждого завершения
+- Не начинать следующую задачу без теста предыдущей
