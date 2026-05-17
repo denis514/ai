@@ -4,6 +4,22 @@
 // Резолвинг через useTutorialContent() из src/i18n/.
 
 export const tutorials = {
+  "api-basics": {
+    "nodeId": "pl-api",
+    "icon": "code",
+    "level": "intermediate",
+    "prerequisites": ["claude-setup"],
+    "relatedPrompts": [],
+    "next": ["agents", "mcp"],
+    "steps": [
+      { "id": "ab-1" },
+      { "id": "ab-2" },
+      { "id": "ab-3" },
+      { "id": "ab-4" },
+      { "id": "ab-5" },
+      { "id": "ab-6" }
+    ]
+  },
   "ai-limitations": {
     "nodeId": "cap-limitations",
     "icon": "shield",

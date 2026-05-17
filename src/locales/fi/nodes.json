@@ -241,6 +241,15 @@
     "example": "Desktop + MCP-tiedostojärjestelmäpalvelin: Claude lukee, kirjoittaa ja järjestää tiedostoja projektiikansiossasi ilman kopioi-liitä-toimintoa.",
     "mistakes": "Luuleminen että Desktop on erillinen tuote — sama tili, tilaus ja mallit kuin claude.ai. Se vain lisää paikalliset supervoimat."
   },
+  "pl-api": {
+    "title": "Claude API",
+    "what": "Anthropic API antaa kehittäjille ohjelmallisen pääsyn Claudeen. HTTP POST api.anthropic.com -osoitteeseen — saat virtautetun tai erävastaauksen. Tukee kaikkia malleja (Haiku, Sonnet, Opus). Tärkeimmät ominaisuudet: järjestelmäpromptit, moniturniset keskustelut, visio, tool use, streaming, prompt caching. SDK:t Pythonille ja TypeScriptille. Tokenipohjainen hinnoittelu — ei tilausvaatimusta.",
+    "why": "Mahdollistaa Clauden upottamisen omiin tuotteisiin, skripteihin ja sisäisiin työkaluihin — täysi hallinta malliversioon, lämpötilaan, max_tokens-arvoon ja järjestelmäkäyttäytymiseen.",
+    "when": "Kun tarvitset Claudea omassa sovelluksessasi, työnkulun automaatiossa, datapipelinessa tai agentissa. Kaikki, mikä ylittää chat.claude.ai:n rajat — yksinkertaisesta sähköpostien tiivistämiseen tarkoitetusta skriptistä täyteen AI-tuotteeseen.",
+    "impact": "Avaa Clauden insinööritiimeille. Yksi API-integraatio voi automatisoida tunteja toistuvasta tietotyöstä koko organisaatiossa.",
+    "example": "curl https://api.anthropic.com/v1/messages -H 'x-api-key: $ANTHROPIC_API_KEY' -H 'anthropic-version: 2023-06-01' -d '{\"model\":\"claude-opus-4-5\",\"max_tokens\":1024,\"messages\":[{\"role\":\"user\",\"content\":\"Hello!\"}]}'",
+    "mistakes": "API-avaimen laittaminen suoraan asiakaspuolen koodiin (se paljastuu). max_tokens-arvon jättäminen asettamatta — vastaukset voivat olla odottamattoman pitkiä ja kalliita. Streamingin ohittaminen pitkissä vastauksissa — käyttäjä odottaa koko vastausta."
+  },
   "pl-privacy": {
     "title": "Tietojen luottamuksellisuus",
     "what": "Anthropic ei käytä Free/Pro/Team-keskusteluja oletuksena mallien kouluttamiseen. Enterprisessä — lisä-SLA ja kontrolli. Alueelliset vaihtoehdot compliancea varten.",

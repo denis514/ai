@@ -245,6 +245,12 @@ export const mindmapData = {
           "relatedIds": ["pl-desktop", "mcp", "pl-cowork", "pl-compare"]
         },
         {
+          "id": "pl-api",
+          "icon": "code",
+          "category": "основы",
+          "relatedIds": ["cap-tools", "mcp", "ag-principles"]
+        },
+        {
           "id": "pl-privacy",
           "icon": "lock",
           "category": "основы"

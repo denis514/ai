@@ -3312,5 +3312,149 @@
         "tip": "The 4D Framework's Discernment step IS this checklist. Limitations are not Claude's problem to solve — they are yours to design around."
       }
     }
+  },
+  "api-basics": {
+    "title": "Claude API for developers",
+    "subtitle": "Make your first API call and understand the primitives that power every Claude integration",
+    "totalTime": "18 min",
+    "whatItIs": "A hands-on introduction to the Anthropic API. You will get an API key, make your first request, understand the core primitives (messages, roles, system prompts, tokens, streaming), and learn the patterns you will use in every Claude-powered application you build.",
+    "approach": "Every concept is shown with a working code example. Read the explanation, run the code, see the result. By the end you will have the mental model to build anything from a simple script to a production-grade AI feature.",
+    "outcomes": [
+      "Obtain an API key and make a working API call in under 5 minutes",
+      "Understand the messages array, roles (user/assistant/system), and why the structure matters",
+      "Know how tokens work and how to estimate and control cost",
+      "Stream responses so users see output immediately",
+      "Use the official Python and TypeScript SDKs",
+      "Know the five most common integration mistakes and how to avoid them"
+    ],
+    "applyIn": [
+      {
+        "title": "Web and mobile apps",
+        "description": "Add a Claude-powered chat, summarizer, or classifier to any product — backend calls the API, frontend renders the stream."
+      },
+      {
+        "title": "Internal scripts and automations",
+        "description": "A 20-line Python script can summarize emails, classify support tickets, or extract structured data from documents."
+      },
+      {
+        "title": "AI agents and pipelines",
+        "description": "The Messages API is the foundation of every Claude agent. Tool use, multi-turn memory, and orchestration all build on these same primitives."
+      }
+    ],
+    "pitfalls": [
+      "Hardcoding the API key in source code — use environment variables or a secrets manager.",
+      "Setting max_tokens too high by default — you pay for output tokens whether you use them or not.",
+      "Not streaming long responses — users stare at a blank screen while waiting for a full response to generate.",
+      "Building multi-turn chat manually without tracking the messages array — context gets lost.",
+      "Ignoring rate limits — production apps need retry logic with exponential backoff."
+    ],
+    "exercises": [
+      {
+        "question": "Write a Python script that takes a command-line argument (a topic) and prints a 3-sentence summary of that topic using the Claude API. Test it with: python summarize.py 'prompt caching'",
+        "hint": "Use the anthropic Python SDK. The messages array should have one user message: f'Summarize {topic} in exactly 3 sentences.'"
+      },
+      {
+        "question": "Modify your script to stream the response — print each word as it arrives instead of waiting for the full answer. Compare the user experience.",
+        "hint": "Use client.messages.stream() as a context manager. Iterate over text_stream to print each chunk."
+      }
+    ],
+    "steps": {
+      "ab-1": {
+        "title": "Get your API key",
+        "time": "2 min",
+        "why": "The API key is your credential — it identifies your account, tracks usage, and authorizes requests. Every API call requires one.",
+        "instructions": [
+          "Go to console.anthropic.com and sign in (or create an account).",
+          "Navigate to Settings → API Keys → Create Key.",
+          "Give it a descriptive name (e.g. 'dev-local' or 'my-project').",
+          "Copy the key immediately — you will not be able to see it again.",
+          "Store it in an environment variable: export ANTHROPIC_API_KEY='sk-ant-...'",
+          "Never paste it into source code, commit it to git, or share it in chat."
+        ],
+        "validate": "You have an API key stored in an environment variable and can echo $ANTHROPIC_API_KEY without it being empty.",
+        "tip": "Create separate keys for local development and production. If a key leaks, you can revoke just that one without disrupting everything."
+      },
+      "ab-2": {
+        "title": "Your first API call",
+        "time": "3 min",
+        "why": "The fastest way to understand the API is to run a real request. We start with raw curl, then switch to the SDK — same concepts, less boilerplate.",
+        "instructions": [
+          "Run this curl command to make your first request:",
+          "curl https://api.anthropic.com/v1/messages \\\n  -H 'x-api-key: $ANTHROPIC_API_KEY' \\\n  -H 'anthropic-version: 2023-06-01' \\\n  -H 'content-type: application/json' \\\n  -d '{\n    \"model\": \"claude-haiku-4-5\",\n    \"max_tokens\": 256,\n    \"messages\": [{\"role\": \"user\", \"content\": \"Say hello in exactly 5 words.\"}]\n  }'",
+          "You will get a JSON response with a 'content' array. The text is in content[0].text.",
+          "Install the Python SDK: pip install anthropic",
+          "Now run the same call in Python:\nimport anthropic\nclient = anthropic.Anthropic()\nmessage = client.messages.create(\n    model='claude-haiku-4-5',\n    max_tokens=256,\n    messages=[{'role': 'user', 'content': 'Say hello in exactly 5 words.'}]\n)\nprint(message.content[0].text)"
+        ],
+        "validate": "You received a response from Claude in both curl and Python.",
+        "tip": "Use claude-haiku-4-5 for experiments — it is 25× cheaper than Opus while being fast enough for most tasks. Switch to Sonnet or Opus only when quality requires it."
+      },
+      "ab-3": {
+        "title": "The messages array — roles and multi-turn",
+        "time": "3 min",
+        "why": "The messages array is the API's core primitive. Every conversation, every multi-turn interaction, every injected context lives here. Understanding it unlocks everything.",
+        "instructions": [
+          "The messages array is a list of turns. Each turn has a 'role' ('user' or 'assistant') and 'content' (text or a list of content blocks).",
+          "A system prompt is passed separately as the 'system' parameter — not as a message with role 'system'.",
+          "Example with system prompt and 2 turns:\nclient.messages.create(\n    model='claude-haiku-4-5',\n    max_tokens=512,\n    system='You are a concise assistant. Reply in bullet points only.',\n    messages=[\n        {'role': 'user', 'content': 'What are the three main Python data structures?'},\n        {'role': 'assistant', 'content': '- Lists\\n- Dictionaries\\n- Tuples'},\n        {'role': 'user', 'content': 'Which is fastest for membership testing?'}\n    ]\n)",
+          "The last message must have role 'user'. Claude always responds as 'assistant'.",
+          "To build a chat app: maintain a Python list of message dicts. Append user messages before each call, append Claude's response after."
+        ],
+        "validate": "You can build a multi-turn conversation by maintaining the messages array across calls.",
+        "tip": "The system prompt is the most powerful tool you have as a developer. Use it to set persona, output format, language, scope, and constraints — before any user message."
+      },
+      "ab-4": {
+        "title": "Tokens, cost, and max_tokens",
+        "time": "3 min",
+        "why": "API cost scales with token usage. Understanding tokens lets you control budget, avoid surprises, and architect efficient applications.",
+        "instructions": [
+          "A token ≈ 0.75 words in English. '1000 tokens' is roughly a 750-word essay.",
+          "You are charged for input tokens (everything in messages + system) AND output tokens (Claude's response).",
+          "Check pricing at anthropic.com/pricing — Haiku is cheapest, Opus is most expensive. A typical user message + short response costs a fraction of a cent.",
+          "max_tokens controls the MAXIMUM length of Claude's response. Set it intentionally:",
+          "  - Classifiers / sentiment: 10–50 tokens",
+          "  - Short answers: 256–512 tokens",
+          "  - Long-form content: 2048–4096 tokens",
+          "  - max is model-dependent (up to 64k for Opus 4.5)",
+          "Check actual usage per call: message.usage.input_tokens and message.usage.output_tokens",
+          "Prompt caching: prefix the same long system prompt across many calls and pay ~10% of the input cost for cached tokens."
+        ],
+        "validate": "You know how to set max_tokens appropriately and read token usage from the API response.",
+        "tip": "Build a cost estimator into your dev workflow: log input + output tokens per call during testing, multiply by model rate, project to your expected monthly volume before shipping."
+      },
+      "ab-5": {
+        "title": "Streaming responses",
+        "time": "3 min",
+        "why": "Without streaming, users wait several seconds staring at a blank screen. With streaming, words appear as Claude generates them — the perceived response time drops from seconds to milliseconds.",
+        "instructions": [
+          "Use client.messages.stream() as a context manager:",
+          "with client.messages.stream(\n    model='claude-haiku-4-5',\n    max_tokens=512,\n    messages=[{'role': 'user', 'content': 'Explain quantum entanglement simply.'}]\n) as stream:\n    for text in stream.text_stream:\n        print(text, end='', flush=True)\n    print()  # newline at end",
+          "For web apps: stream server-sent events (SSE) from your backend to the frontend. Most frameworks (FastAPI, Express, Flask) support SSE natively.",
+          "The stream context manager also exposes .get_final_message() to get the complete message object after streaming finishes.",
+          "TypeScript equivalent:\nconst stream = await client.messages.stream({ ... });\nfor await (const chunk of stream) {\n  if (chunk.type === 'content_block_delta') {\n    process.stdout.write(chunk.delta.text);\n  }\n}"
+        ],
+        "validate": "You can stream a Claude response and print each chunk as it arrives.",
+        "tip": "Always stream for any user-facing response that might be longer than 2 sentences. The UX difference is dramatic."
+      },
+      "ab-6": {
+        "title": "Five common integration mistakes",
+        "time": "4 min",
+        "why": "These five mistakes collectively cause 80% of API integration bugs and production incidents. Knowing them in advance saves hours of debugging.",
+        "instructions": [
+          "1. Hardcoded API key: Never do api_key='sk-ant-...'. Use os.environ.get('ANTHROPIC_API_KEY'). Add .env to .gitignore. Rotate any key that touched source control.",
+          "2. No retry logic: The API can return 529 (overloaded) or 5xx errors under load. Wrap calls in exponential backoff: retry up to 3 times with delays of 1s, 2s, 4s.",
+          "3. No streaming for long responses: If the task takes >2s, stream it. Users bounce from loading spinners.",
+          "4. Losing conversation history: In multi-turn apps, if you don't persist the messages array, Claude forgets the context on every request. Store messages in your database, not just in memory.",
+          "5. Wrong model for the task: Running Opus for a simple classifier (10× more expensive than Haiku, no quality benefit). Profile quality vs cost on your actual data before choosing a model.",
+          "Bonus: test with real edge cases early — empty inputs, very long inputs, unusual characters, concurrent users. The API behaves correctly, but your code may not."
+        ],
+        "validate": "You have a checklist of 5 pitfalls to review before shipping any Claude integration.",
+        "tip": "Anthropic's official cookbooks at github.com/anthropics/anthropic-cookbook have production-ready patterns for all of these — error handling, streaming, tool use, and more.",
+        "troubleshoot": {
+          "I get a 401 error": "API key is missing or wrong. Check that ANTHROPIC_API_KEY is set in your environment and that you are reading it with os.environ.get(), not hardcoding.",
+          "I get a 429 error": "Rate limit exceeded. You are sending too many requests per minute. Add a sleep between requests in loops, or implement exponential backoff.",
+          "Response is cut off": "max_tokens is too low. Increase it or use a streaming approach that detects the stop_reason: 'max_tokens' signal and continues the generation."
+        }
+      }
+    }
   }
 }

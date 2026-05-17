@@ -10,6 +10,7 @@
  *   2. Деплой — лейбл появится у всех пользователей.
  */
 export const WHATS_NEW = {
+  'pl-api':          { date: '2026-05-17', type: 'new' },
   'pr-4d':           { date: '2026-05-17', type: 'new' },
   'pl-cowork':       { date: '2026-05-17', type: 'new' }, // also has tutorial now
   'pl-cowork':       { date: '2026-05-17', type: 'new' },

@@ -3320,5 +3320,148 @@
         "tip": "4D-viitekehyksen Discernment-vaihe ON tämä tarkistuslista. Rajoitukset eivät ole Clauden ongelma ratkaistavaksi — ne ovat sinun suunniteltavaksi."
       }
     }
+  },
+  "api-basics": {
+    "title": "Claude API kehittäjille",
+    "subtitle": "Ensimmäinen API-kutsu ja primitiivit joiden päälle jokainen integraatio rakentuu",
+    "totalTime": "18 min",
+    "whatItIs": "Käytännön johdanto Anthropic APIin. Hankit API-avaimen, teet ensimmäisen kutsun, ymmärrät ydinkäsitteet (messages, roles, system prompts, tokenit, streaming) ja opit mallit joita käytetään jokaisessa Claude-sovelluksessa.",
+    "approach": "Jokainen käsite esitetään toimivalla koodiesimerkillä. Lue selitys — aja koodi — näe tulos. Tutoriaalin lopussa sinulla on mentaalimalli, jolla rakentaa mitä tahansa yksinkertaisesta skriptistä tuotantotason AI-ominaisuuteen.",
+    "outcomes": [
+      "Hanki API-avain ja tee toimiva kutsu alle 5 minuutissa",
+      "Ymmärrä messages-taulukko, roolit (user/assistant/system) ja miksi rakenne on tärkeä",
+      "Tiedä miten tokenit toimivat ja miten arvioida ja hallita kustannuksia",
+      "Streamaa vastauksia — käyttäjä näkee tulosteen heti",
+      "Käytä virallisia Python- ja TypeScript-SDK:ita",
+      "Tiedä viisi yleisintä integraatiovirhettä ja miten välttää ne"
+    ],
+    "applyIn": [
+      {
+        "title": "Web- ja mobiilisovellukset",
+        "description": "Lisää Claude-pohjainen chat, tiivistäjä tai luokittelija mihin tahansa tuotteeseen — backend kutsuu APIa, frontend renderöi streamin."
+      },
+      {
+        "title": "Sisäiset skriptit ja automaatio",
+        "description": "20-rivinen Python-skripti voi tiivistää sähköposteja, luokitella tukiticketeitä tai poimia strukturoitua dataa dokumenteista."
+      },
+      {
+        "title": "AI-agentit ja pipelineet",
+        "description": "Messages API on jokaisen Claude-agentin perusta. Tool use, monivuoromuisti ja orkestrointi rakentuvat samojen primitiivien päälle."
+      }
+    ],
+    "pitfalls": [
+      "API-avaimen kovakoodaus lähdekoodiin — käytä ympäristömuuttujia tai salaisuudenhallintaa.",
+      "max_tokens liian korkealle oletuksena — maksat lähtötokeneista vaikka et käytä niitä.",
+      "Ei streamausta pitkille vastauksille — käyttäjät tuijottavat tyhjää näyttöä.",
+      "Monivuorochat rakentaminen ilman messages-taulukon seurantaa — konteksti katoaa.",
+      "Rate limitien huomioimatta jättäminen — tuotantosovellukset tarvitsevat retry-logiikan."
+    ],
+    "exercises": [
+      {
+        "question": "Kirjoita Python-skripti, joka ottaa komentoriviargumentin (aiheen) ja tulostaa 3-lauseisen tiivistelmän Claude APIa käyttäen. Testaa: python summarize.py 'prompt caching'",
+        "hint": "Käytä anthropic Python SDK:ta. messages-taulukossa pitäisi olla yksi user-viesti: f'Summarize {topic} in exactly 3 sentences.'"
+      },
+      {
+        "question": "Muokkaa skriptiä streamaamaan vastaus — tulosta jokainen sana saapuessaan odottamatta koko vastausta. Vertaa käyttäjäkokemusta.",
+        "hint": "Käytä client.messages.stream() kontekstimanagerina. Iteroi text_stream-taulukon läpi jokaisen chunkin tulostamiseksi."
+      }
+    ],
+    "steps": {
+      "ab-1": {
+        "title": "Hanki API-avain",
+        "time": "2 min",
+        "why": "API-avain on tunnistetietosi — se tunnistaa tilisi, seuraa käyttöä ja valtuuttaa pyynnöt. Jokainen API-kutsu vaatii sen.",
+        "instructions": [
+          "Mene osoitteeseen console.anthropic.com ja kirjaudu sisään (tai luo tili).",
+          "Siirry kohtaan Settings → API Keys → Create Key.",
+          "Anna sille kuvaava nimi (esim. 'dev-local' tai 'my-project').",
+          "Kopioi avain heti — et voi enää nähdä sitä.",
+          "Tallenna ympäristömuuttujaan: export ANTHROPIC_API_KEY='sk-ant-...'",
+          "Älä koskaan liitä sitä lähdekoodiin, commitoi gitiin tai jaa chatissa."
+        ],
+        "validate": "Sinulla on API-avain ympäristömuuttujassa ja echo $ANTHROPIC_API_KEY palauttaa ei-tyhjän merkkijonon.",
+        "tip": "Luo erilliset avaimet paikalliseen kehitykseen ja tuotantoon. Jos avain vuotaa — peruuta vain se, häiritsemättä muuta."
+      },
+      "ab-2": {
+        "title": "Ensimmäinen API-kutsu",
+        "time": "3 min",
+        "why": "Nopein tapa ymmärtää API on ajaa oikea pyyntö. Aloitamme raw curlilla, sitten siirrymme SDK:hon — samat käsitteet, vähemmän boilerplatea.",
+        "instructions": [
+          "Aja tämä curl-komento ensimmäistä pyyntöä varten:",
+          "curl https://api.anthropic.com/v1/messages \\\n  -H 'x-api-key: $ANTHROPIC_API_KEY' \\\n  -H 'anthropic-version: 2023-06-01' \\\n  -H 'content-type: application/json' \\\n  -d '{\n    \"model\": \"claude-haiku-4-5\",\n    \"max_tokens\": 256,\n    \"messages\": [{\"role\": \"user\", \"content\": \"Say hello in exactly 5 words.\"}]\n  }'",
+          "Saat JSON-vastauksen 'content'-taulukolla. Teksti on content[0].text:ssä.",
+          "Asenna Python SDK: pip install anthropic",
+          "Sama kutsu Pythonilla:\nimport anthropic\nclient = anthropic.Anthropic()\nmessage = client.messages.create(\n    model='claude-haiku-4-5',\n    max_tokens=256,\n    messages=[{'role': 'user', 'content': 'Say hello in exactly 5 words.'}]\n)\nprint(message.content[0].text)"
+        ],
+        "validate": "Sait vastauksen Claudelta sekä curlilla että Pythonilla.",
+        "tip": "Käytä claude-haiku-4-5:tä kokeiluihin — se on 25× halvempi kuin Opus ja riittävän nopea useimpiin tehtäviin."
+      },
+      "ab-3": {
+        "title": "messages-taulukko — roolit ja monivuoro",
+        "time": "3 min",
+        "why": "messages-taulukko on APIn ydinkäsite. Jokainen keskustelu, jokainen monivuorovuorovaikutus, jokainen injektoitu konteksti elää täällä.",
+        "instructions": [
+          "messages-taulukko on lista vuoroista. Jokaisella vuorolla on 'role' ('user' tai 'assistant') ja 'content'.",
+          "Järjestelmäprompt välitetään erillään 'system'-parametrina — ei viestinä, jolla on role 'system'.",
+          "Esimerkki järjestelmäpromptilla ja 2 vuorolla:\nclient.messages.create(\n    model='claude-haiku-4-5',\n    max_tokens=512,\n    system='You are a concise assistant. Reply in bullet points only.',\n    messages=[\n        {'role': 'user', 'content': 'What are the three main Python data structures?'},\n        {'role': 'assistant', 'content': '- Lists\\n- Dictionaries\\n- Tuples'},\n        {'role': 'user', 'content': 'Which is fastest for membership testing?'}\n    ]\n)",
+          "Viimeisellä viestillä täytyy olla role 'user'. Claude vastaa aina 'assistant'ina.",
+          "Chat-sovellukselle: ylläpidä Python-listaa viestidikteistä. Liitä user-viestit ennen jokaista kutsua, Clauden vastaus jälkeen."
+        ],
+        "validate": "Osaat rakentaa monivuorokeskustelun ylläpitämällä messages-taulukkoa kutsujen välillä.",
+        "tip": "Järjestelmäprompt on kehittäjän tehokkain työkalu. Käytä sitä persoonan, tulostusmuodon, kielen ja rajoitusten asettamiseen."
+      },
+      "ab-4": {
+        "title": "Tokenit, kustannukset ja max_tokens",
+        "time": "3 min",
+        "why": "API-kustannus skaalautuu tokenien käytön mukaan. Tokenien ymmärtäminen mahdollistaa budjetin hallinnan.",
+        "instructions": [
+          "1 tokeni ≈ 0,75 sanaa englanniksi. '1000 tokenia' on noin 750-sanainen essee.",
+          "Maksat syötetokeneista (kaikki messages + system) JA lähtötokeneista (Clauden vastaus).",
+          "Tarkista hinnoittelu osoitteesta anthropic.com/pricing — Haiku on halvein, Opus kallein.",
+          "max_tokens hallitsee Clauden vastauksen MAKSIMIPITUUTTA. Aseta harkiten:",
+          "  - Luokittelijat: 10–50 tokenia",
+          "  - Lyhyet vastaukset: 256–512 tokenia",
+          "  - Pitkä sisältö: 2048–4096 tokenia",
+          "Tarkista todellinen käyttö: message.usage.input_tokens ja message.usage.output_tokens",
+          "Prompt caching: käytä samaa pitkää järjestelmäpromptia monissa kutsuissa ja maksa ~10% kustannuksista."
+        ],
+        "validate": "Tiedät miten asettaa max_tokens asianmukaisesti ja lukea tokenien käyttö API-vastauksesta.",
+        "tip": "Rakenna kustannusarvioija kehitystyönkulkuun: kirjaa input + output -tokenit per kutsu testauksessa, kerro mallin hinnalla."
+      },
+      "ab-5": {
+        "title": "Vastausten streamaus",
+        "time": "3 min",
+        "why": "Ilman streamausta käyttäjät odottavat useita sekunteja tuijottaen tyhjää näyttöä. Streamauksen kanssa sanat ilmestyvät niiden generoidessa.",
+        "instructions": [
+          "Käytä client.messages.stream() kontekstimanagerina:",
+          "with client.messages.stream(\n    model='claude-haiku-4-5',\n    max_tokens=512,\n    messages=[{'role': 'user', 'content': 'Explain quantum entanglement simply.'}]\n) as stream:\n    for text in stream.text_stream:\n        print(text, end='', flush=True)\n    print()",
+          "Web-sovelluksille: streama server-sent events (SSE) backendistä frontendille.",
+          ".get_final_message() palauttaa täydellisen viestiobjektin streamauksen jälkeen.",
+          "TypeScript:\nconst stream = await client.messages.stream({ ... });\nfor await (const chunk of stream) {\n  if (chunk.type === 'content_block_delta') {\n    process.stdout.write(chunk.delta.text);\n  }\n}"
+        ],
+        "validate": "Osaat streamata Claude-vastauksen ja tulostaa jokaisen chunkin saapuessaan.",
+        "tip": "Streama aina käyttäjille suunnattu vastaus, joka voi olla pidempi kuin 2 lausetta. UX-ero on dramaattinen."
+      },
+      "ab-6": {
+        "title": "Viisi yleistä integraatiovirhettä",
+        "time": "4 min",
+        "why": "Nämä viisi virhettä aiheuttavat yhdessä 80% integraatiobugeja. Niiden tunteminen etukäteen säästää tunteja debugauksessa.",
+        "instructions": [
+          "1. Kovakoodattu API-avain: käytä os.environ.get('ANTHROPIC_API_KEY'), lisää .env .gitignore-tiedostoon.",
+          "2. Ei retry-logiikkaa: kääri kutsut eksponentiaaliseen backoffiin (viiveet 1s, 2s, 4s).",
+          "3. Ei streamausta pitkille vastauksille: käyttäjät lähtevät latauspyöritteistä.",
+          "4. Keskusteluhistorian menettäminen: tallenna messages-taulukko tietokantaan, ei vain muistiin.",
+          "5. Väärä malli tehtävälle: profiloi laatu vs kustannus oikealla datalla ennen mallin valintaa.",
+          "Bonus: testaa todellisilla reunatapauksilla aikaisin — tyhjät syötteet, hyvin pitkät syötteet, erikoismerkit."
+        ],
+        "validate": "Sinulla on 5 sudenkuopan tarkistuslista katselmoitavaksi ennen Claude-integraation julkaisua.",
+        "tip": "Anthropicin viralliset keittokirjat osoitteessa github.com/anthropics/anthropic-cookbook sisältävät tuotantovalmiita malleja.",
+        "troubleshoot": {
+          "Saan 401-virheen": "API-avain puuttuu tai on väärä. Tarkista, että ANTHROPIC_API_KEY on asetettu ympäristöön ja luet sen os.environ.get():lla.",
+          "Saan 429-virheen": "Rate limit ylitetty. Lisää sleep-komento kutsujen väliin silmukoissa tai toteuta eksponentiaalinen backoff.",
+          "Vastaus katkeaa": "max_tokens on liian pieni. Kasvata sitä tai tunnista stop_reason: 'max_tokens' -signaali ja jatka generointia."
+        }
+      }
+    }
   }
 }

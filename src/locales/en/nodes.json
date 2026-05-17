@@ -241,6 +241,15 @@
     "example": "Desktop + MCP filesystem server: Claude can read, write, and organize files in your project folder without you copy-pasting anything.",
     "mistakes": "Thinking Desktop is a separate product — it uses the same account, subscription, and models as claude.ai. It just adds local superpowers."
   },
+  "pl-api": {
+    "title": "Claude API",
+    "what": "The Anthropic API gives developers programmatic access to Claude. Send messages via HTTP POST to api.anthropic.com, receive streamed or batch responses. Supports all Claude models (Haiku, Sonnet, Opus). Key features: system prompts, multi-turn conversations, vision, tool use, streaming, prompt caching. SDKs available for Python and TypeScript. Token-based pricing — pay per input/output token, no subscription required.",
+    "why": "Lets you embed Claude directly in your products, scripts, and internal tools without relying on the Claude.ai UI. Full control over model version, temperature, max tokens, and system behavior.",
+    "when": "When you need Claude inside your own app, workflow automation, data pipeline, or custom agent. Anything beyond chat.claude.ai — from a simple script that summarizes emails to a full AI-powered product.",
+    "impact": "Unlocks Claude for engineering teams. A single API integration can automate hours of repetitive knowledge work across an entire organization.",
+    "example": "curl https://api.anthropic.com/v1/messages -H 'x-api-key: $ANTHROPIC_API_KEY' -H 'anthropic-version: 2023-06-01' -d '{\"model\":\"claude-opus-4-5\",\"max_tokens\":1024,\"messages\":[{\"role\":\"user\",\"content\":\"Hello!\"}]}'",
+    "mistakes": "Putting the API key directly in client-side code (it will be exposed). Not setting max_tokens — responses can be unexpectedly long and expensive. Ignoring streaming for long responses — users see nothing until the entire response arrives."
+  },
   "pl-privacy": {
     "title": "Data privacy",
     "what": "Anthropic doesn't use Free/Pro/Team conversations by default for model training. On Enterprise — additional SLAs and control. Regional options for compliance.",
