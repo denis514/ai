@@ -11,6 +11,7 @@
  */
 export const WHATS_NEW = {
   'pr-4d':           { date: '2026-05-17', type: 'new' },
+  'pl-cowork':       { date: '2026-05-17', type: 'new' }, // also has tutorial now
   'pl-cowork':       { date: '2026-05-17', type: 'new' },
   'pl-integrations': { date: '2026-05-17', type: 'new' },
   'cap-limitations': { date: '2026-05-17', type: 'new' },

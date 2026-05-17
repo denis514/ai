@@ -4,6 +4,21 @@
 // Резолвинг через useTutorialContent() из src/i18n/.
 
 export const tutorials = {
+  "claude-cowork": {
+    "nodeId": "pl-cowork",
+    "icon": "robot",
+    "level": "beginner",
+    "prerequisites": ["claude-setup"],
+    "relatedPrompts": [],
+    "next": ["agents", "subagents"],
+    "steps": [
+      { "id": "cw-1" },
+      { "id": "cw-2" },
+      { "id": "cw-3" },
+      { "id": "cw-4" },
+      { "id": "cw-5" }
+    ]
+  },
   "claude-setup": {
     "nodeId": "platform",
     "icon": "sparkles",
