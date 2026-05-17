@@ -30,13 +30,19 @@ function buildById(id, structure, locale) {
       title: sc.title,
       time: sc.time,
       why: sc.why,
-      instructions: sc.instructions || [],
+      instructions: Array.isArray(sc.instructions)
+        ? sc.instructions
+        : (sc.instructions && typeof sc.instructions === 'object'
+            ? Object.values(sc.instructions)
+            : []),
       ...(sc.prompt ? { prompt: sc.prompt } : {}),
       ...(sc.example ? { example: sc.example } : {}),
       ...(sc.validate ? { validate: sc.validate } : {}),
       ...(sc.tip ? { tip: sc.tip } : {}),
       ...(sc.troubleshoot ? { troubleshoot: sc.troubleshoot } : {}),
-      ...(Array.isArray(sc.actions) && sc.actions.length ? { actions: sc.actions } : {})
+      ...(sc.actions
+        ? { actions: Array.isArray(sc.actions) ? sc.actions : Object.values(sc.actions) }
+        : {})
     };
   });
   return {
