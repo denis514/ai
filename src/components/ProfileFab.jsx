@@ -50,6 +50,11 @@ export default function ProfileFab(props) {
 
   const close = () => setOpen(false);
 
+  const openAccount = () => {
+    close();
+    props.onOpenAccount?.();
+  };
+
   // Когда пользователь кликает на статистику внутри ProfilePanel — нужно и
   // показать ноды на карте (через App.onShowNodes), и закрыть саму панель.
   const onShowNodes = (ids, label) => {
@@ -102,6 +107,17 @@ export default function ProfileFab(props) {
         {/* Desktop dropdown */}
         {open && !isMobile && (
           <div className="profile-fab__dropdown" role="dialog" aria-label={t('profile.fabAria')}>
+            {isLoggedIn && (
+              <button
+                type="button"
+                className="profile-fab__account-link"
+                onClick={openAccount}
+              >
+                <Icon name="user" size={14} strokeWidth={1.5} />
+                {t('account.title')}
+                <Icon name="arrow-right" size={12} strokeWidth={1.5} />
+              </button>
+            )}
             <ProfilePanel {...props} onShowNodes={onShowNodes} onStartTutorial={onStartTutorial} onClose={close} />
           </div>
         )}
@@ -116,6 +132,17 @@ export default function ProfileFab(props) {
           icon="user"
           className="bsheet--profile"
         >
+          {isLoggedIn && (
+            <button
+              type="button"
+              className="profile-fab__account-link"
+              onClick={openAccount}
+            >
+              <Icon name="user" size={14} strokeWidth={1.5} />
+              {t('account.title')}
+              <Icon name="arrow-right" size={12} strokeWidth={1.5} />
+            </button>
+          )}
           <ProfilePanel {...props} onShowNodes={onShowNodes} onClose={null} />
         </BottomSheet>
       )}

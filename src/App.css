@@ -1999,6 +1999,258 @@
   .onboarding-header h1 { font-size: 19px; }
 }
 
+/* =====================================================
+   ACCOUNT PAGE
+   ===================================================== */
+.account-page {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: var(--bg, #0f0f0f);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn .2s ease;
+}
+
+.account-page__empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--text-muted);
+  padding: 40px;
+  text-align: center;
+}
+
+.account-page__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg, #0f0f0f);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.account-page__back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: color .15s, background .15s;
+  flex-shrink: 0;
+}
+.account-page__back:hover { color: var(--text); background: var(--surface-2); }
+.account-page__header h1 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.account-page__body {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Sections */
+.account-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.account-section h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin: 0;
+}
+.account-section__desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+.account-section--danger {
+  border-color: rgba(239,68,68,.25);
+}
+.account-section--danger h2 { color: #ef4444; }
+
+/* Fields */
+.account-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.account-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.account-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.account-value {
+  font-size: 14px;
+  color: var(--text);
+}
+.account-value--readonly {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.account-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.account-input {
+  flex: 1;
+  padding: 9px 12px;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  transition: border-color .15s;
+}
+.account-input:focus { outline: none; border-color: var(--accent); }
+.account-input--danger:focus { border-color: #ef4444; }
+
+.account-msg {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 0;
+}
+.account-msg.is-ok  { color: #22c55e; }
+.account-msg.is-err { color: #ef4444; }
+
+/* Language buttons */
+.account-lang-row {
+  display: flex;
+  gap: 8px;
+}
+.account-lang-btn {
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+}
+.account-lang-btn.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(249,115,22,.08);
+}
+
+/* Action buttons */
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.account-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity .15s, background .15s;
+  border: 1.5px solid transparent;
+  text-decoration: none;
+}
+.account-btn:disabled { opacity: .5; cursor: not-allowed; }
+.account-btn--primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.account-btn--primary:hover:not(:disabled) { opacity: .88; }
+.account-btn--outline {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+.account-btn--outline:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.account-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-muted);
+}
+.account-btn--ghost:hover { color: var(--text); }
+.account-btn--danger {
+  background: rgba(239,68,68,.12);
+  border-color: rgba(239,68,68,.3);
+  color: #ef4444;
+}
+.account-btn--danger:hover:not(:disabled) { background: rgba(239,68,68,.2); }
+.account-btn--sm { padding: 7px 12px; font-size: 13px; }
+
+/* Delete confirm */
+.account-delete-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(239,68,68,.06);
+  border-radius: 10px;
+  border: 1px solid rgba(239,68,68,.2);
+}
+.account-delete-confirm__warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: #ef4444;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .account-page__body { padding: 20px 16px 60px; }
+  .account-section { padding: 18px 16px; }
+  .account-actions { flex-direction: column; }
+  .account-btn { justify-content: flex-start; }
+}
+
 .profile-fab__dropdown {
   position: absolute;
   top: calc(100% + 8px);
@@ -2014,6 +2266,28 @@
   animation: pf-dropdown .18s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: top right;
 }
+/* Ссылка на Account page внутри dropdown */
+.profile-fab__account-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color .15s, background .15s;
+  text-align: left;
+}
+.profile-fab__account-link:hover {
+  color: var(--accent);
+  background: var(--surface-2);
+}
+.profile-fab__account-link > :last-child { margin-left: auto; }
 @keyframes pf-dropdown {
   from { transform: scale(0.96) translateY(-4px); opacity: 0; }
   to   { transform: scale(1) translateY(0); opacity: 1; }

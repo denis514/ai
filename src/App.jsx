@@ -31,6 +31,7 @@ import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import AuthModal from './components/AuthModal.jsx';
 import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
+import AccountPage from './components/AccountPage.jsx';
 import './App.css';
 
 const GA_ID = 'G-GLRHYG2JVK';
@@ -181,6 +182,7 @@ function AppInner() {
   const coursesOpen   = route?.type === 'courses';
   const libraryOpen   = route?.type === 'library' || route?.type === 'prompt';
   const helpOpen      = route?.type === 'help';
+  const accountOpen   = route?.type === 'account';
   const activeHelpSection = route?.type === 'help' ? route.id : null;
   const activePromptId = route?.type === 'prompt' ? route.id : null;
 
@@ -507,6 +509,7 @@ function AppInner() {
           onShowNodes={onShowNodes}
           onStartTutorial={onStartTutorial}
           onOpenAuth={() => setAuthOpen(true)}
+          onOpenAccount={() => setRoute({ type: 'account' })}
         />
 
         <CanvasFilters
@@ -616,6 +619,10 @@ function AppInner() {
 
       {authOpen && (
         <AuthModal onClose={() => setAuthOpen(false)} />
+      )}
+
+      {accountOpen && (
+        <AccountPage onClose={() => setRoute(null)} />
       )}
 
       {/* Welcome онбординг — показывается после первого логина */}
