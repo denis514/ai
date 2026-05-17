@@ -4,7 +4,9 @@ import { t as tFn } from './t.js';
 
 const LocaleContext = createContext({ locale: DEFAULT_LOCALE, setLocale: () => {} });
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Storage helpers ─────────────────────────────────────────────────────────
+
+const IP_DETECT_KEY = 'claude-mindmap:ip-locale:v1';
 
 function readLocaleFromHash() {
   if (typeof window === 'undefined') return null;
@@ -20,92 +22,103 @@ function readStoredLocale() {
   try {
     const v = window.localStorage.getItem(STORAGE_KEY);
     return isLocale(v) ? v : null;
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
 
-/**
- * Маппинг страна ISO → locale.
- * Финляндия → fi, русскоязычные страны → ru, остальные → en.
- */
+function readCachedIPLocale() {
+  if (typeof window === 'undefined') return null;
+  try {
+    const v = window.localStorage.getItem(IP_DETECT_KEY);
+    return isLocale(v) ? v : null;
+  } catch { return null; }
+}
+
+// ─── IP detection ─────────────────────────────────────────────────────────────
+
 const COUNTRY_TO_LOCALE = {
-  FI: 'fi',                                    // Финляндия
-  RU: 'ru', BY: 'ru', UA: 'ru', KZ: 'ru',     // Русскоязычные страны
+  FI: 'fi',
+  RU: 'ru', BY: 'ru', UA: 'ru', KZ: 'ru',
   UZ: 'ru', KG: 'ru', TJ: 'ru', AM: 'ru',
 };
 
-const IP_DETECT_KEY = 'claude-mindmap:ip-locale:v1'; // кешируем результат
-
 /**
- * Асинхронно определяет локаль по IP через ipapi.co.
- * Результат кешируется в localStorage, чтобы делать запрос только один раз.
- * Возвращает locale string или null при ошибке.
+ * Запрашивает страну по IP, кеширует в localStorage.
+ * Если кеш есть — возвращает немедленно без сети.
  */
 async function detectIPLocale() {
   if (typeof window === 'undefined') return null;
-
-  // Если уже определяли — берём из кеша (не делаем повторный запрос)
+  const cached = readCachedIPLocale();
+  if (cached) return cached; // уже знаем — не делаем запрос
   try {
-    const cached = localStorage.getItem(IP_DETECT_KEY);
-    if (cached && isLocale(cached)) return cached;
-  } catch {}
-
-  try {
-    // api.country.is — бесплатно, без лимитов, возвращает {"ip":"...","country":"FI"}
     const res = await fetch('https://api.country.is', {
       signal: AbortSignal.timeout(3000),
     });
     if (!res.ok) return null;
     const json = await res.json();
     const country = (json?.country || '').toUpperCase();
-    const locale = COUNTRY_TO_LOCALE[country] || 'en';
+    const locale  = COUNTRY_TO_LOCALE[country] || 'en';
     try { localStorage.setItem(IP_DETECT_KEY, locale); } catch {}
     return locale;
   } catch {
-    return null; // сеть недоступна или таймаут — молча падаем на DEFAULT
+    return null;
   }
 }
 
+// ─── Initial locale resolution ────────────────────────────────────────────────
+
 /**
- * Resolve локали при старте (синхронно):
- *   1. URL hash (#/ru/...) — абсолютный приоритет
- *   2. localStorage — пользователь уже выбирал вручную
- *   3. DEFAULT_LOCALE ('en') — пока IP не ответил
+ * Приоритет (синхронный):
+ *   1. URL hash (#/ru/...) — абсолютный
+ *   2. localStorage (ручной выбор пользователя)
+ *   3. IP-кеш из прошлого визита (localStorage ip-locale)
+ *   4. DEFAULT_LOCALE 'en'
  *
- * IP-детекция запускается асинхронно в LocaleProvider и обновляет локаль
- * только если пользователь ещё не сделал явный выбор.
+ * IP-запрос делается ТОЛЬКО если кеша нет (первый визит).
+ * Результат записывается в кеш и применяется только в первые 800ms
+ * загрузки страницы — когда пользователь ещё точно не открыл ни одной
+ * модалки. Это исключает перерисовку во время взаимодействия.
  */
 function resolveInitialLocale() {
   return (
-    readLocaleFromHash() ||
-    readStoredLocale()   ||
-    DEFAULT_LOCALE          // → 'en', IP подтянется асинхронно
+    readLocaleFromHash()  ||
+    readStoredLocale()    ||
+    readCachedIPLocale()  || // ← синхронно из кеша
+    DEFAULT_LOCALE
   );
 }
+
+// ─── Provider ────────────────────────────────────────────────────────────────
 
 export function LocaleProvider({ children }) {
   const [locale, setLocaleState] = useState(resolveInitialLocale);
 
-  // ── IP-детекция при первом визите ────────────────────────────────────────
-  // Запускается только если нет явного выбора пользователя (нет в localStorage)
-  // и нет locale в URL. Не перебивает ручной выбор.
+  // IP-детекция: только если нет ни ручного выбора, ни кеша (= первый визит).
+  // Применяем результат ТОЛЬКО в первые 800ms — пока пользователь ещё не успел
+  // открыть модалку. Если ответ пришёл позже — просто сохраняем в кеш для
+  // следующего визита, но НЕ перерисовываем сейчас.
   useEffect(() => {
-    const hasManualChoice = !!readStoredLocale();
-    const hasUrlLocale    = !!readLocaleFromHash();
-    if (hasManualChoice || hasUrlLocale) return; // пользователь уже выбрал — не трогаем
+    const hasManual = !!readStoredLocale();
+    const hasURL    = !!readLocaleFromHash();
+    const hasCache  = !!readCachedIPLocale();
+
+    // Кеш есть или ручной выбор — ничего делать не нужно
+    if (hasManual || hasURL || hasCache) return;
+
+    const mountedAt = Date.now();
 
     detectIPLocale().then(detected => {
       if (!detected) return;
-      // Перепроверяем — вдруг пользователь успел выбрать вручную пока грузился IP
+      // Защитный таймер: если прошло больше 800ms — не перерисовываем,
+      // просто кеш уже записан (detectIPLocale делает это сам)
+      const elapsed = Date.now() - mountedAt;
+      if (elapsed > 800) return;
+      // Двойная проверка — вдруг за это время пользователь выбрал язык
       if (readStoredLocale()) return;
       setLocaleState(detected);
-      // НЕ пишем в localStorage — IP-детекция не считается явным выбором.
-      // При следующем визите запрос пойдёт снова (или из IP-кеша).
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Sync со сменой hash (например, переход по ссылке #/fi/...).
+  // Sync locale при смене hash (ссылки с #/fi/...)
   useEffect(() => {
     const onHash = () => {
       const fromHash = readLocaleFromHash();
@@ -115,33 +128,26 @@ export function LocaleProvider({ children }) {
     return () => window.removeEventListener('hashchange', onHash);
   }, [locale]);
 
-  // Sync <html lang> для корректного SEO и accessibility.
+  // Sync <html lang>
   useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.documentElement.lang = locale;
-    }
+    if (typeof document !== 'undefined') document.documentElement.lang = locale;
   }, [locale]);
 
-  // Persist в localStorage + обновить URL при программной смене.
+  // Ручная смена языка — пишет в обе storage-ячейки и обновляет URL
   const setLocale = useCallback((next) => {
     if (!isLocale(next)) return;
     try {
-      // Ручной выбор пишем в localStorage — это явное предпочтение пользователя
-      window.localStorage.setItem(STORAGE_KEY, next);
-      // Сохраняем IP-кеш тоже — чтобы при следующем визите без localStorage
-      // система помнила что IP-детекция уже прошла (и не перебивала выбор)
-      window.localStorage.setItem(IP_DETECT_KEY, next);
+      localStorage.setItem(STORAGE_KEY, next);    // явный выбор
+      localStorage.setItem(IP_DETECT_KEY, next);  // перебить IP-кеш
     } catch {}
-    // Переписать первый сегмент hash под новую локаль.
     const h = window.location.hash || '';
-    const stripped = h.replace(/^#\/?([a-z]{2})(\/|$)/i, (m, code, sep) => {
-      return isLocale(code.toLowerCase()) ? (sep === '/' ? '#/' : '#') : m;
-    });
-    const rest = stripped.replace(/^#\/?/, '');
+    const stripped = h.replace(/^#\/?([a-z]{2})(\/|$)/i, (m, code, sep) =>
+      isLocale(code.toLowerCase()) ? (sep === '/' ? '#/' : '#') : m
+    );
+    const rest   = stripped.replace(/^#\/?/, '');
     const target = rest ? `#/${next}/${rest}` : `#/${next}`;
     window.history.replaceState(null, '', target);
     setLocaleState(next);
-    // Эвент для других подписчиков (useHashRoute), чтобы они перечитали URL.
     window.dispatchEvent(new HashChangeEvent('hashchange'));
   }, []);
 
@@ -149,21 +155,14 @@ export function LocaleProvider({ children }) {
     locale,
     setLocale,
     locales: LOCALES,
-    t: (key, vars) => tFn(key, locale, vars)
+    t: (key, vars) => tFn(key, locale, vars),
   }), [locale, setLocale]);
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 }
 
-export function useLocale() {
-  return useContext(LocaleContext);
-}
+export function useLocale() { return useContext(LocaleContext); }
 
-/**
- * Прямой хук для перевода — короче в JSX:
- *   const t = useT();
- *   <button>{t('common.close')}</button>
- */
 export function useT() {
   const { t } = useContext(LocaleContext);
   return t;
