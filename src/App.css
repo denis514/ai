@@ -3656,6 +3656,7 @@
 .detail__example-blur {
   background: #1c1c1c;
   padding: 14px;
+  min-height: 110px;
   filter: blur(4px);
   user-select: none;
   pointer-events: none;
@@ -3808,16 +3809,14 @@
   border-top-color: #1a1a1a;
 }
 
-/* Fixed-position tooltip — не обрезается overflow:hidden родителя */
-.tooltip__bubble--fixed {
-  position: fixed;
-  transform: none;
-  /* стрелка вверх (пузырь выше триггера): translateY -100% */
-  translate: 0 -100%;
-  z-index: 9999;
-  pointer-events: none;
+/* Portal tooltip — position:fixed, не обрезается overflow родителя */
+.tooltip__bubble--portal {
+  position: fixed !important;
+  transform: none !important;
+  z-index: 9999 !important;
 }
-.tooltip__bubble--fixed::after {
+/* Стрелка вниз (пузырь ВЫШЕ триггера, dir=up) */
+.tooltip__bubble--portal:not(.tooltip__bubble--down)::after {
   content: '';
   position: absolute;
   top: 100%; left: 50%;
@@ -3825,15 +3824,15 @@
   border: 5px solid transparent;
   border-top-color: #1a1a1a;
 }
-/* Пузырь ниже триггера (dir=down) */
-.tooltip__bubble--fixed.tooltip__bubble--down {
-  translate: 0 0;
-}
-.tooltip__bubble--fixed.tooltip__bubble--down::after {
-  top: auto;
-  bottom: 100%;
-  border-top-color: transparent;
+/* Стрелка вверх (пузырь НИЖЕ триггера, dir=down) */
+.tooltip__bubble--portal.tooltip__bubble--down::after {
+  content: '';
+  position: absolute;
+  bottom: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
   border-bottom-color: #1a1a1a;
+  top: auto;
 }
 
 /* ============= Prompts section ============= */

@@ -1,94 +1,85 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useT } from '../i18n/LocaleContext.jsx';
 
-/**
- * Tooltip — умное позиционирование относительно viewport.
- *
- * Проблема прежней версии: position:absolute внутри скролл-контейнера
- * обрезается overflow:hidden родителя и прячется за хедер.
- *
- * Решение: при открытии читаем getBoundingClientRect() триггера,
- * рендерим пузырь через position:fixed с вычисленными координатами.
- * Автоматически переключаемся вниз если сверху мало места.
- */
+const BUBBLE_W = 220;
+const GAP      = 8;
+// Минимальная высота detail header (sticky) — не показывать пузырь за ним
+const SAFE_TOP = 64;
+
 export default function Tooltip({ children, label }) {
   const t = useT();
   const [open, setOpen] = useState(false);
-  const [pos, setPos]   = useState({ top: 0, left: 0, dir: 'up' });
-  const triggerRef = useRef(null);
+  const [style, setStyle] = useState({});
+  const [dir, setDir]     = useState('up');
+  const btnRef = useRef(null);
 
-  const BUBBLE_WIDTH  = 220;
-  const BUBBLE_HEIGHT = 80;  // примерная высота
-  const GAP           = 8;
-  const HEADER_HEIGHT = 56;  // высота sticky-хедера detail panel
-
-  const calcPos = useCallback(() => {
-    const el = triggerRef.current;
+  const calcStyle = useCallback(() => {
+    const el = btnRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    const centerX = r.left + r.width / 2;
+    const cx = r.left + r.width / 2;
 
-    // Сверху достаточно места (с учётом хедера)?
-    const spaceAbove = r.top - HEADER_HEIGHT;
-    const dir = spaceAbove >= BUBBLE_HEIGHT + GAP * 2 ? 'up' : 'down';
+    // Показываем вверх если хватает места, иначе вниз
+    const spaceAbove = r.top - SAFE_TOP;
+    const showUp = spaceAbove >= 120;
 
-    let top;
-    if (dir === 'up') {
-      top = r.top - GAP;               // нижний край пузыря = верх триггера - GAP
+    let left = cx - BUBBLE_W / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - BUBBLE_W - 8));
+
+    if (showUp) {
+      setDir('up');
+      // bottom пузыря = r.top - GAP
+      setStyle({ position: 'fixed', bottom: `${window.innerHeight - r.top + GAP}px`, left: `${left}px` });
     } else {
-      top = r.bottom + GAP;            // верхний край пузыря = низ триггера + GAP
+      setDir('down');
+      // top пузыря = r.bottom + GAP
+      setStyle({ position: 'fixed', top: `${r.bottom + GAP}px`, left: `${left}px` });
     }
-
-    // Горизонтальное: центрируем, но держим в пределах viewport
-    let left = centerX - BUBBLE_WIDTH / 2;
-    left = Math.max(8, Math.min(left, window.innerWidth - BUBBLE_WIDTH - 8));
-
-    setPos({ top, left, dir });
   }, []);
 
-  const handleOpen = useCallback((e) => {
+  const toggle = useCallback((e) => {
     e.stopPropagation();
-    calcPos();
+    if (!open) calcStyle();
     setOpen(o => !o);
-  }, [calcPos]);
+  }, [open, calcStyle]);
 
-  // Закрыть при клике вне или скролле
   useEffect(() => {
     if (!open) return;
-    const close = () => setOpen(false);
+    const close = (e) => {
+      // не закрываем если клик по самой кнопке — toggle() уже отработает
+      if (btnRef.current && btnRef.current.contains(e.target)) return;
+      setOpen(false);
+    };
+    const closeAlways = () => setOpen(false);
     document.addEventListener('mousedown', close);
     document.addEventListener('touchstart', close);
-    document.addEventListener('scroll', close, true); // capture: закрывает при любом скролле
-    window.addEventListener('resize', close);
+    window.addEventListener('resize', closeAlways);
+    // Скролл закрывает только если это скролл внутри detail__body
+    const body = btnRef.current?.closest('.detail__body');
+    if (body) body.addEventListener('scroll', closeAlways);
     return () => {
       document.removeEventListener('mousedown', close);
       document.removeEventListener('touchstart', close);
-      document.removeEventListener('scroll', close, true);
-      window.removeEventListener('resize', close);
+      window.removeEventListener('resize', closeAlways);
+      if (body) body.removeEventListener('scroll', closeAlways);
     };
   }, [open]);
 
   return (
-    <span className="tooltip" ref={triggerRef}>
+    <span className="tooltip" ref={btnRef}>
       <button
         type="button"
         className="tooltip__trigger"
         aria-expanded={open}
         aria-label={t('tooltip.aria')}
-        onClick={handleOpen}
+        onClick={toggle}
       >?</button>
 
       {open && (
         <span
-          className={`tooltip__bubble tooltip__bubble--fixed ${pos.dir === 'down' ? 'tooltip__bubble--down' : ''}`}
+          className={`tooltip__bubble tooltip__bubble--portal ${dir === 'down' ? 'tooltip__bubble--down' : ''}`}
           role="tooltip"
-          style={{
-            top:  pos.dir === 'up'   ? `${pos.top}px`   : undefined,
-            bottom: pos.dir === 'up' ? undefined         : undefined,
-            left: `${pos.left}px`,
-            // При dir=down: top = низ триггера + GAP
-            ...(pos.dir === 'down' ? { top: `${pos.top}px` } : {}),
-          }}
+          style={{ ...style, width: BUBBLE_W + 'px', zIndex: 9999 }}
           onMouseDown={e => e.stopPropagation()}
         >
           {label || children}
