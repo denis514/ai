@@ -5,6 +5,24 @@
 
 ---
 
+## Supabase — Backend & Auth (2026-05-17)
+
+Решение принято: **Supabase** как backend platform. Промпт для аудита: `prompts/supabase-auth-audit.md`.
+
+| Phase | Задача | Статус |
+|-------|--------|--------|
+| **1** | Auth Foundation — Supabase project, env vars, `supabaseClient.js`, `AuthContext.jsx`, таблица `profiles` + RLS, login/register UI | open |
+| **2** | Profile & Account page — display_name, email change, delete account (GDPR), export data (GDPR) | open |
+| **3** | Learning Progress — перенести localStorage → Supabase `learning_progress` + `favorites` | open |
+| **4** | Scenarios & Comments — таблицы `personal_scenarios`, `comments` | open |
+| **5** | Monetization — Stripe + `subscriptions` + `ai_usage` limits | open |
+
+**Перед стартом Phase 1:** запустить промпт `prompts/supabase-auth-audit.md` → получить аудит-отчёт → подтвердить план.
+
+GDPR / Финляндия: privacy by design, data minimisation, RLS на всех таблицах, consent timestamps, механизм удаления и экспорта данных пользователя (30 дней по финскому закону).
+
+---
+
 ## Инфраструктурный план (по итогам аудита 2026-05-11)
 
 ### P1 — Фундамент ✅ ЗАВЕРШЁН (2026-05-11)
