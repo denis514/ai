@@ -95,7 +95,9 @@ export default function TutorialModal({
   onOpenLibrary,
   onOpenNode,
   onOpenCourses,
-  progressApi
+  progressApi,
+  suspended = false,   // true когда перекрыт AuthModal — игнорируем ESC и клик-вне
+  onRequestAuth,       // вызвать вместо dispatch atlas:open-auth (из gate)
 }) {
   const t = useT();
   const { isLoggedIn } = useAuth();
@@ -165,6 +167,7 @@ export default function TutorialModal({
   useEffect(() => {
     if (!tut) return;
     const onKey = (e) => {
+      if (suspended) return; // скрыты за AuthModal — не реагируем
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       if (e.key === 'Escape') { onClose(); }
       else if (e.key === 'ArrowLeft') { onPrev(); }
@@ -176,7 +179,7 @@ export default function TutorialModal({
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [tut, onClose, onPrev, onNext, onMarkAndNext]);
+  }, [tut, onClose, onPrev, onNext, onMarkAndNext, suspended]);
 
   const stepsList = useMemo(() => {
     if (!tut) return [];
@@ -212,7 +215,7 @@ export default function TutorialModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="tut-title"
-      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={(e) => { if (!suspended && e.target === e.currentTarget) onClose(); }}
     >
       <div className={`tut-modal ${isFullscreen ? 'is-fullscreen' : ''}`}>
         <header className="tut-header">
@@ -331,7 +334,10 @@ export default function TutorialModal({
                 <button
                   type="button"
                   className="tut-gate__btn"
-                  onClick={() => document.dispatchEvent(new CustomEvent('atlas:open-auth'))}
+                  onClick={() => onRequestAuth
+                    ? onRequestAuth()
+                    : document.dispatchEvent(new CustomEvent('atlas:open-auth'))
+                  }
                 >
                   {t('auth.signIn')} →
                 </button>

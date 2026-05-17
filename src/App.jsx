@@ -130,7 +130,7 @@ function searchTree(root, query, category, searchableById) {
 function AppInner() {
   // Локаль — нужна для поискового индекса (контент в текущей локали).
   const { locale } = useLocale();
-  const { isNewUser, dismissOnboarding } = useAuth();
+  const { isNewUser, dismissOnboarding, isLoggedIn } = useAuth();
 
   // Global user level — определяет дефолтный набор раскрытых веток
   const { level, setLevel } = useLevelFilter();
@@ -207,6 +207,8 @@ function AppInner() {
   const [featuredPrompt, setFeaturedPrompt] = useState(null);
   const [archiveOpen, setArchiveOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  // true когда AuthModal открыт из tutorial gate — туториал скрывается, но не размонтируется
+  const [tutorialAwaitingAuth, setTutorialAwaitingAuth] = useState(false);
 
   // Cmd+K / Ctrl+K → открыть command palette
   useEffect(() => {
@@ -225,6 +227,26 @@ function AppInner() {
     const handler = () => setAuthOpen(true);
     document.addEventListener('atlas:open-auth', handler);
     return () => document.removeEventListener('atlas:open-auth', handler);
+  }, []);
+
+  // Когда пользователь залогинился — закрываем AuthModal и возвращаем туториал
+  useEffect(() => {
+    if (isLoggedIn && authOpen) {
+      setAuthOpen(false);
+      setTutorialAwaitingAuth(false);
+    }
+  }, [isLoggedIn]); // eslint-disable-line
+
+  // Открыть AuthModal из gate туториала: скрыть туториал, показать форму входа
+  const handleTutorialRequestAuth = useCallback(() => {
+    setTutorialAwaitingAuth(true);
+    setAuthOpen(true);
+  }, []);
+
+  // Закрыть AuthModal: если открыт из туториала — вернуть туториал
+  const handleAuthClose = useCallback(() => {
+    setAuthOpen(false);
+    setTutorialAwaitingAuth(false);
   }, []);
 
   // ===== Prev/Next: плоский список видимых узлов по DFS =====
@@ -548,15 +570,20 @@ function AppInner() {
       )}
 
       {activeTutorial && (
-        <TutorialModal
-          tutorialId={activeTutorial}
-          onClose={onCloseTutorial}
-          onOpenTutorial={(id) => setRoute({ type: 'tutorial', id })}
-          onOpenLibrary={onOpenLibrary}
-          onOpenNode={(id) => setRoute({ type: 'node', id })}
-          onOpenCourses={onOpenCourses}
-          progressApi={progressApi}
-        />
+        /* Скрываем туториал пока открыт AuthModal из gate (display:none сохраняет состояние) */
+        <div style={tutorialAwaitingAuth ? { display: 'none' } : undefined}>
+          <TutorialModal
+            tutorialId={activeTutorial}
+            onClose={onCloseTutorial}
+            onOpenTutorial={(id) => setRoute({ type: 'tutorial', id })}
+            onOpenLibrary={onOpenLibrary}
+            onOpenNode={(id) => setRoute({ type: 'node', id })}
+            onOpenCourses={onOpenCourses}
+            progressApi={progressApi}
+            suspended={tutorialAwaitingAuth}
+            onRequestAuth={handleTutorialRequestAuth}
+          />
+        </div>
       )}
 
       {libraryOpen && (
@@ -618,7 +645,7 @@ function AppInner() {
       )}
 
       {authOpen && (
-        <AuthModal onClose={() => setAuthOpen(false)} />
+        <AuthModal onClose={handleAuthClose} />
       )}
 
       {accountOpen && (
