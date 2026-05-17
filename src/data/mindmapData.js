@@ -444,6 +444,12 @@ export const mindmapData = {
       "minLevel": "intermediate",
       "children": [
         {
+          "id": "pr-4d",
+          "icon": "compass",
+          "category": "промпты",
+          "relatedIds": ["pr-principles", "cap-limitations", "pr-iterate"]
+        },
+        {
           "id": "pr-principles",
           "icon": "compass",
           "category": "промпты"
