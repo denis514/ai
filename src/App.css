@@ -3677,13 +3677,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   background: rgba(15,15,15,0.75);
   backdrop-filter: blur(2px);
   color: var(--text-muted);
   font-size: 13px;
   text-align: center;
-  padding: 16px;
+  padding: 28px 20px;
 }
 .detail__example-cta-btn {
   margin-top: 4px;
@@ -3797,6 +3797,7 @@
   width: 220px;
   z-index: 50;
   box-shadow: var(--shadow-lg);
+  pointer-events: none;
 }
 .tooltip__bubble::after {
   content: '';
@@ -3805,6 +3806,34 @@
   transform: translateX(-50%);
   border: 5px solid transparent;
   border-top-color: #1a1a1a;
+}
+
+/* Fixed-position tooltip — не обрезается overflow:hidden родителя */
+.tooltip__bubble--fixed {
+  position: fixed;
+  transform: none;
+  /* стрелка вверх (пузырь выше триггера): translateY -100% */
+  translate: 0 -100%;
+  z-index: 9999;
+  pointer-events: none;
+}
+.tooltip__bubble--fixed::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #1a1a1a;
+}
+/* Пузырь ниже триггера (dir=down) */
+.tooltip__bubble--fixed.tooltip__bubble--down {
+  translate: 0 0;
+}
+.tooltip__bubble--fixed.tooltip__bubble--down::after {
+  top: auto;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-bottom-color: #1a1a1a;
 }
 
 /* ============= Prompts section ============= */
