@@ -4,6 +4,7 @@ import ProfilePanel from './ProfilePanel.jsx';
 import BottomSheet from './BottomSheet.jsx';
 import { useIsMobile } from '../hooks/useIsMobile.js';
 import { useT } from '../i18n/LocaleContext.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 
 /**
  * ProfileFab — круглая кнопка профиля (TR угол).
@@ -16,12 +17,20 @@ import { useT } from '../i18n/LocaleContext.jsx';
  */
 export default function ProfileFab(props) {
   const t = useT();
+  const { isLoggedIn, user, profile } = useAuth();
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
   const containerRef = useRef(null);
 
-  const { identityApi } = props;
+  const { identityApi, onOpenAuth } = props;
   const { initial, color, isSet } = identityApi;
+
+  // Если пользователь авторизован — используем имя из Supabase profile как приоритет
+  const displayName = profile?.display_name || identityApi?.name || null;
+  const displayInitial = displayName
+    ? [...displayName.trim()][0]?.toUpperCase() || '?'
+    : initial;
+  const displayColor = color;
 
   useEffect(() => {
     if (!open || isMobile) return;
@@ -56,22 +65,38 @@ export default function ProfileFab(props) {
     requestAnimationFrame(() => close());
   };
 
+  // Если Supabase не сконфигурирован или пользователь не вошёл —
+  // показываем кнопку «Войти» вместо открытия профиля
+  const handleClick = () => {
+    if (!isLoggedIn && onOpenAuth) {
+      onOpenAuth();
+    } else {
+      setOpen((o) => !o);
+    }
+  };
+
+  const hasAvatar = isLoggedIn ? !!displayName : isSet;
+  const avatarInitial = isLoggedIn ? displayInitial : initial;
+  const avatarColor = displayColor;
+
   return (
     <>
       <div className="profile-fab" ref={containerRef}>
         <button
           type="button"
-          className={`profile-fab__btn ${open ? 'is-open' : ''} ${isSet ? 'has-identity' : ''}`}
-          onClick={() => setOpen((o) => !o)}
-          aria-label={t('profile.fabAria')}
-          aria-expanded={open}
-          style={isSet ? { '--avatar-color': color } : undefined}
+          className={`profile-fab__btn ${open ? 'is-open' : ''} ${hasAvatar ? 'has-identity' : ''} ${isLoggedIn ? 'is-auth' : ''}`}
+          onClick={handleClick}
+          aria-label={isLoggedIn ? t('profile.fabAria') : t('auth.signIn')}
+          aria-expanded={isLoggedIn ? open : undefined}
+          style={hasAvatar ? { '--avatar-color': avatarColor } : undefined}
         >
-          {isSet ? (
-            <span className="profile-fab__initial">{initial}</span>
+          {hasAvatar ? (
+            <span className="profile-fab__initial">{avatarInitial}</span>
           ) : (
-            <Icon name="user" size={22} strokeWidth={1.5} />
+            <Icon name={isLoggedIn ? 'user' : 'login'} size={22} strokeWidth={1.5} />
           )}
+          {/* Зелёная точка — индикатор авторизации */}
+          {isLoggedIn && <span className="profile-fab__auth-dot" aria-hidden="true" />}
         </button>
 
         {/* Desktop dropdown */}

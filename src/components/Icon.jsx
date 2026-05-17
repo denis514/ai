@@ -76,7 +76,13 @@ import {
   QuoteDownIcon,
   UserCircleIcon,
   StarIcon,
-  MoreHorizontalIcon
+  MoreHorizontalIcon,
+  // auth icons
+  Login01Icon,
+  Mail01Icon,
+  MailSend01Icon,
+  Alert01Icon,
+  InformationCircleIcon
 } from '@hugeicons/core-free-icons';
 
 /**
@@ -163,7 +169,13 @@ const REGISTRY = {
   quote:       QuoteDownIcon,
   user:        UserCircleIcon,
   star:        StarIcon,
-  more:        MoreHorizontalIcon
+  more:        MoreHorizontalIcon,
+  // auth
+  login:       Login01Icon,
+  mail:        Mail01Icon,
+  send:        MailSend01Icon,
+  warning:     Alert01Icon,
+  info:        InformationCircleIcon
 };
 
 /**

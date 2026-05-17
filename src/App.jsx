@@ -29,6 +29,7 @@ import { STRINGS } from './i18n/strings.js';
 import PasswordGate from './components/PasswordGate.jsx';
 import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
+import AuthModal from './components/AuthModal.jsx';
 import './App.css';
 
 const GA_ID = 'G-GLRHYG2JVK';
@@ -201,6 +202,7 @@ function AppInner() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [featuredPrompt, setFeaturedPrompt] = useState(null);
   const [archiveOpen, setArchiveOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
 
   // Cmd+K / Ctrl+K → открыть command palette
   useEffect(() => {
@@ -495,6 +497,7 @@ function AppInner() {
           identityApi={identityApi}
           onShowNodes={onShowNodes}
           onStartTutorial={onStartTutorial}
+          onOpenAuth={() => setAuthOpen(true)}
         />
 
         <CanvasFilters
@@ -600,6 +603,10 @@ function AppInner() {
           onSelectNode={(id) => { setRoute({ type: 'node', id }); setArchiveOpen(false); }}
           onClose={() => setArchiveOpen(false)}
         />
+      )}
+
+      {authOpen && (
+        <AuthModal onClose={() => setAuthOpen(false)} />
       )}
     </div>
   );
