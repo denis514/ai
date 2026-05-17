@@ -29,8 +29,8 @@
 | status | task | тест | дата |
 |--------|------|------|------|
 | ✅ done | **Account page** — профиль, email, имя, язык, GDPR-экспорт, удаление аккаунта (EN/RU/FI) | build ✅ · 158 modules · i18n ✅ | 2026-05-17 |
-| open | Улучшенный Profile: streak, достижения на базе Supabase | — | — |
-| open | Progress sync across devices: читать прогресс из Supabase | — | — |
+| ✅ done | **Улучшенный Profile** — useSupabaseStats hook, streak из Supabase, 9 достижений EN/RU/FI, «Synced» индикатор, email под именем | build ✅ · 159 modules · i18n ✅ | 2026-05-17 |
+| ✅ done | **Progress sync across devices** — useSupabaseStats читает learning_progress + node_progress + favorites + activity_log из Supabase | build ✅ | 2026-05-17 |
 
 ### Phase 4 — Premium foundation (будущее)
 | status | task | дата |

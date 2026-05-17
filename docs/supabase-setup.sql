@@ -101,6 +101,23 @@ CREATE POLICY "favorites: own all"
   USING (auth.uid() = user_id);
 
 -- ============================================
+-- TABLE: activity_log
+-- Дни активности для streak (Phase 3)
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.activity_log (
+  id        uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id   uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  date      date NOT NULL,  -- YYYY-MM-DD
+  UNIQUE (user_id, date)
+);
+
+ALTER TABLE public.activity_log ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "activity_log: own all"
+  ON public.activity_log
+  USING (auth.uid() = user_id);
+
+-- ============================================
 -- Триггер: auto-update updated_at
 -- ============================================
 CREATE OR REPLACE FUNCTION public.set_updated_at()

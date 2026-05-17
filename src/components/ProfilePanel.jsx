@@ -3,7 +3,9 @@ import Icon from './Icon.jsx';
 import { tutorialIds, tutorials } from '../data/tutorials.js';
 import { initialFromName, colorFromName } from '../hooks/useUserIdentity.js';
 import { useLocale, useT } from '../i18n/LocaleContext.jsx';
-import { LOCALE_LABEL, LOCALE_SHORT } from '../i18n/config.js';
+import { LOCALE_LABEL } from '../i18n/config.js';
+import { useAuth } from '../context/AuthContext.jsx';
+import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
 
 const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
 
@@ -18,10 +20,6 @@ const STORAGE_KEYS = [
   'claude-mindmap:locale:v1'
 ];
 
-/**
- * ProfilePanel — содержимое профиля пользователя.
- * Рендерится внутри ProfileFab (dropdown desktop / bottom sheet mobile).
- */
 export default function ProfilePanel({
   level,
   onLevelChange,
@@ -36,65 +34,78 @@ export default function ProfilePanel({
 }) {
   const t = useT();
   const { locale, setLocale, locales } = useLocale();
+  const { user, profile, isLoggedIn } = useAuth();
   const [langOpen, setLangOpen] = useState(false);
 
-  // ===== Name editing =====
-  const [editingName, setEditingName] = useState(!identityApi?.isSet);
-  const [nameDraft, setNameDraft] = useState(identityApi?.name || '');
+  // Supabase stats (только когда залогинен)
+  const supaStats = useSupabaseStats(user?.id || null);
+
+  // Имя: приоритет Supabase profile → localStorage identity
+  const displayName = profile?.display_name || identityApi?.name || null;
+  const displayInitial = displayName ? ([...displayName.trim()][0]?.toUpperCase() || '?') : '?';
+  const displayColor  = displayName ? colorFromName(displayName) : '#94a3b8';
+
+  // Редактирование имени (только для не-залогиненных, localStorage)
+  const [editingName, setEditingName] = useState(!isLoggedIn && !identityApi?.isSet);
+  const [nameDraft, setNameDraft]     = useState(identityApi?.name || '');
   const nameInputRef = useRef(null);
 
   const saveName = () => {
     const trimmed = nameDraft.trim();
-    if (trimmed) {
-      identityApi.setName(trimmed);
-      setEditingName(false);
-    }
+    if (trimmed) { identityApi?.setName(trimmed); setEditingName(false); }
   };
-
   const startEdit = () => {
     setNameDraft(identityApi?.name || '');
     setEditingName(true);
     setTimeout(() => nameInputRef.current?.focus(), 30);
   };
 
-  // ===== Phase 1: статистики =====
-  const tutorialStats = useMemo(() => {
-    let done = 0;
-    let started = 0;
+  // ── Статистики: Supabase когда залогинен, иначе localStorage ──────────────
+  const tutsDone    = isLoggedIn ? supaStats.tutorialsDone    : (() => {
+    let n = 0;
+    for (const id of tutorialIds) { if (progressApi.getProgress(id)?.completedAt) n++; }
+    return n;
+  })();
+  const tutsStarted = isLoggedIn ? supaStats.tutorialsStarted : (() => {
+    let n = 0;
     for (const id of tutorialIds) {
       const p = progressApi.getProgress(id);
-      if (p?.completedAt) done++;
-      else if ((p?.completedSteps?.length || 0) > 0 || (p?.lastStepIndex || 0) > 0) started++;
+      if (!p?.completedAt && ((p?.completedSteps?.length || 0) > 0 || (p?.lastStepIndex || 0) > 0)) n++;
     }
-    return { done, started, total: tutorialIds.length };
-  }, [progressApi]);
-  const tutPercent = Math.round((tutorialStats.done / tutorialStats.total) * 100);
+    return n;
+  })();
+  const tutsTotal   = tutorialIds.length;
+  const tutPercent  = Math.round((tutsDone / tutsTotal) * 100);
 
-  const nodeCounts = nodeProgressApi.counts;
+  const nodesViewed  = isLoggedIn ? supaStats.nodesViewed  : nodeProgressApi.counts.viewed;
+  const nodesReview  = isLoggedIn ? supaStats.nodesReview  : nodeProgressApi.counts.review;
+  const bmCount      = isLoggedIn ? supaStats.bookmarksCount : bookmarksApi.count;
+  const streak       = isLoggedIn ? supaStats.streak       : activityApi.streak;
+  const totalDays    = isLoggedIn ? supaStats.totalDays    : activityApi.totalDays;
+  const loading      = isLoggedIn ? supaStats.loading      : false;
 
-  // ===== Achievements (labels пока RU; переведём в Phase 2) =====
-  const achievements = useMemo(() => {
-    const list = [];
-    if (tutorialStats.done >= 1) list.push({ id: 'first-course', label: 'Первый курс', icon: 'graduation', earned: true });
-    if (tutorialStats.done >= 5) list.push({ id: 'five-courses', label: '5 курсов', icon: 'graduation', earned: true });
-    if (tutorialStats.done >= 10) list.push({ id: 'ten-courses', label: '10 курсов', icon: 'trophy', earned: true });
-    if (nodeCounts.viewed >= 10) list.push({ id: 'explorer-10', label: 'Изучил 10 узлов', icon: 'compass', earned: true });
-    if (nodeCounts.viewed >= 50) list.push({ id: 'explorer-50', label: 'Изучил 50 узлов', icon: 'compass', earned: true });
-    if (bookmarksApi.count >= 5) list.push({ id: 'bookmarker', label: 'Коллекционер (5+)', icon: 'bookmark-filled', earned: true });
-    if (activityApi.streak >= 3) list.push({ id: 'streak-3', label: '3 дня подряд', icon: 'flash', earned: true });
-    if (activityApi.streak >= 7) list.push({ id: 'streak-7', label: 'Неделя', icon: 'flash', earned: true });
-    if (activityApi.streak >= 30) list.push({ id: 'streak-30', label: 'Месяц подряд', icon: 'trophy', earned: true });
-    return list;
-  }, [tutorialStats, nodeCounts, bookmarksApi.count, activityApi.streak]);
+  // ── Достижения ────────────────────────────────────────────────────────────
+  const ACHIEVEMENTS = [
+    { id: 'first-tut',  threshold: () => tutsDone >= 1,   icon: 'graduation', key: 'achievement.firstTutorial' },
+    { id: 'five-tuts',  threshold: () => tutsDone >= 5,   icon: 'graduation', key: 'achievement.fiveTutorials' },
+    { id: 'ten-tuts',   threshold: () => tutsDone >= 10,  icon: 'trophy',     key: 'achievement.tenTutorials'  },
+    { id: 'explorer10', threshold: () => nodesViewed >= 10, icon: 'compass',  key: 'achievement.explorer10'    },
+    { id: 'explorer50', threshold: () => nodesViewed >= 50, icon: 'compass',  key: 'achievement.explorer50'    },
+    { id: 'collector',  threshold: () => bmCount >= 5,    icon: 'bookmark-filled', key: 'achievement.collector' },
+    { id: 'streak3',    threshold: () => streak >= 3,     icon: 'flash',      key: 'achievement.streak3'       },
+    { id: 'streak7',    threshold: () => streak >= 7,     icon: 'flash',      key: 'achievement.streak7'       },
+    { id: 'streak30',   threshold: () => streak >= 30,    icon: 'trophy',     key: 'achievement.streak30'      },
+  ];
+  const earned = ACHIEVEMENTS.filter(a => a.threshold());
 
-  // ===== Export / Import =====
+  // ── Export (localStorage) ─────────────────────────────────────────────────
+  const fileInputRef = useRef(null);
+  const [importMsg, setImportMsg] = useState('');
+
   const exportData = () => {
     const dump = {};
     for (const key of STORAGE_KEYS) {
-      try {
-        const v = localStorage.getItem(key);
-        if (v != null) dump[key] = v;
-      } catch {}
+      try { const v = localStorage.getItem(key); if (v != null) dump[key] = v; } catch {}
     }
     const blob = new Blob(
       [JSON.stringify({ exportedAt: new Date().toISOString(), data: dump }, null, 2)],
@@ -102,16 +113,11 @@ export default function ProfilePanel({
     );
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = `claude-atlas-progress-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    a.href = url; a.download = `claude-atlas-progress-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
   };
 
-  const fileInputRef = useRef(null);
-  const [importMsg, setImportMsg] = useState('');
   const importData = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -121,13 +127,10 @@ export default function ProfilePanel({
       const data = parsed?.data || parsed;
       let restored = 0;
       for (const key of STORAGE_KEYS) {
-        if (data[key] != null) {
-          localStorage.setItem(key, data[key]);
-          restored++;
-        }
+        if (data[key] != null) { localStorage.setItem(key, data[key]); restored++; }
       }
       setImportMsg(t('profile.data.importRestored', { n: restored }));
-    } catch (err) {
+    } catch {
       setImportMsg(t('profile.data.importError'));
     }
     e.target.value = '';
@@ -135,68 +138,62 @@ export default function ProfilePanel({
 
   const resetAll = () => {
     if (!window.confirm(t('profile.data.resetConfirm'))) return;
-    for (const key of STORAGE_KEYS) {
-      try { localStorage.removeItem(key); } catch {}
-    }
+    for (const key of STORAGE_KEYS) { try { localStorage.removeItem(key); } catch {} }
     window.location.reload();
   };
 
-  const streakLabel = activityApi.streak === 1
+  const streakLabel = streak === 1
     ? t('profile.activity.dayStreak.one')
     : t('profile.activity.dayStreak.many');
-  const totalLabel = activityApi.totalDays === 1
+  const totalLabel = totalDays === 1
     ? t('profile.activity.daysTotal.one')
     : t('profile.activity.daysTotal.many');
 
   return (
     <div className="profile-panel">
-      {/* HEADER */}
+
+      {/* ── HEADER ── */}
       <header className="profile-panel__head">
         <span
-          className={`profile-panel__avatar ${identityApi?.isSet ? 'has-identity' : ''}`}
+          className={`profile-panel__avatar ${displayName ? 'has-identity' : ''}`}
           aria-hidden="true"
-          style={identityApi?.isSet ? { '--avatar-color': identityApi.color } : undefined}
+          style={displayName ? { '--avatar-color': displayColor } : undefined}
         >
-          {identityApi?.isSet ? (
-            <span className="profile-panel__avatar-initial">{identityApi.initial}</span>
-          ) : (
-            <Icon name="user" size={28} strokeWidth={1.25} />
-          )}
+          {displayName
+            ? <span className="profile-panel__avatar-initial">{displayInitial}</span>
+            : <Icon name="user" size={28} strokeWidth={1.25} />}
         </span>
+
         <div className="profile-panel__head-text">
-          {editingName ? (
+          {/* Залогинен — имя из Supabase (редактируется на Account page) */}
+          {isLoggedIn ? (
+            <>
+              <strong>{displayName || t('common.anonymous')}</strong>
+              <span className="profile-panel__email">{user.email}</span>
+            </>
+          ) : editingName ? (
             <div className="profile-panel__name-edit">
               <input
                 ref={nameInputRef}
                 type="text"
                 value={nameDraft}
-                onChange={(e) => setNameDraft(e.target.value)}
-                onKeyDown={(e) => {
+                onChange={e => setNameDraft(e.target.value)}
+                onKeyDown={e => {
                   if (e.key === 'Enter') saveName();
-                  if (e.key === 'Escape') { setEditingName(!!identityApi?.isSet ? false : true); }
+                  if (e.key === 'Escape' && identityApi?.isSet) setEditingName(false);
                 }}
                 placeholder={t('profile.namePlaceholder')}
                 maxLength={20}
                 autoFocus
               />
-              <button
-                type="button"
-                onClick={saveName}
-                disabled={!nameDraft.trim()}
-                title={t('common.save')}
-              >
+              <button type="button" onClick={saveName} disabled={!nameDraft.trim()} title={t('common.save')}>
                 <Icon name="check" size={14} strokeWidth={1.75} />
               </button>
             </div>
           ) : (
             <>
               <strong>{identityApi?.name || t('common.anonymous')}</strong>
-              <button
-                type="button"
-                className="profile-panel__name-edit-btn"
-                onClick={startEdit}
-                title={t('common.edit')}
-              >
+              <button type="button" className="profile-panel__name-edit-btn" onClick={startEdit} title={t('common.edit')}>
                 {t('common.edit')}
               </button>
             </>
@@ -205,30 +202,26 @@ export default function ProfilePanel({
             {t('profile.level')}: <strong>{t(`profile.level.${level}`)}</strong>
           </span>
         </div>
+
         {onClose && (
-          <button
-            type="button"
-            className="profile-panel__close"
-            onClick={onClose}
-            aria-label={t('common.close')}
-          >
+          <button type="button" className="profile-panel__close" onClick={onClose} aria-label={t('common.close')}>
             <Icon name="close" size={16} strokeWidth={1.75} />
           </button>
         )}
       </header>
 
-      {/* PRO TEASER — под именем */}
+      {/* ── PRO TEASER ── */}
       <section className="profile-panel__pro">
         <span className="profile-panel__pro-badge">{t('common.soon')}</span>
         <strong>{t('profile.pro.title')}</strong>
         <p>{t('profile.pro.desc')}</p>
       </section>
 
-      {/* LEVEL SWITCHER */}
+      {/* ── LEVEL SWITCHER ── */}
       <section className="profile-panel__section">
         <h4>{t('profile.level')}</h4>
         <div className="profile-panel__level-row">
-          {['beginner', 'intermediate', 'expert'].map((lvl) => (
+          {['beginner', 'intermediate', 'expert'].map(lvl => (
             <button
               key={lvl}
               type="button"
@@ -241,45 +234,53 @@ export default function ProfilePanel({
         </div>
       </section>
 
-      {/* STREAK */}
+      {/* ── STREAK ── */}
       <section className="profile-panel__section">
         <h4>{t('profile.activity')}</h4>
-        <div className="profile-panel__stat-grid">
-          <div className="profile-panel__stat">
-            <span className="profile-panel__stat-val">{activityApi.streak}</span>
-            <span className="profile-panel__stat-label">{streakLabel}</span>
+        {loading ? (
+          <div className="profile-panel__loading">
+            <Icon name="refresh" size={14} strokeWidth={1.5} />
+            <span>{t('common.loading')}</span>
           </div>
-          <div className="profile-panel__stat">
-            <span className="profile-panel__stat-val">{activityApi.totalDays}</span>
-            <span className="profile-panel__stat-label">{totalLabel}</span>
+        ) : (
+          <div className="profile-panel__streak-row">
+            <div className="profile-panel__streak-card">
+              <span className="profile-panel__streak-val">{streak}</span>
+              <span className="profile-panel__streak-label">{streakLabel}</span>
+              {streak >= 3 && <span className="profile-panel__streak-fire">🔥</span>}
+            </div>
+            <div className="profile-panel__streak-card">
+              <span className="profile-panel__streak-val">{totalDays}</span>
+              <span className="profile-panel__streak-label">{totalLabel}</span>
+            </div>
+            {isLoggedIn && (
+              <div className="profile-panel__streak-card profile-panel__streak-card--sync">
+                <Icon name="check" size={13} strokeWidth={2} />
+                <span>{t('profile.synced')}</span>
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </section>
 
-      {/* TUTORIAL PROGRESS */}
+      {/* ── TUTORIAL PROGRESS ── */}
       <section className="profile-panel__section">
         <h4>{t('profile.tutorials')}</h4>
         <div className="profile-panel__progress">
           <div className="profile-panel__progress-meta">
-            <span>{t('profile.tutorials.done', { done: tutorialStats.done, total: tutorialStats.total })}</span>
+            <span>{t('profile.tutorials.done', { done: tutsDone, total: tutsTotal })}</span>
             <span>{tutPercent}%</span>
           </div>
           <div className="profile-panel__progress-bar">
             <div className="profile-panel__progress-fill" style={{ width: `${tutPercent}%` }} />
           </div>
-          {tutorialStats.started > 0 && (
+          {tutsStarted > 0 && (
             <span className="profile-panel__progress-note">
-              {t('profile.tutorials.inProgress', { n: tutorialStats.started })}
+              {t('profile.tutorials.inProgress', { n: tutsStarted })}
             </span>
           )}
-          {/* Возможность пере-открыть вводный урок даже если карточка
-              «Добро пожаловать» уже скрыта кнопкой «Я уже знаю». */}
           {onStartTutorial && (
-            <button
-              type="button"
-              className="profile-panel__welcome-link"
-              onClick={() => onStartTutorial('welcome')}
-            >
+            <button type="button" className="profile-panel__welcome-link" onClick={() => onStartTutorial('welcome')}>
               <Icon name="rocket" size={13} strokeWidth={1.5} />
               <span>{t('profile.welcome.replay')}</span>
             </button>
@@ -287,70 +288,69 @@ export default function ProfilePanel({
         </div>
       </section>
 
-      {/* NODE PROGRESS — кликабельные карточки. Клик → показать эти ноды на карте. */}
+      {/* ── NODE PROGRESS ── */}
       <section className="profile-panel__section">
         <h4>{t('profile.map')}</h4>
         <div className="profile-panel__stat-grid">
           <button
             type="button"
             className="profile-panel__stat profile-panel__stat--green profile-panel__stat--clickable"
-            disabled={!nodeCounts.viewed}
+            disabled={!nodesViewed}
             onClick={() => {
               const ids = nodeProgressApi.idsBy?.('viewed') || [];
               if (ids.length) onShowNodes?.(ids, t('profile.map.viewed'));
             }}
-            title={nodeCounts.viewed ? t('profile.map.showOnMap') : ''}
+            title={nodesViewed ? t('profile.map.showOnMap') : ''}
           >
-            <span className="profile-panel__stat-val">{nodeCounts.viewed}</span>
+            <span className="profile-panel__stat-val">{nodesViewed}</span>
             <span className="profile-panel__stat-label">{t('profile.map.viewed')}</span>
           </button>
           <button
             type="button"
             className="profile-panel__stat profile-panel__stat--amber profile-panel__stat--clickable"
-            disabled={!nodeCounts.review}
+            disabled={!nodesReview}
             onClick={() => {
               const ids = nodeProgressApi.idsBy?.('review') || [];
               if (ids.length) onShowNodes?.(ids, t('profile.map.review'));
             }}
-            title={nodeCounts.review ? t('profile.map.showOnMap') : ''}
+            title={nodesReview ? t('profile.map.showOnMap') : ''}
           >
-            <span className="profile-panel__stat-val">{nodeCounts.review}</span>
+            <span className="profile-panel__stat-val">{nodesReview}</span>
             <span className="profile-panel__stat-label">{t('profile.map.review')}</span>
           </button>
           <button
             type="button"
             className="profile-panel__stat profile-panel__stat--clickable"
-            disabled={!bookmarksApi.count}
+            disabled={!bmCount}
             onClick={() => {
               const ids = Array.from(bookmarksApi.bookmarks?.values?.() || [])
-                .filter(b => b.type === 'node')
-                .map(b => b.id);
+                .filter(b => b.type === 'node').map(b => b.id);
               if (ids.length) onShowNodes?.(ids, t('profile.map.bookmarks'));
             }}
-            title={bookmarksApi.count ? t('profile.map.showOnMap') : ''}
+            title={bmCount ? t('profile.map.showOnMap') : ''}
           >
-            <span className="profile-panel__stat-val">{bookmarksApi.count}</span>
+            <span className="profile-panel__stat-val">{bmCount}</span>
             <span className="profile-panel__stat-label">{t('profile.map.bookmarks')}</span>
           </button>
         </div>
       </section>
 
-      {/* ACHIEVEMENTS */}
-      {achievements.length > 0 && (
+      {/* ── ACHIEVEMENTS ── */}
+      {earned.length > 0 && (
         <section className="profile-panel__section">
           <h4>{t('profile.achievements')}</h4>
           <div className="profile-panel__achievements">
-            {achievements.map((a) => (
-              <div key={a.id} className="profile-panel__achievement" title={a.label}>
+            {earned.map(a => (
+              <div key={a.id} className="profile-panel__achievement" title={t(a.key)}>
                 <Icon name={a.icon} size={14} strokeWidth={1.5} />
-                <span>{a.label}</span>
+                <span>{t(a.key)}</span>
               </div>
             ))}
           </div>
         </section>
       )}
 
-      {/* SETTINGS */}
+      {/* ── DATA / SETTINGS ── */}
       <section className="profile-panel__section">
         <h4>{t('profile.data')}</h4>
         <div className="profile-panel__settings">
@@ -358,34 +358,20 @@ export default function ProfilePanel({
             <Icon name="external-link" size={14} strokeWidth={1.5} />
             <span>{t('profile.data.export')}</span>
           </button>
-          <button
-            type="button"
-            className="profile-panel__setting-btn"
-            onClick={() => fileInputRef.current?.click()}
-          >
+          <button type="button" className="profile-panel__setting-btn" onClick={() => fileInputRef.current?.click()}>
             <Icon name="inbox" size={14} strokeWidth={1.5} />
             <span>{t('profile.data.import')}</span>
           </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="application/json,.json"
-            style={{ display: 'none' }}
-            onChange={importData}
-          />
+          <input ref={fileInputRef} type="file" accept="application/json,.json" style={{ display: 'none' }} onChange={importData} />
           {importMsg && <div className="profile-panel__msg">{importMsg}</div>}
-          <button
-            type="button"
-            className="profile-panel__setting-btn profile-panel__setting-btn--danger"
-            onClick={resetAll}
-          >
+          <button type="button" className="profile-panel__setting-btn profile-panel__setting-btn--danger" onClick={resetAll}>
             <Icon name="close" size={14} strokeWidth={1.75} />
             <span>{t('profile.data.reset')}</span>
           </button>
         </div>
       </section>
 
-      {/* LANGUAGE PICKER — bottom right flag dropdown */}
+      {/* ── LANGUAGE ── */}
       <div className="profile-panel__lang-bar">
         <div className="profile-panel__lang-picker">
           <button
@@ -401,7 +387,7 @@ export default function ProfilePanel({
           </button>
           {langOpen && (
             <ul className="profile-panel__lang-dropdown" role="listbox">
-              {locales.map((code) => (
+              {locales.map(code => (
                 <li key={code} role="option" aria-selected={locale === code}>
                   <button
                     type="button"
