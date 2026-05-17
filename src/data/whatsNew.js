@@ -10,6 +10,7 @@
  *   2. Деплой — лейбл появится у всех пользователей.
  */
 export const WHATS_NEW = {
+  'pl-cowork': { date: '2026-05-17', type: 'new' },
   'pl-web-setup': { date: '2026-05-15', type: 'new' },
   'pl-desktop':   { date: '2026-05-15', type: 'new' },
   'cc-grp-session':      { date: '2026-05-15', type: 'new' },
