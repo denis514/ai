@@ -239,6 +239,12 @@ export const mindmapData = {
           "relatedIds": ["pl-desktop", "agents", "cap-computer", "cc-subagents"]
         },
         {
+          "id": "pl-integrations",
+          "icon": "plug",
+          "category": "основы",
+          "relatedIds": ["pl-desktop", "mcp", "pl-cowork", "pl-compare"]
+        },
+        {
           "id": "pl-privacy",
           "icon": "lock",
           "category": "основы"
@@ -417,6 +423,16 @@ export const mindmapData = {
           "relatedIds": [
             "b-models",
             "cap-tools"
+          ]
+        },
+        {
+          "id": "cap-limitations",
+          "icon": "shield",
+          "category": "основы",
+          "relatedIds": [
+            "b-models",
+            "b-knowledge",
+            "b-safety"
           ]
         }
       ]
