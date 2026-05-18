@@ -2370,19 +2370,32 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+.profile-panel__name-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.profile-panel__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
 .profile-panel__name-edit-btn {
-  align-self: flex-start;
-  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
   border: none;
   background: transparent;
   color: var(--text-muted);
-  font-size: 11px;
   cursor: pointer;
-  text-decoration: underline;
-  text-decoration-color: var(--border-strong);
-  text-underline-offset: 2px;
+  border-radius: 4px;
+  opacity: 0.55;
+  transition: opacity 0.15s, color 0.15s;
+  flex-shrink: 0;
 }
-.profile-panel__name-edit-btn:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.profile-panel__name-edit-btn:hover { opacity: 1; color: var(--accent); }
 .profile-panel__head-text {
   display: flex;
   flex-direction: column;

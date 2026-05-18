@@ -6,6 +6,7 @@ import { useLocale, useT } from '../i18n/LocaleContext.jsx';
 import { LOCALE_LABEL } from '../i18n/config.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
+import { updateProfile } from '../services/profileService.js';
 
 const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
 
@@ -34,7 +35,7 @@ export default function ProfilePanel({
 }) {
   const t = useT();
   const { locale, setLocale, locales } = useLocale();
-  const { user, profile, isLoggedIn } = useAuth();
+  const { user, profile, setProfile, isLoggedIn } = useAuth();
   const [langOpen, setLangOpen] = useState(false);
 
   // Supabase stats (только когда залогинен)
@@ -45,17 +46,33 @@ export default function ProfilePanel({
   const displayInitial = displayName ? ([...displayName.trim()][0]?.toUpperCase() || '?') : '?';
   const displayColor  = displayName ? colorFromName(displayName) : '#94a3b8';
 
-  // Редактирование имени (только для не-залогиненных, localStorage)
+  // ── Единое инлайн-редактирование имени ──────────────────────────────────
+  // Для залогиненных — сохраняет в Supabase + обновляет AuthContext.
+  // Для гостей — сохраняет в localStorage через identityApi.
+  const initialDraft = isLoggedIn ? (profile?.display_name || '') : (identityApi?.name || '');
   const [editingName, setEditingName] = useState(!isLoggedIn && !identityApi?.isSet);
-  const [nameDraft, setNameDraft]     = useState(identityApi?.name || '');
+  const [nameDraft, setNameDraft]     = useState(initialDraft);
+  const [nameSaving, setNameSaving]   = useState(false);
   const nameInputRef = useRef(null);
 
-  const saveName = () => {
+  const saveName = async () => {
     const trimmed = nameDraft.trim();
-    if (trimmed) { identityApi?.setName(trimmed); setEditingName(false); }
+    if (!trimmed) return;
+    if (isLoggedIn && user) {
+      setNameSaving(true);
+      const { error } = await updateProfile(user.id, { display_name: trimmed });
+      setNameSaving(false);
+      if (!error) {
+        setProfile(p => ({ ...p, display_name: trimmed }));
+        setEditingName(false);
+      }
+    } else {
+      identityApi?.setName(trimmed);
+      setEditingName(false);
+    }
   };
   const startEdit = () => {
-    setNameDraft(identityApi?.name || '');
+    setNameDraft(isLoggedIn ? (profile?.display_name || '') : (identityApi?.name || ''));
     setEditingName(true);
     setTimeout(() => nameInputRef.current?.focus(), 30);
   };
@@ -175,13 +192,8 @@ export default function ProfilePanel({
         </span>
 
         <div className="profile-panel__head-text">
-          {/* Залогинен — имя из Supabase (редактируется на Account page) */}
-          {isLoggedIn ? (
-            <>
-              <strong>{displayName || t('common.anonymous')}</strong>
-              <span className="profile-panel__email">{user.email}</span>
-            </>
-          ) : editingName ? (
+          {/* Единое редактирование имени: залогинен → Supabase, гость → localStorage */}
+          {editingName ? (
             <div className="profile-panel__name-edit">
               <input
                 ref={nameInputRef}
@@ -190,23 +202,39 @@ export default function ProfilePanel({
                 onChange={e => setNameDraft(e.target.value)}
                 onKeyDown={e => {
                   if (e.key === 'Enter') saveName();
-                  if (e.key === 'Escape' && identityApi?.isSet) setEditingName(false);
+                  if (e.key === 'Escape' && (isLoggedIn ? !!profile?.display_name : identityApi?.isSet)) setEditingName(false);
                 }}
                 placeholder={t('profile.namePlaceholder')}
-                maxLength={20}
+                maxLength={30}
                 autoFocus
+                disabled={nameSaving}
               />
-              <button type="button" onClick={saveName} disabled={!nameDraft.trim()} title={t('common.save')}>
-                <Icon name="check" size={14} strokeWidth={1.75} />
+              <button
+                type="button"
+                onClick={saveName}
+                disabled={!nameDraft.trim() || nameSaving}
+                title={t('common.save')}
+              >
+                {nameSaving
+                  ? <Icon name="refresh" size={14} strokeWidth={1.75} />
+                  : <Icon name="check" size={14} strokeWidth={1.75} />}
               </button>
             </div>
           ) : (
-            <>
-              <strong>{identityApi?.name || t('common.anonymous')}</strong>
-              <button type="button" className="profile-panel__name-edit-btn" onClick={startEdit} title={t('common.edit')}>
-                {t('common.edit')}
+            <div className="profile-panel__name-row">
+              <strong className="profile-panel__name">{displayName || t('common.anonymous')}</strong>
+              <button
+                type="button"
+                className="profile-panel__name-edit-btn"
+                onClick={startEdit}
+                title={t('common.edit')}
+              >
+                <Icon name="pencil" size={12} strokeWidth={1.75} />
               </button>
-            </>
+            </div>
+          )}
+          {isLoggedIn && (
+            <span className="profile-panel__email">{user.email}</span>
           )}
           <span className="profile-panel__level">
             {t('profile.level')}: <strong>{t(`profile.level.${level}`)}</strong>

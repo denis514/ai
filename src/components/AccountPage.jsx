@@ -22,10 +22,7 @@ export default function AccountPage({ onClose, onNavigate }) {
   const { locale, setLocale, locales } = useLocale();
   const { user, profile, setProfile, signOut, refreshProfile } = useAuth();
 
-  // Display name
-  const [displayName, setDisplayName] = useState(profile?.display_name || '');
-  const [nameSaving, setNameSaving]   = useState(false);
-  const [nameMsg, setNameMsg]         = useState('');
+  // (display_name редактируется в ProfilePanel — единое место)
 
   // Delete account
   const [deleteStep, setDeleteStep] = useState('idle'); // idle | confirm | deleting | done
@@ -44,24 +41,6 @@ export default function AccountPage({ onClose, onNavigate }) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
-
-  // ── Сохранить имя ────────────────────────────────────────────────────────
-  const saveName = async () => {
-    if (!user) return;
-    setNameSaving(true);
-    setNameMsg('');
-    const { error } = await updateProfile(user.id, {
-      display_name: displayName.trim() || null,
-    });
-    setNameSaving(false);
-    if (error) {
-      setNameMsg(t('account.saveError'));
-    } else {
-      setProfile(p => ({ ...p, display_name: displayName.trim() || null }));
-      setNameMsg(t('account.saved'));
-      setTimeout(() => setNameMsg(''), 2500);
-    }
-  };
 
   // ── Сохранить язык ────────────────────────────────────────────────────────
   const saveLocale = async (code) => {
@@ -169,36 +148,12 @@ export default function AccountPage({ onClose, onNavigate }) {
           </div>
 
           <div className="account-field">
-            <label className="account-label" htmlFor="acc-name">
-              {t('account.displayName')}
-            </label>
-            <div className="account-input-row">
-              <input
-                id="acc-name"
-                type="text"
-                className="account-input"
-                value={displayName}
-                onChange={e => { setDisplayName(e.target.value); setNameMsg(''); }}
-                placeholder={t('profile.namePlaceholder')}
-                maxLength={30}
-                onKeyDown={e => { if (e.key === 'Enter') saveName(); }}
-              />
-              <button
-                type="button"
-                className="account-btn account-btn--sm"
-                onClick={saveName}
-                disabled={nameSaving}
-              >
-                {nameSaving
-                  ? <Icon name="refresh" size={14} strokeWidth={1.75} />
-                  : t('common.save')}
-              </button>
+            <label className="account-label">{t('account.displayName')}</label>
+            <div className="account-value account-value--readonly">
+              <Icon name="user" size={14} strokeWidth={1.5} />
+              {profile?.display_name || <span style={{ opacity: 0.45 }}>{t('profile.namePlaceholder')}</span>}
             </div>
-            {nameMsg && (
-              <span className={`account-msg ${nameMsg === t('account.saved') ? 'is-ok' : 'is-err'}`}>
-                {nameMsg}
-              </span>
-            )}
+            <span className="account-hint">{t('account.nameHint')}</span>
           </div>
 
           <div className="account-field">
