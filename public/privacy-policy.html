@@ -185,11 +185,24 @@
       </ul>
 
       <h2>3. Cookies &amp; Analytics</h2>
-      <p>We use <strong>Google Analytics 4</strong> only after you give explicit consent via the cookie banner. GA4 collects anonymous usage statistics (page views, session duration). You can withdraw consent at any time by refreshing the page and declining cookies.</p>
-      <p>Supabase stores a session cookie to keep you logged in. This cookie is strictly necessary for authentication and does not require separate consent.</p>
+      <table>
+        <tr><th>Cookie</th><th>Purpose</th><th>Basis</th><th>Duration</th></tr>
+        <tr><td><code>sb-*</code> (Supabase)</td><td>Authentication session — strictly necessary</td><td>Art. 6(1)(b) — contract</td><td>Session / 1 year</td></tr>
+        <tr><td><code>ca_consent</code></td><td>Stores your cookie preference</td><td>Art. 6(1)(c) — legal obligation</td><td>1 year</td></tr>
+        <tr><td>Google Analytics (_ga, _gid)</td><td>Anonymous usage statistics — only with consent</td><td>Art. 6(1)(a) — consent</td><td>14 months (Google default)</td></tr>
+      </table>
+      <p>We implement <strong>GA4 Consent Mode v2</strong>: analytics storage is denied by default and only enabled after your explicit consent. GA4 is configured with <code>anonymize_ip: true</code> and advertising signals disabled. You can withdraw analytics consent at any time via <strong>Settings → Cookie Preferences → Reset</strong>.</p>
+
+      <h2>3a. Authentication Methods</h2>
+      <p>We offer two authentication methods:</p>
+      <ul>
+        <li><strong>Magic Link (email OTP)</strong> — we send a one-time link to your email. No password stored. Email used only for authentication.</li>
+        <li><strong>Google OAuth</strong> — you sign in via your Google account. We receive your email address and optionally your name from Google. No Google password or payment data is accessed. Data received from Google is governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. We only store the email address in our database. You must confirm consent to our Privacy Policy before being redirected to Google.</li>
+      </ul>
 
       <h2>4. Data Storage &amp; Transfers</h2>
-      <p>Your data is stored in Supabase (PostgreSQL) hosted in the <strong>EU Central region (Frankfurt, Germany)</strong>. No data is transferred outside the European Economic Area.</p>
+      <p>Your data is stored in Supabase (PostgreSQL) hosted in the <strong>EU Central region (Frankfurt, Germany)</strong>. No personal data is transferred outside the European Economic Area (EEA).</p>
+      <p>Google Analytics data is processed by Google LLC. As of 2024, GA4 uses EU-based data processing with IP anonymisation. Standard Contractual Clauses (SCCs) apply per Google's DPA.</p>
       <p>Vercel (CDN/hosting) is located in the EU where possible. Static assets (no personal data) may be cached globally.</p>
 
       <h2>5. Data Retention</h2>
@@ -221,7 +234,8 @@
         <li>All data transmitted over HTTPS (TLS 1.2+)</li>
         <li>Row Level Security (RLS) on all database tables — users can only access their own data</li>
         <li>No secret API keys in client-side code</li>
-        <li>Passwords not stored — authentication via Magic Link (email OTP only)</li>
+        <li>No passwords stored — authentication via Magic Link (email OTP) or Google OAuth</li>
+        <li>Age verification required at registration: users must confirm they are 16 or older (GDPR Art. 8)</li>
       </ul>
 
       <h2>8. Third-Party Processors</h2>
@@ -232,8 +246,8 @@
         <tr><td>Google LLC (GA4)</td><td>Anonymous analytics (consent-based)</td><td>EU (anonymised)</td><td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com</a></td></tr>
       </table>
 
-      <h2>9. Children</h2>
-      <p>Claude Atlas is not directed at children under 16. We do not knowingly collect data from minors. If you believe a child has provided data, contact us and we will delete it immediately.</p>
+      <h2>9. Children (GDPR Art. 8)</h2>
+      <p>Claude Atlas is not directed at children under 16. We require users to confirm their age (16+) before creating an account. We do not knowingly collect data from minors. If you believe a child has provided data, contact us at <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a> and we will delete it within 72 hours.</p>
 
       <h2>10. Changes to This Policy</h2>
       <p>We may update this policy. We will notify registered users by email for material changes. The version number and date at the top of this page indicate the current revision.</p>

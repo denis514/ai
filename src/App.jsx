@@ -37,6 +37,19 @@ import './App.css';
 
 const GA_ID = 'G-GLRHYG2JVK';
 
+// ── GA4 Consent Mode v2 (GDPR-compliant) ────────────────────────────────────
+// По умолчанию — все хранилища запрещены (ст. 6(1)(a) GDPR — согласие).
+// analytics_storage и ad_storage обновляются только ПОСЛЕ явного согласия.
+function initGAConsentMode() {
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag('consent', 'default', {
+    analytics_storage: 'denied',
+    ad_storage:        'denied',
+    wait_for_update:   500,
+  });
+}
+
 function loadGA() {
   if (window.__ga_loaded) return;
   window.__ga_loaded = true;
@@ -45,10 +58,21 @@ function loadGA() {
   s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
   document.head.appendChild(s);
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
   window.gtag('js', new Date());
-  window.gtag('config', GA_ID);
+  window.gtag('config', GA_ID, {
+    anonymize_ip: true,          // анонимизация IP (ст. 25 GDPR — privacy by design)
+    allow_google_signals: false, // отключить рекламные сигналы
+    allow_ad_personalization_signals: false,
+  });
+  // Обновляем consent ТОЛЬКО если пользователь дал явное согласие
+  window.gtag('consent', 'update', {
+    analytics_storage: 'granted',
+  });
 }
+
+// Инициализируем Consent Mode немедленно (до загрузки GA скрипта)
+initGAConsentMode();
 
 function collectAllIds(node, acc = new Set()) {
   acc.add(node.id);

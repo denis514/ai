@@ -19,10 +19,15 @@ export default function AuthModal({ onClose }) {
 
   const [step, setStep] = useState('email'); // 'email' | 'sent'
   const [email, setEmail] = useState('');
+  // Единое GDPR-согласие: покрывает оба метода входа (Google + Magic Link)
   const [consent, setConsent] = useState(false);
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Оба условия должны быть выполнены для любого метода входа
+  const canProceed = consent && ageConfirmed;
 
   // Закрыть по Escape
   useEffect(() => {
@@ -32,6 +37,7 @@ export default function AuthModal({ onClose }) {
   }, [onClose]);
 
   const handleGoogle = async () => {
+    if (!canProceed) { setError(t('auth.errorConsent')); return; }
     setError('');
     setGoogleLoading(true);
     const { error: err } = await signInWithGoogle();
@@ -43,24 +49,18 @@ export default function AuthModal({ onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
     if (!email.trim() || !email.includes('@')) {
       setError(t('auth.errorInvalidEmail'));
       return;
     }
-    if (!consent) {
+    if (!canProceed) {
       setError(t('auth.errorConsent'));
       return;
     }
-
     setLoading(true);
     const { error: err } = await sendMagicLink(email, consent);
     setLoading(false);
-
-    if (err) {
-      setError(err);
-      return;
-    }
+    if (err) { setError(err); return; }
     setStep('sent');
   };
 
@@ -100,12 +100,38 @@ export default function AuthModal({ onClose }) {
         <div className="auth-modal__body">
           {step === 'email' ? (
             <>
+              {/* ── GDPR: единое согласие для обоих методов ── */}
+              <div className="auth-modal__gdpr">
+                <label className="auth-modal__consent">
+                  <input
+                    type="checkbox"
+                    checked={consent}
+                    onChange={(e) => { setConsent(e.target.checked); setError(''); }}
+                  />
+                  <span>
+                    {t('auth.consentText')}{' '}
+                    <a href="/privacy-policy" target="_blank" rel="noopener noreferrer"
+                      className="auth-modal__link">{t('auth.privacyPolicy')}</a>.{' '}
+                    {t('auth.consentGdpr')}
+                  </span>
+                </label>
+                <label className="auth-modal__consent">
+                  <input
+                    type="checkbox"
+                    checked={ageConfirmed}
+                    onChange={(e) => { setAgeConfirmed(e.target.checked); setError(''); }}
+                  />
+                  <span>{t('auth.ageConfirm')}</span>
+                </label>
+              </div>
+
               {/* ── Google OAuth ── */}
               <button
                 type="button"
                 className="auth-google-btn"
                 onClick={handleGoogle}
-                disabled={googleLoading || loading}
+                disabled={googleLoading || loading || !canProceed}
+                title={!canProceed ? t('auth.errorConsent') : ''}
               >
                 {googleLoading ? (
                   <Icon name="refresh" size={18} strokeWidth={1.75} />
@@ -125,69 +151,47 @@ export default function AuthModal({ onClose }) {
                 <span>{t('auth.orEmail')}</span>
               </div>
 
-            <form className="auth-modal__form" onSubmit={handleSubmit} noValidate>
-              <label className="auth-modal__label" htmlFor="auth-email">
-                {t('auth.emailLabel')}
-              </label>
-              <input
-                id="auth-email"
-                className="auth-modal__input"
-                type="email"
-                value={email}
-                onChange={(e) => { setEmail(e.target.value); setError(''); }}
-                placeholder="you@example.com"
-                autoFocus
-                autoComplete="email"
-                inputMode="email"
-                disabled={loading}
-              />
-
-              <label className="auth-modal__consent">
+              <form className="auth-modal__form" onSubmit={handleSubmit} noValidate>
+                <label className="auth-modal__label" htmlFor="auth-email">
+                  {t('auth.emailLabel')}
+                </label>
                 <input
-                  type="checkbox"
-                  checked={consent}
-                  onChange={(e) => { setConsent(e.target.checked); setError(''); }}
+                  id="auth-email"
+                  className="auth-modal__input"
+                  type="email"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                  placeholder="you@example.com"
+                  autoFocus
+                  autoComplete="email"
+                  inputMode="email"
                   disabled={loading}
                 />
-                <span>
-                  {t('auth.consentText')}{' '}
-                  <a
-                    href="/privacy-policy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="auth-modal__link"
-                  >
-                    {t('auth.privacyPolicy')}
-                  </a>
-                  {'. '}
-                  {t('auth.consentGdpr')}
-                </span>
-              </label>
 
-              {error && (
-                <p className="auth-modal__error" role="alert">
-                  <Icon name="warning" size={14} strokeWidth={1.75} />
-                  {error}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                className="auth-modal__submit"
-                disabled={loading || !email.trim() || !consent}
-              >
-                {loading ? (
-                  <><Icon name="refresh" size={16} strokeWidth={1.75} /> {t('auth.sending')}</>
-                ) : (
-                  <><Icon name="send" size={16} strokeWidth={1.75} /> {t('auth.sendLink')}</>
+                {error && (
+                  <p className="auth-modal__error" role="alert">
+                    <Icon name="warning" size={14} strokeWidth={1.75} />
+                    {error}
+                  </p>
                 )}
-              </button>
 
-              <p className="auth-modal__hint">
-                <Icon name="info" size={13} strokeWidth={1.5} />
-                {t('auth.magicLinkHint')}
-              </p>
-            </form>
+                <button
+                  type="submit"
+                  className="auth-modal__submit"
+                  disabled={loading || !email.trim() || !canProceed}
+                >
+                  {loading ? (
+                    <><Icon name="refresh" size={16} strokeWidth={1.75} /> {t('auth.sending')}</>
+                  ) : (
+                    <><Icon name="send" size={16} strokeWidth={1.75} /> {t('auth.sendLink')}</>
+                  )}
+                </button>
+
+                <p className="auth-modal__hint">
+                  <Icon name="info" size={13} strokeWidth={1.5} />
+                  {t('auth.magicLinkHint')}
+                </p>
+              </form>
             </>
           ) : (
             <div className="auth-modal__sent">

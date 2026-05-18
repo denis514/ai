@@ -286,6 +286,39 @@ export default function AccountPage({ onClose, onNavigate }) {
           )}
         </section>
 
+        {/* ── Cookie preferences (GDPR Art. 7(3) — право отозвать согласие) ── */}
+        <section className="account-section">
+          <h2>{t('account.cookieTitle')}</h2>
+          <p className="account-section__desc">{t('account.cookieDesc')}</p>
+          <div className="account-actions">
+            <button
+              type="button"
+              className="account-btn account-btn--outline"
+              onClick={() => {
+                localStorage.removeItem('ca_consent');
+                window.location.reload();
+              }}
+            >
+              <Icon name="refresh" size={16} strokeWidth={1.5} />
+              {t('account.cookieReset')}
+            </button>
+          </div>
+        </section>
+
+        {/* ── GDPR contact ── */}
+        <section className="account-section">
+          <h2>{t('account.gdprContact')}</h2>
+          <p className="account-section__desc">{t('account.gdprContactDesc')}</p>
+          <a
+            href="mailto:privacy@105-atlas.vercel.app"
+            className="account-btn account-btn--ghost"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
+          >
+            <Icon name="mail" size={16} strokeWidth={1.5} />
+            privacy@105-atlas.vercel.app
+          </a>
+        </section>
+
       </div>
     </div>
   );

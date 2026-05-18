@@ -16,29 +16,18 @@ export function AuthProvider({ children }) {
 
   // Загрузить профиль; если не существует — создать (новый пользователь).
   // При Google-входе: auto-fill display_name из user_metadata если ещё не задан.
-  const loadProfile = useCallback(async (userId, email, userMeta) => {
+  // GDPR: display_name НЕ заполняется автоматически из Google metadata.
+  // Пользователь явно задаёт имя в ProfilePanel (Art. 5(1)(b) — цель обработки,
+  // Art. 5(1)(c) — минимизация данных). userMeta принимается но не используется.
+  const loadProfile = useCallback(async (userId, email, _userMeta) => {
     const { data } = await getProfile(userId);
     if (data) {
-      // Если имя ещё не задано, а Google дал нам имя — заполним автоматически
-      if (!data.display_name && userMeta?.full_name) {
-        const { updateProfile } = await import('../services/profileService.js');
-        await updateProfile(userId, { display_name: userMeta.full_name });
-        setProfile({ ...data, display_name: userMeta.full_name });
-      } else {
-        setProfile(data);
-      }
+      setProfile(data);
       return false; // не новый пользователь
     } else {
-      // Новый пользователь — создать профиль, сразу заполнить имя если есть
       await createProfile(userId, email);
       const { data: fresh } = await getProfile(userId);
-      if (fresh && !fresh.display_name && userMeta?.full_name) {
-        const { updateProfile } = await import('../services/profileService.js');
-        await updateProfile(userId, { display_name: userMeta.full_name });
-        setProfile({ ...fresh, display_name: userMeta.full_name });
-      } else {
-        setProfile(fresh);
-      }
+      setProfile(fresh);
       return true; // новый пользователь
     }
   }, []);
