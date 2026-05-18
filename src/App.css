@@ -4382,6 +4382,13 @@
   display: flex;
   min-height: 0;
   margin-top: 24px;
+  /* Gate: нужен position relative чтобы overlay позиционировался внутри */
+  position: relative;
+}
+/* Когда gate активен — блокируем скролл в основной области */
+.tut-body--gated .tut-main {
+  overflow: hidden;
+  pointer-events: none;
 }
 
 /* SIDEBAR */
@@ -4479,39 +4486,72 @@
   position: relative;
 }
 
-/* Tutorial gate overlay — guest on step 2+ */
+/* Tutorial gate — поверх всего tut-body (sidebar + content) */
 .tut-gate {
   position: absolute;
   inset: 0;
-  z-index: 10;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   text-align: center;
-  padding: 32px 24px;
-  background: var(--bg, #0f0f0f);
-  backdrop-filter: blur(6px);
+  padding: 40px 32px;
+  /* Полностью непрозрачный фон — нельзя увидеть контент под ним */
+  background: var(--surface, #ffffff);
+  overflow: hidden; /* нельзя скроллить */
+  /* Лёгкое свечение сверху — граница с прогресс-баром */
+  border-top: 1px solid var(--border);
 }
-.tut-gate__icon { color: var(--accent); opacity: 0.7; margin-bottom: 4px; }
-.tut-gate h3 { font-size: 17px; font-weight: 700; }
-.tut-gate p { font-size: 14px; color: var(--text-muted); max-width: 300px; line-height: 1.5; }
+.tut-gate__icon {
+  color: var(--accent);
+  opacity: 0.75;
+  margin-bottom: 6px;
+}
+.tut-gate h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  max-width: 320px;
+}
+.tut-gate p {
+  font-size: 14px;
+  color: var(--text-muted);
+  max-width: 300px;
+  line-height: 1.55;
+  margin: 0;
+}
 .tut-gate__btn {
-  margin-top: 4px;
-  padding: 10px 24px;
+  margin-top: 6px;
+  padding: 12px 28px;
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 24px;
+  border-radius: 28px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity .15s;
+  transition: opacity .15s, transform .1s;
+  box-shadow: 0 2px 12px rgba(0,0,0,.12);
 }
-.tut-gate__btn:hover { opacity: 0.88; }
-.tut-gate__hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-.tut-step--blurred { filter: blur(6px); pointer-events: none; user-select: none; }
+.tut-gate__btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.tut-gate__btn:active { transform: translateY(0); }
+.tut-gate__hint {
+  font-size: 12px;
+  color: var(--text-dim, var(--text-muted));
+  margin-top: 2px;
+}
+
+/* Замок на заблокированных шагах в сайдбаре */
+.tut-side__item.is-locked {
+  opacity: 0.55;
+  cursor: default;
+}
+.tut-side__item.is-locked .tut-side__num {
+  color: var(--text-muted);
+  background: transparent;
+}
 
 .tut-step__head {
   display: flex;
