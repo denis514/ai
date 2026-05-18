@@ -703,7 +703,13 @@ function AppInner() {
       )}
 
       {accountOpen && (
-        <AccountPage onClose={() => setRoute(null)} />
+        <AccountPage
+          onClose={() => setRoute(null)}
+          onRequestAuth={() => {
+            setRoute(null);      // закрываем AccountPage (z-index 8000)
+            setAuthOpen(true);   // открываем AuthModal поверх
+          }}
+        />
       )}
 
       {/* Welcome онбординг — показывается после первого логина */}

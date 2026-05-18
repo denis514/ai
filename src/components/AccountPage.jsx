@@ -17,7 +17,7 @@ import { supabase } from '../lib/supabaseClient.js';
  *   - Удаление аккаунта (GDPR Art. 17)
  *   - Выход
  */
-export default function AccountPage({ onClose, onNavigate }) {
+export default function AccountPage({ onClose, onNavigate, onRequestAuth }) {
   const t = useT();
   const { locale, setLocale, locales } = useLocale();
   const { user, profile, setProfile, signOut, refreshProfile } = useAuth();
@@ -112,7 +112,10 @@ export default function AccountPage({ onClose, onNavigate }) {
           <button
             type="button"
             className="account-btn account-btn--primary"
-            onClick={() => document.dispatchEvent(new CustomEvent('atlas:open-auth'))}
+            onClick={() => onRequestAuth
+              ? onRequestAuth()
+              : document.dispatchEvent(new CustomEvent('atlas:open-auth'))
+            }
           >
             {t('auth.signIn')}
           </button>
