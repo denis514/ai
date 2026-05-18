@@ -12,7 +12,7 @@ function buildEdgePath(from, to) {
 }
 
 const Mindmap = forwardRef(function Mindmap(
-  { root, expandedIds, selectedId, matchedIds, searchActive, onToggle, onSelect, tutorialState, nodeStatusOf, isNewNode, newTypeOf, hasNewInside },
+  { root, expandedIds, selectedId, matchedIds, searchActive, onToggle, onSelect, tutorialState, nodeStatusOf, isBookmarkedNode, isNewNode, newTypeOf, hasNewInside },
   ref
 ) {
   const containerRef = useRef(null);
@@ -73,6 +73,7 @@ const Mindmap = forwardRef(function Mindmap(
           const isDimmed  = searchActive && !isMatched;
           const tState = tutorialState ? tutorialState(node.id) : null;
           const nodeStatus = nodeStatusOf ? nodeStatusOf(node.id) : null;
+          const isBookmarked = isBookmarkedNode ? isBookmarkedNode(node.id) : false;
           return (
             <MindmapNode
               key={node.id}
@@ -87,6 +88,7 @@ const Mindmap = forwardRef(function Mindmap(
               tutorialDone={!!tState?.done}
               tutorialStarted={!!tState?.started}
               nodeStatus={nodeStatus}
+              isBookmarked={isBookmarked}
               isNew={isNewNode ? isNewNode(node.id) : false}
               newType={newTypeOf ? newTypeOf(node.id) : null}
               hasNewInside={hasNewInside ? hasNewInside(node.id) : false}

@@ -15,6 +15,7 @@ export default function MindmapNode({
   isExpanded, isSelected, isMatched, isDimmed,
   hasTutorial, tutorialDone, tutorialStarted,
   nodeStatus,
+  isBookmarked,
   isNew, newType, hasNewInside,
   onToggle, onSelect
 }) {
@@ -112,6 +113,27 @@ export default function MindmapNode({
       {!isNew && hasNewInside && !isRoot && (
         <span className="mm-node__new-badge mm-node__new-badge--new mm-node__new-badge--inside">
           {t('node.badgeNew')}
+        </span>
+      )}
+
+      {/* Бейджи статусов: viewed / review / bookmark — белый круг, цвет категории */}
+      {!isRoot && (nodeStatus || isBookmarked) && (
+        <span className="mm-node__status-badges" aria-hidden="true">
+          {nodeStatus === 'viewed' && (
+            <span className="mm-node__status-badge mm-node__status-badge--viewed" title={t('detail.progress.viewed')}>
+              <Icon name="check-circle" size={14} strokeWidth={1.5} />
+            </span>
+          )}
+          {nodeStatus === 'review' && (
+            <span className="mm-node__status-badge mm-node__status-badge--review" title={t('detail.progress.review')}>
+              <Icon name="refresh-circle" size={14} strokeWidth={1.5} />
+            </span>
+          )}
+          {isBookmarked && (
+            <span className="mm-node__status-badge mm-node__status-badge--bookmark" title={t('detail.bookmarkAdd')}>
+              <Icon name="bookmark-filled" size={14} strokeWidth={1.5} />
+            </span>
+          )}
         </span>
       )}
     </div>

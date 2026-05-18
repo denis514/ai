@@ -77,6 +77,9 @@ import {
   UserCircleIcon,
   StarIcon,
   MoreHorizontalIcon,
+  // node status badge icons
+  CheckmarkCircle01Icon,
+  CircleArrowReload01Icon,
   // auth icons
   Login01Icon,
   Mail01Icon,
@@ -163,6 +166,8 @@ const REGISTRY = {
   expand:      Maximize01Icon,
   bookmark:    Bookmark01Icon,
   'bookmark-filled': BookmarkCheck01Icon,
+  'check-circle':    CheckmarkCircle01Icon,  // бейдж «просмотрено»
+  'refresh-circle':  CircleArrowReload01Icon, // бейдж «вернуться»
   'external-link': LinkSquare01Icon,
   eye:         EyeIcon,
   building:    Building01Icon,

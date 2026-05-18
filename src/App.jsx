@@ -514,6 +514,7 @@ function AppInner() {
           onSelect={onSelect}
           tutorialState={tutorialState}
           nodeStatusOf={nodeProgressApi.getStatus}
+          isBookmarkedNode={(id) => bookmarksApi.isBookmarked('node', id)}
           isNewNode={isNew}
           newTypeOf={newType}
           hasNewInside={id => newAncestorIds.has(id)}
