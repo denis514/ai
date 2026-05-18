@@ -1,33 +1,36 @@
 import React from 'react';
 import Icon from './Icon.jsx';
+import { useT } from '../i18n/LocaleContext.jsx';
 
 export default function CookieBanner({ onAccept, onDecline }) {
+  const t = useT();
+
   return (
-    <div className="cookie-banner" role="dialog" aria-label="Согласие на использование cookie">
+    <div className="cookie-banner" role="dialog" aria-label={t('cookie.accept')}>
       <div className="cookie-banner__inner">
 
         <div className="cookie-banner__icon">
           <Icon name="shield" size={18} strokeWidth={1.5} />
         </div>
 
-        <p className="cookie-banner__text">
-          We use <strong>Google Analytics</strong> to understand how visitors interact
-          with the site. Data is anonymous and never shared with third parties.
-          Session data (login status) is stored locally and never transmitted.
-        </p>
+        {/* dangerouslySetInnerHTML — текст содержит <strong>Google Analytics</strong> */}
+        <p
+          className="cookie-banner__text"
+          dangerouslySetInnerHTML={{ __html: t('cookie.text') }}
+        />
 
         <div className="cookie-banner__actions">
           <button
             className="cookie-banner__btn cookie-banner__btn--accept"
             onClick={onAccept}
           >
-            Accept
+            {t('cookie.accept')}
           </button>
           <button
             className="cookie-banner__btn cookie-banner__btn--decline"
             onClick={onDecline}
           >
-            Decline
+            {t('cookie.decline')}
           </button>
         </div>
 
