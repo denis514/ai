@@ -112,7 +112,8 @@ export default function AuthModal({ onClose }) {
                     {t('auth.consentText')}{' '}
                     <a href="/privacy-policy" target="_blank" rel="noopener noreferrer"
                       className="auth-modal__link">{t('auth.privacyPolicy')}</a>.{' '}
-                    {t('auth.consentGdpr')}
+                    {/* consentGdpr может содержать HTML-ссылки (напр. FI локаль) */}
+                    <span dangerouslySetInnerHTML={{ __html: t('auth.consentGdpr') }} />
                   </span>
                 </label>
                 <label className="auth-modal__consent">
@@ -121,7 +122,8 @@ export default function AuthModal({ onClose }) {
                     checked={ageConfirmed}
                     onChange={(e) => { setAgeConfirmed(e.target.checked); setError(''); }}
                   />
-                  <span>{t('auth.ageConfirm')}</span>
+                  {/* ageConfirm может содержать HTML-ссылки (напр. FI ссылка на GDPR Art. 8) */}
+                  <span dangerouslySetInnerHTML={{ __html: t('auth.ageConfirm') }} />
                 </label>
               </div>
 
