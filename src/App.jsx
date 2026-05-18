@@ -32,6 +32,8 @@ import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import AuthModal from './components/AuthModal.jsx';
 import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
 import AccountPage from './components/AccountPage.jsx';
+import UpdateBanner from './components/UpdateBanner.jsx';
+import { useVersionCheck } from './hooks/useVersionCheck.js';
 import { syncTutorialProgress, syncBookmarks, syncNodeProgress } from './services/syncService.js';
 import './App.css';
 
@@ -156,6 +158,35 @@ function AppInner() {
   // Локаль — нужна для поискового индекса (контент в текущей локали).
   const { locale } = useLocale();
   const { isNewUser, dismissOnboarding, isLoggedIn, user } = useAuth();
+
+  // Обнаружение нового деплоя → показ баннера обновления
+  const { hasUpdate, dismiss: dismissUpdate, reload: reloadPage } = useVersionCheck();
+
+  // ChunkLoadError: если браузер не может загрузить JS-чанк (старый деплой) →
+  // автоматически перезагружаем страницу (один раз, защита от loop в guard).
+  useEffect(() => {
+    const onError = (e) => {
+      const msg = e?.reason?.message || e?.message || '';
+      if (
+        msg.includes('Failed to fetch dynamically imported module') ||
+        msg.includes('Loading chunk') ||
+        msg.includes('ChunkLoadError') ||
+        msg.includes('Importing a module script failed')
+      ) {
+        const last = parseInt(sessionStorage.getItem('atlas:last-auto-reload') || '0', 10);
+        if (Date.now() - last > 10_000) {
+          sessionStorage.setItem('atlas:last-auto-reload', String(Date.now()));
+          window.location.reload();
+        }
+      }
+    };
+    window.addEventListener('unhandledrejection', onError);
+    window.addEventListener('error', onError);
+    return () => {
+      window.removeEventListener('unhandledrejection', onError);
+      window.removeEventListener('error', onError);
+    };
+  }, []); // eslint-disable-line
 
   // Global user level — определяет дефолтный набор раскрытых веток
   const { level, setLevel } = useLevelFilter();
@@ -721,6 +752,11 @@ function AppInner() {
           }}
           onDismiss={dismissOnboarding}
         />
+      )}
+
+      {/* Баннер новой версии — показывается после деплоя */}
+      {hasUpdate && (
+        <UpdateBanner onReload={reloadPage} onDismiss={dismissUpdate} />
       )}
     </div>
   );
