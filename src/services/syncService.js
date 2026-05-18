@@ -130,6 +130,55 @@ export async function syncTutorialProgress(userId, progressMap) {
     .upsert(rows, { onConflict: 'user_id,tutorial_id' });
 }
 
+/**
+ * Реал-тайм синк закладок → Supabase.
+ * Вызывается при каждом toggle закладки пока пользователь залогинен.
+ * @param {string} userId
+ * @param {Map} bookmarksMap — Map<key, { type, id, addedAt }>
+ */
+export async function syncBookmarks(userId, bookmarksMap) {
+  if (!supabase || !userId || !bookmarksMap) return;
+
+  // Получаем текущие закладки из Supabase чтобы найти удалённые
+  const { data: existing } = await supabase
+    .from('favorites')
+    .select('item_type, item_id')
+    .eq('user_id', userId);
+
+  const localKeys = new Set(
+    Array.from(bookmarksMap.values()).map(b => `${b.type}:${b.id}`)
+  );
+  const remoteKeys = new Set(
+    (existing || []).map(r => `${r.item_type}:${r.item_id}`)
+  );
+
+  // Добавить новые
+  const toAdd = Array.from(bookmarksMap.values()).filter(
+    b => !remoteKeys.has(`${b.type}:${b.id}`)
+  );
+  if (toAdd.length) {
+    const rows = toAdd.map(b => ({
+      user_id:   userId,
+      item_type: b.type,
+      item_id:   b.id,
+      added_at:  b.addedAt ? new Date(b.addedAt).toISOString() : new Date().toISOString(),
+    }));
+    await supabase.from('favorites').upsert(rows, { onConflict: 'user_id,item_type,item_id' });
+  }
+
+  // Удалить те что убрали из localStorage
+  const toDelete = (existing || []).filter(
+    r => !localKeys.has(`${r.item_type}:${r.item_id}`)
+  );
+  for (const r of toDelete) {
+    await supabase.from('favorites')
+      .delete()
+      .eq('user_id', userId)
+      .eq('item_type', r.item_type)
+      .eq('item_id', r.item_id);
+  }
+}
+
 export function isSyncDone(userId) {
   try {
     const done = JSON.parse(localStorage.getItem(SYNC_DONE_KEY) || '{}');

@@ -106,7 +106,10 @@ export default function ProfilePanel({
 
   const nodesViewed  = isLoggedIn ? supaStats.nodesViewed  : nodeProgressApi.counts.viewed;
   const nodesReview  = isLoggedIn ? supaStats.nodesReview  : nodeProgressApi.counts.review;
-  const bmCount      = isLoggedIn ? supaStats.bookmarksCount : bookmarksApi.count;
+  // Math.max — защита от задержки Supabase: localStorage всегда актуален
+  const bmCount      = isLoggedIn
+    ? Math.max(supaStats.bookmarksCount, bookmarksApi.count)
+    : bookmarksApi.count;
   const streak       = isLoggedIn ? supaStats.streak       : activityApi.streak;
   const totalDays    = isLoggedIn ? supaStats.totalDays    : activityApi.totalDays;
   const loading      = isLoggedIn ? supaStats.loading      : false;

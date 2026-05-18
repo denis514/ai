@@ -32,7 +32,7 @@ import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import AuthModal from './components/AuthModal.jsx';
 import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
 import AccountPage from './components/AccountPage.jsx';
-import { syncTutorialProgress } from './services/syncService.js';
+import { syncTutorialProgress, syncBookmarks } from './services/syncService.js';
 import './App.css';
 
 const GA_ID = 'G-GLRHYG2JVK';
@@ -249,6 +249,17 @@ function AppInner() {
     }, 600);
     return () => clearTimeout(timer);
   }, [progressApi.progress]); // eslint-disable-line
+
+  // Реал-тайм синк закладок → Supabase при каждом toggle.
+  const isBookmarksMounted = useRef(false);
+  useEffect(() => {
+    if (!isBookmarksMounted.current) { isBookmarksMounted.current = true; return; }
+    if (!user?.id) return;
+    const timer = setTimeout(() => {
+      syncBookmarks(user.id, bookmarksApi.bookmarks);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [bookmarksApi.bookmarks]); // eslint-disable-line
 
   // Открыть AuthModal из gate туториала: скрыть туториал, показать форму входа
   const handleTutorialRequestAuth = useCallback(() => {
