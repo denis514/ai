@@ -111,9 +111,9 @@ export default function AuthModal({ onClose }) {
                   <span>
                     {t('auth.consentText')}{' '}
                     <a href="/privacy-policy" target="_blank" rel="noopener noreferrer"
-                      className="auth-modal__link">{t('auth.privacyPolicy')}</a>.{' '}
-                    {/* consentGdpr может содержать HTML-ссылки (напр. FI локаль) */}
-                    <span dangerouslySetInnerHTML={{ __html: t('auth.consentGdpr') }} />
+                      className="auth-modal__link">{t('auth.privacyPolicy')}</a>
+                    {/* consentGdpr: пустая строка → ничего не рендерится; FI → «& GDPR» со ссылкой */}
+                    {t('auth.consentGdpr') && <>{' '}<span dangerouslySetInnerHTML={{ __html: t('auth.consentGdpr') }} /></>}
                   </span>
                 </label>
                 <label className="auth-modal__consent">
