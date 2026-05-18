@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 import { getProfile, createProfile } from '../services/profileService.js';
-import { syncLocalToSupabase, isSyncDone, markSyncDone } from '../services/syncService.js';
+import { syncLocalToSupabase } from '../services/syncService.js';
 
 const AuthContext = createContext(null);
 
@@ -57,16 +57,11 @@ export function AuthProvider({ children }) {
     setIsNewUser(false);
   }, []);
 
-  // Запустить sync localStorage → Supabase (один раз на аккаунт)
+  // Синк localStorage → Supabase при каждом входе.
+  // Idempotent (upsert), поэтому guard не нужен.
+  // Гарантирует что офлайн-данные гостя попадут в Supabase после логина.
   const runSync = useCallback(async (userId) => {
-    if (isSyncDone(userId)) return;
-    const { synced, errors } = await syncLocalToSupabase(userId);
-    if (errors.length === 0 || synced > 0) {
-      markSyncDone(userId);
-    }
-    if (import.meta.env.DEV) {
-      console.log(`[Atlas sync] synced ${synced} items`, errors.length ? errors : '');
-    }
+    await syncLocalToSupabase(userId);
   }, []);
 
   useEffect(() => {

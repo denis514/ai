@@ -32,7 +32,7 @@ import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import AuthModal from './components/AuthModal.jsx';
 import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
 import AccountPage from './components/AccountPage.jsx';
-import { syncTutorialProgress, syncBookmarks } from './services/syncService.js';
+import { syncTutorialProgress, syncBookmarks, syncNodeProgress } from './services/syncService.js';
 import './App.css';
 
 const GA_ID = 'G-GLRHYG2JVK';
@@ -238,28 +238,33 @@ function AppInner() {
     }
   }, [isLoggedIn]); // eslint-disable-line
 
-  // Реал-тайм синк прогресса туториалов → Supabase при каждом изменении.
-  // useRef позволяет пропустить первый рендер (данные ещё только загружаются из localStorage).
-  const isProgressMounted = useRef(false);
+  // ─── Реал-тайм синк localStorage → Supabase ─────────────────────────────
+  // После каждого изменения данных пишем в Supabase (debounce 300ms).
+  // useRef пропускает первый рендер (данные загружаются из localStorage при mount).
+  const isProgressMounted  = useRef(false);
+  const isBookmarksMounted = useRef(false);
+  const isNodesMounted     = useRef(false);
+
   useEffect(() => {
     if (!isProgressMounted.current) { isProgressMounted.current = true; return; }
     if (!user?.id) return;
-    const timer = setTimeout(() => {
-      syncTutorialProgress(user.id, progressApi.progress);
-    }, 600);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => syncTutorialProgress(user.id, progressApi.progress), 300);
+    return () => clearTimeout(t);
   }, [progressApi.progress]); // eslint-disable-line
 
-  // Реал-тайм синк закладок → Supabase при каждом toggle.
-  const isBookmarksMounted = useRef(false);
   useEffect(() => {
     if (!isBookmarksMounted.current) { isBookmarksMounted.current = true; return; }
     if (!user?.id) return;
-    const timer = setTimeout(() => {
-      syncBookmarks(user.id, bookmarksApi.bookmarks);
-    }, 600);
-    return () => clearTimeout(timer);
+    const t = setTimeout(() => syncBookmarks(user.id, bookmarksApi.bookmarks), 300);
+    return () => clearTimeout(t);
   }, [bookmarksApi.bookmarks]); // eslint-disable-line
+
+  useEffect(() => {
+    if (!isNodesMounted.current) { isNodesMounted.current = true; return; }
+    if (!user?.id) return;
+    const t = setTimeout(() => syncNodeProgress(user.id, nodeProgressApi.state ?? {}), 300);
+    return () => clearTimeout(t);
+  }, [nodeProgressApi.counts]); // eslint-disable-line
 
   // Открыть AuthModal из gate туториала: скрыть туториал, показать форму входа
   const handleTutorialRequestAuth = useCallback(() => {

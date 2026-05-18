@@ -131,6 +131,42 @@ export async function syncTutorialProgress(userId, progressMap) {
 }
 
 /**
+ * Реал-тайм синк прогресса узлов → Supabase.
+ * @param {string} userId
+ * @param {Object} nodeProgressMap — { [nodeId]: 'viewed' | 'review' }
+ */
+export async function syncNodeProgress(userId, nodeProgressMap) {
+  if (!supabase || !userId || !nodeProgressMap) return;
+
+  const { data: existing } = await supabase
+    .from('node_progress')
+    .select('node_id, status')
+    .eq('user_id', userId);
+
+  const localEntries = Object.entries(nodeProgressMap).filter(([, v]) => v);
+  const localIds = new Set(localEntries.map(([id]) => id));
+  const remoteIds = new Set((existing || []).map(r => r.node_id));
+
+  // Upsert новых / изменённых
+  if (localEntries.length) {
+    const rows = localEntries.map(([node_id, status]) => ({
+      user_id: userId, node_id, status,
+      updated_at: new Date().toISOString(),
+    }));
+    await supabase.from('node_progress')
+      .upsert(rows, { onConflict: 'user_id,node_id' });
+  }
+
+  // Удалить записи которых больше нет
+  for (const { node_id } of (existing || [])) {
+    if (!localIds.has(node_id)) {
+      await supabase.from('node_progress')
+        .delete().eq('user_id', userId).eq('node_id', node_id);
+    }
+  }
+}
+
+/**
  * Реал-тайм синк закладок → Supabase.
  * Вызывается при каждом toggle закладки пока пользователь залогинен.
  * @param {string} userId

@@ -107,5 +107,5 @@ export function useNodeProgress() {
       .map(([id]) => id);
   }, [state]);
 
-  return { getStatus, setStatus, toggleNext, clear, counts, total, idsBy };
+  return { getStatus, setStatus, toggleNext, clear, counts, total, idsBy, state };
 }

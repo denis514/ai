@@ -93,23 +93,16 @@ export default function ProfilePanel({
     return n;
   })();
 
-  // Когда залогинен — берём максимум из Supabase и localStorage.
-  // Это защищает от ситуации когда Supabase ещё не получил последний sync.
-  const tutsDone    = isLoggedIn
-    ? Math.max(supaStats.tutorialsDone,    localTutsDone)
-    : localTutsDone;
-  const tutsStarted = isLoggedIn
-    ? Math.max(supaStats.tutorialsStarted, localTutsStarted)
-    : localTutsStarted;
+  // Для залогиненных — Supabase источник правды.
+  // Для гостей — localStorage.
+  const tutsDone    = isLoggedIn ? supaStats.tutorialsDone    : localTutsDone;
+  const tutsStarted = isLoggedIn ? supaStats.tutorialsStarted : localTutsStarted;
   const tutsTotal   = tutorialIds.length;
   const tutPercent  = Math.round((tutsDone / tutsTotal) * 100);
 
   const nodesViewed  = isLoggedIn ? supaStats.nodesViewed  : nodeProgressApi.counts.viewed;
   const nodesReview  = isLoggedIn ? supaStats.nodesReview  : nodeProgressApi.counts.review;
-  // Math.max — защита от задержки Supabase: localStorage всегда актуален
-  const bmCount      = isLoggedIn
-    ? Math.max(supaStats.bookmarksCount, bookmarksApi.count)
-    : bookmarksApi.count;
+  const bmCount      = isLoggedIn ? supaStats.bookmarksCount : bookmarksApi.count;
   const streak       = isLoggedIn ? supaStats.streak       : activityApi.streak;
   const totalDays    = isLoggedIn ? supaStats.totalDays    : activityApi.totalDays;
   const loading      = isLoggedIn ? supaStats.loading      : false;
@@ -391,26 +384,29 @@ export default function ProfilePanel({
         </section>
       )}
 
-      {/* ── DATA / SETTINGS ── */}
-      <section className="profile-panel__section">
-        <h4>{t('profile.data')}</h4>
-        <div className="profile-panel__settings">
-          <button type="button" className="profile-panel__setting-btn" onClick={exportData}>
-            <Icon name="external-link" size={14} strokeWidth={1.5} />
-            <span>{t('profile.data.export')}</span>
-          </button>
-          <button type="button" className="profile-panel__setting-btn" onClick={() => fileInputRef.current?.click()}>
-            <Icon name="inbox" size={14} strokeWidth={1.5} />
-            <span>{t('profile.data.import')}</span>
-          </button>
-          <input ref={fileInputRef} type="file" accept="application/json,.json" style={{ display: 'none' }} onChange={importData} />
-          {importMsg && <div className="profile-panel__msg">{importMsg}</div>}
-          <button type="button" className="profile-panel__setting-btn profile-panel__setting-btn--danger" onClick={resetAll}>
-            <Icon name="close" size={14} strokeWidth={1.75} />
-            <span>{t('profile.data.reset')}</span>
-          </button>
-        </div>
-      </section>
+      {/* ── DATA / SETTINGS — только для гостей ── */}
+      {/* Залогиненные используют AccountPage: там Supabase-экспорт (GDPR Art.20) */}
+      {!isLoggedIn && (
+        <section className="profile-panel__section">
+          <h4>{t('profile.data')}</h4>
+          <div className="profile-panel__settings">
+            <button type="button" className="profile-panel__setting-btn" onClick={exportData}>
+              <Icon name="external-link" size={14} strokeWidth={1.5} />
+              <span>{t('profile.data.export')}</span>
+            </button>
+            <button type="button" className="profile-panel__setting-btn" onClick={() => fileInputRef.current?.click()}>
+              <Icon name="inbox" size={14} strokeWidth={1.5} />
+              <span>{t('profile.data.import')}</span>
+            </button>
+            <input ref={fileInputRef} type="file" accept="application/json,.json" style={{ display: 'none' }} onChange={importData} />
+            {importMsg && <div className="profile-panel__msg">{importMsg}</div>}
+            <button type="button" className="profile-panel__setting-btn profile-panel__setting-btn--danger" onClick={resetAll}>
+              <Icon name="close" size={14} strokeWidth={1.75} />
+              <span>{t('profile.data.reset')}</span>
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* ── LANGUAGE ── */}
       <div className="profile-panel__lang-bar">
