@@ -6,7 +6,12 @@ const LocaleContext = createContext({ locale: DEFAULT_LOCALE, setLocale: () => {
 
 // ─── Storage helpers ─────────────────────────────────────────────────────────
 
-const IP_DETECT_KEY = 'claude-mindmap:ip-locale:v1';
+// v2 — новый ключ чтобы старый вечный кеш v1 не мешал
+const IP_DETECT_KEY = 'claude-mindmap:ip-locale:v2';
+const IP_CACHE_TTL  = 7 * 24 * 60 * 60 * 1000; // 7 дней
+
+// Удаляем устаревший ключ v1 если он ещё есть
+try { localStorage.removeItem('claude-mindmap:ip-locale:v1'); } catch {}
 
 function readLocaleFromHash() {
   if (typeof window === 'undefined') return null;
@@ -25,12 +30,29 @@ function readStoredLocale() {
   } catch { return null; }
 }
 
+/**
+ * Читает IP-кеш с проверкой TTL (7 дней).
+ * Если кеш истёк — удаляет его и возвращает null.
+ */
 function readCachedIPLocale() {
   if (typeof window === 'undefined') return null;
   try {
-    const v = window.localStorage.getItem(IP_DETECT_KEY);
-    return isLocale(v) ? v : null;
+    const raw = window.localStorage.getItem(IP_DETECT_KEY);
+    if (!raw) return null;
+    const { locale, ts } = JSON.parse(raw);
+    if (Date.now() - ts > IP_CACHE_TTL) {
+      // Кеш протух — сбросить, чтобы при следующем визите снова определить
+      localStorage.removeItem(IP_DETECT_KEY);
+      return null;
+    }
+    return isLocale(locale) ? locale : null;
   } catch { return null; }
+}
+
+function writeIPCache(locale) {
+  try {
+    localStorage.setItem(IP_DETECT_KEY, JSON.stringify({ locale, ts: Date.now() }));
+  } catch {}
 }
 
 // ─── IP detection ─────────────────────────────────────────────────────────────
@@ -42,13 +64,13 @@ const COUNTRY_TO_LOCALE = {
 };
 
 /**
- * Запрашивает страну по IP, кеширует в localStorage.
- * Если кеш есть — возвращает немедленно без сети.
+ * Запрашивает страну по IP, кеширует в localStorage на 7 дней.
+ * Если свежий кеш есть — возвращает без сетевого запроса.
  */
 async function detectIPLocale() {
   if (typeof window === 'undefined') return null;
   const cached = readCachedIPLocale();
-  if (cached) return cached; // уже знаем — не делаем запрос
+  if (cached) return cached; // свежий кеш — не делаем запрос
   try {
     const res = await fetch('https://api.country.is', {
       signal: AbortSignal.timeout(3000),
@@ -57,7 +79,7 @@ async function detectIPLocale() {
     const json = await res.json();
     const country = (json?.country || '').toUpperCase();
     const locale  = COUNTRY_TO_LOCALE[country] || 'en';
-    try { localStorage.setItem(IP_DETECT_KEY, locale); } catch {}
+    writeIPCache(locale);
     return locale;
   } catch {
     return null;
@@ -137,8 +159,8 @@ export function LocaleProvider({ children }) {
   const setLocale = useCallback((next) => {
     if (!isLocale(next)) return;
     try {
-      localStorage.setItem(STORAGE_KEY, next);    // явный выбор
-      localStorage.setItem(IP_DETECT_KEY, next);  // перебить IP-кеш
+      localStorage.setItem(STORAGE_KEY, next);  // явный выбор пользователя
+      writeIPCache(next);                        // перебить IP-кеш (с новым TTL)
     } catch {}
     const h = window.location.hash || '';
     const stripped = h.replace(/^#\/?([a-z]{2})(\/|$)/i, (m, code, sep) =>
