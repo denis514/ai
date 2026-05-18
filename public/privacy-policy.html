@@ -4,461 +4,698 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — Claude Atlas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f0f0f;
-      --surface: #1a1a1a;
-      --border: #2a2a2a;
-      --text: #e8e8e8;
-      --text-muted: #888;
-      --accent: #f97316;
-      --radius: 10px;
+      --bg:           #f7f7f5;
+      --surface:      #ffffff;
+      --surface-2:    #fafaf7;
+      --surface-3:    #f1f1ef;
+      --text:         #1a1a1a;
+      --text-muted:   #6b6b6b;
+      --text-dim:     #9a9a9a;
+      --border:       #e5e5e1;
+      --border-strong:#d4d4d0;
+      --accent:       #d97757;
+      --accent-soft:  #fae8df;
+      --accent-dark:  #b85e3a;
+      --blue:         #2f6fea;
+      --blue-soft:    #eef3fd;
+      --radius-sm:    8px;
+      --radius:       14px;
+      --radius-lg:    20px;
+      --shadow-sm:    0 1px 3px rgba(20,20,20,.06);
+      --shadow-md:    0 4px 16px rgba(20,20,20,.07);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
-      padding: 0 16px 80px;
+      -webkit-font-smoothing: antialiased;
     }
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-    header {
-      padding: 40px 0 32px;
+
+    /* ── Top bar ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247,247,245,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      margin-bottom: 40px;
-    }
-    header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    header p {
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-    .lang-tabs {
+      padding: 0 24px;
+      height: 52px;
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .topbar__logo {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
       gap: 8px;
-      margin-bottom: 40px;
+    }
+    .topbar__logo-dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .topbar__back {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color .15s;
+    }
+    .topbar__back:hover { color: var(--accent); }
+
+    /* ── Page wrapper ── */
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 48px 0 36px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 36px;
+    }
+    .hero__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .hero__title {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .hero__meta {
+      font-size: 13px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero__meta-dot { opacity: .4; }
+
+    /* ── Language switcher ── */
+    .lang-switcher {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
     }
     .lang-btn {
-      padding: 8px 18px;
-      border-radius: 20px;
+      padding: 6px 16px;
+      border-radius: 999px;
       border: 1.5px solid var(--border);
-      background: transparent;
+      background: var(--surface);
       color: var(--text-muted);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
+      font-family: inherit;
       cursor: pointer;
       transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
+    .lang-btn:hover { border-color: var(--accent); color: var(--accent); }
     .lang-btn.active {
+      background: var(--accent-soft);
       border-color: var(--accent);
-      color: var(--accent);
-      background: rgba(249,115,22,0.08);
+      color: var(--accent-dark);
     }
+
+    /* ── Section visibility ── */
     .lang-section { display: none; }
     .lang-section.active { display: block; }
+
+    /* ── Section heading ── */
     h2 {
-      font-size: 20px;
-      font-weight: 600;
-      margin: 36px 0 12px;
+      font-size: 18px;
+      font-weight: 700;
       color: var(--text);
+      margin: 40px 0 14px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    h2::before {
+      content: attr(data-n);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 8px;
+      border-radius: 999px;
+      flex-shrink: 0;
     }
     h3 {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
-      margin: 24px 0 8px;
-      color: var(--accent);
+      color: var(--text-muted);
+      margin: 20px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
     }
-    p { margin-bottom: 12px; font-size: 15px; color: var(--text); }
-    ul { margin: 8px 0 16px 20px; }
-    li { margin-bottom: 6px; font-size: 15px; }
+
+    p {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    ul, ol {
+      margin: 4px 0 16px 20px;
+    }
+    li {
+      font-size: 15px;
+      margin-bottom: 7px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    strong { font-weight: 600; color: var(--text); }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    code {
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 5px;
+      color: var(--text);
+    }
+
+    /* ── Table ── */
+    .table-wrap {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin: 12px 0 24px;
+      box-shadow: var(--shadow-sm);
+    }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 16px 0 24px;
       font-size: 14px;
-    }
-    th {
-      text-align: left;
-      padding: 10px 14px;
       background: var(--surface);
-      border-bottom: 2px solid var(--border);
-      font-weight: 600;
     }
-    td {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-    tr:last-child td { border-bottom: none; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
+    thead tr { background: var(--surface-2); }
+    th {
+      padding: 11px 16px;
+      text-align: left;
       font-size: 12px;
       font-weight: 600;
-      background: rgba(249,115,22,0.12);
-      color: var(--accent);
-      margin-left: 6px;
-    }
-    .back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 40px;
-      font-size: 14px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
       color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
     }
-    .back:hover { color: var(--accent); }
-    .updated {
+    td {
+      padding: 11px 16px;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:nth-child(even) { background: var(--surface-2); }
+
+    /* ── Info card ── */
+    .info-card {
+      background: var(--blue-soft);
+      border: 1px solid rgba(47,111,234,.18);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin: 12px 0 20px;
+      font-size: 14px;
+      color: #1a3a7a;
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      margin-top: 56px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .doc-footer__links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .doc-footer a {
       font-size: 13px;
       color: var(--text-muted);
-      margin-top: 4px;
+      text-decoration: none;
     }
+    .doc-footer a:hover { color: var(--accent); }
+    .doc-footer__copy { font-size: 12px; color: var(--text-dim); }
+
+    /* ── Mobile ── */
     @media (max-width: 600px) {
-      header h1 { font-size: 22px; }
-      h2 { font-size: 17px; }
+      .hero__title { font-size: 26px; }
+      h2 { font-size: 16px; }
+      .topbar { padding: 0 16px; }
+      th, td { padding: 9px 12px; }
+      .doc-footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Privacy Policy — Claude Atlas</h1>
-      <p class="updated">Last updated: 17 May 2026 · Version 1.0</p>
-    </header>
 
-    <div class="lang-tabs">
-      <button class="lang-btn active" onclick="switchLang('en')">🇬🇧 English</button>
-      <button class="lang-btn" onclick="switchLang('ru')">🇷🇺 Русский</button>
-      <button class="lang-btn" onclick="switchLang('fi')">🇫🇮 Suomi</button>
+<nav class="topbar">
+  <a href="/" class="topbar__logo">
+    <span class="topbar__logo-dot"></span>
+    Claude Atlas
+  </a>
+  <a href="/" class="topbar__back">← Back to app</a>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero__eyebrow">Legal</div>
+    <h1 class="hero__title">Privacy Policy</h1>
+    <div class="hero__meta">
+      <span>Claude Atlas</span>
+      <span class="hero__meta-dot">·</span>
+      <span>Version 1.0</span>
+      <span class="hero__meta-dot">·</span>
+      <span>Last updated: 17 May 2026</span>
     </div>
+  </div>
 
-    <!-- ==================== ENGLISH ==================== -->
-    <div id="lang-en" class="lang-section active">
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="switchLang('en', this)">🇬🇧 English</button>
+    <button class="lang-btn" onclick="switchLang('ru', this)">🇷🇺 Русский</button>
+    <button class="lang-btn" onclick="switchLang('fi', this)">🇫🇮 Suomi</button>
+  </div>
 
-      <h2>1. Who We Are</h2>
-      <p>Claude Atlas ("we", "our", "the service") is an interactive learning platform about Claude AI. This Privacy Policy explains what personal data we collect, why, how long we keep it, and what rights you have under the General Data Protection Regulation (GDPR) and Finnish data protection law.</p>
-      <p>Data controller: Claude Atlas (individual operator). Contact: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
+  <!-- ═══════════════════════ ENGLISH ═══════════════════════ -->
+  <div id="lang-en" class="lang-section active">
 
-      <h2>2. What Data We Collect</h2>
-      <p>We follow <strong>privacy by design and data minimisation</strong>. We collect only what is necessary to provide the service.</p>
+    <h2 data-n="01">Who We Are</h2>
+    <p>Claude Atlas ("we", "our", "the service") is an interactive learning platform about Claude AI. This Privacy Policy explains what personal data we collect, why, how long we keep it, and what rights you have under the General Data Protection Regulation (GDPR) and Finnish data protection law.</p>
+    <p>Data controller: Claude Atlas (individual operator). Contact: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
 
-      <h3>When you create an account</h3>
-      <table>
-        <tr><th>Data</th><th>Why</th><th>Legal basis</th></tr>
+    <h2 data-n="02">What Data We Collect</h2>
+    <p>We follow <strong>privacy by design and data minimisation</strong>. We collect only what is necessary to provide the service.</p>
+
+    <h3>When you create an account</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Data</th><th>Why</th><th>Legal basis</th></tr></thead>
+      <tbody>
         <tr><td>Email address</td><td>Authentication via Magic Link</td><td>Contract (Art. 6(1)(b) GDPR)</td></tr>
         <tr><td>Consent timestamp &amp; version</td><td>Proof of consent</td><td>Legal obligation (Art. 6(1)(c))</td></tr>
         <tr><td>Account creation date</td><td>Technical audit trail</td><td>Legitimate interest (Art. 6(1)(f))</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h3>Optional data you provide</h3>
-      <table>
-        <tr><th>Data</th><th>Why</th><th>Legal basis</th></tr>
+    <h3>Optional data you provide</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Data</th><th>Why</th><th>Legal basis</th></tr></thead>
+      <tbody>
         <tr><td>Display name</td><td>Personalisation of your profile</td><td>Consent (Art. 6(1)(a))</td></tr>
         <tr><td>Language preference</td><td>Display interface in your language</td><td>Legitimate interest</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h3>Learning activity</h3>
-      <table>
-        <tr><th>Data</th><th>Why</th><th>Legal basis</th></tr>
+    <h3>Learning activity</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Data</th><th>Why</th><th>Legal basis</th></tr></thead>
+      <tbody>
         <tr><td>Tutorial progress (completed steps, timestamps)</td><td>Sync progress across devices</td><td>Contract</td></tr>
         <tr><td>Node status (viewed / to review)</td><td>Personalised learning map</td><td>Contract</td></tr>
         <tr><td>Bookmarks</td><td>Saved items across sessions</td><td>Contract</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h3>What we do NOT collect</h3>
-      <ul>
-        <li>Phone number, home address, date of birth</li>
-        <li>Finnish personal identity code (henkilötunnus)</li>
-        <li>Payment card data (handled by Stripe, if applicable)</li>
-        <li>Precise geolocation</li>
-        <li>Behavioural analytics without explicit consent</li>
-      </ul>
+    <h3>What we do NOT collect</h3>
+    <ul>
+      <li>Phone number, home address, date of birth</li>
+      <li>Finnish personal identity code (henkilötunnus)</li>
+      <li>Payment card data</li>
+      <li>Precise geolocation</li>
+      <li>Behavioural analytics without explicit consent</li>
+    </ul>
 
-      <h2>3. Cookies &amp; Analytics</h2>
-      <table>
-        <tr><th>Cookie</th><th>Purpose</th><th>Basis</th><th>Duration</th></tr>
-        <tr><td><code>sb-*</code> (Supabase)</td><td>Authentication session — strictly necessary</td><td>Art. 6(1)(b) — contract</td><td>Session / 1 year</td></tr>
-        <tr><td><code>ca_consent</code></td><td>Stores your cookie preference</td><td>Art. 6(1)(c) — legal obligation</td><td>1 year</td></tr>
-        <tr><td>Google Analytics (_ga, _gid)</td><td>Anonymous usage statistics — only with consent</td><td>Art. 6(1)(a) — consent</td><td>14 months (Google default)</td></tr>
-      </table>
-      <p>We implement <strong>GA4 Consent Mode v2</strong>: analytics storage is denied by default and only enabled after your explicit consent. GA4 is configured with <code>anonymize_ip: true</code> and advertising signals disabled. You can withdraw analytics consent at any time via <strong>Settings → Cookie Preferences → Reset</strong>.</p>
+    <h2 data-n="03">Cookies &amp; Analytics</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Cookie</th><th>Purpose</th><th>Basis</th><th>Duration</th></tr></thead>
+      <tbody>
+        <tr><td><code>sb-*</code> (Supabase)</td><td>Authentication session — strictly necessary</td><td>Art. 6(1)(b)</td><td>Session / 1 year</td></tr>
+        <tr><td><code>ca_consent</code></td><td>Stores your cookie preference</td><td>Art. 6(1)(c)</td><td>1 year</td></tr>
+        <tr><td>Google Analytics (_ga, _gid)</td><td>Anonymous usage statistics — only with consent</td><td>Art. 6(1)(a)</td><td>14 months</td></tr>
+      </tbody>
+    </table></div>
+    <div class="info-card">We implement <strong>GA4 Consent Mode v2</strong>: analytics storage is denied by default and only enabled after your explicit consent. GA4 is configured with <code>anonymize_ip: true</code> and advertising signals disabled. Withdraw consent anytime via <strong>Settings → Cookie Preferences → Reset</strong>.</div>
 
-      <h2>3a. Authentication Methods</h2>
-      <p>We offer two authentication methods:</p>
-      <ul>
-        <li><strong>Magic Link (email OTP)</strong> — we send a one-time link to your email. No password stored. Email used only for authentication.</li>
-        <li><strong>Google OAuth</strong> — you sign in via your Google account. We receive your email address and optionally your name from Google. No Google password or payment data is accessed. Data received from Google is governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. We only store the email address in our database. You must confirm consent to our Privacy Policy before being redirected to Google.</li>
-      </ul>
+    <h2 data-n="3a">Authentication Methods</h2>
+    <ul>
+      <li><strong>Magic Link (email OTP)</strong> — we send a one-time link to your email. No password stored.</li>
+      <li><strong>Google OAuth</strong> — we receive your email from Google. No password or payment data is accessed. Data from Google is governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. You must confirm consent before being redirected to Google.</li>
+    </ul>
 
-      <h2>4. Data Storage &amp; Transfers</h2>
-      <p>Your data is stored in Supabase (PostgreSQL) hosted in the <strong>EU Central region (Frankfurt, Germany)</strong>. No personal data is transferred outside the European Economic Area (EEA).</p>
-      <p>Google Analytics data is processed by Google LLC. As of 2024, GA4 uses EU-based data processing with IP anonymisation. Standard Contractual Clauses (SCCs) apply per Google's DPA.</p>
-      <p>Vercel (CDN/hosting) is located in the EU where possible. Static assets (no personal data) may be cached globally.</p>
+    <h2 data-n="04">Data Storage &amp; Transfers</h2>
+    <p>Your data is stored in Supabase (PostgreSQL) in the <strong>EU Central region (Frankfurt, Germany)</strong>. No personal data is transferred outside the EEA.</p>
+    <p>Google Analytics uses EU-based data processing with IP anonymisation. Standard Contractual Clauses (SCCs) apply per Google's DPA.</p>
+    <p>Vercel (CDN/hosting) is EU-preferred. Static assets may be cached globally.</p>
 
-      <h2>5. Data Retention</h2>
-      <table>
-        <tr><th>Data type</th><th>Retention period</th></tr>
+    <h2 data-n="05">Data Retention</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Data type</th><th>Retention period</th></tr></thead>
+      <tbody>
         <tr><td>Account &amp; profile</td><td>Until you delete your account</td></tr>
         <tr><td>Learning progress, bookmarks</td><td>Until you delete your account</td></tr>
-        <tr><td>Auth logs (Supabase internal)</td><td>30 days (Supabase default)</td></tr>
-        <tr><td>Analytics (GA4)</td><td>14 months (Google default, consent-based)</td></tr>
+        <tr><td>Auth logs (Supabase internal)</td><td>30 days</td></tr>
+        <tr><td>Analytics (GA4)</td><td>14 months (consent-based)</td></tr>
         <tr><td>Inactive accounts</td><td>Deleted after 2 years of inactivity</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h2>6. Your Rights (GDPR)</h2>
-      <p>Under GDPR you have the following rights. We respond within <strong>30 days</strong>.</p>
-      <ul>
-        <li><strong>Right of access</strong> — request a copy of all data we hold about you.</li>
-        <li><strong>Right to rectification</strong> — correct inaccurate data.</li>
-        <li><strong>Right to erasure ("right to be forgotten")</strong> — delete your account and all associated data via Settings → Delete account, or by emailing us.</li>
-        <li><strong>Right to data portability</strong> — download your data as JSON via Settings → Export data.</li>
-        <li><strong>Right to restrict processing</strong> — request that we limit how we use your data.</li>
-        <li><strong>Right to object</strong> — object to processing based on legitimate interest.</li>
-        <li><strong>Right to withdraw consent</strong> — withdraw cookie consent or delete your account at any time.</li>
-      </ul>
-      <p>To exercise your rights: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
-      <p>You also have the right to lodge a complaint with the Finnish Data Protection Ombudsman: <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></p>
+    <h2 data-n="06">Your Rights (GDPR)</h2>
+    <p>Under GDPR you have the following rights. We respond within <strong>30 days</strong>.</p>
+    <ul>
+      <li><strong>Right of access</strong> — request a copy of all data we hold about you.</li>
+      <li><strong>Right to rectification</strong> — correct inaccurate data.</li>
+      <li><strong>Right to erasure</strong> — delete your account via Settings → Delete account, or by emailing us.</li>
+      <li><strong>Right to data portability</strong> — download your data as JSON via Settings → Export data.</li>
+      <li><strong>Right to restrict processing</strong> — request that we limit how we use your data.</li>
+      <li><strong>Right to object</strong> — object to processing based on legitimate interest.</li>
+      <li><strong>Right to withdraw consent</strong> — withdraw cookie consent or delete your account at any time.</li>
+    </ul>
+    <p>To exercise your rights: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a><br>
+    Complaints: Finnish Data Protection Ombudsman — <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></p>
 
-      <h2>7. Data Security</h2>
-      <ul>
-        <li>All data transmitted over HTTPS (TLS 1.2+)</li>
-        <li>Row Level Security (RLS) on all database tables — users can only access their own data</li>
-        <li>No secret API keys in client-side code</li>
-        <li>No passwords stored — authentication via Magic Link (email OTP) or Google OAuth</li>
-        <li>Age verification required at registration: users must confirm they are 16 or older (GDPR Art. 8)</li>
-      </ul>
+    <h2 data-n="07">Data Security</h2>
+    <ul>
+      <li>All data transmitted over HTTPS (TLS 1.2+)</li>
+      <li>Row Level Security (RLS) on all database tables</li>
+      <li>No secret API keys in client-side code</li>
+      <li>No passwords stored — Magic Link or Google OAuth only</li>
+      <li>Age verification (16+) required at registration (GDPR Art. 8)</li>
+    </ul>
 
-      <h2>8. Third-Party Processors</h2>
-      <table>
-        <tr><th>Processor</th><th>Purpose</th><th>Location</th><th>DPA</th></tr>
+    <h2 data-n="08">Third-Party Processors</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Processor</th><th>Purpose</th><th>Location</th><th>DPA</th></tr></thead>
+      <tbody>
         <tr><td>Supabase Inc.</td><td>Database, authentication</td><td>EU (Frankfurt)</td><td><a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a></td></tr>
         <tr><td>Vercel Inc.</td><td>Hosting, CDN</td><td>EU preferred</td><td><a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">vercel.com/legal</a></td></tr>
         <tr><td>Google LLC (GA4)</td><td>Anonymous analytics (consent-based)</td><td>EU (anonymised)</td><td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com</a></td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h2>9. Children (GDPR Art. 8)</h2>
-      <p>Claude Atlas is not directed at children under 16. We require users to confirm their age (16+) before creating an account. We do not knowingly collect data from minors. If you believe a child has provided data, contact us at <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a> and we will delete it within 72 hours.</p>
+    <h2 data-n="09">Children (GDPR Art. 8)</h2>
+    <p>Claude Atlas is not directed at children under 16. We require age confirmation at registration. If you believe a child has provided data, contact us at <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a> — we will delete it within 72 hours.</p>
 
-      <h2>10. Changes to This Policy</h2>
-      <p>We may update this policy. We will notify registered users by email for material changes. The version number and date at the top of this page indicate the current revision.</p>
+    <h2 data-n="10">Changes to This Policy</h2>
+    <p>We may update this policy. Registered users will be notified by email of material changes.</p>
 
-      <a href="/" class="back">← Back to Claude Atlas</a>
+    <div class="doc-footer">
+      <div class="doc-footer__links">
+        <a href="/">← Back to Claude Atlas</a>
+        <a href="/terms-of-service">Terms of Service</a>
+        <a href="mailto:denisantropov@gmail.com">Contact</a>
+      </div>
+      <span class="doc-footer__copy">© 2026 Claude Atlas</span>
     </div>
+  </div>
 
-    <!-- ==================== РУССКИЙ ==================== -->
-    <div id="lang-ru" class="lang-section">
+  <!-- ═══════════════════════ РУССКИЙ ═══════════════════════ -->
+  <div id="lang-ru" class="lang-section">
 
-      <h2>1. Кто мы</h2>
-      <p>Claude Atlas («мы», «наш сервис») — интерактивная обучающая платформа о Claude AI. Эта Политика конфиденциальности объясняет, какие персональные данные мы собираем, зачем, как долго храним и какие права у вас есть согласно GDPR и законодательству Финляндии о защите данных.</p>
-      <p>Оператор данных: Claude Atlas (индивидуальный оператор). Контакт: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
+    <h2 data-n="01">Кто мы</h2>
+    <p>Claude Atlas («мы», «наш сервис») — интерактивная обучающая платформа о Claude AI. Эта Политика конфиденциальности объясняет, какие персональные данные мы собираем, зачем, как долго храним и какие права у вас есть согласно GDPR и законодательству Финляндии.</p>
+    <p>Оператор данных: Claude Atlas (индивидуальный оператор). Контакт: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
 
-      <h2>2. Какие данные мы собираем</h2>
-      <p>Мы следуем принципу <strong>privacy by design и минимизации данных</strong>. Собираем только то, что необходимо для работы сервиса.</p>
+    <h2 data-n="02">Какие данные мы собираем</h2>
+    <p>Мы следуем принципу <strong>privacy by design и минимизации данных</strong>.</p>
 
-      <h3>При создании аккаунта</h3>
-      <table>
-        <tr><th>Данные</th><th>Зачем</th><th>Правовое основание</th></tr>
+    <h3>При создании аккаунта</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Данные</th><th>Зачем</th><th>Правовое основание</th></tr></thead>
+      <tbody>
         <tr><td>Email-адрес</td><td>Аутентификация через Magic Link</td><td>Договор (ст. 6(1)(b) GDPR)</td></tr>
         <tr><td>Дата и версия согласия</td><td>Подтверждение согласия</td><td>Юридическое обязательство (ст. 6(1)(c))</td></tr>
         <tr><td>Дата создания аккаунта</td><td>Технический аудиторский след</td><td>Законный интерес (ст. 6(1)(f))</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h3>Данные, которые вы предоставляете добровольно</h3>
-      <table>
-        <tr><th>Данные</th><th>Зачем</th><th>Правовое основание</th></tr>
+    <h3>Данные, которые вы предоставляете добровольно</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Данные</th><th>Зачем</th><th>Правовое основание</th></tr></thead>
+      <tbody>
         <tr><td>Отображаемое имя</td><td>Персонализация профиля</td><td>Согласие (ст. 6(1)(a))</td></tr>
         <tr><td>Предпочитаемый язык</td><td>Интерфейс на вашем языке</td><td>Законный интерес</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h3>Учебная активность</h3>
-      <table>
-        <tr><th>Данные</th><th>Зачем</th><th>Правовое основание</th></tr>
+    <h3>Учебная активность</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Данные</th><th>Зачем</th><th>Правовое основание</th></tr></thead>
+      <tbody>
         <tr><td>Прогресс туториалов (шаги, даты)</td><td>Синхронизация между устройствами</td><td>Договор</td></tr>
         <tr><td>Статус узлов (просмотрено / повторить)</td><td>Персональная карта обучения</td><td>Договор</td></tr>
         <tr><td>Закладки</td><td>Сохранённые элементы</td><td>Договор</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h3>Что мы НЕ собираем</h3>
-      <ul>
-        <li>Номер телефона, домашний адрес, дата рождения</li>
-        <li>Финский личный код (henkilötunnus)</li>
-        <li>Данные банковских карт (обрабатываются Stripe, если применимо)</li>
-        <li>Точную геолокацию</li>
-        <li>Поведенческую аналитику без явного согласия</li>
-      </ul>
+    <h3>Что мы НЕ собираем</h3>
+    <ul>
+      <li>Номер телефона, домашний адрес, дата рождения</li>
+      <li>Финский личный код (henkilötunnus)</li>
+      <li>Данные банковских карт</li>
+      <li>Точную геолокацию</li>
+      <li>Поведенческую аналитику без явного согласия</li>
+    </ul>
 
-      <h2>3. Cookies и аналитика</h2>
-      <p>Мы используем <strong>Google Analytics 4</strong> только после вашего явного согласия через баннер cookies. GA4 собирает анонимную статистику (просмотры страниц, длительность сессий). Вы можете отозвать согласие в любой момент, перезагрузив страницу и отказавшись от cookies.</p>
-      <p>Supabase хранит сессионный cookie для поддержания входа в систему. Этот cookie технически необходим для аутентификации.</p>
+    <h2 data-n="03">Cookies и аналитика</h2>
+    <div class="info-card">Мы используем <strong>Google Analytics 4</strong> только после явного согласия через баннер cookies. Реализован <strong>GA4 Consent Mode v2</strong>: аналитическое хранилище запрещено по умолчанию, <code>anonymize_ip: true</code>. Отозвать согласие: <strong>Настройки → Управление куки → Сброс</strong>.</div>
 
-      <h2>4. Хранение данных и передачи</h2>
-      <p>Данные хранятся в Supabase (PostgreSQL) в регионе <strong>EU Central (Франкфурт, Германия)</strong>. Никакие данные не передаются за пределы Европейской экономической зоны.</p>
+    <h2 data-n="04">Хранение данных и передачи</h2>
+    <p>Данные хранятся в Supabase (PostgreSQL) в регионе <strong>EU Central (Франкфурт, Германия)</strong>. Данные не передаются за пределы ЕЭЗ.</p>
 
-      <h2>5. Сроки хранения</h2>
-      <table>
-        <tr><th>Тип данных</th><th>Срок хранения</th></tr>
-        <tr><td>Аккаунт и профиль</td><td>До удаления аккаунта вами</td></tr>
-        <tr><td>Прогресс, закладки</td><td>До удаления аккаунта вами</td></tr>
-        <tr><td>Журналы Auth (внутренние Supabase)</td><td>30 дней</td></tr>
+    <h2 data-n="05">Сроки хранения</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Тип данных</th><th>Срок хранения</th></tr></thead>
+      <tbody>
+        <tr><td>Аккаунт и профиль</td><td>До удаления аккаунта</td></tr>
+        <tr><td>Прогресс, закладки</td><td>До удаления аккаунта</td></tr>
+        <tr><td>Журналы Auth (Supabase)</td><td>30 дней</td></tr>
         <tr><td>Аналитика GA4</td><td>14 месяцев (с согласия)</td></tr>
-        <tr><td>Неактивные аккаунты</td><td>Удаляются через 2 года бездействия</td></tr>
-      </table>
+        <tr><td>Неактивные аккаунты</td><td>Удаляются через 2 года</td></tr>
+      </tbody>
+    </table></div>
 
-      <h2>6. Ваши права (GDPR)</h2>
-      <p>Согласно GDPR у вас есть следующие права. Мы отвечаем в течение <strong>30 дней</strong>.</p>
-      <ul>
-        <li><strong>Право на доступ</strong> — запросить копию всех данных о вас.</li>
-        <li><strong>Право на исправление</strong> — исправить неточные данные.</li>
-        <li><strong>Право на удаление («право быть забытым»)</strong> — удалить аккаунт и все данные через Настройки → Удалить аккаунт или по email.</li>
-        <li><strong>Право на переносимость данных</strong> — скачать данные в формате JSON через Настройки → Экспорт.</li>
-        <li><strong>Право на ограничение обработки</strong> — ограничить использование ваших данных.</li>
-        <li><strong>Право на возражение</strong> — возражать против обработки на основе законного интереса.</li>
-        <li><strong>Право отозвать согласие</strong> — отозвать согласие на cookies или удалить аккаунт в любое время.</li>
-      </ul>
-      <p>Для реализации прав: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
-      <p>Вы также вправе подать жалобу в надзорный орган Финляндии по защите данных: <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></p>
+    <h2 data-n="06">Ваши права (GDPR)</h2>
+    <p>Согласно GDPR у вас есть следующие права. Мы отвечаем в течение <strong>30 дней</strong>.</p>
+    <ul>
+      <li><strong>Право на доступ</strong> — запросить копию всех данных о вас.</li>
+      <li><strong>Право на исправление</strong> — исправить неточные данные.</li>
+      <li><strong>Право на удаление</strong> — удалить аккаунт через Настройки → Удалить аккаунт.</li>
+      <li><strong>Право на переносимость</strong> — скачать данные в JSON через Настройки → Экспорт.</li>
+      <li><strong>Право на ограничение обработки</strong> — ограничить использование ваших данных.</li>
+      <li><strong>Право на возражение</strong> — возражать против обработки на основе законного интереса.</li>
+      <li><strong>Право отозвать согласие</strong> — в любой момент.</li>
+    </ul>
+    <p>Для реализации прав: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a><br>
+    Жалобы: Финский уполномоченный по защите данных — <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></p>
 
-      <h2>7. Безопасность данных</h2>
-      <ul>
-        <li>Все данные передаются по HTTPS (TLS 1.2+)</li>
-        <li>Row Level Security (RLS) на всех таблицах — пользователь видит только свои данные</li>
-        <li>Секретные ключи не хранятся в клиентском коде</li>
-        <li>Пароли не хранятся — аутентификация только через Magic Link (email OTP)</li>
-      </ul>
+    <h2 data-n="07">Безопасность данных</h2>
+    <ul>
+      <li>Все данные передаются по HTTPS (TLS 1.2+)</li>
+      <li>Row Level Security (RLS) на всех таблицах базы данных</li>
+      <li>Секретные ключи не хранятся в клиентском коде</li>
+      <li>Пароли не хранятся — Magic Link или Google OAuth</li>
+      <li>Подтверждение возраста (16+) при регистрации (GDPR ст. 8)</li>
+    </ul>
 
-      <h2>8. Сторонние обработчики данных</h2>
-      <table>
-        <tr><th>Обработчик</th><th>Цель</th><th>Расположение</th></tr>
+    <h2 data-n="08">Сторонние обработчики</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Обработчик</th><th>Цель</th><th>Расположение</th></tr></thead>
+      <tbody>
         <tr><td>Supabase Inc.</td><td>База данных, аутентификация</td><td>ЕС (Франкфурт)</td></tr>
         <tr><td>Vercel Inc.</td><td>Хостинг, CDN</td><td>Приоритетно ЕС</td></tr>
         <tr><td>Google LLC (GA4)</td><td>Анонимная аналитика (с согласия)</td><td>ЕС (анонимизировано)</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h2>9. Дети</h2>
-      <p>Claude Atlas не предназначен для детей до 16 лет. Мы не собираем данные несовершеннолетних намеренно. Если вы считаете, что ребёнок предоставил данные — напишите нам, мы удалим их немедленно.</p>
+    <h2 data-n="09">Дети</h2>
+    <p>Claude Atlas не предназначен для детей до 16 лет. При регистрации требуется подтверждение возраста. Если вы считаете, что ребёнок предоставил данные — напишите нам, мы удалим их в течение 72 часов.</p>
 
-      <h2>10. Изменения в политике</h2>
-      <p>Мы можем обновлять эту политику. При существенных изменениях зарегистрированные пользователи получат уведомление по email.</p>
+    <h2 data-n="10">Изменения политики</h2>
+    <p>При существенных изменениях зарегистрированные пользователи получат уведомление по email.</p>
 
-      <a href="/" class="back">← Вернуться в Claude Atlas</a>
+    <div class="doc-footer">
+      <div class="doc-footer__links">
+        <a href="/">← Вернуться в Claude Atlas</a>
+        <a href="/terms-of-service">Условия использования</a>
+        <a href="mailto:denisantropov@gmail.com">Контакт</a>
+      </div>
+      <span class="doc-footer__copy">© 2026 Claude Atlas</span>
     </div>
+  </div>
 
-    <!-- ==================== SUOMI ==================== -->
-    <div id="lang-fi" class="lang-section">
+  <!-- ═══════════════════════ SUOMI ═══════════════════════ -->
+  <div id="lang-fi" class="lang-section">
 
-      <h2>1. Keitä olemme</h2>
-      <p>Claude Atlas ("me", "palvelumme") on interaktiivinen oppimisalusta Claude AI:sta. Tämä tietosuojakäytäntö selittää, mitä henkilötietoja keräämme, miksi, kuinka kauan säilytämme niitä ja mitkä ovat oikeutesi EU:n yleisen tietosuoja-asetuksen (GDPR) ja Suomen tietosuojalain nojalla.</p>
-      <p>Rekisterinpitäjä: Claude Atlas (yksityinen toimija). Yhteystiedot: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
+    <h2 data-n="01">Keitä olemme</h2>
+    <p>Claude Atlas ("me", "palvelumme") on interaktiivinen oppimisalusta Claude AI:sta. Tämä tietosuojakäytäntö selittää, mitä henkilötietoja keräämme, miksi, kuinka kauan säilytämme niitä ja mitkä ovat oikeutesi GDPR:n ja Suomen tietosuojalain nojalla.</p>
+    <p>Rekisterinpitäjä: Claude Atlas (yksityinen toimija). Yhteystiedot: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
 
-      <h2>2. Mitä tietoja keräämme</h2>
-      <p>Noudatamme <strong>sisäänrakennetun tietosuojan ja tietojen minimoinnin periaatteita</strong>. Keräämme vain palvelun tarjoamiseen tarvittavat tiedot.</p>
+    <h2 data-n="02">Mitä tietoja keräämme</h2>
+    <p>Noudatamme <strong>sisäänrakennetun tietosuojan ja tietojen minimoinnin periaatteita</strong>.</p>
 
-      <h3>Tilin luomisen yhteydessä</h3>
-      <table>
-        <tr><th>Tieto</th><th>Miksi</th><th>Oikeusperusta</th></tr>
+    <h3>Tilin luomisen yhteydessä</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Tieto</th><th>Miksi</th><th>Oikeusperusta</th></tr></thead>
+      <tbody>
         <tr><td>Sähköpostiosoite</td><td>Todennus Magic Linkin kautta</td><td>Sopimus (GDPR 6(1)(b))</td></tr>
         <tr><td>Suostumuksen aikaleima ja versio</td><td>Suostumuksen todistus</td><td>Lakisääteinen velvoite (6(1)(c))</td></tr>
         <tr><td>Tilin luomispäivä</td><td>Tekninen kirjausketju</td><td>Oikeutettu etu (6(1)(f))</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h3>Vapaaehtoisesti antamasi tiedot</h3>
-      <table>
-        <tr><th>Tieto</th><th>Miksi</th><th>Oikeusperusta</th></tr>
+    <h3>Vapaaehtoisesti antamasi tiedot</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Tieto</th><th>Miksi</th><th>Oikeusperusta</th></tr></thead>
+      <tbody>
         <tr><td>Näyttönimi</td><td>Profiilisi personointi</td><td>Suostumus (6(1)(a))</td></tr>
         <tr><td>Kieliasetus</td><td>Käyttöliittymä valitsemallasi kielellä</td><td>Oikeutettu etu</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h3>Oppimisaktiviteetti</h3>
-      <table>
-        <tr><th>Tieto</th><th>Miksi</th><th>Oikeusperusta</th></tr>
+    <h3>Oppimisaktiviteetti</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Tieto</th><th>Miksi</th><th>Oikeusperusta</th></tr></thead>
+      <tbody>
         <tr><td>Tutoriaalien edistyminen (vaiheet, aikaleimat)</td><td>Synkronointi laitteiden välillä</td><td>Sopimus</td></tr>
         <tr><td>Solmujen tila (katsottu / kerrataan)</td><td>Henkilökohtainen oppimiskartta</td><td>Sopimus</td></tr>
         <tr><td>Kirjanmerkit</td><td>Tallennetut kohteet</td><td>Sopimus</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h3>Mitä emme kerää</h3>
-      <ul>
-        <li>Puhelinnumero, kotiosoite, syntymäaika</li>
-        <li>Henkilötunnus</li>
-        <li>Maksukorttitiedot (käsittelee Stripe, tarvittaessa)</li>
-        <li>Tarkka sijaintitieto</li>
-        <li>Käyttäytymisanalytiikka ilman nimenomaista suostumusta</li>
-      </ul>
+    <h3>Mitä emme kerää</h3>
+    <ul>
+      <li>Puhelinnumero, kotiosoite, syntymäaika</li>
+      <li>Henkilötunnus</li>
+      <li>Maksukorttitiedot</li>
+      <li>Tarkka sijaintitieto</li>
+      <li>Käyttäytymisanalytiikka ilman nimenomaista suostumusta</li>
+    </ul>
 
-      <h2>3. Evästeet ja analytiikka</h2>
-      <p>Käytämme <strong>Google Analytics 4:ää</strong> vain saatuamme nimenomaisen suostumuksesi evästebannerin kautta. GA4 kerää anonyymiä käyttötilastoa. Voit peruuttaa suostumuksesi milloin tahansa lataamalla sivun uudelleen ja kieltäytymällä evästeistä.</p>
-      <p>Supabase tallentaa istuntoevästeen kirjautumisen ylläpitämiseksi. Tämä eväste on teknisesti välttämätön todentamiselle.</p>
+    <h2 data-n="03">Evästeet ja analytiikka</h2>
+    <div class="info-card">Käytämme <strong>Google Analytics 4:ää</strong> vain suostumuksesi jälkeen. Toteutamme <strong>GA4 Consent Mode v2:n</strong>: analytiikka on oletuksena estetty, <code>anonymize_ip: true</code>. Peruuta suostumus: <strong>Asetukset → Evästeasetukset → Nollaa</strong>.</div>
 
-      <h2>4. Tietojen säilytys ja siirrot</h2>
-      <p>Tietosi säilytetään Supabasessa (PostgreSQL) <strong>EU:n keskisessä alueella (Frankfurt, Saksa)</strong>. Tietoja ei siirretä Euroopan talousalueen ulkopuolelle.</p>
+    <h2 data-n="04">Tietojen säilytys ja siirrot</h2>
+    <p>Tietosi säilytetään Supabasessa (PostgreSQL) <strong>EU:n keskisessä alueella (Frankfurt, Saksa)</strong>. Tietoja ei siirretä ETA-alueen ulkopuolelle.</p>
 
-      <h2>5. Säilytysajat</h2>
-      <table>
-        <tr><th>Tietotyyppi</th><th>Säilytysaika</th></tr>
+    <h2 data-n="05">Säilytysajat</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Tietotyyppi</th><th>Säilytysaika</th></tr></thead>
+      <tbody>
         <tr><td>Tili ja profiili</td><td>Kunnes poistat tilisi</td></tr>
         <tr><td>Oppimisedistyminen, kirjanmerkit</td><td>Kunnes poistat tilisi</td></tr>
         <tr><td>Auth-lokit (Supabase sisäiset)</td><td>30 päivää</td></tr>
         <tr><td>Analytiikka (GA4)</td><td>14 kuukautta (suostumuksen perusteella)</td></tr>
         <tr><td>Passiiviset tilit</td><td>Poistetaan 2 vuoden toimettomuuden jälkeen</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h2>6. Oikeutesi (GDPR)</h2>
-      <p>GDPR:n nojalla sinulla on seuraavat oikeudet. Vastaamme <strong>30 päivän</strong> kuluessa.</p>
-      <ul>
-        <li><strong>Oikeus saada tietoja</strong> — pyytää kopio kaikista sinua koskevista tiedoista.</li>
-        <li><strong>Oikeus oikaista tietoja</strong> — korjata virheelliset tiedot.</li>
-        <li><strong>Oikeus tulla unohdetuksi</strong> — poistaa tili ja kaikki tiedot Asetukset → Poista tili -kohdasta tai sähköpostitse.</li>
-        <li><strong>Oikeus siirtää tietoja</strong> — ladata tiedot JSON-muodossa Asetukset → Vie tiedot -kohdasta.</li>
-        <li><strong>Oikeus rajoittaa käsittelyä</strong> — rajoittaa tietojesi käyttöä.</li>
-        <li><strong>Vastustamisoikeus</strong> — vastustaa oikeutettuun etuun perustuvaa käsittelyä.</li>
-        <li><strong>Oikeus peruuttaa suostumus</strong> — peruuttaa evästeiden hyväksyntä tai poistaa tili milloin tahansa.</li>
-      </ul>
-      <p>Oikeuksien käyttämiseksi: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
-      <p>Sinulla on myös oikeus tehdä valitus tietosuojavaltuutetulle: <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></p>
+    <h2 data-n="06">Oikeutesi (GDPR)</h2>
+    <p>GDPR:n nojalla sinulla on seuraavat oikeudet. Vastaamme <strong>30 päivän</strong> kuluessa.</p>
+    <ul>
+      <li><strong>Oikeus saada tietoja</strong> — pyytää kopio kaikista sinua koskevista tiedoista.</li>
+      <li><strong>Oikeus oikaista tietoja</strong> — korjata virheelliset tiedot.</li>
+      <li><strong>Oikeus tulla unohdetuksi</strong> — poistaa tili Asetukset → Poista tili -kohdasta.</li>
+      <li><strong>Oikeus siirtää tietoja</strong> — ladata tiedot JSON-muodossa.</li>
+      <li><strong>Oikeus rajoittaa käsittelyä</strong> — rajoittaa tietojesi käyttöä.</li>
+      <li><strong>Vastustamisoikeus</strong> — vastustaa oikeutettuun etuun perustuvaa käsittelyä.</li>
+      <li><strong>Oikeus peruuttaa suostumus</strong> — milloin tahansa.</li>
+    </ul>
+    <p>Oikeuksien käyttämiseksi: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a><br>
+    Valitukset: <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></p>
 
-      <h2>7. Tietoturva</h2>
-      <ul>
-        <li>Kaikki tiedot siirretään HTTPS-yhteyden kautta (TLS 1.2+)</li>
-        <li>Row Level Security (RLS) kaikissa tietokantatauluissa — käyttäjä näkee vain omat tietonsa</li>
-        <li>Salaisia API-avaimia ei tallenneta asiakaspuolen koodiin</li>
-        <li>Salasanoja ei tallenneta — todennus vain Magic Linkin kautta (sähköposti-OTP)</li>
-      </ul>
+    <h2 data-n="07">Tietoturva</h2>
+    <ul>
+      <li>Kaikki tiedot siirretään HTTPS-yhteyden kautta (TLS 1.2+)</li>
+      <li>Row Level Security (RLS) kaikissa tietokantatauluissa</li>
+      <li>Salaisia API-avaimia ei tallenneta asiakaspuolen koodiin</li>
+      <li>Salasanoja ei tallenneta — Magic Link tai Google OAuth</li>
+      <li>Ikävahvistus (16+) rekisteröitymisessä (GDPR 8 art.)</li>
+    </ul>
 
-      <h2>8. Kolmannen osapuolen käsittelijät</h2>
-      <table>
-        <tr><th>Käsittelijä</th><th>Tarkoitus</th><th>Sijainti</th></tr>
+    <h2 data-n="08">Kolmannen osapuolen käsittelijät</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Käsittelijä</th><th>Tarkoitus</th><th>Sijainti</th></tr></thead>
+      <tbody>
         <tr><td>Supabase Inc.</td><td>Tietokanta, todennus</td><td>EU (Frankfurt)</td></tr>
         <tr><td>Vercel Inc.</td><td>Hosting, CDN</td><td>EU ensisijaisesti</td></tr>
         <tr><td>Google LLC (GA4)</td><td>Anonyymi analytiikka (suostumuksen perusteella)</td><td>EU (anonymisoitu)</td></tr>
-      </table>
+      </tbody>
+    </table></div>
 
-      <h2>9. Lapset</h2>
-      <p>Claude Atlas ei ole suunnattu alle 16-vuotiaille. Emme tietoisesti kerää alaikäisten tietoja. Jos uskot lapsen antaneen tietoja, ota yhteyttä ja poistamme ne välittömästi.</p>
+    <h2 data-n="09">Lapset</h2>
+    <p>Claude Atlas ei ole suunnattu alle 16-vuotiaille. Rekisteröitymisessä vaaditaan iän vahvistus. Jos uskot lapsen antaneen tietoja, ota yhteyttä — poistamme ne 72 tunnin kuluessa.</p>
 
-      <h2>10. Muutokset tähän käytäntöön</h2>
-      <p>Voimme päivittää tätä käytäntöä. Ilmoitamme rekisteröityneille käyttäjille olennaisista muutoksista sähköpostitse.</p>
+    <h2 data-n="10">Muutokset tähän käytäntöön</h2>
+    <p>Rekisteröityneille käyttäjille ilmoitetaan olennaisista muutoksista sähköpostitse.</p>
 
-      <a href="/" class="back">← Takaisin Claude Atlakseen</a>
+    <div class="doc-footer">
+      <div class="doc-footer__links">
+        <a href="/">← Takaisin Claude Atlakseen</a>
+        <a href="/terms-of-service">Käyttöehdot</a>
+        <a href="mailto:denisantropov@gmail.com">Yhteystiedot</a>
+      </div>
+      <span class="doc-footer__copy">© 2026 Claude Atlas</span>
     </div>
   </div>
 
-  <script>
-    function switchLang(lang) {
-      document.querySelectorAll('.lang-section').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById('lang-' + lang).classList.add('active');
-      event.target.classList.add('active');
-    }
-  </script>
+</div>
+
+<script>
+  function switchLang(lang, btn) {
+    document.querySelectorAll('.lang-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('lang-' + lang).classList.add('active');
+    btn.classList.add('active');
+  }
+  const bl = navigator.language?.slice(0,2).toLowerCase();
+  if (bl === 'ru') { document.querySelector('[onclick*="ru"]').click(); }
+  else if (bl === 'fi') { document.querySelector('[onclick*="fi"]').click(); }
+</script>
 </body>
 </html>

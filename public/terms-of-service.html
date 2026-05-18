@@ -4,75 +4,284 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Terms of Service — Claude Atlas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f0f0f;
-      --surface: #1a1a1a;
-      --border: #2a2a2a;
-      --text: #e8e8e8;
-      --text-muted: #888;
-      --accent: #f97316;
-      --radius: 10px;
+      --bg:           #f7f7f5;
+      --surface:      #ffffff;
+      --surface-2:    #fafaf7;
+      --surface-3:    #f1f1ef;
+      --text:         #1a1a1a;
+      --text-muted:   #6b6b6b;
+      --text-dim:     #9a9a9a;
+      --border:       #e5e5e1;
+      --border-strong:#d4d4d0;
+      --accent:       #d97757;
+      --accent-soft:  #fae8df;
+      --accent-dark:  #b85e3a;
+      --blue:         #2f6fea;
+      --blue-soft:    #eef3fd;
+      --radius-sm:    8px;
+      --radius:       14px;
+      --radius-lg:    20px;
+      --shadow-sm:    0 1px 3px rgba(20,20,20,.06);
+      --shadow-md:    0 4px 16px rgba(20,20,20,.07);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
-      padding: 0 16px 80px;
+      -webkit-font-smoothing: antialiased;
     }
-    .container { max-width: 760px; margin: 0 auto; }
-    header { padding: 40px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
-    header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
-    header p { color: var(--text-muted); font-size: 14px; }
-    .lang-switch { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-    .lang-switch a {
-      padding: 5px 14px; border-radius: 20px; font-size: 13px;
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--text-muted); text-decoration: none; transition: all .15s;
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247,247,245,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
-    .lang-switch a.active, .lang-switch a:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-    h2 { font-size: 17px; font-weight: 600; margin: 28px 0 10px; color: var(--accent); }
-    p { margin-bottom: 12px; font-size: 15px; }
-    ul, ol { margin: 8px 0 16px 20px; }
-    li { margin-bottom: 6px; font-size: 15px; }
-    a { color: var(--accent); }
+    .topbar__logo {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar__logo-dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .topbar__back {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color .15s;
+    }
+    .topbar__back:hover { color: var(--accent); }
+
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    .hero {
+      padding: 48px 0 36px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 36px;
+    }
+    .hero__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .hero__title {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .hero__meta {
+      font-size: 13px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero__meta-dot { opacity: .4; }
+
+    .lang-switcher {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .lang-btn {
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all .15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .lang-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent-dark);
+    }
+
     .section { display: none; }
     .section.active { display: block; }
-    strong { color: var(--text); }
-    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); text-decoration: none; font-size: 14px; margin-bottom: 24px; }
-    .back-link:hover { color: var(--text); }
-    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 14px; }
-    th, td { padding: 10px 12px; border: 1px solid var(--border); text-align: left; }
-    th { background: var(--surface); color: var(--text-muted); font-weight: 500; }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 40px 0 14px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    h2::before {
+      content: attr(data-n);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 8px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+
+    p {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.7;
+    }
+
+    ul, ol {
+      margin: 4px 0 16px 20px;
+    }
+    li {
+      font-size: 15px;
+      margin-bottom: 7px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    strong { font-weight: 600; color: var(--text); }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .info-card {
+      background: var(--blue-soft);
+      border: 1px solid rgba(47,111,234,.18);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin: 12px 0 20px;
+      font-size: 14px;
+      color: #1a3a7a;
+      line-height: 1.6;
+    }
+
+    .warn-card {
+      background: var(--accent-soft);
+      border: 1px solid rgba(217,119,87,.25);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin: 12px 0 20px;
+      font-size: 14px;
+      color: var(--accent-dark);
+      line-height: 1.6;
+    }
+
+    .doc-footer {
+      margin-top: 56px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .doc-footer__links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .doc-footer a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .doc-footer a:hover { color: var(--accent); }
+    .doc-footer__copy { font-size: 12px; color: var(--text-dim); }
+
+    @media (max-width: 600px) {
+      .hero__title { font-size: 26px; }
+      h2 { font-size: 16px; }
+      .topbar { padding: 0 16px; }
+      .doc-footer { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
-<div class="container">
 
-  <a href="/" class="back-link">← Claude Atlas</a>
+<nav class="topbar">
+  <a href="/" class="topbar__logo">
+    <span class="topbar__logo-dot"></span>
+    Claude Atlas
+  </a>
+  <a href="/" class="topbar__back">← Back to app</a>
+</nav>
 
-  <div class="lang-switch">
-    <a href="#" onclick="setLang('en')" id="btn-en" class="active">🇬🇧 English</a>
-    <a href="#" onclick="setLang('ru')" id="btn-ru">🇷🇺 Русский</a>
-    <a href="#" onclick="setLang('fi')" id="btn-fi">🇫🇮 Suomi</a>
+<div class="page">
+
+  <div class="hero">
+    <div class="hero__eyebrow">Legal</div>
+    <h1 class="hero__title">Terms of Service</h1>
+    <div class="hero__meta">
+      <span>Claude Atlas</span>
+      <span class="hero__meta-dot">·</span>
+      <span>Version 1.0</span>
+      <span class="hero__meta-dot">·</span>
+      <span>Effective: May 2026</span>
+    </div>
   </div>
 
-  <!-- ═══════════════════════════ ENGLISH ═══════════════════════════ -->
-  <div id="lang-en" class="section active">
-    <header>
-      <h1>Terms of Service</h1>
-      <p>Claude Atlas · Version 1.0 · Effective: May 2026</p>
-    </header>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en', this)">🇬🇧 English</button>
+    <button class="lang-btn" onclick="setLang('ru', this)">🇷🇺 Русский</button>
+    <button class="lang-btn" onclick="setLang('fi', this)">🇫🇮 Suomi</button>
+  </div>
 
-    <h2>1. Acceptance</h2>
+  <!-- ═══════════════════════ ENGLISH ═══════════════════════ -->
+  <div id="lang-en" class="section active">
+
+    <h2 data-n="01">Acceptance</h2>
     <p>By accessing or using Claude Atlas ("Service", "we", "our"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service. Users must be <strong>16 years or older</strong>.</p>
 
-    <h2>2. Description of Service</h2>
+    <h2 data-n="02">Description of Service</h2>
     <p>Claude Atlas is an interactive learning platform about Anthropic's Claude AI. It provides a knowledge mindmap, tutorials, prompt templates, and learning progress tracking. The Service is provided free of charge for registered users.</p>
+    <div class="info-card">Claude Atlas is an independent educational project and is <strong>not affiliated with or endorsed by Anthropic, PBC</strong>. "Claude" is a trademark of Anthropic.</div>
 
-    <h2>3. User Accounts</h2>
+    <h2 data-n="03">User Accounts</h2>
     <ul>
       <li>You may register via Magic Link (email) or Google OAuth.</li>
       <li>You are responsible for maintaining the security of your account.</li>
@@ -80,8 +289,8 @@
       <li>You must provide accurate information when creating your account.</li>
     </ul>
 
-    <h2>4. Acceptable Use</h2>
-    <p>You agree NOT to:</p>
+    <h2 data-n="04">Acceptable Use</h2>
+    <p>You agree <strong>not to</strong>:</p>
     <ul>
       <li>Use the Service for any unlawful purpose</li>
       <li>Attempt to gain unauthorised access to other users' data</li>
@@ -91,48 +300,53 @@
       <li>Interfere with the operation of the Service</li>
     </ul>
 
-    <h2>5. Intellectual Property</h2>
+    <h2 data-n="05">Intellectual Property</h2>
     <p>All content on Claude Atlas — including text, design, code, icons, and educational materials — is the property of Claude Atlas or its licensors and is protected by copyright. You may not reproduce, distribute, or create derivative works without permission.</p>
-    <p>"Claude" is a trademark of Anthropic, PBC. Claude Atlas is an independent educational project and is not affiliated with or endorsed by Anthropic.</p>
 
-    <h2>6. User Content</h2>
+    <h2 data-n="06">User Content</h2>
     <p>You retain ownership of any content you submit (display name, learning notes). By submitting content, you grant us a limited licence to store and display it as part of the Service. We do not sell or share user content with third parties.</p>
 
-    <h2>7. Disclaimer of Warranties</h2>
-    <p>The Service is provided <strong>"as is"</strong> without warranties of any kind, either express or implied. We do not warrant that the Service will be uninterrupted, error-free, or always available.</p>
-    <p>Educational content is provided for informational purposes only. We do not guarantee accuracy or completeness of information about Claude AI, as the product evolves continuously.</p>
+    <h2 data-n="07">Disclaimer of Warranties</h2>
+    <p>The Service is provided <strong>"as is"</strong> without warranties of any kind. We do not warrant that the Service will be uninterrupted or error-free.</p>
+    <p>Educational content is provided for informational purposes only. We do not guarantee accuracy of information about Claude AI, as the product evolves continuously.</p>
 
-    <h2>8. Limitation of Liability</h2>
-    <p>To the maximum extent permitted by law, Claude Atlas shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the Service, including loss of data or learning progress.</p>
+    <h2 data-n="08">Limitation of Liability</h2>
+    <p>To the maximum extent permitted by law, Claude Atlas shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Service, including loss of data or learning progress.</p>
 
-    <h2>9. Termination</h2>
-    <p>We may suspend or terminate your account if you violate these Terms. You may delete your account at any time via <strong>Settings → Delete account</strong>. Upon termination, your data will be permanently deleted in accordance with our <a href="/privacy-policy">Privacy Policy</a>.</p>
+    <h2 data-n="09">Termination</h2>
+    <p>We may suspend or terminate your account if you violate these Terms. You may delete your account at any time via <strong>Settings → Delete account</strong>. Upon termination, your data will be permanently deleted per our <a href="/privacy-policy">Privacy Policy</a>.</p>
 
-    <h2>10. Changes to Terms</h2>
-    <p>We may update these Terms from time to time. We will notify registered users by email of material changes. Continued use of the Service after changes constitutes acceptance of the new Terms.</p>
+    <h2 data-n="10">Changes to Terms</h2>
+    <p>We may update these Terms. Registered users will be notified by email of material changes. Continued use after changes constitutes acceptance of the new Terms.</p>
 
-    <h2>11. Governing Law</h2>
+    <h2 data-n="11">Governing Law</h2>
     <p>These Terms are governed by the laws of <strong>Finland</strong>. Disputes shall be resolved in the courts of Finland. EU consumer protection laws apply where relevant.</p>
 
-    <h2>12. Contact</h2>
-    <p>Questions about these Terms: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
-    <p>Privacy-related requests: see our <a href="/privacy-policy">Privacy Policy</a>.</p>
+    <h2 data-n="12">Contact</h2>
+    <p>Questions: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a><br>
+    Privacy: <a href="/privacy-policy">Privacy Policy</a></p>
+
+    <div class="doc-footer">
+      <div class="doc-footer__links">
+        <a href="/">← Back to Claude Atlas</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="mailto:denisantropov@gmail.com">Contact</a>
+      </div>
+      <span class="doc-footer__copy">© 2026 Claude Atlas</span>
+    </div>
   </div>
 
-  <!-- ═══════════════════════════ RUSSIAN ═══════════════════════════ -->
+  <!-- ═══════════════════════ РУССКИЙ ═══════════════════════ -->
   <div id="lang-ru" class="section">
-    <header>
-      <h1>Условия использования</h1>
-      <p>Claude Atlas · Версия 1.0 · Действует с мая 2026</p>
-    </header>
 
-    <h2>1. Принятие условий</h2>
+    <h2 data-n="01">Принятие условий</h2>
     <p>Используя Claude Atlas («Сервис», «мы», «наш»), вы соглашаетесь с настоящими Условиями использования. Если вы не согласны — не используйте Сервис. Пользователям должно быть <strong>16 лет или больше</strong>.</p>
 
-    <h2>2. Описание сервиса</h2>
-    <p>Claude Atlas — интерактивная обучающая платформа об ИИ-ассистенте Claude от Anthropic. Она включает интерактивную карту знаний, туториалы, библиотеку промптов и отслеживание прогресса обучения. Сервис бесплатен для зарегистрированных пользователей.</p>
+    <h2 data-n="02">Описание сервиса</h2>
+    <p>Claude Atlas — интерактивная обучающая платформа об ИИ-ассистенте Claude от Anthropic. Она включает карту знаний, туториалы, библиотеку промптов и отслеживание прогресса. Сервис бесплатен для зарегистрированных пользователей.</p>
+    <div class="info-card">Claude Atlas является независимым образовательным проектом и <strong>не аффилирован с Anthropic, PBC</strong>. «Claude» — торговая марка Anthropic.</div>
 
-    <h2>3. Аккаунты пользователей</h2>
+    <h2 data-n="03">Аккаунты пользователей</h2>
     <ul>
       <li>Регистрация через Magic Link (email) или Google OAuth.</li>
       <li>Вы несёте ответственность за безопасность своего аккаунта.</li>
@@ -140,59 +354,63 @@
       <li>При регистрации необходимо указывать достоверные данные.</li>
     </ul>
 
-    <h2>4. Допустимое использование</h2>
-    <p>Вы обязуетесь НЕ:</p>
+    <h2 data-n="04">Допустимое использование</h2>
+    <p>Вы обязуетесь <strong>не</strong>:</p>
     <ul>
       <li>Использовать Сервис в незаконных целях</li>
-      <li>Пытаться получить несанкционированный доступ к данным других пользователей</li>
-      <li>Парсить, краулить или автоматизировать запросы к Сервису</li>
-      <li>Реверс-инжинировать или декомпилировать части Сервиса</li>
-      <li>Загружать вредоносный, оскорбительный или незаконный контент</li>
+      <li>Получать несанкционированный доступ к данным других пользователей</li>
+      <li>Парсить или автоматизировать запросы к Сервису</li>
+      <li>Реверс-инжинировать части Сервиса</li>
+      <li>Загружать вредоносный или незаконный контент</li>
       <li>Нарушать работу Сервиса</li>
     </ul>
 
-    <h2>5. Интеллектуальная собственность</h2>
-    <p>Весь контент Claude Atlas — тексты, дизайн, код, иконки и учебные материалы — является собственностью Claude Atlas или его лицензиаров и защищён авторским правом. Воспроизведение без разрешения запрещено.</p>
-    <p>«Claude» — торговая марка Anthropic, PBC. Claude Atlas является независимым образовательным проектом и не аффилирован с Anthropic.</p>
+    <h2 data-n="05">Интеллектуальная собственность</h2>
+    <p>Весь контент Claude Atlas защищён авторским правом. Воспроизведение без разрешения запрещено.</p>
 
-    <h2>6. Контент пользователя</h2>
-    <p>Вы сохраняете право собственности на контент, который вы предоставляете (имя, заметки). Предоставляя контент, вы выдаёте нам ограниченную лицензию на его хранение и отображение в рамках Сервиса. Мы не продаём и не передаём пользовательский контент третьим лицам.</p>
+    <h2 data-n="06">Контент пользователя</h2>
+    <p>Вы сохраняете право собственности на предоставленный контент. Мы не продаём и не передаём пользовательский контент третьим лицам.</p>
 
-    <h2>7. Отказ от гарантий</h2>
-    <p>Сервис предоставляется <strong>«как есть»</strong> без каких-либо явных или подразумеваемых гарантий. Мы не гарантируем бесперебойную или безошибочную работу Сервиса.</p>
-    <p>Образовательный контент предоставляется только в информационных целях. Точность информации о Claude AI не гарантируется, поскольку продукт постоянно развивается.</p>
+    <h2 data-n="07">Отказ от гарантий</h2>
+    <p>Сервис предоставляется <strong>«как есть»</strong> без каких-либо гарантий. Точность информации о Claude AI не гарантируется, так как продукт постоянно развивается.</p>
 
-    <h2>8. Ограничение ответственности</h2>
-    <p>В максимально допустимой законом степени Claude Atlas не несёт ответственности за косвенный, случайный или consequential ущерб, включая потерю данных или прогресса обучения.</p>
+    <h2 data-n="08">Ограничение ответственности</h2>
+    <p>Claude Atlas не несёт ответственности за косвенный ущерб, включая потерю данных или прогресса обучения.</p>
 
-    <h2>9. Прекращение использования</h2>
-    <p>Мы можем приостановить или удалить ваш аккаунт при нарушении Условий. Вы можете удалить аккаунт в любой момент через <strong>Настройки → Удалить аккаунт</strong>. При удалении данные будут безвозвратно уничтожены согласно <a href="/privacy-policy">Политике конфиденциальности</a>.</p>
+    <h2 data-n="09">Прекращение использования</h2>
+    <p>Вы можете удалить аккаунт в любой момент через <strong>Настройки → Удалить аккаунт</strong>. При удалении данные будут безвозвратно уничтожены согласно <a href="/privacy-policy">Политике конфиденциальности</a>.</p>
 
-    <h2>10. Изменения Условий</h2>
-    <p>Мы можем обновлять Условия. О существенных изменениях зарегистрированные пользователи будут уведомлены по email. Продолжение использования Сервиса после изменений означает принятие новых Условий.</p>
+    <h2 data-n="10">Изменения Условий</h2>
+    <p>О существенных изменениях зарегистрированные пользователи будут уведомлены по email.</p>
 
-    <h2>11. Применимое право</h2>
-    <p>Настоящие Условия регулируются законодательством <strong>Финляндии</strong>. Споры рассматриваются в судах Финляндии. Применяются нормы защиты потребителей ЕС.</p>
+    <h2 data-n="11">Применимое право</h2>
+    <p>Настоящие Условия регулируются законодательством <strong>Финляндии</strong>. Применяются нормы защиты потребителей ЕС.</p>
 
-    <h2>12. Контакты</h2>
-    <p>Вопросы по Условиям: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
-    <p>Запросы по защите данных: см. <a href="/privacy-policy">Политику конфиденциальности</a>.</p>
+    <h2 data-n="12">Контакты</h2>
+    <p>Вопросы: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a><br>
+    Конфиденциальность: <a href="/privacy-policy">Политика конфиденциальности</a></p>
+
+    <div class="doc-footer">
+      <div class="doc-footer__links">
+        <a href="/">← Вернуться в Claude Atlas</a>
+        <a href="/privacy-policy">Политика конфиденциальности</a>
+        <a href="mailto:denisantropov@gmail.com">Контакт</a>
+      </div>
+      <span class="doc-footer__copy">© 2026 Claude Atlas</span>
+    </div>
   </div>
 
-  <!-- ═══════════════════════════ FINNISH ═══════════════════════════ -->
+  <!-- ═══════════════════════ SUOMI ═══════════════════════ -->
   <div id="lang-fi" class="section">
-    <header>
-      <h1>Käyttöehdot</h1>
-      <p>Claude Atlas · Versio 1.0 · Voimassa toukokuusta 2026</p>
-    </header>
 
-    <h2>1. Ehtojen hyväksyminen</h2>
+    <h2 data-n="01">Ehtojen hyväksyminen</h2>
     <p>Käyttämällä Claude Atlasta ("Palvelu", "me", "meidän") hyväksyt nämä käyttöehdot. Jos et hyväksy ehtoja, älä käytä palvelua. Käyttäjien tulee olla <strong>vähintään 16-vuotiaita</strong>.</p>
 
-    <h2>2. Palvelun kuvaus</h2>
+    <h2 data-n="02">Palvelun kuvaus</h2>
     <p>Claude Atlas on interaktiivinen oppimisalusta Anthropicin Claude AI:sta. Se sisältää tietomindmapin, oppitunnit, promptikirjaston ja oppimisedistymisen seurannan. Palvelu on ilmainen rekisteröityneille käyttäjille.</p>
+    <div class="info-card">Claude Atlas on itsenäinen oppimisprojekti eikä se ole <strong>Anthropic, PBC:n</strong> tytäryhtiö tai sen hyväksymä. "Claude" on Anthropicin tavaramerkki.</div>
 
-    <h2>3. Käyttäjätilit</h2>
+    <h2 data-n="03">Käyttäjätilit</h2>
     <ul>
       <li>Rekisteröityminen Magic Link (sähköposti) tai Google OAuth -menetelmällä.</li>
       <li>Olet vastuussa tilisi turvallisuudesta.</li>
@@ -200,59 +418,64 @@
       <li>Rekisteröitymisessä on annettava totuudenmukaiset tiedot.</li>
     </ul>
 
-    <h2>4. Sallittu käyttö</h2>
-    <p>Sitoudut OLEMAAN:</p>
+    <h2 data-n="04">Sallittu käyttö</h2>
+    <p>Sitoudut <strong>olemaan</strong>:</p>
     <ul>
       <li>Käyttämättä palvelua laittomiin tarkoituksiin</li>
       <li>Yrittämättä päästä luvattomasti muiden käyttäjien tietoihin</li>
       <li>Kaapimatta tai automatisoimatta pyyntöjä palveluun</li>
       <li>Purkamatta palvelun osia käänteisesti</li>
-      <li>Lataamatta haitallista, loukkaavaa tai laitonta sisältöä</li>
+      <li>Lataamatta haitallista tai laitonta sisältöä</li>
       <li>Häiritsemättä palvelun toimintaa</li>
     </ul>
 
-    <h2>5. Immateriaalioikeudet</h2>
-    <p>Kaikki Claude Atlaksen sisältö — tekstit, suunnittelu, koodi, kuvakkeet ja oppimateriaali — kuuluu Claude Atlakselle tai sen lisenssinantajille ja on tekijänoikeudella suojattu.</p>
-    <p>"Claude" on Anthropic, PBC:n tavaramerkki. Claude Atlas on itsenäinen oppimisprojekti eikä se ole Anthropicin tytäryhtiö tai sen hyväksymä.</p>
+    <h2 data-n="05">Immateriaalioikeudet</h2>
+    <p>Kaikki Claude Atlaksen sisältö on tekijänoikeudella suojattu. Jäljentäminen ilman lupaa on kielletty.</p>
 
-    <h2>6. Käyttäjien sisältö</h2>
-    <p>Säilytät omistajuuden lähettämääsi sisältöön (näyttönimi, muistiinpanot). Lähettämällä sisältöä myönnät meille rajoitetun lisenssin sen tallentamiseen ja näyttämiseen palvelussa. Emme myy tai jaa käyttäjien sisältöä kolmansille osapuolille.</p>
+    <h2 data-n="06">Käyttäjien sisältö</h2>
+    <p>Säilytät omistajuuden lähettämääsi sisältöön. Emme myy tai jaa käyttäjien sisältöä kolmansille osapuolille.</p>
 
-    <h2>7. Takuiden vastuuvapauslauseke</h2>
-    <p>Palvelu tarjotaan <strong>"sellaisenaan"</strong> ilman mitään takuita. Emme takaa palvelun keskeytyksetöntä tai virheetöntä toimintaa.</p>
-    <p>Oppimateriaali on tarkoitettu vain tiedoksi. Emme takaa Claude AI:ta koskevan tiedon tarkkuutta tai täydellisyyttä, koska tuote kehittyy jatkuvasti.</p>
+    <h2 data-n="07">Takuiden vastuuvapauslauseke</h2>
+    <p>Palvelu tarjotaan <strong>"sellaisenaan"</strong> ilman takuita. Emme takaa Claude AI:ta koskevan tiedon tarkkuutta, koska tuote kehittyy jatkuvasti.</p>
 
-    <h2>8. Vastuunrajoitus</h2>
-    <p>Lain sallimassa enimmäismäärässä Claude Atlas ei ole vastuussa epäsuorista tai välillisistä vahingoista, mukaan lukien tietojen tai oppimisedistymisen menetys.</p>
+    <h2 data-n="08">Vastuunrajoitus</h2>
+    <p>Claude Atlas ei ole vastuussa epäsuorista vahingoista, mukaan lukien tietojen tai oppimisedistymisen menetys.</p>
 
-    <h2>9. Käytön lopettaminen</h2>
-    <p>Voimme keskeyttää tai poistaa tilisi ehtojen rikkomisen vuoksi. Voit poistaa tilisi milloin tahansa kohdasta <strong>Asetukset → Poista tili</strong>. Poistamisen yhteydessä tietosi poistetaan pysyvästi <a href="/privacy-policy">tietosuojakäytäntömme</a> mukaisesti.</p>
+    <h2 data-n="09">Käytön lopettaminen</h2>
+    <p>Voit poistaa tilisi milloin tahansa kohdasta <strong>Asetukset → Poista tili</strong>. Tietosi poistetaan pysyvästi <a href="/privacy-policy">tietosuojakäytäntömme</a> mukaisesti.</p>
 
-    <h2>10. Ehtojen muutokset</h2>
-    <p>Voimme päivittää ehtoja. Rekisteröityneille käyttäjille ilmoitetaan olennaisista muutoksista sähköpostitse. Palvelun käytön jatkaminen muutosten jälkeen tarkoittaa uusien ehtojen hyväksymistä.</p>
+    <h2 data-n="10">Ehtojen muutokset</h2>
+    <p>Rekisteröityneille käyttäjille ilmoitetaan olennaisista muutoksista sähköpostitse.</p>
 
-    <h2>11. Sovellettava laki</h2>
-    <p>Näitä ehtoja sovelletaan <strong>Suomen lain</strong> mukaisesti. Riidat ratkaistaan Suomen tuomioistuimissa. EU:n kuluttajansuojasäännökset soveltuvat tarvittaessa.</p>
+    <h2 data-n="11">Sovellettava laki</h2>
+    <p>Näitä ehtoja sovelletaan <strong>Suomen lain</strong> mukaisesti. EU:n kuluttajansuojasäännökset soveltuvat tarvittaessa.</p>
 
-    <h2>12. Yhteystiedot</h2>
-    <p>Kysymykset käyttöehdoista: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
-    <p>Tietosuojapyynnöt: katso <a href="/privacy-policy">tietosuojakäytäntömme</a>.</p>
+    <h2 data-n="12">Yhteystiedot</h2>
+    <p>Kysymykset: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a><br>
+    Tietosuoja: <a href="/privacy-policy">tietosuojakäytäntö</a></p>
+
+    <div class="doc-footer">
+      <div class="doc-footer__links">
+        <a href="/">← Takaisin Claude Atlakseen</a>
+        <a href="/privacy-policy">Tietosuojakäytäntö</a>
+        <a href="mailto:denisantropov@gmail.com">Yhteystiedot</a>
+      </div>
+      <span class="doc-footer__copy">© 2026 Claude Atlas</span>
+    </div>
   </div>
 
 </div>
 
 <script>
-  function setLang(lang) {
-    ['en','ru','fi'].forEach(l => {
-      document.getElementById('lang-' + l).classList.toggle('active', l === lang);
-      document.getElementById('btn-' + l).classList.toggle('active', l === lang);
-    });
-    return false;
+  function setLang(lang, btn) {
+    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('lang-' + lang).classList.add('active');
+    btn.classList.add('active');
   }
-  // Автоопределение языка браузера
-  const browserLang = navigator.language?.slice(0,2).toLowerCase();
-  if (browserLang === 'ru') setLang('ru');
-  else if (browserLang === 'fi') setLang('fi');
+  const bl = navigator.language?.slice(0,2).toLowerCase();
+  if (bl === 'ru') { document.querySelector('[onclick*="ru"]').click(); }
+  else if (bl === 'fi') { document.querySelector('[onclick*="fi"]').click(); }
 </script>
 </body>
 </html>
