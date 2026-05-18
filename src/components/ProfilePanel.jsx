@@ -61,12 +61,13 @@ export default function ProfilePanel({
   };
 
   // ── Статистики: Supabase когда залогинен, иначе localStorage ──────────────
-  const tutsDone    = isLoggedIn ? supaStats.tutorialsDone    : (() => {
+  // Локальные значения (всегда актуальны, т.к. localStorage пишется синхронно)
+  const localTutsDone = (() => {
     let n = 0;
     for (const id of tutorialIds) { if (progressApi.getProgress(id)?.completedAt) n++; }
     return n;
   })();
-  const tutsStarted = isLoggedIn ? supaStats.tutorialsStarted : (() => {
+  const localTutsStarted = (() => {
     let n = 0;
     for (const id of tutorialIds) {
       const p = progressApi.getProgress(id);
@@ -74,6 +75,15 @@ export default function ProfilePanel({
     }
     return n;
   })();
+
+  // Когда залогинен — берём максимум из Supabase и localStorage.
+  // Это защищает от ситуации когда Supabase ещё не получил последний sync.
+  const tutsDone    = isLoggedIn
+    ? Math.max(supaStats.tutorialsDone,    localTutsDone)
+    : localTutsDone;
+  const tutsStarted = isLoggedIn
+    ? Math.max(supaStats.tutorialsStarted, localTutsStarted)
+    : localTutsStarted;
   const tutsTotal   = tutorialIds.length;
   const tutPercent  = Math.round((tutsDone / tutsTotal) * 100);
 

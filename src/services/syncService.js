@@ -108,6 +108,28 @@ export async function syncLocalToSupabase(userId) {
  */
 const SYNC_DONE_KEY = 'claude-mindmap:sync-done:v1';
 
+/**
+ * Точечный реал-тайм синк прогресса туториалов → Supabase.
+ * Вызывается после каждого toggleStep пока пользователь залогинен.
+ * @param {string} userId
+ * @param {Object} progressMap  — { [tutorialId]: { completedSteps, lastStepIndex, completedAt } }
+ */
+export async function syncTutorialProgress(userId, progressMap) {
+  if (!supabase || !userId || !progressMap) return;
+  const rows = Object.entries(progressMap).map(([tutorial_id, p]) => ({
+    user_id:         userId,
+    tutorial_id,
+    completed_steps: p.completedSteps || [],
+    last_step_index: p.lastStepIndex  || 0,
+    completed_at:    p.completedAt    || null,
+    updated_at:      new Date().toISOString(),
+  }));
+  if (!rows.length) return;
+  await supabase
+    .from('learning_progress')
+    .upsert(rows, { onConflict: 'user_id,tutorial_id' });
+}
+
 export function isSyncDone(userId) {
   try {
     const done = JSON.parse(localStorage.getItem(SYNC_DONE_KEY) || '{}');

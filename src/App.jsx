@@ -32,6 +32,7 @@ import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import AuthModal from './components/AuthModal.jsx';
 import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
 import AccountPage from './components/AccountPage.jsx';
+import { syncTutorialProgress } from './services/syncService.js';
 import './App.css';
 
 const GA_ID = 'G-GLRHYG2JVK';
@@ -130,7 +131,7 @@ function searchTree(root, query, category, searchableById) {
 function AppInner() {
   // Локаль — нужна для поискового индекса (контент в текущей локали).
   const { locale } = useLocale();
-  const { isNewUser, dismissOnboarding, isLoggedIn } = useAuth();
+  const { isNewUser, dismissOnboarding, isLoggedIn, user } = useAuth();
 
   // Global user level — определяет дефолтный набор раскрытых веток
   const { level, setLevel } = useLevelFilter();
@@ -236,6 +237,18 @@ function AppInner() {
       setTutorialAwaitingAuth(false);
     }
   }, [isLoggedIn]); // eslint-disable-line
+
+  // Реал-тайм синк прогресса туториалов → Supabase при каждом изменении.
+  // useRef позволяет пропустить первый рендер (данные ещё только загружаются из localStorage).
+  const isProgressMounted = useRef(false);
+  useEffect(() => {
+    if (!isProgressMounted.current) { isProgressMounted.current = true; return; }
+    if (!user?.id) return;
+    const timer = setTimeout(() => {
+      syncTutorialProgress(user.id, progressApi.progress);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [progressApi.progress]); // eslint-disable-line
 
   // Открыть AuthModal из gate туториала: скрыть туториал, показать форму входа
   const handleTutorialRequestAuth = useCallback(() => {
