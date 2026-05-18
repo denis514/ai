@@ -311,7 +311,6 @@ export default function TutorialModal({
               >
                 {t('auth.signIn')} →
               </button>
-              <span className="tut-gate__hint">{t('tutorial.gateHint')}</span>
             </div>
           )}
 
