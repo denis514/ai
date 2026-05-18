@@ -34,6 +34,28 @@ export async function sendMagicLink(email, consentGiven) {
 }
 
 /**
+ * Войти через Google OAuth.
+ * Supabase выполнит редирект на Google, после авторизации вернёт пользователя
+ * обратно на сайт. onAuthStateChange в AuthContext поймает SIGNED_IN автоматически.
+ *
+ * @returns {{ error: string|null }}
+ */
+export async function signInWithGoogle() {
+  if (!supabase) return { error: 'Supabase not configured' };
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin + '/',
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'select_account', // всегда показывать выбор аккаунта Google
+      },
+    },
+  });
+  return { error: error?.message || null };
+}
+
+/**
  * Выход из аккаунта.
  */
 export async function signOut() {

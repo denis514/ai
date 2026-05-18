@@ -14,16 +14,31 @@ export function AuthProvider({ children }) {
   // Используется для показа Welcome онбординга
   const [isNewUser, setIsNewUser] = useState(false);
 
-  // Загрузить профиль; если не существует — создать (новый пользователь)
-  const loadProfile = useCallback(async (userId, email) => {
+  // Загрузить профиль; если не существует — создать (новый пользователь).
+  // При Google-входе: auto-fill display_name из user_metadata если ещё не задан.
+  const loadProfile = useCallback(async (userId, email, userMeta) => {
     const { data } = await getProfile(userId);
     if (data) {
-      setProfile(data);
+      // Если имя ещё не задано, а Google дал нам имя — заполним автоматически
+      if (!data.display_name && userMeta?.full_name) {
+        const { updateProfile } = await import('../services/profileService.js');
+        await updateProfile(userId, { display_name: userMeta.full_name });
+        setProfile({ ...data, display_name: userMeta.full_name });
+      } else {
+        setProfile(data);
+      }
       return false; // не новый пользователь
     } else {
+      // Новый пользователь — создать профиль, сразу заполнить имя если есть
       await createProfile(userId, email);
       const { data: fresh } = await getProfile(userId);
-      setProfile(fresh);
+      if (fresh && !fresh.display_name && userMeta?.full_name) {
+        const { updateProfile } = await import('../services/profileService.js');
+        await updateProfile(userId, { display_name: userMeta.full_name });
+        setProfile({ ...fresh, display_name: userMeta.full_name });
+      } else {
+        setProfile(fresh);
+      }
       return true; // новый пользователь
     }
   }, []);
@@ -65,7 +80,7 @@ export function AuthProvider({ children }) {
       const u = session?.user ?? null;
       setUser(u);
       if (u) {
-        const isNew = await loadProfile(u.id, u.email);
+        const isNew = await loadProfile(u.id, u.email, u.user_metadata);
         setIsNewUser(isNew);
         // Sync только для не-новых пользователей при восстановлении сессии
         if (!isNew) runSync(u.id);
@@ -80,8 +95,8 @@ export function AuthProvider({ children }) {
         setUser(u);
 
         if (u) {
-          const isNew = await loadProfile(u.id, u.email);
-          // SIGNED_IN после Magic Link — показать онбординг если новый
+          const isNew = await loadProfile(u.id, u.email, u.user_metadata);
+          // SIGNED_IN (Magic Link или Google OAuth) — показать онбординг если новый
           if (event === 'SIGNED_IN') {
             setIsNewUser(isNew);
             runSync(u.id);
