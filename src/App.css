@@ -1686,10 +1686,22 @@
   line-height: 1.4;
 }
 .auth-modal__body {
-  padding: 24px 22px;
+  padding: 20px 22px 24px;
   display: flex;
   flex-direction: column;
   gap: 0;
+}
+
+/* ── GDPR consent block ── */
+.auth-modal__gdpr {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin-bottom: 14px;
 }
 
 /* ── Google OAuth button ── */
@@ -1716,6 +1728,20 @@
   box-shadow: 0 0 0 3px rgba(var(--accent-rgb, 99,102,241), 0.1);
 }
 .auth-google-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Мобайл: Google-кнопка удобнее для тапа */
+@media (max-width: 480px) {
+  .auth-google-btn {
+    padding: 13px 16px;
+    font-size: 15px;
+  }
+  .auth-modal__consent {
+    font-size: 14px;
+  }
+  .auth-modal__gdpr {
+    padding: 8px 12px;
+  }
+}
 .auth-google-btn__icon {
   width: 18px;
   height: 18px;
@@ -1768,19 +1794,27 @@
 }
 .auth-modal__consent {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   font-size: 13px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.4;
   cursor: pointer;
+  /* touch-зона ≥ 44px — комфортный тап на мобайле */
+  min-height: 44px;
+  padding: 4px 0;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .auth-modal__consent input[type="checkbox"] {
-  margin-top: 2px;
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   accent-color: var(--accent);
+  cursor: pointer;
+  /* отдельная touch-зона для самого чекбокса */
+  padding: 4px;
+  box-sizing: content-box;
 }
 .auth-modal__link {
   color: var(--accent);
