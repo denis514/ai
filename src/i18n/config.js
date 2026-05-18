@@ -19,8 +19,9 @@ export const LOCALE_SHORT = {
 export const DEFAULT_LOCALE = 'en';
 
 // Fallback при отсутствии ключа в текущей локали.
-// RU — source-of-truth, поэтому в нём всегда есть полный набор ключей.
-export const FALLBACK_LOCALE = 'ru';
+// EN — нейтральный fallback: если ключ не найден в FI или RU,
+// показываем английский текст (лучше чем русский для FI-пользователей).
+export const FALLBACK_LOCALE = 'en';
 
 export const STORAGE_KEY = 'claude-mindmap:locale:v1';
 
