@@ -10,10 +10,13 @@
 ### Build
 | Метрика | Значение | Статус |
 |---------|----------|--------|
-| Build time | 1.30s | ✅ |
-| JS bundle (gzip) | 558 KB | ⚠️ большой, но допустимо |
-| CSS bundle (gzip) | 20 KB | ✅ |
-| Modules | ~159 | ✅ |
+| Build time | 1.21s | ✅ |
+| JS initial bundle (gzip) | 85 KB | ✅ (было 558 KB) |
+| JS initial bundle (raw) | 278 KB | ✅ (было 1601 KB) |
+| Lazy chunks (content per locale) | ~75–88 KB gzip | ✅ |
+| Vendor chunks (cached) | react 45KB + supabase 53KB + icons 19KB | ✅ |
+| CSS bundle (gzip) | 21 KB | ✅ |
+| Modules | ~164 | ✅ |
 | Ошибки сборки | 0 | ✅ |
 
 ### Инфраструктура
@@ -87,7 +90,7 @@
 ### P2 — Техника
 | status | task | примечание | дата |
 |--------|------|-----------|------|
-| open | **Code splitting** — Vite manualChunks, split локали/туториалы от ядра. Bundle 1.77MB → цель < 800KB | build optimization | — |
+| ✅ | **Code splitting** — initial bundle 1601KB → 278KB (-83%), gzip 559→85KB | manualChunks vendors + lazy locale content chunks | 2026-05-19 |
 | open | **Supabase session timebox** — выставить 30 дней в Dashboard (Authentication → Sessions) | Dashboard config | — |
 
 ### P3 — Premium (будущее)
