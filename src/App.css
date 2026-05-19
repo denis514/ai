@@ -6900,6 +6900,12 @@
   align-items: center;
   gap: 6px;
   padding: 10px 16px;
+  /* pill(28) + paddingTop(10) + paddingBottom(10) = 48px.
+     flex-shrink:0 — не сжиматься в flex-колонке модалки.
+     Без этого overflow-y:auto (форсируется overflow-x) обрезает pills сверху/снизу. */
+  min-height: 48px;
+  flex-shrink: 0;
+  box-sizing: border-box;
   border-bottom: 1px solid var(--border);
   background: var(--surface);
   overflow-x: auto;
