@@ -27,6 +27,7 @@ import { useWhatsNew } from './hooks/useWhatsNew.js';
 import { useLocale } from './i18n/LocaleContext.jsx';
 import { useAuth } from './context/AuthContext.jsx';
 import { STRINGS } from './i18n/strings.js';
+import { FALLBACK_LOCALE } from './i18n/config.js';
 import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import AuthModal from './components/AuthModal.jsx';
@@ -156,7 +157,7 @@ function searchTree(root, query, category, searchableById) {
 
 function AppInner() {
   // Локаль — нужна для поискового индекса (контент в текущей локали).
-  const { locale } = useLocale();
+  const { locale, contentVersion } = useLocale();
   const { isNewUser, dismissOnboarding, isLoggedIn, user } = useAuth();
 
   // Обнаружение нового деплоя → показ баннера обновления
@@ -194,13 +195,16 @@ function AppInner() {
   // Поисковый индекс: id узла → searchable-строка (title + все details).
   // Пересобирается при смене локали.
   const searchableById = useMemo(() => {
-    const bag = STRINGS[locale]?.nodes || STRINGS.ru.nodes;
+    // STRINGS[locale].nodes появляется после lazy-load (contentVersion > 0).
+    // До загрузки поиск возвращает пустой индекс — это ок, карта уже видна.
+    const bag = STRINGS[locale]?.nodes || STRINGS[FALLBACK_LOCALE]?.nodes;
+    if (!bag) return {};
     const out = {};
     for (const [id, c] of Object.entries(bag)) {
       out[id] = `${c.title} ${c.what} ${c.why} ${c.when} ${c.impact} ${c.example} ${c.mistakes}`.toLowerCase();
     }
     return out;
-  }, [locale]);
+  }, [locale, contentVersion]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // По умолчанию на первой загрузке — только root, всё остальное свёрнуто.
   // Раскрытие по уровню происходит только при ЯВНОМ изменении уровня в Profile

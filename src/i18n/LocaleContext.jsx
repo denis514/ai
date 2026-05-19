@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { LOCALES, DEFAULT_LOCALE, STORAGE_KEY, isLocale } from './config.js';
+import { LOCALES, DEFAULT_LOCALE, FALLBACK_LOCALE, STORAGE_KEY, isLocale } from './config.js';
 import { t as tFn } from './t.js';
+import { loadLocaleContent } from './strings.js';
 
 const LocaleContext = createContext({ locale: DEFAULT_LOCALE, setLocale: () => {} });
 
@@ -113,6 +114,10 @@ function resolveInitialLocale() {
 
 export function LocaleProvider({ children }) {
   const [locale, setLocaleState] = useState(resolveInitialLocale);
+  // contentVersion инкрементируется когда lazy-контент загружен.
+  // Это заставляет useT()/useLocale() потребителей перерисоваться и
+  // получить актуальные данные из STRINGS (уже мутированного).
+  const [contentVersion, setContentVersion] = useState(0);
 
   // IP-детекция: только если нет ни ручного выбора, ни кеша (= первый визит).
   // Применяем результат ТОЛЬКО в первые 800ms — пока пользователь ещё не успел
@@ -139,6 +144,19 @@ export function LocaleProvider({ children }) {
       setLocaleState(detected);
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Lazy-load тяжёлого контента (nodes, tutorials, prompt-library) для
+  // текущей локали + FALLBACK_LOCALE (en) для корректной работы fallback.
+  // Мёржит данные в STRINGS[locale], затем инкрементирует contentVersion →
+  // все useT()/useLocale() потребители перерисовываются с актуальным контентом.
+  useEffect(() => {
+    const locales = locale === FALLBACK_LOCALE
+      ? [locale]
+      : [locale, FALLBACK_LOCALE];
+    Promise.all(locales.map(loadLocaleContent))
+      .then(() => setContentVersion(v => v + 1))
+      .catch(() => {}); // сеть недоступна — работаем с тем что есть
+  }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Sync locale при смене hash (ссылки с #/fi/...)
   useEffect(() => {
@@ -177,8 +195,9 @@ export function LocaleProvider({ children }) {
     locale,
     setLocale,
     locales: LOCALES,
+    contentVersion, // потребители могут зависеть от него в useMemo/useEffect
     t: (key, vars) => tFn(key, locale, vars),
-  }), [locale, setLocale]);
+  }), [locale, setLocale, contentVersion]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 }
