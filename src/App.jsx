@@ -35,7 +35,6 @@ import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
 import AccountPage from './components/AccountPage.jsx';
 import UpdateBanner from './components/UpdateBanner.jsx';
 import { useVersionCheck } from './hooks/useVersionCheck.js';
-import { signOut as authSignOut } from './services/authService.js';
 import { syncTutorialProgress, syncBookmarks, syncNodeProgress } from './services/syncService.js';
 import './App.css';
 
@@ -164,15 +163,11 @@ function AppInner() {
   // Обнаружение нового деплоя → показ баннера обновления
   const { hasUpdate, dismiss: dismissUpdate, reload: reloadPage } = useVersionCheck();
 
-  // При нажатии «Обновить страницу» сначала завершаем сессию, затем перезагружаем.
-  // Это гарантирует чистый старт: после reload пользователь видит экран входа,
-  // а не потенциально устаревший/нулевой профиль.
-  const handleUpdateReload = useCallback(async () => {
-    try {
-      await authSignOut();
-    } catch {
-      // Если signOut упал (нет сети и т.п.) — всё равно перезагружаем
-    }
+  // При нажатии «Обновить страницу» — просто перезагружаем.
+  // Сессия сохраняется: Supabase автоматически восстанавливает токен из localStorage.
+  // signOut здесь был ошибкой — он разрывал цикл OAuth/MagicLink и приводил
+  // к рассинхронизации счётчиков (Supabase) и ID (localStorage).
+  const handleUpdateReload = useCallback(() => {
     reloadPage();
   }, [reloadPage]);
 

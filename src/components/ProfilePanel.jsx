@@ -331,7 +331,10 @@ export default function ProfilePanel({
             className="profile-panel__stat profile-panel__stat--green profile-panel__stat--clickable"
             disabled={!nodesViewed}
             onClick={() => {
-              const ids = nodeProgressApi.idsBy?.('viewed') || [];
+              // Для залогиненных: приоритет Supabase-IDs, fallback localStorage
+              const ids = isLoggedIn && supaStats.viewedIds.length
+                ? supaStats.viewedIds
+                : (nodeProgressApi.idsBy?.('viewed') || []);
               if (ids.length) onShowNodes?.(ids, t('profile.map.viewed'));
             }}
             title={nodesViewed ? t('profile.map.showOnMap') : ''}
@@ -344,7 +347,9 @@ export default function ProfilePanel({
             className="profile-panel__stat profile-panel__stat--amber profile-panel__stat--clickable"
             disabled={!nodesReview}
             onClick={() => {
-              const ids = nodeProgressApi.idsBy?.('review') || [];
+              const ids = isLoggedIn && supaStats.reviewIds.length
+                ? supaStats.reviewIds
+                : (nodeProgressApi.idsBy?.('review') || []);
               if (ids.length) onShowNodes?.(ids, t('profile.map.review'));
             }}
             title={nodesReview ? t('profile.map.showOnMap') : ''}
@@ -357,8 +362,12 @@ export default function ProfilePanel({
             className="profile-panel__stat profile-panel__stat--clickable"
             disabled={!bmCount}
             onClick={() => {
-              const ids = Array.from(bookmarksApi.bookmarks?.values?.() || [])
-                .filter(b => b.type === 'node').map(b => b.id);
+              // Supabase-IDs (точные, включая данные с других устройств),
+              // fallback — localStorage если Supabase ещё не загрузился
+              const ids = isLoggedIn && supaStats.bookmarkNodeIds.length
+                ? supaStats.bookmarkNodeIds
+                : Array.from(bookmarksApi.bookmarks?.values?.() || [])
+                    .filter(b => b.type === 'node').map(b => b.id);
               if (ids.length) onShowNodes?.(ids, t('profile.map.bookmarks'));
             }}
             title={bmCount ? t('profile.map.showOnMap') : ''}

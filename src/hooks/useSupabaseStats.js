@@ -67,6 +67,11 @@ export function useSupabaseStats(userId) {
     nodesViewed: 0,
     nodesReview: 0,
     bookmarksCount: 0,
+    // ID-списки для навигации по карте из ProfilePanel.
+    // Источник правды — Supabase, а не localStorage.
+    viewedIds: [],
+    reviewIds: [],
+    bookmarkNodeIds: [],
     streak: 0,
     totalDays: 0,
     loading: true,
@@ -78,40 +83,60 @@ export function useSupabaseStats(userId) {
       return;
     }
 
-    // Записываем сегодняшний визит
-    await recordTodayActivity(userId);
+    try {
+      // Записываем сегодняшний визит
+      await recordTodayActivity(userId);
 
-    // Параллельно грузим все данные
-    const [progressRes, nodeRes, favRes, dates] = await Promise.all([
-      supabase.from('learning_progress').select('completed_at,completed_steps,last_step_index').eq('user_id', userId),
-      supabase.from('node_progress').select('status').eq('user_id', userId),
-      supabase.from('favorites').select('id', { count: 'exact', head: true }).eq('user_id', userId),
-      fetchActivityDates(userId),
-    ]);
+      // Параллельно грузим все данные.
+      // node_progress теперь возвращает node_id + status (для ID-списков).
+      // favorites возвращает item_id + item_type (для bookmarkNodeIds).
+      const [progressRes, nodeRes, favRes, dates] = await Promise.all([
+        supabase.from('learning_progress').select('completed_at,completed_steps,last_step_index').eq('user_id', userId),
+        supabase.from('node_progress').select('node_id,status').eq('user_id', userId),
+        supabase.from('favorites').select('item_id,item_type').eq('user_id', userId),
+        fetchActivityDates(userId),
+      ]);
 
-    const progress = progressRes.data || [];
-    const nodes    = nodeRes.data   || [];
+      const progress = progressRes.data || [];
+      const nodes    = nodeRes.data   || [];
+      const favs     = favRes.data    || [];
 
-    const tutorialsDone    = progress.filter(p => !!p.completed_at).length;
-    const tutorialsStarted = progress.filter(p =>
-      !p.completed_at && ((p.completed_steps?.length || 0) > 0 || (p.last_step_index || 0) > 0)
-    ).length;
-    const nodesViewed  = nodes.filter(n => n.status === 'viewed').length;
-    const nodesReview  = nodes.filter(n => n.status === 'review').length;
-    const bookmarksCount = favRes.count || 0;
-    const streak     = computeStreak(dates);
-    const totalDays  = dates.length;
+      const tutorialsDone    = progress.filter(p => !!p.completed_at).length;
+      const tutorialsStarted = progress.filter(p =>
+        !p.completed_at && ((p.completed_steps?.length || 0) > 0 || (p.last_step_index || 0) > 0)
+      ).length;
 
-    setStats({
-      tutorialsDone,
-      tutorialsStarted,
-      nodesViewed,
-      nodesReview,
-      bookmarksCount,
-      streak,
-      totalDays,
-      loading: false,
-    });
+      const viewedNodes  = nodes.filter(n => n.status === 'viewed');
+      const reviewNodes  = nodes.filter(n => n.status === 'review');
+      const bookmarkFavs = favs.filter(f => f.item_type === 'node');
+
+      const nodesViewed  = viewedNodes.length;
+      const nodesReview  = reviewNodes.length;
+      const bookmarksCount = bookmarkFavs.length;
+      const viewedIds    = viewedNodes.map(n => n.node_id).filter(Boolean);
+      const reviewIds    = reviewNodes.map(n => n.node_id).filter(Boolean);
+      const bookmarkNodeIds = bookmarkFavs.map(f => f.item_id).filter(Boolean);
+
+      const streak    = computeStreak(dates);
+      const totalDays = dates.length;
+
+      setStats({
+        tutorialsDone,
+        tutorialsStarted,
+        nodesViewed,
+        nodesReview,
+        bookmarksCount,
+        viewedIds,
+        reviewIds,
+        bookmarkNodeIds,
+        streak,
+        totalDays,
+        loading: false,
+      });
+    } catch {
+      // Сетевая ошибка или RLS-исключение — сбрасываем loading чтобы не зависнуть
+      setStats(s => ({ ...s, loading: false }));
+    }
   }, [userId]);
 
   useEffect(() => { load(); }, [load]);
