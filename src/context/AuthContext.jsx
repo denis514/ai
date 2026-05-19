@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 import { getProfile, createProfile } from '../services/profileService.js';
 import { syncLocalToSupabase } from '../services/syncService.js';
@@ -9,27 +9,26 @@ export function AuthProvider({ children }) {
   const [user, setUser]       = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // isNewUser: true если пользователь только что зарегистрировался
-  // Используется для показа Welcome онбординга
   const [isNewUser, setIsNewUser] = useState(false);
 
-  // Загрузить профиль; если не существует — создать (новый пользователь).
-  // При Google-входе: auto-fill display_name из user_metadata если ещё не задан.
-  // GDPR: display_name НЕ заполняется автоматически из Google metadata.
-  // Пользователь явно задаёт имя в ProfilePanel (Art. 5(1)(b) — цель обработки,
-  // Art. 5(1)(c) — минимизация данных). userMeta принимается но не используется.
-  const loadProfile = useCallback(async (userId, email, _userMeta) => {
+  // Ref для отслеживания последнего события — нужен чтобы отличить
+  // первый вход (SIGNED_IN) от восстановления сессии (INITIAL_SESSION/TOKEN_REFRESHED).
+  // Влияет на runSync и isNewUser — они нужны только при реальном входе.
+  const lastEvent = useRef(null);
+
+  // ─── Загрузка / создание профиля ──────────────────────────────────────────
+
+  const loadProfile = useCallback(async (userId, email) => {
     const { data } = await getProfile(userId);
     if (data) {
       setProfile(data);
       return false; // не новый пользователь
-    } else {
-      await createProfile(userId, email);
-      const { data: fresh } = await getProfile(userId);
-      setProfile(fresh);
-      return true; // новый пользователь
     }
+    // Новый пользователь — создаём профиль
+    await createProfile(userId, email);
+    const { data: fresh } = await getProfile(userId);
+    setProfile(fresh);
+    return true;
   }, []);
 
   const refreshProfile = useCallback(async () => {
@@ -38,62 +37,81 @@ export function AuthProvider({ children }) {
     if (data) setProfile(data);
   }, [user]);
 
+  // ─── Signout ──────────────────────────────────────────────────────────────
+
   const handleSignOut = useCallback(async () => {
     if (!supabase) return;
     await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
-    setIsNewUser(false);
+    // setUser / setProfile / setIsNewUser будут сброшены через SIGNED_OUT в onAuthStateChange
   }, []);
 
-  // Синк localStorage → Supabase при каждом входе.
-  // Idempotent (upsert), поэтому guard не нужен.
-  // Гарантирует что офлайн-данные гостя попадут в Supabase после логина.
+  // ─── Синк localStorage → Supabase ─────────────────────────────────────────
+
   const runSync = useCallback(async (userId) => {
     await syncLocalToSupabase(userId);
   }, []);
 
+  // ─── Основной auth-эффект ──────────────────────────────────────────────────
+  //
+  // Правило Supabase v2:
+  //   • Используем ТОЛЬКО onAuthStateChange — он синхронно стреляет INITIAL_SESSION
+  //     при монтировании (даже если сессия уже есть в localStorage).
+  //   • НЕ вызываем getSession() отдельно — это создаёт race condition, при которой
+  //     getSession() может вернуть null после того как onAuthStateChange уже установил user.
+  //   • Коллбэк onAuthStateChange должен быть СИНХРОННЫМ — только setUser / setLoading.
+  //     Async-операции (loadProfile, runSync) идут в отдельный useEffect.
+  //
   useEffect(() => {
     if (!supabase) {
       setLoading(false);
       return;
     }
 
-    // Восстановить сессию при загрузке
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      if (u) {
-        const isNew = await loadProfile(u.id, u.email, u.user_metadata);
-        setIsNewUser(isNew);
-        // Sync только для не-новых пользователей при восстановлении сессии
-        if (!isNew) runSync(u.id);
-      }
-      setLoading(false);
-    });
-
-    // Слушаем смены auth state
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
+        lastEvent.current = event;
         const u = session?.user ?? null;
+
+        // Синхронные обновления состояния — ТОЛЬКО здесь
         setUser(u);
 
-        if (u) {
-          const isNew = await loadProfile(u.id, u.email, u.user_metadata);
-          // SIGNED_IN (Magic Link или Google OAuth) — показать онбординг если новый
-          if (event === 'SIGNED_IN') {
-            setIsNewUser(isNew);
-            runSync(u.id);
-          }
-        } else {
+        if (!u) {
           setProfile(null);
           setIsNewUser(false);
         }
+
+        // loading снимается после первого подтверждённого состояния
+        // (INITIAL_SESSION = восстановление из localStorage; SIGNED_IN = свежий вход;
+        //  SIGNED_OUT = явный выход; TOKEN_REFRESHED = тихое обновление токена)
+        setLoading(false);
       }
     );
 
     return () => subscription.unsubscribe();
-  }, [loadProfile, runSync]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ─── Async-операции при смене пользователя ────────────────────────────────
+  //
+  // Отдельный эффект — зависит от user?.id.
+  // Запускается только когда user действительно изменился.
+  //
+  useEffect(() => {
+    if (!user) return;
+
+    const event = lastEvent.current;
+
+    // loadProfile всегда при наличии пользователя
+    loadProfile(user.id, user.email).then((isNew) => {
+      // isNewUser и runSync — только при реальном входе (SIGNED_IN),
+      // а не при тихом восстановлении сессии (INITIAL_SESSION / TOKEN_REFRESHED)
+      if (event === 'SIGNED_IN') {
+        setIsNewUser(isNew);
+        runSync(user.id);
+      }
+    });
+  }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ─── Context value ────────────────────────────────────────────────────────
 
   const value = {
     user,
