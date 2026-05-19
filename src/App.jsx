@@ -35,6 +35,7 @@ import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
 import AccountPage from './components/AccountPage.jsx';
 import UpdateBanner from './components/UpdateBanner.jsx';
 import { useVersionCheck } from './hooks/useVersionCheck.js';
+import { signOut as authSignOut } from './services/authService.js';
 import { syncTutorialProgress, syncBookmarks, syncNodeProgress } from './services/syncService.js';
 import './App.css';
 
@@ -162,6 +163,18 @@ function AppInner() {
 
   // Обнаружение нового деплоя → показ баннера обновления
   const { hasUpdate, dismiss: dismissUpdate, reload: reloadPage } = useVersionCheck();
+
+  // При нажатии «Обновить страницу» сначала завершаем сессию, затем перезагружаем.
+  // Это гарантирует чистый старт: после reload пользователь видит экран входа,
+  // а не потенциально устаревший/нулевой профиль.
+  const handleUpdateReload = useCallback(async () => {
+    try {
+      await authSignOut();
+    } catch {
+      // Если signOut упал (нет сети и т.п.) — всё равно перезагружаем
+    }
+    reloadPage();
+  }, [reloadPage]);
 
   // ChunkLoadError: если браузер не может загрузить JS-чанк (старый деплой) →
   // автоматически перезагружаем страницу (один раз, защита от loop в guard).
@@ -773,7 +786,7 @@ function AppInner() {
 
       {/* Баннер новой версии — показывается после деплоя */}
       {hasUpdate && (
-        <UpdateBanner onReload={reloadPage} onDismiss={dismissUpdate} />
+        <UpdateBanner onReload={handleUpdateReload} onDismiss={dismissUpdate} />
       )}
     </div>
   );
