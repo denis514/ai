@@ -3717,5 +3717,140 @@
         "tip": "Yleisin epäonnistuminen tässä vaiheessa: liian nopea eteneminen. Yksi luotettava käyttötapaus jonka 80% tiimistä käyttää luotettavasti on arvokkaampi kuin 10 käyttötapausta jotka kaikki kokeilivat kerran ja unohtivat."
       }
     }
+  },
+  "claude-project-architecture": {
+    "title": "Rakenna Claude-projektin arkkitehtuuri",
+    "subtitle": "Luo työtila jossa Claude tuntee aina kontekstisi",
+    "totalTime": "23 min",
+    "whatItIs": "Käytännöllinen kurssi jossa rakennat toimivan Claude-projektin rakenteen tyhjästä — lopussa sinulla on henkilökohtainen työtila jossa Claude muistaa kontekstisi, noudattaa mieltymyksiäsi ja suorittaa toistuvat tehtävät ilman uudelleenselittämistä. Koodausta ei tarvita. Työskentelet suoraan Claude.ai-käyttöliittymässä.",
+    "approach": "Älä vain lue — toimi. Jokainen vaihe pyytää sinua kopioimaan kehotteen, liittämään sen Claude.ai:hin ja luomaan jotain konkreettista: projektiohjeesi, tietokantasi, ensimmäisen mallipohjan. Kuudenteen vaiheeseen mennessä suoritat todellisen tehtävän ja näet eron Clauden kanssa ja ilman arkkitehtuuria.",
+    "outcomes": [
+      "Ymmärrät miksi Claude 'unohtaa' ja miten projektin arkkitehtuuri ratkaisee tämän",
+      "Loit Claude Project -työtilan nimellä, tarkoituksella ja toimivilla ohjeilla",
+      "Kirjoitit projektiohjeesi — asiakirjan jonka Claude lukee joka istunnossa",
+      "Järjestit tietokantasi: mitä ladata, mitä jättää pois",
+      "Rakensit ensimmäisen uudelleenkäytettävän Skill-mallipohjasi toistuvalle tehtävälle",
+      "Suoritit täydellisen työnkulun uuden arkkitehtuurisi avulla"
+    ],
+    "applyIn": [
+      {
+        "title": "Kaikki toistuva työ Clauden kanssa",
+        "description": "Kun arkkitehtuuri on rakennettu, se tarkoittaa: avaat Clauden ja se jo tietää kuka olet, mitä teet ja miten pidät asioiden tapahtuvan. Ei enää uudelleenselittämistä."
+      },
+      {
+        "title": "Tiimin tiedonhallinta",
+        "description": "Jaa projektirakenteesi kollegoille jotta kaikki tiimissä saavat saman laadukkaan Clauden vastauksen — samalla kontekstilla ja ohjeilla."
+      },
+      {
+        "title": "Useiden projektien organisointi",
+        "description": "Kun olet rakentanut yhden arkkitehtuurin, sinulla on malli. Uuden projektin luominen toiselle työskentelyalueelle vie 15 minuuttia eikä kolmea viikkoa."
+      }
+    ],
+    "pitfalls": [
+      "Ohjeiden tekeminen liian pitkiksi — Claude lukee kaiken joka kerta. Alle 500 sanaa on hyvä tavoite ensimmäiselle versiolle.",
+      "Kaiken lisääminen tietokantaan — liikaa kontekstia laimentaa mitä Claude kiinnittää huomiota. Ole valikoiva.",
+      "Perfektionismi ennen käyttöä — aloita yksinkertaisesti, käytä viikon, sitten paranna puuttuvien asioiden perusteella."
+    ],
+    "exercises": [
+      {
+        "question": "Avaa chat ILMAN projektia ja kysy jotain mitä normaalisti kysyisit. Avaa sitten projektisi ja kysy sama. Vertaa vastauksia. Mitä muuttui?",
+        "hint": "Ero paljastaa juuri mitä projektiohjeesi tekevät sinulle."
+      },
+      {
+        "question": "Viikon projektin arkkitehtuurin käytön jälkeen listaa 3 asiaa jota selität Claudelle edelleen uudelleen. Ne ovat ehdokkaita seuraavaan ohjeiden päivitykseen tai uuteen Skilliin.",
+        "hint": "Parhaat projektin arkkitehtuurit rakennetaan vähitellen. Jokainen lisäys pitäisi ratkaista konkreettinen kitka jonka todella tunnet."
+      }
+    ],
+    "steps": {
+      "cpa-1": {
+        "title": "Miksi Claude tarvitsee arkkitehtuurin",
+        "time": "3 min",
+        "why": "Claude aloittaa jokaisen keskustelun tyhjästä. Ilman arkkitehtuuria selität kontekstisi, mieltymyksesi ja tavoitteesi yhä uudelleen. Arkkitehtuurin avulla Claude saapuu täysin briifättyä — valmis työskentelemään täydellä laadulla ensimmäisestä viestistä.",
+        "instructions": [
+          "Perusongelma: Claudella ei ole oletuksena pysyvää muistia. Jokainen keskustelu on tyhjä taulu. Konteksti katoaa, laatu heikkenee ja toistelet itseäsi jatkuvasti.",
+          "Ratkaisu: arkkitehtuurin sisältävä Project. Project antaa Claudelle pysyvän kontekstin — ohjeet jotka se lukee joka istunnossa, tiedon johon se voi viitata ja mallipohja jotka standardoivat toistuvat tehtävät.",
+          "Claude-projektin arkkitehtuurin kolme kerrosta:\n  1. Projektiohjeet — mitä Claude aina tietää (roolisi, tavoitteet, tyyli, rajoitukset)\n  2. Tietokanta — viiteasiakirjat joita Claude voi hakea (materiaalisi, mallipohjat, tiedot)\n  3. Skills (kehotemallipohjat) — tallennetut ohjeet toistuviin tehtäviin (työnkulkusi, tarkistukset, luonnokset)",
+          "Mentaalimalli: ajattele Projectia kuin uuden Claude-tiimin jäsenen palkkaamista. Projektiohjeet = perehdytysdokumentti. Tietokanta = viitekirjasto jonka annat heille. Skills = toistuvien tehtävien menettelytavat.",
+          "Mitä rakennat: kuudenteen vaiheeseen mennessä kaikki kolme kerrosta toimivat todelliselle työalueellesi."
+        ],
+        "validate": "Ymmärrät miksi arkkitehtuuriton Claude on vähemmän hyödyllinen ja tiedät kolme kerrosta jotka rakennat.",
+        "tip": "Arvokkain oivallus: arkkitehtuuri ei tee Claudesta älykkäämpää — se estää Clauden (ja sinun) ajan tuhlaamista kontekstiin jonka olet jo selittänyt."
+      },
+      "cpa-2": {
+        "title": "Luodaan Project-työtila",
+        "time": "3 min",
+        "why": "Projektisi on säiliö. Kaikki muu asuu siinä. Oikea asetup vie 3 minuuttia ja määrittää onko Claudella aina oikea konteksti ladattuna.",
+        "instructions": [
+          "Mene claude.ai → napsauta 'Projects' vasemmassa paneelissa → '+ New project'.",
+          "Nimeä projekti tarkasti. Ei 'Oma projekti' — jotain kuten 'Markkinointi — Q3 Kampanjat' tai 'Sisältö — Blogi & Uutiskirje'. Nimi on vain navigointiasi varten.",
+          "Lisää lyhyt kuvaus (1–2 lausetta). Claude ei lue tätä — se on sinulle kun sinulla on useita projekteja.",
+          "Sinulla on nyt tyhjä projekti. Älä lisää mitään vielä — täytämme vaihe vaiheelta."
+        ],
+        "prompt": "Käytä tätä kehotetta projektin nimen valintaan:\n\nAsetän Claude Project -työtilaa. Auta minua valitsemaan hyvä nimi.\n\nPäätyöalueeni: [KUVAILE TYÖTÄSI YHDELLÄ LAUSEELLA]\nYleisimmät tehtävätyypit: [LUETTELE 3 TEHTÄVÄÄ]\nKuinka monta eri työaluetta minulla on: [LUKUMÄÄRÄ]\n\nEhdota 3 tarkkaa projektin nimeä jotka auttaisivat minua pysymään organisoituneena. Selitä kullekin mitä se sisältäisi.",
+        "validate": "Sinulla on nimetty, tyhjä Claude Project valmiina täytettäväksi.",
+        "tip": "Aloita YHDELLÄ projektilla aktiivisimmalle työalueellesi. Voit aina luoda lisää. Kaiken arkkitehturoinnin yrittäminen kerralla johtaa analyysipareesiin."
+      },
+      "cpa-3": {
+        "title": "Kirjoitetaan projektiohjeet (Claude-briifisi)",
+        "time": "6 min",
+        "why": "Projektiohjeet ovat mitä Claude lukee ennen jokaista projektisi keskustelua. Tämä on arkkitehtuurisi tärkein osa. Hyvät ohjeet tarkoittavat Clauden saapuvan täysin briifättynä — huonot tarkoittavat selität edelleen kaiken.",
+        "instructions": [
+          "Projektissasi → 'Edit project details' → 'Project instructions' → lisää ohjeesi tähän.",
+          "Mitä hyvät projektiohjeet sisältävät:\n  • KET OLET: roolisi, organisaatiosi, relevantti tausta\n  • MIHIN TÄMÄ PROJEKTI ON: tarkoitus, tavoitteet, miltä menestys näyttää\n  • MIELTYMYKSESI: viestintätyyli, tulosmuoto, yksityiskohtien taso\n  • RAJOITUKSET: mitä välttää, mitä et halua Clauden tekevän\n  • KONTEKSTI: avaintiedot jotka Clauden täytyy tietää työstäsi",
+          "Pituus: tavoittele 200–400 sanaa. Riittävän lyhyt että Claude todella käyttää kaiken. Riittävän pitkä kattamaan avainmerkityksen.",
+          "Käytä alla olevaa kehotetta pyytääksesi Claudea KIRJOITTAMAAN projektiohjeet puolestasi. Liitä sitten tulos projektiisi.",
+          "Testaa liittämisen jälkeen: avaa uusi keskustelu projektissasi ja kysy Claudelta jotain. Heijastaako vastaus ohjeesi? Jos ei — muokkaa ja paranna."
+        ],
+        "prompt": "Kopioi tämä tavalliseen Claude-chattiin (ei vielä projektiisi — teemme luonnosta):\n\nAuta minua kirjoittamaan projektiohjeet Claude-työtilalleni. Vastaan kysymyksiisi, sitten kirjoitat ohjeet.\n\nKontekstini:\n- Roolini/työ: [ROOLISI]\n- Tämä projekti on: [PROJEKTIN TARKOITUS]\n- Päätoistuvat tehtäväni: [LUETTELE 3–5 TEHTÄVÄÄ]\n- Haluamani vastaustyyli: [MUODOLLINEN/EPÄMUODOLLINEN, LYHYT/YKSITYISKOHTAINEN]\n- Avaintiedot jotka Clauden pitää aina tietää: [2–3 AVAINTIETOA]\n- Asiat joita Claude ei koskaan saa tehdä tässä projektissa: [RAJOITUKSESI]\n\nKirjoita minulle projektiohjeet tässä muodossa:\n## Tietoja minusta\n## Tämän projektin tarkoitus\n## Miten haluan sinun vastaavan\n## Avainmerkitys\n## Mitä välttää\n\nPidä alle 350 sanaa. Tuntukoon briifausasiakirjalta, ei sääntölistalta.",
+        "validate": "Projektiohjeet on liitetty ja tallennettu. Olet testannut niitä vähintään yhdessä keskustelussa.",
+        "tip": "Parhaat projektiohjeet kirjoitetaan ajan myötä, eivät kerralla. Viikon projektikäytön jälkeen tiedät täsmälleen mitä puuttui. Luo ensimmäinen versio nyt; paranna ensi viikolla."
+      },
+      "cpa-4": {
+        "title": "Lisätään tietokanta (mitä Claude voi käyttää)",
+        "time": "4 min",
+        "why": "Projektin tietokanta on Clauden viitekirjasto. Toisin kuin ohjeet (jotka Claude lukee aina), tietokantaa haetaan kun relevantti. Tänne kuuluvat viitemateriaalisi — mutta vain ne joita Claude todella tarvitsee.",
+        "instructions": [
+          "Projektissasi → 'Add content' → 'Add files' tai liitä teksti suoraan.",
+          "Mitä kuuluu tietokantaan:\n  ✓ Tyyliohjeet, äänisävydokumentit, brändimateriaalit\n  ✓ Prosessidokumentaatio, menettelytavat, tarkistuslistat\n  ✓ Mallipohjat joita haluat Clauden noudattavan\n  ✓ Avainviitetiedot (tuotetiedot, organisaatiokaaviot, asiakasprofiilit)\n  ✓ Aiemmat esimerkit töistä joita haluat Clauden vastaavan",
+          "Mitä EI kuulu tietokantaan:\n  ✗ Yleistiedot jotka Claude jo tietää\n  ✗ Arkaluontoiset tiedot joita et halua tallennettavan\n  ✗ Vanhentuneet dokumentit (hämmentävät enemmän kuin auttavat)\n  ✗ Dokumentit joihin Claude ei koskaan viittaa",
+          "Laadusääntö: jos epäilet — jätä pois. 3 erittäin relevanttia dokumenttia voittaa 30 löyhästi relevanttia.",
+          "Käytä alla olevaa kehotetta selvittääksesi mitä lisätä PROJEKTISI tietokantaan."
+        ],
+        "prompt": "Liitä tämä projektiisi (ohjeiden asetuksen jälkeen):\n\nAuta minua päättämään mitä lisätä projektini tietokantaan.\n\nProjektini on tarkoitettu: [PROJEKTISI TARKOITUS]\nDokumentit joita voisin mahdollisesti lisätä: [LUETTELE SAATAVILLA OLEVAT DOKUMENTIT]\n\nJokaiselle luetteloimalleni dokumentille kerro:\n1. Lisätäänkö? (Kyllä / Ei / Ehkä)\n2. Miksi tai miksi ei\n3. Jos kyllä — mihin tarkoitukseen Claude käyttäisi sitä?\n\nEhdota myös millaisia dokumentteja minun pitäisi LUODA lisättäväksi, jos niitä ei vielä ole.",
+        "validate": "Sinulla on 2–5 relevanttia dokumenttia tietokannassa. Tiedät miksi kukin on siellä.",
+        "tip": "Lisää 'Käytännön esimerkit' -dokumentti: aiempia tuloksia jotka edustavat parasta työtäsi. Sano Claudelle: 'Vastaa näiden esimerkkien tyyliä ja laatua'. Tämä parantaa tuloslaatua välittömästi."
+      },
+      "cpa-5": {
+        "title": "Rakennetaan ensimmäinen Skill (uudelleenkäytettävä mallipohja)",
+        "time": "4 min",
+        "why": "Skill on tallennettu kehotemallipohjat toistuvalle tehtävälle. Sen sijaan että selittäisit viikoittain miten kirjoittaa viikkoraportti — tallennat ohjeet kerran ja käytät uudelleen. Ensimmäinen Skill säästää aikaa heti.",
+        "instructions": [
+          "Skill ei ole koodi — se on tallennettu uudelleenkäytettävä ohje jonka voit ottaa käyttöön tarvittaessa. Ajattele sitä kuin reseptikorttia Claudelle.",
+          "Valitse ensimmäinen Skillisi: valitse tehtävä jonka teet useimmin Clauden kanssa. Esimerkkejä: 'Kirjoita viikkoyhteenvetoni', 'Tarkista tämä asiakirja', 'Ideoi X:stä', 'Laadi vastaus tähän sähköpostiin'.",
+          "Hyvän Skill-kehotteen rakenne:\n  • ROOLI: kuka Claude edustaa\n  • KONTEKSTI: mistä tämä tehtävä kertoo\n  • SYÖTE: mitä annat\n  • TEHTÄVÄ: mitä tarkalleen haluat tehtävän\n  • MUOTO: miten tulos jäsennellään\n  • RAJOITUKSET: mitä välttää",
+          "Tallenna Skillisi kahdella tavalla:\n  a) Lisää projektin tietokantaan nimellä 'skill-[nimi].md'\n  b) Pidä erillisessä tiedostossa tietokoneella liitettäväksi tarvittaessa",
+          "Käytä alla olevaa kehotetta pyytääksesi Claudea kirjoittamaan ensimmäinen Skill-mallipohjasi puolestasi."
+        ],
+        "prompt": "Liitä tämä projektiisi:\n\nAuta minua luomaan uudelleenkäytettävä Skill-mallipohja tehtävälle jonka teen säännöllisesti.\n\nTehtävä: [KUVAILE TOISTUVA TEHTÄVÄSI]\nKuinka usein teen sen: [TAAJUUS]\nMitä yleensä annan syötteenä: [MITÄ ANNAT CLAUDELLE]\nMinkä tulosteen tarvitsen: [MITÄ HALUAT TAKAISIN]\nHaluamani muoto: [MITEN PITÄISI JÄSENNELLÄ]\nLaatua johon tähtään: [KUVAILE HYVÄ TULOS]\n\nKirjoita minulle täydellinen Skill-mallipohja jonka voin tallentaa ja käyttää uudelleen. Sisällytä:\n- Otsikko Skillille\n- Täydellinen kehote jota käyttää joka kerta (täytettävillä [PLACEHOLDER]-kohdilla)\n- Käyttöohjeet\n- Yksi esimerkki syötteestä ja tuloksesta laadun kalibroimiseksi",
+        "validate": "Sinulla on tallennettu Skill-mallipohja yleisimmälle tehtävällesi. Olet testannut sitä kerran oikealla syötteellä.",
+        "tip": "Testi hyvälle Skillille: voisitko antaa tämän mallipohjat kollegalle ja he saisivat saman laadukkaan tuloksen kuin sinä? Jos kyllä — hyvin kirjoitettu. Jos ei — vielä liian epämääräinen."
+      },
+      "cpa-6": {
+        "title": "Suoritetaan ensimmäinen täydellinen työnkulku",
+        "time": "3 min",
+        "why": "Tavoite on toimiva arkkitehtuuri — ei olemassa oleva. Tämä vaihe suorittaa todellisen tehtävän koko järjestelmäsi kautta: Project-konteksti + Ohjeet + Tietokanta + Skill. Näet eron.",
+        "instructions": [
+          "Avaa projektisi. Sinulla on nyt: Ohjeet (latautuu automaattisesti), Tietokanta (käytettävissä viittaamiseen), Skill-mallipohja (valmis käyttöön).",
+          "Valitse todellinen tehtävä jonka sinun täytyy tehdä tällä viikolla. Avaa Project, aloita uusi keskustelu.",
+          "Huomaa: sinun ei tarvitse selittää kuka olet tai mistä tässä projektissa on kyse. Claude jo tietää.",
+          "Käytä Skill-mallipohjasi: liitä se keskusteluun täytettynä oikealla syötteellä. Katso miten Claude käyttää Ohjeiden ja Tietokannan kontekstia paremman, henkilökohtaisemman tuloksen tuottamiseen.",
+          "Tehtävän jälkeen kysy itseltäsi: mitä minun olisi pitänyt selittää jos tätä projektia ei olisi? Se on arkkitehtuurisi arvo.",
+          "Arkkitehtuurisi on nyt aktiivinen. Parannukseksi: aina kun huomaat selittäväsi jotain jonka Clauden pitäisi jo tietää — lisää se Ohjeisiin. Aina kun teet tehtävää johon Claudella pitäisi olla valmis prosessi — tallenna se Skillinä."
+        ],
+        "prompt": "Liitä tämä projektiisi arkkitehtuurin tarkistamiseksi ja parantamiseksi ensimmäisen käytön jälkeen:\n\nSuoritin juuri tehtävän projektimme avulla. Auta minua parantamaan arkkitehtuuria.\n\nTehty tehtävä: [KUVAILE MITÄ TEIT]\nAsiat jotka minun piti selittää joita Clauden pitäisi tietää: [LUETTELE MITÄ JOUDUIT SELITTÄMÄÄN]\nMikä toimi hyvin: [MITÄ EI TARVINNUT SELITTÄÄ]\nTuloslaatu: [PAREMPI/SAMA/HUONOMPI kuin ilman projektia?]\n\nTämän perusteella ehdota:\n1. Mitä lisätä tai muuttaa projektiohjeissamme\n2. Mikä uusi Skill luoda seuraavaksi\n3. Mitä lisätä tietokantaan\n\nPidä ehdotukset konkreettisina ja toimintakelpoisina.",
+        "validate": "Olet suorittanut todellisen tehtävän projektin arkkitehtuurin kautta. Tiedät mitä parantaa ensi viikolla.",
+        "tip": "Projektin arkkitehtuuri ei ole koskaan 'valmis' — se kasvaa käytön myötä. Parhaat ylläpitäjät tarkistavat ja päivittävät sen 10 minuuttia joka perjantai: mikä toimi, mikä ei, mitä lisätä. Pienet viikoittaiset parannukset kertyvät huomattavasti paremmaksi järjestelmäksi kuukausien aikana."
+      }
+    }
   }
 }

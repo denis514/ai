@@ -3711,5 +3711,140 @@
         "tip": "The most common failure at this stage: moving too fast. One solid use case that 80% of your team uses reliably is worth more than 10 use cases that everyone tried once and forgot."
       }
     }
+  },
+  "claude-project-architecture": {
+    "title": "Build Your Claude Project Architecture",
+    "subtitle": "Set up a workspace where Claude always knows your context",
+    "totalTime": "23 min",
+    "whatItIs": "A hands-on course where you build a real, working Claude project structure from scratch — by the end, you have a personalized workspace where Claude remembers your context, follows your preferences, and runs your recurring tasks without re-explaining everything each time. No coding required. You work directly in Claude.ai.",
+    "approach": "Don't just read — act. Every step asks you to copy a prompt, paste it into Claude.ai, and create something concrete: your project instructions, your knowledge base, your first reusable template. By step 6 you'll run a real task and see the difference between Claude with and without architecture.",
+    "outcomes": [
+      "Understand why Claude 'forgets' and how project architecture solves this",
+      "Created a Claude Project with a name, purpose, and working instructions",
+      "Written your Project Instructions — the document Claude reads every session",
+      "Organized your knowledge: what to upload, what to leave out",
+      "Built your first reusable Skill template for a recurring task",
+      "Run a complete workflow using your new architecture"
+    ],
+    "applyIn": [
+      {
+        "title": "Any recurring work you do with Claude",
+        "description": "Once built, your architecture means you open Claude and it already knows who you are, what you're working on, and how you like things done. No more re-explaining."
+      },
+      {
+        "title": "Team knowledge management",
+        "description": "Share your project structure with colleagues so everyone on the team gets the same quality of Claude output — with the same context and instructions."
+      },
+      {
+        "title": "Multi-project organization",
+        "description": "Once you build one architecture, you have a template. Creating a second project for a new area of work takes 15 minutes instead of 3 weeks."
+      }
+    ],
+    "pitfalls": [
+      "Making Project Instructions too long — Claude reads everything every time. Under 500 words is a good target for the first version.",
+      "Adding everything to Knowledge — too much context dilutes what Claude pays attention to. Be selective.",
+      "Trying to make it perfect before using it — start simple, use it for one week, then improve based on what's missing."
+    ],
+    "exercises": [
+      {
+        "question": "Open a chat without using your Project and ask Claude something you'd normally ask. Then open your Project and ask the same question. Compare the responses. What changed?",
+        "hint": "The difference reveals exactly what your Project Instructions are doing for you."
+      },
+      {
+        "question": "After one week of using your project architecture, list 3 things you still re-explain to Claude. Those are candidates for your next update to Project Instructions or your next Skill.",
+        "hint": "The best project architectures are built incrementally. Each thing you add should solve a specific friction you actually feel."
+      }
+    ],
+    "steps": {
+      "cpa-1": {
+        "title": "Why Claude needs architecture",
+        "time": "3 min",
+        "why": "Claude starts fresh every conversation. Without architecture, you re-explain your context, preferences, and goals every single time. With architecture, Claude arrives pre-briefed — ready to work at full quality from message one.",
+        "instructions": [
+          "The core problem: Claude has no persistent memory by default. Each conversation is a blank slate. You lose context, quality drops, and you repeat yourself constantly.",
+          "The solution: a Project with architecture. A Project gives Claude permanent context — instructions it reads every session, knowledge it can reference, and templates that standardize how recurring tasks are done.",
+          "Three layers of a Claude project architecture:\n  1. Project Instructions — what Claude always knows (your identity, goals, style, constraints)\n  2. Project Knowledge — reference documents Claude can search (your materials, templates, data)\n  3. Skills (Prompt Templates) — saved instructions for recurring tasks (your workflows, reviews, drafts)",
+          "The mental model: think of your Project as hiring a new Claude team member. Project Instructions = their onboarding document. Knowledge = the reference library you give them. Skills = the SOPs they follow for recurring tasks.",
+          "What you'll build: by step 6, you'll have all three layers working for a real area of your work."
+        ],
+        "validate": "You understand why a blank-slate Claude is less useful than an architected one, and you know the three layers you'll build.",
+        "tip": "The most valuable insight: architecture is not about making Claude smarter — it's about not wasting Claude's (and your) time on context you've already explained."
+      },
+      "cpa-2": {
+        "title": "Create your Project workspace",
+        "time": "3 min",
+        "why": "Your Project is the container. Everything else lives inside it. Setting it up correctly takes 3 minutes and determines whether Claude always has the right context loaded.",
+        "instructions": [
+          "Go to claude.ai → click 'Projects' in the left sidebar → '+ New project'.",
+          "Name your project specifically. Not 'My Project' — something like 'Marketing — Q3 Campaigns' or 'Content — Blog & Newsletter' or 'Research — Competitor Analysis'. The name is just for your navigation.",
+          "Add a brief description (1–2 sentences). Claude doesn't read this — it's for you when you have multiple projects.",
+          "You now have an empty project. Don't add anything yet — we'll add content step by step."
+        ],
+        "prompt": "Use this prompt to choose your project name:\n\nI'm setting up a Claude Project workspace. Help me choose a good name.\n\nMy main area of work: [DESCRIBE YOUR WORK IN 1 SENTENCE]\nThe types of tasks I do most often: [LIST 3 TASKS]\nHow many different work areas I have: [NUMBER]\n\nSuggest 3 specific project names that would help me stay organized. For each, explain what it would contain.",
+        "validate": "You have a named, empty Claude Project ready to fill.",
+        "tip": "Start with ONE project for your most active area of work. You can always create more. Trying to architect everything at once leads to analysis paralysis."
+      },
+      "cpa-3": {
+        "title": "Write your Project Instructions (your Claude brief)",
+        "time": "6 min",
+        "why": "Project Instructions are what Claude reads before every single conversation in your project. This is the most important piece of your architecture. Good instructions mean Claude arrives fully briefed — bad instructions mean you're still re-explaining.",
+        "instructions": [
+          "In your Project, click 'Edit project details' → 'Project instructions' → add your instructions here.",
+          "What good Project Instructions include:\n  • WHO YOU ARE: your role, your organization, relevant background\n  • WHAT THIS PROJECT IS FOR: the purpose, the goals, what success looks like\n  • YOUR PREFERENCES: communication style, output format, level of detail\n  • CONSTRAINTS: what to avoid, what you don't want Claude to do\n  • CONTEXT: key facts Claude needs to know about your work",
+          "Length: aim for 200–400 words. Short enough that Claude actually uses all of it. Long enough to cover the key context.",
+          "Use the prompt below to have Claude WRITE your Project Instructions for you. Then paste the result into your project.",
+          "After pasting, test it: open a new conversation in your project and ask Claude something. Does the response reflect your instructions? If not, edit and improve."
+        ],
+        "prompt": "Copy this into a fresh Claude chat (not your project yet — we're drafting):\n\nHelp me write Project Instructions for my Claude workspace. I'll answer your questions, then you write the instructions.\n\nHere's my context:\n- My role/job: [YOUR ROLE]\n- This project is for: [PROJECT PURPOSE]\n- My main recurring tasks: [LIST 3–5 TASKS]\n- My preferred response style: [FORMAL/CASUAL, SHORT/DETAILED, STRUCTURED/CONVERSATIONAL]\n- Key things Claude should always know: [2–3 KEY FACTS]\n- Things Claude should never do in this project: [YOUR CONSTRAINTS]\n\nWrite me Project Instructions in this format:\n## About me\n## This project's purpose\n## How I want you to respond\n## Key context\n## What to avoid\n\nKeep it under 350 words. Make it feel like a briefing document, not a list of rules.",
+        "validate": "Your Project Instructions are pasted and saved. You've tested them with at least one conversation.",
+        "tip": "The best Project Instructions are written over time, not all at once. After using your project for a week, you'll know exactly what was missing. Build the first version now; refine next week."
+      },
+      "cpa-4": {
+        "title": "Add your Knowledge (what Claude can reference)",
+        "time": "4 min",
+        "why": "Project Knowledge is Claude's reference library. Unlike instructions (which Claude reads every time), Knowledge is searched when relevant. This is where your reference materials live — but only the ones Claude actually needs.",
+        "instructions": [
+          "In your Project → 'Add content' → 'Add files' or paste text directly.",
+          "What belongs in Knowledge:\n  ✓ Style guides, tone references, brand documents\n  ✓ Process documentation, SOPs, checklists\n  ✓ Templates you want Claude to follow\n  ✓ Key reference data (product info, org charts, client profiles)\n  ✓ Past examples of work you want Claude to match",
+          "What does NOT belong in Knowledge:\n  ✗ General information Claude already knows (company history, public info)\n  ✗ Sensitive data you don't want stored\n  ✗ Outdated documents (they confuse more than help)\n  ✗ Documents Claude will never need to reference",
+          "Quality rule: when in doubt, leave it out. 3 highly relevant documents beat 30 loosely relevant ones.",
+          "Use the prompt below to identify what to add to YOUR project's knowledge base."
+        ],
+        "prompt": "Paste this into your project (after you've set up instructions):\n\nHelp me decide what to add to my project's knowledge base.\n\nMy project is for: [YOUR PROJECT PURPOSE]\nDocuments I could potentially add: [LIST YOUR AVAILABLE DOCUMENTS]\n\nFor each document I listed, tell me:\n1. Should I add it? (Yes / No / Maybe)\n2. Why or why not\n3. If yes — what specifically should Claude use it for?\n\nAlso suggest what types of documents I should CREATE to add, if I don't have them yet.",
+        "validate": "You have 2–5 relevant documents in your Knowledge base. You know why each one is there.",
+        "tip": "Add a 'Working Examples' document: past outputs that represent your best work. Tell Claude: 'Match the style and quality of these examples.' This immediately improves output quality."
+      },
+      "cpa-5": {
+        "title": "Build your first Skill (a reusable template)",
+        "time": "4 min",
+        "why": "A Skill is a saved prompt template for a task you do repeatedly. Instead of explaining how to write a weekly report every week, you save the instructions once and reuse them. Your first Skill will immediately save you time.",
+        "instructions": [
+          "A Skill isn't code — it's a saved, reusable instruction that you can call on whenever you need it. Think of it as a recipe card for Claude.",
+          "Choose your first Skill: pick the single task you do most often with Claude. Examples: 'Write my weekly summary', 'Review this document', 'Brainstorm ideas for X', 'Draft a response to this email'.",
+          "Anatomy of a good Skill prompt:\n  • ROLE: who Claude is acting as\n  • CONTEXT: what this task is about\n  • INPUT: what you'll provide\n  • TASK: exactly what you want done\n  • FORMAT: how to structure the output\n  • CONSTRAINTS: what to avoid",
+          "Save your Skill in one of two ways:\n  a) Add it to your Project Knowledge as 'skill-[name].md'\n  b) Keep it in a separate document on your computer to paste when needed",
+          "Use the prompt below to have Claude write your first Skill template for you."
+        ],
+        "prompt": "Paste this into your project:\n\nHelp me create a reusable Skill template for a task I do regularly.\n\nThe task: [DESCRIBE YOUR RECURRING TASK]\nHow often I do it: [FREQUENCY]\nWhat I usually provide as input: [WHAT YOU GIVE CLAUDE]\nWhat output I need: [WHAT YOU WANT BACK]\nFormat I prefer: [HOW IT SHOULD BE STRUCTURED]\nQuality I'm aiming for: [DESCRIBE A GOOD RESULT]\n\nWrite me a complete Skill template I can save and reuse. Include:\n- A title for the Skill\n- The full prompt I should use each time (with [PLACEHOLDER] for things I'll fill in)\n- Instructions for how to use it\n- One example input and output to calibrate quality",
+        "validate": "You have a saved Skill template for your most common task. You've tested it once with real input.",
+        "tip": "The test for a good Skill: could you give this template to a colleague and they'd get the same quality output as you? If yes, it's well-written. If not, it's still too vague."
+      },
+      "cpa-6": {
+        "title": "Run your first complete workflow",
+        "time": "3 min",
+        "why": "Having architecture that works is the goal — not having architecture that exists. This step runs a real task through your full system: Project context + Instructions + Knowledge + Skill. You'll see the difference.",
+        "instructions": [
+          "Open your Project. You now have: Instructions (loaded automatically), Knowledge (available to reference), and a Skill template (ready to use).",
+          "Pick a real task you need to do this week. Open your Project, start a new conversation.",
+          "Notice: you don't need to explain who you are or what this project is about. Claude already knows.",
+          "Use your Skill template: paste it into the conversation with the actual input filled in. Watch Claude use the context from your Instructions and Knowledge to produce a better, more personalized result.",
+          "After the task, ask yourself: what would I have had to explain if I didn't have this project? That's your architecture's value.",
+          "Your architecture is now live. To improve it: whenever you find yourself explaining something Claude should already know, add it to Instructions. Whenever you do a task Claude should already know how to handle, save it as a Skill."
+        ],
+        "prompt": "Paste this into your project to review and improve your architecture after first use:\n\nI just completed a task using our project. Help me improve the architecture.\n\nThe task I did: [DESCRIBE WHAT YOU DID]\nThings I had to explain that Claude should have known: [LIST ANYTHING YOU HAD TO CLARIFY]\nThings that worked well: [WHAT DIDN'T NEED EXPLANATION]\nOutput quality: [BETTER/SAME/WORSE than without the project?]\n\nBased on this, suggest:\n1. What to add or change in our Project Instructions\n2. What new Skill to create next\n3. What to add to Knowledge\n\nKeep the suggestions specific and actionable.",
+        "validate": "You've run a real task through your project architecture. You know what to improve for next week.",
+        "tip": "Your project architecture is never 'done' — it grows with your usage. The best maintainers review and update it for 10 minutes every Friday: what worked, what didn't, what to add. Small weekly improvements compound into a dramatically better system over months."
+      }
+    }
   }
 }

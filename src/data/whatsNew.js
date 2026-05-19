@@ -16,8 +16,9 @@
  */
 export const WHATS_NEW = {
   // ─── Новые курсы (туториалы) ────────────────────────────────────────────────
-  'claude-for-business': { date: '2026-05-19', type: 'new', kind: 'tutorial' },
-  'ai-fluency':          { date: '2026-05-19', type: 'new', kind: 'tutorial' },
+  'claude-project-architecture': { date: '2026-05-19', type: 'new', kind: 'tutorial' },
+  'claude-for-business':         { date: '2026-05-19', type: 'new', kind: 'tutorial' },
+  'ai-fluency':                  { date: '2026-05-19', type: 'new', kind: 'tutorial' },
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
   'pl-api':          { date: '2026-05-17', type: 'new' },

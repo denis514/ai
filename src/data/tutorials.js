@@ -836,6 +836,30 @@ export const tutorials = {
       { "id": "w-8" }
     ]
   },
+  "claude-project-architecture": {
+    "nodeId": "i-claudemd",
+    "icon": "folder",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": ["basics", "projects"],
+    "relatedPrompts": [
+      "start-role-task",
+      "create-claudemd"
+    ],
+    "next": [
+      "instructions",
+      "skills",
+      "claude-for-business"
+    ],
+    "steps": [
+      { "id": "cpa-1" },
+      { "id": "cpa-2" },
+      { "id": "cpa-3" },
+      { "id": "cpa-4" },
+      { "id": "cpa-5" },
+      { "id": "cpa-6" }
+    ]
+  },
   "claude-for-business": {
     "nodeId": "scenarios",
     "icon": "building",
