@@ -30,6 +30,44 @@
 - Идея: автогенерация графа связей (помимо радиального дерева) —
   показать, какие узлы цитируют друг друга.
 
+---
+
+## Новые курсы — аудит vs Anthropic Academy (2026-05-19)
+
+### Источник: https://anthropic.skilljar.com
+
+Anthropic Academy предлагает 18 курсов в 4 категориях. Сопоставление с Atlas:
+
+| Курс Anthropic | Статус в Atlas | Приоритет |
+|----------------|----------------|-----------|
+| Claude 101 | ✅ покрыт (intro + basics) | — |
+| Introduction to Claude Cowork | ✅ покрыт (claude-cowork) | — |
+| AI Capabilities and Limitations | ✅ покрыт (capabilities + ai-limitations) | — |
+| Claude Code 101 | ✅ покрыт (claude-code) | — |
+| Claude Code in Action | ⚠️ частично (нет практического проекта) | P2 |
+| Building with the Claude API | ✅ покрыт (api-basics) | — |
+| Introduction to MCP | ✅ покрыт (mcp) | — |
+| MCP: Advanced Topics | ❌ отсутствует | P2 |
+| Introduction to agent skills | ✅ покрыт (skills) | — |
+| Introduction to subagents | ✅ покрыт (subagents) | — |
+| Claude with Amazon Bedrock | ❌ отсутствует | P3 |
+| Claude with Google Cloud Vertex AI | ❌ отсутствует | P3 |
+| AI Fluency: Framework & Foundations | ❌ отсутствует | **P1** |
+| AI Fluency for educators | ❌ отсутствует | **P1** |
+| AI Fluency for Small Businesses | ⚠️ частично (scenarios) | **P1** |
+| AI Fluency for nonprofits | ❌ отсутствует | P3 |
+| AI Fluency for students | ❌ отсутствует | P2 |
+| Teaching AI Fluency | ❌ отсутствует | P3 |
+
+### Вывод по аудиту
+
+**Главный разрыв:** аудитория `business` почти пуста — 1 курс из 26.
+Anthropic Academy делает ставку на AI Fluency (6 курсов для разных аудиторий).
+
+**Нет вообще в Atlas:** educators-трек, AI Fluency framework, cloud-интеграции.
+
+→ Promoted в backlog. См. `tasks/backlog.md#новые-курсы`.
+
 ## Заметки
 - Не пытаемся реализовать всё. Это пул для разговора.
 - Идея → backlog: должна пройти через `knowledge-architect` или

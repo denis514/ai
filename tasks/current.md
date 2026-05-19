@@ -84,7 +84,10 @@
 | status | task | примечание | дата |
 |--------|------|-----------|------|
 | ✅ | **Audience tracks в CoursesModal** — фильтр «Все / Для всех / Бизнес / Разработчикам» | pills в обоих табах, audience в 26 tutorials + 6 paths | 2026-05-19 |
-| open | **Learning Paths: For Business + For Educators** | skill: `ai-pedagogy-architect` | — |
+| open | **Курс `ai-fluency`** — AI Fluency: Framework & Foundations | everyone, beginner, nodeId: b-claude. Батч 1 из аудита Anthropic Academy. | — |
+| open | **Курс `claude-for-business`** — AI для малого бизнеса | business, beginner, nodeId: scenarios. Батч 1. | — |
+| open | **Курс `claude-for-educators`** — AI для педагогов | business, beginner, новый узел b-educators. Батч 1. | — |
+| open | **Learning Paths: For Business + For Educators** | После Батч 1 курсов — собрать их в маршруты | — |
 | open | **Аудит устаревших узлов** — `cap-computer`, `b-knowledge`, `pl-platforms` | skill: `content-gap-auditor` | — |
 
 ### P2 — Техника
