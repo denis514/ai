@@ -385,11 +385,15 @@ function AppInner() {
     [query, category, searchableById]
   );
 
-  // Pinned узлы — список id, который пользователь хочет «увидеть на карте»
-  // (например, кликнул на «Закладки: 5» в профиле → должны раскрыться и
-  // подсветиться именно эти 5). Очищается при следующей навигации.
+  // Pinned узлы — список id, которые пользователь хочет «увидеть на карте»
+  // (например, кликнул на «Закладки: 5» в профиле → подсвечиваются именно они).
+  //
+  // pinDimActive — флаг затемнения остальных узлов. Сбрасывается при первом
+  // клике на любой узел (карта становится полностью интерактивной), но
+  // подсветка pinnedIds (.is-matched) при этом сохраняется.
   const [pinnedIds, setPinnedIds] = useState(() => new Set());
   const [pinLabel, setPinLabel] = useState('');
+  const [pinDimActive, setPinDimActive] = useState(false);
 
   const pinnedAncestors = useMemo(() => {
     if (!pinnedIds.size) return new Set();
@@ -428,16 +432,24 @@ function AppInner() {
     if (!ids || !ids.length) return;
     setPinnedIds(new Set(ids));
     setPinLabel(label || '');
+    setPinDimActive(true); // включаем затемнение при первом показе
   }, []);
 
   const clearPinned = useCallback(() => {
     setPinnedIds(new Set());
     setPinLabel('');
+    setPinDimActive(false);
   }, []);
 
-  // Esc — единственный способ сбросить подсветку pinned-нод (чип удалён).
+  // Снять затемнение при клике на любой узел — карта становится полностью
+  // интерактивной, но подсветка pinnedIds (.is-matched) остаётся видимой.
+  const releasePinDim = useCallback(() => {
+    if (pinDimActive) setPinDimActive(false);
+  }, [pinDimActive]);
+
+  // Esc — полный сброс подсветки pinned-нод.
   useEffect(() => {
-    if (!pinnedIds.size) return;
+    if (!pinnedIds.size && !pinDimActive) return;
     const onKey = (e) => {
       if (e.key !== 'Escape') return;
       const tag = (e.target?.tagName || '').toLowerCase();
@@ -446,7 +458,7 @@ function AppInner() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [pinnedIds, clearPinned]);
+  }, [pinnedIds, pinDimActive, clearPinned]);
 
   const onToggle = useCallback((id) => {
     setExpandedIds(prev => {
@@ -460,7 +472,8 @@ function AppInner() {
   const onSelect = useCallback((node) => {
     setRoute({ type: 'node', id: node.id });
     markSeen(node.id);
-  }, [setRoute, markSeen]);
+    releasePinDim(); // снять затемнение, подсветка pinnedIds остаётся
+  }, [setRoute, markSeen, releasePinDim]);
 
   // При смене выбранного узла — раскрываем всех предков, чтобы узел стал
   // видимым на карте (важно для глубоких ссылок: Cmd+K, learning paths,
@@ -568,7 +581,7 @@ function AppInner() {
           expandedIds={expandedIds}
           selectedId={selected?.id}
           matchedIds={highlightedIds}
-          searchActive={active || pinnedIds.size > 0}
+          searchActive={active || pinDimActive}
           onToggle={onToggle}
           onSelect={onSelect}
           tutorialState={tutorialState}
@@ -584,7 +597,7 @@ function AppInner() {
           isOpen={panelOpen}
           onClose={onCloseAll}
           onStartTutorial={onStartTutorial}
-          onSelectRelated={(id) => setRoute({ type: 'node', id })}
+          onSelectRelated={(id) => { setRoute({ type: 'node', id }); releasePinDim(); }}
           progressApi={progressApi}
           bookmarksApi={bookmarksApi}
           nodeProgressApi={nodeProgressApi}
