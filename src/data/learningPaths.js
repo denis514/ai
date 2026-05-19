@@ -7,6 +7,7 @@ export const learningPaths = [
     "id": "newcomer",
     "icon": "sparkles",
     "level": "beginner",
+    "audience": "everyone",
     "steps": [
       {
         "type": "node",
@@ -38,6 +39,7 @@ export const learningPaths = [
     "id": "engineer",
     "icon": "laptop",
     "level": "intermediate",
+    "audience": "developers",
     "steps": [
       {
         "type": "node",
@@ -77,6 +79,7 @@ export const learningPaths = [
     "id": "researcher",
     "icon": "microscope",
     "level": "intermediate",
+    "audience": "business",
     "steps": [
       {
         "type": "node",
@@ -112,6 +115,7 @@ export const learningPaths = [
     "id": "automation",
     "icon": "tools",
     "level": "advanced",
+    "audience": "developers",
     "steps": [
       {
         "type": "node",
@@ -151,6 +155,7 @@ export const learningPaths = [
     "id": "prompting",
     "icon": "mixer",
     "level": "intermediate",
+    "audience": "everyone",
     "steps": [
       {
         "type": "node",
@@ -198,6 +203,7 @@ export const learningPaths = [
     "id": "zero-to-running",
     "icon": "rocket",
     "level": "beginner",
+    "audience": "developers",
     "steps": [
       { "type": "tutorial", "id": "intro" },
       { "type": "node", "id": "fs-what-is-project" },

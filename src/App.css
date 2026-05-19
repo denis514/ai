@@ -6894,6 +6894,45 @@
   color: var(--surface);
 }
 
+/* Audience filter pills */
+.courses-audience {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.courses-audience::-webkit-scrollbar { display: none; }
+
+.courses-audience__pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, color .15s, border-color .15s;
+  line-height: 1.4;
+}
+.courses-audience__pill:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+.courses-audience__pill.is-active {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--surface);
+}
+
 /* ============================================================
    Learning Paths — карточки + раскрытые шаги
    ============================================================ */

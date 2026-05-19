@@ -28,10 +28,13 @@ const LEVEL_COLOR = {
   advanced:     '#7c3aed'
 };
 
+const AUDIENCES = ['all', 'everyone', 'business', 'developers'];
+
 export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi, nodeProgressApi, onOpenPrompt }) {
   const t = useT();
   const { locale } = useLocale();
   const [tab, setTab] = useState('paths');
+  const [audience, setAudience] = useState('all');
   const [selectedTutorialId, setSelectedTutorialId] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
@@ -54,7 +57,7 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
   // Локализованный preview выбранного туториала.
   const selectedTutorialKey = selectedTutorialId;
 
-  const items = Object.entries(tutorials).map(([key, struct]) => {
+  const allItems = Object.entries(tutorials).map(([key, struct]) => {
     const tutLocalized = getLocalizedTutorial(key, locale);
     const node = findNodeById(mindmapData, struct.nodeId);
     const p = progressApi.getProgress(struct.nodeId);
@@ -63,11 +66,16 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
     const isDone = !!p.completedAt;
     const isStarted = done > 0 || (p.lastStepIndex || 0) > 0;
     const cat = node ? CATEGORIES[node.category] : null;
-    return { key, t: tutLocalized, node, p, done, total, isDone, isStarted, cat };
+    return { key, t: tutLocalized, node, p, done, total, isDone, isStarted, cat, audience: struct.audience || 'everyone' };
   });
 
-  const completed = items.filter(i => i.isDone).length;
-  const started   = items.filter(i => !i.isDone && i.isStarted).length;
+  const completed = allItems.filter(i => i.isDone).length;
+  const started   = allItems.filter(i => !i.isDone && i.isStarted).length;
+
+  // Фильтруем по аудитории
+  const items = audience === 'all'
+    ? allItems
+    : allItems.filter(i => i.audience === audience);
 
   // Сортируем: продолжающиеся → незавершённые → завершённые
   items.sort((a, b) => {
@@ -133,8 +141,22 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
           >
             <Icon name="graduation" size={14} strokeWidth={1.5} />
             {t('courses.courses')}
-            <span className="courses-tab__count">{items.length}</span>
+            <span className="courses-tab__count">{allItems.length}</span>
           </button>
+        </div>
+
+        {/* Фильтр аудитории */}
+        <div className="courses-audience" role="group" aria-label="Audience filter">
+          {AUDIENCES.map(aud => (
+            <button
+              key={aud}
+              type="button"
+              className={`courses-audience__pill ${audience === aud ? 'is-active' : ''}`}
+              onClick={() => { setAudience(aud); setSelectedTutorialId(null); }}
+            >
+              {t(`courses.audience.${aud}`)}
+            </button>
+          ))}
         </div>
 
         {tab === 'courses' ? (
@@ -215,6 +237,7 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
         ) : (
           <PathsList
             paths={getAllLocalizedPaths(locale)}
+            audience={audience}
             progressApi={progressApi}
             nodeProgressApi={nodeProgressApi}
             onNavigate={(r) => {
@@ -274,7 +297,7 @@ function stepIcon(step) {
 
 const LEVEL_ORDER = { beginner: 0, intermediate: 1, advanced: 2, expert: 3 };
 
-function PathsList({ paths, progressApi, nodeProgressApi, onNavigate }) {
+function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate }) {
   const t = useT();
   const { locale } = useLocale();
   const [openId, setOpenId] = useState(null);
@@ -284,7 +307,11 @@ function PathsList({ paths, progressApi, nodeProgressApi, onNavigate }) {
     prompt: t('courses.kind.prompt')
   };
 
-  const sorted = [...paths].sort(
+  const filtered = audience === 'all'
+    ? paths
+    : paths.filter(p => p.audience === audience);
+
+  const sorted = [...filtered].sort(
     (a, b) => (LEVEL_ORDER[a.level] ?? 99) - (LEVEL_ORDER[b.level] ?? 99)
   );
 

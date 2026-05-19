@@ -22,6 +22,7 @@ export function getLocalizedPath(id, locale) {
     id: struct.id,
     icon: struct.icon,
     level: struct.level,
+    audience: struct.audience || 'everyone',
     title: c.title || '',
     description: c.description || '',
     duration: c.duration || '',

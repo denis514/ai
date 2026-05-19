@@ -8,6 +8,7 @@ export const tutorials = {
     "nodeId": "pl-api",
     "icon": "code",
     "level": "intermediate",
+    "audience": "developers",
     "prerequisites": ["claude-setup"],
     "relatedPrompts": [],
     "next": ["agents", "mcp"],
@@ -24,6 +25,7 @@ export const tutorials = {
     "nodeId": "cap-limitations",
     "icon": "shield",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": ["basics"],
     "relatedPrompts": [],
     "next": ["prompting", "claude-setup"],
@@ -39,6 +41,7 @@ export const tutorials = {
     "nodeId": "pl-cowork",
     "icon": "robot",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": ["claude-setup"],
     "relatedPrompts": [],
     "next": ["agents", "subagents"],
@@ -54,6 +57,7 @@ export const tutorials = {
     "nodeId": "platform",
     "icon": "sparkles",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [],
     "relatedPrompts": ["start-role-task"],
     "next": ["projects", "instructions", "basics"],
@@ -70,6 +74,7 @@ export const tutorials = {
     "nodeId": "basics",
     "icon": "brain",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [],
     "relatedPrompts": [
       "start-role-task",
@@ -102,6 +107,7 @@ export const tutorials = {
     "nodeId": "projects",
     "icon": "folder",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [
       "basics"
     ],
@@ -142,6 +148,7 @@ export const tutorials = {
     "nodeId": "artifacts",
     "icon": "paint",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [
       "basics"
     ],
@@ -176,6 +183,7 @@ export const tutorials = {
     "nodeId": "skills",
     "icon": "tools",
     "level": "intermediate",
+    "audience": "developers",
     "prerequisites": [
       "basics",
       "projects"
@@ -217,6 +225,7 @@ export const tutorials = {
     "nodeId": "claude-code",
     "icon": "laptop",
     "level": "intermediate",
+    "audience": "developers",
     "prerequisites": [
       "basics"
     ],
@@ -260,6 +269,7 @@ export const tutorials = {
     "nodeId": "mcp",
     "icon": "plug",
     "level": "intermediate",
+    "audience": "developers",
     "prerequisites": [
       "basics",
       "claude-code"
@@ -301,6 +311,7 @@ export const tutorials = {
     "nodeId": "instructions",
     "icon": "settings",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [
       "basics"
     ],
@@ -335,6 +346,7 @@ export const tutorials = {
     "nodeId": "prompting",
     "icon": "note",
     "level": "intermediate",
+    "audience": "everyone",
     "prerequisites": [
       "basics"
     ],
@@ -376,6 +388,7 @@ export const tutorials = {
     "nodeId": "scenarios",
     "icon": "target",
     "level": "intermediate",
+    "audience": "business",
     "prerequisites": [
       "basics",
       "projects"
@@ -411,6 +424,7 @@ export const tutorials = {
     "nodeId": "agents",
     "icon": "robot",
     "level": "advanced",
+    "audience": "developers",
     "prerequisites": [
       "basics",
       "claude-code",
@@ -450,6 +464,7 @@ export const tutorials = {
     "nodeId": "ready-prompts",
     "icon": "clipboard",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [],
     "relatedPrompts": [
       "start-role-task",
@@ -479,6 +494,7 @@ export const tutorials = {
     "nodeId": "b-claude",
     "icon": "sparkles",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [],
     "relatedPrompts": [
       "start-role-task",
@@ -511,6 +527,7 @@ export const tutorials = {
     "nodeId": "platform",
     "icon": "tag",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [
       "intro"
     ],
@@ -544,6 +561,7 @@ export const tutorials = {
     "nodeId": "capabilities",
     "icon": "eye",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [
       "intro"
     ],
@@ -581,6 +599,7 @@ export const tutorials = {
     "nodeId": "prompting",
     "icon": "testtube",
     "level": "intermediate",
+    "audience": "everyone",
     "prerequisites": [
       "basics",
       "prompting"
@@ -622,6 +641,7 @@ export const tutorials = {
     "nodeId": "cc-subagents",
     "icon": "robot",
     "level": "advanced",
+    "audience": "developers",
     "prerequisites": [
       "skills"
     ],
@@ -657,6 +677,7 @@ export const tutorials = {
     "nodeId": "cap-tools",
     "icon": "tools",
     "level": "advanced",
+    "audience": "developers",
     "prerequisites": [
       "capabilities",
       "prompting-techniques"
@@ -695,6 +716,7 @@ export const tutorials = {
     "nodeId": "cc-hooks",
     "icon": "hook",
     "level": "advanced",
+    "audience": "developers",
     "prerequisites": [
       "claude-code"
     ],
@@ -730,6 +752,7 @@ export const tutorials = {
     "nodeId": "b-first-steps",
     "icon": "rocket",
     "level": "beginner",
+    "audience": "developers",
     "prerequisites": [],
     "relatedPrompts": [
       "start-role-task"
@@ -755,6 +778,7 @@ export const tutorials = {
     "nodeId": "fs-terminal",
     "icon": "terminal",
     "level": "beginner",
+    "audience": "developers",
     "prerequisites": [],
     "relatedPrompts": [],
     "next": [
@@ -773,6 +797,7 @@ export const tutorials = {
     "nodeId": "fs-folder-create",
     "icon": "folder-plus",
     "level": "beginner",
+    "audience": "developers",
     "prerequisites": [
       "terminal-tour"
     ],
@@ -792,6 +817,7 @@ export const tutorials = {
     "nodeId": "b-claude",
     "icon": "rocket",
     "level": "beginner",
+    "audience": "everyone",
     "prerequisites": [],
     "relatedPrompts": [],
     "next": [
