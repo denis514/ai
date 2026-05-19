@@ -6909,54 +6909,53 @@
 .courses-audience::-webkit-scrollbar { display: none; }
 
 .courses-audience__pill {
-  /* Сброс браузерных стилей кнопки */
+  /* Сброс всех браузерных стилей кнопки */
   -webkit-appearance: none;
   appearance: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
-  /* Фиксированный размер — одинаков во всех состояниях */
+  /* Жёстко фиксированный размер — не меняется ни в одном состоянии */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 5px 13px;
-  border-radius: 20px;
+  height: 28px;
+  padding: 0 13px;
+  margin: 0;
+  flex-shrink: 0;
+  border-radius: 14px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-muted);
   font-size: 12px;
   font-weight: 500;
-  line-height: 1;
+  line-height: 28px;
   cursor: pointer;
   white-space: nowrap;
   user-select: none;
   transition: background .15s, color .15s, border-color .15s;
-  /* Запрет любого сдвига при нажатии */
-  transform: none !important;
+  transform: none;
 }
 .courses-audience__pill:hover {
   border-color: var(--text-muted);
   color: var(--text);
-  background: transparent;
 }
 .courses-audience__pill:active {
-  /* Явно запрещаем браузерный inset/сдвиг */
-  transform: none !important;
-  padding: 5px 13px;
+  transform: none;
 }
 .courses-audience__pill:focus-visible {
   outline: 2px solid var(--accent, #d97757);
   outline-offset: 2px;
 }
-.courses-audience__pill.is-active {
+.courses-audience__pill.is-active,
+.courses-audience__pill.is-active:hover,
+.courses-audience__pill.is-active:active {
   background: var(--text);
   border-color: var(--text);
   color: var(--surface);
-}
-.courses-audience__pill.is-active:hover {
-  background: var(--text);
-  border-color: var(--text);
-  color: var(--surface);
+  height: 28px;
+  padding: 0 13px;
+  transform: none;
 }
 
 /* ============================================================
