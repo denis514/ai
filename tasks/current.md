@@ -80,7 +80,7 @@
 ### P1 — Контент и функционал
 | status | task | примечание | дата |
 |--------|------|-----------|------|
-| open | **Audience tracks в CoursesModal** — фильтр «For Everyone / Business / Developers» | skill: `react-knowledge-ui` | — |
+| ✅ | **Audience tracks в CoursesModal** — фильтр «Все / Для всех / Бизнес / Разработчикам» | pills в обоих табах, audience в 26 tutorials + 6 paths | 2026-05-19 |
 | open | **Learning Paths: For Business + For Educators** | skill: `ai-pedagogy-architect` | — |
 | open | **Аудит устаревших узлов** — `cap-computer`, `b-knowledge`, `pl-platforms` | skill: `content-gap-auditor` | — |
 
