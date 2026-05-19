@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 const STORAGE_KEY = 'claude-mindmap.tutorial-progress.v1';
 
-// Структура: { [tutorialId]: { completedSteps: string[], lastStepIndex: number, completedAt: string|null } }
+// Структура: { [tutorialId]: { completedSteps: string[], lastStepIndex: number, completedAt: string|null, startedAt: string|null } }
 
 function readStorage() {
   try {
@@ -36,8 +36,14 @@ export function useTutorialProgress() {
 
   const update = useCallback((tutorialId, updater) => {
     setProgress(prev => {
-      const cur = prev[tutorialId] || { completedSteps: [], lastStepIndex: 0, completedAt: null };
-      const next = { ...prev, [tutorialId]: updater(cur) };
+      const isNew = !prev[tutorialId];
+      const cur = prev[tutorialId] || { completedSteps: [], lastStepIndex: 0, completedAt: null, startedAt: null };
+      const updated = updater(cur);
+      // Ставим startedAt при первом касании туториала
+      if (isNew || !cur.startedAt) {
+        updated.startedAt = updated.startedAt || new Date().toISOString();
+      }
+      const next = { ...prev, [tutorialId]: updated };
       writeStorage(next);
       return next;
     });

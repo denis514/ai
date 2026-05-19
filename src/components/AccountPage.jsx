@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { updateProfile, deleteProfile } from '../services/profileService.js';
 import { supabase } from '../lib/supabaseClient.js';
+import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
 
 /**
  * AccountPage — страница управления аккаунтом.
@@ -21,6 +22,9 @@ export default function AccountPage({ onClose, onNavigate, onRequestAuth }) {
   const t = useT();
   const { locale, setLocale, locales } = useLocale();
   const { user, profile, setProfile, signOut, refreshProfile } = useAuth();
+
+  // Статистика активности из Supabase
+  const supaStats = useSupabaseStats(user?.id || null);
 
   // (display_name редактируется в ProfilePanel — единое место)
 
@@ -174,6 +178,37 @@ export default function AccountPage({ onClose, onNavigate, onRequestAuth }) {
               ))}
             </div>
           </div>
+        </section>
+
+        {/* ── Activity section ── */}
+        <section className="account-section">
+          <h2>{t('profile.activity')}</h2>
+          {supaStats.loading ? (
+            <div className="account-activity-loading">
+              <Icon name="refresh" size={14} strokeWidth={1.5} />
+              <span>{t('common.loading')}</span>
+            </div>
+          ) : (
+            <div className="account-activity-row">
+              <div className="account-activity-card">
+                <span className="account-activity-val">{supaStats.streak}</span>
+                <span className="account-activity-label">
+                  {supaStats.streak === 1
+                    ? t('profile.activity.dayStreak.one')
+                    : t('profile.activity.dayStreak.many')}
+                </span>
+                {supaStats.streak >= 3 && <span className="account-activity-fire">🔥</span>}
+              </div>
+              <div className="account-activity-card">
+                <span className="account-activity-val">{supaStats.totalDays}</span>
+                <span className="account-activity-label">
+                  {supaStats.totalDays === 1
+                    ? t('profile.activity.daysTotal.one')
+                    : t('profile.activity.daysTotal.many')}
+                </span>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* ── Data & Privacy section ── */}

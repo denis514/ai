@@ -7,6 +7,7 @@ import { LOCALE_LABEL } from '../i18n/config.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
 import { updateProfile } from '../services/profileService.js';
+import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 
 const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
 
@@ -84,28 +85,45 @@ export default function ProfilePanel({
     for (const id of tutorialIds) { if (progressApi.getProgress(id)?.completedAt) n++; }
     return n;
   })();
-  const localTutsStarted = (() => {
-    let n = 0;
-    for (const id of tutorialIds) {
-      const p = progressApi.getProgress(id);
-      if (!p?.completedAt && ((p?.completedSteps?.length || 0) > 0 || (p?.lastStepIndex || 0) > 0)) n++;
-    }
-    return n;
-  })();
-
   // Для залогиненных — Supabase источник правды.
   // Для гостей — localStorage.
   const tutsDone    = isLoggedIn ? supaStats.tutorialsDone    : localTutsDone;
-  const tutsStarted = isLoggedIn ? supaStats.tutorialsStarted : localTutsStarted;
   const tutsTotal   = tutorialIds.length;
   const tutPercent  = Math.round((tutsDone / tutsTotal) * 100);
 
   const nodesViewed  = isLoggedIn ? supaStats.nodesViewed  : nodeProgressApi.counts.viewed;
   const nodesReview  = isLoggedIn ? supaStats.nodesReview  : nodeProgressApi.counts.review;
   const bmCount      = isLoggedIn ? supaStats.bookmarksCount : bookmarksApi.count;
-  const streak       = isLoggedIn ? supaStats.streak       : activityApi.streak;
-  const totalDays    = isLoggedIn ? supaStats.totalDays    : activityApi.totalDays;
   const loading      = isLoggedIn ? supaStats.loading      : false;
+
+  // ── Список активных курсов (В процессе) ──────────────────────────────────
+  // Активный = начат но не завершён. Сортировка: startedAt desc (новейший первый).
+  const activeCourses = useMemo(() => {
+    const result = [];
+    for (const id of tutorialIds) {
+      const p = progressApi.getProgress(id);
+      const isStarted = (p?.completedSteps?.length || 0) > 0 || (p?.lastStepIndex || 0) > 0;
+      const isDone = !!p?.completedAt;
+      if (!isStarted || isDone) continue;
+
+      const stepCount = tutorials[id]?.steps?.length || 1;
+      const doneCount = p?.completedSteps?.length || 0;
+      const percent = Math.round((doneCount / stepCount) * 100);
+      const localized = getLocalizedTutorial(id, locale);
+      const title = localized?.title || id;
+      const startedAt = p?.startedAt || null;
+
+      result.push({ id, title, percent, stepCount, doneCount, startedAt });
+    }
+    // Сортировка: startedAt desc, без startedAt — в конец
+    result.sort((a, b) => {
+      if (!a.startedAt && !b.startedAt) return 0;
+      if (!a.startedAt) return 1;
+      if (!b.startedAt) return -1;
+      return b.startedAt.localeCompare(a.startedAt);
+    });
+    return result;
+  }, [progressApi, locale]);
 
   // ── Достижения ────────────────────────────────────────────────────────────
   const ACHIEVEMENTS = [
@@ -115,9 +133,6 @@ export default function ProfilePanel({
     { id: 'explorer10', threshold: () => nodesViewed >= 10, icon: 'compass',  key: 'achievement.explorer10'    },
     { id: 'explorer50', threshold: () => nodesViewed >= 50, icon: 'compass',  key: 'achievement.explorer50'    },
     { id: 'collector',  threshold: () => bmCount >= 5,    icon: 'bookmark-filled', key: 'achievement.collector' },
-    { id: 'streak3',    threshold: () => streak >= 3,     icon: 'flash',      key: 'achievement.streak3'       },
-    { id: 'streak7',    threshold: () => streak >= 7,     icon: 'flash',      key: 'achievement.streak7'       },
-    { id: 'streak30',   threshold: () => streak >= 30,    icon: 'trophy',     key: 'achievement.streak30'      },
   ];
   const earned = ACHIEVEMENTS.filter(a => a.threshold());
 
@@ -164,13 +179,6 @@ export default function ProfilePanel({
     for (const key of STORAGE_KEYS) { try { localStorage.removeItem(key); } catch {} }
     window.location.reload();
   };
-
-  const streakLabel = streak === 1
-    ? t('profile.activity.dayStreak.one')
-    : t('profile.activity.dayStreak.many');
-  const totalLabel = totalDays === 1
-    ? t('profile.activity.daysTotal.one')
-    : t('profile.activity.daysTotal.many');
 
   return (
     <div className="profile-panel">
@@ -268,35 +276,6 @@ export default function ProfilePanel({
         </div>
       </section>
 
-      {/* ── STREAK ── */}
-      <section className="profile-panel__section">
-        <h4>{t('profile.activity')}</h4>
-        {loading ? (
-          <div className="profile-panel__loading">
-            <Icon name="refresh" size={14} strokeWidth={1.5} />
-            <span>{t('common.loading')}</span>
-          </div>
-        ) : (
-          <div className="profile-panel__streak-row">
-            <div className="profile-panel__streak-card">
-              <span className="profile-panel__streak-val">{streak}</span>
-              <span className="profile-panel__streak-label">{streakLabel}</span>
-              {streak >= 3 && <span className="profile-panel__streak-fire">🔥</span>}
-            </div>
-            <div className="profile-panel__streak-card">
-              <span className="profile-panel__streak-val">{totalDays}</span>
-              <span className="profile-panel__streak-label">{totalLabel}</span>
-            </div>
-            {isLoggedIn && (
-              <div className="profile-panel__streak-card profile-panel__streak-card--sync">
-                <Icon name="check" size={13} strokeWidth={2} />
-                <span>{t('profile.synced')}</span>
-              </div>
-            )}
-          </div>
-        )}
-      </section>
-
       {/* ── TUTORIAL PROGRESS ── */}
       <section className="profile-panel__section">
         <h4>{t('profile.tutorials')}</h4>
@@ -308,11 +287,6 @@ export default function ProfilePanel({
           <div className="profile-panel__progress-bar">
             <div className="profile-panel__progress-fill" style={{ width: `${tutPercent}%` }} />
           </div>
-          {tutsStarted > 0 && (
-            <span className="profile-panel__progress-note">
-              {t('profile.tutorials.inProgress', { n: tutsStarted })}
-            </span>
-          )}
           {onStartTutorial && (
             <button type="button" className="profile-panel__welcome-link" onClick={() => onStartTutorial('welcome')}>
               <Icon name="rocket" size={13} strokeWidth={1.5} />
@@ -320,6 +294,38 @@ export default function ProfilePanel({
             </button>
           )}
         </div>
+      </section>
+
+      {/* ── В ПРОЦЕССЕ ── */}
+      <section className="profile-panel__section">
+        <h4>{t('profile.inProgress.title')}</h4>
+        {activeCourses.length === 0 ? (
+          <p className="profile-panel__empty-hint">{t('profile.inProgress.empty')}</p>
+        ) : (
+          <ul className="profile-panel__active-courses">
+            {activeCourses.map(course => (
+              <li key={course.id}>
+                <button
+                  type="button"
+                  className="profile-panel__active-course"
+                  onClick={() => onStartTutorial?.(course.id)}
+                  title={course.title}
+                >
+                  <span className="profile-panel__active-course-title">{course.title}</span>
+                  <span className="profile-panel__active-course-right">
+                    <span className="profile-panel__active-course-pct">{course.percent}%</span>
+                    <span className="profile-panel__active-course-bar">
+                      <span
+                        className="profile-panel__active-course-fill"
+                        style={{ width: `${course.percent}%` }}
+                      />
+                    </span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {/* ── NODE PROGRESS ── */}
