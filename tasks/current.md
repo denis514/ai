@@ -5,34 +5,92 @@
 
 ---
 
-## 🚀 Access Strategy — Active Sprint (2026-05-17)
+## 🔧 Технический аудит (2026-05-19)
 
-Новая стратегия: **Open Ecosystem with Gated Depth**.
-Карта открыта для всех. Регистрация = прогресс + синхронизация. Премиум = AI-глубина.
+### Build
+| Метрика | Значение | Статус |
+|---------|----------|--------|
+| Build time | 1.30s | ✅ |
+| JS bundle (gzip) | 558 KB | ⚠️ большой, но допустимо |
+| CSS bundle (gzip) | 20 KB | ✅ |
+| Modules | ~159 | ✅ |
+| Ошибки сборки | 0 | ✅ |
 
-### Phase 1 — Открыть карту, убрать пароль ✅ ЗАВЕРШЁН (2026-05-17)
-| status | task | тест | дата |
-|--------|------|------|------|
-| ✅ done | **Убрать PasswordGate** — перевести в dev-only или удалить. MainMap открыт без пароля. ProfileFab показывает «Войти» для guest. | build ✅ · сайт открывается без пароля ✅ · Auth работает ✅ | 2026-05-17 |
-| open | **Guest lock: example field** — в Node Detail panel поле `example` для guest = blur + иконка замка + CTA «Войди, чтобы видеть примеры». Для logged-in — как сейчас. | build ✅ · guest видит blur ✅ · logged-in видит пример ✅ | 2026-05-17 |
-| open | **Tutorial gate: шаги 2+** — для guest при открытии шага 2+ показывать registration overlay поверх контента шага. CTA «Бесплатный аккаунт — полный доступ». | build ✅ · guest видит overlay на шаге 2 ✅ · logged-in проходит все шаги ✅ | 2026-05-17 |
-| open | **Prompt Library gate: лимит 15** — для guest открыты первые 15 промптов, остальные размыты с счётчиком и CTA. | build ✅ · guest видит 15 + blur на остальных ✅ | 2026-05-17 |
+### Инфраструктура
+| Компонент | Статус | Примечание |
+|-----------|--------|------------|
+| Supabase Auth | ✅ | Magic Link + Google OAuth |
+| Supabase DB | ✅ | EU Frankfurt, RLS на всех таблицах |
+| Vercel deploy | ✅ | Auto-deploy из GitHub |
+| i18n EN/RU/FI | ✅ | Все ключи синхронизированы |
+| GDPR | ✅ | Consent Mode v2, ToS, Privacy Policy |
+| IP-локализация | ✅ | TTL 7 дней, кеш v2 |
+| Сессия | ✅ | autoRefreshToken, рекомендуется 30д timebox в Supabase |
 
-### Phase 2 — Guest vs Registered UX ✅ ЗАВЕРШЁН (2026-05-17)
-| status | task | тест | дата |
-|--------|------|------|------|
-| ✅ done | **Welcome онбординг** — экран выбора уровня после первого логина. isNewUser флаг в AuthContext, WelcomeOnboarding.jsx с 3 уровнями и анимацией | build ✅ · 157 modules ✅ · onboarding в бандле ✅ | 2026-05-17 |
-| ✅ done | **LocalStorage → Supabase sync** — syncService.js мигрирует tutorials/nodes/bookmarks при первом входе. Идемпотентен (markSyncDone). | build ✅ · syncService в бандле ✅ | 2026-05-17 |
-| ✅ done | **SEO meta tags** — index.html: title, description, keywords, OG, Twitter Card, canonical. lang=en | SEO meta ✅ · canonical ✅ | 2026-05-17 |
+### Известные технические долги
+- ⚠️ Bundle 1.77 MB raw — нет code splitting (Vite manualChunks не настроен)
+- ⚠️ Supabase session timebox не настроен вручную (работает дефолт)
 
-### Phase 3 — Retention
-| status | task | тест | дата |
-|--------|------|------|------|
-| ✅ done | **Account page** — профиль, email, имя, язык, GDPR-экспорт, удаление аккаунта (EN/RU/FI) | build ✅ · 158 modules · i18n ✅ | 2026-05-17 |
-| ✅ done | **Улучшенный Profile** — useSupabaseStats hook, streak из Supabase, 9 достижений EN/RU/FI, «Synced» индикатор, email под именем | build ✅ · 159 modules · i18n ✅ | 2026-05-17 |
-| ✅ done | **Progress sync across devices** — useSupabaseStats читает learning_progress + node_progress + favorites + activity_log из Supabase | build ✅ | 2026-05-17 |
+---
 
-### Phase 4 — Premium foundation (будущее)
+## ✅ Завершено (2026-05-17 → 2026-05-19)
+
+### Auth & Access
+- ✅ Password gate убран — карта открыта для всех
+- ✅ Magic Link авторизация + GDPR consent
+- ✅ Google OAuth (кнопка в AuthModal, Consent Mode v2)
+- ✅ Tutorial gate: шаги 2+ — безопасный overlay, контент не рендерится, прогресс не пишется гостям
+- ✅ Guest lock: пример в DetailPanel — blur + CTA
+- ✅ Prompt Library gate: лимит 15 промптов для гостей
+- ✅ AuthModal — единое GDPR-согласие для обоих методов входа
+- ✅ Возраст 16+ чекбокс в AuthModal (GDPR Art. 8)
+- ✅ AccountPage: кнопка «Войти» работает (z-index fix)
+- ✅ Tutorial→Auth swap: туториал скрывается, AuthModal открывается поверх
+
+### Supabase Sync
+- ✅ syncService: localStorage → Supabase при каждом входе (idempotent upsert)
+- ✅ Реал-тайм синк: tutorials, bookmarks, nodeProgress (debounce 300ms)
+- ✅ Supabase = source of truth для залогиненных (убраны Math.max хаки)
+- ✅ ProfilePanel: Math.max убран, Supabase данные приоритетны
+
+### Profile & UX
+- ✅ Единое редактирование имени в ProfilePanel (Supabase/localStorage)
+- ✅ useSupabaseStats: streak, достижения (9 штук), прогресс
+- ✅ Статус-бейджи на узлах карты: viewed ✓ / review ↺ / bookmark — цвет категории
+- ✅ Update Banner: определение нового деплоя, ChunkLoadError auto-reload
+- ✅ Welcome онбординг после первого логина
+
+### i18n & Локализация
+- ✅ FALLBACK_LOCALE: ru → en (финская локаль не показывает русский)
+- ✅ CookieBanner локализован EN/RU/FI
+- ✅ IP-кеш: TTL 7 дней, ключ v2 (старый вечный кеш очищен)
+- ✅ Переименование Claude Atlas → 105 Atlas (все user-facing файлы)
+
+### GDPR & Юридика
+- ✅ Privacy Policy EN/RU/FI (новый дизайн в стиле Atlas)
+- ✅ Terms of Service EN/RU/FI (новый дизайн)
+- ✅ GA4 Consent Mode v2 (analytics_storage: denied по умолчанию)
+- ✅ Cookie preferences в AccountPage (сброс + перезагрузка)
+- ✅ GDPR contact в AccountPage
+
+---
+
+## 🔴 Открытые задачи (приоритет)
+
+### P1 — Контент и функционал
+| status | task | примечание | дата |
+|--------|------|-----------|------|
+| open | **Audience tracks в CoursesModal** — фильтр «For Everyone / Business / Developers» | skill: `react-knowledge-ui` | — |
+| open | **Learning Paths: For Business + For Educators** | skill: `ai-pedagogy-architect` | — |
+| open | **Аудит устаревших узлов** — `cap-computer`, `b-knowledge`, `pl-platforms` | skill: `content-gap-auditor` | — |
+
+### P2 — Техника
+| status | task | примечание | дата |
+|--------|------|-----------|------|
+| open | **Code splitting** — Vite manualChunks, split локали/туториалы от ядра. Bundle 1.77MB → цель < 800KB | build optimization | — |
+| open | **Supabase session timebox** — выставить 30 дней в Dashboard (Authentication → Sessions) | Dashboard config | — |
+
+### P3 — Premium (будущее)
 | status | task | дата |
 |--------|------|------|
 | open | Pricing page / premium CTA | — |
@@ -41,31 +99,7 @@
 
 ---
 
-## Остальные открытые задачи
-
-| status | task | skill | дата |
-|--------|------|-------|------|
-| ✅ done | **i18n Phase 5** — все файлы локализации clean (нет RU текста в EN/FI). Переведены troubleshoot ключи (25 штук) в EN+FI tutorials. Nodes, prompts, paths, ui — уже были clean. | build ✅ · audit ✅ | 2026-05-17 |
-| open | **Аудит устаревших узлов** — `cap-computer`, `b-knowledge`, `pl-platforms` | `content-gap-auditor` | 2026-05-17 |
-| open | **Audience tracks в CoursesModal** — фильтр For Everyone / Business / Developers | `react-knowledge-ui` | 2026-05-17 |
-| open | **Learning Paths: For Business + For Educators** | `ai-pedagogy-architect` | 2026-05-17 |
-
----
-
-## Сделано ✅
-- Password gate (SHA-256) + Mastercard spinner
-- Cookie consent + GA4
-- Atlas rebrand
-- What's New badge system + archive modal
-- Узлы: pl-web-setup, pl-desktop, pl-cowork, pl-integrations, cap-limitations, pr-4d, pl-api, 9× cc-grp-*
-- Tutorial routing bug fix
-- Tutorials: claude-setup, claude-cowork, ai-limitations, api-basics (EN/RU/FI)
-- i18n Phase 1–4 + 18 EN tutorials переведены
-- Supabase Auth Phase 1: Magic Link + GDPR + profiles + RLS
-- Privacy Policy EN/RU/FI
-- vercel.json routing fix
-
 ## Правила работы
-- Каждая задача: build ✅ → preview/test ✅ → commit → push
-- Обновлять этот файл после каждого завершения
+- Каждая задача: build ✅ → preview/test ✅ → commit → push → обновить этот файл
 - Не начинать следующую задачу без теста предыдущей
+- После каждого git push — обновить этот файл
