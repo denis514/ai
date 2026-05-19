@@ -653,6 +653,7 @@ function AppInner() {
           category={category}
           onCategory={setCategory}
           onSelectNode={(id) => setRoute({ type: 'node', id })}
+          onOpenTutorial={(id) => setRoute({ type: 'tutorial', id })}
           onOpenArchive={() => setArchiveOpen(true)}
         />
 

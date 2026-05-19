@@ -3580,5 +3580,136 @@
         "tip": "The Atlas map shows all of this visually — each node connects to related tutorials. Use the 'Courses' view to filter by your audience and see what's available for your track."
       }
     }
+  },
+  "claude-for-business": {
+    "title": "Claude for Business",
+    "subtitle": "Practical AI adoption for your team and workflows",
+    "totalTime": "22 min",
+    "whatItIs": "A practical course for business owners, managers, and team leads who want to integrate Claude into real work — not as an experiment, but as a reliable part of how their team operates. Covers identifying the right tasks, writing shared instructions, protecting sensitive data, measuring ROI, and scaling from one early adopter to a whole team.",
+    "approach": "This course works best if you take it with a specific business context in mind: your team, your recurring tasks, your constraints. Each step produces a concrete output — by the end you'll have a first draft of team instructions, a pilot task chosen, and a measurement plan. Theory is kept minimal; application is the point.",
+    "outcomes": [
+      "Identified which business tasks deliver the most value when assisted by Claude",
+      "Written a shared team instruction set (system prompt) for your main use case",
+      "Applied a data privacy framework for what your team can and cannot input",
+      "Designed a 2-week pilot with before/after measurement criteria",
+      "Created a plan for expanding Claude use across your team"
+    ],
+    "applyIn": [
+      {
+        "title": "Management and leadership",
+        "description": "Turn recurring decisions, reports, and reviews into templated AI-assisted workflows. Get drafts, summaries, and analysis in minutes rather than hours."
+      },
+      {
+        "title": "Client-facing work",
+        "description": "Draft proposals, briefs, follow-up emails, and meeting summaries faster. Keep consistent tone and structure across team members."
+      },
+      {
+        "title": "Internal operations",
+        "description": "Automate routine documents: HR templates, onboarding guides, policy summaries, process documentation. Reduce admin overhead without hiring."
+      }
+    ],
+    "pitfalls": [
+      "Introducing Claude to the whole team at once without a pilot — adoption fails when people don't have concrete, successful examples first.",
+      "Skipping the instructions step — without shared context, each team member gets inconsistent results and concludes 'Claude doesn't work for us'.",
+      "Measuring the wrong metric — 'hours saved' sounds good but is hard to track; 'quality of first draft' and 'rounds of revision reduced' are more honest."
+    ],
+    "exercises": [
+      {
+        "question": "List 5 recurring tasks your team does weekly. For each, rate: (1) how time-consuming it is, (2) how much the quality varies between team members. Tasks that score high on both are your best candidates for AI assistance.",
+        "hint": "Look for tasks where you've said 'we need a template for this' or 'why does everyone do this differently'."
+      },
+      {
+        "question": "Write a 5-sentence system prompt for your team's most common use case. Include: who Claude is acting as, what the goal is, what format to use, what to avoid, and who the audience is.",
+        "hint": "Don't try to make it perfect. A 5-sentence prompt tested on 10 real tasks is worth more than a 50-sentence prompt that was never tested."
+      }
+    ],
+    "steps": {
+      "cb-1": {
+        "title": "Identify your highest-value AI tasks",
+        "time": "4 min",
+        "why": "Most businesses start with 'let's try AI' and fail because they don't pick the right tasks first. A structured selection process ensures your pilot has the best chance of success.",
+        "instructions": [
+          "The best business tasks for Claude share three properties: they recur frequently, they have a clear definition of 'good output', and they currently show quality variation between team members.",
+          "High-value categories: drafting documents (proposals, briefs, reports, emails), summarizing content (meeting notes, research, feedback), analyzing data or text (customer feedback themes, competitive positioning), creating templates and checklists.",
+          "Lower-value or risky categories: tasks requiring real-time data, decisions with significant financial or legal consequences (without human review), tasks where personal relationship or nuance is the whole point.",
+          "Your selection method: list 5 recurring tasks. Score each 1–3 on: frequency (how often), time cost (how long it takes), quality variance (how differently team members do it). Highest total score = your pilot task.",
+          "Important: pick ONE task for your pilot. Trying to fix everything at once is why most AI adoption initiatives stall."
+        ],
+        "validate": "You have identified one specific recurring task as your pilot — not 'communication' but 'first draft of client proposals' or 'weekly status report'.",
+        "tip": "The task you pick for your pilot will set the tone for your whole team's AI perception. Pick something where success is visible and measurable."
+      },
+      "cb-2": {
+        "title": "Write shared team instructions",
+        "time": "5 min",
+        "why": "The biggest reason AI doesn't 'work' for a business team is inconsistent instructions. When each person prompts differently, results vary. Shared instructions create shared quality.",
+        "instructions": [
+          "Team instructions (a shared system prompt) tell Claude the context that never changes: who you are, what your business does, your tone and voice, and what 'good' looks like for your outputs.",
+          "Structure for a business system prompt:\n  • Role: 'You are a business assistant for [Company], a [description]'\n  • Audience: 'Our clients/colleagues are [description]'\n  • Tone: 'Write in [formal/conversational/technical] style'\n  • Format defaults: 'Use bullet points for lists, keep summaries under 200 words'\n  • Constraints: 'Never mention competitor names, always include a next step'",
+          "Where to store shared instructions: in Claude, create a Project and add the instructions there. Everyone on the team uses the same Project. When instructions change, update once — it applies for everyone.",
+          "Start simple: 5–8 sentences is enough for a first version. You'll iterate based on what you observe in real use. Resist the urge to write an exhaustive prompt before testing.",
+          "Test your instructions: have 3 team members run the same task with the shared prompt. Compare outputs. Adjust what was inconsistent."
+        ],
+        "prompt": "Template to adapt:\n\nYou are a professional assistant for [Company Name], a [brief company description]. Our clients are [client description].\n\nCommunication style: [formal/friendly/technical]. Default format: [bullet points/prose/structured sections]. Keep responses [concise/detailed] unless asked otherwise.\n\nAlways: [list 2-3 things to always do].\nNever: [list 2-3 things to never do].",
+        "validate": "You have a draft team instruction set in a Claude Project that at least one other team member has tested.",
+        "tip": "Instructions are a living document. Schedule a 15-minute monthly review: what worked, what produced wrong outputs, what's missing."
+      },
+      "cb-3": {
+        "title": "Data privacy: what your team can and cannot input",
+        "time": "4 min",
+        "why": "Businesses handle sensitive data. The consequences of leaking client information, financial data, or personal data through an AI tool are real. A clear policy prevents both the risk and the uncertainty that makes people avoid the tool entirely.",
+        "instructions": [
+          "Default rule for claude.ai (consumer product): treat it like a professional email to an unknown third party. Don't input what you wouldn't put in that email.",
+          "What's generally safe: anonymized descriptions of situations ('a client in the retail sector'), general business questions, document structures and frameworks, drafts that don't contain real names/numbers/identifiers.",
+          "What requires caution: actual client names and details (replace with 'Client A'), specific financial figures (use ranges or anonymize), employee personal data, legally privileged information, trade secrets or unreleased product plans.",
+          "Enterprise option: Anthropic offers enterprise agreements that include data privacy guarantees (no training on your data, security controls). If your business handles particularly sensitive data — consider this before rolling out to the full team.",
+          "Practical policy: create a one-page 'AI Input Policy' for your team. Three sections: OK to input, Input with caution (how), Never input. Make it specific to your industry and business context."
+        ],
+        "validate": "You have a draft AI input policy that you could share with your team today.",
+        "tip": "The goal of the policy is not to restrict AI use — it's to give your team confidence. 'Here's exactly what's safe' is more empowering than a vague 'be careful'."
+      },
+      "cb-4": {
+        "title": "Design your 2-week pilot",
+        "time": "4 min",
+        "why": "A pilot that isn't designed is just experimentation with no conclusion. A 2-week structured pilot gives you real data to decide whether to expand, adjust, or stop.",
+        "instructions": [
+          "Define your pilot task: one specific, recurring task, used by 2–5 team members, over 2 weeks.",
+          "Baseline measurement: before starting, record how long the task currently takes and a quality score (1–5) for typical output. This is your control group.",
+          "Success criteria: decide now what 'good enough' looks like. Suggested: time reduced by ≥ 25%, quality maintained at same score or higher, team members report it's less frustrating.",
+          "During the pilot: everyone uses the shared instructions (the Project you created). Log: time taken, quality score, any notable failures or surprises.",
+          "End of pilot review: compare logged data to baseline. Decide: expand to more tasks, refine instructions, or stop. Either outcome is valuable — you've learned something real.",
+          "Common pilot failures to avoid: people forget to log, the task changes mid-pilot, 'good enough' wasn't defined upfront, instructions weren't finalized before starting."
+        ],
+        "validate": "You have a pilot plan: specific task, team members involved, start/end date, baseline recorded, success criteria defined.",
+        "tip": "Two weeks is long enough to hit the learning curve and short enough to maintain focus. Don't extend — run a second pilot instead."
+      },
+      "cb-5": {
+        "title": "Measure ROI honestly",
+        "time": "3 min",
+        "why": "AI ROI is often overstated in pilots and understated in long-term use. Honest measurement helps you make real decisions — including when to stop using Claude for something.",
+        "instructions": [
+          "Time metrics: track actual time, not estimated. 'I think it saves me 2 hours' is usually wrong. Log the before and after for 10 real instances.",
+          "Quality metrics: count rounds of revision. If you spend less time revising, that's measurable value. If you spend more time fixing Claude's output than you would have writing it — that's a signal to stop.",
+          "Hidden costs: include time to write good prompts, time to review output, and time to train team members. ROI is net, not gross.",
+          "Strategic value: some tasks save no time but unlock new capability — analysis you wouldn't have done, insights from data you couldn't synthesize manually. Value these too, even if they're harder to quantify.",
+          "Decision framework: if time savings ≥ 25% OR quality improvement is noticeable OR a previously-impossible task is now possible — the task is worth continuing. Otherwise: stop, adjust, or move to a different task."
+        ],
+        "validate": "You have a simple spreadsheet or table tracking time and quality for your pilot task over 2 weeks.",
+        "tip": "Share your ROI data with your team. Real numbers from real work are far more persuasive than any vendor case study."
+      },
+      "cb-6": {
+        "title": "Scale from 1 to your whole team",
+        "time": "2 min",
+        "why": "A successful pilot means nothing if it stays with one person. Scaling requires a different set of actions than starting.",
+        "instructions": [
+          "From pilot to standard: update your team instructions based on what you learned. Write a one-page 'How we use Claude' guide specific to the task you piloted.",
+          "Onboarding new users: don't just give people access and say 'try it'. Run a 30-minute session: show 3 real examples from your pilot, let them try the task themselves with the shared instructions, answer questions.",
+          "Identify your internal champion: the person who got the most value from the pilot. They should demonstrate use cases to colleagues — peer adoption is far more effective than management mandate.",
+          "Expand gradually: add one new use case every 4–6 weeks. Each new use case gets the same treatment: shared instructions, pilot, measurement, then standard practice.",
+          "Review quarterly: revisit all your Claude use cases. Are they still delivering value? Have new Claude capabilities made different approaches possible? Has your team's needs changed?"
+        ],
+        "validate": "You have a 3-step onboarding plan for the next team member who will start using Claude for your piloted task.",
+        "tip": "The most common failure at this stage: moving too fast. One solid use case that 80% of your team uses reliably is worth more than 10 use cases that everyone tried once and forgot."
+      }
+    }
   }
 }

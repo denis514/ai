@@ -14,7 +14,7 @@ function categoryLabel(t, id) {
  * Плавающий фильтр — всегда компактный dropdown (desktop + wide).
  * На mobile скрыт (живёт в MobileFab).
  */
-export default function CanvasFilters({ category, onCategory, onSelectNode, onOpenArchive }) {
+export default function CanvasFilters({ category, onCategory, onSelectNode, onOpenTutorial, onOpenArchive }) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const [updatesOpen, setUpdatesOpen] = useState(false);
@@ -65,6 +65,7 @@ export default function CanvasFilters({ category, onCategory, onSelectNode, onOp
         {updatesOpen && (
           <WhatsNewPanel
             onSelectNode={onSelectNode}
+            onOpenTutorial={onOpenTutorial}
             onClose={() => setUpdatesOpen(false)}
             onOpenArchive={onOpenArchive}
           />

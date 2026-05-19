@@ -4,6 +4,7 @@ import { nodeIndex } from '../data/mindmapData.js';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { useWhatsNew } from '../hooks/useWhatsNew.js';
 import { useLocale } from '../i18n/LocaleContext.jsx';
+import Icon from './Icon.jsx';
 
 const TTL_DAYS = 60;
 const MAX_SHOWN = 10;
@@ -13,17 +14,26 @@ function isWithinTTL(dateStr) {
   return age <= TTL_DAYS;
 }
 
-export default function WhatsNewPanel({ onSelectNode, onClose, onOpenArchive }) {
+export default function WhatsNewPanel({ onSelectNode, onOpenTutorial, onClose, onOpenArchive }) {
   const t = useT();
   const { locale } = useLocale();
   const { isNew, markSeen } = useWhatsNew();
 
   const [titles, setTitles] = React.useState({});
+
   React.useEffect(() => {
-    import(`../locales/${locale}/nodes.json`).then(m => {
+    // Загружаем заголовки узлов и туториалов параллельно
+    Promise.all([
+      import(`../locales/${locale}/nodes.json`).catch(() => ({ default: {} })),
+      import(`../locales/${locale}/tutorials.json`).catch(() => ({ default: {} })),
+    ]).then(([nodesM, tutorialsM]) => {
       const map = {};
-      Object.entries(WHATS_NEW).forEach(([id]) => {
-        map[id] = m.default?.[id]?.title || m[id]?.title || id;
+      Object.entries(WHATS_NEW).forEach(([id, entry]) => {
+        if (entry.kind === 'tutorial') {
+          map[id] = tutorialsM.default?.[id]?.title || id;
+        } else {
+          map[id] = nodesM.default?.[id]?.title || nodesM[id]?.title || id;
+        }
       });
       setTitles(map);
     }).catch(() => {});
@@ -37,9 +47,13 @@ export default function WhatsNewPanel({ onSelectNode, onClose, onOpenArchive }) 
   const entries = allEntries.slice(0, MAX_SHOWN);
   const hiddenCount = allEntries.length - entries.length;
 
-  const handleSelect = (id) => {
+  const handleSelect = (id, entry) => {
     markSeen(id);
-    onSelectNode(id);
+    if (entry.kind === 'tutorial') {
+      onOpenTutorial?.(id);
+    } else {
+      onSelectNode(id);
+    }
     onClose?.();
   };
 
@@ -70,18 +84,22 @@ export default function WhatsNewPanel({ onSelectNode, onClose, onOpenArchive }) 
           <ul className="wn-panel__list">
             {entries.map(([id, entry]) => {
               const unseen = isNew(id);
-              if (!nodeIndex[id]) return null;
+              // Для узлов карты: пропускаем если узел не существует в mindmap
+              if (entry.kind !== 'tutorial' && !nodeIndex[id]) return null;
               return (
                 <li key={id}>
                   <button
                     type="button"
                     className={`wn-panel__item ${unseen ? 'is-unseen' : ''}`}
-                    onClick={() => handleSelect(id)}
+                    onClick={() => handleSelect(id, entry)}
                   >
                     <span className={`wn-panel__badge wn-panel__badge--${entry.type}`}>
                       {entry.type === 'new' ? t('category.updatesNew') : t('category.updatesUpdated')}
                     </span>
                     <span className="wn-panel__item-title">
+                      {entry.kind === 'tutorial' && (
+                        <Icon name="graduation" size={12} strokeWidth={1.5} className="wn-panel__item-kind-icon" />
+                      )}
                       {titles[id] || id}
                     </span>
                     <span className="wn-panel__item-date">{formatDate(entry.date)}</span>

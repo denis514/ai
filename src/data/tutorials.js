@@ -836,6 +836,31 @@ export const tutorials = {
       { "id": "w-8" }
     ]
   },
+  "claude-for-business": {
+    "nodeId": "scenarios",
+    "icon": "building",
+    "level": "beginner",
+    "audience": "business",
+    "prerequisites": ["ai-fluency"],
+    "relatedPrompts": [
+      "business-positioning",
+      "analysis-deep-dive",
+      "start-role-task"
+    ],
+    "next": [
+      "scenarios",
+      "projects",
+      "claude-for-educators"
+    ],
+    "steps": [
+      { "id": "cb-1" },
+      { "id": "cb-2" },
+      { "id": "cb-3" },
+      { "id": "cb-4" },
+      { "id": "cb-5" },
+      { "id": "cb-6" }
+    ]
+  },
   "ai-fluency": {
     "nodeId": "b-claude",
     "icon": "brain",
