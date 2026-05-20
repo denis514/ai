@@ -32,6 +32,7 @@ import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 import AuthModal from './components/AuthModal.jsx';
 import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
+import IntroModal, { isIntroSeen } from './components/IntroModal.jsx';
 import AccountPage from './components/AccountPage.jsx';
 import UpdateBanner from './components/UpdateBanner.jsx';
 import { useVersionCheck } from './hooks/useVersionCheck.js';
@@ -160,6 +161,9 @@ function AppInner() {
   const { locale, contentVersion } = useLocale();
   const { isNewUser, dismissOnboarding, isLoggedIn, loading: authLoading, user } = useAuth();
 
+  // IntroModal — показывается при первом визите (до авторизации)
+  const [introOpen, setIntroOpen] = useState(() => !isIntroSeen());
+
   // Обнаружение нового деплоя → показ баннера обновления
   const { hasUpdate, dismiss: dismissUpdate, reload: reloadPage } = useVersionCheck();
 
@@ -231,6 +235,12 @@ function AppInner() {
 
   // Hash-роутер — единый источник истины о том, что открыто.
   const [route, setRoute] = useHashRoute();
+
+  // IntroModal: handler объявлен здесь — setRoute уже доступен.
+  const handleIntroDone = useCallback(() => {
+    setIntroOpen(false);
+    setTimeout(() => setRoute({ type: 'tutorial', id: 'ai-fluency' }), 150);
+  }, [setRoute]);
 
   // Derived UI state из route.
   // Узел "выбран" не только когда route.type === 'node', но и когда открыт
@@ -816,6 +826,11 @@ function AppInner() {
             setAuthOpen(true);   // открываем AuthModal поверх
           }}
         />
+      )}
+
+      {/* Intro — первое знакомство с Atlas (первый визит, до авторизации) */}
+      {introOpen && !isNewUser && (
+        <IntroModal onDone={handleIntroDone} />
       )}
 
       {/* Welcome онбординг — показывается после первого логина */}
