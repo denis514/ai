@@ -1,0 +1,96 @@
+name: QA Pipeline
+
+on:
+  push:
+    branches: [main]
+
+# Прерывать предыдущий прогон если пришёл новый push
+concurrency:
+  group: qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Шаг 1: Быстрая проверка сборки и контента (~1 мин) ──────────────────
+  build-lint:
+    name: Build & Lint
+    runs-on: ubuntu-latest
+    outputs:
+      status: ${{ job.status }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Lint data
+        run: npm run lint:data
+
+      - name: Notify on build/lint failure
+        if: failure()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          QA_STATUS: failure
+          QA_STEP: build-lint
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: node scripts/notify-telegram.mjs
+
+  # ── Шаг 2: Браузерные smoke-тесты против продакшна (~3 мин) ─────────────
+  smoke-test:
+    name: Smoke Tests (Production)
+    runs-on: ubuntu-latest
+    needs: build-lint   # запускается только если build-lint прошёл
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Wait for Vercel deployment
+        # Vercel деплоит ~60-90 сек. Ждём чтобы тестировать актуальную версию.
+        run: sleep 90
+
+      - name: Run smoke tests
+        run: npm run test:smoke
+
+      - name: Upload test results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: test-results/
+          retention-days: 7
+
+      - name: Notify result
+        if: always()
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          QA_STATUS: ${{ job.status }}
+          QA_STEP: smoke-test
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+        run: node scripts/notify-telegram.mjs
