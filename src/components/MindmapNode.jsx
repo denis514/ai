@@ -110,15 +110,11 @@ export default function MindmapNode({
         </span>
       )}
 
-      {!isNew && !isRoot && (() => {
-        const insideType = hasNewInside?.(node.id);
-        if (!insideType) return null;
-        return (
-          <span className={`mm-node__new-badge mm-node__new-badge--${insideType} mm-node__new-badge--inside`}>
-            {insideType === 'updated' ? t('node.badgeUpdated') : t('node.badgeNew')}
-          </span>
-        );
-      })()}
+      {!isNew && hasNewInside && !isRoot && (
+        <span className={`mm-node__new-badge mm-node__new-badge--${hasNewInside} mm-node__new-badge--inside`}>
+          {hasNewInside === 'updated' ? t('node.badgeUpdated') : t('node.badgeNew')}
+        </span>
+      )}
 
       {/* Бейджи статусов: viewed / review / bookmark — белый круг, цвет категории */}
       {!isRoot && (nodeStatus || isBookmarked) && (
