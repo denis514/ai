@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 const MIN_ZOOM = 0.25;
 const MAX_ZOOM = 2.5;
@@ -6,9 +7,15 @@ const WHEEL_STEP = 0.0015;
 
 export function usePanZoom(containerRef) {
   const [transform, setTransform] = useState({ x: 0, y: 0, k: 1 });
+  // true пока идёт программная pan-анимация — добавляет CSS transition
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const dragState = useRef(null);
+  const dragState  = useRef(null);
   const pinchState = useRef(null);
+  const animRef    = useRef(null);  // setTimeout id ожидания окончания анимации
+  // Синхронный ref чтобы читать актуальный transform вне React render-цикла
+  const transformRef = useRef(transform);
+  transformRef.current = transform;
 
   // Центрируем при монтировании и при ресайзе
   const center = useCallback(() => {
@@ -51,10 +58,56 @@ export function usePanZoom(containerRef) {
     zoomAt(px, py, factor);
   }, [containerRef, zoomAt]);
 
+  // ── Плавное программное перемещение к точке на канвасе ────────────────────
+  //
+  // Стратегия: CSS transition вместо rAF-цикла.
+  //
+  // Проблема с rAF в React 18: setTransform() внутри requestAnimationFrame
+  // батчится как "deferred update" и может не вызывать рендер до следующего кадра,
+  // ломая цикл анимации.
+  //
+  // Решение:
+  //   1. flushSync(setIsAnimating(true)) — форсируем рендер с CSS transition
+  //   2. setTransform(target) — React рендерит целевой transform
+  //   3. Браузер видит: transition + изменение transform → плавная анимация ✓
+  //   4. setTimeout(duration) → убираем transition (готово к следующему drag)
+  //
+  // worldX, worldY — координаты в системе канваса (не viewport).
+  // xOffset — коррекция центра по X (например: −230px когда открыта боковая панель).
+  //
+  const panTo = useCallback((worldX, worldY, { duration = 420, xOffset = 0, yOffset = 0 } = {}) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+
+    // Отменяем предыдущую анимацию
+    if (animRef.current) { clearTimeout(animRef.current); animRef.current = null; }
+
+    const { k } = transformRef.current;
+
+    // Целевая позиция: worldX·k оказывается по центру видимой области
+    const tx = r.width  / 2 + xOffset - worldX * k;
+    const ty = r.height / 2 + yOffset - worldY * k;
+
+    // Шаг 1: включить transition (flushSync → синхронный рендер до setTransform)
+    flushSync(() => setIsAnimating(true));
+
+    // Шаг 2: задать целевой transform — браузер анимирует переход
+    setTransform({ x: tx, y: ty, k });
+
+    // Шаг 3: убрать transition после завершения анимации
+    animRef.current = setTimeout(() => {
+      setIsAnimating(false);
+      animRef.current = null;
+    }, duration + 50);
+  }, [containerRef]);
+
   // Мышь — drag
   const onMouseDown = useCallback((e) => {
     if (e.button !== 0) return;
     if (e.target.closest('[data-no-pan="true"]')) return;
+    // Прерываем программную анимацию: убираем transition чтобы drag не лагал
+    if (animRef.current) { clearTimeout(animRef.current); animRef.current = null; setIsAnimating(false); }
     dragState.current = {
       startX: e.clientX, startY: e.clientY,
       origX: transform.x, origY: transform.y
@@ -83,6 +136,8 @@ export function usePanZoom(containerRef) {
   // Touch — pan + pinch
   const onTouchStart = useCallback((e) => {
     if (e.target.closest('[data-no-pan="true"]')) return;
+    // Прерываем программную анимацию при касании
+    if (animRef.current) { clearTimeout(animRef.current); animRef.current = null; setIsAnimating(false); }
     if (e.touches.length === 1) {
       dragState.current = {
         startX: e.touches[0].clientX, startY: e.touches[0].clientY,
@@ -183,8 +238,8 @@ export function usePanZoom(containerRef) {
   }, [containerRef]);
 
   return {
-    transform,
+    transform, isAnimating,
     handlers: { onWheel, onMouseDown, onTouchStart, onTouchMove, onTouchEnd },
-    zoomIn, zoomOut, reset, fitToScreen, MIN_ZOOM, MAX_ZOOM
+    zoomIn, zoomOut, reset, fitToScreen, panTo, MIN_ZOOM, MAX_ZOOM
   };
 }

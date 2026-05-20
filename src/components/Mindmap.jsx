@@ -17,7 +17,7 @@ const Mindmap = forwardRef(function Mindmap(
 ) {
   const containerRef = useRef(null);
   const { nodes, edges, bounds } = useMindmapLayout(root, expandedIds);
-  const { transform, handlers, zoomIn, zoomOut, reset, fitToScreen, MIN_ZOOM, MAX_ZOOM } =
+  const { transform, isAnimating, handlers, zoomIn, zoomOut, reset, fitToScreen, panTo, MIN_ZOOM, MAX_ZOOM } =
     usePanZoom(containerRef);
 
   useImperativeHandle(ref, () => ({
@@ -25,8 +25,20 @@ const Mindmap = forwardRef(function Mindmap(
     fitToScreen: () => fitToScreen(bounds),
     zoom: transform.k,
     minZoom: MIN_ZOOM,
-    maxZoom: MAX_ZOOM
-  }), [zoomIn, zoomOut, reset, fitToScreen, bounds, transform.k, MIN_ZOOM, MAX_ZOOM]);
+    maxZoom: MAX_ZOOM,
+    /**
+     * Плавно перемещает канвас так, чтобы узел с данным id оказался по центру.
+     * @param {string} nodeId
+     * @param {{ xOffset?: number, yOffset?: number, duration?: number }} [opts]
+     * @returns {boolean} true если узел найден в текущем layout
+     */
+    panToNode: (nodeId, opts) => {
+      const entry = nodes.find(n => n.node.id === nodeId);
+      if (!entry) return false;
+      panTo(entry.pos.x, entry.pos.y, opts);
+      return true;
+    }
+  }), [zoomIn, zoomOut, reset, fitToScreen, bounds, transform.k, MIN_ZOOM, MAX_ZOOM, nodes, panTo]);
 
   // По умолчанию НЕ делаем авто-fit: первый экран = 100% зум, root по центру.
   // Это согласовано с initial expandedIds={root} в App.jsx — на старте видна
@@ -46,7 +58,8 @@ const Mindmap = forwardRef(function Mindmap(
       <div
         className="mm-canvas__inner"
         style={{
-          transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.k})`
+          transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.k})`,
+          transition: isAnimating ? 'transform 420ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
         }}
       >
         <svg

@@ -638,7 +638,23 @@ function AppInner() {
           isOpen={panelOpen}
           onClose={onCloseAll}
           onStartTutorial={onStartTutorial}
-          onSelectRelated={(id) => { setRoute({ type: 'node', id }); releasePinDim(); }}
+          onSelectRelated={(id) => {
+            setRoute({ type: 'node', id });
+            releasePinDim();
+            // Плавно перемещаем карту к выбранному узлу.
+            // Используем retry-стратегию: узел появляется в layout только после
+            // того как React раскроет ветку предков и пересчитает позиции.
+            // Пробуем каждые 60мс до 8 раз (≤ 480мс суммарно) — останавливаемся
+            // как только panToNode вернёт true (узел найден в layout).
+            // xOffset: -230 — сдвиг центра влево (боковая панель 460px справа).
+            let attempts = 0;
+            const tryPan = () => {
+              attempts++;
+              const found = mapRef.current?.panToNode(id, { xOffset: -230 });
+              if (!found && attempts < 8) setTimeout(tryPan, 60);
+            };
+            setTimeout(tryPan, 50);
+          }}
           progressApi={progressApi}
           bookmarksApi={bookmarksApi}
           nodeProgressApi={nodeProgressApi}
