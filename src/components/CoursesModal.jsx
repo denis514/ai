@@ -109,7 +109,7 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
             <p>
               {tab === 'paths'
                 ? t('courses.paths.desc', { n: learningPaths.length })
-                : t('courses.summary', { done: completed, started, idle: items.length - completed - started })}
+                : t('courses.summary', { done: completed, started, idle: byAudience.length - completed - started })}
             </p>
           </div>
           <button
