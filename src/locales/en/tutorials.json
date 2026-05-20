@@ -3862,9 +3862,18 @@
       "Know the rules of ethical AI use in education"
     ],
     "applyIn": [
-      { "title": "School education", "description": "Lesson plans, age-appropriate explanations, homework, test preparation." },
-      { "title": "Higher education", "description": "Lecture materials, practical case studies, grading rubrics, essay feedback." },
-      { "title": "Corporate training", "description": "Workshops, onboarding materials, knowledge-check quizzes." }
+      {
+        "title": "School education",
+        "description": "Lesson plans, age-appropriate explanations, homework, test preparation."
+      },
+      {
+        "title": "Higher education",
+        "description": "Lecture materials, practical case studies, grading rubrics, essay feedback."
+      },
+      {
+        "title": "Corporate training",
+        "description": "Workshops, onboarding materials, knowledge-check quizzes."
+      }
     ],
     "pitfalls": [
       "Asking Claude to 'write a lesson' without context about your class and subject — you'll get a template, not material for specific students.",
@@ -3872,50 +3881,87 @@
       "Not telling students about AI use — transparency is critical for trust."
     ],
     "exercises": [
-      { "question": "Choose a topic from your subject. Ask Claude to explain it in three ways: for a beginner, intermediate, and advanced level. Evaluate: which explanation would you use and what would you change?" }
+      {
+        "question": "Choose a topic from your subject. Ask Claude to explain it in three ways: for a beginner, intermediate, and advanced level. Evaluate: which explanation would you use and what would you change?"
+      }
     ],
     "steps": {
       "ce-1": {
         "title": "Why does an educator need Claude?",
-        "duration": "3 min",
-        "summary": "Teachers spend up to 40% of their working time preparing materials. Claude doesn't replace the educator — it takes on the draft work, leaving space for real interaction with students.",
-        "content": "**Three roles of Claude in education:**\n\n**1. Draft generator** — lesson plan, task, quiz. You set the goal and constraints, Claude creates the first version, you edit for your class.\n\n**2. Explainer** — the same topic at three difficulty levels in 30 seconds. No more rewriting manually for different groups.\n\n**3. Feedback assistant** — Claude helps structure and phrase comments on student work. You make the final call.\n\n**What Claude does NOT do:** doesn't grade students for you, doesn't know your students personally, doesn't replace live classroom discussion.\n\n**Conclusion:** use Claude to accelerate — not to replace.",
-        "action": "Write down three tasks this week that take the most preparation time. These are your first candidates for Claude."
+        "time": "3 min",
+        "why": "Teachers spend up to 40% of their working time preparing materials. Claude takes on the draft work, leaving space for real interaction with students.",
+        "instructions": [
+          "Claude plays three roles in education: draft generator (lesson plan, task, quiz), explainer (same topic at three difficulty levels in 30 seconds), feedback assistant (helps structure comments on student work).",
+          "What Claude does NOT do: it doesn't grade students for you, doesn't know your students personally, doesn't replace live classroom discussion.",
+          "Rule: use Claude to accelerate — not to replace pedagogical judgment."
+        ],
+        "tip": "Start with whichever task takes the most preparation time this week — a lesson plan, a set of tasks, feedback. That gives an immediate result.",
+        "validate": "Write down three tasks this week that take the most preparation time. These are your first candidates for Claude."
       },
       "ce-2": {
         "title": "Lesson preparation and materials",
-        "duration": "4 min",
-        "summary": "Lesson plans, presentations, handouts — Claude creates all of these far faster. The key is giving the right context: subject, class, goal, constraints.",
-        "content": "**Request formula for teaching materials:**\n```\nSubject: [subject]\nClass/level: [age or level]\nTopic: [specific topic]\nLesson goal: [what the student should be able to do at the end]\nFormat: [lesson plan / handout / presentation]\nConstraints: [duration, available equipment, class specifics]\n```\n\n**Example — lesson plan:**\n> \"Subject: mathematics, grade 7. Topic: linear equations. Goal: student can solve a one-variable equation. Duration: 45 minutes. Three stages: explanation, practice, check. Add 5 problems easy to hard.\"\n\n**Example — differentiated task:**\n> \"Create a task on 'ecosystem' in three difficulty variants: basic (grade 6), standard (grade 8), advanced (grade 10). Each: 5 questions.\"\n\n**Tip:** always add 'adapt for a real class, I will edit' — this tells Claude the result isn't final.",
-        "action": "Take a real lesson from next week. Describe it using the formula and ask Claude to create a plan. Note what's useful and what needs changing."
+        "time": "4 min",
+        "why": "Lesson plans, presentations, handouts — Claude creates all of these far faster. The key is giving the right context: subject, class, goal, constraints.",
+        "instructions": [
+          "Use the request formula: Subject + Class/level + Topic + Lesson goal + Format + Constraints (duration, equipment, class specifics).",
+          "Example for a lesson plan: 'Subject: mathematics, grade 7. Topic: linear equations. Goal: student can solve a one-variable equation. Duration: 45 minutes. Three stages: explanation, practice, check. Add 5 problems easy to hard.'",
+          "Example for a differentiated task: 'Create a task on the topic ecosystem in three difficulty variants: basic (grade 6), standard (grade 8), advanced (grade 10). Each variant: 5 questions.'",
+          "Always add 'adapt for a real class, I will edit' — this tells Claude the result isn't final."
+        ],
+        "tip": "Save successful prompts in a Project as Custom Instructions — then Claude will know your subject and format from the first word.",
+        "validate": "Take a real lesson from next week. Describe it using the formula and ask Claude to create a plan. Note what's useful and what needs changing."
       },
       "ce-3": {
         "title": "Explaining complex topics",
-        "duration": "3 min",
-        "summary": "Claude can explain one concept at any complexity level — from primary school to university. This speeds up preparation for different groups.",
-        "content": "**Three prompts for one topic:**\n```\nExplain [topic] as if explaining to an 8-year-old child.\nExplain [topic] for a 14-year-old without technical terms.\nExplain [topic] for a first-year university student with examples.\n```\n\n**Example — photosynthesis:**\n- Age 8: \"Imagine leaves are tiny kitchens. They cook food from sunlight, water and air…\"\n- Age 14: \"Photosynthesis is the process by which plants convert sunlight into glucose…\"\n- University: \"In chloroplasts, two phases occur: the light reaction in thylakoids and the Calvin cycle in the stroma…\"\n\n**Extra prompts:**\n- \"Create an analogy to explain [concept]\"\n- \"What are common student misconceptions about [X]?\"\n- \"Create a comprehension check question for this topic\"\n\n**Important:** verify factual accuracy — especially for science topics.",
-        "action": "Choose a topic hard to explain at different levels. Ask Claude for three explanations. Use the best fragments in your next lesson."
+        "time": "3 min",
+        "why": "Claude can explain one concept at any complexity level. This speeds up preparation for different groups without rewriting from scratch.",
+        "instructions": [
+          "Use three prompts for one topic: 'Explain [topic] for an 8-year-old child', 'Explain [topic] for a 14-year-old without technical terms', 'Explain [topic] for a first-year university student with examples'.",
+          "Example — photosynthesis at three levels: age 8 — leaves cook food from sunlight and water; age 14 — chemical process without formulas; university student — light and dark phases in chloroplasts.",
+          "Extra prompts: 'Create an analogy to explain [concept]', 'What are common student misconceptions about [X]?', 'Create a comprehension check question for this topic'."
+        ],
+        "tip": "Always verify Claude's factual accuracy — especially for exact sciences, dates and region-specific details.",
+        "validate": "Choose a topic that's hard to explain at different levels. Ask Claude for three explanations. Use the best fragments in your next lesson."
       },
       "ce-4": {
         "title": "Tasks and tests",
-        "duration": "4 min",
-        "summary": "Claude creates tasks, test questions, case studies and project briefs — quickly and in the right format. Your role: set the parameters and edit the result.",
-        "content": "**Types of tasks Claude generates well:**\n\n| Type | Prompt |\n|------|--------|\n| Multiple choice | '10 questions with 4 options, topic X, level Y' |\n| Open-ended | '5 essay questions on topic X for grade 9' |\n| Case study | 'Real scenario on topic X for group discussion' |\n| Tiered tasks | '3 difficulty variants: easy, medium, hard' |\n| Homework | 'Practice task to reinforce topic X, 20 minutes' |\n\n**Example — grading rubric:**\n> \"Create a grading rubric for a history essay (grade 9, WWI causes). Criteria: argumentation, sources, structure, language. Scale: 1–4. Add a description for each level.\"\n\n**Save templates in a Project** — create once, use all year.\n\n**Tip:** ask Claude to add an answer key straight away — saves marking time.",
-        "action": "Create a 10-question quiz on your next lesson's topic. Evaluate the quality and correct 2–3 questions that aren't accurate for your subject."
+        "time": "4 min",
+        "why": "Claude creates tests, case studies, rubrics and project briefs quickly and in the right format. Your role: set the parameters and edit the result.",
+        "instructions": [
+          "For multiple choice: '10 questions with 4 options, topic X, level Y, add an answer key'.",
+          "For open-ended questions: '5 essay questions on topic X for grade 9'.",
+          "For a grading rubric: 'Create a rubric for a history essay (grade 9), criteria: argumentation, sources, structure, language. Scale 1–4, describe each level'.",
+          "For tiered tasks: '3 difficulty variants: easy, medium, hard — same topic'.",
+          "Save templates in a Project — create once, use all year."
+        ],
+        "tip": "Always ask for the answer key straight away — saves marking time.",
+        "validate": "Create a 10-question quiz on your next lesson's topic. Evaluate the quality and correct 2–3 questions that aren't accurate for your subject."
       },
       "ce-5": {
         "title": "Feedback and assessment",
-        "duration": "3 min",
-        "summary": "Claude helps structure and phrase feedback — quickly and constructively. The teacher makes the final decision and adds personal context.",
-        "content": "**What Claude does well:**\n- Structures comments: 'what's good → what to improve → how'\n- Rephrases criticism into constructive language\n- Generates typical comments for bulk marking\n- Suggests feedback based on your criteria\n\n**Example prompt:**\n> \"I'm an English teacher. A student wrote: [text]. Criteria: structure, argumentation, grammar. Write constructive feedback in 3–4 sentences for a grade 10 student.\"\n\n**Batch feedback template:**\n> \"Here are my general comments after the test: [notes]. Turn them into 5 typical feedback responses I can adapt for different students.\"\n\n**Boundary:** never let Claude assign a grade without your decision. Grading is a pedagogical judgment, not an algorithm.",
-        "action": "Take 3 student assignments. Use Claude for a draft of feedback. Compare with what you'd have written — where did Claude help, where did it miss?"
+        "time": "3 min",
+        "why": "Claude helps structure and phrase feedback — quickly and constructively. The teacher makes the final decision and adds personal context.",
+        "instructions": [
+          "Claude handles well: structuring comments (what's good → what to improve → how to improve), rephrasing criticism into constructive language, generating typical comments for bulk marking.",
+          "Example prompt: 'I am an English teacher. A student wrote this essay: [text]. Criteria: structure, argumentation, grammar. Write constructive feedback in 3–4 sentences for a grade 10 student.'",
+          "For batch feedback: 'Here are my general comments to the class: [notes]. Turn them into 5 typical feedback responses I can adapt for different students.'"
+        ],
+        "tip": "Never let Claude assign a grade without your decision. Grading is a pedagogical judgment, not an algorithm.",
+        "validate": "Take 3 student assignments. Use Claude for a draft of feedback. Compare with what you'd have written — where did Claude help, where did it miss?"
       },
       "ce-6": {
         "title": "AI ethics in education",
-        "duration": "3 min",
-        "summary": "Using Claude in education requires transparency with students, understanding its limits and a clear classroom policy. Ethics isn't an obstacle — it's the foundation of trust.",
-        "content": "**Three principles for ethical AI use in the classroom:**\n\n**1. Transparency**\nTell students when materials were created with AI. This builds critical thinking: 'Claude suggested this, I checked and adapted it'.\n\n**2. Authorship and responsibility**\nAI is a teacher preparation tool. Student work should be the student's work. Define clearly: where AI helps learning, and where it replaces it.\n\n**3. Critical verification**\nClaude can be wrong about facts, dates and region-specific details. Always verify accuracy — especially for exact sciences and history.\n\n**Classroom policy template:**\n- AI may be used for brainstorming and drafts\n- Final work must reflect the student's own thinking\n- Using AI = citing the source\n\n**For older students:** teach them to work with Claude — it's a 21st-century skill. Assignment: 'write an essay and show how you used AI as a tool'.",
-        "action": "Formulate AI-use rules for your class. Discuss them with students — their reaction will show what you missed."
+        "time": "3 min",
+        "why": "Using Claude in education requires transparency with students, understanding its limits and a clear classroom policy. Ethics is the foundation of trust.",
+        "instructions": [
+          "Principle 1 — Transparency: tell students when materials were created with AI. This builds critical thinking: 'Claude suggested this, I checked and adapted it'.",
+          "Principle 2 — Authorship: AI is a teacher preparation tool. Student work should be the student's work. Define clearly where AI helps learning and where it replaces it.",
+          "Principle 3 — Fact-checking: Claude can be wrong about dates, details and region-specific data. Always verify — especially in exact sciences and history.",
+          "Classroom policy template: AI may be used for brainstorming and drafts; final work must reflect the student's own thinking; using AI = citing the source.",
+          "For older students — teach them to work with Claude: it's a 21st-century skill. Assignment: 'write an essay and show how you used AI as a tool'."
+        ],
+        "tip": "A classroom policy works better when you create it together with students — they will suggest fair rules themselves.",
+        "validate": "Formulate AI-use rules for your class. Discuss them with students — their reaction will show what you missed."
       }
     }
   }
