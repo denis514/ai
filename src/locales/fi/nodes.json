@@ -440,66 +440,66 @@
   },
   "skills": {
     "title": "Skills",
-    "what": "Kansio SKILL.md:llä ja apuriedostoilla — asettaa toistettavan Clauden käyttäytymisen triggerille.",
-    "why": "Jotta ei tarvitse selittää säännöllistä prosessia uudelleen — malli ottaa Skillin haltuun triggerin perusteella.",
-    "when": "Kun sinulla on vakiintunut prosessi vaiheilla, malleilla ja tarkistuksilla.",
-    "impact": "Skills muuttaa kertaluonteisen promptin toistettavaksi työkaluksi taatulla laadulla.",
-    "example": "Luo Skill toistuvalle tehtävällesi: anna trigger (mitä käyttäjä sanoo) ja vaiheet (mitä Clauden pitää tehdä).",
-    "mistakes": "Tehdä Skill kertaluonteisesta promptista — menetät aikaa muotoiluun, et saa takaisinmaksua."
+    "what": "Valmiit ohjeet Claudelle: lisäät Skillin Projektiin (claude.ai) tai luot skills/-kansion Claude Codeen — ja Claude seuraa reseptiä arvaamisensa sijaan.",
+    "why": "Ilman Skillejä selität joka kerta «miten tarkalleen»: tuhlataan tokeneita ja saadaan epäyhtenäisiä tuloksia. Skill lukitsee säännöt kerran — ja ne toimivat joka kerta.",
+    "when": "Kun sama monivaiheinen prosessi toistuu ≥ 3 kertaa viikossa ja haluat saman tuloksen joka kerta.",
+    "impact": "Skill = toistettava laatu. Käynnistä → saa saman tuloksen kuin viimeksi, ilman uudelleenselitystä.",
+    "example": "Valmisteletko usein tehtäviä kehittäjille? Luo «user-story»-Skill — Claude kysyy tarvittavat tiedot ja muotoilee tehtävän mallisi mukaan ilman ohjausta.",
+    "mistakes": "Skillin luominen kertaluonteiselle tehtävälle — hyöty syntyy vain toistosta, muuten asennus vie enemmän aikaa kuin säästää."
   },
   "s-md": {
     "title": "SKILL.md",
-    "what": "Skillin pääfile: nimi, kuvaus, triggerit, vaiheet. Minimissään — kuvaus + ohje.",
-    "why": "Tämä on «resepti», jolla Claude toistaa prosessin joka kerta samalla tavalla.",
-    "when": "Mitä tahansa Skilliä luotaessa — ilman SKILL.md:tä sitä ei ole olemassa.",
-    "impact": "Hyvin kirjoitettu SKILL.md = deterministinen laatu ajoittain.",
-    "example": "name: expert-audit\\ndescription: Use when user asks for an expert audit of their material\\n## Steps...",
-    "mistakes": "Yhden fraasin kuvaus «tekee auditoinnin» — Claude ei ymmärrä, milloin Skill laukaista."
+    "what": "Tekstitiedosto-resepti: kertoo Claudelle MITÄ Skill tekee, MILLOIN se aktivoidaan ja MITKÄ vaiheet suoritetaan. Ainoa pakollinen tiedosto kaikissa Skilleissä.",
+    "why": "Claude lukee SKILL.md:n ohjeena ja seuraa sitä — joka kerta samalla tavalla, ilman improvisointia.",
+    "when": "Minkä tahansa Skillin luomisessa — ilman SKILL.md:tä Skill ei ole olemassa.",
+    "impact": "Yksi hyvin kirjoitettu SKILL.md korvaa 20 toistuvaa saman prosessin selitystä.",
+    "example": "Minimaalinen toimiva esimerkki:\n# Tehtävän muotoilu\ndescription: Käytä kun käyttäjä pyytää luomaan tehtävän tai user storyn.\n## Vaiheet\n1. Kysy: mille järjestelmälle tehtävä on?\n2. Pyydä hyväksymiskriteerit\n3. Muotoile: Tavoite / Mitä tehdä / Hyväksymiskriteerit",
+    "mistakes": "Yhden lauseen kuvaus «auttaa tehtävissä» — Claude ei ymmärrä milloin aktivoida Skill, ja käyttää sitä kaikkeen tai ei mihinkään."
   },
   "s-trigger": {
     "title": "Triggerit",
-    "what": "Skillin kuvaus = trigger. Claude itse päättää, aktivoiko sen pyynnön kontekstin perusteella.",
-    "why": "Mitä tarkempi kuvaus, sitä tarkempi laukeaminen: ilman vääriä aktivointeja ja pois jättämisiä.",
-    "when": "Minkä tahansa Skillin suunnittelussa — tämä on tärkein osa.",
-    "impact": "Hyvä trigger ≈ +50% aktivoinnin tarkkuuteen.",
-    "example": "description: «Use when user mentions PDF parsing, table extraction, or invoice scanning.»",
-    "mistakes": "Liian yleiset triggerit («kun tarvitsee apua») — Skill aktivoituu kaikessa peräjälkeen."
+    "what": "Skill aktivoituu kahdella tavalla. (1) claude.ai: Claude lukee Projektin Skills-listan ja aktivoi oikean kontekstin perusteella. (2) Claude Code: kirjoitat eksplisiittisesti /skillname — Claude lukee SKILL.md:n ja seuraa vaiheita.",
+    "why": "Ymmärrät mekanismin — ymmärrät miksi Skill «ei lauennut»: joko kuvaus on liian epämääräinen (claude.ai) tai et kirjoittanut /skillname (Claude Code).",
+    "when": "Kuvauksen kirjoittamisessa mille tahansa Skillille — tämä on kriittisin elementti.",
+    "impact": "Tarkka kuvaus claude.ai:ssa = Skill aktivoituu itsestään oikealla hetkellä. Eksplisiittinen /command Claude Codessa = ei magiaa, täysi hallinta.",
+    "example": "claude.ai — kuvaus «Use when user asks to create a presentation or prepare slides» → Claude aktivoi Skillin automaattisesti kun pyydetään «tee minulle diat».\nClaude Code — kirjoitat /audit → Claude lukee SKILL.md:n ja seuraa vaiheita, ohittaen muut Skillit.",
+    "mistakes": "claude.ai: kuvaus «auttaa dokumenteissa» — Skill laukeaa jokaiseen kysymykseen. Claude Code: odottaa Skillin aktivoituvan itsestään — se toimii vain eksplisiittisellä /commandilla."
   },
   "s-files": {
     "title": "Apuriedostot",
-    "what": "Mallit, scriptit, tarkistuslistat Skillin kansiossa — Claude voi lukea ja käyttää niitä.",
-    "why": "Strukturoivat monimutkaisen taidon: raportin malli, JSON-skeema, kysely.",
-    "when": "Kun Skill sisältää muotoillun outputin tai ulkoista dataa.",
-    "impact": "Tiedostoihin siirtäminen tekee SKILL.md:stä lyhyen ja selkeän.",
-    "example": "Lisää Skilliisi templates/report.md — Claude täyttää sen mallin mukaan.",
-    "mistakes": "Tunkea kaikki SKILL.md:hen — se paisuu lukukelvottomaksi."
+    "what": "Lisätiedostot Skill-kansiossa: raporttipohjat, tarkistuslistat, JSON-skeelat — Claude lukee ne osana ohjetta ja täyttää ne käyttäjän tiedoilla.",
+    "why": "Siirrät pitkän pohjan tai kysymyslistan SKILL.md:stä erilliseen tiedostoon — päätiedosto pysyy lyhyenä ja luettavana.",
+    "when": "Kun Skill tuottaa rakenteellisen outputin: raportti, taulukko tai briiffi pohjan mukaan.",
+    "impact": "Skill pohjalla = taattu outputin muoto joka kerta, ei «mitä sattuu tulemaan».",
+    "example": "Skillin rakenne:\nskills/report/\n  SKILL.md → «Täytä templates/report.md käyttäjän tiedoilla»\n  templates/report.md → pohja: Tavoite / Havainnot / Suositukset\n\nClaude lukee pohjan ja täyttää sen automaattisesti.",
+    "mistakes": "50-rivin pohjan laittaminen suoraan SKILL.md:hen — tiedostosta tulee lukukelvoton ja Claude seuraa ohjetta heikommin."
   },
   "s-ready": {
     "title": "Valmiit Skills",
-    "what": "Anthropic tarjoaa kokoelman: pptx, xlsx, pdf, docx, skill-creator ja muut.",
-    "why": "Ei tarvitse kirjoittaa nollasta rutiineja kuten «luo diat» — se toimii jo.",
-    "when": "Kun tehtävä on tyypillinen: dokumentti, esitys, taulukko.",
-    "impact": "Valmiit Skills — taattu laatu Anthropic-tiimiltä.",
-    "example": "Käytä Skill pptx kootaksesi esityksen alla olevan toimeksiannon mukaan.",
-    "mistakes": "Kirjoittaa oma «diojen generaattori» — keksit pyörää."
+    "what": "claude.ai:ssa: Project Settings → Skills → Browse → Anthropicin valmiit Skills. Lisää yhdellä klikillä: pptx (esitykset), xlsx (taulukot), pdf (dokumenttianalyysi), docx (Word-tiedostot), skill-creator (luo oma Skill).",
+    "why": "Rutiinitehtävät — diat, PDF-analyysi, Excel — on jo kirjoitettu ja testattu Anthropicin toimesta. Ei tarvitse keksiä pyörää.",
+    "when": "Ensimmäinen askel ennen oman Skillin rakentamista: tarkista onko valmiiksi olemassa tehtävällesi sopiva.",
+    "impact": "Valmis Skill toimii heti ensimmäisestä ajosta — Anthropic on jo kirjoittanut vaiheet, pohjat ja promptit puolestasi.",
+    "example": "Project Settings → Skills → Browse → lisää «pptx» → kirjoita «Luo esitys tästä tekstistä: [teksti]» → Claude rakentaa .pptx-tiedoston pohjaa käyttäen.",
+    "mistakes": "Oman Skillin kirjoittaminen PDF:lle, Excelille tai dioille tarkistamatta valmiita — käytät 30 minuuttia kun 1-klikkauksen ratkaisu on jo olemassa."
   },
   "s-create": {
     "title": "Oma Skill",
-    "what": "Skillin voi luoda käsin tai skill-creatorin kautta (se itse kysyy roolin, vaiheet, mallit).",
-    "why": "Muutat henkilökohtaisen käytännön työkaluksi, jota voi jakaa tiimin kanssa.",
-    "when": "Kun prosessi on toistettavissa ja käytössä ≥ 5 kertaa viikossa.",
-    "impact": "Skillin luominen maksaa itsensä takaisin jo 2-3 ajossa.",
-    "example": "Käytä skill-creatoria tehdäksesi Skill «Tehtävän valmistelu kehittäjälle» user story -mallin mukaan.",
-    "mistakes": "Tehdä Skill «varmuuden vuoksi» — ilman todellista pyyntöä se on kuollut."
+    "what": "claude.ai: kirjoita /skill-creator Projektin chatissa — se kysyy kysymykset ja kokoaa Skillin puolestasi. Claude Code: luo skills/my-skill/-kansio SKILL.md-tiedostolla sisällä, aktivoi /my-skill-komennolla.",
+    "why": "Mikä tahansa toistuva prosessi on Skill-ehdokas: tekstin auditointi, tehtävien muotoilu, raporttien laadinta, briiffit.",
+    "when": "Kun käytät samaa prosessia ≥ 3 kertaa viikossa ja olet kyllästynyt selittämään «miten tarkalleen» Claudelle joka kerta.",
+    "impact": "Maksaa itsensä takaisin jo 3. ajokerralla: säästää 5–15 minuuttia joka kerta kun muuten selittäisit prosessin uudelleen.",
+    "example": "claude.ai: kirjoita /skill-creator → se kysyy «nimi?», «milloin aktivoida?», «mitkä vaiheet?» → rakentaa Skillin automaattisesti.\nClaude Code: luo skills/brief/SKILL.md → kirjoita vaiheet → kirjoita /brief terminaalichatissa.",
+    "mistakes": "Skillin luominen «varmuuden vuoksi» — ilman todellista toistuvaa tarvetta se ei koskaan maksa itseään takaisin ja sotkee Projektiasi."
   },
   "s-vs-subagents": {
     "title": "Skill ≠ Sub-agent",
-    "what": "Skill (claude.ai) — «tieto-miten-tehdä», ladataan chattiin triggerillä. Sub-agent (Claude Code) — eristetty toteuttaja omalla kontekstilla ja työkaluilla. Eri kerrokset: Skill — mitä tehdä, Sub-agent — kuka tekee.",
-    "why": "Tämä on yleisin sekaannus. Käyttäjät sekoittavat ne ja hämmentyvät: mitä valita tehtävälle. Selvä ero säästää tunteja kokeiluja.",
-    "when": "Kun valitset niiden välillä. Sub-agent — jos tehtävä on pitkä, vaatii kontekstin eristystä, suoritetaan Claude Codessa. Skill — jos toimenpide on toistettava, aktivoituu triggerillä, asuu claude.ai:ssa (tai myös Claude Codessa).",
-    "impact": "Oikea kerroksen valinta = ratkaisu minuuteissa, väärä = pettymys ja uudelleenkirjoitus.",
-    "example": "Säännöllinen dokumenttien auditointi → Skill (toistettava toimenpide). Rinnakkainen haku koko repon yli → Sub-agent (vaatii kontekstin eristystä, omia työkaluja).",
-    "mistakes": "Luoda Sub-agent tehtävälle, joka ratkaistaan Skillillä — overkill. Luoda Skill tehtävälle, joka vaatii pitkän tutkimuksen omalla kontekstilla — törmäät pääsessiön rajoihin."
+    "what": "Skill = resepti MITÄ tehdä (Claude seuraa vaiheita). Sub-agent = erillinen suorittaja omalla kontekstilla ja työkaluilla (tiedostot, terminaali, selain). Skill asuu Projektissa tai kansiossa. Sub-agent käynnistetään Claude Codesta eristettyjä tehtäviä varten.",
+    "why": "Yleisin virhe: luodaan Sub-agent missä Skill riittäisi, tai tehdään Skill tehtävälle joka vaatii eristystä ja ulkoisia työkaluja.",
+    "when": "Skill — kun tehtävä toistuu ja mahtuu vaiheisiin ilman ulkoisia työkaluja. Sub-agent — kun tehtävä on pitkä, vaatii rinnakkaista työtä tai tiedostojen/verkon lukemista.",
+    "impact": "Oikea valinta: Skill ratkaisee sekunneissa, Sub-agent on raskaampi mutta tehokkaampi. Väärä valinta — menetät aikaa uudelleenkirjoittamiseen.",
+    "example": "Skill: «Aina kun pyydän kirjoittamaan tehtävän — muotoile tällä pohjalla» (toistuva toimenpide, ei ulkoisia työkaluja).\nSub-agent: «Käy läpi kaikki tiedostot repossa ja etsi vanhentuneet riippuvuudet» (eristetty tutkimus, työkalut tarvitaan).",
+    "mistakes": "Sub-agent mallitehtävälle — overkill, käynnistyy hitaammin. Skill pitkälle tutkimukselle tiedostojen kanssa — törmäät pääsessiön kontekstirajoihin."
   },
   "claude-code": {
     "title": "Claude Code",

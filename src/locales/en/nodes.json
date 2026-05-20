@@ -440,66 +440,66 @@
   },
   "skills": {
     "title": "Skills",
-    "what": "A folder with SKILL.md and helper files — sets repeatable Claude behavior triggered by a prompt.",
-    "why": "So you don't re-explain your regular process — the model picks up the Skill via the trigger.",
-    "when": "When you have an established process with steps, templates and checks.",
-    "impact": "Skills turn a one-off prompt into a reproducible tool with guaranteed quality.",
-    "example": "Create a Skill for your recurring task: specify the trigger (what the user says) and the steps (what Claude should do).",
-    "mistakes": "Making a Skill out of a one-off prompt — you lose time on formatting and don't get the return."
+    "what": "Ready-made instructions for Claude: you add a Skill to a Project (claude.ai) or create a skills/ folder in Claude Code — and Claude follows a recipe instead of guessing what to do.",
+    "why": "Without Skills you re-explain «how exactly» every time: wasting tokens and getting inconsistent results. A Skill locks in the rules once — and they work every time.",
+    "when": "When the same multi-step process repeats ≥ 3 times a week and you want the same result each time.",
+    "impact": "Skill = reproducible quality. Run it → get the same result as last time, without re-explaining anything.",
+    "example": "Always preparing tasks for developers? Create a «user-story» Skill — Claude will ask for the details and format the task using your template, no prompting needed.",
+    "mistakes": "Creating a Skill for a one-off task — the value only comes from repetition, otherwise setup costs more time than it saves."
   },
   "s-md": {
     "title": "SKILL.md",
-    "what": "The Skill's main file: name, description, triggers, steps. Minimum — description + instruction.",
-    "why": "It's the «recipe» Claude uses to reproduce the process the same way each time.",
-    "when": "When creating any Skill — without SKILL.md it doesn't exist.",
-    "impact": "A well-written SKILL.md = deterministic quality run after run.",
-    "example": "name: expert-audit\\ndescription: Use when user asks for an expert audit of their material\\n## Steps...",
-    "mistakes": "A 1-phrase description «does audits» — Claude won't know when to trigger the Skill."
+    "what": "A text recipe file: tells Claude WHAT the Skill does, WHEN to activate it, and WHICH steps to follow. The only required file in any Skill.",
+    "why": "Claude reads SKILL.md as an instruction and follows it — the same way every time, no improvisation.",
+    "when": "When creating any Skill — without SKILL.md the Skill doesn't exist.",
+    "impact": "One well-written SKILL.md replaces 20 repeated explanations of the same process.",
+    "example": "Minimal working example:\n# Task Formatting\ndescription: Use when the user asks to create a task or user story.\n## Steps\n1. Ask: which system is the task for?\n2. Request acceptance criteria\n3. Format: Goal / What to do / Acceptance criteria",
+    "mistakes": "A one-phrase description like «helps with tasks» — Claude won't know when to activate the Skill and will either use it on everything or never."
   },
   "s-trigger": {
     "title": "Triggers",
-    "what": "The Skill's description = the trigger. Claude decides whether to activate it based on the request context.",
-    "why": "The more precise the description, the more precise the activation: no false fires and no misses.",
-    "when": "When designing any Skill — this is the most important part.",
-    "impact": "A good trigger ≈ +50% activation accuracy.",
-    "example": "description: «Use when user mentions PDF parsing, table extraction, or invoice scanning.»",
-    "mistakes": "Triggers too general («when help is needed») — the Skill activates on everything."
+    "what": "A Skill activates in two ways. (1) claude.ai: Claude reads the Project's Skills list and enables the right one based on context. (2) Claude Code: you explicitly type /skillname — Claude reads SKILL.md and follows the steps.",
+    "why": "Know the mechanism — understand why a Skill «didn't fire»: either the description is too vague (claude.ai), or you didn't type /skillname (Claude Code).",
+    "when": "When writing the description for any Skill — this is the most critical element.",
+    "impact": "Precise description in claude.ai = Skill activates on its own at the right moment. Explicit /command in Claude Code = no magic, full control.",
+    "example": "claude.ai — description «Use when user asks to create a presentation or prepare slides» → Claude activates the Skill automatically when asked «make me some slides».\nClaude Code — you type /audit → Claude reads SKILL.md and follows the steps, ignoring all other Skills.",
+    "mistakes": "claude.ai: a description like «helps with documents» — the Skill fires on every question. Claude Code: waiting for the Skill to activate on its own — it only runs when you type the explicit /command."
   },
   "s-files": {
     "title": "Helper files",
-    "what": "Templates, scripts, checklists in the Skill folder — Claude can read and use them.",
-    "why": "Structure a complex Skill: report template, JSON schema, questionnaire.",
-    "when": "When the Skill includes formatted output or external data.",
-    "impact": "Moving things into files keeps SKILL.md short and clear.",
-    "example": "Add templates/report.md to your Skill — Claude will fill it in by the template.",
-    "mistakes": "Stuffing everything into SKILL.md — it bloats to an unreadable state."
+    "what": "Extra files in the Skill folder: report templates, checklists, JSON schemas — Claude reads them as part of the instruction and fills them in with user data.",
+    "why": "Move a long template or question list out of SKILL.md into a separate file — the main file stays short and readable.",
+    "when": "When the Skill generates structured output: a report, spreadsheet, or brief based on a template.",
+    "impact": "A Skill with a template = a guaranteed output format every time, not «whatever comes out».",
+    "example": "Skill structure:\nskills/report/\n  SKILL.md → «Fill templates/report.md with user data»\n  templates/report.md → template: Goal / Findings / Recommendations\n\nClaude reads the template and populates it automatically.",
+    "mistakes": "Stuffing a 50-line template directly into SKILL.md — the file becomes unreadable and Claude follows the instruction less reliably."
   },
   "s-ready": {
     "title": "Ready-made Skills",
-    "what": "Anthropic provides a collection: pptx, xlsx, pdf, docx, skill-creator and others.",
-    "why": "No need to write routines like «make slides» from scratch — they already work.",
-    "when": "When the task is typical: document, presentation, spreadsheet.",
-    "impact": "Ready-made Skills — guaranteed quality from the Anthropic team.",
-    "example": "Use the Skill pptx to assemble a presentation from the brief below.",
-    "mistakes": "Writing your own «slide generator» — you're reinventing the wheel."
+    "what": "In claude.ai: Project Settings → Skills → Browse → Anthropic-built Skills. Add with one click: pptx (presentations), xlsx (spreadsheets), pdf (document analysis), docx (Word files), skill-creator (build your own Skill).",
+    "why": "Routine tasks — slides, PDF analysis, Excel — are already written and tested by Anthropic. No need to reinvent the wheel.",
+    "when": "First step before building your own Skill: check whether a ready-made one already covers your task.",
+    "impact": "A ready-made Skill works from the first run — Anthropic already wrote the steps, templates and prompts for you.",
+    "example": "Project Settings → Skills → Browse → add «pptx» → type «Create a presentation from this text: [text]» → Claude builds a .pptx file using the template.",
+    "mistakes": "Writing your own Skill for PDF, Excel or slides without checking the ready-made ones — spending 30 minutes where a 1-click solution already exists."
   },
   "s-create": {
     "title": "Your own Skill",
-    "what": "You can create a Skill manually or via skill-creator (it'll ask role, steps, templates).",
-    "why": "You turn personal practice into a tool you can share with the team.",
-    "when": "When the process is reproducible and used ≥ 5 times a week.",
-    "impact": "Creating a Skill pays off after 2-3 runs.",
-    "example": "Use skill-creator to make a Skill «Prepare a task for a developer» based on a user story template.",
-    "mistakes": "Making a Skill «just in case» — without a real request, it's dead."
+    "what": "claude.ai: type /skill-creator in the Project chat — it asks questions and assembles the Skill for you. Claude Code: create a skills/my-skill/ folder with a SKILL.md file inside, activate with /my-skill.",
+    "why": "Any repeating process is a Skill candidate: text audits, task formatting, report drafting, briefings.",
+    "when": "When you use the same process ≥ 3 times a week and are tired of explaining «how exactly» to Claude each time.",
+    "impact": "Pays off from the 3rd run: saves 5–15 minutes every time you'd otherwise re-explain the process.",
+    "example": "claude.ai: type /skill-creator → it asks «name?», «when to activate?», «what steps?» → builds the Skill automatically.\nClaude Code: create skills/brief/SKILL.md → write the steps → type /brief in the terminal chat.",
+    "mistakes": "Creating a Skill «just in case» — without a real repeating need it never pays off and clutters your Project."
   },
   "s-vs-subagents": {
     "title": "Skill ≠ Sub-agent",
-    "what": "Skill (claude.ai) — «know-how» loaded into chat on trigger. Sub-agent (Claude Code) — an isolated executor with its own context and tools. Different layers: Skill — what to do, Sub-agent — who does it.",
-    "why": "This is the most common confusion. Users mix them up and lose track: which to pick for the task. A clear distinction saves hours of experiments.",
-    "when": "When choosing between them. Sub-agent — if the task is long, needs context isolation, runs in Claude Code. Skill — if the procedure is reproducible, activates on a trigger, lives in claude.ai (or in Claude Code too).",
-    "impact": "Picking the right layer = a solution in minutes; the wrong one = disappointment and a rewrite.",
-    "example": "Regular document audit → Skill (repeatable procedure). Parallel search across the whole repo → Sub-agent (needs context isolation, own tools).",
-    "mistakes": "Creating a Sub-agent for a task that's solved by a Skill — overkill. Creating a Skill for a task that needs long research with its own context — you'll hit the main chat's limits."
+    "what": "Skill = a recipe for WHAT to do (Claude follows steps). Sub-agent = a separate executor with its own context and tools (files, terminal, browser). A Skill lives in a Project or folder. A Sub-agent is launched from Claude Code for isolated tasks.",
+    "why": "The most common mistake: creating a Sub-agent where a Skill would do, or making a Skill for a task that needs isolation and external tools.",
+    "when": "Skill — when the task repeats and fits into steps without external tools. Sub-agent — when the task is long, needs parallel work or reading files/network.",
+    "impact": "Right choice: Skill resolves in seconds, Sub-agent is heavier but more powerful. Wrong choice — you lose time rewriting from scratch.",
+    "example": "Skill: «Whenever I ask to write a task — format it using this template» (repeatable procedure, no external tools).\nSub-agent: «Go through all files in the repo and find outdated dependencies» (isolated research, tools needed).",
+    "mistakes": "Sub-agent for a template task — overkill, takes longer to launch. Skill for long research with files — you'll hit the main chat's context limit."
   },
   "claude-code": {
     "title": "Claude Code",
