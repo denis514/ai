@@ -85,9 +85,7 @@ export const mindmapData = {
           "category": "основы",
           "relatedIds": [
             "pr-cot",
-            "projects",
-            "cc-cmd-compact",
-            "cc-cmd-clear"
+            "projects"
           ]
         },
         {
@@ -246,7 +244,7 @@ export const mindmapData = {
         },
         {
           "id": "pl-api",
-          "icon": "code",
+          "icon": "terminal",
           "category": "основы",
           "relatedIds": ["cap-tools", "mcp", "ag-principles"]
         },
