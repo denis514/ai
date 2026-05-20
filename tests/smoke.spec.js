@@ -75,8 +75,8 @@ test('3. No blank screen — i18n loaded', async ({ page }) => {
   expect(bodyText).not.toContain('undefined');
   expect(bodyText).not.toContain('[object Object]');
 
-  // Хедер присутствует и не пустой
-  const header = page.locator('header').first();
+  // Хедер присутствует и не пустой (.canvas-header — реальный класс в приложении)
+  const header = page.locator('.canvas-header').first();
   await expect(header).toBeVisible({ timeout: 8_000 });
   const headerText = await header.textContent();
   expect(headerText?.trim().length).toBeGreaterThan(0);
@@ -124,8 +124,8 @@ test('5. Clicking a node opens the detail panel', async ({ page }) => {
   const firstNode = page.locator('.mm-node').first();
   await firstNode.click();
 
-  // Боковая панель открывается
-  const panel = page.locator('.detail-panel');
+  // Боковая панель открывается (.detail.is-open — реальный класс в приложении)
+  const panel = page.locator('.detail.is-open');
   await expect(panel).toBeVisible({ timeout: 8_000 });
 
   // Панель содержит текст (не белый экран)
