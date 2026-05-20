@@ -830,7 +830,15 @@ function AppInner() {
 
       {/* Intro — первое знакомство с Atlas (первый визит, до авторизации) */}
       {introOpen && !isNewUser && (
-        <IntroModal onDone={handleIntroDone} />
+        <IntroModal
+          onDone={handleIntroDone}
+          onRequestAuth={() => {
+            // Закрываем интро (без открытия курса), затем открываем авторизацию
+            try { localStorage.setItem('atlas:intro-seen:v1', '1'); } catch {}
+            setIntroOpen(false);
+            setAuthOpen(true);
+          }}
+        />
       )}
 
       {/* Welcome онбординг — показывается после первого логина */}

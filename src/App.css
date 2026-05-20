@@ -2251,6 +2251,47 @@
   justify-content: center;
 }
 
+/* Блок авторизации на слайде 2 */
+.intro-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.intro-auth__divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.intro-auth__divider::before,
+.intro-auth__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.intro-auth__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.intro-auth__btn:hover {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+
 @media (max-width: 520px) {
   .intro-card { padding: 24px 20px 20px; border-radius: 16px; }
   .intro-title { font-size: 18px; }

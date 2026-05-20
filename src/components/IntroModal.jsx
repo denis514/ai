@@ -59,7 +59,7 @@ const FEATURES = [
   { icon: 'books', key: 'intro.feature.prompts' },
 ];
 
-export default function IntroModal({ onDone }) {
+export default function IntroModal({ onDone, onRequestAuth }) {
   const t = useT();
   const [slide, setSlide] = useState(0);
   const [role, setRole] = useState('everyone');
@@ -158,6 +158,23 @@ export default function IntroModal({ onDone }) {
                 </button>
               ))}
             </div>
+
+            {/* Блок авторизации */}
+            {onRequestAuth && (
+              <div className="intro-auth">
+                <div className="intro-auth__divider">
+                  <span>{t('intro.authHint')}</span>
+                </div>
+                <button
+                  type="button"
+                  className="intro-auth__btn"
+                  onClick={onRequestAuth}
+                >
+                  <Icon name="login" size={16} strokeWidth={1.75} />
+                  {t('intro.authCta')}
+                </button>
+              </div>
+            )}
           </div>
         )}
 
