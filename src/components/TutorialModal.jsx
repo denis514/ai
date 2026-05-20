@@ -114,9 +114,6 @@ export default function TutorialModal({
 
   const stepIndex = (() => {
     if (!tut) return 0;
-    // Гость всегда стартует с шага 0 — нет смысла восстанавливать прогресс
-    // на шаг 2+ если он всё равно увидит gate (и не увидит контент)
-    if (!isLoggedIn) return 0;
     const p = getProgress(tutorialId);
     return Math.max(0, Math.min(p.lastStepIndex || 0, tut.steps.length - 1));
   })();
@@ -124,12 +121,16 @@ export default function TutorialModal({
   const [showAllSteps, setShowAllSteps] = useState(false);
   const scrollRef = useRef(null);
 
+  // Восстанавливаем шаг при смене туториала ИЛИ при смене статуса авторизации.
+  // Важно: если пользователь вернулся из OAuth-редиректа (isLoggedIn изменился
+  // false→true), эффект должен сработать и восстановить сохранённый lastStepIndex.
+  // При выходе из аккаунта — сбрасываем на шаг 0 (гость увидит gate на шаге 2+).
   useEffect(() => {
     if (!tut) return;
     if (!isLoggedIn) { setActiveIdx(0); return; }
     const p = getProgress(tutorialId);
     setActiveIdx(Math.max(0, Math.min(p.lastStepIndex || 0, tut.steps.length - 1)));
-  }, [tutorialId]); // eslint-disable-line
+  }, [tutorialId, isLoggedIn]); // eslint-disable-line
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
