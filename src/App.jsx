@@ -260,15 +260,21 @@ function AppInner() {
   const nodeProgressApi = useNodeProgress();
   const { isNew, newType, markSeen, newIds } = useWhatsNew();
 
-  // Предки всех новых узлов — чтобы показывать бейдж на свёрнутых ветках
+  // Предки всех новых узлов — Map<id, 'new'|'updated'>.
+  // Тип: 'new' приоритетнее 'updated' (если хоть один потомок 'new' → предок тоже 'new').
   const newAncestorIds = useMemo(() => {
-    const acc = new Set();
+    const acc = new Map(); // id → 'new' | 'updated'
     for (const id of newIds) {
+      const t = newType(id) || 'new';
       const path = findAncestorPath(mindmapData, id) || [];
-      path.forEach(a => acc.add(a));
+      path.forEach(ancestorId => {
+        const existing = acc.get(ancestorId);
+        // 'new' имеет приоритет над 'updated'
+        if (!existing || t === 'new') acc.set(ancestorId, t);
+      });
     }
     return acc;
-  }, [newIds]);
+  }, [newIds, newType]);
   const activityApi = useActivityLog();
   const identityApi = useUserIdentity();
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -475,7 +481,9 @@ function AppInner() {
       else next.add(id);
       return next;
     });
-  }, []);
+    // Если ветка сама помечена как new/updated — сбрасываем лейбл при первом клике
+    markSeen(id);
+  }, [markSeen]);
 
   const onSelect = useCallback((node) => {
     setRoute({ type: 'node', id: node.id });
@@ -597,7 +605,7 @@ function AppInner() {
           isBookmarkedNode={(id) => bookmarksApi.isBookmarked('node', id)}
           isNewNode={isNew}
           newTypeOf={newType}
-          hasNewInside={id => newAncestorIds.has(id)}
+          hasNewInside={id => newAncestorIds.get(id) ?? null}
         />
 
         <DetailPanel
