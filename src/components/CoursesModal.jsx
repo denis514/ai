@@ -29,15 +29,12 @@ const LEVEL_COLOR = {
 };
 
 const AUDIENCES = ['all', 'everyone', 'business', 'developers'];
-const STATUSES  = ['all', 'started', 'done'];
-const LEVEL_GROUPS = ['beginner', 'intermediate', 'advanced'];
 
 export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi, nodeProgressApi, onOpenPrompt }) {
   const t = useT();
   const { locale } = useLocale();
   const [tab, setTab] = useState('paths');
   const [audience, setAudience] = useState('all');
-  const [status, setStatus]   = useState('all');
   const [selectedTutorialId, setSelectedTutorialId] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
@@ -69,30 +66,22 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
     const isDone = !!p.completedAt;
     const isStarted = done > 0 || (p.lastStepIndex || 0) > 0;
     const cat = node ? CATEGORIES[node.category] : null;
-    return { key, t: tutLocalized, node, p, done, total, isDone, isStarted, cat,
-             audience: struct.audience || 'everyone',
-             level: struct.level || 'beginner' };
+    return { key, t: tutLocalized, node, p, done, total, isDone, isStarted, cat, audience: struct.audience || 'everyone' };
   });
 
   const completed = allItems.filter(i => i.isDone).length;
   const started   = allItems.filter(i => !i.isDone && i.isStarted).length;
 
-  // Фильтр по аудитории
-  const byAudience = audience === 'all'
+  // Фильтруем по аудитории
+  const items = audience === 'all'
     ? allItems
     : allItems.filter(i => i.audience === audience);
 
-  // Фильтр по статусу
-  const byStatus = status === 'done'
-    ? byAudience.filter(i => i.isDone)
-    : status === 'started'
-      ? byAudience.filter(i => i.isStarted && !i.isDone)
-      : byAudience;
-
-  // Группируем по уровню: начальный → средний → продвинутый
-  const levelGroups = LEVEL_GROUPS
-    .map(lvl => ({ level: lvl, items: byStatus.filter(i => i.level === lvl) }))
-    .filter(g => g.items.length > 0);
+  // Сортируем: продолжающиеся → незавершённые → завершённые
+  items.sort((a, b) => {
+    const order = (it) => it.isDone ? 2 : (it.isStarted ? 0 : 1);
+    return order(a) - order(b);
+  });
 
   return (
     <div
@@ -109,7 +98,7 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
             <p>
               {tab === 'paths'
                 ? t('courses.paths.desc', { n: learningPaths.length })
-                : t('courses.summary', { done: completed, started, idle: byAudience.length - completed - started })}
+                : t('courses.summary', { done: completed, started, idle: items.length - completed - started })}
             </p>
           </div>
           <button
@@ -170,89 +159,51 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
           ))}
         </div>
 
-        {/* Фильтр статуса — только на вкладке «Курсы» */}
-        {tab === 'courses' && (
-          <div className="courses-status" role="group" aria-label="Status filter">
-            {STATUSES.map(s => {
-              const count = s === 'done' ? completed : s === 'started' ? started : null;
-              return (
-                <button
-                  key={s}
-                  type="button"
-                  className={`courses-status__pill ${status === s ? 'is-active' : ''}`}
-                  onClick={() => { setStatus(s); setSelectedTutorialId(null); }}
-                >
-                  {t(`courses.status.${s}`)}
-                  {count != null && count > 0 && (
-                    <span className="courses-status__badge">{count}</span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
         {tab === 'courses' ? (
           <div className={`courses-pane-wrap ${selectedTutorialKey ? 'has-detail' : ''}`}>
           <div className="courses-list">
-            {levelGroups.length === 0 && (
-              <div className="courses-empty">
-                <Icon name="graduation" size={28} strokeWidth={1.25} />
-                <p>{t(`courses.empty.${status}`)}</p>
-              </div>
-            )}
-            {levelGroups.map(({ level, items: groupItems }) => (
-              <div key={level} className="courses-level-group">
-                <div className="courses-level-group__header" style={{ '--lvl-color': LEVEL_COLOR[level] }}>
-                  <span className="courses-level-group__dot" />
-                  <span className="courses-level-group__label">{t(`level.${level}`)}</span>
-                  <span className="courses-level-group__count">{groupItems.length}</span>
+            {items.map(({ key, t: tut, node, p, done, total, isDone, isStarted, cat }) => (
+              <button
+                key={key}
+                type="button"
+                className={`course ${isDone ? 'is-done' : ''} ${isStarted && !isDone ? 'is-started' : ''} ${selectedTutorialKey === key ? 'is-selected' : ''}`}
+                onClick={() => setSelectedTutorialId(key)}
+                style={cat ? { '--cat-color': cat.color } : undefined}
+              >
+                <div className="course__icon" aria-hidden="true">
+                  <Icon name={isDone ? 'check' : tut.icon} size={22} strokeWidth={1.5} />
                 </div>
-                {groupItems.map(({ key, t: tut, node, p, done, total, isDone, isStarted, cat }) => (
-                  <button
-                    key={key}
-                    type="button"
-                    className={`course ${isDone ? 'is-done' : ''} ${isStarted && !isDone ? 'is-started' : ''} ${selectedTutorialKey === key ? 'is-selected' : ''}`}
-                    onClick={() => setSelectedTutorialId(key)}
-                    style={cat ? { '--cat-color': cat.color } : undefined}
-                  >
-                    <div className="course__icon" aria-hidden="true">
-                      <Icon name={tut.icon} size={22} strokeWidth={1.5} />
-                      {isDone && <span className="course__done-badge" aria-hidden="true"><Icon name="check" size={10} strokeWidth={2.5} /></span>}
-                    </div>
-                    <div className="course__main">
-                      <div className="course__title-row">
-                        <h3>{tut.title}</h3>
-                        {cat && node && <span className="course__cat">{t(`category.${node.category || 'основы'}`)}</span>}
-                      </div>
-                      <p>{tut.subtitle}</p>
-                      <div className="course__meta">
-                        <span className="course__meta-item">
-                          <Icon name="books" size={14} strokeWidth={1.5} /> {t('courses.stepsCount', { n: total })}
-                        </span>
-                        <span className="course__meta-item">
-                          <Icon name="clock" size={14} strokeWidth={1.5} /> {tut.totalTime}
-                        </span>
-                        <span className={`course__status ${isDone ? 'is-done' : isStarted ? 'is-started' : ''}`}>
-                          {isDone
-                            ? (p.completedAt
-                                ? t('courses.completedOn', { date: new Date(p.completedAt).toLocaleDateString(locale === 'ru' ? 'ru-RU' : locale === 'fi' ? 'fi-FI' : 'en-US') })
-                                : t('courses.completed'))
-                            : isStarted
-                              ? t('courses.inProgress', { done, total })
-                              : t('courses.notStarted')}
-                        </span>
-                      </div>
-                      <div className="course__progress">
-                        <div className="course__progress-bar" style={{ width: `${(done / total) * 100}%` }} />
-                      </div>
-                    </div>
-                    <div className="course__cta" aria-hidden="true">
-                      <Icon name="arrow-right" size={18} strokeWidth={1.5} />
-                    </div>
-                  </button>
-                ))}
-              </div>
+                <div className="course__main">
+                  <div className="course__title-row">
+                    <h3>{tut.title}</h3>
+                    {cat && node && <span className="course__cat">{t(`category.${node.category || 'основы'}`)}</span>}
+                  </div>
+                  <p>{tut.subtitle}</p>
+                  <div className="course__meta">
+                    <span className="course__meta-item">
+                      <Icon name="books" size={14} strokeWidth={1.5} /> {t('courses.stepsCount', { n: total })}
+                    </span>
+                    <span className="course__meta-item">
+                      <Icon name="clock" size={14} strokeWidth={1.5} /> {tut.totalTime}
+                    </span>
+                    <span className={`course__status ${isDone ? 'is-done' : isStarted ? 'is-started' : ''}`}>
+                      {isDone
+                        ? (p.completedAt
+                            ? t('courses.completedOn', { date: new Date(p.completedAt).toLocaleDateString(locale === 'ru' ? 'ru-RU' : locale === 'fi' ? 'fi-FI' : 'en-US') })
+                            : t('courses.completed'))
+                        : isStarted
+                          ? t('courses.inProgress', { done, total })
+                          : t('courses.notStarted')}
+                    </span>
+                  </div>
+                  <div className="course__progress">
+                    <div className="course__progress-bar" style={{ width: `${(done / total) * 100}%` }} />
+                  </div>
+                </div>
+                <div className="course__cta" aria-hidden="true">
+                  <Icon name="arrow-right" size={18} strokeWidth={1.5} />
+                </div>
+              </button>
             ))}
           </div>
 

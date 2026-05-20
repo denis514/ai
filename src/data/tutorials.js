@@ -6,7 +6,7 @@
 export const tutorials = {
   "api-basics": {
     "nodeId": "pl-api",
-    "icon": "terminal",
+    "icon": "code",
     "level": "intermediate",
     "audience": "developers",
     "prerequisites": ["claude-setup"],
