@@ -15,10 +15,27 @@ import { supabase } from '../lib/supabaseClient.js';
  * @param {boolean} consentGiven - пользователь поставил галочку согласия
  * @returns {{ error: string|null }}
  */
+// Ключ в sessionStorage для восстановления маршрута после авторизации.
+// sessionStorage живёт в рамках одной вкладки/сессии браузера.
+const RETURN_ROUTE_KEY = 'atlas:post-auth-route';
+
+/** Сохранить текущий хэш перед OAuth-редиректом или отправкой Magic Link. */
+function saveReturnRoute() {
+  const hash = window.location.hash;
+  // Сохраняем только если есть реальный маршрут (не просто '#' или '#/ru')
+  if (hash && hash.replace(/^#\/?([a-z]{2}\/)?/, '').length > 0) {
+    sessionStorage.setItem(RETURN_ROUTE_KEY, hash);
+  }
+}
+
 export async function sendMagicLink(email, consentGiven) {
   if (!supabase) return { error: 'Supabase not configured' };
   if (!email || !email.includes('@')) return { error: 'Invalid email' };
   if (!consentGiven) return { error: 'Consent required' };
+
+  // Сохраняем маршрут: после клика по Magic Link пользователь вернётся
+  // в ту же точку, где инициировал вход.
+  saveReturnRoute();
 
   const { error } = await supabase.auth.signInWithOtp({
     email: email.trim().toLowerCase(),
@@ -42,6 +59,12 @@ export async function sendMagicLink(email, consentGiven) {
  */
 export async function signInWithGoogle() {
   if (!supabase) return { error: 'Supabase not configured' };
+
+  // Сохраняем маршрут: после Google OAuth редиректа страница перезагружается
+  // на origin + '/' и хэш теряется. sessionStorage сохраняется между редиректами
+  // в рамках одной вкладки.
+  saveReturnRoute();
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {

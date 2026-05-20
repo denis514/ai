@@ -20,7 +20,7 @@ import DetailNavFooter from './components/DetailNavFooter.jsx';
 import WelcomeCard from './components/WelcomeCard.jsx';
 import HelpModal from './components/HelpModal.jsx';
 import { useTutorialProgress } from './hooks/useTutorialProgress.js';
-import { useHashRoute } from './hooks/useHashRoute.js';
+import { useHashRoute, parseHash } from './hooks/useHashRoute.js';
 import { useBookmarks } from './hooks/useBookmarks.js';
 import { useNodeProgress } from './hooks/useNodeProgress.js';
 import { useWhatsNew } from './hooks/useWhatsNew.js';
@@ -158,7 +158,7 @@ function searchTree(root, query, category, searchableById) {
 function AppInner() {
   // Локаль — нужна для поискового индекса (контент в текущей локали).
   const { locale, contentVersion } = useLocale();
-  const { isNewUser, dismissOnboarding, isLoggedIn, user } = useAuth();
+  const { isNewUser, dismissOnboarding, isLoggedIn, loading: authLoading, user } = useAuth();
 
   // Обнаружение нового деплоя → показ баннера обновления
   const { hasUpdate, dismiss: dismissUpdate, reload: reloadPage } = useVersionCheck();
@@ -310,6 +310,31 @@ function AppInner() {
       setTutorialAwaitingAuth(false);
     }
   }, [isLoggedIn]); // eslint-disable-line
+
+  // Восстанавливаем маршрут после OAuth-редиректа (Google) или Magic Link.
+  //
+  // Проблема: после Google OAuth страница перезагружается на origin+'/', хэш теряется.
+  // Решение: authService.js сохраняет хэш в sessionStorage перед редиректом,
+  //          а мы восстанавливаем его здесь когда auth-состояние установлено.
+  //
+  // Срабатывает один раз: когда authLoading завершается И isLoggedIn = true
+  // И в sessionStorage есть сохранённый маршрут.
+  // После чтения запись удаляется — не мешает следующим сессиям.
+  useEffect(() => {
+    if (authLoading) return; // ждём пока auth определит состояние
+    if (!isLoggedIn) return; // не залогинен — нечего восстанавливать
+
+    const saved = sessionStorage.getItem('atlas:post-auth-route');
+    if (!saved) return;
+
+    sessionStorage.removeItem('atlas:post-auth-route');
+
+    const parsed = parseHash(saved);
+    if (parsed?.type) {
+      // Небольшая задержка: дать React время завершить рендер после auth
+      setTimeout(() => setRoute(parsed), 50);
+    }
+  }, [authLoading, isLoggedIn]); // eslint-disable-line
 
   // ─── Реал-тайм синк localStorage → Supabase ─────────────────────────────
   // После каждого изменения данных пишем в Supabase (debounce 300ms).

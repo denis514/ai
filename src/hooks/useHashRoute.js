@@ -23,7 +23,7 @@ import { LOCALES, isLocale } from '../i18n/config.js';
  * пробрасывать locale в каждый setRoute.
  */
 
-function parseHash(hash) {
+export function parseHash(hash) {
   if (!hash || hash === '#' || hash === '#/') return null;
   const clean = hash.replace(/^#\/?/, '');
   const parts = clean.split('/').filter(Boolean);
