@@ -16,7 +16,6 @@ const STORAGE_KEYS = [
   'claude-mindmap:node-progress:v1',
   'claude-mindmap.tutorial-progress.v1',
   'claude-mindmap:user-level:v1',
-  'claude-mindmap:tutorial-mode:v1',
   'claude-mindmap:activity-log:v1',
   'claude-mindmap:user-identity:v1',
   'claude-mindmap:locale:v1'

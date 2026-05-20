@@ -78,16 +78,6 @@ function Troubleshoot({ items, t }) {
   );
 }
 
-const MODE_STORAGE_KEY = 'claude-mindmap:tutorial-mode:v1';
-
-function loadInitialMode() {
-  if (typeof window === 'undefined') return 'standard';
-  try {
-    const m = localStorage.getItem(MODE_STORAGE_KEY);
-    return (m === 'quick' || m === 'deep') ? m : 'standard';
-  } catch { return 'standard'; }
-}
-
 export default function TutorialModal({
   tutorialId,
   onClose,
@@ -104,11 +94,7 @@ export default function TutorialModal({
   // Локализованный туториал — структура из tutorials.js + текст из локали.
   const tut = useTutorialContent(tutorialId);
 
-  const [mode, setMode] = useState(loadInitialMode);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  useEffect(() => {
-    try { localStorage.setItem(MODE_STORAGE_KEY, mode); } catch {}
-  }, [mode]);
 
   const { getProgress, toggleStep, setLastStepIndex, reset, isCompleted } = progressApi;
 
@@ -239,27 +225,6 @@ export default function TutorialModal({
             </div>
           </div>
           <div className="tut-header__controls">
-            <div
-              className="tut-mode"
-              role="group"
-              aria-label={t('tutorial.ariaModal')}
-              title={t('tutorial.modeTip')}
-            >
-              {[
-                { id: 'quick',    label: t('tutorial.mode.quick') },
-                { id: 'standard', label: t('tutorial.mode.standard') },
-                { id: 'deep',     label: t('tutorial.mode.deep') }
-              ].map(m => (
-                <button
-                  key={m.id}
-                  type="button"
-                  className={`tut-mode__btn ${mode === m.id ? 'is-active' : ''}`}
-                  onClick={() => setMode(m.id)}
-                >
-                  {m.label}
-                </button>
-              ))}
-            </div>
             <button
               type="button"
               className="tut-header__expand"
@@ -369,7 +334,7 @@ export default function TutorialModal({
               </div>
               <h3 className="tut-step__title">{step.title}</h3>
 
-              {step.why && mode !== 'quick' && (
+              {step.why && (
                 <section className="tut-block tut-block--why">
                   <h4>{t('tutorial.section.why')}</h4>
                   <p>{step.why}</p>
@@ -392,14 +357,14 @@ export default function TutorialModal({
                 </section>
               )}
 
-              {step.example && !step.prompt && mode !== 'quick' && (
+              {step.example && !step.prompt && (
                 <section className="tut-block">
                   <h4>{t('tutorial.section.example')}</h4>
                   <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} />
                 </section>
               )}
 
-              {step.example && step.prompt && mode === 'deep' && (
+              {step.example && step.prompt && (
                 <section className="tut-block">
                   <h4>{t('tutorial.section.exampleExtra')}</h4>
                   <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} />
@@ -415,7 +380,7 @@ export default function TutorialModal({
                 </section>
               )}
 
-              {step.tip && mode !== 'quick' && (
+              {step.tip && (
                 <section className="tut-block tut-block--tip">
                   <h4>
                     <Icon name="idea" size={16} strokeWidth={1.5} /> {t('tutorial.tipLabel')}
@@ -464,7 +429,7 @@ export default function TutorialModal({
                 </section>
               )}
 
-              {step.troubleshoot && mode !== 'quick' && <Troubleshoot items={step.troubleshoot} t={t} />}
+              {step.troubleshoot && <Troubleshoot items={step.troubleshoot} t={t} />}
 
               {activeIdx === tut.steps.length - 1 && tut.exercises && tut.exercises.length > 0 && (
                 <section className="tut-block tut-block--exercises">
@@ -476,7 +441,7 @@ export default function TutorialModal({
                     {tut.exercises.map((ex, i) => (
                       <li key={i}>
                         <strong>{ex.question}</strong>
-                        {ex.hint && mode !== 'quick' && (
+                        {ex.hint && (
                           <p className="tut-exercises__hint-line">
                             <Icon name="idea" size={12} strokeWidth={1.5} /> {ex.hint}
                           </p>
