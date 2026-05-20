@@ -15,7 +15,6 @@ const STORAGE_KEYS = [
   'claude-mindmap:bookmarks:v1',
   'claude-mindmap:node-progress:v1',
   'claude-mindmap.tutorial-progress.v1',
-  'claude-mindmap:user-level:v1',
   'claude-mindmap:activity-log:v1',
   'claude-mindmap:user-identity:v1',
   'claude-mindmap:locale:v1'
@@ -239,9 +238,6 @@ export default function ProfilePanel({
           {isLoggedIn && (
             <span className="profile-panel__email">{user.email}</span>
           )}
-          <span className="profile-panel__level">
-            {t('profile.level')}: <strong>{t(`profile.level.${level}`)}</strong>
-          </span>
         </div>
 
         {onClose && (
@@ -256,23 +252,6 @@ export default function ProfilePanel({
         <span className="profile-panel__pro-badge">{t('common.soon')}</span>
         <strong>{t('profile.pro.title')}</strong>
         <p>{t('profile.pro.desc')}</p>
-      </section>
-
-      {/* ── LEVEL SWITCHER ── */}
-      <section className="profile-panel__section">
-        <h4>{t('profile.level')}</h4>
-        <div className="profile-panel__level-row">
-          {['beginner', 'intermediate', 'expert'].map(lvl => (
-            <button
-              key={lvl}
-              type="button"
-              className={`profile-panel__level-btn ${level === lvl ? 'is-active' : ''}`}
-              onClick={() => onLevelChange(lvl)}
-            >
-              {t(`profile.level.${lvl}`)}
-            </button>
-          ))}
-        </div>
       </section>
 
       {/* ── TUTORIAL PROGRESS ── */}
