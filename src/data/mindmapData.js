@@ -622,6 +622,11 @@ export const mindmapData = {
             "cap-files",
             "cap-code-exec"
           ]
+        },
+        {
+          "id": "b-educators",
+          "icon": "graduation",
+          "category": "основы"
         }
       ]
     },

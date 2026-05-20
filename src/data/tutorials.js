@@ -885,6 +885,30 @@ export const tutorials = {
       { "id": "cb-6" }
     ]
   },
+  "claude-for-educators": {
+    "nodeId": "b-educators",
+    "icon": "graduation",
+    "level": "beginner",
+    "audience": "business",
+    "prerequisites": ["ai-fluency"],
+    "relatedPrompts": [
+      "start-role-task",
+      "prompting-improve"
+    ],
+    "next": [
+      "scenarios",
+      "projects",
+      "claude-for-business"
+    ],
+    "steps": [
+      { "id": "ce-1" },
+      { "id": "ce-2" },
+      { "id": "ce-3" },
+      { "id": "ce-4" },
+      { "id": "ce-5" },
+      { "id": "ce-6" }
+    ]
+  },
   "ai-fluency": {
     "nodeId": "b-claude",
     "icon": "brain",
