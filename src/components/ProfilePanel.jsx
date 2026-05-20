@@ -123,6 +123,25 @@ export default function ProfilePanel({
     return result;
   }, [progressApi, locale]);
 
+  // ── Список завершённых курсов ────────────────────────────────────────────
+  const completedCourses = useMemo(() => {
+    const result = [];
+    for (const id of tutorialIds) {
+      const p = progressApi.getProgress(id);
+      if (!p?.completedAt) continue;
+      const localized = getLocalizedTutorial(id, locale);
+      result.push({
+        id,
+        title: localized?.title || id,
+        icon: tutorials[id]?.icon || 'graduation',
+        completedAt: p.completedAt
+      });
+    }
+    // Сортировка: completedAt desc (последний завершённый — первый)
+    result.sort((a, b) => b.completedAt.localeCompare(a.completedAt));
+    return result;
+  }, [progressApi, locale]);
+
   // ── Достижения ────────────────────────────────────────────────────────────
   const ACHIEVEMENTS = [
     { id: 'first-tut',  threshold: () => tutsDone >= 1,   icon: 'graduation', key: 'achievement.firstTutorial' },
@@ -305,6 +324,33 @@ export default function ProfilePanel({
           </ul>
         )}
       </section>
+
+      {/* ── ЗАВЕРШЁННЫЕ КУРСЫ ── */}
+      {completedCourses.length > 0 && (
+        <section className="profile-panel__section">
+          <h4>{t('profile.completed.title')} <span className="profile-panel__section-count">{completedCourses.length}</span></h4>
+          <ul className="profile-panel__active-courses">
+            {completedCourses.map(course => (
+              <li key={course.id}>
+                <button
+                  type="button"
+                  className="profile-panel__active-course profile-panel__active-course--done"
+                  onClick={() => onStartTutorial?.(course.id)}
+                  title={course.title}
+                >
+                  <span className="profile-panel__active-course-icon" aria-hidden="true">
+                    <Icon name={course.icon} size={14} strokeWidth={1.5} />
+                  </span>
+                  <span className="profile-panel__active-course-title">{course.title}</span>
+                  <span className="profile-panel__done-check" aria-hidden="true">
+                    <Icon name="check" size={11} strokeWidth={2.5} />
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* ── NODE PROGRESS ── */}
       <section className="profile-panel__section">
