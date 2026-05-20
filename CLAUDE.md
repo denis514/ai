@@ -188,9 +188,44 @@ Claude Atlas/
 5. **Внести правку через skill `mindmap-expander`** (если skill активен) или
    следуя его SKILL.md как чек-листу.
 6. **Проверить** что layout не сломан (нет дублей `id`, валидный JS).
-7. **Записать в `tasks/current.md`** или закрыть тикет.
+7. **Запустить `node scripts/sync-whats-new.mjs`** — лейблы обновятся автоматически.
+8. **Записать в `tasks/current.md`** или закрыть тикет.
 
 Подробнее — в `docs/ai-workflows.md`.
+
+---
+
+## 10a. Правило автоматических лейблов «новое» / «обновлено» (ОБЯЗАТЕЛЬНО)
+
+**После любой правки контента** (`src/locales/*/nodes.json`, `src/data/tutorials.js`,
+`src/locales/*/tutorials.json`) — **обязательно запустить скрипт:**
+
+```bash
+node scripts/sync-whats-new.mjs
+```
+
+Что делает скрипт:
+- Вычисляет sha1-хеши каждого узла и туториала
+- Сравнивает с `src/data/nodeHashes.json` (источник правды)
+- Новые ID → `type: 'new'` + сегодняшняя дата в `whatsNew.js`
+- Изменённые ID → `type: 'updated'` + сегодняшняя дата в `whatsNew.js`
+- Обновляет `nodeHashes.json`
+
+**Оба файла коммитить вместе с контентом:**
+```
+git add src/locales/ src/data/tutorials.js src/data/whatsNew.js src/data/nodeHashes.json
+```
+
+**Нельзя:**
+- Коммитить контент без запуска скрипта
+- Редактировать `whatsNew.js` вручную (файл авто-генерируется)
+- Редактировать `nodeHashes.json` вручную
+
+**Дополнительные команды:**
+```bash
+npm run sync               # то же что node scripts/sync-whats-new.mjs
+node scripts/sync-whats-new.mjs --regen  # пересобрать whatsNew.js без изменения дат
+```
 
 ---
 
