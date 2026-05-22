@@ -607,7 +607,8 @@ function AppInner() {
   // Принимает tutorial KEY (не nodeId). Используется из DetailPanel, CoursesModal, WelcomeCard.
   const onStartTutorial = useCallback((tutorialKey) => {
     setRoute({ type: 'tutorial', id: tutorialKey });
-  }, [setRoute]);
+    markSeen(tutorialKey); // убираем лейбл ОБНОВЛЕНО/НОВОЕ при старте курса
+  }, [setRoute, markSeen]);
 
   const onOpenCourses  = useCallback(() => setRoute({ type: 'courses' }), [setRoute]);
   const onOpenLibrary  = useCallback(() => setRoute({ type: 'library' }), [setRoute]);

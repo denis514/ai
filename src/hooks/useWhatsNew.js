@@ -1,7 +1,35 @@
 import { useState, useCallback } from 'react';
 import { WHATS_NEW } from '../data/whatsNew.js';
 
-const LS_KEY = 'ca_seen_new';
+const LS_KEY      = 'ca_seen_new';
+const VISITED_KEY = 'ca_first_visited';
+
+function saveSeen(set) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify([...set])); } catch {}
+}
+
+/**
+ * При самом первом визите (VISITED_KEY ещё не существует) —
+ * «засеваем» все текущие записи как уже просмотренные.
+ *
+ * Логика:
+ *   • Новый пользователь → видит чистую карту без значков.
+ *     Badges появятся только для контента, опубликованного ПОСЛЕ его первого визита.
+ *   • Вернувшийся пользователь (VISITED_KEY уже есть) → поведение прежнее:
+ *     видит только то, что ещё не открывал через markSeen.
+ */
+function initFirstVisit() {
+  try {
+    if (localStorage.getItem(VISITED_KEY) !== null) return;
+    localStorage.setItem(VISITED_KEY, new Date().toISOString().slice(0, 10));
+    const allKeys = Object.entries(WHATS_NEW)
+      .map(([id, entry]) => `${id}:${entry.date}`);
+    saveSeen(new Set(allKeys));
+  } catch {}
+}
+
+// Инициализируем при загрузке модуля (до рендера)
+initFirstVisit();
 
 function loadSeen() {
   try {
@@ -9,10 +37,6 @@ function loadSeen() {
   } catch {
     return new Set();
   }
-}
-
-function saveSeen(set) {
-  localStorage.setItem(LS_KEY, JSON.stringify([...set]));
 }
 
 /**
