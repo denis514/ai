@@ -369,4 +369,4 @@ Atlas Transformation layer показывает **как пройти Stage 1 �
 
 ---
 
-_Status: DRAFT | Prev: [05 — Systems Layer](./05-systems-layer.md) | Next: [07 — Use Cases](./07-use-cases.md)_
+_Status: IMPLEMENTED (2026-05-22) | Prev: [05 — Systems Layer](./05-systems-layer.md) | Next: [07 — Use Cases](./07-use-cases.md)_

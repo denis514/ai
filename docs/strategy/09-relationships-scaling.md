@@ -350,4 +350,4 @@ KPI для measuring architecture health:
 
 ---
 
-_Status: DRAFT | Prev: [08 — Migration Plan](./08-migration-plan.md) | Index: [README](./README.md)_
+_Status: IMPLEMENTED (2026-05-22) | Prev: [08 — Migration Plan](./08-migration-plan.md) | Index: [README](./README.md)_

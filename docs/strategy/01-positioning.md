@@ -145,4 +145,4 @@ Atlas доказывает новое позиционирование чере�
 
 ---
 
-_Status: DRAFT | Next: [02 — Architecture](./02-architecture.md)_
+_Status: IMPLEMENTED (2026-05-22) | Next: [02 — Architecture](./02-architecture.md)_

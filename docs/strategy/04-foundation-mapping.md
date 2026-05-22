@@ -272,4 +272,4 @@ Sub-разделы Foundation получают свои подкатегории
 
 ---
 
-_Status: DRAFT | Prev: [03 — Node Classification](./03-node-classification.md) | Next: [05 — Systems Layer](./05-systems-layer.md)_
+_Status: IMPLEMENTED (2026-05-22) | Prev: [03 — Node Classification](./03-node-classification.md) | Next: [05 — Systems Layer](./05-systems-layer.md)_

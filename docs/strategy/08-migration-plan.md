@@ -444,4 +444,4 @@ Atlas после Phase 5:
 
 ---
 
-_Status: DRAFT | Prev: [07 — Use Cases](./07-use-cases.md) | Next: [09 — Relationships & Scaling](./09-relationships-scaling.md)_
+_Status: IMPLEMENTED (2026-05-22) | Prev: [07 — Use Cases](./07-use-cases.md) | Next: [09 — Relationships & Scaling](./09-relationships-scaling.md)_

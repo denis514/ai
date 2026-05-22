@@ -352,4 +352,4 @@ Use Case готов к публикации, если:
 
 ---
 
-_Status: DRAFT | Prev: [06 — Transformation Layer](./06-transformation-layer.md) | Next: [08 — Migration Plan](./08-migration-plan.md)_
+_Status: IMPLEMENTED (2026-05-22) | Prev: [06 — Transformation Layer](./06-transformation-layer.md) | Next: [08 — Migration Plan](./08-migration-plan.md)_

@@ -267,4 +267,4 @@ use-cases       — #f59e0b (оранжевый) ← НОВАЯ (см. доку�
 
 ---
 
-_Status: DRAFT | Prev: [01 — Positioning](./01-positioning.md) | Next: [03 — Node Classification](./03-node-classification.md)_
+_Status: IMPLEMENTED (2026-05-22) | Prev: [01 — Positioning](./01-positioning.md) | Next: [03 — Node Classification](./03-node-classification.md)_
