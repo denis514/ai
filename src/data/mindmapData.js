@@ -1395,19 +1395,6 @@ export const mindmapData = {
           ],
       "children": [
         {
-          "id": "sys-overview",
-          "icon": "sparkles",
-          "category": "systems",
-          "relatedIds": [
-            "ai-data-systems",
-            "ai-human-collaboration",
-            "ai-integration-systems",
-            "ai-operations",
-            "ai-orchestration",
-            "ai-workflows"
-          ]
-        },
-        {
           "id": "ai-workflows",
           "icon": "link",
           "category": "systems",
@@ -1611,19 +1598,6 @@ export const mindmapData = {
         "systems"
       ],
       "children": [
-        {
-          "id": "tf-overview",
-          "icon": "sparkles",
-          "category": "transformation",
-          "relatedIds": [
-            "ai-native-customer-support",
-            "ai-native-design",
-            "ai-native-enterprise",
-            "ai-native-marketing",
-            "ai-native-operations",
-            "ai-native-product"
-          ]
-        },
         {
           "id": "ai-native-operations",
           "icon": "settings",
@@ -1990,7 +1964,7 @@ export const mindmapData = {
                 "mk-team-workflow",
                 "cs-team-workflow",
                 "pd-team-workflow",
-                "sys-overview"
+                "systems"
               ]
             },
             {
@@ -2182,15 +2156,6 @@ export const mindmapData = {
         "uc-ai-vendor-selection"
       ],
       "children": [
-        {
-          "id": "uc-overview",
-          "icon": "sparkles",
-          "category": "use-cases",
-          "relatedIds": [
-            "ai-fundamentals",
-            "cc-md"
-          ]
-        },
         {
           "id": "uc-ai-reporting-launch",
           "icon": "clipboard",
