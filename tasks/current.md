@@ -135,6 +135,18 @@
 
 ---
 
+## ✅ Завершено — Сессия 2026-05-22 (Use Cases расширение)
+
+### +5 cross-direction Use Cases
+- ✅ **uc-ai-rag-launch** — RAG за 2-3 недели (attachment)
+- ✅ **uc-ai-pilot-to-production** — pilot→prod transition (download)
+- ✅ **uc-ai-roi-estimation** — Estimating AI ROI (tag)
+- ✅ **uc-ai-vendor-selection** — AI Vendor + Stack (store)
+- ✅ **uc-ai-multi-agent-system** — Multi-agent Orchestration (plug)
+
+Use Cases теперь 13: 8 direction-specific + 5 cross-direction.
+Bundle: 91.96 KB gzip.
+
 ## ✅ Завершено — Сессия 2026-05-22 (AI-Native Enterprise)
 
 ### Пятое Transformation-направление — стратегический пласт
