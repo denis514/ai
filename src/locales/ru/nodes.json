@@ -1627,5 +1627,86 @@
     "impact": "Outcome: working content pipeline с brand voice за 2 недели. Metrics: time-to-publish 2 days→4h, brand consistency 60%→90%, content output +200%.",
     "example": "Путь (7 шагов):\n\n1. Foundation: prompting → как формулировать брифы для AI\n2. Foundation: b-system → как написать system prompt с voice\n3. Foundation: i-style + instructions → custom instructions уровня профиля\n4. Foundation: i-claudemd → CLAUDE.md для marketing workspace\n5. Foundation: projects → создать Project «Blog» с файлами voice\n6. Systems: sys-linear-chain → структура pipeline (brief → draft → review → publish)\n7. Transformation: mk-content-ops → конкретный workflow с metrics\n8. Bonus: mk-brand-voice → детальный voice tuning\n\nDay 1-3: Audit existing content. Document voice attributes.\nDay 4-7: Setup Project + first test articles. Iterate voice prompt.\nDay 8-14: Roll-out для команды + measurement.\n\nStage transition: 1→2.",
     "mistakes": "Делать UC без voice work. Pipeline без brand voice = AI-generic тексты быстрее, но всё ещё generic. Voice setup — 30% времени UC. Не пропускай."
+  },
+  "ai-native-customer-support": {
+    "title": "AI-Native Customer Support",
+    "what": "Customer support команды на AI-native рельсах: tier-1 автоматизация, agent-assist для tier-2, knowledge base ops, escalation intelligence, quality monitoring, analytics. От «AI отвечает на простое» — к «AI делает 70% работы, человек делает сложное».",
+    "why": "Support — наиболее измеримое из всех transformation-направлений. Tickets, response time, CSAT, deflection rate — всё трекается. ROI виден через месяц. Это «easy win» для AI в компании.",
+    "when": "Когда tier-1 объём >100 tickets/week. Когда есть knowledge base (или возможность её собрать). Когда команда устаёт от повторяющихся вопросов и хочет работать над сложным.",
+    "impact": "Deflection rate 0% → 40-60% за 3 месяца. Response time для tier-2: 2 часа → 15 минут (через agent-assist). Agent satisfaction +35% (уходит рутина). CSAT держится или растёт. Stage 1→3 за 6 месяцев.",
+    "example": "Maturity stages для Support:\nStage 0: Pre-AI — все tickets человеку, средняя нагрузка 50 в день/агент.\nStage 1: AI experiments — Claude помогает писать ответы отдельно.\nStage 2: AI workflows — tier-1 бот закрывает 30% запросов, agent-assist на tier-2.\nStage 3: AI-native — 60% автоматизация, агенты фокусируются на сложных кейсах.\nStage 4: AI-first — proactive support: AI предсказывает проблемы до тикета.",
+    "mistakes": "Запустить AI tier-1 без quality monitoring и escalation. AI ошибётся на 5-15% — без quality monitoring это попадёт в CSAT. Без escalation пользователь застрянет в loop с ботом. Quality + escalation = обязательны с day 1."
+  },
+  "cs-tier1": {
+    "title": "AI Tier-1 Automation",
+    "what": "Автоматизация первой линии поддержки: AI читает входящий ticket → находит ответ в knowledge base (RAG) → пишет персонализированный ответ → или эскалирует на человека. Pipeline с явными quality gates.",
+    "why": "30-50% всех support tickets — повторяющиеся вопросы (password reset, billing, account access). AI закрывает эту массу с consistent качеством. Tier-2 агенты фокусируются на сложном.",
+    "when": "Tier-1 объём >100 tickets/week. Есть structured knowledge base. Чёткие FAQ-категории (40%+ tickets укладываются в 20 паттернов). Buy-in от CS-lead.",
+    "impact": "Deflection: 40-60%. Median response time: 4 часа → 2 минуты для AI-tickets. Tier-2 нагрузка снижается на 30-40%. CSAT для AI-tickets: 4.2/5 при правильной настройке (vs 4.4 для людей).",
+    "example": "Tier-1 Workflow:\n\n  Incoming ticket\n        ↓\n  [Classify intent: FAQ vs complex]\n   ├─ FAQ → AI processes with KB\n   │         ↓\n   │     [Confidence > 0.8?]\n   │      ├─ Yes → AI response + log\n   │      └─ No  → escalate to tier-2 with AI summary\n   └─ Complex → directly to human queue\n\n  Quality gate: 10% random AI responses → human review weekly\n\nMetric: deflection rate weekly, CSAT for AI-tickets.",
+    "mistakes": "Делать tier-1 на 80% kontent. Edge cases накапливаются: каждый отказ AI = плохой опыт. Production-правило: AI отвечает только когда confidence high. Иначе escalate с AI-подготовленным контекстом для человека."
+  },
+  "cs-agent-assist": {
+    "title": "AI Agent Assist",
+    "what": "AI как «co-pilot» tier-2 агента: реал-тайм suggestions ответа, autocompletion, поиск похожих кейсов, генерация шаблонов. Агент остаётся в driver seat, AI accelerates.",
+    "why": "Agent-assist менее рискован чем tier-1: human всегда в loop. ROI быстрее (response time -50% сразу). Команда видит AI как «помощник», не «угроза». Adoption намного выше.",
+    "when": "Tier-2/3 команда тратит время на писать ответы с нуля. Есть исторические tickets с хорошими ответами. Хочется поднять velocity без снижения качества.",
+    "impact": "Response time per ticket: 8 минут → 3 минуты. Agents handle 50-70% больше tickets/day. Quality consistent (AI use as draft, agent edits). Onboarding new agents: -50% (AI compensate junior gap). Stage 1→2.",
+    "example": "Agent Assist Setup:\n\n1. Browser plugin или integration в helpdesk.\n2. Open ticket → AI читает context + customer history.\n3. AI suggests:\n   - 3 варианта ответа (formal/friendly/technical)\n   - Similar past tickets (resolved)\n   - Relevant KB articles\n4. Agent selects + edits + sends.\n5. AI learns from agent edits (over time improves suggestions).\n\nReal usage: 70% suggestions accepted с минорными правками, 20% edited значимо, 10% не используются.",
+    "mistakes": "Заставлять агентов использовать AI «обязательно». Если suggestion плохое — заставит писать с нуля. Делать adoption через ценность (показывать time saved per ticket), а не через mandate."
+  },
+  "cs-knowledge-base": {
+    "title": "AI Knowledge Base Operations",
+    "what": "Knowledge base превращается из «PDF dump» в живую AI-systems: vector search, auto-updates на основе resolved tickets, gap analysis (что часто спрашивают но нет статьи), structured taxonomy.",
+    "why": "Без хорошего KB все AI support fails. KB = единственный источник правды для AI. Качество KB ≠ количество статей. Quality KB ops = больше impact чем просто запустить AI.",
+    "when": "Параллельно с tier-1 setup. Когда AI-bot отвечает «не знаю» на >20% вопросов. Когда agents жалуются «не могу найти статью». Когда KB не обновлялась >6 месяцев.",
+    "impact": "KB findability: 50% → 90% (vector search vs keyword). AI deflection rate растёт +15-20% (больше покрытия). Agent onboarding: -40% времени. Stage 1→2.",
+    "example": "KB Ops Pipeline:\n\nWeekly:\n  1. AI читает resolved tickets за неделю.\n  2. Identifies frequent questions без KB articles.\n  3. Drafts new KB articles из ticket solutions.\n  4. KB editor reviews + publishes.\n\nMonthly:\n  1. AI analyzes KB usage (which articles cited).\n  2. Flags outdated content (product changed, article didn't).\n  3. Suggests merges (duplicate articles).\n\nMetric: % tickets where AI found KB match → up over time.",
+    "mistakes": "Делать KB только для humans. Современный KB optimization = для AI + humans. Структура (clear headers, atomic articles, metadata) важна для AI retrieval. Иначе AI не находит — даже если статья существует."
+  },
+  "cs-escalation": {
+    "title": "AI Escalation Intelligence",
+    "what": "Умная эскалация: AI решает когда передавать человеку и кому именно (по специализации, нагрузке, severity). Плюс готовит контекст эскалации — агент получает не «вот ticket», а «вот ticket + история + что AI пробовал».",
+    "why": "Глупая эскалация = ticket переходит без контекста, агент тратит 5 минут на чтение. Умная = agent видит summary + что уже пробовалось + recommended next step. Velocity растёт без потери quality.",
+    "when": "Когда tier-1 AI запущен и нужно правильно routing tier-2. Когда есть специализации (billing vs technical vs account). Когда escalation = bottleneck.",
+    "impact": "Time-to-resolution для escalated tickets: -40%. Routing accuracy: 80% → 95% (correct specialist on first try). Agent satisfaction +: меньше «зачем мне это передали».",
+    "example": "Escalation Workflow:\n\n  AI cannot resolve ticket\n        ↓\n  [Classify problem domain]\n   ├─ Billing → queue: billing_team\n   ├─ Technical → queue: tech_support\n   └─ Account → queue: account_specialists\n        ↓\n  AI prepares escalation summary:\n   - Customer info + history\n   - What customer wants\n   - What AI tried (and why didn't work)\n   - Suggested next step\n        ↓\n  Agent picks up: context ready in 30 sec instead of 5 min.\n\nMetric: agent feedback on escalation quality.",
+    "mistakes": "Эскалировать «на всякий случай» при низкой confidence. Если AI ошибётся 10% случаев, но эскалирует 50% — это деградация. Калибруй threshold: слишком высокий = угробил deflection, слишком низкий = плохая quality."
+  },
+  "cs-quality-monitoring": {
+    "title": "AI Quality Monitoring",
+    "what": "Continuous monitoring качества AI-responses: weekly sample → human review → identify failure patterns → adjust prompts/KB. Without monitoring AI деградирует тихо: ошибки накапливаются, никто не видит.",
+    "why": "AI не статичен: KB меняется, продукт меняется, customer questions меняются. AI который работал в Q1 может проседать в Q3. Quality monitoring catches drift до того как CSAT упадёт.",
+    "when": "С day 1 AI tier-1 запуска. Обязательно. Не «когда будет проблема» — а continuous. Минимум: 10% AI-responses random sample → weekly review.",
+    "impact": "AI drift detection: до того как клиенты заметят (CSAT не падает). Continuous improvement: каждую неделю prompts/KB лучше. Trust в AI системе растёт через explicit quality data. Stage 2→3.",
+    "example": "Quality Monitoring Process:\n\nWeekly:\n  1. Random sample 10% AI responses.\n  2. Quality team rates: accuracy, tone, completeness.\n  3. Failure patterns extracted: «AI confuses billing X with Y», «misses context Z».\n  4. Action: update KB articles OR adjust system prompt OR add edge case to training data.\n\nMetric:\n  - % AI responses rated >4/5\n  - Trending direction (better/worse week-over-week)\n  - Top 3 failure categories\n\nEscalation: если quality < 4/5 для 2 weeks → pause AI tier-1, investigate.",
+    "mistakes": "Monitoring без action loop. Если найденные ошибки не приводят к изменениям — это театр. Quality monitoring должен быть встроен в weekly product process (Mon: review, Tue: fix, Wed: validate, ...)."
+  },
+  "cs-support-analytics": {
+    "title": "AI Support Analytics",
+    "what": "AI читает support metrics + ticket content → пишет insight reports: trending issues, customer sentiment, agent performance patterns, product feedback. Превращает support data в product insights.",
+    "why": "Support — это free user research. Тысячи разговоров с реальными клиентами. Но команда тонет в objects/dashboards. AI делает narrative layer + connects to product/marketing teams.",
+    "when": "Weekly support reviews. Когда product team хочет «голос клиента». Когда есть pattern «много жалоб на feature X» — нужно systematic detection.",
+    "impact": "Time-to-insight: дни → часы. Product team получает trending issues automatically. Customer voice loop closes: from ticket → insight → product change → fewer tickets. Stage 2→3.",
+    "example": "Weekly Support Analytics Report:\n\n  Inputs:\n  - All tickets за неделю (resolved + open)\n  - CSAT scores + comments\n  - Agent performance metrics\n  - Product release notes\n\n  AI Output:\n  - Top 5 trending issues (with ticket count + delta)\n  - Sentiment analysis: где клиенты frustrated\n  - Correlation: «new feature X released → tickets about X +40%»\n  - Recommendations for product team\n  - Recommendations for KB updates\n\nDistribution: report shared с product + marketing → closing the loop.",
+    "mistakes": "Делать support analytics в isolation. Если insights не доходят до product/engineering — они бесполезны. Setup explicit channels: weekly «Support Insights» Slack post в #product, monthly review session."
+  },
+  "cs-team-workflow": {
+    "title": "AI Customer Support Team Workflow",
+    "what": "Operating model CS-команды с AI: shared knowledge base ops, common agent-assist setup, AI office hours, quality calibration sessions, AI-aware promotion path для агентов. От «AI = инструмент» — к «AI = part of how we operate».",
+    "why": "Individual AI usage в support не работает — нужна consistency для customers (everyone gets same quality answer). Team workflow обеспечивает это через shared setup + processes.",
+    "when": "Когда team ≥5 agents используют AI. Когда новые agents приходят и «не знают как». Когда квалити inconsistent между shift teams.",
+    "impact": "Team velocity: agents process 50%+ больше tickets. New agent onboarding: 4 weeks → 2 weeks. Quality consistency across shifts: +60%. AI literacy team-wide.",
+    "example": "CS Team Setup:\n\n1. Shared Claude Project «Support Workspace»:\n   - KB indexed\n   - Brand voice guide (tone for customers)\n   - Common scenarios templates\n\n2. CLAUDE.md: response guidelines, escalation criteria, tone rules.\n\n3. Skills: response-drafter, ticket-summarizer, escalation-formatter.\n\n4. Weekly calibration: team reviews 5 AI-handled tickets together. Discusses: what worked, what would change.\n\n5. AI-aware promotion: agents who improve AI workflow → senior path (not just «answer more tickets»).\n\nResult: team functions as cohesive AI-augmented unit.",
+    "mistakes": "Treat AI usage as «individual perk». Без team-level workflow customers get inconsistent experience (depending on which agent picks). AI = team capability, не individual skill."
+  },
+  "uc-ai-support-tier1": {
+    "title": "Use Case: Запуск AI Tier-1 Support за 3-4 недели",
+    "what": "Полный путь от «всё руками» до «AI закрывает 40% tickets». Cross-layer path через 7 узлов: Foundation → AI Fundamentals → Systems → Transformation.",
+    "why": "Tier-1 automation = highest-ROI AI-проект в support. Этот UC показывает structured approach (not «купим бота»): KB первое, потом AI, потом quality monitoring.",
+    "when": "Tier-1 volume >100 tickets/week. Есть baseline CSAT для сравнения. Можно invest 3-4 недели в setup. Buy-in от CS-lead И product (для KB).",
+    "impact": "Outcome: working tier-1 AI с 40% deflection за 4 недели. Metrics: deflection rate 0→40%, median response time 4h→2min для AI-tickets, CSAT maintained at baseline.",
+    "example": "Путь (7 шагов):\n\nWeek 1: Knowledge Base prep.\n1. Foundation: af-rag-basics → понять что нужно для RAG\n2. Foundation: af-vector-db → выбор vector DB (pgvector обычно достаточно)\n3. Systems: sys-rag-architecture → выбор паттерна (Advanced RAG обязательно)\n4. Audit + restructure existing KB articles\n\nWeek 2: AI tier-1 setup.\n5. Foundation: prompting → system prompt для support bot\n6. Foundation: projects → создать «Support Bot» Project с KB\n7. Transformation: cs-tier1 → построить workflow с quality gates\n\nWeek 3: Quality + escalation.\n8. Transformation: cs-escalation → правильный routing для эскалаций\n9. Transformation: cs-quality-monitoring → setup random sample review\n\nWeek 4: Roll-out.\n10. Pilot на 1 категории tickets. Measure deflection + CSAT.\n11. Expand на 3-5 категорий. Iterate.\n\nStage transition: 1→2.",
+    "mistakes": "Запустить AI tier-1 без KB ops first. Если KB не годится для AI retrieval (плохая структура, outdated) — AI будет отвечать generic или wrong. KB ops = 50% работы UC. Не пропускай."
   }
 }

@@ -1627,5 +1627,86 @@
     "impact": "Outcome: toimiva content pipeline brand voicella 2 viikossa. Mittarit: time-to-publish 2 päivää→4h, brand-konsistenssi 60%→90%, sisältötuotanto +200%.",
     "example": "Polku (7 askelta):\n\n1. Foundation: prompting → kuinka muotoilla briefejä AI:lle\n2. Foundation: b-system → kuinka kirjoittaa system prompt voicella\n3. Foundation: i-style + instructions → custom instructions profiilitasolla\n4. Foundation: i-claudemd → CLAUDE.md markkinointi-workspacelle\n5. Foundation: projects → luo «Blog» Project voice-tiedostoilla\n6. Systems: sys-linear-chain → pipeline-rakenne (brief → draft → review → publish)\n7. Transformation: mk-content-ops → konkreettinen workflow mittareilla\n8. Bonus: mk-brand-voice → yksityiskohtainen voice tuning\n\nDay 1-3: Audit olemassa olevaa sisältöä. Dokumentoi voice-attribuutit.\nDay 4-7: Setup Project + ensimmäiset testiartikkelit. Iteraatio voice promptilla.\nDay 8-14: Roll-out tiimille + mittaus.\n\nStage transition: 1→2.",
     "mistakes": "Tehdä UC ilman voice-työtä. Pipeline ilman brand voicea = AI-geneerisiä tekstejä nopeammin, mutta silti geneerisiä. Voice setup on 30% UC-ajasta. Älä ohita."
+  },
+  "ai-native-customer-support": {
+    "title": "AI-Native Customer Support",
+    "what": "Customer support -tiimit AI-native-kiskoilla: tier-1 automatisointi, agent-assist tier-2:lle, knowledge base ops, escalation intelligence, quality monitoring, analytics. «AI vastaa yksinkertaiseen» -tilasta «AI tekee 70% työstä, ihmiset tekevät monimutkaisen» -tilaan.",
+    "why": "Support on mitattavin kaikista transformation-suunnista. Tickets, response time, CSAT, deflection rate — kaikki seurattua. ROI näkyy kuukaudessa. Tämä on «easy win» AI:lle yrityksessä.",
+    "when": "Kun tier-1 volyymi >100 tickets/viikko. Kun on knowledge base (tai kyky rakentaa se). Kun tiimi väsyy toistuviin kysymyksiin ja haluaa työskennellä monimutkaisten parissa.",
+    "impact": "Deflection rate 0% → 40-60% 3 kuukaudessa. Tier-2 response time: 2h → 15min (agent-assistin kautta). Agent-tyytyväisyys +35% (rutiini katoaa). CSAT pysyy tai kasvaa. Stage 1→3 6 kuukaudessa.",
+    "example": "Maturity stages Supportille:\nStage 0: Pre-AI — kaikki tickets ihmisille, keskimääräinen kuormitus 50/päivä/agentti.\nStage 1: AI experiments — Claude auttaa kirjoittamaan vastauksia erikseen.\nStage 2: AI workflows — tier-1 botti sulkee 30% pyynnöistä, agent-assist tier-2:ssa.\nStage 3: AI-native — 60% automaatio, agentit keskittyvät monimutkaisiin kaseihin.\nStage 4: AI-first — proaktiivinen support: AI ennustaa ongelmat ennen ticketejä.",
+    "mistakes": "Käynnistää AI tier-1 ilman quality monitoringia ja escalationia. AI erehtyy 5-15% — ilman quality monitoringia tämä päätyy CSAT:iin. Ilman escalationia käyttäjä jumiutuu bot-loopiin. Quality + escalation = pakollisia day 1:stä."
+  },
+  "cs-tier1": {
+    "title": "AI Tier-1 -automatisointi",
+    "what": "Ensimmäisen linjan supportin automatisointi: AI lukee tulevan ticketin → löytää vastauksen knowledge basesta (RAG) → kirjoittaa personoidun vastauksen → tai eskaloi ihmiselle. Pipeline selkeillä quality-gateilla.",
+    "why": "30-50% kaikista support ticketeistä on toistuvia kysymyksiä (password reset, billing, account access). AI sulkee tämän massan konsistentilla laadulla. Tier-2 agentit keskittyvät monimutkaisiin.",
+    "when": "Tier-1 volyymi >100 tickets/viikko. Strukturoitu knowledge base. Selkeät FAQ-kategoriat (40%+ ticketeistä mahtuu 20 mallliin). Buy-in CS-leadiltä.",
+    "impact": "Deflection: 40-60%. Median response time: 4h → 2min AI-ticketeille. Tier-2 kuormitus laskee 30-40%. CSAT AI-ticketeille: 4.2/5 oikealla setupilla (vs 4.4 ihmisille).",
+    "example": "Tier-1 -workflow:\n\n  Tuleva ticket\n        ↓\n  [Luokittele intent: FAQ vs monimutkainen]\n   ├─ FAQ → AI käsittelee KB:n kanssa\n   │         ↓\n   │     [Confidence > 0.8?]\n   │      ├─ Kyllä → AI-vastaus + loki\n   │      └─ Ei  → eskalointi tier-2:lle AI-yhteenvedolla\n   └─ Monimutkainen → suoraan human-jonoon\n\n  Laatuportti: 10% satunnainen AI-vastausten otos → human-review viikoittain\n\nMittari: deflection rate viikoittain, CSAT AI-ticketeille.",
+    "mistakes": "Tehdä tier-1 80% sisällöllä. Edge case:t kertyvät: jokainen AI-epäonnistuminen = huono kokemus. Tuotantosääntö: AI vastaa vain kun confidence on korkea. Muuten eskaloi AI-valmistellulla kontekstilla ihmiselle."
+  },
+  "cs-agent-assist": {
+    "title": "AI Agent Assist",
+    "what": "AI tier-2-agentin «co-pilottina»: reaaliaikaiset vastausehdotukset, autocompletion, samankaltaisten kasien haku, mallien generointi. Agentti pysyy kuljettajan paikalla, AI nopeuttaa.",
+    "why": "Agent-assist on vähemmän riskialtis kuin tier-1: ihminen on aina loopissa. ROI on nopeampi (response time -50% heti). Tiimi näkee AI:n «auttajana», ei «uhkana». Adoptio on paljon korkeampi.",
+    "when": "Tier-2/3-tiimi käyttää aikaa vastausten kirjoittamiseen alusta. On historiallisia ticketejä hyvillä vastauksilla. Halutaan nostaa velocityä menettämättä laatua.",
+    "impact": "Response time per ticket: 8 min → 3 min. Agentit käsittelevät 50-70% enemmän tickets/päivä. Laatu konsistentti (AI käytetään luonnoksena, agentti muokkaa). Uuden agentin onboarding: -50% (AI kompensoi junior-gapin). Stage 1→2.",
+    "example": "Agent Assist -setup:\n\n1. Selainplugin tai integraatio helpdeskiin.\n2. Avaa ticket → AI lukee kontekstin + asiakashistorian.\n3. AI ehdottaa:\n   - 3 vastausvaihtoehtoa (formal/friendly/technical)\n   - Samankaltaisia aiempia ticketejä (ratkaistuja)\n   - Relevantteja KB-artikkeleita\n4. Agentti valitsee + muokkaa + lähettää.\n5. AI oppii agentin muokkauksista (parantaa ehdotuksia ajan myötä).\n\nReal usage: 70% ehdotuksista hyväksytään pienillä muokkauksilla, 20% muokataan merkittävästi, 10% käyttämättä.",
+    "mistakes": "Pakottaa agentit käyttämään AI:tä «pakollisesti». Jos ehdotus on huono — pakottaa kirjoittamaan alusta. Aja adoptiota arvon kautta (näytä time saved per ticket), ei mandaattina."
+  },
+  "cs-knowledge-base": {
+    "title": "AI Knowledge Base Operations",
+    "what": "Knowledge base muuttuu «PDF-dumpista» eläväksi AI-järjestelmäksi: vektorihaku, automaattiset päivitykset ratkaistuista ticketeistä, gap-analyysi (mitä usein kysytään mutta ei artikkelia), strukturoitu taksonomia.",
+    "why": "Ilman hyvää KB:tä kaikki AI-support epäonnistuu. KB = AI:n ainoa totuuden lähde. KB-laatu ≠ artikkelien määrä. Quality KB ops = enemmän vaikutusta kuin pelkkä AI:n käynnistäminen.",
+    "when": "Rinnan tier-1-setupin kanssa. Kun AI-botti vastaa «en tiedä» >20% kysymyksistä. Kun agentit valittavat «en löydä artikkelia». Kun KB ei ole päivitetty >6 kuukauteen.",
+    "impact": "KB:n löydettävyys: 50% → 90% (vektorihaku vs avainsana). AI deflection rate kasvaa +15-20% (enemmän kattavuutta). Agentin onboarding: -40% ajasta. Stage 1→2.",
+    "example": "KB Ops Pipeline:\n\nViikoittain:\n  1. AI lukee viikon ratkaistut tickets.\n  2. Tunnistaa toistuvat kysymykset ilman KB-artikkeleita.\n  3. Luonnostelee uudet KB-artikkelit ticket-ratkaisuista.\n  4. KB-editori tarkistaa + julkaisee.\n\nKuukausittain:\n  1. AI analysoi KB-käyttöä (mitä artikkeleita siteerataan).\n  2. Merkkaa vanhentuneen sisällön (tuote muuttui, artikkeli ei).\n  3. Ehdottaa yhdistämisiä (duplikoituja artikkeleita).\n\nMittari: % ticketeistä, joissa AI löysi KB-vastaavuuden → kasvaa ajan myötä.",
+    "mistakes": "Tehdä KB vain ihmisille. Moderni KB-optimointi = AI:lle + ihmisille. Rakenne (selkeät otsikot, atomiset artikkelit, metadata) on tärkeä AI-retrievalille. Muuten AI ei löydä — vaikka artikkeli olisi olemassa."
+  },
+  "cs-escalation": {
+    "title": "AI Escalation Intelligence",
+    "what": "Älykkä eskalointi: AI päättää milloin siirtää ihmiselle ja tarkalleen kenelle (erikoistumisen, kuormituksen, severityn mukaan). Lisäksi valmistelee eskaloinnin kontekstin — agentti saa ei «tässä ticket», vaan «tässä ticket + historia + mitä AI yritti».",
+    "why": "Tyhmä eskalointi = ticket saapuu ilman kontekstia, agentti käyttää 5 minuuttia lukemiseen. Älykäs = agentti näkee yhteenvedon + mitä jo yritettiin + suositellut seuraavat vaiheet. Velocity kasvaa menettämättä laatua.",
+    "when": "Kun tier-1 AI on käynnissä ja tier-2-routing tarvitaan. Kun on erikoistumisia (billing vs technical vs account). Kun eskalointi on pullonkaula.",
+    "impact": "Time-to-resolution eskaloiduille ticketeille: -40%. Routing accuracy: 80% → 95% (oikea spesialisti ensimmäisellä yrittämällä). Agent-tyytyväisyys +: vähemmän «miksi tämä lähetettiin minulle».",
+    "example": "Eskalointi-workflow:\n\n  AI ei voi ratkaista tickettiä\n        ↓\n  [Luokittele ongelma-alue]\n   ├─ Billing → jono: billing_team\n   ├─ Technical → jono: tech_support\n   └─ Account → jono: account_specialists\n        ↓\n  AI valmistelee eskalointiyhteenvedon:\n   - Asiakastiedot + historia\n   - Mitä asiakas haluaa\n   - Mitä AI yritti (ja miksi ei toiminut)\n   - Suositeltu seuraava vaihe\n        ↓\n  Agentti ottaa: konteksti valmiina 30 sekunnissa 5 min sijaan.\n\nMittari: agentin palaute eskaloinnin laadusta.",
+    "mistakes": "Eskaloida «varmuuden vuoksi» matalalla luottamuksella. Jos AI erehtyy 10% mutta eskaloi 50% — se on degradaatio. Kalibroi kynnys: liian korkea = tappoi deflectionin, liian matala = huono laatu."
+  },
+  "cs-quality-monitoring": {
+    "title": "AI Quality Monitoring",
+    "what": "AI-vastausten laadun jatkuva monitorointi: viikoittainen otos → human-review → tunnista epäonnistumismallit → säädä prompts/KB. Ilman monitorointia AI degradoituu hiljaisesti: virheet kertyvät, kukaan ei näe.",
+    "why": "AI ei ole staattinen: KB muuttuu, tuote muuttuu, asiakaskysymykset muuttuvat. Q1:ssä toiminut AI voi luistaa Q3:ssa. Quality monitoring kiinniottaa driftin ennen kuin CSAT putoaa.",
+    "when": "Day 1:stä AI tier-1:n käynnistymisestä. Pakollista. Ei «kun on ongelma» — jatkuvasti. Vähintään: 10% AI-vastausten satunnainen otos → viikoittainen review.",
+    "impact": "AI driftin tunnistus: ennen kuin asiakkaat huomaavat (CSAT ei putoa). Jatkuva parannus: joka viikko prompts/KB paranevat. Luottamus AI-järjestelmään kasvaa eksplisiittisten laatumetriikoiden kautta. Stage 2→3.",
+    "example": "Quality Monitoring -prosessi:\n\nViikoittain:\n  1. Satunnainen otos 10% AI-vastauksista.\n  2. Quality-tiimi arvioi: tarkkuus, sävy, kattavuus.\n  3. Epäonnistumismallit uutetaan: «AI sekoittaa billing X:n ja Y:n», «menettää kontekstin Z».\n  4. Toiminto: päivitä KB-artikkelit TAI säädä system promptia TAI lisää edge case training dataan.\n\nMittari:\n  - % AI-vastauksista arvioitu >4/5\n  - Trendin suunta (parempi/huonompi viikoittain)\n  - Top 3 epäonnistumiskategoriaa\n\nEskalointi: jos laatu < 4/5 2 viikkoa → pause AI tier-1, tutki.",
+    "mistakes": "Monitorointi ilman action loopia. Jos löydetyt virheet eivät johda muutoksiin — se on teatteria. Quality monitoring täytyy rakentaa osaksi viikoittaista tuoteprosessia (ma: review, ti: korjaa, ke: validoi, ...)."
+  },
+  "cs-support-analytics": {
+    "title": "AI Support Analytics",
+    "what": "AI lukee support-metriikat + ticket-sisältöä → kirjoittaa insight-raportteja: trendaavat ongelmat, asiakaspalaute, agentin performance-mallit, tuotepalaute. Muuttaa support-datan tuote-insighteiksi.",
+    "why": "Support on ilmaista user researchia. Tuhansia keskusteluja oikeiden asiakkaiden kanssa. Mutta tiimi hukkuu objects/dashboardeihin. AI tekee narrative-kerroksen + yhdistää product/marketing-tiimeihin.",
+    "when": "Viikoittaiset support review:t. Kun product team haluaa «voice of customerin». Kun on malli «paljon valituksia feature X:stä» — tarvitaan systemaattinen tunnistus.",
+    "impact": "Time-to-insight: päiviä → tunteja. Product team saa trendaavat ongelmat automaattisesti. Customer voice -loop sulkeutuu: ticketistä → insight → tuotemuutos → vähemmän ticketejä. Stage 2→3.",
+    "example": "Viikoittainen Support Analytics -raportti:\n\n  Inputit:\n  - Kaikki viikon tickets (ratkaistut + avoimet)\n  - CSAT-pisteet + kommentit\n  - Agentin performance-metriikat\n  - Tuotteen release notes\n\n  AI Output:\n  - Top 5 trendaavaa ongelmaa (ticket-määrä + delta)\n  - Sentiment-analyysi: missä asiakkaat turhautuneita\n  - Korrelaatio: «uusi feature X julkaistu → tickets X:stä +40%»\n  - Suosituksia product teamille\n  - Suosituksia KB-päivityksiin\n\nJakelu: raportti jaettu product + marketing -tiimien kanssa → loopin sulkeminen.",
+    "mistakes": "Tehdä support-analytics eristyksessä. Jos insightit eivät päädy product/engineeringiin — ne ovat hyödyttömiä. Rakenna eksplisiittiset kanavat: viikoittainen «Support Insights» Slack-posti #product:iin, kuukausittainen review-sessio."
+  },
+  "cs-team-workflow": {
+    "title": "AI Customer Support -tiimin workflow",
+    "what": "CS-tiimin operating model AI:n kanssa: jaettu knowledge base ops, yhteinen agent-assist setup, AI office hours, quality calibration -sessiot, AI-tietoinen promotion path agenteille. «AI = työkalu» -tilasta «AI = osa toimintaamme» -tilaan.",
+    "why": "Yksilön AI-käyttö supportissa ei toimi — tarvitaan konsistenssia asiakkaille (jokainen saa saman laadun vastauksen). Tiimin workflow varmistaa tämän jaetun setupin + prosessien kautta.",
+    "when": "Kun tiimi ≥5 agenttia käyttää AI:tä. Kun uudet agentit saapuvat ja «eivät tiedä miten». Kun laatu on epäjohdonmukainen vuorovahvuus-tiimien välillä.",
+    "impact": "Tiimin velocity: agentit käsittelevät 50%+ enemmän ticketejä. Uuden agentin onboarding: 4 viikkoa → 2 viikkoa. Laatuhdistuneisuus vuorojen välillä: +60%. AI-lukutaito tiiminlaajuinen.",
+    "example": "CS-tiimin setup:\n\n1. Jaettu Claude Project «Support Workspace»:\n   - KB indeksoitu\n   - Brand voice guide (sävy asiakkaille)\n   - Yleiset scenarios-mallinneet\n\n2. CLAUDE.md: vastausohjeet, eskalointiperusteet, sävysäännöt.\n\n3. Skills: response-drafter, ticket-summarizer, escalation-formatter.\n\n4. Viikoittainen kalibrointi: tiimi reviewaa 5 AI-käsiteltyä tickettiä yhdessä. Keskustelee: mikä toimi, mitä muutettaisiin.\n\n5. AI-tietoinen promotion: agentit jotka parantavat AI-workflow:tä → senior path (ei vain «vastaa enemmän ticketejä»).\n\nTulos: tiimi toimii koherenttina AI-augmentoituna yksikkönä.",
+    "mistakes": "Käsitellä AI-käyttö «yksilön etuna». Ilman team-tason workflow:tä asiakkaat saavat epäjohdonmukaisen kokemuksen (riippuen mikä agentti nappaa). AI = tiimin kyvykkyys, ei yksilön taito."
+  },
+  "uc-ai-support-tier1": {
+    "title": "Use Case: AI Tier-1 Supportin käynnistys 3-4 viikossa",
+    "what": "Täysi polku «kaikki käsin» -tilasta «AI sulkee 40% ticketeistä» -tilaan. Cross-layer-polku 7 solmun läpi: Foundation → AI Fundamentals → Systems → Transformation.",
+    "why": "Tier-1 automatisointi = korkein-ROI AI-projekti supportissa. Tämä UC näyttää strukturoidun lähestymistavan (ei «osta botti»): KB ensin, sitten AI, sitten quality monitoring.",
+    "when": "Tier-1 volyymi >100 tickets/viikko. Baseline CSAT olemassa vertailuun. Voi investoida 3-4 viikkoa setupiin. Buy-in CS-leadiltä JA productilta (KB:n vuoksi).",
+    "impact": "Outcome: toimiva tier-1 AI 40% deflectionilla 4 viikossa. Mittarit: deflection rate 0→40%, median response time 4h→2min AI-ticketeille, CSAT ylläpidetty baselinessa.",
+    "example": "Polku (7 askelta):\n\nWeek 1: Knowledge Base -valmistelu.\n1. Foundation: af-rag-basics → ymmärrä mitä RAG vaatii\n2. Foundation: af-vector-db → vektoritietokannan valinta (pgvector yleensä riittää)\n3. Systems: sys-rag-architecture → mallin valinta (Advanced RAG pakollinen)\n4. Audit + restrukturoi olemassa olevat KB-artikkelit\n\nWeek 2: AI tier-1 setup.\n5. Foundation: prompting → system prompt support-botille\n6. Foundation: projects → luo «Support Bot» -Project KB:llä\n7. Transformation: cs-tier1 → rakenna workflow laatuporteilla\n\nWeek 3: Quality + escalation.\n8. Transformation: cs-escalation → oikea routing eskaloinneille\n9. Transformation: cs-quality-monitoring → setup satunnaisotoksen review\n\nWeek 4: Roll-out.\n10. Pilotti 1 ticket-kategoriassa. Mittaa deflection + CSAT.\n11. Laajenna 3-5 kategoriaan. Iteroi.\n\nStage transition: 1→2.",
+    "mistakes": "Käynnistää AI tier-1 ilman KB ops ensin. Jos KB ei sovi AI-retrievaliin (huono rakenne, vanhentunut) — AI vastaa generic tai väärin. KB ops = 50% UC-työstä. Älä ohita."
   }
 }

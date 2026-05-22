@@ -1259,6 +1259,89 @@ export const mindmapData = {
               ]
             }
           ]
+        },
+        {
+          "id": "ai-native-customer-support",
+          "icon": "inbox",
+          "category": "transformation",
+          "children": [
+            {
+              "id": "cs-tier1",
+              "icon": "robot",
+              "category": "transformation",
+              "relatedIds": [
+                "af-rag-basics",
+                "sys-rag-architecture",
+                "sys-quality-gates",
+                "agents"
+              ]
+            },
+            {
+              "id": "cs-agent-assist",
+              "icon": "keyboard",
+              "category": "transformation",
+              "relatedIds": [
+                "prompting",
+                "agents",
+                "af-llm-basics",
+                "b-context"
+              ]
+            },
+            {
+              "id": "cs-knowledge-base",
+              "icon": "books",
+              "category": "transformation",
+              "relatedIds": [
+                "af-rag-basics",
+                "sys-rag-architecture",
+                "af-vector-db",
+                "projects"
+              ]
+            },
+            {
+              "id": "cs-escalation",
+              "icon": "send",
+              "category": "transformation",
+              "relatedIds": [
+                "sys-quality-gates",
+                "ops-decision-intelligence",
+                "agents",
+                "ag-principles"
+              ]
+            },
+            {
+              "id": "cs-quality-monitoring",
+              "icon": "check-circle",
+              "category": "transformation",
+              "relatedIds": [
+                "sys-quality-gates",
+                "ops-reporting-automation",
+                "sc-analysis"
+              ]
+            },
+            {
+              "id": "cs-support-analytics",
+              "icon": "chart",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "ops-reporting-automation",
+                "mk-performance-analytics"
+              ]
+            },
+            {
+              "id": "cs-team-workflow",
+              "icon": "users",
+              "category": "transformation",
+              "relatedIds": [
+                "projects",
+                "p-team",
+                "instructions",
+                "ops-team-workflow",
+                "mk-team-workflow"
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1323,6 +1406,20 @@ export const mindmapData = {
             "i-claudemd",
             "sc-content",
             "sys-linear-chain"
+          ]
+        },
+        {
+          "id": "uc-ai-support-tier1",
+          "icon": "command",
+          "category": "use-cases",
+          "relatedIds": [
+            "cs-tier1",
+            "cs-knowledge-base",
+            "cs-escalation",
+            "af-rag-basics",
+            "sys-rag-architecture",
+            "prompting",
+            "projects"
           ]
         }
       ]
