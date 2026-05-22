@@ -55,8 +55,8 @@ const ROLES = [
 
 const FEATURES = [
   { icon: 'compass', key: 'intro.feature.map' },
-  { icon: 'graduation', key: 'intro.feature.courses' },
-  { icon: 'books', key: 'intro.feature.prompts' },
+  { icon: 'rocket', key: 'intro.feature.courses' },
+  { icon: 'flash', key: 'intro.feature.prompts' },
 ];
 
 export default function IntroModal({ onDone, onRequestAuth }) {

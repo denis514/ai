@@ -3982,6 +3982,48 @@
   left: -6px;
 }
 
+/* ============================================================
+   Layer-узлы (depth=1): foundation / systems / transformation / use-cases.
+   Особая визуальная подача — это 4 главных архитектурных слоя Atlas.
+   ============================================================ */
+.mm-node--layer {
+  border-width: 2px;
+  border-style: solid;
+  position: relative;
+  font-weight: 600;
+  background: linear-gradient(to bottom,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--cat-color) 6%, var(--surface)) 100%);
+}
+.mm-node--layer::after {
+  /* Цветная полоска снизу — индикатор layer */
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 14%;
+  right: 14%;
+  height: 3px;
+  background: var(--cat-color);
+  border-radius: 2px 2px 0 0;
+  opacity: 0.9;
+}
+.mm-node--layer:hover {
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--cat-color) 4%, var(--surface)) 0%,
+    color-mix(in srgb, var(--cat-color) 12%, var(--surface)) 100%);
+  border-color: var(--cat-color);
+  transform: translateY(-1px);
+}
+.mm-node--layer.is-selected {
+  background: color-mix(in srgb, var(--cat-color) 18%, var(--surface));
+  border-color: var(--cat-color);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--cat-color) 22%, transparent);
+}
+/* Иконка чуть крупнее на layer-узлах */
+.mm-node--layer .mm-node__icon {
+  background: color-mix(in srgb, var(--cat-color) 18%, white);
+}
+
 /* Главный узел (root) — крупный, заметный */
 /* Root — компактный круглый узел только с логотипом, без текста.
    Цвета: фон всегда тёмный, лого всегда белое. Состояние фильтра — рамка + glow. */

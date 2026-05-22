@@ -27,14 +27,18 @@ export default function MindmapNode({
 
   const cat = CATEGORIES[node.category] || CATEGORIES['основы'];
 
+  // depth===1 = layer-узел (foundation/systems/transformation/use-cases) — особая визуальная подача
+  const isLayer = depth === 1 && !isRoot;
   const cls = [
     'mm-node',
     isRoot ? 'mm-node--root' : (depth === 1 ? 'mm-node--branch' : 'mm-node--leaf'),
+    isLayer ? 'mm-node--layer' : '',
+    isLayer ? `mm-node--layer-${node.id}` : '',
     isSelected ? 'is-selected' : '',
     isMatched ? 'is-matched' : '',
     isDimmed ? 'is-dimmed' : '',
     nodeStatus ? `mm-node--status-${nodeStatus}` : ''
-  ].join(' ');
+  ].filter(Boolean).join(' ');
 
   const onNodeClick = (e) => {
     e.stopPropagation();
