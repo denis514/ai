@@ -104,6 +104,10 @@ for (const ins of insertions) {
   totalAdded += ins.count;
 }
 
+// Безопасный post-fix: после нового `]` перед следующим `"key":` должна быть
+// запятая (иначе rollup parse error). Это вставляет недостающие запятые.
+src = src.replace(/(\n\s+\])\n(\s+")/g, '$1,\n$2');
+
 fs.writeFileSync(mdFp, src, 'utf-8');
 console.log(`✅ Added relatedIds for ${insertions.length} nodes (${totalAdded} relations)`);
 console.log('Запусти npm run build чтобы проверить.');

@@ -10,7 +10,7 @@
   },
   "basics": {
     "title": "Claude basics",
-    "what": "Claude — a family of AI models from Anthropic. Available via claude.ai, API, [[node:claude-code|Claude Code]] and integrations.",
+    "what": "Claude — a family of AI models from Anthropic. Available via [[node:pl-web-setup|claude.ai]], API, [[node:claude-code|Claude Code]] and integrations.",
     "why": "So you understand which model to pick, how context works, and where the capability boundaries lie.",
     "when": "At the very start of work — before you write your first serious prompt.",
     "impact": "Understanding the model = 2-3× more accurate requests and many times fewer «hallucinations».",
@@ -57,7 +57,7 @@
     "title": "System prompt",
     "what": "A hidden instruction that sets the model's behavior before the conversation starts: role, style, constraints.",
     "why": "Makes responses predictable and consistent across the conversation.",
-    "when": "In API, Projects ([[node:instructions|Custom Instructions]]), [[node:claude-code|Claude Code]] (CLAUDE.md) — anywhere you want to set the «character».",
+    "when": "In API, Projects ([[node:instructions|Custom Instructions]]), [[node:claude-code|Claude Code]] ([[node:cc-md|CLAUDE.md]]) — anywhere you want to set the «character».",
     "impact": "A good system prompt = +30-50% to accuracy and stability.",
     "example": "You're an expert in my domain. Reply only in English. First facts, then hypotheses, then recommendations.",
     "mistakes": "Writing the role manually in every message instead of a single system prompt."
@@ -102,19 +102,19 @@
     "title": "First steps",
     "what": "A subbranch for anyone who has never opened a terminal and doesn't know what a \"project folder\" is. Six atomic nodes: the project concept, organizing on disk, what a terminal is, how to create a folder, how to navigate, what Node.js is.",
     "why": "Every [[node:claude-code|Claude Code]] tutorial and many Skills assume a baseline: you can open a terminal, create a folder, install a package. Without that baseline the advanced sections become impassable.",
-    "when": "At the very beginning of getting acquainted with Claude, especially if you plan to work via [[node:claude-code|Claude Code]], not just claude.ai. Also useful before the \"First project\" tutorial.",
+    "when": "At the very beginning of getting acquainted with Claude, especially if you plan to work via [[node:claude-code|Claude Code]], not just [[node:pl-web-setup|claude.ai]]. Also useful before the \"First project\" tutorial.",
     "impact": "Removes terminal anxiety and eliminates the main blocker \"I don't know where to start\".",
     "example": "I've never opened a terminal — which nodes should I start with?",
-    "mistakes": "Trying to install [[node:claude-code|Claude Code]] and run /init right away without understanding the basics — you'll stumble on every command."
+    "mistakes": "Trying to install [[node:claude-code|Claude Code]] and run [[node:cc-cmd-init|/init]] right away without understanding the basics — you'll stumble on every command."
   },
   "fs-what-is-project": {
     "title": "What a project is",
-    "what": "A \"project\" in Claude is either a folder on your computer (for [[node:claude-code|Claude Code]]) or an isolated workspace in claude.ai (Project). Both mean the same thing: \"I have a context, and Claude remembers it\". They just live in different places.",
-    "why": "Without this concept the word \"project\" becomes confusing: one person means a claude.ai Project, another means a folder on disk. Understanding this removes 90% of beginner confusion.",
-    "when": "Before any practical step — choosing between claude.ai and [[node:claude-code|Claude Code]], before installing anything.",
-    "impact": "You consciously choose where the project lives: in the cloud (claude.ai Project) or on your computer (folder). The decision takes 1 minute.",
-    "example": "I want to do regular report audits — should this be a Project in claude.ai (I'll upload templates to Knowledge) or a folder for [[node:claude-code|Claude Code]] (if it's code)?",
-    "mistakes": "Thinking \"project\" = one specific thing. Creating both a claude.ai Project and a folder at the same time — and not knowing where your work actually lives."
+    "what": "A \"project\" in Claude is either a folder on your computer (for [[node:claude-code|Claude Code]]) or an isolated workspace in [[node:pl-web-setup|claude.ai]] (Project). Both mean the same thing: \"I have a context, and Claude remembers it\". They just live in different places.",
+    "why": "Without this concept the word \"project\" becomes confusing: one person means a [[node:pl-web-setup|claude.ai]] Project, another means a folder on disk. Understanding this removes 90% of beginner confusion.",
+    "when": "Before any practical step — choosing between [[node:pl-web-setup|claude.ai]] and [[node:claude-code|Claude Code]], before installing anything.",
+    "impact": "You consciously choose where the project lives: in the cloud ([[node:pl-web-setup|claude.ai]] Project) or on your computer (folder). The decision takes 1 minute.",
+    "example": "I want to do regular report audits — should this be a Project in [[node:pl-web-setup|claude.ai]] (I'll upload templates to Knowledge) or a folder for [[node:claude-code|Claude Code]] (if it's code)?",
+    "mistakes": "Thinking \"project\" = one specific thing. Creating both a [[node:pl-web-setup|claude.ai]] Project and a folder at the same time — and not knowing where your work actually lives."
   },
   "fs-organize-disk": {
     "title": "Where to keep projects",
@@ -128,7 +128,7 @@
   "fs-terminal": {
     "title": "Terminal without fear",
     "what": "The terminal (mac: Terminal.app, Windows: PowerShell or Windows Terminal) is a program where you tell the computer what to do with words instead of clicks. A black screen with a cursor. Commands are short: cd, ls, mkdir. Errors are harmless — just read what's written and fix it.",
-    "why": "Half of Claude's capabilities ([[node:claude-code|Claude Code]], MCP, scripts, package installs) live in the terminal. Without it you're limited to claude.ai only.",
+    "why": "Half of Claude's capabilities ([[node:claude-code|Claude Code]], MCP, scripts, package installs) live in the terminal. Without it you're limited to [[node:pl-web-setup|claude.ai]] only.",
     "when": "First time — 5 minutes before your first command. The \"black screen\" is no harder than typing into a chat, just different rules.",
     "impact": "The psychological block is removed. The terminal is a tool roughly as complex as a text editor, not as \"programming\".",
     "example": "Opened Terminal.app → typed `pwd` → saw /Users/name → I know where I am. Next I can `mkdir my-project`.",
@@ -149,7 +149,7 @@
     "why": "Without navigation you can't tell [[node:claude-code|Claude Code]] \"work here\". Claude Code always operates in the current folder (the one shown by pwd).",
     "when": "Before every [[node:claude-code|Claude Code]] session. Before installing dependencies. Before running scripts.",
     "impact": "You always know where you are and can jump to where you need fast. 5 seconds vs. 5 minutes of \"where did I end up?\".",
-    "example": "`cd ~/projects/atlas` → `pwd` shows /Users/denisa/projects/atlas → `ls` shows src/, CLAUDE.md, package.json. I'm ready to launch claude.",
+    "example": "`cd ~/projects/atlas` → `pwd` shows /Users/denisa/projects/atlas → `ls` shows src/, [[node:cc-md|CLAUDE.md]], package.json. I'm ready to launch claude.",
     "mistakes": "Running commands without checking `pwd` first — then wondering why files ended up \"who knows where\". Always check where you are before doing anything."
   },
   "fs-install-node": {
@@ -190,7 +190,7 @@
   },
   "pl-models": {
     "title": "Models per plan",
-    "what": "Free gives access only to a subset of models (usually Sonnet and Haiku). Opus — only on Pro/Team/Enterprise. The exact list changes — check the current one in claude.ai.",
+    "what": "Free gives access only to a subset of models (usually Sonnet and Haiku). Opus — only on Pro/Team/Enterprise. The exact list changes — check the current one in [[node:pl-web-setup|claude.ai]].",
     "why": "So you don't get disappointed: «why don't I see Opus» — it's just the plan.",
     "when": "When picking a plan and when picking a model for a specific task.",
     "impact": "Knowing plan limits = realistic expectations and the right tool choice.",
@@ -199,12 +199,12 @@
   },
   "pl-platforms": {
     "title": "Where Claude works",
-    "what": "Web (claude.ai), Mobile (iOS/Android), Desktop (Mac/Windows), CLI ([[node:claude-code|Claude Code]]), VS Code/JetBrains extensions, API. Each has its own strengths.",
+    "what": "Web ([[node:pl-web-setup|claude.ai]]), Mobile (iOS/Android), Desktop (Mac/Windows), CLI ([[node:claude-code|Claude Code]]), VS Code/JetBrains extensions, API. Each has its own strengths.",
     "why": "So you use Claude where it's more effective, not «only in the browser».",
     "when": "When picking a tool for a task: chat on the go, development, automation, embed into a product.",
     "impact": "The right channel saves 50%+ time on a typical task.",
     "example": "My task — everyday development. Which Claude channel do I need?",
-    "mistakes": "Using only claude.ai when the task is about code — you lose file and history access. Use [[node:claude-code|Claude Code]]."
+    "mistakes": "Using only [[node:pl-web-setup|claude.ai]] when the task is about code — you lose file and history access. Use [[node:claude-code|Claude Code]]."
   },
   "pl-rate": {
     "title": "Rate limits API",
@@ -217,12 +217,12 @@
   },
   "pl-compare": {
     "title": "Claude.ai vs Code vs API",
-    "what": "Three main channels that newcomers confuse. Claude.ai — browser chat for everyday tasks. [[node:claude-code|Claude Code]] — CLI/IDE for working with files and code. API — programmatic access for integrations and automation.",
-    "why": "Picking the channel for the task determines 50% of success: doing ad-hoc questions through API — slow and expensive; refactoring 20 files inside Claude.ai — impossible.",
+    "what": "Three main channels that newcomers confuse. [[node:pl-web-setup|Claude.ai]] — browser chat for everyday tasks. [[node:claude-code|Claude Code]] — CLI/IDE for working with files and code. API — programmatic access for integrations and automation.",
+    "why": "Picking the channel for the task determines 50% of success: doing ad-hoc questions through API — slow and expensive; refactoring 20 files inside [[node:pl-web-setup|Claude.ai]] — impossible.",
     "when": "Right at the start, before subscribing. And again — when the task changes character (chat → code → integration).",
     "impact": "The right channel = 2-5× faster and 2-3× cheaper for the same task.",
-    "example": "Chat / one-off document audit → Claude.ai. Repo work → [[node:claude-code|Claude Code]]. Embed Claude into your product / batch → API.",
-    "mistakes": "Living only in Claude.ai when tasks involve files — you miss [[node:claude-code|Claude Code]]. Going into API «because I'm a developer» — you miss Claude.ai's ready UI for interactive work."
+    "example": "Chat / one-off document audit → [[node:pl-web-setup|Claude.ai]]. Repo work → [[node:claude-code|Claude Code]]. Embed Claude into your product / batch → API.",
+    "mistakes": "Living only in [[node:pl-web-setup|Claude.ai]] when tasks involve files — you miss [[node:claude-code|Claude Code]]. Going into API «because I'm a developer» — you miss Claude.ai's ready UI for interactive work."
   },
   "pl-web-setup": {
     "title": "Claude.ai web setup",
@@ -240,13 +240,13 @@
     "when": "Switch to Desktop when you need MCP integrations, or want Claude always accessible via a keyboard shortcut without keeping a browser tab open.",
     "impact": "MCP transforms Claude from a chatbot into an assistant that can read your files, query databases, and control local applications.",
     "example": "Desktop + MCP filesystem server: Claude can read, write, and organize files in your project folder without you copy-pasting anything.",
-    "mistakes": "Thinking Desktop is a separate product — it uses the same account, subscription, and models as claude.ai. It just adds local superpowers."
+    "mistakes": "Thinking Desktop is a separate product — it uses the same account, subscription, and models as [[node:pl-web-setup|claude.ai]]. It just adds local superpowers."
   },
   "pl-api": {
     "title": "Claude API",
     "what": "The Anthropic API gives developers programmatic access to Claude. Send messages via HTTP POST to api.anthropic.com, receive streamed or batch responses. Supports all Claude models (Haiku, Sonnet, Opus). Key features: system prompts, multi-turn conversations, vision, [[node:cap-tools|tool use]], streaming, [[node:cap-caching|prompt caching]]. SDKs available for Python and TypeScript. Token-based pricing — pay per input/output token, no subscription required.",
-    "why": "Lets you embed Claude directly in your products, scripts, and internal tools without relying on the Claude.ai UI. Full control over model version, temperature, max tokens, and system behavior.",
-    "when": "When you need Claude inside your own app, workflow automation, data pipeline, or custom agent. Anything beyond chat.claude.ai — from a simple script that summarizes emails to a full AI-powered product.",
+    "why": "Lets you embed Claude directly in your products, scripts, and internal tools without relying on the [[node:pl-web-setup|Claude.ai]] UI. Full control over model version, temperature, max tokens, and system behavior.",
+    "when": "When you need Claude inside your own app, workflow automation, data pipeline, or custom agent. Anything beyond chat.[[node:pl-web-setup|claude.ai]] — from a simple script that summarizes emails to a full AI-powered product.",
     "impact": "Unlocks Claude for engineering teams. A single API integration can automate hours of repetitive knowledge work across an entire organization.",
     "example": "curl https://api.anthropic.com/v1/messages -H 'x-api-key: $ANTHROPIC_API_KEY' -H 'anthropic-version: 2023-06-01' -d '{\"model\":\"claude-opus-4-5\",\"max_tokens\":1024,\"messages\":[{\"role\":\"user\",\"content\":\"Hello!\"}]}'",
     "mistakes": "Putting the API key directly in client-side code (it will be exposed). Not setting max_tokens — responses can be unexpectedly long and expensive. Ignoring streaming for long responses — users see nothing until the entire response arrives."
@@ -262,7 +262,7 @@
   },
   "capabilities": {
     "title": "Capabilities",
-    "what": "Claude's technical capabilities beyond text chat: images, files, [[node:cap-search|Web search]], Memory, Computer use, tools, [[node:cap-caching|Prompt caching]], Citations.",
+    "what": "Claude's technical capabilities beyond text chat: images, files, [[node:cap-search|Web search]], Memory, [[node:cap-computer|Computer use]], tools, [[node:cap-caching|Prompt caching]], Citations.",
     "why": "So you use Claude to its full potential — most users know about 20% of its capabilities.",
     "when": "After mastering the basics — expanding your technique arsenal.",
     "impact": "Multi-channel use increases Claude's applicability 3-5×.",
@@ -289,7 +289,7 @@
   },
   "cap-search": {
     "title": "Web search",
-    "what": "Claude can search the current web (available in claude.ai on Pro and via API). Gets fresh information beyond the training cutoff.",
+    "what": "Claude can search the current web (available in [[node:pl-web-setup|claude.ai]] on Pro and via API). Gets fresh information beyond the training cutoff.",
     "why": "To get current data: news, releases, prices, events after the knowledge cutoff.",
     "when": "When the question is about «now», «recently», «current prices», «fresh documents».",
     "impact": "Removes the main LLM limitation — the outdated knowledge cutoff.",
@@ -327,7 +327,7 @@
     "title": "Prompt caching",
     "what": "Caching of large system prompts and contexts on Anthropic's side. On repeat requests with the same prefix — discounted billing and faster response.",
     "why": "To save tokens and time on repeat requests with the same large context.",
-    "when": "A long CLAUDE.md, large Project Knowledge, [[node:b-system|system prompt]] > 1000 tokens — candidates.",
+    "when": "A long [[node:cc-md|CLAUDE.md]], large Project Knowledge, [[node:b-system|system prompt]] > 1000 tokens — candidates.",
     "impact": "Reduces the cost of repeat requests by 70-90% and speeds up the response.",
     "example": "Enable Prompt caching for a [[node:b-system|system prompt]] with company rules in API requests.",
     "mistakes": "Relying on the cache for frequently changing context — it'll be invalidated constantly."
@@ -343,7 +343,7 @@
   },
   "cap-code-exec": {
     "title": "Code execution",
-    "what": "Claude can run Python code in an isolated sandbox: compute, parse CSV/JSON, plot charts, test hypotheses on data. Available in claude.ai (on some plans) and via API.",
+    "what": "Claude can run Python code in an isolated sandbox: compute, parse CSV/JSON, plot charts, test hypotheses on data. Available in [[node:pl-web-setup|claude.ai]] (on some plans) and via API.",
     "why": "So the numbers aren't «made up»: real computation, formula validation, real data processing without translating to text.",
     "when": "On table analysis, statistics, conversions, any tasks where «the model computed» = «the model guessed».",
     "impact": "Code execution turns Claude from a «smart conversationalist» into an «analyst with a calculator» — numbers are correct, not approximated.",
@@ -352,7 +352,7 @@
   },
   "projects": {
     "title": "Projects",
-    "what": "A long-lived workspace in Claude.ai: uploaded files + [[node:instructions|Custom Instructions]] + chat history.",
+    "what": "A long-lived workspace in [[node:pl-web-setup|Claude.ai]]: uploaded files + [[node:instructions|Custom Instructions]] + chat history.",
     "why": "So you don't repeat context in every new conversation — Claude already «knows» your product.",
     "when": "When work is recurring: one product, one team, one domain.",
     "impact": "Instead of 1000 tokens of briefing every time — 0 tokens and straight to the point.",
@@ -397,7 +397,7 @@
   },
   "artifacts": {
     "title": "Artifacts",
-    "what": "A separate panel in Claude.ai where the model places the «product» of work: code, HTML, SVG, document, diagram.",
+    "what": "A separate panel in [[node:pl-web-setup|Claude.ai]] where the model places the «product» of work: code, HTML, SVG, document, diagram.",
     "why": "So the product is separated from the explanation: it's convenient to read, edit, copy, iteratively improve.",
     "when": "When the result is more than a couple of paragraphs or it's a runnable/visual object.",
     "impact": "With Artifacts you see a ready prototype, not a «wall of text» — feedback and iterations 5× faster.",
@@ -442,7 +442,7 @@
   },
   "skills": {
     "title": "Skills",
-    "what": "Ready-made instructions for Claude: you add a Skill to a Project (claude.ai) or create a skills/ folder in [[node:claude-code|Claude Code]] — and Claude follows a recipe instead of guessing what to do.",
+    "what": "Ready-made instructions for Claude: you add a Skill to a Project ([[node:pl-web-setup|claude.ai]]) or create a skills/ folder in [[node:claude-code|Claude Code]] — and Claude follows a recipe instead of guessing what to do.",
     "why": "Without Skills you re-explain «how exactly» every time: wasting tokens and getting inconsistent results. A Skill locks in the rules once — and they work every time.",
     "when": "When the same multi-step process repeats ≥ 3 times a week and you want the same result each time.",
     "impact": "Skill = reproducible quality. Run it → get the same result as last time, without re-explaining anything.",
@@ -460,12 +460,12 @@
   },
   "s-trigger": {
     "title": "Triggers",
-    "what": "A Skill activates in two ways. (1) claude.ai: Claude reads the Project's Skills list and enables the right one based on context. (2) [[node:claude-code|Claude Code]]: you explicitly type /skillname — Claude reads SKILL.md and follows the steps.",
-    "why": "Know the mechanism — understand why a Skill «didn't fire»: either the description is too vague (claude.ai), or you didn't type /skillname ([[node:claude-code|Claude Code]]).",
+    "what": "A Skill activates in two ways. (1) [[node:pl-web-setup|claude.ai]]: Claude reads the Project's Skills list and enables the right one based on context. (2) [[node:claude-code|Claude Code]]: you explicitly type /skillname — Claude reads SKILL.md and follows the steps.",
+    "why": "Know the mechanism — understand why a Skill «didn't fire»: either the description is too vague ([[node:pl-web-setup|claude.ai]]), or you didn't type /skillname ([[node:claude-code|Claude Code]]).",
     "when": "When writing the description for any Skill — this is the most critical element.",
-    "impact": "Precise description in claude.ai = Skill activates on its own at the right moment. Explicit /command in [[node:claude-code|Claude Code]] = no magic, full control.",
-    "example": "claude.ai — description «Use when user asks to create a presentation or prepare slides» → Claude activates the Skill automatically when asked «make me some slides».\n[[node:claude-code|Claude Code]] — you type /audit → Claude reads SKILL.md and follows the steps, ignoring all other Skills.",
-    "mistakes": "claude.ai: a description like «helps with documents» — the Skill fires on every question. [[node:claude-code|Claude Code]]: waiting for the Skill to activate on its own — it only runs when you type the explicit /command."
+    "impact": "Precise description in [[node:pl-web-setup|claude.ai]] = Skill activates on its own at the right moment. Explicit /command in [[node:claude-code|Claude Code]] = no magic, full control.",
+    "example": "[[node:pl-web-setup|claude.ai]] — description «Use when user asks to create a presentation or prepare slides» → Claude activates the Skill automatically when asked «make me some slides».\n[[node:claude-code|Claude Code]] — you type /audit → Claude reads SKILL.md and follows the steps, ignoring all other Skills.",
+    "mistakes": "[[node:pl-web-setup|claude.ai]]: a description like «helps with documents» — the Skill fires on every question. [[node:claude-code|Claude Code]]: waiting for the Skill to activate on its own — it only runs when you type the explicit /command."
   },
   "s-files": {
     "title": "Helper files",
@@ -478,7 +478,7 @@
   },
   "s-ready": {
     "title": "Ready-made Skills",
-    "what": "In claude.ai: Project Settings → Skills → Browse → Anthropic-built Skills. Add with one click: pptx (presentations), xlsx (spreadsheets), pdf (document analysis), docx (Word files), skill-creator (build your own Skill).",
+    "what": "In [[node:pl-web-setup|claude.ai]]: Project Settings → Skills → Browse → Anthropic-built Skills. Add with one click: pptx (presentations), xlsx (spreadsheets), pdf (document analysis), docx (Word files), skill-creator (build your own Skill).",
     "why": "Routine tasks — slides, PDF analysis, Excel — are already written and tested by Anthropic. No need to reinvent the wheel.",
     "when": "First step before building your own Skill: check whether a ready-made one already covers your task.",
     "impact": "A ready-made Skill works from the first run — Anthropic already wrote the steps, templates and prompts for you.",
@@ -487,11 +487,11 @@
   },
   "s-create": {
     "title": "Your own Skill",
-    "what": "claude.ai: type /skill-creator in the Project chat — it asks questions and assembles the Skill for you. [[node:claude-code|Claude Code]]: create a skills/my-skill/ folder with a SKILL.md file inside, activate with /my-skill.",
+    "what": "[[node:pl-web-setup|claude.ai]]: type /skill-creator in the Project chat — it asks questions and assembles the Skill for you. [[node:claude-code|Claude Code]]: create a skills/my-skill/ folder with a SKILL.md file inside, activate with /my-skill.",
     "why": "Any repeating process is a Skill candidate: text audits, task formatting, report drafting, briefings.",
     "when": "When you use the same process ≥ 3 times a week and are tired of explaining «how exactly» to Claude each time.",
     "impact": "Pays off from the 3rd run: saves 5–15 minutes every time you'd otherwise re-explain the process.",
-    "example": "claude.ai: type /skill-creator → it asks «name?», «when to activate?», «what steps?» → builds the Skill automatically.\n[[node:claude-code|Claude Code]]: create skills/brief/SKILL.md → write the steps → type /brief in the terminal chat.",
+    "example": "[[node:pl-web-setup|claude.ai]]: type /skill-creator → it asks «name?», «when to activate?», «what steps?» → builds the Skill automatically.\n[[node:claude-code|Claude Code]]: create skills/brief/SKILL.md → write the steps → type /brief in the terminal chat.",
     "mistakes": "Creating a Skill «just in case» — without a real repeating need it never pays off and clutters your Project."
   },
   "s-vs-subagents": {
@@ -509,8 +509,8 @@
     "why": "So Claude can actually work with your code — not just give «paste this snippet» advice.",
     "when": "For development, refactoring, code audits, automating tasks in the repo.",
     "impact": "A full-featured environment: quality 5-10× higher than «copy-paste from chat».",
-    "example": "Run claude in your repo → /init → ask to do a security review of recent commits.",
-    "mistakes": "Using Claude Code without CLAUDE.md — the model re-discovers the project every time."
+    "example": "Run claude in your repo → [[node:cc-cmd-init|/init]] → ask to do a security review of recent commits.",
+    "mistakes": "Using Claude Code without [[node:cc-md|CLAUDE.md]] — the model re-discovers the project every time."
   },
   "cc-install": {
     "title": "Install and run",
@@ -518,7 +518,7 @@
     "why": "A full-featured CLI agent with access to files, terminal, network — in one command.",
     "when": "Once when setting up the environment — then just claude in the project folder.",
     "impact": "Without installation there are no Skills, no Hooks, no Subagents — this is the base.",
-    "example": "cd ~/projects/site && claude → /init to generate CLAUDE.md.",
+    "example": "cd ~/projects/site && claude → [[node:cc-cmd-init|/init]] to generate [[node:cc-md|CLAUDE.md]].",
     "mistakes": "Running outside a git repository — you lose history context and some features."
   },
   "cc-terminal": {
@@ -579,7 +579,7 @@
     "title": "settings.json (project)",
     "what": ".claude/settings.json in the project root — shared team rules: Permissions, Hooks, env, Statusline.",
     "why": "So the whole team works under the same rules, no «works on my machine».",
-    "when": "Right after /init — add base Permissions and Hooks.",
+    "when": "Right after [[node:cc-cmd-init|/init]] — add base Permissions and Hooks.",
     "impact": "A unified standard, less «set up by my instructions» during onboarding.",
     "example": "permissions.allow: [Bash(npm test), Edit(./src/**)], hooks.PostToolUse:Write: prettier.",
     "mistakes": "Storing personal secrets or API keys there — the file goes to git."
@@ -622,17 +622,17 @@
   },
   "cc-slash": {
     "title": "Slash commands",
-    "what": "Commands like /init, /clear, /compact, /model, /review — built-in and custom. Work in both the terminal and claude.ai chats.",
+    "what": "Commands like [[node:cc-cmd-init|/init]], [[node:cc-cmd-clear|/clear]], [[node:cc-cmd-compact|/compact]], /model, /review — built-in and custom. Work in both the terminal and [[node:pl-web-setup|claude.ai]] chats.",
     "why": "Launch complex scenarios with a single press — without a long prompt.",
     "when": "When the task is typical: review, init, context cleanup, model switch.",
     "impact": "Slash commands save 80% of typing for recurring tasks.",
-    "example": "/review — structured code review of the current branch. /compact — compress context without losing history.",
-    "mistakes": "Ignoring /clear when context goes «stale» — answer quality drops."
+    "example": "/review — structured code review of the current branch. [[node:cc-cmd-compact|/compact]] — compress context without losing history.",
+    "mistakes": "Ignoring [[node:cc-cmd-clear|/clear]] when context goes «stale» — answer quality drops."
   },
   "cc-cmd-init": {
     "title": "/init — initialize",
-    "what": "Scans the current project and generates CLAUDE.md: stack, conventions, entry points, taboos.",
-    "why": "So you don't write CLAUDE.md from scratch — the model describes the frame, you fine-tune.",
+    "what": "Scans the current project and generates [[node:cc-md|CLAUDE.md]]: stack, conventions, entry points, taboos.",
+    "why": "So you don't write [[node:cc-md|CLAUDE.md]] from scratch — the model describes the frame, you fine-tune.",
     "when": "On the first [[node:claude-code|Claude Code]] launch in a new project.",
     "impact": "30 minutes of manual work → 3 minutes, plus coverage of what you wouldn't have thought of.",
     "example": "claude in the repo → /init → finalize the «taboos» and «architectural decisions» sections.",
@@ -640,12 +640,12 @@
   },
   "cc-cmd-clear": {
     "title": "/clear — clear chat",
-    "what": "Clears the current conversation and context — starts a new chat with the same CLAUDE.md and Hooks.",
+    "what": "Clears the current conversation and context — starts a new chat with the same [[node:cc-md|CLAUDE.md]] and Hooks.",
     "why": "To free the [[node:b-context|context window]] when a task is closed or the topic changed.",
     "when": "After finishing a subtask, before starting another large piece of work.",
     "impact": "Clean context ≈ +30-50% accuracy on the next answers.",
     "example": "/clear after a PR review, before refactoring another part of the code.",
-    "mistakes": "Doing /clear mid-work and losing intermediate conclusions — /compact is better."
+    "mistakes": "Doing /clear mid-work and losing intermediate conclusions — [[node:cc-cmd-compact|/compact]] is better."
   },
   "cc-cmd-compact": {
     "title": "/compact — compress context",
@@ -654,7 +654,7 @@
     "when": "When the chat has grown and the model has begun «forgetting» details of earlier discussions.",
     "impact": "Frees 80-90% of context while preserving key conclusions.",
     "example": "/compact after long research, before moving to writing code.",
-    "mistakes": "Relying on compact forever — sooner or later a full /clear is needed."
+    "mistakes": "Relying on compact forever — sooner or later a full [[node:cc-cmd-clear|/clear]] is needed."
   },
   "cc-cmd-model": {
     "title": "/model — pick model",
@@ -721,11 +721,11 @@
   },
   "cc-md": {
     "title": "CLAUDE.md",
-    "what": "A project instructions file: stack, conventions, important paths, taboos. Loaded into every conversation.",
+    "what": "A [[node:p-instructions|project instructions]] file: stack, conventions, important paths, taboos. Loaded into every conversation.",
     "why": "It's the project's «character» in [[node:claude-code|Claude Code]] — like [[node:instructions|Custom Instructions]] but for code.",
     "when": "In every project that uses [[node:claude-code|Claude Code]] — mandatory.",
     "impact": "Without CLAUDE.md the model spends the first 10 minutes on what's already described.",
-    "example": "Generate CLAUDE.md via /init and add «don't use any in TypeScript».",
+    "example": "Generate CLAUDE.md via [[node:cc-cmd-init|/init]] and add «don't use any in TypeScript».",
     "mistakes": "Listing the obvious there (repo name, that it's React) — rules and taboos are more valuable."
   },
   "cc-subagents": {
@@ -820,7 +820,7 @@
   },
   "instructions": {
     "title": "Custom Instructions",
-    "what": "Permanent instructions that Claude considers in every reply — at the account, Project or CLAUDE.md level.",
+    "what": "Permanent instructions that Claude considers in every reply — at the account, Project or [[node:cc-md|CLAUDE.md]] level.",
     "why": "So you don't repeat «answer in English, concise, no fluff» in every message.",
     "when": "Right when setting up the environment — this is the first investment that pays off from the first conversation.",
     "impact": "Good instructions = +30-50% consistency and style across all responses.",
@@ -829,12 +829,12 @@
   },
   "i-global": {
     "title": "Global",
-    "what": "Settings in your personal Claude.ai profile: apply to all chats unless overridden.",
+    "what": "Settings in your personal [[node:pl-web-setup|Claude.ai]] profile: apply to all chats unless overridden.",
     "why": "Basic «character»: language, tone, format — no need to repeat in every Project.",
     "when": "Once — when setting up the account.",
     "impact": "Without them — every new chat starts from scratch on style.",
     "example": "Always answer in English. Be concise. Use bullet points by default.",
-    "mistakes": "Conflicting with Project instructions — the Project wins, and your global stops working there."
+    "mistakes": "Conflicting with [[node:p-instructions|Project instructions]] — the Project wins, and your global stops working there."
   },
   "i-project": {
     "title": "Project level",
@@ -850,7 +850,7 @@
     "what": "Project file in [[node:claude-code|Claude Code]]: stack, conventions, taboos, critical paths.",
     "why": "These are instructions at the level «how we write code right here».",
     "when": "In every repository that uses [[node:claude-code|Claude Code]].",
-    "impact": "Without CLAUDE.md Claude's code is generic; with it — matches your norms.",
+    "impact": "Without [[node:cc-md|CLAUDE.md]] Claude's code is generic; with it — matches your norms.",
     "example": "Stack: Next.js + Tailwind. Never use any. Tests — Vitest, not Jest.",
     "mistakes": "Describing the obvious there (that it's React) — better to write about non-obvious rules."
   },
@@ -966,7 +966,7 @@
     "title": "Create a Project",
     "what": "A template for quickly setting up a new Project: role, format, taboos, KPIs.",
     "why": "All Projects immediately come out professional-grade — not «bare chat».",
-    "when": "On every new Project in claude.ai.",
+    "when": "On every new Project in [[node:pl-web-setup|claude.ai]].",
     "impact": "Without a good template a Project = just a folder, not a specialized assistant.",
     "example": "Open the [[prompt:create-project|ready-made prompt «Create a Project»]].",
     "mistakes": "Copying as is — be sure to plug in your own domain and style."
@@ -991,10 +991,10 @@
   },
   "rp-claudemd": {
     "title": "Create CLAUDE.md",
-    "what": "A prompt to generate CLAUDE.md with the right structure: stack, conventions, taboos, entry points.",
+    "what": "A prompt to generate [[node:cc-md|CLAUDE.md]] with the right structure: stack, conventions, taboos, entry points.",
     "why": "A ready project file in 1 minute — not an hour of manual formatting.",
     "when": "In every project where you run [[node:claude-code|Claude Code]].",
-    "impact": "CLAUDE.md from a template = the model writes code «in project style» right away.",
+    "impact": "[[node:cc-md|CLAUDE.md]] from a template = the model writes code «in project style» right away.",
     "example": "Open the [[prompt:create-claudemd|ready-made prompt «Create CLAUDE.md»]].",
     "mistakes": "Not specifying taboos — Claude will use patterns forbidden in the project."
   },
@@ -1030,7 +1030,7 @@
     "what": "Code writing, refactoring, debugging, migrations, tests — especially in [[node:claude-code|Claude Code]].",
     "why": "Claude is one of the best coding models; combined with the CLI it becomes almost an intern.",
     "when": "Any development from prototype to production.",
-    "impact": "Works stronger with CLAUDE.md and Hooks — otherwise it drifts into its own habits.",
+    "impact": "Works stronger with [[node:cc-md|CLAUDE.md]] and Hooks — otherwise it drifts into its own habits.",
     "example": "Rewrite this endpoint so it uses transactions and caches the result for 60s.",
     "mistakes": "Working in chat, not in [[node:claude-code|Claude Code]] — you lose file and history access."
   },
@@ -1063,7 +1063,7 @@
   },
   "sc-data": {
     "title": "Data analysis",
-    "what": "CSV / XLSX / JSON / SQL dumps — Claude reads, computes aggregates, looks for anomalies, plots charts. Especially strong with Code execution: real numbers, not approximations.",
+    "what": "CSV / XLSX / JSON / SQL dumps — Claude reads, computes aggregates, looks for anomalies, plots charts. Especially strong with [[node:cap-code-exec|Code execution]]: real numbers, not approximations.",
     "why": "To move from Excel formulas to human language: «find top-5 SKUs with revenue drops and explain the pattern» — without VLOOKUP.",
     "when": "When there's a data table and questions like «what's interesting here», «what's anomalous», «what are the trends».",
     "impact": "Removes the «tool tax»: instead of an hour on formulas — minutes of conversation with the data.",
@@ -1162,18 +1162,18 @@
   },
   "cc-grp-session": {
     "title": "Session management",
-    "what": "/clear — new session. /compact — summarize context to free space. /resume — continue a previous session. /rename — name the current conversation. /background — keep running after terminal closes. /branch — fork conversation at current point. /rewind — restore code and chat to earlier state. /export — save conversation to file. /copy — copy last response. /recap — one-line session summary. /desktop — move to Claude Desktop. /teleport — resume from claude.ai. /remote-control — control session from phone. /exit — close CLI.",
+    "what": "[[node:cc-cmd-clear|/clear]] — new session. [[node:cc-cmd-compact|/compact]] — summarize context to free space. /resume — continue a previous session. /rename — name the current conversation. /background — keep running after terminal closes. /branch — fork conversation at current point. /rewind — restore code and chat to earlier state. /export — save conversation to file. /copy — copy last response. /recap — one-line session summary. /desktop — move to [[node:pl-desktop|Claude Desktop]]. /teleport — resume from [[node:pl-web-setup|claude.ai]]. /remote-control — control session from phone. /exit — close CLI.",
     "why": "Sessions are persistent — you can pause, resume, fork, and export any conversation. Understanding session commands prevents losing context.",
     "when": "Long coding sessions, switching devices, saving progress, recovering from mistakes with /rewind.",
     "impact": "Never lose work. Resume complex multi-hour tasks. Fork experiments without breaking the main session.",
     "example": "/branch before a risky refactor → experiment freely → if it fails, original session intact.",
-    "mistakes": "Using /clear when you meant /compact — /clear deletes context, /compact summarizes it."
+    "mistakes": "Using [[node:cc-cmd-clear|/clear]] when you meant [[node:cc-cmd-compact|/compact]] — /clear deletes context, /compact summarizes it."
   },
   "cc-grp-context": {
     "title": "Context and code",
-    "what": "/add-dir — add a directory to Claude's working context. /context — visualize current context usage as a grid. /memory — edit CLAUDE.md memory files. /diff — view uncommitted changes and per-turn diffs. /focus — show only prompt, tool summary, and final response. /goal — set a goal and keep working until condition met. /init — generate CLAUDE.md for current project.",
+    "what": "/add-dir — add a directory to Claude's working context. /context — visualize current context usage as a grid. /memory — edit [[node:cc-md|CLAUDE.md]] memory files. /diff — view uncommitted changes and per-turn diffs. /focus — show only prompt, tool summary, and final response. /goal — set a goal and keep working until condition met. [[node:cc-cmd-init|/init]] — generate CLAUDE.md for current project.",
     "why": "Claude's [[node:b-context|context window]] is finite. These commands let you control what Claude sees and focus its attention.",
-    "when": "Large codebases (add only relevant dirs), long sessions (monitor with /context), starting new projects (/init).",
+    "when": "Large codebases (add only relevant dirs), long sessions (monitor with /context), starting new projects ([[node:cc-cmd-init|/init]]).",
     "impact": "Better answers, fewer hallucinations, faster responses — Claude sees exactly what it needs.",
     "example": "/add-dir src/components → Claude now reads all component files without you referencing each one.",
     "mistakes": "Adding the entire repo when only one folder is relevant — wastes context and slows Claude down."
@@ -1243,7 +1243,7 @@
   },
   "pl-cowork": {
     "title": "Claude Cowork",
-    "what": "Agentic task automation built into Claude Desktop (Pro/Max/Team/Enterprise). Claude plans multi-step work, breaks it into subtasks, runs code in an isolated VM on your machine, and writes results directly to your file system. Unlike chat, you describe an outcome — Claude handles every step.",
+    "what": "Agentic task automation built into [[node:pl-desktop|Claude Desktop]] (Pro/Max/Team/Enterprise). Claude plans multi-step work, breaks it into subtasks, runs code in an isolated VM on your machine, and writes results directly to your file system. Unlike chat, you describe an outcome — Claude handles every step.",
     "why": "Complex knowledge work — file organization, data analysis, document creation — requires many coordinated steps and local file access. Cowork handles this autonomously so you can step away and come back to finished results.",
     "when": "Organizing a chaotic folder, processing hundreds of receipts, synthesizing research from multiple documents, building spreadsheets with formulas, creating reports. NOT for simple questions — use regular chat instead.",
     "impact": "Hours of repetitive file and document work done while you focus on other things. Can run scheduled tasks automatically (daily, weekly) without any code or APIs.",
@@ -1342,11 +1342,11 @@
   },
   "ai-fundamentals": {
     "title": "AI Fundamentals",
-    "what": "Universal AI concepts not tied to any single model: LLM, embeddings, vector databases, RAG. The vocabulary every AI system speaks — from ChatGPT to your own pipeline on open-source models.",
+    "what": "Universal AI concepts not tied to any single model: LLM, [[node:af-embeddings|embeddings]], vector databases, RAG. The vocabulary every AI system speaks — from ChatGPT to your own pipeline on open-source models.",
     "why": "Atlas covers Claude in depth, but the AI industry is broader. To talk with engineers, evaluate vendor proposals, and make architectural decisions — you need the common concepts.",
     "when": "When reading a technical doc / proposal with AI terms. When choosing a tech stack. When discussing architecture with your team.",
     "impact": "Knowing fundamentals shifts you from «I use AI» to «I understand what I am doing». You gain confidence in decisions and substantive arguments.",
-    "example": "A RAG pipeline uses embeddings (a fundamental concept), stores them in a vector database (a fundamental technology), and feeds relevant chunks into an LLM (a fundamental architecture). Knowing all three — you can read any RAG documentation.",
+    "example": "A RAG pipeline uses [[node:af-embeddings|embeddings]] (a fundamental concept), stores them in a [[node:af-vector-db|vector database]] (a fundamental technology), and feeds relevant chunks into an LLM (a fundamental architecture). Knowing all three — you can read any RAG documentation.",
     "mistakes": "Learning fundamentals as abstract theory. More effective: take a concrete task (e.g., «build search over my docs») and learn the needed concepts as you go."
   },
   "af-llm-basics": {
@@ -1369,8 +1369,8 @@
   },
   "af-vector-db": {
     "title": "Vector Databases",
-    "what": "A database optimized for storing and searching embeddings (vectors). Does what a regular DB cannot: «find the 10 closest vectors to this one». Pinecone, Weaviate, pgvector (Postgres extension), Qdrant, Chroma.",
-    "why": "Without a vector DB, embeddings are useless: you need to store millions of vectors and quickly find nearest neighbors. A regular DB does this slowly (O(n) scan). A vector DB uses ANN indexes (HNSW, IVF) — search in milliseconds.",
+    "what": "A database optimized for storing and searching [[node:af-embeddings|embeddings]] (vectors). Does what a regular DB cannot: «find the 10 closest vectors to this one». Pinecone, Weaviate, pgvector (Postgres extension), Qdrant, Chroma.",
+    "why": "Without a vector DB, [[node:af-embeddings|embeddings]] are useless: you need to store millions of vectors and quickly find nearest neighbors. A regular DB does this slowly (O(n) scan). A vector DB uses ANN indexes (HNSW, IVF) — search in milliseconds.",
     "when": "RAG systems with >1000 documents. Semantic search over a large knowledge base. Recommendation systems. Anomaly detection.",
     "impact": "A vector DB turns a «search attempt» into a production-ready system: latency <100ms, scale to billions of vectors, metadata filters.",
     "example": "You have 50,000 knowledge base articles. You want a user to ask a question — the system finds the 5 most relevant and feeds them to Claude as context. Without a vector DB — each query takes 30+ seconds. With a vector DB — <100ms.",
@@ -1387,11 +1387,11 @@
   },
   "af-memory-systems": {
     "title": "AI Memory: Types",
-    "what": "AI systems have 4 memory types. In-context — what is in the current prompt (short, ephemeral). External — RAG / knowledge base (long-term, selective). Semantic — embeddings of past interactions (search by meaning). Episodic — log of specific events (recover exact sequence).",
+    "what": "AI systems have 4 memory types. In-context — what is in the current prompt (short, ephemeral). External — RAG / knowledge base (long-term, selective). Semantic — [[node:af-embeddings|embeddings]] of past interactions (search by meaning). Episodic — log of specific events (recover exact sequence).",
     "why": "Without understanding memory types, you build a chatbot that «does not remember yesterday's conversation» — and you do not know what to do. Each type solves a different problem.",
     "when": "When designing conversational AI. When users complain «AI forgot what I said». When you need personalization that persists across sessions.",
     "impact": "Right memory architecture transforms AI from «1-request helper» into «colleague who remembers context». This is the shift from toy demo to production assistant.",
-    "example": "Claude Memory (cap-memory) = semantic memory. Project Files (p-files) = external memory. CLAUDE.md (i-claudemd) = persistent instructions, also a form of external memory. Each has its role.",
+    "example": "Claude Memory (cap-memory) = semantic memory. Project Files (p-files) = external memory. [[node:cc-md|CLAUDE.md]] (i-claudemd) = persistent instructions, also a form of external memory. Each has its role.",
     "mistakes": "Trying to cram all history into context («increase the window to 1M»). Expensive, slow, does not scale. Production solution — combination of types: short-term in-context + long-term external + episodic for important events."
   },
   "af-multimodal": {
@@ -1462,8 +1462,8 @@
     "what": "How an ops team orchestrates working with AI: shared prompts, shared Projects, access, knowledge management. This is about team operating model, not individual usage.",
     "why": "Individual AI usage does not scale. A team of 10, each with their own prompting style = different results + duplicated work. Team workflow creates a unified standard.",
     "when": "When the team ≥3 people actively use AI. When inconsistent results emerge. When a newcomer arrives and «does not know how we work with AI».",
-    "impact": "Team velocity: +30-50%. Onboarding time for newcomers: days instead of weeks. Knowledge sharing: shared Projects + CLAUDE.md = team learns from each other. Stage 2→3.",
-    "example": "Operations Team Setup:\n1. Shared Claude Project «Operations Workspace» with team-style [[node:b-system|system prompt]].\n2. CLAUDE.md in shared repo: rules, templates, typical tasks.\n3. Reusable Skills for recurring tasks (report-writer, decision-analyzer).\n4. Weekly «AI office hours»: team shares discoveries.\n5. Metric: % of tasks done through shared workflow.\n\nStage 3 sign: a newcomer is productive in 2-3 days, not weeks.",
+    "impact": "Team velocity: +30-50%. Onboarding time for newcomers: days instead of weeks. Knowledge sharing: shared Projects + [[node:cc-md|CLAUDE.md]] = team learns from each other. Stage 2→3.",
+    "example": "Operations Team Setup:\n1. Shared Claude Project «Operations Workspace» with team-style [[node:b-system|system prompt]].\n2. [[node:cc-md|CLAUDE.md]] in shared repo: rules, templates, typical tasks.\n3. Reusable Skills for recurring tasks (report-writer, decision-analyzer).\n4. Weekly «AI office hours»: team shares discoveries.\n5. Metric: % of tasks done through shared workflow.\n\nStage 3 sign: a newcomer is productive in 2-3 days, not weeks.",
     "mistakes": "Making «team workflow» = «one person forces everyone to use their prompts». That is not workflow, that is dictatorship. Team workflow = collaborative development + ownership + feedback loops."
   },
   "uc-ai-reporting-launch": {
@@ -1472,7 +1472,7 @@
     "why": "This is the most common ops-team request: «AI can write reports, how do we start?». A Use Case gives a clear route instead of «start reading everything».",
     "when": "When there is a regular report (weekly/monthly) taking ≥3 hours per week. When data is available (CRM/analytics with export). When there is team buy-in.",
     "impact": "Outcome: working weekly report workflow in 2 weeks of work. Metrics: time-to-report 4h→30min, consistency +90%, team buy-in measurable (NPS survey).",
-    "example": "Path (6 steps through nodes):\n1. Foundation: prompting → how to write a [[node:b-system|system prompt]] for a report\n2. Foundation: af-rag-basics → if the report needs CRM context, how to feed it to Claude\n3. Foundation: projects → create a «Weekly Reports» workspace for the team\n4. Foundation: i-claudemd → describe the report format in CLAUDE.md\n5. Transformation: ops-reporting-automation → concrete workflow with stages\n6. Transformation: sc-data → how to work with CSV data\n\nDay 1-3: Setup Project + write first prompt manually.\nDay 4-7: Iterate on 5-10 real reports.\nDay 8-14: Roll-out to the team + feedback.\n\nStage transition: 1→2.",
+    "example": "Path (6 steps through nodes):\n1. Foundation: prompting → how to write a [[node:b-system|system prompt]] for a report\n2. Foundation: af-rag-basics → if the report needs CRM context, how to feed it to Claude\n3. Foundation: projects → create a «Weekly Reports» workspace for the team\n4. Foundation: i-claudemd → describe the report format in [[node:cc-md|CLAUDE.md]]\n5. Transformation: ops-reporting-automation → concrete workflow with stages\n6. Transformation: sc-data → how to work with CSV data\n\nDay 1-3: Setup Project + write first prompt manually.\nDay 4-7: Iterate on 5-10 real reports.\nDay 8-14: Roll-out to the team + feedback.\n\nStage transition: 1→2.",
     "mistakes": "Wanting «full automation» in the first week. First AI writes a draft → human edits → measure quality. Only after 5-10 successful iterations — add automation (triggers, scheduling)."
   },
   "uc-ai-process-automation": {
@@ -1616,7 +1616,7 @@
     "why": "Individual usage in marketing does not scale — voice is not consistent, templates duplicate, learnings are lost. Team workflow = single standard + shared library + faster onboarding.",
     "when": "Marketing team ≥3 people actively use AI. Inconsistent results emerge. New team members «do not know how we work with AI».",
     "impact": "Team velocity: +30-50%. New writer time-to-productive: 2 weeks → 3-5 days. Knowledge retention: shared Projects + voice guide = team learns from common mistakes.",
-    "example": "Marketing Team Setup:\n\n1. Shared Claude Project «Marketing Workspace»\n2. Files: brand voice guide, content templates, SEO playbook\n3. CLAUDE.md: «content rules + naming conventions»\n4. Reusable Skills: blog-post-writer, email-drafter, social-snippet\n5. Weekly «AI office hours» 30 min: team shows winning prompts, discusses fails\n6. Metric: % of content done via shared workflow vs ad-hoc\n\nStage 3 sign: new writer is productive in 3-5 days, everyone has consistent quality.",
+    "example": "Marketing Team Setup:\n\n1. Shared Claude Project «Marketing Workspace»\n2. Files: brand voice guide, content templates, SEO playbook\n3. [[node:cc-md|CLAUDE.md]]: «content rules + naming conventions»\n4. Reusable Skills: blog-post-writer, email-drafter, social-snippet\n5. Weekly «AI office hours» 30 min: team shows winning prompts, discusses fails\n6. Metric: % of content done via shared workflow vs ad-hoc\n\nStage 3 sign: new writer is productive in 3-5 days, everyone has consistent quality.",
     "mistakes": "Making «team workflow» = «one person dictates». Team workflow = collaboration. Each contributor → updates workflow + ownership over one part (voice guide, templates, SEO). Shared ownership = sustainable system."
   },
   "uc-ai-content-ops-launch": {
@@ -1625,7 +1625,7 @@
     "why": "The most common marketing-team request: «AI writes but does not sound like us». This UC solves the problem systematically — through explicit brand voice setup + content pipeline.",
     "when": "When the team already uses AI ad-hoc but quality is inconsistent. When output >10 pieces/month. When there is buy-in from editor/content lead.",
     "impact": "Outcome: working content pipeline with brand voice in 2 weeks. Metrics: time-to-publish 2 days→4h, brand consistency 60%→90%, content output +200%.",
-    "example": "Path (7 steps):\n\n1. Foundation: prompting → how to formulate briefs for AI\n2. Foundation: b-system → how to write a [[node:b-system|system prompt]] with voice\n3. Foundation: i-style + instructions → [[node:instructions|custom instructions]] at profile level\n4. Foundation: i-claudemd → CLAUDE.md for marketing workspace\n5. Foundation: projects → create a «Blog» Project with voice files\n6. Systems: sys-linear-chain → pipeline structure (brief → draft → review → publish)\n7. Transformation: mk-content-ops → concrete workflow with metrics\n8. Bonus: mk-brand-voice → detailed voice tuning\n\nDay 1-3: Audit existing content. Document voice attributes.\nDay 4-7: Setup Project + first test articles. Iterate voice prompt.\nDay 8-14: Roll-out for the team + measurement.\n\nStage transition: 1→2.",
+    "example": "Path (7 steps):\n\n1. Foundation: prompting → how to formulate briefs for AI\n2. Foundation: b-system → how to write a [[node:b-system|system prompt]] with voice\n3. Foundation: i-style + instructions → [[node:instructions|custom instructions]] at profile level\n4. Foundation: i-claudemd → [[node:cc-md|CLAUDE.md]] for marketing workspace\n5. Foundation: projects → create a «Blog» Project with voice files\n6. Systems: sys-linear-chain → pipeline structure (brief → draft → review → publish)\n7. Transformation: mk-content-ops → concrete workflow with metrics\n8. Bonus: mk-brand-voice → detailed voice tuning\n\nDay 1-3: Audit existing content. Document voice attributes.\nDay 4-7: Setup Project + first test articles. Iterate voice prompt.\nDay 8-14: Roll-out for the team + measurement.\n\nStage transition: 1→2.",
     "mistakes": "Doing a UC without voice work. Pipeline without brand voice = AI-generic texts faster, but still generic. Voice setup is 30% of UC time. Do not skip."
   },
   "ai-native-customer-support": {
@@ -1697,7 +1697,7 @@
     "why": "Individual AI usage in support does not work — consistency for customers is needed (everyone gets same quality answer). Team workflow ensures this through shared setup + processes.",
     "when": "When team ≥5 agents use AI. When new agents arrive and «do not know how». When quality is inconsistent between shift teams.",
     "impact": "Team velocity: agents process 50%+ more tickets. New agent onboarding: 4 weeks → 2 weeks. Quality consistency across shifts: +60%. AI literacy team-wide.",
-    "example": "CS Team Setup:\n\n1. Shared Claude Project «Support Workspace»:\n   - KB indexed\n   - Brand voice guide (tone for customers)\n   - Common scenarios templates\n\n2. CLAUDE.md: response guidelines, escalation criteria, tone rules.\n\n3. Skills: response-drafter, ticket-summarizer, escalation-formatter.\n\n4. Weekly calibration: team reviews 5 AI-handled tickets together. Discusses: what worked, what would change.\n\n5. AI-aware promotion: agents who improve AI workflow → senior path (not just «answer more tickets»).\n\nResult: team functions as a cohesive AI-augmented unit.",
+    "example": "CS Team Setup:\n\n1. Shared Claude Project «Support Workspace»:\n   - KB indexed\n   - Brand voice guide (tone for customers)\n   - Common scenarios templates\n\n2. [[node:cc-md|CLAUDE.md]]: response guidelines, escalation criteria, tone rules.\n\n3. Skills: response-drafter, ticket-summarizer, escalation-formatter.\n\n4. Weekly calibration: team reviews 5 AI-handled tickets together. Discusses: what worked, what would change.\n\n5. AI-aware promotion: agents who improve AI workflow → senior path (not just «answer more tickets»).\n\nResult: team functions as a cohesive AI-augmented unit.",
     "mistakes": "Treating AI usage as «individual perk». Without team-level workflow, customers get inconsistent experience (depending on which agent picks). AI = team capability, not individual skill."
   },
   "uc-ai-support-tier1": {
@@ -1778,7 +1778,7 @@
     "why": "Individual usage in product does not scale — research findings are lost between PMs, specs are inconsistent, knowledge is not shared. Team workflow creates a shared institutional memory.",
     "when": "Product team ≥3 PMs use AI. When «everyone has their own approach to specs». When research findings are lost after launch. When a new PM «does not know how we work».",
     "impact": "Team velocity: +30%. New PM onboarding: 6 weeks → 3 weeks (via shared knowledge). Decision quality: improves over time (institutional memory grows). Stage 2→3.",
-    "example": "Product Team Setup:\n\n1. Shared Claude Project «Product Workspace»:\n   - All research transcripts indexed\n   - Past PRDs library\n   - Experiment learnings\n   - Customer feedback (categorized)\n\n2. CLAUDE.md: writing conventions, PRD template, decision frameworks.\n\n3. Skills:\n   - research-synthesizer\n   - prd-drafter\n   - feedback-categorizer\n   - experiment-designer\n\n4. Weekly «AI office hours» 30 min:\n   - Best prompt discoveries\n   - Failed AI experiments (what is not working)\n   - Cross-team learning\n\n5. Quarterly knowledge curation:\n   - What to add to shared workspace\n   - What is outdated and to remove\n\nStage 3 sign: new PM writes a shipping-ready PRD by the end of the first month.",
+    "example": "Product Team Setup:\n\n1. Shared Claude Project «Product Workspace»:\n   - All research transcripts indexed\n   - Past PRDs library\n   - Experiment learnings\n   - Customer feedback (categorized)\n\n2. [[node:cc-md|CLAUDE.md]]: writing conventions, PRD template, decision frameworks.\n\n3. Skills:\n   - research-synthesizer\n   - prd-drafter\n   - feedback-categorizer\n   - experiment-designer\n\n4. Weekly «AI office hours» 30 min:\n   - Best prompt discoveries\n   - Failed AI experiments (what is not working)\n   - Cross-team learning\n\n5. Quarterly knowledge curation:\n   - What to add to shared workspace\n   - What is outdated and to remove\n\nStage 3 sign: new PM writes a shipping-ready PRD by the end of the first month.",
     "mistakes": "Doing team workflow without a librarian role. Shared workspace without maintainership = junk drawer in 6 months. Someone must curate: weekly review of new content, monthly cleanup of outdated."
   },
   "uc-ai-discovery-launch": {
@@ -1832,7 +1832,7 @@
     "why": "Without a CoE, each tactical team reinvents the wheel: discovers RAG, learns prompt engineering, sets up vector DB. CoE shares this knowledge and infrastructure → 5-10× faster for all subsequent teams.",
     "when": "After 2-3 successful tactical AI directions. When «how and where do I find an AI expert?» becomes a regular question. When signing up for enterprise AI vendors (CoE manages).",
     "impact": "New AI initiative time-to-launch: 6 months → 2 months. Cost: shared infra cheaper than per-team setup. Quality: best practices spread. Career: clear AI path for talent.",
-    "example": "CoE Structure:\n\nCore team (3-5):\n  - Head of AI / Chief AI Officer\n  - Senior ML/AI engineer\n  - AI Product Manager\n  - AI Ethics & Governance lead\n\nFunctions:\n  1. Shared infrastructure (vector DBs, LLM API contracts, monitoring)\n  2. Best practices library (CLAUDE.md templates, Skills, patterns)\n  3. Office hours (weekly, anyone can attend)\n  4. Training programs (3 levels: foundational, intermediate, advanced)\n  5. Tooling decisions (which AI tools company-wide)\n  6. Governance coordination (with security/legal)\n  7. Talent: hiring AI roles + upskilling existing\n  8. Showcase: monthly «AI demos» across the company\n\nKey metric: CoE-enabled launches per quarter.",
+    "example": "CoE Structure:\n\nCore team (3-5):\n  - Head of AI / Chief AI Officer\n  - Senior ML/AI engineer\n  - AI Product Manager\n  - AI Ethics & Governance lead\n\nFunctions:\n  1. Shared infrastructure (vector DBs, LLM API contracts, monitoring)\n  2. Best practices library ([[node:cc-md|CLAUDE.md]] templates, Skills, patterns)\n  3. Office hours (weekly, anyone can attend)\n  4. Training programs (3 levels: foundational, intermediate, advanced)\n  5. Tooling decisions (which AI tools company-wide)\n  6. Governance coordination (with security/legal)\n  7. Talent: hiring AI roles + upskilling existing\n  8. Showcase: monthly «AI demos» across the company\n\nKey metric: CoE-enabled launches per quarter.",
     "mistakes": "Making CoE «the AI department» — building everything. CoE = enablement, not execution. Tactical teams build, CoE shares know-how. Otherwise CoE becomes a bottleneck."
   },
   "en-roi-measurement": {
@@ -1904,7 +1904,7 @@
     "why": "Bad vendor decisions = months of lost time + lock-in. Good decision-making = explicit criteria + structured evaluation. This UC gives the framework.",
     "when": "Before a major AI initiative (>$50k investment). Annual technology review. When the existing vendor becomes unreliable. When scaling beyond a single team.",
     "impact": "Outcome: documented vendor selection with reasoning in 2-3 weeks. Metrics: decision quality (look back in 6 months — was it the right call?), reduced vendor churn.",
-    "example": "Path (6 steps):\n\n1. Foundation: af-llm-basics → understand LLM model differences (size, architecture, training data)\n2. Foundation: pl-compare → Claude.ai vs Code vs API vs others\n3. Foundation: pl-api → API economics (cost per million tokens, rate limits)\n4. Enterprise: en-governance → governance requirements (DPA, data residency, audit)\n5. Enterprise: en-risk-management → vendor lock risk, fallback strategy\n6. Foundation: m-security → security review checklist\n\nProcess:\n  Week 1: Define use case + requirements. List criteria with weights.\n  Week 2: Shortlist 3-5 vendors. Test pilots with each.\n  Week 3: Score, negotiate, decide.\n\nFramework criteria:\n- Quality (model capability on our task)\n- Cost (per-token + projected total monthly)\n- Latency (p50/p99)\n- Security (DPA, encryption, audit logs)\n- Vendor stability (funding, traction, longevity)\n- Lock-in (data portability, API abstractability)\n- Support (responsive, technical depth)",
+    "example": "Path (6 steps):\n\n1. Foundation: af-llm-basics → understand LLM model differences (size, architecture, training data)\n2. Foundation: pl-compare → [[node:pl-web-setup|Claude.ai]] vs Code vs API vs others\n3. Foundation: pl-api → API economics (cost per million tokens, rate limits)\n4. Enterprise: en-governance → governance requirements (DPA, data residency, audit)\n5. Enterprise: en-risk-management → vendor lock risk, fallback strategy\n6. Foundation: m-security → security review checklist\n\nProcess:\n  Week 1: Define use case + requirements. List criteria with weights.\n  Week 2: Shortlist 3-5 vendors. Test pilots with each.\n  Week 3: Score, negotiate, decide.\n\nFramework criteria:\n- Quality (model capability on our task)\n- Cost (per-token + projected total monthly)\n- Latency (p50/p99)\n- Security (DPA, encryption, audit logs)\n- Vendor stability (funding, traction, longevity)\n- Lock-in (data portability, API abstractability)\n- Support (responsive, technical depth)",
     "mistakes": "Deciding based on a single benchmark. Benchmarks are biased and measure generic capabilities. Test on YOUR specific tasks. If 5 vendors → take 10 representative tasks → blind test → score. That is the real-world signal."
   },
   "uc-ai-multi-agent-system": {
@@ -2066,7 +2066,7 @@
     "why": "Individual designer AI usage does not scale — voice is inconsistent, components diverge, lessons are not learned. Team workflow consolidates AI value.",
     "when": "Design team ≥3 designers actively use AI. When the product is design-driven (consumer apps, brand-heavy). When inconsistent AI usage causes brand fragmentation.",
     "impact": "Team velocity: +25-35%. Brand consistency: significantly improved. Designer career growth: «AI-augmented designer» as senior path. Stage 2→3.",
-    "example": "Design Team Setup:\n\n1. Shared Claude Project «Design Workspace»:\n   - Brand voice guide indexed\n   - Design system docs accessible\n   - Past research synthesized\n   - Component library reference\n\n2. CLAUDE.md: design principles, brand voice, accessibility rules.\n\n3. Skills (Figma plugins + Claude):\n   - microcopy-generator\n   - component-doc-writer\n   - accessibility-checker\n   - research-synthesizer\n\n4. Weekly rituals:\n   - «AI office hours» (30 min): designers share wins/failures\n   - Quarterly «AI in design» retrospective\n\n5. Critique enhancements:\n   - Pre-critique: AI runs accessibility/brand checks\n   - Critique focuses on craft + concept (not finding bugs)\n\nStage 3 sign: new designer productive in 3-5 days.",
+    "example": "Design Team Setup:\n\n1. Shared Claude Project «Design Workspace»:\n   - Brand voice guide indexed\n   - Design system docs accessible\n   - Past research synthesized\n   - Component library reference\n\n2. [[node:cc-md|CLAUDE.md]]: design principles, brand voice, accessibility rules.\n\n3. Skills (Figma plugins + Claude):\n   - microcopy-generator\n   - component-doc-writer\n   - accessibility-checker\n   - research-synthesizer\n\n4. Weekly rituals:\n   - «AI office hours» (30 min): designers share wins/failures\n   - Quarterly «AI in design» retrospective\n\n5. Critique enhancements:\n   - Pre-critique: AI runs accessibility/brand checks\n   - Critique focuses on craft + concept (not finding bugs)\n\nStage 3 sign: new designer productive in 3-5 days.",
     "mistakes": "Making «AI in design» = «designer is required to use AI». Forced adoption kills creative ownership. AI must be «discovered through value» — designers choose to use it when it makes them better, faster, happier."
   },
   "uc-ai-design-research-launch": {

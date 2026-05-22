@@ -6,11 +6,11 @@
     "when": "Kun otat Claudea haltuun tai etsit sopivaa työkalua tehtävälle: kirjoittaa koodia, tehdä auditointi, automatisoida rutiineja.",
     "impact": "Suoraan: «kysy ChatGPT:ltä» -sijaan valitset oikean tilan (Project / Artifact / Skill / Code) — ja vastauksen laatu nousee moninkertaisesti.",
     "example": "Avaa kartta, etsi osio «Skills», lue «milloin käyttää» — ja yritä luoda ensimmäinen SKILL.md omaan rutiiniisi.",
-    "mistakes": "Käyttää vain chattia ja jättää huomiotta Projects, Skills ja Claude Code — käytät 10× enemmän tokeneita kontekstin toistamiseen."
+    "mistakes": "Käyttää vain chattia ja jättää huomiotta Projects, Skills ja [[node:claude-code|Claude Code]] — käytät 10× enemmän tokeneita kontekstin toistamiseen."
   },
   "basics": {
     "title": "Clauden perusteet",
-    "what": "Claude — Anthropicin AI-malliperhe. Saatavilla claude.ai:ssa, API:ssa, Claude Codessa ja integraatioissa.",
+    "what": "Claude — Anthropicin AI-malliperhe. Saatavilla [[node:pl-web-setup|claude.ai]]:ssa, API:ssa, Claude Codessa ja integraatioissa.",
     "why": "Jotta ymmärrät, minkä mallin valita, miten konteksti toimii ja missä kulkevat ominaisuuksien rajat.",
     "when": "Aivan työn alussa — ennen kuin kirjoitat ensimmäisen vakavan promptin.",
     "impact": "Mallin ymmärtäminen = 2-3× tarkemmat pyynnöt ja moninkertaisesti vähemmän «hallusinaatioita».",
@@ -57,7 +57,7 @@
     "title": "Järjestelmäprompti",
     "what": "Piilotettu ohje, joka asettaa mallin käyttäytymisen ennen keskustelun alkua: rooli, tyyli, rajoitukset.",
     "why": "Tekee vastauksista ennustettavia ja johdonmukaisia koko keskustelussa.",
-    "when": "API:ssa, Projects-tilassa (Custom Instructions), Claude Codessa (CLAUDE.md) — kaikkialla, missä halutaan asettaa «luonne».",
+    "when": "API:ssa, Projects-tilassa ([[node:instructions|Custom Instructions]]), Claude Codessa ([[node:cc-md|CLAUDE.md]]) — kaikkialla, missä halutaan asettaa «luonne».",
     "impact": "Hyvä system prompt = +30-50% tarkkuuteen ja vakauteen.",
     "example": "Olet asiantuntija aihealueellani. Vastaa vain suomeksi. Ensin faktat, sitten hypoteesit, sitten suositukset.",
     "mistakes": "Kirjoittaa rooli jokaiseen viestiin käsin, yhden system promptin sijaan."
@@ -101,20 +101,20 @@
   "b-first-steps": {
     "title": "Ensimmäiset askeleet",
     "what": "Alaoksa heille, jotka eivät ole koskaan avanneet terminaalia eivätkä tiedä, mikä on \"projektikansio\". Kuusi atomaarista solmua: projektin käsite, järjestäminen levyllä, mikä terminaali on, miten luoda kansio, miten navigoida, mikä Node.js on.",
-    "why": "Kaikki Claude Code -oppitunnit ja osa Skills:istä olettavat perustan: osaat avata terminaalin, luoda kansion, asentaa paketin. Ilman tätä perustaa edistyneet osiot muuttuvat ylittämättömiksi.",
-    "when": "Aivan Claude-tutustumisen alussa, erityisesti jos aiot työskennellä Claude Code:n kautta, et vain claude.ai:ssa. Hyödyllinen myös ennen \"Ensimmäinen projekti\" -oppituntia.",
+    "why": "Kaikki [[node:claude-code|Claude Code]] -oppitunnit ja osa Skills:istä olettavat perustan: osaat avata terminaalin, luoda kansion, asentaa paketin. Ilman tätä perustaa edistyneet osiot muuttuvat ylittämättömiksi.",
+    "when": "Aivan Claude-tutustumisen alussa, erityisesti jos aiot työskennellä [[node:claude-code|Claude Code]]:n kautta, et vain [[node:pl-web-setup|claude.ai]]:ssa. Hyödyllinen myös ennen \"Ensimmäinen projekti\" -oppituntia.",
     "impact": "Poistaa terminaalipelon ja eliminoi pääblokkaajan \"en tiedä mistä aloittaa\".",
     "example": "En ole koskaan avannut terminaalia — mistä solmuista aloittaa?",
-    "mistakes": "Yrittää asentaa Claude Code:n ja tehdä /init heti ilman perusrakenteen ymmärrystä — kompastut joka komentoon."
+    "mistakes": "Yrittää asentaa [[node:claude-code|Claude Code]]:n ja tehdä [[node:cc-cmd-init|/init]] heti ilman perusrakenteen ymmärrystä — kompastut joka komentoon."
   },
   "fs-what-is-project": {
     "title": "Mikä on projekti",
-    "what": "\"Projekti\" Claudessa on joko kansio tietokoneellasi (Claude Code:lle) tai eristetty työtila claude.ai:ssa (Project). Molemmat tarkoittavat samaa: \"minulla on konteksti, ja Claude muistaa sen\". Asuvat vain eri paikoissa.",
-    "why": "Ilman tätä käsitettä sana \"projekti\" muuttuu sekaannukseksi: yksi puhuu Project:sta claude.ai:ssa, toinen kansiosta levyllä. Ymmärrys poistaa 90 % aloittelijoiden sekaannuksesta.",
-    "when": "Ennen mitä tahansa käytännön askelta — valintaa claude.ai:n ja Claude Code:n välillä, ennen mitään asennusta.",
-    "impact": "Valitset tietoisesti, missä projekti asuu: pilvessä (claude.ai Project) vai tietokoneellasi (kansio). Päätös syntyy minuutissa.",
-    "example": "Haluan tehdä säännöllisiä raporttien auditointeja — onko se Project claude.ai:ssa (lataan pohjat Knowledge:en) vai kansio Claude Code:lle (jos koodia)?",
-    "mistakes": "Ajatella, että \"projekti\" = jokin yksi asia. Luoda samanaikaisesti sekä Project claude.ai:ssa että kansio — eikä tietää, missä työsi asuu."
+    "what": "\"Projekti\" Claudessa on joko kansio tietokoneellasi ([[node:claude-code|Claude Code]]:lle) tai eristetty työtila [[node:pl-web-setup|claude.ai]]:ssa (Project). Molemmat tarkoittavat samaa: \"minulla on konteksti, ja Claude muistaa sen\". Asuvat vain eri paikoissa.",
+    "why": "Ilman tätä käsitettä sana \"projekti\" muuttuu sekaannukseksi: yksi puhuu Project:sta [[node:pl-web-setup|claude.ai]]:ssa, toinen kansiosta levyllä. Ymmärrys poistaa 90 % aloittelijoiden sekaannuksesta.",
+    "when": "Ennen mitä tahansa käytännön askelta — valintaa [[node:pl-web-setup|claude.ai]]:n ja [[node:claude-code|Claude Code]]:n välillä, ennen mitään asennusta.",
+    "impact": "Valitset tietoisesti, missä projekti asuu: pilvessä ([[node:pl-web-setup|claude.ai]] Project) vai tietokoneellasi (kansio). Päätös syntyy minuutissa.",
+    "example": "Haluan tehdä säännöllisiä raporttien auditointeja — onko se Project [[node:pl-web-setup|claude.ai]]:ssa (lataan pohjat Knowledge:en) vai kansio [[node:claude-code|Claude Code]]:lle (jos koodia)?",
+    "mistakes": "Ajatella, että \"projekti\" = jokin yksi asia. Luoda samanaikaisesti sekä Project [[node:pl-web-setup|claude.ai]]:ssa että kansio — eikä tietää, missä työsi asuu."
   },
   "fs-organize-disk": {
     "title": "Missä säilyttää projekteja",
@@ -128,7 +128,7 @@
   "fs-terminal": {
     "title": "Terminaali ilman pelkoa",
     "what": "Terminaali (mac: Terminal.app, Windows: PowerShell tai Windows Terminal) on ohjelma, jossa sanot tietokoneelle mitä tehdä sanoin klikkien sijaan. Musta ruutu kursorin kanssa. Komennot lyhyitä: cd, ls, mkdir. Virheet ovat vaarattomia — lue mitä siellä lukee ja korjaa.",
-    "why": "Puolet Clauden mahdollisuuksista (Claude Code, MCP, skriptit, pakettien asennus) elää terminaalissa. Ilman sitä olet rajoitettu vain claude.ai:hin.",
+    "why": "Puolet Clauden mahdollisuuksista ([[node:claude-code|Claude Code]], MCP, skriptit, pakettien asennus) elää terminaalissa. Ilman sitä olet rajoitettu vain [[node:pl-web-setup|claude.ai]]:hin.",
     "when": "Ensimmäistä kertaa — 5 minuuttia ennen ensimmäistä komentoa. \"Musta ruutu\" ei ole vaikeampi kuin tekstin syöttäminen chat:iin, vain eri säännöt.",
     "impact": "Psykologinen blokki poistuu. Terminaali on työkalu vaikeustasoltaan kuin \"muistio\", ei \"ohjelmointi\".",
     "example": "Avasin Terminal.app:n → kirjoitin `pwd` → näin /Users/nimi → ymmärrän missä olen. Sitten voin `mkdir my-project`.",
@@ -138,7 +138,7 @@
     "title": "Luo kansio",
     "what": "Kaksi tapaa tehdä uusi kansio. Finder:in/Explorer:in kautta: oikea klikkaus → New Folder. Terminaalin kautta: `mkdir kansion-nimi`. Molemmat valideja, molemmat luovat saman asian. Valitse mielialan mukaan.",
     "why": "Kansio = säilytin yhdelle projektille. Ilman sitä tiedostot lojuvat työpöydällä, ja viikon kuluttua et muista, mitkä mihinkin.",
-    "when": "Joka kerta, kun aloitat uuden aiheen (uusi työ Claude Code:n kanssa, uusi tiedostosetti analysoitavaksi, uusi kokeilu).",
+    "when": "Joka kerta, kun aloitat uuden aiheen (uusi työ [[node:claude-code|Claude Code]]:n kanssa, uusi tiedostosetti analysoitavaksi, uusi kokeilu).",
     "impact": "Selvä raja: \"tämä projekti — tämä kansio\". Poistaa projekti = poistaa kansio, ilman jälkiä. Kopioida projekti = kopioida kansio.",
     "example": "`mkdir ~/projects/my-first-claude-project` — kansio luotu sekunnissa. Tai Finder:issä: avasin ~/projects/, oikea klikkaus, \"New Folder\", kirjoitin nimen.",
     "mistakes": "Luoda kansio välilyönneillä tai kyrillisellä Finder:in kautta, ja sitten ihmetellä, miksi cd valittaa. Käytä lyhyitä latinalaisia nimiä."
@@ -146,18 +146,18 @@
   "fs-navigate": {
     "title": "Siirry ja katso",
     "what": "`cd kansion-nimi` — astu kansioon. `cd ..` — nouse tasolla ylöspäin. `pwd` — selvitä, missä olen nyt. `ls` (mac/linux) tai `dir` (Windows) — näytä, mitä kansiossa on. Tämä on koko sanasto 95 %:lle tehtävistä.",
-    "why": "Ilman navigointia et voi sanoa Claude Code:lle \"työskentele täällä\". Claude Code toimii aina nykyisessä kansiossa (siinä, jonka pwd näyttää).",
-    "when": "Ennen jokaista Claude Code -sessiota. Ennen riippuvuuksien asennusta. Ennen skriptien ajamista.",
+    "why": "Ilman navigointia et voi sanoa [[node:claude-code|Claude Code]]:lle \"työskentele täällä\". Claude Code toimii aina nykyisessä kansiossa (siinä, jonka pwd näyttää).",
+    "when": "Ennen jokaista [[node:claude-code|Claude Code]] -sessiota. Ennen riippuvuuksien asennusta. Ennen skriptien ajamista.",
     "impact": "Tiedät aina, missä olet, ja voit nopeasti hypätä minne tarvitset. 5 sekuntia vs 5 minuuttia \"minne minä jouduin\".",
-    "example": "`cd ~/projects/atlas` → `pwd` näyttää /Users/denisa/projects/atlas → `ls` näyttää src/, CLAUDE.md, package.json. Olen valmis ajamaan claude.",
+    "example": "`cd ~/projects/atlas` → `pwd` näyttää /Users/denisa/projects/atlas → `ls` näyttää src/, [[node:cc-md|CLAUDE.md]], package.json. Olen valmis ajamaan claude.",
     "mistakes": "Ajaa komentoja tarkistamatta `pwd`:tä — sitten ihmettelet, miksi tiedostot luotiin \"epäselvään paikkaan\". Tarkista aina, missä olet, ennen kuin teet jotain."
   },
   "fs-install-node": {
     "title": "Asenna Node.js",
-    "what": "Node.js on \"moottori\" npm-komennoille (mukaan lukien Claude Code). Asennus: macilla `brew install node`, Windows:issa installerilla osoitteesta nodejs.org. Tarkistus: `node -v` näyttää version.",
-    "why": "Ilman Node.js:ää npm install ei toimi, mikä tarkoittaa — Claude Code ei toimi. Tämä on perusprerequisite ennen mitä tahansa paikallista AI-työtä.",
-    "when": "Kerran — jokaisella koneella, jossa aiot käyttää Claude Code:a. Versio 18+ riittää.",
-    "impact": "Asennuksen jälkeen voit asentaa minkä tahansa npm-paketin yhdellä komennolla. Avautuu pääsy Claude Code:en, MCP-palvelimiin, kehitystyökaluihin.",
+    "what": "Node.js on \"moottori\" npm-komennoille (mukaan lukien [[node:claude-code|Claude Code]]). Asennus: macilla `brew install node`, Windows:issa installerilla osoitteesta nodejs.org. Tarkistus: `node -v` näyttää version.",
+    "why": "Ilman Node.js:ää npm install ei toimi, mikä tarkoittaa — [[node:claude-code|Claude Code]] ei toimi. Tämä on perusprerequisite ennen mitä tahansa paikallista AI-työtä.",
+    "when": "Kerran — jokaisella koneella, jossa aiot käyttää [[node:claude-code|Claude Code]]:a. Versio 18+ riittää.",
+    "impact": "Asennuksen jälkeen voit asentaa minkä tahansa npm-paketin yhdellä komennolla. Avautuu pääsy [[node:claude-code|Claude Code]]:en, MCP-palvelimiin, kehitystyökaluihin.",
     "example": "Macilla terminaalissa: `brew install node` → odotat 30 sekuntia → `node -v` → näet v20.11.0. Valmista. Sitten `npm install -g @anthropic-ai/claude-code`.",
     "mistakes": "Asentaa vanhan version (esim. 14.x) ja sitten ihmetellä virheitä \"engine not supported\". Asenna aina tuore LTS-versio."
   },
@@ -190,7 +190,7 @@
   },
   "pl-models": {
     "title": "Mallit tariffin mukaan",
-    "what": "Free antaa pääsyn vain osaan malleja (yleensä Sonnet ja Haiku). Opus — vain Prossa/Teamissa/Enterprisessä. Tarkka lista muuttuu — katso ajantasainen claude.ai:sta.",
+    "what": "Free antaa pääsyn vain osaan malleja (yleensä Sonnet ja Haiku). Opus — vain Prossa/Teamissa/Enterprisessä. Tarkka lista muuttuu — katso ajantasainen [[node:pl-web-setup|claude.ai]]:sta.",
     "why": "Jotta et pety: «miksi en näe Opusta» — kyse on vain tariffista.",
     "when": "Tariffin valinnassa ja konkreettisen tehtävän mallin valinnassa.",
     "impact": "Tariffin rajoitusten tunteminen = realistiset odotukset ja oikea työkalun valinta.",
@@ -199,12 +199,12 @@
   },
   "pl-platforms": {
     "title": "Missä Claude toimii",
-    "what": "Web (claude.ai), Mobile (iOS/Android), Desktop (Mac/Windows), CLI (Claude Code), VS Code/JetBrains-laajennukset, API. Jokaisella — omat vahvuutensa.",
+    "what": "Web ([[node:pl-web-setup|claude.ai]]), Mobile (iOS/Android), Desktop (Mac/Windows), CLI ([[node:claude-code|Claude Code]]), VS Code/JetBrains-laajennukset, API. Jokaisella — omat vahvuutensa.",
     "why": "Jotta käytät Claudea siellä, missä se on tehokkaampi, eikä «vain selaimessa».",
     "when": "Työkalun valinnassa tehtävälle: chat liikkeellä, kehitys, automaatio, embed tuotteeseen.",
     "impact": "Oikea kanavan valinta säästää 50%+ aikaa tyypillisessä tehtävässä.",
     "example": "Minulla on tehtävä — päivittäinen kehitys. Mikä Clauden kanava tarvitsen?",
-    "mistakes": "Käyttää vain claude.ai:tä kun tehtävä on koodista — menetät pääsyn tiedostoihin ja historiaan. Käytä Claude Codea."
+    "mistakes": "Käyttää vain [[node:pl-web-setup|claude.ai]]:tä kun tehtävä on koodista — menetät pääsyn tiedostoihin ja historiaan. Käytä Claude Codea."
   },
   "pl-rate": {
     "title": "Rate limits API",
@@ -217,19 +217,19 @@
   },
   "pl-compare": {
     "title": "Claude.ai vs Code vs API",
-    "what": "Kolme pääkanavaa, joiden välillä aloittelijat hämmentyvät. Claude.ai — selain-chat päivittäisiin tehtäviin. Claude Code — CLI/IDE tiedostojen ja koodin kanssa työskentelyyn. API — ohjelmallinen pääsy integraatioita ja automaatiota varten.",
-    "why": "Kanavan valinta tehtävälle määrittää 50% onnistumisesta: API:ssa tehdä ad-hoc-kysymyksiä — hidasta ja kallista; Claude.ai:ssa tehdä 20 tiedoston refaktorointi — mahdotonta.",
+    "what": "Kolme pääkanavaa, joiden välillä aloittelijat hämmentyvät. [[node:pl-web-setup|Claude.ai]] — selain-chat päivittäisiin tehtäviin. [[node:claude-code|Claude Code]] — CLI/IDE tiedostojen ja koodin kanssa työskentelyyn. API — ohjelmallinen pääsy integraatioita ja automaatiota varten.",
+    "why": "Kanavan valinta tehtävälle määrittää 50% onnistumisesta: API:ssa tehdä ad-hoc-kysymyksiä — hidasta ja kallista; [[node:pl-web-setup|Claude.ai]]:ssa tehdä 20 tiedoston refaktorointi — mahdotonta.",
     "when": "Aivan alussa, ennen tilausta. Ja uudelleen — kun tehtävä muuttaa luonnetta (chatista → koodiin → integraatioon).",
     "impact": "Oikea kanava = 2-5× nopeampi ja 2-3× halvempi samaan tehtävään.",
-    "example": "Chat / kertaluonteinen dokumentin auditointi → Claude.ai. Työ repositorion kanssa → Claude Code. Upota Claude omaan tuotteeseen / batch → API.",
-    "mistakes": "Asua vain Claude.ai:ssa kun tehtävät liittyvät tiedostoihin — menetät Claude Coden. Lähteä API:hin «koska kehittäjä» — menetät Claude.ai:n valmiin UI:n interaktiiviseen työhön."
+    "example": "Chat / kertaluonteinen dokumentin auditointi → [[node:pl-web-setup|Claude.ai]]. Työ repositorion kanssa → [[node:claude-code|Claude Code]]. Upota Claude omaan tuotteeseen / batch → API.",
+    "mistakes": "Asua vain [[node:pl-web-setup|Claude.ai]]:ssa kun tehtävät liittyvät tiedostoihin — menetät Claude Coden. Lähteä API:hin «koska kehittäjä» — menetät Claude.ai:n valmiin UI:n interaktiiviseen työhön."
   },
   "pl-web-setup": {
     "title": "Claude.ai-asennus",
-    "what": "Viisi asetusta jotka aloittelijan tulee tehdä kerran: Profile (nimi/kieli), Custom Instructions (About me + How to respond), Memory (päälle/pois), Privacy (kieltäydy koulutusdata-käytöstä) ja ensimmäisen Projektin luominen. Kestää 15 minuuttia — säästää tunteja toistuvasta kontekstista.",
+    "what": "Viisi asetusta jotka aloittelijan tulee tehdä kerran: Profile (nimi/kieli), [[node:instructions|Custom Instructions]] (About me + How to respond), Memory (päälle/pois), Privacy (kieltäydy koulutusdata-käytöstä) ja ensimmäisen Projektin luominen. Kestää 15 minuuttia — säästää tunteja toistuvasta kontekstista.",
     "why": "Ilman asetuksia jokainen uusi chat alkaa nollasta. Claude ei tiedä kuka olet, mitä teet tai miten haluat vastaukset muotoiltavan. Kertaluonteinen asennus muuttaa kaikki tulevat keskustelut.",
     "when": "Ensimmäisenä päivänä — ennen vakavaa työtä. Tarkista 2-3 kuukauden välein tehtäviesi muuttuessa.",
-    "impact": "Pelkät Custom Instructions lyhentävät kehotepituutta 30-50% ja parantavat ensimmäisen luonnoksen laatua merkittävästi.",
+    "impact": "Pelkät [[node:instructions|Custom Instructions]] lyhentävät kehotepituutta 30-50% ja parantavat ensimmäisen luonnoksen laatua merkittävästi.",
     "example": "Asennuksen jälkeen: avaat uuden chatin, kirjoitat 'tarkista tämä sähköpostiluonnos' — Claude tietää jo roolisi, haluamasi kielen, sävyn ja muodon. Ei tarvita briefingiä.",
     "mistakes": "Tietosuoja-asetusten ohittaminen — oletuksena tietojasi saatetaan käyttää mallin koulutukseen. Kieltäydy Settings → Privacy -kohdassa jos se on sinulle tärkeää."
   },
@@ -240,13 +240,13 @@
     "when": "Vaihda Desktopiin kun tarvitset MCP-integraatioita tai haluat Clauden aina saataville pikanäppäimellä ilman avointa selainvälilehteä.",
     "impact": "MCP muuttaa Clauden chatbotista assistentiksi joka pystyy lukemaan tiedostoja, kyselemään tietokantoja ja hallitsemaan paikallisia sovelluksia.",
     "example": "Desktop + MCP-tiedostojärjestelmäpalvelin: Claude lukee, kirjoittaa ja järjestää tiedostoja projektiikansiossasi ilman kopioi-liitä-toimintoa.",
-    "mistakes": "Luuleminen että Desktop on erillinen tuote — sama tili, tilaus ja mallit kuin claude.ai. Se vain lisää paikalliset supervoimat."
+    "mistakes": "Luuleminen että Desktop on erillinen tuote — sama tili, tilaus ja mallit kuin [[node:pl-web-setup|claude.ai]]. Se vain lisää paikalliset supervoimat."
   },
   "pl-api": {
     "title": "Claude API",
-    "what": "Anthropic API antaa kehittäjille ohjelmallisen pääsyn Claudeen. HTTP POST api.anthropic.com -osoitteeseen — saat virtautetun tai erävastaauksen. Tukee kaikkia malleja (Haiku, Sonnet, Opus). Tärkeimmät ominaisuudet: järjestelmäpromptit, moniturniset keskustelut, visio, tool use, streaming, prompt caching. SDK:t Pythonille ja TypeScriptille. Tokenipohjainen hinnoittelu — ei tilausvaatimusta.",
+    "what": "Anthropic API antaa kehittäjille ohjelmallisen pääsyn Claudeen. HTTP POST api.anthropic.com -osoitteeseen — saat virtautetun tai erävastaauksen. Tukee kaikkia malleja (Haiku, Sonnet, Opus). Tärkeimmät ominaisuudet: järjestelmäpromptit, moniturniset keskustelut, visio, tool use, streaming, [[node:cap-caching|prompt caching]]. SDK:t Pythonille ja TypeScriptille. Tokenipohjainen hinnoittelu — ei tilausvaatimusta.",
     "why": "Mahdollistaa Clauden upottamisen omiin tuotteisiin, skripteihin ja sisäisiin työkaluihin — täysi hallinta malliversioon, lämpötilaan, max_tokens-arvoon ja järjestelmäkäyttäytymiseen.",
-    "when": "Kun tarvitset Claudea omassa sovelluksessasi, työnkulun automaatiossa, datapipelinessa tai agentissa. Kaikki, mikä ylittää chat.claude.ai:n rajat — yksinkertaisesta sähköpostien tiivistämiseen tarkoitetusta skriptistä täyteen AI-tuotteeseen.",
+    "when": "Kun tarvitset Claudea omassa sovelluksessasi, työnkulun automaatiossa, datapipelinessa tai agentissa. Kaikki, mikä ylittää chat.[[node:pl-web-setup|claude.ai]]:n rajat — yksinkertaisesta sähköpostien tiivistämiseen tarkoitetusta skriptistä täyteen AI-tuotteeseen.",
     "impact": "Avaa Clauden insinööritiimeille. Yksi API-integraatio voi automatisoida tunteja toistuvasta tietotyöstä koko organisaatiossa.",
     "example": "curl https://api.anthropic.com/v1/messages -H 'x-api-key: $ANTHROPIC_API_KEY' -H 'anthropic-version: 2023-06-01' -d '{\"model\":\"claude-opus-4-5\",\"max_tokens\":1024,\"messages\":[{\"role\":\"user\",\"content\":\"Hello!\"}]}'",
     "mistakes": "API-avaimen laittaminen suoraan asiakaspuolen koodiin (se paljastuu). max_tokens-arvon jättäminen asettamatta — vastaukset voivat olla odottamattoman pitkiä ja kalliita. Streamingin ohittaminen pitkissä vastauksissa — käyttäjä odottaa koko vastausta."
@@ -262,7 +262,7 @@
   },
   "capabilities": {
     "title": "Ominaisuudet",
-    "what": "Clauden tekniset kyvyt tekstichatin lisäksi: kuvat, tiedostot, Web search, Memory, Computer use, työkalut, Prompt caching, Citations.",
+    "what": "Clauden tekniset kyvyt tekstichatin lisäksi: kuvat, tiedostot, Web search, Memory, [[node:cap-computer|Computer use]], työkalut, [[node:cap-caching|Prompt caching]], Citations.",
     "why": "Jotta käytät Claudea täysipainoisesti — useimmat käyttäjät tietävät 20% ominaisuuksista.",
     "when": "Perusteiden hallinnan jälkeen — tekniikoiden arsenaalin laajennus.",
     "impact": "Monikanavainen käyttö lisää Clauden sovellettavuutta 3-5×.",
@@ -289,7 +289,7 @@
   },
   "cap-search": {
     "title": "Web search",
-    "what": "Claude voi etsiä ajantasaisesta webistä (saatavilla claude.ai:ssa Prolla ja API:ssa). Saa tuoretta tietoa koulutuksen leikkauspisteen ulkopuolelta.",
+    "what": "Claude voi etsiä ajantasaisesta webistä (saatavilla [[node:pl-web-setup|claude.ai]]:ssa Prolla ja API:ssa). Saa tuoretta tietoa koulutuksen leikkauspisteen ulkopuolelta.",
     "why": "Jotta saa ajantasaista dataa: uutiset, julkaisut, hinnat, knowledge cutoffin jälkeiset tapahtumat.",
     "when": "Kun kysymys on «nyt», «äskettäin», «nykyiset hinnat», «tuoreet dokumentit».",
     "impact": "Poistaa LLM:n pääongelman — vanhentuneen knowledge cutoffin.",
@@ -327,7 +327,7 @@
     "title": "Prompt caching",
     "what": "Suurten järjestelmäpromptien ja kontekstien välimuistitus Anthropicin puolella. Toistuvissa pyynnöissä samalla etuliitteellä — laskutus alennetulla hinnalla ja nopeampi vastaus.",
     "why": "Jotta säästää tokeneita ja aikaa toistuvissa pyynnöissä samalla suurella kontekstilla.",
-    "when": "Pitkä CLAUDE.md, suuri Project Knowledge, system prompt > 1000 tokenia — kandidaatit.",
+    "when": "Pitkä [[node:cc-md|CLAUDE.md]], suuri Project Knowledge, system prompt > 1000 tokenia — kandidaatit.",
     "impact": "Vähentää toistuvien pyyntöjen kustannuksia 70-90% ja nopeuttaa vastausta.",
     "example": "Ota Prompt caching käyttöön system promptille yhtiön säännöillä API-pyynnöissä.",
     "mistakes": "Luottaa välimuistiin usein muuttuvassa kontekstissa — se invalidoidaan jatkuvasti."
@@ -343,7 +343,7 @@
   },
   "cap-code-exec": {
     "title": "Code execution",
-    "what": "Claude voi suorittaa Python-koodia eristetyssä sandboxissa: laskea, parsia CSV/JSON, piirtää graafeja, testata hypoteeseja datalla. Saatavilla claude.ai:ssa (osassa tariffeja) ja API:n kautta.",
+    "what": "Claude voi suorittaa Python-koodia eristetyssä sandboxissa: laskea, parsia CSV/JSON, piirtää graafeja, testata hypoteeseja datalla. Saatavilla [[node:pl-web-setup|claude.ai]]:ssa (osassa tariffeja) ja API:n kautta.",
     "why": "Jotta numerot eivät ole «keksittyjä»: oikeat laskennat, kaavojen validointi, oikean datan käsittely ilman tekstiksi muuntamista.",
     "when": "Taulukoiden analyysissä, tilastoissa, muunnoksissa, kaikissa tehtävissä joissa «malli laski» = «malli arvasi».",
     "impact": "Code execution muuttaa Clauden «älykkäästä keskustelijasta» «analyytikoksi laskimella» — numerot ovat oikein, ei likimääräisiä.",
@@ -352,7 +352,7 @@
   },
   "projects": {
     "title": "Projects",
-    "what": "Pitkäikäinen työtila Claude.ai:ssa: ladatut tiedostot + Custom Instructions + chattien historia.",
+    "what": "Pitkäikäinen työtila [[node:pl-web-setup|Claude.ai]]:ssa: ladatut tiedostot + [[node:instructions|Custom Instructions]] + chattien historia.",
     "why": "Jotta ei tarvitse toistaa kontekstia jokaisessa uudessa keskustelussa — Claude jo «tietää» tuotteesi.",
     "when": "Kun työ on toistuvaa: yksi tuote, yksi tiimi, yksi aihealue.",
     "impact": "1000 tokenin briiffauksen sijaan joka kerta — 0 tokenia ja suoraan asiaan.",
@@ -397,7 +397,7 @@
   },
   "artifacts": {
     "title": "Artifacts",
-    "what": "Erillinen paneeli Claude.ai:ssa, johon malli sijoittaa työn «tuotteen»: koodi, HTML, SVG, dokumentti, diagrammi.",
+    "what": "Erillinen paneeli [[node:pl-web-setup|Claude.ai]]:ssa, johon malli sijoittaa työn «tuotteen»: koodi, HTML, SVG, dokumentti, diagrammi.",
     "why": "Jotta tuote on erotettu selityksestä: sitä on mukava lukea, muokata, kopioida, iteratiivisesti parantaa.",
     "when": "Kun tulos on enemmän kuin pari kappaletta tai se on suoritettava/visuaalinen objekti.",
     "impact": "Artifactsien kanssa näet valmiin prototyypin, etkä «tekstipinoa» — palaute ja iteraatiot 5× nopeampia.",
@@ -442,7 +442,7 @@
   },
   "skills": {
     "title": "Skills",
-    "what": "Valmiit ohjeet Claudelle: lisäät Skillin Projektiin (claude.ai) tai luot skills/-kansion Claude Codeen — ja Claude seuraa reseptiä arvaamisensa sijaan.",
+    "what": "Valmiit ohjeet Claudelle: lisäät Skillin Projektiin ([[node:pl-web-setup|claude.ai]]) tai luot skills/-kansion Claude Codeen — ja Claude seuraa reseptiä arvaamisensa sijaan.",
     "why": "Ilman Skillejä selität joka kerta «miten tarkalleen»: tuhlataan tokeneita ja saadaan epäyhtenäisiä tuloksia. Skill lukitsee säännöt kerran — ja ne toimivat joka kerta.",
     "when": "Kun sama monivaiheinen prosessi toistuu ≥ 3 kertaa viikossa ja haluat saman tuloksen joka kerta.",
     "impact": "Skill = toistettava laatu. Käynnistä → saa saman tuloksen kuin viimeksi, ilman uudelleenselitystä.",
@@ -460,12 +460,12 @@
   },
   "s-trigger": {
     "title": "Triggerit",
-    "what": "Skill aktivoituu kahdella tavalla. (1) claude.ai: Claude lukee Projektin Skills-listan ja aktivoi oikean kontekstin perusteella. (2) Claude Code: kirjoitat eksplisiittisesti /skillname — Claude lukee SKILL.md:n ja seuraa vaiheita.",
-    "why": "Ymmärrät mekanismin — ymmärrät miksi Skill «ei lauennut»: joko kuvaus on liian epämääräinen (claude.ai) tai et kirjoittanut /skillname (Claude Code).",
+    "what": "Skill aktivoituu kahdella tavalla. (1) [[node:pl-web-setup|claude.ai]]: Claude lukee Projektin Skills-listan ja aktivoi oikean kontekstin perusteella. (2) [[node:claude-code|Claude Code]]: kirjoitat eksplisiittisesti /skillname — Claude lukee SKILL.md:n ja seuraa vaiheita.",
+    "why": "Ymmärrät mekanismin — ymmärrät miksi Skill «ei lauennut»: joko kuvaus on liian epämääräinen ([[node:pl-web-setup|claude.ai]]) tai et kirjoittanut /skillname ([[node:claude-code|Claude Code]]).",
     "when": "Kuvauksen kirjoittamisessa mille tahansa Skillille — tämä on kriittisin elementti.",
-    "impact": "Tarkka kuvaus claude.ai:ssa = Skill aktivoituu itsestään oikealla hetkellä. Eksplisiittinen /command Claude Codessa = ei magiaa, täysi hallinta.",
-    "example": "claude.ai — kuvaus «Use when user asks to create a presentation or prepare slides» → Claude aktivoi Skillin automaattisesti kun pyydetään «tee minulle diat».\nClaude Code — kirjoitat /audit → Claude lukee SKILL.md:n ja seuraa vaiheita, ohittaen muut Skillit.",
-    "mistakes": "claude.ai: kuvaus «auttaa dokumenteissa» — Skill laukeaa jokaiseen kysymykseen. Claude Code: odottaa Skillin aktivoituvan itsestään — se toimii vain eksplisiittisellä /commandilla."
+    "impact": "Tarkka kuvaus [[node:pl-web-setup|claude.ai]]:ssa = Skill aktivoituu itsestään oikealla hetkellä. Eksplisiittinen /command Claude Codessa = ei magiaa, täysi hallinta.",
+    "example": "[[node:pl-web-setup|claude.ai]] — kuvaus «Use when user asks to create a presentation or prepare slides» → Claude aktivoi Skillin automaattisesti kun pyydetään «tee minulle diat».\n[[node:claude-code|Claude Code]] — kirjoitat /audit → Claude lukee SKILL.md:n ja seuraa vaiheita, ohittaen muut Skillit.",
+    "mistakes": "[[node:pl-web-setup|claude.ai]]: kuvaus «auttaa dokumenteissa» — Skill laukeaa jokaiseen kysymykseen. [[node:claude-code|Claude Code]]: odottaa Skillin aktivoituvan itsestään — se toimii vain eksplisiittisellä /commandilla."
   },
   "s-files": {
     "title": "Apuriedostot",
@@ -478,7 +478,7 @@
   },
   "s-ready": {
     "title": "Valmiit Skills",
-    "what": "claude.ai:ssa: Project Settings → Skills → Browse → Anthropicin valmiit Skills. Lisää yhdellä klikillä: pptx (esitykset), xlsx (taulukot), pdf (dokumenttianalyysi), docx (Word-tiedostot), skill-creator (luo oma Skill).",
+    "what": "[[node:pl-web-setup|claude.ai]]:ssa: Project Settings → Skills → Browse → Anthropicin valmiit Skills. Lisää yhdellä klikillä: pptx (esitykset), xlsx (taulukot), pdf (dokumenttianalyysi), docx (Word-tiedostot), skill-creator (luo oma Skill).",
     "why": "Rutiinitehtävät — diat, PDF-analyysi, Excel — on jo kirjoitettu ja testattu Anthropicin toimesta. Ei tarvitse keksiä pyörää.",
     "when": "Ensimmäinen askel ennen oman Skillin rakentamista: tarkista onko valmiiksi olemassa tehtävällesi sopiva.",
     "impact": "Valmis Skill toimii heti ensimmäisestä ajosta — Anthropic on jo kirjoittanut vaiheet, pohjat ja promptit puolestasi.",
@@ -487,11 +487,11 @@
   },
   "s-create": {
     "title": "Oma Skill",
-    "what": "claude.ai: kirjoita /skill-creator Projektin chatissa — se kysyy kysymykset ja kokoaa Skillin puolestasi. Claude Code: luo skills/my-skill/-kansio SKILL.md-tiedostolla sisällä, aktivoi /my-skill-komennolla.",
+    "what": "[[node:pl-web-setup|claude.ai]]: kirjoita /skill-creator Projektin chatissa — se kysyy kysymykset ja kokoaa Skillin puolestasi. [[node:claude-code|Claude Code]]: luo skills/my-skill/-kansio SKILL.md-tiedostolla sisällä, aktivoi /my-skill-komennolla.",
     "why": "Mikä tahansa toistuva prosessi on Skill-ehdokas: tekstin auditointi, tehtävien muotoilu, raporttien laadinta, briiffit.",
     "when": "Kun käytät samaa prosessia ≥ 3 kertaa viikossa ja olet kyllästynyt selittämään «miten tarkalleen» Claudelle joka kerta.",
     "impact": "Maksaa itsensä takaisin jo 3. ajokerralla: säästää 5–15 minuuttia joka kerta kun muuten selittäisit prosessin uudelleen.",
-    "example": "claude.ai: kirjoita /skill-creator → se kysyy «nimi?», «milloin aktivoida?», «mitkä vaiheet?» → rakentaa Skillin automaattisesti.\nClaude Code: luo skills/brief/SKILL.md → kirjoita vaiheet → kirjoita /brief terminaalichatissa.",
+    "example": "[[node:pl-web-setup|claude.ai]]: kirjoita /skill-creator → se kysyy «nimi?», «milloin aktivoida?», «mitkä vaiheet?» → rakentaa Skillin automaattisesti.\n[[node:claude-code|Claude Code]]: luo skills/brief/SKILL.md → kirjoita vaiheet → kirjoita /brief terminaalichatissa.",
     "mistakes": "Skillin luominen «varmuuden vuoksi» — ilman todellista toistuvaa tarvetta se ei koskaan maksa itseään takaisin ja sotkee Projektiasi."
   },
   "s-vs-subagents": {
@@ -509,8 +509,8 @@
     "why": "Jotta Claude voi todella työskennellä koodisi kanssa — eikä antaa neuvoja «liitä tämä snippet».",
     "when": "Kehitykseen, refaktorointiin, koodi-auditointeihin, tehtävien automatisointiin repositoriossa.",
     "impact": "Täysipainoinen ympäristö: laatu 5-10× korkeampi kuin «copy-paste chatista».",
-    "example": "Käynnistä claude repositoriossa → /init → pyydä tekemään security review viimeisistä commiteista.",
-    "mistakes": "Käyttää Claude Codea ilman CLAUDE.md:tä — malli selvittää projektia joka kerta uudelleen."
+    "example": "Käynnistä claude repositoriossa → [[node:cc-cmd-init|/init]] → pyydä tekemään security review viimeisistä commiteista.",
+    "mistakes": "Käyttää Claude Codea ilman [[node:cc-md|CLAUDE.md]]:tä — malli selvittää projektia joka kerta uudelleen."
   },
   "cc-install": {
     "title": "Asennus ja käynnistys",
@@ -518,7 +518,7 @@
     "why": "Täysipainoinen CLI-agentti pääsyllä tiedostoihin, terminaaliin, verkkoon — yhdellä komennolla.",
     "when": "Kerran ympäristön asetuksessa — sitten vain claude projektin kansiossa.",
     "impact": "Ilman asennusta ei ole Skillsiä, Hooksia eikä Subagentteja — tämä on perusta.",
-    "example": "cd ~/projects/site && claude → /init CLAUDE.md:n generointiin.",
+    "example": "cd ~/projects/site && claude → [[node:cc-cmd-init|/init]] [[node:cc-md|CLAUDE.md]]:n generointiin.",
     "mistakes": "Käynnistää git-repositorion ulkopuolella — menetät historian kontekstin ja osan ominaisuuksista."
   },
   "cc-terminal": {
@@ -550,7 +550,7 @@
   },
   "cc-tty-modes": {
     "title": "Toimintatilat",
-    "what": "Tilat: tavallinen chat, Plan mode (vain suunnittelu ilman muutoksia), fast mode (Haiku — nopeammin).",
+    "what": "Tilat: tavallinen chat, [[node:cc-plan-mode|Plan mode]] (vain suunnittelu ilman muutoksia), fast mode (Haiku — nopeammin).",
     "why": "Erilaisille tehtäville — eri vapaus: vaaralliseen muutokseen tarvitaan Plan, rutiiniin — fast.",
     "when": "Plan — ennen suuria muutoksia. Fast — päivittäiseen työhön ja nopeisiin korjauksiin.",
     "impact": "Plan suojaa tarpeettomilta muutoksilta. Fast — säästää aikaa yksinkertaisissa tehtävissä.",
@@ -579,7 +579,7 @@
     "title": "settings.json (projekti)",
     "what": ".claude/settings.json projektin juuressa — tiimin yhteiset säännöt: Permissions, Hooks, env, Statusline.",
     "why": "Jotta koko tiimi työskentelee samoilla säännöillä, ilman «minulla toimii / sinulla ei».",
-    "when": "Heti /init:n jälkeen — lisää perus-Permissions ja Hooks.",
+    "when": "Heti [[node:cc-cmd-init|/init]]:n jälkeen — lisää perus-Permissions ja Hooks.",
     "impact": "Yhtenäinen standardi, vähemmän «aseta ohjeideni mukaan» onboardingissa.",
     "example": "permissions.allow: [Bash(npm test), Edit(./src/**)], hooks.PostToolUse:Write: prettier.",
     "mistakes": "Säilyttää siellä henkilökohtaiset salaisuudet tai API-avaimet — tiedosto menee gitiin."
@@ -622,39 +622,39 @@
   },
   "cc-slash": {
     "title": "Slash-komennot",
-    "what": "Komennot kuten /init, /clear, /compact, /model, /review — sisäänrakennetut ja käyttäjän. Toimivat sekä terminaalissa että claude.ai:n chateissa.",
+    "what": "Komennot kuten [[node:cc-cmd-init|/init]], [[node:cc-cmd-clear|/clear]], [[node:cc-cmd-compact|/compact]], /model, /review — sisäänrakennetut ja käyttäjän. Toimivat sekä terminaalissa että [[node:pl-web-setup|claude.ai]]:n chateissa.",
     "why": "Käynnistävät monimutkaisia skenaarioita yhdellä painalluksella — ilman pitkää promptia.",
     "when": "Kun tehtävä on tyypillinen: review, alustus, kontekstin tyhjennys, mallin vaihto.",
     "impact": "Slash-komennot säästävät 80% kirjoittamisesta toistuviin tehtäviin.",
-    "example": "/review — strukturoitu code review nykyisestä haarasta. /compact — tiivistä konteksti ilman historian menetystä.",
-    "mistakes": "Sivuuttaa /clear kun konteksti «pilaantui» — vastausten laatu laskee."
+    "example": "/review — strukturoitu code review nykyisestä haarasta. [[node:cc-cmd-compact|/compact]] — tiivistä konteksti ilman historian menetystä.",
+    "mistakes": "Sivuuttaa [[node:cc-cmd-clear|/clear]] kun konteksti «pilaantui» — vastausten laatu laskee."
   },
   "cc-cmd-init": {
     "title": "/init — alustus",
-    "what": "Skannaa nykyisen projektin ja generoi CLAUDE.md:n: pino, konventiot, sisääntulopisteet, tabut.",
-    "why": "Jotta ei tarvitse kirjoittaa CLAUDE.md:tä nollasta — malli itse kuvaa kehykset, ja sinä viimeistelet.",
-    "when": "Ensimmäisellä Claude Code -käynnistyksellä uudessa projektissa.",
+    "what": "Skannaa nykyisen projektin ja generoi [[node:cc-md|CLAUDE.md]]:n: pino, konventiot, sisääntulopisteet, tabut.",
+    "why": "Jotta ei tarvitse kirjoittaa [[node:cc-md|CLAUDE.md]]:tä nollasta — malli itse kuvaa kehykset, ja sinä viimeistelet.",
+    "when": "Ensimmäisellä [[node:claude-code|Claude Code]] -käynnistyksellä uudessa projektissa.",
     "impact": "30 minuuttia käsityötä → 3 minuuttia, plus kattaa sen, mitä et olisi ajatellut.",
     "example": "claude repossa → /init → viimeistele «tabu»- ja «arkkitehtoniset päätökset» -osiot.",
     "mistakes": "Käyttää generoitua tiedostoa lopullisena — ilman korjauksia se on tarpeettoman raskas."
   },
   "cc-cmd-clear": {
     "title": "/clear — tyhjennä chat",
-    "what": "Tyhjentää nykyisen keskustelun ja kontekstin — aloittaa uuden chatin samalla CLAUDE.md:llä ja Hooksilla.",
-    "why": "Jotta vapauttaa konteksti-ikkuna kun tehtävä on suljettu tai aihe vaihtui.",
+    "what": "Tyhjentää nykyisen keskustelun ja kontekstin — aloittaa uuden chatin samalla [[node:cc-md|CLAUDE.md]]:llä ja Hooksilla.",
+    "why": "Jotta vapauttaa [[node:b-context|konteksti-ikkuna]] kun tehtävä on suljettu tai aihe vaihtui.",
     "when": "Osatehtävän valmistuttua, ennen uuden ison työn aloittamista.",
     "impact": "Puhdas konteksti ≈ +30-50% seuraavien vastausten tarkkuuteen.",
     "example": "/clear PR-reviewn jälkeen, ennen kuin aloitat toisen koodi-osan refaktoroinnin.",
-    "mistakes": "Tehdä /clear keskellä työtä ja menettää välitulokset — parempi /compact."
+    "mistakes": "Tehdä /clear keskellä työtä ja menettää välitulokset — parempi [[node:cc-cmd-compact|/compact]]."
   },
   "cc-cmd-compact": {
     "title": "/compact — tiivistä konteksti",
     "what": "Tiivistää nykyisen kontekstin — malli itse tiivistää historian ja jatkaa kompaktilla versiolla.",
-    "why": "Konteksti-ikkuna on lähellä rajaa, mutta historiaa ei saa menettää — tehtävä on käynnissä.",
+    "why": "[[node:b-context|Konteksti-ikkuna]] on lähellä rajaa, mutta historiaa ei saa menettää — tehtävä on käynnissä.",
     "when": "Kun chat on kasvanut ja malli on alkanut «unohtaa» aiempien keskustelujen yksityiskohtia.",
     "impact": "Vapauttaa 80-90% kontekstista säilyttäen keskeiset johtopäätökset.",
     "example": "/compact pitkän tutkimuksen jälkeen, ennen siirtymistä koodin kirjoittamiseen.",
-    "mistakes": "Luottaa compactiin loputtomiin — ennemmin tai myöhemmin tarvitaan täysi /clear."
+    "mistakes": "Luottaa compactiin loputtomiin — ennemmin tai myöhemmin tarvitaan täysi [[node:cc-cmd-clear|/clear]]."
   },
   "cc-cmd-model": {
     "title": "/model — mallin valinta",
@@ -722,10 +722,10 @@
   "cc-md": {
     "title": "CLAUDE.md",
     "what": "Projektin ohjetiedosto: pino, konventiot, tärkeät polut, tabut. Ladataan jokaiseen keskusteluun.",
-    "why": "Tämä on projektin «luonne» Claude Codessa — kuin Custom Instructions, mutta koodille.",
+    "why": "Tämä on projektin «luonne» Claude Codessa — kuin [[node:instructions|Custom Instructions]], mutta koodille.",
     "when": "Jokaisessa projektissa, jossa käytetään Claude Codea — pakollinen.",
     "impact": "Ilman CLAUDE.md:tä malli käyttää ensimmäiset 10 minuuttia siihen, mitä on jo kuvattu.",
-    "example": "Generoi CLAUDE.md komennolla /init ja lisää «älä käytä any TypeScriptissä».",
+    "example": "Generoi CLAUDE.md komennolla [[node:cc-cmd-init|/init]] ja lisää «älä käytä any TypeScriptissä».",
     "mistakes": "Listata siellä ilmeistä (repon nimi, että se on React) — arvokkaampia ovat säännöt ja tabut."
   },
   "cc-subagents": {
@@ -748,7 +748,7 @@
   },
   "cc-ide": {
     "title": "IDE-laajennukset",
-    "what": "Claude Code VS Codessa ja JetBrainsissa: sama agentti, mutta inline-muutoksilla suoraan editorissa, diff-view accept/rejectillä, synkronointi auki olevien välilehtien kanssa. Asennetaan marketplacesta.",
+    "what": "[[node:claude-code|Claude Code]] VS Codessa ja JetBrainsissa: sama agentti, mutta inline-muutoksilla suoraan editorissa, diff-view accept/rejectillä, synkronointi auki olevien välilehtien kanssa. Asennetaan marketplacesta.",
     "why": "Jotta ei tarvitse vaihtaa terminaalin ja IDE:n välillä joka muutokseen: vähemmän konteksti-vaihteluita, nopeampi muutosten katselmus.",
     "when": "Kun päätyö on IDE:ssä ja Clauden täytyy olla «käden ulottuvilla» editorin sisällä, ei erillisessä terminaali-ikkunassa.",
     "impact": "IDE-integraatio = 1.5-2× nopeampi accept/reject-sykli vs terminaali; näet muutoksen ympäröivän koodin kontekstissa.",
@@ -820,7 +820,7 @@
   },
   "instructions": {
     "title": "Custom Instructions",
-    "what": "Pysyvät ohjeet, jotka Claude ottaa huomioon jokaisessa vastauksessa — tilin, Projectin tai CLAUDE.md:n tasolla.",
+    "what": "Pysyvät ohjeet, jotka Claude ottaa huomioon jokaisessa vastauksessa — tilin, Projectin tai [[node:cc-md|CLAUDE.md]]:n tasolla.",
     "why": "Jotta ei tarvitse toistaa «vastaa suomeksi, lyhyesti, ilman höttöä» jokaisessa viestissä.",
     "when": "Heti ympäristön asetuksessa — tämä on ensimmäinen investointi, joka maksaa itsensä takaisin ensimmäisestä keskustelusta.",
     "impact": "Hyvät ohjeet = +30-50% kaikkien vastausten johdonmukaisuuteen ja tyyliin.",
@@ -850,7 +850,7 @@
     "what": "Projektin tiedosto Claude Codessa: pino, konventiot, tabut, kriittiset polut.",
     "why": "Tämä on tason «miten kirjoitamme koodia juuri täällä» ohjeet.",
     "when": "Jokaisessa repossa, jossa käytetään Claude Codea.",
-    "impact": "Ilman CLAUDE.md:tä Clauden koodi — yleinen, sen kanssa — vastaa normejasi.",
+    "impact": "Ilman [[node:cc-md|CLAUDE.md]]:tä Clauden koodi — yleinen, sen kanssa — vastaa normejasi.",
     "example": "Stack: Next.js + Tailwind. Älä koskaan käytä any:tä. Testit — Vitest, ei Jest.",
     "mistakes": "Kuvata siellä ilmeistä (että tämä on React) — parempi kirjoittaa epäilmeisistä säännöistä."
   },
@@ -955,7 +955,7 @@
   },
   "ready-prompts": {
     "title": "Valmiit promptit",
-    "what": "Kokoelma toistettavia prompteja tyypillisiin tehtäviin — kopioi FAB-painikkeesta vasemmalla alhaalla.",
+    "what": "Kokoelma toistettavia prompteja tyypillisiin tehtäviin — esimerkkejä valmiista: [[prompt:create-project|«Luo Project»]], [[prompt:create-skill|«Luo Skill»]], [[prompt:create-claudemd|«Luo CLAUDE.md»]], [[prompt:expert-audit|«Asiantuntija-auditointi»]].",
     "why": "Jotta ei tarvitse «keksiä muotoilua» joka kerta — on toimiva pohja, testattu käytännössä.",
     "when": "Kun tehtävä toistuu, mutta Skillin muotoilu on liian aikaista — promptin voi nopeasti sovittaa.",
     "impact": "Valmiit promptit säästävät 5-15 minuuttia tehtävässä ja nostavat laadun lattiaa.",
@@ -966,9 +966,9 @@
     "title": "Luo Project",
     "what": "Malli uuden Projectin nopeaan asetukseen: rooli, muoto, tabut, KPI:t.",
     "why": "Kaikki Projectit lähtevät heti ammattitasolle — eivätkä «paljas chat».",
-    "when": "Minkä tahansa uuden Projectin luomisessa claude.ai:ssa.",
+    "when": "Minkä tahansa uuden Projectin luomisessa [[node:pl-web-setup|claude.ai]]:ssa.",
     "impact": "Ilman hyvää mallia Project = vain kansio tiedostoineen, ei erikoistunut avustaja.",
-    "example": "Ks. FAB «Valmiit promptit» → «Luo Project».",
+    "example": "Avaa [[prompt:create-project|valmis prompti «Luo Project»]].",
     "mistakes": "Kopioida sellaisenaan — pakollista laittaa oma aihealue ja tyyli."
   },
   "rp-artifact": {
@@ -977,7 +977,7 @@
     "why": "Takaa previewn, responsiivisuuden, perussaavutettavuuden ensimmäisellä kerralla.",
     "when": "Kun tarvitaan interaktiivinen prototyyppi, ei tekstikuvaus.",
     "impact": "Hyvä prompti = 1-2 iteraatiossa vs 5-7.",
-    "example": "Ks. FAB → «Luo HTML-prototyyppi».",
+    "example": "Avaa [[prompt:html-prototype|valmis prompti «Luo HTML-prototyyppi»]].",
     "mistakes": "Olla määrittämättä kohdeyleisö ja laite — saat generic-vedoksen."
   },
   "rp-skill": {
@@ -986,16 +986,16 @@
     "why": "Muuttaa idean toimivaksi Skilliksi yhdellä läpiviennillä.",
     "when": "Kun on vakiintunut käytäntö ja sitä halutaan formalisoida.",
     "impact": "Ilman mallia Skill usein «ei laukea» huonon triggerin takia.",
-    "example": "Ks. FAB → «Luo Skill».",
+    "example": "Avaa [[prompt:create-skill|valmis prompti «Luo Skill»]].",
     "mistakes": "Olla määrittämättä triggereitä nimenomaisesti — Skill ei aktivoidu silloin, kun pitää."
   },
   "rp-claudemd": {
     "title": "Luo CLAUDE.md",
-    "what": "Prompti CLAUDE.md:n generointiin oikealla rakenteella: pino, konventiot, tabut, sisääntulopisteet.",
+    "what": "Prompti [[node:cc-md|CLAUDE.md]]:n generointiin oikealla rakenteella: pino, konventiot, tabut, sisääntulopisteet.",
     "why": "Valmis projektitiedosto 1 minuutissa — ei tunti manuaalista muotoilua.",
     "when": "Jokaisessa projektissa, jossa käynnistät Claude Coden.",
-    "impact": "CLAUDE.md mallista = malli kirjoittaa heti koodia «projektin tyylissä».",
-    "example": "Ks. FAB → «Luo CLAUDE.md».",
+    "impact": "[[node:cc-md|CLAUDE.md]] mallista = malli kirjoittaa heti koodia «projektin tyylissä».",
+    "example": "Avaa [[prompt:create-claudemd|valmis prompti «Luo CLAUDE.md»]].",
     "mistakes": "Olla määrittämättä tabuja — Claude käyttää kuvioita, jotka ovat projektissa kiellettyjä."
   },
   "rp-audit": {
@@ -1004,7 +1004,7 @@
     "why": "Kattaa 80% tyypillisistä ongelmista yhdellä läpiviennillä.",
     "when": "Ennen jonkin uuden käynnistystä tai suuren muutoksen jälkeen.",
     "impact": "Strukturoitu auditointi = toimet mielipiteiden sijaan.",
-    "example": "Ks. FAB → «Tee asiantuntija-auditointi».",
+    "example": "Avaa [[prompt:expert-audit|valmis prompti «Tee asiantuntija-auditointi»]].",
     "mistakes": "Olla määrittämättä kontekstia ja yleisöä — suositukset ovat irrallaan todellisuudesta."
   },
   "scenarios": {
@@ -1030,7 +1030,7 @@
     "what": "Koodin kirjoittaminen, refaktorointi, debugaus, migraatiot, testit — erityisesti Claude Codessa.",
     "why": "Claude on yksi parhaista koodimalleista; yhdistettynä CLI:hin tulee melkein harjoittelijaksi.",
     "when": "Mihin tahansa kehitykseen prototyypistä prodaktioon.",
-    "impact": "Toimii vahvemmin CLAUDE.md:n ja Hooksien kanssa — muuten menee omiin tapoihin.",
+    "impact": "Toimii vahvemmin [[node:cc-md|CLAUDE.md]]:n ja Hooksien kanssa — muuten menee omiin tapoihin.",
     "example": "Kirjoita tämä endpoint uudelleen niin, että se käyttää transaktioita ja välimuistittaa tuloksen 60s:n ajan.",
     "mistakes": "Työskennellä chatissa, ei Claude Codessa — menetät pääsyn tiedostoihin ja historiaan."
   },
@@ -1162,18 +1162,18 @@
   },
   "cc-grp-session": {
     "title": "Istunnonhallinta",
-    "what": "/clear — uusi istunto. /compact — tiivistä konteksti historian säilyttäen. /resume — jatka edellistä istuntoa. /rename — nimeä keskustelu. /background — jatka terminaalin sulkemisen jälkeen. /branch — haaruta keskustelu nykyisestä kohdasta. /rewind — palauta koodi ja chat aiempaan tilaan. /export — tallenna keskustelu tiedostoon. /copy — kopioi viimeisin vastaus. /recap — lyhyt istunnon yhteenveto. /desktop — siirrä Claude Desktopiin. /teleport — jatka claude.ai:sta. /remote-control — hallitse puhelimelta. /exit — sulje CLI.",
+    "what": "[[node:cc-cmd-clear|/clear]] — uusi istunto. [[node:cc-cmd-compact|/compact]] — tiivistä konteksti historian säilyttäen. /resume — jatka edellistä istuntoa. /rename — nimeä keskustelu. /background — jatka terminaalin sulkemisen jälkeen. /branch — haaruta keskustelu nykyisestä kohdasta. /rewind — palauta koodi ja chat aiempaan tilaan. /export — tallenna keskustelu tiedostoon. /copy — kopioi viimeisin vastaus. /recap — lyhyt istunnon yhteenveto. /desktop — siirrä Claude Desktopiin. /teleport — jatka [[node:pl-web-setup|claude.ai]]:sta. /remote-control — hallitse puhelimelta. /exit — sulje CLI.",
     "why": "Istunnot ovat pysyviä — niitä voi keskeyttää, jatkaa, haarauttaa ja viedä ulos. Istuntokomentojen ymmärtäminen estää kontekstin menetyksen.",
     "when": "Pitkät koodaussessiot, laitteen vaihto, edistymisen tallentaminen, virheiden palautus /rewindillä.",
     "impact": "Et koskaan menetä työtä. Monimutkaisten tehtävien jatkaminen. Kokeilu ilman riskiä /branchilla.",
     "example": "/branch ennen riskialtista refaktorointia → kokeile vapaasti → jos epäonnistuu, pääistunto koskematon.",
-    "mistakes": "/clearin käyttö /compactin sijaan — /clear poistaa kontekstin, /compact tiivistää sen."
+    "mistakes": "[[node:cc-cmd-clear|/clear]]in käyttö [[node:cc-cmd-compact|/compact]]in sijaan — /clear poistaa kontekstin, /compact tiivistää sen."
   },
   "cc-grp-context": {
     "title": "Konteksti ja koodi",
-    "what": "/add-dir — lisää hakemisto Clauden kontekstiin. /context — visualisoi kontekstin käyttö ruudukkoina. /memory — muokkaa CLAUDE.md-muistitiedostoja. /diff — näytä sitoutumattomat muutokset. /focus — näytä vain kehote, työkaluyhteenveto ja vastaus. /goal — aseta tavoite ja jatka kunnes se täyttyy. /init — luo CLAUDE.md projektille.",
-    "why": "Konteksti-ikkuna on rajallinen. Nämä komennot hallitsevat mitä Claude näkee ja mihin sen huomio kohdistuu.",
-    "when": "Suuret koodipohjat (lisää vain tarvittavat hakemistot), pitkät sessiot (/context seuranta), projektin aloitus (/init).",
+    "what": "/add-dir — lisää hakemisto Clauden kontekstiin. /context — visualisoi kontekstin käyttö ruudukkoina. /memory — muokkaa [[node:cc-md|CLAUDE.md]]-muistitiedostoja. /diff — näytä sitoutumattomat muutokset. /focus — näytä vain kehote, työkaluyhteenveto ja vastaus. /goal — aseta tavoite ja jatka kunnes se täyttyy. [[node:cc-cmd-init|/init]] — luo CLAUDE.md projektille.",
+    "why": "[[node:b-context|Konteksti-ikkuna]] on rajallinen. Nämä komennot hallitsevat mitä Claude näkee ja mihin sen huomio kohdistuu.",
+    "when": "Suuret koodipohjat (lisää vain tarvittavat hakemistot), pitkät sessiot (/context seuranta), projektin aloitus ([[node:cc-cmd-init|/init]]).",
     "impact": "Paremmat vastaukset, vähemmän hallusinaatioita, nopeampi toiminta.",
     "example": "/add-dir src/components → Claude lukee kaikki komponentit automaattisesti.",
     "mistakes": "Koko repositorion lisääminen kun tarvitaan vain yksi kansio — tuhlaa kontekstia."
@@ -1189,7 +1189,7 @@
   },
   "cc-grp-ui": {
     "title": "Käyttöliittymä ja ulkoasu",
-    "what": "/color — kehoterivin väri istunnolle. /theme — yleinen teema. /tui — terminaalin UI-renderer. /terminal-setup — Option+Enter rivinvaihdolle. /voice — äänitila. /focus — minimaalinen näyttö. /radio — Claude FM lo-fi taustamusiikki. /stickers — tilaa Claude Code -tarroja.",
+    "what": "/color — kehoterivin väri istunnolle. /theme — yleinen teema. /tui — terminaalin UI-renderer. /terminal-setup — Option+Enter rivinvaihdolle. /voice — äänitila. /focus — minimaalinen näyttö. /radio — Claude FM lo-fi taustamusiikki. /stickers — tilaa [[node:claude-code|Claude Code]] -tarroja.",
     "why": "Mukava käyttöliittymä vähentää kitkaa pitkissä koodaussessioissa.",
     "when": "/terminal-setup kerran asennuksen jälkeen. /focus kun tulostus on liian meluisaa.",
     "impact": "Vähemmän kognitiivista kuormaa. Parempi luettavuus.",
@@ -1261,7 +1261,7 @@
   },
   "cap-limitations": {
     "title": "Kyvyt ja rajoitukset",
-    "what": "Claude on tehokas, mutta sillä on todellisia rajoituksia jotka jokaisen käyttäjän on ymmärrettävä. Tärkeimmät: Tiedon katkaisuajankohta (koulutusdata päättyy ~alkuvuoteen 2026, ei tietoisuutta sen jälkeisistä tapahtumista). Hallusinaatiot (Claude voi varmuudella ilmoittaa virheellisiä faktoja, erityisesti kapeilla aiheilla tai 'täyttäessään aukkoja'). Ei reaaliaikaista dataa (ei voi selata verkkoa ellei web-haku ole käytössä). Konteksti-ikkuna (pitkissä keskusteluissa varhaisempi sisältö 'putoaa pois'). Ei kuvanluontia. Kirjaimellinen tulkinta (ei havaitse ironiaa, kulttuurisia vivahteja, implisiittistä merkitystä).",
+    "what": "Claude on tehokas, mutta sillä on todellisia rajoituksia jotka jokaisen käyttäjän on ymmärrettävä. Tärkeimmät: Tiedon katkaisuajankohta (koulutusdata päättyy ~alkuvuoteen 2026, ei tietoisuutta sen jälkeisistä tapahtumista). Hallusinaatiot (Claude voi varmuudella ilmoittaa virheellisiä faktoja, erityisesti kapeilla aiheilla tai 'täyttäessään aukkoja'). Ei reaaliaikaista dataa (ei voi selata verkkoa ellei web-haku ole käytössä). [[node:b-context|Konteksti-ikkuna]] (pitkissä keskusteluissa varhaisempi sisältö 'putoaa pois'). Ei kuvanluontia. Kirjaimellinen tulkinta (ei havaitse ironiaa, kulttuurisia vivahteja, implisiittistä merkitystä).",
     "why": "Suurin osa AI-virheistä tapahtuu koska käyttäjät eivät tunne rajoja. Rajoitusten ymmärtäminen mahdollistaa kehotteen ja työnkulkujen suunnittelun niin, että ne kiertävät rajoitukset eivätkä törmää niihin.",
     "when": "Aina kun käytät Claudea faktoihin, viimeisiin tapahtumiin, pitkäkestoisiin tehtäviin tai tärkeisiin päätöksiin — tarkista tulokset. Älä koskaan luota pelkästään Claudeen lakiin, terveyteen tai talouteen liittyvissä asioissa.",
     "impact": "Käyttäjät jotka ymmärtävät rajoitukset tekevät 3-5 kertaa vähemmän virheitä. He tarkistavat tulokset, käyttävät web-hakua tarvittaessa, jakavat pitkät tehtävät lyhyempiin sessioihin ja pitävät Claudea luonnoksena eikä lopullisena lähteenä.",
@@ -1279,7 +1279,7 @@
   },
   "foundation": {
     "title": "Claude Foundation",
-    "what": "Perustaso: mitä Claude oikeasti on, miten se toimii, mitkä ovat sen rajat. Kaikki muu — [[node:systems|Systems]], [[node:transformation|Transformation]], [[node:use-cases|Use Cases]] — nojaa tähän.\n\nKun luet RAGista, multi-agentista tai workflow'sta muissa osioissa — palaat tänne kontekstia varten: mikä malli, mikä konteksti-ikkuna, mitkä kustannukset.",
+    "what": "Perustaso: mitä Claude oikeasti on, miten se toimii, mitkä ovat sen rajat. Kaikki muu — [[node:systems|Systems]], [[node:transformation|Transformation]], [[node:use-cases|Use Cases]] — nojaa tähän.\n\nKun luet RAGista, multi-agentista tai workflow'sta muissa osioissa — palaat tänne kontekstia varten: mikä malli, mikä [[node:b-context|konteksti-ikkuna]], mitkä kustannukset.",
     "why": "Ilman Foundationia muu on taikuutta. Et ymmärrä miksi jokin toimii tänään eikä huomenna, miksi yksi malli on 15× halvempi kuin toinen, miksi promptisi toimii chatissa mutta hajoaa tuotannossa.\n\nTämä on taso jossa «AI tuntuu taikuudelta» muuttuu «tiedän mitä konepellin alla tapahtuu»:ksi.",
     "when": "Aloita tästä jos olet uusi Clauden kanssa. Palaa tänne kun jokin lakkaa toimimasta muissa kerroksissa etkä ymmärrä miksi.\n\nJos olet työskennellyt Clauden kanssa 6+ kuukautta — tiedät luultavasti 70% tästä. Selaa, etsi sokeita kohtia.",
     "impact": "Foundationin jälkeen: et enää yllätyt. Tiedät mikä malli valita mihinkin tehtävään. Et polta budjettia «varmuuden vuoksi». Et syytä mallia kun oikeasti prompti on ongelma.\n\nPääjuttu: ymmärrät työkalua sen sijaan että uskoisit siihen.",
@@ -1352,7 +1352,7 @@
   "af-llm-basics": {
     "title": "LLM: kuinka se toimii",
     "what": "Large Language Model — transformer-neuroverkko, joka on koulutettu ennustamaan seuraavan tokenin tekstissä. Claude, GPT, Gemini, Llama — kaikki LLM:iä. Eroavat koossa (miljardit parametrit), arkkitehtuurissa (decoder-only, mixture-of-experts) ja koulutusdatassa.",
-    "why": "Ymmärtääksesi miksi LLM erehtyy, hallusinoi tai unohtaa eilisen keskustelun — sinun on tiedettävä, mitä sisällä on. Tämä selittää KAIKKI rajoitukset: konteksti-ikkuna, kustannukset, latenssi, hallusinaatiot.",
+    "why": "Ymmärtääksesi miksi LLM erehtyy, hallusinoi tai unohtaa eilisen keskustelun — sinun on tiedettävä, mitä sisällä on. Tämä selittää KAIKKI rajoitukset: [[node:b-context|konteksti-ikkuna]], kustannukset, latenssi, hallusinaatiot.",
     "when": "Ennen syvällistä AI-käyttöä. Ennen kuin riitelet kehittäjän kanssa siitä, «miksi malli ei voi tehdä X». Ennen infrastruktuurin kustannusten / latenssin arviointia.",
     "impact": "LLM:n ymmärtäminen = rajojen ymmärtäminen. Tietäen että malli ei «ajattele» vaan tilastollisesti ennustaa — lakkaat odottamasta ihmeitä ja alat suunnitella kehotteita oikein.",
     "example": "Kehote: «Paljonko on 47×83?» — LLM ennustaa token kerrallaan ja voi erehtyä yhdessä numerossa. Ratkaisu: anna sille työkalu (calculator tool use) tai pyydä chain-of-thought. Tämä on suora seuraus arkkitehtuurista.",
@@ -1391,7 +1391,7 @@
     "why": "Ilman muistityyppien ymmärtämistä rakennat chatbotin, joka «ei muista eilistä keskustelua» — etkä tiedä mitä tehdä. Jokainen tyyppi ratkaisee oman ongelmansa.",
     "when": "Keskustelevan AI:n suunnittelussa. Kun käyttäjät valittavat «AI unohti mitä sanoin». Kun tarvitset personointia, joka säilyy istuntojen välillä.",
     "impact": "Oikea muistiarkkitehtuuri muuttaa AI:n «1 pyynnön auttajasta» «kollegaksi, joka muistaa kontekstin». Tämä on siirtymä toy demosta production-avustajaksi.",
-    "example": "Claude Memory (cap-memory) = semanttinen muisti. Project Files (p-files) = ulkoinen muisti. CLAUDE.md (i-claudemd) = pysyvät ohjeet, myös ulkoisen muistin muoto. Jokaisella on roolinsa.",
+    "example": "Claude Memory (cap-memory) = semanttinen muisti. Project Files (p-files) = ulkoinen muisti. [[node:cc-md|CLAUDE.md]] (i-claudemd) = pysyvät ohjeet, myös ulkoisen muistin muoto. Jokaisella on roolinsa.",
     "mistakes": "Yrittää tunkea koko historia kontekstiin («kasvatetaan ikkunaa 1M:ään»). Kallista, hidasta, ei skaalaudu. Production-ratkaisu — tyyppien yhdistelmä: lyhytaikainen in-context + pitkäaikainen ulkoinen + episodinen tärkeille tapahtumille."
   },
   "af-multimodal": {
@@ -1405,7 +1405,7 @@
   },
   "af-fine-tuning": {
     "title": "Fine-tuning vs Prompting",
-    "what": "Fine-tuning = mallin uudelleenkoulutus omalla datalla (tuhansia esimerkkejä) — malli kirjaimellisesti päivittää painonsa. Prompting = ohjeiden välittäminen kontekstissa muuttamatta mallia. 95% liiketoimintatehtävistä ratkaistaan prompting + few-shot examples + RAG -yhdistelmällä, ilman fine-tuningia.",
+    "what": "Fine-tuning = mallin uudelleenkoulutus omalla datalla (tuhansia esimerkkejä) — malli kirjaimellisesti päivittää painonsa. Prompting = ohjeiden välittäminen kontekstissa muuttamatta mallia. 95% liiketoimintatehtävistä ratkaistaan prompting + [[node:pr-fewshot|few-shot examples]] + RAG -yhdistelmällä, ilman fine-tuningia.",
     "why": "Fine-tuning on kallis (tuhansia $) ja hidas (päivien/viikkojen) prosessi. Lisäksi mallistasi tulee «omasi» — et voi päivittää uuteen Claude-versioon ilman fine-tuningin toistamista. Prompting on välitön, halpa, joustava.",
     "when": "Fine-tuning on järkevää kun: (1) hyvin spesifinen tone-of-voice, joka ei välity kehotteessa; (2) hyvin kapea domain tuhansilla esimerkeillä; (3) tarvitset alentaa latenssia/kustannuksia pienemmällä mallilla.",
     "impact": "Oikea valinta säästää kuukausia. Tiimit aloittavat usein «tehdään fine-tuning» -ajatuksella ja viettävät neljänneksen datankeräyksessä. Vaihtoehto (prompting + RAG) olisi voinut käynnistyä viikossa.",
@@ -1462,17 +1462,17 @@
     "what": "Kuinka ops-tiimi orkestroi AI:n kanssa työskentelyä: jaetut promptit, jaetut Projektit, käyttöoikeudet, knowledge management. Tämä on tiimin operating modelista, ei yksilön käytöstä.",
     "why": "Yksilön AI-käyttö ei skaalaudu. 10 hengen tiimi, jokaisella oma promptaus-tyyli = erilaisia tuloksia + päällekkäistä työtä. Tiimin workflow luo yhtenäisen standardin.",
     "when": "Kun tiimi ≥3 henkilöä käyttää aktiivisesti AI:ta. Kun ilmaantuu epäjohdonmukaisia tuloksia. Kun uusi tulokas saapuu ja «ei tiedä, miten työskentelemme AI:n kanssa».",
-    "impact": "Tiimin velocity: +30-50%. Onboarding-aika uusille: päiviä viikkojen sijaan. Tiedon jakaminen: jaetut Projektit + CLAUDE.md = tiimi oppii toisiltaan. Stage 2→3.",
-    "example": "Operations Team Setup:\n1. Jaettu Claude Project «Operations Workspace» tiimin tyylin system promptilla.\n2. CLAUDE.md jaetussa repossa: säännöt, mallit, tyypilliset tehtävät.\n3. Reusable Skills toistuville tehtäville (report-writer, decision-analyzer).\n4. Viikoittainen «AI office hours»: tiimi jakaa löytöjä.\n5. Mittari: % tehtävistä tehty jaetun workflow:n kautta.\n\nStage 3 -merkki: uusi tulokas tuottava 2-3 päivässä, ei viikoissa.",
+    "impact": "Tiimin velocity: +30-50%. Onboarding-aika uusille: päiviä viikkojen sijaan. Tiedon jakaminen: jaetut Projektit + [[node:cc-md|CLAUDE.md]] = tiimi oppii toisiltaan. Stage 2→3.",
+    "example": "Operations Team Setup:\n1. Jaettu Claude Project «Operations Workspace» tiimin tyylin system promptilla.\n2. [[node:cc-md|CLAUDE.md]] jaetussa repossa: säännöt, mallit, tyypilliset tehtävät.\n3. Reusable Skills toistuville tehtäville (report-writer, decision-analyzer).\n4. Viikoittainen «AI office hours»: tiimi jakaa löytöjä.\n5. Mittari: % tehtävistä tehty jaetun workflow:n kautta.\n\nStage 3 -merkki: uusi tulokas tuottava 2-3 päivässä, ei viikoissa.",
     "mistakes": "Tehdä «tiimin workflow» = «yksi henkilö pakottaa kaikki käyttämään hänen promptejaan». Se ei ole workflow, se on diktatuuri. Tiimin workflow = yhteistyössä kehittäminen + ownership + feedback loopit."
   },
   "uc-ai-reporting-launch": {
     "title": "Use Case: AI-raportoinnin käynnistys 2 viikossa",
-    "what": "Täysi polku «meillä on manuaaliset raportit» -tilasta «toimiva viikoittainen raportti-workflow» -tilaan. Polku 6 Atlas-solmun läpi: Foundation → AI Fundamentals → Configuration → Transformation.",
+    "what": "Täysi polku «meillä on manuaaliset raportit» -tilasta «toimiva viikoittainen raportti-workflow» -tilaan. Polku 6 Atlas-solmun läpi: Foundation → [[node:ai-fundamentals|AI Fundamentals]] → Configuration → Transformation.",
     "why": "Tämä on yleisin ops-tiimien pyyntö: «AI:han voi kirjoittaa raportteja, miten aloitamme?». Use Case antaa selkeän reitin sen sijaan, että «aloita lukea kaikkea».",
     "when": "Kun on säännöllinen raportti (viikoittain/kuukausittain), joka vie ≥3 tuntia viikossa. Kun data on saatavilla (CRM/analytics exportilla). Kun tiimi on mukana.",
     "impact": "Outcome: toimiva viikkoraportti-workflow 2 viikon työllä. Metriikat: time-to-report 4h→30min, konsistenssi +90%, tiimi-buy-in mitattavissa (NPS-kysely).",
-    "example": "Polku (6 askelta solmujen läpi):\n1. Foundation: prompting → kuinka kirjoittaa system prompt raportille\n2. Foundation: af-rag-basics → jos raportti tarvitsee CRM-kontekstia, miten syöttää Cluden\n3. Foundation: projects → luo «Weekly Reports» -workspace tiimille\n4. Foundation: i-claudemd → kuvaile raportin formaatti CLAUDE.md:ssä\n5. Transformation: ops-reporting-automation → konkreettinen workflow vaiheilla\n6. Transformation: sc-data → kuinka työskennellä CSV-datan kanssa\n\nDay 1-3: Setup Project + kirjoita ensimmäinen prompt käsin.\nDay 4-7: Iteraatiot 5-10 oikealla raportilla.\nDay 8-14: Roll-out tiimille + palaute.\n\nStage transition: 1→2.",
+    "example": "Polku (6 askelta solmujen läpi):\n1. Foundation: prompting → kuinka kirjoittaa system prompt raportille\n2. Foundation: af-rag-basics → jos raportti tarvitsee CRM-kontekstia, miten syöttää Cluden\n3. Foundation: projects → luo «Weekly Reports» -workspace tiimille\n4. Foundation: i-claudemd → kuvaile raportin formaatti [[node:cc-md|CLAUDE.md]]:ssä\n5. Transformation: ops-reporting-automation → konkreettinen workflow vaiheilla\n6. Transformation: sc-data → kuinka työskennellä CSV-datan kanssa\n\nDay 1-3: Setup Project + kirjoita ensimmäinen prompt käsin.\nDay 4-7: Iteraatiot 5-10 oikealla raportilla.\nDay 8-14: Roll-out tiimille + palaute.\n\nStage transition: 1→2.",
     "mistakes": "Haluta «täysi automaatio» ensimmäisellä viikolla. Ensin AI kirjoittaa luonnoksen → ihminen muokkaa → mitataan laatu. Vasta 5-10 onnistuneen iteraation jälkeen — lisää automaatio (laukaisimet, ajoitus)."
   },
   "uc-ai-process-automation": {
@@ -1616,7 +1616,7 @@
     "why": "Yksilön käyttö markkinoinnissa ei skaalaudu — voice ei ole konsistentti, templates duplikoituvat, oppimiset katoavat. Tiimin workflow = yksi standardi + jaettu kirjasto + nopeampi onboarding.",
     "when": "Markkinointitiimi ≥3 henkilöä käyttää aktiivisesti AI:ta. Epäjohdonmukaisia tuloksia ilmaantuu. Uudet tiimijäsenet «eivät tiedä, miten työskentelemme AI:n kanssa».",
     "impact": "Tiimin velocity: +30-50%. Uuden kirjailijan time-to-productive: 2 viikkoa → 3-5 päivää. Knowledge retention: jaetut Projektit + voice guide = tiimi oppii yhteisistä virheistä.",
-    "example": "Markkinointitiimin setup:\n\n1. Jaettu Claude Project «Marketing Workspace»\n2. Tiedostot: brand voice guide, content templates, SEO playbook\n3. CLAUDE.md: «sisältösäännöt + naming conventions»\n4. Reusable Skills: blog-post-writer, email-drafter, social-snippet\n5. Viikoittainen «AI office hours» 30 min: tiimi näyttää voittavia prompteja, keskustelee epäonnistumisista\n6. Mittari: % sisällöstä tehty jaetun workflow:n kautta vs ad-hoc\n\nStage 3 -merkki: uusi kirjailija tuottava 3-5 päivässä, kaikilla konsistentti laatu.",
+    "example": "Markkinointitiimin setup:\n\n1. Jaettu Claude Project «Marketing Workspace»\n2. Tiedostot: brand voice guide, content templates, SEO playbook\n3. [[node:cc-md|CLAUDE.md]]: «sisältösäännöt + naming conventions»\n4. Reusable Skills: blog-post-writer, email-drafter, social-snippet\n5. Viikoittainen «AI office hours» 30 min: tiimi näyttää voittavia prompteja, keskustelee epäonnistumisista\n6. Mittari: % sisällöstä tehty jaetun workflow:n kautta vs ad-hoc\n\nStage 3 -merkki: uusi kirjailija tuottava 3-5 päivässä, kaikilla konsistentti laatu.",
     "mistakes": "Tehdä «tiimin workflow» = «yksi henkilö sanelee». Tiimin workflow = yhteistyö. Jokainen kontribuoija → päivittää workflow:tä + ownership yhdestä osasta (voice guide, templates, SEO). Jaettu ownership = kestävä järjestelmä."
   },
   "uc-ai-content-ops-launch": {
@@ -1625,7 +1625,7 @@
     "why": "Yleisin markkinointitiimien pyyntö: «AI kirjoittaa, mutta ei kuulosta meiltä». Tämä UC ratkaisee ongelman systemaattisesti — eksplisiittisen brand voice setupin + content pipelinen kautta.",
     "when": "Kun tiimi käyttää jo AI:ta ad-hoc, mutta laatu on epäjohdonmukainen. Kun output >10 kappaletta/kuukausi. Kun editorin/content leadin buy-in on olemassa.",
     "impact": "Outcome: toimiva content pipeline brand voicella 2 viikossa. Mittarit: time-to-publish 2 päivää→4h, brand-konsistenssi 60%→90%, sisältötuotanto +200%.",
-    "example": "Polku (7 askelta):\n\n1. Foundation: prompting → kuinka muotoilla briefejä AI:lle\n2. Foundation: b-system → kuinka kirjoittaa system prompt voicella\n3. Foundation: i-style + instructions → custom instructions profiilitasolla\n4. Foundation: i-claudemd → CLAUDE.md markkinointi-workspacelle\n5. Foundation: projects → luo «Blog» Project voice-tiedostoilla\n6. Systems: sys-linear-chain → pipeline-rakenne (brief → draft → review → publish)\n7. Transformation: mk-content-ops → konkreettinen workflow mittareilla\n8. Bonus: mk-brand-voice → yksityiskohtainen voice tuning\n\nDay 1-3: Audit olemassa olevaa sisältöä. Dokumentoi voice-attribuutit.\nDay 4-7: Setup Project + ensimmäiset testiartikkelit. Iteraatio voice promptilla.\nDay 8-14: Roll-out tiimille + mittaus.\n\nStage transition: 1→2.",
+    "example": "Polku (7 askelta):\n\n1. Foundation: prompting → kuinka muotoilla briefejä AI:lle\n2. Foundation: b-system → kuinka kirjoittaa system prompt voicella\n3. Foundation: i-style + instructions → [[node:instructions|custom instructions]] profiilitasolla\n4. Foundation: i-claudemd → [[node:cc-md|CLAUDE.md]] markkinointi-workspacelle\n5. Foundation: projects → luo «Blog» Project voice-tiedostoilla\n6. Systems: sys-linear-chain → pipeline-rakenne (brief → draft → review → publish)\n7. Transformation: mk-content-ops → konkreettinen workflow mittareilla\n8. Bonus: mk-brand-voice → yksityiskohtainen voice tuning\n\nDay 1-3: Audit olemassa olevaa sisältöä. Dokumentoi voice-attribuutit.\nDay 4-7: Setup Project + ensimmäiset testiartikkelit. Iteraatio voice promptilla.\nDay 8-14: Roll-out tiimille + mittaus.\n\nStage transition: 1→2.",
     "mistakes": "Tehdä UC ilman voice-työtä. Pipeline ilman brand voicea = AI-geneerisiä tekstejä nopeammin, mutta silti geneerisiä. Voice setup on 30% UC-ajasta. Älä ohita."
   },
   "ai-native-customer-support": {
@@ -1697,12 +1697,12 @@
     "why": "Yksilön AI-käyttö supportissa ei toimi — tarvitaan konsistenssia asiakkaille (jokainen saa saman laadun vastauksen). Tiimin workflow varmistaa tämän jaetun setupin + prosessien kautta.",
     "when": "Kun tiimi ≥5 agenttia käyttää AI:tä. Kun uudet agentit saapuvat ja «eivät tiedä miten». Kun laatu on epäjohdonmukainen vuorovahvuus-tiimien välillä.",
     "impact": "Tiimin velocity: agentit käsittelevät 50%+ enemmän ticketejä. Uuden agentin onboarding: 4 viikkoa → 2 viikkoa. Laatuhdistuneisuus vuorojen välillä: +60%. AI-lukutaito tiiminlaajuinen.",
-    "example": "CS-tiimin setup:\n\n1. Jaettu Claude Project «Support Workspace»:\n   - KB indeksoitu\n   - Brand voice guide (sävy asiakkaille)\n   - Yleiset scenarios-mallinneet\n\n2. CLAUDE.md: vastausohjeet, eskalointiperusteet, sävysäännöt.\n\n3. Skills: response-drafter, ticket-summarizer, escalation-formatter.\n\n4. Viikoittainen kalibrointi: tiimi reviewaa 5 AI-käsiteltyä tickettiä yhdessä. Keskustelee: mikä toimi, mitä muutettaisiin.\n\n5. AI-tietoinen promotion: agentit jotka parantavat AI-workflow:tä → senior path (ei vain «vastaa enemmän ticketejä»).\n\nTulos: tiimi toimii koherenttina AI-augmentoituna yksikkönä.",
+    "example": "CS-tiimin setup:\n\n1. Jaettu Claude Project «Support Workspace»:\n   - KB indeksoitu\n   - Brand voice guide (sävy asiakkaille)\n   - Yleiset scenarios-mallinneet\n\n2. [[node:cc-md|CLAUDE.md]]: vastausohjeet, eskalointiperusteet, sävysäännöt.\n\n3. Skills: response-drafter, ticket-summarizer, escalation-formatter.\n\n4. Viikoittainen kalibrointi: tiimi reviewaa 5 AI-käsiteltyä tickettiä yhdessä. Keskustelee: mikä toimi, mitä muutettaisiin.\n\n5. AI-tietoinen promotion: agentit jotka parantavat AI-workflow:tä → senior path (ei vain «vastaa enemmän ticketejä»).\n\nTulos: tiimi toimii koherenttina AI-augmentoituna yksikkönä.",
     "mistakes": "Käsitellä AI-käyttö «yksilön etuna». Ilman team-tason workflow:tä asiakkaat saavat epäjohdonmukaisen kokemuksen (riippuen mikä agentti nappaa). AI = tiimin kyvykkyys, ei yksilön taito."
   },
   "uc-ai-support-tier1": {
     "title": "Use Case: AI Tier-1 Supportin käynnistys 3-4 viikossa",
-    "what": "Täysi polku «kaikki käsin» -tilasta «AI sulkee 40% ticketeistä» -tilaan. Cross-layer-polku 7 solmun läpi: Foundation → AI Fundamentals → Systems → Transformation.",
+    "what": "Täysi polku «kaikki käsin» -tilasta «AI sulkee 40% ticketeistä» -tilaan. Cross-layer-polku 7 solmun läpi: Foundation → [[node:ai-fundamentals|AI Fundamentals]] → Systems → Transformation.",
     "why": "Tier-1 automatisointi = korkein-ROI AI-projekti supportissa. Tämä UC näyttää strukturoidun lähestymistavan (ei «osta botti»): KB ensin, sitten AI, sitten quality monitoring.",
     "when": "Tier-1 volyymi >100 tickets/viikko. Baseline CSAT olemassa vertailuun. Voi investoida 3-4 viikkoa setupiin. Buy-in CS-leadiltä JA productilta (KB:n vuoksi).",
     "impact": "Outcome: toimiva tier-1 AI 40% deflectionilla 4 viikossa. Mittarit: deflection rate 0→40%, median response time 4h→2min AI-ticketeille, CSAT ylläpidetty baselinessa.",
@@ -1778,7 +1778,7 @@
     "why": "Yksilön käyttö tuotteessa ei skaalaudu — research findings katoavat PM:ien välillä, specit ovat epäjohdonmukaisia, tietoa ei jaeta. Tiimin workflow luo jaetun institutionaalisen muistin.",
     "when": "Tuotetiimi ≥3 PM:ää käyttää AI:tä. Kun «jokaisella on oma lähestymistapa specceihin». Kun research-löydökset katoavat launchin jälkeen. Kun uusi PM «ei tiedä miten työskentelemme».",
     "impact": "Tiimin velocity: +30%. Uuden PM:n onboarding: 6 viikkoa → 3 viikkoa (jaetun tiedon kautta). Päätöslaatu: paranee ajan myötä (institutionaalinen muisti kasvaa). Stage 2→3.",
-    "example": "Product Team Setup:\n\n1. Jaettu Claude Project «Product Workspace»:\n   - Kaikki research-transkriptit indeksoitu\n   - Past PRDs -kirjasto\n   - Koe-oppimukset\n   - Asiakaspalaute (luokiteltu)\n\n2. CLAUDE.md: kirjoituskonventiot, PRD-malline, päätöskehykset.\n\n3. Skills:\n   - research-synthesizer\n   - prd-drafter\n   - feedback-categorizer\n   - experiment-designer\n\n4. Viikoittainen «AI office hours» 30 min:\n   - Parhaat prompt-löydöt\n   - Epäonnistuneet AI-kokeet (mikä ei toimi)\n   - Cross-team-oppiminen\n\n5. Kvartaalin tiedon kuratointi:\n   - Mitä lisätä jaettuun workspaceen\n   - Mikä on vanhentunut ja poistettavissa\n\nStage 3 -merkki: uusi PM kirjoittaa shipping-ready PRD:n ensimmäisen kuukauden loppuun mennessä.",
+    "example": "Product Team Setup:\n\n1. Jaettu Claude Project «Product Workspace»:\n   - Kaikki research-transkriptit indeksoitu\n   - Past PRDs -kirjasto\n   - Koe-oppimukset\n   - Asiakaspalaute (luokiteltu)\n\n2. [[node:cc-md|CLAUDE.md]]: kirjoituskonventiot, PRD-malline, päätöskehykset.\n\n3. Skills:\n   - research-synthesizer\n   - prd-drafter\n   - feedback-categorizer\n   - experiment-designer\n\n4. Viikoittainen «AI office hours» 30 min:\n   - Parhaat prompt-löydöt\n   - Epäonnistuneet AI-kokeet (mikä ei toimi)\n   - Cross-team-oppiminen\n\n5. Kvartaalin tiedon kuratointi:\n   - Mitä lisätä jaettuun workspaceen\n   - Mikä on vanhentunut ja poistettavissa\n\nStage 3 -merkki: uusi PM kirjoittaa shipping-ready PRD:n ensimmäisen kuukauden loppuun mennessä.",
     "mistakes": "Tehdä tiimin workflow ilman librarian-roolia. Jaettu workspace ilman ylläpitoa = junk drawer 6 kuukaudessa. Jonkun on kuratoitava: viikoittainen uuden sisällön review, kuukausittainen vanhentuneen siivous."
   },
   "uc-ai-discovery-launch": {
@@ -1873,7 +1873,7 @@
   },
   "uc-ai-rag-launch": {
     "title": "Use Case: RAG-järjestelmän käynnistys 2-3 viikossa",
-    "what": "Täysi polku «AI ei tunne dokumenttejamme» -tilasta «toimiva RAG-järjestelmä sitaateilla» -tilaan. Tekninen cross-layer UC 6 solmun läpi: AI Fundamentals → Systems → Configuration. Soveltuu kaikkiin Transformation-suuntiin.",
+    "what": "Täysi polku «AI ei tunne dokumenttejamme» -tilasta «toimiva RAG-järjestelmä sitaateilla» -tilaan. Tekninen cross-layer UC 6 solmun läpi: [[node:ai-fundamentals|AI Fundamentals]] → Systems → Configuration. Soveltuu kaikkiin Transformation-suuntiin.",
     "why": "RAG on yleisin tuotanto-AI-malli. Jokainen 5 Transformation-suunnasta (Operations/Marketing/Support/Product/Enterprise) käyttää RAG:ia. Tämä UC = tekninen perusta useimpiin AI-projekteihin.",
     "when": "Kun AI:n täytyy työskennellä spesifisen tiedon kanssa (dokumentit, KB, historiallinen data). Kun LLM «ei tunne faktojamme». Kun tarvitset factual grounding -sitaattien kanssa.",
     "impact": "Outcome: toimiva RAG-pipeline 2-3 viikossa. Mittarit: vastausten tarkkuus 30% (ei RAG) → 85%+ (oikea RAG), sitaattien määrä 100%, latenssi <500ms per kysely.",
@@ -1904,7 +1904,7 @@
     "why": "Huonot vendor-päätökset = kuukausien menetetty aika + lock-in. Hyvä päätöksenteko = eksplisiittiset kriteerit + strukturoitu arviointi. Tämä UC antaa viitekehyksen.",
     "when": "Ennen major AI-aloitetta (>$50k investointi). Vuosittainen teknologia-review. Kun olemassa oleva vendor muuttuu epäluotettavaksi. Kun skaalataan yli yhden tiimin.",
     "impact": "Outcome: dokumentoitu vendor-valinta perusteluilla 2-3 viikossa. Mittarit: päätöslaatu (katso taaksepäin 6 kuukauden kuluttua — oliko oikea valinta?), vähentynyt vendor-churn.",
-    "example": "Polku (6 askelta):\n\n1. Foundation: af-llm-basics → ymmärrä LLM-mallien erot (koko, arkkitehtuuri, koulutusdata)\n2. Foundation: pl-compare → Claude.ai vs Code vs API vs muut\n3. Foundation: pl-api → API-talous (kustannus per miljoona tokenia, rate limits)\n4. Enterprise: en-governance → governance-vaatimukset (DPA, data residency, audit)\n5. Enterprise: en-risk-management → vendor lock -riski, fallback-strategia\n6. Foundation: m-security → security review -checklist\n\nProcess:\n  Week 1: Määritä use case + vaatimukset. Listaa kriteerit painotuksilla.\n  Week 2: Shortlist 3-5 vendoria. Testaa pilotit jokaisen kanssa.\n  Week 3: Pisteytä, neuvottele, päätä.\n\nViitekehys-kriteerit:\n- Laatu (mallin kyky meidän tehtävässämme)\n- Kustannus (per-token + projisoitu kuukausittainen kokonaiskustannus)\n- Latenssi (p50/p99)\n- Security (DPA, salaus, audit logit)\n- Vendor-stabiilius (rahoitus, traction, pitkäikäisyys)\n- Lock-in (datan siirrettävyys, API-abstraktoitavuus)\n- Tuki (responsiivinen, tekninen syvyys)",
+    "example": "Polku (6 askelta):\n\n1. Foundation: af-llm-basics → ymmärrä LLM-mallien erot (koko, arkkitehtuuri, koulutusdata)\n2. Foundation: pl-compare → [[node:pl-web-setup|Claude.ai]] vs Code vs API vs muut\n3. Foundation: pl-api → API-talous (kustannus per miljoona tokenia, rate limits)\n4. Enterprise: en-governance → governance-vaatimukset (DPA, data residency, audit)\n5. Enterprise: en-risk-management → vendor lock -riski, fallback-strategia\n6. Foundation: m-security → security review -checklist\n\nProcess:\n  Week 1: Määritä use case + vaatimukset. Listaa kriteerit painotuksilla.\n  Week 2: Shortlist 3-5 vendoria. Testaa pilotit jokaisen kanssa.\n  Week 3: Pisteytä, neuvottele, päätä.\n\nViitekehys-kriteerit:\n- Laatu (mallin kyky meidän tehtävässämme)\n- Kustannus (per-token + projisoitu kuukausittainen kokonaiskustannus)\n- Latenssi (p50/p99)\n- Security (DPA, salaus, audit logit)\n- Vendor-stabiilius (rahoitus, traction, pitkäikäisyys)\n- Lock-in (datan siirrettävyys, API-abstraktoitavuus)\n- Tuki (responsiivinen, tekninen syvyys)",
     "mistakes": "Päättää yksittäisen benchmarkin perusteella. Benchmarkit ovat bias-pohjaisia ja mittaavat generic-kyvykkyyksiä. Testaa OMILLA spesifisillä tehtävilläsi. Jos 5 vendoria → ota 10 representative-tehtävää → blind test → pisteytä. Se on real-world-signaali."
   },
   "uc-ai-multi-agent-system": {
@@ -2066,7 +2066,7 @@
     "why": "Yksittäisen suunnittelijan AI-käyttö ei skaalaudu — voice epäjohdonmukainen, komponentit eriytyvät, opit unohdetaan. Tiimin workflow konsolidoi AI-arvon.",
     "when": "Design team ≥3 suunnittelijaa käyttää aktiivisesti AI:ta. Kun tuote on design-driven (kuluttajasovellukset, brand-painotteinen). Kun epäjohdonmukainen AI-käyttö aiheuttaa brand-fragmentaation.",
     "impact": "Tiimin velocity: +25-35%. Brand-konsistenssi: merkittävästi parantunut. Suunnittelijan urakehitys: «AI-augmentoitu suunnittelija» senior-polkuna. Stage 2→3.",
-    "example": "Design Team Setup:\n\n1. Jaettu Claude Project «Design Workspace»:\n   - Brand voice guide indeksoitu\n   - Design system -dokumentit saatavilla\n   - Aikaisempi research syntetisoitu\n   - Komponenttikirjaston referenssi\n\n2. CLAUDE.md: design-periaatteet, brand voice, accessibility-säännöt.\n\n3. Skills (Figma-pluginit + Claude):\n   - microcopy-generator\n   - component-doc-writer\n   - accessibility-checker\n   - research-synthesizer\n\n4. Viikoittaiset rituaalit:\n   - «AI office hours» (30 min): suunnittelijat jakavat voitot/epäonnistumiset\n   - Kvartaalin «AI in design» -retrospektiivi\n\n5. Critique-parannukset:\n   - Pre-critique: AI ajaa accessibility/brand-tarkistukset\n   - Critique keskittyy craftiin + konseptiin (ei bugien etsimiseen)\n\nStage 3 -merkki: uusi suunnittelija tuottava 3-5 päivässä.",
+    "example": "Design Team Setup:\n\n1. Jaettu Claude Project «Design Workspace»:\n   - Brand voice guide indeksoitu\n   - Design system -dokumentit saatavilla\n   - Aikaisempi research syntetisoitu\n   - Komponenttikirjaston referenssi\n\n2. [[node:cc-md|CLAUDE.md]]: design-periaatteet, brand voice, accessibility-säännöt.\n\n3. Skills (Figma-pluginit + Claude):\n   - microcopy-generator\n   - component-doc-writer\n   - accessibility-checker\n   - research-synthesizer\n\n4. Viikoittaiset rituaalit:\n   - «AI office hours» (30 min): suunnittelijat jakavat voitot/epäonnistumiset\n   - Kvartaalin «AI in design» -retrospektiivi\n\n5. Critique-parannukset:\n   - Pre-critique: AI ajaa accessibility/brand-tarkistukset\n   - Critique keskittyy craftiin + konseptiin (ei bugien etsimiseen)\n\nStage 3 -merkki: uusi suunnittelija tuottava 3-5 päivässä.",
     "mistakes": "Tehdä «AI in design» = «suunnittelija on pakko käyttää AI:ta». Pakotettu adoptio tappaa luovan ownershipin. AI:n on oltava «löydetty arvon kautta» — suunnittelijat valitsevat käyttää sitä kun se tekee heistä parempia, nopeampia, onnellisempia."
   },
   "uc-ai-design-research-launch": {

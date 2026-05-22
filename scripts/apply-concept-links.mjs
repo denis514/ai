@@ -27,28 +27,59 @@ const CONCEPTS = {
   'cap-caching': ['Prompt caching'],
   'cc-plan-mode': ['Plan Mode'],
   'pr-fewshot': ['Few-shot examples', 'few-shot examples', 'few-shot prompting'],
-  // Концепты которые различаются между RU и EN — обрабатываем через locale-specific
+  // Новые добавления (волна 2)
+  'pl-desktop': ['Claude Desktop'],
+  'pl-web-setup': ['claude.ai'],
+  'cap-computer': ['Computer Use', 'computer use'],
+  'cap-files': ['Files API', 'files API'],
+  'cap-vision': ['Vision API'],
+  'cap-thinking': ['extended thinking'],
+  'cap-code-exec': ['code execution'],
+  'sys-rag-architecture': ['RAG architecture'],
+  'cc-cmd-compact': ['/compact'],
+  'cc-cmd-clear': ['/clear'],
+  'cc-cmd-init': ['/init'],
+  'cc-md': ['CLAUDE.md'],
+  'cc-hooks': ['Claude Code hooks', 'CC hooks'],
 };
 
 // Локализованные формы для концептов, чьи titlы отличаются в RU vs EN
 const LOCALE_FORMS = {
   ru: {
-    'b-context': ['контекстное окно', 'контекстного окна'],
-    'b-system': ['системный промпт', 'системного промпта'],
+    'b-context': ['контекстное окно', 'контекстного окна', 'контекстном окне'],
+    'b-system': ['системный промпт', 'системного промпта', 'системному промпту'],
     'cap-tools': ['Tool use'],
     'cap-search': ['Web search'],
+    'p-team': ['командная работа', 'командной работы'],
+    'p-instructions': ['Project instructions', 'project-инструкции'],
+    'i-claudemd': ['CLAUDE.md'],
+    'i-style': ['стиль письма', 'стиль ответов'],
+    'cap-memory': ['Memory tool', 'memory tool'],
+    'cap-citations': ['Citations API', 'citations'],
+    'af-vector-db': ['vector database', 'векторная база'],
+    'af-embeddings': ['embeddings'],
   },
   en: {
     'b-context': ['context window'],
     'b-system': ['system prompt'],
     'cap-tools': ['tool use'],
     'cap-search': ['web search'],
+    'p-team': ['team work'],
+    'p-instructions': ['Project instructions'],
+    'cap-memory': ['Memory tool'],
+    'cap-citations': ['Citations API'],
+    'af-vector-db': ['vector database'],
+    'af-embeddings': ['embeddings'],
   },
-  fi: {},
+  fi: {
+    'b-context': ['konteksti-ikkuna', 'konteksti-ikkunan'],
+    'b-system': ['järjestelmäprompti', 'järjestelmäpromptin'],
+    'pl-desktop': ['Claude Desktop'],
+  },
 };
 
 const FIELDS = ['what', 'why', 'when', 'impact', 'example', 'mistakes'];
-const LOCALES = ['ru', 'en'];
+const LOCALES = ['ru', 'en', 'fi'];
 
 // Уже-внутри-ссылки проверка
 const EXISTING_LINK_RE = /\[\[[^\]]+\]\]/g;
@@ -105,7 +136,14 @@ for (const locale of LOCALES) {
       // Для каждой пары (targetId, форма) — пытаемся подставить ПЕРВУЮ
       // попавшуюся в этом поле. Внутри одного поля только ОДНА вставка
       // на target (чтобы не было «Claude Code … Claude Code» оба линкованы).
+      // Также skip targetы которые уже линкованы в этом поле через любую форму.
       const triedTargets = new Set();
+      // Pre-populate: targetы которые уже встречаются в [[...]] этого поля
+      const existingLinkRe = /\[\[(?:node|tutorial|prompt):([a-z0-9-]+)/g;
+      let em;
+      while ((em = existingLinkRe.exec(text)) !== null) {
+        triedTargets.add(em[1]);
+      }
       const allForms = [];
       for (const [tid, forms] of Object.entries(CONCEPTS)) {
         if (tid === nodeId) continue;
