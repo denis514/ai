@@ -1555,5 +1555,77 @@
     "impact": "Правильный context passing = 50-70% экономия tokens в multi-step workflow. И снижение error rate (LLM лучше работает с focused context чем с overload).",
     "example": "Пример: review analysis workflow.\n\nStep 1: Analyze 50 customer reviews (output: 50K tokens)\nStep 2: Needs only 5 themes from Step 1\n\n❌ Full context: pass all 50K tokens → expensive, slow, LLM struggles with focus\n✅ Summarized:   AI-summarize Step 1 → 500 tokens → pass to Step 2\n✅ Filtered:     Extract themes as JSON → 200 tokens → pass to Step 2\n\nКостsavings: 250× меньше токенов на Step 2.",
     "mistakes": "«Авось влезет» — закидывать full context на каждом шаге. Стоимость растёт квадратично с длиной workflow. Production-правило: всегда explicit context strategy ПЕРЕД multi-step workflow, не «починим когда сломается»."
+  },
+  "ai-native-marketing": {
+    "title": "AI-Native Marketing",
+    "what": "Маркетинг-команды на AI-native рельсах: контент-операции, кампании, brand voice, SEO at scale, performance analytics. От ad-hoc «Claude пишет посты» — к воспроизводимой контент-машине.",
+    "why": "Marketing — самая «creative-heavy» команда в компании. AI закрывает рутинную часть (черновики, SEO, A/B варианты), освобождая команду на стратегию и emotional intelligence. ROI измерим: time-to-publish, SEO traffic, conversion rate.",
+    "when": "Когда команда тратит ≥40% времени на ручной контент. Когда нужна consistency tone-of-voice через 5+ каналов. Когда SEO-coverage отстаёт от конкурентов из-за нехватки рук.",
+    "impact": "6 узлов AI-Native Marketing закрывают полный жизненный цикл: создание (content-ops, brand-voice) + дистрибуция (campaigns, SEO) + измерение (analytics) + команда (workflow).",
+    "example": "Maturity stages для Marketing:\nStage 0: Pre-AI — ручное письмо, generic tone, медленная итерация.\nStage 1: AI experiments — Claude пишет драфт, человек переписывает с нуля.\nStage 2: AI workflows — Project с brand voice, AI даёт 80% готовый текст.\nStage 3: AI-native — контент-машина: AI генерирует, человек делает strategy review.\nStage 4: AI-first — новые форматы (interactive, personalized) благодаря AI.",
+    "mistakes": "Думать что AI = «генератор постов». Marketing AI = system: brand voice + content templates + SEO awareness + performance feedback loop. Без системы — generic тексты, которые звучат как AI."
+  },
+  "mk-content-ops": {
+    "title": "AI Content Operations",
+    "what": "Контент-машина на AI: input (бриф) → AI draft → human review → publish. Pipeline для блог-постов, email, social, документации. Цель — 10× ускорение без потери brand voice.",
+    "why": "Контент-команды тратят 40-60% времени на черновики. AI закрывает 80% этой работы. Освобождённое время идёт на strategy, distribution, performance analysis — где AI не помогает.",
+    "when": "Когда команда публикует ≥10 материалов в месяц. Когда есть documented brand voice (или его легко собрать). Когда есть SEO/audience research как input для брифов.",
+    "impact": "Time-to-publish: 2 дня → 4 часа. Content output: +200-300% при том же составе команды. Consistency: единый tone across все каналы. Stage 1→2.",
+    "example": "Content Pipeline:\n\n  Бриф (topic + outline + audience)\n        ↓\n  Project «Blog» с brand voice prompt\n        ↓\n  AI draft (800 слов за 2 минуты)\n        ↓\n  Quality gate: editor review\n        ↓\n  Final + SEO optimization\n        ↓\n  Publish\n\nMetric: 1500-слов лонгрид за 4 часа вместо 2 дней.",
+    "mistakes": "Делать «AI generates → publish» без human gate. Любой AI-текст требует review: фактчек, тон, локальный контекст. Без human-in-the-loop — generic AI-контент, который читатель опознаёт за 3 секунды."
+  },
+  "mk-campaign-intel": {
+    "title": "AI Campaign Intelligence",
+    "what": "AI-поддержка планирования и анализа маркетинговых кампаний: предсказание performance, генерация вариантов креатива, post-mortem анализ. AI = «второй analyst» в команде.",
+    "why": "Кампании планируются под нагрузкой → reactive решения, нет learning loop. AI добавляет structured analysis на pre-launch (что попробовать) и post-launch (что сработало почему).",
+    "when": "Quarterly campaign planning. Перед запуском кампании с бюджетом >$10k. Post-mortem после каждой major кампании. A/B testing copy.",
+    "impact": "Campaign ROI: +20-40% за счёт лучшего planning и faster learning. Reduce reactive decisions: 60%. Stage 2→3.",
+    "example": "Campaign workflow:\n\n  Pre-launch:\n  1. AI анализирует прошлые кампании на похожую аудиторию\n  2. Генерирует 5 вариантов angle/positioning\n  3. Predicts likely performance (rough)\n\n  Post-launch:\n  1. AI читает все метрики + comments\n  2. Pattern-matching: что сработало, что нет\n  3. Документирует learnings в shared knowledge base\n\nЧерез год: organized library of campaign learnings.",
+    "mistakes": "Использовать AI как «предсказатель ROI». AI хорош в pattern-matching исторических данных, но новые рынки/каналы — за пределами его опыта. AI = «вдумчивый коллега для brainstorming», не «оракул»."
+  },
+  "mk-brand-voice": {
+    "title": "AI Brand Voice Tuning",
+    "what": "Документирование и кодификация brand voice в системе AI-генерации. От ad-hoc «надо звучать как мы» — к explicit voice guide + system prompts + few-shot examples в каждом Project.",
+    "why": "Без explicit voice AI выдаёт generic «как все». С voice guide — текст звучит как ваша команда. Это разница между «AI заметен» и «AI незаметен».",
+    "when": "Когда команда ≥3 человек пишут контент. Когда «AI tone не наш» жалобы. Перед roll-out AI content operations на всю команду. Когда brand vocabulary важен (B2B, tech, lifestyle).",
+    "impact": "Brand consistency: 60% → 95%. Editor rewrite time: -70%. New team member onboarding: -50%. Stage 2→3.",
+    "example": "Brand Voice Setup:\n\n1. Документ «Voice Guide»:\n   - 3-5 voice attributes (e.g., warm, expert, direct)\n   - Do/Don't примеры для каждого\n   - 10 sample paragraphs в нашем стиле\n\n2. System prompt в Project «Blog»:\n   «Ты пишешь в стиле X. Voice attributes: ... Examples: ...»\n\n3. Test: 5 разных людей дают brief → AI генерирует → blind review → > 80% выбирают AI-version vs generic.\n\nReal investment: 2-3 дня на setup, экономит часы на каждом материале.",
+    "mistakes": "Описывать voice абстрактно («профессиональный, но дружелюбный»). Это не помогает AI. Voice = examples + concrete attributes + Do/Don't. Чем конкретнее, тем лучше воспроизводимость."
+  },
+  "mk-seo-optimization": {
+    "title": "AI SEO at Scale",
+    "what": "AI для SEO-задач: keyword research, content briefs от SERPs, meta optimization, internal linking. От 1 SEO-специалиста на 5 человек контента — к команде где каждый автор SEO-aware.",
+    "why": "SEO требует expertise, которой у content writers обычно нет. AI закрывает gap: автор пишет, AI проверяет/предлагает SEO-improvements. Команда работает быстрее без найма SEO-spec.",
+    "when": "Когда content output >20 материалов/месяц + SEO критичен (B2B SaaS, eCommerce, content-driven). Когда есть бюджет на keyword research tools (ahrefs/semrush).",
+    "impact": "Organic traffic: +30-60% за 6 месяцев. SEO-coverage rate (% страниц targeting keyword): 30% → 80%. Stage 1→2.",
+    "example": "SEO Workflow:\n\n  1. Author пишет draft по topic.\n  2. AI Step: «вот SERPs топ-10 для этой темы → что покрывают конкуренты, чего нет»\n  3. AI Step: «по этому draft + SERP gap analysis, какие подтемы добавить, какие keywords integrate»\n  4. Author redrafts с AI рекомендациями.\n  5. AI Step: meta title + description optimization.\n\nResult: SEO-optimized content без отдельного SEO-passa.",
+    "mistakes": "Доверять AI keyword research полностью. AI не знает текущие тренды (cutoff date) и не видит свежие SERPs. Использовать AI как «SEO advisor», но keyword data — из специализированных tools."
+  },
+  "mk-performance-analytics": {
+    "title": "AI Marketing Performance Analytics",
+    "what": "AI читает marketing-метрики (GA, social, email) → пишет insight-driven отчёты с гипотезами и action items. От «вот graphs, разбирайся» — к «вот что произошло и что делаем».",
+    "why": "Marketing-команды утопают в dashboards без actionable insights. AI делает narrative layer: connects dots, объясняет аномалии, предлагает гипотезы. Decision velocity растёт.",
+    "when": "Weekly/monthly performance reviews. Когда команда тратит >2 часов в неделю собирая отчёты. Когда «причина» снижения метрик неочевидна.",
+    "impact": "Time-to-insight: дни → часы. Quality of weekly reviews: structured insights вместо «вот числа». Stage 2→3.",
+    "example": "Weekly Marketing Performance Report:\n\n  Inputs:\n  - GA4 export (traffic, conversions)\n  - Email metrics (open rate, CTR)\n  - Social engagement\n  - Campaign spend\n\n  AI Output:\n  - Что выросло/упало (numbers + delta)\n  - Hypotheses why (на основе past patterns)\n  - 3 рекомендации на след неделю\n  - Red flags (что требует deeper investigation)\n\n  Human: 15 минут validation + 3 декомпозированных action.",
+    "mistakes": "Использовать AI как «attribution engine». AI не знает реальной atribution model (multi-touch, view-through). Использовать AI для narrative и pattern-matching, не для exact causation."
+  },
+  "mk-team-workflow": {
+    "title": "AI Marketing Team Workflow",
+    "what": "Как marketing-команда оркеструет работу с AI: shared brand voice, content templates, weekly AI office hours, knowledge sharing. От «каждый со своим Claude» — к коллаборативной AI-системе.",
+    "why": "Individual usage in marketing не масштабируется — voice не consistent, templates дублируются, learnings теряются. Team workflow = единый стандарт + shared library + faster onboarding.",
+    "when": "Marketing team ≥3 человек активно используют AI. Появляются inconsistent результаты. Новые члены команды «не знают как мы работаем с AI».",
+    "impact": "Team velocity: +30-50%. New writer time-to-productive: 2 недели → 3-5 дней. Knowledge retention: shared Projects + voice guide = команда учится на общих ошибках.",
+    "example": "Marketing Team Setup:\n\n1. Shared Claude Project «Marketing Workspace»\n2. Files: brand voice guide, content templates, SEO playbook\n3. CLAUDE.md: «правила контента + naming conventions»\n4. Reusable Skills: blog-post-writer, email-drafter, social-snippet\n5. Weekly «AI office hours» 30 мин: команда показывает удачные prompts, обсуждает faily\n6. Metric: % контента сделано через shared workflow vs ad-hoc\n\nStage 3 sign: новый writer продуктивен через 3-5 дней, у всех consistent quality.",
+    "mistakes": "Делать «team workflow» = «один person диктует». Team workflow = коллаборация. Каждый contributor → updates воркфлоу + ownership over одной части (voice guide, templates, SEO). Shared ownership = sustainable system."
+  },
+  "uc-ai-content-ops-launch": {
+    "title": "Use Case: Запуск AI-контент-операций за 2 недели",
+    "what": "Полный путь от «у нас generic AI-тексты» до «работающая контент-машина с brand voice». Cross-layer path через 7 узлов: Foundation → Configuration → Systems → Transformation.",
+    "why": "Самый частый запрос marketing teams: «AI пишет, но не звучит как мы». Этот UC решает проблему systematically — через явный brand voice setup + content pipeline.",
+    "when": "Когда команда уже использует AI ad-hoc, но качество inconsistent. Когда output >10 материалов/месяц. Когда есть buy-in от editor/content lead.",
+    "impact": "Outcome: working content pipeline с brand voice за 2 недели. Metrics: time-to-publish 2 days→4h, brand consistency 60%→90%, content output +200%.",
+    "example": "Путь (7 шагов):\n\n1. Foundation: prompting → как формулировать брифы для AI\n2. Foundation: b-system → как написать system prompt с voice\n3. Foundation: i-style + instructions → custom instructions уровня профиля\n4. Foundation: i-claudemd → CLAUDE.md для marketing workspace\n5. Foundation: projects → создать Project «Blog» с файлами voice\n6. Systems: sys-linear-chain → структура pipeline (brief → draft → review → publish)\n7. Transformation: mk-content-ops → конкретный workflow с metrics\n8. Bonus: mk-brand-voice → детальный voice tuning\n\nDay 1-3: Audit existing content. Document voice attributes.\nDay 4-7: Setup Project + first test articles. Iterate voice prompt.\nDay 8-14: Roll-out для команды + measurement.\n\nStage transition: 1→2.",
+    "mistakes": "Делать UC без voice work. Pipeline без brand voice = AI-generic тексты быстрее, но всё ещё generic. Voice setup — 30% времени UC. Не пропускай."
   }
 }

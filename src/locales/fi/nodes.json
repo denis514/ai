@@ -1555,5 +1555,77 @@
     "impact": "Oikea context passing = 50-70% token-säästö multi-step workflow:ssa. Plus alhaisempi virhetaso (LLM toimii paremmin fokusoidulla kontekstilla kuin ylikuormalla).",
     "example": "Esimerkki: review analysis -workflow.\n\nStep 1: Analysoi 50 asiakaspalautetta (output: 50K tokenia)\nStep 2: Tarvitsee vain 5 teemaa Step 1:stä\n\n❌ Full context: välitä kaikki 50K tokenia → kallis, hidas, LLM kamppailee fokuksen kanssa\n✅ Summarized:   AI-tiivistä Step 1 → 500 tokenia → välitä Step 2:lle\n✅ Filtered:     Uuta teemat JSON:na → 200 tokenia → välitä Step 2:lle\n\nKustannussäästö: 250× vähemmän tokeneita Step 2:ssa.",
     "mistakes": "«Kyllä se mahtuu» — heittämällä full context jokaisessa askeleessa. Kustannus kasvaa neliöllisesti workflow:n pituuden kanssa. Tuotantosääntö: aina eksplisiittinen context-strategia ENNEN multi-step workflow:ta, ei «korjataan kun rikkoutuu»."
+  },
+  "ai-native-marketing": {
+    "title": "AI-Native Marketing",
+    "what": "Markkinointitiimit AI-native-kiskoilla: sisältöoperaatiot, kampanjat, brand voice, SEO at scale, performance analytics. Ad-hoc «Claude kirjoittaa postauksia» -tilasta toistettavaan sisältökoneeseen.",
+    "why": "Markkinointi on yrityksen «creative-heavy» tiimi. AI kattaa rutiininomaisen osan (luonnokset, SEO, A/B-vaihtoehdot), vapauttaen tiimin strategiaan ja emotional intelligenceen. ROI on mitattavissa: time-to-publish, SEO-liikenne, konversioaste.",
+    "when": "Kun tiimi käyttää ≥40% ajasta manuaaliseen sisältöön. Kun tarvitset tone-of-voice -konsistenssia 5+ kanavalla. Kun SEO-kattavuus jää kilpailijoiden taakse käsien puutteen vuoksi.",
+    "impact": "6 AI-Native Marketing -solmua kattavat koko elinkaaren: luominen (content-ops, brand-voice) + jakelu (campaigns, SEO) + mittaus (analytics) + tiimi (workflow).",
+    "example": "Maturity stages markkinoinnille:\nStage 0: Pre-AI — manuaalinen kirjoittaminen, generic ääni, hidas iteraatio.\nStage 1: AI experiments — Claude kirjoittaa luonnoksen, ihminen kirjoittaa uudelleen alusta.\nStage 2: AI workflows — Project brand voicella, AI tuottaa 80% valmista tekstiä.\nStage 3: AI-native — sisältökone: AI generoi, ihminen tekee strategy reviewn.\nStage 4: AI-first — uudet formaatit (interaktiivinen, personoitu) AI:n ansiosta.",
+    "mistakes": "Ajatella että AI = «postausgeneraattori». Markkinointi-AI = järjestelmä: brand voice + content templates + SEO awareness + performance feedback loop. Ilman järjestelmää — geneeriset tekstit, jotka kuulostavat AI:lta."
+  },
+  "mk-content-ops": {
+    "title": "AI-sisältöoperaatiot",
+    "what": "Sisältökone AI:lla: input (brief) → AI-luonnos → ihmisen review → julkaisu. Pipeline blogipostauksille, sähköpostille, sosiaaliselle, dokumentaatiolle. Tavoite — 10× nopeutus menettämättä brand voicea.",
+    "why": "Sisältötiimit käyttävät 40-60% ajasta luonnoksiin. AI kattaa 80% tästä työstä. Vapautunut aika menee strategiaan, jakeluun, performance-analyysiin — missä AI ei auta.",
+    "when": "Kun tiimi julkaisee ≥10 kappaletta kuukaudessa. Kun on dokumentoitu brand voice (tai sen voi helposti koota). Kun SEO/audience research on syötteenä briefille.",
+    "impact": "Time-to-publish: 2 päivää → 4 tuntia. Sisältötuotanto: +200-300% samalla tiimillä. Konsistenssi: yksi sävy kaikissa kanavissa. Stage 1→2.",
+    "example": "Sisältö-pipeline:\n\n  Brief (aihe + outline + yleisö)\n        ↓\n  Project «Blog» brand voice -promptilla\n        ↓\n  AI-luonnos (800 sanaa 2 minuutissa)\n        ↓\n  Laatuportti: editorin review\n        ↓\n  Lopullinen + SEO-optimointi\n        ↓\n  Julkaisu\n\nMittari: 1500 sanan longread 4 tunnissa 2 päivän sijaan.",
+    "mistakes": "Tehdä «AI generoi → julkaise» ilman ihmisen porttia. Mikä tahansa AI-teksti tarvitsee reviewn: faktantarkistus, sävy, paikallinen konteksti. Ilman human-in-the-loopia — generic AI-sisältö, jonka lukija tunnistaa 3 sekunnissa."
+  },
+  "mk-campaign-intel": {
+    "title": "AI-kampanjan intelligence",
+    "what": "AI-tuki markkinointikampanjoiden suunnitteluun ja analyysiin: performance-ennustus, kreatiivivaihtoehtojen generointi, post-mortem-analyysi. AI = «toinen analyytikko» tiimissä.",
+    "why": "Kampanjat suunnitellaan paineen alla → reaktiiviset päätökset, ei oppimissilmukkaa. AI lisää strukturoidun analyysin pre-launchissa (mitä kokeilla) ja post-launchissa (mikä toimi miksi).",
+    "when": "Kvartaalin kampanjasuunnittelu. Ennen kampanjan käynnistystä >$10k budjetilla. Post-mortem jokaisen major-kampanjan jälkeen. A/B-testaus copyssa.",
+    "impact": "Kampanjan ROI: +20-40% paremman suunnittelun ja nopeamman oppimisen ansiosta. Vähennä reaktiivisia päätöksiä: 60%. Stage 2→3.",
+    "example": "Kampanjatyönkulku:\n\n  Pre-launch:\n  1. AI analysoi aiemmat kampanjat samaiselle yleisölle\n  2. Generoi 5 angle/positioning-vaihtoehtoa\n  3. Ennustaa todennäköisen suorituskyvyn (karkea)\n\n  Post-launch:\n  1. AI lukee kaikki metriikat + kommentit\n  2. Pattern-matching: mikä toimi, mikä ei\n  3. Dokumentoi oppimiset jaettuun tietopohjaan\n\nVuoden jälkeen: organisoitu kirjasto kampanja-oppimisista.",
+    "mistakes": "Käyttää AI:tä «ROI-ennustajana». AI on hyvä historiallisen datan pattern-matchingissa, mutta uudet markkinat/kanavat ovat sen kokemuksen ulkopuolella. AI = «harkitseva kollega brainstormingiin», ei «oraakkeli»."
+  },
+  "mk-brand-voice": {
+    "title": "AI Brand Voice -viritys",
+    "what": "Brand voicen dokumentointi ja kodifiointi AI-generointijärjestelmässä. Ad-hoc «meidän pitää kuulostaa meiltä» -tilasta eksplisiittiseen voice guideen + system prompts + few-shot esimerkkeihin jokaisessa Projectissa.",
+    "why": "Ilman eksplisiittistä voicea AI tuottaa generic «kuten kaikki». Voice guiden kanssa — teksti kuulostaa tiimiltäsi. Tämä on ero «AI on huomattavissa» ja «AI on huomaamaton» välillä.",
+    "when": "Kun tiimi ≥3 henkilöä kirjoittaa sisältöä. Kun «AI-sävy ei ole meitä» -valitukset. Ennen AI-sisältöoperaatioiden roll-outia koko tiimille. Kun brand vocabulary on tärkeä (B2B, tech, lifestyle).",
+    "impact": "Brand-konsistenssi: 60% → 95%. Editorin uudelleenkirjoitusaika: -70%. Uuden tiimijäsenen onboarding: -50%. Stage 2→3.",
+    "example": "Brand Voice Setup:\n\n1. «Voice Guide» -dokumentti:\n   - 3-5 voice-attribuuttia (esim. lämmin, asiantunteva, suora)\n   - Do/Don't-esimerkit jokaiselle\n   - 10 esimerkkikappaletta tyylissämme\n\n2. System prompt «Blog»-Projectissa:\n   «Kirjoitat tyylissä X. Voice-attribuutit: ... Esimerkit: ...»\n\n3. Testi: 5 eri ihmistä antaa briefin → AI generoi → blind review → > 80% valitsee AI-version vs generic.\n\nTodellinen investointi: 2-3 päivää setupille, säästää tunteja per kappale.",
+    "mistakes": "Kuvata voicea abstraktisti («ammattimainen mutta ystävällinen»). Tämä ei auta AI:tä. Voice = esimerkit + konkreettiset attribuutit + Do/Don't. Mitä konkreettisempi, sitä parempi toistettavuus."
+  },
+  "mk-seo-optimization": {
+    "title": "AI SEO at Scale",
+    "what": "AI SEO-tehtäville: keyword research, content briefs SERPeistä, meta-optimointi, internal linking. 1 SEO-spesialistista per 5 sisällöntekijää — tiimiin, jossa jokainen kirjoittaja on SEO-tietoinen.",
+    "why": "SEO vaatii asiantuntemusta, jota sisällöntekijöillä ei yleensä ole. AI sulkee gapin: kirjailija kirjoittaa, AI tarkistaa/ehdottaa SEO-parannuksia. Tiimi liikkuu nopeammin ilman SEO-spec-rekrytointia.",
+    "when": "Kun content output >20 kappaletta/kuukausi + SEO on kriittinen (B2B SaaS, eCommerce, content-driven). Kun on budjetti keyword research -työkaluille (ahrefs/semrush).",
+    "impact": "Orgaaninen liikenne: +30-60% 6 kuukaudessa. SEO-kattavuus (% sivuista, jotka kohdistuvat avainsanaan): 30% → 80%. Stage 1→2.",
+    "example": "SEO-workflow:\n\n  1. Kirjailija kirjoittaa luonnoksen aiheesta.\n  2. AI-vaihe: «tässä SERPs top-10 tälle aiheelle → mitä kilpailijat kattavat, mitä ei»\n  3. AI-vaihe: «tämän luonnoksen + SERP gap -analyysin perusteella, mitä alateemoja lisätä, mitä avainsanoja integroida»\n  4. Kirjailija kirjoittaa uudelleen AI-suosituksilla.\n  5. AI-vaihe: meta title + description -optimointi.\n\nTulos: SEO-optimoitu sisältö ilman erillistä SEO-läpikäyntiä.",
+    "mistakes": "Luottaa AI:n keyword researchiin täysin. AI ei tunne nykyisiä trendejä (cutoff date) eikä näe tuoreita SERPejä. Käytä AI:tä «SEO-neuvonantajana», mutta keyword-data — erikoistuneista työkaluista."
+  },
+  "mk-performance-analytics": {
+    "title": "AI Marketing Performance Analytics",
+    "what": "AI lukee markkinointimetriikat (GA, social, email) → kirjoittaa insight-pohjaisia raportteja hypoteeseilla ja action itemeillä. «Tässä graafit, selviä» -tilasta «tässä mitä tapahtui ja mitä teemme» -tilaan.",
+    "why": "Markkinointitiimit hukkuvat dashboardeihin ilman actionable insightejä. AI tekee narrative layerin: yhdistää pisteitä, selittää anomalioita, ehdottaa hypoteeseja. Päätösnopeus kasvaa.",
+    "when": "Viikoittaiset/kuukausittaiset performance review:t. Kun tiimi käyttää >2 tuntia viikossa raporttien keräämiseen. Kun metriikoiden laskun «syy» on epäselvä.",
+    "impact": "Time-to-insight: päiviä → tunteja. Viikkoraportin laatu: strukturoidut insightit «tässä numerot» -tilan sijaan. Stage 2→3.",
+    "example": "Viikoittainen Marketing Performance Report:\n\n  Inputit:\n  - GA4 export (liikenne, konversiot)\n  - Sähköpostimetriikat (open rate, CTR)\n  - Social engagement\n  - Kampanja-spend\n\n  AI Output:\n  - Mikä kasvoi/laski (numerot + delta)\n  - Hypoteesit miksi (aiempien patternien perusteella)\n  - 3 suositusta seuraavalle viikolle\n  - Red flag:t (mikä tarvitsee syvällisempää tutkintaa)\n\n  Ihminen: 15 min validointi + 3 dekomponoitua actionia.",
+    "mistakes": "Käyttää AI:tä «attribution-koneena». AI ei tunne todellista attribution-mallia (multi-touch, view-through). Käytä AI:tä narrative- ja pattern-matchingiin, ei tarkkaan kausaliteettiin."
+  },
+  "mk-team-workflow": {
+    "title": "AI Marketing Team Workflow",
+    "what": "Kuinka markkinointitiimi orkestroi työskentelyä AI:n kanssa: jaettu brand voice, content templates, viikoittaiset AI office hours, knowledge sharing. «Jokainen omalla Claudella» -tilasta yhteistyö-AI-järjestelmään.",
+    "why": "Yksilön käyttö markkinoinnissa ei skaalaudu — voice ei ole konsistentti, templates duplikoituvat, oppimiset katoavat. Tiimin workflow = yksi standardi + jaettu kirjasto + nopeampi onboarding.",
+    "when": "Markkinointitiimi ≥3 henkilöä käyttää aktiivisesti AI:ta. Epäjohdonmukaisia tuloksia ilmaantuu. Uudet tiimijäsenet «eivät tiedä, miten työskentelemme AI:n kanssa».",
+    "impact": "Tiimin velocity: +30-50%. Uuden kirjailijan time-to-productive: 2 viikkoa → 3-5 päivää. Knowledge retention: jaetut Projektit + voice guide = tiimi oppii yhteisistä virheistä.",
+    "example": "Markkinointitiimin setup:\n\n1. Jaettu Claude Project «Marketing Workspace»\n2. Tiedostot: brand voice guide, content templates, SEO playbook\n3. CLAUDE.md: «sisältösäännöt + naming conventions»\n4. Reusable Skills: blog-post-writer, email-drafter, social-snippet\n5. Viikoittainen «AI office hours» 30 min: tiimi näyttää voittavia prompteja, keskustelee epäonnistumisista\n6. Mittari: % sisällöstä tehty jaetun workflow:n kautta vs ad-hoc\n\nStage 3 -merkki: uusi kirjailija tuottava 3-5 päivässä, kaikilla konsistentti laatu.",
+    "mistakes": "Tehdä «tiimin workflow» = «yksi henkilö sanelee». Tiimin workflow = yhteistyö. Jokainen kontribuoija → päivittää workflow:tä + ownership yhdestä osasta (voice guide, templates, SEO). Jaettu ownership = kestävä järjestelmä."
+  },
+  "uc-ai-content-ops-launch": {
+    "title": "Use Case: AI-sisältöoperaatioiden käynnistys 2 viikossa",
+    "what": "Täysi polku «meillä on generic AI-tekstejä» -tilasta «toimiva sisältökone brand voicella» -tilaan. Cross-layer-polku 7 solmun läpi: Foundation → Configuration → Systems → Transformation.",
+    "why": "Yleisin markkinointitiimien pyyntö: «AI kirjoittaa, mutta ei kuulosta meiltä». Tämä UC ratkaisee ongelman systemaattisesti — eksplisiittisen brand voice setupin + content pipelinen kautta.",
+    "when": "Kun tiimi käyttää jo AI:ta ad-hoc, mutta laatu on epäjohdonmukainen. Kun output >10 kappaletta/kuukausi. Kun editorin/content leadin buy-in on olemassa.",
+    "impact": "Outcome: toimiva content pipeline brand voicella 2 viikossa. Mittarit: time-to-publish 2 päivää→4h, brand-konsistenssi 60%→90%, sisältötuotanto +200%.",
+    "example": "Polku (7 askelta):\n\n1. Foundation: prompting → kuinka muotoilla briefejä AI:lle\n2. Foundation: b-system → kuinka kirjoittaa system prompt voicella\n3. Foundation: i-style + instructions → custom instructions profiilitasolla\n4. Foundation: i-claudemd → CLAUDE.md markkinointi-workspacelle\n5. Foundation: projects → luo «Blog» Project voice-tiedostoilla\n6. Systems: sys-linear-chain → pipeline-rakenne (brief → draft → review → publish)\n7. Transformation: mk-content-ops → konkreettinen workflow mittareilla\n8. Bonus: mk-brand-voice → yksityiskohtainen voice tuning\n\nDay 1-3: Audit olemassa olevaa sisältöä. Dokumentoi voice-attribuutit.\nDay 4-7: Setup Project + ensimmäiset testiartikkelit. Iteraatio voice promptilla.\nDay 8-14: Roll-out tiimille + mittaus.\n\nStage transition: 1→2.",
+    "mistakes": "Tehdä UC ilman voice-työtä. Pipeline ilman brand voicea = AI-geneerisiä tekstejä nopeammin, mutta silti geneerisiä. Voice setup on 30% UC-ajasta. Älä ohita."
   }
 }

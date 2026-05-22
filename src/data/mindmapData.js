@@ -1184,6 +1184,81 @@ export const mindmapData = {
               ]
             }
           ]
+        },
+        {
+          "id": "ai-native-marketing",
+          "icon": "mask",
+          "category": "transformation",
+          "children": [
+            {
+              "id": "mk-content-ops",
+              "icon": "pencil",
+              "category": "transformation",
+              "relatedIds": [
+                "prompting",
+                "b-system",
+                "projects",
+                "sc-content",
+                "sys-linear-chain"
+              ]
+            },
+            {
+              "id": "mk-campaign-intel",
+              "icon": "globe",
+              "category": "transformation",
+              "relatedIds": [
+                "prompting",
+                "sc-data",
+                "sys-workflows-basics",
+                "sc-analysis"
+              ]
+            },
+            {
+              "id": "mk-brand-voice",
+              "icon": "quote",
+              "category": "transformation",
+              "relatedIds": [
+                "instructions",
+                "i-style",
+                "b-system",
+                "prompting",
+                "projects"
+              ]
+            },
+            {
+              "id": "mk-seo-optimization",
+              "icon": "search",
+              "category": "transformation",
+              "relatedIds": [
+                "prompting",
+                "af-rag-basics",
+                "sys-rag-architecture",
+                "sc-content"
+              ]
+            },
+            {
+              "id": "mk-performance-analytics",
+              "icon": "eye",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "sc-analysis",
+                "ops-reporting-automation"
+              ]
+            },
+            {
+              "id": "mk-team-workflow",
+              "icon": "users",
+              "category": "transformation",
+              "relatedIds": [
+                "projects",
+                "p-team",
+                "instructions",
+                "skills",
+                "ops-team-workflow"
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1234,6 +1309,20 @@ export const mindmapData = {
             "af-llm-basics",
             "prompting",
             "pr-cot"
+          ]
+        },
+        {
+          "id": "uc-ai-content-ops-launch",
+          "icon": "note",
+          "category": "use-cases",
+          "relatedIds": [
+            "mk-content-ops",
+            "mk-brand-voice",
+            "prompting",
+            "projects",
+            "i-claudemd",
+            "sc-content",
+            "sys-linear-chain"
           ]
         }
       ]
