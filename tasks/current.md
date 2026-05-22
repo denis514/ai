@@ -135,6 +135,20 @@
 
 ---
 
+## ✅ Завершено — Сессия 2026-05-22 (Phase 2 batch 1)
+
+### AI Fundamentals — первый батч (4 узла + контейнер)
+- ✅ **ai-fundamentals** контейнер под foundation
+- ✅ **af-llm-basics** — LLM: как работает (cube, cross-link: b-claude/b-models/b-context)
+- ✅ **af-embeddings** — Embeddings: векторные представления (compass)
+- ✅ **af-vector-db** — Vector Databases (bricks)
+- ✅ **af-rag-basics** — RAG: Retrieval Augmented Generation (archive)
+- Контент: 5 узлов × 6 полей × 3 локали (ru/en/fi)
+- Cross-links: 9 связей с существующими узлами
+
+**Следующий батч 2.5:** af-memory-systems, af-multimodal, af-fine-tuning
+**После batch 2.5:** Phase 3 — Operations flagship (5 узлов + 2-3 Use Cases)
+
 ## ✅ Завершено — Сессия 2026-05-22 (Phase 1)
 
 ### Архитектурная миграция Phase 1 — AI-Native Transformation OS
