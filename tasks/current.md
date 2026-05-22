@@ -86,6 +86,40 @@
 
 ---
 
+## ✅ Завершено — Сессия 2026-05-22
+
+### QA Pipeline
+- ✅ **GitHub Actions QA** — build + lint + Playwright smoke-тесты после каждого push
+- ✅ **Telegram-уведомления** — бот @My_Ai_AtlasBot, TELEGRAM_TOKEN + TELEGRAM_CHAT_ID в GitHub Secrets
+- ✅ **5 smoke-тестов** — app loads, mindmap renders, no blank screen, courses modal, detail panel
+- ✅ **Lint fixes** — 7 ошибок: titles для b-models/cap-computer/cap-thinking, icon code→terminal (pl-api + api-basics), dangling relatedIds в b-context
+
+### Навигация и взаимодействие
+- ✅ **navigateToNode хелпер** — единая функция: setRoute + panToNode с retry; используется везде
+- ✅ **DetailNavFooter** — кнопки «← Назад» / «Далее →» теперь плавно двигают карту
+- ✅ **Клавиши ← →** — навигация по узлам с клавиатуры тоже движет карту
+- ✅ **Кнопки профиля** — «Закладки», «Прочитано», «Вернуться» двигают карту к первому узлу списка
+
+### UX-аудит — исправлено
+- ✅ **ОБНОВЛЕНО на всех узлах** — initFirstVisit() засевает все записи как seen при первом визите; новый пользователь видит чистую карту
+- ✅ **markSeen при старте туториала** — onStartTutorial вызывает markSeen(key)
+- ✅ **WelcomeCard dismiss** — добавлена кнопка × на newcomer-варианте; «Начать» закрывает карточку; TTL: 90 дней для newcomer, 14 дней для continue
+- ✅ **Мобиль fitToScreen** — useIsMobile + hasAutoFitted ref; fitToScreen(padding=20) при первой загрузке; onFit на мобиле тоже padding=20
+- ✅ **Mindmap.jsx** — fitToScreen принимает опциональный padding
+- ✅ **Закрывать дропдауны при смене route** — CanvasHeader (Atlas-меню) и CanvasFilters (обновления + категория) закрываются при любом изменении route
+
+### Автоматизация контента (план)
+- ✅ **Стратегия автопубликации** — план 3 фаз: content-queue.json → lesson-publisher skill → content-scout skill → GitHub Actions cron + Claude API
+
+### Модалки
+- ✅ **IntroModal** — первое знакомство для новых посетителей (2 слайда: что это + ваша роль); после — открывается ai-fluency
+- ✅ **IntroModal: auth кнопка** — «Войти или создать аккаунт» на слайде 2
+- ✅ **Удалён переключатель Quick/Standard/Deep** — всегда показывается максимальный контент
+- ✅ **Удалён выбор уровня из ProfilePanel** — уровень остался для сортировки курсов, но убран из UI профиля
+- ✅ **Брендинг** — «Claude Atlas» → «105 Atlas» во всех пользовательских текстах
+
+---
+
 ## 🔴 Открытые задачи (приоритет)
 
 ### Курсы — Батч 2 (следующий)
@@ -105,6 +139,48 @@
 |---|----|---------|-----------|---------|----|
 | 4 | `mcp-advanced` | MCP: продвинутые сценарии | developers | advanced | Anthropic: «MCP Advanced Topics». У нас только базовый MCP |
 | 5 | `building-evaluations` | Как оценивать ответы Claude | developers | intermediate | Anthropic GitHub-курс по evals. Критично для тех кто строит на Claude |
+
+### UX-аудит — остаток (продолжить следующей сессии)
+
+Аудит проведён с помощью Claude Preview (localhost:5173). Найдено 8 проблем, закрыто 4.
+
+| # | Задача | Приоритет | Статус |
+|---|--------|-----------|--------|
+| 1 | ОБНОВЛЕНО на всех узлах при первом визите | 🔴 | ✅ |
+| 2 | WelcomeCard — dismiss + кнопка × | 🔴 | ✅ |
+| 3 | Мобиль — fitToScreen при загрузке | 🔴 | ✅ |
+| 4 | Закрывать дропдауны при смене route | 🟡 | ✅ |
+| **5** | **Курсы — группировка по уровню + фильтр статуса** | 🟡 | open |
+| **6** | **Поиск — inline-строка должна фильтровать карту** | 🟡 | open |
+| **7** | **Мобиль — FAB-кнопки для Курсов и Поиска** | 🟡 | open |
+| **8** | **Тёмная тема** | 🔵 | open |
+
+**Детали пункта 5 (Курсы):**
+Реализация была в коммите `7e9f612` но откатана. Нужно повторить:
+- Статус-фильтр: «Все курсы | В процессе | Завершены» (с счётчиком-бейджем)
+- Группировка по уровню: Новичок → Продвинутый → Эксперт (с цветными заголовками)
+- Бейдж ✓ поверх иконки завершённых курсов
+- Пустое состояние при отсутствии курсов
+- Исправить: `items.length` → `byAudience.length` в строке summary
+- i18n: `courses.status.*`, `courses.empty.*` (добавить в ru/en/fi)
+
+**Детали пункта 6 (Поиск):**
+Inline-строка в CanvasHeader открывается, но ввод текста не фильтрует карту.
+Нужно проверить: `onQuery` → `setQuery` → `searchTree` → узлы подсвечиваются.
+Возможно React event propagation issue в input внутри CanvasHeader.
+
+**Детали пункта 7 (Мобиль FAB):**
+На мобиле нет прямых кнопок для Библиотеки, Курсов, Поиска в шапке.
+В MobileFab.jsx добавить: кнопку «Обучение» (открывает CoursesModal) и «Поиск».
+
+### Контент — автопубликация (следующий шаг)
+| # | Задача | Статус |
+|---|--------|--------|
+| 1 | **`content/content-queue.json`** — перенести бэклог уроков в машиночитаемый формат | open |
+| 2 | **`skills/lesson-publisher/SKILL.md`** — оркестратор публикации одного урока | open |
+| 3 | **`skills/content-scout/SKILL.md`** — еженедельный поиск новых уроков в Anthropic Academy | open |
+| 4 | **`scripts/publish-lessons.mjs`** — Node.js скрипт вызова Claude API для генерации | open |
+| 5 | **`.github/workflows/publish-lessons.yml`** — cron-расписание публикации (понедельник 08:00) | open |
 
 ### Техника
 | status | task | примечание | дата |
