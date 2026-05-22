@@ -1035,7 +1035,7 @@ export const mindmapData = {
     },
     {
       "id": "systems",
-      "icon": "network",
+      "icon": "link",
       "category": "systems",
       "children": [
         {
