@@ -1384,5 +1384,32 @@
     "impact": "Transforms the LLM from a «generative helper» into an «expert on your data». Answer accuracy: 30% (without RAG) → 85%+ (with well-built RAG).",
     "example": "Query: «What is our return policy?». RAG: 1) embedding of query → 2) search in vector DB → 3) find the Returns Policy section → 4) Claude answers based on the finding with a citation. No hallucinations.",
     "mistakes": "Doing naive RAG: one chunk = one page, retrieval top-3, straight into prompt. Production RAG needs re-ranking, hybrid search (keyword + semantic), chunk overlap, metadata. This is the difference between «kind of works» and «actually works»."
+  },
+  "af-memory-systems": {
+    "title": "AI Memory: Types",
+    "what": "AI systems have 4 memory types. In-context — what is in the current prompt (short, ephemeral). External — RAG / knowledge base (long-term, selective). Semantic — embeddings of past interactions (search by meaning). Episodic — log of specific events (recover exact sequence).",
+    "why": "Without understanding memory types, you build a chatbot that «does not remember yesterday's conversation» — and you do not know what to do. Each type solves a different problem.",
+    "when": "When designing conversational AI. When users complain «AI forgot what I said». When you need personalization that persists across sessions.",
+    "impact": "Right memory architecture transforms AI from «1-request helper» into «colleague who remembers context». This is the shift from toy demo to production assistant.",
+    "example": "Claude Memory (cap-memory) = semantic memory. Project Files (p-files) = external memory. CLAUDE.md (i-claudemd) = persistent instructions, also a form of external memory. Each has its role.",
+    "mistakes": "Trying to cram all history into context («increase the window to 1M»). Expensive, slow, does not scale. Production solution — combination of types: short-term in-context + long-term external + episodic for important events."
+  },
+  "af-multimodal": {
+    "title": "Multimodal AI",
+    "what": "AI working with multiple data types simultaneously: text + images + audio + video + code. Claude natively processes text and images. GPT-4 + Gemini add voice. The future — a single model for all modalities.",
+    "why": "The real world is multimodal. UX feedback = screenshot + comment. Support = voice call + photo of the problem. Building purely text-based AI systems means ignoring half the context.",
+    "when": "When a task requires understanding beyond text. Screenshot → code. Design mockup → HTML. Document photo (PDF) → structured data. Video → automatic summary.",
+    "impact": "Multimodal AI expands the task range by 5-10×. Without it, AI = text assistant. With it = universal helper for any media.",
+    "example": "Screenshot of error + «why is it like this?» → Claude sees and reads the stack trace. Figma design mockup → «build the HTML» → ready code. This is impossible in text-only models.",
+    "mistakes": "Thinking multimodal = «AI understands the image». Understanding is variable: recognizing objects — yes, reading a complex chart — may err, OCR of handwritten text — weaker than specialized OCR. Test on your data types."
+  },
+  "af-fine-tuning": {
+    "title": "Fine-tuning vs Prompting",
+    "what": "Fine-tuning = retraining the model on your data (thousands of examples) — the model literally updates its weights. Prompting = passing instructions in context without changing the model. 95% of business tasks are solved by prompting + few-shot examples + RAG, no fine-tuning needed.",
+    "why": "Fine-tuning is an expensive (thousands of $) and slow (days/weeks) process. Plus your model becomes «yours» — you cannot upgrade to a new Claude version without redoing the fine-tuning. Prompting is instant, cheap, flexible.",
+    "when": "Fine-tuning makes sense when: (1) very specific tone-of-voice that does not transfer in a prompt; (2) very narrow domain with thousands of examples; (3) need to reduce latency/cost via a smaller model.",
+    "impact": "The right choice saves months. Teams often start with «let us fine-tune» and spend a quarter on data collection. The alternative (prompting + RAG) could have launched in a week.",
+    "example": "Task: «AI replies in our CEO's style». First: 5-shot prompting with examples of CEO emails + system prompt «reply in this style». If after 50 iterations quality still suffers — then fine-tuning. In 80% of cases — prompting is enough.",
+    "mistakes": "Doing fine-tuning «just in case». It is technical debt: your model is outdated in half a year, the new Claude version is better than your fine-tuned one. Exhaust prompting + RAG + tools first — only then fine-tuning."
   }
 }

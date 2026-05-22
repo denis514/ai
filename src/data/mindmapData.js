@@ -133,6 +133,36 @@ export const mindmapData = {
                 "cap-citations",
                 "cap-files"
               ]
+            },
+            {
+              "id": "af-memory-systems",
+              "icon": "book",
+              "category": "foundation",
+              "relatedIds": [
+                "cap-memory",
+                "af-rag-basics",
+                "p-files"
+              ]
+            },
+            {
+              "id": "af-multimodal",
+              "icon": "paint",
+              "category": "foundation",
+              "relatedIds": [
+                "cap-vision",
+                "cap-files",
+                "af-llm-basics"
+              ]
+            },
+            {
+              "id": "af-fine-tuning",
+              "icon": "mixer",
+              "category": "foundation",
+              "relatedIds": [
+                "prompting",
+                "af-llm-basics",
+                "instructions"
+              ]
             }
           ]
         },

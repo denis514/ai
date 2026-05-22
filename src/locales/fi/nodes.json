@@ -1384,5 +1384,32 @@
     "impact": "Muuttaa LLM:n «generatiivisesta avustajasta» «datasi asiantuntijaksi». Vastausten tarkkuus: 30% (ilman RAG:ia) → 85%+ (hyvin rakennetulla RAG:lla).",
     "example": "Kysely: «Mikä on palautuskäytäntömme?». RAG: 1) kyselyn embedding → 2) haku vektoritietokannasta → 3) löytää Returns Policy -osion → 4) Claude vastaa löydökseen perustuen lähdeviittauksella. Ei hallusinaatioita.",
     "mistakes": "Tehdä naive RAG: yksi pala = yksi sivu, top-3 retrieval, suoraan kehotteeseen. Tuotanto-RAG tarvitsee re-ranking, hybridi-haku (avainsana + semanttinen), pala-päällekkäisyys, metadata. Tämä on ero «näyttää toimivan» ja «todella toimii» välillä."
+  },
+  "af-memory-systems": {
+    "title": "AI-muisti: tyypit",
+    "what": "AI-järjestelmillä on 4 muistityyppiä. In-context — mitä on nykyisessä kehotteessa (lyhyt, katoaa). External — RAG / tietokanta (pitkä, valikoiva). Semantic — aikaisempien vuorovaikutusten embeddings (haku merkityksen mukaan). Episodic — loki tietyistä tapahtumista (palauta tarkka järjestys).",
+    "why": "Ilman muistityyppien ymmärtämistä rakennat chatbotin, joka «ei muista eilistä keskustelua» — etkä tiedä mitä tehdä. Jokainen tyyppi ratkaisee oman ongelmansa.",
+    "when": "Keskustelevan AI:n suunnittelussa. Kun käyttäjät valittavat «AI unohti mitä sanoin». Kun tarvitset personointia, joka säilyy istuntojen välillä.",
+    "impact": "Oikea muistiarkkitehtuuri muuttaa AI:n «1 pyynnön auttajasta» «kollegaksi, joka muistaa kontekstin». Tämä on siirtymä toy demosta production-avustajaksi.",
+    "example": "Claude Memory (cap-memory) = semanttinen muisti. Project Files (p-files) = ulkoinen muisti. CLAUDE.md (i-claudemd) = pysyvät ohjeet, myös ulkoisen muistin muoto. Jokaisella on roolinsa.",
+    "mistakes": "Yrittää tunkea koko historia kontekstiin («kasvatetaan ikkunaa 1M:ään»). Kallista, hidasta, ei skaalaudu. Production-ratkaisu — tyyppien yhdistelmä: lyhytaikainen in-context + pitkäaikainen ulkoinen + episodinen tärkeille tapahtumille."
+  },
+  "af-multimodal": {
+    "title": "Multimodaalinen AI",
+    "what": "AI, joka työskentelee useiden datatyyppien kanssa samanaikaisesti: teksti + kuvat + ääni + video + koodi. Claude käsittelee tekstiä ja kuvia natiivisti. GPT-4 + Gemini lisäävät äänen. Tulevaisuus — yksi malli kaikille modaliteeteille.",
+    "why": "Todellinen maailma on multimodaalinen. UX-palaute = ruutukaappaus + kommentti. Tuki = äänipuhelu + valokuva ongelmasta. Puhtaasti tekstipohjaisten AI-järjestelmien rakentaminen tarkoittaa puolen kontekstin huomiotta jättämistä.",
+    "when": "Kun tehtävä vaatii ymmärrystä tekstin ulkopuolelta. Ruutukaappaus → koodi. Suunnittelumallinne → HTML. Dokumenttikuva (PDF) → strukturoitu data. Video → automaattinen yhteenveto.",
+    "impact": "Multimodaalinen AI laajentaa tehtäväalueen 5-10-kertaiseksi. Ilman sitä AI = tekstiavustaja. Sen kanssa = universaali apuri kaikille medioille.",
+    "example": "Virhe-ruutukaappaus + «miksi näin?» → Claude näkee ja lukee stack tracen. Figma-suunnittelumallinne → «rakenna HTML» → valmis koodi. Tämä on mahdotonta vain-teksti-malleilla.",
+    "mistakes": "Ajatella multimodaalinen = «AI ymmärtää kuvan». Ymmärrys vaihtelee: kohteiden tunnistaminen — kyllä, monimutkaisen kaavion lukeminen — voi erehtyä, käsinkirjoitetun tekstin OCR — heikompi kuin erikoistuneet OCR:t. Testaa omilla datatyypeillä."
+  },
+  "af-fine-tuning": {
+    "title": "Fine-tuning vs Prompting",
+    "what": "Fine-tuning = mallin uudelleenkoulutus omalla datalla (tuhansia esimerkkejä) — malli kirjaimellisesti päivittää painonsa. Prompting = ohjeiden välittäminen kontekstissa muuttamatta mallia. 95% liiketoimintatehtävistä ratkaistaan prompting + few-shot examples + RAG -yhdistelmällä, ilman fine-tuningia.",
+    "why": "Fine-tuning on kallis (tuhansia $) ja hidas (päivien/viikkojen) prosessi. Lisäksi mallistasi tulee «omasi» — et voi päivittää uuteen Claude-versioon ilman fine-tuningin toistamista. Prompting on välitön, halpa, joustava.",
+    "when": "Fine-tuning on järkevää kun: (1) hyvin spesifinen tone-of-voice, joka ei välity kehotteessa; (2) hyvin kapea domain tuhansilla esimerkeillä; (3) tarvitset alentaa latenssia/kustannuksia pienemmällä mallilla.",
+    "impact": "Oikea valinta säästää kuukausia. Tiimit aloittavat usein «tehdään fine-tuning» -ajatuksella ja viettävät neljänneksen datankeräyksessä. Vaihtoehto (prompting + RAG) olisi voinut käynnistyä viikossa.",
+    "example": "Tehtävä: «AI vastaa CEO:mme tyyliin». Ensin: 5-shot prompting esimerkeillä CEO:n sähköposteista + system prompt «vastaa tähän tyyliin». Jos 50 iteraation jälkeen laatu yhä kärsii — sitten fine-tuning. 80% tapauksista — prompting riittää.",
+    "mistakes": "Tehdä fine-tuningia «varmuuden vuoksi». Se on teknistä velkaa: mallisi on vanhentunut puolessa vuodessa, uusi Claude-versio on parempi kuin sinun fine-tunetusi. Käytä ensin prompting + RAG + tools — vasta sitten fine-tuning."
   }
 }
