@@ -1425,6 +1425,94 @@ export const mindmapData = {
               ]
             }
           ]
+        },
+        {
+          "id": "ai-native-enterprise",
+          "icon": "building",
+          "category": "transformation",
+          "children": [
+            {
+              "id": "en-transformation-strategy",
+              "icon": "expand",
+              "category": "transformation",
+              "relatedIds": [
+                "ops-team-workflow",
+                "mk-team-workflow",
+                "cs-team-workflow",
+                "pd-team-workflow",
+                "sys-overview"
+              ]
+            },
+            {
+              "id": "en-change-management",
+              "icon": "tools",
+              "category": "transformation",
+              "relatedIds": [
+                "projects",
+                "p-team",
+                "ops-team-workflow",
+                "mk-team-workflow"
+              ]
+            },
+            {
+              "id": "en-governance",
+              "icon": "lock",
+              "category": "transformation",
+              "relatedIds": [
+                "b-safety",
+                "b-prompt-injection",
+                "sys-quality-gates",
+                "m-security",
+                "pl-privacy"
+              ]
+            },
+            {
+              "id": "en-coe",
+              "icon": "star",
+              "category": "transformation",
+              "relatedIds": [
+                "ops-team-workflow",
+                "mk-team-workflow",
+                "instructions",
+                "skills"
+              ]
+            },
+            {
+              "id": "en-roi-measurement",
+              "icon": "trophy",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "ops-reporting-automation",
+                "mk-performance-analytics",
+                "cs-support-analytics",
+                "pd-product-analytics"
+              ]
+            },
+            {
+              "id": "en-risk-management",
+              "icon": "warning",
+              "category": "transformation",
+              "relatedIds": [
+                "b-safety",
+                "b-prompt-injection",
+                "m-security",
+                "sys-quality-gates",
+                "pl-privacy"
+              ]
+            },
+            {
+              "id": "en-talent-strategy",
+              "icon": "developer",
+              "category": "transformation",
+              "relatedIds": [
+                "b-claude",
+                "ai-fundamentals",
+                "ops-team-workflow",
+                "pd-team-workflow"
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1516,6 +1604,21 @@ export const mindmapData = {
             "af-rag-basics",
             "prompting",
             "projects"
+          ]
+        },
+        {
+          "id": "uc-ai-transformation-roadmap",
+          "icon": "folder-plus",
+          "category": "use-cases",
+          "relatedIds": [
+            "en-transformation-strategy",
+            "en-change-management",
+            "en-coe",
+            "en-roi-measurement",
+            "ai-native-operations",
+            "ai-native-marketing",
+            "ai-native-customer-support",
+            "ai-native-product"
           ]
         }
       ]
