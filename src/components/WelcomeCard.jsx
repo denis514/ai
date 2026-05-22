@@ -5,18 +5,20 @@ import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 
 const DISMISS_KEY = 'claude-mindmap:welcome-dismissed:v1';
-// Сколько дней не показывать после закрытия. После 7 дней снова всплывёт —
-// человек, скорее всего, забыл, на чём остановился.
-const DISMISS_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+// «Продолжить» (есть активный туториал) — напоминает раз в 14 дней.
+// «Добро пожаловать» (нет прогресса) — не показывается 90 дней после dismiss.
+const DISMISS_TTL_CONTINUE_MS = 14 * 24 * 60 * 60 * 1000;
+const DISMISS_TTL_NEWCOMER_MS = 90 * 24 * 60 * 60 * 1000;
 
-function readDismissed() {
+function readDismissed(hasCandidate) {
   if (typeof window === 'undefined') return false;
   try {
     const raw = localStorage.getItem(DISMISS_KEY);
     if (!raw) return false;
     const ts = Number(raw);
     if (!Number.isFinite(ts)) return false;
-    return Date.now() - ts < DISMISS_TTL_MS;
+    const ttl = hasCandidate ? DISMISS_TTL_CONTINUE_MS : DISMISS_TTL_NEWCOMER_MS;
+    return Date.now() - ts < ttl;
   } catch { return false; }
 }
 
@@ -53,19 +55,19 @@ export default function WelcomeCard({
 }) {
   const t = useT();
   const { locale } = useLocale();
-  const [dismissed, setDismissed] = useState(() => readDismissed());
-
-  // Если localStorage обновился извне (например, открыл туториал в другой вкладке) —
-  // не подписываемся, это редкий случай. Перерисуем при следующем mount.
-
   const candidate = useMemo(
     () => findContinueCandidate(progressApi?.progress),
     [progressApi?.progress]
   );
 
+  const [dismissed, setDismissed] = useState(() => readDismissed(!!candidate));
+
   if (dismissed) return null;
 
   const onDismiss = () => { writeDismissed(); setDismissed(true); };
+
+  // Начать туториал и сразу закрыть карточку
+  const onStart = (id) => { onStartTutorial?.(id); onDismiss(); };
 
   if (candidate) {
     const tut = getLocalizedTutorial(candidate.id, locale);
@@ -97,7 +99,7 @@ export default function WelcomeCard({
           <button
             type="button"
             className="btn btn--primary welcome-card__cta"
-            onClick={() => onStartTutorial?.(candidate.id)}
+            onClick={() => onStart(candidate.id)}
           >
             <Icon name="arrow-right" size={14} strokeWidth={1.75} /> {t('welcome.continue.cta')}
           </button>
@@ -113,12 +115,18 @@ export default function WelcomeCard({
     );
   }
 
-  // Никакой активности — простая карточка приветствия:
-  // заголовок, короткое описание, две кнопки. Крестик намеренно убран —
-  // «Я уже знаю» сам по себе функционирует как dismiss. Восстановить доступ
-  // к вводному уроку можно через Profile → «Открыть вводный урок».
+  // Никакой активности — простая карточка приветствия.
+  // Теперь имеет × для явного закрытия + «Начать» закрывает карточку.
   return (
     <div className="welcome-card welcome-card--newcomer" role="region" aria-label="Welcome">
+      <button
+        type="button"
+        className="welcome-card__close"
+        onClick={onDismiss}
+        aria-label={t('welcome.close')}
+      >
+        <Icon name="close" size={16} strokeWidth={1.75} />
+      </button>
       <div className="welcome-card__icon" aria-hidden="true">
         <Icon name="rocket" size={26} strokeWidth={1.5} />
       </div>
@@ -130,7 +138,7 @@ export default function WelcomeCard({
         <button
           type="button"
           className="btn btn--primary welcome-card__cta"
-          onClick={() => onStartTutorial?.('welcome')}
+          onClick={() => onStart('welcome')}
         >
           <Icon name="arrow-right" size={14} strokeWidth={1.75} /> {t('welcome.simple.cta')}
         </button>
