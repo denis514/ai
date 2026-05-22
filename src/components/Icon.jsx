@@ -85,7 +85,10 @@ import {
   Mail01Icon,
   MailSend01Icon,
   Alert01Icon,
-  InformationCircleIcon
+  InformationCircleIcon,
+  // theme icons
+  Sun03Icon,
+  Moon02Icon
 } from '@hugeicons/core-free-icons';
 
 /**
@@ -180,7 +183,10 @@ const REGISTRY = {
   mail:        Mail01Icon,
   send:        MailSend01Icon,
   warning:     Alert01Icon,
-  info:        InformationCircleIcon
+  info:        InformationCircleIcon,
+  // theme toggle
+  sun:         Sun03Icon,
+  moon:        Moon02Icon
 };
 
 /**

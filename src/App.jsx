@@ -21,6 +21,7 @@ import DetailNavFooter from './components/DetailNavFooter.jsx';
 import WelcomeCard from './components/WelcomeCard.jsx';
 import HelpModal from './components/HelpModal.jsx';
 import { useTutorialProgress } from './hooks/useTutorialProgress.js';
+import { useTheme } from './hooks/useTheme.js';
 import { useHashRoute, parseHash } from './hooks/useHashRoute.js';
 import { useBookmarks } from './hooks/useBookmarks.js';
 import { useNodeProgress } from './hooks/useNodeProgress.js';

@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
 import { updateProfile } from '../services/profileService.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
+import { useTheme } from '../hooks/useTheme.js';
 
 const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
 
@@ -37,6 +38,7 @@ export default function ProfilePanel({
   const { user, profile, setProfile, isLoggedIn } = useAuth();
   const [langOpen, setLangOpen] = useState(false);
   const [completedOpen, setCompletedOpen] = useState(false);
+  const { theme, toggle: toggleTheme } = useTheme();
 
   // Supabase stats (только когда залогинен)
   const supaStats = useSupabaseStats(user?.id || null);
@@ -463,8 +465,17 @@ export default function ProfilePanel({
         </section>
       )}
 
-      {/* ── LANGUAGE ── */}
+      {/* ── LANGUAGE + THEME ── */}
       <div className="profile-panel__lang-bar">
+        <button
+          type="button"
+          className="profile-panel__theme-btn"
+          onClick={toggleTheme}
+          title={theme === 'dark' ? t('profile.theme.toLight') : t('profile.theme.toDark')}
+          aria-label={theme === 'dark' ? t('profile.theme.toLight') : t('profile.theme.toDark')}
+        >
+          <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={16} strokeWidth={1.5} />
+        </button>
         <div className="profile-panel__lang-picker">
           <button
             type="button"

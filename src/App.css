@@ -876,6 +876,46 @@
   --header-h: 116px;
 }
 
+/* ============================================================
+   Тёмная тема — активируется через [data-theme="dark"] на <html>
+   Сохранена цветовая иерархия light-темы, перевернута светлота.
+   ============================================================ */
+:root[data-theme="dark"] {
+  --bg: #0f0f10;
+  --bg-grid: #1a1a1c;
+  --surface: #1a1a1c;
+  --surface-2: #222225;
+  --surface-3: #2a2a2e;
+
+  --line: #5b8df5;
+  --line-soft: #3d5a99;
+  --line-deep: #7da7ff;
+
+  --text: #f0f0ef;
+  --text-muted: #a8a8a5;
+  --text-dim: #707070;
+
+  --border: #2e2e32;
+  --border-strong: #404045;
+
+  --accent: #e8855f;
+  --accent-soft: #3a2820;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Smooth theme transition */
+html {
+  transition: background-color .2s ease;
+}
+body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
+.canvas-header__bar, .canvas-filters__menu, .cfilter__menu,
+.profile-panel, .bsheet, .auth-modal, .intro-card {
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
 @media (max-width: 720px) {
   :root { --header-h: 156px; }
 }
@@ -3228,7 +3268,29 @@
 .profile-panel__lang-bar {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
   padding: 8px 18px 16px;
+}
+
+/* Theme toggle — sun/moon icon button */
+.profile-panel__theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.profile-panel__theme-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border-strong);
 }
 
 .profile-panel__lang-picker {
