@@ -1111,6 +1111,93 @@ export const mindmapData = {
               ]
             }
           ]
+        },
+        {
+          "id": "ai-orchestration",
+          "icon": "command",
+          "category": "systems",
+          "children": [
+            {
+              "id": "sys-multi-agent-patterns",
+              "icon": "puzzle",
+              "category": "systems",
+              "relatedIds": [
+                "agents",
+                "ag-principles",
+                "cc-subagents",
+                "ag-managed",
+                "uc-ai-multi-agent-system",
+                "sys-context-passing"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ai-human-collaboration",
+          "icon": "users",
+          "category": "systems",
+          "children": [
+            {
+              "id": "sys-escalation-paths",
+              "icon": "send",
+              "category": "systems",
+              "relatedIds": [
+                "cs-escalation",
+                "sys-quality-gates",
+                "ag-principles",
+                "ops-decision-intelligence"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ai-operations",
+          "icon": "eye",
+          "category": "systems",
+          "children": [
+            {
+              "id": "sys-evals-benchmarks",
+              "icon": "check-circle",
+              "category": "systems",
+              "relatedIds": [
+                "cs-quality-monitoring",
+                "sys-quality-gates",
+                "prompting",
+                "pr-iterate"
+              ]
+            },
+            {
+              "id": "sys-cost-management",
+              "icon": "tag",
+              "category": "systems",
+              "relatedIds": [
+                "cap-caching",
+                "pl-api",
+                "en-roi-measurement",
+                "af-llm-basics",
+                "af-fine-tuning"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ai-integration-systems",
+          "icon": "plug",
+          "category": "systems",
+          "children": [
+            {
+              "id": "sys-api-patterns",
+              "icon": "globe",
+              "category": "systems",
+              "relatedIds": [
+                "pl-api",
+                "pl-cowork",
+                "mcp",
+                "cap-tools",
+                "pl-integrations"
+              ]
+            }
+          ]
         }
       ]
     },

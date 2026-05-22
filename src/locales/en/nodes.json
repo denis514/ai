@@ -1915,5 +1915,86 @@
     "impact": "Outcome: working multi-agent system in 4-6 weeks. Metrics: task completion rate, latency vs single-agent, cost per completed workflow, debuggability score.",
     "example": "Path (6 steps):\n\n1. Foundation: agents → understand agent fundamentals\n2. Foundation: ag-principles → agent design principles\n3. Foundation: cc-subagents → implement subagents in Claude Code (if applicable)\n4. Foundation: ag-managed → Claude Managed Agents if using Claude\n5. Systems: sys-workflows-basics → workflow patterns for coordination\n6. Systems: sys-context-passing → critical for multi-agent: how context flows\n\nArchitecture patterns:\n  - Coordinator-Worker: one main agent delegates sub-agents specific tasks\n  - Debate: 2-3 agents argue, coordinator decides\n  - Reflection: agent + critic agent + revision agent\n  - Tool-using agent: agent + multiple tools (search, calc, code-exec)\n\nWeek 1-2: Decompose the problem. Design agent roles.\nWeek 3-4: Build agents individually. Test in isolation.\nWeek 5-6: Compose with orchestration. Iterate on coordination failures.\n\nKey: structured logging + replay debugging.",
     "mistakes": "Jumping into multi-agent from nothing. If a single-agent feels limited — first improve prompts + tools + RAG. Multi-agent adds complexity quadratically: debugging, monitoring, cost, latency. Use ONLY when single-agent provably maxed out."
+  },
+  "ai-orchestration": {
+    "title": "AI Orchestration",
+    "what": "Patterns for coordinating multiple AI agents and steps: coordinator-worker, debate, reflection, manager-subordinate. The level above workflow — when the workflow itself becomes a subtask.",
+    "why": "Single-agent workflows work up to a certain complexity. When a task requires different expertise or parallel processing — orchestration patterns are needed.",
+    "when": "When workflow complexity grows: more than 5-7 steps, different specializations, parallel processing. When a single AI struggles with the task as a whole.",
+    "impact": "Orchestration is the shift from «AI as helper» to «AI as distributed system». This is next-level architecture for AI workflows.",
+    "example": "4 basic patterns:\n1. Coordinator-Worker — main agent delegates to subagents\n2. Debate — multiple agents argue, coordinator decides\n3. Reflection — agent + critic + revision\n4. Tool-using — agent + multiple tools",
+    "mistakes": "Doing orchestration «because it is cool». Complexity grows quadratically: debug, monitor, cost. Use only when single-agent is provably maxed out."
+  },
+  "ai-human-collaboration": {
+    "title": "AI Human Collaboration",
+    "what": "Architectural patterns for the AI ↔ human boundary: handoff, review/approval, copilot vs autopilot, trust calibration, escalation. Not «UI/UX», but the architecture of decisions.",
+    "why": "Without explicit human-AI boundary patterns, AI is either overly cautious (everything → human) or makes mistakes (no oversight). An architectural choice about trust.",
+    "when": "Any AI system with real consequences (money, reputation, legal). An architectural decision BEFORE launch, not after an incident.",
+    "impact": "Calibrated human-AI border: ~70% of tasks AI sole, ~25% AI+review, ~5% human-first. Vs uncalibrated: either bottleneck (everything waits for human) or incidents.",
+    "example": "Trust matrix: confidence × consequence\n  Low consequence × any confidence → AI sole\n  High consequence × high confidence → AI + audit log\n  High consequence × low confidence → human-first",
+    "mistakes": "Doing «AI does everything» without human gates. Production AI without oversight = incident waiting to happen. And the reverse: «everything through human» = AI = waste."
+  },
+  "ai-operations": {
+    "title": "AI Operations",
+    "what": "AI in production: observability, evals, cost management, prompt versioning, security ops. Without AI Ops, AI stays a PoC — no visibility, no cost control, no confidence.",
+    "why": "AI deploys differently from regular software: probabilistic outputs, model drift, prompt as code, cost variability. Traditional DevOps does not cover this.",
+    "when": "From day 1 of production AI. Not «when needed». AI Ops = what distinguishes «pilot» from «production». No ops = forever pilot.",
+    "impact": "Production AI lifespan: 3 months (no ops) → 2+ years (proper ops). Predictability: cost predictable, quality stable, drift detected.",
+    "example": "5 AI Ops areas:\n1. Observability — what AI does in production\n2. Evals — quality assessment continuously\n3. Cost management — token spend, model selection\n4. Prompt versioning — prompt changes ≠ silent\n5. Security ops — incident response, audit trails",
+    "mistakes": "Thinking AI Ops = DevOps + AI labels. These are different disciplines. AI Ops requires understanding probabilistic systems, model behavior, prompt engineering."
+  },
+  "ai-integration-systems": {
+    "title": "AI Integration Systems",
+    "what": "Patterns for connecting AI with real business systems: APIs, webhooks, MCP, event-driven, no-code. From «AI in chat» — to «AI integrated into workflow tools».",
+    "why": "AI without integration = demo. AI with integration = production system embedded in actual work. This is the difference between «cool tech» and «business impact».",
+    "when": "When AI must trigger actions (send email, update CRM, create ticket). When users work in existing tools (Slack, Notion, Linear).",
+    "impact": "Integrated AI: users do not switch context. Adoption grows 3-5×. AI becomes «invisible infrastructure» instead of «separate app».",
+    "example": "3 integration approaches:\n1. API-driven — AI as a service, called by other systems\n2. Event-driven — AI reacts to events (webhook)\n3. Embedded — AI inside existing tools (Claude Cowork, Slack bots)\n\nChoice depends on: latency, security, user workflow.",
+    "mistakes": "Making a standalone AI app when integration is better. «Open our AI tool» = adoption barrier. Integration in existing tools = AI where people work."
+  },
+  "sys-multi-agent-patterns": {
+    "title": "Multi-Agent Patterns",
+    "what": "4 architectural patterns for multi-agent systems: Coordinator-Worker (1 manager + N specialists), Debate (multiple POVs + arbiter), Reflection (agent + critic), Tool-using (agent + tool library).",
+    "why": "Without patterns, multi-agent = chaos. Each pattern solves a specific problem: decomposition (Coordinator), quality through disagreement (Debate), self-improvement (Reflection), capability extension (Tool-using).",
+    "when": "Coordinator-Worker — when a task decomposes into parallel subtasks. Debate — for high-stakes decisions with multiple valid POVs. Reflection — when quality is critical (writing, code). Tool-using — when capabilities beyond LLM are needed.",
+    "impact": "Multi-agent with the right pattern: 30-50% quality lift on complex tasks vs single-agent. Latency hit (several LLM calls), but trade-off often worth it.",
+    "example": "┌─ Coordinator-Worker ─────┐  ┌─ Debate ──────────┐\n│  Main Agent              │  │  Agent A (POV 1)  │\n│   ├─→ Worker A (analyze) │  │  Agent B (POV 2)  │\n│   ├─→ Worker B (write)   │  │   ↓ disagree ↓    │\n│   └─→ Worker C (review)  │  │  Arbiter decides  │\n└──────────────────────────┘  └───────────────────┘\n\n┌─ Reflection ─────────────┐  ┌─ Tool-using ──────┐\n│  Agent writes draft      │  │  Agent reasons    │\n│   ↓                      │  │   ↓               │\n│  Critic finds issues     │  │  Calls tool (API) │\n│   ↓                      │  │   ↓               │\n│  Agent revises           │  │  Reasons with     │\n│   loop until good        │  │  tool output      │\n└──────────────────────────┘  └───────────────────┘",
+    "mistakes": "Mixing patterns without understanding. Coordinator-Worker + Debate in one system = explosion of LLM calls. Pick one primary pattern per workflow, others — secondary tools."
+  },
+  "sys-escalation-paths": {
+    "title": "Escalation Paths",
+    "what": "Architectural pattern for AI → human handoff: explicit triggers (confidence, severity, category), prepared context for the human, return path. Not «AI fails → call human», but «structured handoff with context».",
+    "why": "Without escalation paths, AI either forever-tries (frustrating users), or immediately gives up (defeats purpose). Calibrated escalation = trust in the system grows.",
+    "when": "Any AI with real consequences. Customer-facing AI (support, sales). High-stakes decisions (hiring, refunds, content moderation). AI with recurring tasks where edge cases are possible.",
+    "impact": "User experience: stops the «bot loop frustration». Human time efficient: they get prepared context, not a raw ticket. Confidence in AI: users see the fallback works.",
+    "example": "Escalation Pipeline:\n\n  AI receives task\n        ↓\n  [Confidence > threshold?]\n   ├─ Yes → AI responds + log\n   └─ No  → [Identify problem type]\n             ├─ Billing → billing team queue\n             ├─ Technical → tech team queue\n             └─ Unclear → general queue\n                        ↓\n              AI prepares handoff package:\n              - Customer context\n              - What was asked\n              - What AI tried\n              - Why AI stopped (confidence, category, etc.)\n                        ↓\n              Human picks up: context-ready in 30s",
+    "mistakes": "Making static escalation rules. «Always escalate billing» — misses nuance. Smart escalation: confidence + category + history. And: not testing escalation patterns pre-launch — you find edge cases in production."
+  },
+  "sys-evals-benchmarks": {
+    "title": "AI Evals & Benchmarks",
+    "what": "Systematic assessment of AI quality: golden test sets, automated evals, A/B comparisons, human evaluation. Turns «AI seems to work» into «AI quality measured, monitored, improved».",
+    "why": "AI quality varies over time (model updates, prompt changes), context (different topics), user (different inputs). Without evals → silent quality drift. Quality monitoring catches this before users notice.",
+    "when": "From day 1 of production AI (NOT after). Before prompt updates («compare before/after»). Before model migration (Claude 3→4). Continuously (weekly random sample).",
+    "impact": "Quality drift caught early. Prompt improvements measured. Model migrations safer. AI program longevity 3-5× (vs «vibes-based» quality assessment).",
+    "example": "Eval framework:\n\nGolden Set:\n  - 50-200 high-quality examples (input + ideal output)\n  - Updated quarterly as understanding deepens\n  - Categories: edge cases, common cases, failure modes\n\nAutomated Evals:\n  - Run nightly on all golden examples\n  - Metrics: accuracy, format compliance, latency, cost\n  - Alert on regression\n\nHuman Evals:\n  - Weekly: 10% random sample reviewed\n  - Rate: 1-5 on accuracy, tone, completeness\n  - Identify failure patterns\n\nA/B Comparisons:\n  - Before prompt change: baseline on golden set\n  - After change: same set, compare\n  - Only ship if improvement statistically significant",
+    "mistakes": "Evals «when there is time». Quality drift is silent — without monitoring you notice when users complain. And: golden set «done once». The set must evolve — new edge cases discovered = added to the set."
+  },
+  "sys-cost-management": {
+    "title": "AI Cost Management",
+    "what": "Discipline of managing AI economics: model selection (Haiku vs Sonnet vs Opus), prompt efficiency, caching, batching, monitoring. AI cost from $0 → $50k/month easily. Cost discipline = sustainable AI program.",
+    "why": "AI cost growth is unpredictable: usage scales, models change pricing, new use cases are added. Without cost management — surprise bills, executive panic, programs cancelled.",
+    "when": "From the first production deploy. Monthly cost review. Before scaling an AI initiative. When a new team asks for AI access — cost projection is mandatory.",
+    "impact": "Predictable cost: 90%+ accuracy on monthly forecasts. Cost optimization: 30-70% reduction via right-sizing. Sustainable scaling: no surprise overruns.",
+    "example": "Cost Management Framework:\n\n1. Model right-sizing:\n   - Default to the cheapest model that works\n   - Test: «works on Haiku?» before «definitely Opus»\n   - 80/20 rule: most tasks are fine on Sonnet\n\n2. Prompt efficiency:\n   - Minimize input tokens (filter context, summarize history)\n   - Use prompt caching (cap-caching) for repeated context\n   - Few-shot examples only when they measurably improve quality\n\n3. Caching layer:\n   - Cache common queries (LLM call → cached response)\n   - 30-70% cost reduction for FAQ-style usage\n\n4. Batching:\n   - Non-urgent tasks → batch API (50% cheaper, slower)\n\n5. Monitoring:\n   - Daily cost dashboard\n   - Alert on abnormal spikes\n   - Per-team / per-use-case cost breakdown\n\nMetric: cost per outcome (per ticket resolved, per report generated) — not just total spend.",
+    "mistakes": "Optimizing cost without quality measurement. A cheaper model «saves» $1000 but loses $5000 in worse outcomes. Track quality metrics in parallel with cost. Cost reduction is valid only if quality is preserved."
+  },
+  "sys-api-patterns": {
+    "title": "API Integration Patterns",
+    "what": "Architectural patterns for integrating AI with business systems via APIs: synchronous (request/response), asynchronous (queue + callback), webhook-driven (event reaction), streaming (real-time output).",
+    "why": "AI integration via REST API is the most common pattern. Knowing sync/async/webhook/streaming patterns = understanding what to use when.",
+    "when": "Sync — interactive features (user waits). Async — long tasks (>30s, document processing). Webhook — event-driven (new ticket, code commit). Streaming — chat UI, real-time generation.",
+    "impact": "The right pattern: better UX (sync for interactive), lower cost (async for batch), faster reaction (webhook), better perceived speed (streaming).",
+    "example": "4 Patterns:\n\nSync:\n  User → API → AI → response (200ms-30s)\n  Use: chat, search, classification\n\nAsync:\n  User → API → queue → AI processes → callback / poll\n  Use: doc generation, analysis, bulk operations\n\nWebhook:\n  External event → webhook → AI processes → action\n  Use: new ticket arrives, code commit, form submit\n\nStreaming:\n  User → API → AI streams tokens → UI shows progress\n  Use: chat UI, long-form generation, perception of speed",
+    "mistakes": "Using sync for long tasks. User waits 60s with no feedback → drops off. Long tasks always async + status polling OR streaming. Pick the pattern based on task duration + user expectation, not «easier to implement»."
   }
 }

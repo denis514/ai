@@ -1915,5 +1915,86 @@
     "impact": "Outcome: toimiva multi-agent-järjestelmä 4-6 viikossa. Mittarit: tehtävän suoritusaste, latenssi vs single-agent, kustannus per suoritettu workflow, debuggability-pisteet.",
     "example": "Polku (6 askelta):\n\n1. Foundation: agents → ymmärrä agentin perusteet\n2. Foundation: ag-principles → agentin suunnitteluperiaatteet\n3. Foundation: cc-subagents → toteuta subagents Claude Codessa (jos sovellettavissa)\n4. Foundation: ag-managed → Claude Managed Agents jos käytät Claudea\n5. Systems: sys-workflows-basics → workflow-mallit koordinointiin\n6. Systems: sys-context-passing → kriittinen multi-agentille: miten konteksti virtaa\n\nArkkitehtuurimallit:\n  - Coordinator-Worker: yksi pää-agentti delegoi sub-agenteille spesifiset tehtävät\n  - Debate: 2-3 agenttia kiistelevät, koordinaattori päättää\n  - Reflection: agentti + critic-agentti + revision-agentti\n  - Tool-using agent: agentti + useita työkaluja (search, calc, code-exec)\n\nWeek 1-2: Decompose ongelma. Suunnittele agentin roolit.\nWeek 3-4: Rakenna agentit yksittäisesti. Testaa eristettynä.\nWeek 5-6: Yhdistä orkestraatiolla. Iteroi koordinointi-epäonnistumisia.\n\nAvain: strukturoitu lokitus + replay-debug.",
     "mistakes": "Hypätä multi-agentiin tyhjästä. Jos single-agent tuntuu rajoitetulta — parannan ensin promptit + työkalut + RAG. Multi-agent lisää monimutkaisuutta neliöllisesti: debug, monitorointi, kustannus, latenssi. Käytä VAIN kun single-agent on todistetusti tapissa."
+  },
+  "ai-orchestration": {
+    "title": "AI Orchestration",
+    "what": "Mallit usean AI-agentin ja askelen koordinointiin: coordinator-worker, debate, reflection, manager-subordinate. Workflow:n yläpuolinen taso — kun workflow itse muuttuu alitehtäväksi.",
+    "why": "Single-agent-workflow:t toimivat tiettyyn monimutkaisuuteen asti. Kun tehtävä vaatii eri asiantuntemusta tai rinnakkaista käsittelyä — tarvitaan orchestration-malleja.",
+    "when": "Kun workflow:n monimutkaisuus kasvaa: yli 5-7 askelta, eri erikoistumiset, rinnakkainen käsittely. Kun single AI kamppailee tehtävän kanssa kokonaisuudessaan.",
+    "impact": "Orchestration on siirtymä «AI avustajana» -tilasta «AI distribuoituna järjestelmänä» -tilaan. Tämä on next-level-arkkitehtuuri AI-workflow:ille.",
+    "example": "4 perusmallia:\n1. Coordinator-Worker — pää-agentti delegoi subagenteille\n2. Debate — useat agentit kiistelevät, koordinaattori päättää\n3. Reflection — agentti + critic + revisio\n4. Tool-using — agentti + useita työkaluja",
+    "mistakes": "Tehdä orchestration «koska se on cool». Monimutkaisuus kasvaa neliöllisesti: debug, monitorointi, kustannus. Käytä vain kun single-agent on todistetusti tapissa."
+  },
+  "ai-human-collaboration": {
+    "title": "AI Human Collaboration",
+    "what": "Arkkitehtuurimallit AI ↔ ihmisen rajalle: handoff, review/approval, copilot vs autopilot, trust calibration, escalation. Ei «UI/UX», vaan päätösten arkkitehtuuri.",
+    "why": "Ilman eksplisiittisiä human-AI-rajan malleja AI on joko liian varovainen (kaikki → ihmiselle) tai tekee virheitä (ei oversightia). Arkkitehtoninen valinta luottamuksesta.",
+    "when": "Mikä tahansa AI-järjestelmä todellisilla seurauksilla (raha, maine, juridinen). Arkkitehtoninen päätös ENNEN launchia, ei tapauksen jälkeen.",
+    "impact": "Kalibroitu human-AI-raja: ~70% tehtävistä AI sole, ~25% AI+review, ~5% human-first. Vs kalibroimaton: joko pullonkaula (kaikki odottaa ihmistä) tai tapaukset.",
+    "example": "Trust-matriisi: confidence × consequence\n  Matala consequence × mikä tahansa confidence → AI sole\n  Korkea consequence × korkea confidence → AI + audit-loki\n  Korkea consequence × matala confidence → human-first",
+    "mistakes": "Tehdä «AI tekee kaiken» ilman human-portteja. Tuotanto-AI ilman oversightia = tapaus odottamassa. Ja päinvastoin: «kaikki ihmisen kautta» = AI = hukkaa."
+  },
+  "ai-operations": {
+    "title": "AI Operations",
+    "what": "AI tuotannossa: observability, evals, cost management, prompt versioning, security ops. Ilman AI Opsia AI pysyy PoC:nä — ei näkyvyyttä, ei cost controllia, ei luottamusta.",
+    "why": "AI deploys eri tavalla kuin tavallinen ohjelmisto: probabilistiset outputit, model drift, prompt as code, kustannusten vaihtelevuus. Perinteinen DevOps ei kata tätä.",
+    "when": "Day 1:stä tuotanto-AI:sta. Ei «kun tarvitaan». AI Ops = mikä erottaa «pilotin» «tuotannosta». No ops = forever pilot.",
+    "impact": "Tuotanto-AI:n elinikä: 3 kuukautta (ei ops) → 2+ vuotta (oikea ops). Ennustettavuus: kustannus ennustettavissa, laatu vakaa, drift tunnistettu.",
+    "example": "5 AI Ops -aluetta:\n1. Observability — mitä AI tekee tuotannossa\n2. Evals — laadun arviointi jatkuvasti\n3. Cost management — token spend, mallinvalinta\n4. Prompt versioning — promptin muutokset ≠ hiljaisia\n5. Security ops — incident response, audit trails",
+    "mistakes": "Ajatella että AI Ops = DevOps + AI-labelit. Nämä ovat eri tieteenaloja. AI Ops vaatii ymmärrystä probabilistisista järjestelmistä, mallin käyttäytymisestä, prompt engineeringistä."
+  },
+  "ai-integration-systems": {
+    "title": "AI Integration Systems",
+    "what": "Mallit AI:n yhdistämiseen oikeisiin liiketoimintajärjestelmiin: APIs, webhookit, MCP, event-driven, no-code. «AI chatissa» -tilasta «AI integroitu workflow-työkaluihin» -tilaan.",
+    "why": "AI ilman integraatiota = demo. AI integraatiolla = tuotantojärjestelmä upotettu todelliseen työhön. Tämä on ero «cool tech» ja «business impact» välillä.",
+    "when": "Kun AI:n täytyy laukaista toimintoja (lähetä email, päivitä CRM, luo ticket). Kun käyttäjät työskentelevät olemassa olevissa työkaluissa (Slack, Notion, Linear).",
+    "impact": "Integroitu AI: käyttäjät eivät vaihda kontekstia. Adoptio kasvaa 3-5×. AI:sta tulee «näkymätöntä infrastruktuuria» «erillisen sovelluksen» sijaan.",
+    "example": "3 integraatio-lähestymistapaa:\n1. API-driven — AI palveluna, kutsutaan muista järjestelmistä\n2. Event-driven — AI reagoi tapahtumiin (webhook)\n3. Embedded — AI olemassa olevien työkalujen sisällä (Claude Cowork, Slack-botit)\n\nValinta riippuu: latenssi, security, käyttäjän workflow.",
+    "mistakes": "Tehdä standalone AI-sovellus kun integraatio on parempi. «Avaa AI-työkalumme» = adoptio-este. Integraatio olemassa oleviin työkaluihin = AI siellä missä ihmiset työskentelevät."
+  },
+  "sys-multi-agent-patterns": {
+    "title": "Multi-Agent Patterns",
+    "what": "4 arkkitehtonista mallia multi-agent-järjestelmille: Coordinator-Worker (1 manageri + N erikoistunutta), Debate (useita näkökulmia + arbiter), Reflection (agentti + critic), Tool-using (agentti + työkalukirjasto).",
+    "why": "Ilman malleja multi-agent = kaaos. Jokainen malli ratkaisee spesifisen ongelman: decomposition (Coordinator), laatu erimielisyyden kautta (Debate), itsensä parantaminen (Reflection), kyvykkyyden laajennus (Tool-using).",
+    "when": "Coordinator-Worker — kun tehtävä dekomponoituu rinnakkaisiin alitehtäviin. Debate — high-stakes-päätöksille useilla valideilla näkökulmilla. Reflection — kun laatu on kriittinen (kirjoittaminen, koodi). Tool-using — kun tarvitaan kyvykkyyksiä LLM:n ulkopuolella.",
+    "impact": "Multi-agent oikealla mallilla: 30-50% laadun nousu monimutkaisissa tehtävissä vs single-agent. Latenssikustannus (useita LLM-kutsuja), mutta trade-off usein arvoinen.",
+    "example": "┌─ Coordinator-Worker ─────┐  ┌─ Debate ──────────┐\n│  Pää-agentti             │  │  Agentti A (POV 1)│\n│   ├─→ Worker A (analysoi)│  │  Agentti B (POV 2)│\n│   ├─→ Worker B (kirjoita)│  │   ↓ erimieli ↓    │\n│   └─→ Worker C (review)  │  │  Arbiter päättää  │\n└──────────────────────────┘  └───────────────────┘\n\n┌─ Reflection ─────────────┐  ┌─ Tool-using ──────┐\n│  Agentti kirjoittaa draft│  │  Agentti päättelee│\n│   ↓                      │  │   ↓               │\n│  Critic löytää ongelmat  │  │  Kutsuu työkalun  │\n│   ↓                      │  │   ↓               │\n│  Agentti revisoi         │  │  Päättelee tool-  │\n│   loop kunnes hyvä       │  │  outputilla       │\n└──────────────────────────┘  └───────────────────┘",
+    "mistakes": "Yhdistellä malleja ilman ymmärrystä. Coordinator-Worker + Debate yhdessä järjestelmässä = LLM-kutsujen räjähdys. Valitse yksi primary-malli per workflow, muut — toissijaisia työkaluja."
+  },
+  "sys-escalation-paths": {
+    "title": "Escalation Paths",
+    "what": "Arkkitehtoninen malli AI → ihmisen handoffille: eksplisiittiset laukaisimet (confidence, severity, kategoria), valmisteltu konteksti ihmiselle, paluupolku. Ei «AI epäonnistuu → soita ihmiselle», vaan «strukturoitu handoff kontekstilla».",
+    "why": "Ilman escalation-polkuja AI joko yrittää ikuisesti (turhauttaa käyttäjiä) tai luovuttaa heti (kumoaa tarkoituksen). Kalibroitu escalation = luottamus järjestelmään kasvaa.",
+    "when": "Mikä tahansa AI todellisilla seurauksilla. Customer-facing AI (support, sales). High-stakes-päätökset (palkkaus, palautukset, content moderation). AI toistuvilla tehtävillä joissa edge case:t ovat mahdollisia.",
+    "impact": "Käyttäjäkokemus: pysäyttää «bot loop -turhautumisen». Ihmisen aika tehokas: saa valmiin kontekstin, ei raakaa tickettiä. Luottamus AI:hin: käyttäjät näkevät fallbackin toimivan.",
+    "example": "Escalation Pipeline:\n\n  AI vastaanottaa tehtävän\n        ↓\n  [Confidence > kynnys?]\n   ├─ Kyllä → AI vastaa + loki\n   └─ Ei  → [Tunnista ongelmatyyppi]\n             ├─ Billing → billing-tiimin jono\n             ├─ Technical → tech-tiimin jono\n             └─ Epäselvä → yleinen jono\n                        ↓\n              AI valmistelee handoff-paketin:\n              - Asiakaskonteksti\n              - Mitä kysyttiin\n              - Mitä AI yritti\n              - Miksi AI pysähtyi (confidence, kategoria, jne.)\n                        ↓\n              Ihminen ottaa: konteksti valmis 30s:ssa",
+    "mistakes": "Tehdä staattisia escalation-sääntöjä. «Aina escalation billingissä» — menettää nyanssin. Smart escalation: confidence + kategoria + historia. Ja: ei testata escalation-malleja pre-launchissa — löydät edge case:t tuotannossa."
+  },
+  "sys-evals-benchmarks": {
+    "title": "AI Evals & Benchmarks",
+    "what": "AI:n laadun systemaattinen arviointi: golden test setit, automatisoidut evalit, A/B-vertailut, human evaluation. Muuttaa «AI näyttää toimivan» -lauseen muotoon «AI:n laatu mitattu, monitoroitu, parannettu».",
+    "why": "AI:n laatu vaihtelee ajan myötä (mallin päivitykset, prompt-muutokset), kontekstin (eri aiheet), käyttäjän (eri inputit) mukaan. Ilman evaleja → hiljainen quality drift. Quality monitoring saa tämän kiinni ennen kuin käyttäjät huomaavat.",
+    "when": "Day 1:stä tuotanto-AI:sta (EI jälkeen). Ennen prompt-päivityksiä («vertaa ennen/jälkeen»). Ennen mallin migraatiota (Claude 3→4). Jatkuvasti (viikoittainen satunnainen otos).",
+    "impact": "Quality drift kiinniotettu aikaisin. Prompt-parannukset mitattu. Mallin migraatiot turvallisempia. AI-ohjelman elinikä 3-5× (vs «vibes-pohjainen» laadun arviointi).",
+    "example": "Eval-viitekehys:\n\nGolden Set:\n  - 50-200 korkealaatuista esimerkkiä (input + ihanteellinen output)\n  - Päivitetty kvartaaleittain ymmärryksen syvetessä\n  - Kategoriat: edge case:t, yleiset tapaukset, failure modet\n\nAutomatisoidut Evalit:\n  - Aja yöllä kaikilla golden examples:eilla\n  - Mittarit: tarkkuus, formaatti-compliance, latenssi, kustannus\n  - Hälytys regressiosta\n\nHuman Evalit:\n  - Viikoittain: 10% satunnainen otos reviewataan\n  - Pisteytä: 1-5 tarkkuudelle, sävylle, kattavuudelle\n  - Tunnista failure-mallit\n\nA/B-vertailut:\n  - Ennen prompt-muutosta: baseline golden setillä\n  - Muutoksen jälkeen: sama setti, vertaa\n  - Ship vain jos parannus tilastollisesti merkittävä",
+    "mistakes": "Evalit «kun on aikaa». Quality drift on hiljaista — ilman monitorointia huomaat kun käyttäjät valittavat. Ja: golden set «kerran tehty». Setin täytyy kehittyä — uudet edge case:t löydetty = lisätty settiin."
+  },
+  "sys-cost-management": {
+    "title": "AI Cost Management",
+    "what": "AI-talouden hallinnan kuri: mallinvalinta (Haiku vs Sonnet vs Opus), promptin tehokkuus, caching, batching, monitorointi. AI-kustannus $0:sta → $50k/kk helposti. Cost-kuri = kestävä AI-ohjelma.",
+    "why": "AI-kustannusten kasvu on ennustamatonta: käyttö skaalautuu, mallit muuttavat hinnoittelua, uusia use case:ja lisätään. Ilman cost managementiä — yllätyslaskut, executive-paniikki, ohjelmat peruttu.",
+    "when": "Ensimmäisestä tuotantodeploystä alkaen. Kuukausittainen cost-review. Ennen AI-aloitteen skaalausta. Kun uusi tiimi pyytää AI-pääsyä — cost-projektio pakollinen.",
+    "impact": "Ennustettava kustannus: 90%+ tarkkuus kuukausi-ennusteissa. Cost-optimointi: 30-70% vähennys right-sizingin kautta. Kestävä skaalaus: ei yllätys-ylityksiä.",
+    "example": "Cost Management Framework:\n\n1. Mallin right-sizing:\n   - Default halvimpaan toimivaan malliin\n   - Testaa: «toimii Haikulla?» ennen «ehdottomasti Opus»\n   - 80/20-sääntö: useimmat tehtävät hyvin Sonnetilla\n\n2. Promptin tehokkuus:\n   - Minimoi input-tokenit (suodata konteksti, tiivistä historia)\n   - Käytä prompt cachingia (cap-caching) toistuvalle kontekstille\n   - Few-shot-esimerkit vain kun ne mitattavasti parantavat laatua\n\n3. Caching-kerros:\n   - Cache yleiset kyselyt (LLM-kutsu → cached vastaus)\n   - 30-70% kustannusvähennys FAQ-tyylisille käytöille\n\n4. Batching:\n   - Ei-kiireelliset tehtävät → batch API (50% halvempi, hitaampi)\n\n5. Monitorointi:\n   - Päivittäinen cost-dashboard\n   - Hälytys epätavallisista piikeistä\n   - Per-tiimi / per-use-case kustannuserittely\n\nMittari: kustannus per lopputulos (per ratkaistu ticket, per generoitu raportti) — ei vain kokonaiskulutus.",
+    "mistakes": "Optimoida kustannuksia ilman laadun mittausta. Halvempi malli «säästää» $1000 mutta menettää $5000 huonompiin lopputuloksiin. Seuraa laatumetriikoita rinnan kustannuksen kanssa. Kustannusvähennys validi vain jos laatu säilytetty."
+  },
+  "sys-api-patterns": {
+    "title": "API Integration Patterns",
+    "what": "Arkkitehtoniset mallit AI:n integraatioon liiketoimintajärjestelmiin API:en kautta: synchronous (request/response), asynchronous (queue + callback), webhook-driven (event reaction), streaming (real-time output).",
+    "why": "AI-integraatio REST API:n kautta on yleisin malli. Sync/async/webhook/streaming-mallien tunteminen = ymmärrys mitä käyttää milloin.",
+    "when": "Sync — interaktiiviset featuret (käyttäjä odottaa). Async — pitkät tehtävät (>30s, dokumenttien käsittely). Webhook — event-driven (uusi ticket, code commit). Streaming — chat-UI, real-time-generointi.",
+    "impact": "Oikea malli: parempi UX (sync interaktiiviselle), alhaisempi kustannus (async batchille), nopeampi reaktio (webhook), parempi koettu nopeus (streaming).",
+    "example": "4 Mallia:\n\nSync:\n  Käyttäjä → API → AI → vastaus (200ms-30s)\n  Käyttö: chat, haku, luokittelu\n\nAsync:\n  Käyttäjä → API → jono → AI käsittelee → callback / poll\n  Käyttö: doc-generointi, analyysi, bulk-operaatiot\n\nWebhook:\n  Ulkoinen tapahtuma → webhook → AI käsittelee → toiminta\n  Käyttö: uusi ticket saapuu, code commit, form submit\n\nStreaming:\n  Käyttäjä → API → AI stream:aa tokeneita → UI näyttää edistystä\n  Käyttö: chat-UI, long-form-generointi, nopeuden havaintaminen",
+    "mistakes": "Käyttää sync:iä pitkille tehtäville. Käyttäjä odottaa 60s ilman palautetta → tippuu pois. Pitkät tehtävät aina async + status polling TAI streaming. Valitse malli tehtävän keston + käyttäjän odotuksen perusteella, ei «helpompi toteuttaa»."
   }
 }
