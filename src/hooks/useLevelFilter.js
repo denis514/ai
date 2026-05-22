@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from 'react';
  * Применяется:
  *   - на mindmap: ветки с minLevel выше текущего по умолчанию **свёрнуты**
  *     (видны заголовки, скрыты дети — мягкий режим, можно развернуть вручную)
- *   - в CoursesModal / PromptLibraryModal: фильтр уровня по умолчанию
+ *   - в WorkflowsModal / PromptLibraryModal: фильтр уровня по умолчанию
  *
  * Default: 'expert' — backward compatibility, существующий пользователь
  * видит всё как раньше. Чтобы получить «новичковый» вид — нужно выбрать вручную.

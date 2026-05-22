@@ -74,7 +74,7 @@ export function useTutorialContent(tutorialId) {
 
 /**
  * Чистая функция: получить все туториалы как enriched-объекты в текущей локали.
- * Для CommandPalette / CoursesModal, где нужен полный список.
+ * Для CommandPalette / WorkflowsModal, где нужен полный список.
  */
 export function getAllLocalizedTutorials(locale) {
   const out = {};

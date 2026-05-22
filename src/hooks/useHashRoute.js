@@ -13,7 +13,7 @@ import { LOCALES, isLocale } from '../i18n/config.js';
  * Семантика типов (как и раньше):
  *   node/<id>     — DetailPanel
  *   tutorial/<id> — TutorialModal
- *   courses       — CoursesModal
+ *   courses       — WorkflowsModal
  *   library       — PromptLibraryModal
  *   prompt/<id>   — шаблон в fullscreen
  *

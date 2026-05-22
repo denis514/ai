@@ -47,6 +47,13 @@ export const WHATS_NEW = {
   'welcome': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
+  'foundation': { date: '2026-05-22', type: 'new' },
+  'systems': { date: '2026-05-22', type: 'new' },
+  'transformation': { date: '2026-05-22', type: 'new' },
+  'use-cases': { date: '2026-05-22', type: 'new' },
+  'sys-overview': { date: '2026-05-22', type: 'new' },
+  'tf-overview': { date: '2026-05-22', type: 'new' },
+  'uc-overview': { date: '2026-05-22', type: 'new' },
   'b-educators': { date: '2026-05-20', type: 'new' },
   'pl-api': { date: '2026-05-17', type: 'new' },
   'pr-4d': { date: '2026-05-17', type: 'new' },

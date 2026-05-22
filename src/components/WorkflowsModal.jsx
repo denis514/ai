@@ -32,7 +32,7 @@ const AUDIENCES    = ['all', 'everyone', 'business', 'developers'];
 const STATUSES     = ['all', 'started', 'done'];
 const LEVEL_GROUPS = ['beginner', 'intermediate', 'advanced'];
 
-export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi, nodeProgressApi, onOpenPrompt }) {
+export default function WorkflowsModal({ onClose, onOpen, onNavigate, progressApi, nodeProgressApi, onOpenPrompt }) {
   const t = useT();
   const { locale } = useLocale();
   const [tab, setTab] = useState('paths');

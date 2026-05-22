@@ -5,7 +5,7 @@ import CanvasHeader from './components/CanvasHeader.jsx';
 import Mindmap from './components/Mindmap.jsx';
 import DetailPanel from './components/DetailPanel.jsx';
 import TutorialModal from './components/TutorialModal.jsx';
-import CoursesModal from './components/CoursesModal.jsx';
+import WorkflowsModal from './components/WorkflowsModal.jsx';
 import PromptLibraryModal from './components/PromptLibraryModal.jsx';
 import CommandPalette from './components/CommandPalette.jsx';
 import CanvasZoom from './components/CanvasZoom.jsx';
@@ -639,7 +639,7 @@ function AppInner() {
   // Сводка для тулбара
   const tutorialsCompleted = tutorialIds.filter(id => progressApi.isCompleted(id)).length;
 
-  // Принимает tutorial KEY (не nodeId). Используется из DetailPanel, CoursesModal, WelcomeCard.
+  // Принимает tutorial KEY (не nodeId). Используется из DetailPanel, WorkflowsModal, WelcomeCard.
   const onStartTutorial = useCallback((tutorialKey) => {
     setRoute({ type: 'tutorial', id: tutorialKey });
     markSeen(tutorialKey); // убираем лейбл ОБНОВЛЕНО/НОВОЕ при старте курса
@@ -777,7 +777,7 @@ function AppInner() {
       </main>
 
       {coursesOpen && (
-        <CoursesModal
+        <WorkflowsModal
           onClose={onCloseAll}
           onOpen={onStartTutorial}
           onNavigate={setRoute}

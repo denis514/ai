@@ -15,7 +15,7 @@ import { WHATS_NEW } from '../data/whatsNew.js';
  * TL: Brand/Menu (настройки, поиск, категории, управление картой)
  * TR: Поиск — открывает меню с автофокусом в поле поиска
  * BL: Промпты — быстрые готовые промпты
- * BR: Курсы — открывает CoursesModal напрямую
+ * BR: Курсы — открывает WorkflowsModal напрямую
  */
 export default function MobileFab({
   query, onQuery,
@@ -94,7 +94,7 @@ export default function MobileFab({
         </button>
       </div>
 
-      {/* BR: Курсы — прямой доступ к CoursesModal */}
+      {/* BR: Курсы — прямой доступ к WorkflowsModal */}
       <div className="fab fab--br">
         <button
           type="button"
