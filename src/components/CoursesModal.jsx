@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { tutorials } from '../data/tutorials.js';
 import { mindmapData, CATEGORIES } from '../data/mindmapData.js';
 import { learningPaths } from '../data/learningPaths.js';
@@ -38,9 +38,13 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
   const [tab, setTab] = useState('paths');
   const [audience, setAudience] = useState('all');
   const [status, setStatus]   = useState('all');
+  const [audienceOpen, setAudienceOpen] = useState(false);
+  const [statusOpen,   setStatusOpen]   = useState(false);
   const [selectedTutorialId, setSelectedTutorialId] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
+  const audienceRef = useRef(null);
+  const statusRef   = useRef(null);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -56,6 +60,17 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose, selectedTutorialId, isMobile]);
+
+  // Закрываем дропдауны по клику вне
+  useEffect(() => {
+    if (!audienceOpen && !statusOpen) return;
+    const onClick = (e) => {
+      if (audienceRef.current && !audienceRef.current.contains(e.target)) setAudienceOpen(false);
+      if (statusRef.current   && !statusRef.current.contains(e.target))   setStatusOpen(false);
+    };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
+  }, [audienceOpen, statusOpen]);
 
   // Локализованный preview выбранного туториала.
   const selectedTutorialKey = selectedTutorialId;
@@ -158,41 +173,84 @@ export default function CoursesModal({ onClose, onOpen, onNavigate, progressApi,
           </button>
         </div>
 
-        {/* Фильтр аудитории */}
-        <div className="courses-audience" role="group" aria-label="Audience filter">
-          {AUDIENCES.map(aud => (
-            <button
-              key={aud}
-              type="button"
-              className={`courses-audience__pill ${audience === aud ? 'is-active' : ''}`}
-              onClick={() => { setAudience(aud); setSelectedTutorialId(null); }}
-            >
-              {t(`courses.audience.${aud}`)}
-            </button>
-          ))}
-        </div>
+        {/* Фильтры — два дропдауна в одной строке */}
+        <div className="courses-filters-bar">
 
-        {/* Фильтр статуса — только на вкладке «Курсы» */}
-        {tab === 'courses' && (
-          <div className="courses-status" role="group" aria-label="Status filter">
-            {STATUSES.map(s => {
-              const count = s === 'done' ? completed : s === 'started' ? started : null;
-              return (
-                <button
-                  key={s}
-                  type="button"
-                  className={`courses-status__pill ${status === s ? 'is-active' : ''}`}
-                  onClick={() => { setStatus(s); setSelectedTutorialId(null); }}
-                >
-                  {t(`courses.status.${s}`)}
-                  {count != null && count > 0 && (
-                    <span className="courses-status__badge">{count}</span>
-                  )}
-                </button>
-              );
-            })}
+          {/* Левый дропдаун: «Для кого» */}
+          <div className="cfilter" ref={audienceRef}>
+            <button
+              type="button"
+              className={`cfilter__toggle ${audienceOpen ? 'is-open' : ''} ${audience !== 'all' ? 'is-active' : ''}`}
+              onClick={() => { setAudienceOpen(v => !v); setStatusOpen(false); }}
+              aria-haspopup="listbox"
+              aria-expanded={audienceOpen}
+            >
+              <span className="cfilter__label">{t('courses.filter.audience')}</span>
+              <span className="cfilter__value">{t(`courses.audience.${audience}`)}</span>
+              <Icon name={audienceOpen ? 'arrow-up' : 'arrow-down'} size={11} strokeWidth={1.75} />
+            </button>
+            {audienceOpen && (
+              <div className="cfilter__menu" role="listbox">
+                {AUDIENCES.map(aud => (
+                  <button
+                    key={aud}
+                    type="button"
+                    role="option"
+                    aria-selected={audience === aud}
+                    className={`cfilter__option ${audience === aud ? 'is-selected' : ''}`}
+                    onClick={() => { setAudience(aud); setAudienceOpen(false); setSelectedTutorialId(null); }}
+                  >
+                    {t(`courses.audience.${aud}`)}
+                    {audience === aud && <Icon name="check" size={13} strokeWidth={1.75} />}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Правый дропдаун: «Статус» — только на вкладке «Курсы» */}
+          {tab === 'courses' && (
+            <div className="cfilter" ref={statusRef}>
+              <button
+                type="button"
+                className={`cfilter__toggle ${statusOpen ? 'is-open' : ''} ${status !== 'all' ? 'is-active' : ''}`}
+                onClick={() => { setStatusOpen(v => !v); setAudienceOpen(false); }}
+                aria-haspopup="listbox"
+                aria-expanded={statusOpen}
+              >
+                <span className="cfilter__label">{t('courses.filter.status')}</span>
+                <span className="cfilter__value">{t(`courses.status.${status}`)}</span>
+                {status !== 'all' && (status === 'done' ? completed : started) > 0 && (
+                  <span className="cfilter__dot" />
+                )}
+                <Icon name={statusOpen ? 'arrow-up' : 'arrow-down'} size={11} strokeWidth={1.75} />
+              </button>
+              {statusOpen && (
+                <div className="cfilter__menu" role="listbox">
+                  {STATUSES.map(s => {
+                    const count = s === 'done' ? completed : s === 'started' ? started : null;
+                    return (
+                      <button
+                        key={s}
+                        type="button"
+                        role="option"
+                        aria-selected={status === s}
+                        className={`cfilter__option ${status === s ? 'is-selected' : ''}`}
+                        onClick={() => { setStatus(s); setStatusOpen(false); setSelectedTutorialId(null); }}
+                      >
+                        <span>{t(`courses.status.${s}`)}</span>
+                        {count != null && count > 0 && (
+                          <span className="cfilter__badge">{count}</span>
+                        )}
+                        {status === s && <Icon name="check" size={13} strokeWidth={1.75} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
         {tab === 'courses' ? (
           <div className={`courses-pane-wrap ${selectedTutorialKey ? 'has-detail' : ''}`}>

@@ -7189,125 +7189,126 @@
 }
 
 /* Audience filter pills */
-.courses-audience {
+/* ============================================================
+   Фильтры курсов — два компактных дропдауна в одной строке
+   ============================================================ */
+.courses-filters-bar {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
-  /* pill(28) + paddingTop(10) + paddingBottom(10) = 48px.
-     flex-shrink:0 — не сжиматься в flex-колонке модалки.
-     Без этого overflow-y:auto (форсируется overflow-x) обрезает pills сверху/снизу. */
-  min-height: 48px;
-  flex-shrink: 0;
-  box-sizing: border-box;
+  gap: 8px;
+  padding: 8px 16px;
   border-bottom: 1px solid var(--border);
   background: var(--surface);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-.courses-audience::-webkit-scrollbar { display: none; }
-
-.courses-audience__pill {
-  /* Сброс всех браузерных стилей кнопки */
-  -webkit-appearance: none;
-  appearance: none;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
-  /* Жёстко фиксированный размер — не меняется ни в одном состоянии */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 28px;
-  padding: 0 13px;
-  margin: 0;
   flex-shrink: 0;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 28px;
-  cursor: pointer;
-  white-space: nowrap;
-  user-select: none;
-  transition: background .15s, color .15s, border-color .15s;
-  transform: none;
-}
-.courses-audience__pill:hover {
-  border-color: var(--text-muted);
-  color: var(--text);
-}
-.courses-audience__pill:active {
-  transform: none;
-}
-.courses-audience__pill:focus-visible {
-  outline: 2px solid var(--accent, #d97757);
-  outline-offset: 2px;
-}
-.courses-audience__pill.is-active,
-.courses-audience__pill.is-active:hover,
-.courses-audience__pill.is-active:active {
-  background: var(--text);
-  border-color: var(--text);
-  color: var(--surface);
-  height: 28px;
-  padding: 0 13px;
-  transform: none;
 }
 
-/* ============================================================
-   Статус-фильтр курсов (Все / В процессе / Завершены)
-   ============================================================ */
-.courses-status {
-  display: flex;
-  gap: 6px;
-  padding: 0 16px 10px;
-  flex-wrap: wrap;
+/* Один дропдаун */
+.cfilter {
+  position: relative;
 }
-.courses-status__pill {
+.cfilter__toggle {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  height: 26px;
-  padding: 0 11px;
+  height: 30px;
+  padding: 0 10px;
   border: 1px solid var(--border);
-  border-radius: 100px;
+  border-radius: 8px;
   background: var(--surface-2, #f6f5f3);
-  color: var(--text-2);
+  color: var(--text);
   font-size: 12px;
-  font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
   white-space: nowrap;
+  transition: background .12s, border-color .12s;
+  -webkit-tap-highlight-color: transparent;
 }
-.courses-status__pill:hover {
+.cfilter__toggle:hover { background: var(--surface-3, #eceae5); }
+.cfilter__toggle.is-open {
+  border-color: var(--text-muted);
   background: var(--surface-3, #eceae5);
-  border-color: var(--border-2, #ccc);
 }
-.courses-status__pill.is-active {
-  background: var(--text);
+.cfilter__toggle.is-active {
   border-color: var(--text);
+  background: var(--text);
   color: var(--surface);
 }
-.courses-status__badge {
+.cfilter__toggle.is-active:hover { background: var(--text); }
+.cfilter__toggle.is-active.is-open { background: var(--text); border-color: var(--text); }
+
+.cfilter__label {
+  color: inherit;
+  opacity: 0.55;
+  font-weight: 500;
+}
+.cfilter__toggle.is-active .cfilter__label { opacity: 0.7; }
+.cfilter__value {
+  font-weight: 600;
+}
+
+/* Оранжевая точка (есть ненулевой счётчик) */
+.cfilter__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent, #d97757);
+  flex-shrink: 0;
+}
+.cfilter__toggle.is-active .cfilter__dot { background: rgba(255,255,255,0.6); }
+
+/* Выпадающий список */
+.cfilter__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 160px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.04);
+  padding: 4px;
+  z-index: 120;
+  animation: cfilter-open .14s cubic-bezier(0.16,1,0.3,1);
+  transform-origin: top left;
+}
+@keyframes cfilter-open {
+  from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+.cfilter__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  border-radius: 7px;
+  cursor: pointer;
+  text-align: left;
+  transition: background .1s;
+}
+.cfilter__option:hover { background: var(--surface-2, #f6f5f3); }
+.cfilter__option.is-selected { font-weight: 600; }
+.cfilter__option.is-selected:hover { background: var(--surface-2, #f6f5f3); }
+/* Иконка check всегда в конце */
+.cfilter__option > *:last-child:not(span) { margin-left: auto; color: var(--accent, #d97757); }
+/* Бейдж счётчика */
+.cfilter__badge {
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
   border-radius: 100px;
   background: var(--accent, #d97757);
   color: #fff;
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
-}
-.courses-status__pill.is-active .courses-status__badge {
-  background: rgba(255,255,255,0.25);
 }
 
 /* ============================================================
