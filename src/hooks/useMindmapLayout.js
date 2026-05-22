@@ -4,8 +4,9 @@ const LEVEL_GAP_X = 320;
 const LEAF_HEIGHT  = 92;
 const ROOT_OFFSET  = 0;
 
-// Главные ветки распределяем: первые N — справа, остальные — слева
-const RIGHT_BRANCHES = 6;
+// ID веток которые принудительно идут слева от root.
+// Остальные ветки — справа.
+const LEFT_BRANCH_IDS = new Set(['foundation']);
 
 // Считаем «листья» поддерева — определяет вертикальное место.
 function countLeaves(node, isExpanded) {
@@ -40,8 +41,9 @@ function placeRoot(root, isExpanded) {
 
   if (!root.children || !isExpanded(root.id)) return positions;
 
-  const right = root.children.slice(0, RIGHT_BRANCHES);
-  const left  = root.children.slice(RIGHT_BRANCHES);
+  // Foundation — слева, остальные ветки (systems, transformation, use-cases) — справа
+  const left  = root.children.filter(c => LEFT_BRANCH_IDS.has(c.id));
+  const right = root.children.filter(c => !LEFT_BRANCH_IDS.has(c.id));
 
   // Правая сторона
   const rightLeaves = right.reduce((s, c) => s + countLeaves(c, isExpanded), 0);
