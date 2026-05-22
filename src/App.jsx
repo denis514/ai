@@ -494,7 +494,17 @@ function AppInner() {
     if (!ids || !ids.length) return;
     setPinnedIds(new Set(ids));
     setPinLabel(label || '');
-    setPinDimActive(true); // включаем затемнение при первом показе
+    setPinDimActive(true);
+    // Плавно перемещаем карту к первому узлу из списка.
+    // Задержка 120мс — панель профиля успевает начать закрываться,
+    // поэтому xOffset: 0 (панель уходит, центр — середина экрана).
+    let attempts = 0;
+    const tryPan = () => {
+      attempts++;
+      const found = mapRef.current?.panToNode(ids[0], { xOffset: 0 });
+      if (!found && attempts < 8) setTimeout(tryPan, 60);
+    };
+    setTimeout(tryPan, 120);
   }, []);
 
   const clearPinned = useCallback(() => {
