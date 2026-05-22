@@ -135,6 +135,26 @@
 
 ---
 
+## ✅ Завершено — Сессия 2026-05-22 (Phase 5 UI polish)
+
+### Visual layer indicators
+- ✅ **MindmapNode** — класс `mm-node--layer` для 4 root-layer узлов (depth=1)
+- ✅ **CSS** — layer-узлы получили цветную полоску внизу, градиентный фон, толще border
+- ✅ **Hover/Selected states** — layer-цветной glow и поднятие
+
+### IntroModal — новое позиционирование
+- ✅ **slide1**: «Карта AI-трансформации» вместо «карта экосистемы Claude»
+- ✅ **Features**: Foundation → Systems → Transformation → Use Cases
+- ✅ **Roles**: переориентированы на новую аудиторию (Operations/Marketing/Support, Product/Design, Tech lead/Enterprise)
+- ✅ ru/en/fi полностью переписаны
+
+### Brand & SEO
+- ✅ **Page title**: «105 Atlas — AI Transformation Map»
+- ✅ **Meta description**: про AI transformation + 5 directions
+- ✅ **OG/Twitter Cards** обновлены
+
+Bundle: 92.23 KB gzip.
+
 ## ✅ Завершено — Сессия 2026-05-22 (Systems Tier 2)
 
 ### Полная структура Systems-слоя (6 sub-разделов)
