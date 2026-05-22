@@ -1784,6 +1784,91 @@ export const mindmapData = {
               ]
             }
           ]
+        },
+        {
+          "id": "ai-native-design",
+          "icon": "paint",
+          "category": "transformation",
+          "children": [
+            {
+              "id": "ds-design-research",
+              "icon": "microscope",
+              "category": "transformation",
+              "relatedIds": [
+                "pd-discovery-research",
+                "sc-design",
+                "af-multimodal",
+                "cap-vision"
+              ]
+            },
+            {
+              "id": "ds-prototype-generation",
+              "icon": "bricks",
+              "category": "transformation",
+              "relatedIds": [
+                "cap-vision",
+                "cap-files",
+                "pd-spec-generation",
+                "artifacts"
+              ]
+            },
+            {
+              "id": "ds-design-ops",
+              "icon": "tools",
+              "category": "transformation",
+              "relatedIds": [
+                "projects",
+                "instructions",
+                "en-coe",
+                "skills"
+              ]
+            },
+            {
+              "id": "ds-accessibility",
+              "icon": "shield",
+              "category": "transformation",
+              "relatedIds": [
+                "cap-vision",
+                "prompting",
+                "sys-evals-benchmarks"
+              ]
+            },
+            {
+              "id": "ds-design-system",
+              "icon": "puzzle",
+              "category": "transformation",
+              "relatedIds": [
+                "skills",
+                "instructions",
+                "mk-brand-voice",
+                "i-templates"
+              ]
+            },
+            {
+              "id": "ds-content-design",
+              "icon": "quote",
+              "category": "transformation",
+              "relatedIds": [
+                "mk-brand-voice",
+                "mk-content-ops",
+                "sc-content",
+                "prompting"
+              ]
+            },
+            {
+              "id": "ds-team-workflow",
+              "icon": "users",
+              "category": "transformation",
+              "relatedIds": [
+                "projects",
+                "p-team",
+                "ops-team-workflow",
+                "mk-team-workflow",
+                "cs-team-workflow",
+                "pd-team-workflow"
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1954,6 +2039,19 @@ export const mindmapData = {
             "sys-workflows-basics",
             "sys-context-passing",
             "ag-managed"
+          ]
+        },
+        {
+          "id": "uc-ai-design-research-launch",
+          "icon": "eye",
+          "category": "use-cases",
+          "relatedIds": [
+            "ds-design-research",
+            "pd-discovery-research",
+            "af-rag-basics",
+            "projects",
+            "prompting",
+            "sys-context-passing"
           ]
         }
       ]

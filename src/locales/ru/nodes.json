@@ -1996,5 +1996,86 @@
     "impact": "Right pattern: better UX (sync для interactive), lower cost (async для batch), faster reaction (webhook), better perceived speed (streaming).",
     "example": "4 Patterns:\n\nSync:\n  User → API → AI → response (200ms-30s)\n  Use: chat, search, classification\n\nAsync:\n  User → API → queue → AI processes → callback / poll\n  Use: doc generation, analysis, bulk operations\n\nWebhook:\n  External event → webhook → AI processes → action\n  Use: new ticket arrives, code commit, form submit\n\nStreaming:\n  User → API → AI streams tokens → UI shows progress\n  Use: chat UI, long-form generation, perception of speed",
     "mistakes": "Use sync для long tasks. User waits 60s with no feedback → drops off. Long tasks always async + status polling OR streaming. Pick pattern based on task duration + user expectation, not «easier to implement»."
+  },
+  "ai-native-design": {
+    "title": "AI-Native Design",
+    "what": "Design-команды на AI-native рельсах: research synthesis, prototype generation, design ops automation, accessibility audits, design system evolution, content design, team workflows. От «AI генерит картинки» — к «AI = co-designer на каждом этапе».",
+    "why": "Design — творческая роль, но 30-40% работы — рутина: рисёрч-синтез, accessibility-проверки, документация компонентов. AI закрывает эту часть, design-команда фокусируется на critical thinking и craft.",
+    "when": "Когда команда тратит >30% времени на operational дела (audit reports, asset variants, microcopy iterations). Когда design ops нет, и каждый дизайнер изобретает свои подходы.",
+    "impact": "7 узлов покрывают полный design lifecycle: research → prototype → ops → accessibility → design system → content design + team workflow. Time savings 40-60% на operational tasks.",
+    "example": "Maturity stages для Design:\nStage 0: Pre-AI — manual research, hand-coded prototypes, accessibility «потом проверим».\nStage 1: AI experiments — Claude помогает с microcopy.\nStage 2: AI workflows — research synthesis automated, accessibility audits в CI.\nStage 3: AI-native — design system самообновляется через AI, content-варианты генерятся за минуты.\nStage 4: AI-first — продукты с adaptive UI, где AI generates interfaces под user в realtime.",
+    "mistakes": "Думать что AI = «генератор UI». Real AI in design = augmenting designer judgment, not replacing it. AI хорош в synthesis, variants, audits. Не в taste, brand intuition, user empathy."
+  },
+  "ds-design-research": {
+    "title": "AI Design Research",
+    "what": "AI-powered user research для дизайнеров: synthesis usability tests, поведенческий анализ session recordings, competitor design pattern analysis. От «100 интервью = 2 недели на разбор» — к «AI извлекает themes за час, designer валидирует».",
+    "why": "Research — критическая часть design, но time-intensive. Designer тратит 50% времени на синтез, 50% на actual design. AI сдвигает баланс к 20/80.",
+    "when": "Usability testing rounds (5-15 sessions). Competitor research. Card sorting analysis. Когда есть session recordings и нужно extract patterns.",
+    "impact": "Time-to-insight: дни → часы. Theme extraction structured вместо «designer's gut feel». Stage 1→2.",
+    "example": "Usability Synthesis Workflow:\n\n  Inputs:\n  - 10 session recordings (transcripts)\n  - User interview notes\n  - Pre/post task survey data\n        ↓\n  AI Steps:\n  1. Extract pain points (frequency + severity)\n  2. Group by user task / journey stage\n  3. Identify quick wins vs structural issues\n  4. Generate improvement hypotheses\n        ↓\n  Designer validates:\n  - Pain point severity rated through design lens\n  - Solutions ranked by feasibility\n        ↓\n  Output: structured research report + prioritized backlog\n\nMetric: time-to-insight, design improvements shipped.",
+    "mistakes": "Делать AI synthesis без designer eye-on-data. AI пропускает emotional nuance, frustration patterns, edge cases. Workflow: AI extracts themes → designer reviews 20% with original recordings → confidence в остальном."
+  },
+  "ds-prototype-generation": {
+    "title": "AI Prototype Generation",
+    "what": "AI-генерация прототипов: design mockup → HTML/React код, sketches → Figma compositions, multiple style variants за минуты. От «designer кодит prototype 2 дня» — к «AI даёт 5 вариантов за час, designer выбирает + refine».",
+    "why": "Prototyping — bottleneck в design cycle. AI закрывает «технический» аспект (превратить идею в kod/Figma), designer фокусируется на concept + critique.",
+    "when": "Early-stage exploration (need many variants quickly). Design system component variants. Conversion of mockup to code. A/B testing variant generation.",
+    "impact": "Time-to-prototype: 2 дня → 4 часа. Variant coverage: 1-2 → 5-10 per concept. Iteration speed: 2-3× faster. Stage 1→2.",
+    "example": "Prototype Workflow:\n\n  Designer brief:\n  «Onboarding flow для B2B SaaS,\n   3 шага, brand color #2563eb,\n   шрифт Inter, mood: friendly+confident»\n        ↓\n  AI Step 1: Generate 5 layout variants\n        ↓\n  Designer selects 2 most promising\n        ↓\n  AI Step 2: Generate React/HTML for each\n        ↓\n  Designer refines via Figma OR direct code edits\n        ↓\n  Output: working prototype 4 hours after brief\n\nReal usage: AI-generated code = starting point, не final. Designer refines 30-50%.",
+    "mistakes": "Ждать от AI «pixel-perfect output». AI dает 70% from idea to code, последние 30% (taste, brand fit, accessibility) — designer. Treating AI as starting point = speed. Treating as final = mediocre output."
+  },
+  "ds-design-ops": {
+    "title": "AI Design Operations",
+    "what": "Автоматизация design ops: asset documentation, component change-logs, Figma library management, design QA. От «у нас всё есть, но никто не знает где» — к «AI maintains documentation continuously».",
+    "why": "Design ops invisible until breaks. Asset chaos, outdated components, missing docs — все это убивает velocity. AI maintains это continuously без manual effort.",
+    "when": "Design system есть, но poorly documented. Multiple designers, components diverge. New hires спрашивают «где X компонент?». Pre-handoff QA не выполняется.",
+    "impact": "Designer time on ops: -50%. New hire onboarding: 2 weeks → 1 week. Component reuse: +30% (вместо переизобретения). Stage 2→3.",
+    "example": "Design Ops Automation:\n\n1. Component Documentation:\n   - AI читает Figma file → генерирует MD docs per component\n   - Updates: AI диффит changes weekly → adds changelog\n\n2. Asset Audit:\n   - AI scans products → finds inconsistent components\n   - Flags: «button styles diverge across 5 screens»\n\n3. Handoff QA:\n   - Pre-handoff AI checks: token usage, accessibility, spacing\n   - Generates QA report для dev review\n\n4. Library Health:\n   - Weekly: AI identifies unused components, outdated tokens\n   - Suggests cleanup\n\nMetric: design system health score, time saved on documentation.",
+    "mistakes": "Делать design ops AI без integration в actual tools. «AI генерит docs в отдельном Notion» = никто не читает. AI должен жить там где designers работают: Figma plugins, Slack integrations, CI/CD для design."
+  },
+  "ds-accessibility": {
+    "title": "AI Accessibility Automation",
+    "what": "AI-проверки a11y на каждом шаге: contrast checks, alt-text generation, screen reader simulation, keyboard navigation audit. От «accessibility = специальный audit раз в полгода» — к «accessibility-by-default через AI».",
+    "why": "Accessibility часто проверяется в конце, когда переделывать дорого. AI catches issues в real-time во время design. Стоимость в 10× меньше.",
+    "when": "Design system accessibility setup. New feature launches с user-facing UI. Quarterly product audits. Customer complaints about a11y issues.",
+    "impact": "A11y bug rate: 30% → 5% (issues caught at design stage). Compliance: WCAG AA reached confidently. Legal risk: significantly reduced. Stage 1→2.",
+    "example": "A11y Automation Pipeline:\n\n  Design phase:\n  1. AI checks contrast ratios on every screen\n  2. Auto-generates alt-text suggestions for images\n  3. Flags missing focus states, keyboard traps\n  4. Reviews color usage (color as sole indicator?)\n\n  Pre-handoff:\n  5. Full WCAG checklist auto-run\n  6. Report: issues + recommendations + WCAG criteria mapping\n\n  Post-launch:\n  7. Real screen reader test simulation\n  8. AI describes UX as blind user would experience it\n\nMetric: WCAG compliance %, a11y issues per release.",
+    "mistakes": "Думать что AI = «полный a11y replacement». Manual testing с real assistive tech (real screen readers, real keyboard navigation) — still required. AI catches 80%, last 20% — manual + user testing с a11y users."
+  },
+  "ds-design-system": {
+    "title": "AI Design System Evolution",
+    "what": "AI помогает развивать design system: генерация token sets, component variants, documentation для каждого компонента, миграция usage при breaking changes. Design system из «статичный документ» в «живая система с AI-помощником».",
+    "why": "Design systems обычно стагнируют: нет ресурсов на поддержку, breaking changes откладываются. AI снимает operational burden — система остаётся свежей.",
+    "when": "Design system есть, но maintenance burden высокий. Migration к новому token system. Component variants нужно создать (sizes, states, themes). Documentation поразлета по разным местам.",
+    "impact": "Design system update velocity: 3-5× faster. Migration speed: weeks → days. Documentation freshness: always current. Stage 2→3.",
+    "example": "Design System Evolution:\n\n1. Token Generation:\n   - Designer задаёт «brand uses warm palette, modern feel»\n   - AI generates: color scale, spacing scale, typography scale\n   - Designer refines: 70% AI output → 30% manual adjustment\n\n2. Component Variants:\n   - Designer creates base button\n   - AI generates: sizes (sm/md/lg), states (default/hover/focus/disabled), themes (light/dark)\n   - Outputs Figma file + code stubs\n\n3. Breaking Change Migration:\n   - «We changed token spacing from 4px to 8px»\n   - AI scans codebase + Figma files\n   - Generates migration PR + Figma changes list\n\n4. Documentation:\n   - AI maintains MDX docs per component\n   - Updates on component changes automatically\n\nMetric: components shipped, time-to-update.",
+    "mistakes": "Полностью полагаться на AI для design system decisions. Design system embodies brand strategy + UX principles — это критические human decisions. AI = executor, не decision-maker для system architecture."
+  },
+  "ds-content-design": {
+    "title": "AI Content Design",
+    "what": "AI-помощь в UX writing: microcopy для buttons/forms/errors, onboarding flows, empty states, helper text. От «designer пишет copy в свободное время» — к «AI generates contextual copy, designer curates voice».",
+    "why": "UX copy критичен для UX, но designer time на copy всегда insufficient. AI generates options, designer chooses + refines по brand voice.",
+    "when": "New feature launches with substantial UI text. Onboarding flow design. Error message standardization. International product (multiple languages).",
+    "impact": "Copy generation time: -70%. Coverage: 100% of UI elements have intentional copy (vs «TBD»). Consistency: brand voice maintained across product. Stage 2→3.",
+    "example": "Content Design Workflow:\n\nFor each UI surface:\n  1. Designer provides context: «password reset flow, friendly tone»\n  2. AI generates 5 variants for each microcopy slot:\n     - Page title\n     - Description (1 sentence)\n     - Primary CTA\n     - Error states (3-5 likely errors)\n     - Success state\n  3. Designer picks best + may refine\n  4. AI suggests improvements based on brand voice\n  5. Final copy документируется в content style guide\n\nFor i18n:\n  - AI does first-pass translation\n  - Local copywriter refines (we still need humans here)\n\nMetric: copy coverage %, brand voice consistency score.",
+    "mistakes": "Использовать AI для legal/compliance copy без review. «AI wrote it» не освобождает от accountability. Critical copy (privacy notices, ToS, regulatory text) — human-written, AI только для review."
+  },
+  "ds-team-workflow": {
+    "title": "AI Design Team Workflow",
+    "what": "Design team operating model с AI: shared Figma plugins, design system AI-helpers, weekly «AI office hours» для designers, AI-aware critique sessions. От «каждый designer со своим Claude» — к «designed-augmented team».",
+    "why": "Individual designer AI usage не масштабируется — voice inconsistent, components diverge, lessons unlearned. Team workflow consolidates AI value.",
+    "when": "Design team ≥3 designers активно используют AI. Когда product is design-driven (consumer apps, brand-heavy). When inconsistent AI usage causes brand fragmentation.",
+    "impact": "Team velocity: +25-35%. Brand consistency: significantly improved. Designer career growth: «AI-augmented designer» as senior path. Stage 2→3.",
+    "example": "Design Team Setup:\n\n1. Shared Claude Project «Design Workspace»:\n   - Brand voice guide indexed\n   - Design system docs accessible\n   - Past research synthesized\n   - Component library reference\n\n2. CLAUDE.md: design principles, brand voice, accessibility rules.\n\n3. Skills (Figma plugins + Claude):\n   - microcopy-generator\n   - component-doc-writer\n   - accessibility-checker\n   - research-synthesizer\n\n4. Weekly rituals:\n   - «AI office hours» (30 min): designers share wins/failures\n   - Quarterly «AI in design» retrospective\n\n5. Critique enhancements:\n   - Pre-critique: AI runs accessibility/brand checks\n   - Critique focuses on craft + concept (not finding bugs)\n\nStage 3 sign: new designer productive в 3-5 дней.",
+    "mistakes": "Делать «AI in design» = «designer обязан использовать AI». Forced adoption убивает creative ownership. AI должен быть «discovered through value» — designers choose to use when it makes them better, faster, happier."
+  },
+  "uc-ai-design-research-launch": {
+    "title": "Use Case: Запуск AI Design Research за 2 недели",
+    "what": "Полный путь от «у нас гора research material и нет времени её разобрать» до «AI-powered research pipeline для design team». Cross-layer path через 6 узлов.",
+    "why": "Самый частый запрос design teams: «у нас тонны user research, но мы не можем его процессировать. Дизайнеры тратят время на синтез, не на actual design». Этот UC решает systematically.",
+    "when": "Когда есть ≥10 session recordings или interview transcripts. Когда design ops несбалансирован (много research input, мало synthesis output). Когда есть buy-in от Head of Design.",
+    "impact": "Outcome: working research pipeline за 2 недели. Metrics: time-to-insight 2 weeks→2 hours per round, research coverage 30%→100%, structured theme library.",
+    "example": "Путь (6 шагов):\n\nWeek 1: Foundation setup.\n1. Foundation: prompting → как формулировать synthesis prompts для research\n2. Foundation: af-rag-basics → research repository индексация\n3. Foundation: projects → создать «Design Research» Project с files\n\nWeek 1-2: Workflow build.\n4. Systems: sys-context-passing → передача research context между этапами\n5. Transformation: ds-design-research → конкретный synthesis workflow\n\nWeek 2: Team adoption.\n6. Transformation: pd-discovery-research → cross-link с PM workflow для shared insights\n\nDay 1-3: Index existing research (sessions, transcripts).\nDay 4-7: Test synthesis на 5 sessions. Designer validates → refine prompts.\nDay 8-14: Full pipeline + team training + first real research round.\n\nStage transition: 1→2.",
+    "mistakes": "Делать UC без designer-PM alignment. Design research и Product research разделены в большинстве компаний. Если synthesis pipeline только для дизайнеров, PMs дублируют работу. Sync с pd-discovery-research = synergy, не duplication."
   }
 }
