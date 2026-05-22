@@ -336,6 +336,7 @@ node scripts/sync-whats-new.mjs --regen  # пересобрать whatsNew.js б
 | Описать концепт MCP                    | `skills/mcp-specialist/`   |
 | Спроектировать tutorial / новое обучение | `skills/ai-pedagogy-architect/` |
 | Найти пробелы в контенте Atlas         | `skills/content-gap-auditor/` |
+| Аудит «понятности» обучающего материала | `skills/learning-content-auditor/` (on-demand) |
 | Проверить релизы Anthropic еженедельно | `skills/news-watcher/`     |
 | Правила AI-обучения                    | `docs/learning-design-rules.md` |
 | Maintenance / deprecate-watch          | `docs/maintenance.md`      |
