@@ -1339,5 +1339,50 @@
     "impact": "Structured workflow instead of chaotic exploration.",
     "example": "uc-ai-reporting-launch — a path through 5-6 nodes with an explicit outcome and metrics.",
     "mistakes": "Making \"your own Use Case\" without an explicit outcome and metrics — you get a vague list of links."
+  },
+  "ai-fundamentals": {
+    "title": "AI Fundamentals",
+    "what": "Universal AI concepts not tied to any single model: LLM, embeddings, vector databases, RAG. The vocabulary every AI system speaks — from ChatGPT to your own pipeline on open-source models.",
+    "why": "Atlas covers Claude in depth, but the AI industry is broader. To talk with engineers, evaluate vendor proposals, and make architectural decisions — you need the common concepts.",
+    "when": "When reading a technical doc / proposal with AI terms. When choosing a tech stack. When discussing architecture with your team.",
+    "impact": "Knowing fundamentals shifts you from «I use AI» to «I understand what I am doing». You gain confidence in decisions and substantive arguments.",
+    "example": "A RAG pipeline uses embeddings (a fundamental concept), stores them in a vector database (a fundamental technology), and feeds relevant chunks into an LLM (a fundamental architecture). Knowing all three — you can read any RAG documentation.",
+    "mistakes": "Learning fundamentals as abstract theory. More effective: take a concrete task (e.g., «build search over my docs») and learn the needed concepts as you go."
+  },
+  "af-llm-basics": {
+    "title": "LLM: How It Works",
+    "what": "Large Language Model — a transformer neural network trained to predict the next token in text. Claude, GPT, Gemini, Llama — all LLMs. They differ in size (billions of parameters), architecture (decoder-only, mixture-of-experts), and training data.",
+    "why": "To understand why an LLM errs, hallucinates, or forgets yesterday's conversation — you need to know what is inside. This explains EVERY limitation: context window, cost, latency, hallucinations.",
+    "when": "Before deep AI usage. Before arguing with a developer about «why the model cannot do X». Before estimating cost / latency of infrastructure.",
+    "impact": "Understanding LLMs = understanding the boundaries. Knowing the model does not «think» but statistically predicts — you stop expecting miracles and start designing prompts correctly.",
+    "example": "Prompt: «What is 47×83?» — the LLM predicts token-by-token and may err in one digit. Solution: give it a tool (calculator tool use) or ask for chain-of-thought. This is a direct consequence of the architecture.",
+    "mistakes": "Thinking the LLM «knows» facts. It knows token patterns. Fresh facts, exact numbers, your company specifics — NOT in the LLM. Solution: external sources (RAG, tools)."
+  },
+  "af-embeddings": {
+    "title": "Embeddings: Vector Representations",
+    "what": "An embedding is a representation of text (or image, audio) as a vector of numbers (e.g., 1536 dimensions). Semantically similar texts produce close vectors. This enables search «by meaning», not by exact word match.",
+    "why": "Embeddings are the foundation of semantic search, RAG, clustering, recommendations. Without them you cannot build a «smart search» that finds «how to configure the router» from the query «no internet at home».",
+    "when": "When you need to search large text volumes by meaning. When building RAG. When you need recommendations (similar products / docs / people).",
+    "impact": "Embeddings turn unstructured text into data you can work with mathematically. This is the shift from keyword search to semantic search — quality gain of 30-50%.",
+    "example": "The texts «how to reset my password» and «forgot password, please help» — keyword search will not connect them (few common words). Embedding vectors of these phrases will be close → semantic search finds both for «password reset».",
+    "mistakes": "Using embeddings from a random model. Search quality depends directly on embedding model quality. OpenAI text-embedding-3-large, Cohere embed-v3, or natively via Claude — the choice matters."
+  },
+  "af-vector-db": {
+    "title": "Vector Databases",
+    "what": "A database optimized for storing and searching embeddings (vectors). Does what a regular DB cannot: «find the 10 closest vectors to this one». Pinecone, Weaviate, pgvector (Postgres extension), Qdrant, Chroma.",
+    "why": "Without a vector DB, embeddings are useless: you need to store millions of vectors and quickly find nearest neighbors. A regular DB does this slowly (O(n) scan). A vector DB uses ANN indexes (HNSW, IVF) — search in milliseconds.",
+    "when": "RAG systems with >1000 documents. Semantic search over a large knowledge base. Recommendation systems. Anomaly detection.",
+    "impact": "A vector DB turns a «search attempt» into a production-ready system: latency <100ms, scale to billions of vectors, metadata filters.",
+    "example": "You have 50,000 knowledge base articles. You want a user to ask a question — the system finds the 5 most relevant and feeds them to Claude as context. Without a vector DB — each query takes 30+ seconds. With a vector DB — <100ms.",
+    "mistakes": "Choosing a managed solution (Pinecone) when pgvector suffices. Postgres + pgvector is often easier for a team that already knows SQL — and cheaper. Managed is needed at >10M vectors or special requirements."
+  },
+  "af-rag-basics": {
+    "title": "RAG: Retrieval Augmented Generation",
+    "what": "RAG = feeding the LLM relevant chunks from your knowledge base as context before it generates an answer. Pipeline: query → embedding → vector search → top-K chunks → prompt «Answer based on this context» → LLM.",
+    "why": "The LLM does not know your documents. Without RAG, it either hallucinates or says «I do not know». With RAG — it answers from your data with source citations. This is the most common production AI pattern.",
+    "when": "Chatbots over corporate knowledge bases. Search with AI summaries. Customer support with automated answers. Analysis of large document sets.",
+    "impact": "Transforms the LLM from a «generative helper» into an «expert on your data». Answer accuracy: 30% (without RAG) → 85%+ (with well-built RAG).",
+    "example": "Query: «What is our return policy?». RAG: 1) embedding of query → 2) search in vector DB → 3) find the Returns Policy section → 4) Claude answers based on the finding with a citation. No hallucinations.",
+    "mistakes": "Doing naive RAG: one chunk = one page, retrieval top-3, straight into prompt. Production RAG needs re-ranking, hybrid search (keyword + semantic), chunk overlap, metadata. This is the difference between «kind of works» and «actually works»."
   }
 }

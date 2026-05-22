@@ -89,6 +89,54 @@ export const mindmapData = {
       "minLevel": "beginner",
       "children": [
         {
+          "id": "ai-fundamentals",
+          "icon": "microscope",
+          "category": "foundation",
+          "minLevel": "beginner",
+          "children": [
+            {
+              "id": "af-llm-basics",
+              "icon": "cube",
+              "category": "foundation",
+              "relatedIds": [
+                "b-claude",
+                "b-models",
+                "b-context"
+              ]
+            },
+            {
+              "id": "af-embeddings",
+              "icon": "compass",
+              "category": "foundation",
+              "relatedIds": [
+                "cap-search",
+                "af-rag-basics",
+                "af-vector-db"
+              ]
+            },
+            {
+              "id": "af-vector-db",
+              "icon": "bricks",
+              "category": "foundation",
+              "relatedIds": [
+                "af-embeddings",
+                "af-rag-basics"
+              ]
+            },
+            {
+              "id": "af-rag-basics",
+              "icon": "archive",
+              "category": "foundation",
+              "relatedIds": [
+                "af-embeddings",
+                "af-vector-db",
+                "cap-citations",
+                "cap-files"
+              ]
+            }
+          ]
+        },
+        {
           "id": "basics",
           "icon": "brain",
           "category": "foundation",

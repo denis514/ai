@@ -1339,5 +1339,50 @@
     "impact": "Strukturoitu workflow kaoottisen tutkimisen sijaan.",
     "example": "uc-ai-reporting-launch — polku 5–6 solmun läpi selkeällä lopputuloksella ja metriikoilla.",
     "mistakes": "Tehdä \"oma Use Case\" ilman selkeää lopputulosta ja metriikoita — saat sumean linkkilistan."
+  },
+  "ai-fundamentals": {
+    "title": "AI Fundamentals",
+    "what": "Yleiset AI-käsitteet, jotka eivät ole sidottu yhteen malliin: LLM, embeddings, vektoritietokannat, RAG. Sanasto, jota jokainen AI-järjestelmä puhuu — ChatGPT:stä omiin pipeline-ratkaisuihin avoimen lähdekoodin malleilla.",
+    "why": "Atlas kuvaa Clauden syvällisesti, mutta AI-toimiala on laajempi. Insinöörien kanssa keskustelemiseen, tarjousten arviointiin ja arkkitehtuuripäätösten tekemiseen tarvitset yhteiset käsitteet.",
+    "when": "Kun luet teknistä dokumenttia / tarjousta AI-termeillä. Kun valitset teknologiapinoa. Kun keskustelet arkkitehtuurista tiimisi kanssa.",
+    "impact": "Fundamentalsien tunteminen siirtää sinut «käytän AI:ta» -tilasta «ymmärrän mitä teen» -tilaan. Saat varmuutta päätöksiin ja perusteltuihin keskusteluihin.",
+    "example": "RAG-pipeline käyttää embeddingsejä (perustavaa käsitettä), tallentaa ne vektoritietokantaan (perustavaa teknologiaa) ja syöttää relevantteja paloja LLM:lle (perustavaa arkkitehtuuria). Tuntemalla kaikki kolme — voit lukea minkä tahansa RAG-dokumentaation.",
+    "mistakes": "Opiskella fundamentaleja abstraktina teoriana. Tehokkaampaa: ota konkreettinen tehtävä (esim. «rakenna haku omiin dokumentteihini») ja opi tarvittavat käsitteet matkan varrella."
+  },
+  "af-llm-basics": {
+    "title": "LLM: kuinka se toimii",
+    "what": "Large Language Model — transformer-neuroverkko, joka on koulutettu ennustamaan seuraavan tokenin tekstissä. Claude, GPT, Gemini, Llama — kaikki LLM:iä. Eroavat koossa (miljardit parametrit), arkkitehtuurissa (decoder-only, mixture-of-experts) ja koulutusdatassa.",
+    "why": "Ymmärtääksesi miksi LLM erehtyy, hallusinoi tai unohtaa eilisen keskustelun — sinun on tiedettävä, mitä sisällä on. Tämä selittää KAIKKI rajoitukset: konteksti-ikkuna, kustannukset, latenssi, hallusinaatiot.",
+    "when": "Ennen syvällistä AI-käyttöä. Ennen kuin riitelet kehittäjän kanssa siitä, «miksi malli ei voi tehdä X». Ennen infrastruktuurin kustannusten / latenssin arviointia.",
+    "impact": "LLM:n ymmärtäminen = rajojen ymmärtäminen. Tietäen että malli ei «ajattele» vaan tilastollisesti ennustaa — lakkaat odottamasta ihmeitä ja alat suunnitella kehotteita oikein.",
+    "example": "Kehote: «Paljonko on 47×83?» — LLM ennustaa token kerrallaan ja voi erehtyä yhdessä numerossa. Ratkaisu: anna sille työkalu (calculator tool use) tai pyydä chain-of-thought. Tämä on suora seuraus arkkitehtuurista.",
+    "mistakes": "Ajatella että LLM «tietää» faktoja. Se tuntee token-mallit. Tuoreet faktat, tarkat numerot, yrityksesi erityispiirteet — EI LLM:ssä. Ratkaisu: ulkoiset lähteet (RAG, työkalut)."
+  },
+  "af-embeddings": {
+    "title": "Embeddings: vektoriesitykset",
+    "what": "Embedding on tekstin (tai kuvan, äänen) esitys numerovektorina (esim. 1536 ulottuvuutta). Merkitykseltään samankaltaiset tekstit tuottavat lähekkäisiä vektoreita. Tämä mahdollistaa haun «merkityksen mukaan», ei tarkan sanaosuman mukaan.",
+    "why": "Embeddings ovat semanttisen haun, RAG:n, klusteroinnin ja suositusten perusta. Ilman niitä et voi rakentaa «älykästä hakua», joka löytää «kuinka konfiguroida reititin» kyselyllä «ei internetiä kotona».",
+    "when": "Kun tarvitset hakua suurista tekstimääristä merkityksen mukaan. Kun rakennat RAG:ia. Kun tarvitset suosituksia (samankaltaiset tuotteet / dokumentit / ihmiset).",
+    "impact": "Embeddings muuttavat strukturoimattoman tekstin dataksi, jota voi käsitellä matemaattisesti. Tämä on siirtymä avainsanahausta semanttiseen hakuun — laadun parannus 30-50%.",
+    "example": "Tekstit «kuinka resetoida salasanani» ja «unohdin salasanan, auta» — avainsanahaku ei yhdistä niitä (yhteisiä sanoja on vähän). Näiden lauseiden embedding-vektorit ovat lähellä → semanttinen haku löytää molemmat haulla «password reset».",
+    "mistakes": "Käyttää satunnaisen mallin embeddingsejä. Hakulaatu riippuu suoraan embedding-mallin laadusta. OpenAI text-embedding-3-large, Cohere embed-v3 tai natiivi Cluden kautta — valinnalla on merkitystä."
+  },
+  "af-vector-db": {
+    "title": "Vektoritietokannat",
+    "what": "Tietokanta, joka on optimoitu embeddingsien (vektorien) tallentamiseen ja hakuun. Tekee sen, mitä tavallinen tietokanta ei voi: «löydä 10 lähintä vektoria tähän». Pinecone, Weaviate, pgvector (Postgres-laajennus), Qdrant, Chroma.",
+    "why": "Ilman vektoritietokantaa embeddings ovat hyödyttömiä: sinun on tallennettava miljoonia vektoreita ja löydettävä nopeasti lähimmät naapurit. Tavallinen tietokanta tekee tämän hitaasti (O(n)-skannaus). Vektoritietokanta käyttää ANN-indeksejä (HNSW, IVF) — haku millisekunneissa.",
+    "when": "RAG-järjestelmät, joissa on >1000 dokumenttia. Semanttinen haku suuressa tietokannassa. Suositusjärjestelmät. Anomalioiden tunnistus.",
+    "impact": "Vektoritietokanta muuttaa «hakuyrityksen» tuotantovalmiiksi järjestelmäksi: latenssi <100ms, skaalaus miljardeihin vektoreihin, metadata-suodattimet.",
+    "example": "Sinulla on 50 000 tietokanta-artikkelia. Haluat, että käyttäjä kysyy kysymyksen — järjestelmä löytää 5 relevanteinta ja syöttää ne Claudelle kontekstina. Ilman vektoritietokantaa — jokainen kysely kestää 30+ sekuntia. Vektoritietokannan kanssa — <100ms.",
+    "mistakes": "Valita managed-ratkaisu (Pinecone) kun pgvector riittää. Postgres + pgvector on usein helpompi tiimille, joka tuntee jo SQL:n — ja halvempi. Managed tarvitaan >10M vektorilla tai erityisvaatimuksilla."
+  },
+  "af-rag-basics": {
+    "title": "RAG: Retrieval Augmented Generation",
+    "what": "RAG = relevanttien palasten syöttäminen LLM:lle tietopohjastasi kontekstina ennen kuin se generoi vastauksen. Pipeline: kysely → embedding → vektorihaku → top-K palaset → kehote «Vastaa tämän kontekstin perusteella» → LLM.",
+    "why": "LLM ei tunne dokumenttejasi. Ilman RAG:ia se joko hallusinoi tai sanoo «en tiedä». RAG:n kanssa — vastaa datasi perusteella lähdeviittauksilla. Tämä on yleisin tuotannon AI-malli.",
+    "when": "Yrityksen tietopohjaan perustuvat chatbotit. Haku AI-yhteenvedoilla. Asiakaspalvelu automaattisilla vastauksilla. Suurten dokumenttijoukkojen analyysi.",
+    "impact": "Muuttaa LLM:n «generatiivisesta avustajasta» «datasi asiantuntijaksi». Vastausten tarkkuus: 30% (ilman RAG:ia) → 85%+ (hyvin rakennetulla RAG:lla).",
+    "example": "Kysely: «Mikä on palautuskäytäntömme?». RAG: 1) kyselyn embedding → 2) haku vektoritietokannasta → 3) löytää Returns Policy -osion → 4) Claude vastaa löydökseen perustuen lähdeviittauksella. Ei hallusinaatioita.",
+    "mistakes": "Tehdä naive RAG: yksi pala = yksi sivu, top-3 retrieval, suoraan kehotteeseen. Tuotanto-RAG tarvitsee re-ranking, hybridi-haku (avainsana + semanttinen), pala-päällekkäisyys, metadata. Tämä on ero «näyttää toimivan» ja «todella toimii» välillä."
   }
 }
