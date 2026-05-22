@@ -135,6 +135,21 @@
 
 ---
 
+## ✅ Завершено — Сессия 2026-05-22 (Тёмная тема)
+
+### Dark theme — finalized
+- ✅ **CSS variables** — `:root[data-theme="dark"]` переопределяет всю палитру
+- ✅ **useTheme hook** — localStorage + prefers-color-scheme detection + listener
+- ✅ **ProfilePanel** — sun/moon toggle рядом с language switcher
+- ✅ **meta[theme-color]** обновляется для мобильных
+- ✅ **No flash** — applyTheme() synchronous before React render
+- ✅ Smooth .2s transition на body/modals/nodes
+- ✅ i18n: profile.theme.toLight/toDark (ru/en/fi)
+- ✅ Icon REGISTRY: +sun, +moon
+
+Закрывает последний пункт UX-аудита #8 (Тёмная тема).
+Bundle: 96.18 → 96.63 KB gzip (+0.45 KB).
+
 ## ✅ Завершено — Сессия 2026-05-22 (Learning Paths)
 
 ### +6 audience-specific Learning Paths (6→12)
