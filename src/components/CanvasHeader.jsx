@@ -20,13 +20,19 @@ import { useT } from '../i18n/LocaleContext.jsx';
 export default function CanvasHeader({
   query, onQuery,
   tutorialsCompleted, tutorialsTotal,
-  onOpenCourses, onOpenLibrary, onOpenHelp
+  onOpenCourses, onOpenLibrary, onOpenHelp,
+  route
 }) {
   const t = useT();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Закрываем dropdown при любом изменении route (открытие узла, модалки и т.д.)
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [route]);
 
   // Click-outside закрывает dropdown
   useEffect(() => {

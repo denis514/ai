@@ -715,6 +715,7 @@ function AppInner() {
           onOpenCourses={onOpenCourses}
           onOpenLibrary={onOpenLibrary}
           onOpenHelp={onOpenHelp}
+          route={route}
         />
 
         <ProfileFab
@@ -737,6 +738,7 @@ function AppInner() {
           onSelectNode={(id) => setRoute({ type: 'node', id })}
           onOpenTutorial={(id) => setRoute({ type: 'tutorial', id })}
           onOpenArchive={() => setArchiveOpen(true)}
+          route={route}
         />
 
         <WelcomeCard

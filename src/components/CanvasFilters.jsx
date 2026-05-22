@@ -14,12 +14,18 @@ function categoryLabel(t, id) {
  * Плавающий фильтр — всегда компактный dropdown (desktop + wide).
  * На mobile скрыт (живёт в MobileFab).
  */
-export default function CanvasFilters({ category, onCategory, onSelectNode, onOpenTutorial, onOpenArchive }) {
+export default function CanvasFilters({ category, onCategory, onSelectNode, onOpenTutorial, onOpenArchive, route }) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const [updatesOpen, setUpdatesOpen] = useState(false);
   const containerRef = useRef(null);
   const updatesRef = useRef(null);
+
+  // Закрываем все дропдауны при смене route (открытие узла, курсов, туториала...)
+  useEffect(() => {
+    setOpen(false);
+    setUpdatesOpen(false);
+  }, [route]);
   const { isNew } = useWhatsNew();
   const TTL_DAYS = 60;
   const unseenCount = Object.entries(WHATS_NEW).filter(([id, e]) => {
