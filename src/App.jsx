@@ -495,6 +495,24 @@ function AppInner() {
     });
   }, [active, ancestors, pinnedIds, pinnedAncestors]);
 
+  // При поиске — плавно панируем к первому matched-узлу (с debounce 350мс).
+  // Без этого узлы подсвечиваются в DOM, но остаются за пределами вьюпорта.
+  useEffect(() => {
+    if (!active || matched.size === 0) return;
+    const firstId = [...matched][0];
+    const timer = setTimeout(() => {
+      const xOffset = panelOpen ? -230 : 0;
+      let attempts = 0;
+      const tryPan = () => {
+        attempts++;
+        const found = mapRef.current?.panToNode(firstId, { xOffset });
+        if (!found && attempts < 8) setTimeout(tryPan, 60);
+      };
+      tryPan();
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [matched, active, panelOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const highlightedIds = useMemo(() => {
     const s = new Set(matched);
     ancestors.forEach(id => s.add(id));
