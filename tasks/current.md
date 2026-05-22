@@ -135,6 +135,21 @@
 
 ---
 
+## ✅ Завершено — Сессия 2026-05-22 (Learning Paths)
+
+### +6 audience-specific Learning Paths (6→12)
+- ✅ **ops-team** (business/intermediate, 8 steps) — settings
+- ✅ **marketing-team** (business/intermediate, 8 steps) — mask
+- ✅ **support-team** (business/intermediate, 9 steps) — inbox
+- ✅ **product-team** (business/intermediate, 8 steps) — construction
+- ✅ **enterprise-transformation** (business/advanced, 8 steps) — building
+- ✅ **design-team** (everyone/intermediate, 8 steps) — paint
+
+Каждый path: tutorial → Foundation → Systems → Transformation → UC.
+Локализованы в ru/en/fi (144 текстовых блока).
+Существующие 6 paths сохранены как generic skill-based paths.
+Bundle: 96.18 KB gzip.
+
 ## ✅ Завершено — Сессия 2026-05-22 (Tutorials migration)
 
 ### 32 туториала relinked к Use Cases
