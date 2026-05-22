@@ -1411,5 +1411,86 @@
     "impact": "Oikea valinta säästää kuukausia. Tiimit aloittavat usein «tehdään fine-tuning» -ajatuksella ja viettävät neljänneksen datankeräyksessä. Vaihtoehto (prompting + RAG) olisi voinut käynnistyä viikossa.",
     "example": "Tehtävä: «AI vastaa CEO:mme tyyliin». Ensin: 5-shot prompting esimerkeillä CEO:n sähköposteista + system prompt «vastaa tähän tyyliin». Jos 50 iteraation jälkeen laatu yhä kärsii — sitten fine-tuning. 80% tapauksista — prompting riittää.",
     "mistakes": "Tehdä fine-tuningia «varmuuden vuoksi». Se on teknistä velkaa: mallisi on vanhentunut puolessa vuodessa, uusi Claude-versio on parempi kuin sinun fine-tunetusi. Käytä ensin prompting + RAG + tools — vasta sitten fine-tuning."
+  },
+  "ai-native-operations": {
+    "title": "AI-Native Operations",
+    "what": "Tiimin operatiiviset prosessit siirrettynä AI-native-kiskoille: prosessien automatisointi, AI-päätöstuki, automaattinen raportointi, resurssien optimointi, tiimin workflow:t AI:n ympärillä.",
+    "why": "Operations on pienin ja taktisin kaikista transformation-suunnista. Ihanteellinen aloitus: mitattavat tehtävät, nopea ROI, minimaalinen riski.",
+    "when": "Kun tiimi käyttää jo Claudea yksittäisissä tehtävissä mutta haluaa systemaattisesti integroida AI:n toimintamalliin.",
+    "impact": "Stage 0→3 3-6 kuukaudessa: 30-40% tiimin ajasta vapautuu strategisempaan työhön. Metriikat: time-to-decision, raportin läpimenoaika, escalation rate.",
+    "example": "Maturity stages Operations:lle:\nStage 0: Pre-AI — manuaaliset raportit, vaisto-päätökset.\nStage 1: AI experiments — Claude auttaa kirjoittamaan yksittäisiä raportteja.\nStage 2: AI workflows — on Project + system prompt viikoittaiseen raportointiin.\nStage 3: AI-native — raportit generoituvat automaattisesti, ops-tiimi keskittyy strategiaan.\nStage 4: AI-first — uudet tuotteet rakennetaan AI:lle ensimmäisestä päivästä lähtien.",
+    "mistakes": "Haluta Stage 3 heti. Operations transformation = peräkkäinen liike: mittaa baseline → ota käyttöön Stage 1 → siirry Stage 2:een → vasta 2-3 kuukauden jälkeen katso Stage 3:a."
+  },
+  "ops-process-automation": {
+    "title": "AI-prosessien automatisointi",
+    "what": "Toistuvien prosessien automatisointi AI:n avulla: input (laukaisin) → AI-käsittely → output (tulos + seuraava toiminto). Skills + Hooks + RAG ydinpinona.",
+    "why": "Jokaisella tiimillä 30-50% tehtävistä = toistuvia: onboarding, status-päivitykset, rutiiniviestintä. AI hoitaa suurimman osan näistä ilman laadun menetystä.",
+    "when": "Kun tehtävä tapahtuu ≥5×/viikko + on selkeät inputit/outputit + tulos voidaan validoida. Ihanteelliset ehdokkaat: viikkoraportit, tervetuliais-sähköpostit, sisäiset status-tiivistelmät.",
+    "impact": "Aikasäästö: 70-90% tietyssä tehtävässä. Konsistenssi: yksi laadukas tulos sen sijaan, että «riippuu kuka teki». Stage 1→2.",
+    "example": "Workflow «Viikoittainen status-tiivistelmä»:\n1. Laukaisin (maanantai 9:00 tai /command).\n2. AI-vaihe: lukee Linear/Jira viikolta.\n3. AI-vaihe: kirjoittaa executive summary brändi-tyyliin.\n4. Laatuportti: ihminen tekee lopullisen tarkistuksen (15 min 2 tunnin kirjoituksen sijaan).\n5. Output: julkaisu #leadership Slackissä.\n\nEnnen: 2h/viikko. Jälkeen: 15min tarkistus.",
+    "mistakes": "Automatisoida prosessi, joka ei ole vielä «vakiintunut». Jos prosessi muuttuu viikoittain — AI-automaatio rikkoutuu jatkuvasti. Ensin: vakauta prosessi käsin. Sitten: automatisoi."
+  },
+  "ops-decision-intelligence": {
+    "title": "AI-päätöstuki",
+    "what": "AI «toisena mielipiteenä» operatiivisille päätöksille: AI analysoi datan + kontekstin + päätöshistorian → antaa strukturoidun suosituksen. Ei korvaa ihmistä, mutta kurinalaistaa prosessin.",
+    "why": "Operatiiviset päätökset tehdään usein «vaistolla» paineen alla. AI-strukturointi pakottaa harkitsemaan vaihtoehtoja, riskejä, metriikoita — vähentää reaktiivisia päätöksiä.",
+    "when": "Hire/no-hire-päätökset. Resurssien allokointi. Toimittajan valinta. Process change vs no-change. Päätökset >$10k vaikutuksella tai >2 viikon horisontilla.",
+    "impact": "Reaktiivisten päätösten vähennys: 50-70%. Päätöksen laatu mitattavissa (seuraa tuloksia). Stage 2→3.",
+    "example": "Päätös-template:\n1. Konteksti: tilanne 5 lauseessa.\n2. Vaihtoehdot: 3 päätösvaihtoehtoa.\n3. Jokainen vaihtoehto: edut, haitat, kustannus, riski.\n4. AI-analyysi: pattern-matching aiempien päätösten kanssa + suositus.\n5. Ihminen override + lokaa päätöksen perustelut.\n\n3 kuukauden jälkeen NÄET päätöstesi mallit — missä AI oli oikeassa, missä erehtyi.",
+    "mistakes": "Seurata sokeasti AI-suositusta. AI on hyvä mallintaa, mutta ei tunne kontekstiasi kokonaan. Käsittele AI:tä «harkitsevana junnuna»: antaa näkökulman, mutta päätös ja vastuu ovat sinun."
+  },
+  "ops-reporting-automation": {
+    "title": "AI-raportoinnin automatisointi",
+    "what": "Raporttien automaattinen generointi strukturoidusta datasta: CRM, analytiikka, projektinhallinta. AI lukee datan, kirjoittaa insight-pohjaisen kerronnan, muodostaa action itemit.",
+    "why": "Tiimit käyttävät 4-8 tuntia viikossa manuaaliseen raportointiin. AI hoitaa 80% työstä, jättäen ihmiselle review ja executive judgment.",
+    "when": "Säännölliset raportit (viikoittain/kuukausittain). Data järjestelmissä API/export-mahdollisuudella. Yleisö odottaa konsistenssia formaatissa. KPI:t laskettavissa.",
+    "impact": "Time-to-report: 4h → 30 min. Konsistenssi: +90% (yksi formaatti, sävy). Tuoreus: raportit tulevat ajallaan, ei «kun ehdin». Stage 1→2.",
+    "example": "Sales Weekly Report:\n1. Export CRM:stä (HubSpot/Salesforce) → CSV.\n2. Project system promptilla: «olet sales analyst, raportin formaatti on XYZ».\n3. Prompti: «tässä viikon data, kirjoita executive summary + 3 action item».\n4. Output: valmis raportti numeroilla, trendeillä, suosituksilla.\n\nMetriikat: raportointiaika 4h→30min, datan tarkkuus 100% (autopull), insights consistency 95%.",
+    "mistakes": "Tehdä «AI generoi kaunista tekstiä» ilman toimintaa. Raportti ilman action itemejä on roskaa. Rakenteen on oltava: mikä muuttui → miksi → mitä teemme → KPI. Joka kerta."
+  },
+  "ops-resource-optimization": {
+    "title": "AI-resurssien optimointi",
+    "what": "AI:n optimointi tiimin resurssien allokoinnissa: capacity planning, työkalut eri tehtäviin, Claude-mallin valinta (Haiku vs Sonnet vs Opus), API-kustannusten hallinta.",
+    "why": "Operations-tiimit kuluttavat usein liikaa työkaluihin ja resursseihin koska «olemme aina tehneet näin». AI-auditointi paljastaa over-provisioningin, model mismatchin, käyttämättömät resurssit.",
+    "when": "Kvartaalin resurssikatselmus. Ennen vuosibudjetin suunnittelua. Kun AI-kulut tulevat näkyviksi P&L:ssä.",
+    "impact": "Kustannussäästö: 20-40% operations-kulutuksessa. Tuottavuus: parempi työkalu-tehtävä-sovitus. Stage 2→3.",
+    "example": "AI Spend Audit:\n1. Export kaikki AI-API logit 30 päivältä.\n2. AI-analyysi: «mitkä tehtävät käyttävät Opusta, voiko siirtyä Sonnettiin?»\n3. Output: lista tehtävistä + vaihtoehtoiset mallit + arvioidut säästöt.\n4. Testi: yksi viikko uudella mixillä → mittaa laatu.\n5. Roll out: jos laatu ei putoa, siirrä 80% tehtävistä.\n\nReal case: $5k/kk Opus → $1.2k/kk Sonnet, laadun pudotus <5%, ROI = 4x.",
+    "mistakes": "Optimoida vain kustannuksia ilman laadun mittausta. Halvempi malli voi «säästää» $1000 mutta vähentää konversiota $5000. Seuraa laatumetriikoita rinnan kustannusten kanssa."
+  },
+  "ops-team-workflow": {
+    "title": "AI Operations -tiimin workflow",
+    "what": "Kuinka ops-tiimi orkestroi AI:n kanssa työskentelyä: jaetut promptit, jaetut Projektit, käyttöoikeudet, knowledge management. Tämä on tiimin operating modelista, ei yksilön käytöstä.",
+    "why": "Yksilön AI-käyttö ei skaalaudu. 10 hengen tiimi, jokaisella oma promptaus-tyyli = erilaisia tuloksia + päällekkäistä työtä. Tiimin workflow luo yhtenäisen standardin.",
+    "when": "Kun tiimi ≥3 henkilöä käyttää aktiivisesti AI:ta. Kun ilmaantuu epäjohdonmukaisia tuloksia. Kun uusi tulokas saapuu ja «ei tiedä, miten työskentelemme AI:n kanssa».",
+    "impact": "Tiimin velocity: +30-50%. Onboarding-aika uusille: päiviä viikkojen sijaan. Tiedon jakaminen: jaetut Projektit + CLAUDE.md = tiimi oppii toisiltaan. Stage 2→3.",
+    "example": "Operations Team Setup:\n1. Jaettu Claude Project «Operations Workspace» tiimin tyylin system promptilla.\n2. CLAUDE.md jaetussa repossa: säännöt, mallit, tyypilliset tehtävät.\n3. Reusable Skills toistuville tehtäville (report-writer, decision-analyzer).\n4. Viikoittainen «AI office hours»: tiimi jakaa löytöjä.\n5. Mittari: % tehtävistä tehty jaetun workflow:n kautta.\n\nStage 3 -merkki: uusi tulokas tuottava 2-3 päivässä, ei viikoissa.",
+    "mistakes": "Tehdä «tiimin workflow» = «yksi henkilö pakottaa kaikki käyttämään hänen promptejaan». Se ei ole workflow, se on diktatuuri. Tiimin workflow = yhteistyössä kehittäminen + ownership + feedback loopit."
+  },
+  "uc-ai-reporting-launch": {
+    "title": "Use Case: AI-raportoinnin käynnistys 2 viikossa",
+    "what": "Täysi polku «meillä on manuaaliset raportit» -tilasta «toimiva viikoittainen raportti-workflow» -tilaan. Polku 6 Atlas-solmun läpi: Foundation → AI Fundamentals → Configuration → Transformation.",
+    "why": "Tämä on yleisin ops-tiimien pyyntö: «AI:han voi kirjoittaa raportteja, miten aloitamme?». Use Case antaa selkeän reitin sen sijaan, että «aloita lukea kaikkea».",
+    "when": "Kun on säännöllinen raportti (viikoittain/kuukausittain), joka vie ≥3 tuntia viikossa. Kun data on saatavilla (CRM/analytics exportilla). Kun tiimi on mukana.",
+    "impact": "Outcome: toimiva viikkoraportti-workflow 2 viikon työllä. Metriikat: time-to-report 4h→30min, konsistenssi +90%, tiimi-buy-in mitattavissa (NPS-kysely).",
+    "example": "Polku (6 askelta solmujen läpi):\n1. Foundation: prompting → kuinka kirjoittaa system prompt raportille\n2. Foundation: af-rag-basics → jos raportti tarvitsee CRM-kontekstia, miten syöttää Cluden\n3. Foundation: projects → luo «Weekly Reports» -workspace tiimille\n4. Foundation: i-claudemd → kuvaile raportin formaatti CLAUDE.md:ssä\n5. Transformation: ops-reporting-automation → konkreettinen workflow vaiheilla\n6. Transformation: sc-data → kuinka työskennellä CSV-datan kanssa\n\nDay 1-3: Setup Project + kirjoita ensimmäinen prompt käsin.\nDay 4-7: Iteraatiot 5-10 oikealla raportilla.\nDay 8-14: Roll-out tiimille + palaute.\n\nStage transition: 1→2.",
+    "mistakes": "Haluta «täysi automaatio» ensimmäisellä viikolla. Ensin AI kirjoittaa luonnoksen → ihminen muokkaa → mitataan laatu. Vasta 5-10 onnistuneen iteraation jälkeen — lisää automaatio (laukaisimet, ajoitus)."
+  },
+  "uc-ai-process-automation": {
+    "title": "Use Case: Toistuvan prosessin automatisointi",
+    "what": "Polku tietyn operations-prosessin automatisointiin AI:n kautta. Ehdokkaan tunnistuksesta tuotantovalmiiseen workflow:iin Skills + Hooks -ratkaisulla.",
+    "why": "Operations-tiimit jäävät usein jumiin vaiheessa «kokeilimme Claudea, tykkäsimme» — mutta eivät tiedä, miten tehdä siitä systemaattista. Tämä UC näyttää strukturoidun lähestymistavan.",
+    "when": "Kun on prosessi, joka pyörii ≥5×/viikko selkeillä inputeilla/outputeilla. Kun tulosten vaihtelu on ongelma. Kun on tekninen mahdollisuus laukaisimille/integraatioille.",
+    "impact": "Outcome: automatisoitu workflow laatuporttien kanssa 2-3 viikossa. Metriikat: aikasäästö 70-90%, virhetaso <5%, tiimin tyytyväisyys +.",
+    "example": "Polku (6 askelta):\n1. Tunnistus: valitse prosessi — tämä on ops-process-automation\n2. Foundation: skills + s-create → rakenna reusable Skill\n3. Foundation: mcp → jos ulkoiset integraatiot tarvitaan\n4. Foundation: cc-hooks → automaattiset laukaisimet\n5. Foundation: prompting → ydin-workflow-prompti\n6. Transformation: ops-process-automation → rakenne laatuporteilla\n\nWeek 1: Dokumentoi prosessi as-is. Tunnista AI-korvattavissa olevat askelet.\nWeek 2: Rakenna Skill + ensimmäiset testit historiallisella datalla.\nWeek 3: Tuotanto-roll-out monitoroinnilla.\n\nStage transition: 1→2 (jos ensimmäinen automaatio) tai 2→3 (laajennus).",
+    "mistakes": "Automatisoida ilman prosessin vakauttamista. Jos prosessi vielä muuttuu — workflow rikkoutuu jatkuvasti. Ja: ei laatuportteja. Ilman ihmisen reviewta = automatisoitua roskaa."
+  },
+  "uc-ai-decision-support": {
+    "title": "Use Case: AI-tuki operatiivisille päätöksille",
+    "what": "AI-strukturoinnin käyttöönotto operatiivisille päätöksille tiimissä. Ad-hoc «keskustellaan Slackissä» -tilasta strukturoituun päätösprosessiin AI-analyysillä.",
+    "why": "Operations-tiimit tekevät 5-10 päätöstä viikossa kuormituksen alla. Ilman rakennetta — paljon reaktiivista, vähän oppimista. AI lisää kurinalaisuutta ilman byrokratiaa.",
+    "when": "Kun päätökset vaativat trade-off-analyysiä (hire vs no-hire, toimittajan valinta, prosessimuutos). Kun retrospektiivi näyttää «päätimme tämän vuosi sitten ja unohdimme».",
+    "impact": "Outcome: toimiva päätösprosessi AI-tuella 3-4 viikossa. Metriikat: reaktiiviset päätökset ↓50-70%, oppimissilmukka luotu (retrospektiivi AI-pattern-matchingilla).",
+    "example": "Polku (6 askelta):\n1. Tunnistus: mitkä päätökset sisällyttää (Operations: palkkaukset, toimittajat, prosessit)\n2. Foundation: prompting + pr-cot (chain-of-thought) — AI-analyysin rakenne\n3. Foundation: sc-data + sc-analysis — kuinka syöttää data päätökselle\n4. Foundation: af-llm-basics — ymmärrä AI:n rajat: missä antaa arvoa, missä erehtyy\n5. Foundation: projects → workspace «Decision Log» historialla\n6. Transformation: ops-decision-intelligence → konkreettinen workflow\n\nWeek 1: Pilotti 3-5 yksinkertaisella päätöksellä.\nWeek 2-3: Mallin hiominen + laadun varmistus.\nWeek 4: Roll-out kaikille major-päätöksille + retrospektiivi.\n\nStage transition: 2→3.",
+    "mistakes": "Käyttää AI:tä «päätöksentekijänä». AI on hyvä strukturoinnissa ja pattern-matchingissa, mutta konteksti ja vastuu kuuluvat ihmiselle. Dokumentaatio on tärkeämpää kuin itse AI-output: seuraa tuloksia → opi → paranna."
   }
 }

@@ -1411,5 +1411,86 @@
     "impact": "Правильный выбор экономит месяцы. Команды часто начинают с «давайте fine-tune» и тратят квартал на сбор данных. Альтернатива (prompting + RAG) могла бы запуститься за неделю.",
     "example": "Задача: «AI отвечает в стиле нашего CEO». Сначала: 5-shot prompting с примерами писем CEO + system prompt «отвечай в этом стиле». Если после 50 итераций качество всё ещё страдает — тогда fine-tuning. 80% случаев — prompting достаточно.",
     "mistakes": "Делать fine-tuning «на всякий случай». Это технический долг: твоя модель устарела за полгода, новая Claude версия лучше твоей fine-tuned. Сначала исчерпай prompting + RAG + tools — только потом fine-tuning."
+  },
+  "ai-native-operations": {
+    "title": "AI-Native Operations",
+    "what": "Операционные процессы команды, переведённые на AI-native рельсы: автоматизация процессов, AI-поддержка решений, автоматический репортинг, оптимизация ресурсов, командные workflows вокруг AI.",
+    "why": "Operations — самое маленькое и тактическое из всех transformation-направлений. Идеальный старт: измеримые задачи, быстрый ROI, минимальный риск.",
+    "when": "Когда команда уже использует Claude в отдельных задачах, но хочет систематически интегрировать AI в operating model.",
+    "impact": "Stage 0→3 за 3-6 месяцев: 30-40% времени команды освобождается под более стратегическую работу. Метрика: time-to-decision, report turnaround, escalation rate.",
+    "example": "Maturity stages для Operations:\nStage 0: Pre-AI — ручные отчёты, решения по чутью.\nStage 1: AI experiments — Claude помогает писать отдельные отчёты.\nStage 2: AI workflows — есть Project + system prompt для еженедельного репортинга.\nStage 3: AI-native — отчёты автогенерятся, ops-команда занимается стратегией.\nStage 4: AI-first — новые продукты строятся на AI с первого дня.",
+    "mistakes": "Хотеть Stage 3 сразу. Operations transformation = последовательное движение: измерь baseline → внедри Stage 1 → перейди на Stage 2 → не раньше чем через 2-3 месяца смотри Stage 3."
+  },
+  "ops-process-automation": {
+    "title": "AI Process Automation",
+    "what": "Автоматизация повторяющихся процессов через AI: вход (триггер) → AI-обработка → выход (результат + следующее действие). Skills + Hooks + RAG как основной стек.",
+    "why": "У любой команды 30-50% задач = повторяющиеся: онбординг, статус-апдейты, рутинная коммуникация. AI закрывает большинство этих задач без потери качества.",
+    "when": "Когда задача делается ≥5 раз в неделю + имеет чёткие inputs/outputs + результат можно валидировать. Идеальные кандидаты: weekly reports, customer welcome emails, internal status digests.",
+    "impact": "Time savings: 70-90% на конкретной задаче. Consistency: единый качественный результат вместо вариативности «зависит кто делал». Stage 1→2.",
+    "example": "Workflow «Weekly status digest»:\n1. Триггер (понедельник 9:00 или /command).\n2. AI Step: считывает Linear/Jira за неделю.\n3. AI Step: пишет executive summary в фирменном стиле.\n4. Quality gate: человек делает финальную проверку (15 минут вместо 2 часов написания).\n5. Output: публикация в #leadership Slack.\n\nДо: 2 часа в неделю. После: 15 минут review.",
+    "mistakes": "Автоматизировать процесс который ещё «не устаканен». Если процесс меняется каждую неделю — AI-автоматизация будет постоянно ломаться. Сначала: процесс стабилизировать вручную. Потом: автоматизировать."
+  },
+  "ops-decision-intelligence": {
+    "title": "AI Decision Intelligence",
+    "what": "AI как «второй мнение» для операционных решений: AI анализирует данные + контекст + историю решений → даёт structured рекомендацию. Не заменяет человека, но дисциплинирует процесс.",
+    "why": "Operational решения часто делаются «по чутью» под нагрузкой. AI-структурирование заставляет рассмотреть alternatives, риски, метрики — снижает количество reactive решений.",
+    "when": "Hire/no-hire decisions. Resource allocation. Vendor selection. Process change vs no-change. Решения с >$10k impact или >2 weeks horizon.",
+    "impact": "Reduction in reactive decisions: 50-70%. Decision quality measurable (track outcomes). Stage 2→3.",
+    "example": "Decision template:\n1. Context: ситуация в 5 предложениях.\n2. Options: 3 варианта решения.\n3. Each option: pros, cons, cost, risk.\n4. AI analysis: pattern-matching с прошлыми решениями + рекомендация.\n5. Human override + log decision reasoning.\n\nЧерез 3 месяца ты ВИДИШЬ паттерны своих решений — где AI был прав, где ошибался.",
+    "mistakes": "Слепо следовать AI-рекомендации. AI хорош в анализе паттернов, но не знает твоего контекста полностью. Воспринимай AI как «вдумчивого джуниора»: даёт перспективу, но решение и ответственность — твои."
+  },
+  "ops-reporting-automation": {
+    "title": "AI Reporting Automation",
+    "what": "Автогенерация отчётов из структурированных данных: CRM, аналитика, project management. AI читает данные, пишет insight-driven нарратив, формирует action items.",
+    "why": "Команды тратят 4-8 часов в неделю на ручной репортинг. AI закрывает 80% работы, оставляя человеку review и executive judgment.",
+    "when": "Регулярные отчёты (weekly/monthly). Данные в системах с API/export. Аудитория ожидает consistency в формате. KPI можно посчитать.",
+    "impact": "Time-to-report: 4 часа → 30 минут. Consistency: +90% (единый формат, тон). Freshness: отчёты приходят вовремя, не «когда руки дошли». Stage 1→2.",
+    "example": "Sales Weekly Report:\n1. Export из CRM (HubSpot/Salesforce) → CSV.\n2. Project с system prompt: «ты sales analyst, формат отчёта — XYZ».\n3. Промпт: «вот данные за неделю, напиши executive summary + 3 action items».\n4. Output: готовый отчёт с числами, трендами, рекомендациями.\n\nMetrics: время на репортинг 4h→30min, точность данных 100% (autopull), insights consistency 95%.",
+    "mistakes": "Делать «AI generates pretty text» без действий. Отчёт без action items — мусор. Структура должна быть: что изменилось → почему → что делаем → KPI. Каждый раз."
+  },
+  "ops-resource-optimization": {
+    "title": "AI Resource Optimization",
+    "what": "AI-оптимизация распределения ресурсов команды: capacity planning, инструменты для разных задач, выбор модели Claude (Haiku vs Sonnet vs Opus), API cost management.",
+    "why": "Operations teams часто overspend на инструментах и ресурсах потому что «всегда так делали». AI-аудит выявляет over-provisioning, model mismatch, idle resources.",
+    "when": "Quarterly resource review. Перед годовым бюджетным планированием. Когда AI-расходы становятся видимы в P&L.",
+    "impact": "Cost reduction: 20-40% на operations спендинг. Productivity: better tool-to-task fit. Stage 2→3.",
+    "example": "AI Spend Audit:\n1. Export всех AI-API logs за 30 дней.\n2. AI анализ: «какие задачи используют Opus, можно ли заменить на Sonnet?»\n3. Output: список задач + alternative модели + estimated savings.\n4. Тест: один week на новом mix → измерить quality.\n5. Roll out: если quality не падает, перевести 80% задач.\n\nReal case: $5k/month Opus → $1.2k/month Sonnet, quality drop <5%, ROI = 4x.",
+    "mistakes": "Оптимизировать только cost без quality measurement. Cheaper модель может «сэкономить» $1000, но снизить conversion на $5000. Track quality metrics параллельно с cost."
+  },
+  "ops-team-workflow": {
+    "title": "AI Operations Team Workflow",
+    "what": "Как ops-команда оркеструет работу с AI: общие prompts, shared Projects, доступы, knowledge management. Это про team operating model, не про индивидуальное использование.",
+    "why": "Individual AI usage не масштабируется. Команда из 10 человек, каждый со своим стилем промптинга = разные результаты + дублирующая работа. Team workflow создаёт единый стандарт.",
+    "when": "Когда команда ≥3 человека активно используют AI. Когда появляются inconsistent результаты. Когда новый человек приходит и «не знает как мы работаем с AI».",
+    "impact": "Team velocity: +30-50%. Onboarding time для новых: дни вместо недель. Knowledge sharing: shared Projects + CLAUDE.md = команда учится друг у друга. Stage 2→3.",
+    "example": "Operations Team Setup:\n1. Shared Claude Project «Operations Workspace» с system prompt командного стиля.\n2. CLAUDE.md в shared repo: правила, шаблоны, типичные задачи.\n3. Reusable Skills для повторяющихся задач (report-writer, decision-analyzer).\n4. Weekly «AI office hours»: команда делится открытиями.\n5. Metric: % задач сделано через shared workflow.\n\nStage 3 sign: новичок продуктивен через 2-3 дня, не недели.",
+    "mistakes": "Делать «team workflow» = «один человек принуждает всех использовать его prompts». Это не workflow, это диктатура. Team workflow = коллаборативная разработка + ownership + feedback loops."
+  },
+  "uc-ai-reporting-launch": {
+    "title": "Use Case: Запуск AI-репортинга за 2 недели",
+    "what": "Полный путь от «у нас ручные отчёты» до «работающий weekly report workflow». Путь через 6 узлов Atlas: Foundation → AI Fundamentals → Configuration → Transformation.",
+    "why": "Это самый частый запрос operations-команд: «AI же может писать отчёты, как начать?». Use Case даёт чёткий маршрут вместо «начни читать всё подряд».",
+    "when": "Когда есть регулярный отчёт (weekly/monthly) занимающий ≥3 часов в неделю. Когда данные доступны (CRM/analytics с export). Когда есть buy-in от команды.",
+    "impact": "Outcome: working weekly report workflow за 2 недели работы. Metrics: time-to-report 4h→30min, consistency +90%, team buy-in measurable (NPS опрос).",
+    "example": "Путь (6 шагов через узлы):\n1. Foundation: prompting → как написать system prompt для отчёта\n2. Foundation: af-rag-basics → если отчёт требует контекста из CRM, как подавать его в Claude\n3. Foundation: projects → создать workspace «Weekly Reports» для команды\n4. Foundation: i-claudemd → описать формат отчёта в CLAUDE.md\n5. Transformation: ops-reporting-automation → конкретный workflow с этапами\n6. Transformation: sc-data → как работать с CSV-данными\n\nDay 1-3: Setup Project + написать первый prompt вручную.\nDay 4-7: Итерации на 5-10 реальных отчётах.\nDay 8-14: Roll-out для команды + feedback.\n\nStage transition: 1→2.",
+    "mistakes": "Хотеть «volledige automatisering» в первую неделю. Сначала AI пишет драфт → человек правит → измеряем quality. Только после 5-10 успешных итераций — добавляем автоматизацию (триггеры, scheduling)."
+  },
+  "uc-ai-process-automation": {
+    "title": "Use Case: Автоматизация повторяющегося процесса",
+    "what": "Путь к автоматизации конкретного operations-процесса через AI. От identification кандидата до production-ready workflow со Skills + Hooks.",
+    "why": "Operations teams часто застревают на этапе «попробовали Claude, понравилось» — но не знают как сделать это systematic. Этот UC показывает structured approach.",
+    "when": "Когда есть процесс выполняющийся ≥5 раз в неделю с четкими inputs/outputs. Когда вариативность результата проблема. Когда есть техническая возможность triggers/integrations.",
+    "impact": "Outcome: автоматизированный workflow с quality gates за 2-3 недели. Metrics: time savings 70-90%, error rate <5%, team satisfaction +.",
+    "example": "Путь (6 шагов):\n1. Identification: выбрать процесс — это будет ops-process-automation\n2. Foundation: skills + s-create → создать reusable Skill\n3. Foundation: mcp → если нужны external интеграции\n4. Foundation: cc-hooks → автоматические триггеры\n5. Foundation: prompting → core промпт workflow\n6. Transformation: ops-process-automation → структура с quality gates\n\nWeek 1: Document процесс as-is. Identify AI-replaceable steps.\nWeek 2: Build Skill + первые тесты на исторических данных.\nWeek 3: Production roll-out с monitoring.\n\nStage transition: 1→2 (если первая автоматизация) или 2→3 (расширение).",
+    "mistakes": "Автоматизировать без stabilization процесса. Если процесс ещё меняется — workflow будет постоянно ломаться. И: не делать quality gates. Без human review = автоматизированный мусор."
+  },
+  "uc-ai-decision-support": {
+    "title": "Use Case: AI-поддержка операционных решений",
+    "what": "Внедрение AI-структурирования для операционных решений в команде. От ad-hoc «обсудим в Slack» до structured decision process с AI-analysis.",
+    "why": "Operations teams принимают 5-10 решений в неделю под нагрузкой. Без structure — много reactive, мало learning. AI добавляет дисциплину без бюрократии.",
+    "when": "Когда decisions требуют trade-off analysis (hire vs no-hire, vendor selection, process change). Когда retrospective показывает «мы это решали год назад и забыли».",
+    "impact": "Outcome: working decision process с AI-support за 3-4 недели. Metrics: reactive decisions ↓50-70%, learning loop established (retrospective с AI-pattern matching).",
+    "example": "Путь (6 шагов):\n1. Identification: какие decisions включать (Operations: hires, vendors, processes)\n2. Foundation: prompting + pr-cot (chain-of-thought) — структура AI-анализа\n3. Foundation: sc-data + sc-analysis — как подавать данные для решения\n4. Foundation: af-llm-basics — понять границы AI: где даёт value, где ошибается\n5. Foundation: projects → workspace «Decision Log» с историей\n6. Transformation: ops-decision-intelligence → конкретный workflow\n\nWeek 1: Pilot на 3-5 простых decisions.\nWeek 2-3: Шлифовка template + проверка quality.\nWeek 4: Roll-out для всех major decisions + retrospective.\n\nStage transition: 2→3.",
+    "mistakes": "Использовать AI как «решатель». AI хорош в structuring и pattern-matching, но контекст и accountability — у человека. Documentation важнее самого AI-output: track outcomes → learn → improve."
   }
 }

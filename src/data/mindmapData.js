@@ -1054,6 +1054,67 @@ export const mindmapData = {
           "id": "tf-overview",
           "icon": "sparkles",
           "category": "transformation"
+        },
+        {
+          "id": "ai-native-operations",
+          "icon": "settings",
+          "category": "transformation",
+          "children": [
+            {
+              "id": "ops-process-automation",
+              "icon": "repeat",
+              "category": "transformation",
+              "relatedIds": [
+                "skills",
+                "cc-hooks",
+                "ai-fundamentals",
+                "af-rag-basics"
+              ]
+            },
+            {
+              "id": "ops-decision-intelligence",
+              "icon": "idea",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "sc-analysis",
+                "af-llm-basics",
+                "prompting"
+              ]
+            },
+            {
+              "id": "ops-reporting-automation",
+              "icon": "chart",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "projects",
+                "af-rag-basics",
+                "prompting"
+              ]
+            },
+            {
+              "id": "ops-resource-optimization",
+              "icon": "sliders",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "af-llm-basics",
+                "cap-caching"
+              ]
+            },
+            {
+              "id": "ops-team-workflow",
+              "icon": "users",
+              "category": "transformation",
+              "relatedIds": [
+                "projects",
+                "p-team",
+                "instructions",
+                "skills"
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1066,6 +1127,45 @@ export const mindmapData = {
           "id": "uc-overview",
           "icon": "sparkles",
           "category": "use-cases"
+        },
+        {
+          "id": "uc-ai-reporting-launch",
+          "icon": "clipboard",
+          "category": "use-cases",
+          "relatedIds": [
+            "ops-reporting-automation",
+            "af-rag-basics",
+            "prompting",
+            "projects",
+            "i-claudemd",
+            "sc-data"
+          ]
+        },
+        {
+          "id": "uc-ai-process-automation",
+          "icon": "puzzle",
+          "category": "use-cases",
+          "relatedIds": [
+            "ops-process-automation",
+            "skills",
+            "s-create",
+            "cc-hooks",
+            "mcp",
+            "prompting"
+          ]
+        },
+        {
+          "id": "uc-ai-decision-support",
+          "icon": "compass",
+          "category": "use-cases",
+          "relatedIds": [
+            "ops-decision-intelligence",
+            "sc-data",
+            "sc-analysis",
+            "af-llm-basics",
+            "prompting",
+            "pr-cot"
+          ]
         }
       ]
     }

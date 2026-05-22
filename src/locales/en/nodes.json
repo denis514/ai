@@ -1411,5 +1411,86 @@
     "impact": "The right choice saves months. Teams often start with «let us fine-tune» and spend a quarter on data collection. The alternative (prompting + RAG) could have launched in a week.",
     "example": "Task: «AI replies in our CEO's style». First: 5-shot prompting with examples of CEO emails + system prompt «reply in this style». If after 50 iterations quality still suffers — then fine-tuning. In 80% of cases — prompting is enough.",
     "mistakes": "Doing fine-tuning «just in case». It is technical debt: your model is outdated in half a year, the new Claude version is better than your fine-tuned one. Exhaust prompting + RAG + tools first — only then fine-tuning."
+  },
+  "ai-native-operations": {
+    "title": "AI-Native Operations",
+    "what": "Team operational processes shifted to AI-native rails: process automation, AI decision support, automated reporting, resource optimization, team workflows around AI.",
+    "why": "Operations is the smallest and most tactical of all transformation directions. Ideal start: measurable tasks, fast ROI, minimal risk.",
+    "when": "When the team already uses Claude in individual tasks but wants to systematically integrate AI into the operating model.",
+    "impact": "Stage 0→3 in 3-6 months: 30-40% of team time freed up for more strategic work. Metrics: time-to-decision, report turnaround, escalation rate.",
+    "example": "Maturity stages for Operations:\nStage 0: Pre-AI — manual reports, gut-feel decisions.\nStage 1: AI experiments — Claude helps write individual reports.\nStage 2: AI workflows — there is a Project + system prompt for weekly reporting.\nStage 3: AI-native — reports auto-generate, ops team focuses on strategy.\nStage 4: AI-first — new products built on AI from day one.",
+    "mistakes": "Wanting Stage 3 immediately. Operations transformation = sequential movement: measure baseline → roll out Stage 1 → move to Stage 2 → not before 2-3 months look at Stage 3."
+  },
+  "ops-process-automation": {
+    "title": "AI Process Automation",
+    "what": "Automating recurring processes via AI: input (trigger) → AI processing → output (result + next action). Skills + Hooks + RAG as the core stack.",
+    "why": "Every team has 30-50% of tasks = recurring: onboarding, status updates, routine comms. AI handles most of these without quality loss.",
+    "when": "When a task happens ≥5×/week + has clear inputs/outputs + result can be validated. Ideal candidates: weekly reports, customer welcome emails, internal status digests.",
+    "impact": "Time savings: 70-90% on a specific task. Consistency: a single quality result instead of «depends who did it». Stage 1→2.",
+    "example": "Workflow «Weekly status digest»:\n1. Trigger (Monday 9am or /command).\n2. AI Step: reads Linear/Jira for the week.\n3. AI Step: writes executive summary in branded style.\n4. Quality gate: human does final review (15 min instead of 2 hours of writing).\n5. Output: publish in #leadership Slack.\n\nBefore: 2h/week. After: 15min review.",
+    "mistakes": "Automating a process that has not yet «stabilized». If the process changes every week — AI automation will constantly break. First: stabilize the process manually. Then: automate."
+  },
+  "ops-decision-intelligence": {
+    "title": "AI Decision Intelligence",
+    "what": "AI as a «second opinion» for operational decisions: AI analyzes data + context + history of decisions → gives a structured recommendation. Does not replace human, but disciplines the process.",
+    "why": "Operational decisions are often made «by gut» under pressure. AI structuring forces consideration of alternatives, risks, metrics — reduces reactive decisions.",
+    "when": "Hire/no-hire decisions. Resource allocation. Vendor selection. Process change vs no-change. Decisions with >$10k impact or >2 weeks horizon.",
+    "impact": "Reduction in reactive decisions: 50-70%. Decision quality measurable (track outcomes). Stage 2→3.",
+    "example": "Decision template:\n1. Context: situation in 5 sentences.\n2. Options: 3 decision variants.\n3. Each option: pros, cons, cost, risk.\n4. AI analysis: pattern-matching with past decisions + recommendation.\n5. Human override + log decision reasoning.\n\nAfter 3 months you SEE the patterns of your decisions — where AI was right, where it erred.",
+    "mistakes": "Blindly following AI recommendation. AI is good at pattern analysis but does not know your full context. Treat AI as a «thoughtful junior»: gives perspective, but the decision and accountability are yours."
+  },
+  "ops-reporting-automation": {
+    "title": "AI Reporting Automation",
+    "what": "Auto-generating reports from structured data: CRM, analytics, project management. AI reads data, writes insight-driven narrative, forms action items.",
+    "why": "Teams spend 4-8 hours a week on manual reporting. AI handles 80% of the work, leaving the human with review and executive judgment.",
+    "when": "Regular reports (weekly/monthly). Data in systems with API/export. Audience expects consistency in format. KPIs are countable.",
+    "impact": "Time-to-report: 4h → 30 min. Consistency: +90% (single format, tone). Freshness: reports come on time, not «when I got around to it». Stage 1→2.",
+    "example": "Sales Weekly Report:\n1. Export from CRM (HubSpot/Salesforce) → CSV.\n2. Project with system prompt: «you are a sales analyst, report format is XYZ».\n3. Prompt: «here is data for the week, write executive summary + 3 action items».\n4. Output: ready report with numbers, trends, recommendations.\n\nMetrics: reporting time 4h→30min, data accuracy 100% (autopull), insights consistency 95%.",
+    "mistakes": "Doing «AI generates pretty text» without action. A report without action items is trash. Structure must be: what changed → why → what we do → KPI. Every time."
+  },
+  "ops-resource-optimization": {
+    "title": "AI Resource Optimization",
+    "what": "AI optimization of team resource allocation: capacity planning, tools for different tasks, Claude model choice (Haiku vs Sonnet vs Opus), API cost management.",
+    "why": "Operations teams often overspend on tools and resources because «we have always done it this way». AI audit reveals over-provisioning, model mismatch, idle resources.",
+    "when": "Quarterly resource review. Before annual budget planning. When AI spend becomes visible in P&L.",
+    "impact": "Cost reduction: 20-40% on operations spend. Productivity: better tool-to-task fit. Stage 2→3.",
+    "example": "AI Spend Audit:\n1. Export all AI-API logs for 30 days.\n2. AI analysis: «which tasks use Opus, can they be moved to Sonnet?»\n3. Output: list of tasks + alternative models + estimated savings.\n4. Test: one week on the new mix → measure quality.\n5. Roll out: if quality does not drop, move 80% of tasks.\n\nReal case: $5k/month Opus → $1.2k/month Sonnet, quality drop <5%, ROI = 4x.",
+    "mistakes": "Optimizing only cost without quality measurement. A cheaper model can «save» $1000 but reduce conversion by $5000. Track quality metrics in parallel with cost."
+  },
+  "ops-team-workflow": {
+    "title": "AI Operations Team Workflow",
+    "what": "How an ops team orchestrates working with AI: shared prompts, shared Projects, access, knowledge management. This is about team operating model, not individual usage.",
+    "why": "Individual AI usage does not scale. A team of 10, each with their own prompting style = different results + duplicated work. Team workflow creates a unified standard.",
+    "when": "When the team ≥3 people actively use AI. When inconsistent results emerge. When a newcomer arrives and «does not know how we work with AI».",
+    "impact": "Team velocity: +30-50%. Onboarding time for newcomers: days instead of weeks. Knowledge sharing: shared Projects + CLAUDE.md = team learns from each other. Stage 2→3.",
+    "example": "Operations Team Setup:\n1. Shared Claude Project «Operations Workspace» with team-style system prompt.\n2. CLAUDE.md in shared repo: rules, templates, typical tasks.\n3. Reusable Skills for recurring tasks (report-writer, decision-analyzer).\n4. Weekly «AI office hours»: team shares discoveries.\n5. Metric: % of tasks done through shared workflow.\n\nStage 3 sign: a newcomer is productive in 2-3 days, not weeks.",
+    "mistakes": "Making «team workflow» = «one person forces everyone to use their prompts». That is not workflow, that is dictatorship. Team workflow = collaborative development + ownership + feedback loops."
+  },
+  "uc-ai-reporting-launch": {
+    "title": "Use Case: Launch AI Reporting in 2 Weeks",
+    "what": "Full path from «we have manual reports» to «working weekly report workflow». Path through 6 Atlas nodes: Foundation → AI Fundamentals → Configuration → Transformation.",
+    "why": "This is the most common ops-team request: «AI can write reports, how do we start?». A Use Case gives a clear route instead of «start reading everything».",
+    "when": "When there is a regular report (weekly/monthly) taking ≥3 hours per week. When data is available (CRM/analytics with export). When there is team buy-in.",
+    "impact": "Outcome: working weekly report workflow in 2 weeks of work. Metrics: time-to-report 4h→30min, consistency +90%, team buy-in measurable (NPS survey).",
+    "example": "Path (6 steps through nodes):\n1. Foundation: prompting → how to write a system prompt for a report\n2. Foundation: af-rag-basics → if the report needs CRM context, how to feed it to Claude\n3. Foundation: projects → create a «Weekly Reports» workspace for the team\n4. Foundation: i-claudemd → describe the report format in CLAUDE.md\n5. Transformation: ops-reporting-automation → concrete workflow with stages\n6. Transformation: sc-data → how to work with CSV data\n\nDay 1-3: Setup Project + write first prompt manually.\nDay 4-7: Iterate on 5-10 real reports.\nDay 8-14: Roll-out to the team + feedback.\n\nStage transition: 1→2.",
+    "mistakes": "Wanting «full automation» in the first week. First AI writes a draft → human edits → measure quality. Only after 5-10 successful iterations — add automation (triggers, scheduling)."
+  },
+  "uc-ai-process-automation": {
+    "title": "Use Case: Automate a Recurring Process",
+    "what": "Path to automating a specific operations process via AI. From candidate identification to a production-ready workflow with Skills + Hooks.",
+    "why": "Operations teams often get stuck at «we tried Claude, liked it» — but do not know how to make it systematic. This UC shows a structured approach.",
+    "when": "When there is a process running ≥5×/week with clear inputs/outputs. When result variability is a problem. When there is technical capability for triggers/integrations.",
+    "impact": "Outcome: automated workflow with quality gates in 2-3 weeks. Metrics: time savings 70-90%, error rate <5%, team satisfaction +.",
+    "example": "Path (6 steps):\n1. Identification: pick the process — this is ops-process-automation\n2. Foundation: skills + s-create → build a reusable Skill\n3. Foundation: mcp → if external integrations are needed\n4. Foundation: cc-hooks → automatic triggers\n5. Foundation: prompting → core workflow prompt\n6. Transformation: ops-process-automation → structure with quality gates\n\nWeek 1: Document the process as-is. Identify AI-replaceable steps.\nWeek 2: Build the Skill + first tests on historical data.\nWeek 3: Production roll-out with monitoring.\n\nStage transition: 1→2 (if first automation) or 2→3 (expansion).",
+    "mistakes": "Automating without stabilizing the process. If the process is still changing — the workflow will constantly break. And: not making quality gates. Without human review = automated trash."
+  },
+  "uc-ai-decision-support": {
+    "title": "Use Case: AI Support for Operational Decisions",
+    "what": "Rolling out AI structuring for operational decisions in the team. From ad-hoc «let us discuss in Slack» to a structured decision process with AI analysis.",
+    "why": "Operations teams make 5-10 decisions a week under load. Without structure — lots of reactive, little learning. AI adds discipline without bureaucracy.",
+    "when": "When decisions require trade-off analysis (hire vs no-hire, vendor selection, process change). When retrospective shows «we decided this a year ago and forgot».",
+    "impact": "Outcome: working decision process with AI support in 3-4 weeks. Metrics: reactive decisions ↓50-70%, learning loop established (retrospective with AI pattern matching).",
+    "example": "Path (6 steps):\n1. Identification: which decisions to include (Operations: hires, vendors, processes)\n2. Foundation: prompting + pr-cot (chain-of-thought) — structure of AI analysis\n3. Foundation: sc-data + sc-analysis — how to feed data for the decision\n4. Foundation: af-llm-basics — understand AI boundaries: where it gives value, where it errs\n5. Foundation: projects → «Decision Log» workspace with history\n6. Transformation: ops-decision-intelligence → concrete workflow\n\nWeek 1: Pilot on 3-5 simple decisions.\nWeek 2-3: Refine template + verify quality.\nWeek 4: Roll-out to all major decisions + retrospective.\n\nStage transition: 2→3.",
+    "mistakes": "Using AI as «the decider». AI is good at structuring and pattern matching, but context and accountability belong to the human. Documentation matters more than the AI output itself: track outcomes → learn → improve."
   }
 }
