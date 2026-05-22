@@ -180,7 +180,11 @@ export const mindmapData = {
             {
               "id": "b-anthropic",
               "icon": "building",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "af-llm-basics",
+                "b-claude"
+              ]
             },
             {
               "id": "b-models",
@@ -224,12 +228,21 @@ export const mindmapData = {
             {
               "id": "b-knowledge",
               "icon": "calendar",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "af-rag-basics",
+                "b-context",
+                "sys-rag-architecture"
+              ]
             },
             {
               "id": "b-help",
               "icon": "compass",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "b-claude",
+                "sys-evals-benchmarks"
+              ]
             },
             {
               "id": "b-first-steps",
@@ -240,12 +253,19 @@ export const mindmapData = {
                 {
                   "id": "fs-what-is-project",
                   "icon": "folder",
-                  "category": "foundation"
+                  "category": "foundation",
+                  "relatedIds": [
+                    "b-first-steps",
+                    "projects"
+                  ]
                 },
                 {
                   "id": "fs-organize-disk",
                   "icon": "folder",
-                  "category": "foundation"
+                  "category": "foundation",
+                  "relatedIds": [
+                    "b-first-steps"
+                  ]
                 },
                 {
                   "id": "fs-terminal",
@@ -259,7 +279,11 @@ export const mindmapData = {
                 {
                   "id": "fs-folder-create",
                   "icon": "folder-plus",
-                  "category": "foundation"
+                  "category": "foundation",
+                  "relatedIds": [
+                    "b-first-steps",
+                    "fs-organize-disk"
+                  ]
                 },
                 {
                   "id": "fs-navigate",
@@ -292,7 +316,11 @@ export const mindmapData = {
             {
               "id": "pl-limits",
               "icon": "clock",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "pl-rate",
+                "sys-cost-management"
+              ]
             },
             {
               "id": "pl-models",
@@ -306,7 +334,12 @@ export const mindmapData = {
             {
               "id": "pl-platforms",
               "icon": "compass",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "pl-api",
+                "pl-compare",
+                "sys-api-patterns"
+              ]
             },
             {
               "id": "pl-rate",
@@ -404,7 +437,12 @@ export const mindmapData = {
             {
               "id": "i-project",
               "icon": "folder",
-              "category": "configuration"
+              "category": "configuration",
+              "relatedIds": [
+                "i-claudemd",
+                "instructions",
+                "ops-team-workflow"
+              ]
             },
             {
               "id": "i-claudemd",
@@ -419,7 +457,12 @@ export const mindmapData = {
             {
               "id": "i-templates",
               "icon": "clipboard",
-              "category": "configuration"
+              "category": "configuration",
+              "relatedIds": [
+                "i-claudemd",
+                "instructions",
+                "mk-content-ops"
+              ]
             }
           ]
         },
@@ -442,7 +485,11 @@ export const mindmapData = {
             {
               "id": "p-instructions",
               "icon": "settings",
-              "category": "configuration"
+              "category": "configuration",
+              "relatedIds": [
+                "i-project",
+                "projects"
+              ]
             },
             {
               "id": "p-team",
@@ -452,7 +499,11 @@ export const mindmapData = {
             {
               "id": "p-when",
               "icon": "target",
-              "category": "configuration"
+              "category": "configuration",
+              "relatedIds": [
+                "projects",
+                "sys-workflows-basics"
+              ]
             }
           ]
         },
@@ -465,22 +516,39 @@ export const mindmapData = {
             {
               "id": "a-types",
               "icon": "puzzle",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "artifacts",
+                "mk-content-ops"
+              ]
             },
             {
               "id": "a-trigger",
               "icon": "flash",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "artifacts",
+                "sys-workflows-basics"
+              ]
             },
             {
               "id": "a-iterate",
               "icon": "repeat",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "artifacts",
+                "pr-iterate",
+                "sys-evals-benchmarks"
+              ]
             },
             {
               "id": "a-edit",
               "icon": "pencil",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "artifacts",
+                "mk-content-ops"
+              ]
             }
           ]
         },
@@ -520,7 +588,12 @@ export const mindmapData = {
             {
               "id": "cap-computer",
               "icon": "laptop",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "ag-managed",
+                "agents",
+                "cap-tools"
+              ]
             },
             {
               "id": "cap-tools",
@@ -595,7 +668,11 @@ export const mindmapData = {
             {
               "id": "pr-xml",
               "icon": "tag",
-              "category": "prompts"
+              "category": "prompts",
+              "relatedIds": [
+                "pr-structured",
+                "prompting"
+              ]
             },
             {
               "id": "pr-fewshot",
@@ -642,27 +719,52 @@ export const mindmapData = {
                 {
                   "id": "rp-project",
                   "icon": "folder",
-                  "category": "prompts"
+                  "category": "prompts",
+                  "relatedIds": [
+                    "projects",
+                    "ready-prompts",
+                    "uc-ai-process-automation"
+                  ]
                 },
                 {
                   "id": "rp-artifact",
                   "icon": "paint",
-                  "category": "prompts"
+                  "category": "prompts",
+                  "relatedIds": [
+                    "artifacts",
+                    "mk-content-ops",
+                    "ready-prompts"
+                  ]
                 },
                 {
                   "id": "rp-skill",
                   "icon": "tools",
-                  "category": "prompts"
+                  "category": "prompts",
+                  "relatedIds": [
+                    "ready-prompts",
+                    "skills",
+                    "sys-multi-agent-patterns"
+                  ]
                 },
                 {
                   "id": "rp-claudemd",
                   "icon": "book",
-                  "category": "prompts"
+                  "category": "prompts",
+                  "relatedIds": [
+                    "i-claudemd",
+                    "ops-team-workflow",
+                    "ready-prompts"
+                  ]
                 },
                 {
                   "id": "rp-audit",
                   "icon": "search",
-                  "category": "prompts"
+                  "category": "prompts",
+                  "relatedIds": [
+                    "ready-prompts",
+                    "sc-analysis",
+                    "sys-evals-benchmarks"
+                  ]
                 }
               ]
             }
@@ -682,22 +784,41 @@ export const mindmapData = {
             {
               "id": "s-md",
               "icon": "file",
-              "category": "automation"
+              "category": "automation",
+              "relatedIds": [
+                "i-claudemd",
+                "skills",
+                "sys-multi-agent-patterns"
+              ]
             },
             {
               "id": "s-trigger",
               "icon": "target",
-              "category": "automation"
+              "category": "automation",
+              "relatedIds": [
+                "cc-hooks",
+                "skills",
+                "sys-workflows-basics"
+              ]
             },
             {
               "id": "s-files",
               "icon": "archive",
-              "category": "automation"
+              "category": "automation",
+              "relatedIds": [
+                "p-files",
+                "skills"
+              ]
             },
             {
               "id": "s-ready",
               "icon": "cube",
-              "category": "automation"
+              "category": "automation",
+              "relatedIds": [
+                "ai-fundamentals",
+                "rp-skill",
+                "skills"
+              ]
             },
             {
               "id": "s-create",
@@ -729,12 +850,22 @@ export const mindmapData = {
             {
               "id": "sc-coding",
               "icon": "keyboard",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "ag-code",
+                "claude-code",
+                "pd-spec-generation"
+              ]
             },
             {
               "id": "sc-design",
               "icon": "paint",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "ag-designer",
+                "mk-content-ops",
+                "pd-discovery-research"
+              ]
             },
             {
               "id": "sc-content",
@@ -758,7 +889,11 @@ export const mindmapData = {
             {
               "id": "b-educators",
               "icon": "graduation",
-              "category": "foundation"
+              "category": "foundation",
+              "relatedIds": [
+                "mk-content-ops",
+                "pd-discovery-research"
+              ]
             }
           ]
         },
@@ -941,17 +1076,32 @@ export const mindmapData = {
             {
               "id": "m-what",
               "icon": "question",
-              "category": "automation"
+              "category": "automation",
+              "relatedIds": [
+                "cap-tools",
+                "mcp",
+                "sys-api-patterns"
+              ]
             },
             {
               "id": "m-ready",
               "icon": "store",
-              "category": "automation"
+              "category": "automation",
+              "relatedIds": [
+                "mcp",
+                "pl-integrations",
+                "sys-api-patterns"
+              ]
             },
             {
               "id": "m-custom",
               "icon": "construction",
-              "category": "automation"
+              "category": "automation",
+              "relatedIds": [
+                "ai-integration-systems",
+                "mcp",
+                "sys-api-patterns"
+              ]
             },
             {
               "id": "m-security",
@@ -964,12 +1114,21 @@ export const mindmapData = {
             {
               "id": "m-patterns",
               "icon": "puzzle",
-              "category": "automation"
+              "category": "automation",
+              "relatedIds": [
+                "mcp",
+                "sys-api-patterns",
+                "sys-multi-agent-patterns"
+              ]
             },
             {
               "id": "m-debug",
               "icon": "microscope",
-              "category": "automation"
+              "category": "automation",
+              "relatedIds": [
+                "mcp",
+                "sys-evals-benchmarks"
+              ]
             }
           ]
         },
@@ -997,27 +1156,52 @@ export const mindmapData = {
             {
               "id": "ag-code",
               "icon": "developer",
-              "category": "agents"
+              "category": "agents",
+              "relatedIds": [
+                "agents",
+                "pd-spec-generation",
+                "sys-multi-agent-patterns"
+              ]
             },
             {
               "id": "ag-ux",
               "icon": "search",
-              "category": "agents"
+              "category": "agents",
+              "relatedIds": [
+                "agents",
+                "pd-discovery-research",
+                "sys-evals-benchmarks"
+              ]
             },
             {
               "id": "ag-research",
               "icon": "books",
-              "category": "agents"
+              "category": "agents",
+              "relatedIds": [
+                "agents",
+                "pd-discovery-research",
+                "pd-feedback-synthesis"
+              ]
             },
             {
               "id": "ag-designer",
               "icon": "paint",
-              "category": "agents"
+              "category": "agents",
+              "relatedIds": [
+                "agents",
+                "mk-content-ops",
+                "pd-discovery-research"
+              ]
             },
             {
               "id": "ag-pm",
               "icon": "chart",
-              "category": "agents"
+              "category": "agents",
+              "relatedIds": [
+                "agents",
+                "pd-roadmap-intelligence",
+                "pd-spec-generation"
+              ]
             },
             {
               "id": "ag-managed",
