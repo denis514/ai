@@ -125,21 +125,22 @@ export default function ProfilePanel({
   }, [progressApi, locale]);
 
   // ── Список завершённых курсов ─────────────────────────────────────────────
+  // Для залогиненных — берём ID из Supabase (completedTutorialIds), иначе localStorage.
   const completedCourses = useMemo(() => {
-    const result = [];
-    for (const id of tutorialIds) {
-      const p = progressApi.getProgress(id);
-      if (!p?.completedAt) continue;
-      const localized = getLocalizedTutorial(id, locale);
-      const title = localized?.title || id;
-      const stepCount = tutorials[id]?.steps?.length || 1;
-      const completedAt = p.completedAt;
-      result.push({ id, title, stepCount, completedAt });
-    }
-    // Сортировка: завершённые последними — первые
-    result.sort((a, b) => b.completedAt.localeCompare(a.completedAt));
-    return result;
-  }, [progressApi, locale]);
+    const idsToUse = isLoggedIn && supaStats.completedTutorialIds.length > 0
+      ? supaStats.completedTutorialIds
+      : tutorialIds.filter(id => !!progressApi.getProgress(id)?.completedAt);
+
+    return idsToUse
+      .map(id => {
+        const localized = getLocalizedTutorial(id, locale);
+        const title = localized?.title || id;
+        // Дата: из localStorage если есть, иначе из Supabase (нет точной даты)
+        const completedAt = progressApi.getProgress(id)?.completedAt || '';
+        return { id, title, completedAt };
+      })
+      .sort((a, b) => b.completedAt.localeCompare(a.completedAt));
+  }, [isLoggedIn, supaStats.completedTutorialIds, progressApi, locale]);
 
   // ── Достижения ────────────────────────────────────────────────────────────
   const ACHIEVEMENTS = [
