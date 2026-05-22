@@ -22,7 +22,7 @@ const Mindmap = forwardRef(function Mindmap(
 
   useImperativeHandle(ref, () => ({
     zoomIn, zoomOut, reset,
-    fitToScreen: () => fitToScreen(bounds),
+    fitToScreen: (padding) => fitToScreen(bounds, padding),
     zoom: transform.k,
     minZoom: MIN_ZOOM,
     maxZoom: MAX_ZOOM,

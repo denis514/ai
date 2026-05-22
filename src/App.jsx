@@ -11,6 +11,7 @@ import CommandPalette from './components/CommandPalette.jsx';
 import CanvasZoom from './components/CanvasZoom.jsx';
 import CanvasFilters from './components/CanvasFilters.jsx';
 import { useLevelFilter, LEVEL_RANK } from './hooks/useLevelFilter.js';
+import { useIsMobile } from './hooks/useIsMobile.js';
 import { useActivityLog } from './hooks/useActivityLog.js';
 import { useUserIdentity } from './hooks/useUserIdentity.js';
 import ProfileFab from './components/ProfileFab.jsx';
@@ -265,6 +266,22 @@ function AppInner() {
   const activePromptId = route?.type === 'prompt' ? route.id : null;
 
   const mapRef = useRef(null);
+  const isMobile = useIsMobile();
+
+  // На мобиле начальный зум 100% прячет все узлы за экраном.
+  // Вызываем fitToScreen один раз при первом переходе в mobile-режим.
+  // hasAutoFitted гарантирует вызов не более одного раза (не на каждый resize).
+  const hasAutoFitted = useRef(false);
+  useEffect(() => {
+    if (!isMobile || hasAutoFitted.current) return;
+    hasAutoFitted.current = true;
+    const timer = setTimeout(() => {
+      // padding=20 на мобиле (default 80 слишком велик для 375px)
+      mapRef.current?.fitToScreen(20);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [isMobile]);
+
   const progressApi = useTutorialProgress();
   const bookmarksApi = useBookmarks();
   const nodeProgressApi = useNodeProgress();
@@ -576,7 +593,7 @@ function AppInner() {
   const onZoomIn  = () => mapRef.current?.zoomIn();
   const onZoomOut = () => mapRef.current?.zoomOut();
   const onReset   = () => mapRef.current?.reset();
-  const onFit     = () => mapRef.current?.fitToScreen();
+  const onFit     = () => mapRef.current?.fitToScreen(isMobile ? 20 : undefined);
 
   useEffect(() => {
     let raf;
