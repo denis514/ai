@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import BottomSheet from './BottomSheet.jsx';
 import { readyPrompts } from '../data/prompts.js';
@@ -11,6 +11,11 @@ import { WHATS_NEW } from '../data/whatsNew.js';
 
 /**
  * MobileFab — 4 FAB-кнопки в углах canvas (только mobile).
+ *
+ * TL: Brand/Menu (настройки, поиск, категории, управление картой)
+ * TR: Поиск — открывает меню с автофокусом в поле поиска
+ * BL: Промпты — быстрые готовые промпты
+ * BR: Курсы — открывает CoursesModal напрямую
  */
 export default function MobileFab({
   query, onQuery,
@@ -24,6 +29,7 @@ export default function MobileFab({
   const [menuOpen, setMenuOpen] = useState(false);
   const [promptsOpen, setPromptsOpen] = useState(false);
   const [updatesOpen, setUpdatesOpen] = useState(false);
+  const searchInputRef = useRef(null);
   const { isNew } = useWhatsNew();
   const TTL_DAYS = 60;
   const unseenCount = Object.entries(WHATS_NEW).filter(([id, e]) => {
@@ -42,6 +48,12 @@ export default function MobileFab({
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  // Открываем меню и фокусируемся на поиске через 350мс (BottomSheet анимация)
+  const openSearch = () => {
+    setMenuOpen(true);
+    setTimeout(() => searchInputRef.current?.focus(), 350);
+  };
+
   return (
     <>
       <div className="fab fab--tl">
@@ -53,6 +65,20 @@ export default function MobileFab({
           title={t('mobile.menuTitle')}
         >
           <Icon name="sparkles" size={22} strokeWidth={1.5} />
+        </button>
+      </div>
+
+      {/* TR: Поиск — прямой доступ к поисковой строке */}
+      <div className="fab fab--tr">
+        <button
+          type="button"
+          className={`fab__btn ${query ? 'fab__btn--active' : ''}`}
+          onClick={openSearch}
+          aria-label={t('header.searchOpen')}
+          title={t('header.searchIdle')}
+        >
+          <Icon name="search" size={22} strokeWidth={1.5} />
+          {query && <span className="fab__dot" aria-hidden="true" />}
         </button>
       </div>
 
@@ -68,15 +94,16 @@ export default function MobileFab({
         </button>
       </div>
 
+      {/* BR: Курсы — прямой доступ к CoursesModal */}
       <div className="fab fab--br">
         <button
           type="button"
           className="fab__btn"
-          onClick={onOpenLibrary}
-          aria-label={t('mobile.libraryAria')}
-          title={t('mobile.libraryTitle')}
+          onClick={onOpenCourses}
+          aria-label={t('header.learning')}
+          title={t('header.learning')}
         >
-          <Icon name="books" size={22} strokeWidth={1.5} />
+          <Icon name="graduation" size={22} strokeWidth={1.5} />
         </button>
       </div>
 
@@ -95,6 +122,7 @@ export default function MobileFab({
                 <Icon name="search" size={16} strokeWidth={1.5} />
               </span>
               <input
+                ref={searchInputRef}
                 type="search"
                 value={query}
                 onChange={(e) => onQuery(e.target.value)}
@@ -198,6 +226,15 @@ export default function MobileFab({
             >
               <Icon name="graduation" size={18} strokeWidth={1.5} />
               <span>{t('header.learning')}</span>
+              <Icon name="arrow-right" size={14} strokeWidth={1.5} />
+            </button>
+            <button
+              type="button"
+              className="fab-menu__big-action"
+              onClick={() => { setMenuOpen(false); onOpenLibrary(); }}
+            >
+              <Icon name="books" size={18} strokeWidth={1.5} />
+              <span>{t('header.library')}</span>
               <Icon name="arrow-right" size={14} strokeWidth={1.5} />
             </button>
           </div>

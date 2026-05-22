@@ -3289,6 +3289,7 @@
   z-index: 50;
 }
 .fab__btn {
+  position: relative;
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -3300,7 +3301,7 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: var(--shadow-lg);
-  transition: background .15s ease, transform .12s ease;
+  transition: background .15s ease, transform .12s ease, border-color .15s ease, color .15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 .fab__btn:active { transform: scale(0.92); }
@@ -3308,6 +3309,25 @@
 .fab__btn:focus-visible {
   outline: 2px solid var(--line);
   outline-offset: 2px;
+}
+/* Состояние активного поиска */
+.fab__btn--active {
+  background: var(--surface-2);
+  border-color: var(--accent, #d97757);
+  color: var(--accent, #d97757);
+}
+.fab__btn--active:hover { background: var(--surface-3); }
+/* Оранжевая точка поверх иконки — есть активный запрос */
+.fab__dot {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent, #d97757);
+  border: 1.5px solid var(--surface);
+  pointer-events: none;
 }
 
 /* ============================================================
