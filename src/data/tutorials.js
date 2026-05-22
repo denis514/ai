@@ -9,16 +9,35 @@ export const tutorials = {
     "icon": "terminal",
     "level": "intermediate",
     "audience": "developers",
-    "prerequisites": ["claude-setup"],
+    "prerequisites": [
+      "claude-setup"
+    ],
     "relatedPrompts": [],
-    "next": ["agents", "mcp"],
+    "next": [
+      "agents",
+      "mcp",
+      "uc-ai-vendor-selection",
+      "uc-ai-multi-agent-system"
+    ],
     "steps": [
-      { "id": "ab-1" },
-      { "id": "ab-2" },
-      { "id": "ab-3" },
-      { "id": "ab-4" },
-      { "id": "ab-5" },
-      { "id": "ab-6" }
+      {
+        "id": "ab-1"
+      },
+      {
+        "id": "ab-2"
+      },
+      {
+        "id": "ab-3"
+      },
+      {
+        "id": "ab-4"
+      },
+      {
+        "id": "ab-5"
+      },
+      {
+        "id": "ab-6"
+      }
     ]
   },
   "ai-limitations": {
@@ -26,15 +45,31 @@ export const tutorials = {
     "icon": "shield",
     "level": "beginner",
     "audience": "everyone",
-    "prerequisites": ["basics"],
+    "prerequisites": [
+      "basics"
+    ],
     "relatedPrompts": [],
-    "next": ["prompting", "claude-setup"],
+    "next": [
+      "prompting",
+      "claude-setup",
+      "uc-ai-pilot-to-production"
+    ],
     "steps": [
-      { "id": "al-1" },
-      { "id": "al-2" },
-      { "id": "al-3" },
-      { "id": "al-4" },
-      { "id": "al-5" }
+      {
+        "id": "al-1"
+      },
+      {
+        "id": "al-2"
+      },
+      {
+        "id": "al-3"
+      },
+      {
+        "id": "al-4"
+      },
+      {
+        "id": "al-5"
+      }
     ]
   },
   "claude-cowork": {
@@ -42,15 +77,31 @@ export const tutorials = {
     "icon": "robot",
     "level": "beginner",
     "audience": "everyone",
-    "prerequisites": ["claude-setup"],
+    "prerequisites": [
+      "claude-setup"
+    ],
     "relatedPrompts": [],
-    "next": ["agents", "subagents"],
+    "next": [
+      "agents",
+      "subagents",
+      "uc-ai-reporting-launch"
+    ],
     "steps": [
-      { "id": "cw-1" },
-      { "id": "cw-2" },
-      { "id": "cw-3" },
-      { "id": "cw-4" },
-      { "id": "cw-5" }
+      {
+        "id": "cw-1"
+      },
+      {
+        "id": "cw-2"
+      },
+      {
+        "id": "cw-3"
+      },
+      {
+        "id": "cw-4"
+      },
+      {
+        "id": "cw-5"
+      }
     ]
   },
   "claude-setup": {
@@ -59,15 +110,34 @@ export const tutorials = {
     "level": "beginner",
     "audience": "everyone",
     "prerequisites": [],
-    "relatedPrompts": ["start-role-task"],
-    "next": ["projects", "instructions", "basics"],
+    "relatedPrompts": [
+      "start-role-task"
+    ],
+    "next": [
+      "projects",
+      "instructions",
+      "basics",
+      "uc-ai-vendor-selection"
+    ],
     "steps": [
-      { "id": "cs-1" },
-      { "id": "cs-2" },
-      { "id": "cs-3" },
-      { "id": "cs-4" },
-      { "id": "cs-5" },
-      { "id": "cs-6" }
+      {
+        "id": "cs-1"
+      },
+      {
+        "id": "cs-2"
+      },
+      {
+        "id": "cs-3"
+      },
+      {
+        "id": "cs-4"
+      },
+      {
+        "id": "cs-5"
+      },
+      {
+        "id": "cs-6"
+      }
     ]
   },
   "basics": {
@@ -83,7 +153,8 @@ export const tutorials = {
     ],
     "next": [
       "prompting",
-      "projects"
+      "projects",
+      "uc-ai-reporting-launch"
     ],
     "steps": [
       {
@@ -118,7 +189,9 @@ export const tutorials = {
     ],
     "next": [
       "instructions",
-      "artifacts"
+      "artifacts",
+      "uc-ai-content-ops-launch",
+      "uc-ai-reporting-launch"
     ],
     "steps": [
       {
@@ -159,7 +232,8 @@ export const tutorials = {
     ],
     "next": [
       "prompting",
-      "scenarios"
+      "scenarios",
+      "uc-ai-content-ops-launch"
     ],
     "steps": [
       {
@@ -195,7 +269,9 @@ export const tutorials = {
     ],
     "next": [
       "claude-code",
-      "agents"
+      "agents",
+      "uc-ai-process-automation",
+      "uc-ai-multi-agent-system"
     ],
     "steps": [
       {
@@ -236,7 +312,8 @@ export const tutorials = {
     ],
     "next": [
       "mcp",
-      "agents"
+      "agents",
+      "uc-ai-process-automation"
     ],
     "steps": [
       {
@@ -281,7 +358,9 @@ export const tutorials = {
     ],
     "next": [
       "claude-code",
-      "agents"
+      "agents",
+      "uc-ai-multi-agent-system",
+      "uc-ai-vendor-selection"
     ],
     "steps": [
       {
@@ -322,7 +401,8 @@ export const tutorials = {
     ],
     "next": [
       "projects",
-      "prompting"
+      "prompting",
+      "uc-ai-content-ops-launch"
     ],
     "steps": [
       {
@@ -358,7 +438,8 @@ export const tutorials = {
     ],
     "next": [
       "ready-prompts",
-      "scenarios"
+      "scenarios",
+      "uc-ai-rag-launch"
     ],
     "steps": [
       {
@@ -400,7 +481,8 @@ export const tutorials = {
     ],
     "next": [
       "projects",
-      "agents"
+      "agents",
+      "uc-ai-process-automation"
     ],
     "steps": [
       {
@@ -437,7 +519,8 @@ export const tutorials = {
     ],
     "next": [
       "claude-code",
-      "skills"
+      "skills",
+      "uc-ai-multi-agent-system"
     ],
     "steps": [
       {
@@ -473,7 +556,9 @@ export const tutorials = {
     ],
     "next": [
       "prompting",
-      "projects"
+      "projects",
+      "uc-ai-content-ops-launch",
+      "uc-ai-process-automation"
     ],
     "steps": [
       {
@@ -537,7 +622,8 @@ export const tutorials = {
     ],
     "next": [
       "intro",
-      "basics"
+      "basics",
+      "uc-ai-vendor-selection"
     ],
     "steps": [
       {
@@ -572,7 +658,8 @@ export const tutorials = {
     ],
     "next": [
       "intro",
-      "projects"
+      "projects",
+      "uc-ai-rag-launch"
     ],
     "steps": [
       {
@@ -611,7 +698,9 @@ export const tutorials = {
     ],
     "next": [
       "ready-prompts",
-      "pr-iterate"
+      "pr-iterate",
+      "uc-ai-rag-launch",
+      "uc-ai-decision-support"
     ],
     "steps": [
       {
@@ -650,7 +739,8 @@ export const tutorials = {
     ],
     "next": [
       "agents",
-      "s-vs-subagents"
+      "s-vs-subagents",
+      "uc-ai-multi-agent-system"
     ],
     "steps": [
       {
@@ -689,7 +779,8 @@ export const tutorials = {
     "next": [
       "cap-tools",
       "mcp",
-      "agents"
+      "agents",
+      "uc-ai-multi-agent-system"
     ],
     "steps": [
       {
@@ -725,7 +816,8 @@ export const tutorials = {
     ],
     "next": [
       "cc-hooks",
-      "cc-cfg-permissions"
+      "cc-cfg-permissions",
+      "uc-ai-process-automation"
     ],
     "steps": [
       {
@@ -759,19 +851,40 @@ export const tutorials = {
     ],
     "next": [
       "basics",
-      "claude-code"
+      "claude-code",
+      "uc-ai-content-ops-launch"
     ],
     "steps": [
-      { "id": "fp-1" },
-      { "id": "fp-2" },
-      { "id": "fp-3" },
-      { "id": "fp-4" },
-      { "id": "fp-5" },
-      { "id": "fp-6" },
-      { "id": "fp-7" },
-      { "id": "fp-8" },
-      { "id": "fp-9" },
-      { "id": "fp-10" }
+      {
+        "id": "fp-1"
+      },
+      {
+        "id": "fp-2"
+      },
+      {
+        "id": "fp-3"
+      },
+      {
+        "id": "fp-4"
+      },
+      {
+        "id": "fp-5"
+      },
+      {
+        "id": "fp-6"
+      },
+      {
+        "id": "fp-7"
+      },
+      {
+        "id": "fp-8"
+      },
+      {
+        "id": "fp-9"
+      },
+      {
+        "id": "fp-10"
+      }
     ]
   },
   "terminal-tour": {
@@ -786,11 +899,21 @@ export const tutorials = {
       "first-project"
     ],
     "steps": [
-      { "id": "tt-1" },
-      { "id": "tt-2" },
-      { "id": "tt-3" },
-      { "id": "tt-4" },
-      { "id": "tt-5" }
+      {
+        "id": "tt-1"
+      },
+      {
+        "id": "tt-2"
+      },
+      {
+        "id": "tt-3"
+      },
+      {
+        "id": "tt-4"
+      },
+      {
+        "id": "tt-5"
+      }
     ]
   },
   "folders-workshop": {
@@ -806,11 +929,21 @@ export const tutorials = {
       "first-project"
     ],
     "steps": [
-      { "id": "fw-1" },
-      { "id": "fw-2" },
-      { "id": "fw-3" },
-      { "id": "fw-4" },
-      { "id": "fw-5" }
+      {
+        "id": "fw-1"
+      },
+      {
+        "id": "fw-2"
+      },
+      {
+        "id": "fw-3"
+      },
+      {
+        "id": "fw-4"
+      },
+      {
+        "id": "fw-5"
+      }
     ]
   },
   "welcome": {
@@ -826,14 +959,30 @@ export const tutorials = {
       "first-project"
     ],
     "steps": [
-      { "id": "w-1" },
-      { "id": "w-2" },
-      { "id": "w-3" },
-      { "id": "w-4" },
-      { "id": "w-5" },
-      { "id": "w-6" },
-      { "id": "w-7" },
-      { "id": "w-8" }
+      {
+        "id": "w-1"
+      },
+      {
+        "id": "w-2"
+      },
+      {
+        "id": "w-3"
+      },
+      {
+        "id": "w-4"
+      },
+      {
+        "id": "w-5"
+      },
+      {
+        "id": "w-6"
+      },
+      {
+        "id": "w-7"
+      },
+      {
+        "id": "w-8"
+      }
     ]
   },
   "claude-project-architecture": {
@@ -841,7 +990,10 @@ export const tutorials = {
     "icon": "folder",
     "level": "beginner",
     "audience": "everyone",
-    "prerequisites": ["basics", "projects"],
+    "prerequisites": [
+      "basics",
+      "projects"
+    ],
     "relatedPrompts": [
       "start-role-task",
       "create-claudemd"
@@ -849,15 +1001,29 @@ export const tutorials = {
     "next": [
       "instructions",
       "skills",
-      "claude-for-business"
+      "claude-for-business",
+      "uc-ai-reporting-launch",
+      "uc-ai-process-automation"
     ],
     "steps": [
-      { "id": "cpa-1" },
-      { "id": "cpa-2" },
-      { "id": "cpa-3" },
-      { "id": "cpa-4" },
-      { "id": "cpa-5" },
-      { "id": "cpa-6" }
+      {
+        "id": "cpa-1"
+      },
+      {
+        "id": "cpa-2"
+      },
+      {
+        "id": "cpa-3"
+      },
+      {
+        "id": "cpa-4"
+      },
+      {
+        "id": "cpa-5"
+      },
+      {
+        "id": "cpa-6"
+      }
     ]
   },
   "claude-for-business": {
@@ -865,7 +1031,9 @@ export const tutorials = {
     "icon": "building",
     "level": "beginner",
     "audience": "business",
-    "prerequisites": ["ai-fluency"],
+    "prerequisites": [
+      "ai-fluency"
+    ],
     "relatedPrompts": [
       "business-positioning",
       "analysis-deep-dive",
@@ -874,15 +1042,30 @@ export const tutorials = {
     "next": [
       "scenarios",
       "projects",
-      "claude-for-educators"
+      "claude-for-educators",
+      "uc-ai-reporting-launch",
+      "uc-ai-decision-support",
+      "uc-ai-roi-estimation"
     ],
     "steps": [
-      { "id": "cb-1" },
-      { "id": "cb-2" },
-      { "id": "cb-3" },
-      { "id": "cb-4" },
-      { "id": "cb-5" },
-      { "id": "cb-6" }
+      {
+        "id": "cb-1"
+      },
+      {
+        "id": "cb-2"
+      },
+      {
+        "id": "cb-3"
+      },
+      {
+        "id": "cb-4"
+      },
+      {
+        "id": "cb-5"
+      },
+      {
+        "id": "cb-6"
+      }
     ]
   },
   "claude-for-educators": {
@@ -890,7 +1073,9 @@ export const tutorials = {
     "icon": "graduation",
     "level": "beginner",
     "audience": "business",
-    "prerequisites": ["ai-fluency"],
+    "prerequisites": [
+      "ai-fluency"
+    ],
     "relatedPrompts": [
       "start-role-task",
       "prompting-improve"
@@ -898,15 +1083,28 @@ export const tutorials = {
     "next": [
       "scenarios",
       "projects",
-      "claude-for-business"
+      "claude-for-business",
+      "uc-ai-content-ops-launch"
     ],
     "steps": [
-      { "id": "ce-1" },
-      { "id": "ce-2" },
-      { "id": "ce-3" },
-      { "id": "ce-4" },
-      { "id": "ce-5" },
-      { "id": "ce-6" }
+      {
+        "id": "ce-1"
+      },
+      {
+        "id": "ce-2"
+      },
+      {
+        "id": "ce-3"
+      },
+      {
+        "id": "ce-4"
+      },
+      {
+        "id": "ce-5"
+      },
+      {
+        "id": "ce-6"
+      }
     ]
   },
   "ai-fluency": {
@@ -922,15 +1120,28 @@ export const tutorials = {
     "next": [
       "basics",
       "claude-for-business",
-      "claude-for-educators"
+      "claude-for-educators",
+      "uc-ai-rag-launch"
     ],
     "steps": [
-      { "id": "af-1" },
-      { "id": "af-2" },
-      { "id": "af-3" },
-      { "id": "af-4" },
-      { "id": "af-5" },
-      { "id": "af-6" }
+      {
+        "id": "af-1"
+      },
+      {
+        "id": "af-2"
+      },
+      {
+        "id": "af-3"
+      },
+      {
+        "id": "af-4"
+      },
+      {
+        "id": "af-5"
+      },
+      {
+        "id": "af-6"
+      }
     ]
   },
   "workflow-automation": {
@@ -938,7 +1149,10 @@ export const tutorials = {
     "icon": "repeat",
     "level": "intermediate",
     "audience": "everyone",
-    "prerequisites": ["ai-fluency", "projects"],
+    "prerequisites": [
+      "ai-fluency",
+      "projects"
+    ],
     "relatedPrompts": [
       "start-role-task",
       "analysis-deep-dive"
@@ -946,15 +1160,29 @@ export const tutorials = {
     "next": [
       "skills",
       "scenarios",
-      "role-use-cases"
+      "role-use-cases",
+      "uc-ai-process-automation",
+      "uc-ai-pilot-to-production"
     ],
     "steps": [
-      { "id": "wa-1" },
-      { "id": "wa-2" },
-      { "id": "wa-3" },
-      { "id": "wa-4" },
-      { "id": "wa-5" },
-      { "id": "wa-6" }
+      {
+        "id": "wa-1"
+      },
+      {
+        "id": "wa-2"
+      },
+      {
+        "id": "wa-3"
+      },
+      {
+        "id": "wa-4"
+      },
+      {
+        "id": "wa-5"
+      },
+      {
+        "id": "wa-6"
+      }
     ]
   },
   "role-use-cases": {
@@ -962,7 +1190,10 @@ export const tutorials = {
     "icon": "user",
     "level": "intermediate",
     "audience": "business",
-    "prerequisites": ["ai-fluency", "claude-for-business"],
+    "prerequisites": [
+      "ai-fluency",
+      "claude-for-business"
+    ],
     "relatedPrompts": [
       "start-role-task",
       "business-positioning"
@@ -970,15 +1201,30 @@ export const tutorials = {
     "next": [
       "workflow-automation",
       "claude-for-educators",
-      "scenarios"
+      "scenarios",
+      "uc-ai-content-ops-launch",
+      "uc-ai-support-tier1",
+      "uc-ai-discovery-launch"
     ],
     "steps": [
-      { "id": "ruc-1" },
-      { "id": "ruc-2" },
-      { "id": "ruc-3" },
-      { "id": "ruc-4" },
-      { "id": "ruc-5" },
-      { "id": "ruc-6" }
+      {
+        "id": "ruc-1"
+      },
+      {
+        "id": "ruc-2"
+      },
+      {
+        "id": "ruc-3"
+      },
+      {
+        "id": "ruc-4"
+      },
+      {
+        "id": "ruc-5"
+      },
+      {
+        "id": "ruc-6"
+      }
     ]
   }
 };
