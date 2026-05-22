@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { parseInlineLinks } from '../utils/inlineLinks.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getLocalizedFeaturedPrompt } from '../i18n/usePrompt.js';
@@ -52,9 +52,9 @@ function InlineLink({ kind, id, label, t, locale, onNavigate }) {
   let exists = true;
   let icon = null;
   let title = '';
+  let preview = ''; // короткий «что это» для hover-карточки
 
   if (kind === 'node') {
-    // Пробуем достать title узла из локали; если ключа нет — узел "битый"
     const key = `nodes.${id}.title`;
     const got = t(key);
     if (!got || got === key) {
@@ -62,6 +62,13 @@ function InlineLink({ kind, id, label, t, locale, onNavigate }) {
     } else {
       title = got;
       if (!resolvedLabel) resolvedLabel = got;
+      // Превью: первые ~140 символов поля what
+      const whatKey = `nodes.${id}.what`;
+      const what = t(whatKey);
+      if (what && what !== whatKey) {
+        preview = what.replace(/\[\[[^\]]+\]\]/g, '').trim().slice(0, 160);
+        if (preview.length === 160) preview += '…';
+      }
     }
     icon = 'arrow-right';
   } else if (kind === 'tutorial') {
@@ -72,6 +79,8 @@ function InlineLink({ kind, id, label, t, locale, onNavigate }) {
       const loc = getLocalizedTutorial(id, locale);
       title = loc?.title || id;
       if (!resolvedLabel) resolvedLabel = title;
+      preview = (loc?.intro || loc?.subtitle || '').slice(0, 160);
+      if (preview.length === 160) preview += '…';
     }
     icon = 'graduation';
   } else if (kind === 'prompt') {
@@ -81,12 +90,13 @@ function InlineLink({ kind, id, label, t, locale, onNavigate }) {
     } else {
       title = prompt.title;
       if (!resolvedLabel) resolvedLabel = title;
+      preview = (prompt.description || '').slice(0, 160);
+      if (preview.length === 160) preview += '…';
     }
     icon = 'sparkles';
   }
 
   if (!exists) {
-    // Битая ссылка — показываем label (или id) без интерактива, но с пометкой
     return (
       <span
         className="inline-link inline-link--broken"
@@ -107,18 +117,58 @@ function InlineLink({ kind, id, label, t, locale, onNavigate }) {
   };
 
   return (
-    <button
-      type="button"
-      className={`inline-link inline-link--${kind}`}
-      onClick={handleClick}
+    <LinkWithPreview
+      kind={kind}
+      icon={icon}
       title={title}
+      preview={preview}
+      label={resolvedLabel}
+      onClick={handleClick}
+    />
+  );
+}
+
+function LinkWithPreview({ kind, icon, title, preview, label, onClick }) {
+  const [open, setOpen] = useState(false);
+  const timerRef = useRef(null);
+
+  const show = () => {
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setOpen(true), 350);
+  };
+  const hide = () => {
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setOpen(false), 120);
+  };
+
+  useEffect(() => () => clearTimeout(timerRef.current), []);
+
+  return (
+    <span
+      className="inline-link-wrap"
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onFocus={show}
+      onBlur={hide}
     >
-      {icon && (
-        <span className="inline-link__icon" aria-hidden="true">
-          <Icon name={icon} size={12} strokeWidth={1.75} />
+      <button
+        type="button"
+        className={`inline-link inline-link--${kind}`}
+        onClick={onClick}
+      >
+        {icon && (
+          <span className="inline-link__icon" aria-hidden="true">
+            <Icon name={icon} size={12} strokeWidth={1.75} />
+          </span>
+        )}
+        <span className="inline-link__label">{label}</span>
+      </button>
+      {open && preview && (
+        <span className={`inline-link__preview inline-link__preview--${kind}`} role="tooltip">
+          <span className="inline-link__preview-title">{title}</span>
+          <span className="inline-link__preview-body">{preview}</span>
         </span>
       )}
-      <span className="inline-link__label">{resolvedLabel}</span>
-    </button>
+    </span>
   );
 }

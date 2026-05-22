@@ -18,6 +18,8 @@ export default function DetailPanel({
   onStartTutorial,
   onSelectRelated,
   onOpenPrompt,
+  backNode,
+  onBack,
   progressApi,
   bookmarksApi,
   nodeProgressApi,
@@ -75,6 +77,9 @@ export default function DetailPanel({
   const tTotalTime = tutorialLocalized?.totalTime || '';
 
   const bookmarkOn = bookmarksApi?.isBookmarked('node', node.id);
+
+  // Заголовок узла «откуда пришёл» — для breadcrumb «← назад в X».
+  const backTitle = backNode ? t(`nodes.${backNode.id}.title`) : '';
 
   // Навигаторы для inline-ссылок [[node:|tutorial:|prompt:]] в тексте узла.
   const inlineNav = {
@@ -167,6 +172,17 @@ export default function DetailPanel({
 
   const bodyBlock = (
     <>
+      {backNode && onBack && (
+        <button
+          type="button"
+          className="detail__back"
+          onClick={onBack}
+          title={t('detail.backTo', { title: backTitle })}
+        >
+          <Icon name="arrow-left" size={14} strokeWidth={1.75} />
+          <span>{t('detail.backTo', { title: backTitle })}</span>
+        </button>
+      )}
       {['what', 'why', 'when', 'impact'].map(k => d[k] && (
         <section key={k} className="detail__section">
           <h3>

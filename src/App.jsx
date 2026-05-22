@@ -308,6 +308,10 @@ function AppInner() {
   const identityApi = useUserIdentity();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [featuredPrompt, setFeaturedPrompt] = useState(null);
+  // Стек навигации для breadcrumb «← назад»: накапливается при cross-link
+  // переходах внутри панели, очищается при закрытии и при «свежей» навигации
+  // (клик по карте, поиск, hash-роутинг).
+  const [navStack, setNavStack] = useState([]);
   const [archiveOpen, setArchiveOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   // true когда AuthModal открыт из tutorial gate — туториал скрывается, но не размонтируется
@@ -584,6 +588,7 @@ function AppInner() {
     setRoute({ type: 'node', id: node.id });
     markSeen(node.id);
     releasePinDim(); // снять затемнение, подсветка pinnedIds остаётся
+    setNavStack([]); // клик по карте/поиск/нав. через UI = «свежая» нав., сброс стека
   }, [setRoute, markSeen, releasePinDim]);
 
   // При смене выбранного узла — раскрываем всех предков, чтобы узел стал
@@ -650,7 +655,10 @@ function AppInner() {
   const onOpenCourses  = useCallback(() => setRoute({ type: 'courses' }), [setRoute]);
   const onOpenLibrary  = useCallback(() => setRoute({ type: 'library' }), [setRoute]);
   const onOpenHelp     = useCallback((sectionId) => setRoute({ type: 'help', id: sectionId || null }), [setRoute]);
-  const onCloseAll     = useCallback(() => setRoute(null), [setRoute]);
+  const onCloseAll     = useCallback(() => {
+    setRoute(null);
+    setNavStack([]); // закрытие панели — сброс стека «откуда пришёл»
+  }, [setRoute]);
 
   // Закрытие tutorial — оставляем пользователя на узле, не очищаем route
   // полностью. Так после прохождения курса карта остаётся позиционированной
@@ -711,11 +719,28 @@ function AppInner() {
           onStartTutorial={onStartTutorial}
           onSelectRelated={(id) => {
             releasePinDim();
+            // Push текущий узел в стек перед уходом (cap = 5)
+            setNavStack(prev => {
+              if (!selected?.id || selected.id === id) return prev;
+              const next = [...prev, selected.id];
+              return next.slice(-5);
+            });
             navigateToNode(id);
           }}
           onOpenPrompt={(promptId) => {
             const p = getLocalizedFeaturedPrompt(promptId, locale);
             if (p) setFeaturedPrompt(p);
+          }}
+          backNode={
+            navStack.length
+              ? findNodeById(mindmapData, navStack[navStack.length - 1])
+              : null
+          }
+          onBack={() => {
+            const last = navStack[navStack.length - 1];
+            if (!last) return;
+            setNavStack(prev => prev.slice(0, -1));
+            navigateToNode(last);
           }}
           progressApi={progressApi}
           bookmarksApi={bookmarksApi}

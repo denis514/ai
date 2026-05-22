@@ -8389,3 +8389,91 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   background: color-mix(in srgb, var(--accent, #8b7af0) 26%, transparent);
   color: var(--accent, #8b7af0);
 }
+
+/* Hover-preview для inline-ссылок */
+.inline-link-wrap {
+  position: relative;
+  display: inline;
+}
+.inline-link__preview {
+  position: absolute;
+  z-index: 1000;
+  top: calc(100% + 6px);
+  left: 0;
+  max-width: 320px;
+  min-width: 200px;
+  padding: 10px 12px;
+  background: var(--tooltip-bg, #1a1a1a);
+  color: var(--tooltip-text, #fafaf9);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18), 0 2px 6px rgba(0,0,0,.10);
+  font-size: 13px;
+  line-height: 1.45;
+  pointer-events: none;
+  white-space: normal;
+  animation: inline-preview-in 0.16s ease-out both;
+}
+.inline-link__preview::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 14px;
+  border: 6px solid transparent;
+  border-bottom-color: var(--tooltip-bg, #1a1a1a);
+}
+.inline-link__preview-title {
+  display: block;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.82;
+  margin-bottom: 4px;
+}
+.inline-link__preview-body {
+  display: block;
+  font-size: 13px;
+}
+.inline-link__preview--node       { border-left: 3px solid #6f5dde; padding-left: 10px; }
+.inline-link__preview--tutorial   { border-left: 3px solid #2faa6a; padding-left: 10px; }
+.inline-link__preview--prompt     { border-left: 3px solid #e0833a; padding-left: 10px; }
+
+@keyframes inline-preview-in {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile: preview шире, не наезжает на правый край */
+@media (max-width: 600px) {
+  .inline-link__preview {
+    max-width: calc(100vw - 32px);
+    left: -8px;
+  }
+}
+
+/* Breadcrumb «← назад в X» в DetailPanel */
+.detail__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+  border-radius: 8px;
+  color: color-mix(in srgb, var(--text) 80%, transparent);
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s, transform .12s;
+}
+.detail__back:hover {
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+  border-color: color-mix(in srgb, var(--text) 26%, transparent);
+  color: var(--text);
+}
+.detail__back:active { transform: translateX(-1px); }
+:root[data-theme="dark"] .detail__back {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  border-color: color-mix(in srgb, var(--text) 16%, transparent);
+}
