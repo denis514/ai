@@ -4404,13 +4404,23 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   background: var(--surface-3);
   color: var(--text);
 }
+/* Tooltip-цвета адаптируются к теме через CSS variables */
+:root {
+  --tooltip-bg: #1a1a1a;
+  --tooltip-text: #ffffff;
+}
+:root[data-theme="dark"] {
+  --tooltip-bg: #404045;            /* светлее var(--surface)=#1a1a1c для контраста */
+  --tooltip-text: #f5f5f4;
+}
+
 .tooltip__bubble {
   position: absolute;
   bottom: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%);
-  background: #1a1a1a;
-  color: white;
+  background: var(--tooltip-bg);
+  color: var(--tooltip-text);
   font-size: 11.5px;
   font-weight: 400;
   text-transform: none;
@@ -4422,6 +4432,12 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   z-index: 50;
   box-shadow: var(--shadow-lg);
   pointer-events: none;
+  /* Плавное появление */
+  animation: tooltip-fade-in .18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes tooltip-fade-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 .tooltip__bubble::after {
   content: '';
@@ -4429,14 +4445,19 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   top: 100%; left: 50%;
   transform: translateX(-50%);
   border: 5px solid transparent;
-  border-top-color: #1a1a1a;
+  border-top-color: var(--tooltip-bg);
 }
 
-/* Portal tooltip — position:fixed, не обрезается overflow родителя */
+/* Portal tooltip — position:fixed, не обрезается overflow родителя.
+   transform handled by animation, поэтому НЕ ставим transform:none. */
 .tooltip__bubble--portal {
   position: fixed !important;
-  transform: none !important;
   z-index: 9999 !important;
+  animation: tooltip-fade-in-portal .18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes tooltip-fade-in-portal {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 /* Стрелка вниз (пузырь ВЫШЕ триггера, dir=up) */
 .tooltip__bubble--portal:not(.tooltip__bubble--down)::after {
@@ -4445,7 +4466,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   top: 100%; left: 50%;
   transform: translateX(-50%);
   border: 5px solid transparent;
-  border-top-color: #1a1a1a;
+  border-top-color: var(--tooltip-bg);
 }
 /* Стрелка вверх (пузырь НИЖЕ триггера, dir=down) */
 .tooltip__bubble--portal.tooltip__bubble--down::after {
@@ -4454,7 +4475,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   bottom: 100%; left: 50%;
   transform: translateX(-50%);
   border: 5px solid transparent;
-  border-bottom-color: #1a1a1a;
+  border-bottom-color: var(--tooltip-bg);
   top: auto;
 }
 
