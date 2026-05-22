@@ -1492,5 +1492,68 @@
     "impact": "Outcome: working decision process с AI-support за 3-4 недели. Metrics: reactive decisions ↓50-70%, learning loop established (retrospective с AI-pattern matching).",
     "example": "Путь (6 шагов):\n1. Identification: какие decisions включать (Operations: hires, vendors, processes)\n2. Foundation: prompting + pr-cot (chain-of-thought) — структура AI-анализа\n3. Foundation: sc-data + sc-analysis — как подавать данные для решения\n4. Foundation: af-llm-basics — понять границы AI: где даёт value, где ошибается\n5. Foundation: projects → workspace «Decision Log» с историей\n6. Transformation: ops-decision-intelligence → конкретный workflow\n\nWeek 1: Pilot на 3-5 простых decisions.\nWeek 2-3: Шлифовка template + проверка quality.\nWeek 4: Roll-out для всех major decisions + retrospective.\n\nStage transition: 2→3.",
     "mistakes": "Использовать AI как «решатель». AI хорош в structuring и pattern-matching, но контекст и accountability — у человека. Documentation важнее самого AI-output: track outcomes → learn → improve."
+  },
+  "ai-workflows": {
+    "title": "AI Workflows",
+    "what": "Паттерны соединения AI-компонентов в работающие процессы. Один из 6 разделов Systems-слоя. Без понимания workflows нельзя строить production AI — будет «попробовали в чате» вместо «работает в команде».",
+    "why": "Workflow-thinking — основа Systems-уровня. Понимая workflow patterns, ты переходишь от «использую AI» к «проектирую AI-systems». Это разница между «промпт-инженер» и «AI architect».",
+    "when": "Когда нужно соединить ≥2 AI-шага в воспроизводимый процесс. Когда команда переходит к production AI. Когда заметил что «у нас 5 человек делают одно и то же по-разному».",
+    "impact": "80% production AI-проектов = workflow design (а не promptmagic). Workflow patterns — самый частый Systems-нужник.",
+    "example": "3 базовых паттерна:\n1. Linear chain — sequential (A → B → C)\n2. Conditional routing — ветвления (A → if-then → B/C)\n3. Feedback loops — итерации (A → check → A с правками)\n\nБольшинство задач = linear chain. Сложные паттерны нужны редко.",
+    "mistakes": "Прыгать в complex patterns без mastery linear chain. Сначала linear для 80% задач. Сложность — добавлять по нужде, не proactively. YAGNI > over-engineering."
+  },
+  "sys-workflows-basics": {
+    "title": "Что такое AI Workflow",
+    "what": "Workflow = направленный граф шагов: вход → AI-обработка → quality check → выход. НЕ = промпт (промпт — это один шаг). НЕ = автоматизация (автоматизация — это триггер). Workflow — это архитектурный паттерн с явными границами и контролями.",
+    "why": "Без workflow-thinking AI = «попробовали в чате, не масштабируется». С workflow = воспроизводимый production-процесс с измеримым качеством.",
+    "when": "Когда задача требует ≥2 AI-шагов с условиями, людьми, или quality-gates. Когда нужна повторяемость результата. Когда хочешь передать процесс коллеге без него.",
+    "impact": "Workflow-thinking — переход от «AI experiments» к «AI в production». Каждый production AI-проект — это workflow (даже если автор не называет это так).",
+    "example": "Анатомия workflow:\n\n  Trigger ──→ AI Step 1 ──→ Validate ──→ AI Step 2 ──→ Output\n                                ↓ fail\n                             Human review\n\nКлючевое: между шагами есть точки контроля. Без них = «надеюсь сработает».",
+    "mistakes": "Делать workflow без quality-gates. Между шагами накапливается мусор: ошибка step 1 → проблема в step 2 → катастрофа в step 3. Quality gates ловят раньше и дешевле."
+  },
+  "sys-linear-chain": {
+    "title": "Linear Chain паттерн",
+    "what": "Простейший workflow-паттерн: A → B → C, где выход A = вход B. Без conditions, без branches, без loops. Большинство production AI-workflows = именно этот паттерн.",
+    "why": "80% реальных задач не нужен complex routing. Linear chain = надёжный, debuggable, легко поддерживается. Сложные паттерны добавляются только когда linear не справляется.",
+    "when": "Sequential обработка: extract → transform → summarize → publish. Когда каждый шаг имеет один следующий и нет вариаций маршрута.",
+    "impact": "Linear chain легко debug-ить: каждый шаг тестируется отдельно. Refactoring безболезненный (замена одного шага). Onboarding нового члена команды — минуты, а не часы.",
+    "example": "Reporting workflow:\n\n  CSV data → [Parse] → [Analyze patterns] → [Write report] → Output\n\nКаждый шаг = один AI-вызов с чётким input/output контрактом. Падение шага = понятно где исправлять.",
+    "mistakes": "Усложнять linear chain conditional logic «на всякий случай». YAGNI: добавляй ветвления только когда они реально нужны на основе данных, не на «может пригодится». Сложность = долг."
+  },
+  "sys-quality-gates": {
+    "title": "Quality Gates паттерн",
+    "what": "Точка между AI-шагами, где результат проверяется (автоматически или человеком) до передачи дальше. Без gates AI-ошибки накапливаются — нельзя trust финальному output.",
+    "why": "AI не идеален: 5-15% выходов могут быть некачественные. В chain без gates ошибка step 1 множится на step 2 = бесполезный конечный результат. Gates ловят раньше и дешевле.",
+    "when": "Production workflow с реальными последствиями (деньги, репутация, юр). Workflow длиной >2 шага. Когда стоимость review < стоимости пропущенной ошибки.",
+    "impact": "Error rate в финальном выходе: 30% (без gates) → <5% (с правильно поставленными gates). Trust в production AI значительно растёт. Team confidence в системе → adoption.",
+    "example": "Calibrated gates:\n\n  AI generates draft → [Confidence > 0.85?]\n                          ├─ Yes → Auto-publish\n                          └─ No  → Human review (15 min)\n\nИли:\n  AI extracts data → [Validate JSON schema]\n                        ├─ Valid → Continue\n                        └─ Invalid → Retry with different prompt",
+    "mistakes": "Делать gates на всех шагах одинаково. Калибруй: критический шаг = manual review, простой = automated check, шаг с consequences = trust score threshold. Без калибровки — либо bottleneck (всё ждёт человека), либо ошибки проскакивают."
+  },
+  "ai-data-systems": {
+    "title": "AI Data Systems",
+    "what": "Как AI получает доступ к данным компании: RAG, vector search, hybrid retrieval, knowledge bases. Один из 6 разделов Systems-слоя. Превращает AI из «текстового помощника» в «эксперта по вашим данным».",
+    "why": "Без data systems AI = stateless помощник, отвечает «не знаю» на любой специфический вопрос. С data systems = production knowledge system с factual grounding (anti-hallucination).",
+    "when": "Когда AI должен работать с вашими документами/данными. Когда нужна персонализация. Когда требуется citing sources. Когда LLM сам по себе не справляется с domain-specific задачами.",
+    "impact": "Data systems переводят LLM из «генеративной модели» в production-ready knowledge system. Accuracy ответов: 30% (без RAG) → 85%+ (proper RAG architecture).",
+    "example": "2 ключевых компонента раздела:\n1. RAG Architecture — как retrieve + generate (4 паттерна)\n2. Context Passing — как передавать данные между AI-шагами\n\nВместе они покрывают 90% data system задач.",
+    "mistakes": "Думать что vector DB + embeddings = data system. Это только storage. Полный data system = retrieval + ranking + filtering + context strategy + monitoring. Каждый слой важен."
+  },
+  "sys-rag-architecture": {
+    "title": "RAG Architecture Patterns",
+    "what": "4 архитектурных паттерна RAG. (1) Naive: query → vector search → top-K → LLM. (2) Advanced: + re-ranking. (3) Modular: multi-step retrieval + iteration. (4) Agentic: RAG как часть agent loop с tools.",
+    "why": "«RAG» как термин слишком общий. Naive RAG в production = низкое качество (часто 50-60% accuracy). Нужно знать конкретный паттерн под бюджет latency/cost/quality.",
+    "when": "Naive → proof of concept, демо.\nAdvanced → production с базой 1K-100K документов.\nModular → сложные queries с разными источниками.\nAgentic → нужны tools кроме retrieval (search + calculation + API).",
+    "impact": "Правильный паттерн = 10× cost reduction ИЛИ 2× quality improvement. Naive→Advanced часто = +30% accuracy сразу (за счёт re-ranking).",
+    "example": "Сравнение паттернов:\n\nNaive:    Query → VectorSearch → Top-K → LLM → Answer\nAdvanced: Query → VectorSearch → Top-50 → Re-rank → Top-5 → LLM → Answer\nModular:  Query → Classify intent → Route → [Retrieve-A | Retrieve-B] → Merge → LLM\nAgentic:  Query → Agent loop: [retrieve | reason | tool-use] → Answer\n\nПо мере роста сложности: latency растёт, quality растёт, cost растёт.",
+    "mistakes": "Использовать Naive RAG в production. «У меня работает на тестах» ≠ production-ready. Production: всегда re-ranking + hybrid search (keyword + semantic) + chunk overlap + metadata filtering."
+  },
+  "sys-context-passing": {
+    "title": "Context Passing между AI-шагами",
+    "what": "Как передавать данные/контекст между AI-шагами в workflow. Три стратегии: full context (всё), filtered (релевантное), summarized (LLM-сжатие). Каждая имеет trade-off cost/quality/latency.",
+    "why": "В multi-step workflow контекст растёт квадратично. На шаге 5 у тебя в input может быть 100K токенов истории → дорого, медленно, может не влезть в context window. Context passing strategy — критичный архитектурный выбор.",
+    "when": "Workflow ≥3 шагов. Когда output одного шага не помещается в input следующего. Когда нужно сохранять reasoning или intermediate state между шагами.",
+    "impact": "Правильный context passing = 50-70% экономия tokens в multi-step workflow. И снижение error rate (LLM лучше работает с focused context чем с overload).",
+    "example": "Пример: review analysis workflow.\n\nStep 1: Analyze 50 customer reviews (output: 50K tokens)\nStep 2: Needs only 5 themes from Step 1\n\n❌ Full context: pass all 50K tokens → expensive, slow, LLM struggles with focus\n✅ Summarized:   AI-summarize Step 1 → 500 tokens → pass to Step 2\n✅ Filtered:     Extract themes as JSON → 200 tokens → pass to Step 2\n\nКостsavings: 250× меньше токенов на Step 2.",
+    "mistakes": "«Авось влезет» — закидывать full context на каждом шаге. Стоимость растёт квадратично с длиной workflow. Production-правило: всегда explicit context strategy ПЕРЕД multi-step workflow, не «починим когда сломается»."
   }
 }

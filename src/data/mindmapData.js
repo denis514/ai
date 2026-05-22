@@ -1042,6 +1042,75 @@ export const mindmapData = {
           "id": "sys-overview",
           "icon": "sparkles",
           "category": "systems"
+        },
+        {
+          "id": "ai-workflows",
+          "icon": "link",
+          "category": "systems",
+          "children": [
+            {
+              "id": "sys-workflows-basics",
+              "icon": "flash",
+              "category": "systems",
+              "relatedIds": [
+                "skills",
+                "projects",
+                "ops-process-automation",
+                "uc-ai-process-automation"
+              ]
+            },
+            {
+              "id": "sys-linear-chain",
+              "icon": "arrow-right",
+              "category": "systems",
+              "relatedIds": [
+                "sys-workflows-basics",
+                "ops-reporting-automation",
+                "uc-ai-reporting-launch"
+              ]
+            },
+            {
+              "id": "sys-quality-gates",
+              "icon": "shield",
+              "category": "systems",
+              "relatedIds": [
+                "sys-workflows-basics",
+                "ops-process-automation",
+                "ag-principles",
+                "p-team"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ai-data-systems",
+          "icon": "scroll",
+          "category": "systems",
+          "children": [
+            {
+              "id": "sys-rag-architecture",
+              "icon": "testtube",
+              "category": "systems",
+              "relatedIds": [
+                "af-rag-basics",
+                "af-vector-db",
+                "af-embeddings",
+                "cap-citations",
+                "ops-reporting-automation"
+              ]
+            },
+            {
+              "id": "sys-context-passing",
+              "icon": "hook",
+              "category": "systems",
+              "relatedIds": [
+                "sys-workflows-basics",
+                "b-context",
+                "cap-caching",
+                "af-memory-systems"
+              ]
+            }
+          ]
         }
       ]
     },

@@ -1492,5 +1492,68 @@
     "impact": "Outcome: working decision process with AI support in 3-4 weeks. Metrics: reactive decisions ↓50-70%, learning loop established (retrospective with AI pattern matching).",
     "example": "Path (6 steps):\n1. Identification: which decisions to include (Operations: hires, vendors, processes)\n2. Foundation: prompting + pr-cot (chain-of-thought) — structure of AI analysis\n3. Foundation: sc-data + sc-analysis — how to feed data for the decision\n4. Foundation: af-llm-basics — understand AI boundaries: where it gives value, where it errs\n5. Foundation: projects → «Decision Log» workspace with history\n6. Transformation: ops-decision-intelligence → concrete workflow\n\nWeek 1: Pilot on 3-5 simple decisions.\nWeek 2-3: Refine template + verify quality.\nWeek 4: Roll-out to all major decisions + retrospective.\n\nStage transition: 2→3.",
     "mistakes": "Using AI as «the decider». AI is good at structuring and pattern matching, but context and accountability belong to the human. Documentation matters more than the AI output itself: track outcomes → learn → improve."
+  },
+  "ai-workflows": {
+    "title": "AI Workflows",
+    "what": "Patterns for connecting AI components into working processes. One of 6 Systems-layer sections. Without workflow understanding, you cannot build production AI — it stays «tried it in chat» instead of «works in the team».",
+    "why": "Workflow-thinking is the foundation of the Systems layer. Knowing workflow patterns shifts you from «I use AI» to «I design AI systems». This is the difference between «prompt engineer» and «AI architect».",
+    "when": "When you need to connect ≥2 AI steps into a reproducible process. When the team moves to production AI. When you notice «5 people doing the same thing differently».",
+    "impact": "80% of production AI projects = workflow design (not prompt magic). Workflow patterns are the most common Systems need.",
+    "example": "3 basic patterns:\n1. Linear chain — sequential (A → B → C)\n2. Conditional routing — branches (A → if-then → B/C)\n3. Feedback loops — iterations (A → check → A with fixes)\n\nMost tasks = linear chain. Complex patterns needed rarely.",
+    "mistakes": "Jumping into complex patterns without linear chain mastery. First, linear for 80% of tasks. Add complexity as needed, not proactively. YAGNI > over-engineering."
+  },
+  "sys-workflows-basics": {
+    "title": "What Is an AI Workflow",
+    "what": "Workflow = directed graph of steps: input → AI processing → quality check → output. NOT = prompt (a prompt is one step). NOT = automation (automation is a trigger). Workflow is an architectural pattern with explicit boundaries and controls.",
+    "why": "Without workflow-thinking, AI = «tried in chat, does not scale». With workflow = reproducible production process with measurable quality.",
+    "when": "When a task requires ≥2 AI steps with conditions, humans, or quality gates. When you need result reproducibility. When you want to hand off the process to a colleague without you.",
+    "impact": "Workflow-thinking is the transition from «AI experiments» to «AI in production». Every production AI project is a workflow (even if the author does not call it that).",
+    "example": "Workflow anatomy:\n\n  Trigger ──→ AI Step 1 ──→ Validate ──→ AI Step 2 ──→ Output\n                                ↓ fail\n                             Human review\n\nKey insight: between steps there are control points. Without them = «I hope it works».",
+    "mistakes": "Making a workflow without quality gates. Between steps, garbage accumulates: step 1 error → step 2 problem → step 3 catastrophe. Quality gates catch earlier and cheaper."
+  },
+  "sys-linear-chain": {
+    "title": "Linear Chain Pattern",
+    "what": "The simplest workflow pattern: A → B → C, where output of A = input of B. No conditions, no branches, no loops. Most production AI workflows = exactly this pattern.",
+    "why": "80% of real tasks do not need complex routing. Linear chain = reliable, debuggable, easy to maintain. Complex patterns are added only when linear cannot handle the case.",
+    "when": "Sequential processing: extract → transform → summarize → publish. When each step has one next step and no route variations.",
+    "impact": "Linear chain is easy to debug: each step is tested separately. Refactoring is painless (replacing one step). Onboarding a new team member — minutes, not hours.",
+    "example": "Reporting workflow:\n\n  CSV data → [Parse] → [Analyze patterns] → [Write report] → Output\n\nEach step = one AI call with a clear input/output contract. A step failure = clear where to fix.",
+    "mistakes": "Adding conditional logic to a linear chain «just in case». YAGNI: add branches only when actually needed based on data, not «might be useful». Complexity = debt."
+  },
+  "sys-quality-gates": {
+    "title": "Quality Gates Pattern",
+    "what": "A point between AI steps where the result is checked (automatically or by a human) before passing it on. Without gates, AI errors accumulate — you cannot trust the final output.",
+    "why": "AI is not perfect: 5-15% of outputs may be low quality. In a chain without gates, step 1 error multiplies into step 2 = useless final result. Gates catch earlier and cheaper.",
+    "when": "Production workflow with real consequences (money, reputation, legal). Workflow longer than 2 steps. When the cost of review < cost of a missed error.",
+    "impact": "Final-output error rate: 30% (no gates) → <5% (with well-placed gates). Trust in production AI grows significantly. Team confidence → adoption.",
+    "example": "Calibrated gates:\n\n  AI generates draft → [Confidence > 0.85?]\n                          ├─ Yes → Auto-publish\n                          └─ No  → Human review (15 min)\n\nOr:\n  AI extracts data → [Validate JSON schema]\n                        ├─ Valid → Continue\n                        └─ Invalid → Retry with different prompt",
+    "mistakes": "Making gates the same at every step. Calibrate: critical step = manual review, simple step = automated check, step with consequences = trust score threshold. Without calibration — either bottleneck (everything waits for human) or errors slip through."
+  },
+  "ai-data-systems": {
+    "title": "AI Data Systems",
+    "what": "How AI gets access to company data: RAG, vector search, hybrid retrieval, knowledge bases. One of 6 Systems-layer sections. Transforms AI from a «text helper» into an «expert on your data».",
+    "why": "Without data systems, AI = stateless helper, answers «I do not know» to any specific question. With data systems = production knowledge system with factual grounding (anti-hallucination).",
+    "when": "When AI must work with your documents/data. When personalization is needed. When source citing is required. When the LLM alone cannot handle domain-specific tasks.",
+    "impact": "Data systems shift the LLM from a «generative model» to a production-ready knowledge system. Answer accuracy: 30% (no RAG) → 85%+ (proper RAG architecture).",
+    "example": "2 key components of the section:\n1. RAG Architecture — how to retrieve + generate (4 patterns)\n2. Context Passing — how to pass data between AI steps\n\nTogether they cover 90% of data system tasks.",
+    "mistakes": "Thinking vector DB + embeddings = data system. That is only storage. A full data system = retrieval + ranking + filtering + context strategy + monitoring. Every layer matters."
+  },
+  "sys-rag-architecture": {
+    "title": "RAG Architecture Patterns",
+    "what": "4 architectural RAG patterns. (1) Naive: query → vector search → top-K → LLM. (2) Advanced: + re-ranking. (3) Modular: multi-step retrieval + iteration. (4) Agentic: RAG as part of an agent loop with tools.",
+    "why": "«RAG» as a term is too generic. Naive RAG in production = low quality (often 50-60% accuracy). You need to know the specific pattern for your latency/cost/quality budget.",
+    "when": "Naive → proof of concept, demo.\nAdvanced → production with 1K-100K document base.\nModular → complex queries with different sources.\nAgentic → tools beyond retrieval needed (search + calculation + API).",
+    "impact": "The right pattern = 10× cost reduction OR 2× quality improvement. Naive→Advanced often = +30% accuracy immediately (thanks to re-ranking).",
+    "example": "Pattern comparison:\n\nNaive:    Query → VectorSearch → Top-K → LLM → Answer\nAdvanced: Query → VectorSearch → Top-50 → Re-rank → Top-5 → LLM → Answer\nModular:  Query → Classify intent → Route → [Retrieve-A | Retrieve-B] → Merge → LLM\nAgentic:  Query → Agent loop: [retrieve | reason | tool-use] → Answer\n\nAs complexity grows: latency grows, quality grows, cost grows.",
+    "mistakes": "Using Naive RAG in production. «It works in my tests» ≠ production-ready. Production: always re-ranking + hybrid search (keyword + semantic) + chunk overlap + metadata filtering."
+  },
+  "sys-context-passing": {
+    "title": "Context Passing Between AI Steps",
+    "what": "How to pass data/context between AI steps in a workflow. Three strategies: full context (everything), filtered (relevant), summarized (LLM compression). Each has a cost/quality/latency trade-off.",
+    "why": "In a multi-step workflow, context grows quadratically. At step 5 your input may have 100K tokens of history → expensive, slow, may not fit the context window. Context passing strategy is a critical architectural choice.",
+    "when": "Workflow ≥3 steps. When the output of one step does not fit the input of the next. When you need to preserve reasoning or intermediate state between steps.",
+    "impact": "Right context passing = 50-70% token savings in multi-step workflow. Plus a lower error rate (LLM works better with focused context than with overload).",
+    "example": "Example: review analysis workflow.\n\nStep 1: Analyze 50 customer reviews (output: 50K tokens)\nStep 2: Needs only 5 themes from Step 1\n\n❌ Full context: pass all 50K tokens → expensive, slow, LLM struggles with focus\n✅ Summarized:   AI-summarize Step 1 → 500 tokens → pass to Step 2\n✅ Filtered:     Extract themes as JSON → 200 tokens → pass to Step 2\n\nCost savings: 250× fewer tokens at Step 2.",
+    "mistakes": "«It will probably fit» — passing full context at every step. Cost grows quadratically with workflow length. Production rule: always explicit context strategy BEFORE multi-step workflow, not «we will fix it when it breaks»."
   }
 }

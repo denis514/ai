@@ -1492,5 +1492,68 @@
     "impact": "Outcome: toimiva päätösprosessi AI-tuella 3-4 viikossa. Metriikat: reaktiiviset päätökset ↓50-70%, oppimissilmukka luotu (retrospektiivi AI-pattern-matchingilla).",
     "example": "Polku (6 askelta):\n1. Tunnistus: mitkä päätökset sisällyttää (Operations: palkkaukset, toimittajat, prosessit)\n2. Foundation: prompting + pr-cot (chain-of-thought) — AI-analyysin rakenne\n3. Foundation: sc-data + sc-analysis — kuinka syöttää data päätökselle\n4. Foundation: af-llm-basics — ymmärrä AI:n rajat: missä antaa arvoa, missä erehtyy\n5. Foundation: projects → workspace «Decision Log» historialla\n6. Transformation: ops-decision-intelligence → konkreettinen workflow\n\nWeek 1: Pilotti 3-5 yksinkertaisella päätöksellä.\nWeek 2-3: Mallin hiominen + laadun varmistus.\nWeek 4: Roll-out kaikille major-päätöksille + retrospektiivi.\n\nStage transition: 2→3.",
     "mistakes": "Käyttää AI:tä «päätöksentekijänä». AI on hyvä strukturoinnissa ja pattern-matchingissa, mutta konteksti ja vastuu kuuluvat ihmiselle. Dokumentaatio on tärkeämpää kuin itse AI-output: seuraa tuloksia → opi → paranna."
+  },
+  "ai-workflows": {
+    "title": "AI Workflows",
+    "what": "AI-komponenttien yhdistämismallit toimiviksi prosesseiksi. Yksi 6 Systems-kerroksen osiosta. Ilman workflow-ymmärrystä et voi rakentaa tuotanto-AI:ta — se jää «kokeilimme chatissa» -tilaan «toimii tiimissä» -tilan sijaan.",
+    "why": "Workflow-ajattelu on Systems-kerroksen perusta. Workflow-mallien tunteminen siirtää sinut «käytän AI:ta» -tilasta «suunnittelen AI-järjestelmiä» -tilaan. Tämä on ero «prompt engineerin» ja «AI architectin» välillä.",
+    "when": "Kun tarvitset yhdistää ≥2 AI-askelta toistettavaan prosessiin. Kun tiimi siirtyy tuotanto-AI:hin. Kun huomaat «5 ihmistä tekee saman asian eri tavalla».",
+    "impact": "80% tuotanto-AI-projekteista = workflow-suunnittelu (ei prompt magic). Workflow-mallit ovat yleisin Systems-tarve.",
+    "example": "3 perusmallia:\n1. Linear chain — peräkkäinen (A → B → C)\n2. Conditional routing — haarautumat (A → if-then → B/C)\n3. Feedback loops — iteraatiot (A → check → A korjauksilla)\n\nUseimmat tehtävät = linear chain. Monimutkaisia malleja tarvitaan harvoin.",
+    "mistakes": "Hypätä monimutkaisiin malleihin ilman linear chain mestaruutta. Ensin linear 80% tehtäville. Lisää monimutkaisuutta tarpeen mukaan, ei ennakoivasti. YAGNI > over-engineering."
+  },
+  "sys-workflows-basics": {
+    "title": "Mikä on AI Workflow",
+    "what": "Workflow = suunnattu askelten graafi: input → AI-käsittely → laadun tarkistus → output. EI = prompti (prompti on yksi askel). EI = automaatio (automaatio on laukaisin). Workflow on arkkitehtuurinen malli selkeillä rajoilla ja kontrolleilla.",
+    "why": "Ilman workflow-ajattelua AI = «kokeilimme chatissa, ei skaalaudu». Workflow:n kanssa = toistettava tuotantoprosessi mitattavalla laadulla.",
+    "when": "Kun tehtävä vaatii ≥2 AI-askelta ehdoilla, ihmisillä tai laatuporteilla. Kun tarvitset tuloksen toistettavuutta. Kun haluat luovuttaa prosessin kollegalle ilman sinua.",
+    "impact": "Workflow-ajattelu on siirtymä «AI experimenteistä» «AI tuotannossa» -tilaan. Jokainen tuotanto-AI-projekti on workflow (vaikka tekijä ei kutsuisi sitä niin).",
+    "example": "Workflow:n anatomia:\n\n  Laukaisin ──→ AI-vaihe 1 ──→ Validoi ──→ AI-vaihe 2 ──→ Output\n                                  ↓ fail\n                              Ihmisen review\n\nKeskeistä: askelten välillä on kontrollipisteet. Ilman niitä = «toivon että toimii».",
+    "mistakes": "Tehdä workflow ilman laatuportteja. Askelten välillä kertyy roskaa: askelen 1 virhe → askelen 2 ongelma → askelen 3 katastrofi. Laatuportit kiinniottavat aiemmin ja halvemmalla."
+  },
+  "sys-linear-chain": {
+    "title": "Linear Chain -malli",
+    "what": "Yksinkertaisin workflow-malli: A → B → C, jossa A:n output = B:n input. Ei ehtoja, ei haaroja, ei silmukoita. Useimmat tuotanto-AI-workflow:t = juuri tämä malli.",
+    "why": "80% todellisista tehtävistä ei tarvitse monimutkaista reititystä. Linear chain = luotettava, debug-attava, helppo ylläpitää. Monimutkaisia malleja lisätään vain kun linear ei selviä.",
+    "when": "Peräkkäinen käsittely: extract → transform → summarize → publish. Kun jokaisella askeleella on yksi seuraava ja ei reittivaihtoehtoja.",
+    "impact": "Linear chain on helppo debugata: jokainen askel testataan erikseen. Refaktorointi on kivutonta (yhden askelen korvaaminen). Uuden tiimijäsenen onboarding — minuutteja, ei tunteja.",
+    "example": "Reporting workflow:\n\n  CSV-data → [Parse] → [Analyze patterns] → [Write report] → Output\n\nJokainen askel = yksi AI-kutsu selkeällä input/output-sopimuksella. Askelen kaatuminen = selvää missä korjata.",
+    "mistakes": "Lisätä ehtologiikkaa linear chainiin «varmuuden vuoksi». YAGNI: lisää haaroja vain kun todella tarvitaan datan perusteella, ei «voi olla hyödyllistä». Monimutkaisuus = velka."
+  },
+  "sys-quality-gates": {
+    "title": "Quality Gates -malli",
+    "what": "Piste AI-askelten välillä, jossa tulos tarkistetaan (automaattisesti tai ihmisen toimesta) ennen eteenpäin siirtymistä. Ilman portteja AI-virheet kertyvät — et voi luottaa lopulliseen outputiin.",
+    "why": "AI ei ole täydellinen: 5-15% outputeista voi olla heikkolaatuisia. Ketjussa ilman portteja askelen 1 virhe kertautuu askeleen 2 kanssa = hyödytön lopputulos. Portit kiinniottavat aiemmin ja halvemmalla.",
+    "when": "Tuotanto-workflow todellisilla seurauksilla (raha, maine, juridinen). Workflow pidempi kuin 2 askelta. Kun review-kustannus < ohitetun virheen kustannus.",
+    "impact": "Lopullisen outputin virhetaso: 30% (ilman portteja) → <5% (hyvin sijoitettujen porttien kanssa). Luottamus tuotanto-AI:hin kasvaa merkittävästi. Tiimin luottamus → adoptio.",
+    "example": "Kalibroidut portit:\n\n  AI generoi draftin → [Confidence > 0.85?]\n                          ├─ Yes → Auto-julkaisu\n                          └─ No  → Ihmisen review (15 min)\n\nTai:\n  AI uuttaa dataa → [Validoi JSON-skeema]\n                        ├─ Validi → Jatka\n                        └─ Invalidi → Yritä uudella promptilla",
+    "mistakes": "Tehdä portit samanlaisiksi jokaisessa askeleessa. Kalibroi: kriittinen askel = manuaalinen review, yksinkertainen askel = automaattinen tarkistus, askel seurauksilla = trust score -kynnys. Ilman kalibrointia — joko pullonkaula (kaikki odottaa ihmistä) tai virheet livahtavat läpi."
+  },
+  "ai-data-systems": {
+    "title": "AI Data Systems",
+    "what": "Kuinka AI saa pääsyn yrityksen dataan: RAG, vektorihaku, hybridihaku, tietopohjat. Yksi 6 Systems-kerroksen osiosta. Muuttaa AI:n «tekstiavustajasta» «datasi asiantuntijaksi».",
+    "why": "Ilman data-järjestelmiä AI = tilaton avustaja, vastaa «en tiedä» mihin tahansa erityiseen kysymykseen. Data-järjestelmien kanssa = tuotantotietojärjestelmä tosiasiallisella perustalla (anti-hallusinaatio).",
+    "when": "Kun AI:n täytyy työskennellä dokumenttiesi/datasi kanssa. Kun personointia tarvitaan. Kun lähdeviittaus on vaadittu. Kun LLM yksin ei selviä domain-erityisistä tehtävistä.",
+    "impact": "Data-järjestelmät siirtävät LLM:n «generatiivisesta mallista» tuotantovalmiiksi tietojärjestelmäksi. Vastausten tarkkuus: 30% (ilman RAG:ia) → 85%+ (oikealla RAG-arkkitehtuurilla).",
+    "example": "2 osion keskeistä komponenttia:\n1. RAG Architecture — kuinka retrieve + generate (4 mallia)\n2. Context Passing — kuinka välittää dataa AI-askelten välillä\n\nYhdessä ne kattavat 90% data-järjestelmien tehtävistä.",
+    "mistakes": "Ajatella että vektoritietokanta + embeddings = data-järjestelmä. Tämä on vain tallennus. Täysi data-järjestelmä = retrieval + ranking + filtering + context strategy + monitoring. Jokainen taso on tärkeä."
+  },
+  "sys-rag-architecture": {
+    "title": "RAG Architecture Patterns",
+    "what": "4 arkkitehtuurista RAG-mallia. (1) Naive: kysely → vektorihaku → top-K → LLM. (2) Advanced: + re-ranking. (3) Modular: monivaiheinen retrieval + iteraatio. (4) Agentic: RAG osana agent loop:ia työkaluilla.",
+    "why": "«RAG» terminä on liian yleinen. Naive RAG tuotannossa = heikko laatu (usein 50-60% tarkkuus). Sinun on tiedettävä spesifinen malli latenssi/kustannus/laatu-budjettiisi.",
+    "when": "Naive → proof of concept, demo.\nAdvanced → tuotanto 1K-100K dokumentin pohjalla.\nModular → monimutkaiset kyselyt eri lähteillä.\nAgentic → tarvitaan työkaluja retrievalin lisäksi (search + calculation + API).",
+    "impact": "Oikea malli = 10× kustannussäästö TAI 2× laadun parannus. Naive→Advanced usein = +30% tarkkuus välittömästi (re-rankingin ansiosta).",
+    "example": "Mallien vertailu:\n\nNaive:    Query → VectorSearch → Top-K → LLM → Answer\nAdvanced: Query → VectorSearch → Top-50 → Re-rank → Top-5 → LLM → Answer\nModular:  Query → Classify intent → Route → [Retrieve-A | Retrieve-B] → Merge → LLM\nAgentic:  Query → Agent loop: [retrieve | reason | tool-use] → Answer\n\nKun monimutkaisuus kasvaa: latenssi kasvaa, laatu kasvaa, kustannus kasvaa.",
+    "mistakes": "Käyttää Naive RAG:ia tuotannossa. «Toimii testeissäni» ≠ tuotantovalmis. Tuotanto: aina re-ranking + hybridihaku (avainsana + semanttinen) + chunk-päällekkäisyys + metadata-suodatus."
+  },
+  "sys-context-passing": {
+    "title": "Context Passing AI-askelten välillä",
+    "what": "Kuinka välittää dataa/kontekstia AI-askelten välillä workflow:ssa. Kolme strategiaa: full context (kaikki), filtered (relevantti), summarized (LLM-tiivistys). Jokaisella on kustannus/laatu/latenssi-kompromissi.",
+    "why": "Multi-step workflow:ssa konteksti kasvaa neliöllisesti. Askeleessa 5 inputissasi voi olla 100K tokenia historiaa → kallis, hidas, ei välttämättä mahdu context-ikkunaan. Context passing -strategia on kriittinen arkkitehtoninen valinta.",
+    "when": "Workflow ≥3 askelta. Kun yhden askelen output ei mahdu seuraavan inputiin. Kun tarvitset säilyttää reasoningia tai välitilaa askelten välillä.",
+    "impact": "Oikea context passing = 50-70% token-säästö multi-step workflow:ssa. Plus alhaisempi virhetaso (LLM toimii paremmin fokusoidulla kontekstilla kuin ylikuormalla).",
+    "example": "Esimerkki: review analysis -workflow.\n\nStep 1: Analysoi 50 asiakaspalautetta (output: 50K tokenia)\nStep 2: Tarvitsee vain 5 teemaa Step 1:stä\n\n❌ Full context: välitä kaikki 50K tokenia → kallis, hidas, LLM kamppailee fokuksen kanssa\n✅ Summarized:   AI-tiivistä Step 1 → 500 tokenia → välitä Step 2:lle\n✅ Filtered:     Uuta teemat JSON:na → 200 tokenia → välitä Step 2:lle\n\nKustannussäästö: 250× vähemmän tokeneita Step 2:ssa.",
+    "mistakes": "«Kyllä se mahtuu» — heittämällä full context jokaisessa askeleessa. Kustannus kasvaa neliöllisesti workflow:n pituuden kanssa. Tuotantosääntö: aina eksplisiittinen context-strategia ENNEN multi-step workflow:ta, ei «korjataan kun rikkoutuu»."
   }
 }
