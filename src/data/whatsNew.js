@@ -15,6 +15,7 @@ export const WHATS_NEW = {
   // ─── Туториалы ─────────────────────────────────────────────────────────────
   'workflow-automation': { date: '2026-05-22', type: 'new', kind: 'tutorial' },
   'role-use-cases': { date: '2026-05-22', type: 'new', kind: 'tutorial' },
+  'intro': { date: '2026-05-22', type: 'updated', kind: 'tutorial' },
   'claude-for-educators': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'claude-project-architecture': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'claude-for-business': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
@@ -34,7 +35,6 @@ export const WHATS_NEW = {
   'scenarios': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'agents': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'ready-prompts': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
-  'intro': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'platform': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'capabilities': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'prompting-techniques': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
