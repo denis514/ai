@@ -3990,8 +3990,9 @@
 .mm-node--layer {
   border-width: 2px;
   border-style: solid;
-  position: relative;
   font-weight: 600;
+  /* НЕ переопределять position — base .mm-node имеет position: absolute,
+     иначе layer-узлы съезжают в normal flow и не попадают на координаты. */
 }
 .mm-node--layer:hover {
   border-color: var(--cat-color);
