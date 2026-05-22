@@ -916,6 +916,32 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   transition: background-color .2s ease, color .2s ease, border-color .2s ease;
 }
 
+/* ============================================================
+   Dark theme overrides — фикс hardcoded pastel backgrounds.
+   Используем color-mix чтобы pale-bg адаптировались к surface.
+   ============================================================ */
+:root[data-theme="dark"] .mm-node__tut.is-started {
+  background: color-mix(in srgb, #c2410c 18%, var(--surface));
+  border-color: color-mix(in srgb, #c2410c 35%, var(--surface));
+}
+:root[data-theme="dark"] .mm-node__tut.is-done {
+  background: color-mix(in srgb, #059669 18%, var(--surface));
+  border-color: color-mix(in srgb, #059669 35%, var(--surface));
+}
+:root[data-theme="dark"] .detail__progress-btn.is-on,
+:root[data-theme="dark"] .tut-finish__next:hover {
+  background: color-mix(in srgb, #059669 18%, var(--surface));
+}
+/* Profile completed-course hover */
+:root[data-theme="dark"] .profile-panel__completed-course:hover {
+  background: color-mix(in srgb, #059669 14%, var(--surface));
+}
+/* Status indicator pills (viewed/review/bookmark) */
+:root[data-theme="dark"] [class*="status-badge--viewed"],
+:root[data-theme="dark"] [class*="--viewed"][class*="badge"] {
+  background: var(--surface-2);
+}
+
 @media (max-width: 720px) {
   :root { --header-h: 156px; }
 }
@@ -4297,11 +4323,12 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .detail__example-cta-btn:hover { opacity: 0.88; }
 
 .detail__section--mistakes p {
-  background: #fef3f3;
+  background: color-mix(in srgb, #e2484f 8%, var(--surface));
   border-left: 3px solid #e2484f;
   padding: 10px 12px;
   border-radius: 6px;
   font-size: 13px;
+  color: var(--text);
 }
 
 .detail__sublist {
