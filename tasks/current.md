@@ -135,6 +135,17 @@
 
 ---
 
+## ✅ Завершено — Сессия 2026-05-22 (Phase 2 batch 2.5)
+
+### AI Fundamentals — расширение (+3 узла, теперь 7 всего)
+- ✅ **af-memory-systems** — AI Memory: 4 типа (book)
+- ✅ **af-multimodal** — Multimodal AI (paint)
+- ✅ **af-fine-tuning** — Fine-tuning vs Prompting (mixer)
+- Cross-links: 9 связей с существующими узлами
+- ai-fundamentals полный (7 узлов): LLM → Embeddings → Vector DB → RAG → Memory → Multimodal → Fine-tuning
+
+**Следующий шаг:** Phase 3 — Operations flagship (5 узлов AI-Native Operations + 2-3 Use Cases)
+
 ## ✅ Завершено — Сессия 2026-05-22 (Phase 2 batch 1)
 
 ### AI Fundamentals — первый батч (4 узла + контейнер)
