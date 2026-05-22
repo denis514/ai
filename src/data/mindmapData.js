@@ -1620,6 +1620,70 @@ export const mindmapData = {
             "ai-native-customer-support",
             "ai-native-product"
           ]
+        },
+        {
+          "id": "uc-ai-rag-launch",
+          "icon": "attachment",
+          "category": "use-cases",
+          "relatedIds": [
+            "af-rag-basics",
+            "af-vector-db",
+            "af-embeddings",
+            "sys-rag-architecture",
+            "projects",
+            "sys-context-passing"
+          ]
+        },
+        {
+          "id": "uc-ai-pilot-to-production",
+          "icon": "download",
+          "category": "use-cases",
+          "relatedIds": [
+            "sys-quality-gates",
+            "en-governance",
+            "en-risk-management",
+            "sys-workflows-basics",
+            "prompting"
+          ]
+        },
+        {
+          "id": "uc-ai-roi-estimation",
+          "icon": "tag",
+          "category": "use-cases",
+          "relatedIds": [
+            "en-roi-measurement",
+            "sc-data",
+            "ops-reporting-automation",
+            "mk-performance-analytics",
+            "cs-support-analytics",
+            "pd-product-analytics"
+          ]
+        },
+        {
+          "id": "uc-ai-vendor-selection",
+          "icon": "store",
+          "category": "use-cases",
+          "relatedIds": [
+            "en-governance",
+            "en-risk-management",
+            "pl-compare",
+            "pl-api",
+            "m-security",
+            "af-llm-basics"
+          ]
+        },
+        {
+          "id": "uc-ai-multi-agent-system",
+          "icon": "plug",
+          "category": "use-cases",
+          "relatedIds": [
+            "agents",
+            "ag-principles",
+            "cc-subagents",
+            "sys-workflows-basics",
+            "sys-context-passing",
+            "ag-managed"
+          ]
         }
       ]
     }
