@@ -135,6 +135,20 @@
 
 ---
 
+## ✅ Завершено — Сессия 2026-05-22 (Phase 1)
+
+### Архитектурная миграция Phase 1 — AI-Native Transformation OS
+- ✅ **Strategy pack** — 10 документов в `docs/strategy/` (~2900 строк)
+- ✅ **00-DECISIONS.md** — 16 архитектурных решений утверждены
+- ✅ **Categories migration** — 5 старых → 8 новых (foundation/configuration/prompts/automation/agents/systems/transformation/use-cases)
+- ✅ **Root structure** — 4 новых root-узла (foundation/systems/transformation/use-cases), 12 разделов теперь дети foundation
+- ✅ **7 новых узлов** — foundation, systems, transformation, use-cases + 3 anchor (sys-overview, tf-overview, uc-overview) на ru/en/fi
+- ✅ **CoursesModal → WorkflowsModal** — rename файла, компонента, всех ссылок (App.jsx, MobileFab, hooks, App.css)
+- ✅ **i18n обновлены** — Tutorial/Курсы → Workflow во всех UI-текстах
+- ✅ **133 узла** — category переведены на новые имена через Python script (атомарно)
+- ✅ **Build passes** — 89.93 KB gzip (+0.4 KB)
+- ✅ **User progress сохранён** — ID узлов не меняли
+
 ## ✅ Завершено — Сессия 2026-05-22 (продолжение)
 
 ### CoursesModal — UX-доработки
