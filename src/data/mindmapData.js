@@ -1342,6 +1342,89 @@ export const mindmapData = {
               ]
             }
           ]
+        },
+        {
+          "id": "ai-native-product",
+          "icon": "construction",
+          "category": "transformation",
+          "children": [
+            {
+              "id": "pd-discovery-research",
+              "icon": "microscope",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-research",
+                "af-rag-basics",
+                "sys-context-passing",
+                "prompting"
+              ]
+            },
+            {
+              "id": "pd-spec-generation",
+              "icon": "file",
+              "category": "transformation",
+              "relatedIds": [
+                "prompting",
+                "b-system",
+                "pr-structured",
+                "projects"
+              ]
+            },
+            {
+              "id": "pd-roadmap-intelligence",
+              "icon": "calendar",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "sc-analysis",
+                "ops-decision-intelligence"
+              ]
+            },
+            {
+              "id": "pd-experimentation",
+              "icon": "testtube",
+              "category": "transformation",
+              "relatedIds": [
+                "pr-iterate",
+                "sc-analysis",
+                "sys-workflows-basics"
+              ]
+            },
+            {
+              "id": "pd-feedback-synthesis",
+              "icon": "quote",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-research",
+                "sc-data",
+                "af-rag-basics",
+                "cs-support-analytics"
+              ]
+            },
+            {
+              "id": "pd-product-analytics",
+              "icon": "chart",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "ops-reporting-automation",
+                "mk-performance-analytics",
+                "cs-support-analytics"
+              ]
+            },
+            {
+              "id": "pd-team-workflow",
+              "icon": "users",
+              "category": "transformation",
+              "relatedIds": [
+                "projects",
+                "p-team",
+                "ops-team-workflow",
+                "mk-team-workflow",
+                "cs-team-workflow"
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1418,6 +1501,19 @@ export const mindmapData = {
             "cs-escalation",
             "af-rag-basics",
             "sys-rag-architecture",
+            "prompting",
+            "projects"
+          ]
+        },
+        {
+          "id": "uc-ai-discovery-launch",
+          "icon": "search",
+          "category": "use-cases",
+          "relatedIds": [
+            "pd-discovery-research",
+            "pd-feedback-synthesis",
+            "sys-context-passing",
+            "af-rag-basics",
             "prompting",
             "projects"
           ]

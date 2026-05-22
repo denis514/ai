@@ -1708,5 +1708,86 @@
     "impact": "Outcome: working tier-1 AI с 40% deflection за 4 недели. Metrics: deflection rate 0→40%, median response time 4h→2min для AI-tickets, CSAT maintained at baseline.",
     "example": "Путь (7 шагов):\n\nWeek 1: Knowledge Base prep.\n1. Foundation: af-rag-basics → понять что нужно для RAG\n2. Foundation: af-vector-db → выбор vector DB (pgvector обычно достаточно)\n3. Systems: sys-rag-architecture → выбор паттерна (Advanced RAG обязательно)\n4. Audit + restructure existing KB articles\n\nWeek 2: AI tier-1 setup.\n5. Foundation: prompting → system prompt для support bot\n6. Foundation: projects → создать «Support Bot» Project с KB\n7. Transformation: cs-tier1 → построить workflow с quality gates\n\nWeek 3: Quality + escalation.\n8. Transformation: cs-escalation → правильный routing для эскалаций\n9. Transformation: cs-quality-monitoring → setup random sample review\n\nWeek 4: Roll-out.\n10. Pilot на 1 категории tickets. Measure deflection + CSAT.\n11. Expand на 3-5 категорий. Iterate.\n\nStage transition: 1→2.",
     "mistakes": "Запустить AI tier-1 без KB ops first. Если KB не годится для AI retrieval (плохая структура, outdated) — AI будет отвечать generic или wrong. KB ops = 50% работы UC. Не пропускай."
+  },
+  "ai-native-product": {
+    "title": "AI-Native Product",
+    "what": "Product-команды на AI-native рельсах: discovery research, spec generation, roadmap intelligence, experimentation, feedback synthesis, analytics. От «PM руками собирает insights» — к «AI делает синтез, PM думает стратегически».",
+    "why": "Product management — самая «strategic-thinking» роль в компании. AI закрывает рутинную часть (синтез интервью, написание specs, чтение feedback), освобождая PM на high-value работу: prioritization, vision, stakeholder alignment.",
+    "when": "Когда PM тратит ≥30% времени на ручной синтез (interviews, feedback, data). Когда команда теряет insights между tickets/Slack/calls. Когда discovery → ship cycle медленный из-за «нужно написать PRD».",
+    "impact": "7 узлов покрывают полный product lifecycle: discovery (research) → definition (spec) → planning (roadmap) → experimentation → measurement (analytics) + sense-making (feedback) + team operating model.",
+    "example": "Maturity stages для Product:\nStage 0: Pre-AI — manual research, gut prioritization, long PRD writing.\nStage 1: AI experiments — Claude помогает писать отдельные PRDs.\nStage 2: AI workflows — Project с research patterns, AI делает первичный синтез.\nStage 3: AI-native — PM как conductor: AI делает discovery/synthesis/specs, PM делает strategy.\nStage 4: AI-first — продукты с AI capabilities как core feature, не add-on.",
+    "mistakes": "Думать что AI заменит product judgment. AI хорош в synthesis и pattern-matching, но prioritization требует business context, stakeholder politics, market intuition. AI = co-pilot, PM остаётся pilot."
+  },
+  "pd-discovery-research": {
+    "title": "AI Discovery Research",
+    "what": "AI-powered user research: автоматический синтез интервью, конкурентный анализ, market research. От «прочитал 20 интервью за 3 дня» — к «AI извлекает темы за час, PM валидирует».",
+    "why": "Discovery — самая time-intensive часть PM-работы. 50 интервью = неделя на синтез вручную. AI делает первый pass за час, PM фокусируется на validation и interpretation.",
+    "when": "Когда есть >10 интервью / customer calls на одну тему. Когда нужна квартальная customer research. Когда конкурентный landscape меняется и нужно отследить.",
+    "impact": "Time-to-insight: дни → часы. Coverage: PM может «обработать» 50 интервью вместо 10. Quality: structured themes вместо «вот мои заметки». Stage 1→2.",
+    "example": "Research Synthesis Workflow:\n\n  Inputs:\n  - 30 интервью transcripts\n  - Customer support tickets (1 month)\n  - Competitor reviews on G2/Trustpilot\n        ↓\n  Project «Research» с RAG индексом\n        ↓\n  AI Steps:\n  1. Extract themes (frequency + sentiment)\n  2. Cluster similar quotes\n  3. Identify gaps (что часто упоминают, но мы не делаем)\n  4. Generate hypothesis matrix\n        ↓\n  PM validates: какие темы actionable, какие требуют follow-up\n        ↓\n  Output: structured research report + raw data accessible\n\nMetric: time-to-insight, theme coverage.",
+    "mistakes": "Полагаться на AI без human validation. AI пропускает nuance: irony, edge cases, культурный контекст. Workflow: AI extracts → PM validates 10-20% sample → confidence в остальном растёт. Без validation — false insights."
+  },
+  "pd-spec-generation": {
+    "title": "AI Spec Generation",
+    "what": "AI пишет PRDs, user stories, technical specs из rough idea + research input. От «PM сидит 2 дня писать PRD» — к «PM итерирует с AI 2 часа, draft готов».",
+    "why": "PRD writing — bottleneck для shipping. PM тратит дни на форматирование/структурирование того, что уже знает в голове. AI закрывает «писательскую» часть, PM фокусируется на content quality.",
+    "when": "Когда команда теряет момент между «есть идея» и «написан PRD». Когда есть documented PRD template. Когда rough notes / research уже есть на руках.",
+    "impact": "Time-to-PRD: 2 дня → 4 часа (включая итерации). Consistency: единый формат для всех specs. Quality: AI catches missing sections (success metrics, edge cases, etc.). Stage 1→2.",
+    "example": "Spec Generation Workflow:\n\n  Input для AI:\n  - Rough idea (3-5 предложений от PM)\n  - Research output (от pd-discovery)\n  - Existing PRD template + 2-3 high-quality examples\n        ↓\n  AI generates:\n  - Problem statement\n  - User stories с acceptance criteria\n  - Success metrics предложения\n  - Open questions\n  - Technical considerations (для engineering)\n        ↓\n  PM iterates: 3-5 раундов правок\n        ↓\n  Output: ship-ready PRD\n\nMetric: time-to-spec, dev team feedback on PRD quality.",
+    "mistakes": "Делать AI-PRD без research input. «Напиши PRD для feature X» = generic stuff. Quality output требует quality input: research, examples, constraints. Garbage in = garbage out."
+  },
+  "pd-roadmap-intelligence": {
+    "title": "AI Roadmap Intelligence",
+    "what": "AI помогает с roadmap-prioritization: анализ feedback patterns, competitor moves, customer requests, internal data → ranked priorities с reasoning. AI = «second analyst» в roadmap discussions.",
+    "why": "Roadmap prioritization обычно делается «по чутью» под давлением stakeholders. AI приносит structured framework: explicit weights, data-based scoring, рассмотрение alternatives.",
+    "when": "Quarterly planning. Перед roadmap review с executives. Когда «у всех своё мнение» и нужна structured framework для decision.",
+    "impact": "Reactive prioritization: -60%. Stakeholder alignment: faster (data, не мнения). Roadmap thrashing: reduced (явные критерии не дают frequent changes). Stage 2→3.",
+    "example": "Roadmap Prioritization Workflow:\n\n  Inputs:\n  - All product opportunities (backlog + new ideas)\n  - Customer feedback themes (от feedback-synthesis)\n  - Competitor analysis\n  - Internal metrics (revenue impact, retention)\n  - Strategic objectives (current quarter)\n        ↓\n  AI Scoring:\n  - Each opportunity rated по: impact, effort, strategic fit, risk\n  - Reasoning explicit для каждого\n  - Alternative orderings проигрываются\n        ↓\n  PM + leadership: review AI ranking + override based on judgment\n        ↓\n  Output: prioritized roadmap с documented reasoning\n\nValue: следующий квартал ты МОЖЕШЬ объяснить «почему мы выбрали это».",
+    "mistakes": "Принимать AI roadmap как final. AI scoring основан на данных, которые ты дал — но он не знает board politics, executive priorities, или upcoming launches. AI = input в decision, не decision itself."
+  },
+  "pd-experimentation": {
+    "title": "AI Feature Experimentation",
+    "what": "AI-поддержка A/B testing: hypothesis generation, variant design, statistical analysis interpretation, learnings synthesis. От «запустили A/B, забыли результаты» — к «structured experimentation engine».",
+    "why": "Most teams running A/B tests poorly: weak hypotheses, no power analysis, results forgotten. AI structures это: forces explicit hypothesis, generates variant ideas, helps interpret results.",
+    "when": "Когда команда runs ≥3 experiments/quarter. Когда experiment outputs не превращаются в product knowledge. Когда нужно scale experimentation на multiple teams.",
+    "impact": "Experiment velocity: +50%. Experiments with clear learnings: 50% → 90%. Knowledge retention: structured library experiment outcomes. Stage 2→3.",
+    "example": "Experimentation Workflow:\n\n  1. Hypothesis Generation:\n     - PM inputs: «hypothesis: shorter onboarding → higher activation»\n     - AI critiques: «specify metric, magnitude, timeframe, sample needed»\n     - Result: «If we cut onboarding from 5 to 2 steps, activation rate +15% over 4 weeks (n>1000)»\n\n  2. Variant Design:\n     - AI generates 3-5 specific variant approaches\n     - Discusses pros/cons of each\n\n  3. Post-experiment Analysis:\n     - Input: results data\n     - AI: «winner with X confidence. Caveats: ... Recommended follow-up: ...»\n\n  4. Library:\n     - AI maintains experiment knowledge base\n     - Search: «did we try X before?»\n\nMetric: experiments / quarter, learnings library size.",
+    "mistakes": "Использовать AI для «predict before run». AI не предскажет результат A/B (если бы мог — A/B был бы не нужен). AI хорош в: hypothesis sharpening, variant ideation, post-analysis interpretation. Не predictive."
+  },
+  "pd-feedback-synthesis": {
+    "title": "AI Feedback Synthesis",
+    "what": "AI читает all user feedback (NPS comments, support tickets, reviews, sales notes) → структурированные insights с trends. От «PM прочитал ~50 комментариев» — к «AI обработал 5000 и нашёл паттерны».",
+    "why": "Customer feedback fragmented по 5-10 источникам. PM физически не успевает прочитать всё. AI делает aggregation + synthesis. Sentiment-shifts видны до того как они проявятся в churn.",
+    "when": "Когда есть ≥3 источника feedback (NPS, support, reviews, sales calls, social). Когда product team хочет «голос клиента» systematic, не anecdotal.",
+    "impact": "Coverage: 5% feedback читается → 100% обрабатывается. Time-to-trend: 2 месяца → 2 недели. Decision quality: data-backed вместо «помнится кто-то жаловался». Stage 2→3.",
+    "example": "Feedback Synthesis Pipeline:\n\n  Sources (weekly):\n  - NPS responses (раз в квартал × 1000+)\n  - Support tickets с CSAT comments\n  - App store / G2 reviews\n  - Sales call notes\n  - Social mentions\n        ↓\n  AI Processing:\n  1. Clean + deduplicate\n  2. Categorize (feature, UX, pricing, performance, ...)\n  3. Sentiment analysis\n  4. Theme extraction\n  5. Trend detection (what changed week-over-week)\n        ↓\n  Weekly Output:\n  - Top 5 themes (with magnitude + delta)\n  - Quote samples for each\n  - Critical issues to investigate\n        ↓\n  Distribution:\n  - Product team review (decisions)\n  - Engineering: bug themes\n  - Marketing: positioning themes\n\nMetric: feedback coverage, time-to-action on trending issues.",
+    "mistakes": "Делать feedback synthesis в vacuum. Output должен идти в roadmap planning, не в read-only report. Workflow: synthesis → product review → roadmap update → measure impact. Без loop — это вежливый theater."
+  },
+  "pd-product-analytics": {
+    "title": "AI Product Analytics",
+    "what": "AI читает product usage data (Amplitude, Mixpanel, GA) → пишет insight reports с гипотезами «почему так?» и suggested investigations. От «вот dashboard» — к «вот что произошло и что значит».",
+    "why": "Product analytics tools покажут «что произошло», но не «почему». PM/analytics manager тратит часы на formulating hypotheses. AI делает это first-pass, человек проверяет.",
+    "when": "Weekly product reviews. После каждого major release. Когда метрика unexpected (рост или падение). Когда команда «не понимает почему» что-то происходит.",
+    "impact": "Time-to-hypothesis: дни → часы. Coverage: analytics-aware решений растёт от 30% к 70%+ команды. Stage 2→3.",
+    "example": "Weekly Product Analytics Workflow:\n\n  Inputs:\n  - Top-line metrics (DAU, MAU, retention, activation)\n  - Feature usage (new + existing)\n  - User segments behavior\n  - Recent product releases\n        ↓\n  AI Analysis:\n  1. What changed (numbers + delta + significance)\n  2. Correlation: «release X → metric Y +Z%»\n  3. Anomaly detection (unusual segment behavior)\n  4. Hypotheses (ranked by likelihood)\n  5. Recommended investigations (queries to run, segments to look at)\n        ↓\n  Product team:\n  - Validates top hypotheses\n  - Decides actions\n  - Adds learnings to knowledge base\n\nMetric: % of metric changes with documented explanation.",
+    "mistakes": "Доверять AI causal claims. «Release X caused metric Y +5%» — это correlation, не causation. AI рекомендует hypothesis, human должен validate через proper analysis (cohort, A/B, before-after)."
+  },
+  "pd-team-workflow": {
+    "title": "AI Product Team Workflow",
+    "what": "Product team operating model с AI: shared research workspace, common spec templates, feedback synthesis pipeline, weekly AI office hours. От «каждый PM со своим Claude» — к «коллаборативная AI-powered product team».",
+    "why": "Indiv usage в product не масштабируется — research findings lost между PMs, specs inconsistent, knowledge не shared. Team workflow создаёт shared institutional memory.",
+    "when": "Product team ≥3 PMs используют AI. Когда «у каждого свой подход к specs». Когда research выводы теряются после launch. Когда новый PM «не знает как мы работаем».",
+    "impact": "Team velocity: +30%. New PM onboarding: 6 weeks → 3 weeks (через shared knowledge). Decision quality: improves over time (institutional memory grows). Stage 2→3.",
+    "example": "Product Team Setup:\n\n1. Shared Claude Project «Product Workspace»:\n   - All research transcripts indexed\n   - Past PRDs library\n   - Experiment learnings\n   - Customer feedback (categorized)\n\n2. CLAUDE.md: writing conventions, PRD template, decision frameworks.\n\n3. Skills:\n   - research-synthesizer\n   - prd-drafter\n   - feedback-categorizer\n   - experiment-designer\n\n4. Weekly «AI office hours» 30 min:\n   - Best prompts discoveries\n   - Failed AI experiments (что не работает)\n   - Cross-team learning\n\n5. Quarterly knowledge curation:\n   - Что добавить в shared workspace\n   - Что устарело и удалить\n\nStage 3 sign: new PM пишет shipping-ready PRD к концу первого месяца.",
+    "mistakes": "Делать team workflow без librarian role. Shared workspace без maintainership = junk drawer через 6 месяцев. Кто-то должен curate: weekly review of new content, monthly cleanup of outdated."
+  },
+  "uc-ai-discovery-launch": {
+    "title": "Use Case: Запуск AI-Discovery за 2 недели",
+    "what": "Полный путь от «делаем research руками» до «AI-powered discovery pipeline». Cross-layer path через 6 узлов: Foundation → Systems → Transformation.",
+    "why": "Самый частый запрос product teams: «у нас тонны интервью / feedback / research, но синтез — bottleneck». Этот UC решает systematically через RAG + workflows + product practices.",
+    "when": "Когда product team имеет ≥30 интервью или ≥100 feedback items без структурированной обработки. Когда discovery → ship cycle медленный. Когда есть buy-in от Head of Product.",
+    "impact": "Outcome: working AI-discovery pipeline за 2 недели. Metrics: time-to-insight ≤2 hours per topic, research coverage 100% (vs 30% manually), theme extraction structured.",
+    "example": "Путь (6 шагов):\n\nWeek 1: Setup foundation.\n1. Foundation: prompting → как формулировать synthesis prompts\n2. Foundation: af-rag-basics → RAG basics для research repository\n3. Foundation: projects → создать «Discovery Workspace» с research files\n\nWeek 1-2: Build pipeline.\n4. Systems: sys-context-passing → правильно передавать research context между шагами\n5. Transformation: pd-discovery-research → конкретный workflow с PM validation gates\n\nWeek 2: Extend & sustain.\n6. Transformation: pd-feedback-synthesis → расширить на ongoing feedback (не только interviews)\n\nDay 1-3: Index existing research в Project. Test synthesis на 5-10 interviews.\nDay 4-7: Refine prompts на основе validation feedback. Document patterns.\nDay 8-14: Scale на full research backlog. Train other PMs.\n\nStage transition: 1→2.",
+    "mistakes": "Делать UC без structured research input. Если interviews хаотично разбросаны по Notion / Google Docs / Slack — AI не сможет их найти. Day 1 работа = organize research repository. Это 30% UC time. Не пропускай."
   }
 }

@@ -1708,5 +1708,86 @@
     "impact": "Outcome: working tier-1 AI with 40% deflection in 4 weeks. Metrics: deflection rate 0→40%, median response time 4h→2min for AI-tickets, CSAT maintained at baseline.",
     "example": "Path (7 steps):\n\nWeek 1: Knowledge Base prep.\n1. Foundation: af-rag-basics → understand what RAG needs\n2. Foundation: af-vector-db → vector DB choice (pgvector usually enough)\n3. Systems: sys-rag-architecture → pattern choice (Advanced RAG mandatory)\n4. Audit + restructure existing KB articles\n\nWeek 2: AI tier-1 setup.\n5. Foundation: prompting → system prompt for support bot\n6. Foundation: projects → create «Support Bot» Project with KB\n7. Transformation: cs-tier1 → build workflow with quality gates\n\nWeek 3: Quality + escalation.\n8. Transformation: cs-escalation → correct routing for escalations\n9. Transformation: cs-quality-monitoring → setup random sample review\n\nWeek 4: Roll-out.\n10. Pilot on 1 ticket category. Measure deflection + CSAT.\n11. Expand to 3-5 categories. Iterate.\n\nStage transition: 1→2.",
     "mistakes": "Launching AI tier-1 without KB ops first. If the KB is not suitable for AI retrieval (bad structure, outdated) — AI will answer generic or wrong. KB ops = 50% of UC work. Do not skip."
+  },
+  "ai-native-product": {
+    "title": "AI-Native Product",
+    "what": "Product teams on AI-native rails: discovery research, spec generation, roadmap intelligence, experimentation, feedback synthesis, analytics. From «PM manually gathers insights» — to «AI does synthesis, PM thinks strategically».",
+    "why": "Product management is the most «strategic-thinking» role in the company. AI handles routine work (interview synthesis, spec writing, feedback reading), freeing the PM for high-value work: prioritization, vision, stakeholder alignment.",
+    "when": "When the PM spends ≥30% of time on manual synthesis (interviews, feedback, data). When the team loses insights between tickets/Slack/calls. When the discovery → ship cycle is slow because of «need to write a PRD».",
+    "impact": "7 nodes cover the full product lifecycle: discovery (research) → definition (spec) → planning (roadmap) → experimentation → measurement (analytics) + sense-making (feedback) + team operating model.",
+    "example": "Maturity stages for Product:\nStage 0: Pre-AI — manual research, gut prioritization, long PRD writing.\nStage 1: AI experiments — Claude helps write individual PRDs.\nStage 2: AI workflows — Project with research patterns, AI does primary synthesis.\nStage 3: AI-native — PM as conductor: AI does discovery/synthesis/specs, PM does strategy.\nStage 4: AI-first — products with AI capabilities as core feature, not add-on.",
+    "mistakes": "Thinking AI will replace product judgment. AI is good at synthesis and pattern matching, but prioritization requires business context, stakeholder politics, market intuition. AI = co-pilot, PM remains pilot."
+  },
+  "pd-discovery-research": {
+    "title": "AI Discovery Research",
+    "what": "AI-powered user research: automatic interview synthesis, competitive analysis, market research. From «read 20 interviews in 3 days» — to «AI extracts themes in an hour, PM validates».",
+    "why": "Discovery is the most time-intensive part of PM work. 50 interviews = a week of manual synthesis. AI does a first pass in an hour, the PM focuses on validation and interpretation.",
+    "when": "When there are >10 interviews/customer calls on one topic. When quarterly customer research is needed. When the competitive landscape changes and you need to track it.",
+    "impact": "Time-to-insight: days → hours. Coverage: PM can «process» 50 interviews instead of 10. Quality: structured themes instead of «here are my notes». Stage 1→2.",
+    "example": "Research Synthesis Workflow:\n\n  Inputs:\n  - 30 interview transcripts\n  - Customer support tickets (1 month)\n  - Competitor reviews on G2/Trustpilot\n        ↓\n  Project «Research» with RAG index\n        ↓\n  AI Steps:\n  1. Extract themes (frequency + sentiment)\n  2. Cluster similar quotes\n  3. Identify gaps (what people often mention but we do not do)\n  4. Generate hypothesis matrix\n        ↓\n  PM validates: which themes are actionable, which need follow-up\n        ↓\n  Output: structured research report + raw data accessible\n\nMetric: time-to-insight, theme coverage.",
+    "mistakes": "Relying on AI without human validation. AI misses nuance: irony, edge cases, cultural context. Workflow: AI extracts → PM validates a 10-20% sample → confidence in the rest grows. Without validation — false insights."
+  },
+  "pd-spec-generation": {
+    "title": "AI Spec Generation",
+    "what": "AI writes PRDs, user stories, technical specs from a rough idea + research input. From «PM sits for 2 days writing a PRD» — to «PM iterates with AI for 2 hours, draft is ready».",
+    "why": "PRD writing is a shipping bottleneck. PMs spend days formatting/structuring what they already know in their heads. AI handles the «writing» part, the PM focuses on content quality.",
+    "when": "When the team loses momentum between «have an idea» and «PRD written». When there is a documented PRD template. When rough notes / research are already on hand.",
+    "impact": "Time-to-PRD: 2 days → 4 hours (including iterations). Consistency: a single format for all specs. Quality: AI catches missing sections (success metrics, edge cases, etc.). Stage 1→2.",
+    "example": "Spec Generation Workflow:\n\n  Input for AI:\n  - Rough idea (3-5 sentences from PM)\n  - Research output (from pd-discovery)\n  - Existing PRD template + 2-3 high-quality examples\n        ↓\n  AI generates:\n  - Problem statement\n  - User stories with acceptance criteria\n  - Success metrics proposals\n  - Open questions\n  - Technical considerations (for engineering)\n        ↓\n  PM iterates: 3-5 rounds of edits\n        ↓\n  Output: ship-ready PRD\n\nMetric: time-to-spec, dev team feedback on PRD quality.",
+    "mistakes": "Doing AI-PRDs without research input. «Write a PRD for feature X» = generic stuff. Quality output requires quality input: research, examples, constraints. Garbage in = garbage out."
+  },
+  "pd-roadmap-intelligence": {
+    "title": "AI Roadmap Intelligence",
+    "what": "AI helps with roadmap prioritization: analyzing feedback patterns, competitor moves, customer requests, internal data → ranked priorities with reasoning. AI = «second analyst» in roadmap discussions.",
+    "why": "Roadmap prioritization is usually done «by gut» under stakeholder pressure. AI brings a structured framework: explicit weights, data-based scoring, consideration of alternatives.",
+    "when": "Quarterly planning. Before a roadmap review with executives. When «everyone has their own opinion» and a structured framework is needed for the decision.",
+    "impact": "Reactive prioritization: -60%. Stakeholder alignment: faster (data, not opinions). Roadmap thrashing: reduced (explicit criteria prevent frequent changes). Stage 2→3.",
+    "example": "Roadmap Prioritization Workflow:\n\n  Inputs:\n  - All product opportunities (backlog + new ideas)\n  - Customer feedback themes (from feedback-synthesis)\n  - Competitor analysis\n  - Internal metrics (revenue impact, retention)\n  - Strategic objectives (current quarter)\n        ↓\n  AI Scoring:\n  - Each opportunity rated on: impact, effort, strategic fit, risk\n  - Reasoning explicit for each\n  - Alternative orderings played out\n        ↓\n  PM + leadership: review AI ranking + override based on judgment\n        ↓\n  Output: prioritized roadmap with documented reasoning\n\nValue: next quarter you CAN explain «why we chose this».",
+    "mistakes": "Accepting AI roadmap as final. AI scoring is based on the data you gave — but it does not know board politics, executive priorities, or upcoming launches. AI = input into a decision, not the decision itself."
+  },
+  "pd-experimentation": {
+    "title": "AI Feature Experimentation",
+    "what": "AI support for A/B testing: hypothesis generation, variant design, statistical analysis interpretation, learnings synthesis. From «ran A/B, forgot results» — to «structured experimentation engine».",
+    "why": "Most teams run A/B tests poorly: weak hypotheses, no power analysis, results forgotten. AI structures this: forces explicit hypothesis, generates variant ideas, helps interpret results.",
+    "when": "When the team runs ≥3 experiments per quarter. When experiment outputs do not turn into product knowledge. When you need to scale experimentation across multiple teams.",
+    "impact": "Experiment velocity: +50%. Experiments with clear learnings: 50% → 90%. Knowledge retention: structured library of experiment outcomes. Stage 2→3.",
+    "example": "Experimentation Workflow:\n\n  1. Hypothesis Generation:\n     - PM inputs: «hypothesis: shorter onboarding → higher activation»\n     - AI critiques: «specify metric, magnitude, timeframe, sample needed»\n     - Result: «If we cut onboarding from 5 to 2 steps, activation rate +15% over 4 weeks (n>1000)»\n\n  2. Variant Design:\n     - AI generates 3-5 specific variant approaches\n     - Discusses pros/cons of each\n\n  3. Post-experiment Analysis:\n     - Input: results data\n     - AI: «winner with X confidence. Caveats: ... Recommended follow-up: ...»\n\n  4. Library:\n     - AI maintains experiment knowledge base\n     - Search: «did we try X before?»\n\nMetric: experiments per quarter, learnings library size.",
+    "mistakes": "Using AI for «predict before run». AI cannot predict the result of an A/B (if it could — an A/B would not be needed). AI is good at: hypothesis sharpening, variant ideation, post-analysis interpretation. Not predictive."
+  },
+  "pd-feedback-synthesis": {
+    "title": "AI Feedback Synthesis",
+    "what": "AI reads all user feedback (NPS comments, support tickets, reviews, sales notes) → structured insights with trends. From «PM read ~50 comments» — to «AI processed 5000 and found patterns».",
+    "why": "Customer feedback is fragmented across 5-10 sources. The PM physically cannot read everything. AI does aggregation + synthesis. Sentiment shifts visible before they show up in churn.",
+    "when": "When there are ≥3 feedback sources (NPS, support, reviews, sales calls, social). When the product team wants «voice of customer» systematic, not anecdotal.",
+    "impact": "Coverage: 5% of feedback is read → 100% is processed. Time-to-trend: 2 months → 2 weeks. Decision quality: data-backed instead of «I remember someone complained». Stage 2→3.",
+    "example": "Feedback Synthesis Pipeline:\n\n  Sources (weekly):\n  - NPS responses (quarterly × 1000+)\n  - Support tickets with CSAT comments\n  - App store / G2 reviews\n  - Sales call notes\n  - Social mentions\n        ↓\n  AI Processing:\n  1. Clean + deduplicate\n  2. Categorize (feature, UX, pricing, performance, ...)\n  3. Sentiment analysis\n  4. Theme extraction\n  5. Trend detection (what changed week-over-week)\n        ↓\n  Weekly Output:\n  - Top 5 themes (with magnitude + delta)\n  - Quote samples for each\n  - Critical issues to investigate\n        ↓\n  Distribution:\n  - Product team review (decisions)\n  - Engineering: bug themes\n  - Marketing: positioning themes\n\nMetric: feedback coverage, time-to-action on trending issues.",
+    "mistakes": "Doing feedback synthesis in a vacuum. Output must flow into roadmap planning, not into a read-only report. Workflow: synthesis → product review → roadmap update → measure impact. Without the loop — polite theater."
+  },
+  "pd-product-analytics": {
+    "title": "AI Product Analytics",
+    "what": "AI reads product usage data (Amplitude, Mixpanel, GA) → writes insight reports with hypotheses «why did this happen?» and suggested investigations. From «here is a dashboard» — to «here is what happened and what it means».",
+    "why": "Product analytics tools show «what happened», but not «why». PM/analytics manager spends hours on formulating hypotheses. AI does this first-pass, the human verifies.",
+    "when": "Weekly product reviews. After every major release. When a metric is unexpected (growth or drop). When the team «does not understand why» something is happening.",
+    "impact": "Time-to-hypothesis: days → hours. Coverage: analytics-aware decisions grow from 30% to 70%+ of the team. Stage 2→3.",
+    "example": "Weekly Product Analytics Workflow:\n\n  Inputs:\n  - Top-line metrics (DAU, MAU, retention, activation)\n  - Feature usage (new + existing)\n  - User segments behavior\n  - Recent product releases\n        ↓\n  AI Analysis:\n  1. What changed (numbers + delta + significance)\n  2. Correlation: «release X → metric Y +Z%»\n  3. Anomaly detection (unusual segment behavior)\n  4. Hypotheses (ranked by likelihood)\n  5. Recommended investigations (queries to run, segments to look at)\n        ↓\n  Product team:\n  - Validates top hypotheses\n  - Decides actions\n  - Adds learnings to knowledge base\n\nMetric: % of metric changes with documented explanation.",
+    "mistakes": "Trusting AI causal claims. «Release X caused metric Y +5%» — that is correlation, not causation. AI recommends a hypothesis, the human must validate via proper analysis (cohort, A/B, before-after)."
+  },
+  "pd-team-workflow": {
+    "title": "AI Product Team Workflow",
+    "what": "Product team operating model with AI: shared research workspace, common spec templates, feedback synthesis pipeline, weekly AI office hours. From «every PM with their own Claude» — to a «collaborative AI-powered product team».",
+    "why": "Individual usage in product does not scale — research findings are lost between PMs, specs are inconsistent, knowledge is not shared. Team workflow creates a shared institutional memory.",
+    "when": "Product team ≥3 PMs use AI. When «everyone has their own approach to specs». When research findings are lost after launch. When a new PM «does not know how we work».",
+    "impact": "Team velocity: +30%. New PM onboarding: 6 weeks → 3 weeks (via shared knowledge). Decision quality: improves over time (institutional memory grows). Stage 2→3.",
+    "example": "Product Team Setup:\n\n1. Shared Claude Project «Product Workspace»:\n   - All research transcripts indexed\n   - Past PRDs library\n   - Experiment learnings\n   - Customer feedback (categorized)\n\n2. CLAUDE.md: writing conventions, PRD template, decision frameworks.\n\n3. Skills:\n   - research-synthesizer\n   - prd-drafter\n   - feedback-categorizer\n   - experiment-designer\n\n4. Weekly «AI office hours» 30 min:\n   - Best prompt discoveries\n   - Failed AI experiments (what is not working)\n   - Cross-team learning\n\n5. Quarterly knowledge curation:\n   - What to add to shared workspace\n   - What is outdated and to remove\n\nStage 3 sign: new PM writes a shipping-ready PRD by the end of the first month.",
+    "mistakes": "Doing team workflow without a librarian role. Shared workspace without maintainership = junk drawer in 6 months. Someone must curate: weekly review of new content, monthly cleanup of outdated."
+  },
+  "uc-ai-discovery-launch": {
+    "title": "Use Case: Launch AI Discovery in 2 Weeks",
+    "what": "Full path from «doing research by hand» to «AI-powered discovery pipeline». Cross-layer path through 6 nodes: Foundation → Systems → Transformation.",
+    "why": "The most common product team request: «we have tons of interviews / feedback / research, but synthesis is a bottleneck». This UC solves it systematically via RAG + workflows + product practices.",
+    "when": "When the product team has ≥30 interviews or ≥100 feedback items without structured processing. When the discovery → ship cycle is slow. When there is buy-in from Head of Product.",
+    "impact": "Outcome: working AI-discovery pipeline in 2 weeks. Metrics: time-to-insight ≤2 hours per topic, research coverage 100% (vs 30% manually), structured theme extraction.",
+    "example": "Path (6 steps):\n\nWeek 1: Setup foundation.\n1. Foundation: prompting → how to formulate synthesis prompts\n2. Foundation: af-rag-basics → RAG basics for research repository\n3. Foundation: projects → create «Discovery Workspace» with research files\n\nWeek 1-2: Build pipeline.\n4. Systems: sys-context-passing → properly pass research context between steps\n5. Transformation: pd-discovery-research → concrete workflow with PM validation gates\n\nWeek 2: Extend & sustain.\n6. Transformation: pd-feedback-synthesis → extend to ongoing feedback (not just interviews)\n\nDay 1-3: Index existing research in the Project. Test synthesis on 5-10 interviews.\nDay 4-7: Refine prompts based on validation feedback. Document patterns.\nDay 8-14: Scale to the full research backlog. Train other PMs.\n\nStage transition: 1→2.",
+    "mistakes": "Doing a UC without structured research input. If interviews are scattered chaotically across Notion / Google Docs / Slack — AI cannot find them. Day 1 work = organize the research repository. This is 30% of UC time. Do not skip."
   }
 }
