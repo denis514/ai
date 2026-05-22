@@ -3,12 +3,30 @@ import MindmapNode from './MindmapNode.jsx';
 import { useMindmapLayout } from '../hooks/useMindmapLayout.js';
 import { usePanZoom } from '../hooks/usePanZoom.js';
 
-function buildEdgePath(from, to) {
-  // Гладкая бокс-кривая Безье — типичный mindmap-style
-  const dx = (to.x - from.x);
-  const cx1 = from.x + dx * 0.5;
-  const cx2 = to.x   - dx * 0.5;
-  return `M ${from.x} ${from.y} C ${cx1} ${from.y}, ${cx2} ${to.y}, ${to.x} ${to.y}`;
+// Приблизительные half-width узлов по depth — для подгонки концов линий к границе узла.
+// Без этого линии идут от центра к центру и «врезаются» в узлы на разную глубину.
+// Точные значения через DOM-замер потребовали бы доп. рендера — здесь компромисс.
+// Должно быть ≤ половины самого УЗКОГО узла на каждом уровне.
+// Иначе появляется gap между концом линии и узлом ("узел съезжает от линии").
+// Замеры: layer min = 78 (Systems), branches ~ 70-180.
+function nodeHalfWidth(depth) {
+  if (depth === 0) return 32;   // root (64px fixed diameter)
+  if (depth === 1) return 75;   // layer nodes (min Systems=78)
+  return 65;                     // обычные узлы (consistent margin)
+}
+
+function buildEdgePath(from, to, depthFrom, depthTo) {
+  // Endpoint у границы узла со стороны линии, не у центра.
+  // Направление: line идёт от from к to, значит, on from-side прижимаем к стороне TO, и наоборот.
+  const dir = Math.sign(to.x - from.x);  // +1 = to справа, -1 = to слева
+  const fromX = from.x + dir * nodeHalfWidth(depthFrom);
+  const toX   = to.x   - dir * nodeHalfWidth(depthTo);
+
+  // Гладкая безье — bend mid-point
+  const dx = (toX - fromX);
+  const cx1 = fromX + dx * 0.5;
+  const cx2 = toX   - dx * 0.5;
+  return `M ${fromX} ${from.y} C ${cx1} ${from.y}, ${cx2} ${to.y}, ${toX} ${to.y}`;
 }
 
 const Mindmap = forwardRef(function Mindmap(
@@ -73,7 +91,7 @@ const Mindmap = forwardRef(function Mindmap(
             return (
               <path
                 key={e.id}
-                d={buildEdgePath(e.from, e.to)}
+                d={buildEdgePath(e.from, e.to, e.depth - 1, e.depth)}
                 className={`mm-edge mm-edge--depth-${Math.min(e.depth, 3)} ${dimmed ? 'is-dimmed' : ''}`}
                 fill="none"
               />
