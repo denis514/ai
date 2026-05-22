@@ -36,6 +36,7 @@ export default function ProfilePanel({
   const { locale, setLocale, locales } = useLocale();
   const { user, profile, setProfile, isLoggedIn } = useAuth();
   const [langOpen, setLangOpen] = useState(false);
+  const [completedOpen, setCompletedOpen] = useState(false);
 
   // Supabase stats (только когда залогинен)
   const supaStats = useSupabaseStats(user?.id || null);
@@ -120,6 +121,23 @@ export default function ProfilePanel({
       if (!b.startedAt) return -1;
       return b.startedAt.localeCompare(a.startedAt);
     });
+    return result;
+  }, [progressApi, locale]);
+
+  // ── Список завершённых курсов ─────────────────────────────────────────────
+  const completedCourses = useMemo(() => {
+    const result = [];
+    for (const id of tutorialIds) {
+      const p = progressApi.getProgress(id);
+      if (!p?.completedAt) continue;
+      const localized = getLocalizedTutorial(id, locale);
+      const title = localized?.title || id;
+      const stepCount = tutorials[id]?.steps?.length || 1;
+      const completedAt = p.completedAt;
+      result.push({ id, title, stepCount, completedAt });
+    }
+    // Сортировка: завершённые последними — первые
+    result.sort((a, b) => b.completedAt.localeCompare(a.completedAt));
     return result;
   }, [progressApi, locale]);
 
@@ -303,6 +321,49 @@ export default function ProfilePanel({
               </li>
             ))}
           </ul>
+        )}
+      </section>
+
+      {/* ── ЗАВЕРШЁННЫЕ КУРСЫ ── */}
+      <section className="profile-panel__section profile-panel__section--completed">
+        <button
+          type="button"
+          className="profile-panel__completed-toggle"
+          onClick={() => setCompletedOpen(v => !v)}
+          aria-expanded={completedOpen}
+        >
+          <h4>{t('profile.completed.title')}</h4>
+          <span className="profile-panel__completed-count">{completedCourses.length}</span>
+          <Icon
+            name={completedOpen ? 'arrow-up' : 'arrow-down'}
+            size={13}
+            strokeWidth={1.75}
+          />
+        </button>
+
+        {completedOpen && (
+          completedCourses.length === 0 ? (
+            <p className="profile-panel__empty-hint">{t('profile.completed.empty')}</p>
+          ) : (
+            <ul className="profile-panel__completed-list">
+              {completedCourses.map(course => (
+                <li key={course.id}>
+                  <button
+                    type="button"
+                    className="profile-panel__completed-course"
+                    onClick={() => onStartTutorial?.(course.id)}
+                    title={t('profile.completed.open')}
+                  >
+                    <span className="profile-panel__completed-check" aria-hidden="true">
+                      <Icon name="check" size={11} strokeWidth={2.5} />
+                    </span>
+                    <span className="profile-panel__completed-title">{course.title}</span>
+                    <Icon name="arrow-right" size={13} strokeWidth={1.5} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )
         )}
       </section>
 
