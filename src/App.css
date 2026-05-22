@@ -8316,3 +8316,76 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 @media (max-width: 480px) {
   .update-banner { bottom: 72px; font-size: 12px; }
 }
+
+/* ───────── Inline-ссылки в тексте узлов [[node:|tutorial:|prompt:|]] ───────── */
+.inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 4px;
+  margin: 0 1px;
+  background: color-mix(in srgb, var(--accent, #6f5dde) 8%, transparent);
+  color: color-mix(in srgb, var(--accent, #6f5dde) 78%, var(--text));
+  border: none;
+  border-bottom: 1px dashed color-mix(in srgb, var(--accent, #6f5dde) 45%, transparent);
+  border-radius: 4px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s, color .15s, border-color .15s;
+  vertical-align: baseline;
+  line-height: 1.4;
+}
+.inline-link:hover {
+  background: color-mix(in srgb, var(--accent, #6f5dde) 18%, transparent);
+  color: var(--accent, #6f5dde);
+  border-bottom-style: solid;
+}
+.inline-link:active {
+  background: color-mix(in srgb, var(--accent, #6f5dde) 28%, transparent);
+}
+.inline-link__icon {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.7;
+}
+.inline-link:hover .inline-link__icon { opacity: 1; }
+.inline-link__label { white-space: normal; }
+
+/* Тип: tutorial — мягкий зелёный оттенок */
+.inline-link--tutorial {
+  --accent: #2faa6a;
+}
+/* Тип: prompt — мягкий оранжевый оттенок (под FAB) */
+.inline-link--prompt {
+  --accent: #e0833a;
+}
+/* Тип: node — фиолетовый по умолчанию (тот же что в карте) */
+.inline-link--node {
+  --accent: #6f5dde;
+}
+
+/* Битая ссылка — без интерактива, серая, с волнистой пунктирной линией */
+.inline-link--broken {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  background: none;
+  color: color-mix(in srgb, var(--text) 55%, transparent);
+  border: none;
+  border-bottom: 1px dotted color-mix(in srgb, var(--text) 35%, transparent);
+  cursor: help;
+  font-style: italic;
+}
+
+/* Dark theme — чуть ярче для контраста */
+:root[data-theme="dark"] .inline-link {
+  background: color-mix(in srgb, var(--accent, #8b7af0) 14%, transparent);
+  color: color-mix(in srgb, var(--accent, #8b7af0) 95%, var(--text));
+  border-bottom-color: color-mix(in srgb, var(--accent, #8b7af0) 50%, transparent);
+}
+:root[data-theme="dark"] .inline-link:hover {
+  background: color-mix(in srgb, var(--accent, #8b7af0) 26%, transparent);
+  color: var(--accent, #8b7af0);
+}

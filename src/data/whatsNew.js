@@ -34,7 +34,6 @@ export const WHATS_NEW = {
   'prompting': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'scenarios': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'agents': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
-  'ready-prompts': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'platform': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'capabilities': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'prompting-techniques': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
@@ -47,6 +46,7 @@ export const WHATS_NEW = {
   'welcome': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
+  'ready-prompts': { date: '2026-05-22', type: 'updated' },
   'foundation': { date: '2026-05-22', type: 'updated' },
   'systems': { date: '2026-05-22', type: 'updated' },
   'transformation': { date: '2026-05-22', type: 'updated' },
@@ -136,6 +136,11 @@ export const WHATS_NEW = {
   'ds-content-design': { date: '2026-05-22', type: 'new' },
   'ds-team-workflow': { date: '2026-05-22', type: 'new' },
   'uc-ai-design-research-launch': { date: '2026-05-22', type: 'new' },
+  'rp-project': { date: '2026-05-22', type: 'updated' },
+  'rp-artifact': { date: '2026-05-22', type: 'updated' },
+  'rp-skill': { date: '2026-05-22', type: 'updated' },
+  'rp-claudemd': { date: '2026-05-22', type: 'updated' },
+  'rp-audit': { date: '2026-05-22', type: 'updated' },
   'b-educators': { date: '2026-05-20', type: 'new' },
   'pl-api': { date: '2026-05-17', type: 'new' },
   'pr-4d': { date: '2026-05-17', type: 'new' },

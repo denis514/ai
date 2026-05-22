@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Tooltip from './Tooltip.jsx';
 import Icon from './Icon.jsx';
 import BottomSheet from './BottomSheet.jsx';
+import InlineText from './InlineText.jsx';
 import { useIsMobile } from '../hooks/useIsMobile.js';
 import { CATEGORIES, getRelatedNodes } from '../data/mindmapData.js';
 import { tutorials, tutorialByNodeId } from '../data/tutorials.js';
@@ -16,6 +17,7 @@ export default function DetailPanel({
   onClose,
   onStartTutorial,
   onSelectRelated,
+  onOpenPrompt,
   progressApi,
   bookmarksApi,
   nodeProgressApi,
@@ -73,6 +75,13 @@ export default function DetailPanel({
   const tTotalTime = tutorialLocalized?.totalTime || '';
 
   const bookmarkOn = bookmarksApi?.isBookmarked('node', node.id);
+
+  // Навигаторы для inline-ссылок [[node:|tutorial:|prompt:]] в тексте узла.
+  const inlineNav = {
+    node: (id) => onSelectRelated?.(id),
+    tutorial: (id) => onStartTutorial?.(id),
+    prompt: (id) => onOpenPrompt?.(id)
+  };
 
   const metaBlock = (
     <>
@@ -164,7 +173,7 @@ export default function DetailPanel({
             {t(`detail.sections.${k}`)}
             <Tooltip label={t(`detail.tooltips.${k}`)} />
           </h3>
-          <p>{d[k]}</p>
+          <InlineText text={d[k]} onNavigate={inlineNav} />
         </section>
       ))}
 
@@ -214,7 +223,7 @@ export default function DetailPanel({
             {t('detail.sections.mistakes')}
             <Tooltip label={t('detail.tooltips.mistakes')} />
           </h3>
-          <p>{d.mistakes}</p>
+          <InlineText text={d.mistakes} onNavigate={inlineNav} />
         </section>
       )}
 

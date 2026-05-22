@@ -27,6 +27,7 @@ import { useBookmarks } from './hooks/useBookmarks.js';
 import { useNodeProgress } from './hooks/useNodeProgress.js';
 import { useWhatsNew } from './hooks/useWhatsNew.js';
 import { useLocale } from './i18n/LocaleContext.jsx';
+import { getLocalizedFeaturedPrompt } from './i18n/usePrompt.js';
 import { useAuth } from './context/AuthContext.jsx';
 import { STRINGS } from './i18n/strings.js';
 import { FALLBACK_LOCALE } from './i18n/config.js';
@@ -711,6 +712,10 @@ function AppInner() {
           onSelectRelated={(id) => {
             releasePinDim();
             navigateToNode(id);
+          }}
+          onOpenPrompt={(promptId) => {
+            const p = getLocalizedFeaturedPrompt(promptId, locale);
+            if (p) setFeaturedPrompt(p);
           }}
           progressApi={progressApi}
           bookmarksApi={bookmarksApi}
