@@ -13,6 +13,8 @@
  */
 export const WHATS_NEW = {
   // ─── Туториалы ─────────────────────────────────────────────────────────────
+  'workflow-automation': { date: '2026-05-22', type: 'new', kind: 'tutorial' },
+  'role-use-cases': { date: '2026-05-22', type: 'new', kind: 'tutorial' },
   'claude-for-educators': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'claude-project-architecture': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'claude-for-business': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },

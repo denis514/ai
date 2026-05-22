@@ -3970,5 +3970,265 @@
         "validate": "Muotoile tekoälyn käyttösäännöt luokallesi. Keskustele niistä oppilaiden kanssa — heidän reaktionsa näyttää mitä unohdit."
       }
     }
+  },
+  "workflow-automation": {
+    "title": "AI-työnkulun rakentaminen",
+    "subtitle": "Projects + Skills + Scenarios yhdeksi automatisoiduksi prosessiksi",
+    "totalTime": "25 min",
+    "whatItIs": "Käytännön kurssi AI-työnkulkujen luomiseen ilman koodia — jokaiselle käyttäjälle, joka haluaa muuttaa hajanaiset Claude-vuorovaikutukset yhtenäiseksi järjestelmäksi. Opit miten Projects toimivat säilöinä, Skills uudelleenkäytettävinä moduuleina ja Scenarios soveltamismalleina. Lopussa olet rakentanut ensimmäisen kattavan työnkulkusi ja dokumentoinut sen tiimiä varten.",
+    "approach": "Kurssi on rakennettu työpajana: jokainen vaihe tuottaa artefaktin, jonka luot oikeaan omaan tehtävääsi. Teoria on minimaalinen — jokainen käsite vahvistetaan välittömästi käytännöllä. Viimeiseen vaiheeseen mennessä sinulla on dokumentoitu työnkulku valmiina siirrettäväksi kollegalle.",
+    "outcomes": [
+      "Osaat analysoida tehtävän ja tunnistaa työnkulkumallin: syöte → prosessi → tuloste",
+      "Rakennat Projecteja pysyvällä kontekstilla varustettuina työskentelytiloina",
+      "Kirjoitat uudelleenkäytettäviä Skillsejä — moduuleja toistuviin operaatioihin",
+      "Rakennat vaiheiden ketjuja, joissa yhden vaiheen tuloste on seuraavan syöte",
+      "Validoit välitulokset — et luota Claudeen sokeasti",
+      "Dokumentoit työnkulun niin, että kollega voi käyttää sitä ilman selityksiäsi"
+    ],
+    "applyIn": [
+      {
+        "title": "Analytiikka ja raportointi",
+        "description": "Muuta 'kerää data → analysoi → kirjoita raportti' -sykli toistettavaksi työnkuluksi. Jokainen vaihe on dokumentoitu, laatu on vakaata, seuraava raportti valmistuu puolta nopeammin."
+      },
+      {
+        "title": "Sisältö ja viestintä",
+        "description": "Sähköpostisarjat, monikanavajulkaisut, säännölliset briifaukset — työnkulku mahdollistaa äänen ja rakenteen uudelleenkäytön sen sijaan, että keksit kaiken alusta joka kerta."
+      },
+      {
+        "title": "Operatiiviset prosessit",
+        "description": "Perehdytys, pyyntöjen käsittely, kokousvalmistelu — mikä tahansa toistuva AI-prosessi voidaan dokumentoida työnkuluksi ja siirtää tiimille ilman laadun heikkenemistä."
+      }
+    ],
+    "pitfalls": [
+      "Yritetään automatisoida koko prosessi kerralla — aloita yhdestä konkreettisesta vaiheesta, varmista että se toimii luotettavasti, lisää sitten seuraava.",
+      "Työnkulun rakentaminen tehtävälle, joka muuttuu joka kerta — automatisointi tuottaa arvoa vain siellä, missä on riittävästi toistoa ja ennakoitava syöte.",
+      "Validate-vaiheiden ohittaminen ajan säästämiseksi — välitulosten tarkistaminen kestää 2 minuuttia ja estää kaskadivirheet koko ketjussa."
+    ],
+    "exercises": [
+      {
+        "question": "Ota mikä tahansa toistuva tehtävä viikostasi ja kartoita se ketjuna: mikä on syöte, mitkä ovat muunnosvaiheet, mikä on lopullinen tuloste. Kuinka moni vaihe vaatii Claudea, ja kuinka moni vaatii omaa harkintaasi?",
+        "hint": "Harkintaa vaativat vaiheet ovat tarkistuspisteesi. Juuri siellä työnkulun tulisi pysähtyä ja odottaa ihmisen tarkistusta."
+      },
+      {
+        "question": "Kirjoita SKILL.md yhdelle toistuvalle operaatiolle, jonka teet joka viikko. Näytä se kollegalle ja kysy: voisiko hän käyttää tätä skilliä ilman apuasi?",
+        "hint": "Jos kollega esittää enemmän kuin kaksi kysymystä, skilliä ei ole kuvattu riittävän hyvin. Lisää esimerkkejä ja tarkenna syöteformaattia."
+      }
+    ],
+    "steps": {
+      "wa-1": {
+        "title": "Mikä on AI-työnkulku: Projects, Skills, Scenarios",
+        "time": "4 min",
+        "why": "Ilman yhteistä terminologiaa on helppo sekoittaa Projects, Skills ja Scenarios — ja rakentaa kaoottisia vuorovaikutuksia järjestelmän sijaan.",
+        "instructions": [
+          "AI-työnkulku on vaiheistus, jossa Claude tekee osan työstä ja ihminen tarkistaa tuloksen ja siirtää ohjauksen eteenpäin. Se ei ole taikuutta — se on toistettava prosessi selkeillä syötteillä ja tulosteilla.",
+          "Project — säilö ja työskentelytila. Siinä ovat ohjeet (mitä Claude tietää oletuksena), tietopohja (dokumentit ja konteksti) ja vuorovaikutushistoria. Yksi Project = yksi työskentelyalue tai tehtävä.",
+          "Skill — uudelleenkäytettävä moduuli: kuvaus yhdestä konkreettisesta operaatiosta, jossa on ohje, syöteformaatti, tulosteformaatti ja esimerkki. Skilliä voi käyttää yhä uudelleen — tulos on ennakoitava.",
+          "Scenario — soveltamismalli: kuvaus konkreettisesta tilanteesta, jossa työnkulkua käytetään. Yhtä Skilliä voidaan käyttää useissa Scenarioissa. Esimerkiksi 'tiivistäminen'-skilliä käytetään 'viikkobriifinki'-scenariossa ja 'kokousvalmistelu'-scenariossa.",
+          "Mentaalinen malli: Project = toimisto. Skills = työohjeet pöydällä. Scenarios = konkreettiset tehtävät, joita työntekijä ratkaisee päivittäin näitä ohjeita käyttäen."
+        ],
+        "tip": "Älä yritä formalisoida kaikkea kerralla. Aloita kuvaamalla mitä teet nyt — sen jälkeen jaa se Projects-, Skills- ja Scenarios-osiin.",
+        "validate": "Osaat nimetä yhden tehtävän työssäsi ja selittää mikä on sen Project, mitä Skilliä tarvitaan ja missä Scenariossa se suoritetaan."
+      },
+      "wa-2": {
+        "title": "Hyvän työnkulun anatomia: syöte → prosessi → tuloste",
+        "time": "4 min",
+        "why": "Työnkulkua ilman selkeää syöte/tuloste-rakennetta ei voi toistaa, siirtää kollegalle tai parantaa — se suoritetaan eri tavalla joka kerta.",
+        "instructions": [
+          "Puretaan esimerkillä: 'analyyttisen raportin valmistelu'. Syöte: raakadata (taulukko, vienti, joukko faktoja) + kysymys, johon raportin tulee vastata. Prosessi: 3 Claude-vaihetta (rakenna → analysoi → muotoile). Tuloste: valmis raporttikonsepti sovitussa formaatissa.",
+          "Kolme kysymystä jokaiselle työnkululle: (1) Mitä Claudelle täytyy toimittaa, jotta se voi aloittaa? (2) Mitkä vaiheet on käytävä läpi ja missä järjestyksessä? (3) Miltä 'valmis' tulos näyttää?",
+          "Syötteen kuvaaminen on tärkein osa. Epämääräinen syöte = arvaamaton tulos. Hyvä syötekuvaus kattaa: dataformaatin, volyymin, pakolliset kentät, kielen ja rajoitukset.",
+          "Välitulosteet ovat seuraavien vaiheiden syötteitä. Kirjaa jokaiselle vaiheelle: mitä siirretään eteenpäin ja missä formaatissa. Tämä mahdollistaa pullonkaulojen löytämisen ennen käynnistämistä.",
+          "Lopullisella tulosteella on oltava valmistumiskriteeri: ei 'hyvä raportti', vaan 'raportti, jossa on enintään 200 sanan johtopäätöstiivistelmä, 3–5 keskeistä löydöstä ja suositukset bullet-pisteinä'."
+        ],
+        "tip": "Kirjoita työnkulku paperille ennen Clauden avaamista. Kaksi tuntia kaavion tekoon säästää kahdeksan tuntia iterointia.",
+        "validate": "Valitsemallesi tehtävälle on syötteen kuvaus, vaiheluettelo ja lopullisen tulosteen valmistumiskriteeri."
+      },
+      "wa-3": {
+        "title": "Skills: ensimmäisen uudelleenkäytettävän moduulin luominen",
+        "time": "5 min",
+        "why": "Ilman formalisoitua Skilliä muotoilet saman tehtävän uudelleen joka kerta — tuhlaat aikaa ja saat epäjohdonmukaisia tuloksia.",
+        "instructions": [
+          "Skill on kiinteärakenteinen dokumentti. Minimikoostumus: nimi (mitä skill tekee), syöte (mitä pitää toimittaa), ohje (vaiheittainen ohje Claudelle), tuloste (mitä Claude palauttaa ja missä formaatissa), esimerkki (konkreettinen syöte/tuloste-pari).",
+          "Valitse toistuva operaatio työssäsi: palautteen tiivistäminen, kokousagendan valmistelu, kilpailijan analyysi, sähköpostiluonnos. Mitä konkreettisempi, sen parempi.",
+          "Kirjoita SKILL.md: aloita nimellä ja yhdellä lauseella siitä miksi tätä skilliä tarvitaan. Sitten Input-osio konkreettisella esimerkillä. Sitten Instructions — mitä Clauden tulee tehdä, vaihe vaiheelta. Sitten Output — tarkka tulosformaatti. Lopuksi esimerkki.",
+          "Testaa skill: avaa Claude, liitä skillin ohje järjestelmäkontekstiksi, anna testisyöte ja arvioi tuloste. Vastaako se kuvattua formaattia?",
+          "Iteroi skilliä, kunnes tuloste on vakaa kolmella eri testisyötteellä. Vasta sitten skill on valmis käytettäväksi työnkulussa."
+        ],
+        "tip": "Paras ensimmäinen skill on se, jonka teet jo manuaalisesti joka viikko. Älä keksi uusia tehtäviä automatisoitavaksi — formalisoi olemassa olevia.",
+        "validate": "Sinulla on valmis SKILL.md, jonka olet testannut vähintään kahdella oikealla syötteellä ja saanut ennakoitavan tuloksen."
+      },
+      "wa-4": {
+        "title": "Ketjut: yhden vaiheen tuloste tulee seuraavan syötteeksi",
+        "time": "4 min",
+        "why": "Vaiheiden ketjuttaminen on se, mikä muuttaa joukon erillisiä Claude-vuorovaikutuksia oikeaksi työnkuluksi.",
+        "instructions": [
+          "Ketjuperiaate: vaiheen N lopullinen tuloste vastaa täsmälleen vaiheen N+1 kuvattua syöteformaattia. Jos formaatit eivät täsmää, vaiheiden väliin tarvitaan muunnosvaihe.",
+          "Harjoitus: ota kaksi skilliä, jotka haluat ketjuttaa. Kirjoita ensimmäisen tulosteformaatti ja toisen syöteformaatti. Onko väli? Useimmiten on — tuloste on liian pitkäsanainen tai eri tavalla jäsennelty.",
+          "Kolme tapaa sulkea väli: (1) lisää ensimmäisen skillin ohjeeseen selkeä tulosteformaatti, joka sopii seuraavalle vaiheelle, (2) luo välissä toimiva muunnosskill, joka muuntaa formaatin tarvittavaksi, (3) lisää ihmisen vaihe — muokkaat siirtymän manuaalisesti.",
+          "Dokumentoi ketju: piirrä kaavio, jossa jokainen lohko on yksi vaihe, nuolet näyttävät tiedonsiirron ja timanttikuviot merkitsevät ihmisen tarkistuspisteet. Tästä kaaviosta tulee työnkulun dokumentaatio.",
+          "Testaa koko ketju kokonaisuutena, ei vain yksittäisiä vaiheita. Virheet syntyvät useimmiten vaiheiden saumakohdissa, ei niiden sisällä."
+        ],
+        "tip": "Käytä selkeitä erottimia prompteissa: 'Tässä edellisen vaiheen tuloste: [DATA]. Suorita nyt...'. Eksplisiittinen kontekstin välittäminen on luotettavampaa kuin implisiittinen.",
+        "validate": "Olet ketjuttanut vähintään kaksi vaihetta ja ajanut oikeaa dataa niiden läpi. Toisen vaiheen tuloste vastaa odotettua formaattia."
+      },
+      "wa-5": {
+        "title": "Laadunvalvonta: human-in-the-loop ja validate-lohkot",
+        "time": "4 min",
+        "why": "Claude voi tehdä virheitä, hallusinoida ja tulkita monimerkityksisesti — sokea luottamus tulosteeseen monivaiheisessa työnkulussa johtaa kaskadimaisiin virheisiin.",
+        "instructions": [
+          "Human-in-the-loop tarkoittaa työnkulun pisteitä, joissa ihminen tarkistaa tuloksen ennen kuin se siirretään eteenpäin. Kaikkia vaiheita ei tarvitse tarkistaa — tunnista kriittiset pisteet, joissa virheellä on suurimmat seuraukset.",
+          "Validate-lohko on eksplisiittinen kriteeri, jonka tarkistat: 'tuloste sisältää tarkalleen 5 kohtaa', 'kaikki yritysnimet vastaavat lähdedataa', 'sävy on muodollinen, ei jargonia'. Kirjoita validate-lohkot jokaiselle vaiheelle, jossa tämä on tärkeää.",
+          "Kolme valvontatasoa: (1) automaattinen — Claude tarkistaa ohjeeseen sisällytetyn tarkistuslistan perusteella, (2) nopea silmäys — 30 sekuntia, katsot rakennetta ja keskeistä dataa, (3) syvä tarkistus — luet kokonaan ja vertaat lähteeseen.",
+          "Punaisia lippuja, jotka vaativat syvää tarkistusta: konkreettiset luvut ja tilastot, nimet ja tittelit, juridinen ja taloudellinen kieli, tietyille henkilöille attribuoidut sitaatit.",
+          "Lisää validate-lohko suoraan skillin ohjeeseen: 'Lisää vastauksesi loppuun tarkistuslista, jossa merkitset jokaisen tämän kriteerin täyttymisen: [lista]. Jos kriteeri ei täyty, selitä miksi'."
+        ],
+        "tip": "Paras validate-lohko on konkreettinen ja binaarinen: täyttyy / ei täyty. 'Teksti kuulostaa ammattimaiselta' on huono kriteeri. 'Ei sisällä sanoja tältä listalta' on hyvä kriteeri.",
+        "validate": "Jokainen työnkulkusi vaihe sisältää vähintään yhden eksplisiittisen validate-kriteerin ja tiedät kuka (ihminen vai Claude) sen tarkistaa."
+      },
+      "wa-6": {
+        "title": "Skaalaaminen: dokumentoi ja siirrä työnkulku tiimille",
+        "time": "4 min",
+        "why": "Työnkulku, joka elää vain yhden ihmisen päässä, ei ole skaalautuva prosessi — se on henkilökohtainen tapa. Dokumentaatio muuttaa sen tiimistandardiksi.",
+        "instructions": [
+          "Työnkulun dokumentaatiorakenne: (1) nimi ja tarkoitus yhdessä lauseessa, (2) milloin käyttää — laukaisin, (3) mitä valmistella — syötedata, (4) vaiheet viitteineen Skillseihin, (5) miltä hyvä tulos näyttää, (6) yleiset virheet ja miten välttää ne.",
+          "Validoi dokumentaatio: pyydä kollega, joka ei ole koskaan nähnyt tätä työnkulkua, lukemaan dokumentti ja yrittämään suorittaa sen itsenäisesti. Missä hän jumittuu — siellä ovat puutteet.",
+          "Versiointi: lisää 'viimeksi päivitetty' -päivämäärä ja lyhyt muutosloki. Työnkulut muuttuvat — tiimin täytyy tietää mikä versio on ajantasainen.",
+          "Säilytys: Claude Project ohjeineen on ihanteellinen työnkulkudokumenttien säilyttämiseen. Kaikilla tiimin jäsenillä on pääsy ja konteksti on aina ajantasainen.",
+          "Parannussykli: jokaisen 10 työnkulkuajon jälkeen pidä 15 minuutin retrospektiivi. Mikä toimi? Mikä vei ylimääräistä aikaa? Mikä antoi odottamattomia tuloksia? Päivitä dokumentaatio."
+        ],
+        "tip": "Hyvä työnkulkudokumentaatio ei ole käyttäjäohje — se on työskentelyohje. Kirjoita se kuin selittäisit älykkäälle uudelle työntekijälle, joka ei ole koskaan tehnyt tätä tehtävää.",
+        "validate": "Sinulla on työnkulkudokumentti, jota toinen henkilö voi käyttää ilman suullisia selityksiäsi. Olet varmistanut tämän käytännössä."
+      }
+    }
+  },
+  "role-use-cases": {
+    "title": "Claude ammateittain",
+    "subtitle": "Konkreettiset sovellukset Marketing, Sales, HR, Product ja Customer Success -tiimeille",
+    "totalTime": "28 min",
+    "whatItIs": "Käytännön kurssi asiantuntijoille, jotka jo tuntevat Clauden perusteet ja haluavat soveltaa niitä rooliinsa kuuluviin tehtäviin. Kattaa viisi funktiota: Marketing, Sales, HR, Product, Customer Success — konkreettisin promptein, malleineen ja työnkulkuineen jokaiselle. Viimeisessä vaiheessa rakennat oman role-playbookin.",
+    "approach": "Jokainen vaihe käsittelee yhtä roolia ja sisältää konkreettisia skenaarioita, kopioitavia prompteja ja tyypillisiä virheitä. Vaikka työskentelisit yhdessä funktiossa — selaile kaikki vaiheet: monet mallit siirtyvät roolien välillä. Viimeinen vaihe kokoaa henkilökohtaisen playbookisi.",
+    "outcomes": [
+      "Sovellat Claudea 5+ roolisi konkreettiseen tehtävään ennakoitavalla laadulla",
+      "Loit roolikohtaiset promptit ja mallit tärkeimmille tehtävillesi",
+      "Rakennat työnkulkuja Projectsilla funktiosi toistuviin operaatioihin",
+      "Mukautat malleja lähialoilta omiin tehtäviisi",
+      "Vältät tyypilliset AI-virheet yritysympäristössä",
+      "Dokumentoit ja olet valmis jakamaan mallit tiimisi kanssa"
+    ],
+    "applyIn": [
+      {
+        "title": "Markkinointi ja viestintä",
+        "description": "Sisältökone yhtenäisellä brändiäänellä: pitkät artikkelit, SEO-sisältö, sähköpostikampanjat ja julkaisut eri kanaville — Claude mukauttaa yhden sisällön kaikkiin formaatteihin."
+      },
+      {
+        "title": "Myynti ja Customer Success",
+        "description": "Personoitu outreach, neuvotteluvalmistelu, vastalauseiden analyysi, vastausmallit — Claude auttaa skaalaamaan laadun menettämättä personointia."
+      },
+      {
+        "title": "HR ja operatiivinen johtaminen",
+        "description": "Työnkuvauksista perehdytyspaketteihin ja käytäntöihin: Claude lyhentää hallinnollisten dokumenttien tekemiseen kuluvaa aikaa ja auttaa ylläpitämään johdonmukaisen sävyn ja standardit."
+      }
+    ],
+    "pitfalls": [
+      "Yhden universaalin promptin käyttäminen kaikille roolin tehtäville — jokainen skenaario tarvitsee oman kontekstinsa ja formaattinsa. Luo erillinen malli jokaiselle toistuvalle tehtävälle.",
+      "Clauden luoman sisällön julkaiseminen ilman brändimukaisuuden ja faktuaalisen tarkkuuden tarkistamista — erityisen kriittistä ulkoisessa viestinnässä myynnissä ja markkinoinnissa.",
+      "Tietosuojan huomiotta jättäminen asiakas- tai kandidaattitietojen kanssa — käytä anonymisoituja kuvauksia äläkä syötä henkilötietoja tarpeettomasti."
+    ],
+    "exercises": [
+      {
+        "question": "Valitse kolme roolisi aikaa vievintä tehtävää. Kirjoita prompti jokaiselle ja testaa se oikealla esimerkillä. Mikä kolmesta antoi parhaan tuloksen ensimmäisellä yrityksellä?",
+        "hint": "Tehtävät, joilla on selkeä malli ja standarditulosteformaatti, toimivat Clauden kanssa parhaiten ensimmäisellä kerralla. Nyansseja ja kontekstia vaativat tehtävät paranevat muutaman iteraation jälkeen."
+      },
+      {
+        "question": "Löydä kollega eri funktiosta (Marketing → Sales, HR → Product) ja näytä hänelle paras promptisi. Pyydä häntä mukauttamaan se omaan rooliinsa. Mikä muuttui? Mikä pysyi samana?",
+        "hint": "Promptin rakenne on yleensä siirrettävissä. Roolin konteksti ja tulosteformaatti muuttuvat. Tämä näyttää sinulle, mikä on promptin ydin ja mikä on roolikohtainen kerros."
+      }
+    ],
+    "steps": {
+      "ruc-1": {
+        "title": "Markkinointi: sisältökone yhtenäisellä äänellä",
+        "time": "5 min",
+        "why": "Markkinointi tuottaa enemmän sisältöä kuin mikään muu funktio — mutta jokaisen kappaleen on kuulostettava samalta. Claude ratkaisee molemmat haasteet samanaikaisesti.",
+        "instructions": [
+          "Brändiääni järjestelmäpromptissa: lisää Project-ohjeisiin brändiäänen kuvaus — 3–5 adjektiivia, esimerkkejä lauseista, jotka kuulostavat 'oikealta' ja esimerkkejä jotka kuulostavat 'väärältä'. Claude soveltaa tätä automaattisesti.",
+          "Pitkät artikkelit ja SEO: artikkelin prompti = aihe + kohderyhmä + lukijan pääkysymys + avainsanat + haluttu pituus + rakenne (H2/H3). Pyydä Claudea kirjoittamaan ensin outline ja hyväksy se ennen koko tekstin luomista.",
+          "Sähköpostikampanjat: käytä yhtä viestiä pohjana — pyydä Claudea luomaan 3–5 variaatiota eri pituuksissa ja sävyissä (muodollinen / keskusteleva / kiireellinen). A/B-testi näyttää mikä toimii parhaiten.",
+          "Kanavamukauttaminen: yksi sisältö → viisi formaattia. Prompti: 'Tässä on pitkän artikkelin teksti: [TEKSTI]. Mukauta se: (1) LinkedIn-julkaisu 150 sanaa, (2) Twitter/X-lanka 5 twiittiä, (3) sähköpostin otsikkorivi + esikatsteluteksti, (4) lyhyt tiivistelmä uutiskirjeeseen, (5) käsikirjoitus 60 sekunnin videolle'.",
+          "Tyypillinen markkinoijan virhe: pyytää Claudea 'kirjoittamaan sisältöä' ilman yleisökontekstia. Määrittele aina: kuka lukija on, mitä hän jo tietää ja miltä hänen pitäisi tuntua lukemisen jälkeen."
+        ],
+        "tip": "Luo Projectiin yksi referenssikappale, joka heijastaa täydellisesti brändiääntä. Käytä sitä viittauksena: 'Kirjoita samassa tyylissä kuin tämä esimerkki: [referenssi]'.",
+        "validate": "Olet luonut vähintään yhden promptin konkreettiselle markkinointitehtävälle ja saanut tuloksen, jota voi käyttää konseptina ilman suuria muokkauksia."
+      },
+      "ruc-2": {
+        "title": "Myynti: liidistä kauppaan",
+        "time": "4 min",
+        "why": "Myynti vaatii personointia laajassa mittakaavassa — jokaisen viestin on tuntuttava käsinkirjoitetulta, mutta sen tekeminen manuaalisesti 50 liidille on mahdotonta.",
+        "instructions": [
+          "Personoitu outreach: prompti = yritysprofiili (toimiala, koko, viimeaikaiset tapahtumat) + yhteyshenkilön profiili (rooli, roolin kipupisteet) + tuotteesi + viestin tavoite (ensikontakti / follow-up / uudelleenaktivointi). Tulos: viestiluonnos, joka tarvitsee vain tarkistuksen ja personoinnin 2–3 kohdassa.",
+          "Vastalauseanalyysi: luo 'Vastalauseanalyysi'-skill. Syöte: asiakkaan vastalauseen sanamuoto. Tuloste: (1) vastalauseen taustalla oleva todellinen huoli, (2) 2–3 tapaa vastata, (3) kysymys, joka auttaa ymmärtämään ongelman syvyyden.",
+          "Neuvotteluvalmistelu: prompti = yrityksen nimi + tunnettu tieto kaupasta + oma asemasi + kokouksen tavoite. Pyydä Claudelta: mahdolliset asiakkaan kysymykset, mahdolliset vastalauseet, keskeiset argumentit asemallesi, punaiset linjat joita ei saa ylittää.",
+          "Kokouksen jälkeen: 'Tässä ovat muistiinpanoni kokouksesta: [MUISTIINPANOT]. Kirjoita seuranta-sähköposti, jossa on: (1) kiitos, (2) lyhyt yhteenveto sopimuksista, (3) seuraavat vaiheet määräaikoineen, (4) avoin kysymys vuoropuhelun jatkamiseksi'.",
+          "Tärkeää: tarkista aina faktuaaliset tiedot yrityksestä ja asiakkaasta, jotka Claude sisällyttää viesteihin — hallusinaatiot myynnissä ovat erityisen vaarallisia."
+        ],
+        "tip": "Paras tapa käyttää Claudea myynnissä ei ole personoinnin korvaaminen vaan sen nopeuttaminen. Luonnos 30 sekunnissa, personointi 2 minuutissa — kirjoittamisen sijaan tyhjästä 15 minuutissa.",
+        "validate": "Sinulla on mallipohjainen outreach-prompti, jonka olet testannut 3 oikealla liidillä ja saanut luonnoksia, jotka vaativat minimaalisia muokkauksia."
+      },
+      "ruc-3": {
+        "title": "HR: työnkuvauksesta perehdytykseen",
+        "time": "5 min",
+        "why": "HR luo suuren määrän toistuvia dokumentteja — ja käyttää niihin usein aikaa, joka voisi mennä ihmisten kanssa työskentelyyn.",
+        "instructions": [
+          "Työnkuvaukset (JD): prompti = roolin nimike + keskeiset vastuut (5–7 kohtaa) + pakolliset vaatimukset + toivottavat + tiimin konteksti + yrityksen formaatti. Pyydä Claudea kirjoittamaan JD, joka: (1) kuulostaa houkuttelevalta kohderyhmälle, (2) käyttää inklusiivista kieltä, (3) välttää liiallisia vaatimuksia, jotka karsivat hyviä ehdokkaita.",
+          "Strukturoidut haastattelut: 'Rekrytoin henkilöä [ROOLI]-tehtävään. Tässä ovat 3 keskeistä kompetenssia: [LISTA]. Luo jokaiselle kompetenssille 2 käyttäytymiskysymystä (STAR-formaatti) ja arviointikriteerit: erinomainen / hyvä / riittämätön'.",
+          "Tervetulopaketti uusille työntekijöille: käytä mallipohjapromptia muuttujilla — työntekijän nimi, rooli, tiimi, aloituspäivä, esimies. Claude luo personoidun tervetulokirjeen ja ensimmäisen viikon tarkistuslistan 2 minuutissa.",
+          "Käytännöt ja ohjeet: 'Tässä on olemassa oleva [AIHE]-käytäntömme, joka on kirjoitettu 3 vuotta sitten: [TEKSTI]. Päivitä se nykystandardeille, tee kielestä selkeämpää, säilytä sisältö. Merkitse missä teit merkittäviä muutoksia'.",
+          "Tietosuoja: älä koskaan syötä oikeiden ehdokkaiden tai työntekijöiden nimiä Claudeen ilman heidän suostumustaan. Käytä nimikirjaimia tai roolikuvauksia henkilötietojen sijaan."
+        ],
+        "tip": "Luo kirjasto mallipohjaisia prompteja jokaiselle HR-dokumenttityypille Claude Projectissa. Yksi asennussessio säästää useita tunteja joka viikko.",
+        "validate": "Olet kirjoittanut työnkuvauksen tai haastattelukysymyksiä Clauden avulla ja vertaillut tulosta aiempaan manuaalisesti kirjoitettuun versioon. Kumpi vei vähemmän aikaa ja oliko laatu vertailukelpoista?"
+      },
+      "ruc-4": {
+        "title": "Tuotehallinta: Discoverystä Speciin",
+        "time": "5 min",
+        "why": "Tuotepäällikkö käyttää jopa 40% ajastaan dokumenttien kirjoittamiseen — PRD:t, user storyt, roadmap-perustelut. Claude ei korvaa tuoteajattelua mutta nopeuttaa dramaattisesti sen muuttamista dokumenteiksi.",
+        "instructions": [
+          "User Storyt: 'Tässä ovat raakamuistiinpanot käyttäjähaastatteluista: [MUISTIINPANOT]. Poimita 5–7 user storyä formaatissa: Käyttäjänä [rooli] haluan [toiminto] jotta [tulos]. Lisää jokaiselle hyväksymiskriteerit ja prioriteetti (Korkea/Keski/Matala) perusteluineen'.",
+          "Haastattelujen synteesi: 'Tässä ovat 5 käyttäjähaastattelun litteraatit: [LITTERAATIT]. Poimita: (1) toistuvat kipupisteet (mainintataajuudella), (2) odottamattomat oivallukset, (3) ristiriidat haastattelujen välillä, (4) avoimet kysymykset, jotka vaativat lisätutkimusta'.",
+          "PRD:n ensimmäinen luonnos: luo 'Ensimmäinen PRD-luonnos' -skill. Syöte: ongelma + kohderyhmä + ehdotettu ratkaisu + rajoitukset. Tuloste: PRD-rakenne täytetyillä osioilla ja eksplisiittisillä paikkamerkeillä, joissa tarvitaan dataa, jota Claudella ei ole.",
+          "Roadmap-perustelu: 'Ehdotan [OMINAISUUDEN] priorisointia ensi neljänneksellä. Tässä on konteksti: [DATA]. Auta kirjoittamaan perustelu sidosryhmille sisältäen: liiketoimintaperustelu, harkitsemamme vaihtoehdot, riskit ja niiden lieventäminen, onnistumismittarit'.",
+          "Tärkeää: PRD ja roadmap sisältävät strategisia päätöksiä, jotka teet sinä, ei Claude. Käytä Claudea rakenteeseen ja sanamuotoihin — älä tuotepäätösten tekemiseen."
+        ],
+        "tip": "Paras PRD-työnkulku: kuvaa ongelma ensin Claudelle omin sanoin 5 lauseessa. Pyydä sitä esittämään tarkentavia kysymyksiä. Vastaa niihin. Vasta sitten pyydä dokumenttiluonnos.",
+        "validate": "Olet käyttänyt Claudea oikean datan (haastattelujen tai muistiinpanojen) synteesiin ja saanut jäsennellyn tulosteen, josta tuli tuotepäätöksen tai dokumentin perusta."
+      },
+      "ruc-5": {
+        "title": "Customer Success: skaalaus ilman laadun heikkenemistä",
+        "time": "5 min",
+        "why": "CS-asiantuntija työskentelee useiden asiakkaiden kanssa samanaikaisesti — vastauksien laatu heikkenee väistämättä kuormituksen alla. Claude auttaa ylläpitämään korkeaa tasoa suuremmalla volyymilla.",
+        "instructions": [
+          "Vastausmallit personoinnilla: luo kirjasto malleista 10 yleisimmälle pyyntötyypille. Jokainen malli on prompti muuttujilla: asiakkaan nimi, tuote, ongelman kuvaus, tilin konteksti. Claude luo personoidun vastauksen mallin pohjalta sekunneissa.",
+          "Eskalointia: 'Tässä on kirjeenvaihtoketju asiakkaan kanssa: [HISTORIA]. Asiakas ilmaisee [TYYTYMÄTTÖMYYSTASON]. Kirjoita: (1) lyhyt tiivistelmä tilanteesta esimiehelle, (2) ehdotettu ratkaisu perusteluineen, (3) vastausluonnos asiakkaalle'.",
+          "Health Score -analyysi: 'Tässä on asiakkaan tuotteen käyttödata viimeiseltä 90 päivältä: [DATA]. Mitkä mallit viittaavat poistumisriskiin? Mitkä laajenemismahdollisuuteen? Ehdota 3 konkreettista toimenpidettä CS-managerille'.",
+          "QBR-valmistelu: 'Tässä on tilin data neljännekseltä: [DATA]. Auta valmistamaan QBR: (1) tärkeimmät saavutukset, jotka ovat tärkeitä nimenomaan tälle asiakkaalle, (2) ROI-visualisointi, (3) suositukset seuraavalle neljännekselle, (4) avoimet kysymykset keskusteluun'.",
+          "Soveltamisen raja: Claude ei näe asiakassuhteen historiaa, jonka olet rakentanut. Anna aina faktuaaliset tiedot (luvut, sopimukset, nimet) eksplisiittisesti — älä koskaan luota siihen, että Claude 'tuntee' asiakkaan."
+        ],
+        "tip": "Nopein voitto CS:ssä: luo malli yleisimmälle pyyntötyypille. Ensimmäinen asennustunti maksaa itsensä takaisin ensimmäisellä viikolla.",
+        "validate": "Sinulla on valmis vastasmalli vähintään yhdelle pyyntötyypille, jonka olet testannut oikeilla tapauksilla ja se vaatii minimaalisia muokkauksia ennen lähettämistä."
+      },
+      "ruc-6": {
+        "title": "Rakenna oma role-playbook",
+        "time": "4 min",
+        "why": "Hajanaiset promptit muistiinpanoissa eivät tuota systeemistä vaikutusta. Playbook muuttaa ne standardiksi — henkilökohtaiseksi tai tiimin standardiksi.",
+        "instructions": [
+          "Role-playbookin rakenne: (1) Roolin top-5 tehtävät prompteineen, (2) Suositeltu Project-rakenne (ohjeet + tietopohja), (3) Yleiset virheet joita välttää, (4) Miten arvioida tulosteen laatua, (5) Mitä ei koskaan delegoida Claudelle.",
+          "Valitse top-5 skenaariot: listaa viisi tehtävää, jotka teet joka viikko. Kirjoita jokaiselle prompti, lisää esimerkkisyöte ja odotettu tuloste. Tämä on playbookin ydin.",
+          "Dokumentoi anti-patternit: kirjaa 2–3 tapausta, joissa Claude antoi huonon tuloksen ja miksi. Tämä on playbookin arvokkain osa kollegoille — he oppivat sinun virheistäsi, eivät omistaan.",
+          "Jakamisformaatti: Claude Project ohjeineen on ihanteellinen playbookin säilyttämiseen. Jaa pääsy tiimin kanssa — tai vie Notion/Confluence-sivuna, jossa promptit ovat valmiina kopioitaviksi.",
+          "Elävä dokumentti: lisää 'viimeksi päivitetty' -päivämäärä ja 15 minuutin retrospektiivi kerran kuukaudessa. Claude ja sen ominaisuudet muuttuvat — playbookin on muututtava niiden mukana."
+        ],
+        "tip": "Paras playbook on minimaalinen mutta käytetty. Viisi hyvin kuvattua skenaariota on parempi kuin kaksikymmentä muodollista. Aloita pienestä ja täydennä todellisen käytön myötä.",
+        "validate": "Sinulla on role-playbook, jossa on vähintään kolme dokumentoitua skenaariota, jotka olet valmis lähettämään kollegalle tänään. Tarkista: voisiko hän käyttää sitä ilman selityksiäsi?"
+      }
+    }
   }
 }

@@ -932,6 +932,54 @@ export const tutorials = {
       { "id": "af-5" },
       { "id": "af-6" }
     ]
+  },
+  "workflow-automation": {
+    "nodeId": "sc-analysis",
+    "icon": "repeat",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": ["ai-fluency", "projects"],
+    "relatedPrompts": [
+      "start-role-task",
+      "analysis-deep-dive"
+    ],
+    "next": [
+      "skills",
+      "scenarios",
+      "role-use-cases"
+    ],
+    "steps": [
+      { "id": "wa-1" },
+      { "id": "wa-2" },
+      { "id": "wa-3" },
+      { "id": "wa-4" },
+      { "id": "wa-5" },
+      { "id": "wa-6" }
+    ]
+  },
+  "role-use-cases": {
+    "nodeId": "sc-content",
+    "icon": "user",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": ["ai-fluency", "claude-for-business"],
+    "relatedPrompts": [
+      "start-role-task",
+      "business-positioning"
+    ],
+    "next": [
+      "workflow-automation",
+      "claude-for-educators",
+      "scenarios"
+    ],
+    "steps": [
+      { "id": "ruc-1" },
+      { "id": "ruc-2" },
+      { "id": "ruc-3" },
+      { "id": "ruc-4" },
+      { "id": "ruc-5" },
+      { "id": "ruc-6" }
+    ]
   }
 };
 

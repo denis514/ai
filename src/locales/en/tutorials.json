@@ -3964,5 +3964,265 @@
         "validate": "Formulate AI-use rules for your class. Discuss them with students — their reaction will show what you missed."
       }
     }
+  },
+  "workflow-automation": {
+    "title": "Building an AI Workflow",
+    "subtitle": "Projects + Skills + Scenarios into a single automated process",
+    "totalTime": "25 min",
+    "whatItIs": "A practical course on creating AI workflows without code — for any user who wants to turn scattered Claude interactions into a coherent system. You will learn how Projects serve as containers, Skills as reusable modules, and Scenarios as application patterns. By the end you will have built your first end-to-end workflow and documented it for your team.",
+    "approach": "The course is structured as a workshop: each step produces an artifact you create for a real task from your own work. Theory is minimal — every concept is immediately reinforced with practice. By the final step you will have a documented workflow ready to hand off to a colleague.",
+    "outcomes": [
+      "Can analyse a task and extract the workflow pattern: input → process → output",
+      "Structure Projects as workspaces with persistent context",
+      "Write reusable Skills — modules for repeating operations",
+      "Build step chains where the output of one step becomes the input of the next",
+      "Validate intermediate results — do not rely on Claude blindly",
+      "Document a workflow so a colleague can run it without your explanations"
+    ],
+    "applyIn": [
+      {
+        "title": "Analytics and reporting",
+        "description": "Turn the cycle 'gather data → analyse → write report' into a repeatable workflow. Every step is documented, quality is stable, the next report takes half the time."
+      },
+      {
+        "title": "Content and communications",
+        "description": "Email series, multi-channel posts, regular briefings — a workflow lets you reuse voice and structure instead of reinventing them every time."
+      },
+      {
+        "title": "Operational processes",
+        "description": "Onboarding, request processing, meeting prep — any repeatable process with AI can be documented as a workflow and handed to the team without quality loss."
+      }
+    ],
+    "pitfalls": [
+      "Trying to automate the entire process at once — start with one concrete step, make sure it works reliably, then add the next.",
+      "Building a workflow for a task that changes every time — automation adds value only where there is enough repetition and a predictable input.",
+      "Skipping validate steps to save time — checking intermediate results takes 2 minutes and prevents cascading errors across the whole chain."
+    ],
+    "exercises": [
+      {
+        "question": "Take any repeating task from your week and map it as a chain: what is the input, what are the transformation steps, what is the final output. How many steps require Claude, and how many require your own judgement?",
+        "hint": "Steps that require judgement are your checkpoints. That is exactly where the workflow should pause and wait for human review."
+      },
+      {
+        "question": "Write a SKILL.md for one repeating operation you do every week. Show it to a colleague and ask: could they run this skill without your help?",
+        "hint": "If your colleague asks more than two questions, the skill is not described well enough. Add examples and clarify the input format."
+      }
+    ],
+    "steps": {
+      "wa-1": {
+        "title": "What is an AI workflow: Projects, Skills, Scenarios",
+        "time": "4 min",
+        "why": "Without shared terminology it is easy to confuse Projects, Skills and Scenarios — and build chaotic interactions instead of a system.",
+        "instructions": [
+          "An AI workflow is a sequence of steps where Claude does part of the work and a human reviews the result and passes control forward. It is not magic — it is a repeatable process with clear inputs and outputs.",
+          "Project — container and workspace. It holds instructions (what Claude knows by default), a knowledge base (documents and context) and interaction history. One Project = one work area or task.",
+          "Skill — a reusable module: a description of one specific operation with an instruction, input format, output format and example. A Skill can be run again and again — the result will be predictable.",
+          "Scenario — an application pattern: a description of a specific situation where the workflow is used. One Skill can be used in multiple Scenarios. For example, the 'summarisation' skill is used in the 'weekly briefing' scenario and the 'meeting preparation' scenario.",
+          "Mental model: Project = the office. Skills = work instructions on the desk. Scenarios = the specific tasks the employee solves every day using those instructions."
+        ],
+        "tip": "Do not try to formalise everything at once. Start by describing what you do now — then break it down into Projects, Skills and Scenarios.",
+        "validate": "You can name one task from your work and explain what its Project will be, which Skill is needed and in which Scenario it is executed."
+      },
+      "wa-2": {
+        "title": "Anatomy of a good workflow: input → process → output",
+        "time": "4 min",
+        "why": "A workflow without a clear input/output structure cannot be repeated, handed to a colleague or improved — it runs differently every time.",
+        "instructions": [
+          "Let us break it down with an example: 'preparing an analytical report'. Input: raw data (table, export, set of facts) + the question the report must answer. Process: 3 Claude steps (structure → analyse → format). Output: a finished report draft in an agreed format.",
+          "Three questions for any workflow: (1) What must be provided to Claude for it to begin? (2) What steps must be taken and in what order? (3) What does a result that counts as 'done' look like?",
+          "Describing the input is the most important part. Undefined input = unpredictable result. A good input description covers: data format, volume, required fields, language and any constraints.",
+          "Intermediate outputs are the inputs for the next steps. For each step write down: what is being passed forward and in what format. This lets you find bottlenecks before you run anything.",
+          "The final output must have a completion criterion: not 'a good report', but 'a report with an executive summary of up to 200 words, 3–5 key findings and recommendations as bullet points'."
+        ],
+        "tip": "Write the workflow on paper before opening Claude. Two hours on a diagram saves eight hours of iteration.",
+        "validate": "For your chosen task you have a description of the input, a list of steps and a completion criterion for the final output."
+      },
+      "wa-3": {
+        "title": "Skills: creating your first reusable module",
+        "time": "5 min",
+        "why": "Without a formalised Skill you reformulate the same task every time — wasting time and getting inconsistent results.",
+        "instructions": [
+          "A Skill is a document with a fixed structure. Minimum contents: name (what the skill does), input (what must be provided), instruction (step-by-step direction to Claude), output (what Claude will return and in what format), example (a concrete input/output pair).",
+          "Choose a repeating operation from your work: summarising feedback, preparing a meeting agenda, analysing a competitor, a first-draft email. The more specific the better.",
+          "Write the SKILL.md: start with the name and one phrase explaining why this skill is needed. Then an Input section with a concrete example. Then Instructions — what Claude should do, step by step. Then Output — the exact result format. Finally, an example.",
+          "Test the skill: open Claude, paste the skill instruction as the system context, provide a test input and evaluate the output. Does it match the described format?",
+          "Iterate the skill until the output is stable across three different test inputs. Only then is the skill ready for use in a workflow."
+        ],
+        "tip": "The best first skill is one you already do manually every week. Do not invent new tasks to automate — formalise existing ones.",
+        "validate": "You have a finished SKILL.md that you have tested on at least two real inputs and received a predictable output."
+      },
+      "wa-4": {
+        "title": "Chains: output of one step becomes input of the next",
+        "time": "4 min",
+        "why": "Connecting steps into a chain is what turns a set of separate Claude interactions into a real workflow.",
+        "instructions": [
+          "Chain principle: the final output of step N exactly matches the described input format of step N+1. If the formats do not match, a transformation step is needed between them.",
+          "Practice: take two skills you want to connect. Write down the output format of the first and the input format of the second. Is there a gap? Usually there is — the output is too verbose, or structured differently.",
+          "Three ways to close the gap: (1) add an explicit output format to the first skill's instruction that suits the next step, (2) create an intermediate transformer skill that converts the format, (3) add a human step — you manually edit the handoff.",
+          "Document the chain: draw a diagram where each block is one step, arrows show data transfer, and diamonds mark human review points. This diagram becomes the workflow documentation.",
+          "Test the entire chain end-to-end, not just individual steps. Errors most often appear at the seams between steps, not inside them."
+        ],
+        "tip": "Use explicit separators in prompts: 'Here is the output from the previous step: [DATA]. Now perform...'. Explicit context passing is more reliable than implicit.",
+        "validate": "You have connected at least two steps into a chain and run real data through it. The output of the second step matches the expected format."
+      },
+      "wa-5": {
+        "title": "Quality control: human-in-the-loop and validate blocks",
+        "time": "4 min",
+        "why": "Claude can make mistakes, hallucinate and interpret ambiguously — blind trust in output in a multi-step workflow leads to cascading errors.",
+        "instructions": [
+          "Human-in-the-loop means points in the workflow where a human checks the result before passing it forward. You do not need to check every step — identify critical points where an error has the greatest consequences.",
+          "A validate block is an explicit criterion you check: 'the output contains exactly 5 items', 'all company names match the source data', 'the tone is formal, no jargon'. Write validate blocks for each step where this matters.",
+          "Three levels of control: (1) automatic — Claude checks against a checklist built into the instruction, (2) quick scan — 30 seconds, you look at structure and key data, (3) deep review — you read fully and compare with the source.",
+          "Red flags requiring deep review: specific numbers and statistics, names and titles, legal and financial language, quotes attributed to specific people.",
+          "Add a validate block directly to the skill instruction: 'At the end of your response add a checklist where you mark compliance with each of these criteria: [list]. If a criterion is not met, explain why'."
+        ],
+        "tip": "The best validate block is specific and binary: met / not met. 'The text sounds professional' is a bad criterion. 'Does not contain words from this list' is a good one.",
+        "validate": "Every step of your workflow has at least one explicit validate criterion and you know who (human or Claude) checks it."
+      },
+      "wa-6": {
+        "title": "Scaling: document and hand off the workflow to your team",
+        "time": "4 min",
+        "why": "A workflow that lives only in one person's head is not a scalable process — it is a personal habit. Documentation turns it into a team standard.",
+        "instructions": [
+          "Workflow documentation structure: (1) name and purpose in one phrase, (2) when to use it — the trigger, (3) what to prepare — input data, (4) steps with links to Skills, (5) what a good result looks like, (6) common mistakes and how to avoid them.",
+          "Validate the documentation: ask a colleague who has never seen this workflow to read the document and try to run it independently. Where they get stuck — those are the gaps.",
+          "Versioning: add a 'last updated' date and a brief changelog. Workflows change — the team needs to know which version is current.",
+          "Storage: a Claude Project with instructions is ideal for storing workflow documents. All team members have access and the context is always current.",
+          "Improvement cycle: after every 10 workflow runs, hold a 15-minute retrospective. What worked? What took extra time? What gave unexpected results? Update the documentation."
+        ],
+        "tip": "Good workflow documentation is not a user manual — it is a work instruction. Write it as if you are explaining to a smart new employee who has never done this task.",
+        "validate": "You have a workflow document that another person can use without your verbal explanations. You have verified this in practice."
+      }
+    }
+  },
+  "role-use-cases": {
+    "title": "Claude by profession",
+    "subtitle": "Concrete applications for Marketing, Sales, HR, Product, Customer Success",
+    "totalTime": "28 min",
+    "whatItIs": "A practical course for specialists who already know the basics of working with Claude and want to apply them to tasks specific to their role. Covers five functions: Marketing, Sales, HR, Product, Customer Success — with concrete prompts, templates and workflows for each. In the final step you build your own role playbook.",
+    "approach": "Each step focuses on one role and contains specific scenarios, prompts to copy and common mistakes. Even if you work in one function — scan all steps: many patterns transfer between roles. The last step assembles your personal playbook.",
+    "outcomes": [
+      "Apply Claude to 5+ concrete tasks of your role with predictable quality",
+      "Created role-specific prompts and templates for your top tasks",
+      "Build workflows with Projects for repeating operations in your function",
+      "Adapt patterns from adjacent roles to your own tasks",
+      "Avoid typical AI mistakes in a corporate context",
+      "Documented and ready to share templates with your team"
+    ],
+    "applyIn": [
+      {
+        "title": "Marketing and communications",
+        "description": "A content machine with a consistent brand voice: long-form articles, SEO content, email campaigns and posts for multiple channels — Claude adapts one piece of content to all formats."
+      },
+      {
+        "title": "Sales and Customer Success",
+        "description": "Personalised outreach, negotiation prep, objection analysis, response templates — Claude helps scale quality without losing personalisation."
+      },
+      {
+        "title": "HR and operations management",
+        "description": "From writing JDs to onboarding packages and policies: Claude cuts time spent on administrative documents and helps maintain a consistent tone and standards."
+      }
+    ],
+    "pitfalls": [
+      "Using one universal prompt for all tasks in the role — every scenario requires its own context and format. Create a separate template for each repeating task.",
+      "Publishing Claude-generated content without checking for brand alignment and factual accuracy — especially critical for external communications in sales and marketing.",
+      "Ignoring data confidentiality when working with customer or candidate information — use anonymised descriptions and do not input personal data unnecessarily."
+    ],
+    "exercises": [
+      {
+        "question": "Choose the three most time-consuming tasks in your role. Write a prompt for each and test it on a real example. Which of the three gave the best result on the first attempt?",
+        "hint": "Tasks with a clear template and standard output format work best with Claude on the first try. Tasks requiring nuance and context improve after a few iterations."
+      },
+      {
+        "question": "Find a colleague from a different function (Marketing → Sales, HR → Product) and show them your best prompt. Ask them to adapt it to their role. What changed? What stayed the same?",
+        "hint": "Prompt structure is usually transferable. Role context and output format change. This will show you what is the essence of the prompt and what is the role-specific layer."
+      }
+    ],
+    "steps": {
+      "ruc-1": {
+        "title": "Marketing: a content machine with a consistent voice",
+        "time": "5 min",
+        "why": "Marketing produces more content than any other function — but every piece must sound the same. Claude solves both challenges simultaneously.",
+        "instructions": [
+          "Brand voice in the system prompt: add a brand voice description to the Project instructions — 3–5 adjectives, examples of sentences that sound 'right' and examples that sound 'wrong'. Claude will apply this automatically.",
+          "Long-form and SEO: a prompt for an article = topic + target audience + the main question the reader has + keywords + desired length + structure (H2/H3). Ask Claude to write the outline first and approve it before generating the full text.",
+          "Email campaigns: use one message as the base — ask Claude to create 3–5 variations of different length and tone (formal / conversational / urgent). A/B testing will show what works best.",
+          "Channel adaptation: one piece of content → five formats. Prompt: 'Here is the long-form text: [TEXT]. Adapt it for: (1) LinkedIn post 150 words, (2) Twitter/X thread of 5 tweets, (3) email subject line + preview text, (4) short summary for a newsletter, (5) script for a 60-second video'.",
+          "Typical marketer mistake: asking Claude to 'write content' without audience context. Always specify: who the reader is, what they already know, and how they should feel after reading."
+        ],
+        "tip": "Create one reference piece in the Project that perfectly reflects the brand voice. Use it as a reference: 'Write in the same style as this example: [reference]'.",
+        "validate": "You have created at least one prompt for a specific marketing task and received a result that can be used as a draft without major edits."
+      },
+      "ruc-2": {
+        "title": "Sales: from lead to deal",
+        "time": "4 min",
+        "why": "Sales requires personalisation at scale — every message must feel hand-crafted, but doing it manually for 50 leads is impossible.",
+        "instructions": [
+          "Personalised outreach: prompt = company profile (industry, size, recent events) + contact profile (role, pain points of the role) + your product + goal of the message (first contact / follow-up / re-engagement). Result: a draft message that only needs to be checked and personalised in 2–3 places.",
+          "Objection analysis: create an 'Objection Analysis' skill. Input: the customer's objection as stated. Output: (1) the real concern behind the objection, (2) 2–3 ways to respond, (3) a question that helps understand the depth of the issue.",
+          "Negotiation prep: prompt = company name + known deal information + your position + meeting goal. Ask Claude for: likely questions the customer will ask, likely objections, key arguments for your position, red lines that must not be crossed.",
+          "After the meeting: 'Here are my notes from the meeting: [NOTES]. Write a follow-up email with: (1) a thank-you, (2) a brief summary of agreements, (3) next steps with deadlines, (4) an open question to keep the dialogue going'.",
+          "Important: always verify factual data about the company and customer that Claude includes in messages — hallucinations in sales are especially dangerous."
+        ],
+        "tip": "The best use of Claude in sales is not replacing personalisation but accelerating it. A draft in 30 seconds, personalisation in 2 minutes — instead of writing from scratch in 15 minutes.",
+        "validate": "You have a template prompt for outreach that you have tested on 3 real leads and received drafts requiring minimal editing."
+      },
+      "ruc-3": {
+        "title": "HR: from JD to onboarding",
+        "time": "5 min",
+        "why": "HR creates a large volume of repeating documents — and often spends time on them that could be spent working with people.",
+        "instructions": [
+          "Job Descriptions: prompt = role title + key responsibilities (5–7 items) + must-have requirements + nice-to-have + team context + company format. Ask Claude to write a JD that: (1) sounds attractive to the target audience, (2) uses inclusive language, (3) avoids excessive requirements that exclude good candidates.",
+          "Structured interviews: 'I am hiring for [ROLE]. Here are 3 key competencies: [LIST]. For each competency create 2 behavioural questions (STAR format) and scoring criteria: excellent / good / insufficient'.",
+          "Welcome package for new employees: use a template prompt with variables — employee name, role, team, start date, manager. Claude generates a personalised welcome letter and first-week checklist in 2 minutes.",
+          "Policies and guidelines: 'Here is our existing [TOPIC] policy written 3 years ago: [TEXT]. Update it to current standards, make the language clearer, keep the substance. Mark where you made significant changes'.",
+          "Confidentiality: never input real candidate or employee names into Claude without their consent. Use initials or role descriptions instead of personal data."
+        ],
+        "tip": "Create a library of template prompts for each HR document type in the Claude Project. One setup session saves several hours every week.",
+        "validate": "You have written a JD or interview questions with Claude and compared the result to a previous version written manually. Which took less time and was the quality comparable?"
+      },
+      "ruc-4": {
+        "title": "Product: from Discovery to Spec",
+        "time": "5 min",
+        "why": "A Product Manager spends up to 40% of their time writing documents — PRDs, user stories, roadmap justifications. Claude does not replace product thinking but dramatically accelerates turning it into documents.",
+        "instructions": [
+          "User Stories: 'Here are raw notes from user interviews: [NOTES]. Extract 5–7 user stories in the format: As a [role], I want to [action] so that [outcome]. For each add acceptance criteria and a priority (High/Medium/Low) with justification'.",
+          "Interview synthesis: 'Here are transcripts from 5 user interviews: [TRANSCRIPTS]. Extract: (1) recurring pain points (with mention frequency), (2) unexpected insights, (3) contradictions across interviews, (4) open questions requiring further research'.",
+          "PRD first draft: create a 'First PRD Draft' skill. Input: problem + target audience + proposed solution + constraints. Output: a PRD structure with completed sections and explicit placeholders where data that Claude does not have is needed.",
+          "Roadmap justification: 'I am proposing to prioritise [FEATURE] next quarter. Here is the context: [DATA]. Help write a justification for stakeholders including: business case, alternatives we considered, risks and how we mitigate them, success metrics'.",
+          "Important: PRD and roadmap contain strategic decisions that you make, not Claude. Use Claude for structure and wording — not for making product decisions."
+        ],
+        "tip": "The best PRD workflow: first describe the problem to Claude in your own words in 5 sentences. Ask it to ask clarifying questions. Answer them. Only then ask for the document draft.",
+        "validate": "You have used Claude to synthesise real data (interviews or notes) and received structured output that became the basis for a product decision or document."
+      },
+      "ruc-5": {
+        "title": "Customer Success: scale without losing quality",
+        "time": "5 min",
+        "why": "A CS specialist handles many customers simultaneously — response quality inevitably drops under load. Claude helps maintain a high level at greater volume.",
+        "instructions": [
+          "Response templates with personalisation: create a library of templates for the top 10 request types. Each template is a prompt with variables: customer name, product, issue summary, account context. Claude generates a personalised response based on the template in seconds.",
+          "Escalation: 'Here is the correspondence thread with the customer: [HISTORY]. The customer is expressing [DISSATISFACTION LEVEL]. Write: (1) a brief summary of the situation for the manager, (2) the proposed solution with justification, (3) a draft response to the customer'.",
+          "Health Score Analysis: 'Here is product usage data for the customer over the last 90 days: [DATA]. What patterns indicate churn risk? Which indicate expansion potential? Suggest 3 specific action items for the CS manager'.",
+          "QBR preparation: 'Here is the account data for the quarter: [DATA]. Help prepare a QBR: (1) key achievements that matter specifically to this customer, (2) ROI visualisation, (3) recommendations for the next quarter, (4) open questions for discussion'.",
+          "Boundary of application: Claude does not see the relationship history with the customer that you have built. Always provide factual details (figures, agreements, names) explicitly — never assume Claude 'knows' the customer."
+        ],
+        "tip": "The fastest win for CS: create a template for the most frequent request type. The first hour of setup pays off in the first week.",
+        "validate": "You have a ready response template for at least one request type that you have tested on real cases and it requires minimal editing before sending."
+      },
+      "ruc-6": {
+        "title": "Build your role playbook",
+        "time": "4 min",
+        "why": "Scattered prompts living in notes do not produce a systemic effect. A playbook turns them into a standard — your personal one or your team's.",
+        "instructions": [
+          "Role playbook structure: (1) Top 5 role tasks with prompts, (2) Recommended Project structure (instructions + knowledge base), (3) Common mistakes to avoid, (4) How to assess output quality, (5) What to never delegate to Claude.",
+          "Choose your top 5 scenarios: list five tasks you do every week. For each write a prompt, add an example input and expected output. This is the core of the playbook.",
+          "Document anti-patterns: record 2–3 cases where Claude gave a bad result and why. This is the most valuable part of the playbook for colleagues — they learn from your mistakes, not their own.",
+          "Format for sharing: a Claude Project with instructions is ideal for storing a playbook. Share access with the team — or export as a Notion/Confluence page with prompts ready to copy.",
+          "Living document: add a 'last updated' date and a 15-minute retrospective once a month. Claude and its capabilities change — the playbook must change with them."
+        ],
+        "tip": "The best playbook is minimal but used. Five well-described scenarios beat twenty formal ones. Start small and add as you use it in real work.",
+        "validate": "You have a role playbook with at least three documented scenarios that you are ready to send to a colleague today. Check: could they use it without your explanations?"
+      }
+    }
   }
 }

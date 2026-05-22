@@ -137,16 +137,21 @@
 
 ## 🔴 Открытые задачи (приоритет)
 
-### Курсы — Батч 2 (следующий)
+### Курсы — Батч 2 (завершено 2026-05-22)
 
-Анализ Anthropic Academy (anthropic.com/learn + skilljar) выявил следующие пробелы.
-Приоритизировано по пользе для аудитории Atlas (не только разработчики):
-
-| # | id | Название | Аудитория | Уровень | Обоснование |
+| # | id | Название | Аудитория | Уровень | Статус |
 |---|----|---------|-----------|---------|----|
-| 1 | `claude-for-educators` | Claude для педагогов | business | beginner | Anthropic имеет «AI Fluency for Educators». Уже запланировано, нужен узел `b-educators` |
-| 2 | `workflow-automation` | Строим AI-рабочий процесс | everyone | intermediate | Пробел: нет курса про сборку реального workflow (Projects + Skills + Scenarios вместе) |
-| 3 | `role-use-cases` | Claude по профессиям | business | intermediate | Anthropic: Marketing/Sales/HR/Product use cases. Наш `scenarios` — общий, нет role-specific |
+| 1 | `claude-for-educators` | Claude для педагогов | business | beginner | ✅ (готов ранее) |
+| 2 | `workflow-automation` | Строим AI-рабочий процесс | everyone | intermediate | ✅ |
+| 3 | `role-use-cases` | Claude по профессиям | business | intermediate | ✅ |
+
+**Процесс создания курса (задокументирован):**
+1. **Выбрать nodeId** — свободный узел mindmap (не занятый другим туториалом). Список занятых: `tutorialByNodeId` в tutorials.js
+2. **Добавить запись в tutorials.js** — nodeId, icon (из REGISTRY в Icon.jsx!), level, audience, prerequisites, relatedPrompts, next, steps с ID
+3. **Написать контент в 3 локали** — `ru/tutorials.json`, `en/tutorials.json`, `fi/tutorials.json`; схема: title, subtitle, totalTime, whatItIs, approach, outcomes[], applyIn[], pitfalls[], exercises[], steps{id: {title, time, why, instructions[], tip, validate}}
+4. **Проверить JSON** — `node -e "JSON.parse(require('fs').readFileSync('...'))"` на каждый файл
+5. **Запустить sync** — `node scripts/sync-whats-new.mjs` → обновит whatsNew.js и nodeHashes.json
+6. **Build + commit** — git add все 5 файлов (tutorials.js + 3 локали + whatsNew.js + nodeHashes.json)
 
 ### Курсы — Батч 3 (после батч 2)
 
