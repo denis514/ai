@@ -47,15 +47,24 @@ export default function DetailPanel({
   };
   const hasExample = !!d.example;
 
+  // При копировании вырезаем inline-link синтаксис: [[type:id|label]] → label,
+  // [[type:id]] → id. В буфер попадает чистый человеко-читаемый текст.
+  const stripInlineLinks = (s) =>
+    (s || '').replace(
+      /\[\[(?:node|tutorial|prompt):([a-z0-9-]+)(?:\|([^\]]+))?\]\]/g,
+      (_, id, label) => label || id
+    );
+
   const copy = async () => {
     if (!d.example) return;
+    const cleanText = stripInlineLinks(d.example);
     try {
-      await navigator.clipboard.writeText(d.example);
+      await navigator.clipboard.writeText(cleanText);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch (e) {
       const ta = document.createElement('textarea');
-      ta.value = d.example;
+      ta.value = cleanText;
       document.body.appendChild(ta);
       ta.select();
       document.execCommand('copy');
@@ -201,7 +210,12 @@ export default function DetailPanel({
           </h3>
           {isLoggedIn ? (
             <div className="detail__example">
-              <pre>{d.example}</pre>
+              <InlineText
+                as="div"
+                className="detail__example-text"
+                text={d.example}
+                onNavigate={inlineNav}
+              />
               <button
                 type="button"
                 className={`copy-btn ${copied ? 'is-copied' : ''}`}
@@ -215,7 +229,7 @@ export default function DetailPanel({
           ) : (
             <div className="detail__example-gate">
               <div className="detail__example-blur" aria-hidden="true">
-                <pre>{d.example}</pre>
+                <pre>{stripInlineLinks(d.example)}</pre>
               </div>
               <div className="detail__example-cta">
                 <Icon name="lock" size={18} strokeWidth={1.5} />
