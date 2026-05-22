@@ -410,6 +410,19 @@ function AppInner() {
       ? visibleFlat[currentIdx + 1]
       : null;
 
+  // Общий хелпер: открыть узел + плавно сдвинуть карту к нему.
+  // xOffset: -230 компенсирует ширину боковой панели (460px / 2).
+  const navigateToNode = useCallback((id) => {
+    setRoute({ type: 'node', id });
+    let attempts = 0;
+    const tryPan = () => {
+      attempts++;
+      const found = mapRef.current?.panToNode(id, { xOffset: -230 });
+      if (!found && attempts < 8) setTimeout(tryPan, 60);
+    };
+    setTimeout(tryPan, 50);
+  }, [setRoute]);
+
   // ←/→ для переключения между узлами (когда панель открыта)
   useEffect(() => {
     if (!panelOpen) return;
@@ -419,15 +432,15 @@ function AppInner() {
       if (tag === 'input' || tag === 'textarea' || e.target?.isContentEditable) return;
       if (e.key === 'ArrowLeft' && prevNode) {
         e.preventDefault();
-        setRoute({ type: 'node', id: prevNode.id });
+        navigateToNode(prevNode.id);
       } else if (e.key === 'ArrowRight' && nextNode) {
         e.preventDefault();
-        setRoute({ type: 'node', id: nextNode.id });
+        navigateToNode(nextNode.id);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [panelOpen, prevNode, nextNode, setRoute]);
+  }, [panelOpen, prevNode, nextNode, navigateToNode]);
 
   const { matched, ancestors, active } = useMemo(
     () => searchTree(mindmapData, query, category, searchableById),
@@ -649,21 +662,8 @@ function AppInner() {
           onClose={onCloseAll}
           onStartTutorial={onStartTutorial}
           onSelectRelated={(id) => {
-            setRoute({ type: 'node', id });
             releasePinDim();
-            // Плавно перемещаем карту к выбранному узлу.
-            // Используем retry-стратегию: узел появляется в layout только после
-            // того как React раскроет ветку предков и пересчитает позиции.
-            // Пробуем каждые 60мс до 8 раз (≤ 480мс суммарно) — останавливаемся
-            // как только panToNode вернёт true (узел найден в layout).
-            // xOffset: -230 — сдвиг центра влево (боковая панель 460px справа).
-            let attempts = 0;
-            const tryPan = () => {
-              attempts++;
-              const found = mapRef.current?.panToNode(id, { xOffset: -230 });
-              if (!found && attempts < 8) setTimeout(tryPan, 60);
-            };
-            setTimeout(tryPan, 50);
+            navigateToNode(id);
           }}
           progressApi={progressApi}
           bookmarksApi={bookmarksApi}
@@ -673,7 +673,7 @@ function AppInner() {
               <DetailNavFooter
                 prev={prevNode}
                 next={nextNode}
-                onGo={(id) => setRoute({ type: 'node', id })}
+                onGo={navigateToNode}
               />
             ) : null
           }
