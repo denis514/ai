@@ -135,6 +135,26 @@
 
 ---
 
+## ✅ Завершено — Сессия 2026-05-22 (Tutorials migration)
+
+### 32 туториала relinked к Use Cases
+- ✅ Аудит: все 32 nodeId валидны, все existing `next` ссылки рабочие
+- ✅ +40 UC-ссылок в `next` arrays для 28/32 туториалов
+- ✅ TutorialModal автоматически рендерит UC-узлы (findNodeById) — UI без изменений
+
+После завершения tutorial пользователь видит **«применить знание в практике»** через релевантные Use Cases. Цепочка: Tutorial → UC → Foundation/Systems/Transformation nodes.
+
+Маппинг (примеры):
+- ai-fluency → uc-ai-rag-launch
+- claude-for-business → uc-ai-reporting-launch + uc-ai-decision-support + uc-ai-roi-estimation
+- workflow-automation → uc-ai-process-automation
+- mcp → uc-ai-multi-agent-system + uc-ai-vendor-selection
+- api-basics → uc-ai-vendor-selection
+
+4 туториала намеренно без UC: welcome/intro/terminal-tour/folders-workshop (onboarding).
+
+Bundle: 92.93 KB gzip.
+
 ## ✅ Завершено — Сессия 2026-05-22 (AI-Native Design)
 
 ### Шестое Transformation-направление (7 узлов + контейнер + UC)
