@@ -415,85 +415,72 @@ Bundle: 90.45 KB gzip (+0.27 KB).
 
 ---
 
-## 🔴 Открытые задачи (приоритет)
+## 🔴 Открытые задачи (актуальные)
 
-### Курсы — Батч 2 (завершено 2026-05-22)
+> Большая часть старых задач закрыта в архитектурной миграции 2026-05-22.
+> Подробный лог фаз — в секции ✅ Завершено выше.
 
-| # | id | Название | Аудитория | Уровень | Статус |
-|---|----|---------|-----------|---------|----|
-| 1 | `claude-for-educators` | Claude для педагогов | business | beginner | ✅ (готов ранее) |
-| 2 | `workflow-automation` | Строим AI-рабочий процесс | everyone | intermediate | ✅ |
-| 3 | `role-use-cases` | Claude по профессиям | business | intermediate | ✅ |
+### Контент
 
-**Процесс создания курса (задокументирован):**
-1. **Выбрать nodeId** — свободный узел mindmap (не занятый другим туториалом). Список занятых: `tutorialByNodeId` в tutorials.js
-2. **Добавить запись в tutorials.js** — nodeId, icon (из REGISTRY в Icon.jsx!), level, audience, prerequisites, relatedPrompts, next, steps с ID
-3. **Написать контент в 3 локали** — `ru/tutorials.json`, `en/tutorials.json`, `fi/tutorials.json`; схема: title, subtitle, totalTime, whatItIs, approach, outcomes[], applyIn[], pitfalls[], exercises[], steps{id: {title, time, why, instructions[], tip, validate}}
-4. **Проверить JSON** — `node -e "JSON.parse(require('fs').readFileSync('...'))"` на каждый файл
-5. **Запустить sync** — `node scripts/sync-whats-new.mjs` → обновит whatsNew.js и nodeHashes.json
-6. **Build + commit** — git add все 5 файлов (tutorials.js + 3 локали + whatsNew.js + nodeHashes.json)
+| # | Задача | Audience | Уровень | Приоритет |
+|---|--------|----------|---------|-----------|
+| 1 | **Туториал `mcp-advanced`** — MCP advanced topics | developers | advanced | 🟡 |
+| 2 | **Туториал `building-evaluations`** — как оценивать ответы Claude | developers | intermediate | 🟡 |
 
-### Курсы — Батч 3 (после батч 2)
+(Anthropic Academy указывает эти темы как пробелы. Низкий приоритет — developers уже хорошо покрыты.)
 
-| # | id | Название | Аудитория | Уровень | Обоснование |
-|---|----|---------|-----------|---------|----|
-| 4 | `mcp-advanced` | MCP: продвинутые сценарии | developers | advanced | Anthropic: «MCP Advanced Topics». У нас только базовый MCP |
-| 5 | `building-evaluations` | Как оценивать ответы Claude | developers | intermediate | Anthropic GitHub-курс по evals. Критично для тех кто строит на Claude |
+### Контент-автопубликация (заморожена до запроса)
 
-### UX-аудит — остаток (продолжить следующей сессии)
+| # | Файл | Что | Приоритет |
+|---|------|-----|-----------|
+| 1 | `content/content-queue.json` | Бэклог уроков в машиночитаемом формате | 🔵 |
+| 2 | `skills/lesson-publisher/SKILL.md` | Оркестратор публикации одного урока | 🔵 |
+| 3 | `skills/content-scout/SKILL.md` | Еженедельный поиск Anthropic Academy | 🔵 |
+| 4 | `scripts/publish-lessons.mjs` | Claude API вызов для генерации | 🔵 |
+| 5 | `.github/workflows/publish-lessons.yml` | Cron publish (пн 08:00) | 🔵 |
 
-Аудит проведён с помощью Claude Preview (localhost:5173). Найдено 8 проблем, закрыто 4.
+### Tech debt (manual)
 
-| # | Задача | Приоритет | Статус |
-|---|--------|-----------|--------|
-| 1 | ОБНОВЛЕНО на всех узлах при первом визите | 🔴 | ✅ |
-| 2 | WelcomeCard — dismiss + кнопка × | 🔴 | ✅ |
-| 3 | Мобиль — fitToScreen при загрузке | 🔴 | ✅ |
-| 4 | Закрывать дропдауны при смене route | 🟡 | ✅ |
-| 5 | Курсы — группировка по уровню + фильтр статуса | 🟡 | ✅ |
-| 6 | Поиск — inline-строка должна фильтровать карту | 🟡 | ✅ |
-| 7 | Мобиль — FAB-кнопки для Курсов и Поиска | 🟡 | ✅ |
-| **8** | **Тёмная тема** | 🔵 | open |
-
-**Детали пункта 5 (Курсы):**
-Реализация была в коммите `7e9f612` но откатана. Нужно повторить:
-- Статус-фильтр: «Все курсы | В процессе | Завершены» (с счётчиком-бейджем)
-- Группировка по уровню: Новичок → Продвинутый → Эксперт (с цветными заголовками)
-- Бейдж ✓ поверх иконки завершённых курсов
-- Пустое состояние при отсутствии курсов
-- Исправить: `items.length` → `byAudience.length` в строке summary
-- i18n: `courses.status.*`, `courses.empty.*` (добавить в ru/en/fi)
-
-**Детали пункта 6 (Поиск):**
-Inline-строка в CanvasHeader открывается, но ввод текста не фильтрует карту.
-Нужно проверить: `onQuery` → `setQuery` → `searchTree` → узлы подсвечиваются.
-Возможно React event propagation issue в input внутри CanvasHeader.
-
-**Детали пункта 7 (Мобиль FAB):**
-На мобиле нет прямых кнопок для Библиотеки, Курсов, Поиска в шапке.
-В MobileFab.jsx добавить: кнопку «Обучение» (открывает CoursesModal) и «Поиск».
-
-### Контент — автопубликация (следующий шаг)
-| # | Задача | Статус |
-|---|--------|--------|
-| 1 | **`content/content-queue.json`** — перенести бэклог уроков в машиночитаемый формат | open |
-| 2 | **`skills/lesson-publisher/SKILL.md`** — оркестратор публикации одного урока | open |
-| 3 | **`skills/content-scout/SKILL.md`** — еженедельный поиск новых уроков в Anthropic Academy | open |
-| 4 | **`scripts/publish-lessons.mjs`** — Node.js скрипт вызова Claude API для генерации | open |
-| 5 | **`.github/workflows/publish-lessons.yml`** — cron-расписание публикации (понедельник 08:00) | open |
-
-### Техника
-| status | task | примечание | дата |
-|--------|------|-----------|------|
-| open | **Supabase session timebox** — выставить 30 дней в Dashboard | Authentication → Sessions | — |
-| open | **Learning Paths: For Business + For Educators** | Собрать батч 2 курсы в маршруты после реализации | — |
-| open | **Аудит устаревших узлов** — `cap-computer`, `b-knowledge`, `pl-platforms` | skill: content-gap-auditor | — |
+| status | task | примечание |
+|--------|------|-----------|
+| ⚙️ manual | **Supabase session timebox** | Dashboard → Auth → Sessions → 30 дней |
 
 ### P3 — Premium (будущее)
+
 | status | task |
 |--------|------|
 | open | Pricing page / premium CTA |
 | open | Stripe / Lemon Squeezy интеграция |
+
+---
+
+## 📦 Архитектурная миграция 2026-05-22 — ИТОГ
+
+✅ **Все 5 фаз стратегии выполнены за одну сессию:**
+
+- Phase 1 — Structural seeds (4 root-узла)
+- Phase 2 — AI Fundamentals (8 узлов)
+- Phase 3 — Operations flagship + 3 UC
+- Phase 4 — Systems Tier 1 + Tier 2 (17 узлов в 6 sub-разделах)
+- Phase 5 — UI polish + repositioning
+
+✅ **6 Transformation directions:**
+Operations, Marketing, Customer Support, Product, Enterprise, Design (46 узлов)
+
+✅ **14 Use Cases** (8 direction-specific + 5 cross-direction)
+
+✅ **+6 audience-specific Learning Paths** (всего 12)
+
+✅ **32 туториала relinked к UCs** (40 cross-refs)
+
+✅ **Orphan audit** — 55→18, +104 cross-links
+- `cap-computer`, `b-knowledge`, `pl-platforms` получили связи к актуальным альтернативам
+
+✅ **Dark theme** + UI polish (layer indicators, position fixes, edge alignment)
+
+✅ **Documentation** — 10 strategy docs в `docs/strategy/`, всё IMPLEMENTED
+
+**Финальные метрики:** 213+ узлов (+60% к 133), bundle 89.93 → 96.63 KB gzip.
 
 ---
 
