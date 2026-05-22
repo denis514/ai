@@ -8266,8 +8266,9 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   align-items: center;
   gap: 10px;
   padding: 10px 14px 10px 16px;
-  background: var(--text, #1a1a1a);
-  color: #fff;
+  background: var(--tooltip-bg, #1a1a1a);  /* контрастная плашка: dark в light theme, light в dark theme */
+  color: var(--tooltip-text, #ffffff);
+  border: 1px solid color-mix(in srgb, var(--tooltip-text, #ffffff) 12%, transparent);
   border-radius: 999px;
   box-shadow: 0 4px 24px rgba(0,0,0,.22);
   font-size: 13px;
