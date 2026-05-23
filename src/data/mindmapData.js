@@ -282,8 +282,7 @@ export const mindmapData = {
               "category": "foundation",
               "relatedIds": [
             "claude-code",
-            "pl-web-setup",
-            "cc-cmd-init"
+            "pl-web-setup"
           ],
               "minLevel": "beginner",
               "children": [
@@ -997,7 +996,6 @@ export const mindmapData = {
           "icon": "laptop",
           "category": "automation",
           "relatedIds": [
-            "cc-cmd-init",
             "cc-md"
           ],
           "minLevel": "advanced",
@@ -1009,7 +1007,6 @@ export const mindmapData = {
               "relatedIds": [
             "fs-install-node",
             "fs-terminal",
-            "cc-cmd-init",
             "cc-md"
           ]
             },
@@ -1055,9 +1052,7 @@ export const mindmapData = {
                   "id": "cc-cfg-settings",
                   "icon": "note",
                   "category": "automation",
-                  "relatedIds": [
-                    "cc-cmd-init"
-                  ]
+                  "relatedIds": []
                 },
                 {
                   "id": "cc-cfg-local",
@@ -1089,9 +1084,6 @@ export const mindmapData = {
               "icon": "command",
               "category": "automation",
               "relatedIds": [
-                "cc-cmd-clear",
-                "cc-cmd-compact",
-                "cc-cmd-init",
                 "pl-web-setup"
               ],
               "children": [
@@ -1100,8 +1092,6 @@ export const mindmapData = {
                   "icon": "repeat",
                   "category": "automation",
                   "relatedIds": [
-                    "cc-cmd-clear",
-                    "cc-cmd-compact",
                     "pl-desktop",
                     "pl-web-setup"
                   ]
@@ -1112,8 +1102,7 @@ export const mindmapData = {
                   "category": "automation",
                   "relatedIds": [
             "b-context",
-            "cc-md",
-            "cc-cmd-init"
+            "cc-md"
           ]
                 },
                 {
@@ -1187,7 +1176,6 @@ export const mindmapData = {
             "claude-code",
             "instructions",
             "i-claudemd",
-            "cc-cmd-init",
             "p-instructions"
           ]
             },

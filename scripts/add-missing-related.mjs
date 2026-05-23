@@ -35,6 +35,11 @@ for (const locale of LOCALES) {
 const mdFp = path.join(ROOT, 'src', 'data', 'mindmapData.js');
 let src = fs.readFileSync(mdFp, 'utf-8');
 
+// Валидные узлы в дереве — для защиты от dangling refs
+const validNodeIds = new Set(
+  [...src.matchAll(/"id":\s*"([a-z0-9-]+)"/g)].map(m => m[1])
+);
+
 // Найдём ВСЕ `"id": "X"` позиции
 function allIdPositions(s) {
   const re = /"id":\s*"([a-z0-9-]+)"/g;
@@ -54,7 +59,11 @@ function blockHasRelated(s, pos, nextPos) {
 const insertions = []; // { pos, str }
 const allPositions = allIdPositions(src);
 
-for (const [nodeId, targets] of linkGraph.entries()) {
+for (const [nodeId, rawTargets] of linkGraph.entries()) {
+  // Фильтруем targets: оставляем только узлы которые реально есть в дереве.
+  // Иначе мы создадим dangling reference → CI lint:data error.
+  const targets = new Set([...rawTargets].filter(t => validNodeIds.has(t)));
+  if (!targets.size) continue;
   // Берём ПОСЛЕДНЕЕ вхождение этого id (обычно это узел в дереве)
   const occurrences = allPositions
     .map((p, i) => ({ ...p, next: allPositions[i + 1]?.at }))

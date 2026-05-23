@@ -45,6 +45,15 @@ for (const locale of LOCALES) {
 const mdFp = path.join(ROOT, 'src', 'data', 'mindmapData.js');
 const mdSrc = fs.readFileSync(mdFp, 'utf-8');
 
+// 2a. Собираем все валидные id узлов в дереве. Это нужно чтобы НЕ добавлять
+// dangling refs (relatedIds → узел которого нет в mindmapData) — иначе
+// CI lint:data падает с «dangling reference» errors. Inline-ссылки в
+// текстах могут указывать на «битые» узлы (есть только в locales) —
+// их relatedIds должны игнорировать.
+const validNodeIds = new Set(
+  [...mdSrc.matchAll(/"id":\s*"([a-z0-9-]+)"/g)].map(m => m[1])
+);
+
 // Парсим существующие relatedIds: для каждого id: 'X' блока находим relatedIds
 // мини-парсер: ищем "id: 'X'" → внутри объекта ищем "relatedIds: [...]"
 function parseExistingRelated(src) {
@@ -73,15 +82,31 @@ function parseExistingRelated(src) {
 
 const existing = parseExistingRelated(mdSrc);
 
-// 3. Считаем что нужно добавить
+// 3. Считаем что нужно добавить (с защитой от dangling refs)
 const suggestions = new Map(); // nodeId → Array<missingTarget>
+const skippedDangling = []; // for reporting
 for (const [from, targets] of linkGraph.entries()) {
+  // Защита: from-узел тоже должен существовать в дереве (иначе нет
+  // куда добавлять relatedIds — узел не существует как DOM-сущность).
+  if (!validNodeIds.has(from)) continue;
   const have = existing.get(from) || new Set();
   const missing = [];
   for (const t of targets) {
-    if (!have.has(t)) missing.push(t);
+    if (have.has(t)) continue;
+    // КРИТИЧНО: target должен существовать в mindmapData.js, иначе будет
+    // dangling reference → CI lint:data error.
+    if (!validNodeIds.has(t)) {
+      skippedDangling.push(`${from} → ${t}`);
+      continue;
+    }
+    missing.push(t);
   }
   if (missing.length) suggestions.set(from, missing);
+}
+if (skippedDangling.length && !APPLY) {
+  console.log(`— Skipped ${skippedDangling.length} dangling target(s) —`);
+  for (const d of skippedDangling.slice(0, 10)) console.log(`  ${d}`);
+  if (skippedDangling.length > 10) console.log(`  ... и ещё ${skippedDangling.length - 10}`);
 }
 
 // Двусторонняя связь: ещё добавляем обратные (из mindmapData.js buildRelatedIndex
