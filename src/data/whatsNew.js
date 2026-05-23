@@ -33,6 +33,7 @@ export const WHATS_NEW = {
   'prompting': { date: '2026-05-23', type: 'updated', kind: 'tutorial' },
   'scenarios': { date: '2026-05-23', type: 'updated', kind: 'tutorial' },
   'skills': { date: '2026-05-23', type: 'updated', kind: 'tutorial' },
+  'prompting-techniques': { date: '2026-05-23', type: 'updated', kind: 'tutorial' },
   'workflow-automation': { date: '2026-05-22', type: 'new', kind: 'tutorial' },
   'role-use-cases': { date: '2026-05-22', type: 'new', kind: 'tutorial' },
   'intro': { date: '2026-05-22', type: 'updated', kind: 'tutorial' },
@@ -41,7 +42,6 @@ export const WHATS_NEW = {
   'api-basics': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'claude-cowork': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'platform': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
-  'prompting-techniques': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'terminal-tour': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
   'folders-workshop': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
 
