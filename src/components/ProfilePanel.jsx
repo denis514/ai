@@ -11,6 +11,8 @@ import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { useTheme } from '../hooks/useTheme.js';
 import { useConfirm } from '../hooks/useConfirm.js';
 import { useToast } from '../hooks/useToast.js';
+import { useSoundPrefs } from '../hooks/useSoundPrefs.js';
+import { playSound } from '../sound/soundEngine.js';
 
 const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
 
@@ -43,6 +45,7 @@ export default function ProfilePanel({
   const [langOpen, setLangOpen] = useState(false);
   const [completedOpen, setCompletedOpen] = useState(false);
   const { theme, toggle: toggleTheme } = useTheme();
+  const sound = useSoundPrefs();
 
   // Supabase stats (только когда залогинен)
   const supaStats = useSupabaseStats(user?.id || null);
@@ -476,6 +479,42 @@ export default function ProfilePanel({
           </div>
         </section>
       )}
+
+      {/* ── SOUND ── */}
+      <section className="profile-panel__section profile-panel__sound">
+        <h4>{t('profile.sound.title')}</h4>
+        <div className="profile-panel__sound-row">
+          <button
+            type="button"
+            className={`profile-panel__sound-toggle ${sound.enabled ? 'is-on' : 'is-off'}`}
+            onClick={() => {
+              const next = !sound.enabled;
+              sound.setEnabled(next);
+              // Если включаем — играем preview, чтобы пользователь сразу услышал
+              if (next) setTimeout(() => playSound('ui.click'), 30);
+            }}
+            aria-pressed={sound.enabled}
+            title={sound.enabled ? t('profile.sound.disable') : t('profile.sound.enable')}
+          >
+            <Icon name={sound.enabled ? 'volume' : 'volume-off'} size={14} strokeWidth={1.5} />
+            <span>{sound.enabled ? t('profile.sound.on') : t('profile.sound.off')}</span>
+          </button>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.05}
+            value={sound.volume}
+            disabled={!sound.enabled}
+            onChange={(e) => sound.setVolume(parseFloat(e.target.value))}
+            onMouseUp={() => sound.enabled && playSound('ui.click')}
+            onTouchEnd={() => sound.enabled && playSound('ui.click')}
+            aria-label={t('profile.sound.volume')}
+            className="profile-panel__sound-volume"
+          />
+          <span className="profile-panel__sound-pct">{Math.round(sound.volume * 100)}%</span>
+        </div>
+      </section>
 
       {/* ── LANGUAGE + THEME ── */}
       <div className="profile-panel__lang-bar">

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { playSound } from '../sound/soundEngine.js';
 
 /**
  * Глобальная очередь toast-уведомлений.
@@ -37,6 +38,8 @@ function add(opts) {
   };
   toasts.push(t);
   notify();
+  // SFX: лёгкий tick на появление toast.
+  try { playSound('toast.show'); } catch {}
   if (t.duration > 0) {
     setTimeout(() => remove(id), t.duration);
   }
