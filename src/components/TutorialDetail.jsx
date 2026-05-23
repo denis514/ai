@@ -57,12 +57,13 @@ export default function TutorialDetail({
     <div className="tut-detail" style={{ '--lvl-color': LEVEL_COLOR[level] }}>
 
       <header className="tut-detail__head">
-        {isMobile && onBack && (
+        {onBack && (
           <button
             type="button"
             className="tut-detail__back"
             onClick={onBack}
             aria-label={t('nav.backToListAria')}
+            title={t('nav.backToListShortcut') || t('nav.backToListAria')}
           >
             <Icon name="arrow-left" size={16} strokeWidth={1.5} />
             <span>{t('nav.backToList')}</span>

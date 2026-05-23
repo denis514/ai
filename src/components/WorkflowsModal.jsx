@@ -57,17 +57,26 @@ export default function WorkflowsModal({
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape') {
-        // На mobile сначала закрывается preview, потом сама модалка
-        if (selectedTutorialId && isMobile) {
+        // ESC закрывает topmost layer: если открыт TutorialDetail —
+        // сначала закрываем его (возврат к списку), только после второго
+        // ESC закрывается модалка. Стандартный паттерн «один ESC = один слой».
+        if (selectedTutorialId) {
           setSelectedTutorialId(null);
         } else {
           onClose();
         }
+      } else if (e.key === 'Backspace' && selectedTutorialId) {
+        // Backspace тоже возвращает к списку (если открыт detail).
+        // Игнорируем когда юзер в input/textarea — иначе backspace
+        // удалит символ ввода.
+        const tag = (e.target?.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || e.target?.isContentEditable) return;
+        setSelectedTutorialId(null);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [onClose, selectedTutorialId, isMobile]);
+  }, [onClose, selectedTutorialId]);
 
   // Закрываем дропдауны по клику вне
   useEffect(() => {
