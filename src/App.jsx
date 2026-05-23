@@ -43,6 +43,7 @@ import AccountPage from './components/AccountPage.jsx';
 import UpdateBanner from './components/UpdateBanner.jsx';
 import { useVersionCheck } from './hooks/useVersionCheck.js';
 import { playSound, preloadSounds } from './sound/soundEngine.js';
+import { useGlobalHoverSfx } from './hooks/useGlobalHoverSfx.js';
 import { syncTutorialProgress, syncBookmarks, syncNodeProgress } from './services/syncService.js';
 import './App.css';
 
@@ -283,6 +284,9 @@ function AppInner() {
       prevRouteTypeRef.current = curr;
     }
   }, [route]);
+
+  // Глобальный hover-звук для всех <button> (с исключениями mindmap-узлов).
+  useGlobalHoverSfx();
 
   // Предзагрузка SFX при первом user gesture (autoplay policy unlock).
   useEffect(() => {
