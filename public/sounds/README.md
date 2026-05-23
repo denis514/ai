@@ -4,27 +4,33 @@
 Лицензия: [Mixkit Free SFX License](https://mixkit.co/license/#sfxFree) — бесплатно
 для коммерческого использования, атрибуция не требуется.
 
-## Файлы, которые нужно скачать
+## Файлы
 
-| Файл                       | Где играет                      | Рекомендуемый звук с mixkit (категория)                  |
-|----------------------------|---------------------------------|----------------------------------------------------------|
-| `node-expand.mp3`          | Раскрытие узла mindmap          | Sci-fi → короткий blip / interface beep, ≤ 200 мс        |
-| `node-collapse.mp3`        | Сворачивание узла               | Sci-fi → reverse-blip / soft tick, ≤ 150 мс              |
-| `modal-open.mp3`           | Открытие модального окна        | Sci-fi → soft whoosh / panel open, ~250 мс               |
-| `modal-close.mp3`          | Закрытие модального окна        | Sci-fi → reverse whoosh / panel close, ~180 мс           |
-| `ui-hover.mp3`             | Hover на primary CTA            | UI → micro-tick / sub-blip, ~80 мс                       |
-| `ui-click.mp3`             | Клик по primary CTA             | UI → confirm-blip, ~120 мс                               |
-| `progress-step.mp3`        | Шаг туториала завершён          | Sci-fi → chime / positive blip, ~250 мс                  |
-| `progress-complete.mp3`    | Туториал завершён               | Sci-fi → success-arpeggio (восх. трезвучие), ~600 мс     |
-| `toast.show.mp3`           | Появление toast (опционально)   | UI → soft pop, ~150 мс                                   |
+Формат: **MP3 или WAV** (HTMLAudio поддерживает оба). WAV проще найти на mixkit,
+но тяжелее по весу (~100 KB вместо ~20 KB). При наличии — предпочтительнее MP3.
+
+| Файл                              | Где играет                      | Статус         | Рекомендация (mixkit)                          |
+|-----------------------------------|---------------------------------|----------------|------------------------------------------------|
+| `node-expand.wav`                 | Раскрытие узла mindmap          | ✅ есть        | Sci-fi → короткий blip / interface beep        |
+| `node-collapse.{wav,mp3}`         | Сворачивание узла               | 🕒 fallback    | Сейчас играет `node-expand.wav` с gain 0.6     |
+| `modal-open.{wav,mp3}`            | Открытие модального окна        | 🕒 нет         | Sci-fi → soft whoosh / panel open, ~250 мс     |
+| `modal-close.{wav,mp3}`           | Закрытие модального окна        | 🕒 нет         | Sci-fi → reverse whoosh / panel close, ~180 мс |
+| `ui-hover.wav`                    | Hover на primary CTA            | ✅ есть        | UI → micro-tick / sub-blip, ~80 мс             |
+| `ui-click.wav`                    | Клик по primary CTA             | ✅ есть        | UI → confirm-blip, ~120 мс                     |
+| `progress-step.{wav,mp3}`         | Шаг туториала завершён          | 🕒 нет         | Sci-fi → chime / positive blip, ~250 мс        |
+| `progress-complete.{wav,mp3}`     | Туториал завершён               | 🕒 нет         | Sci-fi → success-arpeggio, ~600 мс             |
+| `toast-show.{wav,mp3}`            | Появление toast                 | 🕒 нет         | UI → soft pop, ~150 мс                         |
 
 ## Требования к файлам
 
-- Формат: **MP3**, mono, 44.1 kHz, 64–96 kbps.
-- Размер: **≤ 30 KB на файл**, суммарно ≤ 300 KB.
-- Длительность: **≤ 400 мс** (кроме `progress-complete.mp3` — до 700 мс).
+- Формат: **MP3** (предпочтительно) или **WAV**.
+- MP3: mono, 44.1 kHz, 64–96 kbps. WAV: mono, 16-bit, 44.1 kHz.
+- Размер: ≤ 30 KB для MP3, ≤ 200 KB для WAV. Суммарно ≤ 1 MB.
+- Длительность: ≤ 400 мс (кроме `progress-complete` — до 700 мс).
 - Без тишины в начале (обрезать в Audacity / любом редакторе).
 - Без жёсткого clipping; normalize до −3 dB peak.
+- Если есть WAV → можно сконвертировать в MP3 для меньшего веса:
+  `ffmpeg -i input.wav -b:a 96k -ac 1 output.mp3`
 
 ## Как добавить новый звук
 

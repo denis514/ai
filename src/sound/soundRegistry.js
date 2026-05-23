@@ -11,15 +11,18 @@
  */
 
 export const SOUND_REGISTRY = {
-  'node.expand':       { url: '/sounds/node-expand.mp3',       gain: 1.0 },
-  'node.collapse':     { url: '/sounds/node-collapse.mp3',     gain: 0.8 },
-  'modal.open':        { url: '/sounds/modal-open.mp3',        gain: 0.9 },
-  'modal.close':       { url: '/sounds/modal-close.mp3',       gain: 0.7 },
-  'ui.hover':          { url: '/sounds/ui-hover.mp3',          gain: 0.4 },
-  'ui.click':          { url: '/sounds/ui-click.mp3',          gain: 0.8 },
-  'progress.step':     { url: '/sounds/progress-step.mp3',     gain: 1.0 },
-  'progress.complete': { url: '/sounds/progress-complete.mp3', gain: 1.0 },
-  'toast.show':        { url: '/sounds/toast-show.mp3',        gain: 0.6 }
+  // ✅ Доступные ассеты (WAV)
+  'node.expand':       { url: '/sounds/node-expand.wav',       gain: 1.0 },
+  'node.collapse':     { url: '/sounds/node-expand.wav',       gain: 0.6 }, // fallback: тот же файл тише, пока нет своего
+  'ui.hover':          { url: '/sounds/ui-hover.wav',          gain: 0.4 },
+  'ui.click':          { url: '/sounds/ui-click.wav',          gain: 0.8 },
+  // 🕒 Ожидают ассетов — engine молча игнорирует отсутствующие URL.
+  // Когда положишь файлы в public/sounds/ — меняй расширение здесь.
+  'modal.open':        { url: '/sounds/modal-open.wav',        gain: 0.9 },
+  'modal.close':       { url: '/sounds/modal-close.wav',       gain: 0.7 },
+  'progress.step':     { url: '/sounds/progress-step.wav',     gain: 1.0 },
+  'progress.complete': { url: '/sounds/progress-complete.wav', gain: 1.0 },
+  'toast.show':        { url: '/sounds/toast-show.wav',        gain: 0.6 }
 };
 
 export const SOUND_KEYS = Object.keys(SOUND_REGISTRY);
