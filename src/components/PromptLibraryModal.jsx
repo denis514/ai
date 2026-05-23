@@ -84,10 +84,12 @@ export default function PromptLibraryModal({
     });
   }, [activeCategory, levelFilter, query, localizedLibrary]);
 
-  // Esc to close modal — но если открыта вложенная PromptModal, не закрываем library
+  // Esc to close library. PromptModal (если открыт поверх) перехватывает
+  // ESC через stopImmediatePropagation+capture — поэтому здесь нам не нужно
+  // условие `!openPrompt`: библиотека получит ESC только если child закрыт.
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape' && !openPrompt) onClose();
+      if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
@@ -95,7 +97,7 @@ export default function PromptLibraryModal({
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
     };
-  }, [onClose, openPrompt]);
+  }, [onClose]);
 
   const counts = useMemo(() => countByCategory(), []);
 

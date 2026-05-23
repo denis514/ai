@@ -7,11 +7,21 @@ export default function PromptModal({ prompt, onClose }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
+    // ESC закрывает ТОЛЬКО этот модал, не пропуская событие в parent
+    // (если открыт поверх PromptLibraryModal). stopImmediatePropagation
+    // прерывает остальные window-level listener'ы в том же event-tick.
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        e.stopImmediatePropagation();
+        onClose();
+      }
+    };
+    // capture: true чтобы наш handler выполнился РАНЬШЕ родительского
+    // (Library использует addEventListener без capture).
+    window.addEventListener('keydown', onKey, true);
     document.body.style.overflow = 'hidden';
     return () => {
-      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('keydown', onKey, true);
       document.body.style.overflow = '';
     };
   }, [onClose]);

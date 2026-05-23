@@ -29,11 +29,18 @@ export default function AuthModal({ onClose }) {
   // Оба условия должны быть выполнены для любого метода входа
   const canProceed = consent && ageConfirmed;
 
-  // Закрыть по Escape
+  // Закрыть по Escape. AuthModal — topmost layer когда открыт; перехватываем
+  // ESC через capture+stopImmediatePropagation, чтобы он НЕ доходил до
+  // TutorialModal (который под ним с suspended=true) или другого parent-модала.
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        e.stopImmediatePropagation();
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
   }, [onClose]);
 
   const handleGoogle = async () => {

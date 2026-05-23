@@ -357,6 +357,17 @@ function AppInner() {
     }
   }, [isLoggedIn]); // eslint-disable-line
 
+  // Safety net: если AuthModal закрыт (authOpen=false) — tutorialAwaitingAuth
+  // ВСЕГДА должен быть false. Без этой гарантии TutorialModal может остаться
+  // в suspended состоянии (ESC не работает, klik-out отключён). handleAuthClose
+  // делает это явно, но любой неучтённый путь закрытия AuthModal (внешнее
+  // событие, OAuth-редирект, race condition) может оставить state stuck.
+  useEffect(() => {
+    if (!authOpen && tutorialAwaitingAuth) {
+      setTutorialAwaitingAuth(false);
+    }
+  }, [authOpen, tutorialAwaitingAuth]);
+
   // Восстанавливаем маршрут после OAuth-редиректа (Google) или Magic Link.
   //
   // Проблема: после Google OAuth страница перезагружается на origin+'/', хэш теряется.
