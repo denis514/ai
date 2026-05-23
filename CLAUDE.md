@@ -1,6 +1,6 @@
 # CLAUDE.md — AI System File
 
-> Главный файл AI-инфраструктуры проекта **Claude Atlas**.
+> Главный файл AI-инфраструктуры проекта **105 Atlas**.
 > Читается Claude Code автоматически при любой работе в этой папке.
 > Любой агент / skill / workflow обязан учитывать правила ниже.
 
@@ -8,7 +8,7 @@
 
 ## 1. Цель проекта
 
-**Claude Atlas** — это интерактивная **AI-native knowledge system** о Claude:
+**105 Atlas** — это интерактивная **AI-native knowledge system** о Claude:
 не просто визуализация, а **живая база знаний**, которая описывает экосистему Claude
 (Skills, MCP, Agents, Projects, Claude Code, Prompts, Automation, AI workflows)
 и развивается вместе с самой экосистемой.
@@ -45,7 +45,7 @@ UI вторичен. Главное — **архитектура знаний** 
 ## 3. Architecture Rules
 
 ```
-Claude Atlas/
+105 Atlas/
 ├── CLAUDE.md                ← ты здесь: главный AI system file
 ├── .claude/                 ← локальные настройки Claude Code (settings, hooks)
 ├── skills/                  ← переиспользуемые AI-навыки (SKILL.md в каждой)

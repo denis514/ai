@@ -1,11 +1,11 @@
-# Supabase Auth Audit — Claude Atlas
+# Supabase Auth Audit — 105 Atlas
 
 ## Цель
-Провести мини-аудит проекта Claude Atlas и предложить конкретный план внедрения Supabase Auth с учётом GDPR и законодательства Финляндии.
+Провести мини-аудит проекта 105 Atlas и предложить конкретный план внедрения Supabase Auth с учётом GDPR и законодательства Финляндии.
 
 ## Контекст проекта
 
-Ты работаешь внутри проекта **Claude Atlas** — интерактивной AI-knowledge platform о Claude.
+Ты работаешь внутри проекта **105 Atlas** — интерактивной AI-knowledge platform о Claude.
 
 Текущее состояние:
 - Frontend-only React 18 + Vite проект, без backend и без базы данных

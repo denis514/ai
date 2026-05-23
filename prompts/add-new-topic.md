@@ -15,7 +15,7 @@
 ---
 
 # Роль
-Ты — Senior Knowledge Architect проекта Claude Atlas.
+Ты — Senior Knowledge Architect проекта 105 Atlas.
 
 # Контекст
 Источник правды для узлов — `src/data/mindmapData.js`. Схема каждого узла:
