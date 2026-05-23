@@ -487,9 +487,6 @@ function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate }
                   <span className="path__meta-item">
                     <Icon name="books" size={13} strokeWidth={1.5} /> {t('courses.stepsCount', { n: total })}
                   </span>
-                  <span className="path__meta-item">
-                    <Icon name="clock" size={13} strokeWidth={1.5} /> {path.duration}
-                  </span>
                   <span className="path__progress-text">
                     {done}/{total} · {percent}%
                   </span>
