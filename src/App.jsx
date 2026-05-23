@@ -42,8 +42,6 @@ import IntroModal, { isIntroSeen } from './components/IntroModal.jsx';
 import AccountPage from './components/AccountPage.jsx';
 import UpdateBanner from './components/UpdateBanner.jsx';
 import { useVersionCheck } from './hooks/useVersionCheck.js';
-import { playSound, preloadSounds } from './sound/soundEngine.js';
-import { useGlobalHoverSfx } from './hooks/useGlobalHoverSfx.js';
 import { syncTutorialProgress, syncBookmarks, syncNodeProgress } from './services/syncService.js';
 import './App.css';
 
@@ -265,43 +263,6 @@ function AppInner() {
   );
   const panelOpen     = route?.type === 'node' && !!selected;
   const activeTutorial = route?.type === 'tutorial' ? route.id : null;
-
-  // SFX: озвучиваем переходы route → модальные окна (open/close).
-  // Один звук на смену верхнего слоя; смена id внутри одного типа игнорится.
-  const prevRouteTypeRef = useRef(route?.type || null);
-  useEffect(() => {
-    const MODAL_TYPES = new Set([
-      'tutorial', 'courses', 'library', 'prompt', 'help', 'account'
-    ]);
-    const prev = prevRouteTypeRef.current;
-    const curr = route?.type || null;
-    if (prev !== curr) {
-      const wasModal = MODAL_TYPES.has(prev);
-      const isModal  = MODAL_TYPES.has(curr);
-      if (!wasModal && isModal)      playSound('modal.open');
-      else if (wasModal && !isModal) playSound('modal.close');
-      else if (wasModal && isModal)  playSound('modal.open');
-      prevRouteTypeRef.current = curr;
-    }
-  }, [route]);
-
-  // Глобальный hover-звук для всех <button> (с исключениями mindmap-узлов).
-  useGlobalHoverSfx();
-
-  // Предзагрузка SFX при первом user gesture (autoplay policy unlock).
-  useEffect(() => {
-    const onFirst = () => {
-      preloadSounds();
-      window.removeEventListener('pointerdown', onFirst);
-      window.removeEventListener('keydown', onFirst);
-    };
-    window.addEventListener('pointerdown', onFirst, { once: true });
-    window.addEventListener('keydown', onFirst, { once: true });
-    return () => {
-      window.removeEventListener('pointerdown', onFirst);
-      window.removeEventListener('keydown', onFirst);
-    };
-  }, []);
   // Safety net: route указывает на несуществующий узел (битый URL/hash) →
   // сбрасываем чтобы не оставлять пользователя в подвешенном состоянии.
   useEffect(() => {
@@ -641,11 +602,8 @@ function AppInner() {
   const onToggle = useCallback((id) => {
     setExpandedIds(prev => {
       const next = new Set(prev);
-      let wasExpanded = false;
-      if (next.has(id)) { next.delete(id); wasExpanded = true; }
+      if (next.has(id)) next.delete(id);
       else next.add(id);
-      // SFX: один blip на root-событие (раскрытие/сворачивание ветки)
-      playSound(wasExpanded ? 'node.collapse' : 'node.expand');
       return next;
     });
     // Если ветка сама помечена как new/updated — сбрасываем лейбл при первом клике

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { playSound as playSoundSafe } from '../sound/soundEngine.js';
 
 const STORAGE_KEY = 'claude-mindmap.tutorial-progress.v1';
 
@@ -53,19 +52,10 @@ export function useTutorialProgress() {
   const toggleStep = useCallback((tutorialId, stepId, totalSteps) => {
     update(tutorialId, cur => {
       const set = new Set(cur.completedSteps);
-      const wasDone = set.has(stepId);
-      if (wasDone) set.delete(stepId);
+      if (set.has(stepId)) set.delete(stepId);
       else set.add(stepId);
       const completedSteps = [...set];
       const isFullyComplete = completedSteps.length === totalSteps;
-      const wasFullyComplete = !!cur.completedAt;
-      // SFX: озвучиваем переход «не сделан → сделан» и финальное завершение.
-      if (!wasDone) {
-        try {
-          if (isFullyComplete && !wasFullyComplete) playSoundSafe('progress.complete');
-          else playSoundSafe('progress.step');
-        } catch {}
-      }
       return {
         ...cur,
         completedSteps,

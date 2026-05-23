@@ -415,27 +415,6 @@ Bundle: 90.45 KB gzip (+0.27 KB).
 
 ---
 
-## ✅ Завершено — Сессия 2026-05-23 (Sound effects foundation)
-
-- `docs/sound-design.md` — стратегия sci-fi SFX (правила, реестр, a11y, лицензия mixkit).
-- `src/sound/soundEngine.js` + `soundRegistry.js` — singleton с ленивой загрузкой,
-  prefs в localStorage, уважение к `prefers-reduced-motion`, тихая обработка autoplay policy.
-- `src/hooks/useSoundPrefs.js` — React-обвязка с подпиской на engine.
-- `public/sounds/README.md` — список 9 нужных mp3 + источники mixkit + требования (≤ 30 KB / ≤ 400 мс).
-- ProfilePanel: тогл звука + слайдер громкости (default ON, vol 0.3).
-- Icon: + `volume`, `volume-off`.
-- App.jsx: SFX на onToggle узла (expand/collapse) и переходы route → модалки (open/close);
-  предзагрузка sounds при первом user gesture.
-- useTutorialProgress: SFX `progress.step` и `progress.complete`.
-- useToast: SFX `toast.show`.
-- i18n ru/en/fi: `profile.sound.*`.
-- **Следующий шаг:** скачать mp3-файлы с mixkit.co/free-sound-effects/sci-fi/ по списку
-  в `public/sounds/README.md` и положить в эту папку. Код заработает без изменений.
-
-Commit: `bfa5986`.
-
----
-
 ## 🔴 Открытые задачи (актуальные)
 
 > Большая часть старых задач закрыта в архитектурной миграции 2026-05-22.

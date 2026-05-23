@@ -88,10 +88,7 @@ import {
   InformationCircleIcon,
   // theme icons
   Sun03Icon,
-  Moon02Icon,
-  // sound icons
-  VolumeHighIcon,
-  VolumeOffIcon
+  Moon02Icon
 } from '@hugeicons/core-free-icons';
 
 /**
@@ -189,9 +186,7 @@ const REGISTRY = {
   info:        InformationCircleIcon,
   // theme toggle
   sun:         Sun03Icon,
-  moon:        Moon02Icon,
-  volume:      VolumeHighIcon,
-  'volume-off': VolumeOffIcon
+  moon:        Moon02Icon
 };
 
 /**
