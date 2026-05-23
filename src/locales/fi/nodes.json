@@ -58,7 +58,7 @@
     "what": "Piilotettu ohje, joka asettaa mallin käyttäytymisen ennen keskustelun alkua: rooli, tyyli, rajoitukset.",
     "why": "Tekee vastauksista ennustettavia ja johdonmukaisia koko keskustelussa.",
     "when": "API:ssa, Projects-tilassa ([[node:instructions|Custom Instructions]]), Claude Codessa ([[node:cc-md|CLAUDE.md]]) — kaikkialla, missä halutaan asettaa «luonne».",
-    "impact": "Hyvä system prompt = +30-50% tarkkuuteen ja vakauteen.",
+    "impact": "Hyvällä järjestelmäpromptilla: 8/10 vastausta osuu oikeaan tyyliin ekalla kerralla. Ilman: 4-5/10, loput kirjoitat uudelleen.",
     "example": "Olet asiantuntija aihealueellani. Vastaa vain suomeksi. Ensin faktat, sitten hypoteesit, sitten suositukset.",
     "mistakes": "Kirjoittaa rooli jokaiseen viestiin käsin, yhden system promptin sijaan."
   },
@@ -202,7 +202,7 @@
     "what": "Web ([[node:pl-web-setup|claude.ai]]), Mobile (iOS/Android), Desktop (Mac/Windows), CLI ([[node:claude-code|Claude Code]]), VS Code/JetBrains-laajennukset, API. Jokaisella — omat vahvuutensa.",
     "why": "Jotta käytät Claudea siellä, missä se on tehokkaampi, eikä «vain selaimessa».",
     "when": "Työkalun valinnassa tehtävälle: chat liikkeellä, kehitys, automaatio, embed tuotteeseen.",
-    "impact": "Oikea kanavan valinta säästää 50%+ aikaa tyypillisessä tehtävässä.",
+    "impact": "Oikean kanavan valinta säästää 30 minuuttia tyypilliseen tehtävään — tunnin sijaan väärällä alustalla teet 30 minuutissa.",
     "example": "Minulla on tehtävä — päivittäinen kehitys. Mikä Clauden kanava tarvitsen?",
     "mistakes": "Käyttää vain [[node:pl-web-setup|claude.ai]]:tä kun tehtävä on koodista — menetät pääsyn tiedostoihin ja historiaan. Käytä Claude Codea."
   },
@@ -229,7 +229,7 @@
     "what": "Viisi asetusta jotka aloittelijan tulee tehdä kerran: Profile (nimi/kieli), [[node:instructions|Custom Instructions]] (About me + How to respond), Memory (päälle/pois), Privacy (kieltäydy koulutusdata-käytöstä) ja ensimmäisen Projektin luominen. Kestää 15 minuuttia — säästää tunteja toistuvasta kontekstista.",
     "why": "Ilman asetuksia jokainen uusi chat alkaa nollasta. Claude ei tiedä kuka olet, mitä teet tai miten haluat vastaukset muotoiltavan. Kertaluonteinen asennus muuttaa kaikki tulevat keskustelut.",
     "when": "Ensimmäisenä päivänä — ennen vakavaa työtä. Tarkista 2-3 kuukauden välein tehtäviesi muuttuessa.",
-    "impact": "Pelkät [[node:instructions|Custom Instructions]] lyhentävät kehotepituutta 30-50% ja parantavat ensimmäisen luonnoksen laatua merkittävästi.",
+    "impact": "[[node:instructions|Custom Instructions]]:in kanssa: ensimmäinen luonnos on jo hyvä, säädät 5 min. Ilman: kirjoitat täyden promptin tyhjästä joka kerta, 15-20 min selityksiin.",
     "example": "Asennuksen jälkeen: avaat uuden chatin, kirjoitat 'tarkista tämä sähköpostiluonnos' — Claude tietää jo roolisi, haluamasi kielen, sävyn ja muodon. Ei tarvita briefingiä.",
     "mistakes": "Tietosuoja-asetusten ohittaminen — oletuksena tietojasi saatetaan käyttää mallin koulutukseen. Kieltäydy Settings → Privacy -kohdassa jos se on sinulle tärkeää."
   },
@@ -526,7 +526,7 @@
     "what": "Terminaalitila Clauden kanssa: sessiot, drag-and-drop -tiedostot, tilat (Plan / Fast), hotkeyt.",
     "why": "Jotta saa maksimin CLI:stä: vähemmän vaihteluita, enemmän aikaa flowssa.",
     "when": "Joka sessio Claude Codella — perustekniikat säästävät tunteja viikossa.",
-    "impact": "Oikea työ terminaalissa antaa +30-50% nopeuteen verrattuna «kaikki hiirellä».",
+    "impact": "Ennen: ikkunan vaihto → klikkaus → muokkaus → takaisin Claudeen — joka tippu 30 s. Nyt: kaikki näppäimistöllä, ei vaihtoja — sessio virtaa katkomatta.",
     "example": "claude --resume palauttaa eilisen session. @src/App.jsx — Claude lukee tiedoston automaattisesti.",
     "mistakes": "Sivuuttaa sessiot ja hotkeyt — joka kerta briiffaat mallin uudelleen ja menetät kontekstin."
   },
@@ -562,7 +562,7 @@
     "what": "Tab — polun / komennon automaattitäydennys, ↑/↓ — historia, Esc — keskeytä, Ctrl+C — poistu.",
     "why": "Jotta ei tarvitse irrottaa käsiä näppäimistöltä — terminaalityöskentely flowssa.",
     "when": "Joka sessio ensimmäisestä päivästä alkaen — viikossa tästä tulee lihasmuistia.",
-    "impact": "Miinus 30-50% aikaa navigaatioon ja toistuvien komentojen kirjoittamiseen.",
+    "impact": "Ennen: ⌘+Tab → kirjoita komento uudelleen → enter. Nyt: ↑ tai Ctrl+R → löytyi edellinen → Enter. Tunti terminaalissa muuttuu 30 minuutiksi.",
     "example": "Tab @src/-merkin jälkeen — polun automaattitäydennys tiedostoon ilman nimen kirjoittamista.",
     "mistakes": "Hiirityöskentely terminaalissa — menetät CLI:n pääedun."
   },
@@ -625,7 +625,7 @@
     "what": "Komennot kuten [[node:cc-cmd-init|/init]], [[node:cc-cmd-clear|/clear]], [[node:cc-cmd-compact|/compact]], /model, /review — sisäänrakennetut ja käyttäjän. Toimivat sekä terminaalissa että [[node:pl-web-setup|claude.ai]]:n chateissa.",
     "why": "Käynnistävät monimutkaisia skenaarioita yhdellä painalluksella — ilman pitkää promptia.",
     "when": "Kun tehtävä on tyypillinen: review, alustus, kontekstin tyhjennys, mallin vaihto.",
-    "impact": "Slash-komennot säästävät 80% kirjoittamisesta toistuviin tehtäviin.",
+    "impact": "Sen sijaan että kirjoitat «auta nimeämään keskustelu ja tiivistämään historia» — kolme merkkiä `/r` → automaattitäydennys → Enter. Säästö per sessio: 15-20 min.",
     "example": "/review — strukturoitu code review nykyisestä haarasta. [[node:cc-cmd-compact|/compact]] — tiivistä konteksti ilman historian menetystä.",
     "mistakes": "Sivuuttaa [[node:cc-cmd-clear|/clear]] kun konteksti «pilaantui» — vastausten laatu laskee."
   },
@@ -643,7 +643,7 @@
     "what": "Tyhjentää nykyisen keskustelun ja kontekstin — aloittaa uuden chatin samalla [[node:cc-md|CLAUDE.md]]:llä ja Hooksilla.",
     "why": "Jotta vapauttaa [[node:b-context|konteksti-ikkuna]] kun tehtävä on suljettu tai aihe vaihtui.",
     "when": "Osatehtävän valmistuttua, ennen uuden ison työn aloittamista.",
-    "impact": "Puhdas konteksti ≈ +30-50% seuraavien vastausten tarkkuuteen.",
+    "impact": "Tuoreessa kontekstissa Claude vastaa tarkasti ekalla yrittämällä. Kuormitetussa — sekaantuu vanhoihin yksityiskohtiin, käytät 2-3 iteraatiota tarkennuksiin. Yksinkertainen sääntö: uusi tehtävä — /clear.",
     "example": "/clear PR-reviewn jälkeen, ennen kuin aloitat toisen koodi-osan refaktoroinnin.",
     "mistakes": "Tehdä /clear keskellä työtä ja menettää välitulokset — parempi [[node:cc-cmd-compact|/compact]]."
   },
@@ -742,7 +742,7 @@
     "what": "Erityinen Claude Coden tila: malli rakentaa muutossuunnitelman strukturoituna listana, mutta EI tee muutoksia. Sinä katselmoit suunnitelman, hyväksyt — ja vasta sitten suoritus tapahtuu.",
     "why": "Plan mode suojaa «hupsiltal» suurissa muutoksissa: näet kaikki vaiheet ennen kuin ne koskettavat tiedostoja. Erityisen arvokas legacyssä ja arkkitehtonisissa refaktoroinneissa.",
     "when": "Ennen massamuutoksia (10+ tiedostoa), ennen migraatioita, ennen muutoksia arkaluonteisiin paikkoihin (auth, payments, DB-migraatiot).",
-    "impact": "Suunnitelma + manuaalinen suunnitelman katselmus = 5× vähemmän «hupsia» suurissa muutoksissa, +20-30% aikaa itse vaiheelle, mutta moninkertainen säästö rollbackeissa.",
+    "impact": "Isoissa muokkauksissa: 5 min suunnitelman tarkastusta = tunti säästöä kun AI meni harhaan. Ilman suunnitelmaa: 1/5 ajosta pitää tehdä alusta.",
     "example": "Chatissa: «Mene Plan modeen ja ehdota tämän modulin refaktorointisuunnitelma. Ilman muutoksia OK:hon asti».",
     "mistakes": "Käyttää Plan modea triviaaleihin muutoksiin (yksi rivi, yksi tiedosto) — overhead ilman hyötyä. Plan — vaarallisille ja suurille vaiheille."
   },
@@ -823,7 +823,7 @@
     "what": "Pysyvät ohjeet, jotka Claude ottaa huomioon jokaisessa vastauksessa — tilin, Projectin tai [[node:cc-md|CLAUDE.md]]:n tasolla.",
     "why": "Jotta ei tarvitse toistaa «vastaa suomeksi, lyhyesti, ilman höttöä» jokaisessa viestissä.",
     "when": "Heti ympäristön asetuksessa — tämä on ensimmäinen investointi, joka maksaa itsensä takaisin ensimmäisestä keskustelusta.",
-    "impact": "Hyvät ohjeet = +30-50% kaikkien vastausten johdonmukaisuuteen ja tyyliin.",
+    "impact": "Hyvät [[node:instructions|ohjeet]] = yhtenäinen sävy, tyyli, muoto kaikissa vastauksissa. Ilman: jokainen vastaus kuin uusi henkilö — eri ääni, eri rakenne, ei johdonmukaisuutta.",
     "example": "Olen tuoteomistaja. Vastaa tiivisti, muodossa «fakta → seuraus → suositus», ilman muodollisia johdantoja.",
     "mistakes": "Kirjoittaa sinne pitkiä rojuja «auta minua kaikessa» — malli lakkaa huomaamasta tärkeää."
   },
@@ -886,7 +886,7 @@
     "what": "Konteksti → Rooli → Tehtävä → Muoto → Rajoitukset. Mitä konkreettisempi, sitä tarkempi.",
     "why": "Tämä on peruskehys, joka toimii melkein aina.",
     "when": "Ennen mitä tahansa epätriviaalia pyyntöä käytä 30 sekuntia rakenteeseen.",
-    "impact": "Strukturoitu prompti = +50-100% vastauksen laatuun ilman muita ponnistuksia.",
+    "impact": "Strukturoitu prompti = vastaus jota voi käyttää ilman uudelleenkirjoitusta. Ilman: ensimmäinen luonnos «niin-ja-näin», käytät vielä 15 min tarkennuksiin.",
     "example": "Konteksti: tehtäväni. Rooli: asiantuntija aihealueellani. Tehtävä: 5 ratkaisuvaihtoehtoa. Muoto: taulukko. Rajoitukset: <omat>.",
     "mistakes": "Kirjoittaa heti «tehtävä» ilman kontekstia ja roolia — malli arvaa, erehtyy useammin."
   },
@@ -1162,7 +1162,7 @@
   },
   "cc-grp-session": {
     "title": "Istunnonhallinta",
-    "what": "[[node:cc-cmd-clear|/clear]] — uusi istunto. [[node:cc-cmd-compact|/compact]] — tiivistä konteksti historian säilyttäen. /resume — jatka edellistä istuntoa. /rename — nimeä keskustelu. /background — jatka terminaalin sulkemisen jälkeen. /branch — haaruta keskustelu nykyisestä kohdasta. /rewind — palauta koodi ja chat aiempaan tilaan. /export — tallenna keskustelu tiedostoon. /copy — kopioi viimeisin vastaus. /recap — lyhyt istunnon yhteenveto. /desktop — siirrä Claude Desktopiin. /teleport — jatka [[node:pl-web-setup|claude.ai]]:sta. /remote-control — hallitse puhelimelta. /exit — sulje CLI.",
+    "what": "Sessiokomennot Claude Codessa — kontekstin hallinta, laitteiden välillä siirtyminen, tilan palautus.\n\n**Kontekstin hallinta:**\n- [[node:cc-cmd-clear|/clear]] — uusi sessio puhtaalta pöydältä\n- [[node:cc-cmd-compact|/compact]] — tiivistä historia, säilytä johtopäätökset\n- /resume — jatka edellistä sessiota\n- /rewind — palauta koodi ja chat aiempaan tilaan\n\n**Keskustelun hallinta:**\n- /rename — nimeä keskustelu\n- /branch — haaroita keskustelu nykyhetkestä\n- /recap — lyhyt yhteenveto sessiosta\n- /export — tallenna keskustelu tiedostoon\n- /copy — kopioi viimeisin vastaus\n\n**Laitteiden välillä:**\n- /background — jatka työtä terminaalin sulkemisen jälkeen\n- /desktop — siirrä [[node:pl-desktop|Claude Desktopiin]]\n- /teleport — jatka [[node:pl-web-setup|claude.ai:sta]]\n- /remote-control — hallinta puhelimesta\n\n**Sulkeminen:**\n- /exit — sulje CLI",
     "why": "Istunnot ovat pysyviä — niitä voi keskeyttää, jatkaa, haarauttaa ja viedä ulos. Istuntokomentojen ymmärtäminen estää kontekstin menetyksen.",
     "when": "Pitkät koodaussessiot, laitteen vaihto, edistymisen tallentaminen, virheiden palautus /rewindillä.",
     "impact": "Et koskaan menetä työtä. Monimutkaisten tehtävien jatkaminen. Kokeilu ilman riskiä /branchilla.",
@@ -1261,7 +1261,7 @@
   },
   "cap-limitations": {
     "title": "Kyvyt ja rajoitukset",
-    "what": "Claude on tehokas, mutta sillä on todellisia rajoituksia jotka jokaisen käyttäjän on ymmärrettävä. Tärkeimmät: Tiedon katkaisuajankohta (koulutusdata päättyy ~alkuvuoteen 2026, ei tietoisuutta sen jälkeisistä tapahtumista). Hallusinaatiot (Claude voi varmuudella ilmoittaa virheellisiä faktoja, erityisesti kapeilla aiheilla tai 'täyttäessään aukkoja'). Ei reaaliaikaista dataa (ei voi selata verkkoa ellei web-haku ole käytössä). [[node:b-context|Konteksti-ikkuna]] (pitkissä keskusteluissa varhaisempi sisältö 'putoaa pois'). Ei kuvanluontia. Kirjaimellinen tulkinta (ei havaitse ironiaa, kulttuurisia vivahteja, implisiittistä merkitystä).",
+    "what": "Claude on tehokas, mutta sillä on aitoja rajoituksia. Tunne ne = älä yllätä äläkä turhaudu kun jokin ei toimi.\n\n**Pääasialliset rajoitukset:**\n- **Tiedon raja** — opetusdata päättyy noin alkuvuoteen 2026. Tämän jälkeisistä tapahtumista Claude ei tiedä.\n- **Hallusinaatiot** — voi kertoa varmasti väärän faktan, varsinkin kapeista aiheista tai «aukkoja täyttäen».\n- **Ei reaaliaikaista dataa** — ilman web-hakua ei näe internetiä.\n- **[[node:b-context|Konteksti-ikkuna]]** — pitkissä keskusteluissa varhainen sisältö «putoaa» muistista.\n- **Ei kuvageneraatiota** — vain teksti ja koodi (käytä Imagen / DALL-E / etc. piirtämiseen).\n- **Kirjaimellinen tulkinta** — heikko sarkasmissa, kulttuurivivahteissa, alatekstissä.",
     "why": "Suurin osa AI-virheistä tapahtuu koska käyttäjät eivät tunne rajoja. Rajoitusten ymmärtäminen mahdollistaa kehotteen ja työnkulkujen suunnittelun niin, että ne kiertävät rajoitukset eivätkä törmää niihin.",
     "when": "Aina kun käytät Claudea faktoihin, viimeisiin tapahtumiin, pitkäkestoisiin tehtäviin tai tärkeisiin päätöksiin — tarkista tulokset. Älä koskaan luota pelkästään Claudeen lakiin, terveyteen tai talouteen liittyvissä asioissa.",
     "impact": "Käyttäjät jotka ymmärtävät rajoitukset tekevät 3-5 kertaa vähemmän virheitä. He tarkistavat tulokset, käyttävät web-hakua tarvittaessa, jakavat pitkät tehtävät lyhyempiin sessioihin ja pitävät Claudea luonnoksena eikä lopullisena lähteenä.",
@@ -1417,7 +1417,7 @@
     "what": "Raporttien automaattinen generointi strukturoidusta datasta: CRM, analytiikka, projektinhallinta. AI lukee datan, kirjoittaa insight-pohjaisen kerronnan, muodostaa action itemit.",
     "why": "Tiimit käyttävät 4-8 tuntia viikossa manuaaliseen raportointiin. AI hoitaa 80% työstä, jättäen ihmiselle review ja executive judgment.",
     "when": "Säännölliset raportit (viikoittain/kuukausittain). Data järjestelmissä API/export-mahdollisuudella. Yleisö odottaa konsistenssia formaatissa. KPI:t laskettavissa.",
-    "impact": "Time-to-report: 4h → 30 min. Konsistenssi: +90% (yksi formaatti, sävy). Tuoreus: raportit tulevat ajallaan, ei «kun ehdin».",
+    "impact": "Time-to-report: 4 tuntia → 30 minuuttia. Ennen: eri ihmiset, eri pohjat. Nyt: yksi muoto, yksi sävy, kaikkialla. Raportit tulevat ajallaan, ei «kun ehdin».",
     "example": "Sales Weekly Report:\n1. Export CRM:stä (HubSpot/Salesforce) → CSV.\n2. Project system promptilla: «olet sales analyst, raportin formaatti on XYZ».\n3. Prompti: «tässä viikon data, kirjoita executive summary + 3 action item».\n4. Output: valmis raportti numeroilla, trendeillä, suosituksilla.\n\nMetriikat: raportointiaika 4h→30min, datan tarkkuus 100% (autopull), insights consistency 95%.",
     "mistakes": "Tehdä «AI generoi kaunista tekstiä» ilman toimintaa. Raportti ilman action itemejä on roskaa. Rakenteen on oltava: mikä muuttui → miksi → mitä teemme → KPI. Joka kerta."
   },
@@ -1435,7 +1435,7 @@
     "what": "Kuinka ops-tiimi orkestroi AI:n kanssa työskentelyä: jaetut promptit, jaetut Projektit, käyttöoikeudet, knowledge management. Tämä on tiimin operating modelista, ei yksilön käytöstä.",
     "why": "Yksilön AI-käyttö ei skaalaudu. 10 hengen tiimi, jokaisella oma promptaus-tyyli = erilaisia tuloksia + päällekkäistä työtä. Tiimin workflow luo yhtenäisen standardin.",
     "when": "Kun tiimi ≥3 henkilöä käyttää aktiivisesti AI:ta. Kun ilmaantuu epäjohdonmukaisia tuloksia. Kun uusi tulokas saapuu ja «ei tiedä, miten työskentelemme AI:n kanssa».",
-    "impact": "Tiimin velocity: +30-50%. Onboarding-aika uusille: päiviä viikkojen sijaan. Tiedon jakaminen: jaetut Projektit + [[node:cc-md|CLAUDE.md]] = tiimi oppii toisiltaan.",
+    "impact": "Tiimin nopeus: 5 hengen tiimi tekee minkä ennen 8. Uuden onboarding: 2 päivää vs 2 viikkoa. Tieto ei jää «Marjan päähän» — elää jaetuissa Projecteissa + [[node:cc-md|CLAUDE.md]].",
     "example": "Operations Team Setup:\n1. Jaettu Claude Project «Operations Workspace» tiimin tyylin system promptilla.\n2. [[node:cc-md|CLAUDE.md]] jaetussa repossa: säännöt, mallit, tyypilliset tehtävät.\n3. Reusable Skills toistuville tehtäville (report-writer, decision-analyzer).\n4. Viikoittainen «AI office hours»: tiimi jakaa löytöjä.\n5. Mittari: % tehtävistä tehty jaetun workflow:n kautta.\n\nStage 3 -merkki: uusi tulokas tuottava 2-3 päivässä, ei viikoissa.",
     "mistakes": "Tehdä «tiimin workflow» = «yksi henkilö pakottaa kaikki käyttämään hänen promptejaan». Se ei ole workflow, se on diktatuuri. Tiimin workflow = yhteistyössä kehittäminen + ownership + feedback loopit."
   },
@@ -1733,7 +1733,7 @@
     "why": "Asiakaspalaute on hajautunut 5-10 lähteeseen. PM ei fyysisesti ehdi lukea kaikkea. AI tekee aggregaation + synteesin. Sentimentti-muutokset näkyvät ennen kuin ne ilmenevät churnissa.",
     "when": "Kun on ≥3 palautelähdettä (NPS, support, arvostelut, sales-puhelut, social). Kun tuotetiimi haluaa «voice of customerin» systemaattisesti, ei anekdoottisesti.",
     "impact": "Kattavuus: 5% palautteesta luetaan → 100% käsitellään. Time-to-trend: 2 kuukautta → 2 viikkoa. Päätöslaatu: data-tukeinen «muistan jonkun valittaneen» sijaan.",
-    "example": "Feedback Synthesis -pipeline:\n\n  Lähteet (viikoittain):\n  - NPS-vastaukset (kvartaalittain × 1000+)\n  - Support tickets CSAT-kommenteilla\n  - App store / G2 -arvostelut\n  - Sales-puhelumuistiinpanot\n  - Social-maininnat\n        ↓\n  AI-käsittely:\n  1. Siivoa + deduplikoi\n  2. Luokittele (feature, UX, hinnoittelu, performance, ...)\n  3. Sentimentti-analyysi\n  4. Teeman uuttaminen\n  5. Trendi-tunnistus (mikä muuttui viikoittain)\n        ↓\n  Viikoittainen Output:\n  - Top 5 teemaa (magnitudilla + delta)\n  - Lainauksia näytteille\n  - Kriittiset asiat tutkittavaksi\n        ↓\n  Jakelu:\n  - Tuotetiimi-review (päätökset)\n  - Engineering: bug-teemat\n  - Marketing: positioning-teemat\n\nMittari: palautekattavuus, time-to-action trendaavissa asioissa.",
+    "example": "**Palautteen synteesi-pipeline:**\n\n**1. Lähteet (viikoittain):**\n- NPS-vastaukset (kvartaaleittain × 1000+)\n- Tukitiketit CSAT-kommentein\n- App Store / G2 -arviot\n- Myyntipuheluiden muistiinpanot\n- Some-maininnat\n\n**2. AI-käsittely:**\n- Puhdistus + dedup\n- Luokittelu (ominaisuus, UX, hinnoittelu, performance, ...)\n- Tunneanalyysi\n- Teemojen poiminta\n- Trendien havainnointi (viikko-viikko)\n\n**3. Viikoittainen raportti:**\n- Top-5 teemaa (magnitude + delta)\n- Sitaattinäytteet jokaiseen\n- Kriittiset asiat tutkittavaksi\n\n**4. Jakelu:**\n- Product team → päätökset\n- Engineering → bug-teemat\n- Marketing → asemointi-teemat\n\n**Mittarit:** palautteen kattavuus, time-to-action trendaaville issueille.",
     "mistakes": "Tehdä feedback-synteesi tyhjiössä. Outputin täytyy virrata roadmap-suunnitteluun, ei read-only-raporttiin. Workflow: synteesi → tuote-review → roadmap-päivitys → mittaa vaikutus. Ilman loopia — kohteliasta teatteria."
   },
   "pd-product-analytics": {

@@ -58,7 +58,7 @@
     "what": "A hidden instruction that sets the model's behavior before the conversation starts: role, style, constraints.",
     "why": "Makes responses predictable and consistent across the conversation.",
     "when": "In API, Projects ([[node:instructions|Custom Instructions]]), [[node:claude-code|Claude Code]] ([[node:cc-md|CLAUDE.md]]) — anywhere you want to set the «character».",
-    "impact": "A good system prompt = +30-50% to accuracy and stability.",
+    "impact": "With a good system prompt: 8 out of 10 answers nail the style on the first try. Without it: 4-5 out of 10, the rest you have to rewrite.",
     "example": "You're an expert in my domain. Reply only in English. First facts, then hypotheses, then recommendations.",
     "mistakes": "Writing the role manually in every message instead of a single system prompt."
   },
@@ -202,7 +202,7 @@
     "what": "Web ([[node:pl-web-setup|claude.ai]]), Mobile (iOS/Android), Desktop (Mac/Windows), CLI ([[node:claude-code|Claude Code]]), VS Code/JetBrains extensions, API. Each has its own strengths.",
     "why": "So you use Claude where it's more effective, not «only in the browser».",
     "when": "When picking a tool for a task: chat on the go, development, automation, embed into a product.",
-    "impact": "The right channel saves 50%+ time on a typical task.",
+    "impact": "Picking the right channel saves 30 minutes on a typical task — instead of an hour wrestling with the wrong platform, you get it done in 30 minutes.",
     "example": "My task — everyday development. Which Claude channel do I need?",
     "mistakes": "Using only [[node:pl-web-setup|claude.ai]] when the task is about code — you lose file and history access. Use [[node:claude-code|Claude Code]]."
   },
@@ -229,7 +229,7 @@
     "what": "Five settings every beginner must configure once: Profile (name/language), [[node:instructions|Custom Instructions]] (About me + How to respond), Memory (on/off), Privacy (opt out of training data), and creating a first Project. Takes 15 minutes, saves hours of repeated context.",
     "why": "Without setup, every new chat starts from zero. Claude doesn't know who you are, what you do, or how you like answers formatted. One-time setup changes every future conversation.",
     "when": "On day one — before any serious work. Revisit every 2-3 months as your tasks evolve.",
-    "impact": "[[node:instructions|Custom Instructions]] alone cut prompt length by 30-50% and improve first-draft quality significantly.",
+    "impact": "With [[node:instructions|Custom Instructions]]: first draft is already good, you tweak for 5 minutes. Without: you write the full prompt from scratch every time, spending 15-20 minutes on explanations.",
     "example": "After setup: open a new chat, type 'review this email draft' — Claude already knows your role, preferred language, tone, and format. No briefing needed.",
     "mistakes": "Skipping Privacy settings — by default your data may be used for model training. Opt out in Settings → Privacy if that matters to you."
   },
@@ -526,7 +526,7 @@
     "what": "Terminal mode for Claude: sessions, drag-and-drop files, modes (Plan / Fast), hotkeys.",
     "why": "To get the maximum from the CLI: fewer switches, more time in flow.",
     "when": "Every session with [[node:claude-code|Claude Code]] — basic techniques save hours over a week.",
-    "impact": "Proper terminal work gives +30-50% speed compared to «everything by mouse».",
+    "impact": "Before: switch windows → click → edit → return to Claude — every little thing takes 30 seconds. After: all keyboard, no switching — session flows without breaks.",
     "example": "claude --resume restores yesterday's session. @src/App.jsx — Claude reads the file automatically.",
     "mistakes": "Ignoring sessions and hotkeys — you re-brief the model every time and lose context."
   },
@@ -562,7 +562,7 @@
     "what": "Tab — autocomplete path / command, ↑/↓ — history, Esc — interrupt, Ctrl+C — exit.",
     "why": "So you don't take your hands off the keyboard — terminal work in flow.",
     "when": "Every session from day one — within a week this becomes muscle memory.",
-    "impact": "Minus 30-50% time on navigation and typing repetitive commands.",
+    "impact": "Before: ⌘+Tab → retype the command → enter. After: ↑ or Ctrl+R → found previous → Enter. An hour in the terminal becomes 30 minutes.",
     "example": "Tab after @src/ — autocomplete the file path without typing the name.",
     "mistakes": "Using the mouse in the terminal — you lose the main CLI advantage."
   },
@@ -625,7 +625,7 @@
     "what": "Commands like [[node:cc-cmd-init|/init]], [[node:cc-cmd-clear|/clear]], [[node:cc-cmd-compact|/compact]], /model, /review — built-in and custom. Work in both the terminal and [[node:pl-web-setup|claude.ai]] chats.",
     "why": "Launch complex scenarios with a single press — without a long prompt.",
     "when": "When the task is typical: review, init, context cleanup, model switch.",
-    "impact": "Slash commands save 80% of typing for recurring tasks.",
+    "impact": "Instead of typing «help me rename the conversation and compact the history» — three chars `/r` → autocomplete → Enter. Time saved per session: 15-20 minutes.",
     "example": "/review — structured code review of the current branch. [[node:cc-cmd-compact|/compact]] — compress context without losing history.",
     "mistakes": "Ignoring [[node:cc-cmd-clear|/clear]] when context goes «stale» — answer quality drops."
   },
@@ -643,7 +643,7 @@
     "what": "Clears the current conversation and context — starts a new chat with the same [[node:cc-md|CLAUDE.md]] and Hooks.",
     "why": "To free the [[node:b-context|context window]] when a task is closed or the topic changed.",
     "when": "After finishing a subtask, before starting another large piece of work.",
-    "impact": "Clean context ≈ +30-50% accuracy on the next answers.",
+    "impact": "On a fresh context Claude answers accurately on the first try. On a loaded one — gets confused with old details, you spend 2-3 iterations clarifying. Simple rule: new task — /clear.",
     "example": "/clear after a PR review, before refactoring another part of the code.",
     "mistakes": "Doing /clear mid-work and losing intermediate conclusions — [[node:cc-cmd-compact|/compact]] is better."
   },
@@ -742,7 +742,7 @@
     "what": "A special [[node:claude-code|Claude Code]] mode: the model builds a change plan as a structured list but does NOT apply edits. You review the plan, approve — and only then execution proceeds.",
     "why": "Plan mode protects against «oops» on big edits: you see all the steps before they touch files. Especially valuable on legacy and architectural refactors.",
     "when": "Before mass changes (10+ files), before migrations, before edits in sensitive places (auth, payments, DB migrations).",
-    "impact": "Plan + manual plan review = 5× fewer «oops» on big edits, +20-30% time on the step itself, but multifold savings on rollbacks.",
+    "impact": "On big edits: 5 minutes reviewing the plan = an hour saved on rollback when AI goes off-track. Without a plan: one in five runs needs to be redone from scratch.",
     "example": "In chat: «Enter plan mode and propose a refactor plan for this module. No edits until my OK».",
     "mistakes": "Using Plan mode on trivial edits (one line, one file) — overhead without benefit. Plan — for dangerous and large steps."
   },
@@ -823,7 +823,7 @@
     "what": "Permanent instructions that Claude considers in every reply — at the account, Project or [[node:cc-md|CLAUDE.md]] level.",
     "why": "So you don't repeat «answer in English, concise, no fluff» in every message.",
     "when": "Right when setting up the environment — this is the first investment that pays off from the first conversation.",
-    "impact": "Good instructions = +30-50% consistency and style across all responses.",
+    "impact": "Good [[node:instructions|instructions]] = unified tone, style, format across all answers. Without them: each answer feels like a new person — different voice, different structure, no consistency.",
     "example": "I'm a product manager. Reply tersely, in the format «fact → consequence → recommendation», without formal preambles.",
     "mistakes": "Writing long rants there like «help me with everything» — the model stops noticing what matters."
   },
@@ -886,7 +886,7 @@
     "what": "Context → Role → Task → Format → Constraints. The more concrete, the more accurate.",
     "why": "It's the base framework that works almost always.",
     "when": "Before any non-trivial request, spend 30 seconds on structure.",
-    "impact": "A structured prompt = +50-100% to answer quality without other effort.",
+    "impact": "A structured prompt = an answer you can use without rewriting. Without structure: first draft is «meh», you spend another 15 minutes on clarifications and rewrites.",
     "example": "Context: my task. Role: expert in my domain. Task: 5 solution options. Format: table. Constraints: <your own>.",
     "mistakes": "Writing the «task» right away without context and role — the model guesses, errs more often."
   },
@@ -1162,7 +1162,7 @@
   },
   "cc-grp-session": {
     "title": "Session management",
-    "what": "[[node:cc-cmd-clear|/clear]] — new session. [[node:cc-cmd-compact|/compact]] — summarize context to free space. /resume — continue a previous session. /rename — name the current conversation. /background — keep running after terminal closes. /branch — fork conversation at current point. /rewind — restore code and chat to earlier state. /export — save conversation to file. /copy — copy last response. /recap — one-line session summary. /desktop — move to [[node:pl-desktop|Claude Desktop]]. /teleport — resume from [[node:pl-web-setup|claude.ai]]. /remote-control — control session from phone. /exit — close CLI.",
+    "what": "Session commands in Claude Code — managing context, switching devices, restoring state.\n\n**Context control:**\n- [[node:cc-cmd-clear|/clear]] — new session from scratch\n- [[node:cc-cmd-compact|/compact]] — compress history, keep conclusions\n- /resume — continue previous session\n- /rewind — roll back code and chat to a previous state\n\n**Conversation control:**\n- /rename — name the conversation\n- /branch — fork the conversation at current point\n- /recap — short session summary\n- /export — save conversation to file\n- /copy — copy last response\n\n**Switching devices:**\n- /background — keep working after closing terminal\n- /desktop — move to [[node:pl-desktop|Claude Desktop]]\n- /teleport — continue from [[node:pl-web-setup|claude.ai]]\n- /remote-control — control from phone\n\n**Exit:**\n- /exit — close the CLI",
     "why": "Sessions are persistent — you can pause, resume, fork, and export any conversation. Understanding session commands prevents losing context.",
     "when": "Long coding sessions, switching devices, saving progress, recovering from mistakes with /rewind.",
     "impact": "Never lose work. Resume complex multi-hour tasks. Fork experiments without breaking the main session.",
@@ -1261,7 +1261,7 @@
   },
   "cap-limitations": {
     "title": "Capabilities & Limitations",
-    "what": "Claude is powerful but has real constraints every user must understand. Key limitations: Knowledge cutoff (training data ends ~early 2026, no awareness of events after that). Hallucinations (Claude can confidently state incorrect facts, especially on niche topics or when 'filling gaps'). No real-time data (can't browse the web unless [[node:cap-search|web search]] is enabled). [[node:b-context|Context window]] (long conversations cause earlier content to 'fall out'). No image generation. Literal interpretation (misses sarcasm, cultural nuance, implicit meaning).",
+    "what": "Claude is powerful, but has real limits. Knowing them = not being surprised or frustrated when something doesn't work.\n\n**Key limits:**\n- **Knowledge cutoff** — training data ends around early 2026. Claude doesn't know events after that.\n- **Hallucinations** — may confidently state false facts, especially on niche topics or while «filling gaps».\n- **No real-time data** — without web search enabled, can't see the internet.\n- **[[node:b-context|Context window]]** — in long conversations early content «falls out» of memory.\n- **No image generation** — text and code only (use Imagen / DALL-E / etc. for drawing).\n- **Literal interpretation** — weak at catching sarcasm, cultural nuance, subtext.",
     "why": "Most AI mistakes happen because users don't know the boundaries. Understanding limitations lets you design prompts and workflows that work around them instead of running into them.",
     "when": "Any time you use Claude for factual claims, recent events, long-running tasks, or high-stakes decisions — verify outputs. Never rely solely on Claude for legal, medical, or financial advice.",
     "impact": "Users who understand limitations make 3-5x fewer errors. They verify outputs, use [[node:cap-search|web search]] when needed, break long tasks into shorter sessions, and treat Claude as a first draft rather than a final source.",
@@ -1417,7 +1417,7 @@
     "what": "Auto-generating reports from structured data: CRM, analytics, project management. AI reads data, writes insight-driven narrative, forms action items.",
     "why": "Teams spend 4-8 hours a week on manual reporting. AI handles 80% of the work, leaving the human with review and executive judgment.",
     "when": "Regular reports (weekly/monthly). Data in systems with API/export. Audience expects consistency in format. KPIs are countable.",
-    "impact": "Time-to-report: 4h → 30 min. Consistency: +90% (single format, tone). Freshness: reports come on time, not «when I got around to it».",
+    "impact": "Time-to-report: 4 hours → 30 minutes. Before: different people, different templates. Now: one format, one tone, everywhere. Reports arrive on time, not «when I got around to it».",
     "example": "Sales Weekly Report:\n1. Export from CRM (HubSpot/Salesforce) → CSV.\n2. Project with [[node:b-system|system prompt]]: «you are a sales analyst, report format is XYZ».\n3. Prompt: «here is data for the week, write executive summary + 3 action items».\n4. Output: ready report with numbers, trends, recommendations.\n\nMetrics: reporting time 4h→30min, data accuracy 100% (autopull), insights consistency 95%.",
     "mistakes": "Doing «AI generates pretty text» without action. A report without action items is trash. Structure must be: what changed → why → what we do → KPI. Every time."
   },
@@ -1435,7 +1435,7 @@
     "what": "How an ops team orchestrates working with AI: shared prompts, shared Projects, access, knowledge management. This is about team operating model, not individual usage.",
     "why": "Individual AI usage does not scale. A team of 10, each with their own prompting style = different results + duplicated work. Team workflow creates a unified standard.",
     "when": "When the team ≥3 people actively use AI. When inconsistent results emerge. When a newcomer arrives and «does not know how we work with AI».",
-    "impact": "Team velocity: +30-50%. Onboarding time for newcomers: days instead of weeks. Knowledge sharing: shared Projects + [[node:cc-md|CLAUDE.md]] = team learns from each other.",
+    "impact": "Team velocity: a team of 5 does what used to take 8. New hire onboarding: 2 days instead of 2 weeks. Knowledge isn't locked «in Mary's head» — it lives in shared Projects + [[node:cc-md|CLAUDE.md]].",
     "example": "Operations Team Setup:\n1. Shared Claude Project «Operations Workspace» with team-style [[node:b-system|system prompt]].\n2. [[node:cc-md|CLAUDE.md]] in shared repo: rules, templates, typical tasks.\n3. Reusable Skills for recurring tasks (report-writer, decision-analyzer).\n4. Weekly «AI office hours»: team shares discoveries.\n5. Metric: % of tasks done through shared workflow.\n\nStage 3 sign: a newcomer is productive in 2-3 days, not weeks.",
     "mistakes": "Making «team workflow» = «one person forces everyone to use their prompts». That is not workflow, that is dictatorship. Team workflow = collaborative development + ownership + feedback loops."
   },
@@ -1733,7 +1733,7 @@
     "why": "Customer feedback is fragmented across 5-10 sources. The PM physically cannot read everything. AI does aggregation + synthesis. Sentiment shifts visible before they show up in churn.",
     "when": "When there are ≥3 feedback sources (NPS, support, reviews, sales calls, social). When the product team wants «voice of customer» systematic, not anecdotal.",
     "impact": "Coverage: 5% of feedback is read → 100% is processed. Time-to-trend: 2 months → 2 weeks. Decision quality: data-backed instead of «I remember someone complained».",
-    "example": "Feedback Synthesis Pipeline:\n\n  Sources (weekly):\n  - NPS responses (quarterly × 1000+)\n  - Support tickets with CSAT comments\n  - App store / G2 reviews\n  - Sales call notes\n  - Social mentions\n        ↓\n  AI Processing:\n  1. Clean + deduplicate\n  2. Categorize (feature, UX, pricing, performance, ...)\n  3. Sentiment analysis\n  4. Theme extraction\n  5. Trend detection (what changed week-over-week)\n        ↓\n  Weekly Output:\n  - Top 5 themes (with magnitude + delta)\n  - Quote samples for each\n  - Critical issues to investigate\n        ↓\n  Distribution:\n  - Product team review (decisions)\n  - Engineering: bug themes\n  - Marketing: positioning themes\n\nMetric: feedback coverage, time-to-action on trending issues.",
+    "example": "**Feedback synthesis pipeline:**\n\n**1. Sources (weekly):**\n- NPS responses (quarterly × 1000+)\n- Support tickets with CSAT comments\n- App Store / G2 reviews\n- Sales call notes\n- Social mentions\n\n**2. AI processing:**\n- Clean + dedupe\n- Categorize (feature, UX, pricing, performance, ...)\n- Sentiment analysis\n- Theme extraction\n- Trend detection (week-over-week)\n\n**3. Weekly output:**\n- Top 5 themes (with magnitude + delta)\n- Quote samples for each\n- Critical issues to investigate\n\n**4. Distribution:**\n- Product team → decisions\n- Engineering → bug themes\n- Marketing → positioning themes\n\n**Metrics:** feedback coverage, time-to-action on trending issues.",
     "mistakes": "Doing feedback synthesis in a vacuum. Output must flow into roadmap planning, not into a read-only report. Workflow: synthesis → product review → roadmap update → measure impact. Without the loop — polite theater."
   },
   "pd-product-analytics": {
