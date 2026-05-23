@@ -9,6 +9,8 @@ import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
 import { updateProfile } from '../services/profileService.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { useTheme } from '../hooks/useTheme.js';
+import { useConfirm } from '../hooks/useConfirm.js';
+import { useToast } from '../hooks/useToast.js';
 
 const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
 
@@ -34,6 +36,8 @@ export default function ProfilePanel({
   onClose
 }) {
   const t = useT();
+  const { confirm } = useConfirm();
+  const { toast } = useToast();
   const { locale, setLocale, locales } = useLocale();
   const { user, profile, setProfile, isLoggedIn } = useAuth();
   const [langOpen, setLangOpen] = useState(false);
@@ -193,10 +197,18 @@ export default function ProfilePanel({
     e.target.value = '';
   };
 
-  const resetAll = () => {
-    if (!window.confirm(t('profile.data.resetConfirm'))) return;
+  const resetAll = async () => {
+    const ok = await confirm({
+      title: t('profile.data.resetTitle') || t('profile.data.resetConfirm'),
+      description: t('profile.data.resetDescription') || '',
+      confirmLabel: t('profile.data.resetBtn') || t('profile.data.reset'),
+      cancelLabel: t('common.cancel') || 'Отмена',
+      danger: true,
+    });
+    if (!ok) return;
     for (const key of STORAGE_KEYS) { try { localStorage.removeItem(key); } catch {} }
-    window.location.reload();
+    toast.success(t('profile.data.resetDone') || 'Данные сброшены');
+    setTimeout(() => window.location.reload(), 600);
   };
 
   return (

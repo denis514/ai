@@ -6657,6 +6657,23 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   background: var(--surface-2);
   color: var(--text-muted);
 }
+.cmdk-close {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: color-mix(in srgb, var(--text) 55%, transparent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background .12s, color .12s;
+}
+.cmdk-close:hover {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--text);
+}
 
 .cmdk-results {
   flex: 1;
@@ -8701,4 +8718,189 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
     opacity: 1;
     transform: translateX(0) scale(1);
   }
+}
+
+/* ═══════════════ Toast notifications ═══════════════ */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  width: 100%;
+  max-width: 480px;
+  padding: 0 12px;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 10px 14px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+  border-radius: 10px;
+  box-shadow:
+    0 10px 24px -10px rgba(0,0,0,0.25),
+    0 4px 10px -4px rgba(0,0,0,0.15);
+  font-size: 13.5px;
+  pointer-events: auto;
+  animation: toast-in 0.2s ease-out both;
+}
+.toast__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--accent, var(--text));
+}
+.toast--success .toast__icon { color: #2faa6a; }
+.toast--error .toast__icon   { color: #e2484f; }
+.toast--warning .toast__icon { color: #d97706; }
+.toast--info .toast__icon    { color: #6f5dde; }
+.toast__message {
+  flex: 1;
+  line-height: 1.4;
+}
+.toast__action {
+  flex-shrink: 0;
+  margin-left: 4px;
+  padding: 4px 10px;
+  background: color-mix(in srgb, var(--accent, var(--text)) 12%, transparent);
+  color: var(--accent, var(--text));
+  border: none;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.toast__action:hover {
+  background: color-mix(in srgb, var(--accent, var(--text)) 22%, transparent);
+}
+.toast--success .toast__action { --accent: #2faa6a; }
+.toast--error .toast__action   { --accent: #e2484f; }
+.toast--info .toast__action    { --accent: #6f5dde; }
+.toast__close {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: color-mix(in srgb, var(--text) 50%, transparent);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background .12s, color .12s;
+}
+.toast__close:hover {
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+  color: var(--text);
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Mobile: full width */
+@media (max-width: 600px) {
+  .toast-container {
+    bottom: 16px;
+    max-width: none;
+    width: calc(100% - 16px);
+  }
+}
+
+/* ═══════════════ Confirm dialog ═══════════════ */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200; /* над всеми модалами */
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fade-in 0.16s ease;
+}
+.confirm-dialog {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+  animation: slide-up 0.22s cubic-bezier(.2,.7,.3,1) both;
+}
+.confirm-dialog__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.confirm-dialog__icon {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, #e2484f 14%, transparent);
+  color: #e2484f;
+  flex-shrink: 0;
+}
+.confirm-dialog__title {
+  margin: 0;
+  font-size: 17px;
+  letter-spacing: -0.005em;
+}
+.confirm-dialog__description {
+  margin: 8px 0 18px;
+  color: color-mix(in srgb, var(--text) 75%, transparent);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.confirm-dialog__actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.confirm-dialog__btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+  border: 1px solid transparent;
+}
+.confirm-dialog__btn--cancel {
+  background: transparent;
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--text) 18%, transparent);
+}
+.confirm-dialog__btn--cancel:hover {
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+.confirm-dialog__btn--primary {
+  background: var(--text);
+  color: var(--surface);
+}
+.confirm-dialog__btn--primary:hover {
+  background: color-mix(in srgb, var(--text) 88%, var(--surface));
+}
+.confirm-dialog__btn--danger {
+  background: #e2484f;
+  color: #fff;
+}
+.confirm-dialog__btn--danger:hover {
+  background: color-mix(in srgb, #e2484f 88%, #000);
 }

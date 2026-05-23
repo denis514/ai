@@ -19,6 +19,8 @@ import MobileFab from './components/MobileFab.jsx';
 import PromptModal from './components/PromptModal.jsx';
 import DetailNavFooter from './components/DetailNavFooter.jsx';
 import MinimizedPill from './components/MinimizedPill.jsx';
+import ToastContainer from './components/ToastContainer.jsx';
+import ConfirmDialogContainer from './components/ConfirmDialogContainer.jsx';
 import WelcomeCard from './components/WelcomeCard.jsx';
 import HelpModal from './components/HelpModal.jsx';
 import { useTutorialProgress } from './hooks/useTutorialProgress.js';
@@ -1020,6 +1022,10 @@ function AppInner() {
       {hasUpdate && (
         <UpdateBanner onReload={handleUpdateReload} onDismiss={dismissUpdate} />
       )}
+
+      {/* Глобальные системы уведомлений и подтверждений */}
+      <ToastContainer />
+      <ConfirmDialogContainer />
     </div>
   );
 }

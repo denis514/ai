@@ -192,6 +192,15 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksA
             aria-label={t('palette.queryAria')}
           />
           <kbd className="cmdk-kbd">Esc</kbd>
+          <button
+            type="button"
+            className="cmdk-close"
+            onClick={onClose}
+            aria-label={t('palette.kbdClose')}
+            title={t('palette.kbdClose')}
+          >
+            <Icon name="close" size={14} strokeWidth={2} />
+          </button>
         </div>
 
         <div className="cmdk-results" ref={listRef}>

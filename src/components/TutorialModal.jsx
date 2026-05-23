@@ -8,6 +8,8 @@ import { useTutorialContent, getLocalizedTutorial } from '../i18n/useTutorial.js
 import { useAuth } from '../context/AuthContext.jsx';
 import { useFocusReturn } from '../hooks/useFocusReturn.js';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
+import { useConfirm } from '../hooks/useConfirm.js';
+import { useToast } from '../hooks/useToast.js';
 
 function findNodeById(root, id) {
   if (!root) return null;
@@ -105,6 +107,8 @@ export default function TutorialModal({
   const t = useT();
   const { locale } = useLocale();
   const { isLoggedIn } = useAuth();
+  const { confirm } = useConfirm();
+  const { toast } = useToast();
   // Focus возврат на trigger + body-scroll lock когда модал открыт
   // (но не когда suspended — AuthModal сверху сам делает свой lock).
   useFocusReturn(!suspended);
@@ -410,7 +414,19 @@ export default function TutorialModal({
             <button
               type="button"
               className="tut-side__reset"
-              onClick={() => { if (confirm(t('tutorial.resetConfirm'))) reset(tutorialId); }}
+              onClick={async () => {
+                const ok = await confirm({
+                  title: t('tutorial.resetProgress'),
+                  description: t('tutorial.resetConfirm'),
+                  confirmLabel: t('tutorial.resetProgress'),
+                  cancelLabel: t('common.cancel') || 'Отмена',
+                  danger: true,
+                });
+                if (ok) {
+                  reset(tutorialId);
+                  toast.success(t('tutorial.resetDone') || t('tutorial.resetProgress'));
+                }
+              }}
             >{t('tutorial.resetProgress')}</button>
           </nav>
 
