@@ -675,13 +675,14 @@ function AppInner() {
   }, []);
 
   // Восстановление: пользователь кликнул по пилюле.
+  // ВАЖНО: НЕ сбрасываем minimizedWorkflow здесь — иначе на следующем render
+  // WorkflowsModal получит initialSelectedTutorial=null (snapshot уже стёрт).
+  // Сброс делает useEffect ниже — после фактического mount модалки.
   const onExpandMinimized = useCallback(() => {
     const m = minimizedWorkflow;
     if (!m) return;
-    setMinimizedWorkflow(null);
     if (m.type === 'workflows') {
       setRoute({ type: 'courses' });
-      // selectedTutorialKey восстановится через initialSelectedTutorial prop
     } else if (m.type === 'tutorial' && m.tutorialId) {
       setRoute({ type: 'tutorial', id: m.tutorialId });
     }
@@ -691,6 +692,20 @@ function AppInner() {
   const onDismissMinimized = useCallback(() => {
     setMinimizedWorkflow(null);
   }, []);
+
+  // Авто-сброс minimizedWorkflow когда соответствующая модалка
+  // фактически открылась (после onExpandMinimized). Если оставить snapshot
+  // ещё и после открытия — пилюля может «воскреснуть» при следующей
+  // навигации к узлу со стейлом.
+  useEffect(() => {
+    if (!minimizedWorkflow) return;
+    if (minimizedWorkflow.type === 'workflows' && coursesOpen) {
+      setMinimizedWorkflow(null);
+    } else if (minimizedWorkflow.type === 'tutorial'
+            && activeTutorial === minimizedWorkflow.tutorialId) {
+      setMinimizedWorkflow(null);
+    }
+  }, [minimizedWorkflow, coursesOpen, activeTutorial]);
 
   // Закрытие tutorial — оставляем пользователя на узле, не очищаем route
   // полностью. Так после прохождения курса карта остаётся позиционированной
