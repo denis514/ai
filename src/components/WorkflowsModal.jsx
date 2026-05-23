@@ -32,7 +32,11 @@ const AUDIENCES    = ['all', 'everyone', 'business', 'developers'];
 const STATUSES     = ['all', 'started', 'done'];
 const LEVEL_GROUPS = ['beginner', 'intermediate', 'advanced'];
 
-export default function WorkflowsModal({ onClose, onOpen, onNavigate, progressApi, nodeProgressApi, onOpenPrompt }) {
+export default function WorkflowsModal({
+  onClose, onOpen, onNavigate, progressApi, nodeProgressApi, onOpenPrompt,
+  onMinimize,                  // (state) => void — свернуть в пилюлю
+  initialSelectedTutorial,     // string | null — восстановить туториал при разворачивании
+}) {
   const t = useT();
   const { locale } = useLocale();
   const [tab, setTab] = useState('paths');
@@ -40,7 +44,7 @@ export default function WorkflowsModal({ onClose, onOpen, onNavigate, progressAp
   const [status, setStatus]   = useState('all');
   const [audienceOpen, setAudienceOpen] = useState(false);
   const [statusOpen,   setStatusOpen]   = useState(false);
-  const [selectedTutorialId, setSelectedTutorialId] = useState(null);
+  const [selectedTutorialId, setSelectedTutorialId] = useState(initialSelectedTutorial || null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
   const audienceRef = useRef(null);
@@ -338,8 +342,20 @@ export default function WorkflowsModal({ onClose, onOpen, onNavigate, progressAp
                   onOpen(selectedTutorialKey); // передаём ключ туториала, не nodeId
                 }}
                 onOpenNode={(id) => {
-                  setSelectedTutorialId(null);
-                  // setRoute сам закрывает модалку — onClose() здесь обнулял бы маршрут.
+                  // Cross-link клик из туториала-превью → сворачиваем модалку
+                  // в пилюлю (если родитель умеет minimize), переходим на узел.
+                  if (onMinimize && selectedTutorialKey) {
+                    const tutStruct = tutorials[selectedTutorialKey];
+                    const tutLoc = getLocalizedTutorial(selectedTutorialKey, locale);
+                    onMinimize({
+                      type: 'workflows',
+                      selectedTutorialKey,
+                      displayTitle: tutLoc?.title || selectedTutorialKey,
+                      displayIcon: tutStruct?.icon || 'graduation',
+                    });
+                  } else {
+                    setSelectedTutorialId(null);
+                  }
                   onNavigate?.({ type: 'node', id });
                 }}
                 onOpenTutorial={(id) => setSelectedTutorialId(id)}

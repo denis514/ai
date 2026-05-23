@@ -18,6 +18,7 @@ import ProfileFab from './components/ProfileFab.jsx';
 import MobileFab from './components/MobileFab.jsx';
 import PromptModal from './components/PromptModal.jsx';
 import DetailNavFooter from './components/DetailNavFooter.jsx';
+import MinimizedPill from './components/MinimizedPill.jsx';
 import WelcomeCard from './components/WelcomeCard.jsx';
 import HelpModal from './components/HelpModal.jsx';
 import { useTutorialProgress } from './hooks/useTutorialProgress.js';
@@ -312,6 +313,10 @@ function AppInner() {
   // переходах внутри панели, очищается при закрытии и при «свежей» навигации
   // (клик по карте, поиск, hash-роутинг).
   const [navStack, setNavStack] = useState([]);
+  // Свёрнутый workflow/tutorial — пилюля рядом с DetailPanel.
+  // Появляется при cross-link клике из WorkflowsModal или TutorialModal,
+  // позволяет вернуться в оригинальную модалку с восстановлением state.
+  const [minimizedWorkflow, setMinimizedWorkflow] = useState(null);
   const [archiveOpen, setArchiveOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   // true когда AuthModal открыт из tutorial gate — туториал скрывается, но не размонтируется
@@ -658,7 +663,34 @@ function AppInner() {
   const onCloseAll     = useCallback(() => {
     setRoute(null);
     setNavStack([]); // закрытие панели — сброс стека «откуда пришёл»
+    setMinimizedWorkflow(null); // и сброс пилюли свёрнутого workflow
   }, [setRoute]);
+
+  // ───── Свёрнутый workflow/tutorial (MinimizedPill) ─────
+  // Минимизация: вызывается из WorkflowsModal/TutorialModal когда юзер
+  // кликает cross-link [[node:X]]. Сохраняем state и переходим на узел.
+  const onMinimizeWorkflow = useCallback((state) => {
+    setMinimizedWorkflow(state);
+    // Не закрываем route явно — он переключится в navigateToNode/setRoute.
+  }, []);
+
+  // Восстановление: пользователь кликнул по пилюле.
+  const onExpandMinimized = useCallback(() => {
+    const m = minimizedWorkflow;
+    if (!m) return;
+    setMinimizedWorkflow(null);
+    if (m.type === 'workflows') {
+      setRoute({ type: 'courses' });
+      // selectedTutorialKey восстановится через initialSelectedTutorial prop
+    } else if (m.type === 'tutorial' && m.tutorialId) {
+      setRoute({ type: 'tutorial', id: m.tutorialId });
+    }
+  }, [minimizedWorkflow, setRoute]);
+
+  // Отказ: пользователь нажал × на пилюле — забываем state.
+  const onDismissMinimized = useCallback(() => {
+    setMinimizedWorkflow(null);
+  }, []);
 
   // Закрытие tutorial — оставляем пользователя на узле, не очищаем route
   // полностью. Так после прохождения курса карта остаётся позиционированной
@@ -815,6 +847,20 @@ function AppInner() {
           progressApi={progressApi}
           nodeProgressApi={nodeProgressApi}
           onOpenPrompt={setFeaturedPrompt}
+          onMinimize={onMinimizeWorkflow}
+          initialSelectedTutorial={
+            minimizedWorkflow?.type === 'workflows' ? minimizedWorkflow.selectedTutorialKey : null
+          }
+        />
+      )}
+
+      {/* Свёрнутая пилюля workflow/tutorial — рядом с DetailPanel */}
+      {panelOpen && minimizedWorkflow && (
+        <MinimizedPill
+          state={minimizedWorkflow}
+          onExpand={onExpandMinimized}
+          onDismiss={onDismissMinimized}
+          isMobile={isMobile}
         />
       )}
 
@@ -827,6 +873,7 @@ function AppInner() {
             onOpenTutorial={(id) => setRoute({ type: 'tutorial', id })}
             onOpenLibrary={onOpenLibrary}
             onOpenNode={(id) => setRoute({ type: 'node', id })}
+            onMinimize={onMinimizeWorkflow}
             onOpenPrompt={(promptId) => {
               const p = getLocalizedFeaturedPrompt(promptId, locale);
               if (p) setFeaturedPrompt(p);

@@ -95,6 +95,7 @@ export default function TutorialModal({
   onOpenNode,
   onOpenPrompt,        // (id) => void — открыть готовый промпт по id (для inline-ссылок)
   onOpenCourses,
+  onMinimize,          // (state) => void — свернуть в пилюлю
   progressApi,
   suspended = false,   // true когда перекрыт AuthModal — игнорируем ESC и клик-вне
   onRequestAuth,       // вызвать вместо dispatch atlas:open-auth (из gate)
@@ -105,9 +106,27 @@ export default function TutorialModal({
   const tut = useTutorialContent(tutorialId);
 
   // Навигаторы для inline-ссылок [[node:|tutorial:|prompt:]] в тексте туториала.
-  // Переходы по node/tutorial закрывают туториал (как actions), переход по prompt — нет.
+  // node-переход: если родитель умеет minimize — сворачиваем в пилюлю
+  // (state восстановим при разворачивании). Иначе закрываем как раньше.
+  // tutorial/prompt — открывается поверх, туториал не трогаем.
   const inlineNav = {
-    node: (id) => { onClose?.(); onOpenNode?.(id); },
+    node: (id) => {
+      if (onMinimize && tut) {
+        onMinimize({
+          type: 'tutorial',
+          tutorialId,
+          displayTitle: tut.title || tutorialId,
+          displayIcon: tut.icon || 'graduation',
+          progress: {
+            current: activeIdx + 1,
+            total: tut.steps.length
+          }
+        });
+      } else {
+        onClose?.();
+      }
+      onOpenNode?.(id);
+    },
     tutorial: (id) => onOpenTutorial?.(id),
     prompt: (id) => onOpenPrompt?.(id)
   };
