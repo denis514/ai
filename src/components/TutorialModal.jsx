@@ -3,8 +3,8 @@ import { tutorials } from '../data/tutorials.js';
 import { mindmapData } from '../data/mindmapData.js';
 import Icon from './Icon.jsx';
 import InlineText from './InlineText.jsx';
-import { useT } from '../i18n/LocaleContext.jsx';
-import { useTutorialContent } from '../i18n/useTutorial.js';
+import { useT, useLocale } from '../i18n/LocaleContext.jsx';
+import { useTutorialContent, getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
 function findNodeById(root, id) {
@@ -101,6 +101,7 @@ export default function TutorialModal({
   onRequestAuth,       // вызвать вместо dispatch atlas:open-auth (из gate)
 }) {
   const t = useT();
+  const { locale } = useLocale();
   const { isLoggedIn } = useAuth();
   // Локализованный туториал — структура из tutorials.js + текст из локали.
   const tut = useTutorialContent(tutorialId);
@@ -222,6 +223,16 @@ export default function TutorialModal({
   const allDone = tut && completedCount === tut.steps.length;
   const percent = tut ? Math.round((completedCount / tut.steps.length) * 100) : 0;
 
+  // Safety net: route указывает на несуществующий tutorial (битый URL,
+  // устаревший hash, ошибка в данных). Возвращаем пользователя — не оставляем
+  // пустой экран.
+  useEffect(() => {
+    if (tutorialId && !tut && onClose) {
+      console.warn(`TutorialModal: tutorial "${tutorialId}" не найден, закрываю`);
+      onClose();
+    }
+  }, [tutorialId, tut, onClose]);
+
   if (!tut) return null;
 
   const step = tut.steps[activeIdx];
@@ -234,10 +245,36 @@ export default function TutorialModal({
     ? onRequestAuth()
     : document.dispatchEvent(new CustomEvent('atlas:open-auth'));
 
+  // tut.next содержит МИКС из tutorial-id и node-id (например, uc-* use-cases).
+  // Резолвим каждый: сначала пробуем как туториал, затем как узел.
+  // Без этого клик на узловую кнопку дёргал onOpenTutorial(node-id) и
+  // открывал «пустой» TutorialModal (useTutorialContent возвращал null).
   const nextSuggestions = (tut.next || [])
     .map(id => {
+      // 1. Tutorial?
+      if (tutorials[id]) {
+        const tutLoc = getLocalizedTutorial?.(id, locale);
+        return {
+          id,
+          kind: 'tutorial',
+          title: tutLoc?.title || id,
+          icon: tutorials[id].icon || 'graduation',
+        };
+      }
+      // 2. Node (use-case или другой)?
       const node = findNodeById(mindmapData, id);
-      return node ? { id, title: t(`nodes.${id}.title`), icon: node.icon } : null;
+      if (node) {
+        const key = `nodes.${id}.title`;
+        const got = t(key);
+        return {
+          id,
+          kind: 'node',
+          title: (got && got !== key) ? got : id,
+          icon: node.icon || 'compass',
+        };
+      }
+      // 3. Не найдено — пропускаем (битая ссылка)
+      return null;
     })
     .filter(Boolean);
 
@@ -513,8 +550,17 @@ export default function TutorialModal({
                               <button
                                 key={n.id}
                                 type="button"
-                                className="tut-finish__next"
-                                onClick={() => onOpenTutorial(n.id)}
+                                className={`tut-finish__next tut-finish__next--${n.kind}`}
+                                onClick={() => {
+                                  if (n.kind === 'tutorial') {
+                                    onOpenTutorial?.(n.id);
+                                  } else {
+                                    // node-id (например use-case) — закрываем туториал
+                                    // и открываем узел в DetailPanel
+                                    onClose?.();
+                                    onOpenNode?.(n.id);
+                                  }
+                                }}
                               >
                                 <span aria-hidden="true">
                                   <Icon name={n.icon} size={18} strokeWidth={1.5} />

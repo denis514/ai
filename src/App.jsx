@@ -261,6 +261,14 @@ function AppInner() {
   );
   const panelOpen     = route?.type === 'node' && !!selected;
   const activeTutorial = route?.type === 'tutorial' ? route.id : null;
+  // Safety net: route указывает на несуществующий узел (битый URL/hash) →
+  // сбрасываем чтобы не оставлять пользователя в подвешенном состоянии.
+  useEffect(() => {
+    if (route?.type === 'node' && route.id && !selected) {
+      console.warn(`App: узел "${route.id}" не найден, сбрасываю route`);
+      setRoute(null);
+    }
+  }, [route, selected, setRoute]);
   const coursesOpen   = route?.type === 'courses';
   const libraryOpen   = route?.type === 'library' || route?.type === 'prompt';
   const helpOpen      = route?.type === 'help';

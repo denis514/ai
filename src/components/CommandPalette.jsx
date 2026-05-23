@@ -62,7 +62,10 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksA
       const loc = getLocalizedTutorial(key, locale);
       return {
         type: 'tutorial',
-        id: struct.nodeId,
+        // ВАЖНО: id = ключ туториала, НЕ struct.nodeId. Иначе onNavigate
+        // получит nodeId и TutorialModal будет искать tutorials[nodeId] →
+        // null → пустой экран при клике из палитры.
+        id: key,
         title: loc?.title || '',
         icon: struct.icon || 'graduation',
         subtitle: loc?.subtitle || '',
