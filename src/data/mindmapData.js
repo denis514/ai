@@ -145,11 +145,12 @@ export const mindmapData = {
               "icon": "archive",
               "category": "foundation",
               "relatedIds": [
-                "af-embeddings",
-                "af-vector-db",
-                "cap-citations",
-                "cap-files"
-              ]
+            "af-embeddings",
+            "af-vector-db",
+            "cap-citations",
+            "cap-files",
+            "sys-rag-architecture"
+          ]
             },
             {
               "id": "af-memory-systems",
@@ -160,7 +161,8 @@ export const mindmapData = {
             "af-rag-basics",
             "p-files",
             "af-embeddings",
-            "cc-md"
+            "cc-md",
+            "i-claudemd"
           ]
             },
             {
@@ -182,7 +184,8 @@ export const mindmapData = {
             "af-llm-basics",
             "instructions",
             "pr-fewshot",
-            "b-system"
+            "b-system",
+            "af-rag-basics"
           ]
             }
           ]
