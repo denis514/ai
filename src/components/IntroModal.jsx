@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 
 /**
  * IntroModal — первое знакомство с Atlas для новых посетителей.
@@ -61,6 +63,8 @@ const FEATURES = [
 
 export default function IntroModal({ onDone, onRequestAuth }) {
   const t = useT();
+  useFocusReturn();
+  useBodyScrollLock();
   const [slide, setSlide] = useState(0);
   const [role, setRole] = useState('everyone');
   const [leaving, setLeaving] = useState(false);

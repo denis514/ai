@@ -3,6 +3,8 @@ import { WHATS_NEW } from '../data/whatsNew.js';
 import { nodeIndex } from '../data/mindmapData.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useWhatsNew } from '../hooks/useWhatsNew.js';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 import Icon from './Icon.jsx';
 
 const PAGE_SIZE = 10;
@@ -13,6 +15,8 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
   const { isNew, markSeen } = useWhatsNew();
   const [page, setPage] = useState(1);
   const [titles, setTitles] = useState({});
+  useFocusReturn();
+  useBodyScrollLock();
 
   useEffect(() => {
     import(`../locales/${locale}/nodes.json`).then(m => {

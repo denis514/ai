@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 import { mindmapData } from '../data/mindmapData.js';
 import { promptLibrary } from '../data/promptLibrary.js';
 import { tutorials } from '../data/tutorials.js';
@@ -126,12 +128,11 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksA
       setActiveIdx(0);
       // фокусировать input после mount
       setTimeout(() => inputRef.current?.focus(), 50);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
     }
-    return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
+  // Focus return + scroll lock (управляется по isOpen вместо mount)
+  useFocusReturn(isOpen);
+  useBodyScrollLock(isOpen);
 
   // Reset activeIdx когда меняется результат
   useEffect(() => { setActiveIdx(0); }, [query]);

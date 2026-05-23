@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './Icon.jsx';
 import PromptModal from './PromptModal.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 import {
   PROMPT_CATEGORIES,
   PROMPT_LEVELS,
@@ -25,6 +27,8 @@ export default function PromptLibraryModal({
 }) {
   const t = useT();
   const { locale, contentVersion } = useLocale();
+  useFocusReturn();
+  useBodyScrollLock();
   const { isLoggedIn } = useAuth();
   const GUEST_LIMIT = 15;
   const LEVEL_FILTERS = [
@@ -92,11 +96,7 @@ export default function PromptLibraryModal({
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      window.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
+    return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
   const counts = useMemo(() => countByCategory(), []);

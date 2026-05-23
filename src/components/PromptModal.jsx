@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 
 export default function PromptModal({ prompt, onClose }) {
   const t = useT();
   const [copied, setCopied] = useState(false);
+  useFocusReturn();
+  useBodyScrollLock();
 
   useEffect(() => {
     // ESC закрывает ТОЛЬКО этот модал, не пропуская событие в parent
@@ -19,11 +23,7 @@ export default function PromptModal({ prompt, onClose }) {
     // capture: true чтобы наш handler выполнился РАНЬШЕ родительского
     // (Library использует addEventListener без capture).
     window.addEventListener('keydown', onKey, true);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      window.removeEventListener('keydown', onKey, true);
-      document.body.style.overflow = '';
-    };
+    return () => window.removeEventListener('keydown', onKey, true);
   }, [onClose]);
 
   const copy = async () => {

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 
 /**
  * BottomSheet — слайд-ап оверлей из низа экрана.
@@ -39,12 +41,10 @@ export default function BottomSheet({
     if (!isOpen) return;
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      window.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
+    return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, onClose]);
+  useFocusReturn(isOpen);
+  useBodyScrollLock(isOpen);
 
   // Swipe-down to dismiss (только в зоне drag handle)
   const onTouchStart = (e) => {

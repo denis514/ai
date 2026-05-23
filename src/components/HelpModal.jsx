@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './Icon.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getLocalizedHelp } from '../i18n/useHelp.js';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 
 /**
  * HelpModal — справка по продукту с динамическим FAQ.
@@ -30,6 +32,8 @@ export default function HelpModal({
 }) {
   const t = useT();
   const { locale } = useLocale();
+  useFocusReturn();
+  useBodyScrollLock();
 
   const sections = useMemo(() => getLocalizedHelp(locale), [locale]);
   const initialId = activeSectionId && sections.find(s => s.id === activeSectionId)

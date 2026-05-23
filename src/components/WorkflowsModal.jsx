@@ -4,6 +4,8 @@ import { mindmapData, CATEGORIES } from '../data/mindmapData.js';
 import { learningPaths } from '../data/learningPaths.js';
 import { promptIndex } from '../data/promptLibrary.js';
 import { useIsMobile } from '../hooks/useIsMobile.js';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 import TutorialDetail from './TutorialDetail.jsx';
 import Icon from './Icon.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
@@ -45,6 +47,8 @@ export default function WorkflowsModal({
   const [audienceOpen, setAudienceOpen] = useState(false);
   const [statusOpen,   setStatusOpen]   = useState(false);
   const [selectedTutorialId, setSelectedTutorialId] = useState(initialSelectedTutorial || null);
+  useFocusReturn();
+  useBodyScrollLock();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
   const audienceRef = useRef(null);

@@ -6,6 +6,8 @@ import InlineText from './InlineText.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useTutorialContent, getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 
 function findNodeById(root, id) {
   if (!root) return null;
@@ -103,6 +105,10 @@ export default function TutorialModal({
   const t = useT();
   const { locale } = useLocale();
   const { isLoggedIn } = useAuth();
+  // Focus возврат на trigger + body-scroll lock когда модал открыт
+  // (но не когда suspended — AuthModal сверху сам делает свой lock).
+  useFocusReturn(!suspended);
+  useBodyScrollLock(!suspended);
   // Локализованный туториал — структура из tutorials.js + текст из локали.
   const tut = useTutorialContent(tutorialId);
 

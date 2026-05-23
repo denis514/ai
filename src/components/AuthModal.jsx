@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Icon from './Icon.jsx';
 import { sendMagicLink, signInWithGoogle } from '../services/authService.js';
 import { useT } from '../i18n/LocaleContext.jsx';
+import { useFocusReturn } from '../hooks/useFocusReturn.js';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 
 /**
  * AuthModal — модалка входа.
@@ -16,6 +18,8 @@ import { useT } from '../i18n/LocaleContext.jsx';
  */
 export default function AuthModal({ onClose }) {
   const t = useT();
+  useFocusReturn();
+  useBodyScrollLock();
 
   const [step, setStep] = useState('email'); // 'email' | 'sent'
   const [email, setEmail] = useState('');
