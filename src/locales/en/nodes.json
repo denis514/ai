@@ -1399,7 +1399,7 @@
     "what": "Automating recurring processes via AI: input (trigger) → AI processing → output (result + next action). Skills + Hooks + RAG as the core stack.",
     "why": "Every team has 30-50% of tasks = recurring: onboarding, status updates, routine comms. AI handles most of these without quality loss.",
     "when": "When a task happens ≥5×/week + has clear inputs/outputs + result can be validated. Ideal candidates: weekly reports, customer welcome emails, internal status digests.",
-    "impact": "Time savings: 70-90% on a specific task. Consistency: a single quality result instead of «depends who did it». Stage 1→2.",
+    "impact": "Time savings: 70-90% on a specific task. Consistency: a single quality result instead of «depends who did it».",
     "example": "Workflow «Weekly status digest»:\n1. Trigger (Monday 9am or /command).\n2. AI Step: reads Linear/Jira for the week.\n3. AI Step: writes executive summary in branded style.\n4. Quality gate: human does final review (15 min instead of 2 hours of writing).\n5. Output: publish in #leadership Slack.\n\nBefore: 2h/week. After: 15min review.",
     "mistakes": "Automating a process that has not yet «stabilized». If the process changes every week — AI automation will constantly break. First: stabilize the process manually. Then: automate."
   },
@@ -1408,7 +1408,7 @@
     "what": "AI as a «second opinion» for operational decisions: AI analyzes data + context + history of decisions → gives a structured recommendation. Does not replace human, but disciplines the process.",
     "why": "Operational decisions are often made «by gut» under pressure. AI structuring forces consideration of alternatives, risks, metrics — reduces reactive decisions.",
     "when": "Hire/no-hire decisions. Resource allocation. Vendor selection. Process change vs no-change. Decisions with >$10k impact or >2 weeks horizon.",
-    "impact": "Reduction in reactive decisions: 50-70%. Decision quality measurable (track outcomes). Stage 2→3.",
+    "impact": "Reduction in reactive decisions: 50-70%. Decision quality measurable (track outcomes).",
     "example": "Decision template:\n1. Context: situation in 5 sentences.\n2. Options: 3 decision variants.\n3. Each option: pros, cons, cost, risk.\n4. AI analysis: pattern-matching with past decisions + recommendation.\n5. Human override + log decision reasoning.\n\nAfter 3 months you SEE the patterns of your decisions — where AI was right, where it erred.",
     "mistakes": "Blindly following AI recommendation. AI is good at pattern analysis but does not know your full context. Treat AI as a «thoughtful junior»: gives perspective, but the decision and accountability are yours."
   },
@@ -1417,7 +1417,7 @@
     "what": "Auto-generating reports from structured data: CRM, analytics, project management. AI reads data, writes insight-driven narrative, forms action items.",
     "why": "Teams spend 4-8 hours a week on manual reporting. AI handles 80% of the work, leaving the human with review and executive judgment.",
     "when": "Regular reports (weekly/monthly). Data in systems with API/export. Audience expects consistency in format. KPIs are countable.",
-    "impact": "Time-to-report: 4h → 30 min. Consistency: +90% (single format, tone). Freshness: reports come on time, not «when I got around to it». Stage 1→2.",
+    "impact": "Time-to-report: 4h → 30 min. Consistency: +90% (single format, tone). Freshness: reports come on time, not «when I got around to it».",
     "example": "Sales Weekly Report:\n1. Export from CRM (HubSpot/Salesforce) → CSV.\n2. Project with [[node:b-system|system prompt]]: «you are a sales analyst, report format is XYZ».\n3. Prompt: «here is data for the week, write executive summary + 3 action items».\n4. Output: ready report with numbers, trends, recommendations.\n\nMetrics: reporting time 4h→30min, data accuracy 100% (autopull), insights consistency 95%.",
     "mistakes": "Doing «AI generates pretty text» without action. A report without action items is trash. Structure must be: what changed → why → what we do → KPI. Every time."
   },
@@ -1426,7 +1426,7 @@
     "what": "AI optimization of team resource allocation: capacity planning, tools for different tasks, Claude model choice (Haiku vs Sonnet vs Opus), API cost management.",
     "why": "Operations teams often overspend on tools and resources because «we have always done it this way». AI audit reveals over-provisioning, model mismatch, idle resources.",
     "when": "Quarterly resource review. Before annual budget planning. When AI spend becomes visible in P&L.",
-    "impact": "Cost reduction: 20-40% on operations spend. Productivity: better tool-to-task fit. Stage 2→3.",
+    "impact": "Cost reduction: 20-40% on operations spend. Productivity: better tool-to-task fit.",
     "example": "AI Spend Audit:\n1. Export all AI-API logs for 30 days.\n2. AI analysis: «which tasks use Opus, can they be moved to Sonnet?»\n3. Output: list of tasks + alternative models + estimated savings.\n4. Test: one week on the new mix → measure quality.\n5. Roll out: if quality does not drop, move 80% of tasks.\n\nReal case: $5k/month Opus → $1.2k/month Sonnet, quality drop <5%, ROI = 4x.",
     "mistakes": "Optimizing only cost without quality measurement. A cheaper model can «save» $1000 but reduce conversion by $5000. Track quality metrics in parallel with cost."
   },
@@ -1435,7 +1435,7 @@
     "what": "How an ops team orchestrates working with AI: shared prompts, shared Projects, access, knowledge management. This is about team operating model, not individual usage.",
     "why": "Individual AI usage does not scale. A team of 10, each with their own prompting style = different results + duplicated work. Team workflow creates a unified standard.",
     "when": "When the team ≥3 people actively use AI. When inconsistent results emerge. When a newcomer arrives and «does not know how we work with AI».",
-    "impact": "Team velocity: +30-50%. Onboarding time for newcomers: days instead of weeks. Knowledge sharing: shared Projects + [[node:cc-md|CLAUDE.md]] = team learns from each other. Stage 2→3.",
+    "impact": "Team velocity: +30-50%. Onboarding time for newcomers: days instead of weeks. Knowledge sharing: shared Projects + [[node:cc-md|CLAUDE.md]] = team learns from each other.",
     "example": "Operations Team Setup:\n1. Shared Claude Project «Operations Workspace» with team-style [[node:b-system|system prompt]].\n2. [[node:cc-md|CLAUDE.md]] in shared repo: rules, templates, typical tasks.\n3. Reusable Skills for recurring tasks (report-writer, decision-analyzer).\n4. Weekly «AI office hours»: team shares discoveries.\n5. Metric: % of tasks done through shared workflow.\n\nStage 3 sign: a newcomer is productive in 2-3 days, not weeks.",
     "mistakes": "Making «team workflow» = «one person forces everyone to use their prompts». That is not workflow, that is dictatorship. Team workflow = collaborative development + ownership + feedback loops."
   },
@@ -1543,7 +1543,7 @@
     "what": "Content machine on AI: input (brief) → AI draft → human review → publish. Pipeline for blog posts, email, social, documentation. Goal — 10× speedup without losing brand voice.",
     "why": "Content teams spend 40-60% of time on drafts. AI handles 80% of this work. Freed time goes to strategy, distribution, performance analysis — where AI does not help.",
     "when": "When the team publishes ≥10 pieces per month. When there is a documented brand voice (or it is easy to assemble). When SEO/audience research exists as brief input.",
-    "impact": "Time-to-publish: 2 days → 4 hours. Content output: +200-300% with the same team. Consistency: single tone across all channels. Stage 1→2.",
+    "impact": "Time-to-publish: 2 days → 4 hours. Content output: +200-300% with the same team. Consistency: single tone across all channels.",
     "example": "Content Pipeline:\n\n  Brief (topic + outline + audience)\n        ↓\n  Project «Blog» with brand voice prompt\n        ↓\n  AI draft (800 words in 2 minutes)\n        ↓\n  Quality gate: editor review\n        ↓\n  Final + SEO optimization\n        ↓\n  Publish\n\nMetric: 1500-word longread in 4 hours instead of 2 days.",
     "mistakes": "Doing «AI generates → publish» without a human gate. Any AI text needs review: factcheck, tone, local context. Without human-in-the-loop — generic AI content the reader spots in 3 seconds."
   },
@@ -1552,7 +1552,7 @@
     "what": "AI support for planning and analyzing marketing campaigns: performance prediction, creative variant generation, post-mortem analysis. AI = «second analyst» on the team.",
     "why": "Campaigns are planned under pressure → reactive decisions, no learning loop. AI adds structured analysis pre-launch (what to try) and post-launch (what worked and why).",
     "when": "Quarterly campaign planning. Before launching a campaign with >$10k budget. Post-mortem after every major campaign. A/B testing copy.",
-    "impact": "Campaign ROI: +20-40% thanks to better planning and faster learning. Reduce reactive decisions: 60%. Stage 2→3.",
+    "impact": "Campaign ROI: +20-40% thanks to better planning and faster learning. Reduce reactive decisions: 60%.",
     "example": "Campaign workflow:\n\n  Pre-launch:\n  1. AI analyzes past campaigns to similar audience\n  2. Generates 5 angle/positioning variants\n  3. Predicts likely performance (rough)\n\n  Post-launch:\n  1. AI reads all metrics + comments\n  2. Pattern-matching: what worked, what did not\n  3. Documents learnings in shared knowledge base\n\nAfter a year: organized library of campaign learnings.",
     "mistakes": "Using AI as «ROI predictor». AI is good at pattern matching historical data, but new markets/channels are beyond its experience. AI = «thoughtful colleague for brainstorming», not «oracle»."
   },
@@ -1561,7 +1561,7 @@
     "what": "Documenting and codifying brand voice in the AI generation system. From ad-hoc «we need to sound like us» — to explicit voice guide + system prompts + [[node:pr-fewshot|few-shot examples]] in every Project.",
     "why": "Without explicit voice, AI outputs generic «like everyone». With voice guide — text sounds like your team. This is the difference between «AI is noticeable» and «AI is invisible».",
     "when": "When team ≥3 people writes content. When «AI tone is not us» complaints. Before AI content operations roll-out to the whole team. When brand vocabulary matters (B2B, tech, lifestyle).",
-    "impact": "Brand consistency: 60% → 95%. Editor rewrite time: -70%. New team member onboarding: -50%. Stage 2→3.",
+    "impact": "Brand consistency: 60% → 95%. Editor rewrite time: -70%. New team member onboarding: -50%.",
     "example": "Brand Voice Setup:\n\n1. «Voice Guide» document:\n   - 3-5 voice attributes (e.g., warm, expert, direct)\n   - Do/Don't examples for each\n   - 10 sample paragraphs in our style\n\n2. [[node:b-system|System prompt]] in «Blog» Project:\n   «You write in style X. Voice attributes: ... Examples: ...»\n\n3. Test: 5 different people give brief → AI generates → blind review → > 80% pick AI-version vs generic.\n\nReal investment: 2-3 days for setup, saves hours per piece.",
     "mistakes": "Describing voice abstractly («professional but friendly»). It does not help AI. Voice = examples + concrete attributes + Do/Don't. More concrete, better reproducibility."
   },
@@ -1570,7 +1570,7 @@
     "what": "AI for SEO tasks: keyword research, content briefs from SERPs, meta optimization, internal linking. From 1 SEO specialist per 5 content writers — to a team where every writer is SEO-aware.",
     "why": "SEO requires expertise content writers usually do not have. AI closes the gap: author writes, AI checks/suggests SEO improvements. Team moves faster without hiring an SEO spec.",
     "when": "When content output >20 pieces/month + SEO is critical (B2B SaaS, eCommerce, content-driven). When there is budget for keyword research tools (ahrefs/semrush).",
-    "impact": "Organic traffic: +30-60% in 6 months. SEO coverage rate (% of pages targeting keywords): 30% → 80%. Stage 1→2.",
+    "impact": "Organic traffic: +30-60% in 6 months. SEO coverage rate (% of pages targeting keywords): 30% → 80%.",
     "example": "SEO Workflow:\n\n  1. Author writes draft on topic.\n  2. AI Step: «here are top-10 SERPs for this topic → what competitors cover, what is missing»\n  3. AI Step: «based on this draft + SERP gap analysis, what subtopics to add, what keywords to integrate»\n  4. Author redrafts with AI recommendations.\n  5. AI Step: meta title + description optimization.\n\nResult: SEO-optimized content without a separate SEO pass.",
     "mistakes": "Trusting AI keyword research fully. AI does not know current trends (cutoff date) and does not see fresh SERPs. Use AI as «SEO advisor», but keyword data — from specialized tools."
   },
@@ -1579,7 +1579,7 @@
     "what": "AI reads marketing metrics (GA, social, email) → writes insight-driven reports with hypotheses and action items. From «here are graphs, figure it out» — to «here is what happened and what we do».",
     "why": "Marketing teams drown in dashboards without actionable insights. AI does the narrative layer: connects dots, explains anomalies, suggests hypotheses. Decision velocity grows.",
     "when": "Weekly/monthly performance reviews. When the team spends >2 hours per week collecting reports. When the «reason» for metric drops is non-obvious.",
-    "impact": "Time-to-insight: days → hours. Quality of weekly reviews: structured insights instead of «here are numbers». Stage 2→3.",
+    "impact": "Time-to-insight: days → hours. Quality of weekly reviews: structured insights instead of «here are numbers».",
     "example": "Weekly Marketing Performance Report:\n\n  Inputs:\n  - GA4 export (traffic, conversions)\n  - Email metrics (open rate, CTR)\n  - Social engagement\n  - Campaign spend\n\n  AI Output:\n  - What grew/dropped (numbers + delta)\n  - Hypotheses why (based on past patterns)\n  - 3 recommendations for next week\n  - Red flags (what needs deeper investigation)\n\n  Human: 15 min validation + 3 decomposed actions.",
     "mistakes": "Using AI as an «attribution engine». AI does not know the real attribution model (multi-touch, view-through). Use AI for narrative and pattern matching, not for exact causation."
   },
@@ -1624,7 +1624,7 @@
     "what": "AI as a «co-pilot» for tier-2 agent: real-time response suggestions, autocompletion, similar-case search, template generation. Agent stays in the driver seat, AI accelerates.",
     "why": "Agent-assist is less risky than tier-1: human is always in the loop. ROI is faster (response time -50% immediately). Team sees AI as «helper», not «threat». Adoption is much higher.",
     "when": "Tier-2/3 team spends time writing responses from scratch. There are historical tickets with good answers. Want to raise velocity without quality loss.",
-    "impact": "Response time per ticket: 8 min → 3 min. Agents handle 50-70% more tickets/day. Quality consistent (AI used as draft, agent edits). New agent onboarding: -50% (AI compensates junior gap). Stage 1→2.",
+    "impact": "Response time per ticket: 8 min → 3 min. Agents handle 50-70% more tickets/day. Quality consistent (AI used as draft, agent edits). New agent onboarding: -50% (AI compensates junior gap).",
     "example": "Agent Assist Setup:\n\n1. Browser plugin or helpdesk integration.\n2. Open ticket → AI reads context + customer history.\n3. AI suggests:\n   - 3 reply variants (formal/friendly/technical)\n   - Similar past tickets (resolved)\n   - Relevant KB articles\n4. Agent selects + edits + sends.\n5. AI learns from agent edits (improves suggestions over time).\n\nReal usage: 70% suggestions accepted with minor edits, 20% edited significantly, 10% unused.",
     "mistakes": "Forcing agents to use AI «mandatorily». If a suggestion is bad — it forces writing from scratch. Drive adoption through value (show time saved per ticket), not mandate."
   },
@@ -1633,7 +1633,7 @@
     "what": "Knowledge base turns from «PDF dump» into a living AI system: vector search, auto-updates based on resolved tickets, gap analysis (what is often asked but no article exists), structured taxonomy.",
     "why": "Without a good KB, all AI support fails. KB = single source of truth for AI. KB quality ≠ article count. Quality KB ops = more impact than just launching AI.",
     "when": "In parallel with tier-1 setup. When AI bot answers «I do not know» to >20% of questions. When agents complain «cannot find the article». When KB has not been updated in >6 months.",
-    "impact": "KB findability: 50% → 90% (vector search vs keyword). AI deflection rate grows +15-20% (more coverage). Agent onboarding: -40% time. Stage 1→2.",
+    "impact": "KB findability: 50% → 90% (vector search vs keyword). AI deflection rate grows +15-20% (more coverage). Agent onboarding: -40% time.",
     "example": "KB Ops Pipeline:\n\nWeekly:\n  1. AI reads resolved tickets for the week.\n  2. Identifies frequent questions without KB articles.\n  3. Drafts new KB articles from ticket solutions.\n  4. KB editor reviews + publishes.\n\nMonthly:\n  1. AI analyzes KB usage (which articles cited).\n  2. Flags outdated content (product changed, article did not).\n  3. Suggests merges (duplicate articles).\n\nMetric: % of tickets where AI found KB match → up over time.",
     "mistakes": "Making KB only for humans. Modern KB optimization = for AI + humans. Structure (clear headers, atomic articles, metadata) matters for AI retrieval. Otherwise AI does not find — even if the article exists."
   },
@@ -1651,7 +1651,7 @@
     "what": "Continuous monitoring of AI response quality: weekly sample → human review → identify failure patterns → adjust prompts/KB. Without monitoring, AI degrades silently: errors accumulate, no one sees.",
     "why": "AI is not static: KB changes, product changes, customer questions change. AI that worked in Q1 may slip in Q3. Quality monitoring catches drift before CSAT drops.",
     "when": "From day 1 of AI tier-1 launch. Mandatory. Not «when there is a problem» — continuous. Minimum: 10% AI responses random sample → weekly review.",
-    "impact": "AI drift detection: before customers notice (CSAT does not drop). Continuous improvement: every week prompts/KB get better. Trust in the AI system grows through explicit quality data. Stage 2→3.",
+    "impact": "AI drift detection: before customers notice (CSAT does not drop). Continuous improvement: every week prompts/KB get better. Trust in the AI system grows through explicit quality data.",
     "example": "Quality Monitoring Process:\n\nWeekly:\n  1. Random sample 10% of AI responses.\n  2. Quality team rates: accuracy, tone, completeness.\n  3. Failure patterns extracted: «AI confuses billing X with Y», «misses context Z».\n  4. Action: update KB articles OR adjust [[node:b-system|system prompt]] OR add edge case to training data.\n\nMetric:\n  - % AI responses rated >4/5\n  - Trending direction (better/worse week-over-week)\n  - Top 3 failure categories\n\nEscalation: if quality < 4/5 for 2 weeks → pause AI tier-1, investigate.",
     "mistakes": "Monitoring without action loop. If found errors do not lead to changes — it is theater. Quality monitoring must be embedded in weekly product process (Mon: review, Tue: fix, Wed: validate, ...)."
   },
@@ -1660,7 +1660,7 @@
     "what": "AI reads support metrics + ticket content → writes insight reports: trending issues, customer sentiment, agent performance patterns, product feedback. Turns support data into product insights.",
     "why": "Support is free user research. Thousands of conversations with real customers. But the team drowns in objects/dashboards. AI does the narrative layer + connects to product/marketing teams.",
     "when": "Weekly support reviews. When product team wants «voice of customer». When there is a pattern «many complaints about feature X» — need systematic detection.",
-    "impact": "Time-to-insight: days → hours. Product team gets trending issues automatically. Customer voice loop closes: from ticket → insight → product change → fewer tickets. Stage 2→3.",
+    "impact": "Time-to-insight: days → hours. Product team gets trending issues automatically. Customer voice loop closes: from ticket → insight → product change → fewer tickets.",
     "example": "Weekly Support Analytics Report:\n\n  Inputs:\n  - All tickets for the week (resolved + open)\n  - CSAT scores + comments\n  - Agent performance metrics\n  - Product release notes\n\n  AI Output:\n  - Top 5 trending issues (with ticket count + delta)\n  - Sentiment analysis: where customers are frustrated\n  - Correlation: «new feature X released → tickets about X +40%»\n  - Recommendations for product team\n  - Recommendations for KB updates\n\nDistribution: report shared with product + marketing → closing the loop.",
     "mistakes": "Doing support analytics in isolation. If insights do not reach product/engineering — they are useless. Set up explicit channels: weekly «Support Insights» Slack post in #product, monthly review session."
   },
@@ -1696,7 +1696,7 @@
     "what": "AI-powered user research: automatic interview synthesis, competitive analysis, market research. From «read 20 interviews in 3 days» — to «AI extracts themes in an hour, PM validates».",
     "why": "Discovery is the most time-intensive part of PM work. 50 interviews = a week of manual synthesis. AI does a first pass in an hour, the PM focuses on validation and interpretation.",
     "when": "When there are >10 interviews/customer calls on one topic. When quarterly customer research is needed. When the competitive landscape changes and you need to track it.",
-    "impact": "Time-to-insight: days → hours. Coverage: PM can «process» 50 interviews instead of 10. Quality: structured themes instead of «here are my notes». Stage 1→2.",
+    "impact": "Time-to-insight: days → hours. Coverage: PM can «process» 50 interviews instead of 10. Quality: structured themes instead of «here are my notes».",
     "example": "Research Synthesis Workflow:\n\n  Inputs:\n  - 30 interview transcripts\n  - Customer support tickets (1 month)\n  - Competitor reviews on G2/Trustpilot\n        ↓\n  Project «Research» with RAG index\n        ↓\n  AI Steps:\n  1. Extract themes (frequency + sentiment)\n  2. Cluster similar quotes\n  3. Identify gaps (what people often mention but we do not do)\n  4. Generate hypothesis matrix\n        ↓\n  PM validates: which themes are actionable, which need follow-up\n        ↓\n  Output: structured research report + raw data accessible\n\nMetric: time-to-insight, theme coverage.",
     "mistakes": "Relying on AI without human validation. AI misses nuance: irony, edge cases, cultural context. Workflow: AI extracts → PM validates a 10-20% sample → confidence in the rest grows. Without validation — false insights."
   },
@@ -1705,7 +1705,7 @@
     "what": "AI writes PRDs, user stories, technical specs from a rough idea + research input. From «PM sits for 2 days writing a PRD» — to «PM iterates with AI for 2 hours, draft is ready».",
     "why": "PRD writing is a shipping bottleneck. PMs spend days formatting/structuring what they already know in their heads. AI handles the «writing» part, the PM focuses on content quality.",
     "when": "When the team loses momentum between «have an idea» and «PRD written». When there is a documented PRD template. When rough notes / research are already on hand.",
-    "impact": "Time-to-PRD: 2 days → 4 hours (including iterations). Consistency: a single format for all specs. Quality: AI catches missing sections (success metrics, edge cases, etc.). Stage 1→2.",
+    "impact": "Time-to-PRD: 2 days → 4 hours (including iterations). Consistency: a single format for all specs. Quality: AI catches missing sections (success metrics, edge cases, etc.).",
     "example": "Spec Generation Workflow:\n\n  Input for AI:\n  - Rough idea (3-5 sentences from PM)\n  - Research output (from pd-discovery)\n  - Existing PRD template + 2-3 high-quality examples\n        ↓\n  AI generates:\n  - Problem statement\n  - User stories with acceptance criteria\n  - Success metrics proposals\n  - Open questions\n  - Technical considerations (for engineering)\n        ↓\n  PM iterates: 3-5 rounds of edits\n        ↓\n  Output: ship-ready PRD\n\nMetric: time-to-spec, dev team feedback on PRD quality.",
     "mistakes": "Doing AI-PRDs without research input. «Write a PRD for feature X» = generic stuff. Quality output requires quality input: research, examples, constraints. Garbage in = garbage out."
   },
@@ -1714,7 +1714,7 @@
     "what": "AI helps with roadmap prioritization: analyzing feedback patterns, competitor moves, customer requests, internal data → ranked priorities with reasoning. AI = «second analyst» in roadmap discussions.",
     "why": "Roadmap prioritization is usually done «by gut» under stakeholder pressure. AI brings a structured framework: explicit weights, data-based scoring, consideration of alternatives.",
     "when": "Quarterly planning. Before a roadmap review with executives. When «everyone has their own opinion» and a structured framework is needed for the decision.",
-    "impact": "Reactive prioritization: -60%. Stakeholder alignment: faster (data, not opinions). Roadmap thrashing: reduced (explicit criteria prevent frequent changes). Stage 2→3.",
+    "impact": "Reactive prioritization: -60%. Stakeholder alignment: faster (data, not opinions). Roadmap thrashing: reduced (explicit criteria prevent frequent changes).",
     "example": "Roadmap Prioritization Workflow:\n\n  Inputs:\n  - All product opportunities (backlog + new ideas)\n  - Customer feedback themes (from feedback-synthesis)\n  - Competitor analysis\n  - Internal metrics (revenue impact, retention)\n  - Strategic objectives (current quarter)\n        ↓\n  AI Scoring:\n  - Each opportunity rated on: impact, effort, strategic fit, risk\n  - Reasoning explicit for each\n  - Alternative orderings played out\n        ↓\n  PM + leadership: review AI ranking + override based on judgment\n        ↓\n  Output: prioritized roadmap with documented reasoning\n\nValue: next quarter you CAN explain «why we chose this».",
     "mistakes": "Accepting AI roadmap as final. AI scoring is based on the data you gave — but it does not know board politics, executive priorities, or upcoming launches. AI = input into a decision, not the decision itself."
   },
@@ -1723,7 +1723,7 @@
     "what": "AI support for A/B testing: hypothesis generation, variant design, statistical analysis interpretation, learnings synthesis. From «ran A/B, forgot results» — to «structured experimentation engine».",
     "why": "Most teams run A/B tests poorly: weak hypotheses, no power analysis, results forgotten. AI structures this: forces explicit hypothesis, generates variant ideas, helps interpret results.",
     "when": "When the team runs ≥3 experiments per quarter. When experiment outputs do not turn into product knowledge. When you need to scale experimentation across multiple teams.",
-    "impact": "Experiment velocity: +50%. Experiments with clear learnings: 50% → 90%. Knowledge retention: structured library of experiment outcomes. Stage 2→3.",
+    "impact": "Experiment velocity: +50%. Experiments with clear learnings: 50% → 90%. Knowledge retention: structured library of experiment outcomes.",
     "example": "Experimentation Workflow:\n\n  1. Hypothesis Generation:\n     - PM inputs: «hypothesis: shorter onboarding → higher activation»\n     - AI critiques: «specify metric, magnitude, timeframe, sample needed»\n     - Result: «If we cut onboarding from 5 to 2 steps, activation rate +15% over 4 weeks (n>1000)»\n\n  2. Variant Design:\n     - AI generates 3-5 specific variant approaches\n     - Discusses pros/cons of each\n\n  3. Post-experiment Analysis:\n     - Input: results data\n     - AI: «winner with X confidence. Caveats: ... Recommended follow-up: ...»\n\n  4. Library:\n     - AI maintains experiment knowledge base\n     - Search: «did we try X before?»\n\nMetric: experiments per quarter, learnings library size.",
     "mistakes": "Using AI for «predict before run». AI cannot predict the result of an A/B (if it could — an A/B would not be needed). AI is good at: hypothesis sharpening, variant ideation, post-analysis interpretation. Not predictive."
   },
@@ -1732,7 +1732,7 @@
     "what": "AI reads all user feedback (NPS comments, support tickets, reviews, sales notes) → structured insights with trends. From «PM read ~50 comments» — to «AI processed 5000 and found patterns».",
     "why": "Customer feedback is fragmented across 5-10 sources. The PM physically cannot read everything. AI does aggregation + synthesis. Sentiment shifts visible before they show up in churn.",
     "when": "When there are ≥3 feedback sources (NPS, support, reviews, sales calls, social). When the product team wants «voice of customer» systematic, not anecdotal.",
-    "impact": "Coverage: 5% of feedback is read → 100% is processed. Time-to-trend: 2 months → 2 weeks. Decision quality: data-backed instead of «I remember someone complained». Stage 2→3.",
+    "impact": "Coverage: 5% of feedback is read → 100% is processed. Time-to-trend: 2 months → 2 weeks. Decision quality: data-backed instead of «I remember someone complained».",
     "example": "Feedback Synthesis Pipeline:\n\n  Sources (weekly):\n  - NPS responses (quarterly × 1000+)\n  - Support tickets with CSAT comments\n  - App store / G2 reviews\n  - Sales call notes\n  - Social mentions\n        ↓\n  AI Processing:\n  1. Clean + deduplicate\n  2. Categorize (feature, UX, pricing, performance, ...)\n  3. Sentiment analysis\n  4. Theme extraction\n  5. Trend detection (what changed week-over-week)\n        ↓\n  Weekly Output:\n  - Top 5 themes (with magnitude + delta)\n  - Quote samples for each\n  - Critical issues to investigate\n        ↓\n  Distribution:\n  - Product team review (decisions)\n  - Engineering: bug themes\n  - Marketing: positioning themes\n\nMetric: feedback coverage, time-to-action on trending issues.",
     "mistakes": "Doing feedback synthesis in a vacuum. Output must flow into roadmap planning, not into a read-only report. Workflow: synthesis → product review → roadmap update → measure impact. Without the loop — polite theater."
   },
@@ -1741,7 +1741,7 @@
     "what": "AI reads product usage data (Amplitude, Mixpanel, GA) → writes insight reports with hypotheses «why did this happen?» and suggested investigations. From «here is a dashboard» — to «here is what happened and what it means».",
     "why": "Product analytics tools show «what happened», but not «why». PM/analytics manager spends hours on formulating hypotheses. AI does this first-pass, the human verifies.",
     "when": "Weekly product reviews. After every major release. When a metric is unexpected (growth or drop). When the team «does not understand why» something is happening.",
-    "impact": "Time-to-hypothesis: days → hours. Coverage: analytics-aware decisions grow from 30% to 70%+ of the team. Stage 2→3.",
+    "impact": "Time-to-hypothesis: days → hours. Coverage: analytics-aware decisions grow from 30% to 70%+ of the team.",
     "example": "Weekly Product Analytics Workflow:\n\n  Inputs:\n  - Top-line metrics (DAU, MAU, retention, activation)\n  - Feature usage (new + existing)\n  - User segments behavior\n  - Recent product releases\n        ↓\n  AI Analysis:\n  1. What changed (numbers + delta + significance)\n  2. Correlation: «release X → metric Y +Z%»\n  3. Anomaly detection (unusual segment behavior)\n  4. Hypotheses (ranked by likelihood)\n  5. Recommended investigations (queries to run, segments to look at)\n        ↓\n  Product team:\n  - Validates top hypotheses\n  - Decides actions\n  - Adds learnings to knowledge base\n\nMetric: % of metric changes with documented explanation.",
     "mistakes": "Trusting AI causal claims. «Release X caused metric Y +5%» — that is correlation, not causation. AI recommends a hypothesis, the human must validate via proper analysis (cohort, A/B, before-after)."
   },
@@ -1750,7 +1750,7 @@
     "what": "Product team operating model with AI: shared research workspace, common spec templates, feedback synthesis pipeline, weekly AI office hours. From «every PM with their own Claude» — to a «collaborative AI-powered product team».",
     "why": "Individual usage in product does not scale — research findings are lost between PMs, specs are inconsistent, knowledge is not shared. Team workflow creates a shared institutional memory.",
     "when": "Product team ≥3 PMs use AI. When «everyone has their own approach to specs». When research findings are lost after launch. When a new PM «does not know how we work».",
-    "impact": "Team velocity: +30%. New PM onboarding: 6 weeks → 3 weeks (via shared knowledge). Decision quality: improves over time (institutional memory grows). Stage 2→3.",
+    "impact": "Team velocity: +30%. New PM onboarding: 6 weeks → 3 weeks (via shared knowledge). Decision quality: improves over time (institutional memory grows).",
     "example": "Product Team Setup:\n\n1. Shared Claude Project «Product Workspace»:\n   - All research transcripts indexed\n   - Past PRDs library\n   - Experiment learnings\n   - Customer feedback (categorized)\n\n2. [[node:cc-md|CLAUDE.md]]: writing conventions, PRD template, decision frameworks.\n\n3. Skills:\n   - research-synthesizer\n   - prd-drafter\n   - feedback-categorizer\n   - experiment-designer\n\n4. Weekly «AI office hours» 30 min:\n   - Best prompt discoveries\n   - Failed AI experiments (what is not working)\n   - Cross-team learning\n\n5. Quarterly knowledge curation:\n   - What to add to shared workspace\n   - What is outdated and to remove\n\nStage 3 sign: new PM writes a shipping-ready PRD by the end of the first month.",
     "mistakes": "Doing team workflow without a librarian role. Shared workspace without maintainership = junk drawer in 6 months. Someone must curate: weekly review of new content, monthly cleanup of outdated."
   },
@@ -1777,7 +1777,7 @@
     "what": "A document-based AI strategy for 12-24 months: vision, north-star metrics, sequencing of initiatives, investment thesis, success criteria. Not «let us use AI», but «here is HOW we win from AI».",
     "why": "Without explicit strategy, AI initiatives = different departments doing different things. With strategy — coordination, leverage between departments, clear priorities. Strategy doc = alignment tool for leadership.",
     "when": "After 6-12 months of successful pilots in several departments. When the board asks questions about AI ROI. Before annual planning. When you need to hire an AI lead.",
-    "impact": "Decision velocity: 3× faster on AI-related decisions. Org alignment: leadership team on the same page (literally). Time-to-execution: tactical teams understand priorities in days, not months. Stage 2→3.",
+    "impact": "Decision velocity: 3× faster on AI-related decisions. Org alignment: leadership team on the same page (literally). Time-to-execution: tactical teams understand priorities in days, not months.",
     "example": "AI Transformation Strategy doc (8-12 pages):\n\n1. Vision (1 page): where the company is in 2 years with AI\n2. North-star metrics (3-5): cost reduction, revenue growth, NPS, talent retention\n3. Strategic bets (3-7): «Stage-by-stage AI in customer support», «AI-augmented product development», ...\n4. Sequencing: what we do Q1, Q2, Q3, Q4\n5. Investment thesis: where we spend, where we save\n6. Risk & governance principles\n7. Success criteria + checkpoints\n\nCreation process: 2-3 weeks with executives + tactical leads. Reviewed quarterly.\n\nMetric: % of strategic decisions referencing the doc (target: >80% in 6 months).",
     "mistakes": "Making a strategy doc «once and forgotten». The AI landscape changes every 6 months — the strategy must refresh quarterly. And: not making just vision without metrics. Strategy without measurable outcomes = wish list."
   },
@@ -1813,7 +1813,7 @@
     "what": "Framework for measuring AI investment returns: cost vs value, attribution to AI vs other factors, leading vs lagging indicators, payback period. Turns «AI saves time» into «AI saved $X this quarter».",
     "why": "Without ROI measurement, AI initiatives ride on vibes. When finance asks «show me the money?», the response should be quantified. ROI measurement = sustainable AI program longevity.",
     "when": "After 3-6 months of AI in production. Before budget planning (annual or quarterly). When executives ask about AI value. When you need to prioritize between AI initiatives.",
-    "impact": "Budget approval: 2× faster for AI initiatives with tracked ROI. Resource allocation: efficient (kill failing, double on winning). Stakeholder confidence: high. Stage 2→3.",
+    "impact": "Budget approval: 2× faster for AI initiatives with tracked ROI. Resource allocation: efficient (kill failing, double on winning). Stakeholder confidence: high.",
     "example": "AI ROI Framework:\n\nCost side:\n  - Direct: AI API costs, tools, infrastructure\n  - Indirect: training time, change management, governance overhead\n  - Hidden: opportunity cost of team time\n\nValue side:\n  - Time saved (× hourly cost of saved roles)\n  - Quality improvement (cost of errors avoided)\n  - Revenue generated (new capabilities)\n  - Risk reduction (compliance, incidents avoided)\n  - Customer satisfaction (retention impact)\n\nAttribution: how to know AI caused this?\n  - Before/after comparison + control group when possible\n  - A/B testing on features\n  - Counterfactual analysis for high-stakes claims\n\nReporting:\n  - Monthly per tactical direction\n  - Quarterly aggregate to leadership\n  - Annual: full impact report\n\nMetric: documented ROI per initiative > 3× cost (target).",
     "mistakes": "Counting only cost savings, ignoring intangibles. AI brings not only time — but capability gains, morale, future optionality. Without holistic ROI — value undervalued, program cancelled prematurely."
   },
@@ -1822,7 +1822,7 @@
     "what": "Systematic identification, assessment, mitigation of AI-specific risks: hallucinations in production, model drift, data leaks, regulatory non-compliance, bias, vendor dependencies. Risk awareness, not risk avoidance.",
     "why": "AI risks differ from traditional IT risks: probabilistic, evolving, often invisible until late. Traditional risk frameworks do not catch them. Need an AI-specific approach.",
     "when": "From day 1 of every AI initiative (NOT after an incident). Before production launch. Annually for existing AI systems. After any notable industry incident.",
-    "impact": "High-severity incidents: 0 prevented to occurred (best outcome). Insurance cost: lower with documented program. Regulatory readiness: ahead of EU AI Act, NIST framework. Stage 2→3.",
+    "impact": "High-severity incidents: 0 prevented to occurred (best outcome). Insurance cost: lower with documented program. Regulatory readiness: ahead of EU AI Act, NIST framework.",
     "example": "AI Risk Categories + Mitigations:\n\n1. Hallucinations:\n   - Risk: AI returns wrong info confidently\n   - Mitigation: RAG with citations, human review for customer-facing, quality monitoring\n\n2. Model drift:\n   - Risk: AI behavior changes without notice (model update, data shift)\n   - Mitigation: continuous quality monitoring, golden test sets, rollback ability\n\n3. Data leaks:\n   - Risk: customer/sensitive data in model providers\n   - Mitigation: data classification, approved vendors, encryption, audit logs\n\n4. Bias:\n   - Risk: AI discriminates (hiring, pricing, content)\n   - Mitigation: bias testing, diverse training data, monitoring by demographic\n\n5. Regulatory:\n   - Risk: GDPR, EU AI Act, sector-specific violations\n   - Mitigation: compliance review per use case, legal sign-off, documentation\n\n6. Vendor lock:\n   - Risk: depends entirely on one AI provider\n   - Mitigation: abstraction layer, multi-vendor strategy, internal fallback\n\nRisk register: updated quarterly.\n\nMetric: identified vs occurred risks (catch rate target: >90%).",
     "mistakes": "Thinking risk management = compliance checklist. Real AI risk management = thinking about edge cases, scenarios, second-order effects. Checklist alone — false security."
   },
@@ -1831,7 +1831,7 @@
     "what": "Approach to building AI capability on the team: hiring AI roles, upskilling existing employees, retention in the AI-talent market, career paths for AI-augmented roles. Talent is the hardest part for long-term AI success.",
     "why": "AI tools are commodity, AI talent is not. Companies without a talent strategy lose people to Big Tech. Companies with a good strategy attract top talent, retain existing employees via growth opportunities.",
     "when": "Continuously (not «one time»). Before every tactical direction launch. When scaling the AI program. When attrition in AI-relevant roles rises.",
-    "impact": "AI talent retention: 90%+ (vs 60% industry average). Time-to-fill AI roles: 2× faster (employer brand). Internal mobility: 30%+ move into AI-augmented roles. Stage 2→3.",
+    "impact": "AI talent retention: 90%+ (vs 60% industry average). Time-to-fill AI roles: 2× faster (employer brand). Internal mobility: 30%+ move into AI-augmented roles.",
     "example": "AI Talent Strategy:\n\n1. Hiring framework:\n   - Roles needed: ML engineers, AI PMs, AI ethicists, prompt engineers\n   - Compensation benchmarks (AI talent premium)\n   - Sourcing channels (universities, conferences, community)\n\n2. Upskilling:\n   - 3 levels: foundational (everyone), intermediate (heavy users), advanced (builders)\n   - Time budget: 4-8 hours/month protected learning time\n   - Recognition: AI skills in performance reviews\n\n3. Career paths:\n   - «AI-augmented» version of every role (e.g., AI-augmented PM, AI-augmented designer)\n   - New roles: AI ops, AI product, prompt engineer\n   - Senior path for AI builders\n\n4. Retention:\n   - AI projects = career capital (assignment to AI work seen as opportunity)\n   - Internal mobility: skill-based moves to AI-heavy teams\n   - External brand: conference talks, blog posts, GitHub\n\n5. Culture:\n   - «AI-curious» as core value\n   - Failed AI experiments celebrated (learning culture)\n   - Cross-team AI showcases\n\nMetric: AI skills inventory (% of workforce with documented AI proficiency).",
     "mistakes": "Hiring ML engineers and thinking talent strategy is done. They build, but do not replace product, marketing, support skill needs. AI talent strategy = broad upskilling + targeted hiring. Not one or the other."
   },
@@ -1984,7 +1984,7 @@
     "what": "AI-powered user research for designers: synthesis of usability tests, behavioral analysis of session recordings, competitor design pattern analysis. From «100 interviews = 2 weeks of processing» — to «AI extracts themes in an hour, designer validates».",
     "why": "Research is a critical part of design, but time-intensive. The designer spends 50% of time on synthesis, 50% on actual design. AI shifts the balance to 20/80.",
     "when": "Usability testing rounds (5-15 sessions). Competitor research. Card sorting analysis. When there are session recordings and you need to extract patterns.",
-    "impact": "Time-to-insight: days → hours. Theme extraction structured instead of «designer's gut feel». Stage 1→2.",
+    "impact": "Time-to-insight: days → hours. Theme extraction structured instead of «designer's gut feel».",
     "example": "Usability Synthesis Workflow:\n\n  Inputs:\n  - 10 session recordings (transcripts)\n  - User interview notes\n  - Pre/post task survey data\n        ↓\n  AI Steps:\n  1. Extract pain points (frequency + severity)\n  2. Group by user task / journey stage\n  3. Identify quick wins vs structural issues\n  4. Generate improvement hypotheses\n        ↓\n  Designer validates:\n  - Pain point severity rated through design lens\n  - Solutions ranked by feasibility\n        ↓\n  Output: structured research report + prioritized backlog\n\nMetric: time-to-insight, design improvements shipped.",
     "mistakes": "Doing AI synthesis without designer eye-on-data. AI misses emotional nuance, frustration patterns, edge cases. Workflow: AI extracts themes → designer reviews 20% with original recordings → confidence in the rest."
   },
@@ -1993,7 +1993,7 @@
     "what": "AI generation of prototypes: design mockup → HTML/React code, sketches → Figma compositions, multiple style variants in minutes. From «designer codes prototype for 2 days» — to «AI provides 5 variants in an hour, designer selects + refines».",
     "why": "Prototyping is a bottleneck in the design cycle. AI handles the «technical» aspect (turn idea into code/Figma), the designer focuses on concept + critique.",
     "when": "Early-stage exploration (need many variants quickly). Design system component variants. Conversion of mockup to code. A/B testing variant generation.",
-    "impact": "Time-to-prototype: 2 days → 4 hours. Variant coverage: 1-2 → 5-10 per concept. Iteration speed: 2-3× faster. Stage 1→2.",
+    "impact": "Time-to-prototype: 2 days → 4 hours. Variant coverage: 1-2 → 5-10 per concept. Iteration speed: 2-3× faster.",
     "example": "Prototype Workflow:\n\n  Designer brief:\n  «Onboarding flow for B2B SaaS,\n   3 steps, brand color #2563eb,\n   font Inter, mood: friendly+confident»\n        ↓\n  AI Step 1: Generate 5 layout variants\n        ↓\n  Designer selects 2 most promising\n        ↓\n  AI Step 2: Generate React/HTML for each\n        ↓\n  Designer refines via Figma OR direct code edits\n        ↓\n  Output: working prototype 4 hours after brief\n\nReal usage: AI-generated code = starting point, not final. Designer refines 30-50%.",
     "mistakes": "Expecting «pixel-perfect output» from AI. AI gives 70% from idea to code, the last 30% (taste, brand fit, accessibility) — designer. Treating AI as starting point = speed. Treating as final = mediocre output."
   },
@@ -2002,7 +2002,7 @@
     "what": "Automating design ops: asset documentation, component change-logs, Figma library management, design QA. From «we have everything but no one knows where» — to «AI maintains documentation continuously».",
     "why": "Design ops are invisible until they break. Asset chaos, outdated components, missing docs — all kill velocity. AI maintains this continuously without manual effort.",
     "when": "Design system exists but is poorly documented. Multiple designers, components diverge. New hires ask «where is X component?». Pre-handoff QA is not performed.",
-    "impact": "Designer time on ops: -50%. New hire onboarding: 2 weeks → 1 week. Component reuse: +30% (instead of reinvention). Stage 2→3.",
+    "impact": "Designer time on ops: -50%. New hire onboarding: 2 weeks → 1 week. Component reuse: +30% (instead of reinvention).",
     "example": "Design Ops Automation:\n\n1. Component Documentation:\n   - AI reads Figma file → generates MD docs per component\n   - Updates: AI diffs changes weekly → adds changelog\n\n2. Asset Audit:\n   - AI scans products → finds inconsistent components\n   - Flags: «button styles diverge across 5 screens»\n\n3. Handoff QA:\n   - Pre-handoff AI checks: token usage, accessibility, spacing\n   - Generates QA report for dev review\n\n4. Library Health:\n   - Weekly: AI identifies unused components, outdated tokens\n   - Suggests cleanup\n\nMetric: design system health score, time saved on documentation.",
     "mistakes": "Doing AI design ops without integration into actual tools. «AI generates docs in a separate Notion» = no one reads. AI must live where designers work: Figma plugins, Slack integrations, CI/CD for design."
   },
@@ -2011,7 +2011,7 @@
     "what": "AI a11y checks at every step: contrast checks, alt-text generation, screen reader simulation, keyboard navigation audit. From «accessibility = a special audit once every six months» — to «accessibility-by-default through AI».",
     "why": "Accessibility is often checked at the end, when fixing is expensive. AI catches issues in real-time during design. Cost is 10× lower.",
     "when": "Design system accessibility setup. New feature launches with user-facing UI. Quarterly product audits. Customer complaints about a11y issues.",
-    "impact": "A11y bug rate: 30% → 5% (issues caught at design stage). Compliance: WCAG AA reached confidently. Legal risk: significantly reduced. Stage 1→2.",
+    "impact": "A11y bug rate: 30% → 5% (issues caught at design stage). Compliance: WCAG AA reached confidently. Legal risk: significantly reduced.",
     "example": "A11y Automation Pipeline:\n\n  Design phase:\n  1. AI checks contrast ratios on every screen\n  2. Auto-generates alt-text suggestions for images\n  3. Flags missing focus states, keyboard traps\n  4. Reviews color usage (color as sole indicator?)\n\n  Pre-handoff:\n  5. Full WCAG checklist auto-run\n  6. Report: issues + recommendations + WCAG criteria mapping\n\n  Post-launch:\n  7. Real screen reader test simulation\n  8. AI describes UX as a blind user would experience it\n\nMetric: WCAG compliance %, a11y issues per release.",
     "mistakes": "Thinking AI = «full a11y replacement». Manual testing with real assistive tech (real screen readers, real keyboard navigation) — still required. AI catches 80%, the last 20% — manual + user testing with a11y users."
   },
@@ -2020,7 +2020,7 @@
     "what": "AI helps evolve the design system: token set generation, component variants, documentation for every component, usage migration on breaking changes. Design system from a «static document» to «a living system with an AI helper».",
     "why": "Design systems usually stagnate: no resources for maintenance, breaking changes are postponed. AI removes the operational burden — the system stays fresh.",
     "when": "Design system exists but maintenance burden is high. Migration to a new token system. Component variants need to be created (sizes, states, themes). Documentation is scattered across different places.",
-    "impact": "Design system update velocity: 3-5× faster. Migration speed: weeks → days. Documentation freshness: always current. Stage 2→3.",
+    "impact": "Design system update velocity: 3-5× faster. Migration speed: weeks → days. Documentation freshness: always current.",
     "example": "Design System Evolution:\n\n1. Token Generation:\n   - Designer says «brand uses warm palette, modern feel»\n   - AI generates: color scale, spacing scale, typography scale\n   - Designer refines: 70% AI output → 30% manual adjustment\n\n2. Component Variants:\n   - Designer creates base button\n   - AI generates: sizes (sm/md/lg), states (default/hover/focus/disabled), themes (light/dark)\n   - Outputs Figma file + code stubs\n\n3. Breaking Change Migration:\n   - «We changed token spacing from 4px to 8px»\n   - AI scans codebase + Figma files\n   - Generates migration PR + Figma changes list\n\n4. Documentation:\n   - AI maintains MDX docs per component\n   - Updates on component changes automatically\n\nMetric: components shipped, time-to-update.",
     "mistakes": "Relying entirely on AI for design system decisions. The design system embodies brand strategy + UX principles — these are critical human decisions. AI = executor, not decision-maker for system architecture."
   },
@@ -2029,7 +2029,7 @@
     "what": "AI help with UX writing: microcopy for buttons/forms/errors, onboarding flows, empty states, helper text. From «designer writes copy in free time» — to «AI generates contextual copy, designer curates voice».",
     "why": "UX copy is critical for UX, but designer time on copy is always insufficient. AI generates options, the designer chooses + refines by brand voice.",
     "when": "New feature launches with substantial UI text. Onboarding flow design. Error message standardization. International product (multiple languages).",
-    "impact": "Copy generation time: -70%. Coverage: 100% of UI elements have intentional copy (vs «TBD»). Consistency: brand voice maintained across the product. Stage 2→3.",
+    "impact": "Copy generation time: -70%. Coverage: 100% of UI elements have intentional copy (vs «TBD»). Consistency: brand voice maintained across the product.",
     "example": "Content Design Workflow:\n\nFor each UI surface:\n  1. Designer provides context: «password reset flow, friendly tone»\n  2. AI generates 5 variants for each microcopy slot:\n     - Page title\n     - Description (1 sentence)\n     - Primary CTA\n     - Error states (3-5 likely errors)\n     - Success state\n  3. Designer picks the best + may refine\n  4. AI suggests improvements based on brand voice\n  5. Final copy documented in content style guide\n\nFor i18n:\n  - AI does first-pass translation\n  - Local copywriter refines (we still need humans here)\n\nMetric: copy coverage %, brand voice consistency score.",
     "mistakes": "Using AI for legal/compliance copy without review. «AI wrote it» does not release from accountability. Critical copy (privacy notices, ToS, regulatory text) — human-written, AI only for review."
   },
@@ -2038,7 +2038,7 @@
     "what": "Design team operating model with AI: shared Figma plugins, design system AI helpers, weekly «AI office hours» for designers, AI-aware critique sessions. From «every designer with their own Claude» — to a «design-augmented team».",
     "why": "Individual designer AI usage does not scale — voice is inconsistent, components diverge, lessons are not learned. Team workflow consolidates AI value.",
     "when": "Design team ≥3 designers actively use AI. When the product is design-driven (consumer apps, brand-heavy). When inconsistent AI usage causes brand fragmentation.",
-    "impact": "Team velocity: +25-35%. Brand consistency: significantly improved. Designer career growth: «AI-augmented designer» as senior path. Stage 2→3.",
+    "impact": "Team velocity: +25-35%. Brand consistency: significantly improved. Designer career growth: «AI-augmented designer» as senior path.",
     "example": "Design Team Setup:\n\n1. Shared Claude Project «Design Workspace»:\n   - Brand voice guide indexed\n   - Design system docs accessible\n   - Past research synthesized\n   - Component library reference\n\n2. [[node:cc-md|CLAUDE.md]]: design principles, brand voice, accessibility rules.\n\n3. Skills (Figma plugins + Claude):\n   - microcopy-generator\n   - component-doc-writer\n   - accessibility-checker\n   - research-synthesizer\n\n4. Weekly rituals:\n   - «AI office hours» (30 min): designers share wins/failures\n   - Quarterly «AI in design» retrospective\n\n5. Critique enhancements:\n   - Pre-critique: AI runs accessibility/brand checks\n   - Critique focuses on craft + concept (not finding bugs)\n\nStage 3 sign: new designer productive in 3-5 days.",
     "mistakes": "Making «AI in design» = «designer is required to use AI». Forced adoption kills creative ownership. AI must be «discovered through value» — designers choose to use it when it makes them better, faster, happier."
   },

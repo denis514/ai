@@ -1399,7 +1399,7 @@
     "what": "Автоматизация повторяющихся процессов через AI: вход (триггер) → AI-обработка → выход (результат + следующее действие). Skills + Hooks + RAG как основной стек.",
     "why": "У любой команды 30-50% задач = повторяющиеся: онбординг, статус-апдейты, рутинная коммуникация. AI закрывает большинство этих задач без потери качества.",
     "when": "Когда задача делается ≥5 раз в неделю + имеет чёткие inputs/outputs + результат можно валидировать. Идеальные кандидаты: weekly reports, customer welcome emails, internal status digests.",
-    "impact": "Time savings: 70-90% на конкретной задаче. Consistency: единый качественный результат вместо вариативности «зависит кто делал». Stage 1→2.",
+    "impact": "Time savings: 70-90% на конкретной задаче. Consistency: единый качественный результат вместо вариативности «зависит кто делал».",
     "example": "Workflow «Weekly status digest»:\n1. Триггер (понедельник 9:00 или /command).\n2. AI Step: считывает Linear/Jira за неделю.\n3. AI Step: пишет executive summary в фирменном стиле.\n4. Quality gate: человек делает финальную проверку (15 минут вместо 2 часов написания).\n5. Output: публикация в #leadership Slack.\n\nДо: 2 часа в неделю. После: 15 минут review.",
     "mistakes": "Автоматизировать процесс который ещё «не устаканен». Если процесс меняется каждую неделю — AI-автоматизация будет постоянно ломаться. Сначала: процесс стабилизировать вручную. Потом: автоматизировать."
   },
@@ -1408,7 +1408,7 @@
     "what": "AI как «второй мнение» для операционных решений: AI анализирует данные + контекст + историю решений → даёт structured рекомендацию. Не заменяет человека, но дисциплинирует процесс.",
     "why": "Operational решения часто делаются «по чутью» под нагрузкой. AI-структурирование заставляет рассмотреть alternatives, риски, метрики — снижает количество reactive решений.",
     "when": "Hire/no-hire decisions. Resource allocation. Vendor selection. Process change vs no-change. Решения с >$10k impact или >2 weeks horizon.",
-    "impact": "Reduction in reactive decisions: 50-70%. Decision quality measurable (track outcomes). Stage 2→3.",
+    "impact": "Reduction in reactive decisions: 50-70%. Decision quality measurable (track outcomes).",
     "example": "Decision template:\n1. Context: ситуация в 5 предложениях.\n2. Options: 3 варианта решения.\n3. Each option: pros, cons, cost, risk.\n4. AI analysis: pattern-matching с прошлыми решениями + рекомендация.\n5. Human override + log decision reasoning.\n\nЧерез 3 месяца ты ВИДИШЬ паттерны своих решений — где AI был прав, где ошибался.",
     "mistakes": "Слепо следовать AI-рекомендации. AI хорош в анализе паттернов, но не знает твоего контекста полностью. Воспринимай AI как «вдумчивого джуниора»: даёт перспективу, но решение и ответственность — твои."
   },
@@ -1417,7 +1417,7 @@
     "what": "Автогенерация отчётов из структурированных данных: CRM, аналитика, project management. AI читает данные, пишет insight-driven нарратив, формирует action items.",
     "why": "Команды тратят 4-8 часов в неделю на ручной репортинг. AI закрывает 80% работы, оставляя человеку review и executive judgment.",
     "when": "Регулярные отчёты (weekly/monthly). Данные в системах с API/export. Аудитория ожидает consistency в формате. KPI можно посчитать.",
-    "impact": "Time-to-report: 4 часа → 30 минут. Consistency: +90% (единый формат, тон). Freshness: отчёты приходят вовремя, не «когда руки дошли». Stage 1→2.",
+    "impact": "Time-to-report: 4 часа → 30 минут. Consistency: +90% (единый формат, тон). Freshness: отчёты приходят вовремя, не «когда руки дошли».",
     "example": "Sales Weekly Report:\n1. Export из CRM (HubSpot/Salesforce) → CSV.\n2. Project с system prompt: «ты sales analyst, формат отчёта — XYZ».\n3. Промпт: «вот данные за неделю, напиши executive summary + 3 action items».\n4. Output: готовый отчёт с числами, трендами, рекомендациями.\n\nMetrics: время на репортинг 4h→30min, точность данных 100% (autopull), insights consistency 95%.",
     "mistakes": "Делать «AI generates pretty text» без действий. Отчёт без action items — мусор. Структура должна быть: что изменилось → почему → что делаем → KPI. Каждый раз."
   },
@@ -1426,7 +1426,7 @@
     "what": "AI-оптимизация распределения ресурсов команды: capacity planning, инструменты для разных задач, выбор модели Claude (Haiku vs Sonnet vs Opus), API cost management.",
     "why": "Operations teams часто overspend на инструментах и ресурсах потому что «всегда так делали». AI-аудит выявляет over-provisioning, model mismatch, idle resources.",
     "when": "Quarterly resource review. Перед годовым бюджетным планированием. Когда AI-расходы становятся видимы в P&L.",
-    "impact": "Cost reduction: 20-40% на operations спендинг. Productivity: better tool-to-task fit. Stage 2→3.",
+    "impact": "Cost reduction: 20-40% на operations спендинг. Productivity: better tool-to-task fit.",
     "example": "AI Spend Audit:\n1. Export всех AI-API logs за 30 дней.\n2. AI анализ: «какие задачи используют Opus, можно ли заменить на Sonnet?»\n3. Output: список задач + alternative модели + estimated savings.\n4. Тест: один week на новом mix → измерить quality.\n5. Roll out: если quality не падает, перевести 80% задач.\n\nReal case: $5k/month Opus → $1.2k/month Sonnet, quality drop <5%, ROI = 4x.",
     "mistakes": "Оптимизировать только cost без quality measurement. Cheaper модель может «сэкономить» $1000, но снизить conversion на $5000. Track quality metrics параллельно с cost."
   },
@@ -1435,7 +1435,7 @@
     "what": "Как ops-команда оркеструет работу с AI: общие prompts, shared Projects, доступы, knowledge management. Это про team operating model, не про индивидуальное использование.",
     "why": "Individual AI usage не масштабируется. Команда из 10 человек, каждый со своим стилем промптинга = разные результаты + дублирующая работа. Team workflow создаёт единый стандарт.",
     "when": "Когда команда ≥3 человека активно используют AI. Когда появляются inconsistent результаты. Когда новый человек приходит и «не знает как мы работаем с AI».",
-    "impact": "Team velocity: +30-50%. Onboarding time для новых: дни вместо недель. Knowledge sharing: shared Projects + [[node:cc-md|CLAUDE.md]] = команда учится друг у друга. Stage 2→3.",
+    "impact": "Team velocity: +30-50%. Onboarding time для новых: дни вместо недель. Knowledge sharing: shared Projects + [[node:cc-md|CLAUDE.md]] = команда учится друг у друга.",
     "example": "Operations Team Setup:\n1. Shared Claude Project «Operations Workspace» с system prompt командного стиля.\n2. [[node:cc-md|CLAUDE.md]] в shared repo: правила, шаблоны, типичные задачи.\n3. Reusable Skills для повторяющихся задач (report-writer, decision-analyzer).\n4. Weekly «AI office hours»: команда делится открытиями.\n5. Metric: % задач сделано через shared workflow.\n\nStage 3 sign: новичок продуктивен через 2-3 дня, не недели.",
     "mistakes": "Делать «team workflow» = «один человек принуждает всех использовать его prompts». Это не workflow, это диктатура. Team workflow = коллаборативная разработка + ownership + feedback loops."
   },
@@ -1543,7 +1543,7 @@
     "what": "Контент-машина на AI: input (бриф) → AI draft → human review → publish. Pipeline для блог-постов, email, social, документации. Цель — 10× ускорение без потери brand voice.",
     "why": "Контент-команды тратят 40-60% времени на черновики. AI закрывает 80% этой работы. Освобождённое время идёт на strategy, distribution, performance analysis — где AI не помогает.",
     "when": "Когда команда публикует ≥10 материалов в месяц. Когда есть documented brand voice (или его легко собрать). Когда есть SEO/audience research как input для брифов.",
-    "impact": "Time-to-publish: 2 дня → 4 часа. Content output: +200-300% при том же составе команды. Consistency: единый tone across все каналы. Stage 1→2.",
+    "impact": "Time-to-publish: 2 дня → 4 часа. Content output: +200-300% при том же составе команды. Consistency: единый tone across все каналы.",
     "example": "Content Pipeline:\n\n  Бриф (topic + outline + audience)\n        ↓\n  Project «Blog» с brand voice prompt\n        ↓\n  AI draft (800 слов за 2 минуты)\n        ↓\n  Quality gate: editor review\n        ↓\n  Final + SEO optimization\n        ↓\n  Publish\n\nMetric: 1500-слов лонгрид за 4 часа вместо 2 дней.",
     "mistakes": "Делать «AI generates → publish» без human gate. Любой AI-текст требует review: фактчек, тон, локальный контекст. Без human-in-the-loop — generic AI-контент, который читатель опознаёт за 3 секунды."
   },
@@ -1552,7 +1552,7 @@
     "what": "AI-поддержка планирования и анализа маркетинговых кампаний: предсказание performance, генерация вариантов креатива, post-mortem анализ. AI = «второй analyst» в команде.",
     "why": "Кампании планируются под нагрузкой → reactive решения, нет learning loop. AI добавляет structured analysis на pre-launch (что попробовать) и post-launch (что сработало почему).",
     "when": "Quarterly campaign planning. Перед запуском кампании с бюджетом >$10k. Post-mortem после каждой major кампании. A/B testing copy.",
-    "impact": "Campaign ROI: +20-40% за счёт лучшего planning и faster learning. Reduce reactive decisions: 60%. Stage 2→3.",
+    "impact": "Campaign ROI: +20-40% за счёт лучшего planning и faster learning. Reduce reactive decisions: 60%.",
     "example": "Campaign workflow:\n\n  Pre-launch:\n  1. AI анализирует прошлые кампании на похожую аудиторию\n  2. Генерирует 5 вариантов angle/positioning\n  3. Predicts likely performance (rough)\n\n  Post-launch:\n  1. AI читает все метрики + comments\n  2. Pattern-matching: что сработало, что нет\n  3. Документирует learnings в shared knowledge base\n\nЧерез год: organized library of campaign learnings.",
     "mistakes": "Использовать AI как «предсказатель ROI». AI хорош в pattern-matching исторических данных, но новые рынки/каналы — за пределами его опыта. AI = «вдумчивый коллега для brainstorming», не «оракул»."
   },
@@ -1561,7 +1561,7 @@
     "what": "Документирование и кодификация brand voice в системе AI-генерации. От ad-hoc «надо звучать как мы» — к explicit voice guide + system prompts + [[node:pr-fewshot|few-shot examples]] в каждом Project.",
     "why": "Без explicit voice AI выдаёт generic «как все». С voice guide — текст звучит как ваша команда. Это разница между «AI заметен» и «AI незаметен».",
     "when": "Когда команда ≥3 человек пишут контент. Когда «AI tone не наш» жалобы. Перед roll-out AI content operations на всю команду. Когда brand vocabulary важен (B2B, tech, lifestyle).",
-    "impact": "Brand consistency: 60% → 95%. Editor rewrite time: -70%. New team member onboarding: -50%. Stage 2→3.",
+    "impact": "Brand consistency: 60% → 95%. Editor rewrite time: -70%. New team member onboarding: -50%.",
     "example": "Brand Voice Setup:\n\n1. Документ «Voice Guide»:\n   - 3-5 voice attributes (e.g., warm, expert, direct)\n   - Do/Don't примеры для каждого\n   - 10 sample paragraphs в нашем стиле\n\n2. System prompt в Project «Blog»:\n   «Ты пишешь в стиле X. Voice attributes: ... Examples: ...»\n\n3. Test: 5 разных людей дают brief → AI генерирует → blind review → > 80% выбирают AI-version vs generic.\n\nReal investment: 2-3 дня на setup, экономит часы на каждом материале.",
     "mistakes": "Описывать voice абстрактно («профессиональный, но дружелюбный»). Это не помогает AI. Voice = examples + concrete attributes + Do/Don't. Чем конкретнее, тем лучше воспроизводимость."
   },
@@ -1570,7 +1570,7 @@
     "what": "AI для SEO-задач: keyword research, content briefs от SERPs, meta optimization, internal linking. От 1 SEO-специалиста на 5 человек контента — к команде где каждый автор SEO-aware.",
     "why": "SEO требует expertise, которой у content writers обычно нет. AI закрывает gap: автор пишет, AI проверяет/предлагает SEO-improvements. Команда работает быстрее без найма SEO-spec.",
     "when": "Когда content output >20 материалов/месяц + SEO критичен (B2B SaaS, eCommerce, content-driven). Когда есть бюджет на keyword research tools (ahrefs/semrush).",
-    "impact": "Organic traffic: +30-60% за 6 месяцев. SEO-coverage rate (% страниц targeting keyword): 30% → 80%. Stage 1→2.",
+    "impact": "Organic traffic: +30-60% за 6 месяцев. SEO-coverage rate (% страниц targeting keyword): 30% → 80%.",
     "example": "SEO Workflow:\n\n  1. Author пишет draft по topic.\n  2. AI Step: «вот SERPs топ-10 для этой темы → что покрывают конкуренты, чего нет»\n  3. AI Step: «по этому draft + SERP gap analysis, какие подтемы добавить, какие keywords integrate»\n  4. Author redrafts с AI рекомендациями.\n  5. AI Step: meta title + description optimization.\n\nResult: SEO-optimized content без отдельного SEO-passa.",
     "mistakes": "Доверять AI keyword research полностью. AI не знает текущие тренды (cutoff date) и не видит свежие SERPs. Использовать AI как «SEO advisor», но keyword data — из специализированных tools."
   },
@@ -1579,7 +1579,7 @@
     "what": "AI читает marketing-метрики (GA, social, email) → пишет insight-driven отчёты с гипотезами и action items. От «вот graphs, разбирайся» — к «вот что произошло и что делаем».",
     "why": "Marketing-команды утопают в dashboards без actionable insights. AI делает narrative layer: connects dots, объясняет аномалии, предлагает гипотезы. Decision velocity растёт.",
     "when": "Weekly/monthly performance reviews. Когда команда тратит >2 часов в неделю собирая отчёты. Когда «причина» снижения метрик неочевидна.",
-    "impact": "Time-to-insight: дни → часы. Quality of weekly reviews: structured insights вместо «вот числа». Stage 2→3.",
+    "impact": "Time-to-insight: дни → часы. Quality of weekly reviews: structured insights вместо «вот числа».",
     "example": "Weekly Marketing Performance Report:\n\n  Inputs:\n  - GA4 export (traffic, conversions)\n  - Email metrics (open rate, CTR)\n  - Social engagement\n  - Campaign spend\n\n  AI Output:\n  - Что выросло/упало (numbers + delta)\n  - Hypotheses why (на основе past patterns)\n  - 3 рекомендации на след неделю\n  - Red flags (что требует deeper investigation)\n\n  Human: 15 минут validation + 3 декомпозированных action.",
     "mistakes": "Использовать AI как «attribution engine». AI не знает реальной atribution model (multi-touch, view-through). Использовать AI для narrative и pattern-matching, не для exact causation."
   },
@@ -1624,7 +1624,7 @@
     "what": "AI как «co-pilot» tier-2 агента: реал-тайм suggestions ответа, autocompletion, поиск похожих кейсов, генерация шаблонов. Агент остаётся в driver seat, AI accelerates.",
     "why": "Agent-assist менее рискован чем tier-1: human всегда в loop. ROI быстрее (response time -50% сразу). Команда видит AI как «помощник», не «угроза». Adoption намного выше.",
     "when": "Tier-2/3 команда тратит время на писать ответы с нуля. Есть исторические tickets с хорошими ответами. Хочется поднять velocity без снижения качества.",
-    "impact": "Response time per ticket: 8 минут → 3 минуты. Agents handle 50-70% больше tickets/day. Quality consistent (AI use as draft, agent edits). Onboarding new agents: -50% (AI compensate junior gap). Stage 1→2.",
+    "impact": "Response time per ticket: 8 минут → 3 минуты. Agents handle 50-70% больше tickets/day. Quality consistent (AI use as draft, agent edits). Onboarding new agents: -50% (AI compensate junior gap).",
     "example": "Agent Assist Setup:\n\n1. Browser plugin или integration в helpdesk.\n2. Open ticket → AI читает context + customer history.\n3. AI suggests:\n   - 3 варианта ответа (formal/friendly/technical)\n   - Similar past tickets (resolved)\n   - Relevant KB articles\n4. Agent selects + edits + sends.\n5. AI learns from agent edits (over time improves suggestions).\n\nReal usage: 70% suggestions accepted с минорными правками, 20% edited значимо, 10% не используются.",
     "mistakes": "Заставлять агентов использовать AI «обязательно». Если suggestion плохое — заставит писать с нуля. Делать adoption через ценность (показывать time saved per ticket), а не через mandate."
   },
@@ -1633,7 +1633,7 @@
     "what": "Knowledge base превращается из «PDF dump» в живую AI-systems: vector search, auto-updates на основе resolved tickets, gap analysis (что часто спрашивают но нет статьи), structured taxonomy.",
     "why": "Без хорошего KB все AI support fails. KB = единственный источник правды для AI. Качество KB ≠ количество статей. Quality KB ops = больше impact чем просто запустить AI.",
     "when": "Параллельно с tier-1 setup. Когда AI-bot отвечает «не знаю» на >20% вопросов. Когда agents жалуются «не могу найти статью». Когда KB не обновлялась >6 месяцев.",
-    "impact": "KB findability: 50% → 90% (vector search vs keyword). AI deflection rate растёт +15-20% (больше покрытия). Agent onboarding: -40% времени. Stage 1→2.",
+    "impact": "KB findability: 50% → 90% (vector search vs keyword). AI deflection rate растёт +15-20% (больше покрытия). Agent onboarding: -40% времени.",
     "example": "KB Ops Pipeline:\n\nWeekly:\n  1. AI читает resolved tickets за неделю.\n  2. Identifies frequent questions без KB articles.\n  3. Drafts new KB articles из ticket solutions.\n  4. KB editor reviews + publishes.\n\nMonthly:\n  1. AI analyzes KB usage (which articles cited).\n  2. Flags outdated content (product changed, article didn't).\n  3. Suggests merges (duplicate articles).\n\nMetric: % tickets where AI found KB match → up over time.",
     "mistakes": "Делать KB только для humans. Современный KB optimization = для AI + humans. Структура (clear headers, atomic articles, metadata) важна для AI retrieval. Иначе AI не находит — даже если статья существует."
   },
@@ -1651,7 +1651,7 @@
     "what": "Continuous monitoring качества AI-responses: weekly sample → human review → identify failure patterns → adjust prompts/KB. Without monitoring AI деградирует тихо: ошибки накапливаются, никто не видит.",
     "why": "AI не статичен: KB меняется, продукт меняется, customer questions меняются. AI который работал в Q1 может проседать в Q3. Quality monitoring catches drift до того как CSAT упадёт.",
     "when": "С day 1 AI tier-1 запуска. Обязательно. Не «когда будет проблема» — а continuous. Минимум: 10% AI-responses random sample → weekly review.",
-    "impact": "AI drift detection: до того как клиенты заметят (CSAT не падает). Continuous improvement: каждую неделю prompts/KB лучше. Trust в AI системе растёт через explicit quality data. Stage 2→3.",
+    "impact": "AI drift detection: до того как клиенты заметят (CSAT не падает). Continuous improvement: каждую неделю prompts/KB лучше. Trust в AI системе растёт через explicit quality data.",
     "example": "Quality Monitoring Process:\n\nWeekly:\n  1. Random sample 10% AI responses.\n  2. Quality team rates: accuracy, tone, completeness.\n  3. Failure patterns extracted: «AI confuses billing X with Y», «misses context Z».\n  4. Action: update KB articles OR adjust system prompt OR add edge case to training data.\n\nMetric:\n  - % AI responses rated >4/5\n  - Trending direction (better/worse week-over-week)\n  - Top 3 failure categories\n\nEscalation: если quality < 4/5 для 2 weeks → pause AI tier-1, investigate.",
     "mistakes": "Monitoring без action loop. Если найденные ошибки не приводят к изменениям — это театр. Quality monitoring должен быть встроен в weekly product process (Mon: review, Tue: fix, Wed: validate, ...)."
   },
@@ -1660,7 +1660,7 @@
     "what": "AI читает support metrics + ticket content → пишет insight reports: trending issues, customer sentiment, agent performance patterns, product feedback. Превращает support data в product insights.",
     "why": "Support — это free user research. Тысячи разговоров с реальными клиентами. Но команда тонет в objects/dashboards. AI делает narrative layer + connects to product/marketing teams.",
     "when": "Weekly support reviews. Когда product team хочет «голос клиента». Когда есть pattern «много жалоб на feature X» — нужно systematic detection.",
-    "impact": "Time-to-insight: дни → часы. Product team получает trending issues automatically. Customer voice loop closes: from ticket → insight → product change → fewer tickets. Stage 2→3.",
+    "impact": "Time-to-insight: дни → часы. Product team получает trending issues automatically. Customer voice loop closes: from ticket → insight → product change → fewer tickets.",
     "example": "Weekly Support Analytics Report:\n\n  Inputs:\n  - All tickets за неделю (resolved + open)\n  - CSAT scores + comments\n  - Agent performance metrics\n  - Product release notes\n\n  AI Output:\n  - Top 5 trending issues (with ticket count + delta)\n  - Sentiment analysis: где клиенты frustrated\n  - Correlation: «new feature X released → tickets about X +40%»\n  - Recommendations for product team\n  - Recommendations for KB updates\n\nDistribution: report shared с product + marketing → closing the loop.",
     "mistakes": "Делать support analytics в isolation. Если insights не доходят до product/engineering — они бесполезны. Setup explicit channels: weekly «Support Insights» Slack post в #product, monthly review session."
   },
@@ -1696,7 +1696,7 @@
     "what": "AI-powered user research: автоматический синтез интервью, конкурентный анализ, market research. От «прочитал 20 интервью за 3 дня» — к «AI извлекает темы за час, PM валидирует».",
     "why": "Discovery — самая time-intensive часть PM-работы. 50 интервью = неделя на синтез вручную. AI делает первый pass за час, PM фокусируется на validation и interpretation.",
     "when": "Когда есть >10 интервью / customer calls на одну тему. Когда нужна квартальная customer research. Когда конкурентный landscape меняется и нужно отследить.",
-    "impact": "Time-to-insight: дни → часы. Coverage: PM может «обработать» 50 интервью вместо 10. Quality: structured themes вместо «вот мои заметки». Stage 1→2.",
+    "impact": "Time-to-insight: дни → часы. Coverage: PM может «обработать» 50 интервью вместо 10. Quality: structured themes вместо «вот мои заметки».",
     "example": "Research Synthesis Workflow:\n\n  Inputs:\n  - 30 интервью transcripts\n  - Customer support tickets (1 month)\n  - Competitor reviews on G2/Trustpilot\n        ↓\n  Project «Research» с RAG индексом\n        ↓\n  AI Steps:\n  1. Extract themes (frequency + sentiment)\n  2. Cluster similar quotes\n  3. Identify gaps (что часто упоминают, но мы не делаем)\n  4. Generate hypothesis matrix\n        ↓\n  PM validates: какие темы actionable, какие требуют follow-up\n        ↓\n  Output: structured research report + raw data accessible\n\nMetric: time-to-insight, theme coverage.",
     "mistakes": "Полагаться на AI без human validation. AI пропускает nuance: irony, edge cases, культурный контекст. Workflow: AI extracts → PM validates 10-20% sample → confidence в остальном растёт. Без validation — false insights."
   },
@@ -1705,7 +1705,7 @@
     "what": "AI пишет PRDs, user stories, technical specs из rough idea + research input. От «PM сидит 2 дня писать PRD» — к «PM итерирует с AI 2 часа, draft готов».",
     "why": "PRD writing — bottleneck для shipping. PM тратит дни на форматирование/структурирование того, что уже знает в голове. AI закрывает «писательскую» часть, PM фокусируется на content quality.",
     "when": "Когда команда теряет момент между «есть идея» и «написан PRD». Когда есть documented PRD template. Когда rough notes / research уже есть на руках.",
-    "impact": "Time-to-PRD: 2 дня → 4 часа (включая итерации). Consistency: единый формат для всех specs. Quality: AI catches missing sections (success metrics, edge cases, etc.). Stage 1→2.",
+    "impact": "Time-to-PRD: 2 дня → 4 часа (включая итерации). Consistency: единый формат для всех specs. Quality: AI catches missing sections (success metrics, edge cases, etc.).",
     "example": "Spec Generation Workflow:\n\n  Input для AI:\n  - Rough idea (3-5 предложений от PM)\n  - Research output (от pd-discovery)\n  - Existing PRD template + 2-3 high-quality examples\n        ↓\n  AI generates:\n  - Problem statement\n  - User stories с acceptance criteria\n  - Success metrics предложения\n  - Open questions\n  - Technical considerations (для engineering)\n        ↓\n  PM iterates: 3-5 раундов правок\n        ↓\n  Output: ship-ready PRD\n\nMetric: time-to-spec, dev team feedback on PRD quality.",
     "mistakes": "Делать AI-PRD без research input. «Напиши PRD для feature X» = generic stuff. Quality output требует quality input: research, examples, constraints. Garbage in = garbage out."
   },
@@ -1714,7 +1714,7 @@
     "what": "AI помогает с roadmap-prioritization: анализ feedback patterns, competitor moves, customer requests, internal data → ranked priorities с reasoning. AI = «second analyst» в roadmap discussions.",
     "why": "Roadmap prioritization обычно делается «по чутью» под давлением stakeholders. AI приносит structured framework: explicit weights, data-based scoring, рассмотрение alternatives.",
     "when": "Quarterly planning. Перед roadmap review с executives. Когда «у всех своё мнение» и нужна structured framework для decision.",
-    "impact": "Reactive prioritization: -60%. Stakeholder alignment: faster (data, не мнения). Roadmap thrashing: reduced (явные критерии не дают frequent changes). Stage 2→3.",
+    "impact": "Reactive prioritization: -60%. Stakeholder alignment: faster (data, не мнения). Roadmap thrashing: reduced (явные критерии не дают frequent changes).",
     "example": "Roadmap Prioritization Workflow:\n\n  Inputs:\n  - All product opportunities (backlog + new ideas)\n  - Customer feedback themes (от feedback-synthesis)\n  - Competitor analysis\n  - Internal metrics (revenue impact, retention)\n  - Strategic objectives (current quarter)\n        ↓\n  AI Scoring:\n  - Each opportunity rated по: impact, effort, strategic fit, risk\n  - Reasoning explicit для каждого\n  - Alternative orderings проигрываются\n        ↓\n  PM + leadership: review AI ranking + override based on judgment\n        ↓\n  Output: prioritized roadmap с documented reasoning\n\nValue: следующий квартал ты МОЖЕШЬ объяснить «почему мы выбрали это».",
     "mistakes": "Принимать AI roadmap как final. AI scoring основан на данных, которые ты дал — но он не знает board politics, executive priorities, или upcoming launches. AI = input в decision, не decision itself."
   },
@@ -1723,7 +1723,7 @@
     "what": "AI-поддержка A/B testing: hypothesis generation, variant design, statistical analysis interpretation, learnings synthesis. От «запустили A/B, забыли результаты» — к «structured experimentation engine».",
     "why": "Most teams running A/B tests poorly: weak hypotheses, no power analysis, results forgotten. AI structures это: forces explicit hypothesis, generates variant ideas, helps interpret results.",
     "when": "Когда команда runs ≥3 experiments/quarter. Когда experiment outputs не превращаются в product knowledge. Когда нужно scale experimentation на multiple teams.",
-    "impact": "Experiment velocity: +50%. Experiments with clear learnings: 50% → 90%. Knowledge retention: structured library experiment outcomes. Stage 2→3.",
+    "impact": "Experiment velocity: +50%. Experiments with clear learnings: 50% → 90%. Knowledge retention: structured library experiment outcomes.",
     "example": "Experimentation Workflow:\n\n  1. Hypothesis Generation:\n     - PM inputs: «hypothesis: shorter onboarding → higher activation»\n     - AI critiques: «specify metric, magnitude, timeframe, sample needed»\n     - Result: «If we cut onboarding from 5 to 2 steps, activation rate +15% over 4 weeks (n>1000)»\n\n  2. Variant Design:\n     - AI generates 3-5 specific variant approaches\n     - Discusses pros/cons of each\n\n  3. Post-experiment Analysis:\n     - Input: results data\n     - AI: «winner with X confidence. Caveats: ... Recommended follow-up: ...»\n\n  4. Library:\n     - AI maintains experiment knowledge base\n     - Search: «did we try X before?»\n\nMetric: experiments / quarter, learnings library size.",
     "mistakes": "Использовать AI для «predict before run». AI не предскажет результат A/B (если бы мог — A/B был бы не нужен). AI хорош в: hypothesis sharpening, variant ideation, post-analysis interpretation. Не predictive."
   },
@@ -1732,7 +1732,7 @@
     "what": "AI читает all user feedback (NPS comments, support tickets, reviews, sales notes) → структурированные insights с trends. От «PM прочитал ~50 комментариев» — к «AI обработал 5000 и нашёл паттерны».",
     "why": "Customer feedback fragmented по 5-10 источникам. PM физически не успевает прочитать всё. AI делает aggregation + synthesis. Sentiment-shifts видны до того как они проявятся в churn.",
     "when": "Когда есть ≥3 источника feedback (NPS, support, reviews, sales calls, social). Когда product team хочет «голос клиента» systematic, не anecdotal.",
-    "impact": "Coverage: 5% feedback читается → 100% обрабатывается. Time-to-trend: 2 месяца → 2 недели. Decision quality: data-backed вместо «помнится кто-то жаловался». Stage 2→3.",
+    "impact": "Coverage: 5% feedback читается → 100% обрабатывается. Time-to-trend: 2 месяца → 2 недели. Decision quality: data-backed вместо «помнится кто-то жаловался».",
     "example": "Feedback Synthesis Pipeline:\n\n  Sources (weekly):\n  - NPS responses (раз в квартал × 1000+)\n  - Support tickets с CSAT comments\n  - App store / G2 reviews\n  - Sales call notes\n  - Social mentions\n        ↓\n  AI Processing:\n  1. Clean + deduplicate\n  2. Categorize (feature, UX, pricing, performance, ...)\n  3. Sentiment analysis\n  4. Theme extraction\n  5. Trend detection (what changed week-over-week)\n        ↓\n  Weekly Output:\n  - Top 5 themes (with magnitude + delta)\n  - Quote samples for each\n  - Critical issues to investigate\n        ↓\n  Distribution:\n  - Product team review (decisions)\n  - Engineering: bug themes\n  - Marketing: positioning themes\n\nMetric: feedback coverage, time-to-action on trending issues.",
     "mistakes": "Делать feedback synthesis в vacuum. Output должен идти в roadmap planning, не в read-only report. Workflow: synthesis → product review → roadmap update → measure impact. Без loop — это вежливый theater."
   },
@@ -1741,7 +1741,7 @@
     "what": "AI читает product usage data (Amplitude, Mixpanel, GA) → пишет insight reports с гипотезами «почему так?» и suggested investigations. От «вот dashboard» — к «вот что произошло и что значит».",
     "why": "Product analytics tools покажут «что произошло», но не «почему». PM/analytics manager тратит часы на formulating hypotheses. AI делает это first-pass, человек проверяет.",
     "when": "Weekly product reviews. После каждого major release. Когда метрика unexpected (рост или падение). Когда команда «не понимает почему» что-то происходит.",
-    "impact": "Time-to-hypothesis: дни → часы. Coverage: analytics-aware решений растёт от 30% к 70%+ команды. Stage 2→3.",
+    "impact": "Time-to-hypothesis: дни → часы. Coverage: analytics-aware решений растёт от 30% к 70%+ команды.",
     "example": "Weekly Product Analytics Workflow:\n\n  Inputs:\n  - Top-line metrics (DAU, MAU, retention, activation)\n  - Feature usage (new + existing)\n  - User segments behavior\n  - Recent product releases\n        ↓\n  AI Analysis:\n  1. What changed (numbers + delta + significance)\n  2. Correlation: «release X → metric Y +Z%»\n  3. Anomaly detection (unusual segment behavior)\n  4. Hypotheses (ranked by likelihood)\n  5. Recommended investigations (queries to run, segments to look at)\n        ↓\n  Product team:\n  - Validates top hypotheses\n  - Decides actions\n  - Adds learnings to knowledge base\n\nMetric: % of metric changes with documented explanation.",
     "mistakes": "Доверять AI causal claims. «Release X caused metric Y +5%» — это correlation, не causation. AI рекомендует hypothesis, human должен validate через proper analysis (cohort, A/B, before-after)."
   },
@@ -1750,7 +1750,7 @@
     "what": "Product team operating model с AI: shared research workspace, common spec templates, feedback synthesis pipeline, weekly AI office hours. От «каждый PM со своим Claude» — к «коллаборативная AI-powered product team».",
     "why": "Indiv usage в product не масштабируется — research findings lost между PMs, specs inconsistent, knowledge не shared. Team workflow создаёт shared institutional memory.",
     "when": "Product team ≥3 PMs используют AI. Когда «у каждого свой подход к specs». Когда research выводы теряются после launch. Когда новый PM «не знает как мы работаем».",
-    "impact": "Team velocity: +30%. New PM onboarding: 6 weeks → 3 weeks (через shared knowledge). Decision quality: improves over time (institutional memory grows). Stage 2→3.",
+    "impact": "Team velocity: +30%. New PM onboarding: 6 weeks → 3 weeks (через shared knowledge). Decision quality: improves over time (institutional memory grows).",
     "example": "Product Team Setup:\n\n1. Shared Claude Project «Product Workspace»:\n   - All research transcripts indexed\n   - Past PRDs library\n   - Experiment learnings\n   - Customer feedback (categorized)\n\n2. [[node:cc-md|CLAUDE.md]]: writing conventions, PRD template, decision frameworks.\n\n3. Skills:\n   - research-synthesizer\n   - prd-drafter\n   - feedback-categorizer\n   - experiment-designer\n\n4. Weekly «AI office hours» 30 min:\n   - Best prompts discoveries\n   - Failed AI experiments (что не работает)\n   - Cross-team learning\n\n5. Quarterly knowledge curation:\n   - Что добавить в shared workspace\n   - Что устарело и удалить\n\nStage 3 sign: new PM пишет shipping-ready PRD к концу первого месяца.",
     "mistakes": "Делать team workflow без librarian role. Shared workspace без maintainership = junk drawer через 6 месяцев. Кто-то должен curate: weekly review of new content, monthly cleanup of outdated."
   },
@@ -1777,7 +1777,7 @@
     "what": "Document-стратегия AI на 12-24 месяца: vision, north-star metrics, sequencing of initiatives, investment thesis, success criteria. Не «давайте использовать AI», а «вот KAK мы выигрываем от AI».",
     "why": "Без явной strategy AI initiatives = разные департаменты делают разное. С strategy — coordination, leverage между departments, ясные приоритеты. Strategy doc = alignment tool для leadership.",
     "when": "После 6-12 месяцев успешных pilots в нескольких департаментах. Когда board задаёт вопросы про AI ROI. Перед annual planning. Когда нужно нанять AI lead.",
-    "impact": "Decision velocity: 3× быстрее на AI-related decisions. Org alignment: leadership team на той же странице (literally). Time-to-execution: tactical teams понимают priorities за дни, не месяцы. Stage 2→3.",
+    "impact": "Decision velocity: 3× быстрее на AI-related decisions. Org alignment: leadership team на той же странице (literally). Time-to-execution: tactical teams понимают priorities за дни, не месяцы.",
     "example": "AI Transformation Strategy doc (8-12 pages):\n\n1. Vision (1 page): где компания через 2 года с AI\n2. North-star metrics (3-5): cost reduction, revenue growth, NPS, talent retention\n3. Strategic bets (3-7): «Stage-by-stage AI in customer support», «AI-augmented product development», ...\n4. Sequencing: что делаем Q1, Q2, Q3, Q4\n5. Investment thesis: где платим, где экономим\n6. Risk & governance principles\n7. Success criteria + checkpoints\n\nCreation process: 2-3 недели с участием executives + tactical leads. Reviewed quarterly.\n\nMetric: % strategic decisions referencing the doc (target: >80% in 6 months).",
     "mistakes": "Делать strategy doc «один раз и забыли». AI ландшафт меняется каждые 6 месяцев — strategy должна refresh-иться quarterly. И: не делать просто vision без metrics. Strategy без measurable outcomes = wish list."
   },
@@ -1813,7 +1813,7 @@
     "what": "Framework для measuring AI investment returns: cost vs value, attribution to AI vs other factors, leading vs lagging indicators, payback period. Превращает «AI saves time» в «AI saved $X this quarter».",
     "why": "Без ROI measurement AI initiatives держатся на vibes. Когда finance задаёт «show me the money?», response должен быть quantified. ROI measurement = sustainable AI program longevity.",
     "when": "После 3-6 месяцев AI in production. Перед budget planning (annual или quarterly). Когда executives задают about AI value. Когда нужно prioritize между AI initiatives.",
-    "impact": "Budget approval: 2× faster для AI initiatives с tracked ROI. Resource allocation: efficient (kill failing, double on winning). Stakeholder confidence: high. Stage 2→3.",
+    "impact": "Budget approval: 2× faster для AI initiatives с tracked ROI. Resource allocation: efficient (kill failing, double on winning). Stakeholder confidence: high.",
     "example": "AI ROI Framework:\n\nCost side:\n  - Direct: AI API costs, tools, infrastructure\n  - Indirect: training time, change management, governance overhead\n  - Hidden: opportunity cost of team time\n\nValue side:\n  - Time saved (× hourly cost of saved roles)\n  - Quality improvement (cost of errors avoided)\n  - Revenue generated (new capabilities)\n  - Risk reduction (compliance, incidents avoided)\n  - Customer satisfaction (retention impact)\n\nAttribution: how to know AI caused this?\n  - Before/after comparison + control group когда возможно\n  - A/B testing на features\n  - Counterfactual analysis для high-stakes claims\n\nReporting:\n  - Monthly per tactical direction\n  - Quarterly aggregate to leadership\n  - Annual: full impact report\n\nMetric: documented ROI per initiative > 3× cost (target).",
     "mistakes": "Считать только cost savings, игнорируя intangibles. AI приносит не только время — но capability gains, morale, future optionality. Без holistic ROI — недооценка value, программа cancelled prematurely."
   },
@@ -1822,7 +1822,7 @@
     "what": "Systematic identification, assessment, mitigation AI-specific рисков: hallucinations в production, model drift, data leaks, regulatory non-compliance, bias, vendor dependencies. Risk awareness, не risk avoidance.",
     "why": "AI risks отличаются от traditional IT risks: probabilistic, evolving, often invisible until late. Traditional risk frameworks не catch их. Need AI-specific approach.",
     "when": "С day 1 каждой AI initiative (NOT после incident). Перед production launch. Annually для existing AI systems. После любого notable industry incident.",
-    "impact": "High-severity incidents: 0 prevented to occurred (best outcome). Insurance cost: lower with documented program. Regulatory readiness: ahead of EU AI Act, NIST framework. Stage 2→3.",
+    "impact": "High-severity incidents: 0 prevented to occurred (best outcome). Insurance cost: lower with documented program. Regulatory readiness: ahead of EU AI Act, NIST framework.",
     "example": "AI Risk Categories + Mitigations:\n\n1. Hallucinations:\n   - Risk: AI выдаёт wrong info confidently\n   - Mitigation: RAG with [[node:cap-citations|citations]], human review для customer-facing, quality monitoring\n\n2. Model drift:\n   - Risk: AI behavior changes без notice (model update, data shift)\n   - Mitigation: continuous quality monitoring, golden test sets, rollback ability\n\n3. Data leaks:\n   - Risk: customer/sensitive data в model providers\n   - Mitigation: data classification, approved vendors, encryption, audit logs\n\n4. Bias:\n   - Risk: AI discrimates (hiring, pricing, content)\n   - Mitigation: bias testing, diverse training data, monitoring by demographic\n\n5. Regulatory:\n   - Risk: GDPR, EU AI Act, sector-specific violations\n   - Mitigation: compliance review per use case, legal sign-off, documentation\n\n6. Vendor lock:\n   - Risk: depends entirely на one AI provider\n   - Mitigation: abstraction layer, multi-vendor strategy, internal fallback\n\nRisk register: updated quarterly.\n\nMetric: identified vs occurred risks (catch rate target: >90%).",
     "mistakes": "Думать что risk management = compliance checklist. Real AI risk управление = thinking about edge cases, scenarios, второго порядка effects. Checklist alone — false security."
   },
@@ -1831,7 +1831,7 @@
     "what": "Approach к building AI capability в команде: hiring AI roles, upskilling existing employees, retention в AI-talent market, career paths для AI-augmented roles. Talent — самое сложное для long-term AI success.",
     "why": "AI tools commodity, AI talent — нет. Companies без talent strategy теряют people в Big Tech. Companies с good strategy attract top talent, retain existing employees через growth opportunities.",
     "when": "Continuous (не «one time»). Перед каждым tactical direction launch. При scaling AI program. Когда attrition в AI-relevant roles растёт.",
-    "impact": "AI talent retention: 90%+ (vs 60% industry avg). Time-to-fill AI roles: 2× faster (employer brand). Internal mobility: 30%+ перемещаются в AI-augmented roles. Stage 2→3.",
+    "impact": "AI talent retention: 90%+ (vs 60% industry avg). Time-to-fill AI roles: 2× faster (employer brand). Internal mobility: 30%+ перемещаются в AI-augmented roles.",
     "example": "AI Talent Strategy:\n\n1. Hiring framework:\n   - Roles needed: ML engineers, AI PMs, AI ethicists, prompt engineers\n   - Compensation benchmarks (AI talent premium)\n   - Sourcing channels (universities, conferences, community)\n\n2. Upskilling:\n   - 3 levels: foundational (everyone), intermediate (heavy users), advanced (builders)\n   - Time budget: 4-8 hours/month protected learning time\n   - Recognition: AI skills в performance reviews\n\n3. Career paths:\n   - «AI-augmented» version of every role (e.g., AI-augmented PM, AI-augmented designer)\n   - New roles: AI ops, AI product, prompt engineer\n   - Senior path для AI builders\n\n4. Retention:\n   - AI projects = career capital (assignment to AI work seen as opportunity)\n   - Internal mobility: skill-based moves to AI-heavy teams\n   - External brand: conference talks, blog posts, GitHub\n\n5. Culture:\n   - «AI-curious» as core value\n   - Failed AI experiments celebrated (learning culture)\n   - Cross-team AI showcases\n\nMetric: AI skills inventory (% workforce with documented AI proficiency).",
     "mistakes": "Hire ML engineers и думать что talent strategy done. Они build, но не replace product, marketing, support skill needs. AI talent strategy = широкое upskilling + targeted hiring. Не one or the other."
   },
@@ -1984,7 +1984,7 @@
     "what": "AI-powered user research для дизайнеров: synthesis usability tests, поведенческий анализ session recordings, competitor design pattern analysis. От «100 интервью = 2 недели на разбор» — к «AI извлекает themes за час, designer валидирует».",
     "why": "Research — критическая часть design, но time-intensive. Designer тратит 50% времени на синтез, 50% на actual design. AI сдвигает баланс к 20/80.",
     "when": "Usability testing rounds (5-15 sessions). Competitor research. Card sorting analysis. Когда есть session recordings и нужно extract patterns.",
-    "impact": "Time-to-insight: дни → часы. Theme extraction structured вместо «designer's gut feel». Stage 1→2.",
+    "impact": "Time-to-insight: дни → часы. Theme extraction structured вместо «designer's gut feel».",
     "example": "Usability Synthesis Workflow:\n\n  Inputs:\n  - 10 session recordings (transcripts)\n  - User interview notes\n  - Pre/post task survey data\n        ↓\n  AI Steps:\n  1. Extract pain points (frequency + severity)\n  2. Group by user task / journey stage\n  3. Identify quick wins vs structural issues\n  4. Generate improvement hypotheses\n        ↓\n  Designer validates:\n  - Pain point severity rated through design lens\n  - Solutions ranked by feasibility\n        ↓\n  Output: structured research report + prioritized backlog\n\nMetric: time-to-insight, design improvements shipped.",
     "mistakes": "Делать AI synthesis без designer eye-on-data. AI пропускает emotional nuance, frustration patterns, edge cases. Workflow: AI extracts themes → designer reviews 20% with original recordings → confidence в остальном."
   },
@@ -1993,7 +1993,7 @@
     "what": "AI-генерация прототипов: design mockup → HTML/React код, sketches → Figma compositions, multiple style variants за минуты. От «designer кодит prototype 2 дня» — к «AI даёт 5 вариантов за час, designer выбирает + refine».",
     "why": "Prototyping — bottleneck в design cycle. AI закрывает «технический» аспект (превратить идею в kod/Figma), designer фокусируется на concept + critique.",
     "when": "Early-stage exploration (need many variants quickly). Design system component variants. Conversion of mockup to code. A/B testing variant generation.",
-    "impact": "Time-to-prototype: 2 дня → 4 часа. Variant coverage: 1-2 → 5-10 per concept. Iteration speed: 2-3× faster. Stage 1→2.",
+    "impact": "Time-to-prototype: 2 дня → 4 часа. Variant coverage: 1-2 → 5-10 per concept. Iteration speed: 2-3× faster.",
     "example": "Prototype Workflow:\n\n  Designer brief:\n  «Onboarding flow для B2B SaaS,\n   3 шага, brand color #2563eb,\n   шрифт Inter, mood: friendly+confident»\n        ↓\n  AI Step 1: Generate 5 layout variants\n        ↓\n  Designer selects 2 most promising\n        ↓\n  AI Step 2: Generate React/HTML for each\n        ↓\n  Designer refines via Figma OR direct code edits\n        ↓\n  Output: working prototype 4 hours after brief\n\nReal usage: AI-generated code = starting point, не final. Designer refines 30-50%.",
     "mistakes": "Ждать от AI «pixel-perfect output». AI dает 70% from idea to code, последние 30% (taste, brand fit, accessibility) — designer. Treating AI as starting point = speed. Treating as final = mediocre output."
   },
@@ -2002,7 +2002,7 @@
     "what": "Автоматизация design ops: asset documentation, component change-logs, Figma library management, design QA. От «у нас всё есть, но никто не знает где» — к «AI maintains documentation continuously».",
     "why": "Design ops invisible until breaks. Asset chaos, outdated components, missing docs — все это убивает velocity. AI maintains это continuously без manual effort.",
     "when": "Design system есть, но poorly documented. Multiple designers, components diverge. New hires спрашивают «где X компонент?». Pre-handoff QA не выполняется.",
-    "impact": "Designer time on ops: -50%. New hire onboarding: 2 weeks → 1 week. Component reuse: +30% (вместо переизобретения). Stage 2→3.",
+    "impact": "Designer time on ops: -50%. New hire onboarding: 2 weeks → 1 week. Component reuse: +30% (вместо переизобретения).",
     "example": "Design Ops Automation:\n\n1. Component Documentation:\n   - AI читает Figma file → генерирует MD docs per component\n   - Updates: AI диффит changes weekly → adds changelog\n\n2. Asset Audit:\n   - AI scans products → finds inconsistent components\n   - Flags: «button styles diverge across 5 screens»\n\n3. Handoff QA:\n   - Pre-handoff AI checks: token usage, accessibility, spacing\n   - Generates QA report для dev review\n\n4. Library Health:\n   - Weekly: AI identifies unused components, outdated tokens\n   - Suggests cleanup\n\nMetric: design system health score, time saved on documentation.",
     "mistakes": "Делать design ops AI без integration в actual tools. «AI генерит docs в отдельном Notion» = никто не читает. AI должен жить там где designers работают: Figma plugins, Slack integrations, CI/CD для design."
   },
@@ -2011,7 +2011,7 @@
     "what": "AI-проверки a11y на каждом шаге: contrast checks, alt-text generation, screen reader simulation, keyboard navigation audit. От «accessibility = специальный audit раз в полгода» — к «accessibility-by-default через AI».",
     "why": "Accessibility часто проверяется в конце, когда переделывать дорого. AI catches issues в real-time во время design. Стоимость в 10× меньше.",
     "when": "Design system accessibility setup. New feature launches с user-facing UI. Quarterly product audits. Customer complaints about a11y issues.",
-    "impact": "A11y bug rate: 30% → 5% (issues caught at design stage). Compliance: WCAG AA reached confidently. Legal risk: significantly reduced. Stage 1→2.",
+    "impact": "A11y bug rate: 30% → 5% (issues caught at design stage). Compliance: WCAG AA reached confidently. Legal risk: significantly reduced.",
     "example": "A11y Automation Pipeline:\n\n  Design phase:\n  1. AI checks contrast ratios on every screen\n  2. Auto-generates alt-text suggestions for images\n  3. Flags missing focus states, keyboard traps\n  4. Reviews color usage (color as sole indicator?)\n\n  Pre-handoff:\n  5. Full WCAG checklist auto-run\n  6. Report: issues + recommendations + WCAG criteria mapping\n\n  Post-launch:\n  7. Real screen reader test simulation\n  8. AI describes UX as blind user would experience it\n\nMetric: WCAG compliance %, a11y issues per release.",
     "mistakes": "Думать что AI = «полный a11y replacement». Manual testing с real assistive tech (real screen readers, real keyboard navigation) — still required. AI catches 80%, last 20% — manual + user testing с a11y users."
   },
@@ -2020,7 +2020,7 @@
     "what": "AI помогает развивать design system: генерация token sets, component variants, documentation для каждого компонента, миграция usage при breaking changes. Design system из «статичный документ» в «живая система с AI-помощником».",
     "why": "Design systems обычно стагнируют: нет ресурсов на поддержку, breaking changes откладываются. AI снимает operational burden — система остаётся свежей.",
     "when": "Design system есть, но maintenance burden высокий. Migration к новому token system. Component variants нужно создать (sizes, states, themes). Documentation поразлета по разным местам.",
-    "impact": "Design system update velocity: 3-5× faster. Migration speed: weeks → days. Documentation freshness: always current. Stage 2→3.",
+    "impact": "Design system update velocity: 3-5× faster. Migration speed: weeks → days. Documentation freshness: always current.",
     "example": "Design System Evolution:\n\n1. Token Generation:\n   - Designer задаёт «brand uses warm palette, modern feel»\n   - AI generates: color scale, spacing scale, typography scale\n   - Designer refines: 70% AI output → 30% manual adjustment\n\n2. Component Variants:\n   - Designer creates base button\n   - AI generates: sizes (sm/md/lg), states (default/hover/focus/disabled), themes (light/dark)\n   - Outputs Figma file + code stubs\n\n3. Breaking Change Migration:\n   - «We changed token spacing from 4px to 8px»\n   - AI scans codebase + Figma files\n   - Generates migration PR + Figma changes list\n\n4. Documentation:\n   - AI maintains MDX docs per component\n   - Updates on component changes automatically\n\nMetric: components shipped, time-to-update.",
     "mistakes": "Полностью полагаться на AI для design system decisions. Design system embodies brand strategy + UX principles — это критические human decisions. AI = executor, не decision-maker для system architecture."
   },
@@ -2029,7 +2029,7 @@
     "what": "AI-помощь в UX writing: microcopy для buttons/forms/errors, onboarding flows, empty states, helper text. От «designer пишет copy в свободное время» — к «AI generates contextual copy, designer curates voice».",
     "why": "UX copy критичен для UX, но designer time на copy всегда insufficient. AI generates options, designer chooses + refines по brand voice.",
     "when": "New feature launches with substantial UI text. Onboarding flow design. Error message standardization. International product (multiple languages).",
-    "impact": "Copy generation time: -70%. Coverage: 100% of UI elements have intentional copy (vs «TBD»). Consistency: brand voice maintained across product. Stage 2→3.",
+    "impact": "Copy generation time: -70%. Coverage: 100% of UI elements have intentional copy (vs «TBD»). Consistency: brand voice maintained across product.",
     "example": "Content Design Workflow:\n\nFor each UI surface:\n  1. Designer provides context: «password reset flow, friendly tone»\n  2. AI generates 5 variants for each microcopy slot:\n     - Page title\n     - Description (1 sentence)\n     - Primary CTA\n     - Error states (3-5 likely errors)\n     - Success state\n  3. Designer picks best + may refine\n  4. AI suggests improvements based on brand voice\n  5. Final copy документируется в content style guide\n\nFor i18n:\n  - AI does first-pass translation\n  - Local copywriter refines (we still need humans here)\n\nMetric: copy coverage %, brand voice consistency score.",
     "mistakes": "Использовать AI для legal/compliance copy без review. «AI wrote it» не освобождает от accountability. Critical copy (privacy notices, ToS, regulatory text) — human-written, AI только для review."
   },
@@ -2038,7 +2038,7 @@
     "what": "Design team operating model с AI: shared Figma plugins, design system AI-helpers, weekly «AI office hours» для designers, AI-aware critique sessions. От «каждый designer со своим Claude» — к «designed-augmented team».",
     "why": "Individual designer AI usage не масштабируется — voice inconsistent, components diverge, lessons unlearned. Team workflow consolidates AI value.",
     "when": "Design team ≥3 designers активно используют AI. Когда product is design-driven (consumer apps, brand-heavy). When inconsistent AI usage causes brand fragmentation.",
-    "impact": "Team velocity: +25-35%. Brand consistency: significantly improved. Designer career growth: «AI-augmented designer» as senior path. Stage 2→3.",
+    "impact": "Team velocity: +25-35%. Brand consistency: significantly improved. Designer career growth: «AI-augmented designer» as senior path.",
     "example": "Design Team Setup:\n\n1. Shared Claude Project «Design Workspace»:\n   - Brand voice guide indexed\n   - Design system docs accessible\n   - Past research synthesized\n   - Component library reference\n\n2. [[node:cc-md|CLAUDE.md]]: design principles, brand voice, accessibility rules.\n\n3. Skills (Figma plugins + Claude):\n   - microcopy-generator\n   - component-doc-writer\n   - accessibility-checker\n   - research-synthesizer\n\n4. Weekly rituals:\n   - «AI office hours» (30 min): designers share wins/failures\n   - Quarterly «AI in design» retrospective\n\n5. Critique enhancements:\n   - Pre-critique: AI runs accessibility/brand checks\n   - Critique focuses on craft + concept (not finding bugs)\n\nStage 3 sign: new designer productive в 3-5 дней.",
     "mistakes": "Делать «AI in design» = «designer обязан использовать AI». Forced adoption убивает creative ownership. AI должен быть «discovered through value» — designers choose to use when it makes them better, faster, happier."
   },
