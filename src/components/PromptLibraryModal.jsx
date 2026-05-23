@@ -24,7 +24,7 @@ export default function PromptLibraryModal({
   bookmarksApi
 }) {
   const t = useT();
-  const { locale } = useLocale();
+  const { locale, contentVersion } = useLocale();
   const { isLoggedIn } = useAuth();
   const GUEST_LIMIT = 15;
   const LEVEL_FILTERS = [
@@ -34,9 +34,14 @@ export default function PromptLibraryModal({
     { id: 'advanced',     label: t('level.advanced') }
   ];
   // Локализованные коллекции — пересобираются при смене локали.
-  const localizedLibrary = useMemo(() => getAllLocalizedLibrary(locale), [locale]);
-  const localizedCategories = useMemo(() => getAllLibraryCategories(locale), [locale]);
-  const localizedLevels = useMemo(() => getAllLibraryLevels(locale), [locale]);
+  // contentVersion в deps критичен: prompt-library грузится ЛЕНИВО,
+  // без него memo не пересчитывается после loadLocaleContent().
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const localizedLibrary = useMemo(() => getAllLocalizedLibrary(locale), [locale, contentVersion]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const localizedCategories = useMemo(() => getAllLibraryCategories(locale), [locale, contentVersion]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const localizedLevels = useMemo(() => getAllLibraryLevels(locale), [locale, contentVersion]);
   const [activeCategory, setActiveCategory] = useState('start');
   const [levelFilter, setLevelFilter] = useState('all');
   const [query, setQuery] = useState('');

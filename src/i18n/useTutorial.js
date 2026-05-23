@@ -65,10 +65,15 @@ function buildById(id, structure, locale) {
  * Возвращает enriched-объект с теми же полями, что были в data-файле раньше.
  */
 export function useTutorialContent(tutorialId) {
-  const { locale } = useLocale();
+  const { locale, contentVersion } = useLocale();
+  // contentVersion в deps критичен: tutorials грузятся ЛЕНИВО через
+  // loadLocaleContent. Без него useMemo не пересчитывается после загрузки —
+  // и при deep-link открытии (#/tutorial/X) модалка рендерится с пустыми
+  // полями навсегда.
   return useMemo(
     () => buildById(tutorialId, structures[tutorialId], locale),
-    [tutorialId, locale]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [tutorialId, locale, contentVersion]
   );
 }
 
