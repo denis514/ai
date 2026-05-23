@@ -197,7 +197,7 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksA
         <div className="cmdk-results" ref={listRef}>
           {results.length === 0 ? (
             <div className="cmdk-empty">
-              Ничего не найдено по запросу «{query}»
+              {t('palette.empty', { query })}
             </div>
           ) : (
             <ul>
@@ -259,9 +259,9 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksA
         </div>
 
         <div className="cmdk-footer">
-          <span><kbd>↑</kbd><kbd>↓</kbd> навигация</span>
-          <span><kbd>↵</kbd> открыть</span>
-          <span><kbd>Esc</kbd> закрыть</span>
+          <span><kbd>↑</kbd><kbd>↓</kbd> {t('palette.kbdNav')}</span>
+          <span><kbd>↵</kbd> {t('palette.kbdOpen')}</span>
+          <span><kbd>Esc</kbd> {t('palette.kbdClose')}</span>
         </div>
       </div>
     </div>

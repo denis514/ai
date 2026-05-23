@@ -2223,6 +2223,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 
 /* Карточка — чуть шире и просторнее */
 .intro-card {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -2234,6 +2235,30 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   flex-direction: column;
   gap: 20px;
   animation: slide-up .3s ease;
+}
+
+/* Close-кнопка IntroModal — мостик «пропустить» на любом слайде */
+.intro-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  border-radius: 50%;
+  color: color-mix(in srgb, var(--text) 60%, transparent);
+  background: transparent;
+  cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+  z-index: 2;
+}
+.intro-close:hover {
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--text) 25%, transparent);
 }
 
 /* Dots */

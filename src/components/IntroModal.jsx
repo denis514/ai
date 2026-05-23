@@ -99,6 +99,17 @@ export default function IntroModal({ onDone, onRequestAuth }) {
     <div className={`onboarding-overlay intro-overlay${leaving ? ' is-entering' : ''}`}>
       <div className="intro-card">
 
+        {/* Закрыть intro в любой момент — мостик к контенту без прохождения слайдов */}
+        <button
+          type="button"
+          className="intro-close"
+          onClick={handleDone}
+          aria-label={t('intro.skipAria') || 'Закрыть'}
+          title={t('intro.skipAria') || 'Закрыть'}
+        >
+          <Icon name="close" size={18} strokeWidth={1.75} />
+        </button>
+
         {/* Dots-навигация */}
         <div className="intro-dots" aria-hidden="true">
           {[0, 1].map(i => (
