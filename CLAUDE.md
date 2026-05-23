@@ -337,6 +337,10 @@ node scripts/sync-whats-new.mjs --regen  # пересобрать whatsNew.js б
 | Спроектировать tutorial / новое обучение | `skills/ai-pedagogy-architect/` |
 | Найти пробелы в контенте Atlas         | `skills/content-gap-auditor/` |
 | Аудит «понятности» обучающего материала | `skills/learning-content-auditor/` (on-demand) |
+| Аудит правильности финского языка      | `skills/finnish-language-pedagogue/` (on-demand) |
+| Аудит правильности русского языка      | `skills/russian-language-pedagogue/` (on-demand) |
+| Аудит правильности английского языка   | `skills/english-language-pedagogue/` (on-demand) |
+| Общие принципы языковой педагогики     | `docs/language-pedagogy-shared.md` |
 | Проверить релизы Anthropic еженедельно | `skills/news-watcher/`     |
 | Правила AI-обучения                    | `docs/learning-design-rules.md` |
 | Maintenance / deprecate-watch          | `docs/maintenance.md`      |
