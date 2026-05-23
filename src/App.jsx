@@ -827,6 +827,10 @@ function AppInner() {
             onOpenTutorial={(id) => setRoute({ type: 'tutorial', id })}
             onOpenLibrary={onOpenLibrary}
             onOpenNode={(id) => setRoute({ type: 'node', id })}
+            onOpenPrompt={(promptId) => {
+              const p = getLocalizedFeaturedPrompt(promptId, locale);
+              if (p) setFeaturedPrompt(p);
+            }}
             onOpenCourses={onOpenCourses}
             progressApi={progressApi}
             suspended={tutorialAwaitingAuth}

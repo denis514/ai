@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { tutorials } from '../data/tutorials.js';
 import { mindmapData } from '../data/mindmapData.js';
 import Icon from './Icon.jsx';
+import InlineText from './InlineText.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { useTutorialContent } from '../i18n/useTutorial.js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -18,14 +19,22 @@ function findNodeById(root, id) {
   return null;
 }
 
-function CopyableBlock({ text, label, copiedLabel }) {
+function stripInlineLinks(s) {
+  return (s || '').replace(
+    /\[\[(?:node|tutorial|prompt):([a-z0-9-]+)(?:\|([^\]]+))?\]\]/g,
+    (_, id, label) => label || id
+  );
+}
+
+function CopyableBlock({ text, label, copiedLabel, inlineNav }) {
   const [copied, setCopied] = useState(false);
   const onCopy = async () => {
+    const cleanText = stripInlineLinks(text);
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(cleanText);
     } catch {
       const ta = document.createElement('textarea');
-      ta.value = text;
+      ta.value = cleanText;
       document.body.appendChild(ta);
       ta.select();
       document.execCommand('copy');
@@ -36,7 +45,7 @@ function CopyableBlock({ text, label, copiedLabel }) {
   };
   return (
     <div className="tut-code">
-      <pre>{text}</pre>
+      <InlineText as="pre" text={text} onNavigate={inlineNav} />
       <button
         type="button"
         className={`copy-btn ${copied ? 'is-copied' : ''}`}
@@ -84,6 +93,7 @@ export default function TutorialModal({
   onOpenTutorial,
   onOpenLibrary,
   onOpenNode,
+  onOpenPrompt,        // (id) => void — открыть готовый промпт по id (для inline-ссылок)
   onOpenCourses,
   progressApi,
   suspended = false,   // true когда перекрыт AuthModal — игнорируем ESC и клик-вне
@@ -93,6 +103,14 @@ export default function TutorialModal({
   const { isLoggedIn } = useAuth();
   // Локализованный туториал — структура из tutorials.js + текст из локали.
   const tut = useTutorialContent(tutorialId);
+
+  // Навигаторы для inline-ссылок [[node:|tutorial:|prompt:]] в тексте туториала.
+  // Переходы по node/tutorial закрывают туториал (как actions), переход по prompt — нет.
+  const inlineNav = {
+    node: (id) => { onClose?.(); onOpenNode?.(id); },
+    tutorial: (id) => onOpenTutorial?.(id),
+    prompt: (id) => onOpenPrompt?.(id)
+  };
 
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -337,7 +355,7 @@ export default function TutorialModal({
               {step.why && (
                 <section className="tut-block tut-block--why">
                   <h4>{t('tutorial.section.why')}</h4>
-                  <p>{step.why}</p>
+                  <InlineText text={step.why} onNavigate={inlineNav} />
                 </section>
               )}
 
@@ -345,7 +363,9 @@ export default function TutorialModal({
                 <h4>{t('tutorial.section.do')}</h4>
                 <ol className="tut-checklist">
                   {step.instructions.map((inst, i) => (
-                    <li key={i}>{inst}</li>
+                    <li key={i}>
+                      <InlineText as="span" text={inst} onNavigate={inlineNav} />
+                    </li>
                   ))}
                 </ol>
               </section>
@@ -353,21 +373,21 @@ export default function TutorialModal({
               {step.prompt && (
                 <section className="tut-block">
                   <h4>{t('tutorial.section.copy')}</h4>
-                  <CopyableBlock text={step.prompt} label={t('common.copy')} copiedLabel={t('common.copied')} />
+                  <CopyableBlock text={step.prompt} label={t('common.copy')} copiedLabel={t('common.copied')} inlineNav={inlineNav} />
                 </section>
               )}
 
               {step.example && !step.prompt && (
                 <section className="tut-block">
                   <h4>{t('tutorial.section.example')}</h4>
-                  <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} />
+                  <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} inlineNav={inlineNav} />
                 </section>
               )}
 
               {step.example && step.prompt && (
                 <section className="tut-block">
                   <h4>{t('tutorial.section.exampleExtra')}</h4>
-                  <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} />
+                  <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} inlineNav={inlineNav} />
                 </section>
               )}
 
@@ -376,7 +396,7 @@ export default function TutorialModal({
                   <h4>
                     <Icon name="check" size={16} strokeWidth={1.75} /> {t('tutorial.section.validate')}
                   </h4>
-                  <p>{step.validate}</p>
+                  <InlineText text={step.validate} onNavigate={inlineNav} />
                 </section>
               )}
 
@@ -385,7 +405,7 @@ export default function TutorialModal({
                   <h4>
                     <Icon name="idea" size={16} strokeWidth={1.5} /> {t('tutorial.tipLabel')}
                   </h4>
-                  <p>{step.tip}</p>
+                  <InlineText text={step.tip} onNavigate={inlineNav} />
                 </section>
               )}
 
@@ -440,10 +460,13 @@ export default function TutorialModal({
                   <ol className="tut-exercises">
                     {tut.exercises.map((ex, i) => (
                       <li key={i}>
-                        <strong>{ex.question}</strong>
+                        <strong>
+                          <InlineText as="span" text={ex.question} onNavigate={inlineNav} />
+                        </strong>
                         {ex.hint && (
                           <p className="tut-exercises__hint-line">
-                            <Icon name="idea" size={12} strokeWidth={1.5} /> {ex.hint}
+                            <Icon name="idea" size={12} strokeWidth={1.5} />{' '}
+                            <InlineText as="span" text={ex.hint} onNavigate={inlineNav} />
                           </p>
                         )}
                       </li>

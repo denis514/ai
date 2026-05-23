@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from './Icon.jsx';
+import InlineText from './InlineText.jsx';
 import { tutorials } from '../data/tutorials.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
@@ -33,6 +34,18 @@ export default function TutorialDetail({
   const p = progressApi?.getProgress?.(tut.nodeId);
   const done = p?.completedSteps?.length || 0;
   const total = tut.steps.length;
+
+  // Навигаторы для inline-ссылок [[node:|tutorial:|prompt:]] в превью туториала.
+  const inlineNav = {
+    node: (id) => onOpenNode?.(id),
+    tutorial: (id) => onOpenTutorial?.(id),
+    prompt: (id) => {
+      // onOpenPrompt принимает prompt-object — резолвим id → object
+      const prompt = getLocalizedFeaturedPrompt(id, locale)
+                  || getLocalizedLibraryTemplate(id, locale);
+      if (prompt) onOpenPrompt?.(prompt);
+    }
+  };
   const isDone = !!p?.completedAt;
   const isStarted = done > 0 || (p?.lastStepIndex || 0) > 0;
   const percent = total ? Math.round((done / total) * 100) : 0;
@@ -96,7 +109,7 @@ export default function TutorialDetail({
         {tut.whatItIs && (
           <section className="tut-detail__section">
             <h3>{t('tutorialDetail.what')}</h3>
-            <p>{tut.whatItIs}</p>
+            <InlineText text={tut.whatItIs} onNavigate={inlineNav} />
           </section>
         )}
 
@@ -109,7 +122,7 @@ export default function TutorialDetail({
                   <span className="tut-detail__check" aria-hidden="true">
                     <Icon name="check" size={11} strokeWidth={2} />
                   </span>
-                  <span>{o}</span>
+                  <InlineText as="span" text={o} onNavigate={inlineNav} />
                 </li>
               ))}
             </ul>
@@ -119,7 +132,7 @@ export default function TutorialDetail({
         {tut.approach && (
           <section className="tut-detail__section">
             <h3>{t('tutorialDetail.approach')}</h3>
-            <p className="tut-detail__approach">{tut.approach}</p>
+            <InlineText as="p" className="tut-detail__approach" text={tut.approach} onNavigate={inlineNav} />
             {tut.prerequisites && tut.prerequisites.length > 0 && (
               <div className="tut-detail__prereq">
                 <span className="tut-detail__prereq-label">{t('tutorialDetail.prereq')}</span>
@@ -171,7 +184,7 @@ export default function TutorialDetail({
               {tut.applyIn.map((a, i) => (
                 <div key={i} className="tut-detail__apply-card">
                   <h4>{a.title}</h4>
-                  <p>{a.description}</p>
+                  <InlineText text={a.description} onNavigate={inlineNav} />
                 </div>
               ))}
             </div>
@@ -217,7 +230,7 @@ export default function TutorialDetail({
                   <span className="tut-detail__pitfall-icon" aria-hidden="true">
                     <Icon name="question" size={11} strokeWidth={1.75} />
                   </span>
-                  <span>{pf}</span>
+                  <InlineText as="span" text={pf} onNavigate={inlineNav} />
                 </li>
               ))}
             </ul>
@@ -231,10 +244,13 @@ export default function TutorialDetail({
             <ol className="tut-detail__exercises">
               {tut.exercises.map((ex, i) => (
                 <li key={i}>
-                  <strong>{ex.question}</strong>
+                  <strong>
+                    <InlineText as="span" text={ex.question} onNavigate={inlineNav} />
+                  </strong>
                   {ex.hint && (
                     <p className="tut-detail__exercise-hint">
-                      <Icon name="idea" size={12} strokeWidth={1.5} /> {ex.hint}
+                      <Icon name="idea" size={12} strokeWidth={1.5} />{' '}
+                      <InlineText as="span" text={ex.hint} onNavigate={inlineNav} />
                     </p>
                   )}
                 </li>
