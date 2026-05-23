@@ -341,6 +341,7 @@ node scripts/sync-whats-new.mjs --regen  # пересобрать whatsNew.js б
 | Аудит правильности русского языка      | `skills/russian-language-pedagogue/` (on-demand) |
 | Аудит правильности английского языка   | `skills/english-language-pedagogue/` (on-demand) |
 | Общие принципы языковой педагогики     | `docs/language-pedagogy-shared.md` |
+| UX-аудит взаимодействия и навигации    | `skills/ux-interaction-tester/` (on-demand) |
 | Проверить релизы Anthropic еженедельно | `skills/news-watcher/`     |
 | Правила AI-обучения                    | `docs/learning-design-rules.md` |
 | Maintenance / deprecate-watch          | `docs/maintenance.md`      |
