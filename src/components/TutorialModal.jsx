@@ -173,19 +173,23 @@ export default function TutorialModal({
 
   const onToggleCurrent = useCallback(() => {
     if (!tut) return;
-    const step = tut.steps[activeIdx];
+    const idx = Math.min(Math.max(0, activeIdx), tut.steps.length - 1);
+    const step = tut.steps[idx];
+    if (!step) return;
     toggleStep(tutorialId, step.id, tut.steps.length);
   }, [activeIdx, tut, tutorialId, toggleStep]);
 
   const onMarkAndNext = useCallback(() => {
     if (!tut) return;
-    const step = tut.steps[activeIdx];
+    const idx = Math.min(Math.max(0, activeIdx), tut.steps.length - 1);
+    const step = tut.steps[idx];
+    if (!step) return;
     const p = getProgress(tutorialId);
     if (!p.completedSteps.includes(step.id)) {
       toggleStep(tutorialId, step.id, tut.steps.length);
     }
-    if (activeIdx < tut.steps.length - 1) {
-      setActiveIdx(activeIdx + 1);
+    if (idx < tut.steps.length - 1) {
+      setActiveIdx(idx + 1);
     }
   }, [activeIdx, tut, tutorialId, getProgress, toggleStep]);
 
@@ -235,8 +239,15 @@ export default function TutorialModal({
 
   if (!tut) return null;
 
-  const step = tut.steps[activeIdx];
-  const isStepDone = stepsList[activeIdx]?.isDone;
+  // КРИТИЧНО: при переключении между туториалами (например welcome 8 шагов
+  // → instructions 5 шагов) activeIdx из useState ещё может быть 7
+  // (старое значение от предыдущего туториала). Без clamp tut.steps[7] =
+  // undefined → step.title бросает TypeError → нет ErrorBoundary →
+  // пустой экран. useEffect [tutorialId] перевыставит activeIdx в
+  // следующий тик, но рендер этого фрейма обязан быть безопасным.
+  const safeIdx = Math.min(Math.max(0, activeIdx), tut.steps.length - 1);
+  const step = tut.steps[safeIdx];
+  const isStepDone = stepsList[safeIdx]?.isDone;
 
   // Gate: гость пытается открыть шаг 2+
   const isGated = !isLoggedIn && activeIdx > 0;
