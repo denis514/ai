@@ -1581,6 +1581,7 @@ export const mindmapData = {
       "relatedIds": [
         "ai-native-customer-support",
         "ai-native-design",
+        "ai-native-ecommerce",
         "ai-native-enterprise",
         "ai-native-marketing",
         "ai-native-operations",
@@ -2125,6 +2126,216 @@ export const mindmapData = {
           ]
             }
           ]
+        },
+        {
+          "id": "ai-native-ecommerce",
+          "icon": "store",
+          "category": "transformation",
+          "relatedIds": [
+            "ec-pdp-gen",
+            "ec-search-opt",
+            "ec-personalization",
+            "ec-merchandising",
+            "ec-cro",
+            "ec-recommendations",
+            "ec-support",
+            "ec-pricing",
+            "ec-analytics",
+            "ec-segmentation",
+            "ec-inventory",
+            "ec-loyalty",
+            "ec-checkout-opt",
+            "ec-experimentation",
+            "ec-team-workflow",
+            "mk-content-ops",
+            "cs-tier1-automation"
+          ],
+          "children": [
+            {
+              "id": "ec-pdp-gen",
+              "icon": "tag",
+              "category": "transformation",
+              "relatedIds": [
+                "prompting",
+                "b-system",
+                "cap-files",
+                "sys-linear-chain",
+                "sys-quality-gates",
+                "mk-content-ops",
+                "ec-search-opt"
+              ]
+            },
+            {
+              "id": "ec-search-opt",
+              "icon": "search",
+              "category": "transformation",
+              "relatedIds": [
+                "af-embeddings",
+                "af-vector-db",
+                "sys-rag-architecture",
+                "prompting",
+                "ec-recommendations",
+                "ec-personalization"
+              ]
+            },
+            {
+              "id": "ec-personalization",
+              "icon": "target",
+              "category": "transformation",
+              "relatedIds": [
+                "af-memory-systems",
+                "af-embeddings",
+                "cap-memory",
+                "sys-rag-architecture",
+                "sys-context-passing",
+                "ec-recommendations",
+                "ec-segmentation"
+              ]
+            },
+            {
+              "id": "ec-merchandising",
+              "icon": "store",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "cap-files",
+                "sys-quality-gates",
+                "ec-pdp-gen",
+                "ec-search-opt"
+              ]
+            },
+            {
+              "id": "ec-cro",
+              "icon": "sliders",
+              "category": "transformation",
+              "relatedIds": [
+                "prompting",
+                "pr-iterate",
+                "sys-evals-benchmarks",
+                "ec-experimentation",
+                "mk-campaign-intel"
+              ]
+            },
+            {
+              "id": "ec-experimentation",
+              "icon": "testtube",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-analysis",
+                "sys-quality-gates",
+                "sys-evals-benchmarks",
+                "ec-cro",
+                "pd-experimentation"
+              ]
+            },
+            {
+              "id": "ec-checkout-opt",
+              "icon": "check",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "sc-analysis",
+                "cap-tools",
+                "sys-evals-benchmarks",
+                "ec-experimentation"
+              ]
+            },
+            {
+              "id": "ec-recommendations",
+              "icon": "sparkles",
+              "category": "transformation",
+              "relatedIds": [
+                "af-embeddings",
+                "af-vector-db",
+                "sys-rag-architecture",
+                "ec-personalization",
+                "ec-search-opt"
+              ]
+            },
+            {
+              "id": "ec-support",
+              "icon": "robot",
+              "category": "transformation",
+              "relatedIds": [
+                "agents",
+                "sc-content",
+                "sys-multi-agent-patterns",
+                "sys-escalation-paths",
+                "cs-tier1-automation",
+                "cs-agent-assist"
+              ]
+            },
+            {
+              "id": "ec-loyalty",
+              "icon": "trophy",
+              "category": "transformation",
+              "relatedIds": [
+                "af-memory-systems",
+                "sc-data",
+                "ec-segmentation",
+                "ec-personalization"
+              ]
+            },
+            {
+              "id": "ec-analytics",
+              "icon": "chart",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "sc-analysis",
+                "mk-performance-analytics",
+                "ec-team-workflow",
+                "sys-cost-management"
+              ]
+            },
+            {
+              "id": "ec-pricing",
+              "icon": "mixer",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "sc-analysis",
+                "sys-context-passing",
+                "ec-experimentation"
+              ]
+            },
+            {
+              "id": "ec-inventory",
+              "icon": "cube",
+              "category": "transformation",
+              "relatedIds": [
+                "sc-data",
+                "sc-analysis",
+                "ops-resource-optimization"
+              ]
+            },
+            {
+              "id": "ec-segmentation",
+              "icon": "puzzle",
+              "category": "transformation",
+              "relatedIds": [
+                "af-embeddings",
+                "sc-data",
+                "sys-rag-architecture",
+                "ec-personalization",
+                "ec-loyalty"
+              ]
+            },
+            {
+              "id": "ec-team-workflow",
+              "icon": "users",
+              "category": "transformation",
+              "relatedIds": [
+                "projects",
+                "p-team",
+                "instructions",
+                "ops-team-workflow",
+                "mk-team-workflow",
+                "cs-team-workflow",
+                "cc-md"
+              ]
+            }
+          ]
         }
       ]
     },
@@ -2137,8 +2348,11 @@ export const mindmapData = {
         "systems",
         "transformation",
         "uc-ai-content-ops-launch",
+        "uc-ai-conversion-optimization",
         "uc-ai-multi-agent-system",
+        "uc-ai-personalization-launch",
         "uc-ai-pilot-to-production",
+        "uc-ai-product-search",
         "uc-ai-rag-launch",
         "uc-ai-reporting-launch",
         "uc-ai-roi-estimation",
@@ -2329,6 +2543,47 @@ export const mindmapData = {
             "projects",
             "prompting",
             "sys-context-passing"
+          ]
+        },
+        {
+          "id": "uc-ai-personalization-launch",
+          "icon": "target",
+          "category": "use-cases",
+          "relatedIds": [
+            "ec-personalization",
+            "ec-recommendations",
+            "ec-segmentation",
+            "af-embeddings",
+            "af-memory-systems",
+            "sys-rag-architecture",
+            "sys-context-passing"
+          ]
+        },
+        {
+          "id": "uc-ai-product-search",
+          "icon": "search",
+          "category": "use-cases",
+          "relatedIds": [
+            "ec-search-opt",
+            "ec-recommendations",
+            "af-embeddings",
+            "af-vector-db",
+            "sys-rag-architecture",
+            "prompting"
+          ]
+        },
+        {
+          "id": "uc-ai-conversion-optimization",
+          "icon": "flash",
+          "category": "use-cases",
+          "relatedIds": [
+            "ec-cro",
+            "ec-experimentation",
+            "ec-checkout-opt",
+            "sc-analysis",
+            "sys-evals-benchmarks",
+            "prompting",
+            "pr-iterate"
           ]
         }
       ]
