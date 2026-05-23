@@ -18,8 +18,11 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #1f2937;
-  background: #f7f7f5;
+  /* color/background — через CSS variables, чтобы tema переключалась
+     через :root[data-theme="dark"]. Hardcode сюда (как было раньше)
+     ломал тёмную тему — body перекрывал --bg/--text. */
+  color: var(--text, #1f2937);
+  background: var(--bg, #f7f7f5);
   overscroll-behavior: none;
   touch-action: none;
 }
@@ -27,6 +30,11 @@ body {
 button {
   font-family: inherit;
   cursor: pointer;
+  /* color: inherit — критично для dark theme: без этого <button>
+     получает системный buttontext (чёрный), и текст становится
+     невидимым на тёмном фоне модалок. background/border не сбрасываем
+     глобально, чтобы не сломать кнопки с дефолтным стилем. */
+  color: inherit;
 }
 
 input,

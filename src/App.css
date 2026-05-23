@@ -942,6 +942,44 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   background: var(--surface-2);
 }
 
+/* ─── TutorialModal blocks: «зачем этот шаг», «как проверить», «совет» ─── */
+:root[data-theme="dark"] .tut-block--why {
+  background: color-mix(in srgb, #2563eb 16%, var(--surface));
+}
+:root[data-theme="dark"] .tut-block--why h4 {
+  color: color-mix(in srgb, #2563eb 60%, var(--text));
+}
+:root[data-theme="dark"] .tut-block--validate {
+  background: color-mix(in srgb, #059669 16%, var(--surface));
+}
+:root[data-theme="dark"] .tut-block--validate h4 {
+  color: color-mix(in srgb, #059669 60%, var(--text));
+}
+:root[data-theme="dark"] .tut-block--tip {
+  background: color-mix(in srgb, #d97706 16%, var(--surface));
+}
+:root[data-theme="dark"] .tut-block--tip h4 {
+  color: color-mix(in srgb, #d97706 60%, var(--text));
+}
+/* Sidebar «Курс пройден!» — был светло-зелёный блок + тёмный текст */
+:root[data-theme="dark"] .tut-side__done {
+  background: color-mix(in srgb, #059669 16%, var(--surface));
+  border-color: color-mix(in srgb, #059669 30%, var(--surface));
+  color: var(--text);
+}
+
+/* ─── WorkflowsModal: completed course icon + status badges ─── */
+:root[data-theme="dark"] .course.is-done .course__icon {
+  background: color-mix(in srgb, #059669 20%, var(--surface));
+  color: #34d399;
+}
+:root[data-theme="dark"] .course__status.is-started {
+  color: #fb923c; /* lighter orange для тёмного фона */
+}
+:root[data-theme="dark"] .course__status.is-done {
+  color: #34d399; /* lighter green */
+}
+
 @media (max-width: 720px) {
   :root { --header-h: 156px; }
 }
@@ -5536,10 +5574,14 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   gap: 14px;
   padding: 14px;
   background: var(--surface);
+  /* color обязателен на <button>: иначе наследуется системный
+     buttontext (чёрный) → h3 в dark theme невидимы. */
+  color: var(--text);
   border: 1px solid var(--border);
   border-left: 3px solid var(--cat-color);
   border-radius: var(--radius-lg);
   text-align: left;
+  font-family: inherit;
   transition: border-color .12s, background .12s, transform .08s;
   cursor: pointer;
   flex-shrink: 0;
