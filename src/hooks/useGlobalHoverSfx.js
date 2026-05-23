@@ -15,18 +15,17 @@ import { playSound } from '../sound/soundEngine.js';
 export function useGlobalHoverSfx() {
   useEffect(() => {
     let lastNode = null;
-    let lastTs = 0;
 
     const onOver = (e) => {
       const node = e.target?.closest?.('.mm-node');
       if (!node) { lastNode = null; return; }
+      // Один и тот же узел — пропускаем (mouseover спамит на каждом ребёнке)
       if (node === lastNode) return;
       if (node.closest('[data-sfx-hover="off"]')) { lastNode = node; return; }
-
-      const now = performance.now();
-      if (now - lastTs < 80) { lastNode = node; return; }
       lastNode = node;
-      lastTs = now;
+      // Никакого throttle: дедуп по `lastNode` уже даёт ровно один звук
+      // на «вход» в узел. Throttle создавал ощущение лага при быстром
+      // перемещении между соседними узлами.
       playSound('ui.hover');
     };
 

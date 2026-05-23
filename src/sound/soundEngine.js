@@ -74,6 +74,9 @@ function getAudio(key) {
   try {
     const a = new Audio(entry.url);
     a.preload = 'auto';
+    // Принудительно стартуем загрузку/декодирование — иначе первый play()
+    // упирается в network/decode и звучит с задержкой.
+    try { a.load(); } catch {}
     cache.set(key, a);
     return a;
   } catch {
