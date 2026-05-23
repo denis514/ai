@@ -968,6 +968,28 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: var(--text);
 }
 
+/* TutorialModal — final «Поздравляем» секция: был светло-зелёный gradient */
+:root[data-theme="dark"] .tut-finish {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, #059669 14%, var(--surface)) 0%,
+    color-mix(in srgb, #059669 10%, var(--surface)) 100%);
+  border-color: color-mix(in srgb, #059669 30%, var(--surface));
+}
+
+/* TutorialModal — troubleshoot блок (оранжевый pale) */
+:root[data-theme="dark"] .tut-trouble {
+  background: color-mix(in srgb, #d97706 12%, var(--surface));
+  border-color: color-mix(in srgb, #d97706 30%, var(--surface));
+}
+:root[data-theme="dark"] .tut-trouble summary,
+:root[data-theme="dark"] .tut-trouble strong {
+  color: color-mix(in srgb, #d97706 60%, var(--text));
+}
+:root[data-theme="dark"] .tut-trouble li {
+  border-top-color: color-mix(in srgb, #d97706 25%, var(--surface));
+  color: var(--text);
+}
+
 /* ─── WorkflowsModal: completed course icon + status badges ─── */
 :root[data-theme="dark"] .course.is-done .course__icon {
   background: color-mix(in srgb, #059669 20%, var(--surface));
@@ -4844,7 +4866,11 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   gap: 12px;
   padding: 20px 24px 16px;
   border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, #fafaf7, var(--surface));
+  /* Градиент от слегка осветлённого var(--surface) к самому surface.
+     Theme-adaptive: в light light + чуть серее, в dark dark + чуть светлее. */
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--text) 4%, var(--surface)),
+    var(--surface));
   flex: 0 0 auto;
 }
 .tut-header__main { display: flex; gap: 14px; flex: 1; min-width: 0; }
