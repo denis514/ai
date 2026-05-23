@@ -1,236 +1,253 @@
 # Backlog
 
 Задачи, готовые к работе, не активные сейчас.
-Структура: **P1 → P2 → P3** по приоритету. Внутри каждого приоритета — порядок исполнения.
+Структура: **P0 → P1 → P2 → P3** по приоритету. Внутри каждого — порядок исполнения.
+
+**Источник:** `tasks/audit-strategy-vs-reality-2026-05-23.md` (8 разрывов между
+стратегией IMPLEMENTED 2026-05-22 и реальным состоянием кода/контента).
 
 ---
 
-## Новые курсы — план внедрения (аудит 2026-05-19)
+## P0 — Закрыть разрывы с позиционированием (блокирующие)
 
-Источник: аудит 26 существующих туториалов + Anthropic Academy (18 курсов).
-Полный анализ — в `tasks/ideas.md#новые-курсы`.
+Стратегия в `docs/strategy/01-positioning.md` имеет статус `IMPLEMENTED`, но
+два разрыва прямо противоречат заявленному позиционированию каждый раз, когда
+пользователь открывает продукт.
 
-### Текущее состояние аудитории
+### №1 — UI/i18n миграция под новый словарь
 
-| Аудитория | Курсов сейчас | Цель | Разрыв |
-|-----------|--------------|------|--------|
-| everyone | 14 | 17 | −3 |
-| developers | 11 | 14 | −3 |
-| **business** | **1** | **6** | **−5** ← главный разрыв |
-| educators | 0 | 2 | −2 |
+**Проблема.** Стратегия требует словарь «Workflows / Playbooks / Pathways /
+AI-Native Use Cases». В коде остались ~30 ключей с «курс/обучение/tutorial/
+знакомство» (RU), почти весь FI с `oppitunti/kurssi`, EN мигрирован частично.
+Имена компонентов `TutorialModal`/`TutorialDetail` сохранены.
 
----
+**Что менять:**
 
-### Батч 1 — AI Fluency (P1, ~1-2 недели)
+1. **i18n keys в `src/locales/{ru,en,fi}/ui.json`:**
+   ```
+   tutorial.kicker, tutorial.finishCourse, tutorialDone, tutorialStarted,
+   tutorialAvailable, tutorialPass, tutorialContinue, tutorialRetake,
+   expandTutorial, tutorialDetail.plan, tutorialDetail.start,
+   courses.status.*, courses.empty.*, courses.kind.tutorial,
+   profile.tutorials, profile.completed.open,
+   achievements.firstTutorial|fiveTutorials|tenTutorials,
+   welcome.subtitle ("знакомство" → "AI Foundation"),
+   backToListShortcut
+   ```
+2. **Названия компонентов:** оценить переименование `TutorialModal` →
+   `WorkflowModal`, `TutorialDetail` → `WorkflowDetail`. Не блокирующее
+   (внутреннее имя), но снижает когнитивный диссонанс при правках.
+3. **Тон копи:** «Начать обучение» → «Открыть workflow» / «Запустить playbook».
 
-**Цель:** закрыть разрыв по `business` + `educators`, прямо соответствует
-открытой задаче P1 «Learning Paths: For Business + For Educators».
+**Скоуп:** только UI-копи и имена. Контент tutorials (`tutorials.json`) трогаем
+в отдельной задаче (P1 №3).
 
-#### Курс 1: `ai-fluency` — AI Fluency: Framework & Foundations
-```
-audience: everyone | level: beginner | nodeId: b-claude (существующий)
-```
-- **Что:** рамочный курс об AI-грамотности — mindset, этика, продуктивность
-- **Зачем:** базовый для всех аудиторий, входная точка в AI Fluency трек
-- **Шаги (6):**
-  1. Что такое AI Fluency и зачем она нужна
-  2. Как ИИ принимает решения (без магии)
-  3. Эффективное сотрудничество с Claude
-  4. Этика и ответственное использование
-  5. Измерение ценности: ROI личного использования
-  6. Следующие шаги по вашей траектории
-- **Нужно:** только локализация (EN/RU/FI), nodeId уже есть
+**Аудитория проверки:** запустить `russian-language-pedagogue`, `english-language-pedagogue`,
+`finnish-language-pedagogue` после миграции.
 
-#### Курс 2: `claude-for-business` — AI Fluency for Small Businesses
-```
-audience: business | level: beginner | nodeId: scenarios (существующий)
-```
-- **Что:** практический курс — как внедрить Claude в малый/средний бизнес
-- **Зачем:** восполняет главный разрыв (1 бизнес-курс → 2)
-- **Шаги (6):**
-  1. Оценка потенциала Claude для вашего бизнеса
-  2. Первые 3 задачи для автоматизации
-  3. Создание корпоративных инструкций (System Prompt для команды)
-  4. Управление данными и конфиденциальность
-  5. Измерение ROI и эффективности
-  6. Масштабирование: от 1 пользователя к команде
-- **Нужно:** локализация + новые шаги в `scenarios` direction
-
-#### Курс 3: `claude-for-educators` — AI Fluency for Educators
-```
-audience: business | level: beginner | nodeId: новый узел b-educators
-```
-- **Что:** использование Claude в образовательном процессе
-- **Зачем:** educators — отдельная аудитория без покрытия, Anthropic фокусируется
-- **Шаги (6):**
-  1. Claude как методический ассистент учителя
-  2. Планирование уроков и учебных материалов
-  3. Индивидуализация обучения с помощью Claude
-  4. Академическая честность: политики и инструменты
-  5. Оценивание с ИИ: возможности и риски
-  6. Пример: полная подготовка к уроку за 20 минут
-- **Нужно:** новый узел `b-educators` в mindmapData.js + локализация
+**Эффорт:** 2-3 дня.
 
 ---
 
-### Батч 2 — Технические дополнения (P2, ~1 неделя)
+### №2 — eCommerce flagship Transformation direction
 
-#### Курс 4: `mcp-advanced` — MCP: Advanced Topics
-```
-audience: developers | level: advanced | nodeId: mcp (существующий)
-```
-- **Что:** продвинутые паттерны MCP — кастомные серверы, security, debugging
-- **Зачем:** существующий mcp-курс покрывает только основы
-- **Шаги (7):** m-custom, m-patterns, m-debug, m-security + 3 новых
-- **Нужно:** только локализация, все nodeId уже в mindmapData.js
+**Проблема.** Стратегия (`docs/strategy/01-positioning.md` § 3.3 + § 6.4)
+объявляет eCommerce **стратегическим фокусом** и **флагманом transformation-
+направлений**. Сейчас реализованы 6 directions, но `ai-native-ecommerce`
+**отсутствует**.
 
-#### Курс 5: `claude-code-project` — Claude Code in Action
+**Что нужно создать:**
+
 ```
-audience: developers | level: intermediate | nodeId: claude-code (существующий)
+transformation/ai-native-ecommerce
+├── ec-personalization      (Embeddings → product recs)
+├── ec-search               (RAG → semantic search)
+├── ec-cro                  (Claude as conversion analyst)
+├── ec-merchandising        (smart catalogs)
+├── ec-pricing              (dynamic pricing с AI-сигналами)
+├── ec-support              (отдельный support direction уже есть, cross-link)
+├── ec-content              (product descriptions, brand voice)
+├── ec-analytics            (Claude как BI-аналитик)
+├── ec-fraud                (anomaly detection)
+└── ec-checkout             (intent prediction)
 ```
-- **Что:** реальный проект от начала до конца с Claude Code
-- **Зачем:** есть базовый claude-code курс, но нет практического сценария
-- **Шаги (8):** план, CLAUDE.md, workflow, Plan Mode, hooks, review
-- **Нужно:** только локализация
+
+Минимум 10 узлов, как у других directions. Полный план в
+`docs/strategy/06-transformation-layer.md`.
+
+**Use Cases** добавить:
+- `uc-ai-personalization`, `uc-ai-product-search`, `uc-ai-cro` —
+  cross-links вниз к Foundation (Embeddings, RAG) и Systems (data, orchestration).
+
+**Эффорт:** 2 недели (контент + локализация ru/en/fi).
 
 ---
 
-### Батч 3 — Облачные интеграции (P3, по запросу)
+## P1 — Углубление под позиционирование
 
-#### Курс 6: `bedrock` — Claude with Amazon Bedrock
-```
-audience: developers | level: intermediate | nodeId: новый pl-bedrock
-```
-- **Что:** подключение Claude через AWS Bedrock API
-- **Нужно:** новый узел `pl-bedrock` под `platform` + локализация
+### №3 — Tutorials → Workflows reformat
 
-#### Курс 7: `vertex-ai` — Claude with Google Cloud Vertex AI
-```
-audience: developers | level: intermediate | nodeId: новый pl-vertex
-```
-- **Что:** подключение Claude через Google Cloud Vertex AI
-- **Нужно:** новый узел `pl-vertex` под `platform` + локализация
+**Проблема.** Формат tutorials остался педагогическим (`whatItIs/approach/
+outcomes/applyIn/pitfalls/exercises`). Под новое позиционирование нужны поля
+workflow/playbook:
+- `whenToApply` — триггер запуска (а не «уровень beginner/intermediate»)
+- `KPI` — что измеряем результатом
+- `artefacts` — что остаётся после прохода (документ, CLAUDE.md, шаблон)
+- `roleStakeholders` — кто в команде участвует
 
----
+**Подход:** расширить схему `tutorials.js`, оставить обратную совместимость со
+старыми полями. Сначала на 3-5 пилотных workflow (например, `ai-fluency`,
+`claude-for-business`), потом раскат.
 
-### Батч 4 — Расширение AI Fluency трека (P3, по запросу)
-
-| Курс | audience | nodeId | Примечание |
-|------|----------|--------|------------|
-| `ai-fluency-nonprofit` | business | новый | AI Fluency for Nonprofits |
-| `ai-fluency-students` | everyone | b-claude | AI Fluency for Students |
-| `teaching-ai-fluency` | business | новый | Для преподавателей AI Fluency |
+**Эффорт:** схема + миграция — 3-4 дня; полный раскат на 32 tutorials — 1-2 недели.
 
 ---
 
-### Технические требования для каждого нового курса
+### №4 — Systems layer expansion
 
-1. **`src/data/tutorials.js`** — добавить запись: nodeId, icon, level, audience, steps[]
-2. **`src/locales/en/tutorials.json`** — полный контент (title, subtitle, steps)
-3. **`src/locales/ru/tutorials.json`** — перевод на русский
-4. **`src/locales/fi/tutorials.json`** — перевод на финский
-5. **`src/data/mindmapData.js`** — новый узел (только если nodeId не существует)
-6. **`src/locales/*/nodes.json`** — описание нового узла (только если новый)
-7. **`src/data/learningPaths.js`** — добавить в соответствующий путь (Business/Educators)
+**Проблема.** 6 направлений × ~1.6 листа = всего 10 узлов. Для «operating system»
+плотность недостаточна. Особенно тонкие:
+- `ai-orchestration` (1 лист: multi-agent-patterns)
+- `ai-human-collaboration` (1: escalation-paths)
+- `ai-integration-systems` (1: api-patterns)
 
-### Порядок реализации следующего шага
+**Что добавить (минимум):**
+
+| Направление | Новые узлы |
+|-------------|------------|
+| ai-orchestration | sequencing, branching, parallel agents, agent-to-agent comms |
+| ai-human-collaboration | review gates, approval flows, hybrid loops, escalation triggers |
+| ai-integration-systems | webhook patterns, queue-based, event-driven, REST vs MCP, auth strategies |
+| ai-data-systems | + chunking, + vectorisation pipelines, + freshness strategies |
+| ai-workflows | + error recovery, + retry strategies |
+| ai-operations | + observability, + alerting, + drift detection |
+
+Итого: 25-30 новых Systems-узлов.
+
+**Эффорт:** 2-3 недели (контент-тяжёлая задача, делать партиями по направлениям).
+
+---
+
+### №5 — Deprecate-watch sweep (7 узлов)
+
+**Проблема.** Узлы Foundation, стратегически чувствительные к фактам Anthropic,
+не ревизовались с миграции стратегии:
 
 ```
-Батч 1 → старт с `ai-fluency` (проще всего: nodeId уже есть)
-         затем `claude-for-business`
-         затем `claude-for-educators` (сложнее: нужен новый узел)
+pl-plans, pl-limits, pl-rate
+cap-memory, cap-computer
+m-ready
+b-knowledge
 ```
+
+**Подход:** запустить `news-watcher` (skill готов, не использовался) →
+получить дельты Anthropic → пройтись по 7 узлам → актуализировать.
+
+**Эффорт:** 1 день на all 7, при условии что news-watcher даст хороший дайджест.
+
+---
+
+## P2 — Развитие на масштабе
+
+### №6 — Foundation cleanup: `cap-*` под `ai-fundamentals`
+
+**Проблема.** `cap-tools`, `cap-vision`, `cap-caching`, `cap-citations`,
+`cap-computer` живут в `foundation/capabilities`, а не в `ai-fundamentals`.
+Это размывает 3-уровневую модель: capabilities — это **Claude-specific фичи**,
+fundamentals — **AI-механизмы** (как работает LLM, Embeddings и т.д.).
+
+**Подход (не срочно, не ломая ссылки):**
+- Вариант A: переместить `cap-tools` (Tool use) и `cap-vision` (multimodal) под
+  `ai-fundamentals` как `af-tool-use` и `af-vision`, потому что это **общие
+  AI-концепции**, не Claude-specific. Оставить `cap-caching`, `cap-citations`,
+  `cap-computer` в capabilities.
+- Вариант B: ничего не трогать, документировать решение «capabilities ≠ fundamentals
+  по дизайну».
+
+Решить совместно перед началом.
+
+**Эффорт:** 0.5 дня (если Вариант A: переименование + cross-link migration).
+
+---
+
+### №7 — Батч 2 workflows: технические
+
+| Workflow | Аудитория | Уровень | nodeId |
+|----------|-----------|---------|--------|
+| `mcp-advanced` — MCP: Advanced Topics | developers | advanced | mcp |
+| `claude-code-project` — Claude Code in Action | developers | intermediate | claude-code |
+| `building-evaluations` — как оценивать ответы Claude | developers | intermediate | новый `af-evals` |
+
+**Важно:** делать в новом workflow-формате (см. №3), не как tutorials.
+
+**Эффорт:** 1 неделя.
+
+---
+
+### №8 — Инфраструктурные скиллы
+
+| Skill | Цель |
+|-------|------|
+| `verify-mindmap-integrity` | Линт по 6-вопросной схеме, dangling relatedIds, schema-валидация. Прогон pre-commit |
+| `content-scout` | Еженедельный поиск пробелов под новое позиционирование (Anthropic releases + transformation-сигналы) |
+| `workflow-publisher` | Генерация workflow-черновика из узла (бывший lesson-publisher, переименован под новый словарь) |
+
+**Эффорт:** 1-2 дня на skill (SKILL.md + ресурсы).
+
+---
+
+## P3 — Большие ставки (после P0-P2)
+
+| # | Задача | Эффорт | Риск |
+|---|--------|--------|------|
+| 9 | **MCP server для mindmap** — выставить Atlas как MCP-ресурс для Claude Code | 5-7 дн. | высокий |
+| 10 | **AI Companion mode** — кнопка «спросить Claude об этом узле» с контекстом | 3-5 дн. | средний |
+| 11 | **Self-updating mindmap** — `scripts/ai-add-node.js` + scheduled review | 3-5 дн. | высокий |
+| 12 | **Content-автопубликация** (`content/content-queue.json` + GH Actions cron) | 1 нед. | средний |
+
+---
+
+## ⚙️ Tech debt и ручные операции
+
+| Status | Task | Примечание |
+|--------|------|-----------|
+| ⚙️ manual | Supabase session timebox | Dashboard → Auth → Sessions → 30 дней |
+| 📐 архитектура | Решить про `cap-*` vs `ai-fundamentals` (см. №6) | До начала работ по №7 |
+
+---
+
+## 🚫 Что НЕ берём (off-strategy)
+
+Из старого backlog **отброшено** как противоречащее новому позиционированию:
+
+- ❌ Anthropic Academy course matrix («everyone/dev/business/educators»)
+- ❌ Cloud-интеграции `bedrock` / `vertex-ai` как отдельные курсы
+- ❌ Батч 4 «AI Fluency расширение» (nonprofit, students, teaching) — LMS-логика
+- ❌ Stripe / monetization до закрытия P0-P1
+
+Если эти темы и нужны — переосмыслить как Foundation-узлы или Transformation
+use cases, не как «курсы».
 
 ---
 
 ## Supabase — Backend & Auth (2026-05-17)
 
-Решение принято: **Supabase** как backend platform. Промпт для аудита: `prompts/supabase-auth-audit.md`.
+Phase 1-3 ✅ выполнены (Auth, Profile, Progress).
 
 | Phase | Задача | Статус |
 |-------|--------|--------|
-| **1** | Auth Foundation — Supabase project, env vars, `supabaseClient.js`, `AuthContext.jsx`, таблица `profiles` + RLS, login/register UI | open |
-| **2** | Profile & Account page — display_name, email change, delete account (GDPR), export data (GDPR) | open |
-| **3** | Learning Progress — перенести localStorage → Supabase `learning_progress` + `favorites` | open |
-| **4** | Scenarios & Comments — таблицы `personal_scenarios`, `comments` | open |
-| **5** | Monetization — Stripe + `subscriptions` + `ai_usage` limits | open |
+| 4 | Scenarios & Comments — `personal_scenarios`, `comments` | open |
+| 5 | Monetization — Stripe + `subscriptions` + `ai_usage` limits | open |
 
-**Перед стартом Phase 1:** запустить промпт `prompts/supabase-auth-audit.md` → получить аудит-отчёт → подтвердить план.
-
-GDPR / Финляндия: privacy by design, data minimisation, RLS на всех таблицах, consent timestamps, механизм удаления и экспорта данных пользователя (30 дней по финскому закону).
-
----
-
-## Инфраструктурный план (по итогам аудита 2026-05-11)
-
-### P1 — Фундамент ✅ ЗАВЕРШЁН (2026-05-11)
-
-Полная история — в `tasks/current.md`. Все 6 пунктов закрыты.
-
-### P2 — Структурные ходы
-
-✅ Завершены 3 из 5: **№7** (Прогресс на узлах), **№8** (Cross-links), **№9** (Learning paths).
-История — в `current.md`. Отложены пользователем:
-
-| # | Задача | Статус |
-|---|---|---|
-| **10** | Data validation в CI | отложено — требует git репо |
-| **11** | AI Companion mode | отложено |
-
-### P3 — Большие ставки (1+ месяц)
-
-Меняют масштаб проекта. Браться после того, как P1+P2 закрыты и видна аудиторная реакция.
-
-| # | Задача | Эффорт | Риск | Что меняется |
-|---|---|---|---|---|
-| **12** | ✅ **News-watcher skill v1** — готов (`skills/news-watcher/SKILL.md`). Spec + workflow + источники + output-формат. Запуск: вручную или по cron. | done | низкий | новый skill в `skills/` |
-| **13** | **Self-updating mindmap** — `scripts/ai-add-node.js`, pre-commit guard, scheduled review | ~3-5 дней | высокий | автоматизация на Claude Code SDK |
-| **14** | **MCP server для mindmap** — выставить mindmap как MCP-ресурс, чтобы любая Claude Code сессия имела базу знаний в контексте | ~5-7 дней | высокий | новый артефакт `mcp-server/` |
-
----
-
-## Контентный план (расширение mindmap)
-
-### High priority
-- [ ] Аудит текущего mindmap по prompt `improve-mindmap.md` (focus: gaps).
-  Цель: найти тематические дыры по Claude Code / sub-agents / scheduled tasks.
-- [ ] Прогон содержимого `src/data/mindmapData.js` через `content-rules.md`:
-  все ли узлы соблюдают 6-вопросную схему, нет ли пустых полей.
-
-### Medium priority
-- [ ] Расширить раздел MCP — применить `prompts/expand-mcp-section.md`
-  с фокусом `security` и `patterns`.
-- [ ] Создать узлы про sub-agents (Claude Code).
-- [ ] Описать в mindmap различие Skills (claude.ai) vs Sub-agents (Claude Code) —
-  частая путаница.
-
-### Low priority
-- [ ] Реструктурировать ветку «Промпт-инжиниринг», если в ней > 12 детей.
-
-### Deprecate-watch
-
-Узлы и факты, которые **гарантированно устареют** и требуют ревизии.
-Полная политика — в `docs/maintenance.md`.
-
-| Узел / факт | Что проверять | Каденс |
-|---|---|---|
-| `b-models` (Семейство моделей) | Текущие версии Opus/Sonnet/Haiku | После каждого релиза Claude |
-| `pl-plans` (Тарифные планы) | Цены, состав планов | Раз в квартал |
-| `pl-limits` (Лимиты использования) | 5-часовые / недельные значения | Раз в квартал |
-| `pl-models` (Модели по плану) | Какие модели на каком плане | Раз в квартал |
-| `pl-rate` (Rate limits API) | RPM / TPM / Tier пороги | Раз в квартал |
-| `cap-memory` (Memory) | Состояние раскатки фичи | Раз в месяц |
-| `cap-search` (Web search) | Доступность по тарифам | Раз в квартал |
-| `cap-computer` (Computer use) | Статус GA / beta | Раз в квартал |
-| `m-ready` (Готовые MCP-серверы) | Что добавилось в экосистему | Раз в квартал |
-| `b-knowledge` (Knowledge cutoff) | Текущая дата cutoff моделей | После каждого релиза |
+GDPR / Финляндия: privacy by design, data minimisation, RLS, consent timestamps,
+delete + export.
 
 ---
 
 ## Заметки
-- Один пункт = один skill / prompt, не «решить всё разом».
+
+- Один пункт = один skill / prompt / workflow / контент-партия.
 - Перед взятием в работу — переноси в `current.md`.
 - Раз в месяц — grooming: убирать неактуальное.
-- Инфраструктурные задачи (P1-P3) и контентные задачи **независимы** — можно
-  чередовать или делать параллельно. Зависимости явно отмечены в колонке
-  «Что меняется».
+- Любая новая идея проходит через `knowledge-architect` или `ai-system-designer`
+  и приходит сюда из `ideas.md`.
