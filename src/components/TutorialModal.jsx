@@ -314,7 +314,7 @@ export default function TutorialModal({
               <Icon name={tut.icon} size={26} strokeWidth={1.5} />
             </span>
             <div>
-              <span className="tut-header__kicker">{t('tutorial.kicker', { time: tut.totalTime })}</span>
+              <span className="tut-header__kicker">{t('tutorial.kicker')}</span>
               <h2 id="tut-title" className="tut-header__title">{tut.title}</h2>
               <p className="tut-header__subtitle">{tut.subtitle}</p>
             </div>
@@ -395,7 +395,6 @@ export default function TutorialModal({
                             : s.idx + 1}
                       </span>
                       <span className="tut-side__title">{s.title}</span>
-                      <span className="tut-side__time">{s.time}</span>
                     </button>
                   </li>
                 );
@@ -435,9 +434,6 @@ export default function TutorialModal({
             {!isGated && <div className="tut-step">
               <div className="tut-step__head">
                 <span className="tut-step__num">{t('tutorial.stepLabel', { n: activeIdx + 1 })}</span>
-                <span className="tut-step__time">
-                  <Icon name="clock" size={14} strokeWidth={1.5} /> {step.time}
-                </span>
               </div>
               <h3 className="tut-step__title">{step.title}</h3>
 

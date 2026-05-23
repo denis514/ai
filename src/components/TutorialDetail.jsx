@@ -76,9 +76,6 @@ export default function TutorialDetail({
           <div className="tut-detail__head-text">
             <div className="tut-detail__badges">
               <span className="tut-detail__level">{levelLabel}</span>
-              <span className="tut-detail__time">
-                <Icon name="clock" size={12} strokeWidth={1.5} /> {tut.totalTime}
-              </span>
               <span className="tut-detail__steps-count">
                 <Icon name="books" size={12} strokeWidth={1.5} /> {t('tutorialDetail.stepsCount', { n: total })}
               </span>

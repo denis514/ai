@@ -315,9 +315,6 @@ export default function WorkflowsModal({
                         <span className="course__meta-item">
                           <Icon name="books" size={14} strokeWidth={1.5} /> {t('courses.stepsCount', { n: total })}
                         </span>
-                        <span className="course__meta-item">
-                          <Icon name="clock" size={14} strokeWidth={1.5} /> {tut.totalTime}
-                        </span>
                         <span className={`course__status ${isDone ? 'is-done' : isStarted ? 'is-started' : ''}`}>
                           {isDone
                             ? (p.completedAt
