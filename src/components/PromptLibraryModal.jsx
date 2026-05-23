@@ -4,6 +4,7 @@ import PromptModal from './PromptModal.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useFocusReturn } from '../hooks/useFocusReturn.js';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
+import { useToast } from '../hooks/useToast.js';
 import {
   PROMPT_CATEGORIES,
   PROMPT_LEVELS,
@@ -27,8 +28,28 @@ export default function PromptLibraryModal({
 }) {
   const t = useT();
   const { locale, contentVersion } = useLocale();
+  const { toast } = useToast();
   useFocusReturn();
   useBodyScrollLock();
+
+  // Bookmark toggle с feedback-toast. При удалении — undo на 5 секунд.
+  const handleBmToggle = (promptId) => {
+    if (!bookmarksApi) return;
+    const wasOn = bookmarksApi.isBookmarked('prompt', promptId);
+    bookmarksApi.toggle('prompt', promptId);
+    if (wasOn) {
+      toast({
+        message: t('detail.bookmark.removedToast') || t('detail.bookmark.remove'),
+        duration: 5000,
+        action: {
+          label: t('common.undo') || 'Отменить',
+          onClick: () => bookmarksApi.toggle('prompt', promptId),
+        },
+      });
+    } else {
+      toast.success(t('detail.bookmark.addedToast') || t('detail.bookmark.added'));
+    }
+  };
   const { isLoggedIn } = useAuth();
   const GUEST_LIMIT = 15;
   const LEVEL_FILTERS = [
@@ -292,12 +313,12 @@ export default function PromptLibraryModal({
                               role="button"
                               tabIndex={0}
                               className={`lib-card__bm ${bookmarksApi.isBookmarked('prompt', p.id) ? 'is-on' : ''}`}
-                              onClick={(e) => { e.stopPropagation(); bookmarksApi.toggle('prompt', p.id); }}
+                              onClick={(e) => { e.stopPropagation(); handleBmToggle(p.id); }}
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
                                   e.stopPropagation();
                                   e.preventDefault();
-                                  bookmarksApi.toggle('prompt', p.id);
+                                  handleBmToggle(p.id);
                                 }
                               }}
                               aria-label={bookmarksApi.isBookmarked('prompt', p.id) ? t('detail.bookmark.remove') : t('detail.bookmark.toAdd')}

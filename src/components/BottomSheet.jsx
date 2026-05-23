@@ -76,6 +76,9 @@ export default function BottomSheet({
         ref={sheetRef}
         style={dragY > 0 ? { transform: `translateY(${dragY}px)` } : undefined}
       >
+        {/* Swipe-зона: handle + header. Расширили с маленького handle на всю
+            верхнюю зону sheet — стандартный iOS-pattern. Content (.bsheet__body)
+            остаётся скроллируемым отдельно. */}
         <div
           className="bsheet__handle"
           onTouchStart={onTouchStart}
@@ -87,7 +90,12 @@ export default function BottomSheet({
         </div>
 
         {title && (
-          <header className="bsheet__header">
+          <header
+            className="bsheet__header"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             {icon && (
               <span className="bsheet__icon" aria-hidden="true">
                 <Icon name={icon} size={20} strokeWidth={1.5} />
@@ -99,6 +107,7 @@ export default function BottomSheet({
               className="bsheet__close"
               onClick={onClose}
               aria-label={t('common.close')}
+              onTouchStart={(e) => e.stopPropagation()}
             >
               <Icon name="close" size={18} strokeWidth={1.75} />
             </button>

@@ -8904,3 +8904,29 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .confirm-dialog__btn--danger:hover {
   background: color-mix(in srgb, #e2484f 88%, #000);
 }
+
+/* ═══════════════ Skeleton placeholders ═══════════════ */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--text) 8%, transparent) 0%,
+    color-mix(in srgb, var(--text) 16%, transparent) 50%,
+    color-mix(in srgb, var(--text) 8%, transparent) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ═══════════════ BottomSheet — swipe-header indication ═══════════════ */
+/* Курсор-намёк на mobile что header можно потянуть */
+.bsheet__header {
+  touch-action: pan-y;
+  cursor: grab;
+}
+.bsheet__header:active {
+  cursor: grabbing;
+}

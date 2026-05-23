@@ -10,6 +10,7 @@ import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getNodeContent } from '../i18n/useNode.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useToast } from '../hooks/useToast.js';
 
 export default function DetailPanel({
   node,
@@ -28,8 +29,29 @@ export default function DetailPanel({
   const t = useT();
   const { locale } = useLocale();
   const { isLoggedIn } = useAuth();
+  const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const isMobile = useIsMobile();
+
+  // Toggle закладки с feedback-toast. При удалении — даём 5-секундный
+  // undo-shortcut через action в toast (повторный toggle = восстановит).
+  const handleBookmarkToggle = () => {
+    if (!bookmarksApi || !node) return;
+    const wasOn = bookmarksApi.isBookmarked('node', node.id);
+    bookmarksApi.toggle('node', node.id);
+    if (wasOn) {
+      toast({
+        message: t('detail.bookmark.removedToast') || t('detail.bookmark.remove'),
+        duration: 5000,
+        action: {
+          label: t('common.undo') || 'Отменить',
+          onClick: () => bookmarksApi.toggle('node', node.id),
+        },
+      });
+    } else {
+      toast.success(t('detail.bookmark.addedToast') || t('detail.bookmark.added'));
+    }
+  };
 
   if (!node) return null;
 
@@ -108,7 +130,7 @@ export default function DetailPanel({
             <button
               type="button"
               className={`detail__bookmark detail__bookmark--inline ${bookmarkOn ? 'is-on' : ''}`}
-              onClick={() => bookmarksApi.toggle('node', node.id)}
+              onClick={handleBookmarkToggle}
               aria-label={bookmarkOn ? t('detail.bookmark.remove') : t('detail.bookmark.add')}
               title={bookmarkOn ? t('detail.bookmark.added') : t('detail.bookmark.toAdd')}
             >
@@ -351,7 +373,7 @@ export default function DetailPanel({
             <button
               type="button"
               className={`detail__bookmark ${bookmarkOn ? 'is-on' : ''}`}
-              onClick={() => bookmarksApi.toggle('node', node.id)}
+              onClick={handleBookmarkToggle}
               aria-label={bookmarkOn ? t('detail.bookmark.remove') : t('detail.bookmark.add')}
               title={bookmarkOn ? t('detail.bookmark.added') : t('detail.bookmark.toAdd')}
             >
