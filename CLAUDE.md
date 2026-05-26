@@ -325,6 +325,34 @@ node scripts/sync-whats-new.mjs --regen  # пересобрать whatsNew.js б
 
 ---
 
+## 15a. Business-операционный слой (ОБЯЗАТЕЛЬНО для стратегических задач)
+
+У проекта есть отдельный **business-операционный слой**: 7 strategy-документов +
+6 skill-агентов + еженедельная автоматизация. Цель — развитие и монетизация
+105 Atlas как SaaS-продукта, не только как knowledge base.
+
+**Когда пользователь спрашивает «как развивать», «как монетизировать»,
+«что делать дальше», «что говорят конкуренты»:**
+
+1. Прочесть `docs/business-strategy/README.md`.
+2. Вызвать `skills/business-strategist/` (orchestrator) — он dispatches специалистов:
+   - `growth-strategist` — каналы, outreach, SEO
+   - `monetization-architect` — pricing, paywall, tiers
+   - `product-strategist` — feature priorities для revenue
+   - `competitive-intelligence` — market awareness
+   - `proposal-generator` — формирует decision-ready docs
+3. Все стратегические решения логируются в `docs/business-strategy/07-decisions.md`.
+4. Еженедельный review запускается через `node scripts/weekly-strategy-review.mjs`
+   (или GitHub Action `weekly-strategy-review.yml` по понедельникам).
+
+**Никогда:**
+- Не предлагать «делать курсы» / «академию» — нарушает `docs/strategy/01-positioning.md`.
+- Не менять pricing без validation Phase 0 (см. `04-monetization-roadmap.md`).
+- Не реагировать на конкурентов из соцсетей — только через `competitive-intelligence` skill.
+- Не игнорировать `07-decisions.md` — он source of truth для business-решений.
+
+---
+
 ## 16. Точки входа для AI
 
 | Ситуация                               | Куда смотреть              |
@@ -345,9 +373,18 @@ node scripts/sync-whats-new.mjs --regen  # пересобрать whatsNew.js б
 | Проверить релизы Anthropic еженедельно | `skills/news-watcher/`     |
 | Правила AI-обучения                    | `docs/learning-design-rules.md` |
 | Maintenance / deprecate-watch          | `docs/maintenance.md`      |
+| **Бизнес-стратегия проекта**           | `docs/business-strategy/`  |
+| Стратегические решения (orchestrator)  | `skills/business-strategist/` |
+| Acquisition / каналы / outreach        | `skills/growth-strategist/` |
+| Pricing / paywall / tier-структура     | `skills/monetization-architect/` |
+| Roadmap / feature prioritization       | `skills/product-strategist/` |
+| Мониторинг конкурентов и рынка         | `skills/competitive-intelligence/` |
+| Decision-ready proposal docs           | `skills/proposal-generator/` |
+| Еженедельный strategic review          | `node scripts/weekly-strategy-review.mjs` |
 | Что сейчас в работе                    | `tasks/current.md`         |
 | Что в плане                            | `tasks/roadmap.md`         |
 | Сырые идеи                             | `tasks/ideas.md`           |
+| Архив business-решений                 | `docs/business-strategy/07-decisions.md` |
 
 ---
 

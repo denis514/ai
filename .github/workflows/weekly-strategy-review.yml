@@ -1,0 +1,43 @@
+name: Weekly Strategy Review
+
+# Запускается каждый понедельник в 09:00 UTC (11:00 EET).
+# Создаёт `tasks/weekly-strategy-{YYYY-MM-DD}.md`, коммитит и пушит.
+# Также можно запустить вручную через workflow_dispatch.
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Monday 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 30  # для git velocity нужны последние ~7 дней
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate weekly review
+        run: node scripts/weekly-strategy-review.mjs
+
+      - name: Commit + push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tasks/weekly-strategy-*.md
+          if git diff --cached --quiet; then
+            echo "No new weekly review file (skipped)"
+            exit 0
+          fi
+          DATE=$(date -u +%Y-%m-%d)
+          git commit -m "chore(strategy): weekly review ${DATE} (auto-generated)"
+          git push
