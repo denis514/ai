@@ -20,6 +20,7 @@ import PromptModal from './components/PromptModal.jsx';
 import DetailNavFooter from './components/DetailNavFooter.jsx';
 import MinimizedPill from './components/MinimizedPill.jsx';
 import ToastContainer from './components/ToastContainer.jsx';
+import { useToast } from './hooks/useToast.js';
 import ConfirmDialogContainer from './components/ConfirmDialogContainer.jsx';
 import WelcomeCard from './components/WelcomeCard.jsx';
 import HelpModal from './components/HelpModal.jsx';
@@ -29,7 +30,7 @@ import { useHashRoute, parseHash } from './hooks/useHashRoute.js';
 import { useBookmarks } from './hooks/useBookmarks.js';
 import { useNodeProgress } from './hooks/useNodeProgress.js';
 import { useWhatsNew } from './hooks/useWhatsNew.js';
-import { useLocale } from './i18n/LocaleContext.jsx';
+import { useLocale, useT } from './i18n/LocaleContext.jsx';
 import { getLocalizedFeaturedPrompt } from './i18n/usePrompt.js';
 import { useAuth } from './context/AuthContext.jsx';
 import { STRINGS } from './i18n/strings.js';
@@ -242,11 +243,27 @@ function AppInner() {
   // Hash-роутер — единый источник истины о том, что открыто.
   const [route, setRoute] = useHashRoute();
 
-  // IntroModal: handler объявлен здесь — setRoute уже доступен.
+  // i18n + toast — нужны для soft-CTA после IntroModal.
+  const t = useT();
+  const { toast } = useToast();
+
+  // IntroModal: handler объявлен здесь — setRoute и toast уже доступны.
+  // ВАЖНО: НЕ открываем туториал автоматически. Пользователь пришёл «посмотреть карту»,
+  // а не «начать курс на 30 минут». Вместо этого — soft CTA через toast.
+  // История: автоматический setRoute({type:'tutorial', id:'ai-fluency'}) был
+  // удалён 2026-05-24 — см. tasks/product-audit-2026-05-24.md § «самый слабый момент».
   const handleIntroDone = useCallback(() => {
     setIntroOpen(false);
-    setTimeout(() => setRoute({ type: 'tutorial', id: 'ai-fluency' }), 150);
-  }, [setRoute]);
+    // Soft CTA: пользователь сам решает, нужен ли ему обзорный workflow.
+    toast({
+      message: t('intro.tourToast'),
+      duration: 8000,
+      action: {
+        label: t('intro.tourCta'),
+        onClick: () => setRoute({ type: 'tutorial', id: 'ai-fluency' })
+      }
+    });
+  }, [setRoute, toast, t]);
 
   // Derived UI state из route.
   // Узел "выбран" не только когда route.type === 'node', но и когда открыт
