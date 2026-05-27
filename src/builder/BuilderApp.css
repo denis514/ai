@@ -1654,21 +1654,30 @@
 /* ────────────────────────────────────────────────── */
 
 .builder-app .react-flow__edge-path {
-  stroke: var(--text-soft);
-  stroke-width: 2;
+  stroke: var(--text-soft) !important;
+  stroke-width: 2 !important;
+  fill: none !important;
+  stroke-opacity: 1 !important;
   transition: stroke 180ms ease, stroke-width 180ms ease;
 }
 
 .builder-app .react-flow__edge:hover .react-flow__edge-path,
 .builder-app .react-flow__edge.selected .react-flow__edge-path {
-  stroke: var(--accent, #2563eb);
-  stroke-width: 3;
+  stroke: var(--accent, #2563eb) !important;
+  stroke-width: 3 !important;
 }
 
 .builder-app .react-flow__connection-path {
-  stroke: var(--accent, #2563eb);
-  stroke-width: 2.5;
+  stroke: var(--accent, #2563eb) !important;
+  stroke-width: 2.5 !important;
+  fill: none !important;
   stroke-dasharray: 5 5;
+}
+
+/* React Flow стандарт скрывает .react-flow__edges-renderer когда edges пустой —
+   делаем sure что svg layer всегда виден когда edges есть */
+.builder-app .react-flow__edges {
+  pointer-events: auto;
 }
 
 /* ────────────────────────────────────────────────── */
@@ -1774,7 +1783,7 @@
 }
 
 :root[data-theme="dark"] .builder-app .react-flow__edge-path {
-  stroke: var(--text-soft);
+  stroke: var(--text-soft) !important;
 }
 
 :root[data-theme="dark"] .builder-app .react-flow__minimap {
