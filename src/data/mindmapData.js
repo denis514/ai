@@ -90,14 +90,14 @@ export const mindmapData = {
       "icon": "brain",
       "category": "foundation",
       "relatedIds": [
-            "ai-fundamentals",
-            "b-claude",
-            "b-context",
-            "systems",
-            "transformation",
-            "use-cases",
-            "af-embeddings"
-          ],
+        "ai-fundamentals",
+        "b-claude",
+        "b-context",
+        "systems",
+        "transformation",
+        "use-cases",
+        "af-embeddings"
+      ],
       "minLevel": "beginner",
       "children": [
         {
@@ -115,11 +115,11 @@ export const mindmapData = {
               "icon": "cube",
               "category": "foundation",
               "relatedIds": [
-            "b-claude",
-            "b-models",
-            "b-context",
-            "cap-tools"
-          ]
+                "b-claude",
+                "b-models",
+                "b-context",
+                "cap-tools"
+              ]
             },
             {
               "id": "af-embeddings",
@@ -145,25 +145,25 @@ export const mindmapData = {
               "icon": "archive",
               "category": "foundation",
               "relatedIds": [
-            "af-embeddings",
-            "af-vector-db",
-            "cap-citations",
-            "cap-files",
-            "sys-rag-architecture"
-          ]
+                "af-embeddings",
+                "af-vector-db",
+                "cap-citations",
+                "cap-files",
+                "sys-rag-architecture"
+              ]
             },
             {
               "id": "af-memory-systems",
               "icon": "book",
               "category": "foundation",
               "relatedIds": [
-            "cap-memory",
-            "af-rag-basics",
-            "p-files",
-            "af-embeddings",
-            "cc-md",
-            "i-claudemd"
-          ]
+                "cap-memory",
+                "af-rag-basics",
+                "p-files",
+                "af-embeddings",
+                "cc-md",
+                "i-claudemd"
+              ]
             },
             {
               "id": "af-multimodal",
@@ -180,13 +180,13 @@ export const mindmapData = {
               "icon": "mixer",
               "category": "foundation",
               "relatedIds": [
-            "prompting",
-            "af-llm-basics",
-            "instructions",
-            "pr-fewshot",
-            "b-system",
-            "af-rag-basics"
-          ]
+                "prompting",
+                "af-llm-basics",
+                "instructions",
+                "pr-fewshot",
+                "b-system",
+                "af-rag-basics"
+              ]
             }
           ]
         },
@@ -233,11 +233,11 @@ export const mindmapData = {
               "icon": "mixer",
               "category": "foundation",
               "relatedIds": [
-            "pr-role",
-            "instructions",
-            "cc-md",
-            "claude-code"
-          ]
+                "pr-role",
+                "instructions",
+                "cc-md",
+                "claude-code"
+              ]
             },
             {
               "id": "b-safety",
@@ -249,12 +249,12 @@ export const mindmapData = {
               "icon": "lock",
               "category": "foundation",
               "relatedIds": [
-            "b-safety",
-            "m-security",
-            "cc-cfg-permissions",
-            "cap-tools",
-            "b-system"
-          ]
+                "b-safety",
+                "m-security",
+                "cc-cfg-permissions",
+                "cap-tools",
+                "b-system"
+              ]
             },
             {
               "id": "b-knowledge",
@@ -271,19 +271,19 @@ export const mindmapData = {
               "icon": "compass",
               "category": "foundation",
               "relatedIds": [
-            "b-claude",
-            "sys-evals-benchmarks",
-            "claude-code"
-          ]
+                "b-claude",
+                "sys-evals-benchmarks",
+                "claude-code"
+              ]
             },
             {
               "id": "b-first-steps",
               "icon": "rocket",
               "category": "foundation",
               "relatedIds": [
-            "claude-code",
-            "pl-web-setup"
-          ],
+                "claude-code",
+                "pl-web-setup"
+              ],
               "minLevel": "beginner",
               "children": [
                 {
@@ -291,11 +291,11 @@ export const mindmapData = {
                   "icon": "folder",
                   "category": "foundation",
                   "relatedIds": [
-            "b-first-steps",
-            "projects",
-            "claude-code",
-            "pl-web-setup"
-          ]
+                    "b-first-steps",
+                    "projects",
+                    "claude-code",
+                    "pl-web-setup"
+                  ]
                 },
                 {
                   "id": "fs-organize-disk",
@@ -310,39 +310,39 @@ export const mindmapData = {
                   "icon": "terminal",
                   "category": "foundation",
                   "relatedIds": [
-            "cc-install",
-            "fs-navigate",
-            "claude-code",
-            "pl-web-setup"
-          ]
+                    "cc-install",
+                    "fs-navigate",
+                    "claude-code",
+                    "pl-web-setup"
+                  ]
                 },
                 {
                   "id": "fs-folder-create",
                   "icon": "folder-plus",
                   "category": "foundation",
                   "relatedIds": [
-            "b-first-steps",
-            "fs-organize-disk",
-            "claude-code"
-          ]
+                    "b-first-steps",
+                    "fs-organize-disk",
+                    "claude-code"
+                  ]
                 },
                 {
                   "id": "fs-navigate",
                   "icon": "search",
                   "category": "foundation",
                   "relatedIds": [
-            "claude-code",
-            "cc-md"
-          ]
+                    "claude-code",
+                    "cc-md"
+                  ]
                 },
                 {
                   "id": "fs-install-node",
                   "icon": "download",
                   "category": "foundation",
                   "relatedIds": [
-            "cc-install",
-            "claude-code"
-          ]
+                    "cc-install",
+                    "claude-code"
+                  ]
                 }
               ]
             }
@@ -373,22 +373,22 @@ export const mindmapData = {
               "icon": "sliders",
               "category": "foundation",
               "relatedIds": [
-            "b-models",
-            "pl-plans",
-            "pl-web-setup"
-          ]
+                "b-models",
+                "pl-plans",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "pl-platforms",
               "icon": "compass",
               "category": "foundation",
               "relatedIds": [
-            "pl-api",
-            "pl-compare",
-            "sys-api-patterns",
-            "claude-code",
-            "pl-web-setup"
-          ]
+                "pl-api",
+                "pl-compare",
+                "sys-api-patterns",
+                "claude-code",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "pl-rate",
@@ -403,34 +403,34 @@ export const mindmapData = {
               "icon": "mixer",
               "category": "foundation",
               "relatedIds": [
-            "pl-platforms",
-            "pl-plans",
-            "cc-install",
-            "claude-code",
-            "pl-web-setup"
-          ]
+                "pl-platforms",
+                "pl-plans",
+                "cc-install",
+                "claude-code",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "pl-web-setup",
               "icon": "globe",
               "category": "foundation",
               "relatedIds": [
-            "i-global",
-            "projects",
-            "pl-plans",
-            "instructions"
-          ]
+                "i-global",
+                "projects",
+                "pl-plans",
+                "instructions"
+              ]
             },
             {
               "id": "pl-desktop",
               "icon": "laptop",
               "category": "foundation",
               "relatedIds": [
-            "mcp",
-            "pl-platforms",
-            "pl-compare",
-            "pl-web-setup"
-          ]
+                "mcp",
+                "pl-platforms",
+                "pl-compare",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "pl-cowork",
@@ -459,12 +459,12 @@ export const mindmapData = {
               "icon": "terminal",
               "category": "foundation",
               "relatedIds": [
-            "cap-tools",
-            "mcp",
-            "ag-principles",
-            "cap-caching",
-            "pl-web-setup"
-          ]
+                "cap-tools",
+                "mcp",
+                "ag-principles",
+                "cap-caching",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "pl-privacy",
@@ -508,9 +508,9 @@ export const mindmapData = {
               "icon": "book",
               "category": "configuration",
               "relatedIds": [
-            "claude-code",
-            "cc-md"
-          ]
+                "claude-code",
+                "cc-md"
+              ]
             },
             {
               "id": "i-style",
@@ -663,9 +663,9 @@ export const mindmapData = {
               "category": "foundation",
               "minLevel": "expert",
               "relatedIds": [
-            "b-knowledge",
-            "pl-web-setup"
-          ]
+                "b-knowledge",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "cap-memory",
@@ -723,10 +723,10 @@ export const mindmapData = {
               "category": "foundation",
               "minLevel": "expert",
               "relatedIds": [
-            "cap-files",
-            "cap-tools",
-            "pl-web-setup"
-          ]
+                "cap-files",
+                "cap-tools",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "cap-thinking",
@@ -742,12 +742,12 @@ export const mindmapData = {
               "icon": "shield",
               "category": "foundation",
               "relatedIds": [
-            "b-models",
-            "b-knowledge",
-            "b-safety",
-            "b-context",
-            "cap-search"
-          ]
+                "b-models",
+                "b-knowledge",
+                "b-safety",
+                "b-context",
+                "cap-search"
+              ]
             }
           ]
         },
@@ -828,11 +828,11 @@ export const mindmapData = {
                   "icon": "folder",
                   "category": "prompts",
                   "relatedIds": [
-            "projects",
-            "ready-prompts",
-            "uc-ai-process-automation",
-            "pl-web-setup"
-          ]
+                    "projects",
+                    "ready-prompts",
+                    "uc-ai-process-automation",
+                    "pl-web-setup"
+                  ]
                 },
                 {
                   "id": "rp-artifact",
@@ -859,12 +859,12 @@ export const mindmapData = {
                   "icon": "book",
                   "category": "prompts",
                   "relatedIds": [
-            "i-claudemd",
-            "ops-team-workflow",
-            "ready-prompts",
-            "claude-code",
-            "cc-md"
-          ]
+                    "i-claudemd",
+                    "ops-team-workflow",
+                    "ready-prompts",
+                    "claude-code",
+                    "cc-md"
+                  ]
                 },
                 {
                   "id": "rp-audit",
@@ -908,12 +908,12 @@ export const mindmapData = {
               "icon": "target",
               "category": "automation",
               "relatedIds": [
-            "cc-hooks",
-            "skills",
-            "sys-workflows-basics",
-            "claude-code",
-            "pl-web-setup"
-          ]
+                "cc-hooks",
+                "skills",
+                "sys-workflows-basics",
+                "claude-code",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "s-files",
@@ -929,30 +929,30 @@ export const mindmapData = {
               "icon": "cube",
               "category": "automation",
               "relatedIds": [
-            "ai-fundamentals",
-            "rp-skill",
-            "skills",
-            "pl-web-setup"
-          ]
+                "ai-fundamentals",
+                "rp-skill",
+                "skills",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "s-create",
               "icon": "sparkles",
               "category": "automation",
               "relatedIds": [
-            "claude-code",
-            "pl-web-setup"
-          ]
+                "claude-code",
+                "pl-web-setup"
+              ]
             },
             {
               "id": "s-vs-subagents",
               "icon": "puzzle",
               "category": "automation",
               "relatedIds": [
-            "cc-subagents",
-            "agents",
-            "claude-code"
-          ]
+                "cc-subagents",
+                "agents",
+                "claude-code"
+              ]
             }
           ]
         },
@@ -972,11 +972,11 @@ export const mindmapData = {
               "icon": "keyboard",
               "category": "foundation",
               "relatedIds": [
-            "ag-code",
-            "claude-code",
-            "pd-spec-generation",
-            "cc-md"
-          ]
+                "ag-code",
+                "claude-code",
+                "pd-spec-generation",
+                "cc-md"
+              ]
             },
             {
               "id": "sc-design",
@@ -1032,10 +1032,10 @@ export const mindmapData = {
               "icon": "inbox",
               "category": "automation",
               "relatedIds": [
-            "fs-install-node",
-            "fs-terminal",
-            "cc-md"
-          ]
+                "fs-install-node",
+                "fs-terminal",
+                "cc-md"
+              ]
             },
             {
               "id": "cc-terminal",
@@ -1128,9 +1128,9 @@ export const mindmapData = {
                   "icon": "folder",
                   "category": "automation",
                   "relatedIds": [
-            "b-context",
-            "cc-md"
-          ]
+                    "b-context",
+                    "cc-md"
+                  ]
                 },
                 {
                   "id": "cc-grp-model",
@@ -1200,42 +1200,42 @@ export const mindmapData = {
               "icon": "book",
               "category": "automation",
               "relatedIds": [
-            "claude-code",
-            "instructions",
-            "i-claudemd",
-            "p-instructions"
-          ]
+                "claude-code",
+                "instructions",
+                "i-claudemd",
+                "p-instructions"
+              ]
             },
             {
               "id": "cc-subagents",
               "icon": "robot",
               "category": "automation",
               "relatedIds": [
-            "skills",
-            "agents",
-            "mcp",
-            "claude-code"
-          ]
+                "skills",
+                "agents",
+                "mcp",
+                "claude-code"
+              ]
             },
             {
               "id": "cc-plan-mode",
               "icon": "clipboard",
               "category": "automation",
               "relatedIds": [
-            "cc-tty-modes",
-            "cc-subagents",
-            "claude-code"
-          ]
+                "cc-tty-modes",
+                "cc-subagents",
+                "claude-code"
+              ]
             },
             {
               "id": "cc-ide",
               "icon": "developer",
               "category": "automation",
               "relatedIds": [
-            "cc-install",
-            "pl-platforms",
-            "claude-code"
-          ]
+                "cc-install",
+                "pl-platforms",
+                "claude-code"
+              ]
             }
           ]
         },
@@ -1302,10 +1302,10 @@ export const mindmapData = {
               "icon": "microscope",
               "category": "automation",
               "relatedIds": [
-            "mcp",
-            "sys-evals-benchmarks",
-            "claude-code"
-          ]
+                "mcp",
+                "sys-evals-benchmarks",
+                "claude-code"
+              ]
             }
           ]
         },
@@ -1355,11 +1355,11 @@ export const mindmapData = {
               "icon": "books",
               "category": "agents",
               "relatedIds": [
-            "agents",
-            "pd-discovery-research",
-            "pd-feedback-synthesis",
-            "cap-search"
-          ]
+                "agents",
+                "pd-discovery-research",
+                "pd-feedback-synthesis",
+                "cap-search"
+              ]
             },
             {
               "id": "ag-designer",
@@ -1386,11 +1386,11 @@ export const mindmapData = {
               "icon": "rocket",
               "category": "agents",
               "relatedIds": [
-            "ag-principles",
-            "mcp",
-            "cap-tools",
-            "cap-search"
-          ]
+                "ag-principles",
+                "mcp",
+                "cap-tools",
+                "cap-search"
+              ]
             }
           ]
         }
@@ -1401,16 +1401,16 @@ export const mindmapData = {
       "icon": "link",
       "category": "systems",
       "relatedIds": [
-            "ai-data-systems",
-            "ai-operations",
-            "ai-workflows",
-            "foundation",
-            "sys-escalation-paths",
-            "sys-multi-agent-patterns",
-            "sys-quality-gates",
-            "sys-evals-benchmarks",
-            "sys-cost-management"
-          ],
+        "ai-data-systems",
+        "ai-operations",
+        "ai-workflows",
+        "foundation",
+        "sys-escalation-paths",
+        "sys-multi-agent-patterns",
+        "sys-quality-gates",
+        "sys-evals-benchmarks",
+        "sys-cost-management"
+      ],
       "children": [
         {
           "id": "ai-workflows",
@@ -1418,7 +1418,10 @@ export const mindmapData = {
           "category": "systems",
           "relatedIds": [
             "sys-linear-chain",
-            "sys-workflows-basics"
+            "sys-workflows-basics",
+            "sys-branching-logic",
+            "sys-loop-patterns",
+            "sys-prompt-chaining"
           ],
           "children": [
             {
@@ -1426,35 +1429,71 @@ export const mindmapData = {
               "icon": "flash",
               "category": "systems",
               "relatedIds": [
-            "skills",
-            "projects",
-            "ops-process-automation",
-            "uc-ai-process-automation",
-            "sys-linear-chain"
-          ]
+                "skills",
+                "projects",
+                "ops-process-automation",
+                "uc-ai-process-automation",
+                "sys-linear-chain"
+              ]
             },
             {
               "id": "sys-linear-chain",
               "icon": "arrow-right",
               "category": "systems",
               "relatedIds": [
-            "sys-workflows-basics",
-            "ops-reporting-automation",
-            "uc-ai-reporting-launch",
-            "sys-quality-gates"
-          ]
+                "sys-workflows-basics",
+                "ops-reporting-automation",
+                "uc-ai-reporting-launch",
+                "sys-quality-gates"
+              ]
             },
             {
               "id": "sys-quality-gates",
               "icon": "shield",
               "category": "systems",
               "relatedIds": [
-            "sys-workflows-basics",
-            "ops-process-automation",
-            "ag-principles",
-            "p-team",
-            "sys-escalation-paths"
-          ]
+                "sys-workflows-basics",
+                "ops-process-automation",
+                "ag-principles",
+                "p-team",
+                "sys-escalation-paths"
+              ]
+            },
+            {
+              "id": "sys-branching-logic",
+              "icon": "puzzle",
+              "category": "systems",
+              "relatedIds": [
+                "sys-workflows-basics",
+                "sys-linear-chain",
+                "sys-loop-patterns",
+                "sys-prompt-chaining",
+                "cap-tools"
+              ]
+            },
+            {
+              "id": "sys-loop-patterns",
+              "icon": "repeat",
+              "category": "systems",
+              "relatedIds": [
+                "sys-branching-logic",
+                "sys-prompt-chaining",
+                "sys-quality-gates",
+                "sys-evals-benchmarks",
+                "sys-cost-management"
+              ]
+            },
+            {
+              "id": "sys-prompt-chaining",
+              "icon": "link",
+              "category": "systems",
+              "relatedIds": [
+                "sys-linear-chain",
+                "sys-branching-logic",
+                "sys-loop-patterns",
+                "sys-context-passing",
+                "sys-error-handling"
+              ]
             }
           ]
         },
@@ -1463,7 +1502,11 @@ export const mindmapData = {
           "icon": "scroll",
           "category": "systems",
           "relatedIds": [
-            "sys-rag-architecture"
+            "sys-rag-architecture",
+            "sys-vector-stores",
+            "sys-chunking-strategies",
+            "sys-hybrid-search",
+            "sys-document-pipelines"
           ],
           "children": [
             {
@@ -1471,25 +1514,74 @@ export const mindmapData = {
               "icon": "testtube",
               "category": "systems",
               "relatedIds": [
-            "af-rag-basics",
-            "af-vector-db",
-            "af-embeddings",
-            "cap-citations",
-            "ops-reporting-automation",
-            "ai-data-systems"
-          ]
+                "af-rag-basics",
+                "af-vector-db",
+                "af-embeddings",
+                "cap-citations",
+                "ops-reporting-automation",
+                "ai-data-systems"
+              ]
             },
             {
               "id": "sys-context-passing",
               "icon": "hook",
               "category": "systems",
               "relatedIds": [
-            "sys-workflows-basics",
-            "b-context",
-            "cap-caching",
-            "af-memory-systems",
-            "sys-linear-chain"
-          ]
+                "sys-workflows-basics",
+                "b-context",
+                "cap-caching",
+                "af-memory-systems",
+                "sys-linear-chain"
+              ]
+            },
+            {
+              "id": "sys-vector-stores",
+              "icon": "archive",
+              "category": "systems",
+              "relatedIds": [
+                "af-vector-db",
+                "af-embeddings",
+                "sys-rag-architecture",
+                "sys-chunking-strategies",
+                "sys-hybrid-search",
+                "sys-semantic-cache"
+              ]
+            },
+            {
+              "id": "sys-chunking-strategies",
+              "icon": "cube",
+              "category": "systems",
+              "relatedIds": [
+                "sys-rag-architecture",
+                "sys-vector-stores",
+                "sys-hybrid-search",
+                "sys-document-pipelines",
+                "af-embeddings"
+              ]
+            },
+            {
+              "id": "sys-hybrid-search",
+              "icon": "search",
+              "category": "systems",
+              "relatedIds": [
+                "sys-vector-stores",
+                "sys-chunking-strategies",
+                "sys-rag-architecture",
+                "cap-search",
+                "af-embeddings"
+              ]
+            },
+            {
+              "id": "sys-document-pipelines",
+              "icon": "file",
+              "category": "systems",
+              "relatedIds": [
+                "sys-rag-architecture",
+                "sys-chunking-strategies",
+                "sys-data-sync",
+                "sys-vector-stores",
+                "af-rag-basics"
+              ]
             }
           ]
         },
@@ -1498,7 +1590,11 @@ export const mindmapData = {
           "icon": "command",
           "category": "systems",
           "relatedIds": [
-            "sys-multi-agent-patterns"
+            "sys-multi-agent-patterns",
+            "sys-supervisor-worker",
+            "sys-parallel-fan-out",
+            "sys-handoff-protocols",
+            "sys-tool-orchestration"
           ],
           "children": [
             {
@@ -1506,14 +1602,63 @@ export const mindmapData = {
               "icon": "puzzle",
               "category": "systems",
               "relatedIds": [
-            "agents",
-            "ag-principles",
-            "cc-subagents",
-            "ag-managed",
-            "uc-ai-multi-agent-system",
-            "sys-context-passing",
-            "cap-search"
-          ]
+                "agents",
+                "ag-principles",
+                "cc-subagents",
+                "ag-managed",
+                "uc-ai-multi-agent-system",
+                "sys-context-passing",
+                "cap-search"
+              ]
+            },
+            {
+              "id": "sys-supervisor-worker",
+              "icon": "users",
+              "category": "systems",
+              "relatedIds": [
+                "sys-multi-agent-patterns",
+                "sys-handoff-protocols",
+                "sys-tool-orchestration",
+                "sys-parallel-fan-out",
+                "agents"
+              ]
+            },
+            {
+              "id": "sys-parallel-fan-out",
+              "icon": "sparkles",
+              "category": "systems",
+              "relatedIds": [
+                "sys-supervisor-worker",
+                "sys-multi-agent-patterns",
+                "sys-cost-management",
+                "sys-rate-limiting",
+                "sys-error-handling"
+              ]
+            },
+            {
+              "id": "sys-handoff-protocols",
+              "icon": "link",
+              "category": "systems",
+              "relatedIds": [
+                "sys-supervisor-worker",
+                "sys-context-passing",
+                "sys-multi-agent-patterns",
+                "cap-memory",
+                "sys-logging-patterns"
+              ]
+            },
+            {
+              "id": "sys-tool-orchestration",
+              "icon": "tools",
+              "category": "systems",
+              "relatedIds": [
+                "cap-tools",
+                "sys-supervisor-worker",
+                "mcp",
+                "sys-prompt-chaining",
+                "sys-error-handling",
+                "sys-multi-agent-patterns"
+              ]
             }
           ]
         },
@@ -1522,7 +1667,10 @@ export const mindmapData = {
           "icon": "users",
           "category": "systems",
           "relatedIds": [
-            "sys-escalation-paths"
+            "sys-escalation-paths",
+            "sys-approval-flows",
+            "sys-feedback-collection",
+            "sys-confidence-thresholds"
           ],
           "children": [
             {
@@ -1530,12 +1678,48 @@ export const mindmapData = {
               "icon": "send",
               "category": "systems",
               "relatedIds": [
-            "cs-escalation",
-            "sys-quality-gates",
-            "ag-principles",
-            "ops-decision-intelligence",
-            "ai-human-collaboration"
-          ]
+                "cs-escalation",
+                "sys-quality-gates",
+                "ag-principles",
+                "ops-decision-intelligence",
+                "ai-human-collaboration"
+              ]
+            },
+            {
+              "id": "sys-approval-flows",
+              "icon": "shield",
+              "category": "systems",
+              "relatedIds": [
+                "sys-escalation-paths",
+                "sys-quality-gates",
+                "sys-confidence-thresholds",
+                "sys-logging-patterns",
+                "sys-rollback-strategies"
+              ]
+            },
+            {
+              "id": "sys-feedback-collection",
+              "icon": "inbox",
+              "category": "systems",
+              "relatedIds": [
+                "sys-evals-benchmarks",
+                "sys-monitoring",
+                "sys-confidence-thresholds",
+                "sys-versioning",
+                "cs-quality-monitoring"
+              ]
+            },
+            {
+              "id": "sys-confidence-thresholds",
+              "icon": "target",
+              "category": "systems",
+              "relatedIds": [
+                "sys-escalation-paths",
+                "sys-approval-flows",
+                "sys-feedback-collection",
+                "sys-evals-benchmarks",
+                "sys-quality-gates"
+              ]
             }
           ]
         },
@@ -1559,26 +1743,26 @@ export const mindmapData = {
               "icon": "check-circle",
               "category": "systems",
               "relatedIds": [
-            "cs-quality-monitoring",
-            "sys-quality-gates",
-            "prompting",
-            "pr-iterate",
-            "ai-operations",
-            "i-style"
-          ]
+                "cs-quality-monitoring",
+                "sys-quality-gates",
+                "prompting",
+                "pr-iterate",
+                "ai-operations",
+                "i-style"
+              ]
             },
             {
               "id": "sys-cost-management",
               "icon": "tag",
               "category": "systems",
               "relatedIds": [
-            "cap-caching",
-            "pl-api",
-            "en-roi-measurement",
-            "af-llm-basics",
-            "af-fine-tuning",
-            "ai-operations"
-          ]
+                "cap-caching",
+                "pl-api",
+                "en-roi-measurement",
+                "af-llm-basics",
+                "af-fine-tuning",
+                "ai-operations"
+              ]
             },
             {
               "id": "sys-monitoring",
@@ -1659,7 +1843,12 @@ export const mindmapData = {
           "icon": "plug",
           "category": "systems",
           "relatedIds": [
-            "sys-api-patterns"
+            "sys-api-patterns",
+            "sys-event-driven",
+            "sys-batch-vs-realtime",
+            "sys-data-sync",
+            "sys-auth-patterns",
+            "sys-error-handling"
           ],
           "children": [
             {
@@ -1667,13 +1856,74 @@ export const mindmapData = {
               "icon": "globe",
               "category": "systems",
               "relatedIds": [
-            "pl-api",
-            "pl-cowork",
-            "mcp",
-            "cap-tools",
-            "pl-integrations",
-            "ai-integration-systems"
-          ]
+                "pl-api",
+                "pl-cowork",
+                "mcp",
+                "cap-tools",
+                "pl-integrations",
+                "ai-integration-systems"
+              ]
+            },
+            {
+              "id": "sys-event-driven",
+              "icon": "flash",
+              "category": "systems",
+              "relatedIds": [
+                "sys-api-patterns",
+                "sys-data-sync",
+                "sys-error-handling",
+                "sys-batch-vs-realtime",
+                "sys-rate-limiting"
+              ]
+            },
+            {
+              "id": "sys-batch-vs-realtime",
+              "icon": "compass",
+              "category": "systems",
+              "relatedIds": [
+                "sys-api-patterns",
+                "sys-event-driven",
+                "sys-cost-management",
+                "sys-rate-limiting",
+                "pl-api"
+              ]
+            },
+            {
+              "id": "sys-data-sync",
+              "icon": "repeat",
+              "category": "systems",
+              "relatedIds": [
+                "sys-event-driven",
+                "sys-document-pipelines",
+                "sys-api-patterns",
+                "mcp",
+                "sys-error-handling"
+              ]
+            },
+            {
+              "id": "sys-auth-patterns",
+              "icon": "lock",
+              "category": "systems",
+              "relatedIds": [
+                "sys-api-patterns",
+                "mcp",
+                "pl-api",
+                "sys-event-driven",
+                "sys-error-handling"
+              ]
+            },
+            {
+              "id": "sys-error-handling",
+              "icon": "question",
+              "category": "systems",
+              "relatedIds": [
+                "sys-rate-limiting",
+                "sys-rollback-strategies",
+                "sys-monitoring",
+                "sys-event-driven",
+                "sys-tool-orchestration",
+                "sys-api-patterns"
+              ]
             }
           ]
         }
@@ -1734,12 +1984,12 @@ export const mindmapData = {
               "icon": "chart",
               "category": "transformation",
               "relatedIds": [
-            "sc-data",
-            "projects",
-            "af-rag-basics",
-            "prompting",
-            "b-system"
-          ]
+                "sc-data",
+                "projects",
+                "af-rag-basics",
+                "prompting",
+                "b-system"
+              ]
             },
             {
               "id": "ops-resource-optimization",
@@ -1756,13 +2006,13 @@ export const mindmapData = {
               "icon": "users",
               "category": "transformation",
               "relatedIds": [
-            "projects",
-            "p-team",
-            "instructions",
-            "skills",
-            "b-system",
-            "cc-md"
-          ]
+                "projects",
+                "p-team",
+                "instructions",
+                "skills",
+                "b-system",
+                "cc-md"
+              ]
             }
           ]
         },
@@ -1807,13 +2057,13 @@ export const mindmapData = {
               "icon": "quote",
               "category": "transformation",
               "relatedIds": [
-            "instructions",
-            "i-style",
-            "b-system",
-            "prompting",
-            "projects",
-            "pr-fewshot"
-          ]
+                "instructions",
+                "i-style",
+                "b-system",
+                "prompting",
+                "projects",
+                "pr-fewshot"
+              ]
             },
             {
               "id": "mk-seo-optimization",
@@ -1841,13 +2091,13 @@ export const mindmapData = {
               "icon": "users",
               "category": "transformation",
               "relatedIds": [
-            "projects",
-            "p-team",
-            "instructions",
-            "skills",
-            "ops-team-workflow",
-            "cc-md"
-          ]
+                "projects",
+                "p-team",
+                "instructions",
+                "skills",
+                "ops-team-workflow",
+                "cc-md"
+              ]
             }
           ]
         },
@@ -1914,11 +2164,11 @@ export const mindmapData = {
               "icon": "check-circle",
               "category": "transformation",
               "relatedIds": [
-            "sys-quality-gates",
-            "ops-reporting-automation",
-            "sc-analysis",
-            "b-system"
-          ]
+                "sys-quality-gates",
+                "ops-reporting-automation",
+                "sc-analysis",
+                "b-system"
+              ]
             },
             {
               "id": "cs-support-analytics",
@@ -1935,13 +2185,13 @@ export const mindmapData = {
               "icon": "users",
               "category": "transformation",
               "relatedIds": [
-            "projects",
-            "p-team",
-            "instructions",
-            "ops-team-workflow",
-            "mk-team-workflow",
-            "cc-md"
-          ]
+                "projects",
+                "p-team",
+                "instructions",
+                "ops-team-workflow",
+                "mk-team-workflow",
+                "cc-md"
+              ]
             }
           ]
         },
@@ -2028,13 +2278,13 @@ export const mindmapData = {
               "icon": "users",
               "category": "transformation",
               "relatedIds": [
-            "projects",
-            "p-team",
-            "ops-team-workflow",
-            "mk-team-workflow",
-            "cs-team-workflow",
-            "cc-md"
-          ]
+                "projects",
+                "p-team",
+                "ops-team-workflow",
+                "mk-team-workflow",
+                "cs-team-workflow",
+                "cc-md"
+              ]
             }
           ]
         },
@@ -2092,12 +2342,12 @@ export const mindmapData = {
               "icon": "star",
               "category": "transformation",
               "relatedIds": [
-            "ops-team-workflow",
-            "mk-team-workflow",
-            "instructions",
-            "skills",
-            "cc-md"
-          ]
+                "ops-team-workflow",
+                "mk-team-workflow",
+                "instructions",
+                "skills",
+                "cc-md"
+              ]
             },
             {
               "id": "en-roi-measurement",
@@ -2116,13 +2366,13 @@ export const mindmapData = {
               "icon": "warning",
               "category": "transformation",
               "relatedIds": [
-            "b-safety",
-            "b-prompt-injection",
-            "m-security",
-            "sys-quality-gates",
-            "pl-privacy",
-            "cap-citations"
-          ]
+                "b-safety",
+                "b-prompt-injection",
+                "m-security",
+                "sys-quality-gates",
+                "pl-privacy",
+                "cap-citations"
+              ]
             },
             {
               "id": "en-talent-strategy",
@@ -2221,14 +2471,14 @@ export const mindmapData = {
               "icon": "users",
               "category": "transformation",
               "relatedIds": [
-            "projects",
-            "p-team",
-            "ops-team-workflow",
-            "mk-team-workflow",
-            "cs-team-workflow",
-            "pd-team-workflow",
-            "cc-md"
-          ]
+                "projects",
+                "p-team",
+                "ops-team-workflow",
+                "mk-team-workflow",
+                "cs-team-workflow",
+                "pd-team-workflow",
+                "cc-md"
+              ]
             }
           ]
         },
