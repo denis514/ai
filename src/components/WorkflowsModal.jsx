@@ -311,6 +311,22 @@ export default function WorkflowsModal({
                         {cat && node && <span className="course__cat">{t(`category.${node.category || 'основы'}`)}</span>}
                       </div>
                       <p>{tut.subtitle}</p>
+                      {(tut.trigger || tut.savings) && (
+                        <div className="course__recipe">
+                          {tut.trigger && (
+                            <div className="course__trigger" title={tut.trigger}>
+                              <Icon name="flash" size={12} strokeWidth={1.75} />
+                              <span>{tut.trigger}</span>
+                            </div>
+                          )}
+                          {tut.savings && (
+                            <span className="course__savings" title={tut.savings}>
+                              <Icon name="rocket" size={11} strokeWidth={1.75} />
+                              {tut.savings}
+                            </span>
+                          )}
+                        </div>
+                      )}
                       <div className="course__meta">
                         <span className="course__meta-item">
                           <Icon name="books" size={14} strokeWidth={1.5} /> {t('courses.stepsCount', { n: total })}
