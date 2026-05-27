@@ -633,17 +633,20 @@ export const mindmapData = {
             {
               "id": "cap-vision",
               "icon": "eye",
-              "category": "foundation"
+              "category": "foundation",
+              "minLevel": "expert"
             },
             {
               "id": "cap-files",
               "icon": "file",
-              "category": "foundation"
+              "category": "foundation",
+              "minLevel": "expert"
             },
             {
               "id": "cap-search",
               "icon": "search",
               "category": "foundation",
+              "minLevel": "expert",
               "relatedIds": [
             "b-knowledge",
             "pl-web-setup"
@@ -662,6 +665,7 @@ export const mindmapData = {
               "id": "cap-computer",
               "icon": "laptop",
               "category": "foundation",
+              "minLevel": "expert",
               "relatedIds": [
                 "ag-managed",
                 "agents",
@@ -689,12 +693,14 @@ export const mindmapData = {
             {
               "id": "cap-citations",
               "icon": "quote",
-              "category": "foundation"
+              "category": "foundation",
+              "minLevel": "expert"
             },
             {
               "id": "cap-code-exec",
               "icon": "command",
               "category": "foundation",
+              "minLevel": "expert",
               "relatedIds": [
             "cap-files",
             "cap-tools",
