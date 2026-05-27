@@ -81,13 +81,13 @@
     "mistakes": "Olettaa, että system prompt «suojaa» injectionilta — se ei suojaa. Suoja = agentin mahdollisuuksien rajoittaminen (Permissions, deny-listat, human approval), ei «ohjeet olla valpas»."
   },
   "b-knowledge": {
-    "title": "Tieto ja cutoff",
-    "what": "Mallilla on tiedon katkaisupäivä (knowledge cutoff). Sen jälkeisistä tapahtumista se ei välttämättä tiedä.",
-    "why": "Jotta et luota Claudeen tuoreiden tapahtumien datassa ilman tarkistusta tai ulkoisia lähteitä.",
-    "when": "Kun työskentelet tuoreiden uutisten, julkaisujen, hintojen, lakien kanssa.",
-    "impact": "Cutoffin ymmärtäminen pelastaa vanhentuneilta vastauksilta ja virheellisiltä varmoilta väitteiltä.",
-    "example": "Tässä tuore artikkeli (liitetty teksti). Sen pohjalta vastaa, miten markkina muuttui vuonna 2025.",
-    "mistakes": "Kysyä «paljonko X maksaa nyt» — malli vastaa monen kuukauden takaisilla tiedoilla."
+    "title": "Knowledge cutoff (mitä Claude tietää ja ei)",
+    "what": "Jokaisella mallilla on **knowledge cutoff** — opetusdatan katkaisupäivä. Cutoffin jälkeisistä tapahtumista, hinnoista, tuotejulkaisuista malli ei tiedä (tai tietää epätäydellisesti).\n\nCutoff eroaa mallien välillä ja päivittyy uusien versioiden myötä. Kirjoitushetkellä nykyiset cutoff:t (tarkista ajantasaiset anthropic.com:sta):\n- Claude Opus 4 / Sonnet 4: alku 2025\n- Claude Haiku 4.5: alku 2025\n- Vanhemmat mallit (3.5/3.7): aikaisemmin\n\n**Trick:** cutoff ei ole täydellinen stop. Malli voi tietää tapahtumista paria kuukautta ennen cutoffia epätäydellisesti (alhaisempi edustus training datassa).",
+    "why": "Tämä on syy miksi **et voi luottaa Claudeen tuoreiden faktojen suhteen ilman varmistusta**.\n\nProduct teameille se tarkoittaa: AI workflow joka toimii «nykyisellä markkinatilanteella», kilpailijoiden hinnoittelulla, uusilla laeilla — **on käytettävä** web searchia tai RAG:ia tuoreiden lähteiden yli. Pelkkä prompt → Claude → answer ilman tuoretta dataa = production bug.",
+    "when": "**Muista cutoff kun:**\n- Tuoreet uutiset, julkaisut, artikkelit (viimeiset 6-12 kk)\n- Hinnat, planit, rajat (minkä tahansa SaaS:n)\n- Lait, regulaatiot (muuttuvat vuosittain)\n- Library:jen versiot, API breaking changes\n- Kilpailijoiden analyysi\n- Mikä tahansa time-sensitive fakta\n\n**Cutoff ei merkitse kun:**\n- Periaatteet, konseptit, patternit (stabiilit vuosia)\n- Grammar, käännös, yleinen kirjoittaminen\n- Math, logic, algoritmit\n- Historiallinen analyysi jossa data on cutoffin sisällä",
+    "impact": "**Mikä muuttuu kun ymmärrät cutoff:n:**\n- AI workflow:n arkkitehtuuri: aina injektoi tuore konteksti time-sensitive-tehtävissä\n- Trust calibration: Claude puhuu **varmasti** cutoffin jälkeisistä tapahtumista (training fact) — se on False Confidence, ei totuus\n- Tool design: [[node:cap-search|Web search]] tool muuttuu pakolliseksi komponentiksi, ei optionaaliseksi\n- Quality metric: «fact-check» muuttuu omaksi workflow-vaiheeksi, ei default-trustiksi\n\nDeprecate-watch: jokaisen mallin knowledge cutoff päivittyy uuden version myötä. Päivitä tämä solmu jokaisen major Claude release:n yhteydessä.",
+    "example": "**Anti-pattern:**\n```\nuser: «Paljonko Claude Pro maksaa nyt?»\nClaude: «$20/kk» ← vastaus trainingista, voi olla vanhentunut\n```\n\n**Oikea pattern:**\n```\nuser query: «Paljonko Claude Pro maksaa nyt?»\n  ↓\nWorkflow:\n  1. Web search «Claude Pro pricing» (käytä [[node:cap-search|cap-search]])\n  2. Fetch anthropic.com/pricing\n  3. Välitä todellinen hinta kontekstina\n  ↓\nClaude: «Nykyisen sivun mukaan — $X/kk. (sourced)»\n```\n\nJos käyttäjä on IDE:ssä, yksinkertaisemmin: lisää system promptiin tämän päivän päivämäärä + truth source kriittisille faktoille.",
+    "mistakes": "**1. Kysyä «paljonko X maksaa nyt»** — Claude vastaa varmasti training datalla, joka voi olla 6-18 kk vanhentunut. Ilman tuoretta kontekstia = false answer korkealla varmuudella.\n\n**2. Time-sensitive-sisältöä ei merkitä** — jos Atlas sanoo «Anthropic julkaisi X», ilman päivämäärää siitä tulee vanhentunut vuoden sisällä. **Oikein**: «Kirjoitushetkellä (2026-05): X». Ks. `docs/maintenance.md` -sääntö ja deprecate-watch-taulukko.\n\n**3. Cutoff:in sekoittaminen kontekstiin** — cutoff = mitä malli alun perin tiesi. Konteksti = mitä annat sille promptissa. Jos liität tuoreen artikkelin promptiin — Claude käyttää sitä, **riippumatta** cutoffista.\n\n**4. Cutoffin ignorointi librarystän suhteen** — «kerro uusimmat React 19 -ominaisuudet» → Claude tietää vain mitä training:ssa oli. Ajantasaiselle infolle — web search tai keskity stabiileihin patterneihin."
   },
   "b-help": {
     "title": "Mistä saa apua",
@@ -172,21 +172,21 @@
   },
   "pl-plans": {
     "title": "Tariffit",
-    "what": "Free / Pro / Team / Enterprise. Free — kokeiluversio (rajoitetut mallit ja kiintiöt). Pro — yksilölliseen työhön. Team — Projects-tilan jakaminen kollegoiden välillä. Enterprise — räätälöidyt SLA:t ja admin-työkalut.",
-    "why": "Jotta maksat tarpeellisesta tasosta, eikä «kaikesta peräjälkeen» tai päinvastoin, et kärsi Freellä vakavassa tehtävässä.",
-    "when": "Alussa — Free tutustumiseen. 1-2 viikon säännöllisen käytön jälkeen — siirtyminen Prohon.",
-    "impact": "Pro maksaa itsensä takaisin jo viikossa todellista käyttöä Opukseen pääsyn ja Freen rajojen poistumisen ansiosta.",
-    "example": "Kerro, mitä saan siirtyessäni Freestä Prohon tapauksessani: päivittäin työskentely dokumenttien kanssa.",
-    "mistakes": "Ottaa Team kun tiimi on alle 3 hengen — ylimaksu ilman hyötyä. Ottaa Pro jos säännöllisesti tarvitaan jaettuja Projects — menetetään yhteistyö."
+    "what": "Suunnitelmavalikoima: **Free** (kokeiluversio, rajoitetut mallit ja matalat kiintiöt), **Pro** (yksilölliseen työhön, kaikki mallit), **Max** (korotetut Opus-rajat, julkaistu 2025), **Team** (Projects + tiimin yhteinen laskutus), **Enterprise** (SSO, audit log, räätälöidyt SLA:t).\n\nHinnoitteluperiaate: maksat **käyttötasosta + kiintiöiden määrästä**, et yksittäisistä ominaisuuksista. Pro/Max/Team antavat saman toiminnallisuuden — ero on malleissa ja rajoissa.\n\n*Kirjoitushetkellä (2026-05) ajantasainen lista on osoitteessa [anthropic.com/pricing](https://anthropic.com/pricing). Anthropic uudistaa pakettivalikoiman ja hinnat 1-2 kertaa vuodessa.*",
+    "why": "Jotta maksat todellisesta käyttötasostasi. Liian alhainen suunnitelma = törmäät rajoihin keskellä päivää. Liian korkea = maksat tyhjistä paikoista.\n\nKeskeinen ansa: Free luo virheellisen kuvan Clauden kyvykkyyksistä. Vakavat demot törmäävät kiintiöön tunnissa ja istuttavat virheellisen mielipiteen «Claude on heikko».",
+    "when": "**Free** — ensimmäiset 1-2 päivää tutustumiseen, ei työhön.\n**Pro** — päivittäinen yksilöllinen käyttö (5-20 pitkää sessiota viikossa).\n**Max** — jos törmäät säännöllisesti Pron viikoittaiseen Opus-rajaan.\n**Team** — Projects jaettuna ≥3 kollegan kesken + yhteinen laskutus.\n**Enterprise** — compliance / audit log / SSO ovat kriittisiä.",
+    "impact": "Oikea suunnitelma maksaa itsensä takaisin 1-2 viikossa rajojen friktion poistuessa ja Opus-pääsyn ansiosta. Väärä — joko maksat käyttämättömistä paikoista (Team kahdelle), tai päivittäin hukkaat aikaa odottaen nollausta (Free työhön).",
+    "example": "«Käytän Claudea 3-5 tuntia päivässä: Sonnet koodiin + 2-3 pitkää Opus-sessiota viikossa. Pro vai Max?» → Pro kunnes törmäät Opuksen viikoittaiseen rajaan. Jos törmäät säännöllisesti — Max.",
+    "mistakes": "❌ Team kun tiimi on alle 3 henkilöä — ylimaksu.\n❌ Istua Freessä «kunnes opin» — rajat eivät anna oppia.\n❌ Maksaa Prosta ja käyttää vain Sonnetia — Opus oikeuttaa hintaeron.\n\n*deprecate-watch: Anthropic muuttaa tarkat hinnat ja pakettivalikoiman 1-2 kertaa vuodessa — tarkista anthropic.com/pricing.*"
   },
   "pl-limits": {
     "title": "Käyttörajat",
-    "what": "Prolla on kaksi rajatyyppiä: 5-tuntinen (rolling window — kuinka monta viestiä viimeisten 5 tunnin aikana) ja viikoittainen. Nollautuvat liukuvassa ikkunassa, ei kalenterin mukaan.",
-    "why": "Jotta voit suunnitella pitkät sessiot etkä törmää seinään keskellä päivää.",
-    "when": "Kun huomaat «Claude hidastelee» — yleensä olet lähellä 5-tunnista rajaa.",
-    "impact": "Rajan ymmärtäminen mahdollistaa raskaiden pyyntöjen jakamisen ja siirtymisen Sonnetiin rutiineja varten.",
-    "example": "Näytä nykyinen rajani ja kuinka kauan nollautumiseen. Kerro, mitkä tehtävät kannattaa lykätä.",
-    "mistakes": "Istua jatkuvasti Opuksessa — nopein tapa kuluttaa kiintiö. Sonnet selviää 80% tehtävistä."
+    "what": "Maksullisilla suunnitelmilla on kaksi rajatyyppiä:\n\n1. **5-tuntinen liukuva ikkuna** — kuinka monta viestiä voit lähettää viimeisten 5 tunnin aikana. Nollautuu liukuvasti ensimmäisestä viestistä, ei kalenterin mukaan.\n2. **Viikoittainen ikkuna** — kokonaiskäyttö 7 päivän aikana, koskee ensisijaisesti Opusta.\n\nRajoja ei ilmaista kiinteinä «N viestiä» — ne riippuvat kontekstin pituudesta, valitusta mallista ja nykyisestä kuormasta. Opus syö kiintiötä 3-5 kertaa nopeammin kuin Sonnet.\n\n*Anthropic ei julkaise tarkkoja lukuja ja säätää niitä kysynnän mukaan. Kirjoitushetkellä (2026-05) ajantasainen ohje on osoitteessa [support.anthropic.com](https://support.anthropic.com).*",
+    "why": "Rajat eivät ole bugi — ne ovat infrastruktuurin suojaa ylikuormalta. Ikkunan mekaniikan ymmärtäminen (liukuva, ei kalenteri) muuttaa suunnittelua: ei «odotan maanantaihin», vaan «työskentelen lyhyissä sprinteissä taukoineen».",
+    "when": "Huomaat «Claude hidastelee» tai näytölle ilmestyy varoitus rajan lähestymisestä — yleensä se on 5-tuntinen ikkuna. Jos törmäät seinään useita kertoja viikossa Opuksella — se on viikoittainen raja, harkitse Maxia.",
+    "impact": "Rajan ymmärtäminen mahdollistaa raskaiden pyyntöjen jakamisen päivälle, siirtymisen Sonnetiin rutiineja varten ja Opuksen säästämisen vaikeisiin tehtäviin. Tuloksena vakaa tuottavuus ilman keskipäivän seinämiä.",
+    "example": "«Tänään minulla on 3 pitkää Opus-sessiota, joissa kussakin käsitellään 100k tokenia. Milloin teen neljännen — nyt vai huomenna aamulla?» → Aamulla, muuten törmäät 5-tunnin ikkunaan ja menetät 2-3 tuntia.",
+    "mistakes": "❌ Pysyä Opuksessa joka tehtävässä — nopein tapa kuluttaa kiintiö. Sonnet selviää 80% työstä.\n❌ Olettaa että raja «nollautuu keskiyöllä» — se on liukuva, ei kalenteriin sidottu.\n❌ Olla seuraamatta käyttöindikaattoria UI:ssa — se näyttää rajan lähestymisen etukäteen.\n\n*deprecate-watch: Anthropic säätää tarkkoja lukuja ja kaavoja säännöllisesti. Rakenne (5h + viikoittain) on vakaa.*"
   },
   "pl-models": {
     "title": "Mallit tariffin mukaan",
@@ -208,12 +208,12 @@
   },
   "pl-rate": {
     "title": "Rate limits API",
-    "what": "Anthropic API:lla — erilliset rate limits: pyynnöt minuutissa (RPM), tokenit minuutissa (TPM), tokenit päivässä. Riippuvat tilin tieristä (Tier 1 → 4).",
-    "why": "Jotta prod ei kaadu kuormahuipulla ja jotta kasvat Tiereissä tietoisesti.",
-    "when": "Integroinnissa tuotteeseen, batch-käsittelyssä, kuorman kasvaessa.",
-    "impact": "Rajojen tunteminen = oikea arkkitehtuuri retry/backoffilla ja ei-estävällä työllä.",
-    "example": "Mikä on nykyinen Tierini? Paljonko RPM/TPM? Milloin minut nostetaan seuraavaan?",
-    "mistakes": "Sivuuttaa 429-virheet tuotannossa — palvelu on epävakaa. Toteuta exponential backoff."
+    "what": "Anthropic API:ssa on kolme rajoitetyyppiä:\n\n- **RPM** (requests per minute) — pyyntöjen määrä minuutissa\n- **TPM** (tokens per minute) — kokonaistokenmäärä (input + output) minuutissa\n- **Daily tokens** — kokonaistokenmäärä 24 tunnissa\n\nRajat riippuvat **tilin tieristä** (Tier 1 → Tier 4), joka kasvaa automaattisesti käytön ja kulutuksen myötä. Korkeampaa tieriä voi myös hakea ennakoivasti piikkien varalle.\n\nYlityksissä API palauttaa **429 Too Many Requests** + `retry-after`-otsikon.\n\n*Kirjoitushetkellä (2026-05) ajantasaiset tier-luvut ovat osoitteessa [docs.anthropic.com/en/api/rate-limits](https://docs.anthropic.com/en/api/rate-limits). Anthropic säätää niitä infrastruktuurin kasvaessa.*",
+    "why": "Jotta tuotanto ei kaadu kuormahuippuihin ja jotta kasvat tiereissä tietoisesti. Ilman rate limittien ymmärrystä ensimmäinen batch-työ tai virusmainen julkaisu muuttuu 429-kaskadiksi.",
+    "when": "Kaikissa tuotantointegraatioissa, batch-käsittelyssä (evalit, luokittelu), liikenteen kasvaessa. Tier 1 riittää yleensä MVP-vaiheeseen; tuotanto todellisilla käyttäjillä tarvitsee tyypillisesti Tier 2-3.",
+    "impact": "Rajojen tuntemus = arkkitehtuuri retry/backoffilla, jonoilla ja graceful degradationilla. Ilman sitä palvelu on epävakaa, käyttäjät näkevät virheitä, retention laskee.",
+    "example": "«Käynnistän öisen batchin 50k luokittelulle. Mikä tier on turvallinen?» → Laske TPM: 50k × keskimääräinen tokenmäärä per pyyntö / tavoiteaikaikkuna. Jos ei mahdu Tier 1:een — hae Tier 2 + käytä Message Batches API:a (halvempi, erillinen raja).",
+    "mistakes": "❌ Sivuuttaa 429-virheet tuotannossa ilman backoffia — virhekaskadi ja epävakaus.\n❌ Olla käyttämättä `retry-after`-otsikkoa — sokeat retry-silmukat tappavat oman rajan.\n❌ Olla varaamatta puskuria (80% rajasta) — liikennepiikit rikkovat asioita tyhjästä.\n❌ Olla tietämättä **Message Batches API**:sta offline-kuormiin — siinä 50% alennus ja erillinen raja.\n\n*deprecate-watch: Anthropic säätää tier-kohtaisia RPM/TPM-lukuja; rakenne (RPM + TPM + daily + tier-pohjainen) on vakaa.*"
   },
   "pl-compare": {
     "title": "Claude.ai vs Code vs API",
@@ -783,13 +783,13 @@
     "mistakes": "Sekoittaa MCP REST API:n kanssa — tämä on eri taso: mallin työkalujen orkestrointi, ei pyynnöt."
   },
   "m-ready": {
-    "title": "Valmiit palvelimet",
-    "what": "Palvelinten valikoima: Linear, Jira/Confluence, Figma, GitHub, Slack, Notion, tietokannat, tiedostojärjestelmä.",
-    "why": "Kytket yhden — saat kymmeniä työkaluja «laatikosta».",
-    "when": "Kun tuote on jo katalogissa — älä kirjoita omaa palvelinta.",
-    "impact": "Valmis palvelin = minuutteja kytkentään vs viikkoja omaan.",
-    "example": "Kytke Figma MCP, avaa tiedosto URL:lla ja generoi React-komponentti solmusta.",
-    "mistakes": "Kirjoittaa oma konnektori Jiraan — 95% tehtäville riittää virallinen."
+    "title": "Valmiit MCP-palvelimet",
+    "what": "MCP-palvelinten ekosysteemi kattaa keskeiset tietolähteet ja kehitystyökalut:\n\n- **Tuoteseurannat**: Linear, Jira/Confluence, Asana, Notion\n- **Design**: Figma\n- **Koodi / DevOps**: GitHub, GitLab, Sentry\n- **Viestintä**: Slack, Intercom\n- **Data**: PostgreSQL, MySQL, SQLite, Snowflake, BigQuery\n- **Infra**: filesystem, fetch, brave-search, Puppeteer\n- **Pilvi**: AWS, Cloudflare\n\nPalvelimia on kolmea tyyppiä: **viralliset** (Anthropicin ylläpitämät), **vendor** (esim. Linear Linearilta itseltään), **community**. Katalogi kasvaa kuukausittain.\n\n*Kirjoitushetkellä (2026-05) ajantasainen lista on osoitteessa [github.com/modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) ja MCP-asiakkaiden katalogeissa (Claude Desktop, Cursor, Continue).*",
+    "why": "Kytket yhden palvelimen — saat kymmeniä valmiita työkaluja, joissa autentikointi, skeemat ja virheidenkäsittely on jo hiottu. Oman konnektorin kirjoittaminen = 1-4 viikkoa kehitystä plus jatkuva ylläpito.",
+    "when": "Kun tuote on jo katalogissa — ota valmis. Kirjoita oma vain jos: (a) palvelua ei ole katalogissa, (b) tarvitset spesifin palvelinlogiikan, (c) compliance kieltää kolmannen osapuolen palvelimet.",
+    "impact": "Valmis palvelin: minuutteja kytkentään vs viikkoja oman rakentamiseen. Plus — päivitykset tulevat automaattisesti kun toimittaja muuttaa API:aan.",
+    "example": "«Haluan että Claude lukee Linear-tikettejä ja avaa PR:ia GitHubissa.» → `claude_desktop_config.json`: kytket `@modelcontextprotocol/server-linear` ja `@modelcontextprotocol/server-github` tokeneilla. Toimii 10 minuutissa.",
+    "mistakes": "❌ Oman Jira/Slack/Figma-konnektorin kirjoittaminen — 95% tapauksista virallinen riittää.\n❌ Community-palvelimen kytkentä tuotantoon ilman koodiauditia — turvallisuusriski.\n❌ Olla tarkistamatta tokenin scope/oikeudet — annat Claudelle enemmän valtuuksia kuin tarvitaan.\n❌ Ohittaa **MCP Inspector** virheiden etsinnässä — menetät tunteja virheiden arvailuun.\n\n*deprecate-watch: palvelinlista kasvaa kuukausittain. Rakenne (viralliset / vendor / community) on vakaa.*"
   },
   "m-custom": {
     "title": "Oma MCP-palvelin",

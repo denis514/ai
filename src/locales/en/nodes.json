@@ -81,13 +81,13 @@
     "mistakes": "Believing the [[node:b-system|system prompt]] «protects» from injection — it doesn't. Defense = limiting the agent's capabilities (Permissions, deny-lists, human approval), not «instructions to be vigilant»."
   },
   "b-knowledge": {
-    "title": "Knowledge and cutoff",
-    "what": "The model has a knowledge cutoff date. It may not know about events after it.",
-    "why": "So you don't trust Claude with data on fresh events without verification or external sources.",
-    "when": "When working with fresh news, releases, prices, laws.",
-    "impact": "Understanding the cutoff saves you from outdated answers and confident wrong claims.",
-    "example": "Here's a fresh article (text pasted). Based on it, tell me how the market changed in 2025.",
-    "mistakes": "Asking «how much does X cost now» — the model will answer with data many months old."
+    "title": "Knowledge cutoff (what Claude knows and doesn't)",
+    "what": "Every model has a **knowledge cutoff** — the date its training data ends. About events, prices, product releases **after** that date the model doesn't know (or knows incompletely).\n\nThe cutoff differs between models and updates when new versions ship. At time of writing the current cutoffs (check current values on anthropic.com):\n- Claude Opus 4 / Sonnet 4: early 2025\n- Claude Haiku 4.5: early 2025\n- Older models (3.5/3.7): earlier\n\n**Trick:** the cutoff isn't a clean stop. The model may know about events a couple months before the cutoff incompletely (under-representation in training data).",
+    "why": "This is why **you can't trust Claude with fresh facts without verification**.\n\nFor product teams it means: an AI workflow that operates on «current market state», competitor pricing, new laws — **must** use web search or RAG over fresh sources. Just prompt → Claude → answer without fresh data = production bug.",
+    "when": "**Remember the cutoff when:**\n- Fresh news, releases, articles (past 6-12 months)\n- Prices, plans, limits (of any SaaS)\n- Laws, regulations (change yearly)\n- Library versions, API breaking changes\n- Competitor analysis\n- Any time-sensitive facts\n\n**Cutoff doesn't matter when:**\n- Principles, concepts, patterns (stable for years)\n- Grammar, translation, general writing\n- Math, logic, algorithms\n- Historical analysis where the data is inside the cutoff",
+    "impact": "**What changes when you understand the cutoff:**\n- AI workflow architecture: always inject fresh context on time-sensitive tasks\n- Trust calibration: Claude **confidently** speaks about events after the cutoff (training fact) — that's False Confidence, not truth\n- Tool design: [[node:cap-search|Web search]] tool becomes a mandatory component, not optional\n- Quality metric: «fact-check» becomes its own workflow step, not default-trust\n\nDeprecate-watch: each model's knowledge cutoff updates when a new version ships. Refresh this node on every major Claude release.",
+    "example": "**Anti-pattern:**\n```\nuser: «How much does Claude Pro cost now?»\nClaude: «$20/mo» ← answer from training, may be outdated\n```\n\n**Correct pattern:**\n```\nuser query: «How much does Claude Pro cost now?»\n  ↓\nWorkflow:\n  1. Web search «Claude Pro pricing» (use [[node:cap-search|cap-search]])\n  2. Fetch anthropic.com/pricing\n  3. Pass the actual price as context\n  ↓\nClaude: «According to the current page — $X/mo. (sourced)»\n```\n\nIf the user is in an IDE, simpler: add today's date plus a source of truth for critical facts to the system prompt.",
+    "mistakes": "**1. Asking «how much does X cost now»** — Claude will answer confidently with training data which may be 6-18 months stale. Without fresh context = false answer with high confidence.\n\n**2. Not marking time-sensitive content** — if Atlas says «Anthropic released X», without a date it becomes outdated within a year. **Right way**: «At the time of writing (2026-05): X». See the `docs/maintenance.md` rule and the deprecate-watch table.\n\n**3. Confusing cutoff with context** — cutoff = what the model knew originally. Context = what you give it in the prompt. If you paste a fresh article into the prompt — Claude uses it, **regardless** of cutoff.\n\n**4. Ignoring cutoff for libraries** — «tell me the newest React 19 features» → Claude only knows what was in training. For current info — web search or focus on stable patterns."
   },
   "b-help": {
     "title": "Where to find help",
@@ -172,21 +172,21 @@
   },
   "pl-plans": {
     "title": "Plans",
-    "what": "Free / Pro / Team / Enterprise. Free — trial (limited models and quotas). Pro — for individual work. Team — sharing Projects with colleagues. Enterprise — custom SLAs and admin tools.",
-    "why": "So you pay for the level you need, not for «everything at once» or, conversely, suffer on Free with a serious task.",
-    "when": "At the start — Free to get acquainted. After 1-2 weeks of regular use — move to Pro.",
-    "impact": "Pro pays for itself within a week of real use thanks to Opus access and removal of Free limits.",
-    "example": "Tell me what I'll get switching from Free to Pro for my case: daily work with documents.",
-    "mistakes": "Taking Team when the team is under 3 people — overpaying without benefit. Taking Pro if you regularly need shared Projects — you miss collaboration."
+    "what": "A lineup of plans: **Free** (trial, limited models and low quotas), **Pro** (individual work, all models), **Max** (raised Opus limits, launched 2025), **Team** (Projects + shared team billing), **Enterprise** (SSO, audit log, custom SLAs).\n\nPricing principle: you pay for **access tier + quota volume**, not for individual features. Pro/Max/Team give the same functionality — the difference is in models and limits.\n\n*As of writing (2026-05) the current list is at [anthropic.com/pricing](https://anthropic.com/pricing). Anthropic revises the plan mix and prices 1-2 times a year.*",
+    "why": "So you pay for your real level of use. A lower plan = you hit the wall mid-day. An inflated one = you pay for empty seats.\n\nKey trap: Free creates a false impression of Claude's capabilities. Any serious demo hits the quota within an hour and seeds the wrong opinion «Claude is weak».",
+    "when": "**Free** — first 1-2 days of getting acquainted, not for work.\n**Pro** — daily individual use (5-20 long sessions per week).\n**Max** — if you regularly hit Pro's weekly Opus limit.\n**Team** — Projects shared between ≥3 colleagues + unified billing.\n**Enterprise** — compliance / audit log / SSO are critical.",
+    "impact": "The right plan pays for itself within 1-2 weeks via removed friction from limits and Opus access. The wrong one: either you pay for unused seats (Team for two), or daily you waste time waiting for reset (Free for work).",
+    "example": "«I work with Claude 3-5 hours a day: Sonnet for code + 2-3 long Opus sessions per week. Pro or Max?» → Pro until you hit the weekly Opus limit. If you hit it regularly — Max.",
+    "mistakes": "❌ Team when the team is < 3 people — overpayment.\n❌ Staying on Free «until I figure it out» — limits won't let you figure it out.\n❌ Paying for Pro and only using Sonnet — Opus justifies the price difference.\n\n*deprecate-watch: Anthropic changes exact prices and the plan mix 1-2 times per year — check anthropic.com/pricing.*"
   },
   "pl-limits": {
     "title": "Usage limits",
-    "what": "Pro has two limit types: 5-hour (rolling window — how many messages in the last 5 hours) and weekly. Reset on a rolling window, not by calendar.",
-    "why": "So you can plan long sessions and not hit a wall mid-day.",
-    "when": "When you notice «Claude is slowing down» — usually you're close to the 5-hour limit.",
-    "impact": "Understanding the limit lets you spread heavy requests and switch to Sonnet for routine.",
-    "example": "Show my current limit and how long until reset. Tell me which tasks I should postpone.",
-    "mistakes": "Staying on Opus all the time — the fastest way to exhaust the quota. Sonnet handles 80% of tasks."
+    "what": "Paid plans have two types of limits:\n\n1. **5-hour rolling window** — how many messages you can send in the last 5 hours. Resets on a rolling window from the first message, not by calendar.\n2. **Weekly window** — total volume over 7 days, mainly affects Opus.\n\nLimits are not expressed as fixed «N messages» — they depend on context length, selected model and current load. Opus eats the quota 3-5× faster than Sonnet.\n\n*Anthropic doesn't publish exact numbers and adjusts them based on demand. As of writing (2026-05) the current reference is at [support.anthropic.com](https://support.anthropic.com).*",
+    "why": "Limits aren't a bug — they're infrastructure protection from overload. Understanding the window mechanics (rolling, not calendar) changes planning: not «I'll wait until Monday», but «I'll work in short sprints with breaks».",
+    "when": "You notice «Claude is slowing down» or a warning appears about approaching the limit — that's usually the 5-hour window. If you hit the wall several times a week on Opus — that's the weekly limit, time to consider Max.",
+    "impact": "Understanding the limit lets you spread heavy requests across the day, switch to Sonnet for routine and save Opus for hard tasks. Result — stable productivity without mid-day walls.",
+    "example": "«Today I have 3 long Opus sessions processing 100k tokens each. When should I do the fourth — now or tomorrow morning?» → Morning, otherwise you'll hit the 5-hour window and lose 2-3 hours.",
+    "mistakes": "❌ Staying on Opus for every task — the fastest way to exhaust the quota. Sonnet handles 80% of work.\n❌ Assuming the limit «resets at midnight» — it's rolling, not calendar-based.\n❌ Not watching the usage indicator in the UI — it shows the approach to the limit in advance.\n\n*deprecate-watch: Anthropic regularly tweaks exact numbers and formulas. The structure (5h + weekly) is stable.*"
   },
   "pl-models": {
     "title": "Models per plan",
@@ -208,12 +208,12 @@
   },
   "pl-rate": {
     "title": "Rate limits API",
-    "what": "Anthropic API has separate rate limits: requests per minute (RPM), tokens per minute (TPM), tokens per day. Depend on the account Tier (Tier 1 → 4).",
-    "why": "So prod doesn't go down on a spike and you grow through Tiers deliberately.",
-    "when": "On integration into a product, on batch processing, as load grows.",
-    "impact": "Knowing the limits = right architecture with retry/backoff and non-blocking work.",
-    "example": "What Tier am I on right now? How much RPM/TPM? When will I be upgraded?",
-    "mistakes": "Ignoring 429 errors in production — the service will be unstable. Implement exponential backoff."
+    "what": "The Anthropic API has three constraint types:\n\n- **RPM** (requests per minute) — request count per minute\n- **TPM** (tokens per minute) — total token volume (input + output) per minute\n- **Daily tokens** — total token volume per 24 hours\n\nLimits depend on **account tier** (Tier 1 → Tier 4), which grows automatically as usage and spend increase. You can also apply for a higher tier ahead of spikes.\n\nOn excess, the API returns **429 Too Many Requests** with a `retry-after` header.\n\n*As of writing (2026-05) the current per-tier numbers are at [docs.anthropic.com/en/api/rate-limits](https://docs.anthropic.com/en/api/rate-limits). Anthropic adjusts them as infrastructure grows.*",
+    "why": "So prod doesn't fall over on load spikes and so you grow through tiers deliberately. Without understanding rate limits, the first batch job or viral launch becomes a 429 cascade.",
+    "when": "On any production integration, batch processing (evals, classification), traffic growth. Tier 1 is usually enough for MVP; production with real users typically needs Tier 2-3.",
+    "impact": "Knowing the limits = architecture with retry/backoff, queues and graceful degradation. Without this the service is unstable, users see errors, retention falls.",
+    "example": "«I'm launching a nightly batch of 50k classifications. What tier is safe?» → Calculate TPM: 50k × avg tokens per request / target time window. If it doesn't fit Tier 1 — apply for Tier 2 + use Message Batches API (cheaper, separate limit).",
+    "mistakes": "❌ Ignoring 429 in production without backoff — error cascade and instability.\n❌ Not using the `retry-after` header — blind retry loops kill your own limit.\n❌ Not budgeting buffer (80% of limit) — traffic spikes break things needlessly.\n❌ Not knowing about **Message Batches API** for offline loads — that's a 50% discount with a separate limit.\n\n*deprecate-watch: Anthropic revises specific RPM/TPM numbers per tier; the structure (RPM + TPM + daily + tier-based) is stable.*"
   },
   "pl-compare": {
     "title": "Claude.ai vs Code vs API",
@@ -783,13 +783,13 @@
     "mistakes": "Confusing MCP with REST API — it's a different layer: orchestrating model tools, not requests."
   },
   "m-ready": {
-    "title": "Ready-made servers",
-    "what": "A lineup of servers: Linear, Jira/Confluence, Figma, GitHub, Slack, Notion, DBs, filesystem.",
-    "why": "Turn one on — you get dozens of tools «out of the box».",
-    "when": "When the product is already in the catalog — don't write your own server.",
-    "impact": "A ready-made server = minutes to connect vs weeks for your own.",
-    "example": "Connect Figma MCP, open a file by URL and generate a React component from the node.",
-    "mistakes": "Writing your own Jira connector — the official one is enough for 95% of tasks."
+    "title": "Ready-made MCP servers",
+    "what": "The MCP server ecosystem covers core data sources and developer tools:\n\n- **Product trackers**: Linear, Jira/Confluence, Asana, Notion\n- **Design**: Figma\n- **Code / DevOps**: GitHub, GitLab, Sentry\n- **Communications**: Slack, Intercom\n- **Data**: PostgreSQL, MySQL, SQLite, Snowflake, BigQuery\n- **Infra**: filesystem, fetch, brave-search, Puppeteer\n- **Cloud**: AWS, Cloudflare\n\nServers come in three flavors: **official** (Anthropic-maintained), **vendor** (e.g. Linear by Linear itself), **community**. The catalog grows monthly.\n\n*As of writing (2026-05) the current list is at [github.com/modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) and in MCP client catalogs (Claude Desktop, Cursor, Continue).*",
+    "why": "Turn on one server — get dozens of ready tools with authentication, schemas and error handling already debugged. Writing your own connector = 1-4 weeks of development plus ongoing maintenance.",
+    "when": "When the product is already in the catalog — take the ready-made one. Write your own only if: (a) the service isn't in the catalog, (b) you need specific server-side logic, (c) compliance forbids third-party servers.",
+    "impact": "A ready-made server: minutes to connect vs weeks to build your own. Plus — updates arrive automatically when the provider changes their API.",
+    "example": "«I want Claude to read Linear tickets and open PRs on GitHub.» → `claude_desktop_config.json`: hook up `@modelcontextprotocol/server-linear` and `@modelcontextprotocol/server-github` with tokens. Working in 10 minutes.",
+    "mistakes": "❌ Writing your own Jira/Slack/Figma connector — the official one is enough for 95% of cases.\n❌ Hooking up a community server in prod without code audit — security risk.\n❌ Not checking the token's scope/permissions — you give Claude more rights than needed.\n❌ Skipping **MCP Inspector** for debugging — you lose hours guessing errors.\n\n*deprecate-watch: the server list grows monthly. The structure (official / vendor / community) is stable.*"
   },
   "m-custom": {
     "title": "Your own MCP server",
