@@ -43,6 +43,15 @@ import './BuilderApp.css';
 let nodeIdCounter = 1;
 const genNodeId = () => `n${nodeIdCounter++}`;
 
+// Default edge style — apply inline чтобы перебить React Flow defaults.
+// Через CSS !important иногда не работает в production: React Flow может
+// inject inline style attr на path element, и только inline-style на edge
+// object его перебивает.
+const EDGE_STYLE = {
+  stroke: '#94a3b8',
+  strokeWidth: 2,
+};
+
 function BuilderApp() {
   return (
     <ReactFlowProvider>
@@ -122,7 +131,7 @@ function BuilderAppInner() {
 
   /* ────────── Edge connection ────────── */
   const onConnect = useCallback(
-    (params) => setEdges(eds => addEdge({ ...params, animated: false }, eds)),
+    (params) => setEdges(eds => addEdge({ ...params, animated: false, style: EDGE_STYLE }, eds)),
     [setEdges]
   );
 
@@ -199,6 +208,7 @@ function BuilderAppInner() {
       id: `e${i}-${tempIdMap[e.from]}-${tempIdMap[e.to]}`,
       source: tempIdMap[e.from],
       target: tempIdMap[e.to],
+      style: EDGE_STYLE,
     }));
 
     setNodes(newNodes);
