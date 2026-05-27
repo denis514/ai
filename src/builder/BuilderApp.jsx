@@ -15,6 +15,8 @@ import Icon from '../components/Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data/nodeTypes.js';
 import { nodeTypes } from './components/canvas/index.js';
+import ToolboxItem from './components/canvas/ToolboxItem.jsx';
+import ConceptTooltip from './components/education/ConceptTooltip.jsx';
 import TemplateGallery from './components/panels/TemplateGallery.jsx';
 import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
 import { createExecution } from './services/mockExecutor.js';
@@ -56,6 +58,7 @@ function BuilderAppInner() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [execPanelOpen, setExecPanelOpen] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [tooltipInfo, setTooltipInfo] = useState(null); // { defId, top, left }
 
   // Execution state
   const [execStatus, setExecStatus] = useState('idle'); // 'idle' | 'running' | 'completed' | 'failed' | 'stopped'
@@ -391,21 +394,12 @@ function BuilderAppInner() {
                     const def = NODE_DEFS[defId];
                     if (!def) return null;
                     return (
-                      <button
+                      <ToolboxItem
                         key={defId}
-                        type="button"
-                        className="builder-toolbox__item"
-                        style={{ '--node-color': def.color }}
-                        draggable
-                        onDragStart={(e) => {
-                          e.dataTransfer.setData('application/builder-node', defId);
-                          e.dataTransfer.effectAllowed = 'copy';
-                        }}
-                        title={t(def.labelKey) || defId}
-                      >
-                        <Icon name={def.icon} size={14} strokeWidth={1.5} />
-                        <span>{t(def.labelKey) || defId}</span>
-                      </button>
+                        defId={defId}
+                        def={def}
+                        onHover={setTooltipInfo}
+                      />
                     );
                   })}
                 </div>
@@ -507,6 +501,15 @@ function BuilderAppInner() {
           onUseTemplate={loadTemplate}
           onScratch={() => setGalleryOpen(false)}
           onClose={() => setGalleryOpen(false)}
+        />
+      )}
+
+      {/* Education tooltip — hover on toolbox items */}
+      {tooltipInfo && !galleryOpen && (
+        <ConceptTooltip
+          defId={tooltipInfo.defId}
+          top={tooltipInfo.top}
+          left={tooltipInfo.left}
         />
       )}
     </div>

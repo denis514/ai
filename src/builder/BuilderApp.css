@@ -1099,6 +1099,121 @@
 }
 
 /* ────────────────────────────────────────────────── */
+/* Education tooltip (toolbox hover)                  */
+/* ────────────────────────────────────────────────── */
+
+.builder-app .builder-tooltip {
+  --node-color: #2563eb;
+  position: fixed;
+  z-index: 90;
+  width: 280px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--node-color);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+  pointer-events: auto;
+  animation: builder-tooltip-in 160ms ease;
+}
+
+@keyframes builder-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.builder-app .builder-tooltip__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.builder-app .builder-tooltip__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--node-color) 14%, transparent);
+  color: var(--node-color);
+  flex: 0 0 auto;
+}
+
+.builder-app .builder-tooltip__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.builder-app .builder-tooltip__kind {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-soft);
+  margin-top: 2px;
+}
+
+.builder-app .builder-tooltip__desc {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+.builder-app .builder-tooltip__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+  text-align: left;
+}
+
+.builder-app .builder-tooltip__link:hover {
+  background: var(--surface-soft);
+  border-color: var(--node-color);
+  color: var(--node-color);
+}
+
+.builder-app .builder-tooltip__link span {
+  flex: 1 1 auto;
+}
+
+.builder-app .builder-tooltip__hint {
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--text-soft);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+/* Mobile — hide tooltip (no hover на touch) */
+@media (max-width: 768px) {
+  .builder-app .builder-tooltip {
+    display: none;
+  }
+}
+
+/* ────────────────────────────────────────────────── */
 /* Mobile fallback (Day 87 будет proper)               */
 /* ────────────────────────────────────────────────── */
 
