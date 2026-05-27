@@ -5,6 +5,26 @@
 
 ---
 
+## 🎯 Текущий фокус (2026-05-27): Product-first
+
+**Все distribution-процессы заморожены** — см. `docs/business-strategy/PIVOT-PRODUCT-FIRST.md`.
+
+Не запускаются:
+- ❌ Interview validation (была Track A)
+- ❌ LinkedIn outreach (был Nordic playbook)
+- ❌ Email cold-acquisition
+- ❌ Content marketing посты
+- ❌ Growth/sales/competitive skill-агенты (dormant)
+
+Фокус 100%:
+- ✅ Atlas — content depth + UX polish
+- ✅ Builder — продвижение от MVP к Beta (auth, persistence, real APIs)
+- ✅ Технический долг — performance, security, infra
+
+Возобновление distribution — только при выполнении одного из условий в PIVOT-PRODUCT-FIRST.md.
+
+---
+
 ## 🔧 Технический аудит (2026-05-20)
 
 ### Build
