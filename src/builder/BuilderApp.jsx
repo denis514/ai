@@ -352,7 +352,7 @@ function BuilderAppInner() {
           <span className="builder-header__beta">BETA</span>
           {nodes.length > 0 && (
             <span className="builder-header__counter">
-              {nodes.length} {nodes.length === 1 ? 'node' : 'nodes'}
+              {nodes.length} {t(nodes.length === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || (nodes.length === 1 ? 'node' : 'nodes')}
             </span>
           )}
         </div>
@@ -391,7 +391,8 @@ function BuilderAppInner() {
             className="builder-btn builder-btn--ghost"
             onClick={() => setToolboxOpen(v => !v)}
             aria-pressed={toolboxOpen}
-            title="Toggle toolbox"
+            title={t('builder.header.toggleToolbox') || 'Toggle toolbox'}
+            aria-label={t('builder.header.toggleToolbox') || 'Toggle toolbox'}
           >
             <Icon name="archive" size={14} strokeWidth={1.5} />
           </button>
@@ -400,7 +401,8 @@ function BuilderAppInner() {
             className="builder-btn builder-btn--ghost"
             onClick={() => setSidebarOpen(v => !v)}
             aria-pressed={sidebarOpen}
-            title="Toggle sidebar"
+            title={t('builder.header.toggleSidebar') || 'Toggle sidebar'}
+            aria-label={t('builder.header.toggleSidebar') || 'Toggle sidebar'}
           >
             <Icon name="clipboard" size={14} strokeWidth={1.5} />
           </button>
@@ -409,7 +411,8 @@ function BuilderAppInner() {
             className="builder-btn builder-btn--ghost"
             onClick={() => setExecPanelOpen(v => !v)}
             aria-pressed={execPanelOpen}
-            title="Toggle execution panel"
+            title={t('builder.header.toggleExec') || 'Toggle execution panel'}
+            aria-label={t('builder.header.toggleExec') || 'Toggle execution panel'}
           >
             <Icon name="terminal" size={14} strokeWidth={1.5} />
           </button>
@@ -418,7 +421,7 @@ function BuilderAppInner() {
             className="builder-btn builder-btn--primary"
             onClick={handleRun}
             disabled={nodes.length === 0 || execStatus === 'running'}
-            title="Run (R)"
+            title={t('builder.header.runHint') || 'Run (R)'}
           >
             <Icon name={execStatus === 'running' ? 'refresh' : 'flash'} size={14} strokeWidth={1.5} />
             <span>{execStatus === 'running'

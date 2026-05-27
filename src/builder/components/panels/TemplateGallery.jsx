@@ -75,7 +75,7 @@ export default function TemplateGallery({ onUseTemplate, onScratch, onClose }) {
                     {t(`builder.difficulty.${template.difficulty}`) || template.difficulty}
                   </span>
                   <span className="builder-template-card__count">
-                    {template.nodes.length} {template.nodes.length === 1 ? 'node' : 'nodes'}
+                    {template.nodes.length} {t(template.nodes.length === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || (template.nodes.length === 1 ? 'node' : 'nodes')}
                   </span>
                 </div>
               </div>
