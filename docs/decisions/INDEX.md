@@ -9,6 +9,8 @@ Architecture Decision Records (ADRs) для 105 Atlas.
 | [0001](./0001-workflow-schema-v1.md) | 2026-05-27 | Workflow schema v1 — recipe-style fields | accepted | content, business |
 | [0002](./0002-af-cap-separation.md) | 2026-05-27 | Foundation layer separation — af-* vs cap-* | accepted | content, architecture |
 | [0003](./0003-pivot-product-first.md) | 2026-05-27 | Pivot — product-first focus, freeze distribution | accepted | business, strategy |
+| [0004](./0004-bundle-splitting-strategy.md) | 2026-05-27 | Bundle splitting — per-locale sections + lazy modals + audience tutorials | accepted | architecture, performance, frontend |
+| [0005](./0005-css-cleanup-methodology.md) | 2026-05-27 | CSS cleanup methodology — audit-driven manual verification | accepted | architecture, performance, frontend, tooling |
 
 ---
 
