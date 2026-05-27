@@ -59,6 +59,7 @@ const FEATURES = [
   { icon: 'compass', key: 'intro.feature.map' },
   { icon: 'rocket', key: 'intro.feature.courses' },
   { icon: 'flash', key: 'intro.feature.prompts' },
+  { icon: 'sparkles', key: 'intro.feature.builder', beta: true },
 ];
 
 export default function IntroModal({ onDone, onRequestAuth }) {
@@ -134,7 +135,10 @@ export default function IntroModal({ onDone, onRequestAuth }) {
                   <span className="intro-feature__icon" aria-hidden="true">
                     <Icon name={f.icon} size={17} strokeWidth={1.5} />
                   </span>
-                  <span className="intro-feature__text">{t(f.key)}</span>
+                  <span className="intro-feature__text">
+                    {t(f.key)}
+                    {f.beta && <span className="intro-feature__beta">BETA</span>}
+                  </span>
                 </div>
               ))}
             </div>

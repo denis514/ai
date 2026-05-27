@@ -853,6 +853,7 @@ function AppInner() {
           onOpenCourses={onOpenCourses}
           onOpenLibrary={onOpenLibrary}
           onOpenHelp={onOpenHelp}
+          onOpenBuilder={() => setRoute({ type: 'builder' })}
           route={route}
         />
 

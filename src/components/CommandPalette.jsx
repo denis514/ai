@@ -37,7 +37,8 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksA
   const KIND_LABEL = {
     node:     t('palette.kind.node'),
     prompt:   t('palette.kind.prompt'),
-    tutorial: t('palette.kind.tutorial')
+    tutorial: t('palette.kind.tutorial'),
+    builder:  t('palette.kind.builder')
   };
   const [query, setQuery] = useState('');
   const [activeIdx, setActiveIdx] = useState(0);
@@ -74,7 +75,15 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksA
         meta: loc?.totalTime || ''
       };
     });
-    return [...nodes, ...prompts, ...tuts];
+    // Special: Agent Builder — visible через search «builder» / «agent» / «workflow editor»
+    const builderItem = {
+      type: 'builder',
+      id: '__open__', // synthetic — onNavigate handler ignores id for type='builder'
+      title: t('palette.builder.title') || 'Agent Builder',
+      icon: 'sparkles',
+      subtitle: t('palette.builder.subtitle') || 'BETA — visual workflow editor for AI agents',
+    };
+    return [builderItem, ...nodes, ...prompts, ...tuts];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale]);
 

@@ -20,7 +20,7 @@ import { useT } from '../i18n/LocaleContext.jsx';
 export default function CanvasHeader({
   query, onQuery,
   tutorialsCompleted, tutorialsTotal,
-  onOpenCourses, onOpenLibrary, onOpenHelp,
+  onOpenCourses, onOpenLibrary, onOpenHelp, onOpenBuilder,
   route
 }) {
   const t = useT();
@@ -155,6 +155,20 @@ export default function CanvasHeader({
               {tutorialsCompleted}/{tutorialsTotal}
             </span>
           </button>
+          {onOpenBuilder && (
+            <button
+              type="button"
+              className="canvas-header__menu-item"
+              onClick={() => runAction(onOpenBuilder)}
+              role="menuitem"
+            >
+              <Icon name="sparkles" size={16} strokeWidth={1.5} />
+              <span>{t('header.builder')}</span>
+              <span className="canvas-header__menu-badge canvas-header__menu-badge--beta">
+                BETA
+              </span>
+            </button>
+          )}
           <button
             type="button"
             className="canvas-header__menu-item"
