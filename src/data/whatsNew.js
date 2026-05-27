@@ -46,6 +46,7 @@ export const WHATS_NEW = {
   'folders-workshop': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
+  'cap-tools': { date: '2026-05-27', type: 'updated' },
   'ai-native-ecommerce': { date: '2026-05-26', type: 'updated' },
   'ec-pdp-gen': { date: '2026-05-26', type: 'updated' },
   'ec-search-opt': { date: '2026-05-26', type: 'updated' },
