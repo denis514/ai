@@ -1653,31 +1653,24 @@
 /* React Flow edges — themed                          */
 /* ────────────────────────────────────────────────── */
 
+/* Edge styling: inline style на edge object выигрывает в idle state.
+   CSS подключается только для transition + hover/selected accent. */
 .builder-app .react-flow__edge-path {
-  stroke: var(--text-soft) !important;
-  stroke-width: 2 !important;
-  fill: none !important;
-  stroke-opacity: 1 !important;
+  fill: none;
   transition: stroke 180ms ease, stroke-width 180ms ease;
 }
 
 .builder-app .react-flow__edge:hover .react-flow__edge-path,
 .builder-app .react-flow__edge.selected .react-flow__edge-path {
-  stroke: var(--accent, #2563eb) !important;
+  stroke: #2563eb !important;
   stroke-width: 3 !important;
 }
 
 .builder-app .react-flow__connection-path {
-  stroke: var(--accent, #2563eb) !important;
-  stroke-width: 2.5 !important;
-  fill: none !important;
+  stroke: #2563eb;
+  stroke-width: 2.5;
+  fill: none;
   stroke-dasharray: 5 5;
-}
-
-/* React Flow стандарт скрывает .react-flow__edges-renderer когда edges пустой —
-   делаем sure что svg layer всегда виден когда edges есть */
-.builder-app .react-flow__edges {
-  pointer-events: auto;
 }
 
 /* ────────────────────────────────────────────────── */
@@ -1782,9 +1775,7 @@
   background: color-mix(in srgb, #000 70%, transparent);
 }
 
-:root[data-theme="dark"] .builder-app .react-flow__edge-path {
-  stroke: var(--text-soft) !important;
-}
+/* Dark theme — edges стиль из inline JS работает в обоих темах */
 
 :root[data-theme="dark"] .builder-app .react-flow__minimap {
   filter: invert(0.85) hue-rotate(180deg);
