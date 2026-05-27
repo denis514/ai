@@ -381,6 +381,12 @@ node scripts/sync-whats-new.mjs --regen  # пересобрать whatsNew.js б
 | Мониторинг конкурентов и рынка         | `skills/competitive-intelligence/` |
 | Decision-ready proposal docs           | `skills/proposal-generator/` |
 | Еженедельный strategic review          | `node scripts/weekly-strategy-review.mjs` |
+| **Agent Builder — стратегия + планы**  | `docs/agent-builder/`      |
+| Проектирование agents и workflow       | `skills/agent-architecture/` |
+| Visual builder UX (canvas, onboarding) | `skills/ux-flow-designer/` |
+| AI education snippets (tooltips, deep-links) | `skills/ai-education-designer/` |
+| Risk audit перед изменениями кода      | `skills/technical-risk-auditor/` |
+| MVP / Beta / Future scoping            | `skills/mvp-planner/` |
 | Что сейчас в работе                    | `tasks/current.md`         |
 | Что в плане                            | `tasks/roadmap.md`         |
 | Сырые идеи                             | `tasks/ideas.md`           |
