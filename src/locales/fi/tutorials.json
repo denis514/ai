@@ -266,7 +266,33 @@
         "validate": "Sinulla on käynnissä keskustelu OMALLA tehtävälläsi sekä tietoinen mallivalinta + rooli.",
         "tip": "Jatka tästä Prompt engineering -oppitunteihin — siellä menemme tekniikoihin syvemmin."
       }
-    }
+    },
+    "trigger": "Haluat lopettaa kokeilun ja ymmärtää Clauden — mallit, konteksti, keskustelut.",
+    "inputs": [
+      "Peruspääsy claude.ai:hin tai Desktopiin",
+      "Yksi oikea tehtävä harjoitteluun",
+      "20 keskittynyttä minuuttia"
+    ],
+    "outputs": [
+      "Selkeä käsitys Opus / Sonnet / Haiku ja milloin mikäkin",
+      "Hallitut käsitteet: kontekstiikkuna, keskustelut, artefaktit",
+      "Ensimmäinen mielekäs keskustelu omasta tehtävästä"
+    ],
+    "tools": [
+      {
+        "name": "Opus 4",
+        "role": "vaativat tehtävät"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "arkityö"
+      },
+      {
+        "name": "Haiku",
+        "role": "nopeat vastaukset"
+      }
+    ],
+    "savings": "~viikko kokeilua vs 20 min suunnitelmallista aloitusta"
   },
   "projects": {
     "title": "Luo ensimmäinen Project",
@@ -406,7 +432,33 @@
         "validate": "Kollegat näkevät Project:n omissa listoissaan ja voivat avata keskusteluja.",
         "tip": "Nimeä yksi \"kuraattori\" Project:lle — hän vastaa ohjeiden ja knowledge:n siisteydestä. Ilman kuraattoria Project rappeutuu kuukaudessa."
       }
-    }
+    },
+    "trigger": "Huomaat selittäväsi Claudelle saman kontekstin 3+ kertaa viikossa.",
+    "inputs": [
+      "Toistuvien tehtävien lista (sisältö, katselmointi, auditointi)",
+      "Materiaalit knowledge baseen (docs, brand book)",
+      "Haluttu Clauden vastausformaatti"
+    ],
+    "outputs": [
+      "Valmis Project custom instructionseilla",
+      "Ladattu knowledge base (jopa 200K tokenia)",
+      "Aloituspromptien pohjat tiimille"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "säilö"
+      },
+      {
+        "name": "Knowledge base",
+        "role": "projektin muisti"
+      },
+      {
+        "name": "Custom Instructions",
+        "role": "rooli ja tyyli"
+      }
+    ],
+    "savings": "~15-20 min per uusi chat — Claude on jo perillä"
   },
   "artifacts": {
     "title": "Luo ensimmäinen interaktiivinen Artifact",
@@ -515,7 +567,33 @@
         "validate": "Koodi on liitetty projektiisi ja kääntyy ilman virheitä.",
         "tip": "Älä kopioi kaikkea kerralla. Ennen kopiointia pyydä Claudelta: \"käy koodi läpi ja poista turhat kommentit ja kommentoitu roska\"."
       }
-    }
+    },
+    "trigger": "Pitää näyttää elävä prototyyppi, laskeutumissivu tai kaavio — ei staattista tekstiä.",
+    "inputs": [
+      "Artefakti-idea: HTML/SVG/React/Markdown",
+      "Tyyliviitteet (valinnainen)",
+      "Yleisö: kenelle tehdään"
+    ],
+    "outputs": [
+      "Interaktiivinen artefakti sivupaneelissa",
+      "«Tee vihreämpi / lisää lohko» -iterointi ilman copypastea",
+      "Valmis HTML/koodi jaettavaksi"
+    ],
+    "tools": [
+      {
+        "name": "Claude Artifacts",
+        "role": "kangas"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "generointi"
+      },
+      {
+        "name": "Selainesikatselu",
+        "role": "tuloksen tarkastelu"
+      }
+    ],
+    "savings": "~1-2 tuntia per prototyyppi vs manuaalinen koodaus editorissa"
   },
   "skills": {
     "title": "Luo ensimmäinen Skill",
@@ -653,7 +731,33 @@
         "validate": "Skill on oikeassa käytössä, et kirjoita samaa kehotetta käsin.",
         "tip": "Jaa Skill tiimille repositorion kautta (skills/). Yksi Skill × 5 ihmistä = 5-kertainen tuotto."
       }
-    }
+    },
+    "trigger": "Huomaat kirjoittavasi Claudelle saman tarkistuslistan «ensin X, sitten Y, formaatissa Z» joka kerta.",
+    "inputs": [
+      "Toistuvan tehtävän kuvaus",
+      "Referenssiesimerkki «miltä hyvä näyttää»",
+      "Vaiheiden ja rajoitusten lista"
+    ],
+    "outputs": [
+      "Valmis SKILL.md metadatalla + materiaaleilla",
+      "Skill, jonka Claude käynnistää itse sopivissa tehtävissä",
+      "Versiointi tiimille"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "skillsien isäntä"
+      },
+      {
+        "name": "SKILL.md",
+        "role": "spesifikaatiotiedosto"
+      },
+      {
+        "name": "Opus 4",
+        "role": "skillin suunnittelu"
+      }
+    ],
+    "savings": "~10-15 min per toisto + yhtenäinen laatuvaatimus"
   },
   "claude-code": {
     "title": "Asenna ja konfiguroi Claude Code",
@@ -813,7 +917,33 @@
         "validate": "Sinulla on 3 skenaariota, joita käytät tottumuksesta, ilman tietoista \"kokeillaanpa Claudea\".",
         "tip": "Seuraavaksi — MCP. Linear:in/Figma:n/tietokannan kytkeminen muuttaa Claude Coden koodiassistentista tuoteassistentiksi."
       }
-    }
+    },
+    "trigger": "Koodikanta kasvoi Copilotin ulottumattomiin — tarvitset agentin joka näkee koko projektin.",
+    "inputs": [
+      "Node.js + terminaali",
+      "Anthropic API -avain tai Pro-tilaus",
+      "Oikea koodikanta"
+    ],
+    "outputs": [
+      "Asennettu ja autentikoitu Claude Code",
+      "Onnistunut /init CLAUDE.md:llä",
+      "Ymmärrys permissionseista ja tool usesta"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code CLI",
+        "role": "terminaaliagentti"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "oletusmalli"
+      },
+      {
+        "name": "CLAUDE.md",
+        "role": "projektin muisti"
+      }
+    ],
+    "savings": "~2-4 tuntia refaktorointiin — kymmeniä tiedostoja yhdellä ajolla"
   },
   "mcp": {
     "title": "Kytke ensimmäinen MCP-palvelin",
@@ -957,7 +1087,33 @@
         "validate": "Tokenilla on tarkalleen ne scopes:t, joita käytät, ei enempää.",
         "tip": "Älä koskaan käytä yhtä tokenia eri palvelimille. Yksi palvelu = yksi token. Tämä helpottaa peruuttamista."
       }
-    }
+    },
+    "trigger": "Haluat Clauden näkevän Linearisi / Notionisi / DB:si suoraan — ei enää kopiointia kontekstina.",
+    "inputs": [
+      "Lista yhdistettävistä järjestelmistä (Linear, Notion, GitHub, ...)",
+      "Pääsytokenit niihin",
+      "Asennettu Claude Desktop tai Code"
+    ],
+    "outputs": [
+      "Toimiva MCP-palvelin konfiguraatiossa",
+      "Claude lukee elävää dataa yhdistetystä järjestelmästä",
+      "Selkeä käsitys stdio vs HTTP -kuljetuksesta"
+    ],
+    "tools": [
+      {
+        "name": "MCP-protokolla",
+        "role": "integraatiostandardi"
+      },
+      {
+        "name": "Claude Desktop/Code",
+        "role": "MCP-isäntä"
+      },
+      {
+        "name": "Valmiit MCP-palvelimet",
+        "role": "Anthropicin rekisteristä"
+      }
+    ],
+    "savings": "~30 min per tiketti — Claude hakee Linear/Notion-kontekstin itse"
   },
   "instructions": {
     "title": "Konfiguroi Custom Instructions",
@@ -1068,7 +1224,29 @@
         "validate": "Project toimii erikoistuneessa tilassa, globaalit säännöt eivät ole rikki.",
         "tip": "Tarkistus: kysy Project:ssa \"kuka olet?\". Pitää vastata erikoistuneena roolina, ei yleisenä assistenttina."
       }
-    }
+    },
+    "trigger": "Selität joka uudessa chatissa «olen markkinoinnissa, vastaa suomeksi, ilman vatvomista».",
+    "inputs": [
+      "Roolin ja työkontekstin kuvaus",
+      "Tyyli- ja kielipreferenssit",
+      "Lista «älä tee» -säännöistä (sävy, formaatti, pituus)"
+    ],
+    "outputs": [
+      "Täytetyt About me / Response style -kentät",
+      "Sovelletaan automaattisesti kaikkiin chatteihin",
+      "Pohja jaettavaksi tiimin kanssa"
+    ],
+    "tools": [
+      {
+        "name": "Custom Instructions",
+        "role": "claude.ai-profiili"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "huomioi ne joka vastauksessa"
+      }
+    ],
+    "savings": "~2-3 min per uusi chat — yhteensä ~1 tunti viikossa"
   },
   "prompting": {
     "title": "Vahvista Prompt engineering",
@@ -1202,7 +1380,33 @@
         "validate": "Pohja on kirjastossasi, ja voit soveltaa sen 30 sekunnissa.",
         "tip": "Seuraavaksi — osio \"Valmiit kehotteet\" kartalla: siellä 10 pohjaa tyyppi-tehtäviin."
       }
-    }
+    },
+    "trigger": "Sama kysymys antaa joskus käyttökelpoisen suunnitelman, joskus «yleiskatsauksen» — epävakaus rasittaa.",
+    "inputs": [
+      "Muutama omasta promptisi joka floppasi",
+      "Referenssiesimerkki hyvästä vastauksesta",
+      "Tehtävän konteksti (rooli, yleisö, formaatti)"
+    ],
+    "outputs": [
+      "5 vipua: rakenne, konteksti, esimerkit, rooli, rajoitteet",
+      "Uudelleen kirjoitettu «kultainen» prompt omaan caseen",
+      "Henkilökohtainen tarkistuslista ennen lähetystä"
+    ],
+    "tools": [
+      {
+        "name": "Opus 4",
+        "role": "vaikeisiin prompteihin"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "arkipromptit"
+      },
+      {
+        "name": "Prompt Improver",
+        "role": "autoparannus Consolessa"
+      }
+    ],
+    "savings": "~50% vähemmän «kysy uudestaan» -iteraatioita per tehtävä"
   },
   "scenarios": {
     "title": "Valitse oma pääskenaariosi",
@@ -1313,7 +1517,33 @@
         "validate": "Vähintään yksi kollega työskentelee skenaariosi mukaan.",
         "tip": "Jos skenaario toimii SINULLA — se on hypoteesi. Kahdella ihmisellä — kaava. Viidellä — tiimin standardi."
       }
-    }
+    },
+    "trigger": "Yleiset AI-postaukset eivät auta — tarvitset stäkin juuri omaan rooliisi (PM / markkinointi / design).",
+    "inputs": [
+      "Roolisi ja top 3 tehtävää",
+      "Nykyinen työkalupakki (Figma, Linear, Notion, ...)",
+      "Taso: aloittelija / varma / edistynyt"
+    ],
+    "outputs": [
+      "Roolikohtainen AI-stäkki (Projects + MCP + promptit)",
+      "3 päätyönkulkua valmiilla prompteilla",
+      "Kuukauden kehityspolku"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "yksi per tehtävä"
+      },
+      {
+        "name": "MCP",
+        "role": "roolisi integraatiot"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "pääsuorittaja"
+      }
+    ],
+    "savings": "~3-5 tuntia viikossa oman funktion tehtävissä"
   },
   "agents": {
     "title": "Luo ensimmäinen agenttisi",
@@ -1440,7 +1670,33 @@
         "validate": "Sinulla on vähintään 5 oikeaa ajoa; parannukset on kirjattu agentin tiedostoon.",
         "tip": "Parhaat agentit syntyvät iteraatioiden kautta, eivät \"nerokkaasta ensimmäisestä luonnoksesta\". Älä murehdi täydellisyydestä."
       }
-    }
+    },
+    "trigger": "Yksi Claude Code «unohtaa» tiettyjen tehtävätyyppien erityispiirteet — tarvitset omistautuneita suorittajia katselmointiin, testeihin, migraatioihin.",
+    "inputs": [
+      "Delegoitava tehtävätyyppi (review, tests, refactor)",
+      "Tarkistuslista «hyvä tulos»",
+      "Työkalut joihin agentti tarvitsee pääsyn"
+    ],
+    "outputs": [
+      "Valmis sub-agentti roolilla ja työkaluilla",
+      "Komento/triggeri pääclaudesta kutsumiseen",
+      "Kontekstin eristys tehtävien välillä"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "orkestroija"
+      },
+      {
+        "name": "Sub-agents API",
+        "role": "delegointi"
+      },
+      {
+        "name": "Opus 4",
+        "role": "monimutkaisiin agentteihin"
+      }
+    ],
+    "savings": "~40% aikaa toistuvissa insinöörityyppisissä tehtävissä"
   },
   "ready-prompts": {
     "title": "Käytä valmiita kehotteita",
@@ -1536,7 +1792,33 @@
         "validate": "Sinulla on henkilökohtainen kehotekirjasto vähintään yhdellä mukautetulla pohjalla.",
         "tip": "6 kuukauden kuluttua kirjastosi on tärkein tuottavuuspääomasi. Älä aliarvioi. Jaa tiimille."
       }
-    }
+    },
+    "trigger": "Tulos tarvitaan heti — ei aikaa opiskella prompt engineeringiä alusta.",
+    "inputs": [
+      "Tehtävän tyyppi (analyysi / ideointi / strukturointi / kirjoittaminen)",
+      "Omat tiedot pohjaan",
+      "5 min sovittamiseen"
+    ],
+    "outputs": [
+      "Valmis prompt täytetyillä paikoilla",
+      "Strukturoitu Clauden vastaus pohjan mukaan",
+      "Aloituskirjasto «top 10 promptia»"
+    ],
+    "tools": [
+      {
+        "name": "Claude.ai",
+        "role": "web-chat"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "suorittaja"
+      },
+      {
+        "name": "Atlas-promptit",
+        "role": "pohjien katalogi"
+      }
+    ],
+    "savings": "~15-25 min per tehtävä vs promptin rakentaminen tyhjästä"
   },
   "intro": {
     "title": "Ensimmäinen Claude-sessio",
@@ -1640,7 +1922,29 @@
         },
         "validate": "Sinulla on päässäsi selvä jako: milloin menet Googleen, milloin Claudeen."
       }
-    }
+    },
+    "trigger": "Kuulet Claudesta ensimmäistä kertaa etkä näe eroa ChatGPT:hen/Geminiin.",
+    "inputs": [
+      "Selain + internet",
+      "10 keskittynyttä minuuttia",
+      "Uteliaisuutta (ei esitietoja)"
+    ],
+    "outputs": [
+      "Selkeä käsitys mikä Claude on ja missä se asuu",
+      "Realistiset odotukset (osaa/ei osaa)",
+      "Lista ensimmäisistä harjoittelutehtävistä"
+    ],
+    "tools": [
+      {
+        "name": "claude.ai",
+        "role": "web-pääsy"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "free-tason oletusmalli"
+      }
+    ],
+    "savings": "~1-2 hukkapäivää vääristä odotuksista vs 10 min orientoituminen"
   },
   "platform": {
     "title": "Valitse oma tariffisi",
@@ -1741,7 +2045,29 @@
         },
         "validate": "Päätös tehty: \"pysyn Free:ssä N viikkoa\" / \"otan Pro:n nyt\" / \"keskustelen Team:istä\"."
       }
-    }
+    },
+    "trigger": "Tuijotat Free / Pro / Max / Team -valintaa etkä tiedä mistä maksaisi.",
+    "inputs": [
+      "Käyttöskenaario: henkilökohtainen / työ / tiimi",
+      "Tehtävien määrä viikossa",
+      "AI-budjetti"
+    ],
+    "outputs": [
+      "Perusteltu valinta omaan caseen",
+      "Selkeä käsitys rajoista ja malleista per taso",
+      "Päivityssuunnitelma jos osut kattoon"
+    ],
+    "tools": [
+      {
+        "name": "Claude Plans",
+        "role": "Free/Pro/Max/Team"
+      },
+      {
+        "name": "Anthropic Console",
+        "role": "API-taso"
+      }
+    ],
+    "savings": "~$20-200/kk oikealla tariffilla vs «otetaan kallein»"
   },
   "capabilities": {
     "title": "Työskentely kuvien ja tiedostojen kanssa",
@@ -1854,7 +2180,33 @@
         },
         "validate": "Sinulla on konkreettinen tulos + ymmärrys ajan säästöstä."
       }
-    }
+    },
+    "trigger": "Käytät Claudea vain chattina — vaikka työsi on täynnä PDF:iä, kuvankaappauksia, dokumentteja.",
+    "inputs": [
+      "Tiedostot: PDF:t, kuvat, dokumentit",
+      "Konkreettinen tehtävä (analyysi / poiminta / muunnos)",
+      "Haluttu lopputulosformaatti"
+    ],
+    "outputs": [
+      "Hallitut multimodaaliset skenaariot (vision + docs)",
+      "Promptien pohjat tiedostojen analysointiin",
+      "Selkeä käsitys koko/formaatti-rajoista"
+    ],
+    "tools": [
+      {
+        "name": "Claude Vision",
+        "role": "kuvat"
+      },
+      {
+        "name": "PDF-tuki",
+        "role": "jopa 100 sivua"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "analyysi"
+      }
+    ],
+    "savings": "~1-2 tuntia per dokumentti manuaalisesta erottelusta"
   },
   "prompting-techniques": {
     "title": "Kehotetekniikat: hands-on",
@@ -2007,7 +2359,33 @@
         "validate": "Sinulla on kehotteen versio v4 vs v1 — selvä ero ilman täydellistä uudelleenkirjoittamista.",
         "tip": "Muutat 5 asiaa kerralla — et ymmärrä, mikä auttoi. Yksi askel = yksi hypoteesi."
       }
-    }
+    },
+    "trigger": "Perusasiat hallussa — nyt halutaan luotettavuutta vaativiin tehtäviin (CoT, few-shot, self-critique).",
+    "inputs": [
+      "Yksi vaativa tehtävä 5 tekniikan testiin",
+      "Referenssivastaus vertailuun",
+      "Valmius ajaa 5 koetta peräkkäin"
+    ],
+    "outputs": [
+      "Yhteen tehtävään sovellettu: role / CoT / few-shot / structure / self-critique",
+      "Laadun «ennen/jälkeen» -vertailu per tekniikka",
+      "Henkilökohtainen kartta «milloin mitäkin»"
+    ],
+    "tools": [
+      {
+        "name": "Opus 4",
+        "role": "CoT:hen ja self-critiqueen"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "few-shot"
+      },
+      {
+        "name": "Workbench",
+        "role": "A/B-vertailu"
+      }
+    ],
+    "savings": "~30-50% laadun nousu vaativissa tehtävissä oikealla tekniikalla"
   },
   "subagents": {
     "title": "Subagents Claude Code:ssa",
@@ -2145,7 +2523,33 @@
         "validate": "Sinulla on 3 tehtävää perustellulla työkaluvalinnalla. Osaat selittää valinnan sanoin.",
         "tip": "Hybrid:iäkin esiintyy: Skill kutsuu Subagent:ia raskaaseen osaan — parasta molemmista maailmoista."
       }
-    }
+    },
+    "trigger": "Olet hämmennyksissä: miten Skill eroaa Subagentista — ja milloin valita kumpi.",
+    "inputs": [
+      "Claude Code asennettu",
+      "Delegointi-ehdokas tehtävä",
+      "Skillien perusteet (suositus)"
+    ],
+    "outputs": [
+      "Toimiva subagentti eristetyllä kontekstilla",
+      "Selkeä ero Skill (miten tehdä) vs Subagentti (kuka tekee)",
+      "Kutsukomento ja tuloksen tarkistus"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "subagenttien isäntä"
+      },
+      {
+        "name": ".claude/agents/",
+        "role": "agentin konfiguraatio"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "agentin malli"
+      }
+    ],
+    "savings": "~25-40% kontekstiikkunaa säästyy eristyksen ansiosta"
   },
   "tool-use": {
     "title": "Tool use: anna Claudelle kädet",
@@ -2275,7 +2679,33 @@
         "validate": "Sinulla on spesifikaatio oikealle prosessille. Valmis luovutettavaksi kehittäjälle / itsenäiseen toteutukseen.",
         "tip": "Spesifikaatio on arvokkaampi kuin \"yritin koodata\" — ilman sitä koodia uusitaan 3 kertaa."
       }
-    }
+    },
+    "trigger": "Tarvitset Clauden kutsuvan funktioitasi / API:asi — ei vain tuottavan tekstiä.",
+    "inputs": [
+      "Kutsuttavan funktion kuvaus",
+      "JSON-schema parametreille",
+      "Anthropic API -avain"
+    ],
+    "outputs": [
+      "Toimiva tool_use-sykli JSON-schemalla",
+      "Ymmärrys ToolResultista ja virheenkäsittelystä",
+      "Pohja MCP:lle / agenteille / integraatioille"
+    ],
+    "tools": [
+      {
+        "name": "Anthropic SDK",
+        "role": "tool_use API"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "function calling"
+      },
+      {
+        "name": "JSON Schema",
+        "role": "tool-määritykset"
+      }
+    ],
+    "savings": "~80% integrointiajasta vs tekstivastausten parsiminen käsin"
   },
   "hooks": {
     "title": "Hooks: kurin automatisointi",
@@ -2404,7 +2834,33 @@
         "validate": "Osaat perustella valinnan 3 tehtävälle — miksi juuri hook / slash / subagent.",
         "tip": "Hooks ovat erityisen arvokkaita taattuihin toimintoihin — malli voi \"unohtaa\", hook ei unohda."
       }
-    }
+    },
+    "trigger": "Claude Code «unohtaa» joskus ajaa testit/lintin ennen commitia — tarvitaan kova kuri.",
+    "inputs": [
+      "Claude Code asennettu",
+      "Lista pysäytettävistä tapahtumista (PreToolUse, Stop, ...)",
+      "Shell-komennot ajettavaksi"
+    ],
+    "outputs": [
+      "Toimiva hooks-konfiguraatio settings.jsonissa",
+      "Automaattinen lint/test/format oikeissa tapahtumissa",
+      "Takuu ettei malli «unohda»"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code hooks",
+        "role": "PreToolUse/PostToolUse/Stop"
+      },
+      {
+        "name": "settings.json",
+        "role": "hooksien konfiguraatio"
+      },
+      {
+        "name": "Shell",
+        "role": "komentojen suoritus"
+      }
+    ],
+    "savings": "~20-30 min/päivä manuaalisista tarkistuksista + nolla «unohdettua» testiä"
   },
   "first-project": {
     "title": "Luo ensimmäinen projekti Clauden kanssa",
@@ -2616,7 +3072,33 @@
         "validate": "Claude antoi mielekkään vastauksen, joka on sidottu kontekstiisi. Mahdollisesti loi tiedoston projektikansioon.",
         "tip": "Seuraavat opiskeluvaiheet: basics-oppitunti — mallien ja kontekstin teoriaan, claude-code-oppitunti — syvenemiseen /security-review:hin, hooks:eihin, subagents:eihin."
       }
-    }
+    },
+    "trigger": "Et ole koskaan käyttänyt terminaalia — mutta haluat kokeilla Claude Codea oikeassa tehtävässä.",
+    "inputs": [
+      "Mac tai Windows asennusoikeuksin",
+      "Yksinkertaisen projektin idea (laskeutumissivu, skripti, muistiinpanot)",
+      "~1 kiireetön tunti"
+    ],
+    "outputs": [
+      "Asennettu Node.js + Claude Code",
+      "Projektikansio + ensimmäinen /init",
+      "Ensimmäinen oikea feature toteutettu Clauden käsin"
+    ],
+    "tools": [
+      {
+        "name": "Node.js",
+        "role": "ajoympäristö"
+      },
+      {
+        "name": "Claude Code",
+        "role": "agentti"
+      },
+      {
+        "name": "Terminaali",
+        "role": "iTerm / Terminal.app"
+      }
+    ],
+    "savings": "~viikon googlaaminen vs 1 ohjattu tunti"
   },
   "terminal-tour": {
     "title": "Terminaali 5 komennolla",
@@ -2740,7 +3222,33 @@
           "Tab completion doesn't work": "Tab-täydennys ei toimi"
         }
       }
-    }
+    },
+    "trigger": "Terminaali pelottaa — mutta Claude Code ei lähde ilman sitä.",
+    "inputs": [
+      "Avattu Terminal (Mac) tai PowerShell (Win)",
+      "5 minuuttia ja 5 komentoa",
+      "Valmius painaa Enteriä"
+    ],
+    "outputs": [
+      "Hallitut cd / ls / mkdir / pwd / clear",
+      "Käsitys «missä olen» tiedostojärjestelmässä",
+      "Pelko «rikon koneen» pois"
+    ],
+    "tools": [
+      {
+        "name": "Terminal.app",
+        "role": "macOS"
+      },
+      {
+        "name": "PowerShell",
+        "role": "Windows"
+      },
+      {
+        "name": "iTerm2",
+        "role": "valinnainen"
+      }
+    ],
+    "savings": "~tunteja googlaamista «miten avaan kansion konsolissa»"
   },
   "folders-workshop": {
     "title": "Kansiopaja: 3 esimerkkirakennetta",
@@ -2863,7 +3371,33 @@
           "Trash doesn't restore on mac": "Roskakori ei palauta Macilla"
         }
       }
-    }
+    },
+    "trigger": "Tarvitset siistin kansiorakenteen Claude-projektille — mutta et tiedä mistä aloittaa.",
+    "inputs": [
+      "Terminaalin peruskomennot (valinnainen)",
+      "3 skenaariota: työ / henkilökohtainen / kokeilu",
+      "Finder tai Explorer"
+    ],
+    "outputs": [
+      "Luotu 3 oikeaa kansiorakennetta",
+      "Hallitut GUI- ja komentotavat",
+      "Pohja tuleviin projekteihin"
+    ],
+    "tools": [
+      {
+        "name": "Finder/Explorer",
+        "role": "GUI-tapa"
+      },
+      {
+        "name": "Terminaali",
+        "role": "mkdir-komento"
+      },
+      {
+        "name": "VS Code",
+        "role": "rakenteen tarkastelu"
+      }
+    ],
+    "savings": "~30 min per uusi projekti + järjestys tiedostoissa"
   },
   "welcome": {
     "title": "Tutustuminen Claudeen",
@@ -3102,7 +3636,33 @@
           }
         }
       }
-    }
+    },
+    "trigger": "Ensikosketus Claudeen — tarvitset 5 min kartan «mitä täällä on ja miten sitä käytetään».",
+    "inputs": [
+      "Selain",
+      "Uteliaisuutta ja 10 minuuttia",
+      "Ei esitietoja"
+    ],
+    "outputs": [
+      "Selkeä käsitys tiloista: Chat / Cowork / Code",
+      "Realistiset odotukset Claudesta",
+      "Valinta ensimmäisestä sisääntulopisteestä"
+    ],
+    "tools": [
+      {
+        "name": "claude.ai",
+        "role": "web-chat"
+      },
+      {
+        "name": "Claude Desktop",
+        "role": "Cowork"
+      },
+      {
+        "name": "Claude Code",
+        "role": "kehittäjille"
+      }
+    ],
+    "savings": "~päivä harhailua vs 10 min kartta"
   },
   "claude-cowork": {
     "title": "Ensimmäinen tehtävä Claude Coworkilla",
@@ -3218,7 +3778,33 @@
         "validate": "Tulos vastaa tarkoitustasi. Tiedät miten kuvata korjauksia.",
         "tip": "Sano mikä on väärin ('images-kansiosta puuttuvat PDF-tiedostot joissa on upotettuja kuvia'), älä miten korjata. Claude keksii korjauksen."
       }
-    }
+    },
+    "trigger": "Tehtävä koskee kansiollista tiedostoja, eikä selaimeen kopioiminen ole järkevää.",
+    "inputs": [
+      "Asennettu Claude Desktop",
+      "Projektikansio tai dokumentit",
+      "Tehtävä kuvattuna haluttuna lopputuloksena"
+    ],
+    "outputs": [
+      "Liitetty työkansio",
+      "Yksi todellinen tiedostotehtävä viety loppuun asti",
+      "Selkeä ero Chat vs Cowork"
+    ],
+    "tools": [
+      {
+        "name": "Claude Desktop",
+        "role": "Coworkin isäntä"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "suorittaja"
+      },
+      {
+        "name": "Tiedostopääsy",
+        "role": "lukee/muokkaa tiedostoja"
+      }
+    ],
+    "savings": "~20-40 min per tehtävä vs manuaalinen kopiointi selaimen ja editorin välillä"
   },
   "ai-limitations": {
     "title": "Clauden kyvyt ja rajoitukset",
@@ -3337,7 +3923,33 @@
         "validate": "Sinulla on mielessä tarkistuslista: web-haku päällä/pois? Epävarmuuden merkintä kehotteessa? Tarkistussuunnitelma? Project vai pitkä chat?",
         "tip": "4D-viitekehyksen Discernment-vaihe ON tämä tarkistuslista. Rajoitukset eivät ole Clauden ongelma ratkaistavaksi — ne ovat sinun suunniteltavaksi."
       }
-    }
+    },
+    "trigger": "Claude tuotti varmasti virheellisen faktan tai alkoi unohtaa kontekstia pitkässä keskustelussa.",
+    "inputs": [
+      "Konkreettinen hallusinaatio- tai virhetapaus",
+      "Tehtävän tyyppi: faktat, luvut, koodi, arviointi",
+      "Pääsy luotettavaan tietolähteeseen tarkistusta varten"
+    ],
+    "outputs": [
+      "Tarkistuslista «missä Claude on luotettava, missä ei»",
+      "5 lieventämisstrategiaa (grounding, verifiointi, pilkkominen)",
+      "Henkilökohtainen punaisten lippujen lista omaan rooliin"
+    ],
+    "tools": [
+      {
+        "name": "Sonnet 4",
+        "role": "pääasiallinen malli"
+      },
+      {
+        "name": "Web Search",
+        "role": "faktatarkistus"
+      },
+      {
+        "name": "Projects",
+        "role": "grounding kontekstilla"
+      }
+    ],
+    "savings": "~3-4 tuntia viikossa virheellisten vastausten korjaamiseen"
   },
   "api-basics": {
     "title": "Claude API kehittäjille",
@@ -3634,7 +4246,33 @@
         "validate": "Tiedät mitkä 2–3 Atlas-tutoriaalia otat seuraavaksi ja miksi.",
         "tip": "Atlas-kartta näyttää kaiken tämän visuaalisesti — jokainen solmu on yhteydessä liittyviin tutoriaaleihin. Käytä 'Kurssit'-näkymää suodattaaksesi oman yleisösi mukaan ja nähdäksesi mitä on saatavilla omalle polullesi."
       }
-    }
+    },
+    "trigger": "Käytät AI:ta satunnaisesti ja haluat järjestelmän, et muotityökalujen perässä juoksua.",
+    "inputs": [
+      "Valmius opiskella 4 viikkoa × 30 min",
+      "Yksi toistuva työskenaario",
+      "Avoimuus tottumusten muutokseen"
+    ],
+    "outputs": [
+      "Mentaalimalli: miten Claude oikeasti toimii",
+      "Kriteerit «milloin AI, milloin ei»",
+      "Henkilökohtainen AI-tulosten laadun arviointijärjestelmä"
+    ],
+    "tools": [
+      {
+        "name": "Sonnet 4",
+        "role": "harjoittelu"
+      },
+      {
+        "name": "Claude Projects",
+        "role": "kontekstin kiinnitys"
+      },
+      {
+        "name": "Atlas-mindmap",
+        "role": "käsitekartta"
+      }
+    ],
+    "savings": "~kuukausia kaoottisia kokeiluja vs systemaattinen lähestyminen"
   },
   "claude-for-business": {
     "title": "Claude yrityksille",
@@ -3765,7 +4403,33 @@
         "validate": "Sinulla on 3-vaiheinen perehdytyssuunnitelma seuraavalle tiimin jäsenelle joka alkaa käyttää Claudea pilotoituun tehtävään.",
         "tip": "Yleisin epäonnistuminen tässä vaiheessa: liian nopea eteneminen. Yksi luotettava käyttötapaus jonka 80% tiimistä käyttää luotettavasti on arvokkaampi kuin 10 käyttötapausta jotka kaikki kokeilivat kerran ja unohtivat."
       }
-    }
+    },
+    "trigger": "Tiimi käyttää Claudea sattumanvaraisesti — aika tehdä siitä luotettava osa prosesseja.",
+    "inputs": [
+      "Lista tiimin tehtävistä AI-pilottiin",
+      "Datapolitiikka (mitä ei pilveen)",
+      "Onnistumismittari: aika / laatu / ROI"
+    ],
+    "outputs": [
+      "4 viikon pilottisuunnitelma mittareineen",
+      "Custom Instructions -pohjat per rooli",
+      "«Ennen/jälkeen» ROI-laskenta johdolle"
+    ],
+    "tools": [
+      {
+        "name": "Claude Team",
+        "role": "jaetut projektit"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "pääasiallinen malli"
+      },
+      {
+        "name": "Privacy controls",
+        "role": "datan käsittely"
+      }
+    ],
+    "savings": "~10-20 tiimituntia viikossa oikein valituilla tehtävillä"
   },
   "claude-project-architecture": {
     "title": "Rakenna Claude-projektin arkkitehtuuri",
@@ -3900,7 +4564,33 @@
         "validate": "Olet suorittanut todellisen tehtävän projektin arkkitehtuurin kautta. Tiedät mitä parantaa ensi viikolla.",
         "tip": "Projektin arkkitehtuuri ei ole koskaan 'valmis' — se kasvaa käytön myötä. Parhaat ylläpitäjät tarkistavat ja päivittävät sen 10 minuuttia joka perjantai: mikä toimi, mikä ei, mitä lisätä. Pienet viikoittaiset parannukset kertyvät huomattavasti paremmaksi järjestelmäksi kuukausien aikana."
       }
-    }
+    },
+    "trigger": "Haluat rakentaa personoidun työtilan Claudeen — et koota palasia sattumanvaraisesti.",
+    "inputs": [
+      "Roolisi ja säännölliset tehtävät",
+      "Knowledge basen materiaalit (docs, brand book, pohjat)",
+      "Omat «älä tee» -säännöt (sävy, formaatti)"
+    ],
+    "outputs": [
+      "Valmis Project-arkkitehtuuri: instructions + KB + promptit",
+      "Claude muistaa kontekstisi ilman muistutuksia",
+      "Pohja laajentamiseen uusiin tehtäviin"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "arkkitehtuurin perusta"
+      },
+      {
+        "name": "Custom Instructions",
+        "role": "rooli ja tyyli"
+      },
+      {
+        "name": "Knowledge base",
+        "role": "jopa 200K tokenia"
+      }
+    ],
+    "savings": "~1 tunti/päivä kontekstin uudelleenselityksestä Claudelle"
   },
   "claude-for-educators": {
     "title": "Claude opettajille",
@@ -4018,7 +4708,33 @@
         "tip": "Luokkapolitiikka toimii paremmin kun luot sen yhdessä oppilaiden kanssa — he ehdottavat itse reiluja sääntöjä.",
         "validate": "Muotoile tekoälyn käyttösäännöt luokallesi. Keskustele niistä oppilaiden kanssa — heidän reaktionsa näyttää mitä unohdit."
       }
-    }
+    },
+    "trigger": "Valmistelet materiaaleja, palautetta ja personointia — eikä aikaa ole koskaan tarpeeksi.",
+    "inputs": [
+      "Kurssin tai oppitunnin suunnitelma",
+      "Opiskelijoiden taso ja konteksti",
+      "Esimerkkejä «miltä hyvä näyttää»"
+    ],
+    "outputs": [
+      "Tuntisuunnitelma + tasoittain mukautetut versiot",
+      "Palautteen ja arvioinnin pohjat",
+      "Personoitujen tehtävien työnkulku"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "kurssin konteksti"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "materiaalien tuotto"
+      },
+      {
+        "name": "Artifacts",
+        "role": "interaktiiviset harjoitukset"
+      }
+    ],
+    "savings": "~5-8 valmistelutuntia viikossa + parempi palaute opiskelijoille"
   },
   "workflow-automation": {
     "title": "AI-työnkulun rakentaminen",
@@ -4304,6 +5020,32 @@
         "tip": "Paras playbook on minimaalinen mutta käytetty. Viisi hyvin kuvattua skenaariota on parempi kuin kaksikymmentä muodollista. Aloita pienestä ja täydennä todellisen käytön myötä.",
         "validate": "Sinulla on role-playbook, jossa on vähintään kolme dokumentoitua skenaariota, jotka olet valmis lähettämään kollegalle tänään. Tarkista: voisiko hän käyttää sitä ilman selityksiäsi?"
       }
-    }
+    },
+    "trigger": "Perusteet hallussa — aika koota toimiva stäkki tiettyyn rooliin (Marketing / Sales / HR / Product / CS).",
+    "inputs": [
+      "Oma funktiosi ja top 5 viikkotehtävää",
+      "Roolisi nykyiset työkalut (CRM, analytiikka, ...)",
+      "Pääsy Claude Projectsiin"
+    ],
+    "outputs": [
+      "Roolin playbook: 5 tehtävää × valmis prompt + Project",
+      "Integraatiokartta (MCP / KB / pohjat)",
+      "Onboarding-suunnitelma saman roolin kollegoille"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "yksi per tehtävä"
+      },
+      {
+        "name": "MCP",
+        "role": "CRM/Notion/Linear-integraatiot"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "oletussuorittaja"
+      }
+    ],
+    "savings": "~6-10 tuntia viikossa roolikohtaisissa tyypillisissä tehtävissä"
   }
 }

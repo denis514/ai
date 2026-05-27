@@ -266,7 +266,33 @@
         "validate": "You have a running chat with YOUR task and a conscious choice of model + role.",
         "tip": "Continue developing this in 'Prompt Engineering' — we'll go deeper into techniques there."
       }
-    }
+    },
+    "trigger": "You want to stop poking around and actually understand Claude — models, context, chats.",
+    "inputs": [
+      "Basic access to claude.ai or Desktop",
+      "One real task to practice on",
+      "20 focused minutes"
+    ],
+    "outputs": [
+      "Clear sense of Opus / Sonnet / Haiku and when to pick which",
+      "Mastered terms: context window, chats, artifacts",
+      "First meaningful conversation on your task"
+    ],
+    "tools": [
+      {
+        "name": "Opus 4",
+        "role": "complex tasks"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "daily work"
+      },
+      {
+        "name": "Haiku",
+        "role": "fast answers"
+      }
+    ],
+    "savings": "~a week of trial-and-error vs 20 minutes of intentional onboarding"
   },
   "projects": {
     "title": "Create your first Project",
@@ -406,7 +432,33 @@
         "validate": "Colleagues see the Project in their lists and can open chats.",
         "tip": "Designate one 'Project curator' — they own the cleanliness of instructions and knowledge. Without a curator the Project degrades within a month."
       }
-    }
+    },
+    "trigger": "You catch yourself re-explaining the same context to Claude 3+ times a week.",
+    "inputs": [
+      "List of recurring tasks (content, review, audit)",
+      "Knowledge base materials (docs, brand book)",
+      "Desired Claude response format"
+    ],
+    "outputs": [
+      "Ready Project with custom instructions",
+      "Loaded knowledge base (up to 200K tokens)",
+      "Starter prompt templates for the team"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "container"
+      },
+      {
+        "name": "Knowledge base",
+        "role": "project memory"
+      },
+      {
+        "name": "Custom Instructions",
+        "role": "role and style"
+      }
+    ],
+    "savings": "~15-20 min per new chat — Claude is already up to speed"
   },
   "artifacts": {
     "title": "Create your first interactive Artifact",
@@ -515,7 +567,33 @@
         "validate": "Code is pasted into your project and builds without errors.",
         "tip": "Don't copy everything at once. Before copying, ask Claude: 'go through the code and remove unnecessary comments and commented-out junk'."
       }
-    }
+    },
+    "trigger": "You need to show a live prototype, landing or diagram — not static text.",
+    "inputs": [
+      "Artifact idea: HTML/SVG/React/Markdown",
+      "Style references (optional)",
+      "Audience: who it is for"
+    ],
+    "outputs": [
+      "Interactive artifact in the side panel",
+      "«Make it greener / add a block» iteration with no copy-paste",
+      "Ready HTML/code to share"
+    ],
+    "tools": [
+      {
+        "name": "Claude Artifacts",
+        "role": "canvas"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "generation"
+      },
+      {
+        "name": "Browser preview",
+        "role": "preview result"
+      }
+    ],
+    "savings": "~1-2 hours per prototype vs manual coding in an editor"
   },
   "skills": {
     "title": "Create your first Skill",
@@ -654,7 +732,33 @@
         "validate": "The Skill is used in real work; you're not writing the same prompt by hand.",
         "tip": "Share the Skill with the team via the repository (skills/). One Skill × 5 people = 5× the return."
       }
-    }
+    },
+    "trigger": "You notice you write the same checklist «first X, then Y, in format Z» every time.",
+    "inputs": [
+      "Description of the recurring task",
+      "A reference example «what good looks like»",
+      "List of steps and constraints"
+    ],
+    "outputs": [
+      "Ready SKILL.md with metadata + assets",
+      "Skill that Claude triggers itself on matching tasks",
+      "Versioning for the team"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "skills host"
+      },
+      {
+        "name": "SKILL.md",
+        "role": "spec file"
+      },
+      {
+        "name": "Opus 4",
+        "role": "skill design"
+      }
+    ],
+    "savings": "~10-15 min per recurring task + a single quality bar"
   },
   "claude-code": {
     "title": "Install and configure Claude Code",
@@ -814,7 +918,33 @@
         "validate": "You have 3 scenarios you use by habit, without consciously thinking 'let me try Claude'.",
         "tip": "Next step — MCP. Connecting Linear/Figma/DB turns Claude Code from a code assistant into a product assistant."
       }
-    }
+    },
+    "trigger": "Codebase grew beyond Copilot — you need an agent that sees the whole project.",
+    "inputs": [
+      "Node.js + a terminal",
+      "Anthropic API key or Pro subscription",
+      "A real codebase"
+    ],
+    "outputs": [
+      "Installed and authorized Claude Code",
+      "Successful /init with CLAUDE.md",
+      "Working sense of permissions and tool use"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code CLI",
+        "role": "terminal agent"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "default model"
+      },
+      {
+        "name": "CLAUDE.md",
+        "role": "project memory"
+      }
+    ],
+    "savings": "~2-4 hours on a refactor — dozens of files in one pass"
   },
   "mcp": {
     "title": "Connect your first MCP server",
@@ -959,7 +1089,33 @@
         "validate": "The token has exactly the scopes you use, no more.",
         "tip": "Never use one token for different servers. One service = one token. This simplifies revocation."
       }
-    }
+    },
+    "trigger": "You want Claude to see your Linear / Notion / DB directly — no more copy-paste briefings.",
+    "inputs": [
+      "List of systems to connect (Linear, Notion, GitHub, ...)",
+      "Access tokens for those systems",
+      "Claude Desktop or Code installed"
+    ],
+    "outputs": [
+      "Working MCP server in your config",
+      "Claude reads live data from the connected system",
+      "Clear sense of stdio vs HTTP transport"
+    ],
+    "tools": [
+      {
+        "name": "MCP protocol",
+        "role": "integration standard"
+      },
+      {
+        "name": "Claude Desktop/Code",
+        "role": "MCP host"
+      },
+      {
+        "name": "Prebuilt MCP servers",
+        "role": "from Anthropic registry"
+      }
+    ],
+    "savings": "~30 min per ticket — Claude pulls Linear/Notion context itself"
   },
   "instructions": {
     "title": "Configure Custom Instructions",
@@ -1070,7 +1226,29 @@
         "validate": "The Project works in a specialized mode; global rules are not broken.",
         "tip": "Test: ask in the Project 'who are you?'. It should answer as the specialized role, not a generic assistant."
       }
-    }
+    },
+    "trigger": "You explain «I work in marketing, answer in English, no fluff» in every new chat.",
+    "inputs": [
+      "Role and work context description",
+      "Style and language preferences",
+      "A list of «don'ts» (tone, format, length)"
+    ],
+    "outputs": [
+      "Filled About me / Response style fields",
+      "Auto-applied to all chats",
+      "Template shareable with the team"
+    ],
+    "tools": [
+      {
+        "name": "Custom Instructions",
+        "role": "claude.ai profile"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "honors them in every reply"
+      }
+    ],
+    "savings": "~2-3 min per new chat — ~1 hour/week net"
   },
   "prompting": {
     "title": "Level up your prompt engineering",
@@ -1204,7 +1382,33 @@
         "validate": "The template is in your library; you can apply it in 30 seconds.",
         "tip": "Next — the 'Ready prompts' section in the map: 10 templates for typical tasks."
       }
-    }
+    },
+    "trigger": "Same question gives a usable plan one day and a «general overview» the next — instability is killing you.",
+    "inputs": [
+      "A few of your prompts that flopped",
+      "A reference example of a good answer",
+      "Task context (role, audience, format)"
+    ],
+    "outputs": [
+      "5 levers: structure, context, examples, role, constraints",
+      "A rewritten «golden» prompt for your case",
+      "Personal pre-send checklist"
+    ],
+    "tools": [
+      {
+        "name": "Opus 4",
+        "role": "for hard prompts"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "daily prompts"
+      },
+      {
+        "name": "Prompt Improver",
+        "role": "auto-refine in Console"
+      }
+    ],
+    "savings": "~50% fewer «ask again» iterations per task"
   },
   "scenarios": {
     "title": "Choose your main scenario",
@@ -1315,7 +1519,33 @@
         "validate": "At least one colleague is working with your scenario.",
         "tip": "If the scenario works for YOU — it's a hypothesis. Two people — a pattern. Five — a team standard."
       }
-    }
+    },
+    "trigger": "Generic AI posts don't help — you need a stack tailored to your role (PM / marketing / design).",
+    "inputs": [
+      "Your role and top 3 tasks",
+      "Current toolkit (Figma, Linear, Notion, ...)",
+      "Level: beginner / confident / advanced"
+    ],
+    "outputs": [
+      "Role-specific AI stack (Projects + MCP + prompts)",
+      "3 main workflows with ready prompts",
+      "A 1-month leveling-up roadmap"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "one per task"
+      },
+      {
+        "name": "MCP",
+        "role": "integrations for your role"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "main executor"
+      }
+    ],
+    "savings": "~3-5 hours/week on tasks specific to your function"
   },
   "agents": {
     "title": "Create your first agent",
@@ -1443,7 +1673,33 @@
         "validate": "You have a minimum of 5 real runs; improvements are recorded in the agent file.",
         "tip": "The best agents are born through iteration, not from 'a brilliant first draft'. Don't worry about perfection."
       }
-    }
+    },
+    "trigger": "Single Claude Code «forgets» the specifics of certain task types — you need dedicated executors for review, tests, migrations.",
+    "inputs": [
+      "Task type to delegate (review, tests, refactor)",
+      "Checklist of «what a good result looks like»",
+      "Tools the agent needs access to"
+    ],
+    "outputs": [
+      "Ready sub-agent with role and tools",
+      "Command/trigger to invoke from main Claude",
+      "Context isolation between tasks"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "orchestrator"
+      },
+      {
+        "name": "Sub-agents API",
+        "role": "delegation"
+      },
+      {
+        "name": "Opus 4",
+        "role": "for complex agents"
+      }
+    ],
+    "savings": "~40% time on recurring engineering task types"
   },
   "ready-prompts": {
     "title": "Use ready-made prompts",
@@ -1539,7 +1795,33 @@
         "validate": "You have a personal prompt library with at least one adapted template.",
         "tip": "In 6 months your library = your main productivity asset. Don't underestimate it. Share with the team."
       }
-    }
+    },
+    "trigger": "You need a result right now — no time to learn prompt engineering from scratch.",
+    "inputs": [
+      "Task type (analysis / brainstorm / structuring / writing)",
+      "Your data to plug into the template",
+      "5 minutes to adapt"
+    ],
+    "outputs": [
+      "Ready prompt with filled placeholders",
+      "Structured Claude response on the template",
+      "Starter library of «top-10 prompts»"
+    ],
+    "tools": [
+      {
+        "name": "Claude.ai",
+        "role": "web chat"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "executor"
+      },
+      {
+        "name": "Atlas prompts",
+        "role": "template catalog"
+      }
+    ],
+    "savings": "~15-25 min per task vs writing a prompt from scratch"
   },
   "intro": {
     "title": "Your first Claude session",
@@ -1643,7 +1925,29 @@
         },
         "validate": "You have a clear mental split: when you'll go to Google, when to Claude."
       }
-    }
+    },
+    "trigger": "You're hearing about Claude for the first time and don't see how it differs from ChatGPT/Gemini.",
+    "inputs": [
+      "A browser + internet",
+      "10 focused minutes",
+      "Curiosity (no prerequisites)"
+    ],
+    "outputs": [
+      "Clear sense of what Claude is and where it lives",
+      "Realistic expectations (can/can't)",
+      "List of first tasks to practice on"
+    ],
+    "tools": [
+      {
+        "name": "claude.ai",
+        "role": "web access"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "default free-tier model"
+      }
+    ],
+    "savings": "~1-2 wasted days from false expectations vs 10 minutes of orientation"
   },
   "platform": {
     "title": "Choose your plan",
@@ -1744,7 +2048,29 @@
         },
         "validate": "Decision made: 'staying on Free for N weeks' / 'getting Pro now' / 'discussing Team'."
       }
-    }
+    },
+    "trigger": "You're staring at Free / Pro / Max / Team and can't tell what's worth paying for.",
+    "inputs": [
+      "Usage scenario: personal / work / team",
+      "Tasks per week",
+      "AI tooling budget"
+    ],
+    "outputs": [
+      "A justified plan choice for your case",
+      "Clear sense of limits and models per plan",
+      "Upgrade plan if you hit a ceiling"
+    ],
+    "tools": [
+      {
+        "name": "Claude Plans",
+        "role": "Free/Pro/Max/Team"
+      },
+      {
+        "name": "Anthropic Console",
+        "role": "API tier"
+      }
+    ],
+    "savings": "~$20-200/mo by picking the right plan vs «just take the priciest»"
   },
   "capabilities": {
     "title": "Working with images and files",
@@ -1857,7 +2183,33 @@
         },
         "validate": "You have a concrete result + an understanding of time saved."
       }
-    }
+    },
+    "trigger": "You only use Claude as a chat — but your work is full of PDFs, screenshots, documents.",
+    "inputs": [
+      "Files: PDFs, images, documents",
+      "A concrete task (analyze / extract / convert)",
+      "Desired output format"
+    ],
+    "outputs": [
+      "Multimodal scenarios mastered (vision + docs)",
+      "Prompt templates for file analysis",
+      "Clear sense of size/format limits"
+    ],
+    "tools": [
+      {
+        "name": "Claude Vision",
+        "role": "images"
+      },
+      {
+        "name": "PDF support",
+        "role": "up to 100 pages"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "analysis"
+      }
+    ],
+    "savings": "~1-2 hours per document on manual parsing"
   },
   "prompting-techniques": {
     "title": "Prompting techniques: hands-on",
@@ -2009,7 +2361,33 @@
         "validate": "You have v4 vs v1 of the prompt — a noticeable difference without a full rewrite.",
         "tip": "Change 5 things at once — you won't know what helped. One step = one hypothesis."
       }
-    }
+    },
+    "trigger": "Basics are solid — now you want reliability on hard tasks (CoT, few-shot, self-critique).",
+    "inputs": [
+      "One hard task to run through 5 techniques",
+      "A reference answer for comparison",
+      "Willingness to run 5 experiments in a row"
+    ],
+    "outputs": [
+      "Applied on one task: role / CoT / few-shot / structure / self-critique",
+      "«Before/after» quality comparison per technique",
+      "Personal map of «when to use which»"
+    ],
+    "tools": [
+      {
+        "name": "Opus 4",
+        "role": "for CoT and self-critique"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "few-shot"
+      },
+      {
+        "name": "Workbench",
+        "role": "A/B comparison"
+      }
+    ],
+    "savings": "~30-50% quality lift on hard tasks via the right technique"
   },
   "subagents": {
     "title": "Subagents in Claude Code",
@@ -2147,7 +2525,33 @@
         "validate": "You have 3 tasks with a justified tool choice. You can explain the choice in words.",
         "tip": "Hybrid is also possible: a Skill invokes a Subagent for the heavy part — best of both worlds."
       }
-    }
+    },
+    "trigger": "You're confused: how is a Skill different from a Subagent — and when to use which.",
+    "inputs": [
+      "Claude Code installed",
+      "A delegation-candidate task",
+      "Basic skills knowledge (recommended)"
+    ],
+    "outputs": [
+      "Working subagent with isolated context",
+      "Clear separation Skill (how to do) vs Subagent (who does)",
+      "Invocation command and result check"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "subagents host"
+      },
+      {
+        "name": ".claude/agents/",
+        "role": "agent config"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "agent model"
+      }
+    ],
+    "savings": "~25-40% context window saved via isolation"
   },
   "tool-use": {
     "title": "Tool use: give Claude hands",
@@ -2276,7 +2680,33 @@
         "validate": "You have a specification for a real process. Ready to hand off to a developer / implement yourself.",
         "tip": "A specification is more valuable than 'I tried to code it' — without one the code will be rewritten 3 times."
       }
-    }
+    },
+    "trigger": "You need Claude to call your functions / API — not just produce text.",
+    "inputs": [
+      "Description of the function to call",
+      "JSON schema for parameters",
+      "Anthropic API key"
+    ],
+    "outputs": [
+      "Working tool_use loop with JSON schema",
+      "Understanding of ToolResult and error handling",
+      "Foundation for MCP / agents / integrations"
+    ],
+    "tools": [
+      {
+        "name": "Anthropic SDK",
+        "role": "tool_use API"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "function calling"
+      },
+      {
+        "name": "JSON Schema",
+        "role": "tool definitions"
+      }
+    ],
+    "savings": "~80% integration time vs hand-parsing text responses"
   },
   "hooks": {
     "title": "Hooks: automating discipline",
@@ -2405,7 +2835,33 @@
         "validate": "You can justify the choice for 3 tasks — why specifically hook / slash / subagent.",
         "tip": "Hooks are especially valuable for guaranteed actions — the model might 'forget', a hook won't."
       }
-    }
+    },
+    "trigger": "Claude Code sometimes «forgets» to run tests/lint before a commit — you need hard discipline.",
+    "inputs": [
+      "Claude Code installed",
+      "List of events to intercept (PreToolUse, Stop, ...)",
+      "Shell commands to run"
+    ],
+    "outputs": [
+      "Working hooks config in settings.json",
+      "Automatic lint/test/format on the right events",
+      "Guarantee the model can't «forget»"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code hooks",
+        "role": "PreToolUse/PostToolUse/Stop"
+      },
+      {
+        "name": "settings.json",
+        "role": "hooks config"
+      },
+      {
+        "name": "Shell",
+        "role": "command execution"
+      }
+    ],
+    "savings": "~20-30 min/day on manual checks + zero «forgotten» tests"
   },
   "first-project": {
     "title": "Create your first project with Claude",
@@ -2613,7 +3069,33 @@
         "validate": "Claude gave a meaningful answer tied to your context. Possibly created a file in the project folder.",
         "tip": "Next learning steps: the basics tutorial — for theory of models and context, the claude-code tutorial — for deeper /security-review, hooks, subagents."
       }
-    }
+    },
+    "trigger": "You've never used a terminal — but you want to try Claude Code on a real task.",
+    "inputs": [
+      "Mac or Windows with install rights",
+      "A simple project idea (landing, script, notes)",
+      "~1 unhurried hour"
+    ],
+    "outputs": [
+      "Installed Node.js + Claude Code",
+      "A project folder + first /init",
+      "First real feature shipped by Claude's hands"
+    ],
+    "tools": [
+      {
+        "name": "Node.js",
+        "role": "runtime"
+      },
+      {
+        "name": "Claude Code",
+        "role": "agent"
+      },
+      {
+        "name": "Terminal",
+        "role": "iTerm / Terminal.app"
+      }
+    ],
+    "savings": "~a week of googling tutorials vs 1 guided hour"
   },
   "terminal-tour": {
     "title": "Terminal in 5 commands",
@@ -2735,7 +3217,33 @@
           "Tab completion doesn't work": "Normal for cmd.exe. Switch to PowerShell or Windows Terminal — autocomplete works there."
         }
       }
-    }
+    },
+    "trigger": "The terminal scares you — but Claude Code won't run without it.",
+    "inputs": [
+      "Open Terminal (Mac) or PowerShell (Win)",
+      "5 minutes for 5 commands",
+      "Willingness to hit Enter"
+    ],
+    "outputs": [
+      "Mastered cd / ls / mkdir / pwd / clear",
+      "Sense of «where am I» in the filesystem",
+      "«I'll break the computer» fear removed"
+    ],
+    "tools": [
+      {
+        "name": "Terminal.app",
+        "role": "macOS"
+      },
+      {
+        "name": "PowerShell",
+        "role": "Windows"
+      },
+      {
+        "name": "iTerm2",
+        "role": "optional"
+      }
+    ],
+    "savings": "~hours of googling «how to open a folder in the console»"
   },
   "folders-workshop": {
     "title": "Folders workshop: 3 structure examples",
@@ -2856,7 +3364,33 @@
           "Trash doesn't restore on mac": "Cmd+Shift+Delete empties the Trash. If you already emptied — files are lost (only Time Machine can recover, if enabled)."
         }
       }
-    }
+    },
+    "trigger": "You need a tidy folder structure for a Claude project — but no idea where to start.",
+    "inputs": [
+      "Basic terminal commands (optional)",
+      "3 scenarios: work / personal / experiment",
+      "Finder or Explorer"
+    ],
+    "outputs": [
+      "3 real folder structures created",
+      "Both GUI and command approaches mastered",
+      "A template for your future projects"
+    ],
+    "tools": [
+      {
+        "name": "Finder/Explorer",
+        "role": "GUI approach"
+      },
+      {
+        "name": "Terminal",
+        "role": "mkdir command"
+      },
+      {
+        "name": "VS Code",
+        "role": "structure view"
+      }
+    ],
+    "savings": "~30 min per new project + order in your files"
   },
   "welcome": {
     "title": "Getting to know Claude",
@@ -3095,7 +3629,33 @@
           }
         }
       }
-    }
+    },
+    "trigger": "First touch with Claude — you need a 5-minute map of «what's here and how to use it».",
+    "inputs": [
+      "Browser",
+      "Curiosity and 10 minutes",
+      "No prerequisites"
+    ],
+    "outputs": [
+      "Clear sense of modes: Chat / Cowork / Code",
+      "Realistic expectations from Claude",
+      "Pick the first entry point"
+    ],
+    "tools": [
+      {
+        "name": "claude.ai",
+        "role": "web chat"
+      },
+      {
+        "name": "Claude Desktop",
+        "role": "Cowork"
+      },
+      {
+        "name": "Claude Code",
+        "role": "for developers"
+      }
+    ],
+    "savings": "~a day of wandering vs 10 minutes of map"
   },
   "claude-cowork": {
     "title": "Your first task with Claude Cowork",
@@ -3211,7 +3771,33 @@
         "validate": "Output matches your intent. You know how to describe corrections.",
         "tip": "Say what is wrong ('the images folder is missing PDF files that have images embedded'), not how to fix it. Claude will figure out the correction."
       }
-    }
+    },
+    "trigger": "A task involves a folder of files and copy-pasting into the browser is painful.",
+    "inputs": [
+      "Claude Desktop installed",
+      "A project folder or documents",
+      "Task described as the expected outcome"
+    ],
+    "outputs": [
+      "Connected working folder",
+      "A real file task completed end-to-end",
+      "Clear sense of Chat vs Cowork"
+    ],
+    "tools": [
+      {
+        "name": "Claude Desktop",
+        "role": "Cowork host"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "executor"
+      },
+      {
+        "name": "File access",
+        "role": "read/edit files"
+      }
+    ],
+    "savings": "~20-40 min per task vs manual copy-paste between chat and editor"
   },
   "ai-limitations": {
     "title": "Claude's capabilities and limits",
@@ -3330,7 +3916,33 @@
         "validate": "You have a mental checklist: web search on/off? Uncertainty flagging in prompt? Verification plan? Project or long chat?",
         "tip": "The 4D Framework's Discernment step IS this checklist. Limitations are not Claude's problem to solve — they are yours to design around."
       }
-    }
+    },
+    "trigger": "Claude confidently produced a wrong fact or started losing context in a long session.",
+    "inputs": [
+      "A concrete hallucination or failure case",
+      "Task type: facts, numbers, code, judgment",
+      "Access to a source of truth for verification"
+    ],
+    "outputs": [
+      "Checklist of where Claude is reliable vs unreliable",
+      "5 mitigation strategies (grounding, verification, chunking)",
+      "Personal red-flag list for your role"
+    ],
+    "tools": [
+      {
+        "name": "Sonnet 4",
+        "role": "main model"
+      },
+      {
+        "name": "Web Search",
+        "role": "fact-check"
+      },
+      {
+        "name": "Projects",
+        "role": "grounding via context"
+      }
+    ],
+    "savings": "~3-4 hours/week saved on fixing incorrect answers"
   },
   "api-basics": {
     "title": "Claude API for developers",
@@ -3628,7 +4240,33 @@
         "validate": "You know which 2–3 105 Atlas tutorials you're taking next and why.",
         "tip": "The 105 Atlas map shows all of this visually — each node connects to related tutorials. Use the 'Courses' view to filter by your audience and see what's available for your track."
       }
-    }
+    },
+    "trigger": "You use AI ad hoc and want a system, not chasing trendy tools.",
+    "inputs": [
+      "Willingness to learn 4 weeks × 30 min",
+      "One recurring work scenario",
+      "Openness to changing habits"
+    ],
+    "outputs": [
+      "Mental model: how Claude actually works",
+      "Criteria «when AI, when not»",
+      "Personal AI-output quality grading system"
+    ],
+    "tools": [
+      {
+        "name": "Sonnet 4",
+        "role": "practice"
+      },
+      {
+        "name": "Claude Projects",
+        "role": "context capture"
+      },
+      {
+        "name": "Atlas mindmap",
+        "role": "concept map"
+      }
+    ],
+    "savings": "~months of chaotic experiments vs systematic approach"
   },
   "claude-for-business": {
     "title": "Claude for Business",
@@ -3759,7 +4397,33 @@
         "validate": "You have a 3-step onboarding plan for the next team member who will start using Claude for your piloted task.",
         "tip": "The most common failure at this stage: moving too fast. One solid use case that 80% of your team uses reliably is worth more than 10 use cases that everyone tried once and forgot."
       }
-    }
+    },
+    "trigger": "The team uses Claude ad hoc — time to make it a reliable part of the process.",
+    "inputs": [
+      "List of team tasks for an AI pilot",
+      "Data policy (what can't leave premise)",
+      "Success metric: time / quality / ROI"
+    ],
+    "outputs": [
+      "A 4-week pilot plan with metrics",
+      "Custom Instructions templates per role",
+      "«Before/after» ROI math for leadership"
+    ],
+    "tools": [
+      {
+        "name": "Claude Team",
+        "role": "shared projects"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "main model"
+      },
+      {
+        "name": "Privacy controls",
+        "role": "data handling"
+      }
+    ],
+    "savings": "~10-20 team hours/week on well-chosen tasks"
   },
   "claude-project-architecture": {
     "title": "Build Your Claude Project Architecture",
@@ -3894,7 +4558,33 @@
         "validate": "You've run a real task through your project architecture. You know what to improve for next week.",
         "tip": "Your project architecture is never 'done' — it grows with your usage. The best maintainers review and update it for 10 minutes every Friday: what worked, what didn't, what to add. Small weekly improvements compound into a dramatically better system over months."
       }
-    }
+    },
+    "trigger": "You want to build a personalized workspace in Claude — not slap things together ad hoc.",
+    "inputs": [
+      "Your role and regular tasks",
+      "Knowledge base assets (docs, brand book, templates)",
+      "Your «don'ts» (tone, format)"
+    ],
+    "outputs": [
+      "Ready Project architecture: instructions + KB + prompts",
+      "Claude remembers your context without reminders",
+      "A template for extending to new tasks"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "architecture foundation"
+      },
+      {
+        "name": "Custom Instructions",
+        "role": "role and style"
+      },
+      {
+        "name": "Knowledge base",
+        "role": "up to 200K tokens"
+      }
+    ],
+    "savings": "~1 hour/day on re-explaining context to Claude"
   },
   "claude-for-educators": {
     "title": "Claude for Educators",
@@ -4012,7 +4702,33 @@
         "tip": "A classroom policy works better when you create it together with students — they will suggest fair rules themselves.",
         "validate": "Formulate AI-use rules for your class. Discuss them with students — their reaction will show what you missed."
       }
-    }
+    },
+    "trigger": "You're preparing materials, feedback, and personalization — and time is always tight.",
+    "inputs": [
+      "Course or lesson plan",
+      "Student level and context",
+      "Examples of «what good looks like»"
+    ],
+    "outputs": [
+      "Lesson plan + level-adapted variants",
+      "Feedback and grading templates",
+      "Personalized assignment workflow"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "course context"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "material generation"
+      },
+      {
+        "name": "Artifacts",
+        "role": "interactive exercises"
+      }
+    ],
+    "savings": "~5-8 prep hours/week + better feedback to students"
   },
   "workflow-automation": {
     "title": "Building an AI Workflow",
@@ -4298,6 +5014,32 @@
         "tip": "The best playbook is minimal but used. Five well-described scenarios beat twenty formal ones. Start small and add as you use it in real work.",
         "validate": "You have a role playbook with at least three documented scenarios that you are ready to send to a colleague today. Check: could they use it without your explanations?"
       }
-    }
+    },
+    "trigger": "Basics are solid — time to assemble a working stack for a specific role (Marketing / Sales / HR / Product / CS).",
+    "inputs": [
+      "Your function and top 5 weekly tasks",
+      "Current role tooling (CRM, analytics, ...)",
+      "Access to Claude Projects"
+    ],
+    "outputs": [
+      "Role playbook: 5 tasks × ready prompt + Project",
+      "Integration map (MCP / KB / templates)",
+      "Onboarding plan for peers in the same role"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "one per task"
+      },
+      {
+        "name": "MCP",
+        "role": "CRM/Notion/Linear integrations"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "default executor"
+      }
+    ],
+    "savings": "~6-10 hours/week on typical role tasks"
   }
 }
