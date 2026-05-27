@@ -604,6 +604,27 @@ function BuilderAppInner() {
           onOpenTemplates={() => setGalleryOpen(true)}
         />
       )}
+
+      {/* Mobile blocker — отображается через CSS @media on small screens */}
+      <div className="builder-mobile-blocker" aria-hidden="false">
+        <div className="builder-mobile-blocker__icon">
+          <Icon name="laptop" size={32} strokeWidth={1.25} />
+        </div>
+        <h2 className="builder-mobile-blocker__title">
+          {t('builder.mobile.title') || 'Open on a larger screen'}
+        </h2>
+        <p className="builder-mobile-blocker__body">
+          {t('builder.mobile.body') || 'Agent Builder needs space — open on desktop or tablet to design workflows.'}
+        </p>
+        <button
+          type="button"
+          className="builder-mobile-blocker__back"
+          onClick={handleAtlasBack}
+        >
+          <Icon name="arrow-left" size={14} strokeWidth={1.75} />
+          <span>{t('builder.backToAtlas') || 'Back to Atlas'}</span>
+        </button>
+      </div>
     </div>
   );
 }

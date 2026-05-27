@@ -1623,24 +1623,245 @@
 }
 
 /* ────────────────────────────────────────────────── */
-/* Mobile fallback (Day 87 будет proper)               */
+/* Status badge transitions — smooth color changes    */
 /* ────────────────────────────────────────────────── */
 
-@media (max-width: 768px) {
-  .builder-app .builder-grid {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "canvas"
-      "canvas";
-  }
+.builder-app .builder-status-badge {
+  transition: background 220ms ease, color 220ms ease;
+}
 
-  .builder-app .builder-toolbox,
-  .builder-app .builder-sidebar,
-  .builder-app .builder-exec {
+.builder-app .builder-node {
+  transition:
+    box-shadow 220ms ease,
+    transform 80ms ease,
+    border-color 220ms ease;
+}
+
+.builder-app .builder-node--status-running {
+  border-color: #f59e0b !important;
+}
+
+.builder-app .builder-node--status-completed {
+  border-color: #16a34a !important;
+}
+
+.builder-app .builder-node--status-failed {
+  border-color: #dc2626 !important;
+}
+
+/* ────────────────────────────────────────────────── */
+/* React Flow edges — themed                          */
+/* ────────────────────────────────────────────────── */
+
+.builder-app .react-flow__edge-path {
+  stroke: color-mix(in srgb, var(--text-soft) 60%, transparent);
+  stroke-width: 1.5;
+  transition: stroke 180ms ease, stroke-width 180ms ease;
+}
+
+.builder-app .react-flow__edge:hover .react-flow__edge-path,
+.builder-app .react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--accent, #2563eb);
+  stroke-width: 2.5;
+}
+
+.builder-app .react-flow__connection-path {
+  stroke: var(--accent, #2563eb);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+}
+
+/* ────────────────────────────────────────────────── */
+/* Panel slide animations                             */
+/* ────────────────────────────────────────────────── */
+
+.builder-app .builder-toolbox,
+.builder-app .builder-sidebar,
+.builder-app .builder-exec {
+  animation: builder-panel-in 220ms ease;
+}
+
+@keyframes builder-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.builder-app .builder-toolbox {
+  animation-name: builder-toolbox-in;
+}
+
+@keyframes builder-toolbox-in {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.builder-app .builder-sidebar {
+  animation-name: builder-sidebar-in;
+}
+
+@keyframes builder-sidebar-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.builder-app .builder-exec {
+  animation-name: builder-exec-in;
+}
+
+@keyframes builder-exec-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth grid changes when toggling panels */
+.builder-app .builder-grid {
+  transition: grid-template-columns 200ms ease, grid-template-rows 200ms ease;
+}
+
+/* ────────────────────────────────────────────────── */
+/* Dark theme final pass                              */
+/* ────────────────────────────────────────────────── */
+
+:root[data-theme="dark"] .builder-app .builder-tooltip {
+  background: color-mix(in srgb, var(--surface) 96%, #fff);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .builder-app .builder-tour-bubble,
+:root[data-theme="dark"] .builder-app .builder-tour-welcome {
+  background: color-mix(in srgb, var(--surface) 96%, #fff);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="dark"] .builder-app .builder-template-card {
+  background: color-mix(in srgb, var(--surface) 94%, #fff);
+}
+
+:root[data-theme="dark"] .builder-app .builder-template-card:hover {
+  background: color-mix(in srgb, var(--surface) 90%, #fff);
+}
+
+:root[data-theme="dark"] .builder-app .builder-tour-dim {
+  background: color-mix(in srgb, #000 70%, transparent);
+}
+
+:root[data-theme="dark"] .builder-app .builder-tour-backdrop {
+  background: color-mix(in srgb, #000 70%, transparent);
+}
+
+:root[data-theme="dark"] .builder-app .react-flow__edge-path {
+  stroke: color-mix(in srgb, var(--text-soft) 50%, transparent);
+}
+
+:root[data-theme="dark"] .builder-app .react-flow__minimap {
+  filter: invert(0.85) hue-rotate(180deg);
+}
+
+/* ────────────────────────────────────────────────── */
+/* Mobile baseline — explicit «open on desktop» card   */
+/* ────────────────────────────────────────────────── */
+
+.builder-mobile-blocker {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Hide entire builder UI on small screens */
+  .builder-app > .builder-header,
+  .builder-app > .builder-grid {
     display: none;
   }
 
-  .builder-app .builder-header__actions .builder-btn:not(.builder-btn--primary) {
+  .builder-mobile-blocker {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    background: var(--bg);
+    color: var(--text);
+    text-align: center;
+    z-index: 50;
+  }
+
+  .builder-mobile-blocker__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--accent, #2563eb) 14%, transparent);
+    color: var(--accent, #2563eb);
+    margin-bottom: 20px;
+  }
+
+  .builder-mobile-blocker__title {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .builder-mobile-blocker__body {
+    margin: 0 0 24px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-soft);
+    max-width: 320px;
+  }
+
+  .builder-mobile-blocker__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 120ms ease, border-color 120ms ease;
+  }
+
+  .builder-mobile-blocker__back:hover {
+    background: var(--surface-soft);
+    border-color: var(--text-soft);
+  }
+
+  /* Hide tooltips и tour spotlight on mobile (Day 87 будет proper) */
+  .builder-app .builder-tooltip,
+  .builder-app .builder-tour-dim,
+  .builder-app .builder-tour-highlight,
+  .builder-app .builder-tour-bubble {
     display: none;
   }
 }
