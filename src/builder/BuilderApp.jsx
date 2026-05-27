@@ -17,6 +17,7 @@ import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data
 import { nodeTypes } from './components/canvas/index.js';
 import ToolboxItem from './components/canvas/ToolboxItem.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
+import AtlasNodePreview from './components/education/AtlasNodePreview.jsx';
 import TemplateGallery from './components/panels/TemplateGallery.jsx';
 import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
 import { createExecution } from './services/mockExecutor.js';
@@ -60,6 +61,25 @@ function BuilderAppInner() {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [tooltipInfo, setTooltipInfo] = useState(null); // { defId, top, left }
   const tooltipHideTimerRef = useRef(null);
+
+  // Atlas preview state — когда установлено, заменяет NodeDetails в sidebar.
+  const [atlasPreviewId, setAtlasPreviewId] = useState(null);
+
+  const openAtlasPreview = useCallback((atlasId) => {
+    if (!atlasId) return;
+    setAtlasPreviewId(atlasId);
+    setSidebarOpen(true); // open sidebar если был закрыт
+    // Сразу скрываем tooltip — preview в sidebar более полный
+    if (tooltipHideTimerRef.current) {
+      clearTimeout(tooltipHideTimerRef.current);
+      tooltipHideTimerRef.current = null;
+    }
+    setTooltipInfo(null);
+  }, []);
+
+  const closeAtlasPreview = useCallback(() => {
+    setAtlasPreviewId(null);
+  }, []);
 
   /* ────────── Tooltip show/hide с graceful delay ────────── */
   // Show: immediately + cancels pending hide (если мышка вернулась)
@@ -212,11 +232,6 @@ function BuilderAppInner() {
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [selectedNodeId, setNodes, setEdges]);
-
-  /* ────────── Atlas anchor link ────────── */
-  const openAtlasNode = useCallback((nodeId) => {
-    window.location.hash = `#/node/${nodeId}`;
-  }, []);
 
   /* ────────── Header actions ────────── */
   const handleAtlasBack = useCallback(() => {
@@ -488,20 +503,39 @@ function BuilderAppInner() {
 
         {/* Sidebar (right) */}
         {sidebarOpen && (
-          <aside className="builder-sidebar" aria-label={t('builder.sidebar.aria') || 'Selection details'}>
-            <div className="builder-sidebar__header">
-              <span>{t('builder.sidebar.title') || 'Details'}</span>
-            </div>
-            <div className="builder-sidebar__body">
-              {selectedNode ? (
-                <NodeDetails node={selectedNode} t={t} onAtlasLink={openAtlasNode} />
-              ) : (
-                <div className="builder-empty-state">
-                  <Icon name="idea" size={24} strokeWidth={1.5} />
-                  <p>{t('builder.sidebar.empty') || 'Select a node to see details and education tips.'}</p>
+          <aside
+            className={[
+              'builder-sidebar',
+              atlasPreviewId ? 'builder-sidebar--preview' : '',
+            ].join(' ').trim()}
+            aria-label={atlasPreviewId
+              ? (t('builder.preview.aria') || 'Atlas preview')
+              : (t('builder.sidebar.aria') || 'Selection details')}
+          >
+            {atlasPreviewId ? (
+              // Atlas preview takes over entire sidebar — собственный header внутри
+              <AtlasNodePreview
+                atlasId={atlasPreviewId}
+                onClose={closeAtlasPreview}
+                onOpenAtlas={openAtlasPreview}
+              />
+            ) : (
+              <>
+                <div className="builder-sidebar__header">
+                  <span>{t('builder.sidebar.title') || 'Details'}</span>
                 </div>
-              )}
-            </div>
+                <div className="builder-sidebar__body">
+                  {selectedNode ? (
+                    <NodeDetails node={selectedNode} t={t} onAtlasLink={openAtlasPreview} />
+                  ) : (
+                    <div className="builder-empty-state">
+                      <Icon name="idea" size={24} strokeWidth={1.5} />
+                      <p>{t('builder.sidebar.empty') || 'Select a node to see details and education tips.'}</p>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </aside>
         )}
 
@@ -540,6 +574,7 @@ function BuilderAppInner() {
           left={tooltipInfo.left}
           onShow={handleTooltipShow}
           onHide={handleTooltipHide}
+          onOpenAtlas={openAtlasPreview}
         />
       )}
     </div>

@@ -17,7 +17,7 @@ import { getNodeDef } from '../../data/nodeTypes.js';
  * Phase B-1 Day 22-23 (см. docs/agent-builder/03-mvp-30day.md).
  */
 
-export default function ConceptTooltip({ defId, top, left, onShow, onHide }) {
+export default function ConceptTooltip({ defId, top, left, onShow, onHide, onOpenAtlas }) {
   const t = useT();
   const def = getNodeDef(defId);
   if (!def) return null;
@@ -34,10 +34,10 @@ export default function ConceptTooltip({ defId, top, left, onShow, onHide }) {
 
   const handleAtlasOpen = (e) => {
     e.stopPropagation();
-    // Open в новой вкладке чтобы не вытащить пользователя из Builder
-    if (atlasAnchor) {
-      const url = `${window.location.origin}${window.location.pathname}#/node/${atlasAnchor}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
+    // Открываем preview прямо в Builder sidebar (right panel).
+    // Это keeps user в Builder — единая экосистема, нет new-tab disruption.
+    if (atlasAnchor && onOpenAtlas) {
+      onOpenAtlas(atlasAnchor);
     }
   };
 
