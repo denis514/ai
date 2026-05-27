@@ -15,26 +15,24 @@ import Icon from '../components/Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data/nodeTypes.js';
 import { nodeTypes } from './components/canvas/index.js';
+import TemplateGallery from './components/panels/TemplateGallery.jsx';
+import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
+import { createExecution } from './services/mockExecutor.js';
 import './BuilderApp.css';
 
 /**
  * BuilderApp — entry point Agent Builder.
  *
- * Phase B-1 Day 8-14: node interactions.
- *  • Custom AgentNode/ToolNode/TriggerNode/OutputNode (через BaseNode)
- *  • Drag-and-drop из toolbox на canvas
- *  • Click node → selection → sidebar shows details + Atlas link
- *  • Delete key → remove selected
- *  • Edge connections drag from handle to handle
+ * Phase B-1 Day 15-21: templates + mock execution.
+ *  • 4 ready-to-use templates (UX Audit, Analytics, Content, Research)
+ *  • TemplateGallery modal — pick template или start from scratch
+ *  • Mock executor с topological sort, fake logs, 5% failure rate
+ *  • ExecutionPanel с live log streaming, status summary, stop/clear
  *
  * Загружается через React.lazy() из App.jsx → не affects main bundle.
  *
- * НЕ импортирует ничего из src/components/ кроме Icon (registry, OK).
- * НЕ модифицирует ничего за пределами src/builder/.
- *
- * Status: DAY 8-14 — interactions complete.
- * Days 15-21: templates + mock execution.
- * Days 22-30: education tooltips + Atlas deep-links + polish.
+ * Status: DAY 15-21 — templates + execution complete.
+ * Days 22-30: education tooltips + Atlas deep-link previews + polish + launch.
  * См. docs/agent-builder/03-mvp-30day.md.
  */
 
@@ -57,6 +55,13 @@ function BuilderAppInner() {
   const [toolboxOpen, setToolboxOpen] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [execPanelOpen, setExecPanelOpen] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+
+  // Execution state
+  const [execStatus, setExecStatus] = useState('idle'); // 'idle' | 'running' | 'completed' | 'failed' | 'stopped'
+  const [execLogs, setExecLogs] = useState([]);
+  const [execStats, setExecStats] = useState({ total: 0, done: 0, failed: 0 });
+  const execRef = useRef(null);
 
   const reactFlowWrapper = useRef(null);
   const { screenToFlowPosition } = useReactFlow();
@@ -110,6 +115,49 @@ function BuilderAppInner() {
     [screenToFlowPosition, setNodes]
   );
 
+  /* ────────── Load template ────────── */
+  const loadTemplate = useCallback((template) => {
+    // Generate IDs для nodes
+    const tempIdMap = {};
+    const newNodes = template.nodes.map((tn, idx) => {
+      const def = getNodeDef(tn.defId);
+      if (!def) return null;
+      const id = genNodeId();
+      tempIdMap[idx] = id;
+      return {
+        id,
+        type: KIND_TO_NODE_TYPE[def.kind] || 'agentNode',
+        position: tn.position,
+        data: {
+          defId: tn.defId,
+          icon: def.icon,
+          color: def.color,
+          labelKey: def.labelKey,
+          descKey: def.descKey,
+          atlasAnchor: def.atlasAnchor,
+          kind: def.kind,
+          role: def.role,
+          status: 'idle',
+          ...(tn.dataOverride || {}),
+        },
+      };
+    }).filter(Boolean);
+
+    const newEdges = template.edges.map((e, i) => ({
+      id: `e${i}-${tempIdMap[e.from]}-${tempIdMap[e.to]}`,
+      source: tempIdMap[e.from],
+      target: tempIdMap[e.to],
+    }));
+
+    setNodes(newNodes);
+    setEdges(newEdges);
+    setSelectedNodeId(null);
+    setGalleryOpen(false);
+    // Reset exec state
+    setExecLogs([]);
+    setExecStatus('idle');
+  }, [setNodes, setEdges]);
+
   /* ────────── Selection ────────── */
   const onNodeClick = useCallback((event, node) => {
     setSelectedNodeId(node.id);
@@ -125,7 +173,6 @@ function BuilderAppInner() {
     const handler = (e) => {
       if (e.key === 'Delete' || e.key === 'Backspace') {
         if (selectedNodeId) {
-          // Не trigger Delete если фокус в input/textarea
           const tag = document.activeElement?.tagName;
           if (tag === 'INPUT' || tag === 'TEXTAREA') return;
           setNodes(nds => nds.filter(n => n.id !== selectedNodeId));
@@ -148,20 +195,88 @@ function BuilderAppInner() {
     window.location.hash = '';
   }, []);
 
+  /* ────────── Mock execution ────────── */
   const handleRun = useCallback(() => {
-    // Day 17-18 будет mock execution. Сейчас просто open panel + set всех в running на 2 сек.
+    if (nodes.length === 0) return;
+    if (execStatus === 'running') return;
+
+    // Reset all node statuses
+    setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'idle' } })));
+    setExecLogs([]);
+    setExecStatus('running');
     setExecPanelOpen(true);
-    setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'running' } })));
-    setTimeout(() => {
-      setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'completed' } })));
-    }, 2000);
+
+    const stats = { total: nodes.length, done: 0, failed: 0 };
+    setExecStats(stats);
+
+    execRef.current = createExecution({
+      nodes,
+      edges,
+      onUpdate: (nodeId, status) => {
+        setNodes(nds => nds.map(n => n.id === nodeId ? { ...n, data: { ...n.data, status } } : n));
+        if (status === 'completed') {
+          stats.done += 1;
+          setExecStats({ ...stats });
+        } else if (status === 'failed') {
+          stats.failed += 1;
+          setExecStats({ ...stats });
+        }
+      },
+      onLog: (entry) => {
+        setExecLogs(prev => [...prev, entry]);
+      },
+      onComplete: () => {
+        setExecStatus(prev => {
+          if (prev === 'stopped') return 'stopped';
+          return stats.failed > 0 ? 'failed' : 'completed';
+        });
+        execRef.current = null;
+      },
+    });
+  }, [nodes, edges, execStatus, setNodes]);
+
+  const handleStopExec = useCallback(() => {
+    if (execRef.current) {
+      execRef.current.stop();
+      setExecStatus('stopped');
+    }
+  }, []);
+
+  const handleClearLogs = useCallback(() => {
+    setExecLogs([]);
+    setExecStatus('idle');
+    setExecStats({ total: 0, done: 0, failed: 0 });
+    setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'idle' } })));
   }, [setNodes]);
 
-  const handleClear = useCallback(() => {
+  const handleClearCanvas = useCallback(() => {
     setNodes([]);
     setEdges([]);
     setSelectedNodeId(null);
+    setExecLogs([]);
+    setExecStatus('idle');
   }, [setNodes, setEdges]);
+
+  /* ────────── Keyboard shortcuts ────────── */
+  useEffect(() => {
+    const handler = (e) => {
+      const tag = document.activeElement?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+      // R — run
+      if (e.key === 'r' || e.key === 'R') {
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        e.preventDefault();
+        handleRun();
+      }
+      // Esc — close gallery
+      if (e.key === 'Escape') {
+        if (galleryOpen) setGalleryOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [handleRun, galleryOpen]);
 
   return (
     <div
@@ -196,11 +311,20 @@ function BuilderAppInner() {
         </div>
 
         <div className="builder-header__actions">
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost"
+            onClick={() => setGalleryOpen(true)}
+            title={t('builder.gallery.open') || 'Open templates'}
+          >
+            <Icon name="books" size={14} strokeWidth={1.5} />
+            <span>{t('builder.gallery.openShort') || 'Templates'}</span>
+          </button>
           {nodes.length > 0 && (
             <button
               type="button"
               className="builder-btn builder-btn--ghost"
-              onClick={handleClear}
+              onClick={handleClearCanvas}
               title={t('builder.clear') || 'Clear canvas'}
             >
               <Icon name="close" size={14} strokeWidth={1.5} />
@@ -237,11 +361,13 @@ function BuilderAppInner() {
             type="button"
             className="builder-btn builder-btn--primary"
             onClick={handleRun}
-            disabled={nodes.length === 0}
-            title="Run (mock)"
+            disabled={nodes.length === 0 || execStatus === 'running'}
+            title="Run (R)"
           >
-            <Icon name="flash" size={14} strokeWidth={1.5} />
-            <span>{t('builder.run') || 'Run'}</span>
+            <Icon name={execStatus === 'running' ? 'refresh' : 'flash'} size={14} strokeWidth={1.5} />
+            <span>{execStatus === 'running'
+              ? (t('builder.running') || 'Running…')
+              : (t('builder.run') || 'Run')}</span>
           </button>
         </div>
       </header>
@@ -306,7 +432,7 @@ function BuilderAppInner() {
             onDragOver={onDragOver}
             fitView
             proOptions={{ hideAttribution: true }}
-            deleteKeyCode={null /* мы handle delete сами для control */}
+            deleteKeyCode={null}
           >
             <Background gap={20} size={1} />
             <Controls />
@@ -318,12 +444,21 @@ function BuilderAppInner() {
             <div className="builder-empty-canvas">
               <Icon name="sparkles" size={32} strokeWidth={1.25} />
               <h2>{t('builder.canvas.emptyTitle') || 'Build your first agent'}</h2>
-              <p>{t('builder.canvas.emptyDesc') || 'Drag a node from the left panel to start building.'}</p>
+              <p>{t('builder.canvas.emptyDesc') || 'Drag a node from the left panel, or pick a template.'}</p>
+              <button
+                type="button"
+                className="builder-btn builder-btn--primary"
+                onClick={() => setGalleryOpen(true)}
+                style={{ pointerEvents: 'auto', marginTop: 16 }}
+              >
+                <Icon name="books" size={14} strokeWidth={1.5} />
+                <span>{t('builder.canvas.browseTemplates') || 'Browse templates'}</span>
+              </button>
             </div>
           )}
 
-          {/* Status hint — поверх canvas */}
-          {nodes.length > 0 && (
+          {/* Status hint */}
+          {nodes.length > 0 && execStatus !== 'running' && (
             <div className="builder-status-hint">
               <Icon name="idea" size={14} strokeWidth={1.5} />
               <span>{t('builder.canvas.hint') || 'Click a node to see details. Drag handles to connect. Delete key to remove.'}</span>
@@ -352,28 +487,28 @@ function BuilderAppInner() {
 
         {/* Execution panel (bottom) */}
         {execPanelOpen && (
-          <section className="builder-exec" aria-label={t('builder.exec.aria') || 'Execution log'}>
-            <div className="builder-exec__header">
-              <span>{t('builder.exec.title') || 'Execution'}</span>
-              <button
-                type="button"
-                className="builder-btn builder-btn--ghost builder-btn--small"
-                onClick={() => setExecPanelOpen(false)}
-                aria-label={t('builder.exec.close') || 'Close panel'}
-              >
-                <Icon name="close" size={12} strokeWidth={1.75} />
-              </button>
-            </div>
-            <div className="builder-exec__body">
-              <div className="builder-empty-state builder-empty-state--small">
-                <Icon name="terminal" size={20} strokeWidth={1.5} />
-                <p>{t('builder.exec.empty') || 'Real-time logs coming Days 17-18. Press Run to see node status changes.'}</p>
-              </div>
-            </div>
-          </section>
+          <ExecutionPanel
+            logs={execLogs}
+            status={execStatus}
+            nodesTotal={execStats.total}
+            nodesDone={execStats.done}
+            nodesFailed={execStats.failed}
+            onStop={handleStopExec}
+            onClear={handleClearLogs}
+            onClose={() => setExecPanelOpen(false)}
+          />
         )}
 
       </div>
+
+      {/* Template Gallery modal */}
+      {galleryOpen && (
+        <TemplateGallery
+          onUseTemplate={loadTemplate}
+          onScratch={() => setGalleryOpen(false)}
+          onClose={() => setGalleryOpen(false)}
+        />
+      )}
     </div>
   );
 }

@@ -25,18 +25,153 @@
 
 ## Target list
 
-| # | Name | Company | Role | Country | LinkedIn URL | Source | Status | Date contact | Notes |
-|---|------|---------|------|---------|--------------|--------|--------|--------------|-------|
-| 1 |  |  |  |  |  |  | 🔍 |  |  |
-| 2 |  |  |  |  |  |  | 🔍 |  |  |
-| 3 |  |  |  |  |  |  | 🔍 |  |  |
-| 4 |  |  |  |  |  |  | 🔍 |  |  |
-| 5 |  |  |  |  |  |  | 🔍 |  |  |
-| 6 |  |  |  |  |  |  | 🔍 |  |  |
-| 7 |  |  |  |  |  |  | 🔍 |  |  |
-| 8 |  |  |  |  |  |  | 🔍 |  |  |
-| 9 |  |  |  |  |  |  | 🔍 |  |  |
-| 10 |  |  |  |  |  |  | 🔍 |  |  |
+## Contact 1
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
+
+---
+
+## Contact 2
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
+
+---
+
+## Contact 3
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
+
+---
+
+## Contact 4
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
+
+---
+
+## Contact 5
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
+
+---
+
+## Contact 6
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
+
+---
+
+## Contact 7
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
+
+---
+
+## Contact 8
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
+
+---
+
+## Contact 9
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
+
+---
+
+## Contact 10
+
+- #:
+- Name:
+- Company:
+- Role:
+- Country:
+- LinkedIn URL:
+- Source:
+- Status: 🔍
+- Date contact:
+- Notes:
 
 (Скопируй / добавь больше строк по мере необходимости.)
 
