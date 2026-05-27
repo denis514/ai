@@ -1,204 +1,292 @@
 # 03 — Distribution Channels
 
-> **TL;DR**: 3 канала параллельно — content-led SEO (long-term compounding), LinkedIn outbound (short-term signal), partner referrals (multiplier). Никакой paid acquisition до validated unit economics.
+> Где находим клиентов. Версия 2 (post-audit).
+>
+> **Главный сдвиг от V1:** не «SEO + LinkedIn + Partners» в равной доле.
+> Канал #1 — **Nordic LinkedIn + финский moat**. Остальное — после валидации.
 
 ---
 
-## 1. Channel scoring framework
+## Иерархия каналов (V2)
 
-Каждый канал оцениваем по 5 критериям (1-5):
+```
+PHASE 1 (валидация):
+  └─ #1 Nordic LinkedIn — 80% усилий, финский tier-card как hook
 
-| Критерий | Что значит |
-|----------|-----------|
-| **Reach** | Сколько ICP можно coverить |
-| **Targeting** | Насколько точно попадаем в ICP |
-| **Cost** | $/lead |
-| **Time-to-signal** | Когда увидим первые результаты |
-| **Compounding** | Растёт ли сам со временем |
+PHASE 2 (масштабирование):
+  └─ #1 Nordic LinkedIn (продолжение)
+  └─ #2 US/UK LinkedIn — после Nordic валидации
+
+PHASE 3 (диверсификация):
+  └─ #3 SEO long-tail content (eCommerce / Ops / etc)
+  └─ #4 Twitter/X presence (Product Twitter)
+  └─ #5 Partner referrals (Phase 4)
+
+PHASE 4 (post-product-market-fit):
+  └─ #6 Paid acquisition (Google Ads / LinkedIn Ads)
+  └─ #7 Sponsorships (Lenny, Marketingexamined)
+  └─ #8 Conferences (SaaStr, Web Summit)
+```
+
+**Правило:** не запускаем канал N+1 до validated unit economics канала N.
 
 ---
 
-## 2. Канал 1: Content-led SEO (PRIMARY)
+## Канал #1 — Nordic LinkedIn outbound
 
-| Критерий | Оценка | Комментарий |
-|----------|--------|-------------|
-| Reach | 5/5 | Глобально |
-| Targeting | 4/5 | Long-tail = высокое intent |
-| Cost | 5/5 | Только время на контент |
-| Time-to-signal | 1/5 | 6-12 месяцев на traction |
-| Compounding | 5/5 | Старые статьи приносят leads годами |
+### Почему первым
+
+1. **Финский moat работает только здесь** — main differentiator
+2. **Low competition** — нет других нордических AI-products
+3. **Network density** — финский B2B-community компактный
+4. **LinkedIn density** — Finland 30% population on LinkedIn
+5. **Pricing tolerance** — $29 для финской компании = ничего
+6. **Geo proximity** — для founder (если в EU) — same timezone, культурно ближе
+
+### Tactic
+
+**Tool stack:**
+- LinkedIn Sales Navigator ($99/mo) — необязательно сразу, но облегчает через 2-3 недели
+- Hunter.io ($49/mo) — найти email для cold-email backup canal
+- Calendly ($10/mo) — для booking demo calls
+- Notion / Markdown файл для tracking
+
+**Targeting:**
+- Country: Finland (start) + Estonia + Sweden + Norway + Denmark
+- Job titles: Head of Product, Head of Operations, Head of Strategy, VP Product, CPO, COO
+- Company size: 50-500 employees
+- Industry: NOT crypto, NOT Big4 consulting, NOT government
+
+**Volume:** 30-50 LinkedIn connections per week, 10-15 conversations per week.
+
+### Message sequence (4-touch)
+
+**Touch 1 — Connect request (no pitch):**
+> "Hi [Name], saw your work at [Company] on [specific observation from their profile]. I'm building an AI Transformation Playbook for Product/Ops teams — would love to be connected."
+
+**Touch 2 (2 days after acceptance) — Value send:**
+> "Hi [Name], thanks for connecting. Quick context — I noticed [observation about their team/post]. I made a free AI map for Product/Ops teams: [link to Atlas]. The eCommerce or Operations direction might resonate with what you're working on."
+
+**Touch 3 (5 days after Touch 2) — Question (only if engaged):**
+> "Hi [Name], curious — how is your team approaching AI strategy right now? Most heads-of-product I talk to either roll their own framework or hire consulting. I'm trying to learn what's actually working."
+
+**Touch 4 (7 days after Touch 3, only if responded) — Demo invite:**
+> "Would you be open to a 30-min call? I'd love to show you how [specific direction] is structured and learn about your team's process."
+
+**Critical rule:** только 1 ask на touch. Sequence — value-first. If response cold, drop after touch 3.
+
+### Финский angle (специально для Finland targets)
+
+Use Finnish language opportunistically:
+- LinkedIn About может быть на финском: "Rakennan AI-käsikirjaa Product- ja Ops-tiimeille"
+- Touch 2 если профиль на финском: "Hei [Name], huomasin että työskentelet [companyssa]. Tein ilmaisen AI-kartan Product- ja Ops-tiimeille — finskinkielinen on saatavilla yksinään tällä alalla."
+
+Не натянуто — естественно. Финский ICP воспринимает это как сильный сигнал.
+
+### Метрики канала
+
+- Connection accept rate: target 30-50% (B2B norm)
+- Connection → conversation rate: target 10-15%
+- Conversation → demo: target 30-40%
+- Demo → paid: target 20-30%
+
+**Funnel example:** 100 connections/mo → 40 accepts → 5 conversations → 2 demos → 1 paid
+
+**ROI calc:** ~$29 MRR per 100 connections + 4-5 founder-hours/week. Time, not money.
+
+---
+
+## Канал #2 — US/UK LinkedIn outbound
+
+### Когда запускаем
+
+После Nordic канала #1 validated: ≥3 paid users from ≤100 connections sent.
+
+### Чем отличается от Nordic
+
+- Volume в 5-10× больше (US ICP ≈ 50k LinkedIn-доступных)
+- Conversion в 2-3× ниже (competition higher, attention scarcer)
+- Финский angle не работает — нужен другой hook
+
+### Новые hooks для US/UK
+
+1. **"AI for [their specific function]"** — eCommerce, Ops, Marketing direction-specific entry point
+2. **"AI Transformation Playbook"** — общий positioning
+3. **Anti-consulting angle** — "$200k consulting → $29/mo handbook"
+
+### Тactic
+
+Same 4-touch sequence, no Finnish step.
+
+**Targeting tweaks:**
+- US/UK companies с recent funding (Series A-C) — they have AI initiatives, fresh budget
+- Companies that posted "Hiring: Head of AI" в последние 6 месяцев — they care
+- Companies with active product blog — proxy for sophisticated leadership
+
+---
+
+## Канал #3 — SEO long-tail content
+
+### Когда запускаем
+
+Phase 3+ (после Stripe launch). До этого SEO — distraction.
+
+### Strategy
+
+**Не блог.** Atlas content **сам** является SEO-asset. 247 узлов с unique URL = 247 indexable pages в 3 локалях = 741 indexable pages.
+
+**Optimization needed:**
+1. Static rendering для узлов (сейчас SPA — Google indexes частично)
+2. Meta tags per node (title + description from `what`)
+3. OG images per node (auto-generated)
+4. Sitemap.xml с приоритетами
+5. Internal linking optimization (cross-links уже работают на UI level)
+
+### Target search queries
+
+**Long-tail keywords:**
+- "AI workflow for content operations"
+- "AI use cases in eCommerce"
+- "AI transformation playbook"
+- "Claude prompt for [task]"
+- "how to use AI in customer support team"
+
+**Volume:** 100-1000 searches/month each. Combined: 30k-100k monthly searches addressable.
+
+**Conversion expectation:** SEO traffic → free signup → free user → eventually paid: 0.5-2% conversion. Long tail.
+
+---
+
+## Канал #4 — Twitter/X presence (Product Twitter)
+
+### Когда запускаем
+
+Phase 3+ параллельно SEO.
+
+### Strategy
+
+**Founder's account** становится Atlas voice. Twitter ICP = Product/Marketing/Ops on Twitter = 100% overlap с our ICP.
+
+**Content cadence:**
+- 1-2 tweets/day (не больше — отвлекает)
+- Mix:
+  - 50% direct insights from Atlas content ("Today's transformation node: ec-pdp-gen. Catalog teams use AI to scale PDP creation. Here's why...")
+  - 30% commentary on AI news ("Anthropic released X — here's how it shifts the operating model for [function]")
+  - 20% engagement (replies, build relationships with practitioners)
+
+**Format:**
+- Threads of 5-10 tweets explaining one operating model
+- Screenshots of Atlas (visual proof)
+- Always link back: "Full graph here: [Atlas URL]"
+
+### Метрики канала
+
+- Followers growth: 50-100/mo organic (slow)
+- Atlas referral traffic from Twitter: 100-500 visits/mo
+- Conversion: low (2-5% sign up, 1-2% paid)
+
+**Real value:** не traffic, а **authority building**. Через 6-12 месяцев Atlas + founder = recognized voice в AI transformation space. Это GTM-моat сам по себе.
+
+---
+
+## Канал #5 — Partner referrals (Phase 4+)
 
 ### Стратегия
 
-**Не блог.** Atlas — это interactive knowledge graph; контент должен жить на mindmap-страницах,
-индексироваться Google как deep pages.
+**Кто партнёры:**
+1. **AI consultants** (independent / small firms) — recommend Atlas как companion tool их клиентам
+2. **Newsletter operators** (Lenny, Marketing Examined, etc) — sponsorships или referrals
+3. **Product communities** (Reforge alumni, Maven instructors) — community recommendations
 
-**Целевые keyword кластеры:**
+### Affiliate program
 
-1. **«AI for [business function]»** (high volume, broad intent)
-   - "AI for eCommerce", "AI for marketing teams", "AI for customer support"
-   - Target: каждый Transformation direction → landing page оптимизированный под этот keyword
+20-30% recurring commission на referred paid users. Standard для SaaS.
 
-2. **«[Workflow] with AI»** (medium volume, high intent)
-   - "AI product description generation", "AI search relevance optimization",
-     "AI customer segmentation"
-   - Target: каждый ec-* / cs-* / mk-* node → SEO-optimized title + meta
+**Tracking:** Stripe → unique referral codes. ~10% of MRR в Phase 4-5 может идти через partner channel.
 
-3. **«[Tool] vs [Tool]» / «How to [task] with Claude»** (long-tail, highest intent)
-   - "Claude vs ChatGPT for eCommerce", "How to build product recommendations with Claude"
-   - Target: blog-format articles cross-linking deep into Atlas
+### Не запускаем до Phase 4
 
-### Implementation milestones
-
-- **+2 недели:** SEO audit (`scripts/seo-audit.mjs` — TODO) — какие узлы уже ранжируются
-- **+4 недели:** Sitemap + structured data на каждом узле
-- **+8 недель:** 5 «AI for X» landing pages с обновлёнными meta
-- **+12 недель:** 10 long-tail articles published
-- **+26 недель:** 20+ ranking keywords on page 1-2
-
-### Success metric
-- 1,000 organic monthly visits за 6 месяцев = traction signal
+Premature partners = низкое качество leads + admin overhead. Сначала build proven funnel.
 
 ---
 
-## 3. Канал 2: LinkedIn Outbound (SECONDARY)
+## Канал #6 — Paid acquisition
 
-| Критерий | Оценка | Комментарий |
-|----------|--------|-------------|
-| Reach | 3/5 | Ограничено connection limits |
-| Targeting | 5/5 | Job title + company size filters |
-| Cost | 4/5 | Sales Navigator $99/mo |
-| Time-to-signal | 5/5 | Reply в течение дней |
-| Compounding | 2/5 | Личное усилие каждую неделю |
+### Когда запускаем
 
-### Стратегия
+Phase 5+ (через 9-12 месяцев). После validated unit economics (LTV:CAC ratio ≥3).
 
-**Не cold pitching.** Outbound = «полезный контент → дискуссия → demo».
+### Какие платформы
 
-**Sequence (4 touches за 14 дней):**
+- **LinkedIn Ads** — best B2B targeting, expensive ($30-60 CPC)
+- **Google Ads** — branded + long-tail (cheaper but lower intent)
+- **Reddit Ads** — niche communities (eCommerce, ops, productivity)
 
-1. **Day 1:** Connect request с personalized note про их компанию (specific AI initiative)
-2. **Day 3 (если accept):** Поделиться 1 link на Atlas узел, релевантный их инициативе.
-   Без pitch.
-3. **Day 7:** Вопрос-ответ — спросить про их experience с тем что я отправил.
-4. **Day 14:** Если есть диалог — invite на 20-минутный demo Atlas.
+### Не делаем до signal
 
-### Targeting filters (Sales Navigator)
-
-- Title: "Head of Growth" OR "Head of Product" OR "VP eCommerce" OR "Director of CRO"
-- Company size: 11-200 employees
-- Industry: Internet, Consumer Goods, Retail
-- Geography: US, UK, Nordics, DACH (high purchasing power)
-- Posted recently: AI/automation keywords
-
-### Cadence
-
-- 50 connect requests/week
-- 50% accept rate → 25 conversations
-- 10% reply → 2.5 active dialogues
-- 30% book demo → ~1 demo/week
-- 30% demo→subscription → 1 subscription за 3 недели
-
-**Conservative:** 4 subscriptions за квартал from LinkedIn alone.
-
-### What NOT to do
-
-- ❌ Spray-and-pray connection requests без context
-- ❌ Pitch в первом сообщении
-- ❌ Multi-channel automation (LinkedIn → Email → SMS) — kills authenticity
-- ❌ Использовать LinkedIn для Free tier acquisition — это marketing на paid users
-
-### Success metric
-- 5 Team subscriptions from LinkedIn в Q1 = channel validated
+Paid acquisition сжигает money если нет product-market fit. Сначала organic + outbound.
 
 ---
 
-## 4. Канал 3: Partner Referrals (MULTIPLIER)
+## Канал #7 — Conferences и speaking
 
-| Критерий | Оценка | Комментарий |
-|----------|--------|-------------|
-| Reach | 4/5 | Зависит от партнёра |
-| Targeting | 5/5 | Партнёр уже доверяет своей audience |
-| Cost | 3/5 | Revenue share или free seats |
-| Time-to-signal | 3/5 | 2-3 месяца на establish |
-| Compounding | 5/5 | Каждый партнёр = leverage |
+### Selective approach
 
-### Target partners (ранжированы по fit)
+Founder speaks/presents на 2-3 events per year. NOT generic AI conferences (saturated, low signal).
 
-#### Tier 1: AI Infrastructure
-- **Anthropic** — Atlas covers Claude ecosystem; logical referral для educational/Academy alumni.
-  *Ask:* listing в "Learn more" section + co-marketing.
-- **LangChain** — complementary (они tooling, мы knowledge). Cross-promote.
-- **Vercel** — Atlas hosted on Vercel; их community значительно overlaps с ICP.
-  *Ask:* showcase в Templates / Community spotlight.
+**Target events:**
+- SaaStr Annual — Product/Ops focus
+- Web Summit (Lisbon) — broad business audience
+- B2B Marketing Exchange — overlap с ICP
+- Smaller domain conferences (eCommerce Berlin, Ops Summit)
 
-#### Tier 2: Consultancy networks
-- **Toptal AI experts** — mutual referral: они посылают clients в Atlas для self-serve, мы
-  recommend их для deeper engagements.
-- **Anthropic Builder community** — direct contact, low formal barrier.
+**ROI:** не lead-gen напрямую. Authority building + 5-10 paid users per event через follow-up.
 
-#### Tier 3: Media / Educational
-- **Lenny's Newsletter** — sponsorship $5-10K, ICP-perfect overlap
-- **Reforge** — partnership на mutual content
-- **eCommerce-specific newsletters** (ProductLed, Demand Curve, GrowthHackers)
+### Cost vs benefit
 
-### Implementation milestones
-
-- **+4 недели:** Outreach к 5 Tier 1 partners with positioning deck
-- **+8 недель:** 1 Tier 1 partner active (likely Vercel showcase)
-- **+12 недель:** 2 Tier 2 partnerships
-- **+20 недель:** Lenny's sponsorship (если ROI оправдан)
-
-### Success metric
-- 30% всех paid signups через partner referrals к Q2
+Conferences: $5-15k cost + 1 week founder time. Только если есть spare cycles. До Phase 3 — нет cycles.
 
 ---
 
-## 5. Каналы, которые мы НЕ делаем сейчас
+## Channel mix evolution
 
-### ❌ Google Ads / Facebook Ads
-**Почему:** не валидирован unit economics, не знаем CAC ceiling. Деньги пропадают.
-**Когда вернёмся:** после $5K MRR + clear LTV signal.
-
-### ❌ Influencer marketing
-**Почему:** AI/tech influencers overpriced, audience не наш ICP (mostly devs/hobbyists).
-**Когда вернёмся:** не вернёмся в этом виде. Только expert testimonials.
-
-### ❌ Conference speaking
-**Почему:** time-intensive, leads несвоевременны (3-6 месяцев sales cycle).
-**Когда вернёмся:** после product-market fit, как brand-building activity.
-
-### ❌ Cold email blasts
-**Почему:** spam regulations EU (GDPR), low conversion, бренд-разрушительно.
-
-### ❌ Reddit / HackerNews
-**Почему:** anti-promotional culture, легко получить ban. Только organic shares.
+| Phase | Месяц | Primary | Secondary | Notes |
+|-------|-------|---------|-----------|-------|
+| Phase 1 | 1-2 | Nordic LinkedIn | — | Validation |
+| Phase 2 | 2-4 | Nordic LinkedIn | US/UK LinkedIn | Scale outbound |
+| Phase 3 | 3-6 | LinkedIn (combined) | SEO + Twitter | Diversify |
+| Phase 4 | 6-9 | LinkedIn + SEO | Twitter + Partners | Multi-channel |
+| Phase 5 | 9-12 | Mix | + Paid + Conferences | Mature |
 
 ---
 
-## 6. Channel mix (target)
+## Что НЕ делаем (anti-patterns)
 
-| Канал | % новых customers | Тратим времени | Доход после ramp-up |
-|-------|-------------------|----------------|---------------------|
-| SEO | 50% | 30% (writing/optimization) | Compounds |
-| LinkedIn | 30% | 50% (active prospecting) | Linear w/ effort |
-| Partners | 20% | 20% (relationship building) | Compounds w/ momentum |
-
-После 6 месяцев цель: SEO 60% / LinkedIn 20% / Partners 20% (active prospecting фейдит, SEO компаундится).
-
----
-
-## 7. Что измеряем по каждому каналу
-
-| Канал | Top-of-funnel | Mid-funnel | Bottom-funnel |
-|-------|---------------|------------|---------------|
-| SEO | Impressions, position avg | Site visits, time on page | Free signups, trial starts |
-| LinkedIn | Connects sent | Replies received | Demos booked → subscriptions |
-| Partners | Conversations initiated | Active deals | Referred customers |
-
-Все эти метрики живут в `docs/business-strategy/05-metrics.md`.
+- ❌ **Cold email** в EU без GDPR-compliance (10k+ EUR fines)
+- ❌ **Generic newsletter sponsorships** до validated funnel
+- ❌ **Influencer marketing** для B2B (низкий ROI)
+- ❌ **AI tools directories** (G2, Capterra) — низкое качество traffic
+- ❌ **Hacker News launches** до Phase 4 (one-shot, не sustainable)
+- ❌ **Product Hunt** в первые 3 месяца — нет infrastructure для accommodation traffic spike
+- ❌ **Founders Network / IndieHackers** posts «what should I build» — позиционирует как hobby
 
 ---
 
-_Status: PLAN — нет live execution yet. Phase 0 (ICP validation) — приоритет._
-_Created: 2026-05-24 | Owner: growth-strategist agent_
+## Tracking каналов
+
+### Attribution UTM-параметры
+
+Все outbound links должны быть с UTM:
+- `utm_source=linkedin` / `seo` / `twitter` / `partner-{name}`
+- `utm_medium=outbound` / `organic` / `paid`
+- `utm_campaign=nordic-2026q2` / `us-uk-launch` / etc
+
+Stripe Checkout → Supabase: записываем UTM source в signup metadata.
+
+### Weekly review
+
+Ежепонедельный strategic review (`scripts/weekly-strategy-review.mjs`) включает breakdown по каналам: signups, conversions, MRR contribution per channel.
+
+---
+
+_Версия 2.0 — 2026-05-24 (post product audit)._

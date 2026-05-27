@@ -1,229 +1,284 @@
 # 05 — Business Metrics
 
-> **TL;DR**: 3 уровня метрик — North Star (MRR), Health (churn, NPS), Growth (signups, conversion). Не отвлекаемся на vanity (impressions, followers).
+> Что измеряем, что игнорируем. Версия 2 (post-audit).
+>
+> **Главный сдвиг от V1:** target MRR более скромный и realistic ($1100 vs $5000
+> через 90 дней), но дополнительно: **Phase 1 metrics** — валидация перед launch.
 
 ---
 
-## 1. North Star Metric
+## Иерархия метрик
 
-### **MRR (Monthly Recurring Revenue)**
+```
+NORTH STAR
+  └─ MRR (Monthly Recurring Revenue)
 
-Единственная метрика, по которой судим бизнес. Включает Pro + Team + Enterprise.
+HEALTH METRICS (sustainability)
+  ├─ Monthly churn rate
+  ├─ NPS (Net Promoter Score)
+  └─ Activation rate (free → first meaningful action)
 
-**Цели:**
-- Day 90: $750 MRR
-- Day 180: $5,000 MRR
-- Day 365: $25,000 MRR (требует team scaling)
+GROWTH METRICS (acquisition)
+  ├─ Free signups / week
+  ├─ Free → Paid conversion rate
+  ├─ Demo call → Paid rate
+  └─ Channel attribution (LinkedIn / SEO / Twitter)
 
-**Почему MRR, не GMV/total revenue:**
-- Recurring → predictable runway
-- One-time playbook sales не считаются (Phase 3+)
-- Включает все paid tiers
-
----
-
-## 2. Health Metrics (мониторим еженедельно)
-
-### Churn rate
-
-**Definition:** % paying customers, который отменил subscription в данном месяце.
-
-**Targets:**
-- Pro: <5%/мес (B2C SaaS standard)
-- Team: <3%/мес (B2B SaaS standard)
-- Trigger alert: >7% любой tier 2 месяца подряд
-
-**Действия при high churn:**
-1. 3 интервью с churned customers (что не сработало?)
-2. Audit Pro-only features (kто чем пользуется?)
-3. Возможно сменить positioning
-
-### Net Promoter Score (NPS)
-
-**Definition:** % promoters minus % detractors на «would you recommend Atlas to a colleague?»
-
-**Targets:**
-- >30 = good
-- >50 = excellent (часто переходит в organic referrals)
-
-**Cadence:** quarterly survey to all paying customers (NPS tooling: Delighted или simple Stripe form).
-
-### Customer Acquisition Cost (CAC)
-
-**Definition:** Total marketing/sales spend ÷ new paying customers.
-
-**Targets:**
-- Pro: <$30 (1 month payback)
-- Team: <$300 (3 month payback)
-
-**Calculation (Phase 1-3):**
-- Phase 1-2: только Founder time (валидация channel). CAC = 0 financial, high time cost.
-- Phase 3+: добавляем sales nav $99/мес, любой sponsorship spend.
-
-### LTV (Lifetime Value)
-
-**Definition:** ARPU × (1 / churn rate).
-
-**Targets:**
-- Pro: $228 (12 month retention × $19)
-- Team: $3,300+ (24 month × $99 + expansion)
-
-**LTV / CAC ratio target: >3x.** Меньше — unit economics не работают.
+PHASE 1 SPECIFIC (validation)
+  ├─ # of customer interviews completed
+  ├─ # of "yes I'd pay $29" signals
+  ├─ Pricing tolerance score (1-5 from interviews)
+  └─ ICP confirmation rate
+```
 
 ---
 
-## 3. Growth Metrics (мониторим неделю-к-неделе)
+## North Star — MRR
 
-### Top of funnel
+**Monthly Recurring Revenue** — единственная метрика которую founder смотрит каждый день.
 
-| Метрика | Targets Day 90 | Targets Day 180 |
-|---------|----------------|-----------------|
-| Free signups / неделя | 50 | 200 |
-| SEO impressions / неделя | 5,000 | 50,000 |
-| LinkedIn connects / неделя | 50 | 50 (sustained) |
-| Partner-referred visits / неделя | 0 | 100+ |
+### Targets
 
-### Mid funnel
+| Период | Pro users | Team workspaces | MRR Pro | MRR Team | Total MRR |
+|--------|-----------|-----------------|---------|----------|-----------|
+| Day 30 (Phase 3 end) | 5-15 | 0 | $145-435 | $0 | **$145-435** |
+| Day 60 | 15-30 | 0-1 | $435-870 | $0-149 | $435-1019 |
+| Day 90 | 30-50 | 1-2 | $870-1450 | $149-298 | **$1019-1748** |
+| Month 6 | 100-200 | 5-10 | $2900-5800 | $745-1490 | **$3645-7290** |
+| Month 12 | 300-500 | 15-25 | $8700-14500 | $2235-3725 | **$10935-18225** |
+
+### Sub-metrics MRR
+
+- **New MRR** — добавлено в этот месяц
+- **Expansion MRR** — upgrades (Pro → Team)
+- **Churn MRR** — потеряно через cancellations
+- **Net New MRR** = New + Expansion − Churn
+
+**Цель: positive Net New каждый месяц с Day 60.**
+
+---
+
+## Health metrics
+
+### Monthly churn rate
+
+**Define:** % of paid users who cancel in given month.
+
+**Targets:**
+- Month 1-3: <20% (early product, expected)
+- Month 4-6: <15%
+- Month 7-12: <10%
+- Month 12+: <5% (SaaS standard for healthy product)
+
+**Red flag:** churn >25% sustained 2 months → fundamental issue.
+
+### NPS (Net Promoter Score)
+
+**Survey trigger:** 14 days after sign-up + 60 days after subscription start.
+
+**Question:** "How likely are you to recommend Atlas to a colleague?" (0-10)
+
+**Targets:**
+- Month 3: NPS 20+ (good для early product)
+- Month 6: NPS 30+ (good для SaaS)
+- Month 12: NPS 50+ (great)
+
+**Red flag:** NPS <0 means actively damaging brand. Pause growth, fix.
+
+### Activation rate
+
+**Define:** % of new free users who do «meaningful action» в первые 7 дней.
+
+**Meaningful action** = ≥1 of:
+- Открыл 3+ transformation nodes
+- Прошёл 1+ tutorial step
+- Bookmark hit ≥1 node
+- Cmd+K search ≥1 раз
+
+**Targets:**
+- Month 1: 40%+ activation
+- Month 3: 55%+ activation
+- Month 6: 65%+ activation
+
+**Red flag:** <30% activation → onboarding/IntroModal problem.
+
+---
+
+## Growth metrics
+
+### Free signups / week
+
+**Source:** Supabase `auth.users` table.
+
+**Targets:**
+- Phase 3 (Week 4-5): 10-20 new signups/week
+- Phase 4 (Month 2-6): 30-100 new signups/week
+- Phase 5 (Month 6-12): 100-500 new signups/week
+
+### Free → Paid conversion rate
+
+**Define:** Of users who signed up free, what % converts to Pro within 30 days.
+
+**Targets:**
+- Phase 3: 5-10% (high, because Phase 3 traffic = warm leads from interviews)
+- Phase 4: 2-4% (broader audience)
+- Phase 5: 2-5% (with optimization)
+
+**Industry benchmark for B2B SaaS:** 2-5% free → paid conversion.
+
+### Demo call → Paid rate
+
+**Define:** Of demo calls held, what % converts to paid.
+
+**Targets:**
+- Phase 3: 30-40% (highest — warm from interviews)
+- Phase 4-5: 20-30% (general demo flow)
+
+### Channel attribution
+
+UTM-tracking + Supabase signup metadata.
+
+**Track:**
+- LinkedIn (organic via cold outreach)
+- SEO (organic via google)
+- Twitter (organic via twitter)
+- Direct (типаted URL or word-of-mouth)
+- Partner (affiliate code)
+
+**Target distribution Phase 4-5:**
+- LinkedIn: 40-50%
+- SEO: 20-30%
+- Twitter: 10-20%
+- Direct: 10-15%
+- Partner: 5-10%
+
+**Concentration risk:** если один канал >70% — fragile.
+
+---
+
+## Phase 1 specific metrics (validation)
+
+### Interview completion
 
 | Метрика | Target |
 |---------|--------|
-| Free → Trial conversion | 20% |
-| Trial → Paid conversion | 25% |
-| Demo → Subscription (Team) | 30% |
+| Interviews completed | 10 за 14 дней |
+| ICP show-up rate | >50% (booked vs held) |
+| Interview length | 30-45 min average |
+| Recordings + notes | 100% (с разрешения) |
 
-### Bottom funnel
+### Validation signals
 
-| Метрика | Target |
-|---------|--------|
-| New Pro / неделя | 5 (Day 60-90) → 15 (Day 180) |
-| New Team / неделя | 0.3 (Day 60-90) → 2 (Day 180) |
-| Activation rate (used 5+ times in week 1) | >60% |
+**Strong WTP signal** (count of):
+- "Yes, I'd pay $29/mo" — direct quote
+- "We need this for our team" — team interest
+- "Can I share this with [colleague]?" — referral signal
 
----
+**Threshold for GO Phase 2:**
+- 5+ из 10 interviews → at least 1 strong WTP signal
 
-## 4. Product engagement metrics
+**Threshold for STOP / pivot:**
+- 0-2 strong signals из 10 → ICP wrong OR positioning wrong
 
-### Activation
-**Definition:** User completed «aha moment» — opened 3+ nodes + bookmarked 1.
+### Pricing tolerance score
 
-**Why:** Strong leading indicator of paid conversion.
+Scale 1-5 from interview answer to "would $29/mo make sense?":
+- 5 — "yes immediately"
+- 4 — "yes for team budget"
+- 3 — "maybe, depends"
+- 2 — "too expensive but I'd consider $15"
+- 1 — "no"
 
-**Target:** >50% of signups activate within 24h.
-
-### Retention cohorts
-
-| Cohort | Target Week 1 | Week 4 | Week 12 |
-|--------|---------------|--------|---------|
-| Free signups | 40% | 20% | 10% |
-| Pro subscribers | 90% | 80% | 70% |
-| Team subscribers | 95% | 90% | 85% |
-
-### Feature usage (на Pro-only feature)
-
-Tracking чтобы понять что валуется:
-- AI Companion mode opens / week
-- Workflow library full reads / week
-- Playbook downloads / week
-
-**Если Pro-only feature имеет <30% usage среди Pro users — feature не валуется. Либо
-рефакторим, либо убираем.**
+**Target average:** 3.5+ from 10 interviews → pricing OK.
+**Below 3:** consider $19 Pro tier OR repositioning.
 
 ---
 
-## 5. Channel-specific metrics
+## Vanity metrics — НЕ отслеживаем
 
-См. `03-channels.md` § 7 для detailed channel KPIs.
+❌ **Page views / impressions** — нет relation к revenue, distracting
+❌ **Twitter followers** — irrelevant до Phase 4, even then secondary
+❌ **LinkedIn connections count** — only quality matters
+❌ **GitHub stars** — мы не OSS proj
+❌ **Reddit upvotes** — лотерея
+❌ **Press mentions** — feel-good, не revenue
+❌ **Total mindmap nodes count** (247) — это product metric, не business
+❌ **Tutorials completed (total)** — engagement proxy, не revenue
 
-Summary:
-- **SEO:** organic monthly visits (target 1,000 Day 180)
-- **LinkedIn:** demo bookings от outbound (target 5/week)
-- **Partners:** referred customers (target 30% всех paid)
-
----
-
-## 6. Vanity metrics — DO NOT TRACK
-
-Эти метрики красивые, но ничего не говорят про бизнес:
-
-- ❌ Twitter/X followers
-- ❌ LinkedIn page followers
-- ❌ Total user count (если они не activate)
-- ❌ Total tutorial completions
-- ❌ "Time on site" в среднем
-- ❌ Star count на GitHub (если будет open source)
-
-**Правило:** если метрика не предсказывает MRR — не считаем её.
+**Правило:** если метрика не корреллирует с MRR в 30-90 дней — игнорируем.
 
 ---
 
-## 7. Reporting cadence
+## Dashboard structure
 
-### Weekly (понедельник)
-- MRR delta WoW
-- New paid signups (Pro/Team breakdown)
-- Churn events
-- Top 3 SEO keyword movements
-- LinkedIn outbound stats
+### Daily check (5 min, founder)
+- New signups today
+- New paid users today
+- Cancellations today
+- MRR delta vs yesterday
 
-**Format:** 1 markdown file `tasks/weekly-strategy-{YYYY-MM-DD}.md`.
-**Generator:** `scripts/weekly-strategy-review.mjs` (см. business-strategist skill).
+### Weekly review (Monday, 30 min)
+- New MRR vs target
+- Churn rate (rolling 30d)
+- Channel breakdown
+- Demo calls held last week + result
+- Top 3 issues / friction points
 
-### Monthly
-- Cohort retention update
-- CAC by channel
-- LTV/CAC ratio
-- NPS если quarterly month
-
-### Quarterly
-- ICP review (still right segment?)
-- Pricing review (raise? lower? new tier?)
-- Roadmap update (next 90 days)
+### Monthly retrospective (1st Monday, 60 min)
+- All North Star + Health + Growth metrics
+- Decision log update
+- Adjustments to roadmap
 
 ---
 
-## 8. Decision triggers
+## Tooling
 
-Метрики триггерят конкретные действия:
+**Now (Phase 0-1):** Markdown файлы + manual Supabase queries.
+- `tasks/weekly-strategy-{date}.md` — auto-generated по понедельникам через GitHub Actions
+- `tasks/pricing-validation.md` — interviews log
 
-| Trigger | Action |
-|---------|--------|
-| Churn > 7% × 2 месяца | 3 interviews → decide retention plan |
-| Free→Paid conversion < 1% × 60 дней | Re-validate Pro feature gate |
-| MRR growth < 10% MoM at Day 120+ | Re-strategize channels или ICP |
-| LTV/CAC < 2× | Halt paid acquisition, fix unit economics |
-| NPS < 20 | Customer interview round + product audit |
-| 0 referrals на 100 paid customers | Add referral incentive |
+**Phase 2-3:** + Stripe Dashboard для billing metrics.
 
----
+**Phase 4+:** Consider:
+- ChartMogul ($100/mo) — SaaS revenue analytics
+- Plausible / Posthog (privacy-first) — product analytics
+- PostHog — feature usage tracking
 
-## 9. Что НЕ оптимизируем рано
-
-### NOT before $5K MRR
-- ❌ A/B testing pricing
-- ❌ Funnel optimization (CRO внутри Atlas)
-- ❌ Sophisticated attribution
-- ❌ Cohort analysis tooling (Excel + Stripe экспорт хватает до $5K MRR)
-
-### Why
-До $5K MRR оптимизация преждевременна — недостаточно volume чтобы statistical significance.
-Лучше фокус на acquisition + qualitative customer development.
+**До Phase 4 нет budget для аналитики tooling.** Manual review достаточен для <100 paid users.
 
 ---
 
-## 10. Tooling
+## Decision support через metrics
 
-| Цель | Tool | Cost |
-|------|------|------|
-| Subscriptions | Stripe | 2.9% + $0.30 per charge |
-| User analytics | Mixpanel (free до 100K events) или Plausible | $0-19/мес |
-| Cohort retention | Stripe dashboard + manual export | $0 |
-| NPS surveys | Delighted (free до 50 surveys) или Tally | $0-50/мес |
-| Customer outreach | Personal Gmail / LinkedIn (no CRM до $5K MRR) | $0 |
-| Sales Navigator | LinkedIn | $99/мес |
+### Когда что menyaem
 
-**Total tooling cost: <$150/мес** до $5K MRR. После — добавим CRM (Attio или Pipedrive).
+| Metric | Threshold | Decision |
+|--------|-----------|----------|
+| Phase 1 validation signals | 5+ из 10 yes | Phase 2 GO |
+| Phase 1 validation signals | 0-2 из 10 yes | Pivot ICP / positioning |
+| Conversion rate (Phase 3) | >5% | Healthy, scale outbound |
+| Conversion rate | <2% | Demo / pricing issue |
+| Churn rate | >25% | Product issue, pause growth |
+| NPS | <0 | Critical, stop sales until fixed |
+| Demo show-up rate | <30% | Booking flow broken |
+| Activation rate | <30% | Onboarding broken |
+| Channel concentration | >70% in one | Diversification needed |
 
 ---
 
-_Status: PLAN — нет live tracking yet_
-_Created: 2026-05-24 | Owner: business-strategist agent_
+## Что измеряем для weekly strategy review
+
+`scripts/weekly-strategy-review.mjs` (auto-generated по понедельникам) собирает:
+
+1. **Code activity:** commits last week, файлов изменено
+2. **Content state:** total nodes, tutorials, локали status
+3. **Task state:** open tasks, completed last week
+4. **Subscription metrics** (Phase 3+): MRR, new paid, churn, free signups
+5. **Channel metrics** (Phase 3+): signups by source
+6. **Open questions:** автоматически вытаскиваются из decisions.md «status: hypothesis»
+
+Эти данные становятся weekly markdown файлом для review founder-ом.
+
+---
+
+_Версия 2.0 — 2026-05-24 (post product audit)._

@@ -1,235 +1,325 @@
-# 04 — Monetization Roadmap (90 дней)
+# 04 — Monetization Roadmap
 
-> **TL;DR**: Day 0–14: ICP validation. Day 14–35: Stripe + paywall infra. Day 35–60: soft launch Pro. Day 60–90: Team tier + outbound. Target: $5K MRR за 6 месяцев, $500 MRR за 90 дней.
-
----
-
-## Phase 0 — Validation (Day 0-14)
-
-**Goal:** Не строить paywall до доказательства, что есть willingness to pay.
-
-### Tasks
-
-- [ ] **10 ICP interviews** (Primary segment — eCommerce leads).
-  - Schedule через LinkedIn Sales Navigator outreach
-  - Скрипт интервью — см. `docs/business-strategy/02-target-customer.md` § 5
-  - Owner: human (founder) с помощью `skills/user-research-synthesizer`
-  
-- [ ] **Pricing reaction test:** в каждом интервью прямо: «Team subscription $99/мес
-  за 5 seats — что думаешь?»
-  - Need: 5+ «I would pay» reactions
-  - Documenting: цитаты + sentiment в `tasks/pricing-validation.md`
-
-- [ ] **Top Pro-only feature identification.**
-  - Слушать boли: что бы они «купили» как Pro feature
-  - Top candidates: AI Companion mode, Workflow library full access, downloadable playbooks
-  - Decision: 1 «must have» feature для Pro launch
-
-### Exit criteria
-
-- ✅ 5+ positive pricing signals
-- ✅ 1 clear Pro-only feature decided
-- ✅ 3+ referrals to other potential customers
-
-**Если не достигли — НЕ ИДЁМ в Phase 1.** Возвращаемся к ICP validation.
+> Phase 0 → 4. Версия 2 (post-audit).
+>
+> **Главный сдвиг от V1:** Phase 0 не только interviews — а ещё repositioning
+> (DONE). Phase 1 валидация и Stripe build идут **параллельно**, не
+> последовательно. Первый $1 — через 3-4 недели, не 90 дней.
 
 ---
 
-## Phase 1 — Paywall Infrastructure (Day 14-35)
+## Обзор фаз
 
-**Goal:** Технический фундамент монетизации без user-facing changes пока.
+```
+Phase 0  | Week 0       | Repositioning + UX wins (DONE 2026-05-24)
+Phase 1  | Week 1-2     | Validation interviews × 10 + Stripe scaffolding параллельно
+Phase 2  | Week 2-4     | Content tagging + paywall UI + Stripe Checkout
+Phase 3  | Week 4-5     | Launch + outreach + first paying users
+Phase 4  | Month 2-6    | Team tier + optimization (after ≥10 paid + signal)
+Phase 5  | Month 6-12   | Scaling + diversification + paid acquisition
+```
 
-### Tasks
-
-- [ ] **Stripe integration** (test mode first)
-  - Stripe account + Tax/VAT setup для Финляндии
-  - Webhook handler в Supabase Edge Functions
-  - Customer Portal для self-serve billing
-  
-- [ ] **Tier system в Supabase**
-  - Таблица `subscriptions` (user_id, tier, status, current_period_end)
-  - RLS: feature gates через JWT claim
-  - Hook в auth flow — обновлять JWT при tier change
-  
-- [ ] **Pricing page** (`/pricing` route)
-  - 3 tiers: Free / Pro / Team
-  - Annual toggle (−17% discount)
-  - FAQ inline
-  - 3 locales (RU/EN/FI)
-  
-- [ ] **Upgrade flow UX**
-  - "Upgrade to Pro" CTA в местах где user hits Pro-only feature
-  - Stripe Checkout integration
-  - Success/cancel callbacks
-  
-- [ ] **Feature gates** в UI
-  - Bookmark limit (5 для Free, unlimited для Pro)
-  - Pro-only feature: gated с upgrade modal
-  - Soft paywall: показать что есть, но locked
-
-- [ ] **Receipts + GDPR**
-  - Stripe automated receipts
-  - VAT invoice для EU customers (Stripe handles)
-  - Privacy Policy update (subscription data section)
-
-### Exit criteria
-
-- ✅ Можно купить Pro в test mode end-to-end
-- ✅ Tier reflected в UI и API access
-- ✅ Cancel flow работает (downgrade to Free)
-- ✅ GDPR-compliant (data export включает subscription history)
+Первый $1 через 3-5 недель. Первые $1000 MRR через 90-120 дней.
 
 ---
 
-## Phase 2 — Pro Soft Launch (Day 35-60)
+## Phase 0 — Repositioning (Week 0, DONE 2026-05-24)
 
-**Goal:** First $500 MRR от Pro tier.
+### Что сделано
 
-### Tasks
+1. ✅ **Удалить auto-tutorial-push** (`App.jsx:248`) — `507bd27`
+2. ✅ **Переписать IntroModal copy** — позиционирование «AI Transformation Playbook» — `51c9267`
+3. ✅ **Audit 11 cap-* foundation узлов** — 6 скрыто (minLevel: expert), 4 в P1 upgrade, 1 reframe — `ff10208`
+4. ✅ **Пересобрать business-strategy docs** на post-audit реальность — текущий коммит
 
-- [ ] **Switch Stripe to live mode**
-  - Activated account verification
-  - Real charges enabled
-  
-- [ ] **Email outreach к early users** (50-100 emails)
-  - Tone: «You've been using Atlas; we're launching Pro»
-  - Founder-personal не corporate
-  - Early bird discount: 50% off first 3 months
-  - Owner: founder
+### Что отложено в P1 (не блокирует Phase 1)
 
-- [ ] **Pro launch announcement**
-  - LinkedIn post (personal account)
-  - Twitter/X post
-  - Update website hero — Pro tier visible
-  
-- [ ] **First 10 customers feedback loop**
-  - Personal email после signup: «What made you pay?»
-  - Track: какие features они используют
-  - Iterate: убрать unused, усилить used
-  
-- [ ] **Refund policy decision**
-  - Standard: 14-day money-back guarantee
-  - Reduces friction for first-time buyers
+- Полный upgrade 4 cap-* узлов (tools, thinking, memory) — Backlog #34-#35
+- Создание cap-input-modalities consolidation — Backlog #36
+- Reframe cap-caching — Backlog #37
 
-### Targets
-
-- $500 MRR (~25 Pro subscriptions at $19)
-- <10% trial→paid (acceptable for cold launch)
-- 0 refunds requested (signal pricing/value match)
-
-### Exit criteria
-
-- ✅ Stripe live processing real charges
-- ✅ $500+ MRR
-- ✅ <10% monthly churn signal
-
-**Если 0 paid в 25 дней:** stop, return to Phase 0. Pricing или ICP неправильный.
+**Decision:** Phase 1 не ждёт P1 контентных задач. Перевод визитёра в paying user блокирован не качеством cap-* узлов, а **отсутствием paywall**.
 
 ---
 
-## Phase 3 — Team Tier + Outbound (Day 60-90)
+## Phase 1 — Validation + Stripe scaffolding (Week 1-2)
 
-**Goal:** Scale to $2K MRR через B2B channel.
+### Track A: Customer interviews (founder time)
 
-### Tasks
+**Цель:** 10 интервью за 14 дней. Каждое 30-45 мин.
 
-- [ ] **Team tier launch**
-  - Pricing page обновить (Team tier visible)
-  - Team workspace UI (admin panel, invite flow, seat management)
-  - Team billing (annual default, monthly available)
-  - Shared bookmarks/workspace state
+**Source:** LinkedIn outreach (см. `03-channels.md`).
 
-- [ ] **LinkedIn outbound к 100 ICP**
-  - 50 connect/week × 2 недели
-  - Sequence per `03-channels.md` § 3
-  - Owner: founder с помощью `skills/growth-strategist`
+**Scripts:** см. `02-target-customer.md` § 6 — interview script.
 
-- [ ] **First 3 Team customers**
-  - Concierge onboarding: zoom call setup, team workspace pre-configured
-  - White-glove first month: weekly check-in
-  - Goal: turn them into case studies
+**Output:** `tasks/pricing-validation.md` — append per interview.
 
-- [ ] **Case study #1**
-  - Document outcome от первой Team customer
-  - Quote + ROI numbers + photo (with permission)
-  - Use в marketing для следующих deals
+**Decision after 10:**
+- 5+ «I'd pay $29/mo» → Phase 2 GO
+- 3-4 «возможно» → +5 interviews, refine demo/pricing
+- 0-2 «да» → STOP, переcмотр ICP/positioning
 
-### Targets
+### Track B: Stripe scaffolding (parallel, technical)
 
-- 3 Team subscriptions (~$300 MRR)
-- 25+ Pro subscriptions (~$475 MRR)
-- Total: $775+ MRR
-- LinkedIn → 25 conversations → 3 demos → 1+ Team subscription
+**Цель:** при «GO» от Track A — Stripe готов к Phase 2 launch.
 
-### Exit criteria
+**Tasks:**
+1. **Supabase subscription table** + RLS rules (3 дня)
+   ```sql
+   subscriptions (user_id, status, tier, current_period_end, stripe_customer_id, ...)
+   RLS: только owner может read свои row
+   ```
 
-- ✅ $750+ MRR
-- ✅ At least 1 case study published
-- ✅ Repeatable acquisition motion documented
+2. **Stripe account setup** (1 день)
+   - Test mode + Live mode keys
+   - 2 products: Atlas Pro Monthly ($29), Atlas Pro Annual ($290)
+   - Webhook endpoint: `subscription.created`, `subscription.updated`, `subscription.deleted`
 
----
+3. **Stripe Checkout integration** (3 дня)
+   - `/api/checkout-session` edge function (Supabase function)
+   - Redirect flow: app → Stripe Checkout → webhook → DB update → return to app
+   - Test card: 4242 4242 4242 4242
 
-## Phase 4 — Scale (Day 90-180)
+4. **Subscription status в Auth Context** (1 день)
+   - useAuth() returns `{ user, subscription: { tier: 'free' | 'pro', validUntil } }`
+   - Refresh on app load + on webhook trigger
 
-**Goal:** $5K MRR + product-market fit signals.
+**Effort:** ~8 рабочих дней или ~1.5 недели.
 
-### Strategy
-
-- **SEO traction:** 10+ keywords ranking на page 1-2
-- **Partner channel active:** 1 Tier 1 partnership generating leads
-- **Content cadence:** 2 articles/month + Atlas updates
-- **Outbound rhythm:** 50 LinkedIn/week sustained
-- **Iteration:** monthly customer interviews, quarterly pricing review
-
-### Targets
-
-- $5,000 MRR
-- 60% Pro / 40% Team revenue split (signals B2B traction)
-- <5% monthly churn
-- 30% revenue from partner channels
-
-### Decision point at $5K MRR
-
-- ✅ Hit it: Series of investments (paid acquisition test, additional locale)
-- ⚠️ Missed: re-evaluate ICP/product/pricing — не масштабируем broken motion
+### Output Phase 1
+- ✅ 10 customer interviews completed + decision
+- ✅ Stripe scaffolding в test mode ready
+- ✅ Subscription state read everywhere in app
+- ❌ Paywall UI ещё не виден пользователю (за feature flag)
 
 ---
 
-## Critical risks
+## Phase 2 — Content tagging + Paywall UI (Week 2-4)
 
-| Risk | Probability | Mitigation |
-|------|-------------|-----------|
-| 0 paying customers в 60 дней | Medium | Phase 0 validation — не строим paywall без signal |
-| High churn (>10% monthly) | Medium | Concierge first 10 customers, weekly feedback |
-| Stripe compliance issues для Финляндии | Low | Stripe Tax handles VAT; Stripe Atlas если нужна US entity |
-| LinkedIn account restricted | Low | Manual outreach, не automation; Sales Navigator legit |
-| Anthropic запускает competing product | Medium | Differentiated positioning (we're not vendor-tied) + cooperation as partner |
-| AI fatigue в market | Low (still growing) | Focus на Transformation OS positioning, не AI-курсы |
+### Content tagging (strategic, content-decision-heavy)
+
+**Цель:** атрибут `tier: 'free' | 'pro'` на каждом из 247 узлов.
+
+**Decision matrix** (см. `01-revenue-model.md` § 3):
+
+**Default free:**
+- 65 Foundation
+- 10+ Systems
+- 10 basics tutorials
+- 5-7 teaser transformation-узлов на ветку (~35-45 узлов)
+- 2 «getting started» learning paths
+- 42 prompt templates (read-only)
+
+**Default pro:**
+- 22 advanced transformation-узлы (после teasers)
+- 17 use cases
+- 12 learning paths (after teasers)
+- 22 advanced tutorials
+- Markdown export
+
+**Tactical execution:**
+1. **Decision sheet** (4-6h, founder time) — tagging решение на каждый из 247 узлов в spreadsheet
+2. **Apply tags в mindmapData.js** — add `tier: 'free' | 'pro'` field per node (1-2h script)
+3. **sync-whats-new + commit** (15 min)
+
+**Effort:** 1-2 рабочих дня.
+
+### Paywall UI (technical)
+
+**Цель:** Pro узел для free user — visual gate.
+
+**Compoments:**
+
+1. **Lock detection в DetailPanel.jsx** (1 день)
+   - Если `node.tier === 'pro'` И `subscription.tier === 'free'` → render lock screen
+
+2. **PaywallScreen компонент** (2 дня)
+   - Blur top 30% контента (`what` start visible, `why+when+impact+example+mistakes` blurred)
+   - CTA: «Unlock with Atlas Pro — $29/mo or $290/year» + Stripe Checkout button
+   - 3 social proofs (placeholder until real testimonials)
+   - "What you get" bullets (1 link to feature comparison)
+
+3. **Free-tier bookmark на pro-узле** (1 день)
+   - Если free user bookmarks pro node → save bookmark, но UI показывает «🔒 Bookmark saved (Pro required to view)»
+
+4. **Mindmap visual indicator** (1 день)
+   - Pro-узел на карте — маленькая иконка lock в углу node
+   - Hover preview работает (тизер), но клик ведёт к paywall
+
+5. **Account → Subscription tab** (2 дня)
+   - View current plan, billing date, change plan, cancel
+   - Stripe Customer Portal embedded
+
+**Effort:** ~7 рабочих дней или 1.5 недели.
+
+### Output Phase 2
+- ✅ 247 узлов tagged free/pro
+- ✅ Paywall UI live (за feature flag — пока никто не видит)
+- ✅ Stripe billing flow end-to-end working
+- ✅ Account subscription management
 
 ---
 
-## What to NOT do during 90 days
+## Phase 3 — Launch + outreach (Week 4-5)
 
-- ❌ Add new product features unrelated to monetization
-- ❌ Pursue Enterprise deals (slow sales cycle distracts)
-- ❌ Spend on paid acquisition
-- ❌ Build mobile app (Web-first до 1K paid users)
-- ❌ Hire (founder + Claude должно хватать)
-- ❌ Take investor meetings (без leverage до $5K MRR)
+### Soft launch
+
+**Day 1 (Monday):**
+- Feature flag → ON. Paywall активна для всех free users.
+- Smoke test on prod: founder creates test paid subscription, verifies access flow.
+- Lending strapline updated (если есть public landing): "Operating playbook for AI transformation. $29/mo."
+
+**Day 1-7 (outbound focus):**
+- 50 LinkedIn touches Nordic (3-4 hours/day founder time)
+- Direct demos с 5-7 ICP leads из Phase 1 interviews (которые показывали интерес)
+- Notion document «Atlas Pro launch» — для referrals + social proof
+
+**Day 7-14:**
+- 50 LinkedIn touches US/UK (parallel)
+- First batch demo calls — 10-15 prospects through Calendly
+- Conversion target: 5-15 paid users by Week 5
+
+### Metrics Phase 3
+
+| Metric | Target by Week 5 |
+|--------|-----------------|
+| Free users | +100 sign-ups |
+| Free → Pro conversion | 5-15 paid |
+| MRR | $145-435 |
+| Demo calls held | 15-25 |
+| Demo → paid rate | 25-40% |
+| Avg deal size | $29 (only Pro tier, no Team yet) |
+
+### Что НЕ делаем в Phase 3
+
+- ❌ Team tier (defer to Phase 4)
+- ❌ Annual discount push (focus on monthly = lower commit)
+- ❌ Twitter content push (defer to Phase 4)
+- ❌ Paid ads
+- ❌ Press / launch announcement (HN/PH/etc.)
+
+**Focus:** только LinkedIn outbound + demo calls.
 
 ---
 
-## Weekly cadence во время roadmap
+## Phase 4 — Team tier + optimization (Month 2-6)
 
-| День | Activity |
-|------|----------|
-| Понедельник | Strategy review (см. weekly-strategy-review automation) |
-| Вторник-четверг | Execution (build, write, outreach) |
-| Пятница | Customer conversations (3 calls minimum) |
-| Воскресенье | Weekly metrics review + Monday plan |
+### Условие старта Phase 4
+
+- ≥10 paid Pro users active
+- ≥3 явных запросов «can we get this for the team?»
+- Churn rate < 15%/mo (signal продукт-market fit)
+
+### Team tier build
+
+**Team workspace requirements:**
+1. **Multi-user workspace** в Supabase
+   - `workspaces` table, `workspace_members` table, RLS
+   - Admin role + member role
+   - 5-seat limit by default, upgradable
+
+2. **Workspace UI**
+   - "Workspaces" tab в Account
+   - Invite via email (Resend / SendGrid)
+   - Shared bookmarks (workspace-level)
+   - Team progress dashboard (см. who's done what)
+
+3. **Stripe billing — per-seat subscription**
+   - $149/mo for first 5 seats
+   - $30/seat for 6+ seats
+   - Billing tied to workspace, not user
+
+**Effort:** ~6 рабочих недель.
+
+### Marketing motion Phase 4
+
+- **Outreach shift:** теперь pitching "Atlas for your whole team" not "for you"
+- **Demo content updated:** включить team-workflow scenario
+- **Testimonials gathered:** first 5-10 paid users → ask for testimonials → use in marketing
+- **Twitter content launch** (founder voice, см. `03-channels.md` § Channel #4)
+- **SEO push** — static rendering, OG images, sitemap
+
+### Metrics Phase 4
+
+| Metric | Target by Month 6 |
+|--------|-------------------|
+| Free users | 1000+ cumulative |
+| Paid Pro users | 100-200 |
+| Paid Team workspaces | 5-10 |
+| MRR | $3650-7300 |
+| Churn rate (monthly) | <10% |
+| NPS | 30+ |
 
 ---
 
-_Status: PLAN — Phase 0 ещё не стартовала_
-_Created: 2026-05-24 | Owner: business-strategist agent_
-_Next review: после Phase 0 completion (or at Day 14, whichever first)_
+## Phase 5 — Scaling + diversification (Month 6-12)
+
+### Когда стартуем
+
+- ≥$5k MRR consistently
+- Team tier validated (≥5 workspaces)
+- Channel saturation на LinkedIn (response rates dropping)
+
+### Что строим
+
+1. **Paid acquisition test** — LinkedIn Ads + Google Ads
+2. **Partner program launch** — 25% recurring affiliate
+3. **Content marketing push** — founder Twitter @ 5k followers, SEO traffic 1k/mo
+4. **Enterprise tier** — custom contracts $500-2000/mo, SSO, on-prem
+5. **One-time products** — Transformation playbook bundles ($199), founder consultations ($499)
+
+### Metrics Phase 5
+
+| Metric | Target by Month 12 |
+|--------|--------------------|
+| Free users | 5000+ |
+| Paid Pro users | 300-500 |
+| Paid Team workspaces | 15-25 |
+| MRR | $11k-18k |
+| LTV:CAC | 3:1+ |
+| Churn rate | <5%/mo |
+
+---
+
+## What НЕ делаем (anti-roadmap)
+
+- ❌ **Build AI Companion в Phase 1-3** — defer to Phase 5 если будет signal
+- ❌ **Build team tier до Phase 4** — нет signal, premature optimization
+- ❌ **Premium playbook PDFs до Phase 3** — formatting work, не value
+- ❌ **Mobile native app** — defer indefinitely (PWA enough)
+- ❌ **Custom CLAUDE.md generator** — fascinating but не сейчас
+- ❌ **Localize в другие языки кроме ru/en/fi** — после Phase 5
+- ❌ **Pivot если первые 5 paid users — slow** — give it 90 days minimum
+
+---
+
+## Risk register
+
+| Risk | Likelihood | Mitigation |
+|------|------------|------------|
+| Phase 1 валидация показывает 0-2 «yes» | Medium | Pivot ICP / positioning, не paywall infra |
+| Stripe technical issue blocks launch | Low | Test mode early in Phase 1 |
+| Free users churn пред-paywall | Medium | Communicate paywall как «coming soon» via email |
+| Конкурент (Anthropic Academy) копирует positioning | Low | Финский moat не воспроизводим за 6 мес |
+| Founder bandwidth runs out (interview + build + outreach parallel) | High | Hire 1 contractor для Stripe build в Phase 1 если capacity issue |
+| AI capabilities change (Claude deprecation) | Medium | Deprecate-watch на cap-* узлах |
+
+---
+
+## Decision triggers
+
+**После Phase 1:** Go/No-Go на Phase 2 (см. § Phase 1 decision after 10)
+
+**После Phase 3 (Week 5):**
+- ≥10 paid Pro users → Phase 4 build начинается
+- 5-9 paid → continue Phase 3 outreach 4 more weeks
+- 0-4 paid → revisit ICP, demo, pricing
+
+**После Phase 4 (Month 6):**
+- ≥$5k MRR + signal → Phase 5
+- $3-5k MRR → continue Phase 4 optimization
+- <$3k MRR → product-market fit issue, deep retrospective
+
+---
+
+_Версия 2.0 — 2026-05-24 (post product audit)._

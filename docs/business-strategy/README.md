@@ -1,89 +1,89 @@
 # Business Strategy — 105 Atlas
 
-> Бизнес-операционный слой проекта. Не контент-стратегия, не product-стратегия —
-> а **как Atlas зарабатывает деньги и растёт**.
+> Стратегия монетизации. **Версия 2** — переписана после product audit (`tasks/product-audit-2026-05-24.md`).
+>
+> Версия 1 была написана **до** аудита продукта — pricing, ICP и Pro-features
+> оказались гипотезами без grounding. Версия 2 опирается на реальный продукт.
 
-## Зачем эти документы
-
-Стратегия контента (`docs/strategy/`) и правила обучения (`docs/learning-design-rules.md`)
-отвечают на «что и как создаём». Эти документы отвечают на:
-
-- **Кто платит** — и за что именно
-- **Как они находят Atlas** — каналы дистрибуции
-- **Как растёт выручка** — модель монетизации
-- **Что измерять** — бизнес-метрики (не vanity)
-- **С кем конкурируем** — и как отличаемся
-
-Без этих ответов «AI-Native Transformation OS» остаётся технологической мечтой,
-а не бизнесом.
+_Создано: 2026-05-24 | Обновлено: 2026-05-24 (post-audit) | Status: **GROUNDED**_
 
 ---
 
-## Порядок чтения
+## Что изменилось vs Версия 1
 
-| # | Документ | О чём | Время |
-|---|----------|-------|-------|
-| 01 | [Revenue Model](./01-revenue-model.md) | Гипотезы монетизации + path to revenue | 10 мин |
-| 02 | [Target Customer (ICP)](./02-target-customer.md) | Кто платит, почему, сколько | 10 мин |
-| 03 | [Channels](./03-channels.md) | Где найти клиента — distribution playbook | 15 мин |
-| 04 | [Monetization Roadmap](./04-monetization-roadmap.md) | 90-дневный план до первой выручки | 15 мин |
-| 05 | [Metrics](./05-metrics.md) | KPI бизнеса, не контента | 8 мин |
-| 06 | [Competitive Landscape](./06-competitive-landscape.md) | Alternatives + differentiation | 10 мин |
-| 07 | [Decision Log](./07-decisions.md) | Архитектурные бизнес-решения с датами | живой |
+| Аспект | V1 (HYPOTHESIS) | V2 (GROUNDED) |
+|--------|-----------------|---------------|
+| Позиционирование | «AI Mindmap про Claude» | **«AI Transformation Playbook for Product/Ops teams»** |
+| ICP | «eCommerce-команды» | **Product/Ops/Strategy leads в компаниях 50-500 человек** |
+| Pricing | $19 personal / $99 team | **$29 personal / $149 team** (контент уровня консалтинга) |
+| Что нужно построить | AI Companion + team workspace + premium playbooks | **Stripe + tier-tagging + paywall UI** (всё остальное уже есть) |
+| Timeline до первого $1 | 90 дней | **3 недели** |
+| Target MRR через 30 дней | $750-1500 | **$145-435** (валидация, не business) |
+| Главный GTM-канал | LinkedIn (generic) | **Nordic LinkedIn + финский moat** |
+| Pro-only features | AI Companion + team space | **45 transformation-узлов + 17 use cases + 12 paths** (уже существуют) |
+| Phase 0 | Customer interviews | **Repositioning (DONE 2026-05-24) + customer interviews параллельно с Stripe** |
 
-**Total: ~70 минут на полное прочтение.**
-
----
-
-## Краткая суть в 5 предложений
-
-1. **Atlas — не курсы, не academy.** Это knowledge graph + workflows для AI-трансформации команд (см. `docs/strategy/01-positioning.md`).
-2. **Платит — команда, не индивид.** ICP: продакт/маркетинг/eCommerce-команды из 4-20 человек, которым нужна общая карта AI-возможностей.
-3. **Модель — SaaS tier'ы + Enterprise.** Free → Pro ($19/мес) → Team ($99/мес × 5 seats) → Enterprise (custom). Запуск Pro = Q1.
-4. **Канал — content-led + community.** SEO на «AI for X», LinkedIn outreach к Head of AI/Transformation, partner-каналы (Vercel, Anthropic Academy referrals).
-5. **Цель — $5K MRR за 6 месяцев**, чтобы доказать unit economics до масштабирования.
+**Главный сдвиг мышления:** проблема не в продукте, проблема в commerce-слое.
 
 ---
 
-## Анти-цели бизнеса
+## Структура документов
 
-- ❌ Превратиться в Coursera/Udemy. Курсы — мёртвый формат.
-- ❌ Зависеть от единственного канала (одной соцсети, одного партнёра).
-- ❌ Лезть в B2C массмаркет без validated ICP.
-- ❌ Делать pricing «как у всех» — мы продаём систему, не курс.
-- ❌ Брать инвестиции до product-market fit.
-
----
-
-## Связь с другими стратегиями
-
-| Слой | Документ | Что отвечает |
-|------|----------|--------------|
-| Content | `docs/strategy/` | Какие узлы создаём |
-| Pedagogy | `docs/learning-design-rules.md` | Как обучаем |
-| Voice | `docs/voice-guide.md` | Каким тоном пишем |
-| Architecture | `docs/architecture.md` | Технические решения |
-| **Business** | `docs/business-strategy/` | **Как зарабатываем** |
-
-Эти слои **независимы, но согласованы**. Бизнес-решение не может противоречить
-позиционированию (никаких курсов в Pro tier — это нарушение § 1 positioning).
+| # | Документ | Что внутри |
+|---|----------|------------|
+| 00 | [README.md](./README.md) | Этот файл — обзор |
+| 01 | [revenue-model.md](./01-revenue-model.md) | Tier structure, pricing, что за что платят |
+| 02 | [target-customer.md](./02-target-customer.md) | ICP — кто покупает, почему, как ищет |
+| 03 | [channels.md](./03-channels.md) | Где находим клиентов: Nordic LinkedIn → US/UK |
+| 04 | [monetization-roadmap.md](./04-monetization-roadmap.md) | Phase 0-4: путь к первому $1 за 3-4 недели |
+| 05 | [metrics.md](./05-metrics.md) | KPI: MRR, churn, NPS, conversion |
+| 06 | [competitive-landscape.md](./06-competitive-landscape.md) | Anthropic Academy / Maven / status quo |
+| 07 | [decisions.md](./07-decisions.md) | Append-only log решений |
 
 ---
 
-_Создано: 2026-05-24 | Status: **HYPOTHESIS — требует grounding в product audit**_
+## Принципы стратегии (V2)
+
+1. **Распакован реальный продукт, не план.** Pricing и feature-set основаны на
+   фактическом content audit (247 узлов, 32 workflow, 12 paths, full Finnish).
+
+2. **Сначала валидируем WTP, потом строим.** В Phase 0 (validation interviews)
+   ICP **сам говорит** «я бы платил X за Y». Без этого сигнала не запускаем
+   paywall.
+
+3. **Нет новых features до first paying user.** Phase 1-3 — только commerce
+   infrastructure (Stripe, tier-tagging, paywall UI). AI Companion и team
+   workspace — Phase 4, после ≥10 paid users.
+
+4. **Финский moat — основной differentiator.** Nordic-first GTM использует
+   единственный в мире полностью локализованный AI-handbook на финском.
+
+5. **Стратегия append-only.** Decisions фиксируются с датой и обоснованием.
+   Меняем стратегию — пишем новое решение с reference на старое.
 
 ---
 
-## ⚠️ ВАЖНО: статус документов
+## Связь с другими доками
 
-Первая версия этих 7 документов была написана **до полного product audit**.
-Pricing ($19/$99), ICP (eCommerce-команды), Pro-only features (AI Companion mode) —
-**гипотезы**, не валидированные ни продуктом, ни клиентами.
+- **`docs/strategy/`** — 9 архитектурных документов про продуктовую структуру
+  (Foundation/Systems/Transformation). Это «что строим». Прочесть до business-strategy.
+- **`docs/voice-guide.md`** — тон и язык продукта. Применяется к marketing-копи тоже.
+- **`tasks/product-audit-2026-05-24.md`** — продуктовый аудит, основа V2 стратегии.
 
-**Следующий шаг:** product audit → пересборка стратегии на основе реальности.
-См. `tasks/product-audit-2026-05-24.md` (создаётся).
+---
 
-После audit'а каждый документ получает retrospective:
-- Что подтвердилось реальностью продукта
-- Что нужно переписать
-- Что нужно построить чтобы стратегия работала
+## Skill-агенты для исполнения
+
+В `skills/`:
+- `business-strategist` — orchestrator, диспатчит к специалистам
+- `growth-strategist` — каналы, outreach, distribution
+- `monetization-architect` — pricing, paywall, tier design
+- `product-strategist` — feature prioritization для revenue (важно: **после** аудита)
+- `competitive-intelligence` — мониторинг конкурентов
+- `proposal-generator` — оформляет идеи в decision-ready docs
+
+Pattern: всегда вызывать `business-strategist` сначала, он сам выберет специалиста.
+
+---
+
+_Версия 2.0 — 2026-05-24 (post product audit)._

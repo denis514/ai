@@ -1,181 +1,213 @@
 # 02 — Target Customer (ICP)
 
-> **TL;DR**: Primary ICP — Head of Product/Marketing/CRO в eCommerce-компаниях ($5M-50M revenue, 20-200 employees), которым нужна общая карта AI-возможностей для команды. Secondary — Transformation consultants. Anti-ICP — индивидуальные разработчики (не платят за карты).
+> Кто реально купит Atlas Pro и почему. Версия 2 (post-audit).
+>
+> **Главный сдвиг от V1:** ICP не «eCommerce-команды». eCommerce — это **одна
+> из 7** transformation-веток. Реальный ICP — **Product / Ops / Strategy lead**
+> в компании 50-500 человек, ведущий AI-инициативу.
 
 ---
 
-## 1. Primary ICP: eCommerce Transformation Lead
+## 1. Primary ICP — «Transformation Lead»
+
+### Кто это конкретно
+
+**Должности (что в LinkedIn search):**
+- Head of Product / VP of Product
+- Head of Operations / Director of Operations / COO в smaller companies
+- Head of Strategy / Director of Strategy
+- Head of Growth (с product/ops уклоном, не marketing-only)
+- VP / Director of Digital Transformation
+- Chief AI Officer (нечасто, но идеальный signal)
+
+**Контекст компании:**
+- 50-500 человек
+- B2C, B2B SaaS, eCommerce, profession-services, financial — все индустрии
+- Geo: Скандинавия (приоритет), США, UK, Германия, Нидерланды, Канада, Австралия
+- Stage: post-product-market-fit, scaling phase
+
+**Размер компании:** не enterprise (slow sales), не early-stage (no budget). Mid-market где есть бюджет $30-150/mo на tools но нет dedicated AI-консультанта.
+
+### Боль которую мы решаем
+
+Сидит в комнате (или Zoom-комнате) с руководителями функций. CEO говорит:
+**«Нам нужна AI-стратегия. Где мы её достанем?»**
+
+Опции на сегодня:
+1. Нанять консультанта (Accenture, BCG) — $50k-200k за 3 месяца, slow, generic
+2. Поставить task внутреннему team-у — отвлекает от core work, медленно
+3. Прочитать 50 блогов и статей — несвязно, без operating models
+4. Курс на Maven/Reforge — $1000-3000 за 8 недель, один человек, один раз
+5. **Atlas** — $29/mo, всегда доступен, structured, для всей команды (Team tier)
+
+### Как он принимает решение о подписке
+
+Decision criteria (наблюдения из demos и customer-development литературы):
+
+1. **«Это не курс»** — если выглядит как «учим AI», уходит. Если выглядит как «карта решений для нашей трансформации» — остается.
+
+2. **«Я могу это показать команде»** — нужна возможность скинуть URL → коллега видит то же что и я. (Atlas это умеет в free, не делаем gate здесь.)
+
+3. **«Это структурировано как я думаю»** — продукт vs ops vs marketing — функциональный язык, не academic taxonomy. Atlas соответствует.
+
+4. **«Не страшно отменить»** — month-to-month subscription, не annual contract сразу. $29/mo — psychological threshold low risk.
+
+5. **«Видна expertise»** — узлы типа `ai-native-operations` или `cs-team-workflow` должны звучать как написано product-практиком, не AI hypester. Это **наш voice-guide работа**.
+
+---
+
+## 2. Secondary ICP — Practitioner / Individual
 
 ### Кто это
-- **Роль:** Head of Growth / Head of Product / Head of CRO / VP eCommerce
-- **Компания:** $5M-50M ARR, 20-200 employees, B2C или B2B2C
-- **Стадия:** не «стартап», не «enterprise» — growth-stage компания с budget
-  на инструменты, но без AI-команды
-- **Геомаркеты:** EN (US, UK), FI (Финляндия + Nordics), RU (CIS) — три локали Atlas
 
-### Боль
-- «Конкуренты применяют AI, мы не знаем где конкретно нам начать»
-- «Команды не на одной странице по AI: маркетинг хочет content AI, продукт хочет
-  recommendations, support хочет chatbots — но они не связаны»
-- «Запрашиваем budget на AI у CEO/board — не можем объяснить ROI»
-- «Внешние консультанты дорого ($30-100K), внутри людей нет»
+- Product Manager, Marketing Manager, Operations Lead — индивидуально, без команды
+- В стартапе, freelance consultant, или сильный contributor в большой компании
+- Хочет разобраться в AI **для своей роли**, не ведёт инициативу
+- Платит из своего кармана, не из company budget
 
-### Что Atlas даёт
-- **Visibility:** mindmap показывает ВСЁ AI-пространство и связи между уровнями
-- **Vocabulary:** команда говорит на одном языке (Foundation/Systems/Transformation)
-- **Concrete next steps:** workflows для PDP-generation, search optimization, etc.
-- **Без consulting fees** — DIY с гайдами
+### Чем отличается от Primary
 
-### Willingness to pay
-- Team tier $99/мес = $1,188/год = меньше 1 дня consulting time
-- Anchor: «дешевле чем 1 час Anthropic consultant»
+| Аспект | Primary (Transformation Lead) | Secondary (Practitioner) |
+|--------|-------------------------------|--------------------------|
+| Покупает на | Company card | Personal card |
+| Контекст | Ведёт команду в трансформации | Развивается персонально |
+| Tier | Pro $29 → Team $149 over time | Pro $29 only |
+| Lifetime | 12-24 мес (institutional adoption) | 3-9 мес (personal study, потом «изучил, спасибо») |
+| Volume | Меньше | Больше (по числу) |
 
-### Где найти
-- LinkedIn (filter: «Head of Growth» AND «eCommerce» AND company size 20-200)
-- Communities: Shopify Plus, BigCommerce Enterprise, Indie Hackers $1M+ stripe
-- Newsletters: Lenny's Newsletter audience, Reforge alumni
-- Conferences: ShopTalk, CommerceNext, eCommerce Berlin Expo
-
-### Success metric
-- 10 Team subscriptions от этой ICP к Q1 = product-market fit signal
+**Стратегическое значение:** Practitioner — main volume driver первых 30-90 дней. Transformation Lead — main revenue driver через 6 месяцев когда созревают Team accounts.
 
 ---
 
-## 2. Secondary ICP: AI Transformation Consultant
+## 3. Tertiary ICP — Nordic teams (geographic priority)
 
-### Кто это
-- **Роль:** Independent consultant / boutique agency / fractional CTO
-- **Размер:** 1-10 человек consultancy
-- **Specialty:** AI/digital transformation, especially mid-market focused
+### Уникальное условие — финский moat
 
-### Боль
-- «Каждому клиенту объясняю одно и то же про AI с нуля»
-- «Нужна структурированная база знаний для standardize advisory»
-- «White-label или branded option для отчётов клиентам»
+В Финляндии, Эстонии, Швеции, Норвегии:
+- AI-content в коммерческом виде на местном языке **не существует**
+- Mid-market companies (50-500 человек) часто работают на local language даже если знают English
+- Покупательная способность высокая (Nordic average GDP per capita ~$60-80k)
+- LinkedIn density высокая (Finland — 30% population on LinkedIn)
 
-### Что Atlas даёт
-- **Reference resource** для objections («покажи мне на этом узле»)
-- **Client onboarding:** «начни с этого пути в Atlas»
-- **Workflow templates** для consulting deliverables
-- **Recurring revenue для них** через workshops based on Atlas paths
+**Финский tier-card на лендинге:** «Suomenkielinen AI-käsikirja Product- ja Ops-tiimillesi.»
 
-### Willingness to pay
-- Pro tier $19/мес × consultant + Team tier для команды consultancy
-- Possible white-label: $200-500/мес (deferred)
+Эту фразу могут вписать только мы. Любой US/Anthropic/Maven продукт — только English.
 
-### Где найти
-- Toptal, MaadCon, Indie consultant Twitter
-- Anthropic Builder Bounty community
-- LangChain consultants directory
+### Почему это GTM-вектор #1
 
-### Success metric
-- 20 Pro subscriptions от этой ICP к Q1 = solid secondary segment
+1. **Дифференциация instant** — финская команда читает headline и понимает «это для нас сделано»
+2. **Lower competition** — никаких других finnish AI-products
+3. **Network density** — финский B2B-community компактный, рекомендации работают
+4. **Pricing tolerance** — $29 для финской компании = ничего
+
+**План:** первые 20-30 outreach touches идут в Nordic. Если 3+ paid users из 30 outreach = signal. Тогда расширяем на US/UK с уже подтверждённой моделью.
 
 ---
 
-## 3. Tertiary ICP: Enterprise Innovation Lead
+## 4. Anti-ICP — кому НЕ продаём
 
-### Кто это
-- **Роль:** Head of AI / Chief Innovation Officer / Director of Digital
-- **Компания:** Enterprise (1000+ employees), любая вертикаль
-- **Stage:** считают как AI-стратегию ставить, не как технику внедрять
+### ❌ Developers ищущие API docs / SDK reference
 
-### Боль
-- «Board задаёт вопросы про AI strategy, у меня нет структурированного ответа»
-- «Каждый департамент тащит свой AI-проект, нет system view»
-- «Compliance требует audit trail на AI decisions»
+- Они платят за docs.anthropic.com (бесплатно)
+- Atlas не оптимизирован под их нужды
+- IntroModal явно говорит «не для тебя» — это правильно
 
-### Что Atlas даёт
-- **Strategic vocabulary** для board presentations
-- **Cross-departmental view** AI-инициатив
-- **Audit-ready documentation** через Atlas as source of truth
+### ❌ Students изучающие AI с нуля
 
-### Willingness to pay
-- Enterprise tier $5K-50K/год
-- Часто комбинируется с workshops/consulting
+- Нет capacity заплатить $29/mo
+- Anthropic Academy + Coursera + YouTube покрывают их бесплатно
+- Не наш ICP. Foundation-узлы Atlas всё равно открыты — пусть учатся бесплатно
 
-### Где найти
-- ВКЛЮЧЕНИЕ ВНУТРЕННЕЕ: через Secondary ICP (консультанты тащат Atlas в Enterprise)
-- Direct outreach к Fortune 1000 после 6+ месяцев SaaS-traction
-- Industry conferences: World Economic Forum, MIT Sloan AI
+### ❌ AI Hype Followers
 
-### Success metric
-- 1 Enterprise deal в Q3 = breakthrough signal
+- «Latest AI tools» / «list of best AI apps» — не наша роль
+- Atlas даёт operating knowledge, не product news
 
----
+### ❌ Solo founders early-stage
 
-## 4. Anti-ICP (НЕ наша аудитория)
+- Бюджет $0
+- Cognitive load и так высокий
+- $29/mo может быть оправдан 6 месяцев спустя
 
-### ❌ Individual developers / engineers
-**Почему:** developers не покупают knowledge products. Они покупают tooling
-(Copilot, Cursor) и читают free docs (LangChain, Anthropic). Atlas для них —
-free reference, не paid product.
+### ❌ Enterprise (50k+ employees) early
 
-**Что делать:** не делать developer-focused features в Pro tier. Не оптимизировать
-SEO под developer queries.
-
-### ❌ Hobby learners
-**Почему:** низкая willingness to pay, high support cost, не recommend в команды.
-
-**Что делать:** Free tier обслуживает их, они генерируют SEO/social proof.
-
-### ❌ Universities / educators
-**Почему:** institutional bureaucracy для buying, low margins, неподходящий positioning
-(Atlas ≠ academy).
-
-**Что делать:** позволять free access для университетов как goodwill, не строить
-edu-focused features.
-
-### ❌ Стартапы pre-product-market-fit
-**Почему:** нет budget, нет команды для team subscription, churn риск максимальный.
-
-**Что делать:** Free tier их обслуживает; если они вырастут — переедут в paid.
+- Слишком долгий sales cycle (6-12 месяцев)
+- Custom requirements (SSO, on-prem)
+- Не игнорируем если придут, но не таргетируем первые 6 месяцев
 
 ---
 
-## 5. ICP validation playbook (Phase 0)
+## 5. Сегментация под GTM
 
-### Цель: 10 conversations с Primary ICP за 14 дней
-
-**Стандарт интервью (45 минут):**
-1. (10 мин) Контекст: компания, роль, AI-инициативы сейчас
-2. (15 мин) Боль: что не работает с текущим AI-подходом команды
-3. (10 мин) Демо Atlas (показ flagship eCommerce direction)
-4. (10 мин) Pricing reaction: «$99/мес для команды 5 человек — что думаешь?»
-
-**Что слушать:**
-- Цитаты, которые мы используем потом в landing (raw, не парафраз)
-- Frustration moments — где они замолкают, морщатся
-- «I would pay X for…» — direct pricing signal
-- Reference другим — «знаешь кого-то с похожей проблемой?»
-
-**Pass criteria:**
-- 5+ «это полезно» + 3+ «я бы платил $X» + 2+ referrals = ICP validated
-- Меньше — ICP неправильный, ищем дальше
+| Сегмент | Размер | Priority | Channel | Conversion stake |
+|---------|--------|----------|---------|------------------|
+| **Nordic Transformation Leads** | ~5000 LinkedIn-доступных | **P0** | LinkedIn outreach + Finnish landing | High (moat) |
+| **US/UK Transformation Leads** | ~50000 LinkedIn-доступных | P1 | LinkedIn outreach (after Nordic validation) | Medium |
+| **Practitioners (Nordic + US)** | Десятки тысяч | P1 | SEO long-tail + Twitter/LinkedIn content | Lower (sub-$30 LTV mix) |
+| **Transformation consultants** | ~500 в LinkedIn | P2 | Direct outreach + affiliate (Phase 4) | High per-customer |
+| **eCommerce-specific** | ~5000 mid-market | P1 (overlap Primary) | eCommerce-direction-themed content | Medium |
+| Enterprise | ~thousands | Watch | Reactive only | N/A in Phase 0-3 |
 
 ---
 
-## 6. ICP-specific messaging
+## 6. Customer interview script (Phase 0)
 
-### Для eCommerce lead
-> «AI меняет каталог, поиск, поддержку, ценообразование одновременно.
-> Atlas показывает где конкретно начать вашей команде — без 6-месячного
-> consulting engagement»
+**Цель 10 интервью за 14 дней.** Каждое 30-45 минут.
 
-### Для consultant
-> «Standardize advisory на 50+ AI use cases. Один источник правды для клиентов
-> вместо bespoke decks каждый раз»
+### Pre-call qual (через LinkedIn DM):
+- "Hi [Name], I'm building an AI Transformation Playbook for Product/Ops teams. Saw you're [role] at [company]. Would love 30 mins to learn about how your team is approaching AI strategy. Open to it?"
 
-### Для enterprise innovation lead
-> «Когда board спрашивает про AI strategy — у вас есть карта, а не slides»
+### Структура interview (45 min):
 
-### Anti-messaging (не использовать)
-- ❌ «Learn AI» (academy positioning)
-- ❌ «Master Claude» (vendor-specific)
-- ❌ «AI for everyone» (no ICP focus)
-- ❌ «The complete guide» (encyclopedia framing)
+**Часть 1 — Контекст (10 мин)**
+- "Tell me about your role and how you spend your day"
+- "What's your team's current relationship with AI?"
+- "Who else in your company thinks about AI strategy?"
+
+**Часть 2 — Боль (15 мин)**
+- "When you needed an AI roadmap for the team, where did you look?"
+- "What was missing in [whatever they tried]?"
+- "Walk me through last time you had to make an AI-related decision for the team"
+
+**Часть 3 — Демо (10 мин)**
+- Открываем Atlas eCommerce direction (если их вертикаль) или ops direction
+- "Look at this for 60 seconds and tell me what you see"
+- Прокликать 1-2 узла, наблюдать reaction
+- "Is this useful? What's missing for you?"
+
+**Часть 4 — Pricing (10 мин)**
+- "If this was a tool your team could use — Pro tier at $29/mo per person, or Team at $149/mo for 5 seats — which makes sense?"
+- "What would make you actually pay vs continue using free?"
+- **Записать дословно** ответы — это ваш marketing copy потом
+
+### Что записываем
+- Цитаты дословно (для будущих маркетинговых материалов)
+- Моменты frustration — где морщатся, замолкают
+- Прямой сигнал «я бы платил X» — это самое ценное
+- Просьбы порекомендовать кого-то ещё (referrals)
+
+### Где записывать
+`tasks/pricing-validation.md` — простой Markdown файл, append per interview.
+
+### Decision criteria после 10 интервью
+- **5+ человек явно сказали «я бы платил $29»** → Phase 2 (build Stripe + paywall)
+- **3-4 сказали «возможно»** → проблема в pricing или demo. Поговорить ещё с 5
+- **0-2 сказали «да»** → STOP. Фундаментальное непонимание. Пересмотр ICP
 
 ---
 
-_Status: HYPOTHESIS — требует 10 ICP interviews для validation_
-_Created: 2026-05-24 | Next review: после 10 conversations_
+## 7. Что НЕ знаем (open questions)
+
+Это нужно валидировать в Phase 0:
+
+1. **Финский angle:** работает ли он на самом деле как hook? Или Nordic ICP всё равно англоязычные?
+2. **$29 vs $39:** где реальный psychological threshold?
+3. **Team vs Pro:** что выбирают чаще на ранней стадии?
+4. **eCommerce focus:** действительно ли eCommerce direction конвертит лучше operations?
+5. **Demo time:** 30 секунд vs 5 минут — где «вау» происходит?
+
+Каждый из этих вопросов имеет конкретный сигнал из интервью + первых платящих.
+
+---
+
+_Версия 2.0 — 2026-05-24 (post product audit)._

@@ -1,171 +1,174 @@
 # 01 — Revenue Model
 
-> **TL;DR**: Free → Pro ($19/мес) → Team ($99/мес за 5 seats) → Enterprise (custom).
-> Запуск Pro tier — Q1. Цель — $5K MRR за 6 месяцев на 250 платных юзеров.
+> Что мы продаём, за сколько, что за что платят. Версия 2 (post-audit).
+>
+> **Главный сдвиг от V1:** мы не строим новые features. Контент уровня
+> консалтинга **уже существует** (247 узлов, 62 transformation, 17 use cases).
+> Задача — поставить tier-gate на уже готовом.
 
 ---
 
-## 1. Текущее состояние (2026-05-24)
+## 1. Tier structure
 
-- **Выручки нет.** Продукт бесплатен, монетизации не подключено.
-- **Активной базы нет** — ноль publicly tracked DAU/MAU метрик.
-- **Auth есть** (Supabase, Magic Link + Google OAuth) — фундамент для tier-системы готов.
-- **GDPR-совместим** (cookie consent, ToS, Privacy Policy) — Финляндия + EU clean.
+| Tier | Цена | Содержание | Когда launch |
+|------|------|-----------|--------------|
+| **Free** | $0 | Foundation (65 узлов) + 10 basics tutorials + 5-7 teaser transformation-узлов на каждое из 7 направлений + search + bookmarks | Уже live |
+| **Pro** | **$29/mo** или **$290/year** (2 мес бесплатно) | Полный доступ ко всем 62 transformation-узлам + 17 use cases + 12 learning paths + 32 tutorials + 42 prompt-templates + Markdown export | Phase 3 (~3-4 недели) |
+| **Team** | **$149/mo** (5 seats) | Pro × 5 + shared bookmarks + team progress dashboard + admin panel | Phase 4 (после ≥10 paid users + явный сигнал) |
+| **Enterprise** | Custom | Team + SSO + custom transformation paths + dedicated success | По запросу, не маркетируем |
 
-**Это значит:** мы стартуем с нуля. Никакой migration story нет — есть только runway
-строить продукт и базу одновременно.
-
----
-
-## 2. Гипотезы монетизации (ранжированы по уверенности)
-
-### H1 (high confidence): B2B Team subscription
-Команды из 4-20 человек платят за **shared workspace** с общим Project setup,
-brand voice, custom CLAUDE.md, командные skills, аналитику использования.
-
-- **Цена:** $99/мес за 5 seats, +$15/seat сверх
-- **Доказательство:** Notion ($10/seat), Linear ($8/seat), Loom Teams — все
-  продают «команде, не индивиду». eCommerce-команды (наш фокус) знакомы с этой моделью.
-
-### H2 (medium): Pro individual tier
-Индивидуальные practitioners (consultants, freelancers, indie developers)
-платят за **unlimited bookmarks + AI Companion mode + Transformation playbook
-downloads + early access** к новым узлам.
-
-- **Цена:** $19/мес или $190/год
-- **Риск:** B2C SaaS conversion rate низкий (1-3%) для freemium. Без сильного
-  Pro-only feature это не взлетит.
-
-### H3 (medium-low): Transformation Playbook packs
-One-time покупка глубоких guidelines (PDF + interactive paths) для конкретной
-вертикали — eCommerce, Enterprise, Marketing.
-
-- **Цена:** $199-499 per pack
-- **Преимущество:** не требует ongoing engagement, проще продать на cold outreach
-- **Недостаток:** не recurring revenue, нужны новые packs регулярно
-
-### H4 (low confidence): Enterprise license
-SSO, on-prem option, custom Transformation paths, dedicated success manager.
-
-- **Цена:** $5K-50K/год
-- **Реалистично только** после 6-12 месяцев SaaS-traction и 2-3 case studies
-
-### H5 (speculative): Marketplace для Transformation experts
-Платформа, где консультанты по AI-трансформации находят клиентов через Atlas-карту
-их специализации. Atlas берёт 10-20% transaction fee.
-
-- **Когда:** Q4 или позже, если будет 1K+ MAU
+**Ключевое отличие от V1 pricing:**
+- V1: $19/$99 — anchored под Lenny's Newsletter
+- V2: $29/$149 — anchored под **консалтинговую ценность**. Один час работы с
+  transformation-узлами уровня `cs-team-workflow` или `ai-native-operations`
+  заменяет $300-500 консультанта. $29/мес — это <10% такого консультантского часа.
 
 ---
 
-## 3. Tier-структура (предлагаемая)
+## 2. Что **уже сейчас** в продукте является ценностью за деньги
 
-| Tier | Цена | Что входит | ICP |
-|------|------|------------|-----|
-| **Free** | $0 | Mindmap browse, 5 bookmarks, basic tutorials, EN locale | Curiosity, learning |
-| **Pro** | $19/мес или $190/год | Unlimited bookmarks, full Workflow library, AI Companion mode, all locales, no ads (если будут) | Individual practitioner |
-| **Team** | $99/мес (5 seats) | Pro для всех + shared Project, team analytics, custom CLAUDE.md, brand voice config, Slack integration | Команда продукт/маркетинг 4-20 человек |
-| **Enterprise** | от $5K/год | Team + SSO, audit log, custom Transformation paths, on-prem option, SLA, dedicated CSM | 100+ employee orgs |
+Из product-audit-2026-05-24 § 8 (value pockets):
 
-**Принципы:**
-- **Free генерирует demand**, не conversion. Free user — это marketing, не клиент.
-- **Pro — это вход**, не основной доход. Доход — в Team и Enterprise.
-- **Не делаем Pro слишком функциональным** — иначе никто не уйдёт в Team.
+### 💎 Главный value pocket — Transformation directions (62 узла + 17 use cases)
 
----
+**Не есть ни у кого:**
+- eCommerce direction (19 узлов): PDP gen, search, personalization, CRO, etc.
+- Operations (5 узлов): process automation, decision intelligence
+- Marketing (6 узлов): content ops, brand voice, campaign intel
+- Customer Support (7 узлов): tier-1 automation, agent assist
+- Product (7 узлов): discovery, spec gen, experimentation
+- Design (5 узлов): prototype gen, accessibility automation
+- Enterprise (6 узлов): transformation strategy, change management, governance
 
-## 4. Path to first revenue (90 дней)
+**Уровень контента:** консалтинговый. `cs-team-workflow` или `ai-native-operations`
+содержат конкретные operating models с метриками, anti-patterns, cross-links.
+Это **уже сейчас** стоит денег.
 
-### Phase 0 — preconditions (сейчас → +2 недели)
-- [ ] ICP validated через 10 user interviews (`skills/user-research-synthesizer`)
-- [ ] Pricing willingness-to-pay validated (5+ "I would pay $X" responses)
-- [ ] Top 3 Pro-only features identified
+**Pro lock unlock — главный покупательский момент.**
 
-### Phase 1 — paywall infrastructure (+2 → +5 недель)
-- [ ] Stripe integration (test mode)
-- [ ] Tier check в Supabase RLS
-- [ ] Pricing page (RU/EN/FI)
-- [ ] Upgrade flow UX
-- [ ] Receipts + invoicing (Stripe handles)
+### 💎 Cross-link knowledge graph (175 inline-ссылок в узлах + 65 в tutorials)
 
-### Phase 2 — soft launch Pro (+5 → +8 недель)
-- [ ] Email 50-100 early users — "Pro now available"
-- [ ] First 10 paying customers ($190 ARR = $1900)
-- [ ] Iterate based on first feedback
+**Moat.** Не markdown-помойка, не плоский список. Связи Foundation → Systems → Transformation видны кликом. Конкуренту не построить за месяц.
 
-### Phase 3 — Team tier + outbound (+8 → +13 недель)
-- [ ] Team tier launch
-- [ ] LinkedIn outbound к 100 Head of AI/Transformation
-- [ ] First 3 Team subscriptions ($99 × 3 = $297 MRR)
-- [ ] Total ARR target: $5K
+Сама по себе ценность сложно монетизируется (нельзя продать «у меня хорошие ссылки»), но это **обоснование Pro tier** — «вы платите за навигацию, не за тексты».
 
-### Phase 4 — channel scaling (+13 → +26 недель)
-- [ ] Content-led SEO traction (10 ranking keywords)
-- [ ] 1 partner channel active (Vercel community, Anthropic referrals)
-- [ ] $5K MRR achieved
+### 💎 Полная финская локаль
+
+**Аномалия рынка.** Финского commercial AI-handbook не существует. Скандинавия — deep pockets + слабая англоязычная адаптация в среднем менеджменте. Финский tier-card на лендинге = main hook для Nordic GTM.
+
+«Suomenkielinen AI-käsikirja tiimillesi — ainoa maailmassa.»
+
+### 💎 32 tutorials с progress + activity log + resume
+
+Уровня coursera-lite уже сейчас. Resume, completed steps, badges на карте, sync через Supabase. Сам по себе progress не стоит $29 (Anki бесплатный), но **в комбинации** с премиум-контентом — да.
+
+### 💎 42 prompt-templates с категориями + «Open in claude.ai»
+
+Готовые промпты, prefilled в claude.ai одним кликом. Это **utility** —
+PromptBase и FlowGPT берут $9-19/мес именно за это.
 
 ---
 
-## 5. Unit Economics (target)
+## 3. Free vs Pro — content decision matrix
 
-### Pro
-- **ARPU:** $19/mo
-- **Gross margin:** ~95% (Stripe 2.9% + minimal infra cost)
-- **Churn target:** <5% monthly (B2C SaaS benchmark)
-- **CAC target:** <$30 (one month payback)
-- **LTV target:** $228 (12-month retention)
+**Free задача:** показать достаточно ценности чтобы человек **вернулся**,
+но не настолько чтобы он **остался без причины платить**.
 
-### Team
-- **ARPU:** $99/mo base + expansion
-- **Gross margin:** ~93%
-- **Churn target:** <3% monthly (B2B benchmark)
-- **CAC target:** <$300
-- **LTV target:** $3,300+ (24-month retention с expansion)
+| Layer | Free | Pro |
+|-------|------|-----|
+| **Foundation** (65 узлов) | 🟢 100% | 100% (одно и то же) |
+| **Systems** (10+ узлов) | 🟢 100% | 100% (одно и то же) |
+| **Transformation** (62 узла) | 🔒 5-7 teaser узлов на каждое из 7 направлений (~35-45 узлов) | 🟢 100% (62 узла) |
+| **Use Cases** (17 узлов) | 🔒 3 teaser UC | 🟢 100% (17 узлов) |
+| **Learning Paths** (12 paths) | 🔒 2 «getting started» paths | 🟢 100% |
+| **Tutorials** (32 шт) | 🟢 ~10 basics + intro tutorials | 🟢 100% (включая advanced) |
+| **Prompt Library** (42 шт) | 🟢 Read + copy | 🟢 + Markdown export + collections |
+| **Mindmap navigation** | 🟢 Полная | Та же |
+| **Bookmarks / Progress** | 🟢 Локально | 🟢 + Supabase sync (уже работает) |
+| **Activity log** | 🟢 | 🟢 |
 
-### Если эти числа не сходятся за 90 дней — pricing неправильный, не продукт.
-
----
-
-## 6. Принципы pricing
-
-1. **Anchor high.** Если первая реакция «дёшево», цена низкая. Лучше потом снизить чем поднять.
-2. **Annual >> monthly discount.** Annual prepay = -17% (-2 месяца). Снижает churn механически.
-3. **Free trial 14 дней с credit card.** Снижает trial abuse, повышает trial→paid conversion.
-4. **Team tier дёшево на старте** ($99 vs Notion $10/seat × 5 = $50) — но входит в shared infrastructure стоимость. Поднимаем когда есть proof.
-5. **Enterprise — никаких list prices.** Custom quote после discovery call.
+**Гипотеза free-to-pro conversion trigger:** Head of Product зашёл на eCommerce direction,
+прокликал 3 teaser-узла, на 4-м увидел blur + CTA «Get Pro $29/mo to unlock all
+19 eCommerce workflows». Это конкретный, желаемый, измеримый момент.
 
 ---
 
-## 7. Что мы НЕ продаём
+## 4. Revenue model механика
 
-- ❌ Курсы (см. `docs/strategy/01-positioning.md` § 1)
-- ❌ Сертификаты (LMS-логика)
-- ❌ AI consulting (мы продукт, не услуга)
-- ❌ Data/API access (это уже data company, не product)
-- ❌ White-label дешевле $5K/год (девальвирует бренд)
+### Subscription (основной)
+Stripe Checkout → monthly recurring → автоматическое продление → cancel anytime.
 
----
+**Месячный / годовой:**
+- Monthly: $29/mo, churn higher, но low commitment
+- Annual: $290/year ($24/mo effective), pre-paid, lower churn
 
-## 8. Что-если (плохие сценарии)
+Стандарт: ставим оба варианта в Stripe, default — monthly. Annual продаём как «save $58».
 
-### Сценарий A: 0 платных за 90 дней
-**Диагноз:** либо pricing не валидирован (вернуться к Phase 0), либо ICP не подходит,
-либо value proposition не считывается. Не строить больше features — провести
-10 conversations и переписать landing.
+### One-time (опционально, Phase 4+)
+- **Transformation playbook bundles** ($199 each) — скачивание одного direction как Markdown/PDF (20-30 страниц). Для людей которые «не хотят подписку».
+- **Onboarding consultation** ($499) — 60-минутный разговор с founder для крупных команд. Высокая маржа, sales tool.
 
-### Сценарий B: trial users есть, но не конвертят
-**Диагноз:** Pro tier недостаточно ценен. Усилить 1-2 «must have» Pro-only feature.
-Не размывать всеми «nice to have».
-
-### Сценарий C: Team subscriptions есть, но Pro нет
-**Диагноз:** хорошо. Pro — это marketing channel для Team. Возможно убрать Pro или
-оставить как «individual seat» в Team-системе.
-
-### Сценарий D: Все хотят Free, никто не платит
-**Диагноз:** либо мы не product, а content site (как Medium-альтернатива). Тогда
-монетизация — это sponsorships / partnerships, а не subscriptions.
+### Что НЕ делаем
+- ❌ Freemium с time-limit (14-day trial) — слишком B2B-y, отталкивает
+- ❌ Pay-per-node — фрагментирует value, низкий ASP
+- ❌ Ad-supported free tier — портит UX
+- ❌ Affiliate / referral в первые 3 месяца — premature
 
 ---
 
-_Status: HYPOTHESIS — требует валидации Phase 0 перед инвестицией в Phase 1+_
-_Created: 2026-05-24 | Owner: business-strategist agent_
+## 5. Pricing rationale
+
+### Почему $29, не $19
+
+- V1 anchored to «AI newsletters» ($19 Lenny / $19 Substack) — wrong reference frame
+- V2 anchored to **«AI consulting per hour»** ($300-500) — Pro/mo = <10% такого часа
+- Content уровня которое есть **стоит дороже** $19. Underpricing = sigaling «hobby project»
+- $29 — пересечение psychological ($30 round) и rational ($300/year ≈ 1 час консультанта)
+- Если плох — adjust up к $39 после первых 50 paid users (тест на churn)
+
+### Почему $149/team (5 seats), не $99
+
+- V1 $99/team = $20/seat × 5 — этих денег нет в B2B SaaS на уровне team
+- V2 $149/team = $30/seat × 5 — стандартная индустрия
+- Notion/Linear/Figma всех держат $15-30/seat в team tier
+- Запас на тестирование вверх до $199/team если будет signal
+
+### Почему НЕ enterprise pricing на сайте
+
+- Enterprise → custom → call → discovery → quote
+- Public list price = ceiling, теряем negotiation leverage
+- Discovery call сам по себе value (выявляем потребности → строим custom path)
+
+---
+
+## 6. Realistic revenue projections
+
+**30 дней после Phase 3 launch:**
+- 5-15 paid users × $29 = $145-435 MRR
+- **Это валидация WTP, не business.** Не успех, не провал — это сигнал что путь правильный.
+
+**90 дней:**
+- 30-50 paid users × $29 = $870-1450 MRR
+- + Возможно 1-2 team-плана если signal сильный = +$298
+- Total: $1100-1750 MRR
+
+**6 месяцев:**
+- 100-200 paid users × $29 = $2900-5800 MRR
+- + 5-10 team-плана = $745-1490
+- Total: $3650-7300 MRR
+- **Это уже значимый сигнал для построения team tier инфраструктуры**
+
+**12 месяцев (целевая «начало зарабатывать»):**
+- 300-500 paid users → $8700-14500 MRR
+- + 15-25 team plans → $2235-3725
+- Total: $11000-18225 MRR
+
+**Comparison с альтернативами:**
+- 12 месяцев на consulting (1 founder, $200/час, 80% utilization) = $260k/year = $21.6k MRR
+- 12 месяцев на product = $13-18k MRR + продукт + asset
+
+**Status:** Это projections, не plan. Plan — Phase 0 валидация (см. roadmap).
+
+---
+
+_Версия 2.0 — 2026-05-24 (post product audit)._

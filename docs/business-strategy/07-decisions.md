@@ -90,7 +90,225 @@ mid-market $5M-50M ARR), не на developers или enterprises.
 
 ---
 
-## Template для будущих записей
+## 2026-05-24 — Product audit + V2 strategy regrounding
+
+**Решение:** Проведён full product audit (`tasks/product-audit-2026-05-24.md`).
+Все 6 strategy docs переписаны в V2 на основе **реального продукта**, не гипотез.
+
+**Контекст:**
+V1 strategy (созданная сегодня же ранее) была написана **до** product audit —
+pricing, ICP, Pro-features оказались untested гипотезами. User поднял это:
+"стратег должен сначала понять продукт, потом монетизацию".
+
+**Обоснование:**
+- Невозможно продавать продукт, который не видел
+- Audit показал реальную ценность (62 transformation узла, full FI, cross-link граф)
+- И реальные пробелы (нет Stripe, нет paywall — но контент уже на месте)
+
+**Что это означает дальше:**
+- Phase 0 расширен: repositioning ВПЕРЕДИ interviews
+- Pricing pivot $19/$99 → $29/$149 (контент консалтинг-уровня)
+- Defer AI Companion + team workspace в Phase 4
+- Финский moat становится главным GTM-вектором
+
+**Owner:** founder
+
+**Status:** EXECUTED — все 6 docs обновлены, Phase 0 в работе.
+
+---
+
+## 2026-05-24 — Repositioning: «AI Mindmap» → «AI Transformation Playbook»
+
+**Решение:** Atlas позиционируется как «Operating playbook for AI transformation»
+для Product/Ops teams, не как «AI mindmap про Claude».
+
+**Контекст:**
+Product audit § funny truth выявил: Atlas — замаскированный AI-handbook для
+product/ops-менеджеров. 62 transformation узла + 17 use cases + 5 team-paths =
+hidden MBA-курс по AI-операционке. Positioning об этом молчал.
+
+**Обоснование:**
+- Соответствует **реальному** контенту в продукте
+- ICP (product/ops leads) сразу понимает «это для них»
+- Дифференциирует от AI courses (Anthropic Academy) и dev docs (LangChain)
+
+**Альтернативы:**
+- ✗ «AI Atlas про Claude» — generic, не отражает strength
+- ✗ «AI Operating System» — слишком абстрактно для buyer
+- ✗ «AI Encyclopedia» — позиционирует как пассивный reference
+- ✓ «AI Transformation Playbook» — actionable, role-specific, value-clear
+
+**Что это означает дальше:**
+- IntroModal copy переписан (`51c9267`)
+- Lending copy в Phase 3 переписан под этот positioning
+- Outreach messages используют этот язык
+- SEO/Twitter/Marketing — все consistent
+
+**Owner:** founder
+
+**Status:** EXECUTED — IntroModal обновлён 2026-05-24.
+
+---
+
+## 2026-05-24 — Phase 0 UX wins: auto-tutorial-push removal
+
+**Решение:** Убран `setTimeout(() => setRoute({type:'tutorial',id:'ai-fluency'}), 150)`
+из `handleIntroDone` в `App.jsx`. Заменён на soft toast CTA.
+
+**Контекст:**
+Product audit § «самый слабый момент» — IntroModal сразу пушит в туториал.
+Head of Product закрывает вкладку. Самая дорогая строка в проекте.
+
+**Обоснование:**
+- Пользователь приходит «посмотреть карту», не «начать 30-минутный курс»
+- Soft CTA через toast 8 сек — он сам решает
+- Изменение one-line, эффект — на **каждый** будущий пользователь
+
+**Альтернативы:**
+- ✗ Просто удалить — toast даёт «soft offering», не теряет conversion на tutorial
+- ✗ Persistent CTA на главной — отвлекает от карты
+- ✓ Toast 8sec с action button — non-intrusive, dismissible
+
+**Owner:** founder + Claude
+
+**Status:** EXECUTED — `507bd27`.
+
+---
+
+## 2026-05-24 — Phase 0 UX wins: cap-* foundation hide
+
+**Решение:** 6 weak foundation узлов (`cap-vision`, `cap-files`, `cap-search`,
+`cap-citations`, `cap-code-exec`, `cap-computer`) скрыты через `minLevel: 'expert'`.
+
+**Контекст:**
+Product audit § «второй слабый момент» — 10 из 11 cap-* узлов — stub'ы 130-200 chars,
+generic-level. В 3-5 раз тоньше соседних transformation-узлов. Тащат вниз
+perceived quality продукта.
+
+**Обоснование:**
+- Полный upgrade — P1 контентный проект на ~20 часов (см. `tasks/cap-audit-2026-05-24.md`)
+- Минимум action — скрыть из default view, оставить доступ через search
+- 0 риск: контент не удалён, cross-links сохранены, expert users видят
+
+**Альтернативы:**
+- ✗ Delete — потеря cross-links и referenced content
+- ✗ Leave as-is — продолжает damage perceived quality
+- ✗ Upgrade all immediately — 20+ часов content work блокирует Phase 1
+- ✓ Hide via minLevel + schedule upgrade в backlog (#34-#37)
+
+**Owner:** founder
+
+**Status:** EXECUTED — `ff10208`. Полный upgrade — P1 backlog.
+
+---
+
+## 2026-05-24 — Pricing pivot: $19 → $29, $99 → $149
+
+**Решение:** Pro tier $29/mo (V2), не $19 (V1). Team tier $149/mo (V2), не $99.
+
+**Контекст:**
+V1 pricing был anchored к AI newsletters ($19 Lenny). Product audit показал что
+контент уровня **консалтинговый** ($300-500/час), не newsletter-уровня.
+
+**Обоснование:**
+- $29/mo = <10% часа AI consultant. Underpricing = sigaling «hobby».
+- $149/team = $30/seat × 5 — стандарт B2B SaaS (Notion/Linear/Figma в этом range)
+- Содержание уже на этом уровне; не imposters syndrome — facts
+
+**Альтернативы:**
+- ✗ $19/$99 — undervalues product, attracts wrong-fit customers
+- ✗ $49/$249 — too aggressive для Phase 1 валидации
+- ✓ $29/$149 — psychological sweet spot, anchored к consulting
+
+**Status:** HYPOTHESIS — pending Phase 1 валидация (10 interview pricing score >= 3.5/5).
+
+**Reverts:** 2026-05-24 «Pricing structure: Free / Pro $19 / Team $99 / Enterprise custom»
+запись выше (V1 hypothesis).
+
+---
+
+## 2026-05-24 — Primary ICP: Product/Ops/Strategy lead (not eCommerce-specific)
+
+**Решение:** Primary ICP — Product / Ops / Strategy lead в компании 50-500 человек,
+ведущий AI инициативу. eCommerce — **одна из 7** transformation-веток, не вся ICP.
+
+**Контекст:**
+V1 ICP был «eCommerce-команды». Product audit показал что eCommerce — это 19 узлов
+из 62 transformation. Остальные 43 узла обслуживают Ops/Marketing/Support/Product/
+Design/Enterprise. Сужать ICP до eCommerce = терять 70% addressable contentmatch.
+
+**Обоснование:**
+- Контент покрывает 7 функций, ICP должен соответствовать
+- "Transformation lead" — точная роль которая видит value across functions
+- 50-500 employee size — sweet spot между «нет budget» и «slow enterprise»
+
+**Альтернативы:**
+- ✗ eCommerce-only — слишком узко
+- ✗ "AI Learners" — anti-ICP, low WTP
+- ✗ "Anyone" — generic, no positioning
+- ✓ Product/Ops/Strategy lead — specific, role-clear, multi-function content match
+
+**Status:** HYPOTHESIS — pending Phase 1 валидация (interview confirmation).
+
+**Reverts:** 2026-05-24 «Primary ICP: eCommerce Transformation Lead» запись выше (V1).
+
+---
+
+## 2026-05-24 — GTM Channel #1: Nordic LinkedIn + финский moat
+
+**Решение:** Phase 1-2 — 80% усилий на Nordic LinkedIn outbound с финским tier-card
+как hook. US/UK LinkedIn — Phase 2-3, после Nordic валидации.
+
+**Контекст:**
+Product audit § value pockets — full Finnish locale = aномалия рынка. Никто
+больше не имеет commercial AI-handbook на финском. Это самый сильный
+differentiator который у нас есть.
+
+**Обоснование:**
+- Финский moat не воспроизводим за <6 месяцев
+- Nordic ICP — high purchasing power + LinkedIn density
+- Low competition (никаких других Nordic AI products)
+- Network density (финский B2B-community компактный)
+
+**Альтернативы:**
+- ✗ Global LinkedIn (US/UK first) — теряем moat advantage
+- ✗ SEO-first — slow, no validation signal
+- ✗ Twitter — premature без brand recognition
+- ✓ Nordic LinkedIn → US/UK → SEO/Twitter
+
+**Status:** PLAN — execution Phase 1.
+
+**Reverts:** 2026-05-24 «Channel mix: SEO 50% + LinkedIn 30% + Partners 20%» (V1).
+
+---
+
+## 2026-05-24 — First $1 path: 3 weeks not 90 days
+
+**Решение:** Первый платящий пользователь — за 3-5 недель, не 90 дней.
+Build needed: Stripe + tier-tagging + paywall UI. **Не нужны** AI Companion,
+team workspace, premium playbook PDFs.
+
+**Контекст:**
+Product audit § honest verdict — продукт не готов к paid tier СЕГОДНЯ не из-за
+нехватки контента, а из-за **отсутствия commerce-инфраструктуры**. Контент уже
+есть. Stripe — 1-2 недели. Tagging — 2-3 дня. Paywall UI — 3-5 дней.
+
+**Обоснование:**
+- Не строим то что не нужно для first $1
+- Validates WTP через actual payment, не через interview answers
+- $145-435 MRR в первый месяц — signal, не business
+
+**Альтернативы:**
+- ✗ Build AI Companion first (3 weeks) — defers payment to month 2
+- ✗ Build team workspace first (1-2 months) — defers further
+- ✗ Wait для всех P1 контент задач — defers indefinitely
+- ✓ Stripe + paywall на existing контенте → launch → iterate
+
+**Status:** PLAN — execution Phase 1-3.
+
+---
+
+
 
 ```
 ## YYYY-MM-DD — [Краткое название решения]

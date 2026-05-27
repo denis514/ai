@@ -1,183 +1,291 @@
 # 06 — Competitive Landscape
 
-> **TL;DR**: Прямых конкурентов нет — Atlas позиционируется как «AI-Native Transformation OS», ниша между академиями (Coursera, Anthropic Academy) и dev-документацией (LangChain, Anthropic docs). Главная угроза не конкурент, а **null option** (компании не покупают ничего).
+> С кем мы реально конкурируем. Версия 2 (post-audit).
+>
+> **Главный сдвиг от V1:** конкуренты прежние, но теперь у Atlas есть конкретные
+> moats: cross-link graph + full Finnish + 62 operating models. Главная угроза —
+> **status quo** ("do nothing"), не другой продукт.
 
 ---
 
-## 1. Категории альтернатив (как customer тратит этот budget)
+## Категория конкуренции
 
-Customer не сравнивает Atlas с другим продуктом — они выбирают между:
+Atlas попадает между четырьмя категориями, не вписываясь полностью ни в одну:
 
-### A. Делать ничего (null option) — главный «competitor»
-- 60-70% сделок проигрываются sюda
-- Customer думает «мы и сами разберёмся» / «попозже»
-- **Counter:** показывать opportunity cost — конкуренты внедряют AI быстрее
+```
+                  ↑ HIGH STRUCTURE
+                  |
+       Atlas      |        Maven / Reforge
+    (graph)      |       (live cohorts)
+                  |
+        ←------- + -------→
+       LOW                  HIGH
+    INTERACTIVE          INTERACTIVE
+                  |
+   Anthropic     |     YouTube / Twitter
+   Academy      |     (AI thought leaders)
+    (linear)    |
+                  ↓ LOW STRUCTURE
+```
 
-### B. Hire consultant ($30K-100K+)
-- McKinsey/BCG, AI boutiques
-- Дорого, но дают personalized strategy
-- **Counter:** Atlas — 1% стоимости, 80% strategic insight, DIY
-
-### C. Internal AI team build-out ($200K+ headcount)
-- Hire Head of AI + 2-3 engineers
-- 6-12 месяцев до результата
-- **Counter:** Atlas даёт roadmap для existing команды — без новых найма
-
-### D. AI courses / academies
-- Coursera, Udemy, Anthropic Academy, etc.
-- Educational, не actionable
-- **Counter:** мы не учим, мы показываем как применить (positioning § 1)
-
-### E. Vendor-specific tools
-- LangChain, LlamaIndex docs
-- Технические, но без business layer
-- **Counter:** мы соединяем Foundation tech ↔ Business transformation
+Atlas occupies **«high structure, low interactivity»** — searchable, atomic, cross-linked operating-knowledge база. Это «category of one» в этой клетке.
 
 ---
 
-## 2. Detailed competitive matrix
+## Direct alternatives — что ICP реально рассматривает
 
-| Player | Что делают | Цена | Чего НЕ делают (а мы делаем) | Угроза для нас |
-|--------|-----------|------|------------------------------|----------------|
-| **Anthropic Academy** | Курсы по Claude | Free | Не показывают business transformation | 🟡 Medium — partner potential |
-| **LangChain Docs** | Technical guides for AI orchestration | Free | Не объясняют team workflows | 🟢 Low |
-| **Coursera AI courses** | Linear curricula | $39-99/мес | Не visual systems thinking, не team-focused | 🟢 Low — different audience |
-| **Reforge** | Programs on product/growth | $1,995/program | Не AI-specific, не carta | 🟢 Low — complementary |
-| **Lenny's Newsletter** | Insights для PM/Growth | $20/мес | Не structured carta, не team product | 🟢 Low — partner potential |
-| **AI Consultants (McKinsey QuantumBlack, BCG X)** | Bespoke advisory | $50K-500K+ engagement | Не self-serve, не recurring | 🟡 Medium — high-end only |
-| **Toptal AI experts** | Marketplace consultants | $80-200/hr | Не structured knowledge, на час | 🟢 Low — partners |
-| **Notion AI templates** | Templates | Free w/ Notion | Не systems thinking, statically | 🟢 Low |
-| **AI for Work guides (Greg Brockman type substacks)** | Blog content | Free | Не interactive, не team-shareable | 🟢 Low |
-| **Builder.io / Make.com** | Low-code AI tooling | $24-99/мес | Они tooling, мы knowledge — complementary | 🟢 Low — partners |
+### 1. ⚪ Status Quo — «Do nothing»
 
----
+**Это #1 «конкурент».** 60-70% потерянных сделок уходят сюда.
 
-## 3. Differentiation positioning
+**Что они делают вместо:**
+- Рисуют AI-стратегию на whiteboard в комнате руководителей
+- Читают разрозненные blog posts
+- Спрашивают «у кого был успешный AI project»
+- Откладывают решение на следующий квартал
 
-> **Atlas — единственный продукт, соединяющий технологии (Foundation) + системы (Systems) + бизнес-трансформацию (Transformation) в одной визуальной карте.**
+**Чем они от нас бегут:** не понимают за что платить, если можно бесплатно собрать. Не верят что есть лучший framework.
 
-### Где конкретно мы выигрываем
+**Как мы выигрываем:** показать demos где видно «60-минутный демо сэкономил нам неделю whiteboard».
 
-| Сценарий | Why Atlas wins |
-|----------|----------------|
-| Team из 10 человек хочет один источник правды про AI | Только мы делаем team-focused knowledge graph |
-| Head of Growth нужно показать board AI strategy | Visual layered map > slide deck |
-| Consultant хочет standardize advisory | Atlas — структура для bespoke recommendations |
-| Mid-market без AI команды нужен self-serve roadmap | Atlas $99 vs Consultant $30K |
+### 2. Anthropic Academy (anthropic.skilljar.com)
 
-### Где мы проигрываем (и это норм)
+**Что они дают:** 18 курсов по Claude, бесплатно, structured progression.
 
-| Сценарий | Кто выигрывает |
-|----------|---------------|
-| Solo developer ищет API docs | Anthropic Docs |
-| Pre-PMF startup без budget | Free Atlas tier (мы тоже выигрываем но не платно) |
-| Enterprise с $500K budget на 6-месячный engagement | McKinsey/BCG |
-| Student изучает AI с нуля | Coursera, free courses |
+**Что у них есть, чего нет у нас:**
+- Бесплатно (мы $29/mo)
+- Official Anthropic branded
+- Курсы с finals (certificate)
+- Видео формат
 
----
+**Чего у них нет:**
+- Operating models для команд (только feature reference)
+- Cross-linked структура (только linear courses)
+- Multi-language (только English)
+- Не для product/ops decision makers — для AI learners
 
-## 4. Anthropic relationship — особая стратегия
+**Overlap with our content:** наши `foundation` + `basics tutorials` — то же что у них. Это наш free tier.
 
-### Why особая
-- Atlas в основном про Claude ecosystem
-- Anthropic могут запустить competing product (Atlas-like Academy++)
-- Anthropic могут benefit от Atlas (referrals, ecosystem)
+**Где мы выигрываем:** transformation directions — у Anthropic Academy этого нет вообще.
 
-### Path 1: Partner
-- Anthropic ссылается на Atlas в Academy «advanced practitioners»
-- Atlas — official «applied learning» partner
-- Co-marketing event/webinar
-- *Effort:* high (need senior contact)
-- *Outcome:* validation + distribution
+**Где они выигрывают:** AI newcomer wanting to learn fundamentals → Anthropic Academy (free, official).
 
-### Path 2: Coexist
-- Atlas не позиционируется как «alternative to Academy»
-- Academy: учим основы → Atlas: применяем в бизнесе
-- Mutually beneficial без formal partnership
-- *Effort:* low (just don't compete)
-- *Outcome:* organic referrals
+### 3. Maven / Reforge / Reforge cohorts
 
-### Path 3: Acquired (long-term)
-- Если Atlas вырастет до 50K+ MAU, possible acquisition target
-- Не строим под это — но не отрицаем possibility
+**Что они дают:** Live cohort courses, $1000-3000 за 6-8 недель, taught by industry experts.
 
-**Current approach: Path 2 → Path 1 если возникает momentum.**
+**Что у них есть, чего нет у нас:**
+- Live community (peer interactions)
+- Office hours с instructor
+- Cohort accountability
+- Brand prestige (Lenny, Reforge alumni network)
 
----
+**Чего у них нет:**
+- Searchable knowledge (one-shot course, then forgotten)
+- Cross-links между topics (linear progression)
+- Multi-language (only English)
+- $29/mo accessible pricing (theirs is $1000+)
+- Reference-on-demand (after course ended, content disappears)
 
-## 5. Defensibility (moats)
+**Где мы выигрываем:** "I need this every Monday morning when planning the week" — Atlas always-on. Their course = once.
 
-Что защищает Atlas от копирования:
+**Где они выигрывают:** "I need to network with 30 other AI product leads" — Atlas isn't community.
 
-### Strong moats
-1. **Content depth** — 247 связанных узлов с cross-links это год работы. Не реплицировать за месяц.
-2. **3-locale localization** — RU + FI + EN это уникальное преимущество для NORTHCM региона.
-3. **Mindmap UX patent-pending** (если решим патентовать) — visual systems thinking layer.
+### 4. LangChain Docs / Anthropic Docs / SDK refs
 
-### Medium moats
-4. **Community эффект** — если будет user-generated content, network effect.
-5. **Partner integrations** (если построим — Slack, Notion, Linear).
+**Что они дают:** API reference, code examples, technical depth.
 
-### Weak moats (легко скопировать)
-6. **Pricing** — anyone может скопировать tier structure.
-7. **Marketing copy** — переписывается за день.
-8. **Brand** — «105 Atlas» новый, без recognition (пока).
+**Кому:** developers writing code.
 
-### Stratey
-Инвестируем в moats #1-3 (контент, локалии, UX). Не зависим от #6-8.
+**Это не наша аудитория.** Anti-ICP overlap minimal. Если developer открыл Atlas — мы хотим чтобы он быстро понял "не для тебя" → перейти к API docs.
 
----
+### 5. Notion AI Templates / Productivity templates на Gumroad
 
-## 6. Competitive intelligence — что мониторим
+**Что они дают:** Static markdown templates ($19-49 one-time).
 
-**Weekly:**
-- Anthropic релизы (Academy updates, blog posts)
-- LangChain blog (new patterns они продвигают)
-- Notion AI updates (если они идут в team knowledge)
+**Чего у них нет:**
+- Связного contextualизации (каждый template independent)
+- Updates as AI evolves
+- Visual structure (markdown only)
+- Multi-language
 
-**Monthly:**
-- New AI knowledge products on Product Hunt
-- Sponsored ads в LinkedIn ICP feed
-- Pricing changes у похожих SaaS
+**Overlap:** наши prompt templates (42 шт) частично пересекаются с их offering.
 
-**Quarterly:**
-- McKinsey/BCG AI strategy publications (signals enterprise demand)
-- AI conferences keynotes (where market moves)
+**Где мы выигрываем:** template = file. Atlas = ecosystem.
 
-**Tool:** `skills/competitive-intelligence` агент + weekly automated scan.
+### 6. AI Newsletters (Lenny, Ben's Bites, TLDR AI)
+
+**Что они дают:** Weekly insights, $0-20/mo subscription.
+
+**Чего у них нет:** structure. Newsletter — это noise, не handbook. Прочитал → забыл.
+
+**Где они выигрывают:** thought leadership prestige.
+
+**Где мы выигрываем:** "Where did I read about [X]?" → Atlas searchable. Newsletter — нет.
+
+**Strategic note:** Newsletters могут стать partner channel в Phase 5 (sponsored mentions).
+
+### 7. Consultants (Accenture / BCG / boutique AI consulting)
+
+**Что они дают:** Custom AI strategy для конкретной компании, $50k-200k за 3 месяца.
+
+**Кому:** enterprises с budget + slow decision velocity.
+
+**Где они выигрывают:** legitimacy, named expertise, accountability.
+
+**Где мы выигрываем:** $29/mo vs $50k+. И всегда доступно, не "3-month project".
+
+**Overlap:** minimal в short term. Долгосрочно — Atlas заменяет первый месяц consulting engagement (the discovery phase), но не custom strategy work.
 
 ---
 
-## 7. Scenarios для market shift
+## Indirect alternatives
 
-### Scenario A: Anthropic запускает team workspaces
-- **Impact:** medium. Их feature focus — agent capability, не knowledge graph.
-- **Response:** double down на visual + business transformation, не technical depth.
+### YouTube AI thought leaders (Mreflow, AI Explained, Matt Wolfe)
 
-### Scenario B: OpenAI / Google делают «AI Atlas»
-- **Impact:** high.
-- **Response:** vendor-neutral positioning (мы охватываем все AI, не один vendor).
-- **Pre-positioning:** уже сейчас писать «AI» не «Claude» в маркетинге.
+**Не конкуренты.** Они educate audience → audience потом ищет structured tool → Atlas. Они growth assist, не competitor.
 
-### Scenario C: AI fatigue / market correction
-- **Impact:** medium. Compete с «back to basics» messaging.
-- **Response:** focus на ROI/business outcomes, не technology hype.
+### Twitter AI threads (build in public, AI Twitter)
 
-### Scenario D: Free LLMs убивают paid AI tooling
-- **Impact:** low. Atlas не sells AI, sells knowledge how to apply AI.
-- **Response:** continue.
+**Не конкуренты.** Same — noise level. Они build awareness, мы deliver operating knowledge.
+
+### Notion / Linear / monday.com workspaces
+
+**Не конкуренты.** Это productivity tools. Atlas — knowledge tool. Однако они показывают, что team-based knowledge layer покупают — это validation для нашего team tier.
 
 ---
 
-## 8. Что НЕ делаем competitively
+## Atlas competitive moats
 
-- ❌ Public comparisons («Atlas vs Anthropic Academy») — низший класс маркетинга
-- ❌ Price wars — мы выше Coursera, ниже consultants, comfortable middle
-- ❌ Feature wars — у нас фундаментально другой продукт (knowledge graph)
-- ❌ Anthropic-bashing — мы экосистема-friendly
-- ❌ Аcquisition manipulations (artificial growth для valuation)
+### 1. 🏰 Cross-link knowledge graph (175 inline-ссылок + 65 в tutorials)
+
+**Что это:** связи Foundation → Systems → Transformation в одном клике. Не markdown-помойка, не плоский список.
+
+**Время на воспроизведение:** 6-12 месяцев content-architect работы. Конкурент не построит за месяц.
+
+**Underpins:** "you're paying for navigation, not just texts" — обоснование Pro tier.
+
+### 2. 🏰 Полная финская локализация
+
+**Что это:** 247 узлов + 32 tutorials × 3 локали (RU/EN/FI) с language-pedagogue quality control.
+
+**Время на воспроизведение:** 3-6 месяцев professional translation team. Конкурент не сделает.
+
+**Underpins:** Nordic GTM hook. Единственный AI-handbook на финском в мире.
+
+### 3. 🏰 62 transformation operating models
+
+**Что это:** конкретные workflow с метриками, anti-patterns, cross-links — для 7 функций бизнеса.
+
+**Время на воспроизведение:** 6-12 месяцев content production. Не воспроизводимо без deep domain expertise.
+
+**Underpins:** main value pocket — это то, за что платят $29/mo.
+
+### 4. 🏰 Visual mindmap UX
+
+**Что это:** pan/zoom radial graph, expand/collapse branches, search overlay.
+
+**Время на воспроизведение:** 2-3 месяца React engineering. **Менее moat'ный** (можно скопировать).
+
+**Underpins:** First-impression "это не Notion-style wiki" → memorable.
+
+### 5. 🏰 Three-layer architecture (Foundation / Systems / Transformation)
+
+**Что это:** уникальная taxonomy которая отвечает «what» vs «how» vs «for what business»
+
+**Время на воспроизведение:** strategic thinking work. Imitable, но требует таких же insights.
+
+**Underpins:** category positioning «not AI courses, не AI dev docs — operating playbook».
 
 ---
 
-_Status: ACTIVE — review quarterly_
-_Created: 2026-05-24 | Owner: competitive-intelligence agent_
+## Не-moat — где мы НЕ defensible
+
+### Content quantity
+
+247 узлов — впечатляюще сейчас, но Notion AI или Anthropic могут scale faster (с их team-ами). Не moat.
+
+### Tutorial structure
+
+32 tutorials с progress tracking — coursera-lite. Можно скопировать через learning-platform-builder за 1 месяц.
+
+### Prompt templates
+
+42 templates — easily replicable. PromptBase делает это масштабнее.
+
+### Domain (just an idea)
+
+Sub-domain `atlas.example.com` — не moat. Кто угодно может купить better domain.
+
+---
+
+## Threats to monitor
+
+### 1. Anthropic Academy расширяется в transformation direction
+
+**Likelihood:** Medium-High. Anthropic видит ту же возможность.
+
+**Time horizon:** 12-24 месяца.
+
+**Mitigation:**
+- Build expertise moat: founder становится recognized voice
+- Финский moat — Anthropic не локализует
+- Continuous deprecate-watch and updates — Atlas stays freshest
+- Twitter/content authority building
+
+### 2. AI tools directories с premium content
+
+**Likelihood:** Low. Their model — list AI tools, не write operating models.
+
+**Mitigation:** ignore unless they pivot.
+
+### 3. Reforge выпускает evergreen on-demand AI track
+
+**Likelihood:** Medium. Reforge всегда expands.
+
+**Time horizon:** 6-12 месяцев.
+
+**Mitigation:**
+- Pricing differentiation ($29 vs $2000)
+- Multi-language differentiation
+- Always-on vs once-completed
+
+### 4. New AI-native knowledge product launches
+
+**Likelihood:** High. Space heating up.
+
+**Mitigation:**
+- Speed to market — Phase 3 launch в 4-5 недель fast
+- Moat в cross-link graph hard to replicate
+- Phase 4 community + team tier — sticky
+
+### 5. Anthropic API изменения / model deprecations
+
+**Likelihood:** High (continuous).
+
+**Mitigation:** Deprecate-watch process. Каждые 2 недели review affected nodes. `news-watcher` skill.
+
+---
+
+## Positioning vs competitors (one-pager)
+
+| Альтернатива | Чем хороши | Чем плохи | Atlas в одной фразе |
+|--------------|------------|-----------|---------------------|
+| Status quo | $0 cost | Slow, неструктурированно | "$29 ≪ 1 day of whiteboarding" |
+| Anthropic Academy | Free, official | Linear, English-only, AI 101 | "Operating models, не курсы" |
+| Maven / Reforge | Live community | $1000+, one-shot | "Always-on handbook" |
+| LangChain Docs | Technical depth | For devs only | "Для product/ops decision makers" |
+| Consultants | Custom strategy | $50k+, slow | "1% of consulting cost" |
+| Newsletters | Weekly fresh | Unstructured | "Searchable knowledge graph" |
+
+---
+
+## Strategic position summary
+
+Atlas — **«AI Transformation Playbook for Product/Ops teams»** — sits в **категория ‑1**: structured operating knowledge для business teams, не для developers and not for individual learners.
+
+**Главный конкурент:** не другой product, а **inertia decision-makers**. Главная маркетинговая задача Phase 3 — показать что **$29 беспалевно cheaper, чем еще одна неделя whiteboarding**.
+
+---
+
+_Версия 2.0 — 2026-05-24 (post product audit)._
