@@ -658,7 +658,9 @@ export const mindmapData = {
               "category": "foundation",
               "relatedIds": [
                 "projects",
-                "cap-tools"
+                "cap-tools",
+                "ec-personalization",
+                "cs-team-workflow"
               ]
             },
             {

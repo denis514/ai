@@ -47,6 +47,8 @@ export const WHATS_NEW = {
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
   'cap-tools': { date: '2026-05-27', type: 'updated' },
+  'cap-thinking': { date: '2026-05-27', type: 'updated' },
+  'cap-memory': { date: '2026-05-27', type: 'updated' },
   'ai-native-ecommerce': { date: '2026-05-26', type: 'updated' },
   'ec-pdp-gen': { date: '2026-05-26', type: 'updated' },
   'ec-search-opt': { date: '2026-05-26', type: 'updated' },
@@ -218,7 +220,6 @@ export const WHATS_NEW = {
   'cc-grp-config': { date: '2026-05-15', type: 'new' },
   'cc-grp-automation': { date: '2026-05-15', type: 'new' },
   'cc-grp-quality': { date: '2026-05-15', type: 'new' },
-  'cap-thinking': { date: '2026-05-14', type: 'new' },
   'ag-managed': { date: '2026-05-14', type: 'new' },
   'b-models': { date: '2026-05-14', type: 'updated' },
 };
