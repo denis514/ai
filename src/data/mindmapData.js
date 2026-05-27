@@ -1545,7 +1545,13 @@ export const mindmapData = {
           "category": "systems",
           "relatedIds": [
             "sys-cost-management",
-            "sys-evals-benchmarks"
+            "sys-evals-benchmarks",
+            "sys-monitoring",
+            "sys-logging-patterns",
+            "sys-versioning",
+            "sys-rollback-strategies",
+            "sys-rate-limiting",
+            "sys-semantic-cache"
           ],
           "children": [
             {
@@ -1573,6 +1579,78 @@ export const mindmapData = {
             "af-fine-tuning",
             "ai-operations"
           ]
+            },
+            {
+              "id": "sys-monitoring",
+              "icon": "chart",
+              "category": "systems",
+              "relatedIds": [
+                "sys-evals-benchmarks",
+                "sys-logging-patterns",
+                "sys-cost-management",
+                "sys-rollback-strategies",
+                "ai-operations"
+              ]
+            },
+            {
+              "id": "sys-logging-patterns",
+              "icon": "scroll",
+              "category": "systems",
+              "relatedIds": [
+                "sys-monitoring",
+                "sys-versioning",
+                "pl-privacy",
+                "sys-evals-benchmarks",
+                "ai-operations"
+              ]
+            },
+            {
+              "id": "sys-versioning",
+              "icon": "tag",
+              "category": "systems",
+              "relatedIds": [
+                "sys-evals-benchmarks",
+                "sys-rollback-strategies",
+                "pl-models",
+                "sys-logging-patterns",
+                "ai-operations"
+              ]
+            },
+            {
+              "id": "sys-rollback-strategies",
+              "icon": "repeat",
+              "category": "systems",
+              "relatedIds": [
+                "sys-versioning",
+                "sys-monitoring",
+                "sys-evals-benchmarks",
+                "sys-quality-gates",
+                "ai-operations"
+              ]
+            },
+            {
+              "id": "sys-rate-limiting",
+              "icon": "shield",
+              "category": "systems",
+              "relatedIds": [
+                "pl-rate",
+                "pl-api",
+                "sys-monitoring",
+                "sys-api-patterns",
+                "ai-operations"
+              ]
+            },
+            {
+              "id": "sys-semantic-cache",
+              "icon": "archive",
+              "category": "systems",
+              "relatedIds": [
+                "cap-caching",
+                "af-embeddings",
+                "af-vector-db",
+                "sys-cost-management",
+                "ai-operations"
+              ]
             }
           ]
         },
