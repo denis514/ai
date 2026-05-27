@@ -123,7 +123,30 @@
         "validate": "Project created with instructions. Test: ask 'who are you?' inside the Project — Claude should describe the specialized role.",
         "tip": "Don't create a project for every task. Start with 1-2 that match your most frequent work contexts."
       }
-    }
+    },
+    "trigger": "First week with Claude — or rebuilding your profile after a role/task change.",
+    "inputs": [
+      "Plan (Pro minimum)",
+      "Description of your work: role, task types, tools",
+      "List of private contexts for Memory (optional)"
+    ],
+    "outputs": [
+      "Custom Instructions tailored to your role",
+      "Memory enabled with baseline context",
+      "A first Project with the right structure"
+    ],
+    "tools": [
+      {
+        "name": "Custom Instructions"
+      },
+      {
+        "name": "Memory"
+      },
+      {
+        "name": "Projects"
+      }
+    ],
+    "savings": "~1 month of trial-and-error vs 15 min of setup"
   },
   "basics": {
     "title": "Master the basics of Claude",
@@ -3451,7 +3474,33 @@
           "Response is cut off": "max_tokens is too low. Increase it or use a streaming approach that detects the stop_reason: 'max_tokens' signal and continues the generation."
         }
       }
-    }
+    },
+    "trigger": "Integrating Claude into a product or script — you need a first working API call.",
+    "inputs": [
+      "Anthropic Console API key",
+      "Integration language (Python / Node / curl)",
+      "Scenario: chat, classification, or generation"
+    ],
+    "outputs": [
+      "A working first request with a model response",
+      "Understanding of messages / system / max_tokens",
+      "Security checklist for keys and rate limits"
+    ],
+    "tools": [
+      {
+        "name": "Anthropic SDK",
+        "role": "Python/Node"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "default starter model"
+      },
+      {
+        "name": "Console",
+        "role": "keys + usage"
+      }
+    ],
+    "savings": "~2 hours reading docs vs running in 18 min"
   },
   "ai-fluency": {
     "title": "AI Fluency: Framework & Foundations",
@@ -4093,7 +4142,33 @@
         "tip": "Good workflow documentation is not a user manual — it is a work instruction. Write it as if you are explaining to a smart new employee who has never done this task.",
         "validate": "You have a workflow document that another person can use without your verbal explanations. You have verified this in practice."
       }
-    }
+    },
+    "trigger": "A 3+ step routine repeats ≥3 times per week and eats your focus time.",
+    "inputs": [
+      "Description of the current manual process",
+      "Access to tools (Slack/Notion/Linear/etc.)",
+      "Target metric: time / quality / volume"
+    ],
+    "outputs": [
+      "A workflow map: trigger → steps → outcome",
+      "A ready prompt + Project for the task",
+      "A before/after metric for the team report"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "context + prompt"
+      },
+      {
+        "name": "MCP servers",
+        "role": "integrations"
+      },
+      {
+        "name": "Opus 4",
+        "role": "workflow design"
+      }
+    ],
+    "savings": "~5-8 hours/week per automated routine"
   },
   "role-use-cases": {
     "title": "Claude by profession",

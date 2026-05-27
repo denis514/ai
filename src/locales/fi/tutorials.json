@@ -123,7 +123,30 @@
         "validate": "Project luotu ohjeilla. Testi: kysy 'kuka olet?' Projectin sisällä — Clauden tulisi kuvata erikoistunut rooli.",
         "tip": "Älä luo Projectia jokaiselle tehtävälle. Aloita 1-2:lla jotka vastaavat yleisimpiä työkontekstejasi."
       }
-    }
+    },
+    "trigger": "Ensimmäinen viikko Clauden kanssa — tai profiilin uudelleenrakennus roolin/tehtävien vaihduttua.",
+    "inputs": [
+      "Tariffi (Pro vähintään)",
+      "Kuvaus työstäsi: rooli, tehtävätyypit, työkalut",
+      "Lista yksityisistä konteksteista Memorylle (valinnainen)"
+    ],
+    "outputs": [
+      "Custom Instructions roolisi mukaisesti",
+      "Memory käytössä peruskontekstilla",
+      "Ensimmäinen Project oikealla rakenteella"
+    ],
+    "tools": [
+      {
+        "name": "Custom Instructions"
+      },
+      {
+        "name": "Memory"
+      },
+      {
+        "name": "Projects"
+      }
+    ],
+    "savings": "~1 kuukausi yritys-erehdys vs 15 min asetuksia"
   },
   "basics": {
     "title": "Hallitse Clauden perusasiat",
@@ -3457,7 +3480,33 @@
           "Vastaus katkeaa": "max_tokens on liian pieni. Kasvata sitä tai tunnista stop_reason: 'max_tokens' -signaali ja jatka generointia."
         }
       }
-    }
+    },
+    "trigger": "Integroit Clauden tuotteeseen tai skriptiin — tarvitset ensimmäisen toimivan API-kutsun.",
+    "inputs": [
+      "Anthropic Console API-avain",
+      "Integraation kieli (Python / Node / curl)",
+      "Skenaario: chat, luokittelu tai generointi"
+    ],
+    "outputs": [
+      "Toimiva ensimmäinen pyyntö mallin vastauksella",
+      "Ymmärrys messages / system / max_tokens -käsitteistä",
+      "Avainten ja rate limitsien turvallisuuden tarkistuslista"
+    ],
+    "tools": [
+      {
+        "name": "Anthropic SDK",
+        "role": "Python/Node"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "oletusmalli aloitukseen"
+      },
+      {
+        "name": "Console",
+        "role": "avaimet + käyttö"
+      }
+    ],
+    "savings": "~2 tuntia dokkareiden lukua vs käynnistys 18 minuutissa"
   },
   "ai-fluency": {
     "title": "AI Fluency: viitekehys ja perusteet",
@@ -4099,7 +4148,33 @@
         "tip": "Hyvä työnkulkudokumentaatio ei ole käyttäjäohje — se on työskentelyohje. Kirjoita se kuin selittäisit älykkäälle uudelle työntekijälle, joka ei ole koskaan tehnyt tätä tehtävää.",
         "validate": "Sinulla on työnkulkudokumentti, jota toinen henkilö voi käyttää ilman suullisia selityksiäsi. Olet varmistanut tämän käytännössä."
       }
-    }
+    },
+    "trigger": "Rutiini, jossa on 3+ vaihetta, toistuu ≥3 kertaa viikossa ja syö keskittymisaikaa.",
+    "inputs": [
+      "Kuvaus nykyisestä manuaalisesta prosessista",
+      "Pääsy työkaluihin (Slack/Notion/Linear/jne.)",
+      "Tavoitemittari: aika / laatu / volyymi"
+    ],
+    "outputs": [
+      "Workflow-kartta: laukaisin → vaiheet → tulos",
+      "Valmis prompt + Project tehtävälle",
+      "Ennen/jälkeen-mittari tiimin raporttiin"
+    ],
+    "tools": [
+      {
+        "name": "Claude Projects",
+        "role": "konteksti + prompt"
+      },
+      {
+        "name": "MCP-palvelimet",
+        "role": "integraatiot"
+      },
+      {
+        "name": "Opus 4",
+        "role": "workflow-suunnittelu"
+      }
+    ],
+    "savings": "~5-8 tuntia viikossa per automatisoitu rutiini"
   },
   "role-use-cases": {
     "title": "Claude ammateittain",

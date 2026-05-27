@@ -111,6 +111,61 @@ export default function TutorialDetail({
           </section>
         )}
 
+        {(tut.trigger || (tut.inputs?.length) || (tut.outputs?.length) || (tut.tools?.length) || tut.savings) && (
+          <section className="tut-detail__section tut-detail__workflow-card">
+            <h3 className="tut-detail__workflow-card-title">
+              <Icon name="clipboard" size={14} strokeWidth={1.75} />
+              {t('tutorialDetail.workflow.cardTitle')}
+            </h3>
+            <div className="tut-detail__workflow-grid">
+              {tut.trigger && (
+                <div className="tut-detail__workflow-row">
+                  <span className="tut-detail__workflow-label">{t('tutorialDetail.workflow.trigger')}</span>
+                  <InlineText as="span" className="tut-detail__workflow-value" text={tut.trigger} onNavigate={inlineNav} />
+                </div>
+              )}
+              {tut.inputs?.length > 0 && (
+                <div className="tut-detail__workflow-row">
+                  <span className="tut-detail__workflow-label">{t('tutorialDetail.workflow.inputs')}</span>
+                  <ul className="tut-detail__workflow-list">
+                    {tut.inputs.map((x, i) => (
+                      <li key={i}><InlineText as="span" text={x} onNavigate={inlineNav} /></li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {tut.outputs?.length > 0 && (
+                <div className="tut-detail__workflow-row">
+                  <span className="tut-detail__workflow-label">{t('tutorialDetail.workflow.outputs')}</span>
+                  <ul className="tut-detail__workflow-list">
+                    {tut.outputs.map((x, i) => (
+                      <li key={i}><InlineText as="span" text={x} onNavigate={inlineNav} /></li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {tut.tools?.length > 0 && (
+                <div className="tut-detail__workflow-row">
+                  <span className="tut-detail__workflow-label">{t('tutorialDetail.workflow.tools')}</span>
+                  <div className="tut-detail__workflow-chips">
+                    {tut.tools.map((x, i) => (
+                      <span key={i} className="tut-detail__workflow-chip">
+                        {typeof x === 'string' ? x : `${x.name}${x.role ? ` — ${x.role}` : ''}`}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {tut.savings && (
+                <div className="tut-detail__workflow-row tut-detail__workflow-savings">
+                  <span className="tut-detail__workflow-label">{t('tutorialDetail.workflow.savings')}</span>
+                  <InlineText as="span" className="tut-detail__workflow-value" text={tut.savings} onNavigate={inlineNav} />
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
         {tut.outcomes && tut.outcomes.length > 0 && (
           <section className="tut-detail__section">
             <h3>{t('tutorialDetail.outcomes')}</h3>
