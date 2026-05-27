@@ -6,18 +6,20 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
  * ToolboxItem — draggable item в палитре + hover trigger for tooltip.
  *
  * Props:
- *  • defId, def        — NODE_DEFS entry
- *  • onHover(info|null) — called when tooltip should show/hide
+ *  • defId, def     — NODE_DEFS entry
+ *  • onShow(info)   — called когда tooltip should appear (с задержкой 400ms)
+ *  • onHide()       — schedule tooltip hide (handled в parent с задержкой)
  *
- * Hover delay 400ms (industry-standard для tooltips).
- * Position для tooltip — getBoundingClientRect() + offset вправо.
+ * Hover delay 400ms перед show (industry-standard для tooltips).
+ * Hide задержка обрабатывается на стороне parent (BuilderApp), чтобы мышка
+ * успевала перейти на сам tooltip (например клик на «Learn more»).
  *
  * Phase B-1 Day 22-23.
  */
 
 const HOVER_DELAY_MS = 400;
 
-export default function ToolboxItem({ defId, def, onHover }) {
+export default function ToolboxItem({ defId, def, onShow, onHide }) {
   const t = useT();
   const buttonRef = useRef(null);
   const hoverTimerRef = useRef(null);
@@ -27,22 +29,22 @@ export default function ToolboxItem({ defId, def, onHover }) {
     hoverTimerRef.current = setTimeout(() => {
       if (!buttonRef.current) return;
       const rect = buttonRef.current.getBoundingClientRect();
-      onHover({
+      onShow({
         defId,
         top: rect.top - 8,
         // Position to the right of toolbox (240px width + gap)
         left: rect.right + 12,
       });
     }, HOVER_DELAY_MS);
-  }, [defId, onHover]);
+  }, [defId, onShow]);
 
   const handleLeave = useCallback(() => {
     if (hoverTimerRef.current) {
       clearTimeout(hoverTimerRef.current);
       hoverTimerRef.current = null;
     }
-    onHover(null);
-  }, [onHover]);
+    onHide();
+  }, [onHide]);
 
   // Cleanup на unmount
   useEffect(() => () => {

@@ -17,10 +17,18 @@ import { getNodeDef } from '../../data/nodeTypes.js';
  * Phase B-1 Day 22-23 (см. docs/agent-builder/03-mvp-30day.md).
  */
 
-export default function ConceptTooltip({ defId, top, left }) {
+export default function ConceptTooltip({ defId, top, left, onShow, onHide }) {
   const t = useT();
   const def = getNodeDef(defId);
   if (!def) return null;
+
+  // Сохраняем tooltip когда курсор на нём (отменяем pending hide).
+  const handleMouseEnter = () => {
+    if (onShow) onShow({ defId, top, left });
+  };
+  const handleMouseLeave = () => {
+    if (onHide) onHide();
+  };
 
   const { icon, color, labelKey, descKey, atlasAnchor, kind } = def;
 
@@ -42,6 +50,8 @@ export default function ConceptTooltip({ defId, top, left }) {
         '--node-color': color,
       }}
       role="tooltip"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="builder-tooltip__head">
         <span className="builder-tooltip__icon" aria-hidden="true">

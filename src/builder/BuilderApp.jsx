@@ -59,6 +59,31 @@ function BuilderAppInner() {
   const [execPanelOpen, setExecPanelOpen] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [tooltipInfo, setTooltipInfo] = useState(null); // { defId, top, left }
+  const tooltipHideTimerRef = useRef(null);
+
+  /* ────────── Tooltip show/hide с graceful delay ────────── */
+  // Show: immediately + cancels pending hide (если мышка вернулась)
+  const handleTooltipShow = useCallback((info) => {
+    if (tooltipHideTimerRef.current) {
+      clearTimeout(tooltipHideTimerRef.current);
+      tooltipHideTimerRef.current = null;
+    }
+    if (info) setTooltipInfo(info);
+  }, []);
+
+  // Hide: 200ms delay чтобы мышка успела перейти tooltipа
+  const handleTooltipHide = useCallback(() => {
+    if (tooltipHideTimerRef.current) clearTimeout(tooltipHideTimerRef.current);
+    tooltipHideTimerRef.current = setTimeout(() => {
+      setTooltipInfo(null);
+      tooltipHideTimerRef.current = null;
+    }, 200);
+  }, []);
+
+  // Cleanup
+  useEffect(() => () => {
+    if (tooltipHideTimerRef.current) clearTimeout(tooltipHideTimerRef.current);
+  }, []);
 
   // Execution state
   const [execStatus, setExecStatus] = useState('idle'); // 'idle' | 'running' | 'completed' | 'failed' | 'stopped'
@@ -398,7 +423,8 @@ function BuilderAppInner() {
                         key={defId}
                         defId={defId}
                         def={def}
-                        onHover={setTooltipInfo}
+                        onShow={handleTooltipShow}
+                        onHide={handleTooltipHide}
                       />
                     );
                   })}
@@ -504,12 +530,16 @@ function BuilderAppInner() {
         />
       )}
 
-      {/* Education tooltip — hover on toolbox items */}
+      {/* Education tooltip — hover on toolbox items.
+          Передаём show/hide handlers чтобы tooltip сам мог cancel pending hide
+          (когда мышка переходит с item на tooltip) и schedule hide (когда уходит). */}
       {tooltipInfo && !galleryOpen && (
         <ConceptTooltip
           defId={tooltipInfo.defId}
           top={tooltipInfo.top}
           left={tooltipInfo.left}
+          onShow={handleTooltipShow}
+          onHide={handleTooltipHide}
         />
       )}
     </div>
