@@ -703,9 +703,13 @@ export const mindmapData = {
               "icon": "repeat",
               "category": "foundation",
               "relatedIds": [
-            "b-system",
-            "cc-md"
-          ]
+                "b-system",
+                "cc-md",
+                "sys-cost-management",
+                "sc-data",
+                "ec-pricing",
+                "cap-tools"
+              ]
             },
             {
               "id": "cap-citations",
