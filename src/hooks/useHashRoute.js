@@ -95,6 +95,20 @@ export function useHashRoute() {
       );
     }
     setRouteState(next || null);
+
+    // Notify other useHashRoute instances (например AppRouter top-level).
+    // pushState/replaceState не triggers hashchange сам по себе — нужно
+    // dispatch'ить вручную, иначе другие hook instances не sync'нутся.
+    // Без этого click на «Builder» в dropdown меняет URL, но AppRouter не
+    // переключается на BuilderApp (issue от 2026-05-24).
+    try {
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    } catch {
+      // Старые браузеры — fallback
+      const evt = document.createEvent('Event');
+      evt.initEvent('hashchange', false, false);
+      window.dispatchEvent(evt);
+    }
   }, []);
 
   return [route, setRoute];
