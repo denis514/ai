@@ -2175,7 +2175,7 @@ export const mindmapData = {
             "ec-experimentation",
             "ec-team-workflow",
             "mk-content-ops",
-            "cs-tier1-automation"
+            "cs-tier1"
           ],
           "children": [
             {
@@ -2288,7 +2288,7 @@ export const mindmapData = {
                 "sc-content",
                 "sys-multi-agent-patterns",
                 "sys-escalation-paths",
-                "cs-tier1-automation",
+                "cs-tier1",
                 "cs-agent-assist"
               ]
             },
