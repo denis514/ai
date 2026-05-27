@@ -66,9 +66,11 @@ const categorize = (c) => {
   if (c.type === 'css') return 'css';
   if (c.name === 'index') return 'initial';
   if (c.name.startsWith('vendor')) return 'vendor';
-  if (c.name === 'nodes') return 'nodes-locale';
+  // After split-nodes.mjs: nodes.json → core/sys/commerce chunks per locale
+  if (['core', 'sys', 'commerce', 'nodes'].includes(c.name)) return 'nodes-locale';
   if (c.name === 'tutorials') return 'tutorials-locale';
   if (c.name === 'content') return 'content';
+  if (c.name === 'prompt-library') return 'library';
   return 'other';
 };
 chunks.forEach(c => c.category = categorize(c));

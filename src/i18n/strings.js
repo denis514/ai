@@ -52,10 +52,14 @@ export async function loadLocaleContent(locale) {
   _loaded.add(locale);
   try {
     const mod = await loader();
+    // content-<locale>.js теперь экспортирует async loadContent() — это
+    // даёт Vite повод эмиттить отдельные chunks на nodes/{core,sys,commerce},
+    // tutorials и library вместо инлайнинга всего в content-<locale>.js.
+    const content = await mod.loadContent();
     Object.assign(STRINGS[locale], {
-      nodes:            mod.nodes,
-      tutorials:        mod.tutorials,
-      'prompt-library': mod.library,
+      nodes:            content.nodes,
+      tutorials:        content.tutorials,
+      'prompt-library': content.library,
     });
   } catch (e) {
     // При ошибке снимаем флаг — позволяем повторить попытку

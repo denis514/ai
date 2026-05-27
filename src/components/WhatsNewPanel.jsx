@@ -22,17 +22,20 @@ export default function WhatsNewPanel({ onSelectNode, onOpenTutorial, onClose, o
   const [titles, setTitles] = React.useState({});
 
   React.useEffect(() => {
-    // Загружаем заголовки узлов и туториалов параллельно
+    // Узлы раздроблены на nodes/{core,sys,commerce}.json — каждый отдельный chunk.
     Promise.all([
-      import(`../locales/${locale}/nodes.json`).catch(() => ({ default: {} })),
+      import(`../locales/${locale}/nodes/core.json`).catch(() => ({ default: {} })),
+      import(`../locales/${locale}/nodes/sys.json`).catch(() => ({ default: {} })),
+      import(`../locales/${locale}/nodes/commerce.json`).catch(() => ({ default: {} })),
       import(`../locales/${locale}/tutorials.json`).catch(() => ({ default: {} })),
-    ]).then(([nodesM, tutorialsM]) => {
+    ]).then(([coreM, sysM, commerceM, tutorialsM]) => {
+      const allNodes = { ...coreM.default, ...sysM.default, ...commerceM.default };
       const map = {};
       Object.entries(WHATS_NEW).forEach(([id, entry]) => {
         if (entry.kind === 'tutorial') {
           map[id] = tutorialsM.default?.[id]?.title || id;
         } else {
-          map[id] = nodesM.default?.[id]?.title || nodesM[id]?.title || id;
+          map[id] = allNodes[id]?.title || id;
         }
       });
       setTitles(map);

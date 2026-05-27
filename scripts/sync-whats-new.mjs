@@ -258,3 +258,16 @@ if (changedNodes.length)     console.log(`   Обновлённые узлы:   
 if (addedTutorials.length)   console.log(`   Новые туториалы:        ${addedTutorials.join(', ')}`);
 if (changedTutorials.length) console.log(`   Обновлённые туториалы:  ${changedTutorials.join(', ')}`);
 console.log(`   whatsNew.js и nodeHashes.json обновлены → включи в git commit`);
+
+// ── Регенерация node-section файлов ───────────────────────────────────────────
+// nodes.json — source of truth для скриптов; nodes/{core,sys,commerce}.json —
+// генерируемые артефакты. Bundler читает секции (см. src/i18n/content-*.js),
+// поэтому sync обязан их актуализировать после каждого изменения контента.
+try {
+  const { execSync } = await import('node:child_process');
+  console.log('');
+  execSync('node scripts/split-nodes.mjs', { stdio: 'inherit' });
+} catch (e) {
+  console.error('⚠ split-nodes.mjs не отработал — секции могут быть устаревшими:', e.message);
+  process.exit(1);
+}

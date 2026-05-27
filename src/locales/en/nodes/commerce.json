@@ -1,0 +1,461 @@
+{
+  "uc-ai-reporting-launch": {
+    "title": "Launch AI Reporting",
+    "what": "Full path from \"we have manual reports\" to \"working weekly report workflow\". Path through 6 105 Atlas nodes: Foundation → [[node:ai-fundamentals|AI Fundamentals]] → Configuration → Transformation.",
+    "why": "This is the most common ops-team request: \"AI can write reports, how do we start?\". A Use Case gives a clear route instead of \"start reading everything\".",
+    "when": "When there is a regular report (weekly/monthly) taking ≥3 hours per week. When data is available (CRM/analytics with export). When there is team buy-in.",
+    "impact": "Outcome: working weekly report workflow in 2 weeks of work. Metrics: time-to-report 4h→30min, consistency +90%, team buy-in measurable (NPS survey).",
+    "example": "Path (6 steps through nodes):\n1. Foundation: prompting → how to write a [[node:b-system|system prompt]] for a report\n2. Foundation: af-rag-basics → if the report needs CRM context, how to feed it to Claude\n3. Foundation: projects → create a \"Weekly Reports\" workspace for the team\n4. Foundation: i-claudemd → describe the report format in [[node:cc-md|CLAUDE.md]]\n5. Transformation: ops-reporting-automation → concrete workflow with stages\n6. Transformation: sc-data → how to work with CSV data\n\nDay 1-3: Setup Project + write first prompt manually.\nDay 4-7: Iterate on 5-10 real reports.\nDay 8-14: Roll-out to the team + feedback.\n\nStage transition: 1→2.",
+    "mistakes": "Wanting \"full automation\" in the first week. First AI writes a draft → human edits → measure quality. Only after 5-10 successful iterations — add automation (triggers, scheduling)."
+  },
+  "uc-ai-process-automation": {
+    "title": "Automate a Recurring Process",
+    "what": "Path to automating a specific operations process via AI. From candidate identification to a production-ready workflow with Skills + Hooks.",
+    "why": "Operations teams often get stuck at \"we tried Claude, liked it\" — but do not know how to make it systematic. This UC shows a structured approach.",
+    "when": "When there is a process running ≥5×/week with clear inputs/outputs. When result variability is a problem. When there is technical capability for triggers/integrations.",
+    "impact": "Outcome: automated workflow with quality gates in 2-3 weeks. Metrics: time savings 70-90%, error rate <5%, team satisfaction +.",
+    "example": "Path (6 steps):\n1. Identification: pick the process — this is ops-process-automation\n2. Foundation: skills + s-create → build a reusable Skill\n3. Foundation: mcp → if external integrations are needed\n4. Foundation: cc-hooks → automatic triggers\n5. Foundation: prompting → core workflow prompt\n6. Transformation: ops-process-automation → structure with quality gates\n\nWeek 1: Document the process as-is. Identify AI-replaceable steps.\nWeek 2: Build the Skill + first tests on historical data.\nWeek 3: Production roll-out with monitoring.\n\nStage transition: 1→2 (if first automation) or 2→3 (expansion).",
+    "mistakes": "Automating without stabilizing the process. If the process is still changing — the workflow will constantly break. And: not making quality gates. Without human review = automated trash."
+  },
+  "uc-ai-decision-support": {
+    "title": "AI Support for Operational Decisions",
+    "what": "Rolling out AI structuring for operational decisions in the team. From ad-hoc \"let us discuss in Slack\" to a structured decision process with AI analysis.",
+    "why": "Operations teams make 5-10 decisions a week under load. Without structure — lots of reactive, little learning. AI adds discipline without bureaucracy.",
+    "when": "When decisions require trade-off analysis (hire vs no-hire, vendor selection, process change). When retrospective shows \"we decided this a year ago and forgot\".",
+    "impact": "Outcome: working decision process with AI support in 3-4 weeks. Metrics: reactive decisions ↓50-70%, learning loop established (retrospective with AI pattern matching).",
+    "example": "Path (6 steps):\n1. Identification: which decisions to include (Operations: hires, vendors, processes)\n2. Foundation: prompting + pr-cot (chain-of-thought) — structure of AI analysis\n3. Foundation: sc-data + sc-analysis — how to feed data for the decision\n4. Foundation: af-llm-basics — understand AI boundaries: where it gives value, where it errs\n5. Foundation: projects → \"Decision Log\" workspace with history\n6. Transformation: ops-decision-intelligence → concrete workflow\n\nWeek 1: Pilot on 3-5 simple decisions.\nWeek 2-3: Refine template + verify quality.\nWeek 4: Roll-out to all major decisions + retrospective.\n\nStage transition: 2→3.",
+    "mistakes": "Using AI as \"the decider\". AI is good at structuring and pattern matching, but context and accountability belong to the human. Documentation matters more than the AI output itself: track outcomes → learn → improve."
+  },
+  "mk-content-ops": {
+    "title": "AI Content Operations",
+    "what": "Content machine on AI: input (brief) → AI draft → human review → publish. Pipeline for blog posts, email, social, documentation. Goal — 10× speedup without losing brand voice.",
+    "why": "Content teams spend 40-60% of time on drafts. AI handles 80% of this work. Freed time goes to strategy, distribution, performance analysis — where AI does not help.",
+    "when": "When the team publishes ≥10 pieces per month. When there is a documented brand voice (or it is easy to assemble). When SEO/audience research exists as brief input.",
+    "impact": "Time-to-publish: 2 days → 4 hours. Content output: +200-300% with the same team. Consistency: single tone across all channels.",
+    "example": "Content Pipeline:\n\n  Brief (topic + outline + audience)\n        ↓\n  Project \"Blog\" with brand voice prompt\n        ↓\n  AI draft (800 words in 2 minutes)\n        ↓\n  Quality gate: editor review\n        ↓\n  Final + SEO optimization\n        ↓\n  Publish\n\nMetric: 1500-word longread in 4 hours instead of 2 days.",
+    "mistakes": "Doing \"AI generates → publish\" without a human gate. Any AI text needs review: factcheck, tone, local context. Without human-in-the-loop — generic AI content the reader spots in 3 seconds."
+  },
+  "mk-campaign-intel": {
+    "title": "AI Campaign Intelligence",
+    "what": "AI support for planning and analyzing marketing campaigns: performance prediction, creative variant generation, post-mortem analysis. AI = \"second analyst\" on the team.",
+    "why": "Campaigns are planned under pressure → reactive decisions, no learning loop. AI adds structured analysis pre-launch (what to try) and post-launch (what worked and why).",
+    "when": "Quarterly campaign planning. Before launching a campaign with >$10k budget. Post-mortem after every major campaign. A/B testing copy.",
+    "impact": "Campaign ROI: +20-40% thanks to better planning and faster learning. Reduce reactive decisions: 60%.",
+    "example": "Campaign workflow:\n\n  Pre-launch:\n  1. AI analyzes past campaigns to similar audience\n  2. Generates 5 angle/positioning variants\n  3. Predicts likely performance (rough)\n\n  Post-launch:\n  1. AI reads all metrics + comments\n  2. Pattern-matching: what worked, what did not\n  3. Documents learnings in shared knowledge base\n\nAfter a year: organized library of campaign learnings.",
+    "mistakes": "Using AI as \"ROI predictor\". AI is good at pattern matching historical data, but new markets/channels are beyond its experience. AI = \"thoughtful colleague for brainstorming\", not \"oracle\"."
+  },
+  "mk-brand-voice": {
+    "title": "AI Brand Voice Tuning",
+    "what": "Documenting and codifying brand voice in the AI generation system. From ad-hoc \"we need to sound like us\" — to explicit voice guide + system prompts + [[node:pr-fewshot|few-shot examples]] in every Project.",
+    "why": "Without explicit voice, AI outputs generic \"like everyone\". With voice guide — text sounds like your team. This is the difference between \"AI is noticeable\" and \"AI is invisible\".",
+    "when": "When team ≥3 people writes content. When \"AI tone is not us\" complaints. Before AI content operations roll-out to the whole team. When brand vocabulary matters (B2B, tech, lifestyle).",
+    "impact": "Brand consistency: 60% → 95%. Editor rewrite time: -70%. New team member onboarding: -50%.",
+    "example": "Brand Voice Setup:\n\n1. \"Voice Guide\" document:\n   - 3-5 voice attributes (e.g., warm, expert, direct)\n   - Do/Don't examples for each\n   - 10 sample paragraphs in our style\n\n2. [[node:b-system|System prompt]] in \"Blog\" Project:\n   \"You write in style X. Voice attributes: ... Examples: ...\"\n\n3. Test: 5 different people give brief → AI generates → blind review → > 80% pick AI-version vs generic.\n\nReal investment: 2-3 days for setup, saves hours per piece.",
+    "mistakes": "Describing voice abstractly (\"professional but friendly\"). It does not help AI. Voice = examples + concrete attributes + Do/Don't. More concrete, better reproducibility."
+  },
+  "mk-seo-optimization": {
+    "title": "AI SEO at Scale",
+    "what": "AI for SEO tasks: keyword research, content briefs from SERPs, meta optimization, internal linking. From 1 SEO specialist per 5 content writers — to a team where every writer is SEO-aware.",
+    "why": "SEO requires expertise content writers usually do not have. AI closes the gap: author writes, AI checks/suggests SEO improvements. Team moves faster without hiring an SEO spec.",
+    "when": "When content output >20 pieces/month + SEO is critical (B2B SaaS, eCommerce, content-driven). When there is budget for keyword research tools (ahrefs/semrush).",
+    "impact": "Organic traffic: +30-60% in 6 months. SEO coverage rate (% of pages targeting keywords): 30% → 80%.",
+    "example": "SEO Workflow:\n\n  1. Author writes draft on topic.\n  2. AI Step: \"here are top-10 SERPs for this topic → what competitors cover, what is missing\"\n  3. AI Step: \"based on this draft + SERP gap analysis, what subtopics to add, what keywords to integrate\"\n  4. Author redrafts with AI recommendations.\n  5. AI Step: meta title + description optimization.\n\nResult: SEO-optimized content without a separate SEO pass.",
+    "mistakes": "Trusting AI keyword research fully. AI does not know current trends (cutoff date) and does not see fresh SERPs. Use AI as \"SEO advisor\", but keyword data — from specialized tools."
+  },
+  "mk-performance-analytics": {
+    "title": "AI Marketing Performance Analytics",
+    "what": "AI reads marketing metrics (GA, social, email) → writes insight-driven reports with hypotheses and action items. From \"here are graphs, figure it out\" — to \"here is what happened and what we do\".",
+    "why": "Marketing teams drown in dashboards without actionable insights. AI does the narrative layer: connects dots, explains anomalies, suggests hypotheses. Decision velocity grows.",
+    "when": "Weekly/monthly performance reviews. When the team spends >2 hours per week collecting reports. When the \"reason\" for metric drops is non-obvious.",
+    "impact": "Time-to-insight: days → hours. Quality of weekly reviews: structured insights instead of \"here are numbers\".",
+    "example": "Weekly Marketing Performance Report:\n\n  Inputs:\n  - GA4 export (traffic, conversions)\n  - Email metrics (open rate, CTR)\n  - Social engagement\n  - Campaign spend\n\n  AI Output:\n  - What grew/dropped (numbers + delta)\n  - Hypotheses why (based on past patterns)\n  - 3 recommendations for next week\n  - Red flags (what needs deeper investigation)\n\n  Human: 15 min validation + 3 decomposed actions.",
+    "mistakes": "Using AI as an \"attribution engine\". AI does not know the real attribution model (multi-touch, view-through). Use AI for narrative and pattern matching, not for exact causation."
+  },
+  "mk-team-workflow": {
+    "title": "AI Marketing Team Workflow",
+    "what": "How a marketing team orchestrates working with AI: shared brand voice, content templates, weekly AI office hours, knowledge sharing. From \"everyone with their own Claude\" — to a collaborative AI system.",
+    "why": "Individual usage in marketing does not scale — voice is not consistent, templates duplicate, learnings are lost. Team workflow = single standard + shared library + faster onboarding.",
+    "when": "Marketing team ≥3 people actively use AI. Inconsistent results emerge. New team members \"do not know how we work with AI\".",
+    "impact": "Team velocity: +30-50%. New writer time-to-productive: 2 weeks → 3-5 days. Knowledge retention: shared Projects + voice guide = team learns from common mistakes.",
+    "example": "Marketing Team Setup:\n\n1. Shared Claude Project \"Marketing Workspace\"\n2. Files: brand voice guide, content templates, SEO playbook\n3. [[node:cc-md|CLAUDE.md]]: \"content rules + naming conventions\"\n4. Reusable Skills: blog-post-writer, email-drafter, social-snippet\n5. Weekly \"AI office hours\" 30 min: team shows winning prompts, discusses fails\n6. Metric: % of content done via shared workflow vs ad-hoc\n\nStage 3 sign: new writer is productive in 3-5 days, everyone has consistent quality.",
+    "mistakes": "Making \"team workflow\" = \"one person dictates\". Team workflow = collaboration. Each contributor → updates workflow + ownership over one part (voice guide, templates, SEO). Shared ownership = sustainable system."
+  },
+  "uc-ai-content-ops-launch": {
+    "title": "Launch AI Content Operations",
+    "what": "Full path from \"we have generic AI texts\" to \"working content machine with brand voice\". Cross-layer path through 7 nodes: Foundation → Configuration → Systems → Transformation.",
+    "why": "The most common marketing-team request: \"AI writes but does not sound like us\". This UC solves the problem systematically — through explicit brand voice setup + content pipeline.",
+    "when": "When the team already uses AI ad-hoc but quality is inconsistent. When output >10 pieces/month. When there is buy-in from editor/content lead.",
+    "impact": "Outcome: working content pipeline with brand voice in 2 weeks. Metrics: time-to-publish 2 days→4h, brand consistency 60%→90%, content output +200%.",
+    "example": "Path (7 steps):\n\n1. Foundation: prompting → how to formulate briefs for AI\n2. Foundation: b-system → how to write a [[node:b-system|system prompt]] with voice\n3. Foundation: i-style + instructions → [[node:instructions|custom instructions]] at profile level\n4. Foundation: i-claudemd → [[node:cc-md|CLAUDE.md]] for marketing workspace\n5. Foundation: projects → create a \"Blog\" Project with voice files\n6. Systems: sys-linear-chain → pipeline structure (brief → draft → review → publish)\n7. Transformation: mk-content-ops → concrete workflow with metrics\n8. Bonus: mk-brand-voice → detailed voice tuning\n\nDay 1-3: Audit existing content. Document voice attributes.\nDay 4-7: Setup Project + first test articles. Iterate voice prompt.\nDay 8-14: Roll-out for the team + measurement.\n\nStage transition: 1→2.",
+    "mistakes": "Doing a UC without voice work. Pipeline without brand voice = AI-generic texts faster, but still generic. Voice setup is 30% of UC time. Do not skip."
+  },
+  "cs-tier1": {
+    "title": "AI Tier-1 Automation",
+    "what": "Automating first-line support: AI reads incoming ticket → finds answer in knowledge base (RAG) → writes a personalized reply → or escalates to a human. Pipeline with explicit quality gates.",
+    "why": "30-50% of all support tickets are repeat questions (password reset, billing, account access). AI closes this mass with consistent quality. Tier-2 agents focus on complex.",
+    "when": "Tier-1 volume >100 tickets/week. Structured knowledge base. Clear FAQ categories (40%+ tickets fit into 20 patterns). Buy-in from CS-lead.",
+    "impact": "Deflection: 40-60%. Median response time: 4h → 2min for AI-tickets. Tier-2 load drops by 30-40%. CSAT for AI-tickets: 4.2/5 with right setup (vs 4.4 for humans).",
+    "example": "Tier-1 Workflow:\n\n  Incoming ticket\n        ↓\n  [Classify intent: FAQ vs complex]\n   ├─ FAQ → AI processes with KB\n   │         ↓\n   │     [Confidence > 0.8?]\n   │      ├─ Yes → AI response + log\n   │      └─ No  → escalate to tier-2 with AI summary\n   └─ Complex → directly to human queue\n\n  Quality gate: 10% random AI responses → human review weekly\n\nMetric: deflection rate weekly, CSAT for AI-tickets.",
+    "mistakes": "Doing tier-1 at 80% content. Edge cases accumulate: every AI failure = bad experience. Production rule: AI responds only when confidence is high. Otherwise escalate with AI-prepared context for the human."
+  },
+  "cs-agent-assist": {
+    "title": "AI Agent Assist",
+    "what": "AI as a \"co-pilot\" for tier-2 agent: real-time response suggestions, autocompletion, similar-case search, template generation. Agent stays in the driver seat, AI accelerates.",
+    "why": "Agent-assist is less risky than tier-1: human is always in the loop. ROI is faster (response time -50% immediately). Team sees AI as \"helper\", not \"threat\". Adoption is much higher.",
+    "when": "Tier-2/3 team spends time writing responses from scratch. There are historical tickets with good answers. Want to raise velocity without quality loss.",
+    "impact": "Response time per ticket: 8 min → 3 min. Agents handle 50-70% more tickets/day. Quality consistent (AI used as draft, agent edits). New agent onboarding: -50% (AI compensates junior gap).",
+    "example": "Agent Assist Setup:\n\n1. Browser plugin or helpdesk integration.\n2. Open ticket → AI reads context + customer history.\n3. AI suggests:\n   - 3 reply variants (formal/friendly/technical)\n   - Similar past tickets (resolved)\n   - Relevant KB articles\n4. Agent selects + edits + sends.\n5. AI learns from agent edits (improves suggestions over time).\n\nReal usage: 70% suggestions accepted with minor edits, 20% edited significantly, 10% unused.",
+    "mistakes": "Forcing agents to use AI \"mandatorily\". If a suggestion is bad — it forces writing from scratch. Drive adoption through value (show time saved per ticket), not mandate."
+  },
+  "cs-knowledge-base": {
+    "title": "AI Knowledge Base Operations",
+    "what": "Knowledge base turns from \"PDF dump\" into a living AI system: vector search, auto-updates based on resolved tickets, gap analysis (what is often asked but no article exists), structured taxonomy.",
+    "why": "Without a good KB, all AI support fails. KB = single source of truth for AI. KB quality ≠ article count. Quality KB ops = more impact than just launching AI.",
+    "when": "In parallel with tier-1 setup. When AI bot answers \"I do not know\" to >20% of questions. When agents complain \"cannot find the article\". When KB has not been updated in >6 months.",
+    "impact": "KB findability: 50% → 90% (vector search vs keyword). AI deflection rate grows +15-20% (more coverage). Agent onboarding: -40% time.",
+    "example": "KB Ops Pipeline:\n\nWeekly:\n  1. AI reads resolved tickets for the week.\n  2. Identifies frequent questions without KB articles.\n  3. Drafts new KB articles from ticket solutions.\n  4. KB editor reviews + publishes.\n\nMonthly:\n  1. AI analyzes KB usage (which articles cited).\n  2. Flags outdated content (product changed, article did not).\n  3. Suggests merges (duplicate articles).\n\nMetric: % of tickets where AI found KB match → up over time.",
+    "mistakes": "Making KB only for humans. Modern KB optimization = for AI + humans. Structure (clear headers, atomic articles, metadata) matters for AI retrieval. Otherwise AI does not find — even if the article exists."
+  },
+  "cs-escalation": {
+    "title": "AI Escalation Intelligence",
+    "what": "Smart escalation: AI decides when to hand off to a human and exactly to whom (by specialization, load, severity). Plus prepares escalation context — the agent gets not \"here is a ticket\", but \"here is a ticket + history + what AI tried\".",
+    "why": "Dumb escalation = ticket arrives without context, agent spends 5 minutes reading. Smart = agent sees summary + what was already tried + recommended next step. Velocity grows without quality loss.",
+    "when": "When tier-1 AI is running and tier-2 routing is needed. When there are specializations (billing vs technical vs account). When escalation is a bottleneck.",
+    "impact": "Time-to-resolution for escalated tickets: -40%. Routing accuracy: 80% → 95% (correct specialist on first try). Agent satisfaction +: less \"why did they pass this to me\".",
+    "example": "Escalation Workflow:\n\n  AI cannot resolve ticket\n        ↓\n  [Classify problem domain]\n   ├─ Billing → queue: billing_team\n   ├─ Technical → queue: tech_support\n   └─ Account → queue: account_specialists\n        ↓\n  AI prepares escalation summary:\n   - Customer info + history\n   - What customer wants\n   - What AI tried (and why it didn't work)\n   - Suggested next step\n        ↓\n  Agent picks up: context ready in 30 sec instead of 5 min.\n\nMetric: agent feedback on escalation quality.",
+    "mistakes": "Escalating \"just in case\" at low confidence. If AI errs 10% but escalates 50% — it is degradation. Calibrate threshold: too high = killed deflection, too low = bad quality."
+  },
+  "cs-quality-monitoring": {
+    "title": "AI Quality Monitoring",
+    "what": "Continuous monitoring of AI response quality: weekly sample → human review → identify failure patterns → adjust prompts/KB. Without monitoring, AI degrades silently: errors accumulate, no one sees.",
+    "why": "AI is not static: KB changes, product changes, customer questions change. AI that worked in Q1 may slip in Q3. Quality monitoring catches drift before CSAT drops.",
+    "when": "From day 1 of AI tier-1 launch. Mandatory. Not \"when there is a problem\" — continuous. Minimum: 10% AI responses random sample → weekly review.",
+    "impact": "AI drift detection: before customers notice (CSAT does not drop). Continuous improvement: every week prompts/KB get better. Trust in the AI system grows through explicit quality data.",
+    "example": "Quality Monitoring Process:\n\nWeekly:\n  1. Random sample 10% of AI responses.\n  2. Quality team rates: accuracy, tone, completeness.\n  3. Failure patterns extracted: \"AI confuses billing X with Y\", \"misses context Z\".\n  4. Action: update KB articles OR adjust [[node:b-system|system prompt]] OR add edge case to training data.\n\nMetric:\n  - % AI responses rated >4/5\n  - Trending direction (better/worse week-over-week)\n  - Top 3 failure categories\n\nEscalation: if quality < 4/5 for 2 weeks → pause AI tier-1, investigate.",
+    "mistakes": "Monitoring without action loop. If found errors do not lead to changes — it is theater. Quality monitoring must be embedded in weekly product process (Mon: review, Tue: fix, Wed: validate, ...)."
+  },
+  "cs-support-analytics": {
+    "title": "AI Support Analytics",
+    "what": "AI reads support metrics + ticket content → writes insight reports: trending issues, customer sentiment, agent performance patterns, product feedback. Turns support data into product insights.",
+    "why": "Support is free user research. Thousands of conversations with real customers. But the team drowns in objects/dashboards. AI does the narrative layer + connects to product/marketing teams.",
+    "when": "Weekly support reviews. When product team wants \"voice of customer\". When there is a pattern \"many complaints about feature X\" — need systematic detection.",
+    "impact": "Time-to-insight: days → hours. Product team gets trending issues automatically. Customer voice loop closes: from ticket → insight → product change → fewer tickets.",
+    "example": "Weekly Support Analytics Report:\n\n  Inputs:\n  - All tickets for the week (resolved + open)\n  - CSAT scores + comments\n  - Agent performance metrics\n  - Product release notes\n\n  AI Output:\n  - Top 5 trending issues (with ticket count + delta)\n  - Sentiment analysis: where customers are frustrated\n  - Correlation: \"new feature X released → tickets about X +40%\"\n  - Recommendations for product team\n  - Recommendations for KB updates\n\nDistribution: report shared with product + marketing → closing the loop.",
+    "mistakes": "Doing support analytics in isolation. If insights do not reach product/engineering — they are useless. Set up explicit channels: weekly \"Support Insights\" Slack post in #product, monthly review session."
+  },
+  "cs-team-workflow": {
+    "title": "AI Customer Support Team Workflow",
+    "what": "CS team operating model with AI: shared knowledge base ops, common agent-assist setup, AI office hours, quality calibration sessions, AI-aware promotion path for agents. From \"AI = a tool\" — to \"AI = part of how we operate\".",
+    "why": "Individual AI usage in support does not work — consistency for customers is needed (everyone gets same quality answer). Team workflow ensures this through shared setup + processes.",
+    "when": "When team ≥5 agents use AI. When new agents arrive and \"do not know how\". When quality is inconsistent between shift teams.",
+    "impact": "Team velocity: agents process 50%+ more tickets. New agent onboarding: 4 weeks → 2 weeks. Quality consistency across shifts: +60%. AI literacy team-wide.",
+    "example": "CS Team Setup:\n\n1. Shared Claude Project \"Support Workspace\":\n   - KB indexed\n   - Brand voice guide (tone for customers)\n   - Common scenarios templates\n\n2. [[node:cc-md|CLAUDE.md]]: response guidelines, escalation criteria, tone rules.\n\n3. Skills: response-drafter, ticket-summarizer, escalation-formatter.\n\n4. Weekly calibration: team reviews 5 AI-handled tickets together. Discusses: what worked, what would change.\n\n5. AI-aware promotion: agents who improve AI workflow → senior path (not just \"answer more tickets\").\n\nResult: team functions as a cohesive AI-augmented unit.",
+    "mistakes": "Treating AI usage as \"individual perk\". Without team-level workflow, customers get inconsistent experience (depending on which agent picks). AI = team capability, not individual skill."
+  },
+  "uc-ai-support-tier1": {
+    "title": "Launch AI Tier-1 Support",
+    "what": "Full path from \"all by hand\" to \"AI closes 40% of tickets\". Cross-layer path through 7 nodes: Foundation → [[node:ai-fundamentals|AI Fundamentals]] → Systems → Transformation.",
+    "why": "Tier-1 automation = highest-ROI AI project in support. This UC shows a structured approach (not \"buy a bot\"): KB first, then AI, then quality monitoring.",
+    "when": "Tier-1 volume >100 tickets/week. Baseline CSAT exists for comparison. Can invest 3-4 weeks in setup. Buy-in from CS-lead AND product (for KB).",
+    "impact": "Outcome: working tier-1 AI with 40% deflection in 4 weeks. Metrics: deflection rate 0→40%, median response time 4h→2min for AI-tickets, CSAT maintained at baseline.",
+    "example": "Path (7 steps):\n\nWeek 1: Knowledge Base prep.\n1. Foundation: af-rag-basics → understand what RAG needs\n2. Foundation: af-vector-db → vector DB choice (pgvector usually enough)\n3. Systems: sys-rag-architecture → pattern choice (Advanced RAG mandatory)\n4. Audit + restructure existing KB articles\n\nWeek 2: AI tier-1 setup.\n5. Foundation: prompting → [[node:b-system|system prompt]] for support bot\n6. Foundation: projects → create \"Support Bot\" Project with KB\n7. Transformation: cs-tier1 → build workflow with quality gates\n\nWeek 3: Quality + escalation.\n8. Transformation: cs-escalation → correct routing for escalations\n9. Transformation: cs-quality-monitoring → setup random sample review\n\nWeek 4: Roll-out.\n10. Pilot on 1 ticket category. Measure deflection + CSAT.\n11. Expand to 3-5 categories. Iterate.\n\nStage transition: 1→2.",
+    "mistakes": "Launching AI tier-1 without KB ops first. If the KB is not suitable for AI retrieval (bad structure, outdated) — AI will answer generic or wrong. KB ops = 50% of UC work. Do not skip."
+  },
+  "pd-discovery-research": {
+    "title": "AI Discovery Research",
+    "what": "AI-powered user research: automatic interview synthesis, competitive analysis, market research. From \"read 20 interviews in 3 days\" — to \"AI extracts themes in an hour, PM validates\".",
+    "why": "Discovery is the most time-intensive part of PM work. 50 interviews = a week of manual synthesis. AI does a first pass in an hour, the PM focuses on validation and interpretation.",
+    "when": "When there are >10 interviews/customer calls on one topic. When quarterly customer research is needed. When the competitive landscape changes and you need to track it.",
+    "impact": "Time-to-insight: days → hours. Coverage: PM can \"process\" 50 interviews instead of 10. Quality: structured themes instead of \"here are my notes\".",
+    "example": "Research Synthesis Workflow:\n\n  Inputs:\n  - 30 interview transcripts\n  - Customer support tickets (1 month)\n  - Competitor reviews on G2/Trustpilot\n        ↓\n  Project \"Research\" with RAG index\n        ↓\n  AI Steps:\n  1. Extract themes (frequency + sentiment)\n  2. Cluster similar quotes\n  3. Identify gaps (what people often mention but we do not do)\n  4. Generate hypothesis matrix\n        ↓\n  PM validates: which themes are actionable, which need follow-up\n        ↓\n  Output: structured research report + raw data accessible\n\nMetric: time-to-insight, theme coverage.",
+    "mistakes": "Relying on AI without human validation. AI misses nuance: irony, edge cases, cultural context. Workflow: AI extracts → PM validates a 10-20% sample → confidence in the rest grows. Without validation — false insights."
+  },
+  "pd-spec-generation": {
+    "title": "AI Spec Generation",
+    "what": "AI writes PRDs, user stories, technical specs from a rough idea + research input. From \"PM sits for 2 days writing a PRD\" — to \"PM iterates with AI for 2 hours, draft is ready\".",
+    "why": "PRD writing is a shipping bottleneck. PMs spend days formatting/structuring what they already know in their heads. AI handles the \"writing\" part, the PM focuses on content quality.",
+    "when": "When the team loses momentum between \"have an idea\" and \"PRD written\". When there is a documented PRD template. When rough notes / research are already on hand.",
+    "impact": "Time-to-PRD: 2 days → 4 hours (including iterations). Consistency: a single format for all specs. Quality: AI catches missing sections (success metrics, edge cases, etc.).",
+    "example": "Spec Generation Workflow:\n\n  Input for AI:\n  - Rough idea (3-5 sentences from PM)\n  - Research output (from pd-discovery)\n  - Existing PRD template + 2-3 high-quality examples\n        ↓\n  AI generates:\n  - Problem statement\n  - User stories with acceptance criteria\n  - Success metrics proposals\n  - Open questions\n  - Technical considerations (for engineering)\n        ↓\n  PM iterates: 3-5 rounds of edits\n        ↓\n  Output: ship-ready PRD\n\nMetric: time-to-spec, dev team feedback on PRD quality.",
+    "mistakes": "Doing AI-PRDs without research input. \"Write a PRD for feature X\" = generic stuff. Quality output requires quality input: research, examples, constraints. Garbage in = garbage out."
+  },
+  "pd-roadmap-intelligence": {
+    "title": "AI Roadmap Intelligence",
+    "what": "AI helps with roadmap prioritization: analyzing feedback patterns, competitor moves, customer requests, internal data → ranked priorities with reasoning. AI = \"second analyst\" in roadmap discussions.",
+    "why": "Roadmap prioritization is usually done \"by gut\" under stakeholder pressure. AI brings a structured framework: explicit weights, data-based scoring, consideration of alternatives.",
+    "when": "Quarterly planning. Before a roadmap review with executives. When \"everyone has their own opinion\" and a structured framework is needed for the decision.",
+    "impact": "Reactive prioritization: -60%. Stakeholder alignment: faster (data, not opinions). Roadmap thrashing: reduced (explicit criteria prevent frequent changes).",
+    "example": "Roadmap Prioritization Workflow:\n\n  Inputs:\n  - All product opportunities (backlog + new ideas)\n  - Customer feedback themes (from feedback-synthesis)\n  - Competitor analysis\n  - Internal metrics (revenue impact, retention)\n  - Strategic objectives (current quarter)\n        ↓\n  AI Scoring:\n  - Each opportunity rated on: impact, effort, strategic fit, risk\n  - Reasoning explicit for each\n  - Alternative orderings played out\n        ↓\n  PM + leadership: review AI ranking + override based on judgment\n        ↓\n  Output: prioritized roadmap with documented reasoning\n\nValue: next quarter you CAN explain \"why we chose this\".",
+    "mistakes": "Accepting AI roadmap as final. AI scoring is based on the data you gave — but it does not know board politics, executive priorities, or upcoming launches. AI = input into a decision, not the decision itself."
+  },
+  "pd-experimentation": {
+    "title": "AI Feature Experimentation",
+    "what": "AI support for A/B testing: hypothesis generation, variant design, statistical analysis interpretation, learnings synthesis. From \"ran A/B, forgot results\" — to \"structured experimentation engine\".",
+    "why": "Most teams run A/B tests poorly: weak hypotheses, no power analysis, results forgotten. AI structures this: forces explicit hypothesis, generates variant ideas, helps interpret results.",
+    "when": "When the team runs ≥3 experiments per quarter. When experiment outputs do not turn into product knowledge. When you need to scale experimentation across multiple teams.",
+    "impact": "Experiment velocity: +50%. Experiments with clear learnings: 50% → 90%. Knowledge retention: structured library of experiment outcomes.",
+    "example": "Experimentation Workflow:\n\n  1. Hypothesis Generation:\n     - PM inputs: \"hypothesis: shorter onboarding → higher activation\"\n     - AI critiques: \"specify metric, magnitude, timeframe, sample needed\"\n     - Result: \"If we cut onboarding from 5 to 2 steps, activation rate +15% over 4 weeks (n>1000)\"\n\n  2. Variant Design:\n     - AI generates 3-5 specific variant approaches\n     - Discusses pros/cons of each\n\n  3. Post-experiment Analysis:\n     - Input: results data\n     - AI: \"winner with X confidence. Caveats: ... Recommended follow-up: ...\"\n\n  4. Library:\n     - AI maintains experiment knowledge base\n     - Search: \"did we try X before?\"\n\nMetric: experiments per quarter, learnings library size.",
+    "mistakes": "Using AI for \"predict before run\". AI cannot predict the result of an A/B (if it could — an A/B would not be needed). AI is good at: hypothesis sharpening, variant ideation, post-analysis interpretation. Not predictive."
+  },
+  "pd-feedback-synthesis": {
+    "title": "AI Feedback Synthesis",
+    "what": "AI reads all user feedback (NPS comments, support tickets, reviews, sales notes) → structured insights with trends. From \"PM read ~50 comments\" — to \"AI processed 5000 and found patterns\".",
+    "why": "Customer feedback is fragmented across 5-10 sources. The PM physically cannot read everything. AI does aggregation + synthesis. Sentiment shifts visible before they show up in churn.",
+    "when": "When there are ≥3 feedback sources (NPS, support, reviews, sales calls, social). When the product team wants \"voice of customer\" systematic, not anecdotal.",
+    "impact": "Coverage: 5% of feedback is read → 100% is processed. Time-to-trend: 2 months → 2 weeks. Decision quality: data-backed instead of \"I remember someone complained\".",
+    "example": "**Feedback synthesis pipeline:**\n\n**1. Sources (weekly):**\n- NPS responses (quarterly × 1000+)\n- Support tickets with CSAT comments\n- App Store / G2 reviews\n- Sales call notes\n- Social mentions\n\n**2. AI processing:**\n- Clean + dedupe\n- Categorize (feature, UX, pricing, performance, ...)\n- Sentiment analysis\n- Theme extraction\n- Trend detection (week-over-week)\n\n**3. Weekly output:**\n- Top 5 themes (with magnitude + delta)\n- Quote samples for each\n- Critical issues to investigate\n\n**4. Distribution:**\n- Product team → decisions\n- Engineering → bug themes\n- Marketing → positioning themes\n\n**Metrics:** feedback coverage, time-to-action on trending issues.",
+    "mistakes": "Doing feedback synthesis in a vacuum. Output must flow into roadmap planning, not into a read-only report. Workflow: synthesis → product review → roadmap update → measure impact. Without the loop — polite theater."
+  },
+  "pd-product-analytics": {
+    "title": "AI Product Analytics",
+    "what": "AI reads product usage data (Amplitude, Mixpanel, GA) → writes insight reports with hypotheses \"why did this happen?\" and suggested investigations. From \"here is a dashboard\" — to \"here is what happened and what it means\".",
+    "why": "Product analytics tools show \"what happened\", but not \"why\". PM/analytics manager spends hours on formulating hypotheses. AI does this first-pass, the human verifies.",
+    "when": "Weekly product reviews. After every major release. When a metric is unexpected (growth or drop). When the team \"does not understand why\" something is happening.",
+    "impact": "Time-to-hypothesis: days → hours. Coverage: analytics-aware decisions grow from 30% to 70%+ of the team.",
+    "example": "Weekly Product Analytics Workflow:\n\n  Inputs:\n  - Top-line metrics (DAU, MAU, retention, activation)\n  - Feature usage (new + existing)\n  - User segments behavior\n  - Recent product releases\n        ↓\n  AI Analysis:\n  1. What changed (numbers + delta + significance)\n  2. Correlation: \"release X → metric Y +Z%\"\n  3. Anomaly detection (unusual segment behavior)\n  4. Hypotheses (ranked by likelihood)\n  5. Recommended investigations (queries to run, segments to look at)\n        ↓\n  Product team:\n  - Validates top hypotheses\n  - Decides actions\n  - Adds learnings to knowledge base\n\nMetric: % of metric changes with documented explanation.",
+    "mistakes": "Trusting AI causal claims. \"Release X caused metric Y +5%\" — that is correlation, not causation. AI recommends a hypothesis, the human must validate via proper analysis (cohort, A/B, before-after)."
+  },
+  "pd-team-workflow": {
+    "title": "AI Product Team Workflow",
+    "what": "Product team operating model with AI: shared research workspace, common spec templates, feedback synthesis pipeline, weekly AI office hours. From \"every PM with their own Claude\" — to a \"collaborative AI-powered product team\".",
+    "why": "Individual usage in product does not scale — research findings are lost between PMs, specs are inconsistent, knowledge is not shared. Team workflow creates a shared institutional memory.",
+    "when": "Product team ≥3 PMs use AI. When \"everyone has their own approach to specs\". When research findings are lost after launch. When a new PM \"does not know how we work\".",
+    "impact": "Team velocity: +30%. New PM onboarding: 6 weeks → 3 weeks (via shared knowledge). Decision quality: improves over time (institutional memory grows).",
+    "example": "Product Team Setup:\n\n1. Shared Claude Project \"Product Workspace\":\n   - All research transcripts indexed\n   - Past PRDs library\n   - Experiment learnings\n   - Customer feedback (categorized)\n\n2. [[node:cc-md|CLAUDE.md]]: writing conventions, PRD template, decision frameworks.\n\n3. Skills:\n   - research-synthesizer\n   - prd-drafter\n   - feedback-categorizer\n   - experiment-designer\n\n4. Weekly \"AI office hours\" 30 min:\n   - Best prompt discoveries\n   - Failed AI experiments (what is not working)\n   - Cross-team learning\n\n5. Quarterly knowledge curation:\n   - What to add to shared workspace\n   - What is outdated and to remove\n\nStage 3 sign: new PM writes a shipping-ready PRD by the end of the first month.",
+    "mistakes": "Doing team workflow without a librarian role. Shared workspace without maintainership = junk drawer in 6 months. Someone must curate: weekly review of new content, monthly cleanup of outdated."
+  },
+  "uc-ai-discovery-launch": {
+    "title": "Launch AI Discovery",
+    "what": "Full path from \"doing research by hand\" to \"AI-powered discovery pipeline\". Cross-layer path through 6 nodes: Foundation → Systems → Transformation.",
+    "why": "The most common product team request: \"we have tons of interviews / feedback / research, but synthesis is a bottleneck\". This UC solves it systematically via RAG + workflows + product practices.",
+    "when": "When the product team has ≥30 interviews or ≥100 feedback items without structured processing. When the discovery → ship cycle is slow. When there is buy-in from Head of Product.",
+    "impact": "Outcome: working AI-discovery pipeline in 2 weeks. Metrics: time-to-insight ≤2 hours per topic, research coverage 100% (vs 30% manually), structured theme extraction.",
+    "example": "Path (6 steps):\n\nWeek 1: Setup foundation.\n1. Foundation: prompting → how to formulate synthesis prompts\n2. Foundation: af-rag-basics → RAG basics for research repository\n3. Foundation: projects → create \"Discovery Workspace\" with research files\n\nWeek 1-2: Build pipeline.\n4. Systems: sys-context-passing → properly pass research context between steps\n5. Transformation: pd-discovery-research → concrete workflow with PM validation gates\n\nWeek 2: Extend & sustain.\n6. Transformation: pd-feedback-synthesis → extend to ongoing feedback (not just interviews)\n\nDay 1-3: Index existing research in the Project. Test synthesis on 5-10 interviews.\nDay 4-7: Refine prompts based on validation feedback. Document patterns.\nDay 8-14: Scale to the full research backlog. Train other PMs.\n\nStage transition: 1→2.",
+    "mistakes": "Doing a UC without structured research input. If interviews are scattered chaotically across Notion / Google Docs / Slack — AI cannot find them. Day 1 work = organize the research repository. This is 30% of UC time. Do not skip."
+  },
+  "uc-ai-transformation-roadmap": {
+    "title": "Enterprise AI Transformation Roadmap",
+    "what": "Full path from \"doing AI pilots ad-hoc\" to \"AI-native company-wide operations\". Cross-layer + cross-direction path: enterprise strategy → tactical roll-outs → org-wide change. 6-12 months of work.",
+    "why": "This is the highest-level UC in 105 Atlas — for CEO/CIO/Head of AI. Shows how a company systematically does AI transformation across ALL departments at once with governance + measurement.",
+    "when": "When the company commits to AI transformation strategically (not isolated pilots). When there is executive buy-in. When there is resource commitment ($M+ budget) for 12-24 months.",
+    "impact": "Outcome: company at Stage 3 AI-native operations in 12 months. Metrics: 4+ tactical directions running, $X ROI documented, governance in place, 80%+ team AI-proficient.",
+    "example": "Roadmap (12 months):\n\nQ1 (Foundation):\n1. Enterprise: en-transformation-strategy → write strategy doc\n2. Enterprise: en-coe → form CoE team (3-5 people)\n3. Enterprise: en-governance → governance framework\n4. Select first 2 tactical pilots: ai-native-customer-support OR ai-native-operations\n\nQ2 (Tactical Pilots):\n5. Launch tactical pilot #1 (highest ROI: usually Support tier-1)\n6. Launch tactical pilot #2 (most strategic: usually Product or Marketing)\n7. Enterprise: en-change-management → start change program\n8. Enterprise: en-talent-strategy → AI upskilling roll-out\n\nQ3 (Scale):\n9. Add tactical direction #3 (based on Q2 learnings)\n10. Enterprise: en-roi-measurement → measure first 6 months impact\n11. Enterprise: en-risk-management → formal risk register\n12. CoE → share best practices org-wide\n\nQ4 (Maturity):\n13. Add tactical direction #4 (full 4 directions running)\n14. Strategy refresh based on learnings\n15. Annual report to board: ROI, capabilities, risks\n\nStage transition: Stage 1→3 in 12 months (realistic).\nStage 4 — next 12-18 months.",
+    "mistakes": "Launching all 4 tactical directions in parallel in Q1. That is a recipe for chaos and burnout. Sequential: 1 in Q1, 2 in Q2, 3 in Q3, 4 in Q4. Each previous teaches the organization. Do not try \"AI everything overnight\"."
+  },
+  "uc-ai-rag-launch": {
+    "title": "Launch a RAG System",
+    "what": "Full path from \"AI does not know our documents\" to \"working RAG system with citations\". Technical cross-layer UC through 6 nodes: [[node:ai-fundamentals|AI Fundamentals]] → Systems → Configuration. Applicable in any Transformation direction.",
+    "why": "RAG is the most common production AI pattern. Each of the 5 Transformation directions (Operations/Marketing/Support/Product/Enterprise) uses RAG. This UC = technical foundation for most AI projects.",
+    "when": "When AI must work with specific knowledge (documents, KB, historical data). When the LLM \"does not know our facts\". When you need factual grounding with citations.",
+    "impact": "Outcome: working RAG pipeline in 2-3 weeks. Metrics: answer accuracy 30% (no RAG) → 85%+ (proper RAG), citation rate 100%, latency <500ms per query.",
+    "example": "Path (6 steps):\n\n1. Foundation: af-rag-basics → understand what RAG is and its components\n2. Foundation: af-embeddings → choose embedding model\n3. Foundation: af-vector-db → choose vector DB (pgvector / Pinecone / Weaviate)\n4. Systems: sys-rag-architecture → choose pattern (Advanced RAG minimum)\n5. Foundation: projects → setup workspace + document indexing\n6. Systems: sys-context-passing → properly pass retrieved context to LLM\n\nWeek 1: Decide stack + document structure.\nWeek 1-2: Index pilot data. Test retrieval quality.\nWeek 2-3: Build full pipeline. Add re-ranking. Measure.\n\nApplicable directions: ALL (Operations reporting, Marketing content, Support knowledge, Product docs, Enterprise compliance).",
+    "mistakes": "Doing Naive RAG in production. Naive (query → vector → top-K → LLM) = 50-60% accuracy. Production requires: re-ranking, hybrid search (keyword + semantic), chunk overlap, metadata filtering. Otherwise users see \"AI says wrong things\"."
+  },
+  "uc-ai-pilot-to-production": {
+    "title": "Moving an AI Pilot to Production",
+    "what": "Path from \"pilot works\" to \"AI in production with governance + monitoring\". Cross-layer UC: Systems quality + Enterprise governance/risk + Foundation safety. Solves the most common stall point of AI projects.",
+    "why": "The most common place where AI projects die: \"pilot worked, but scale-up stuck\". Reasons: no quality gates, no governance, no risk awareness. This UC provides a structured transition.",
+    "when": "When there is a successful AI pilot (>1 month of operation). When there is a decision \"production roll-out\". When customer data, real money, or brand-facing outputs are involved.",
+    "impact": "Outcome: production-ready AI system in 4-6 weeks. Metrics: 0 high-severity incidents in first 90 days, governance compliance documented, quality monitoring established.",
+    "example": "Path (7 steps):\n\n1. Foundation: b-safety → review safety considerations for production\n2. Systems: sys-quality-gates → add formal quality gates to the workflow\n3. Systems: sys-workflows-basics → document workflow architecture\n4. Foundation: prompting → freeze + version all prompts\n5. Enterprise: en-governance → governance review (data classification, vendor, DPA)\n6. Enterprise: en-risk-management → identify AI-specific risks + mitigations\n7. Transformation: relevant quality-monitoring node (cs-quality-monitoring as pattern)\n\nWeek 1: Audit the pilot. Identify gaps.\nWeek 2-3: Add quality gates + monitoring. Document everything.\nWeek 4: Governance review + approval.\nWeek 5-6: Gradual roll-out with monitoring. Iterate.\n\nStage transition: 1→2 for the specific use case.",
+    "mistakes": "Skipping the governance review. \"The pilot worked!\" — but production has accountability, audit, compliance the pilot did not have. Without review = incident waiting to happen. Governance takes 1-2 weeks, saves months."
+  },
+  "uc-ai-roi-estimation": {
+    "title": "Estimating AI Project ROI",
+    "what": "Framework for estimating ROI before launch and measuring after. Cross-layer UC: Enterprise ROI + analytics from all 4 tactical directions + Foundation data. Answers the executive question: \"show me the money\".",
+    "why": "AI projects often do not get budget because of \"unclear ROI\". This UC provides a structured approach: baseline → projection → measurement → iteration. Turns \"AI will help\" into \"AI will deliver $X over Y months\".",
+    "when": "Before a budget request for an AI initiative. Quarterly review of existing AI projects. After 3-6 months of AI in production (real ROI measurement). When prioritizing AI vs other investments.",
+    "impact": "Outcome: documented ROI framework + first measurement in 4 weeks. Metrics: budget approval rate, accuracy of projections (real vs projected ROI), quarterly ROI tracking.",
+    "example": "Path (6 steps):\n\n1. Enterprise: en-roi-measurement → core framework (cost vs value vs attribution)\n2. Foundation: sc-data → how to gather baseline data\n3. Foundation: sc-analysis → analysis approach\n4. Transformation: relevant analytics node (ops-reporting-automation for Operations or mk-performance-analytics for Marketing)\n5. Foundation: prompting → AI-assisted ROI calculations (for consistency)\n6. Cross-domain: link with other analytics (cs-support-analytics, pd-product-analytics for the full picture)\n\nWeek 1: Define cost categories + value categories for the specific initiative.\nWeek 2: Collect baseline data (60-90 days history if possible).\nWeek 3: Build ROI projection (best/expected/worst case).\nWeek 4: Setup measurement pipeline. Document assumptions.\n\nQuarterly: actual vs projected. Refine the model.",
+    "mistakes": "Counting only direct cost savings. AI brings: time savings + quality improvement + capability gains + risk reduction + future optionality. Holistic ROI = real picture. Without all 5 categories — ROI looks low, initiative cancelled prematurely."
+  },
+  "uc-ai-vendor-selection": {
+    "title": "AI Vendor and Stack Selection",
+    "what": "A structured approach to choosing AI tools: LLM provider, vector DB, monitoring, integration tools. Cross-layer UC: Enterprise governance/risk + Foundation pl-compare. Solves \"which Claude/GPT/Open Source?\".",
+    "why": "Bad vendor decisions = months of lost time + lock-in. Good decision-making = explicit criteria + structured evaluation. This UC gives the framework.",
+    "when": "Before a major AI initiative (>$50k investment). Annual technology review. When the existing vendor becomes unreliable. When scaling beyond a single team.",
+    "impact": "Outcome: documented vendor selection with reasoning in 2-3 weeks. Metrics: decision quality (look back in 6 months — was it the right call?), reduced vendor churn.",
+    "example": "Path (6 steps):\n\n1. Foundation: af-llm-basics → understand LLM model differences (size, architecture, training data)\n2. Foundation: pl-compare → [[node:pl-web-setup|Claude.ai]] vs Code vs API vs others\n3. Foundation: pl-api → API economics (cost per million tokens, rate limits)\n4. Enterprise: en-governance → governance requirements (DPA, data residency, audit)\n5. Enterprise: en-risk-management → vendor lock risk, fallback strategy\n6. Foundation: m-security → security review checklist\n\nProcess:\n  Week 1: Define use case + requirements. List criteria with weights.\n  Week 2: Shortlist 3-5 vendors. Test pilots with each.\n  Week 3: Score, negotiate, decide.\n\nFramework criteria:\n- Quality (model capability on our task)\n- Cost (per-token + projected total monthly)\n- Latency (p50/p99)\n- Security (DPA, encryption, audit logs)\n- Vendor stability (funding, traction, longevity)\n- Lock-in (data portability, API abstractability)\n- Support (responsive, technical depth)",
+    "mistakes": "Deciding based on a single benchmark. Benchmarks are biased and measure generic capabilities. Test on YOUR specific tasks. If 5 vendors → take 10 representative tasks → blind test → score. That is the real-world signal."
+  },
+  "uc-ai-multi-agent-system": {
+    "title": "Multi-Agent System Orchestration",
+    "what": "Path to building a multi-agent system: multiple specialized agents, coordination, context passing, error recovery. Advanced cross-layer UC for technical teams.",
+    "why": "Single-agent systems work up to a certain complexity. Beyond that: you need decomposition + specialization + coordination. Multi-agent — this is next-level architecture for AI workflows.",
+    "when": "When a single-agent system has reached its complexity limit. When the task has clear subtasks with different expertise. When parallelism is needed in AI processing. Advanced usage (after 6+ months of experience).",
+    "impact": "Outcome: working multi-agent system in 4-6 weeks. Metrics: task completion rate, latency vs single-agent, cost per completed workflow, debuggability score.",
+    "example": "Path (6 steps):\n\n1. Foundation: agents → understand agent fundamentals\n2. Foundation: ag-principles → agent design principles\n3. Foundation: cc-subagents → implement subagents in [[node:claude-code|Claude Code]] (if applicable)\n4. Foundation: ag-managed → Claude Managed Agents if using Claude\n5. Systems: sys-workflows-basics → workflow patterns for coordination\n6. Systems: sys-context-passing → critical for multi-agent: how context flows\n\nArchitecture patterns:\n  - Coordinator-Worker: one main agent delegates sub-agents specific tasks\n  - Debate: 2-3 agents argue, coordinator decides\n  - Reflection: agent + critic agent + revision agent\n  - Tool-using agent: agent + multiple tools (search, calc, code-exec)\n\nWeek 1-2: Decompose the problem. Design agent roles.\nWeek 3-4: Build agents individually. Test in isolation.\nWeek 5-6: Compose with orchestration. Iterate on coordination failures.\n\nKey: structured logging + replay debugging.",
+    "mistakes": "Jumping into multi-agent from nothing. If a single-agent feels limited — first improve prompts + tools + RAG. Multi-agent adds complexity quadratically: debugging, monitoring, cost, latency. Use ONLY when single-agent provably maxed out."
+  },
+  "uc-ai-design-research-launch": {
+    "title": "Launch AI Design Research",
+    "what": "Full path from \"we have a mountain of research material and no time to process it\" to \"AI-powered research pipeline for the design team\". Cross-layer path through 6 nodes.",
+    "why": "The most common design team request: \"we have tons of user research, but we cannot process it. Designers spend time on synthesis, not on actual design\". This UC solves it systematically.",
+    "when": "When there are ≥10 session recordings or interview transcripts. When design ops is unbalanced (lots of research input, little synthesis output). When there is buy-in from Head of Design.",
+    "impact": "Outcome: working research pipeline in 2 weeks. Metrics: time-to-insight 2 weeks→2 hours per round, research coverage 30%→100%, structured theme library.",
+    "example": "Path (6 steps):\n\nWeek 1: Foundation setup.\n1. Foundation: prompting → how to formulate synthesis prompts for research\n2. Foundation: af-rag-basics → research repository indexing\n3. Foundation: projects → create a \"Design Research\" Project with files\n\nWeek 1-2: Workflow build.\n4. Systems: sys-context-passing → passing research context between stages\n5. Transformation: ds-design-research → concrete synthesis workflow\n\nWeek 2: Team adoption.\n6. Transformation: pd-discovery-research → cross-link with PM workflow for shared insights\n\nDay 1-3: Index existing research (sessions, transcripts).\nDay 4-7: Test synthesis on 5 sessions. Designer validates → refine prompts.\nDay 8-14: Full pipeline + team training + first real research round.\n\nStage transition: 1→2.",
+    "mistakes": "Doing a UC without designer-PM alignment. Design research and Product research are separate in most companies. If the synthesis pipeline is only for designers, PMs duplicate the work. Sync with pd-discovery-research = synergy, not duplication."
+  },
+  "ec-pdp-gen": {
+    "title": "AI PDP Generation",
+    "what": "Automated generation of Product Detail Pages from raw data: AI creates SEO title, meta description, marketing body, and attribute tables from product specs, images, and a brand voice guide.\n\nInput: CSV with name, attributes, photos. Output: CMS-ready card in 3 languages.",
+    "why": "Catalog teams can't keep up with new products. 10k SKUs = 10k hours of manual copywriting. AI covers 80% of that work in 2-3 minutes per SKU at comparable quality — freeing copywriters for strategic work (brand guides, longreads, CRO copy).",
+    "when": "Catalog >500 SKUs and content team ≤5. Localization needed in 3+ languages. SEO metrics worse than competitors. Regular new assortment (>50 SKUs/month).",
+    "impact": "Time-to-publish: 4 hours → 5 minutes per SKU. Coverage (% of cards with full copy): 30% → 100%. SEO traffic: +25-40% over 3 months on new cards. Localization cost: −70%.",
+    "example": "Workflow:\n\n[CSV: name, attributes, image_url, category]\n  ↓\n[Step 1: extract product type + key attributes]\n  ↓\n[Step 2: SEO title (60 chars) + meta (160 chars)]\n  ↓\n[Step 3: marketing body (300-500 words) in brand voice]\n  ↓\n[Step 4: attribute table HTML]\n  ↓\n[Quality gate: human review OR auto-publish if score > 0.85]\n  ↓\n[Output: CMS draft]\n\nReal example: 500 SKUs → 500 drafts overnight. Editor validates 50 random ones → tunes brand voice prompt → next batch ships without edits.",
+    "mistakes": "Launching on the whole catalog at once — quality degrades on the long tail. Start with 50-100 SKUs + brand voice tuning.\n\nNo quality gate — the catalog gets cluttered with generic text that readers spot.\n\nNo voice localization — generic UK English in the Finnish market puts buyers off."
+  },
+  "ec-search-opt": {
+    "title": "AI Search Optimization",
+    "what": "Semantic search on embeddings: the user types \"warm jacket for winter\" → AI finds \"down jacket\" even if the title contains neither \"warm\" nor \"winter\".\n\nHybrid approach: keyword (exact matches) + semantic (by meaning) + reranking (Claude picks the best).",
+    "why": "Classic keyword search loses 20-40% of queries: synonyms, typos, the buyer's wording doesn't match the product name. Every \"no results\" is lost conversion.\n\nSemantic search closes the gap, but needs embeddings, a vector DB, and reranking — Claude is particularly strong at the final stage.",
+    "when": "On the site >20% of search sessions end in \"no results\". Long queries (>3 words) show low CTR. Catalog >5k SKUs across diverse categories. Multilingual site.",
+    "impact": "Search conversion: +20-40%. \"No results\" rate: 25% → 5%. Average time to click on a result: −30%. Bounce rate on the search result page: −15%.",
+    "example": "Architecture:\n\n[User query: \"jacket for minus 20\"]\n  ↓\n[Step 1: Embedding query → vector]\n  ↓\n[Step 2: Vector search in the product index → top-50 candidates]\n  ↓\n[Step 3: Keyword filter (category, price, availability)]\n  ↓\n[Step 4: Claude rerank: for each candidate — how well does it match the query? Returns top-10 with reasoning]\n  ↓\n[UI: products + explanation \"why these\"]\n\nReal: companies adding semantic search see +25% conversion from search traffic within 60 days.",
+    "mistakes": "Replacing keyword search entirely — you lose exact matches on SKUs and brand names. Hybrid only.\n\nIndexing only the title — you skip attributes, descriptions, reviews. Embeddings should be built from the full product context.\n\nIgnoring stale data. The vector DB must be re-indexed when the catalog changes, otherwise search shows out-of-stock products."
+  },
+  "ec-personalization": {
+    "title": "AI Personalization",
+    "what": "Adapting UX to the individual shopper: home page, recommendations, copy change based on browsing history, purchases, and segment.\n\nClaude here isn't a recommender system (that's a separate node) — it's a layer that interprets behaviour and makes personalization decisions.",
+    "why": "Generic UX gives generic conversion. Personalization adds 30-50% to e-commerce metrics — a long-known fact, but implementation used to be expensive (data team, ML engineers, MLOps).\n\nAI lowers the entry cost: a single Claude agent with access to profile + behaviour can decide \"show X or Y\" without dedicated ML infrastructure.",
+    "when": "Catalog >1k SKUs and >10k active shoppers. Sharply different segments (B2C and B2B on one site, or distinct price tiers). Visible retention gap between segments (meaning the experience doesn't fit some of them).",
+    "impact": "Conversion for returning users: +30-50%. AOV: +10-25%. 30-day retention: +15-30%. CTR on home page recommendations: +40-60%.",
+    "example": "Architecture:\n\n[User session start]\n  ↓\n[Load user context: profile + last 10 views + last 3 purchases + segment]\n  ↓\n[Claude: \"Which categories/collections are relevant? What tone of copy fits?\"]\n  ↓\n[Output: { hero_collection, recommended_categories[5], voice_attributes[3] }]\n  ↓\n[Render homepage with these parameters]\n\nReal: a SaaS-eCommerce raises retention by 22% within a quarter of basic personalization rollout.",
+    "mistakes": "Personalizing everything. First personalize 1-2 high-value surfaces (home, search results). If it works — expand.\n\nIgnoring cold start. For a new buyer there is no data — you need a fallback to segment or generic. Do not show \"hi, we don't know you\".\n\nNot measuring. Personalization without an A/B test = faith, not science. Compare with a control group."
+  },
+  "ec-merchandising": {
+    "title": "AI Merchandising",
+    "what": "AI curator for collections: \"summer collections for women 25-35\" are assembled automatically from catalog + sales + trends, not by a merchandiser by hand.\n\nClaude reads sales data + catalog metadata + seasonal signals → suggests 10-20 collections with rationale.",
+    "why": "Merchandising is a bottleneck in most stores: 1-2 merchandisers per 10k SKUs. Collections go stale, new products fail to make it into collections for weeks. AI takes care of the routine \"collect 20 products on a theme\", a human validates.\n\nSide effect: collections refresh daily instead of monthly — sales react to trends faster.",
+    "when": "Catalog >2k SKUs. Merchandising team ≤3. Visibly stale collections on the site (older than 2 weeks). Seasonal goods — every season needs a manual refresh.",
+    "impact": "Time-to-collection: 4 hours → 20 minutes. Active collections: 15 → 50+ simultaneously. Sales from curated collections: +30-50%. Reaction time to trends: weeks → days.",
+    "example": "Workflow:\n\n[Trigger: weekly merchandising review]\n  ↓\n[Input: catalog snapshot + last 30 days of sales + trending searches]\n  ↓\n[Claude: \"Which 10 collections will be relevant next week? For each — name, description, 15-25 products, rationale\"]\n  ↓\n[Human review: merchandiser validates in 10 minutes]\n  ↓\n[Publish to CMS]\n\nReal: instead of 5 collections refreshed monthly — 30 collections refreshed weekly.",
+    "mistakes": "Auto-publish without a human gate — AI may assemble a collection from out-of-stock or low-margin products.\n\nIgnoring business rules (minimum margin, exclusion rules). Without them AI optimizes \"by relevance\" and the business loses money.\n\nForgetting the baseline. Compare AI collections to manually curated ones to see the real uplift."
+  },
+  "ec-cro": {
+    "title": "AI Conversion Rate Optimization",
+    "what": "Claude as conversion analyst: generates hypotheses from data, proposes A/B variants of copy and UI, and after the test explains why a variant won or lost.\n\nDoes not replace the CRO specialist, but speeds up ideation and synthesis 5-10×.",
+    "why": "The main CRO bottleneck isn't running tests — it's hypothesis generation and result analysis. One hypothesis takes an hour of discussion, a post-mortem takes a day of analysis.\n\nClaude does both phases in minutes, leaving humans with validation and strategic decisions.",
+    "when": "Site with >10k visitors/month (statistical significance is feasible). A CRO function exists or at least 1 specialist. Conversion has plateaued for 3+ months. The team needs ideas, not tools.",
+    "impact": "Hypothesis throughput: 2-3 per week → 10-15. Time-to-postmortem: 2 days → 2 hours. Cumulative conversion uplift over a quarter: +15-25% (driven by more fast iterations).",
+    "example": "Workflow:\n\n[Input: current funnel data + competitors + reviews]\n  ↓\n[Claude: \"5 hypotheses for improving product page conversion with rationale\"]\n  ↓\n[CRO picks 1-2, formulates the test]\n  ↓\n[Claude: \"3 CTA copy variants + 3 hero-image briefs\"]\n  ↓\n[Run A/B test for 2 weeks]\n  ↓\n[Claude: \"Result analysis: variant B won on conversion, lost on AOV. Likely cause — X. What to test next — Y\"]\n\nReal: teams move from 1 test per month to 1 test per week at the same headcount.",
+    "mistakes": "Testing AI-generated variants without human review — they may contain factual errors about the product.\n\nTesting everything. AI generates plenty of ideas, but a valid CRO test = 1 variable over 2 weeks. Prioritization discipline = a more useful workflow than speed.\n\nReplacing the CRO specialist. AI = acceleration, not a replacement for a domain expert."
+  },
+  "ec-experimentation": {
+    "title": "AI Experimentation",
+    "what": "A systematic approach to experiments: AI generates a hypothesis backlog, helps in test design, monitors running tests, spots early signals, and analyses results.\n\nIntegrates with existing A/B tools (Optimizely, VWO, GrowthBook), does not replace them.",
+    "why": "Without AI, experimentation stalls at two points: ideation (where do hypotheses come from) and synthesis (what does the result mean). Between them the test itself uses tools you already have.\n\nAI closes both ends — hypothesis flow grows, the learning loop gets denser.",
+    "when": "The team already runs ≥4 tests per month. A data analyst exists (or you want to unblock through AI). Experimentation has become routine with no strategy — many tests, little learning.",
+    "impact": "Tests per quarter: +50-100% at the same headcount. Learning velocity: every test produces a structured insight rather than \"variant B kinda seems better\". A knowledge base of past tests accumulates automatically.",
+    "example": "Quarterly experimentation review:\n\n[Input: 30 tests run last quarter + results]\n  ↓\n[Claude: \"Which insights recur? Which hypothesis categories drove uplift? Where did we burn cycles?\"]\n  ↓\n[Output: structured retrospective + proposed experimentation roadmap for next quarter]\n\nReal: teams on this approach move from \"we test whatever comes to mind\" to \"we test by an impact × confidence priority matrix\".",
+    "mistakes": "Trusting AI early signals. A test must reach stat-sig — AI may \"see\" a confident pattern on a 50% sample and tempt you to stop early.\n\nNot documenting. AI is only useful if it has history. Without a structured archive of past tests every new test starts from scratch.\n\nForgetting confidence intervals. AI can give a narrow answer to a broad question — always look at uncertainty."
+  },
+  "ec-checkout-opt": {
+    "title": "AI Checkout Optimization",
+    "what": "AI reads funnel data → finds drop-off points → proposes hypotheses for why → generates variants for testing.\n\nCheckout specifics: every step is critical, expensive to redesign. AI helps prioritize what to change.",
+    "why": "Checkout is the most expensive part of the funnel to optimize (you risk breaking payments). Most teams fear touching it. AI lowers the risk through data-driven prioritization: you only change where drop-off is largest and the hypothesis is strongest.",
+    "when": "Checkout completion rate <70%. Mobile checkout visibly worse than desktop. Multi-step checkout (>3 pages). Regular support complaints about \"I can't pay\".",
+    "impact": "Checkout completion: +5-15 percentage points. Mobile gap (desktop − mobile): narrows by 50%. Time-to-find-friction: days → hours.",
+    "example": "Monthly checkout review:\n\n[Input: GA4 funnel data + heatmaps + support tickets about checkout]\n  ↓\n[Claude: \"Top-3 friction points, each with evidence: where people drop, what they ask support, what microcopy may be the cause\"]\n  ↓\n[Output: prioritized backlog with estimated impact]\n  ↓\n[Engineering takes the top-1 item, tests it, revisits it after 30 days]\n\nReal: teams find and fix 3-5 mid-impact friction points per quarter instead of the usual \"maybe we rewrite checkout once a year\".",
+    "mistakes": "Changing many steps at once — impossible to attribute impact. Only one change per test.\n\nIgnoring payment failures. AI reads GA4 but does not see payment provider errors. That data has to be brought in separately.\n\nNo segmentation. Mobile/desktop, new/returning, paid/organic visitors behave very differently. AI without segmentation gives an averaged (and therefore useless) picture."
+  },
+  "ec-recommendations": {
+    "title": "AI Recommendation Systems",
+    "what": "Personal recommendations on embeddings + history: \"you might like\", \"bought together\", \"next purchase\".\n\nClaude is used at two points: reranking (pick the best from a top-50 candidate set) and explanation (\"why this is recommended to you\").",
+    "why": "Recommendations are one of the highest-ROI AI cases in e-commerce: 20-35% of all revenue at large stores comes through recommendations. But classic approaches (collaborative filtering, market-basket analysis) require a data scientist and infrastructure.\n\nGenerative AI lowers the bar: embeddings + Claude reranking give 80% of the quality of classic systems at 20% of the complexity.",
+    "when": "Catalog >1k SKUs. Active users >5k/month. Repeat purchase rate >10% (there is data for personalization). Currently no recommendations in place — so there's a clear baseline for measurable uplift.",
+    "impact": "Revenue from recommendations: 0 → 15-25% of total. AOV: +10-20%. Cross-sell rate: +30-50%. CTR on recommendations: 3-8% (vs 0.5-1.5% on random).",
+    "example": "Architecture:\n\n[User views product X]\n  ↓\n[Embedding similarity: top-50 similar products]\n  ↓\n[User history filter: remove what was already bought/viewed]\n  ↓\n[Claude rerank: \"from these 50, which 6 are most relevant for this user specifically? Account for history + price + availability\"]\n  ↓\n[Render: 6 products + explanation for each (\"you viewed similar items in category Y\")]\n\nReal: companies adding explainability to recommendations see +15% CTR vs unexplained.",
+    "mistakes": "Only collaborative filtering on small data — runs into a \"cold start\" problem.\n\nNot filtering out-of-stock and low-margin — AI optimizes for clicks, the business loses money.\n\nNot measuring against random. Without an A/B baseline you don't know how much better AI is than \"random recommendations\"."
+  },
+  "ec-support": {
+    "title": "AI Commerce Support",
+    "what": "Claude as a tier-1 support agent for e-commerce: answers routine questions (order status, returns, shipping), escalates the hard cases to a human.\n\nIntegration with order management + knowledge base + escalation rules. A concrete application of [[node:cs-tier1|tier-1 automation]] in the commerce domain.",
+    "why": "In e-commerce 70-80% of support queries are routine: \"where is my order\", \"how do I return\", \"when will it arrive\". It's a workload on agents that delivers no value (no upsell, no relationship).\n\nAI closes those 70-80% instantly, agents only work on hard cases (disputed returns, B2B specifics, payment issues).",
+    "when": "Support team drowning in routine queries. Response time >2 hours on simple questions. >20% of queries are about order status. CSAT drops due to slow responses.",
+    "impact": "Tier-1 deflection rate: 60-80%. Response time on simple questions: 2 hours → instant. Agent capacity on complex cases: +200%. CSAT: +0.3-0.7 points.",
+    "example": "Architecture:\n\n[Customer query: \"where is my order #12345\"]\n  ↓\n[Claude: identifies intent = order_status]\n  ↓\n[Tool call: GET /orders/12345]\n  ↓\n[Response: \"Your order shipped on May 23, expected delivery May 25, tracking number X\"]\n\n[Customer query: \"I want to return an item, it's broken\"]\n  ↓\n[Claude: identifies intent = return_with_defect → escalation rule \"defect = human\"]\n  ↓\n[Escalate to agent with context: order details + customer history + photo upload prompt]\n\nReal: an e-commerce store cuts tier-1 ticket volume by 65% in 60 days.",
+    "mistakes": "Auto-escalating everything — no deflection, support team is not unloaded. Define clear escalation rules upfront.\n\nNot syncing the knowledge base. AI answers from old return policies → the real policy changed → complaints.\n\nIgnoring tone. Generic AI tone in support drives people away. Brand voice tuning is mandatory."
+  },
+  "ec-loyalty": {
+    "title": "AI Loyalty Systems",
+    "what": "Personal loyalty programs: AI analyses behaviour → identifies a segment → picks relevant offers (cashback %, exclusive products, early access).\n\nNot \"one program for everyone\" — an adaptive one tied to the customer lifecycle.",
+    "why": "Generic loyalty programs (buy 10 times = 10% off) give flat results. AI-driven loyalty matches offers to individual motivation: VIPs get exclusive access, churning customers get win-back offers, new ones get an onboarding bonus.\n\nROI rises at the same program spend.",
+    "when": "Active buyer base >5k. Repeat purchase rate >15% (there is something to grow). Current loyalty program at <5% redemption (means it isn't working). Team ready for segmented messaging.",
+    "impact": "Loyalty program engagement: 5% → 30-40%. Repeat purchase rate: +15-25%. CLV (customer lifetime value): +20-35%. Churn rate: −10-20%.",
+    "example": "Quarterly loyalty review:\n\n[Input: all customers + behaviour data + program history]\n  ↓\n[Claude: \"Segment the base into 5 groups: VIP, Active, Cooling, At-Risk, Churned. For each — what offer is optimal with rationale\"]\n  ↓\n[Output: program structure + messaging + estimated impact]\n  ↓\n[Marketing/Loyalty team validates, launches]\n  ↓\n[After 30 days: Claude analyses results, refines segmentation]\n\nReal: moving from a flat 10% loyalty to segmented loyalty gives +25% retention in 90 days.",
+    "mistakes": "Ignoring unit economics. Generous offers for VIPs can eat the margin. AI must respect business constraints.\n\nNot measuring. Without A/B segments vs control group you can't prove uplift.\n\nForgetting exit. AI is great at finding churn signals — use it for save campaigns too, not only for acquisition."
+  },
+  "ec-analytics": {
+    "title": "AI Commerce Analytics",
+    "what": "Claude as commerce analyst: reads GA4 + sales data + ad spend → writes insights with hypotheses and action items.\n\nReplaces \"here's a dashboard, figure it out\" with \"here's what happened this week and what to do\".",
+    "why": "Most e-commerce teams drown in data without actionable insights. An analyst is needed but expensive and slow. AI gives the first-pass analysis, the analyst validates and digs deeper.\n\nDecision velocity grows: instead of a weekly review with a 3-5 day delay, you get daily insights by morning.",
+    "when": "Sales >$100k/month. The team looks at metrics weekly but the action item rate is low. No dedicated analyst, or there is one but 80% of their time goes to reports, not analysis. Anomalies in data are spotted late.",
+    "impact": "Time-to-insight: 3-5 days → 1 day. Anomaly detection lag: weeks → 24 hours. Quality of weekly reviews: structured insights vs \"here are the numbers\".",
+    "example": "Daily commerce briefing:\n\n[Input: yesterday's GA4 + sales + ads spend + inventory]\n  ↓\n[Claude: \"Daily summary: revenue ±X% vs avg, top movers by category, anomalies, hypotheses for each, 3 action items for today\"]\n  ↓\n[Slack post in #commerce-daily at 9:00]\n  ↓\n[Team comments, refines, executes]\n\nReal: teams move from monthly \"what happened\" to daily \"what we are doing\" — a sharp rise in ownership at the team level.",
+    "mistakes": "Using AI as an attribution engine. AI does not know the real multi-touch attribution model. Use it for narrative, not for exact causation.\n\nIgnoring data quality. AI will produce confident insights on broken data. Check GA4 + sales reconciliation before automating.\n\nNot documenting. AI is good when it has history — without an archive of past insights every day starts from scratch."
+  },
+  "ec-pricing": {
+    "title": "AI Pricing Optimization",
+    "what": "AI helps with pricing decisions: analyses demand signals, competitor prices, cost structure, margin targets → recommends optimal prices and promotional triggers.\n\nNot automatic pricing (risk of catastrophic mistakes), but decision support for the merchandiser / pricing manager.",
+    "why": "Pricing is a high-ROI lever: a 1% pricing improvement yields 8-12% to profit for a typical e-commerce business. But classical pricing tools are expensive and need a data science team.\n\nClaude + structured data can cover 60-70% of that value at 20% of the cost — especially for teams without a dedicated pricing analyst.",
+    "when": "Catalog >500 SKUs. Margin varies >20% across categories. Competitors >5 in the main categories. Pricing decisions are manual and rare (a few times a year).",
+    "impact": "Gross margin: +1-3 percentage points. Pricing review frequency: quarterly → weekly. Time-to-promotion-decision: days → hours.",
+    "example": "Weekly pricing review:\n\n[Input: SKU-level sales last 30 days + competitor prices (scraped) + inventory levels + margin targets]\n  ↓\n[Claude: \"10 SKUs where price elasticity suggests a price hike is possible. 5 SKUs where competitors are 15%+ lower — recommend match or differentiate. 3 SKUs with inventory build-up — promotion needed with estimated impact\"]\n  ↓\n[Pricing manager validates, updates the system]\n\nReal: teams find and use 3-5 pricing opportunities a month instead of the usual 1-2 a quarter.",
+    "mistakes": "Auto-applying pricing changes. AI may miss a supplier contract (minimum price) or promo commitments. Human in the loop is mandatory.\n\nIgnoring elasticity differences. AI may recommend +5% on an elastic product — you lose more in volume than you gain in margin.\n\nNot validating competitor data. Scraping breaks. AI on bad data produces bad recommendations."
+  },
+  "ec-inventory": {
+    "title": "AI Inventory Intelligence",
+    "what": "AI helps with inventory decisions: demand forecasting, replenishment triggers, slow-mover detection, recommendations on dead stock clearance.\n\nCombines historical sales + seasonality + current signals (search queries, traffic to categories).",
+    "why": "Inventory management has two risks: overstock (cash trapped, eventual writedown) and stockout (lost revenue + customer satisfaction). Classical forecasting tools are heavy and need integration.\n\nAI offers a middle ground: structured analysis on existing data without heavy infrastructure.",
+    "when": "Catalog >1k SKUs. Regular stockouts on bestsellers OR dead stock buildup. Manual inventory review is rare (monthly or less). Forecast accuracy is low (>30% error on quarterly forecast).",
+    "impact": "Stockout rate on bestsellers: −50-70%. Dead stock: −30-50%. Inventory turn ratio: +20-40%. Cash tied in inventory: −15-25%.",
+    "example": "Weekly inventory briefing:\n\n[Input: SKU sales velocity + current stock levels + lead times + seasonal patterns]\n  ↓\n[Claude: \"Top-20 SKUs where stockout is likely in the next 14 days — restock needed. Top-10 slow movers >90 days — recommend clearance promo with estimated lift. Seasonal signals — spring is coming, raise inventory in category X\"]\n  ↓\n[Buying team validates, places PO]\n\nReal: teams on this approach cut stockouts on bestsellers by 60% in a quarter.",
+    "mistakes": "Trusting the forecast without human override. AI is good at pattern detection, bad at unprecedented events (viral post, competitor shutdown).\n\nIgnoring supplier constraints. AI optimizes for demand, but lead times and MOQ are real constraints.\n\nNot measuring forecast accuracy. Without a feedback loop AI does not improve. Every month — review where AI was wrong and why."
+  },
+  "ec-segmentation": {
+    "title": "AI Customer Segmentation",
+    "what": "AI discovers natural segments in the customer base: not \"men 25-35\" (demography), but behavioural (\"buy every 2 weeks, discount-sensitive, open email in the evening\").\n\nUsed as input for personalization, loyalty, marketing campaigns.",
+    "why": "Demographic segmentation is outdated — real behaviour rarely depends on gender/age. Behavioural segmentation used to need a data scientist + clustering algorithms.\n\nClaude + embeddings can find 5-8 meaningful behavioural segments in an hour of work, instead of a month-long ML project.",
+    "when": "Active customers >5k (data needed for signals). Generic marketing — everyone gets the same emails. Conversion rate varies sharply between cohorts without an understanding of why.",
+    "impact": "Email engagement: +50-100% (segmented vs blast). Campaign ROI: +30-60%. Marketing budget efficiency: same revenue at −20-30% spend.",
+    "example": "Quarterly segmentation refresh:\n\n[Input: all-customer feature vector — frequency, recency, AOV, categories, channel preferences, time-of-day patterns]\n  ↓\n[Embedding clustering: 6-8 natural groups]\n  ↓\n[Claude: \"For each group — characteristics, size, value, recommended engagement strategy\"]\n  ↓\n[Output: segment definitions + targeting recipes for marketing / loyalty / CRM]\n\nReal: moving from RFM segmentation to behavioural gives +40% engagement at the same email volume.",
+    "mistakes": "Creating too many segments. >10 segments = the team can't operationalize them. Sweet spot: 4-8 actionable groups.\n\nNot refreshing. Customer behaviour shifts. Quarterly refresh at minimum.\n\nIgnoring business meaningfulness. The algorithm may find a cluster, but if you can't explain \"who they are and what to offer them\" — it is noise, not signal."
+  },
+  "ec-team-workflow": {
+    "title": "Commerce Team AI Workflow",
+    "what": "How an e-commerce team orchestrates AI: a shared Project with brand voice, catalog templates, weekly AI office hours, knowledge sharing across roles (merchant, content, CRO, support, analyst).\n\nThis is a meta node: it ties the previous 14 into a team workflow.",
+    "why": "Individual AI usage in commerce does not scale — different roles use it their own way, voice drifts, insights are lost across functions. Team workflow = shared standard + shared library + cross-functional learning.\n\nA company that puts AI workflow at the team level pulls 6-12 months ahead of those that leave it at the individual level.",
+    "when": "Commerce team ≥4 people use AI. Inconsistent results between roles appear. New team members \"don't know how we work with AI\". Duplication of effort across functions is visible.",
+    "impact": "Team velocity: +30-50%. Onboarding time: 2 weeks → 3-5 days. Cross-functional learning: shared Project = the team sees each other's prompts and insights. Quality consistency: voice + templates + skills.",
+    "example": "Commerce Team Setup:\n\n1. Shared Claude Project \"Commerce Workspace\"\n2. Files: brand voice guide, product taxonomy, content templates, brand do/don't\n3. [[node:cc-md|CLAUDE.md]]: usage rules + naming conventions\n4. Reusable Skills: pdp-writer, search-rerank, weekly-briefing, customer-segment-analyzer\n5. Weekly \"AI office hours\", 30 min: team shares wins and fails\n6. Quarterly review: which AI workflows delivered ROI, which did not\n\nStage 3 sign: a new team member is productive in 5 days, cross-functional projects run on shared AI infrastructure.",
+    "mistakes": "A team with no ownership. \"Everyone uses AI\" = nobody owns the workflow. Every part (voice, templates, skills) must have an owner.\n\nIndividual heroes. The team's most productive AI user accumulates knowledge in their head — when they leave, knowledge leaves. Shared infrastructure from day one.\n\nIgnoring measurement. Without metrics \"AI usage\" = abstract. Track time saved, quality uplift, ROI on specific workflows."
+  },
+  "uc-ai-personalization-launch": {
+    "title": "Launch AI Personalization in the Store",
+    "what": "Full path from \"we have generic UX for everyone\" to \"working personalization for returning customers\". Cross-layer path through 7 nodes: Foundation → Systems → Transformation.\n\nReal scope: 6-8 weeks, 1-2 people on the team.",
+    "why": "Personalization is the highest-ROI e-commerce case (+30-50% conversion for returning users). But teams often delay it: \"we need ML infra\", \"we need data scientists\", \"expensive\". This UC shows how to start without an ML team.",
+    "when": "Catalog >1k SKUs. Active returning customers >5k. Team: senior engineer + product manager + analyst. Readiness to invest 6-8 weeks.",
+    "impact": "Outcome: working personalization on home page + email + recommendations in 2 months. Metrics: returning conversion +30-50%, AOV +10-25%, retention +15-30%.",
+    "example": "Path (7 steps):\n\nWeek 1-2: Foundation.\n1. Foundation: [[node:af-embeddings|af-embeddings]] — products as vectors\n2. Foundation: [[node:af-memory-systems|af-memory-systems]] — user context persistence\n3. Foundation: [[node:af-vector-db|af-vector-db]] — vector storage setup\n\nWeek 3-4: Systems.\n4. Systems: [[node:sys-rag-architecture|sys-rag-architecture]] — retrieval pattern for recommendations\n5. Systems: [[node:sys-context-passing|sys-context-passing]] — passing user context\n\nWeek 5-6: Transformation.\n6. Transformation: [[node:ec-personalization|ec-personalization]] — concrete workflow\n7. Transformation: [[node:ec-recommendations|ec-recommendations]] — recommendation engine\n\nWeek 7-8: Iterate.\nA/B test vs control group, refine prompts, expand surfaces.",
+    "mistakes": "Starting with email personalization. Looks cheaper, but returning users more often come directly to the site. Start with home page recommendations — bigger impact.\n\nNo cold start. For a new user there is no data — the fallback should be generic but not \"we don't know you\".\n\nNot measuring. Without A/B vs control you can't prove AI personalization is better than generic UX."
+  },
+  "uc-ai-product-search": {
+    "title": "Launch Semantic Catalog Search",
+    "what": "Full path from \"keyword search misses products\" to \"hybrid semantic search with reranking\". 6 steps, 4-6 weeks.\n\nKey point: don't throw away the existing keyword search — add a semantic layer on top of it.",
+    "why": "Search is a critical funnel point. 20-40% of conversion is lost to \"no results\". Every search conversion improvement translates directly into revenue.\n\nSemantic search is the most direct ROI case for embeddings in e-commerce.",
+    "when": "Catalog >5k SKUs. >15% of search sessions → \"no results\". Search bounce rate is high. Multilingual site OR many synonyms in categories.",
+    "impact": "No-results rate: 25% → 5%. Search conversion: +20-40%. Time-to-first-click on a result: −30%.",
+    "example": "Path (6 steps):\n\nWeek 1: Foundation.\n1. [[node:af-embeddings|af-embeddings]] — catalog as vectors\n2. [[node:af-vector-db|af-vector-db]] — vector index setup\n\nWeek 2-3: Systems.\n3. [[node:sys-rag-architecture|sys-rag-architecture]] — retrieval pattern\n4. [[node:prompting|prompting]] — reranking prompt design\n\nWeek 4-5: Transformation.\n5. [[node:ec-search-opt|ec-search-opt]] — hybrid search workflow\n6. [[node:ec-recommendations|ec-recommendations]] — bridge to recommendations\n\nWeek 6: Production rollout with A/B test.",
+    "mistakes": "Replacing keyword search entirely. For exact SKU matches keyword wins. Hybrid is mandatory.\n\nNot re-indexing. The catalog changes → the vector DB must update. Without a feedback loop search shows out-of-stock products.\n\nIgnoring query analytics. AI is good at searching but does not explain why people search for \"X\". Analysing search queries is a separate, important task."
+  },
+  "uc-ai-conversion-optimization": {
+    "title": "Launch an AI-Augmented CRO Program",
+    "what": "Full path from \"we run 1-2 tests a month with no structure\" to \"a structured AI-augmented CRO program\". 7 steps, 4-6 weeks of setup.\n\nThis isn't \"AI does CRO\" — it's \"AI accelerates the CRO team 5-10×\".",
+    "why": "CRO is a bottleneck on most teams: ideation is slow, post-mortems take days, the hypothesis backlog is never structured.\n\nAI closes both ends (ideation and synthesis) — the testing tool in between stays the same.",
+    "when": "Site >10k visitors/month (statistical significance is feasible). A CRO function exists (or at least 1 person doing it). Conversion plateau 3+ months. You need ideas, not tools.",
+    "impact": "Hypothesis throughput: 2-3/week → 10-15/week. Time-to-postmortem: 2 days → 2 hours. Cumulative conversion uplift per quarter: +15-25%.",
+    "example": "Path (7 steps):\n\nWeek 1: Foundation.\n1. [[node:prompting|prompting]] — how to formulate hypothesis prompts\n2. [[node:pr-iterate|pr-iterate]] — iterative refinement technique\n3. [[node:sc-analysis|sc-analysis]] — data analysis with Claude\n\nWeek 2-3: Systems.\n4. [[node:sys-evals-benchmarks|sys-evals-benchmarks]] — measuring AI suggestion quality\n5. [[node:sys-quality-gates|sys-quality-gates]] — human review process\n\nWeek 4-5: Transformation.\n6. [[node:ec-cro|ec-cro]] — concrete CRO workflow\n7. [[node:ec-experimentation|ec-experimentation]] — broader experimentation system\n\nWeek 6: Run 3 pilot tests, refine workflow.",
+    "mistakes": "Trusting AI-generated variants without human review — factual errors about the product.\n\nTesting everything. AI generates plenty, but a valid test = 1 variable over 2 weeks. Discipline > speed.\n\nReplacing the CRO specialist. AI = acceleration, not a replacement. Prioritization discipline stays with the human."
+  }
+}

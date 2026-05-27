@@ -19,10 +19,16 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
   useBodyScrollLock();
 
   useEffect(() => {
-    import(`../locales/${locale}/nodes.json`).then(m => {
+    // Узлы в 3 секциях — параллельная загрузка.
+    Promise.all([
+      import(`../locales/${locale}/nodes/core.json`).catch(() => ({ default: {} })),
+      import(`../locales/${locale}/nodes/sys.json`).catch(() => ({ default: {} })),
+      import(`../locales/${locale}/nodes/commerce.json`).catch(() => ({ default: {} })),
+    ]).then(([coreM, sysM, commerceM]) => {
+      const allNodes = { ...coreM.default, ...sysM.default, ...commerceM.default };
       const map = {};
       Object.entries(WHATS_NEW).forEach(([id]) => {
-        map[id] = m.default?.[id]?.title || m[id]?.title || id;
+        map[id] = allNodes[id]?.title || id;
       });
       setTitles(map);
     }).catch(() => {});
