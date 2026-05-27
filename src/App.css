@@ -526,12 +526,6 @@
   background: var(--bg);
   cursor: default;
 }
-
-/* Cosmos variant */
-.pg--cosmos {
-  background: #07070f;
-}
-
 /* Background mindmap layer */
 .pg__bg {
   position: absolute;
@@ -545,15 +539,6 @@
   width: 100%;
   height: 100%;
 }
-
-.pg__svg--full {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
 /* Nodes — white chips, no border */
 .pg__node {
   position: absolute;
@@ -617,17 +602,6 @@
 .pg--unlocking .pg__bg   { opacity: 0; transition: none; }
 .pg--unlocking .pg__blur { opacity: 0; transition: none; }
 .pg--unlocking .pg__glow { opacity: 0; transition: none; }
-
-/* Ignition: shooting star arrives */
-.pg__node--lit {
-  transform: translate(-50%, -50%) scale(1.45);
-  color: #fff;
-  text-shadow:
-    0 0 8px rgba(120,180,255,1),
-    0 0 20px rgba(100,160,255,0.7),
-    0 0 45px rgba(80,140,255,0.4);
-}
-
 /* White glow following cursor */
 .pg__glow {
   position: absolute;
@@ -805,44 +779,6 @@
 
 .pg__btn:hover  { background: #2a2a2a; }
 .pg__btn:active { transform: scale(0.98); }
-
-/* ── Cosmos card overrides ── */
-.pg__card--cosmos {
-  background: rgba(10, 10, 22, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-color: rgba(100, 140, 255, 0.18);
-  box-shadow: 0 0 0 1px rgba(100,140,255,0.08), 0 24px 64px rgba(0,0,0,0.6);
-}
-
-.pg__title--cosmos {
-  color: rgba(255,255,255,0.92);
-  font-size: 26px;
-  letter-spacing: -0.5px;
-}
-
-.pg__subtitle--cosmos {
-  color: rgba(255,255,255,0.38);
-}
-
-.pg__input--cosmos {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.9);
-}
-
-.pg__input--cosmos::placeholder { color: rgba(255,255,255,0.25); }
-
-.pg__input--cosmos:focus {
-  border-color: rgba(100,160,255,0.5);
-  box-shadow: 0 0 0 3px rgba(80,130,255,0.15);
-}
-
-.pg__btn--cosmos {
-  background: rgba(80,130,255,0.85);
-}
-.pg__btn--cosmos:hover { background: rgba(60,110,240,0.95); }
-
 :root {
   --bg: #f7f7f5;
   --bg-grid: #ececec;
@@ -1027,200 +963,13 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   flex: 1;
   min-height: 0;
   display: flex;
-}
-
-/* ============= Toolbar ============= */
-.toolbar {
-  flex: 0 0 auto;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  z-index: 5;
-}
-
-.toolbar__row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  flex-wrap: wrap;
-}
-
-.toolbar__row--top { padding-bottom: 6px; }
-.toolbar__row--filters {
-  padding-top: 0;
-  padding-bottom: 10px;
-  border-top: 1px dashed var(--border);
-  margin-top: 4px;
-  font-size: 13px;
-}
-
-.toolbar__brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 15px;
-}
-
-.toolbar__logo {
-  width: 32px; height: 32px;
-  display: grid; place-items: center;
-  background: var(--accent);
-  color: white;
-  border-radius: 10px;
-  font-size: 16px;
-  box-shadow: var(--shadow-sm);
-}
-
-.toolbar__title {
-  display: inline-flex;
-  align-items: center;
-  line-height: 1;
-}
-.toolbar__title strong { font-size: 16px; letter-spacing: -0.01em; }
-
-/* Кнопка-иконка поиска (по умолчанию вместо input) */
-.toolbar__search-toggle {
-  position: relative;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-  color: var(--text-muted);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background .15s ease, color .15s ease, border-color .15s ease;
-}
-.toolbar__search-toggle:hover {
-  background: var(--surface);
-  color: var(--text);
-  border-color: var(--border-strong);
-}
-.toolbar__search-toggle:focus-visible {
-  outline: 2px solid var(--line);
-  outline-offset: 2px;
-}
-.toolbar__search-toggle.has-query {
+}.toolbar__search-toggle.has-query {
   border-color: var(--line);
   color: var(--line);
-}
-.toolbar__search-dot {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 2px solid var(--surface);
-  box-sizing: content-box;
-}
-
-.toolbar__search {
-  position: relative;
-  flex: 1;
-  min-width: 220px;
-  max-width: 460px;
-  display: flex;
-  align-items: center;
-  animation: toolbar-search-expand .18s cubic-bezier(0.16, 1, 0.3, 1);
-}
-@keyframes toolbar-search-expand {
+}@keyframes toolbar-search-expand {
   from { transform: scaleX(0.85); opacity: 0; transform-origin: left center; }
   to   { transform: scaleX(1);    opacity: 1; transform-origin: left center; }
-}
-.toolbar__search input {
-  width: 100%;
-  padding: 9px 36px 9px 36px;
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-  border-radius: var(--radius-pill);
-  font-size: 14px;
-  color: var(--text);
-  transition: border-color .15s, background .15s, box-shadow .15s;
-  outline: none;
-}
-.toolbar__search input:focus {
-  border-color: var(--line);
-  background: var(--surface);
-  box-shadow: 0 0 0 3px rgba(47, 111, 234, 0.15);
-}
-.toolbar__search-icon {
-  position: absolute;
-  left: 12px;
-  font-size: 13px;
-  pointer-events: none;
-  color: var(--text-muted);
-}
-.toolbar__search-clear {
-  position: absolute;
-  right: 8px;
-  width: 22px; height: 22px;
-  border: none;
-  background: var(--surface-3);
-  border-radius: 50%;
-  color: var(--text-muted);
-  font-size: 16px;
-  line-height: 1;
-}
-
-.toolbar__zoom {
-  display: flex;
-  align-items: center;
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-  border-radius: var(--radius-pill);
-  padding: 2px;
-}
-.toolbar__zoom button {
-  width: 30px; height: 28px;
-  border: none;
-  background: transparent;
-  border-radius: var(--radius-pill);
-  font-size: 18px;
-  color: var(--text);
-  font-weight: 500;
-}
-.toolbar__zoom button:hover { background: var(--surface); }
-.toolbar__zoom-value {
-  font-size: 12px;
-  color: var(--text-muted);
-  min-width: 42px;
-  text-align: center;
-}
-
-.toolbar__actions {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.toolbar__actions button {
-  padding: 7px 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: var(--radius-pill);
-  font-size: 13px;
-  color: var(--text);
-  transition: border-color .15s, background .15s;
-}
-.toolbar__actions button:hover {
-  background: var(--surface-2);
-  border-color: var(--border-strong);
-}
-
-.toolbar__filters-label {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-right: 4px;
-}
-.toolbar__filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.chip {
+}.chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -2909,65 +2658,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: var(--text-muted);
   font-weight: 600;
 }
-
-/* Streak row — улучшенный вид */
-.profile-panel__streak-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.profile-panel__streak-card {
-  flex: 1;
-  min-width: 72px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 12px 8px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  position: relative;
-}
-.profile-panel__streak-val {
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--accent);
-}
-.profile-panel__streak-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  text-align: center;
-  line-height: 1.3;
-}
-.profile-panel__streak-fire {
-  position: absolute;
-  top: 4px;
-  right: 6px;
-  font-size: 13px;
-}
-.profile-panel__streak-card--sync {
-  background: rgba(34,197,94,.07);
-  border-color: rgba(34,197,94,.2);
-  color: #16a34a;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  font-size: 11px;
-  font-weight: 500;
-  min-width: 120px;
-}
-.profile-panel__loading {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--text-muted);
-  padding: 8px 0;
-}
-
 /* Email под именем */
 .profile-panel__email {
   font-size: 11px;
@@ -3052,12 +2742,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   height: 100%;
   background: var(--accent);
   transition: width .3s ease;
-}
-.profile-panel__progress-note {
-  font-size: 11.5px;
-  color: var(--text-muted);
-}
-.profile-panel__welcome-link {
+}.profile-panel__welcome-link {
   margin-top: 8px;
   display: inline-flex;
   align-items: center;
@@ -4637,80 +4322,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 10px;
   padding: 12px 16px 16px;
-}
-
-.prompt-card {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 12px;
-  transition: border-color .15s;
-}
-.prompt-card:hover { border-color: var(--border-strong); }
-.prompt-card.is-open { background: var(--surface); border-color: var(--border-strong); }
-
-.prompt-card__head {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-.prompt-card__icon {
-  width: 30px; height: 30px;
-  display: grid; place-items: center;
-  border-radius: 8px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 14px;
-  flex: 0 0 auto;
-}
-.prompt-card__meta h4 {
-  margin: 0;
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-}
-.prompt-card__meta p {
-  margin: 2px 0 0;
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-.prompt-card__text {
-  margin: 0;
-  background: #1c1c1c;
-  color: #e7e7e3;
-  padding: 10px;
-  border-radius: 8px;
-  font-family: 'SF Mono', Menlo, Consolas, monospace;
-  font-size: 11.5px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  max-height: 180px;
-  overflow-y: auto;
-}
-
-.prompt-card__actions {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-top: auto;
-}
-.prompt-card__toggle {
-  flex: 1;
-  background: var(--surface-3);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 500;
-  padding: 6px 10px;
-  border-radius: var(--radius-pill);
-}
-.prompt-card__toggle:hover { background: var(--surface); }
-
+}.prompt-card.is-open { background: var(--surface); border-color: var(--border-strong); }
 /* ============= Responsive ============= */
 @media (max-width: 980px) {
   .detail {
@@ -4783,27 +4395,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: #059669;
   border-color: #a7f3d0;
 }
-
-/* ============= Toolbar — courses button ============= */
-.toolbar__courses {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 12px !important;
-  background: linear-gradient(135deg, #1f1f1f, #2a2a2a) !important;
-  color: white !important;
-  border-color: #1f1f1f !important;
-}
-.toolbar__courses:hover { background: linear-gradient(135deg, #2a2a2a, #353535) !important; }
-.toolbar__courses-count {
-  background: rgba(255,255,255,0.15);
-  padding: 2px 8px;
-  border-radius: var(--radius-pill);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
 /* ============= Detail panel — tutorial CTA ============= */
 .detail__tutorial-cta {
   display: flex;
@@ -5814,13 +5405,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   align-items: center;
   justify-content: center;
 }
-
-.toolbar__courses {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .detail__tutorial-cta {
   display: flex;
   align-items: center;
@@ -5910,36 +5494,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   align-items: center;
   gap: 8px;
 }
-
-/* ============================================================
-   Prompt card: expand-to-fullscreen button
-   ============================================================ */
-.prompt-card__meta { flex: 1; min-width: 0; }
-
-.prompt-card__expand {
-  flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 8px;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: background .15s ease, color .15s ease, border-color .15s ease;
-}
-.prompt-card__expand:hover {
-  background: var(--surface-3);
-  color: var(--text);
-  border-color: var(--border-strong);
-}
-.prompt-card__expand:focus-visible {
-  outline: 2px solid var(--line);
-  outline-offset: 2px;
-}
-
 /* ============================================================
    Prompt modal (fullscreen prompt reader)
    ============================================================ */
@@ -6102,33 +5656,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   .prompt-modal__footer .btn { width: 100%; }
   .prompt-modal__actions { flex-direction: column; width: 100%; }
   .prompt-modal__hint { justify-content: center; }
-}
-
-/* ============================================================
-   Toolbar: library button
-   ============================================================ */
-.toolbar__library {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  font-size: 13px;
-  cursor: pointer;
-  transition: background .15s ease, border-color .15s ease;
-}
-.toolbar__library:hover {
-  background: var(--surface-3);
-  border-color: var(--border-strong);
-}
-.toolbar__library:focus-visible {
-  outline: 2px solid var(--line);
-  outline-offset: 2px;
-}
-@media (max-width: 720px) {
+}@media (max-width: 720px) {
   .toolbar__library span { display: none; }
   .toolbar__library { padding: 8px 10px; }
 }
@@ -8172,93 +7700,13 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .welcome-card--lesson .welcome-card__close {
   top: 10px;
   right: 10px;
-}
-.welcome-lesson__head {
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  align-items: start;
-  gap: 14px;
-  margin-bottom: 14px;
-}
-.welcome-lesson__head .welcome-card__icon {
+}.welcome-lesson__head .welcome-card__icon {
   width: 44px;
   height: 44px;
 }
 .welcome-lesson__head .welcome-card__kicker {
   margin-bottom: 4px;
 }
-.welcome-lesson__greeting {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.005em;
-  line-height: 1.4;
-}
-
-.welcome-lesson__block {
-  margin: 16px 0 0;
-}
-.welcome-lesson__block h4 {
-  margin: 0 0 6px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--text);
-}
-.welcome-lesson__block p {
-  margin: 0;
-  font-size: 13.5px;
-  color: var(--text);
-  line-height: 1.55;
-}
-.welcome-lesson__steps {
-  margin: 6px 0 0;
-  padding-left: 20px;
-  font-size: 13.5px;
-  color: var(--text);
-  line-height: 1.55;
-}
-.welcome-lesson__steps li { margin-bottom: 4px; }
-.welcome-lesson__steps li:last-child { margin-bottom: 0; }
-
-.welcome-lesson__listTitle {
-  margin: 10px 0 4px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-}
-.welcome-lesson__bullets {
-  margin: 0 0 10px;
-  padding-left: 20px;
-  font-size: 13.5px;
-  color: var(--text);
-  line-height: 1.5;
-}
-.welcome-lesson__bullets li { margin-bottom: 3px; }
-.welcome-lesson__bullets li:last-child { margin-bottom: 0; }
-
-.welcome-lesson__note {
-  margin: 14px 0 0;
-  padding: 10px 12px;
-  background: var(--surface-2);
-  border-radius: 8px;
-  font-size: 12.5px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-.welcome-lesson__note--accent {
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  color: var(--text);
-  border-left: 3px solid var(--accent);
-}
-
-.welcome-lesson__actions {
-  margin-top: 18px;
-  flex-wrap: wrap;
-}
-
 /* Mobile / небольшие экраны — стек, без занятия топа фильтров */
 @media (max-width: 720px) {
   .welcome-card {
@@ -8800,7 +8248,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 
 /* Mobile: пилюля над BottomSheet, на всю ширину */
-.minimized-pill--mobile,
 @media (max-width: 600px) {
   .minimized-pill {
     top: auto;

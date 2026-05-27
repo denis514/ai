@@ -1,13 +1,13 @@
 # Performance Audit — 2026-05-27
 
-<!-- metrics: {"initialJsRaw":348.35,"initialJsGzip":102.31,"cssGzip":30.89,"vendorTotalGzip":117.83,"nodesLocaleMaxGzip":102.02,"tutorialsLocaleMaxGzip":0} -->
+<!-- metrics: {"initialJsRaw":348.35,"initialJsGzip":102.31,"cssGzip":29.660000000000004,"vendorTotalGzip":117.83,"nodesLocaleMaxGzip":102.02,"tutorialsLocaleMaxGzip":0} -->
 
 ## Bundle Status
 
 | Metric | Size (gzip) | Threshold (OK / Warn) | Status | Δ vs prev |
 |--------|------------|----------------------|--------|-----------|
 | Initial JS | 102.3 KB | 120 / 180 KB | ✅ OK | — |
-| CSS total | 30.9 KB | 25 / 40 KB | 🟡 Warning | — |
+| CSS total | 29.7 KB | 25 / 40 KB | 🟡 Warning | — |
 | Vendor total | 117.8 KB | 130 / 180 KB | ✅ OK | — |
 | Nodes (max locale) | 102.0 KB | 130 / 180 KB | ✅ OK | — |
 | Tutorials (max locale) | 0.0 KB | 100 / 150 KB | ✅ OK | — |
@@ -21,11 +21,11 @@
 | core | js | 220.9 | 81.1 | nodes-locale |
 | core | js | 219.8 | 102.0 | nodes-locale |
 | vendor-supabase | js | 207.1 | 53.5 | vendor |
-| BuilderApp | js | 187.4 | 58.9 | other |
-| index | css | 159.6 | 24.9 | css |
+| BuilderApp-Cm | js | 187.4 | 58.9 | other |
 | sys | js | 152.6 | 69.3 | nodes-locale |
 | sys | js | 152.0 | 58.1 | nodes-locale |
 | sys | js | 150.7 | 60.9 | nodes-locale |
+| index | css | 150.5 | 23.7 | css |
 | everyone | js | 144.1 | 52.5 | other |
 | vendor-react | js | 141.8 | 45.5 | vendor |
 | everyone | js | 140.3 | 48.9 | other |
@@ -46,7 +46,7 @@
 | prompt-library | js | 20.8 | 10.2 | library |
 | prompt-library | js | 20.7 | 8.1 | library |
 | TutorialModal | js | 14.4 | 4.3 | other |
-| PromptLibraryModal-DSgn | js | 7.3 | 2.5 | other |
+| PromptLibraryModal | js | 7.3 | 2.5 | other |
 | content-en | js | 0.8 | 0.5 | other |
 | content-ru | js | 0.8 | 0.5 | other |
 | content-fi | js | 0.8 | 0.5 | other |

@@ -52,18 +52,18 @@ const allSource = sourceFiles.map(f => readFileSync(f, 'utf8')).join('\n');
 const used = new Set();
 const unused = new Set();
 
-for (const cls of cssClasses) {
-  // Static usage patterns:
-  //   className="cls"
-  //   className="prefix cls suffix"
-  //   className={`...${cls}...`}  (template literal — fragile match)
-  //   class="cls"
-  //   .cls (CSS selector self-reference — exclude)
-  const tokenRe = new RegExp(`["'\`\\s]${escape(cls)}["'\`\\s]`, 'g');
-  // Also possible: class names referenced indirectly via Hugeicons names — those aren't here.
+// Build a JS-source-only blob (exclude CSS to avoid matching selector definitions).
+const jsSource = sourceFiles
+  .filter(f => /\.(jsx|js|html)$/.test(f))
+  .map(f => readFileSync(f, 'utf8'))
+  .join('\n');
 
-  // Exclude self-references in CSS by stripping CSS content from search
-  if (tokenRe.test(allSource)) {
+for (const cls of cssClasses) {
+  // CSS class name regex: [A-Za-z0-9_-]+
+  // A class is REFERENCED in JS if it appears surrounded by chars NOT in that set.
+  // Covers: "cls", 'cls', `cls`, ` cls`, `${...}cls`, `cls${...}` (template literals).
+  const re = new RegExp(`(^|[^A-Za-z0-9_-])${escape(cls)}([^A-Za-z0-9_-]|$)`);
+  if (re.test(jsSource)) {
     used.add(cls);
   } else {
     unused.add(cls);
