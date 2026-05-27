@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import React, { useCallback, useMemo, useRef, useState, useEffect, Suspense, lazy } from 'react';
 import { mindmapData, CATEGORIES } from './data/mindmapData.js';
 import { tutorials, tutorialIds, tutorialByNodeId } from './data/tutorials.js';
 import CanvasHeader from './components/CanvasHeader.jsx';
@@ -45,6 +45,10 @@ import UpdateBanner from './components/UpdateBanner.jsx';
 import { useVersionCheck } from './hooks/useVersionCheck.js';
 import { syncTutorialProgress, syncBookmarks, syncNodeProgress } from './services/syncService.js';
 import './App.css';
+
+// Agent Builder — lazy loaded. Не affects main bundle.
+// См. docs/agent-builder/ для полной спецификации.
+const BuilderApp = lazy(() => import('./builder/BuilderApp.jsx'));
 
 const GA_ID = 'G-GLRHYG2JVK';
 
@@ -1068,10 +1072,59 @@ export default function App() {
 
   return (
     <>
-      <AppInner />
+      <AppRouter />
       {consent === null && (
         <CookieBanner onAccept={handleAccept} onDecline={handleDecline} />
       )}
     </>
+  );
+}
+
+/**
+ * AppRouter — top-level router который решает что рендерить:
+ *  • route.type === 'builder' → BuilderApp (lazy-loaded из src/builder/)
+ *  • иначе → AppInner (основной Atlas)
+ *
+ * Изолирует Builder от main Atlas component — hooks AppInner не вызываются,
+ * когда пользователь в Builder. И наоборот: при возврате на Atlas,
+ * BuilderApp полностью unmount.
+ *
+ * Builder code загружается через React.lazy() — не affects main bundle index.js.
+ * См. docs/agent-builder/02-architecture.md.
+ */
+function AppRouter() {
+  const [route] = useHashRoute();
+
+  if (route?.type === 'builder') {
+    return (
+      <Suspense fallback={<BuilderSuspenseFallback />}>
+        <BuilderApp />
+      </Suspense>
+    );
+  }
+
+  return <AppInner />;
+}
+
+/**
+ * BuilderSuspenseFallback — простой loader пока React Flow chunk грузится.
+ * Inline-rendered, без зависимостей от Atlas компонентов.
+ */
+function BuilderSuspenseFallback() {
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'var(--bg)',
+        color: 'var(--text-soft)',
+        fontSize: 14,
+      }}
+    >
+      Loading Agent Builder…
+    </div>
   );
 }

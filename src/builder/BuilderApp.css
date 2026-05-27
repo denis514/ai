@@ -1,0 +1,169 @@
+/*
+ * BuilderApp.css — scoped стили под .builder-app namespace.
+ *
+ * НЕ влияет на Atlas (все selectors prefixed с .builder-app).
+ * Inherits CSS variables из основного App.css (themes work automatically).
+ *
+ * Phase B-1 Day 1-2: минимальные стили для placeholder + canvas.
+ */
+
+.builder-app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  overflow: hidden;
+}
+
+/* ────────────────────────────────────────────────── */
+/* Header                                             */
+/* ────────────────────────────────────────────────── */
+
+.builder-app .builder-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.builder-app .builder-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.builder-app .builder-header__back:hover {
+  background: var(--surface-soft);
+  border-color: var(--text-soft);
+}
+
+.builder-app .builder-header__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.builder-app .builder-header__beta {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent, #2563eb) 12%, transparent);
+  color: var(--accent, #2563eb);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.builder-app .builder-header__actions {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+}
+
+/* ────────────────────────────────────────────────── */
+/* Main canvas area                                   */
+/* ────────────────────────────────────────────────── */
+
+.builder-app .builder-main {
+  flex: 1 1 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.builder-app .builder-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* ────────────────────────────────────────────────── */
+/* Status hint (overlay)                              */
+/* ────────────────────────────────────────────────── */
+
+.builder-app .builder-status-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-soft);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+/* ────────────────────────────────────────────────── */
+/* React Flow theme integration                       */
+/* ────────────────────────────────────────────────── */
+
+.builder-app .react-flow {
+  background: transparent;
+}
+
+.builder-app .react-flow__controls {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.builder-app .react-flow__controls-button {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.builder-app .react-flow__controls-button:hover {
+  background: var(--surface-soft);
+}
+
+.builder-app .react-flow__controls-button svg {
+  fill: currentColor;
+}
+
+.builder-app .react-flow__minimap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.builder-app .react-flow__background {
+  background: var(--bg);
+}
+
+/* ────────────────────────────────────────────────── */
+/* Dark theme refinements                             */
+/* ────────────────────────────────────────────────── */
+
+:root[data-theme="dark"] .builder-app .builder-status-hint {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+}
+
+:root[data-theme="dark"] .builder-app .react-flow__background {
+  opacity: 0.5;
+}
