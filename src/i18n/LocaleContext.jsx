@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { LOCALES, DEFAULT_LOCALE, FALLBACK_LOCALE, STORAGE_KEY, isLocale } from './config.js';
 import { t as tFn } from './t.js';
-import { loadLocaleContent } from './strings.js';
+import { loadLocaleContent, loadNodeSection, subscribeToContentChanges } from './strings.js';
 
 const LocaleContext = createContext({ locale: DEFAULT_LOCALE, setLocale: () => {} });
 
@@ -154,9 +154,26 @@ export function LocaleProvider({ children }) {
       ? [locale]
       : [locale, FALLBACK_LOCALE];
     Promise.all(locales.map(loadLocaleContent))
-      .then(() => setContentVersion(v => v + 1))
+      .then(() => {
+        setContentVersion(v => v + 1);
+        // Path C — после критичного core грузим вторичные секции в фоне.
+        // First-paint не блокируется, но titles сразу доступны к моменту
+        // когда user expand'ит sys-* / commerce-* ветки или открывает Cmd+K.
+        // Если getNode() обратится к узлу из ещё не загруженной секции —
+        // он триггерит load сам, эта pre-fetch только ускоряет happy-path.
+        for (const loc of locales) {
+          loadNodeSection(loc, 'sys').catch(() => {});
+          loadNodeSection(loc, 'commerce').catch(() => {});
+        }
+      })
       .catch(() => {}); // сеть недоступна — работаем с тем что есть
   }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Subscribe для lazy-section дозагрузок (sys, commerce). При дозагрузке
+  // strings.js notify'ит — бампаем contentVersion, потребители ре-рендерятся.
+  useEffect(() => {
+    return subscribeToContentChanges(() => setContentVersion(v => v + 1));
+  }, []);
 
   // Sync locale при смене hash (ссылки с #/fi/...)
   useEffect(() => {

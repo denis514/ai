@@ -34,12 +34,75 @@ export const STRINGS = {
 // ─── Lazy content loading ─────────────────────────────────────────────────────
 
 const _loaded = new Set();
+// Per-locale Set of loaded node-sections (sys, commerce).
+// core загружается всегда вместе с loadLocaleContent().
+const _loadedSections = new Map();
+// Subscribers для notify когда секция дозагружена — UI re-renders.
+const _subscribers = new Set();
 
 const CONTENT_LOADERS = {
   en: () => import('./content-en.js'),
   ru: () => import('./content-ru.js'),
   fi: () => import('./content-fi.js'),
 };
+
+/**
+ * Маршрутизатор id → section. Core грузится eager, остальные lazy.
+ */
+export function getNodeSection(id) {
+  if (typeof id !== 'string') return 'core';
+  if (id.startsWith('sys-')) return 'sys';
+  if (id.startsWith('ec-') || id.startsWith('uc-') || id.startsWith('cs-')
+      || id.startsWith('mk-') || id.startsWith('pd-')) return 'commerce';
+  return 'core';
+}
+
+/** Подписка на изменения контента (lazy-load дозагрузил секцию). */
+export function subscribeToContentChanges(fn) {
+  _subscribers.add(fn);
+  return () => _subscribers.delete(fn);
+}
+function notifyChange() {
+  _subscribers.forEach(fn => { try { fn(); } catch {} });
+}
+
+/**
+ * Lazy-load одной node-секции (sys или commerce). Идемпотентно.
+ * Триггерится автоматически при первом обращении к id из несреднной секции
+ * через getNode() helper, либо явно (например CommandPalette при открытии
+ * грузит все секции для search index).
+ */
+export async function loadNodeSection(locale, section) {
+  if (section === 'core') return; // core уже в STRINGS после loadLocaleContent
+  const loaded = _loadedSections.get(locale) ?? new Set();
+  if (loaded.has(section)) return;
+  loaded.add(section); // dedupe concurrent calls
+  _loadedSections.set(locale, loaded);
+  try {
+    const mod = await CONTENT_LOADERS[locale]();
+    const data = await mod.loadNodeSection(section);
+    STRINGS[locale].nodes = { ...STRINGS[locale].nodes, ...data };
+    notifyChange();
+  } catch (e) {
+    loaded.delete(section);
+    throw e;
+  }
+}
+
+/**
+ * Sync getter — возвращает узел если загружен, иначе undefined.
+ * Если секция ещё не загружена — fire-and-forget триггерит её асинхронно;
+ * по завершении бамп contentVersion в LocaleContext → UI рендерится заново.
+ */
+export function getNode(locale, id) {
+  const node = STRINGS[locale]?.nodes?.[id];
+  if (node) return node;
+  const section = getNodeSection(id);
+  if (section !== 'core') {
+    loadNodeSection(locale, section).catch(() => {});
+  }
+  return undefined;
+}
 
 /**
  * Загружает тяжёлый контент (nodes, tutorials, prompt-library) для локали

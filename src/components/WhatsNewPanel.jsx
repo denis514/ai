@@ -22,18 +22,21 @@ export default function WhatsNewPanel({ onSelectNode, onOpenTutorial, onClose, o
   const [titles, setTitles] = React.useState({});
 
   React.useEffect(() => {
-    // Узлы раздроблены на nodes/{core,sys,commerce}.json — каждый отдельный chunk.
+    // Узлы и tutorials раздроблены на секции — параллельная загрузка всех.
     Promise.all([
       import(`../locales/${locale}/nodes/core.json`).catch(() => ({ default: {} })),
       import(`../locales/${locale}/nodes/sys.json`).catch(() => ({ default: {} })),
       import(`../locales/${locale}/nodes/commerce.json`).catch(() => ({ default: {} })),
-      import(`../locales/${locale}/tutorials.json`).catch(() => ({ default: {} })),
-    ]).then(([coreM, sysM, commerceM, tutorialsM]) => {
+      import(`../locales/${locale}/tutorials/everyone.json`).catch(() => ({ default: {} })),
+      import(`../locales/${locale}/tutorials/developers.json`).catch(() => ({ default: {} })),
+      import(`../locales/${locale}/tutorials/business.json`).catch(() => ({ default: {} })),
+    ]).then(([coreM, sysM, commerceM, tutEM, tutDM, tutBM]) => {
       const allNodes = { ...coreM.default, ...sysM.default, ...commerceM.default };
+      const allTuts = { ...tutEM.default, ...tutDM.default, ...tutBM.default };
       const map = {};
       Object.entries(WHATS_NEW).forEach(([id, entry]) => {
         if (entry.kind === 'tutorial') {
-          map[id] = tutorialsM.default?.[id]?.title || id;
+          map[id] = allTuts[id]?.title || id;
         } else {
           map[id] = allNodes[id]?.title || id;
         }

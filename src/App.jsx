@@ -4,9 +4,12 @@ import { tutorials, tutorialIds, tutorialByNodeId } from './data/tutorials.js';
 import CanvasHeader from './components/CanvasHeader.jsx';
 import Mindmap from './components/Mindmap.jsx';
 import DetailPanel from './components/DetailPanel.jsx';
-import TutorialModal from './components/TutorialModal.jsx';
-import WorkflowsModal from './components/WorkflowsModal.jsx';
-import PromptLibraryModal from './components/PromptLibraryModal.jsx';
+// Тяжёлые модалки — lazy-загружаются только при первом открытии (#21+
+// perf-audit pickup: эти 3 модалки добавляют ~30-50KB в initial bundle, но
+// большинство пользователей открывает их не сразу).
+const TutorialModal      = lazy(() => import('./components/TutorialModal.jsx'));
+const WorkflowsModal     = lazy(() => import('./components/WorkflowsModal.jsx'));
+const PromptLibraryModal = lazy(() => import('./components/PromptLibraryModal.jsx'));
 import CommandPalette from './components/CommandPalette.jsx';
 import CanvasZoom from './components/CanvasZoom.jsx';
 import CanvasFilters from './components/CanvasFilters.jsx';
@@ -898,18 +901,20 @@ function AppInner() {
       </main>
 
       {coursesOpen && (
-        <WorkflowsModal
-          onClose={onCloseAll}
-          onOpen={onStartTutorial}
-          onNavigate={setRoute}
-          progressApi={progressApi}
-          nodeProgressApi={nodeProgressApi}
-          onOpenPrompt={setFeaturedPrompt}
-          onMinimize={onMinimizeWorkflow}
-          initialSelectedTutorial={
-            minimizedWorkflow?.type === 'workflows' ? minimizedWorkflow.selectedTutorialKey : null
-          }
-        />
+        <Suspense fallback={null}>
+          <WorkflowsModal
+            onClose={onCloseAll}
+            onOpen={onStartTutorial}
+            onNavigate={setRoute}
+            progressApi={progressApi}
+            nodeProgressApi={nodeProgressApi}
+            onOpenPrompt={setFeaturedPrompt}
+            onMinimize={onMinimizeWorkflow}
+            initialSelectedTutorial={
+              minimizedWorkflow?.type === 'workflows' ? minimizedWorkflow.selectedTutorialKey : null
+            }
+          />
+        </Suspense>
       )}
 
       {/* Свёрнутая пилюля workflow/tutorial — рядом с DetailPanel */}
@@ -925,32 +930,36 @@ function AppInner() {
       {activeTutorial && (
         /* Скрываем туториал пока открыт AuthModal из gate (display:none сохраняет состояние) */
         <div style={tutorialAwaitingAuth ? { display: 'none' } : undefined}>
-          <TutorialModal
-            tutorialId={activeTutorial}
-            onClose={onCloseTutorial}
-            onOpenTutorial={(id) => setRoute({ type: 'tutorial', id })}
-            onOpenLibrary={onOpenLibrary}
-            onOpenNode={(id) => setRoute({ type: 'node', id })}
-            onMinimize={onMinimizeWorkflow}
-            onOpenPrompt={(promptId) => {
-              const p = getLocalizedFeaturedPrompt(promptId, locale);
-              if (p) setFeaturedPrompt(p);
-            }}
-            onOpenCourses={onOpenCourses}
-            progressApi={progressApi}
-            suspended={tutorialAwaitingAuth}
-            onRequestAuth={handleTutorialRequestAuth}
-          />
+          <Suspense fallback={null}>
+            <TutorialModal
+              tutorialId={activeTutorial}
+              onClose={onCloseTutorial}
+              onOpenTutorial={(id) => setRoute({ type: 'tutorial', id })}
+              onOpenLibrary={onOpenLibrary}
+              onOpenNode={(id) => setRoute({ type: 'node', id })}
+              onMinimize={onMinimizeWorkflow}
+              onOpenPrompt={(promptId) => {
+                const p = getLocalizedFeaturedPrompt(promptId, locale);
+                if (p) setFeaturedPrompt(p);
+              }}
+              onOpenCourses={onOpenCourses}
+              progressApi={progressApi}
+              suspended={tutorialAwaitingAuth}
+              onRequestAuth={handleTutorialRequestAuth}
+            />
+          </Suspense>
         </div>
       )}
 
       {libraryOpen && (
-        <PromptLibraryModal
-          onClose={onCloseAll}
-          activePromptId={activePromptId}
-          onActivePromptChange={onLibraryPromptChange}
-          bookmarksApi={bookmarksApi}
-        />
+        <Suspense fallback={null}>
+          <PromptLibraryModal
+            onClose={onCloseAll}
+            activePromptId={activePromptId}
+            onActivePromptChange={onLibraryPromptChange}
+            bookmarksApi={bookmarksApi}
+          />
+        </Suspense>
       )}
 
       {helpOpen && (

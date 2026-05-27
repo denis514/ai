@@ -1,0 +1,2424 @@
+{
+  "skills": {
+    "title": "Luo ensimmäinen Skill",
+    "subtitle": "Muuta rutiini toistettavaksi työkaluksi",
+    "totalTime": "25 min",
+    "whatItIs": "Huomasitko että kirjoitat Claudelle samat ohjeet joka kerta? «Tarkista ensin X, sitten tee Y, muodossa Z...». Skill on valmis tarkistuslistasi toistuvalle tehtävälle: kuvasit kerran, Claude kutsuu sen itse kun tehtävä on samanlainen.\n\nSkill on kansio jossa on SKILL.md ja materiaalit. Muuttaa kertaluonteisen kehotteen vakaaksi työkaluksi — sama laatu ajosta toiseen, ilman sääntöjen kirjoittelua.",
+    "approach": "Tärkein asia on tarkka `description` frontmatter:issa. Siitä riippuu, aktivoituuko Skill. \"Tekee auditoinnin\" on liian yleinen. \"Use when user asks for audit of X with Y\" on toimiva kuvaus.",
+    "outcomes": {
+      "0": "Ymmärrät milloin Skill maksaa vaivan ja milloin se on overkill",
+      "1": "Kirjoitat SKILL.md:n, jonka Claude aktivoi oikein",
+      "2": "Käytät aputiedostoja (mallit, kaaviot)",
+      "3": "Määrittelet anti-triggerit — milloin Skill EI laukea"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Säännöllinen auditointi",
+        "description": "Skill kiinteällä raporttipohjalla — jokainen auditointi tulee samassa muodossa, tiimi lukee yhdenmukaisesti."
+      },
+      "1": {
+        "title": "Tyyppi-tehtävän valmistelu",
+        "description": "Skill \"valmistele tiketti\" -mallilla user story + AC + riskit — muuttaa 10 minuutin työn yhdeksi komennoksi."
+      },
+      "2": {
+        "title": "Toistettava analytiikka",
+        "description": "Skill sisäänrakennetulla metodologialla — sama analyysin laatu riippumatta siitä, kuka tiimistä sen ajoi."
+      }
+    },
+    "pitfalls": {
+      "0": "Tehdä Skill kertaluonteisesta tehtävästä — ei maksa vaivan.",
+      "1": "Hämärä description \"tekee X\" — Claude ei tunnista triggeriä.",
+      "2": "Tunkea kaikki SKILL.md:hen — siitä paisuu lukukelvoton."
+    },
+    "exercises": {
+      "0": {
+        "question": "Listaa 5 omaa toistuvaa tehtävääsi. Yleisimmälle laadi luonnos SKILL.md:stä (nimi, description, 5–7 askelta).",
+        "hint": "Jos tehtävä toistuu harvemmin kuin 5 kertaa viikossa — valitse toinen."
+      },
+      "1": {
+        "question": "Testaa Skill: esitä Claudelle kysymys, jossa sen PITÄÄ aktivoitua, ja anti-trigger-kysymys, jossa EI saa.",
+        "hint": "Ei aktivoidu kun pitäisi → kevennä description:ia; aktivoituu kun ei pitäisi → lisää anti-triggereitä."
+      }
+    },
+    "steps": {
+      "s-1": {
+        "title": "Valitse rutiini formalisoitavaksi",
+        "time": "3 min",
+        "why": "Skill maksaa vaivan, jos prosessi toistuu ≥ 5 kertaa viikossa. Muutoin käytät enemmän aikaa muotoiluun kuin säästät.",
+        "instructions": {
+          "0": "Listaa 3 tehtävää, joita toistat säännöllisesti samankaltaisessa kontekstissa.",
+          "1": "Jokaisesta vastaa: kuinka samankaltainen prosessi on? (≥80 % — Skill-ehdokas).",
+          "2": "Valitse yksi — yleisin ja vakain. Siitä aloitetaan."
+        },
+        "example": "Ehdokkaita:\n1. ✅ Kohteiden säännöllinen auditointi — joka viikko, prosessi sama\n2. ❌ \"Auta tehtävän kanssa\" — liian erilaista, ei formalisoidu\n3. ✅ Tyyppidokumentin valmistelu — useita kertoja päivässä, pohja sama\n\nValitsen: tyyppidokumentin valmistelu — yleisin.",
+        "validate": "Yksi rutiini on valittu, ja voit selvästi sanoa: \"syöte → askeleet → tulos\".",
+        "tip": "Hyvä Skill-merkki — kopioit JO vanhoja kehotteita itseäsi varten."
+      },
+      "s-2": {
+        "title": "Käynnistä skill-creator",
+        "time": "2 min",
+        "why": "skill-creator on Anthropic:n virallinen skill, joka kysyy kaiken tarvittavan ja muotoilee SKILL.md:n oikein.",
+        "instructions": {
+          "0": "claude.ai:ssa (Pro+) tai Claude Code:ssa: pyydä aktivoimaan skill-creator.",
+          "1": "Jos ei aktivoidu automaattisesti — kirjoita suoraan: \"Käytä skill:iä anthropic-skills:skill-creator luomaan uusi skill\".",
+          "2": "skill-creator esittää sarjan kysymyksiä — vastaa yksityiskohtaisesti."
+        },
+        "prompt": "Käytä skill-creator:ia luomaan Skill kehittäjätikettien valmisteluun. Esitä kaikki tarvittavat kysymykset yksi kerrallaan.",
+        "validate": "Claude esittää kysymyksiä skill-creator:in rakenteen mukaisesti: nimi, tavoite, triggerit, askeleet.",
+        "troubleshoot": {
+          "skill-creator ei aktivoidu": "skill-creator ei aktivoidu"
+        }
+      },
+      "s-3": {
+        "title": "Muotoile rooli ja kuvaus (description)",
+        "time": "5 min",
+        "why": "Description = trigger. Sen tarkkuudesta riippuu, laukeaako Skill silloin kun pitää.",
+        "instructions": {
+          "0": "Nimi: kebab-case, lyhyt ja ymmärrettävä (esim. dev-task-prep).",
+          "1": "Description: selkeät triggerit (milloin kutsuttava) + selkeät anti-triggerit (milloin EI).",
+          "2": "Käytä alla olevaa mallia."
+        },
+        "example": "name: dev-task-prep\n\ndescription: Use this skill when the user asks to convert an idea, bug, or\nfeature request into a developer-ready ticket. Triggers on phrases like\n\"prepare a ticket\", \"make a user story\", \"turn this into a task for\nengineering\", or when user pastes raw feature descriptions and wants\nstructured output.\n\nDO NOT use for: code review, architecture discussions, or when user\nexplicitly asks for a quick informal note.",
+        "validate": "Description sisältää konkreettisia trigger-lauseita ja anti-triggereitä.",
+        "tip": "Jos description:issa on yksi yleinen lause tyyliin \"auttaa tehtävien kanssa\" — Skill laukeaa kaikkeen. Ole konkreettinen."
+      },
+      "s-4": {
+        "title": "Kuvaile vaiheittainen workflow",
+        "time": "6 min",
+        "why": "Workflow on \"resepti\". Mitä selkeämpi, sitä vakaampi tulos ajosta toiseen.",
+        "instructions": {
+          "0": "Kuvaa 5–8 vaihetta, jotka Clauden pitää suorittaa.",
+          "1": "Jokaisesta vaiheesta: mitä tekee + minkä output:in antaa seuraavalle.",
+          "2": "Viimeinen vaihe on lopputuloksen muoto."
+        },
+        "example": "## Workflow\n\n1. **Tarkenna idea**: jos kuvaus on alle 2 rivin — esitä 3 tarkentavaa kysymystä (konteksti, käyttäjän tavoite, rajoitukset).\n2. **Muotoile User Story**: muodossa \"As a [rooli] I want [toiminto] so that [arvo]\".\n3. **Acceptance Criteria**: 4–7 kohtaa muodossa Given/When/Then.\n4. **Tekniset huomiot**: mitä koskee / mitä EI koske (jos sovellettavissa).\n5. **Rajatapaukset**: 3–5 negatiivista skenaariota.\n6. **Arvio**: XS/S/M/L/XL yhdellä rivillä perustelu.\n7. **DoD**: 3–5 kohtaa \"valmis, jos…\".\n\n## Output format\nMarkdown, valmis liitettäväksi Linear:iin/Jira:aan.",
+        "validate": "Workflow lukeutuu reseptinä: kokki (Claude) tuntee jokaisen askeleen.",
+        "tip": "Jos askeleita on > 10 — Skill on liian iso. Jaa kahteen toisiinsa liittyvään Skill:iin."
+      },
+      "s-5": {
+        "title": "Lisää templates/ — pohjat toistettavuuteen",
+        "time": "4 min",
+        "why": "Pohjat siirtävät yksityiskohdat pois SKILL.md:stä ja pitävät sen lyhyenä. Ja takaavat yhtenäisen muodon.",
+        "instructions": {
+          "0": "Luo tiedosto templates/ticket.md skill-kansion sisälle.",
+          "1": "Kuvaa siihen täsmälleen se muoto, jossa lopputuloksen pitää olla.",
+          "2": "SKILL.md:ssä viittaa pohjaan: \"noudata muotoa templates/ticket.md:stä\"."
+        },
+        "example": "# templates/ticket.md\n\n## User Story\nAs a {role}, I want {action} so that {value}.\n\n## Acceptance Criteria\n- [ ] Given {context}, When {action}, Then {outcome}\n- [ ] ...\n\n## Technical notes\n**Touch:** ...\n**Don't touch:** ...\n\n## Edge cases\n- ...\n\n## Estimate: {XS|S|M|L|XL}\n{Reason in one line}\n\n## Definition of Done\n- [ ] Tests pass\n- [ ] Code reviewed\n- [ ] ...",
+        "validate": "Pohja on tallennettu, ja SKILL.md viittaa siihen.",
+        "tip": "Pohja on sopimus. Sitä on helpompi muuttaa kuin kirjoittaa SKILL.md uudelleen joka kerta."
+      },
+      "s-6": {
+        "title": "Testaa trigger",
+        "time": "3 min",
+        "why": "Skill, joka ei aktivoidu oikealla hetkellä, on kuollut. Triggerin tarkistus on pakollinen.",
+        "instructions": {
+          "0": "Kirjoita Claudelle luonnollinen lause, johon Skill:n pitää laueta.",
+          "1": "Tarkista: laukesiko se vai ei.",
+          "2": "Sen jälkeen — lause, johon EI saa laueta (anti-trigger). Varmista, että Claude ei aktivoi Skill:iä.",
+          "3": "Jos triggerit toimivat väärin — palaa askeleeseen 3 ja tarkenna description:ia."
+        },
+        "example": "✅ Pitää laueta: \"Auta muuttamaan tämä idea kehittäjille suunnatuksi tiketiksi\"\n✅ Pitää laueta: \"Tee user story AC:lla tästä feature-kuvauksesta\"\n❌ EI saa: \"Kerro yleisellä tasolla, miten user story muotoillaan\" (tämä on opetuspyyntö, ei tiketin valmistelu)",
+        "validate": "Skill laukeaa kaikissa ✅ ja ei laukea ❌:issa.",
+        "tip": "Yleisin ongelma — Skill laukeaa liian usein. Lääke — lisää anti-triggereitä description:iin."
+      },
+      "s-7": {
+        "title": "Aja oikealla tehtävällä ja paranna",
+        "time": "2 min",
+        "why": "Taistelutesti paljastaa sen, mikä ei näy synteettisissä esimerkeissä.",
+        "instructions": {
+          "0": "Ota oikea tehtävä backlog:ista.",
+          "1": "Aja Skill:n kautta 2–3 kertaa.",
+          "2": "Missä tulos on heikko — lisää sääntö Workflow:hon tai anti-trigger description:iin.",
+          "3": "5–10 ajon jälkeen Skill stabiloituu."
+        },
+        "validate": "Skill on oikeassa käytössä, et kirjoita samaa kehotetta käsin.",
+        "tip": "Jaa Skill tiimille repositorion kautta (skills/). Yksi Skill × 5 ihmistä = 5-kertainen tuotto."
+      }
+    },
+    "trigger": "Huomaat kirjoittavasi Claudelle saman tarkistuslistan «ensin X, sitten Y, formaatissa Z» joka kerta.",
+    "inputs": [
+      "Toistuvan tehtävän kuvaus",
+      "Referenssiesimerkki «miltä hyvä näyttää»",
+      "Vaiheiden ja rajoitusten lista"
+    ],
+    "outputs": [
+      "Valmis SKILL.md metadatalla + materiaaleilla",
+      "Skill, jonka Claude käynnistää itse sopivissa tehtävissä",
+      "Versiointi tiimille"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "skillsien isäntä"
+      },
+      {
+        "name": "SKILL.md",
+        "role": "spesifikaatiotiedosto"
+      },
+      {
+        "name": "Opus 4",
+        "role": "skillin suunnittelu"
+      }
+    ],
+    "savings": "~10-15 min per toisto + yhtenäinen laatuvaatimus"
+  },
+  "claude-code": {
+    "title": "Asenna ja konfiguroi Claude Code",
+    "subtitle": "Täysiverinen AI-agentti terminaalissa",
+    "totalTime": "30 min",
+    "whatItIs": "Tunnetko VS Code Copilotin joka täydentää koodirivejä? [[node:claude-code|Claude Code]] tekee saman, mutta 10× laajemmin: lukee koko projektisi, muokkaa kymmeniä tiedostoja, ajaa komentoja, tekee refaktorointia. Ja elää terminaalissasi, ei editorissa.\n\nAnthropicin CLI-työkalu Clauden kanssa työskentelyyn suoraan terminaalissa. Käyttää [[node:cc-cmd-init|/init]]:iä, sub-agents:eja, [[node:mcp|MCP-palvelimia]] ja [[node:cc-md|CLAUDE.md]]:tä projektimuistina. Muuttaa terminaalin täysipainoiseksi AI-kehitysympäristöksi.",
+    "approach": "Älä yritä hallita kaikkea kerralla. Asenna → tee [[node:cc-cmd-init|/init]] → kokeile yhtä oikeaa korjausta → viilaa [[node:cc-md|CLAUDE.md]]. Suurin osa Claude Coden voimasta avautuu CLAUDE.md:n kautta, jonka kirjoitat itse omalle projektillesi.",
+    "outcomes": {
+      "0": "Asensit Claude Coden ja ajoit sen omassa projektissasi",
+      "1": "Generoit CLAUDE.md:n komennolla /init ja viilasit sitä",
+      "2": "Konfiguroit perus-permissions:it turvallisille komennoille",
+      "3": "Ymmärrät keskeiset slash-komennot ja tilat (Plan / Fast)"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Code review",
+        "description": "claude repossa → /review → kokeneen kehittäjän tasoinen rakenteellinen auditointi minuuteissa."
+      },
+      "1": {
+        "title": "Turvallinen refaktorointi",
+        "description": "Plan mode → muutossuunnitelma → hyväksyt → suoritus. Ei yllätyksiä koodissa."
+      },
+      "2": {
+        "title": "Automaattidokumentaatio",
+        "description": "Asensit Hooks:t: tiedostojen muuttuessa README ja CHANGELOG päivittyvät automaattisesti."
+      }
+    },
+    "pitfalls": {
+      "0": "Ajaa git-repon ulkopuolella — menetät historiakontekstin.",
+      "1": "Ilman CLAUDE.md:tä malli selvittää projektin joka kerta uudelleen.",
+      "2": "Liian laajat permissions:it (allow: [Bash(*)]) — hallinta katoaa."
+    },
+    "exercises": {
+      "0": {
+        "question": "Omassa oikeassa repossasi aja claude → /init → viilaa CLAUDE.md (lisää \"tabu\"-osio ja suosikkitabusi).",
+        "hint": "Vähintään 3 riviä tabuja — tulos näkyy heti."
+      },
+      "1": {
+        "question": "Tee pieni korjaus (uudelleennimeä muuttuja) Plan mode:n kautta. Vertaa samaan tavallisessa tilassa.",
+        "hint": "Plan mode = \"näytä ensin suunnitelma, sitten hyväksyn\". Muuttuu nopeasti oletukseksi."
+      }
+    },
+    "steps": {
+      "cc-1": {
+        "title": "Asenna Node.js (jos puuttuu)",
+        "time": "3 min",
+        "why": "Claude Code on npm-paketti. Ilman Node.js:ää se ei käynnisty.",
+        "instructions": {
+          "0": "Tarkista: avaa terminaali → `node -v`.",
+          "1": "Jos versiota ei ole tai se on < 18 — asenna tuore Node.js.",
+          "2": "macOS: `brew install node`. Windows: lataa asennusohjelma osoitteesta nodejs.org."
+        },
+        "validate": "Terminaalissa `node -v` näyttää 18.x tai uudemman.",
+        "troubleshoot": {
+          "command not found: node": "Käynnistä terminaali uudelleen asennuksen jälkeen. Tai tarkista PATH."
+        }
+      },
+      "cc-2": {
+        "title": "Asenna Claude Code globaalisti",
+        "time": "2 min",
+        "why": "Globaali asennus mahdollistaa `claude`-komennon kutsumisen mistä tahansa kansiosta.",
+        "instructions": {
+          "0": "Terminaalissa: `npm install -g @anthropic-ai/claude-code`.",
+          "1": "Odota noin 30 sekuntia.",
+          "2": "Tarkista: `claude --version`."
+        },
+        "prompt": "npm install -g @anthropic-ai/claude-code",
+        "validate": "`claude --version` tulostaa versionumeron ilman virheitä.",
+        "troubleshoot": {
+          "EACCES permission denied": "macOS/Linux: käytä `sudo npm install -g ...` tai aseta npm prefix omaan ~/.npm-globaliin.",
+          "EEXIST file already exists": "Vanha versio on jäljellä. Poista: `npm uninstall -g @anthropic-ai/claude-code`, sitten asenna uudelleen."
+        }
+      },
+      "cc-3": {
+        "title": "Aja repositoriossa ja suorita autentikointi",
+        "time": "3 min",
+        "why": "Claude Code toimii kansion kontekstissa. Autentikointi tehdään kerran per kone.",
+        "instructions": {
+          "0": "Mene minkä tahansa projektin kansioon: `cd ~/projects/oma-projekti`.",
+          "1": "Aja: `claude`.",
+          "2": "Ensimmäisellä kerralla selain avaa Anthropic:n autentikoinnin — kirjaudu sisään.",
+          "3": "Sen jälkeen olet interaktiivisessa istunnossa Clauden kanssa."
+        },
+        "validate": "Terminaalissa on Clauden kehote, voit kirjoittaa viestejä.",
+        "tip": "Toimii parhaiten git-repositoriossa — Claude näkee historian ja diff:in. Repon ulkopuolella menettää puolet ominaisuuksista."
+      },
+      "cc-4": {
+        "title": "Generoi CLAUDE.md komennolla /init",
+        "time": "5 min",
+        "why": "CLAUDE.md on projektin \"luonne\". Claude lukee sen joka käynnistyksellä eikä esitä kysymyksiä ilmiselvistä asioista.",
+        "instructions": {
+          "0": "Claude-istunnossa kirjoita: `/init`.",
+          "1": "Claude skannaa projektin ja ehdottaa CLAUDE.md:n luonnosta.",
+          "2": "Lue se. Poista epätarkat kohdat, lisää säännöt ja tabut (katso esimerkki).",
+          "3": "Tallenna. Tiedosto on projektin juuressa."
+        },
+        "example": "# CLAUDE.md\n\n## Stack\n- Next.js 14, App Router\n- Tailwind CSS\n- TypeScript (strict)\n\n## Conventions\n- ÄLÄ KOSKAAN käytä `any`. Vain `unknown` tai tiukat tyypit.\n- Testit — Vitest, ei Jest. Tiedostot lähdetiedoston vieressä: `foo.ts` + `foo.test.ts`.\n- Kaikki komponentit ovat funktionaalisia TypeScript:llä.\n\n## Forbidden\n- Älä liitä lisää UI-kirjastoja. Vain Tailwind + omat komponentimme.\n- Älä kirjoita `auth/`-kansiota uudelleen ilman sovittelua — siellä on legal compliance.\n\n## Entry points\n- src/app/(routes)/page.tsx — etusivu\n- src/lib/api.ts — kaikki ulkoiset kutsut (ei suoria fetch-kutsuja muualta)",
+        "validate": "CLAUDE.md on repon juuressa, täytetty TEIDÄN projektillenne ominaisilla säännöillä.",
+        "tip": "Älä kuvaa itsestäänselvyyksiä. \"Tämä on React-projekti\" on roskaa. \"Vain funktionaaliset komponentit\" on sääntö."
+      },
+      "cc-5": {
+        "title": "Aja /security-review haaralla",
+        "time": "4 min",
+        "why": "Hyödyllinen valmis workflow — antaa tuntumaa slash-komentojen voimasta.",
+        "instructions": {
+          "0": "Tee koodiin yksinkertainen korjaus, commit:oi (mutta älä push:aa).",
+          "1": "Claude-istunnossa: `/security-review`.",
+          "2": "Claude analysoi diff:in ja antaa listan tietoturvahuomioista.",
+          "3": "Tutki raportti — vaikka koodi olisi puhdas, näet mitä Claude osaa."
+        },
+        "validate": "Saatu rakenteellinen security-raportti.",
+        "tip": "Ota /security-review pre-merge -tavaksi vakaville muutoksille. Kokeneempi kuin kuka tahansa junior."
+      },
+      "cc-6": {
+        "title": "Konfiguroi ensimmäinen Hook",
+        "time": "5 min",
+        "why": "Hooks:t automatisoivat käyttäytymisen, johon ei pidä luottaa \"muistaako Claude\".",
+        "instructions": {
+          "0": "Luo tiedosto `.claude/settings.json` (tai avaa olemassa oleva).",
+          "1": "Lisää hook PostToolUse:Write — se ajaa prettier:in jokaisen tiedostokorjauksen jälkeen.",
+          "2": "Käynnistä claude uudelleen.",
+          "3": "Tee testimuokkaus — näet, että prettier ajautui itsestään."
+        },
+        "example": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Write|Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write \\\"$CLAUDE_FILE_PATH\\\"\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+        "validate": "Jokaisen tiedostokorjauksen jälkeen Claude ajaa prettier:in automaattisesti.",
+        "tip": "Hooks:t = \"juniorin kuri\". Lintteri, testit, typecheck — kaikki hooks:eihin. Malli ei unohda.",
+        "troubleshoot": {
+          "Hook ei laukea": "Tarkista — onko settings.json validia JSON:ia? Käynnistä `claude` uudelleen.",
+          "Hook ei käynnisty": "Hook ei laukea",
+          "Hook valittaa polusta": "Käytä `$CLAUDE_FILE_PATH` (käytettävissä oleva env-muuttuja), älä arvaa polkua.",
+          "Hook antaa polkuvirheen": "Hook valittaa polusta"
+        }
+      },
+      "cc-7": {
+        "title": "Luo oma subagent",
+        "time": "6 min",
+        "why": "Subagent ottaa ison tehtävän eikä tukkeuta pääkontekstia. Paras sijoitus suorituskykyyn.",
+        "instructions": {
+          "0": "Luo tiedosto `.claude/agents/code-reviewer.md`.",
+          "1": "Kuvaa rooli, työkalut, ohjeet (katso esimerkki alla).",
+          "2": "Pyydä keskustelussa: \"aja code-reviewer nykyisille muutoksille\".",
+          "3": "Claude kutsuu subagent:in, joka palauttaa rakenteellisen raportin."
+        },
+        "example": "---\nname: code-reviewer\ndescription: Use when user asks to review code changes, current diff, or specific files. Output is a structured list of issues by severity.\ntools: Read, Bash\n---\n\nYou are a senior code reviewer. Your job:\n\n1. Read the diff with `git diff`.\n2. For each change, check: correctness, security, readability, tests.\n3. Return a markdown report:\n   - 🔴 Critical (blocks merge)\n   - 🟡 Important (should fix)\n   - 🟢 Nit (optional)\n4. For each issue: file:line + what's wrong + how to fix.\n\nDo NOT make architectural arguments — focus on the diff in front of you.\nDo NOT rewrite code yourself — only point out issues.",
+        "validate": "Subagent aktivoituu, antaa rakenteellisen raportin.",
+        "tip": "Kuvaus (description) on jälleen kriittinen. Parent-agent päättää sen perusteella, delegoiko se vai ei."
+      },
+      "cc-8": {
+        "title": "Vahvista — sulauta Claude Code omaan workflow:hosi",
+        "time": "2 min",
+        "why": "Ilman tapaan ottamista Claude Code jää leluksi. Tavoite — se on osa työpäivää.",
+        "instructions": {
+          "0": "Ota käyttöön 3 säännöllistä skenaariota: esim. \"/security-review ennen PR:ää\", \"code-reviewer isoille diff:eille\", \"/init uusille projekteille\".",
+          "1": "Kiinnitä ne tiimin README:hen.",
+          "2": "Viikon kuluttua — laske, paljonko aikaa säästit."
+        },
+        "validate": "Sinulla on 3 skenaariota, joita käytät tottumuksesta, ilman tietoista \"kokeillaanpa Claudea\".",
+        "tip": "Seuraavaksi — MCP. Linear:in/Figma:n/tietokannan kytkeminen muuttaa Claude Coden koodiassistentista tuoteassistentiksi."
+      }
+    },
+    "trigger": "Koodikanta kasvoi Copilotin ulottumattomiin — tarvitset agentin joka näkee koko projektin.",
+    "inputs": [
+      "Node.js + terminaali",
+      "Anthropic API -avain tai Pro-tilaus",
+      "Oikea koodikanta"
+    ],
+    "outputs": [
+      "Asennettu ja autentikoitu Claude Code",
+      "Onnistunut /init CLAUDE.md:llä",
+      "Ymmärrys permissionseista ja tool usesta"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code CLI",
+        "role": "terminaaliagentti"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "oletusmalli"
+      },
+      {
+        "name": "CLAUDE.md",
+        "role": "projektin muisti"
+      }
+    ],
+    "savings": "~2-4 tuntia refaktorointiin — kymmeniä tiedostoja yhdellä ajolla"
+  },
+  "mcp": {
+    "title": "Kytke ensimmäinen MCP-palvelin",
+    "subtitle": "Anna Claudelle pääsy ulkoisiin järjestelmiin",
+    "totalTime": "20 min",
+    "whatItIs": "Tiedätkö miten USB-C on yksi kaapeli kaikkeen — läppäri, näyttö, kuulokkeet, laturi? MCP on «USB-C AI:lle». Yksi standardi jolla Claude voi kytkeytyä mihin tahansa: Lineariin, Notioniin, tietokantaan, tiedostoihin, GitHubiin — ilman kopiointia tai käsintehtyjä integraatioita.\n\n[[node:mcp|MCP (Model Context Protocol)]] on Anthropicin avoin standardi. MCP-palvelimen kautta Claude näkee oikeat työkalusi ja työskentelee suoraan niissä.",
+    "approach": "Aloita valmiilla palvelimella (filesystem tai github), älä omalla. Ymmärrä ensin ekosysteemi ja tietoformaatit toimivan esimerkin kautta, suunnittele oma vasta sitten.",
+    "outcomes": {
+      "0": "Ymmärrät MCP:n arkkitehtuurin: palvelin / asiakas / kuljetus",
+      "1": "Kytkit valmiin MCP-palvelimen Claude Codeen",
+      "2": "Erotat stdio:n ja HTTP/SSE-kuljetuksen toisistaan",
+      "3": "Osaat debugata \"miksi MCP ei näe dataa\""
+    },
+    "applyIn": {
+      "0": {
+        "title": "Konteksti seuraajasta",
+        "description": "MCP tehtäväseuraajaan → Claude näkee tuoreet tiketit, voi kommentoida ja ehdottaa dekomposition."
+      },
+      "1": {
+        "title": "Dokumentaatio kontekstissa",
+        "description": "MCP Confluence:en/Notion:iin → Claude vastaa sisäinen dokumentaatiosi huomioiden."
+      },
+      "2": {
+        "title": "Pääsy koodiin",
+        "description": "MCP GitHub:iin → Claude näkee PR:t, voi kommentoida ja tehdä review-huomioita."
+      }
+    },
+    "pitfalls": {
+      "0": "Kytkeä kaikkea peräkkäin — jokainen palvelin latautuu käynnistyksessä.",
+      "1": "Destruktiiviset tools:it ilman vahvistusvaihetta — riskialtista.",
+      "2": "Tallentaa tokenit projektin settings.json:iin (joutuu git:iin) settings.local.json:in sijaan."
+    },
+    "exercises": {
+      "0": {
+        "question": "Asenna MCP-palvelin filesystem:ille. Pyydä Claudea löytämään kaikki .md-tiedostot documents-kansiostasi ja tekemään sisällysluettelo.",
+        "hint": "Filesystem on turvallisin ensimmäiselle MCP:lle. Täysin paikallinen."
+      },
+      "1": {
+        "question": "Kytke MCP yhteen ulkoiseen järjestelmään, jota käytät (github / linear / notion). Esitä oikea kysymys \"mitä projektissa X tapahtuu\".",
+        "hint": "Jos ei löytänyt mitään — tarkista /mcp Claude Code:ssa: käynnistyikö palvelin? Näkyvätkö tools:it?"
+      }
+    },
+    "steps": {
+      "m-1": {
+        "title": "Ymmärrä, miksi tarvitset MCP:n",
+        "time": "2 min",
+        "why": "Ilman MCP:tä Claude näkee vain sen, mitä syötät käsin. MCP:n kanssa — se elää sinun ympäristössäsi.",
+        "instructions": {
+          "0": "Listaa 3 työkalua, joita käytät päivittäin (Linear, Figma, tietokanta, Slack...).",
+          "1": "Jokaisesta: \"mitä Claude voisi tehdä, jos näkisi tämän?\".",
+          "2": "Valitse YKSI — yleisin. Siitä aloitetaan."
+        },
+        "example": "Ehdokkaita:\n1. ✅ Linear — päivittäin, paljon kontekstia tiketeissä\n2. ✅ Figma — viikoittain, dizainit, tarvitaan handoff koodiin\n3. ❌ Notion — harvoin\n\nAloitan: Linear.",
+        "validate": "Valittu yksi palvelin kytkettäväksi.",
+        "tip": "Hyvä merkki: kopioit tästä työkalusta jatkuvasti tekstiä Clauden keskusteluun. Tämä on MCP:n ROI-mittari."
+      },
+      "m-2": {
+        "title": "Etsi valmis palvelin katalogista",
+        "time": "3 min",
+        "why": "95 % palveluista on jo olemassa. Älä kirjoita omaa — se on ajanhukkaa.",
+        "instructions": {
+          "0": "Avaa Anthropic:n mcp-katalogi tai valitsemasi palvelun virallinen doku.",
+          "1": "Etsi palvelin omalle työkalullesi.",
+          "2": "Kopioi yhteyskonfiguraatio."
+        },
+        "validate": "Sinulla on snippet settings/config-tiedostoa varten url:n, tokenien ja scope:n kanssa.",
+        "troubleshoot": {
+          "Palvelinta ei ole katalogissa": "Etsi community-repoista tai MCP-registry:stä. Äärimmäisessä tapauksessa — kirjoita oma, mutta tämä on jo advanced.",
+          "Hakemistosta ei löydy palvelinta": "Palvelinta ei löydy hakemistosta"
+        }
+      },
+      "m-3": {
+        "title": "Luo access token / API key",
+        "time": "4 min",
+        "why": "Token on tietoturvapiste. Sen scope:sta riippuu, mitä MCP voi lukea ja muuttaa.",
+        "instructions": {
+          "0": "Palvelussa (Linear/Figma/etc.) → Settings → API → Create token.",
+          "1": "Anna minimaaliset tarvittavat oikeudet. Mieluummin read-only; jos kirjoittaa — erillinen token.",
+          "2": "Kopioi token turvalliseen paikkaan (1Password / Bitwarden). Se näytetään KERRAN."
+        },
+        "validate": "Token on luotu, tallennettu salasananhallintaan, oikeudet ovat minimitarpeen mukaiset.",
+        "tip": "Ensimmäiseen kytkentään — read-only. Kirjoitusoikeuden voi lisätä myöhemmin, kun luotat palvelimeen.",
+        "troubleshoot": {
+          "En ymmärrä, mitä scopes:eja tarvitsen": "Ota \"read-only pääresursseihin\" (esim. Issues Linear:lle). Laajennat myöhemmin.",
+          "En ymmärrä mitä scopeja tarvitaan": "En ymmärrä mitä scopeja tarvitaan"
+        }
+      },
+      "m-4": {
+        "title": "Kytke MCP-palvelin Claude Code:een tai claude.ai:hin",
+        "time": "4 min",
+        "why": "Konfiguraatio on yleisin virheen lähde. Toimi tarkistuslistan mukaan.",
+        "instructions": {
+          "0": "Avaa `~/.config/claude-code/mcp.json` (Code) tai Settings → Connectors (claude.ai).",
+          "1": "Lisää server-konfiguraation lohko (katso esimerkki).",
+          "2": "Sijoita token salasananhallinnasta (ÄLÄ koodaa sitä — käytä ENV).",
+          "3": "Käynnistä Claude uudelleen."
+        },
+        "example": "{\n  \"mcpServers\": {\n    \"linear\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-linear\"],\n      \"env\": {\n        \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\"\n      }\n    }\n  }\n}",
+        "validate": "Claude käynnistyi uudelleen ilman virheitä, lokeissa on rivi `connected: linear` tai vastaava.",
+        "troubleshoot": {
+          "Palvelin ei käynnisty": "Palvelin ei käynnisty",
+          "Authentication failed": "Token kopioitu välilyönnillä tai väärä scope. Luo uudelleen ja tarkista."
+        }
+      },
+      "m-5": {
+        "title": "Tarkista käytettävissä olevat tools:it",
+        "time": "2 min",
+        "why": "Ilman tarkistusta et tiedä, mitä MCP-palvelin oikeasti tarjoaa. Tämä on ensimmäinen asia, joka pitää tehdä.",
+        "instructions": {
+          "0": "Pyydä keskustelussa: \"näytä, mitkä työkalut ovat käytettävissä MCP:n kautta\".",
+          "1": "Claude listaa tools:it parametri-schema:n kanssa.",
+          "2": "Lue läpi — merkitse 2–3, joita varmasti tarvitset."
+        },
+        "prompt": "Näytä lista MCP-työkaluista, jotka ovat käytettävissäsi. Jokaisesta — nimi ja lyhyt kuvaus schema:sta.",
+        "validate": "Saatu lista työkaluista kuvauksineen.",
+        "tip": "Jos työkaluja on liikaa — pyydä \"jätä aktiiviseksi vain ne, jotka koskevat Issues:ia ja Comments:eja\". Vähemmän kohinaa."
+      },
+      "m-6": {
+        "title": "Tee ensimmäinen oikea MCP-pyyntö",
+        "time": "3 min",
+        "why": "Taistelupyyntö osoittaa todellisen arvon. Ilman sitä MCP on konfigurointia konfiguroinnin vuoksi.",
+        "instructions": {
+          "0": "Ota tyyppi-tehtävä käytännöstä (katso esimerkit).",
+          "1": "Lähetä Claudelle pyyntö — se valitsee tarvittavat MCP-työkalut itse.",
+          "2": "Arvioi: vastaus nojaa palvelusta saatuihin tuoreisiin tietoihin, ei arvauksiin."
+        },
+        "example": "Linear: \"Näytä kaikki P0-bugit nykyisessä sprintissä, ryhmiteltynä komponenteittain, lyhyellä riskiarviolla kullekin.\"\n\nFigma: \"Avaa node [URL] ja muunna se React-komponentiksi meidän design-systeemimme tyylillä.\"\n\nGitHub: \"Anna minulle yhteenveto kaikista PR:istä, jotka on avattu viimeisten 7 päivän aikana, kirjoittajat ja CI:n tilanne mukaan.\"",
+        "validate": "Vastaus sisältää tuoreita, tarkkoja tietoja palvelusta.",
+        "tip": "Jos Claude epäröi — pyydä \"tarkista uudelleen MCP:n kautta, ei muistista\". Joskus malli on laiska ja arvailee."
+      },
+      "m-7": {
+        "title": "Tietoturva-auditointi kytkennälle",
+        "time": "2 min",
+        "why": "MCP-palvelin näkee sen, minkä token näkee. Scope:n tarkistus = vakuutus.",
+        "instructions": {
+          "0": "Avaa tokenin paneeli palvelussa → tarkista, mitkä oikeudet sillä on.",
+          "1": "Jos on write — kysy itseltäsi: tarvitsenko oikeasti write:in?",
+          "2": "Jos on epäilyksiä — luo token uudelleen pienemmillä oikeuksilla.",
+          "3": "Kytke 2FA palveluun, jos ei ole jo päällä."
+        },
+        "validate": "Tokenilla on tarkalleen ne scopes:t, joita käytät, ei enempää.",
+        "tip": "Älä koskaan käytä yhtä tokenia eri palvelimille. Yksi palvelu = yksi token. Tämä helpottaa peruuttamista."
+      }
+    },
+    "trigger": "Haluat Clauden näkevän Linearisi / Notionisi / DB:si suoraan — ei enää kopiointia kontekstina.",
+    "inputs": [
+      "Lista yhdistettävistä järjestelmistä (Linear, Notion, GitHub, ...)",
+      "Pääsytokenit niihin",
+      "Asennettu Claude Desktop tai Code"
+    ],
+    "outputs": [
+      "Toimiva MCP-palvelin konfiguraatiossa",
+      "Claude lukee elävää dataa yhdistetystä järjestelmästä",
+      "Selkeä käsitys stdio vs HTTP -kuljetuksesta"
+    ],
+    "tools": [
+      {
+        "name": "MCP-protokolla",
+        "role": "integraatiostandardi"
+      },
+      {
+        "name": "Claude Desktop/Code",
+        "role": "MCP-isäntä"
+      },
+      {
+        "name": "Valmiit MCP-palvelimet",
+        "role": "Anthropicin rekisteristä"
+      }
+    ],
+    "savings": "~30 min per tiketti — Claude hakee Linear/Notion-kontekstin itse"
+  },
+  "agents": {
+    "title": "Luo ensimmäinen agenttisi",
+    "subtitle": "Muuta rutiini delegoitavaksi toiminnoksi",
+    "totalTime": "20 min",
+    "whatItIs": "Sub-agent [[node:claude-code|Claude Code]]:ssa on eristetty \"asiantuntija\", jolle pää-Claude delegoi tietyntyyppisiä tehtäviä. Agentilla on oma rooli, työkalut, tarkistuslistat. Muuttaa toistuvan prosessin yhdeksi komennoksi.",
+    "approach": "Älä luo agenttia \"varastoon\". Luo se konkreettiselle rutiinille, jota teet juuri nyt käsin 5+ kertaa viikossa. Description on tärkein: siitä riippuu, aktivoituuko agentti. Jos se on yleinen (\"tekee X\") — ei aktivoidu koskaan.",
+    "outcomes": {
+      "0": "Ymmärrät milloin tarvitaan agentti ja milloin Skill riittää",
+      "1": "Kirjoitit agentin spec:n: name / description / järjestelmäkehote / workflow",
+      "2": "Kuvasit anti-pattern:it — missä agentti EI auta",
+      "3": "Käynnistit agentin oikealla tehtävällä ja mittasit vaikutuksen"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Code review",
+        "description": "Sub-agent review-tarkistuslistalla → ennen merge:ä ajat, saat suodatetun raportin."
+      },
+      "1": {
+        "title": "Auditointiagentti",
+        "description": "Säännöllinen auditointi kiinteillä kriteereillä → yksi trigger pitkän kehotteen sijaan."
+      },
+      "2": {
+        "title": "Researcher",
+        "description": "Agentti lähteiden keräämiseen ja synteesiin Web search:lla → raportti linkkeineen käsityön sijaan."
+      }
+    },
+    "pitfalls": {
+      "0": "Tehdä agentti tehtävälle, joka tulee kerran kuussa — ei maksa vaivan.",
+      "1": "Hämärä description — agentti ei koskaan aktivoidu.",
+      "2": "Luottaa vain agenttiin — se ei korvaa asiantuntijan arkkitehtuuriajattelua."
+    },
+    "exercises": {
+      "0": {
+        "question": "Valitse yksi oikea rutiini (≥ 3 kertaa viikossa). Kirjoita agentin spec: name, description (konkreettisilla triggereillä), järjestelmäkehote, 5–7 askelta workflow:hon.",
+        "hint": "Description:in pitää olla sellainen, että lukemalla ymmärtäisit itse, milloin kutsua."
+      },
+      "1": {
+        "question": "Aja agentti 3 erilaisella syötteellä. Tarkista — se aktivoituu VAIN kun pitää. Jos ei — viilaa description / lisää anti-triggers.",
+        "hint": "Anti-triggers (mikä EI saa kutsua) on tärkeämpi kuin positiiviset triggerit."
+      }
+    },
+    "steps": {
+      "ag-1": {
+        "title": "Etsi sopiva rutiini",
+        "time": "3 min",
+        "why": "Hyvä agentti on toistuvan prosessin automatisointia. Ilman rutiinia ei ole agenttia.",
+        "instructions": {
+          "0": "Listaa prosessit, joita toistat 3+ kertaa viikossa samankaltaisessa kontekstissa.",
+          "1": "Jokaisesta: syötteiden, askelten, tuloksen pitää olla 80 %:sti vakaa.",
+          "2": "Valitse YKSI — yleisin ja vakain."
+        },
+        "example": "Ehdokkaita:\n1. ✅ Code review PR:lle — joka päivä, askeleet samat\n2. ✅ Materiaaliesi säännöllinen auditointi — joka viikko, askeleet samat\n3. ❌ \"Auta pohtimaan ideaa\" — liian erilaista, ei agentti\n\nValitsen: code-reviewer.",
+        "validate": "Valittu konkreettinen rutiini selkeällä \"syöte → askeleet → tulos\".",
+        "tip": "Jos tehtävä vaatii luovuutta ja kontekstia — se ei ole agentti, se on sinun työtäsi. Agentti — toistettavuudesta."
+      },
+      "ag-2": {
+        "title": "Kuvaile rooli ja tavoite",
+        "time": "3 min",
+        "why": "Ilman selkeää roolia agentti yrittää \"tehdä kaiken\". Ja yrittäessään tehdä kaiken — tekee kaiken huonosti.",
+        "instructions": {
+          "0": "Kirjoita: kuka tämä agentti on (rooli), kenelle se työskentelee (kuluttaja), mitä se tuottaa (output).",
+          "1": "Rajaa scope eksplisiittisesti: mitä agentti EI tee.",
+          "2": "Käytä alla olevaa pohjaa."
+        },
+        "example": "Nimi: code-reviewer\nRooli: Senior code reviewer, fokus turvallisuudessa ja luettavuudessa.\nKuluttaja: Minä — kehittäjä, ennen PR:n avaamista.\nOutput: Markdown-raportti ongelmaluettelolla vakavuuden mukaan (🔴/🟡/🟢).\n\nNOT scope:\n- Ei kirjoita koodia (vain osoittaa ongelmat)\n- Ei tee arkkitehtuuri-review:ta (vain diff)\n- Ei optimoi suorituskykyä (jos ei ole selviä regressioita)",
+        "validate": "Nimi + rooli + kuluttaja + output + selvä NOT-scope on kirjattu.",
+        "tip": "NOT-scope suojaa scope creep:iltä. Ilman sitä agentti \"tekee kaiken\" kuukauden kuluttua — ja huonosti."
+      },
+      "ag-3": {
+        "title": "Kirjoita description (trigger)",
+        "time": "4 min",
+        "why": "Description on agentin pääartefakti. Siitä riippuu, delegoiko parent-agentti tehtävän vai ei.",
+        "instructions": {
+          "0": "Kuvaa: MILLOIN agentin pitää aktivoitua (trigger-lauseet / kontekstit).",
+          "1": "Kuvaa: MILLOIN se EI saa laueta (anti-triggers).",
+          "2": "Anna 2–3 esimerkkiä eksplisiittisistä \"kutsu minua\" / \"älä kutsu minua\"."
+        },
+        "example": "description: Use when user asks to review code changes, current diff, a\nspecific PR, or files in their working tree. Triggers on phrases like\n\"review my changes\", \"check this PR\", \"code review\", \"look at the diff\".\n\nDO NOT use for: writing new code, architecture discussions, debugging\nhelp, or when user explicitly asks for \"quick check\" — they want a\nhuman glance, not a structured review.",
+        "validate": "Description sisältää konkreettisia triggereitä ja eksplisiittisiä anti-triggereitä esimerkkien kanssa.",
+        "tip": "Description on agentin yleisin epäonnistumispiste. Testaa sitä 5+ oikealla pyynnöllä."
+      },
+      "ag-4": {
+        "title": "Kuvaile vaiheittainen workflow",
+        "time": "4 min",
+        "why": "Workflow on kuin koulutus agentille. Ilman sitä jokainen ajo on arpapeli.",
+        "instructions": {
+          "0": "Kirjoita askeleet numeroituna listana.",
+          "1": "Jokainen askel — konkreettinen toiminto + mikä välitetään seuraavalle.",
+          "2": "Viimeinen askel — output:in muoto parent-agentille."
+        },
+        "example": "## Workflow\n\n1. Read `git diff` of current changes (or specified PR).\n2. For each file in diff:\n   a. Check security: input validation, secrets, injection.\n   b. Check correctness: edge cases, off-by-one, null handling.\n   c. Check readability: naming, complexity, dead code.\n3. Group findings by severity:\n   - 🔴 Critical (blocks merge)\n   - 🟡 Important (should fix)\n   - 🟢 Nit (optional)\n4. Return markdown report:\n   - Top: 1-line summary (status: clean / yellow / red)\n   - Per-issue: file:line + what's wrong + how to fix.\n5. NEVER rewrite code — only point out issues.",
+        "validate": "Workflow lukeutuu reseptinä: ymmärrät, mitä agentti tekee jokaisella askeleella.",
+        "tip": "Jos askeleita on > 8 — agentti on liian iso. Jaa."
+      },
+      "ag-5": {
+        "title": "Luo subagent Claude Code:ssa",
+        "time": "4 min",
+        "why": "Agentin tiedosto sijaitsee `.claude/agents/<name>.md`. Tämä on helpompi kuin miltä kuulostaa.",
+        "instructions": {
+          "0": "Projektin juuressa: `mkdir -p .claude/agents`.",
+          "1": "Luo tiedosto `.claude/agents/code-reviewer.md` frontmatter:illa (katso esimerkki).",
+          "2": "Käynnistä `claude` uudelleen.",
+          "3": "Pyydä keskustelussa: \"kutsu code-reviewer nykyisille muutoksille\"."
+        },
+        "example": "---\nname: code-reviewer\ndescription: Use when user asks to review code changes... [täysi description]\ntools: Read, Bash\n---\n\nYou are a senior code reviewer. Your job is to review code changes...\n\n[täysi workflow askeleesta 4]",
+        "validate": "Agentti aktivoituu triggerillä, antaa rakenteellisen raportin.",
+        "troubleshoot": {
+          "Agentti ei aktivoidu": "Agentti ei aktivoidu",
+          "Agentti toimii, mutta output on väärä": "Tarkenna workflow — etenkin viimeinen output-muotoa koskeva askel.",
+          "Agentti toimii mutta tulos on väärä": "Agentti toimii mutta tulos ei vastaa odotuksia"
+        }
+      },
+      "ag-6": {
+        "title": "Testaa ja iteroi 5 oikealla tehtävällä",
+        "time": "2 min",
+        "why": "Ilman testausta agentti on hypoteesi. Taisteluajot paljastavat heikot kohdat.",
+        "instructions": {
+          "0": "Aja agenttia 5 kertaa eri oikeilla tehtävillä.",
+          "1": "Joka kerta: mikä toimi hyvin, mikä huonosti.",
+          "2": "Heikkoja kohtia — lisää sääntöjä workflow:hon tai anti-triggereitä.",
+          "3": "5–10 iteraation jälkeen agentti stabiloituu."
+        },
+        "validate": "Sinulla on vähintään 5 oikeaa ajoa; parannukset on kirjattu agentin tiedostoon.",
+        "tip": "Parhaat agentit syntyvät iteraatioiden kautta, eivät \"nerokkaasta ensimmäisestä luonnoksesta\". Älä murehdi täydellisyydestä."
+      }
+    },
+    "trigger": "Yksi Claude Code «unohtaa» tiettyjen tehtävätyyppien erityispiirteet — tarvitset omistautuneita suorittajia katselmointiin, testeihin, migraatioihin.",
+    "inputs": [
+      "Delegoitava tehtävätyyppi (review, tests, refactor)",
+      "Tarkistuslista «hyvä tulos»",
+      "Työkalut joihin agentti tarvitsee pääsyn"
+    ],
+    "outputs": [
+      "Valmis sub-agentti roolilla ja työkaluilla",
+      "Komento/triggeri pääclaudesta kutsumiseen",
+      "Kontekstin eristys tehtävien välillä"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "orkestroija"
+      },
+      {
+        "name": "Sub-agents API",
+        "role": "delegointi"
+      },
+      {
+        "name": "Opus 4",
+        "role": "monimutkaisiin agentteihin"
+      }
+    ],
+    "savings": "~40% aikaa toistuvissa insinöörityyppisissä tehtävissä"
+  },
+  "subagents": {
+    "title": "Subagents Claude Code:ssa",
+    "subtitle": "Rinnakkaisia agentteja — Explore, Plan, omat custom",
+    "totalTime": "15 min",
+    "whatItIs": "Subagent on eristetty suorittaja [[node:claude-code|Claude Code]]:n sisällä: oma konteksti, omat työkalut, oma output. Tämä EI ole Skill (Skill = tieto miten tehdä; Subagent = kuka tekee). Tämän käytännönkurssin jälkeen sekaannus poistuu.",
+    "approach": "Käytä ensin valmiita subagents:eja (Explore, Plan) oikealla tehtävällä — ymmärtääksesi, mitä \"kontekstin eristys\" tarkoittaa. Vasta sitten luo oma. Ilman tätä järjestystä oma jää \"vajaaksi Skill:iksi\".",
+    "outcomes": {
+      "0": "Käynnistät Explore:n hakuun isossa reposissa ilman kontekstin paisuttamista",
+      "1": "Käynnistät Plan:in ennen vaarallisia muutoksia",
+      "2": "Luot oman custom subagent:in tiimin rutiinitehtävälle",
+      "3": "Tiedät milloin subagent voittaa Skill:n (ja päinvastoin)"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Haku isossa reposissa",
+        "description": "Käynnistät Explore:n — se palauttaa findings:t, pääkontekstisi pysyy puhtaana."
+      },
+      "1": {
+        "title": "Vaaralliset muutokset",
+        "description": "20+ tiedoston suunniteltu refaktorointi — Plan rakentaa suunnitelman, sinä review:aat, sitten sovellat."
+      },
+      "2": {
+        "title": "Tiimi",
+        "description": "Oma code-reviewer, security-auditor — konfiguroit kerran, koko tiimi käyttää yhdenmukaisesti."
+      }
+    },
+    "pitfalls": {
+      "0": "Käyttää subagent:ia yksinkertaiseen tehtävään (2 tiedoston lukeminen) — overkill, menetät nopeuden.",
+      "1": "Luoda oma subagent ilman selvää triggeriä description:issa — se ei koskaan aktivoidu.",
+      "2": "Antaa subagent:ille kehote tyyliin \"jatka päättelyäni\" — se ei näe historiaasi, tarvitsee täyden alustuksen.",
+      "3": "Tehdä subagent \"rinnakkaisuuden\" vuoksi siellä, missä tehtävät riippuvat toisistaan — tuloksissa tulee konflikti."
+    },
+    "exercises": {
+      "0": {
+        "question": "Käynnistä Explore omassa työ-repossasi: \"Etsi kaikki paikat, joissa käytetään vanhentunutta API X:ää\". Vertaa aikaa manuaaliseen grep:iin.",
+        "hint": "Explore:n pitää palauttaa rakenteellinen lista — ei \"tässä muutamia paikkoja\", vaan täydellinen."
+      },
+      "1": {
+        "question": "Luo oma subagent toistuvalle tehtävälle (code review / changelog / dependency audit). Aja oikealla haaralla.",
+        "hint": "Description = trigger. \"Use when user asks for X\". Ei \"tekee X\"."
+      },
+      "2": {
+        "question": "Etsi tehtävä, jonka aiemmin teit Skill:llä. Muotoile uudelleen subagent:iksi. Mittaa — missä on voitto, missä häviö.",
+        "hint": "Subagent voittaa pitkissä hauissa; Skill voittaa lyhyissä toistettavissa proseduureissa."
+      }
+    },
+    "steps": {
+      "sa-1": {
+        "title": "Käynnistä Claude Code repositoriossa",
+        "time": "1 min",
+        "why": "Subagents:it ovat vain Claude Code:ssa, eivät [[node:pl-web-setup|claude.ai]]:ssa. Tarvitaan asennus + projekti.",
+        "instructions": {
+          "0": "Avaa terminaali reposissa: cd ~/projects/your-repo",
+          "1": "Aja: claude",
+          "2": "Jos ensimmäistä kertaa — käy /init CLAUDE.md:lle."
+        },
+        "validate": "Näet Claude Code:n kehotteen terminaalissa. Istunto on aktiivinen.",
+        "troubleshoot": {
+          "command not found: claude": "Asenna: npm install -g @anthropic-ai/claude-code",
+          "Käynnistyy, mutta ei tiedostoja": "Et ole git-repositoriossa. Mene oikeaan projektiin.",
+          "Käynnistyy mutta tiedostoja ei luoda": "Käynnistyy mutta tiedostoja ei ole"
+        }
+      },
+      "sa-2": {
+        "title": "Katso käytettävissä olevat subagents:it",
+        "time": "1 min",
+        "why": "Ensin tiedustelu — mitä on jo valmiina.",
+        "instructions": {
+          "0": "Keskustelussa kirjoita: /agents",
+          "1": "Lue lista: Explore (haku), Plan (suunnittelu), general-purpose.",
+          "2": "Huomaa: jokaisella on kuvaus ja tools."
+        },
+        "validate": "Sinulla on lista 3+ subagent:ista kuvauksineen.",
+        "tip": "Jos plugin:eja on asennettu — subagents:eja lisätään. Tämä on normaalia."
+      },
+      "sa-3": {
+        "title": "Käynnistä Explore oikealla tehtävällä",
+        "time": "4 min",
+        "why": "Tämä on keskeinen hetki — ymmärrät, mitä \"kontekstin eristys\" tarkoittaa.",
+        "instructions": {
+          "0": "Muotoile tehtävä: \"Missä käytetään vanhentunutta X:ää?\" tai \"Etsi kaikki TODO:t Y:stä\".",
+          "1": "Pyydä: \"Käynnistä Explore agent etsimään ...\" — Claude delegoi itse.",
+          "2": "Odota tulosta — se tulee yhteenvetona, ei täytenä hakulokina.",
+          "3": "Tarkista: pääkontekstisi ei paisunut tiedostoista — siellä on vain findings."
+        },
+        "prompt": "Käytä Explore agent:ia: etsi kaikki paikat reposissa, joissa importataan vanhentunut X, ja palauta lista file:line.",
+        "validate": "Saat puhtaan listan \"file:line — mitä löytyi\" pääkeskustelussa, ilman raakoja grep-tulosteita.",
+        "tip": "Jos tehtävä vaatii 5+ tiedoston lukemista — tämä on yksiselitteisesti Explore. Jos 1–2 — tavallinen Read on nopeampi."
+      },
+      "sa-4": {
+        "title": "Käynnistä Plan ennen vaarallista korjausta",
+        "time": "3 min",
+        "why": "Plan on \"mieti ennen kuin teet\", ilman tiedostomuutoksia.",
+        "instructions": {
+          "0": "Muotoile tehtävä: \"Kirjoita kaikki X:n käsittelijät uudelleen tyylillä Y\".",
+          "1": "Pyydä: \"Käynnistä ensin Plan agent\" — Claude palauttaa suunnitelman muutoslistana.",
+          "2": "Lue suunnitelma kriittisesti. Etsi riskit / unohduksia.",
+          "3": "Hyväksy suunnitelma tai palaa viilattavaksi — sitten käynnistä toteutus."
+        },
+        "prompt": "Käynnistä Plan agent refaktoroidaksesi <konkreettinen paikka>. Haluan nähdä listan tiedostoista, muutoksista ja mahdollisista regressioista ennen korjauksia.",
+        "validate": "Sinulla on suunnitelma konkreettisilla file:line:illa ja muutosten kuvauksilla, ILMAN sovellettuja muutoksia.",
+        "tip": "Plan + suunnitelman manuaalinen review = 5× vähemmän \"oho\":ja isoissa korjauksissa. Erityisen arvokas legacy:ssä."
+      },
+      "sa-5": {
+        "title": "Luo oma custom subagent",
+        "time": "4 min",
+        "why": "Oma muuttaa säännöllisen tehtävän napiksi.",
+        "instructions": {
+          "0": "Keskustelussa: /agents → luo uusi.",
+          "1": "Nimi: esim. security-reviewer.",
+          "2": "Description: \"Use when user asks to review security of changes / PR / branch\" (trigger!).",
+          "3": "Askeleet: 1) read git diff, 2) check OWASP top-10, 3) output severity-ranked list.",
+          "4": "Tallenna. Tiedosto luotu kansioon .claude/agents/."
+        },
+        "validate": "/agents:issa näkyy uusi agentti. .claude/agents/security-reviewer.md:ssä on konfiguraatio.",
+        "tip": "Description on TÄRKEÄMPI kuin nimi. Ilman selvää triggeriä agentti ei koskaan aktivoidu.",
+        "troubleshoot": {
+          "Agentti ei käynnisty pyynnöstä \"tee security review\"": "Description on liian yleinen tai konfliktissa toisen agentin kanssa. Tee uniikiksi.",
+          "Agentti ei käynnisty pyynöllä \"tee tietoturvatarkistus\"": "Agentti ei käynnisty 'tee security review' -pyynnöllä",
+          "Käynnistyy epäolennaisille pyynnöille": "Description on liian laaja. Lisää negatiivisia triggereitä: \"Use ONLY when ...\".",
+          "Käynnistyy epäolennaisilla pyynnöillä": "Käynnistyy epäolennaisilla pyynnöillä"
+        }
+      },
+      "sa-6": {
+        "title": "Ymmärrä ero Skill vs Subagent",
+        "time": "2 min",
+        "why": "Loppuvahvistus. Ilman sitä sekaannus palaa viikossa.",
+        "instructions": {
+          "0": "Ota 3 omaa säännöllistä tehtävääsi.",
+          "1": "Jokaisesta vastaa: tarvitaanko kontekstin eristys? Tarvitaanko omat tools:it? Onko tehtävä pitkä?",
+          "2": "Kaikki \"kyllä\" → subagent. Kaikki \"ei\" → Skill. Sekoitettu → mieti vielä.",
+          "3": "Kirjaa valinta taulukkoon: Tehtävä → Skill | Subagent | Hybrid."
+        },
+        "validate": "Sinulla on 3 tehtävää perustellulla työkaluvalinnalla. Osaat selittää valinnan sanoin.",
+        "tip": "Hybrid:iäkin esiintyy: Skill kutsuu Subagent:ia raskaaseen osaan — parasta molemmista maailmoista."
+      }
+    },
+    "trigger": "Olet hämmennyksissä: miten Skill eroaa Subagentista — ja milloin valita kumpi.",
+    "inputs": [
+      "Claude Code asennettu",
+      "Delegointi-ehdokas tehtävä",
+      "Skillien perusteet (suositus)"
+    ],
+    "outputs": [
+      "Toimiva subagentti eristetyllä kontekstilla",
+      "Selkeä ero Skill (miten tehdä) vs Subagentti (kuka tekee)",
+      "Kutsukomento ja tuloksen tarkistus"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "subagenttien isäntä"
+      },
+      {
+        "name": ".claude/agents/",
+        "role": "agentin konfiguraatio"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "agentin malli"
+      }
+    ],
+    "savings": "~25-40% kontekstiikkunaa säästyy eristyksen ansiosta"
+  },
+  "tool-use": {
+    "title": "Tool use: anna Claudelle kädet",
+    "subtitle": "Function calling — integraatioiden, agenttien ja MCP:n perusta",
+    "totalTime": "15 min",
+    "whatItIs": "Tool use (function calling) on mekanismi, jonka kautta Claude kutsuu sinun funktioitasi JSON-schema:n perusteella. Tämä on MCP:n, custom-agenttien ja minkä tahansa integraatioiden perusta. Käytännönkurssin jälkeen ymmärrät arkkitehtuurin sisältäpäin, et \"taikana\".",
+    "approach": "Ilman hyviä tools-kuvauksia agentti erehtyy jatkuvasti. Opettele ensin kirjoittamaan kuvauksia, sitten suunnittele setit. Itse kutsujen koodi on toissijaista, sen kirjoittaa SDK.",
+    "outcomes": {
+      "0": "Ymmärrät tool use:n virran: schema → tool:in valinta → kutsu → tulos → vastaus",
+      "1": "Kuvaat tool:in niin, että Claude valitsee oikean 95 %:ssa tapauksista",
+      "2": "Tiedät milloin tool use on parempi kuin MCP ja päinvastoin",
+      "3": "Suunnittelet asiantuntevasti tools-setin omalle agentillesi"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Oma agentti",
+        "description": "Mikä tahansa custom-agentti = tools-järjestelmä. Ilman tool use:n ymmärtämistä agenttia ei rakenna."
+      },
+      "1": {
+        "title": "Integraatio tuotteeseen",
+        "description": "Claude sinun sovelluksessasi kutsuu sinun backendin funktioita — tämä on tool use."
+      },
+      "2": {
+        "title": "MCP:n arkkitehtuuri",
+        "description": "MCP-palvelin = vain tools standardiprotokollalla. Ymmärrettyäsi tool use:n ymmärrät MCP:n."
+      }
+    },
+    "pitfalls": {
+      "0": "Antaa tools:eja ilman selvää kuvausta vaikutuksista — Claude kutsuu destruktiivista sopimattomilla argumenteilla.",
+      "1": "Tehdä \"yleiskäyttöinen\" tool 10 parametrilla 3 kapean sijaan — Claude menee sekaisin.",
+      "2": "Ei eroteta read- ja write-tools:eja — malli sekoittaa kyselyt ja muutokset.",
+      "3": "Luottaa \"malli arvaa\" parametrien tyypeistä — kuvaa JSON Schema tiukasti."
+    },
+    "exercises": {
+      "0": {
+        "question": "Ota tehtävä työstäsi (esim. \"vastaa support-tiketteihin\"). Suunnittele 3–5 tools agentille: nimet, parametrit, vaikutukset.",
+        "hint": "Erottele read (get_ticket, list_recent) ja write (reply, escalate). Jokainen — kapea."
+      },
+      "1": {
+        "question": "Ota yksi tool projektistasi ja kirjoita 2 versiota description:ista: huono (1 lause) ja hyvä (mitä, milloin, mitä EI tehdä). Vertaa Clauden valintaa.",
+        "hint": "Hyvä description = milloin soveltaa + milloin ei + esimerkit argumenteista."
+      },
+      "2": {
+        "question": "Etsi prosesseistasi tehtävä, jossa käytät nyt vapaata chat:ia. Suunnittele, miltä se näyttäisi tool use:n kautta.",
+        "hint": "Jos tehtävä = \"etsi ja tee\" — se on ihanteellinen ehdokas tool use:lle."
+      }
+    },
+    "steps": {
+      "tu-1": {
+        "title": "Ymmärrä, mikä tool use on yksinkertaisesti",
+        "time": "2 min",
+        "why": "Ilman vuorovaikutusmallia seuraavat askeleet ovat \"jonkun muun keittiöstä\".",
+        "instructions": {
+          "0": "Lue virran kaavio: User → Claude → Claude valitsee tool:in → sinun järjestelmäsi suorittaa → tulos → Claude muotoilee vastauksen.",
+          "1": "Huomaa: Claude EI suorita koodia. Se vain päättää \"mikä tool kutsutaan ja millä argumenteilla\".",
+          "2": "Suorittaminen on sinun puolellasi (SDK / MCP-server / sinun backendisi)."
+        },
+        "validate": "Osaat selittää 30 sekunnissa: kuka tekee mitä tool use:n virrassa.",
+        "tip": "Tämä on tarkalleen sama kaava kuin MCP:ssä — siellä on standardoitu kuljetus Clauden ja tools:ien välillä."
+      },
+      "tu-2": {
+        "title": "Lue tool:in minimi-JSON-schema",
+        "time": "3 min",
+        "why": "Tämä on muoto, jonka Claude näkee. Hallinta on pakollista.",
+        "instructions": {
+          "0": "Avaa esimerkki: name + description + input_schema (JSON Schema).",
+          "1": "Huomaa: input_schema kuvaa parametrit type:n, description:in, enum:in, required:in kautta.",
+          "2": "Description on tärkein osa. Claude lukee sen päättääkseen \"sovellanko vai en\".",
+          "3": "Esimerkki: name: \"get_weather\", description: \"Get current weather for a city. Use ONLY when user asks about current weather, not forecasts.\", input_schema: { city: { type: \"string\" } }."
+        },
+        "validate": "Osaat tyhjästä kirjoittaa schema:n tool:lle \"lähetä sähköposti\" — name, description, parametrit.",
+        "tip": "Anthropic SDK / MCP / [[node:claude-code|Claude Code]] — kaikki käyttävät samaa schemaa. Opettele kerran, sovella kaikkialla."
+      },
+      "tu-3": {
+        "title": "Kirjoita hyvä description",
+        "time": "4 min",
+        "why": "Yleisin syy \"agentti ei toimi\" on huono description.",
+        "instructions": {
+          "0": "Pohja: MITÄ tekee (1 lause) → MILLOIN soveltaa (trigger) → MILLOIN EI soveltaa (anti-trigger) → ESIMERKKEJÄ argumenteista.",
+          "1": "Ota tool:isi tehtävästä 2. Kirjoita description pohjan mukaan.",
+          "2": "Testi: anna 3 erilaista käyttäjän pyyntöä — Clauden pitää päättää oikein, käyttääkö tool:ia vai ei."
+        },
+        "prompt": "description: \"Send transactional email to a user (e.g. order confirmation, password reset). Use when user explicitly asks to notify a person. Do NOT use for marketing emails — those go through marketing_send. Example args: {to: \\\"user@x.com\\\", template: \\\"order-confirmed\\\", vars: {order_id: \\\"42\\\"}}\"",
+        "validate": "Description sisältää milloin soveltaa + anti-triggerin + esimerkin.",
+        "tip": "Yksi description-kappale on usein ero 60 %:n ja 95 %:n tarkkuuden välillä. Älä säästele."
+      },
+      "tu-4": {
+        "title": "Suunnittele kapea tools-setti",
+        "time": "3 min",
+        "why": "Kapeat tools:it = luotettava agentti. Laajat = sekaannusta.",
+        "instructions": {
+          "0": "Ota tehtävä tehtävästä 1. Jaa read / write tools:eihin.",
+          "1": "Jokainen tool — yksi tarkoitus, enintään 3–5 parametria.",
+          "2": "Vaaralliset toiminnot (write / delete) — erilliset tools:it eksplisiittisellä confirm-lipulla.",
+          "3": "Enintään 10 tools per agentti. Jos enemmän — jaa kahdeksi agentiksi."
+        },
+        "validate": "Sinulla on 3–7 tools:ia, kukin kapea, read ja write erotettuna, vaaralliset erikseen.",
+        "tip": "Hyvä merkki: osaat sanoa jokaisesta tool:ista \"milloin käyttäisin sitä\". Jos vaikeuksia — turha tai huonosti kuvattu.",
+        "troubleshoot": {
+          "Tuli 15 tools:ia": "Osa on ylimääräistä. Yhdistä samankaltaiset (jos parametrit sopivat) tai jaa agentti kahtia.",
+          "Päädyin 15 työkaluun": "Tuli 15 työkalua",
+          "Yksi tool 8 parametrilla": "Jaa 2–3 kapeaksi — Claude valitsee tarkemmin.",
+          "Yksi työkalu 8 parametrilla": "Yksi työkalu 8 parametrilla"
+        }
+      },
+      "tu-5": {
+        "title": "Päätä: tool use vs MCP",
+        "time": "2 min",
+        "why": "Milloin kirjoittaa itse, milloin ottaa MCP.",
+        "instructions": {
+          "0": "Tool use suoraan = kun tools:it ovat omalle tuotteellesi spesifejä, ei muille tarpeellisia.",
+          "1": "MCP = kun tools:it voivat olla hyödyllisiä useille asiakkaille / uudelleenkäytettäviä / standardointia tarvitaan.",
+          "2": "Vertaa: onko tehtäväsi uudelleenkäytettävä? Jos kyllä — MCP. Jos uniikki — tavallinen tool use."
+        },
+        "validate": "Ymmärrät, missä tapauksessa kirjoitat MCP-palvelimen, missä — pelkät tools omalle agentillesi.",
+        "tip": "Yrityksen sisäinen CRM = tool use (kukaan ulkopuolella ei käytä). Postgres-kääre = MCP (universaalisti hyödyllinen)."
+      },
+      "tu-6": {
+        "title": "Sovella omaan tehtävääsi",
+        "time": "1 min",
+        "why": "Ilman siirtoa kaikki tämä on teoriaa.",
+        "instructions": {
+          "0": "Ota yksi prosessi työstäsi, jota toistat >5 kertaa viikossa.",
+          "1": "Kuvaa se 2–3 tools:ina (tai MCP-palvelimena) paperille / Notion:iin.",
+          "2": "Älä kirjoita koodia — kirjoita spesifikaatio: name, description, params."
+        },
+        "validate": "Sinulla on spesifikaatio oikealle prosessille. Valmis luovutettavaksi kehittäjälle / itsenäiseen toteutukseen.",
+        "tip": "Spesifikaatio on arvokkaampi kuin \"yritin koodata\" — ilman sitä koodia uusitaan 3 kertaa."
+      }
+    },
+    "trigger": "Tarvitset Clauden kutsuvan funktioitasi / API:asi — ei vain tuottavan tekstiä.",
+    "inputs": [
+      "Kutsuttavan funktion kuvaus",
+      "JSON-schema parametreille",
+      "Anthropic API -avain"
+    ],
+    "outputs": [
+      "Toimiva tool_use-sykli JSON-schemalla",
+      "Ymmärrys ToolResultista ja virheenkäsittelystä",
+      "Pohja MCP:lle / agenteille / integraatioille"
+    ],
+    "tools": [
+      {
+        "name": "Anthropic SDK",
+        "role": "tool_use API"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "function calling"
+      },
+      {
+        "name": "JSON Schema",
+        "role": "tool-määritykset"
+      }
+    ],
+    "savings": "~80% integrointiajasta vs tekstivastausten parsiminen käsin"
+  },
+  "hooks": {
+    "title": "Hooks: kurin automatisointi",
+    "subtitle": "Taatut toiminnot tapahtumiin — ilman \"toivottavasti ei unohda\"",
+    "totalTime": "12 min",
+    "whatItIs": "Hooks ovat shell-komentoja, joita [[node:claude-code|Claude Code]] suorittaa tapahtumiin (PreToolUse, PostToolUse, Stop ym.). Ne toimivat HARNESSI-TASOLLA, ei mallin. Siksi ne ovat luotettavia: malli ei voi \"unohtaa\" hook:ia.",
+    "approach": "Hooks ovat koodia, ei tekstiä. Selvitä ensin tapahtumat ja ympäristömuuttujat, kirjoita sitten ensimmäinen hook turvalliselle toiminnolle (tiedoston muoto). Vasta sitten — herkille (deny komennolle rm -rf).",
+    "outcomes": {
+      "0": "Tunnet kaikki keskeiset tapahtumat (Pre/Post ToolUse, Stop, UserPromptSubmit)",
+      "1": "Konfiguroit 2–3 toimivaa hook:ia: autoformat, guard vaarallisille komennoille, post-edit checks",
+      "2": "Ymmärrät eron: hook vs slash-komento vs subagent",
+      "3": "Voit jakaa hook:eja tiimille settings.json:in kautta git:ssä"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Koodin laatu",
+        "description": "PostToolUse:Write → prettier / lintteri. Taattu muoto jokaisella korjauksella."
+      },
+      "1": {
+        "title": "Turvallisuus",
+        "description": "PreToolUse:Bash → estää vaaralliset komennot (rm -rf, git push --force) ennen suoritusta."
+      },
+      "2": {
+        "title": "Mittarit / observability",
+        "description": "Stop → istunnon loki jsonl:ksi. Näet, mitä Claude teki ja paljonko tokeneita kului."
+      }
+    },
+    "pitfalls": {
+      "0": "Raskas shell-skripti hook:issa — hidastaa jokaista Clauden toimintoa. Hook:in pitää olla nopea (<500 ms).",
+      "1": "Hook, joka muuttaa samaa tiedostoa — voi joutua ikuiseen silmukkaan mallin kanssa. Käytä PostToolUse:Write:ä varovasti.",
+      "2": "Laittaa hook:eja salaisuuksilla yhteiseen settings.json:iin — ne menevät git:iin. Herkät — settings.local.json:iin.",
+      "3": "Käyttää hook:ia subagent:in sijaan pitkille tehtäville — hook blokkaa. Pitkä on subagent."
+    },
+    "exercises": {
+      "0": {
+        "question": "Etsi workflow:stasi tehtävä \"jokaisen X:n korjauksen jälkeen — tee Y\". Muotoile PostToolUse hook:iksi.",
+        "hint": "Klassikko: prettier Write:n jälkeen, npm test Edit:in jälkeen testitiedostolle, git status Bash:in jälkeen."
+      },
+      "1": {
+        "question": "Etsi vaarallinen komento, jota et luota Claudelle. Tee PreToolUse hook, joka estää sen.",
+        "hint": "Pohja: tarkista $CLAUDE_BASH_COMMAND grep -E:llä kuvioon → exit 1 jos osuma."
+      },
+      "2": {
+        "question": "Tee Stop-hook, joka kirjaa istunnon päättymisen .claude/logs/session.jsonl:iin. Käytä analytiikkaan \"minkä parissa työskentelin\".",
+        "hint": "echo {...json...} >> .claude/logs/session.jsonl — yksinkertaisin vaihtoehto."
+      }
+    },
+    "steps": {
+      "hk-1": {
+        "title": "Ymmärrä tapahtumamalli",
+        "time": "2 min",
+        "why": "Hooks:t on sidottu tapahtumiin. Tunnet tapahtumat — tunnet mahdollisuudet.",
+        "instructions": {
+          "0": "Keskeiset: PreToolUse (ennen tool:in kutsua — voi peruuttaa), PostToolUse (jälkeen — voi reagoida).",
+          "1": "Hyödylliset: Stop (istunnon loppu), UserPromptSubmit (käyttäjän uusi kehote).",
+          "2": "Jokainen tapahtuma antaa ympäristömuuttujia: $CLAUDE_FILE_PATH, $CLAUDE_BASH_COMMAND, $CLAUDE_TOOL_NAME."
+        },
+        "validate": "Osaat nimetä 3 tapahtumaa ja jokaisesta — tyypillisen sovellusskenaarion.",
+        "tip": "Pre vs Post — yleinen sekaannus. Pre = ennen, voit estää. Post = jälkeen, voit reagoida."
+      },
+      "hk-2": {
+        "title": "Avaa settings.json ja löydä hooks-osio",
+        "time": "2 min",
+        "why": "Hooks:t asuvat .claude/settings.json:issa (projektikohtaiset) tai ~/.claude/settings.json:issa (globaalit).",
+        "instructions": {
+          "0": "Avaa .claude/settings.json reposta. Jos sitä ei ole — luo.",
+          "1": "Etsi tai lisää osio: \"hooks\": { ... }.",
+          "2": "Jokaiselle tapahtumalle — komentojen lista: \"PostToolUse:Write\": [{\"command\": \"...\"}]."
+        },
+        "validate": "Sinulla on validi JSON tyhjällä hooks-lohkolla.",
+        "tip": "Hooks settings.json:issa menevät git:iin. settings.local.json:issa — vain paikallisesti. Valitse tietoisesti."
+      },
+      "hk-3": {
+        "title": "Kirjoita ensimmäinen hook — autoformat",
+        "time": "3 min",
+        "why": "Turvallinen hook harjoitteluun.",
+        "instructions": {
+          "0": "Lisää: \"PostToolUse:Write\": [{\"command\": \"npx prettier --write $CLAUDE_FILE_PATH 2>/dev/null || true\"}].",
+          "1": "Käynnistä Claude Code uudelleen, jotta se ottaa asetukset käyttöön.",
+          "2": "Pyydä Claudea muokkaamaan tiedostoa. Write:n jälkeen näet prettier:in ajaneen.",
+          "3": "|| true lopussa — jottei hook kaadu, jos tiedosto ei ole prettier:in tukema."
+        },
+        "validate": "Jokaisen Clauden korjauksen jälkeen tiedosto on automaattisesti muotoiltu.",
+        "tip": "Sama pohja toimii biome:lle, eslint --fix:lle, ruff format:lle — mille tahansa formaattereille.",
+        "troubleshoot": {
+          "Hook ei laukea": "Hook ei laukea",
+          "Claude jää jumiin Write:n jälkeen": "Hook on liian hidas. Lisää timeout tai siirrä taustalle.",
+          "Claude jäätyy Write-komennon jälkeen": "Claude jäätyy Write-toiminnon jälkeen"
+        }
+      },
+      "hk-4": {
+        "title": "Suojaudu PreToolUse-hook:lla vaarallisilta komennoilta",
+        "time": "3 min",
+        "why": "Oikea guard. Erityisen tärkeä, jos sallit Bash:in permissions:issa.",
+        "instructions": {
+          "0": "Lisää: \"PreToolUse:Bash\": [{\"command\": \"echo \\\"$CLAUDE_BASH_COMMAND\\\" | grep -qE \\\"rm -rf|git push --force|git reset --hard\\\" && exit 1 || exit 0\"}].",
+          "1": "Käynnistä Claude uudelleen. Pyydä Claudea suorittamaan rm -rf temp/.",
+          "2": "Hook:in pitää estää — Claude saa virheen eikä aja komentoa."
+        },
+        "validate": "Vaarallinen komento estyy ennen suoritusta, turvallinen menee läpi.",
+        "tip": "Tämä on deny-by-pattern, joka täydentää permissions.deny:tä. Hyödyllinen, kun permissions ovat liian yleiset."
+      },
+      "hk-5": {
+        "title": "Kirjaa istunto Stop-hook:lla",
+        "time": "2 min",
+        "why": "Observability — näet, mitä Claude teki.",
+        "instructions": {
+          "0": "Lisää: \"Stop\": [{\"command\": \"echo \\\"$(date +%s),$CLAUDE_SESSION_ID,$CLAUDE_TOTAL_TOKENS\\\" >> .claude/logs/session.csv\"}].",
+          "1": "mkdir -p .claude/logs.",
+          "2": "Työskentele Clauden kanssa. Sulje istunto.",
+          "3": "Avaa .claude/logs/session.csv — siellä on tilastosi."
+        },
+        "validate": "Istunnot kirjataan timestamp:in + token:ien kanssa.",
+        "tip": "Pitkällä aikavälillä nämä tilastot näyttävät, mitkä tehtävät ovat kalliita, mitkä halpoja. Hyödyllinen optimointiin."
+      },
+      "hk-6": {
+        "title": "Päätä: hook vs slash vs subagent",
+        "time": "1 min",
+        "why": "Loppuvahvistus työkalun valinnasta.",
+        "instructions": {
+          "0": "Hook — tapahtumaan, synkronisesti, nopea (<500 ms), ilman päätöslogiikkaa.",
+          "1": "Slash-komento — käyttäjän triggerillä, voi olla pitkä.",
+          "2": "Subagent — rinnakkainen tehtävä kontekstin eristyksellä.",
+          "3": "Ota 3 tarvettasi → valitse työkalu kullekin."
+        },
+        "validate": "Osaat perustella valinnan 3 tehtävälle — miksi juuri hook / slash / subagent.",
+        "tip": "Hooks ovat erityisen arvokkaita taattuihin toimintoihin — malli voi \"unohtaa\", hook ei unohda."
+      }
+    },
+    "trigger": "Claude Code «unohtaa» joskus ajaa testit/lintin ennen commitia — tarvitaan kova kuri.",
+    "inputs": [
+      "Claude Code asennettu",
+      "Lista pysäytettävistä tapahtumista (PreToolUse, Stop, ...)",
+      "Shell-komennot ajettavaksi"
+    ],
+    "outputs": [
+      "Toimiva hooks-konfiguraatio settings.jsonissa",
+      "Automaattinen lint/test/format oikeissa tapahtumissa",
+      "Takuu ettei malli «unohda»"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code hooks",
+        "role": "PreToolUse/PostToolUse/Stop"
+      },
+      {
+        "name": "settings.json",
+        "role": "hooksien konfiguraatio"
+      },
+      {
+        "name": "Shell",
+        "role": "komentojen suoritus"
+      }
+    ],
+    "savings": "~20-30 min/päivä manuaalisista tarkistuksista + nolla «unohdettua» testiä"
+  },
+  "first-project": {
+    "title": "Luo ensimmäinen projekti Clauden kanssa",
+    "subtitle": "Tyhjästä koneesta käynnissä olevaan Claude Codeen",
+    "totalTime": "30 min",
+    "whatItIs": "Läpileikkaava oppitunti aivan aloittelijalle: Node.js:n asennus, terminaalin avaaminen, kansion luonti, [[node:claude-code|Claude Code]]:n asennus, ensimmäinen [[node:cc-cmd-init|/init]] ja ensimmäinen oikea pyyntö. Ilman oletusta \"osaat jo cd:n\".",
+    "approach": "Oppitunti haarautuu vaiheessa 1: [[node:pl-web-setup|claude.ai]] (ilman terminaalia, lopetat vaiheessa 2) tai Claude Code (kaikki vaiheeseen 10 asti). Valitse sen mukaan, mikä on tärkeämpää: nopea aloitus ilman asennuksia vai täysi hallinta projektin tiedostoihin.",
+    "outcomes": {
+      "0": "Ymmärrät eron claude.ai-projektin ja paikallisen kansion välillä",
+      "1": "Asensit Node.js:n ja osaat tarkistaa version",
+      "2": "Avasit terminaalin etkä pelkää sitä",
+      "3": "Loit ensimmäisen työkansiosi (kahdella tavalla)",
+      "4": "Asensit Claude Code:n ja kävit autentikoinnin läpi",
+      "5": "Generoit CLAUDE.md:n ja lähetit ensimmäisen oikean pyynnön"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Ensimmäinen päivä Clauden kanssa",
+        "description": "Korvaa \"luin dokumentaation eikä mikään toimi\" -tilan tilalla \"30 minuutin kuluttua jo teen jotain\"."
+      },
+      "1": {
+        "title": "Kollegan perehdytys",
+        "description": "Anna linkki — ja kollega pääsee puolessa tunnissa samaan lähtötilaan kuin sinä."
+      },
+      "2": {
+        "title": "Puhdas asennus",
+        "description": "Ostit uuden Macin tai vaihdoit Windows:iin — käy oppitunti läpi ja palauta työympäristö."
+      }
+    },
+    "pitfalls": {
+      "0": "Ohittaa vaihe 1 (polun valinta) ja kiirehtiä suoraan terminaaliin — sitten huomata, että claude.ai-Project olisi riittänyt.",
+      "1": "Luoda kansio välilyönneillä tai kyrillisellä nimessä — sitten cd valittaa, eikä ymmärrä miksi.",
+      "2": "Asentaa vanha Node.js-versio (<18) — Claude Code valittaa \"engine not supported\".",
+      "3": "Olla tekemättä /init:iä — Claude selvittää projektin joka kerta uudelleen."
+    },
+    "exercises": {
+      "0": {
+        "question": "Käy oppitunti loppuun valitsemaasi polkua pitkin vaiheesta 1. Mittaa kokonaisaika.",
+        "hint": "Polku A (claude.ai) — 5–10 min. Polku B (Claude Code) — 25–35 min."
+      },
+      "1": {
+        "question": "Suorituksen jälkeen — luo toinen kansio toiselle projektille ja tarkista, että Claude Code poimii toisen CLAUDE.md:n oikein.",
+        "hint": "Tämä tarkistaa, että ymmärsit eristyksen: yksi projekti = yksi kansio = oma konteksti."
+      }
+    },
+    "steps": {
+      "fp-1": {
+        "title": "Valitse polku: claude.ai vai Claude Code",
+        "time": "2 min",
+        "why": "Nämä ovat kaksi eri tapaa työskennellä Clauden kanssa, molemmat valideja. Parempi ymmärtää valinta heti kuin tehdä uudelleen tunnin päästä.",
+        "instructions": {
+          "0": "claude.ai (polku A): selainpohjainen chat, Projects, Artifacts. Ei tarvita terminaalia. Ei tarvita asennusta. Riittää useimpiin tehtäviin: kirjoittaminen, analysointi, keskustelu.",
+          "1": "Claude Code (polku B): CLI-työkalu, työskentelee paikallisten tiedostojesi kanssa, käyttää git:iä ja MCP:tä. Tarvitaan terminaali ja Node.js. Kehitykseen ja automaatioon.",
+          "2": "Sääntö: jos tehtäväsi on \"keskustella dokumentista\" — polku A riittää. Jos tehtävä on \"muokata koodia repositoriossa\" — polku B.",
+          "3": "Valitse polku ja kiinnitä: A → siirry vaiheeseen 2 ja lopeta. B → vaiheeseen 3 ja koko loput oppitunnista."
+        },
+        "validate": "Osaat selittää itsellesi yhdessä lauseessa, miksi valitsit juuri tämän polun.",
+        "tip": "Epäröit — aloita A:lla. B:hen siirtyminen myöhemmin ei ole vaikeampaa kuin nyt."
+      },
+      "fp-2": {
+        "title": "Polku A — luo Project claude.ai:hin",
+        "time": "3 min",
+        "why": "Project on pysyvä työtilasi claude.ai:ssa omilla ohjeillaan ja tietopohjallaan. Tämä on lyhyen polun viimeinen vaihe.",
+        "instructions": {
+          "0": "Avaa claude.ai → kirjaudu (Free riittää aloitukseen, Pro Projects:eihin).",
+          "1": "Vasemmalta sivupalkista löydä \"Projects\" → \"+ New project\".",
+          "2": "Nimi: mitä teet + mihin (esim. \"Raporttien säännöllinen auditointi\").",
+          "3": "Description: 1–2 riviä — mihin projekti on ja mitä tulosta odotat.",
+          "4": "Lataa 1–3 tiedostoa Project knowledge:en (jos on). Riittää aloitukseen.",
+          "5": "Valmista. Avaa ensimmäinen keskustelu Project:ssa ja lähetä oikea pyyntö."
+        },
+        "prompt": "Käyttäen ladattuja tiedostoja Project knowledge:sta tee ensimmäinen erittely syötteelle: [URL / dokumentti / kuvaus]. Muoto — top-5 huomiota prioriteetin mukaan.",
+        "validate": "Sinulla on Project vähintään yhdellä oikealla keskustelulla, Clauden vastaus on konkreettinen ja viittaa ladattuihin tiedostoihin.",
+        "tip": "Jos haluat mennä eteenpäin polkua B myöhemmin — siirry vaiheeseen 3. Tieto ei katoa.",
+        "troubleshoot": {
+          "Ei Projects-osiota": "Tämä on Pro-ominaisuus. Free-plan ei näytä sitä. Joko päivitä Pro:hon tai työskentele tavallisissa keskusteluissa ilman Project:ia.",
+          "No Projects section": "Projects-osiota ei näy",
+          "En näe \"New project\"": "Sinulla on ehkä ilmainen Team-tariffi. Tarkista tilaus oikeasta yläkulmasta.",
+          "I don't see 'New project'": "En näe 'New project' -painiketta"
+        }
+      },
+      "fp-3": {
+        "title": "Polku B — asenna Node.js",
+        "time": "3 min",
+        "why": "Node.js tarvitaan npm-pakettien ajamiseen, mukaan lukien Claude Code. Ilman sitä mitään ei asennu.",
+        "instructions": {
+          "0": "macOS (suositeltava): avaa Terminal.app (Cmd+Space → \"Terminal\" → Enter) ja kirjoita `brew install node`. Jos brew ei ole asennettuna — asenna se ensin osoitteesta brew.sh.",
+          "1": "macOS (vaihtoehto): lataa installer osoitteesta nodejs.org → aja .pkg → käy vaiheet läpi.",
+          "2": "Windows: lataa installer osoitteesta nodejs.org → aja .msi → rastita \"Add to PATH\" → käynnistä PowerShell uudelleen.",
+          "3": "Tarkistus: terminaalissa kirjoita `node -v`. Pitää näyttää versio muodossa v20.11.0 tai uudempi."
+        },
+        "validate": "`node -v` näyttää version ≥ 18. `npm -v` toimii myös.",
+        "tip": "Versio 20 tai 22 LTS — optimaalinen. 14 tai 16 — vanha, voi olla ongelmia Claude Code:n kanssa.",
+        "troubleshoot": {
+          "command not found: node": "Terminaali ei näe asennusta. Sulje ja avaa se uudelleen. Windows:issa — tarkista, että rastitit \"Add to PATH\" installer:issa.",
+          "command not found: brew (mac)": "Brew ei ole asennettu. Avaa brew.sh, kopioi asennuskomento, liitä terminaaliin, suorita. Vie 5 minuuttia."
+        }
+      },
+      "fp-4": {
+        "title": "Avaa terminaali ja ymmärrä missä olet",
+        "time": "2 min",
+        "why": "Terminaali on työpiste Claude Code:lle. Hyödyllistä katsoa, mikä tämä yleensä on, ja lakata pelkäämästä sitä.",
+        "instructions": {
+          "0": "macOS: Cmd+Space → kirjoita \"Terminal\" → Enter. Avautuu musta (tai valkoinen) ikkuna kursorin kanssa.",
+          "1": "Windows: avaa \"Käynnistä\"-valikko → kirjoita \"PowerShell\" tai \"Windows Terminal\" → Enter.",
+          "2": "Terminaalissa kirjoita `pwd` (mac) tai `pwd` / `echo %cd%` (Windows) → paina Enter. Näyttää, missä olet nyt.",
+          "3": "Yleensä se on home-kansiosi: /Users/nimi (mac) tai C:\\\\Users\\\\nimi (Windows). Tämä on normaalia."
+        },
+        "prompt": "pwd",
+        "validate": "Terminaali on auki, `pwd` näyttää polun home-kansioosi.",
+        "tip": "\"Musta ruutu\" ei tee mitään pelottavaa itsestään. Vaarallisia ovat vain tietyt komennot (rm -rf ja vastaavat), joita et tule kirjoittamaan tässä oppitunnissa."
+      },
+      "fp-5": {
+        "title": "Luo työkansio",
+        "time": "3 min",
+        "why": "Kansio = projektisi \"koti\". Ilman sitä tiedostot lojuvat missä sattuu.",
+        "instructions": {
+          "0": "Päätös: missä kaikki projektisi asuvat. Suosittelen kansiota `~/projects/` home:ssa.",
+          "1": "Terminaalissa: `mkdir -p ~/projects/my-first-claude-project` — luo kansion (ja vanhemman `projects/`, jos sitä ei ole).",
+          "2": "Vaihtoehto Finder:in/Explorer:in kautta: avaa home → luo kansio `projects` → sen sisälle vielä yksi `my-first-claude-project`.",
+          "3": "Nimi — vain latinalainen, ilman välilyöntejä. Yhdysmerkit tai alaviivat välilyöntien sijaan."
+        },
+        "prompt": "mkdir -p ~/projects/my-first-claude-project",
+        "validate": "Kansio on olemassa. Tarkista: `ls ~/projects/` (mac) tai `dir %USERPROFILE%\\\\projects\\\\` (Windows) — näet `my-first-claude-project` listalla.",
+        "tip": "Projektin nimen voi helposti vaihtaa myöhemmin — se on vain kansio. Tärkeintä on latinalainen ja ilman välilyöntejä.",
+        "troubleshoot": {
+          "permission denied": "Yrität luoda kansion paikkaan, jossa ei ole oikeuksia. ~/ (home) on aina sinun. Älä luo kansioita /Applications- tai /System-paikkoihin.",
+          "mkdir: -p: command not found": "Olet todennäköisesti Windows:issa ja käytät cmd.exe:tä (vanha), et PowerShell:iä. Siirry PowerShell:iin tai käytä `mkdir my-first-claude-project` ilman `-p`."
+        }
+      },
+      "fp-6": {
+        "title": "Siirry kansioon ja tarkista itsesi",
+        "time": "2 min",
+        "why": "Claude Code toimii siinä kansiossa, jossa käynnistit sen. Jos et ole oikeassa — Claude näkee vääriä tiedostoja.",
+        "instructions": {
+          "0": "Terminaalissa: `cd ~/projects/my-first-claude-project`.",
+          "1": "Tarkista: `pwd` → pitää näyttää /Users/.../projects/my-first-claude-project.",
+          "2": "Tarkista, mitä sisällä: `ls` (mac) tai `dir` (Windows). Kansio on tyhjä — tämä on normaalia uudelle projektille.",
+          "3": "Muista komento `cd ~/projects/my-first-claude-project` — käytät sitä joka kerta aloittaessasi työn."
+        },
+        "prompt": "cd ~/projects/my-first-claude-project && pwd",
+        "validate": "`pwd` näyttää polun uuteen kansioon. Olet siinä.",
+        "tip": "`cd ..` — siirry tasolle ylöspäin. `cd ~` — palaa home:en. Tämä on koko navigointisanasto."
+      },
+      "fp-7": {
+        "title": "Asenna Claude Code",
+        "time": "3 min",
+        "why": "Claude Code on Clauden \"kädet\" terminaalissasi. Asennuksen jälkeen komento `claude` on käytettävissä kaikkialla.",
+        "instructions": {
+          "0": "Terminaalissa (missä tahansa kansiossa): `npm install -g @anthropic-ai/claude-code`.",
+          "1": "Odota 30–60 sekuntia. npm lataa paketin ja asentaa sen globaalisti.",
+          "2": "Tarkista: `claude --version` → pitää näyttää versionumero ilman virheitä.",
+          "3": "Jos saat EACCES — mac/Linux:issa aja sudo:lla: `sudo npm install -g @anthropic-ai/claude-code`."
+        },
+        "prompt": "npm install -g @anthropic-ai/claude-code",
+        "validate": "`claude --version` toimii, näyttää version.",
+        "troubleshoot": {
+          "EACCES permission denied": "mac/Linux:issa — tarvitaan oikeudet. Joko `sudo npm install -g ...`, tai aseta npm prefix omaan kansioon (~/.npm-global) — googlautuu \"npm permission EACCES\".",
+          "EEXIST file already exists": "Vanha versio on asennettu. `npm uninstall -g @anthropic-ai/claude-code`, sitten asenna uudelleen."
+        }
+      },
+      "fp-8": {
+        "title": "Käynnistä claude ja käy autentikointi läpi",
+        "time": "2 min",
+        "why": "Ensimmäinen käynnistys on lyhyt: kerran autentikoidut selaimen kautta, sen jälkeen Claude Code muistaa sinut.",
+        "instructions": {
+          "0": "Varmista, että olet työkansiossasi: `pwd` → my-first-claude-project.",
+          "1": "Käynnistä: `claude`.",
+          "2": "Avautuu selain Anthropic auth:lla → kirjaudu samalla tilillä kuin claude.ai:hin.",
+          "3": "Palaa terminaaliin. Näet interaktiivisen Claude Code -kehotteen — voit kirjoittaa viestejä."
+        },
+        "prompt": "claude",
+        "validate": "Terminaalissa — Claude Code:n viestien syöttökenttä. Istunto on aktiivinen.",
+        "tip": "Jos vahingossa suljit istunnon — käynnistä `claude` uudelleen samasta kansiosta. Tämän istunnon konteksti ei säily, mutta [[node:cc-md|CLAUDE.md]] (jos on) poimitaan seuraavassa käynnistyksessä.",
+        "troubleshoot": {
+          "Selain ei avaudu": "Kopioi URL terminaalista käsin ja avaa selaimessa.",
+          "Browser doesn't open": "Selain ei avaudu"
+        }
+      },
+      "fp-9": {
+        "title": "Luo CLAUDE.md komennolla /init",
+        "time": "5 min",
+        "why": "CLAUDE.md on projektin \"luonne\". Claude lukee sen jokaisella käynnistyksellä, jotta ei esitä samoja kysymyksiä.",
+        "instructions": {
+          "0": "Claude-istunnossa kirjoita: `/init`.",
+          "1": "Claude skannaa kansion (nyt se on tyhjä — se on ok) ja ehdottaa CLAUDE.md:n luonnosta.",
+          "2": "Lue luonnos. Poista se, mikä ei sovi. Lisää sääntöosio — esim. \"En ole kehittäjä, selitä yksinkertaisin sanoin\", tai \"Tämä projekti on raporttien säännöllisestä auditoinnista\".",
+          "3": "Tallenna tiedosto (Ctrl+S tai :wq Vim:issä, riippuen editoristasi)."
+        },
+        "prompt": "/init",
+        "validate": "Projektikansioon ilmestyi CLAUDE.md-tiedosto omilla säännöilläsi. Avaa `ls` (mac) tai `dir` (Windows) — näet sen.",
+        "tip": "Älä yritä tehdä täydellistä CLAUDE.md:tä ensiyrityksellä. Tämä on elävä dokumentti — täydennät sitä työn edetessä.",
+        "troubleshoot": {
+          "/init ei toimi": "Olet ehkä kirjoittanut sen tavalliseen claude.ai-keskusteluun, ei Claude Code:en. /init on Claude Code:n slash-komento. Tarkista, että olet terminaali-istunnossa.",
+          "/init doesn't work": "/init ei toimi"
+        }
+      },
+      "fp-10": {
+        "title": "Ensimmäinen oikea pyyntö omalle kontekstillesi",
+        "time": "3 min",
+        "why": "Ilman taistelupyyntöä kaikki tämä on harjoitusta. Nyt — se, minkä takia koko oppitunti oli.",
+        "instructions": {
+          "0": "Mieti: minkä oikean tehtävän antaisit Claudelle juuri nyt? Esim. \"auta strukturoimaan muistiinpanot\", \"erittellään dokumentti\", \"luo suunnitelma projektille X\".",
+          "1": "Muotoile pyyntö muodossa \"Rooli → Tehtävä → Muoto\" (jos et muista — käy myöhemmin läpi basics-oppitunti).",
+          "2": "Lähetä Claude Code:lle. Lue vastaus.",
+          "3": "Jos Claude haluaa luoda tiedoston — salli. Tämä on normaalia työkansiolle."
+        },
+        "prompt": "Työskentelen <oma kontekstisi> parissa. Auta minua <konkreettinen tehtävä> muodossa <markdown / lista / taulukko>. Jos tarvitset alustusta — esitä kysymyksiä.",
+        "validate": "Claude antoi mielekkään vastauksen, joka on sidottu kontekstiisi. Mahdollisesti loi tiedoston projektikansioon.",
+        "tip": "Seuraavat opiskeluvaiheet: basics-oppitunti — mallien ja kontekstin teoriaan, claude-code-oppitunti — syvenemiseen /security-review:hin, hooks:eihin, subagents:eihin."
+      }
+    },
+    "trigger": "Et ole koskaan käyttänyt terminaalia — mutta haluat kokeilla Claude Codea oikeassa tehtävässä.",
+    "inputs": [
+      "Mac tai Windows asennusoikeuksin",
+      "Yksinkertaisen projektin idea (laskeutumissivu, skripti, muistiinpanot)",
+      "~1 kiireetön tunti"
+    ],
+    "outputs": [
+      "Asennettu Node.js + Claude Code",
+      "Projektikansio + ensimmäinen /init",
+      "Ensimmäinen oikea feature toteutettu Clauden käsin"
+    ],
+    "tools": [
+      {
+        "name": "Node.js",
+        "role": "ajoympäristö"
+      },
+      {
+        "name": "Claude Code",
+        "role": "agentti"
+      },
+      {
+        "name": "Terminaali",
+        "role": "iTerm / Terminal.app"
+      }
+    ],
+    "savings": "~viikon googlaaminen vs 1 ohjattu tunti"
+  },
+  "terminal-tour": {
+    "title": "Terminaali 5 komennolla",
+    "subtitle": "Elävä kierros komentoriville",
+    "totalTime": "10 min",
+    "whatItIs": "Käytännön minikurssi: kirjoitat 5 komentoa peräkkäin elävässä terminaalissa ja näet, miten ne toimivat. Ei teoriaa — vain näppäimet ja tulokset.",
+    "approach": "Älä lue eteenpäin. Suorita ensin komento, katso tuloste, lue sitten selitys. Näin lihasmuisti aktivoituu ensimmäisellä kerralla.",
+    "outcomes": {
+      "0": "Tiedät, missä olet tiedostojärjestelmässä (pwd)",
+      "1": "Näet minkä tahansa kansion sisällön (ls / dir)",
+      "2": "Luot kansioita komennolla (mkdir)",
+      "3": "Liikut kansiopuussa (cd / cd .. / cd ~)",
+      "4": "Et pelkää kokeilla omassa home:ssasi"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Ennen Claude Code:n käynnistystä",
+        "description": "Jokainen istunto alkaa cd:llä haluttuun kansioon. Ilman terminaalisanastoa — ei mitenkään."
+      },
+      "1": {
+        "title": "Mikä tahansa ohje internetissä",
+        "description": "\"Avaa terminaali ja kirjoita...\" — ei enää aiheuta paniikkia."
+      },
+      "2": {
+        "title": "Minkä tahansa työkalun asennus",
+        "description": "npm, brew, pip — kaikki terminaalin kautta. Yksi sanasto — kymmeniä työkaluja."
+      }
+    },
+    "pitfalls": {
+      "0": "Hypätä eteenpäin vaiheissa suorittamatta — teoria ilman käytäntöä ei jää mieleen.",
+      "1": "Yrittää työskennellä /Applications- tai /System-kansiossa — siellä tarvitaan oikeudet. Käytä home:a (~/).",
+      "2": "Sivuuttaa virheet — terminaali aina kertoo, mikä meni pieleen. Lue ja korjaa."
+    },
+    "exercises": {
+      "0": {
+        "question": "Suorituksen jälkeen — avaa terminaali uudelleen, siirry ~/projects/ ja tee pwd + ls. Vain muistista.",
+        "hint": "Jos unohdit komennon — katso takaisin vaiheisiin. Muistaminen on normaalia."
+      },
+      "1": {
+        "question": "Luo sisäkkäinen rakenne: ~/projects/test/2026/january/. Käytä yhtä mkdir -p:tä.",
+        "hint": "Lippu -p luo kaikki vanhemmat kansiot kerralla."
+      }
+    },
+    "steps": {
+      "tt-1": {
+        "title": "pwd — selvitä, missä olet nyt",
+        "time": "2 min",
+        "why": "Terminaali on aina \"jossakin\" kansiossa. Selvittää, missä, on päivän ensimmäinen komento.",
+        "instructions": {
+          "0": "Avaa terminaali (jos ei vielä auki): macOS Cmd+Space → \"Terminal\"; Windows — PowerShell.",
+          "1": "Kirjoita: `pwd` (mac/linux/PowerShell) → paina Enter.",
+          "2": "Katso tuloste. Tämä on polku kansioon, jossa olet nyt."
+        },
+        "prompt": "pwd",
+        "example": "Mac: /Users/denisa\nWindows: C:\\Users\\denisa\nYleensä terminaalin käynnistyessä olet omassa home:ssasi — tämä on normaalia.",
+        "validate": "Näet rivin muotoa /Users/<nimi> (mac) tai C:\\Users\\<nimi> (Windows).",
+        "tip": "pwd = \"print working directory\". Mitä yksinkertaisempi komento — sitä useammin käytät. Tätä — kirjaimellisesti joka kerta."
+      },
+      "tt-2": {
+        "title": "ls / dir — katso, mitä ympärillä on",
+        "time": "2 min",
+        "why": "Ilman ls:ää olet sokkona. ls näyttää, mitä kansioita ja tiedostoja on nykyisessä.",
+        "instructions": {
+          "0": "macOS / Linux: kirjoita `ls` → Enter.",
+          "1": "Windows (PowerShell): `ls` toimii myös. Vanha cmd.exe — `dir`.",
+          "2": "Katso listaa. Tämä on home-kansiosi sisältö: Documents, Downloads, Desktop, jne."
+        },
+        "prompt": "ls",
+        "example": "Mac/Linux-tuloste:\nApplications  Desktop  Documents  Downloads  Movies  Music  Pictures  projects  Public\n\nWindows-tuloste (dir):\n  <DIR>  Documents\n  <DIR>  Downloads\n  ...",
+        "validate": "Näet listan kansioista: vähintään Desktop, Documents, Downloads.",
+        "tip": "`ls -la` (mac) näyttää piilotiedostot (alkavat .:llä) ja yksityiskohdat. Hyödyllistä myöhemmin, kun etsit .claude/-kansiota."
+      },
+      "tt-3": {
+        "title": "mkdir + cd — luo kansio ja astu sisään",
+        "time": "2 min",
+        "why": "Tämä on koko setti \"aloittaa uusi projekti\": luo kansio → astu sisään.",
+        "instructions": {
+          "0": "Luo testikansio: `mkdir tutorial-sandbox` → Enter.",
+          "1": "Tarkista, että ilmestyi: `ls` → pitää olla listalla.",
+          "2": "Astu sisään: `cd tutorial-sandbox` → Enter.",
+          "3": "Tarkista, että olet sisällä: `pwd` → pitää päättyä /tutorial-sandbox:iin."
+        },
+        "prompt": "mkdir tutorial-sandbox\ncd tutorial-sandbox\npwd",
+        "example": "Kolmen komennon jälkeen:\n$ pwd\n/Users/denisa/tutorial-sandbox",
+        "validate": "pwd näyttää polun, joka päättyy /tutorial-sandbox:iin. Kansio on luotu ja olet siinä.",
+        "tip": "Tab — paras ystäväsi. Aloita kirjoittaa `cd tut` → paina Tab → terminaali täydentää muotoon `cd tutorial-sandbox/`. Säästää 90 % kirjoittamisesta."
+      },
+      "tt-4": {
+        "title": "cd .. ja cd ~ — navigointi takaisin",
+        "time": "2 min",
+        "why": "Osata palata on yhtä tärkeää kuin astua sisään. Tämä on vakuutus \"minne minä jouduin\" -tilannetta vastaan.",
+        "instructions": {
+          "0": "Olet nyt tutorial-sandbox:issa. Kirjoita `cd ..` → Enter. (Kaksi pistettä = \"kansio ylempänä\".)",
+          "1": "Tarkista: `pwd` → olet taas home:ssa.",
+          "2": "Mene takaisin: `cd tutorial-sandbox` → tarkista pwd.",
+          "3": "Mistä tahansa kohdasta voi palata kotiin yhdellä komennolla: `cd ~` (tai vain `cd`)."
+        },
+        "prompt": "cd ..\npwd\ncd ~\npwd",
+        "example": "$ cd ..\n$ pwd\n/Users/denisa\n$ cd ~\n$ pwd\n/Users/denisa",
+        "validate": "Ymmärrät: `..` = ylöspäin tasolla, `~` = kotiin, mikä tahansa polku = konkreettinen paikka.",
+        "tip": "Windows:issa tilde (~) toimii myös PowerShell:issä. `cd` ilman argumentteja palauttaa aina home:en."
+      },
+      "tt-5": {
+        "title": "Vahvistus — sisäkkäinen rakenne yhdellä komennolla",
+        "time": "2 min",
+        "why": "Todellinen tehtävä: luoda ~/projects/<nimi>/notes/ kerralla. `mkdir -p` osaa tämän.",
+        "instructions": {
+          "0": "Mistä tahansa kirjoita: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
+          "1": "Astu sisään: `cd ~/projects/my-first-project` → tarkista `ls` (pitää olla notes-kansio).",
+          "2": "Voit poistaa testin: `cd ~` → sitten `rm -r tutorial-sandbox` (Mac/Linux) tai `Remove-Item -Recurse tutorial-sandbox` (PowerShell). Tämä poistaa kansion peruuttamattomasti.",
+          "3": "Älä poista ~/projects/my-first-project — sitä tarvitaan first-project-oppitunnissa."
+        },
+        "prompt": "mkdir -p ~/projects/my-first-project/notes\ncd ~/projects/my-first-project\nls",
+        "example": "$ ls\nnotes",
+        "validate": "Näet notes-kansion ~/projects/my-first-project:n sisällä. Rakenne on luotu yhdellä komennolla.",
+        "tip": "-p (parents) — superhyödyllinen lippu. Ilman sitä mkdir kaatuu, jos vanhempi kansio ei ole olemassa. Sen kanssa — luo koko ketjun.",
+        "troubleshoot": {
+          "rm ei toimi Windows:issa": "Windows käyttää `del`:iä tai `rmdir /s`:ää. PowerShell osaa `Remove-Item -Recurse`. Epäilyksessä — poista Explorer:in kautta.",
+          "rm doesn't work on Windows": "rm ei toimi Windowsissa",
+          "Tab-täydennys ei toimi": "Normaalia cmd.exe:lle. Siirry PowerShell:iin tai Windows Terminal:iin — siellä automaattitäydennys toimii.",
+          "Tab completion doesn't work": "Tab-täydennys ei toimi"
+        }
+      }
+    },
+    "trigger": "Terminaali pelottaa — mutta Claude Code ei lähde ilman sitä.",
+    "inputs": [
+      "Avattu Terminal (Mac) tai PowerShell (Win)",
+      "5 minuuttia ja 5 komentoa",
+      "Valmius painaa Enteriä"
+    ],
+    "outputs": [
+      "Hallitut cd / ls / mkdir / pwd / clear",
+      "Käsitys «missä olen» tiedostojärjestelmässä",
+      "Pelko «rikon koneen» pois"
+    ],
+    "tools": [
+      {
+        "name": "Terminal.app",
+        "role": "macOS"
+      },
+      {
+        "name": "PowerShell",
+        "role": "Windows"
+      },
+      {
+        "name": "iTerm2",
+        "role": "valinnainen"
+      }
+    ],
+    "savings": "~tunteja googlaamista «miten avaan kansion konsolissa»"
+  },
+  "folders-workshop": {
+    "title": "Kansiopaja: 3 esimerkkirakennetta",
+    "subtitle": "Auditointi, muistiinpanot, kokeilu — luomme rakenteen kolmelle todelliselle skenaariolle",
+    "totalTime": "10 min",
+    "whatItIs": "Voit luoda kansioita joko klikkaamalla Finder:issä/Explorer:issa tai komennolla terminaalissa. Tämä oppitunti näyttää molemmat tavat kolmelle elävälle skenaariolle: työraportit, henkilökohtaiset muistiinpanot, väliaikainen kokeilu.",
+    "approach": "Älä valitse YHTÄ tapaa. Luo jokainen kansio molemmilla: sekä Finder:in että mkdir:in kautta. Kolmen kierroksen jälkeen valinta tulee tietoiseksi — mikä on sinulle henkilökohtaisesti mukavampi.",
+    "outcomes": {
+      "0": "Luot kansioita sekä UI:n että terminaalin kautta",
+      "1": "Tiedät, mitkä nimet eivät aiheuta ongelmia",
+      "2": "Ymmärrät, miten organisoida projektipuu mielekkäästi",
+      "3": "Osaat poistaa väliaikaiset kokeilut puhtaasti"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Jokainen uusi projekti",
+        "description": "Ensimmäinen askel — kansio mielekkäällä nimellä ~/projects/-kansiossa. Muuten kuukaudessa on kaaos."
+      },
+      "1": {
+        "title": "Henkilökohtainen tietopohja",
+        "description": "Erillinen hierarkia muistiinpanoille, opiskelulle, resepteille — erillään työkansioista."
+      },
+      "2": {
+        "title": "Kokeilu / hiekkalaatikko",
+        "description": "\"Roska\"-kansio, jota ei ole pelottavaa poistaa. Kaikilla ammattilaisilla on sellainen."
+      }
+    },
+    "pitfalls": {
+      "0": "Välilyönnit ja kyrillinen kirjaimisto nimissä — terminaali ja git eivät pidä niistä. \"my project\" ❌ → \"my-project\" ✅.",
+      "1": "Kansiot työpöydällä — viikon kuluttua siellä on 30 kappaletta, mitään ei löydä. Käytä ~/projects/.",
+      "2": "Kansion poistaminen `rm -rf`:llä ilman tarkistusta — kansio katoaa peruuttamattomasti. Ensin ls, sitten rm."
+    },
+    "exercises": {
+      "0": {
+        "question": "Luo oma henkilökohtainen ~/projects/-rakenne: vähintään 3 projektia, nimet mielekkäitä. Yksi Finder:in kautta, kaksi mkdir:n kautta.",
+        "hint": "Nimien pitää vastata kysymykseen \"mikä tämä on?\" 6 kuukauden kuluttua. \"test\" on huono. \"monthly-reports-2026\" on hyvä."
+      },
+      "1": {
+        "question": "Poista väliaikainen kansio molemmilla tavoilla: kerran Roskakorin kautta (drag-to-trash), kerran rm -r:n kautta. Huomaa ero.",
+        "hint": "Roskakori → voi palauttaa. rm -r → ei, peruuttamattomasti. Epäilyksessä — Roskakori."
+      }
+    },
+    "steps": {
+      "fw-1": {
+        "title": "Päätä nimi ja rakenne (nimeämisen säännöt)",
+        "time": "2 min",
+        "why": "Kansion nimi on tuleva komento `cd <tämä nimi>`. Pitkä / välilyönneillä / kyrillinen — kärsit joka kerta.",
+        "instructions": {
+          "0": "Sääntö 1: vain latinalainen. Ei mitään venäläisiä kirjaimia.",
+          "1": "Sääntö 2: välilyöntien sijaan — yhdysmerkki (tai alaviiva). work-reports, ei work reports.",
+          "2": "Sääntö 3: nimi vastaa kysymykseen \"mitä sisällä?\" (≤ 30 merkkiä). monthly-audits on parempi kuin stuff.",
+          "3": "Sääntö 4: yksi kansio — yksi aihe. Älä kasaa erilaista yhteen."
+        },
+        "example": "Hyviä: monthly-audits, claude-notes, sandbox-2026, website-redesign\nHuonoja: \"Minun projektit\", stuff, test, untitled folder, uusi kansio (1)",
+        "validate": "Osaat selittää itsellesi: \"Tämä kansio on X:stä, nimi lyhyt ja selkeä\".",
+        "tip": "Jos aiot tehdä git-repositorion kansiosta — valitse nimi heti. Uudelleennimeäminen myöhemmin on mahdollista, mutta meluisaa."
+      },
+      "fw-2": {
+        "title": "Esimerkki 1 — Työauditoinnit (terminaalin kautta)",
+        "time": "2 min",
+        "why": "Skenaario: aiot tehdä säännöllisiä auditointeja kerran kuussa. Tarvitaan yhteinen kansio niille.",
+        "instructions": {
+          "0": "Avaa terminaali.",
+          "1": "Kirjoita: `mkdir -p ~/projects/monthly-audits/2026-may`. Tämä luo sekä monthly-audits:n että toukokuun alikansion.",
+          "2": "Astu sisään: `cd ~/projects/monthly-audits/2026-may`.",
+          "3": "Tarkista: `pwd` — päättyy /monthly-audits/2026-may:hin. Rakenne on valmis työhön."
+        },
+        "prompt": "mkdir -p ~/projects/monthly-audits/2026-may\ncd ~/projects/monthly-audits/2026-may\npwd",
+        "example": "$ pwd\n/Users/denisa/projects/monthly-audits/2026-may",
+        "validate": "Näet täyden polun 2026-may:hin asti. Kansio on luotu ja olet siinä.",
+        "tip": "Alikansiot päivämäärien mukaan (2026-may) — kaava \"uusi kuukausi = uusi kansio\". Erittäin vakaasti skaalautuva."
+      },
+      "fw-3": {
+        "title": "Esimerkki 2 — Muistiinpanot ja oppiminen (Finder:in/Explorer:in kautta)",
+        "time": "2 min",
+        "why": "Skenaario: opit jotain uutta, haluat säilyttää muistiinpanoja. Visuaalisesti mukavampi — se on normaalia.",
+        "instructions": {
+          "0": "macOS: avaa Finder → Cmd+Shift+H (palaa home:en) → löydä projects-kansio (tai luo se Cmd+Shift+N:llä).",
+          "1": "projects:in sisällä: oikea klikkaus → New Folder → kirjoita `learning-notes` → Enter.",
+          "2": "learning-notes:in sisälle — luo vielä kaksi: `claude` ja `terminal-basics`.",
+          "3": "Windows: avaa Explorer → mene C:\\Users\\<nimi>\\projects → oikea klikkaus → New Folder. Toista alikansioille."
+        },
+        "example": "Finder:in kautta rakenne:\nprojects/\n  learning-notes/\n    claude/\n    terminal-basics/",
+        "validate": "Finder:issä/Explorer:issa näet puun: projects → learning-notes → claude / terminal-basics.",
+        "tip": "Terminaali ja Finder toimivat samalla tiedostojärjestelmällä. Yhdessä luotu kansio näkyy toisessa. Niitä voi sekoittaa."
+      },
+      "fw-4": {
+        "title": "Esimerkki 3 — Väliaikainen kokeilu (millä tahansa tavalla)",
+        "time": "2 min",
+        "why": "Skenaario: haluat kokeilla jotain — tarvitaan kertakäyttökansio, jota ei ole sääli poistaa.",
+        "instructions": {
+          "0": "Luo miten haluat: `mkdir -p ~/projects/sandbox` (terminaali) TAI Finder:in kautta.",
+          "1": "Luo sisälle joitakin kansioita ja tiedostoja — ei väliä mitä. Esim: `cd ~/projects/sandbox && touch test.txt && mkdir notes`.",
+          "2": "Tarkista sisältö: `ls` — pitää olla test.txt ja notes.",
+          "3": "Muista: tämä kansio on ehdokas poistettavaksi vaiheessa 5."
+        },
+        "prompt": "mkdir -p ~/projects/sandbox\ncd ~/projects/sandbox\ntouch test.txt\nmkdir notes\nls",
+        "example": "$ ls\nnotes  test.txt",
+        "validate": "sandbox:issa näet test.txt:n ja notes/:n. Kansio on täytetty ja valmis poistettavaksi.",
+        "tip": "touch luo tyhjän tiedoston sekunnissa. Hyödyllinen nopeisiin testeihin. Windows:issa vastaava: `New-Item test.txt` tai `echo. > test.txt`."
+      },
+      "fw-5": {
+        "title": "Puhdas poistaminen — kaksi tapaa",
+        "time": "2 min",
+        "why": "Opetella poistamaan on yhtä tärkeää kuin opetella luomaan. Muuten kansiot kasaantuvat loputtomasti.",
+        "instructions": {
+          "0": "Tapa 1 (turvallinen) — Finder:in/Explorer:in kautta: avaa ~/projects/, vedä sandbox Roskakoriin. Voi palauttaa, jos muutat mieltäsi.",
+          "1": "Tapa 2 (nopea, peruuttamaton) — `rm -rf ~/projects/sandbox` (mac/linux) tai `Remove-Item -Recurse -Force ~/projects/sandbox` (PowerShell).",
+          "2": "TÄRKEÄÄ: rm -rf poistaa HETI, ilman Roskakoria. Tarkista polku kahdesti ennen Enter:iä.",
+          "3": "Tarkista, että poistui: `ls ~/projects/` — sandbox ei ole listalla."
+        },
+        "prompt": "rm -rf ~/projects/sandbox\nls ~/projects/",
+        "example": "Ennen: $ ls ~/projects/\nmonthly-audits  learning-notes  sandbox  my-first-project\n\nJälkeen:\nmonthly-audits  learning-notes  my-first-project",
+        "validate": "~/projects/-kansiossa ei ole enää sandbox:ia. Kokeilu on suljettu, työkansiot ehjät.",
+        "tip": "Älä koskaan kirjoita rm -rf / tai rm -rf ~/ — tämä poistaa KAIKEN. Anna aina konkreettinen polku ja lue se kahdesti.",
+        "troubleshoot": {
+          "rm: command not found Windows:issa": "Käytä PowerShell:iä `Remove-Item -Recurse`:lla tai vain Explorer + Delete.",
+          "rm: command not found on Windows": "rm: komentoa ei löydy Windowsissa",
+          "Roskakori ei palauta macilla": "Cmd+Shift+Delete tyhjentää roskakorin. Jos jo tyhjensit — tiedostot menetetty (palauttaa voi vain Time Machine:n kautta, jos päällä).",
+          "Trash doesn't restore on mac": "Roskakori ei palauta Macilla"
+        }
+      }
+    },
+    "trigger": "Tarvitset siistin kansiorakenteen Claude-projektille — mutta et tiedä mistä aloittaa.",
+    "inputs": [
+      "Terminaalin peruskomennot (valinnainen)",
+      "3 skenaariota: työ / henkilökohtainen / kokeilu",
+      "Finder tai Explorer"
+    ],
+    "outputs": [
+      "Luotu 3 oikeaa kansiorakennetta",
+      "Hallitut GUI- ja komentotavat",
+      "Pohja tuleviin projekteihin"
+    ],
+    "tools": [
+      {
+        "name": "Finder/Explorer",
+        "role": "GUI-tapa"
+      },
+      {
+        "name": "Terminaali",
+        "role": "mkdir-komento"
+      },
+      {
+        "name": "VS Code",
+        "role": "rakenteen tarkastelu"
+      }
+    ],
+    "savings": "~30 min per uusi projekti + järjestys tiedostoissa"
+  },
+  "api-basics": {
+    "title": "Claude API kehittäjille",
+    "subtitle": "Ensimmäinen API-kutsu ja primitiivit joiden päälle jokainen integraatio rakentuu",
+    "totalTime": "18 min",
+    "whatItIs": "Käytännön johdanto Anthropic APIin. Hankit API-avaimen, teet ensimmäisen kutsun, ymmärrät ydinkäsitteet (messages, roles, system prompts, tokenit, streaming) ja opit mallit joita käytetään jokaisessa Claude-sovelluksessa.",
+    "approach": "Jokainen käsite esitetään toimivalla koodiesimerkillä. Lue selitys — aja koodi — näe tulos. Tutoriaalin lopussa sinulla on mentaalimalli, jolla rakentaa mitä tahansa yksinkertaisesta skriptistä tuotantotason AI-ominaisuuteen.",
+    "outcomes": {
+      "0": "Hanki API-avain ja tee ensimmäinen toimiva kutsu",
+      "1": "Ymmärrä messages-taulukko, roolit (user/assistant/system) ja miksi rakenne on tärkeä",
+      "2": "Tiedä miten tokenit toimivat ja miten arvioida ja hallita kustannuksia",
+      "3": "Streamaa vastauksia — käyttäjä näkee tulosteen heti",
+      "4": "Käytä virallisia Python- ja TypeScript-SDK:ita",
+      "5": "Tiedä viisi yleisintä integraatiovirhettä ja miten välttää ne"
+    },
+    "applyIn": {
+      "0": {
+        "title": "Web- ja mobiilisovellukset",
+        "description": "Lisää Claude-pohjainen chat, tiivistäjä tai luokittelija mihin tahansa tuotteeseen — backend kutsuu APIa, frontend renderöi streamin."
+      },
+      "1": {
+        "title": "Sisäiset skriptit ja automaatio",
+        "description": "20-rivinen Python-skripti voi tiivistää sähköposteja, luokitella tukiticketeitä tai poimia strukturoitua dataa dokumenteista."
+      },
+      "2": {
+        "title": "AI-agentit ja pipelineet",
+        "description": "Messages API on jokaisen Claude-agentin perusta. Tool use, monivuoromuisti ja orkestrointi rakentuvat samojen primitiivien päälle."
+      }
+    },
+    "pitfalls": {
+      "0": "API-avaimen kovakoodaus lähdekoodiin — käytä ympäristömuuttujia tai salaisuudenhallintaa.",
+      "1": "max_tokens liian korkealle oletuksena — maksat lähtötokeneista vaikka et käytä niitä.",
+      "2": "Ei streamausta pitkille vastauksille — käyttäjät tuijottavat tyhjää näyttöä.",
+      "3": "Monivuorochat rakentaminen ilman messages-taulukon seurantaa — konteksti katoaa.",
+      "4": "Rate limitien huomioimatta jättäminen — tuotantosovellukset tarvitsevat retry-logiikan."
+    },
+    "exercises": {
+      "0": {
+        "question": "Kirjoita Python-skripti, joka ottaa komentoriviargumentin (aiheen) ja tulostaa 3-lauseisen tiivistelmän Claude APIa käyttäen. Testaa: python summarize.py 'prompt caching'",
+        "hint": "Käytä anthropic Python SDK:ta. messages-taulukossa pitäisi olla yksi user-viesti: f'Summarize {topic} in exactly 3 sentences.'"
+      },
+      "1": {
+        "question": "Muokkaa skriptiä streamaamaan vastaus — tulosta jokainen sana saapuessaan odottamatta koko vastausta. Vertaa käyttäjäkokemusta.",
+        "hint": "Käytä client.messages.stream() kontekstimanagerina. Iteroi text_stream-taulukon läpi jokaisen chunkin tulostamiseksi."
+      }
+    },
+    "steps": {
+      "ab-1": {
+        "title": "Hanki API-avain",
+        "time": "2 min",
+        "why": "API-avain on tunnistetietosi — se tunnistaa tilisi, seuraa käyttöä ja valtuuttaa pyynnöt. Jokainen API-kutsu vaatii sen.",
+        "instructions": {
+          "0": "Mene osoitteeseen console.anthropic.com ja kirjaudu sisään (tai luo tili).",
+          "1": "Siirry kohtaan Settings → API Keys → Create Key.",
+          "2": "Anna sille kuvaava nimi (esim. 'dev-local' tai 'my-project').",
+          "3": "Kopioi avain heti — et voi enää nähdä sitä.",
+          "4": "Tallenna ympäristömuuttujaan: export ANTHROPIC_API_KEY='sk-ant-...'",
+          "5": "Älä koskaan liitä sitä lähdekoodiin, commitoi gitiin tai jaa chatissa."
+        },
+        "validate": "Sinulla on API-avain ympäristömuuttujassa ja echo $ANTHROPIC_API_KEY palauttaa ei-tyhjän merkkijonon.",
+        "tip": "Luo erilliset avaimet paikalliseen kehitykseen ja tuotantoon. Jos avain vuotaa — peruuta vain se, häiritsemättä muuta."
+      },
+      "ab-2": {
+        "title": "Ensimmäinen API-kutsu",
+        "time": "3 min",
+        "why": "Nopein tapa ymmärtää API on ajaa oikea pyyntö. Aloitamme raw curlilla, sitten siirrymme SDK:hon — samat käsitteet, vähemmän boilerplatea.",
+        "instructions": {
+          "0": "Aja tämä curl-komento ensimmäistä pyyntöä varten:",
+          "1": "curl https://api.anthropic.com/v1/messages \\\n  -H 'x-api-key: $ANTHROPIC_API_KEY' \\\n  -H 'anthropic-version: 2023-06-01' \\\n  -H 'content-type: application/json' \\\n  -d '{\n    \"model\": \"claude-haiku-4-5\",\n    \"max_tokens\": 256,\n    \"messages\": [{\"role\": \"user\", \"content\": \"Say hello in exactly 5 words.\"}]\n  }'",
+          "2": "Saat JSON-vastauksen 'content'-taulukolla. Teksti on content[0].text:ssä.",
+          "3": "Asenna Python SDK: pip install anthropic",
+          "4": "Sama kutsu Pythonilla:\nimport anthropic\nclient = anthropic.Anthropic()\nmessage = client.messages.create(\n    model='claude-haiku-4-5',\n    max_tokens=256,\n    messages=[{'role': 'user', 'content': 'Say hello in exactly 5 words.'}]\n)\nprint(message.content[0].text)"
+        },
+        "validate": "Sait vastauksen Claudelta sekä curlilla että Pythonilla.",
+        "tip": "Käytä claude-haiku-4-5:tä kokeiluihin — se on 25× halvempi kuin Opus ja riittävän nopea useimpiin tehtäviin."
+      },
+      "ab-3": {
+        "title": "messages-taulukko — roolit ja monivuoro",
+        "time": "3 min",
+        "why": "messages-taulukko on APIn ydinkäsite. Jokainen keskustelu, jokainen monivuorovuorovaikutus, jokainen injektoitu konteksti elää täällä.",
+        "instructions": {
+          "0": "messages-taulukko on lista vuoroista. Jokaisella vuorolla on 'role' ('user' tai 'assistant') ja 'content'.",
+          "1": "Järjestelmäprompt välitetään erillään 'system'-parametrina — ei viestinä, jolla on role 'system'.",
+          "2": "Esimerkki järjestelmäpromptilla ja 2 vuorolla:\nclient.messages.create(\n    model='claude-haiku-4-5',\n    max_tokens=512,\n    system='You are a concise assistant. Reply in bullet points only.',\n    messages=[\n        {'role': 'user', 'content': 'What are the three main Python data structures?'},\n        {'role': 'assistant', 'content': '- Lists\\n- Dictionaries\\n- Tuples'},\n        {'role': 'user', 'content': 'Which is fastest for membership testing?'}\n    ]\n)",
+          "3": "Viimeisellä viestillä täytyy olla role 'user'. Claude vastaa aina 'assistant'ina.",
+          "4": "Chat-sovellukselle: ylläpidä Python-listaa viestidikteistä. Liitä user-viestit ennen jokaista kutsua, Clauden vastaus jälkeen."
+        },
+        "validate": "Osaat rakentaa monivuorokeskustelun ylläpitämällä messages-taulukkoa kutsujen välillä.",
+        "tip": "Järjestelmäprompt on kehittäjän tehokkain työkalu. Käytä sitä persoonan, tulostusmuodon, kielen ja rajoitusten asettamiseen."
+      },
+      "ab-4": {
+        "title": "Tokenit, kustannukset ja max_tokens",
+        "time": "3 min",
+        "why": "API-kustannus skaalautuu tokenien käytön mukaan. Tokenien ymmärtäminen mahdollistaa budjetin hallinnan.",
+        "instructions": {
+          "0": "1 tokeni ≈ 0,75 sanaa englanniksi. '1000 tokenia' on noin 750-sanainen essee.",
+          "1": "Maksat syötetokeneista (kaikki messages + system) JA lähtötokeneista (Clauden vastaus).",
+          "2": "Tarkista hinnoittelu osoitteesta anthropic.com/pricing — Haiku on halvein, Opus kallein.",
+          "3": "max_tokens hallitsee Clauden vastauksen MAKSIMIPITUUTTA. Aseta harkiten:",
+          "4": "  - Luokittelijat: 10–50 tokenia",
+          "5": "  - Lyhyet vastaukset: 256–512 tokenia",
+          "6": "  - Pitkä sisältö: 2048–4096 tokenia",
+          "7": "Tarkista todellinen käyttö: message.usage.input_tokens ja message.usage.output_tokens",
+          "8": "Prompt caching: käytä samaa pitkää järjestelmäpromptia monissa kutsuissa ja maksa ~10% kustannuksista."
+        },
+        "validate": "Tiedät miten asettaa max_tokens asianmukaisesti ja lukea tokenien käyttö API-vastauksesta.",
+        "tip": "Rakenna kustannusarvioija kehitystyönkulkuun: kirjaa input + output -tokenit per kutsu testauksessa, kerro mallin hinnalla."
+      },
+      "ab-5": {
+        "title": "Vastausten streamaus",
+        "time": "3 min",
+        "why": "Ilman streamausta käyttäjät odottavat useita sekunteja tuijottaen tyhjää näyttöä. Streamauksen kanssa sanat ilmestyvät niiden generoidessa.",
+        "instructions": {
+          "0": "Käytä client.messages.stream() kontekstimanagerina:",
+          "1": "with client.messages.stream(\n    model='claude-haiku-4-5',\n    max_tokens=512,\n    messages=[{'role': 'user', 'content': 'Explain quantum entanglement simply.'}]\n) as stream:\n    for text in stream.text_stream:\n        print(text, end='', flush=True)\n    print()",
+          "2": "Web-sovelluksille: streama server-sent events (SSE) backendistä frontendille.",
+          "3": ".get_final_message() palauttaa täydellisen viestiobjektin streamauksen jälkeen.",
+          "4": "TypeScript:\nconst stream = await client.messages.stream({ ... });\nfor await (const chunk of stream) {\n  if (chunk.type === 'content_block_delta') {\n    process.stdout.write(chunk.delta.text);\n  }\n}"
+        },
+        "validate": "Osaat streamata Claude-vastauksen ja tulostaa jokaisen chunkin saapuessaan.",
+        "tip": "Streama aina käyttäjille suunnattu vastaus, joka voi olla pidempi kuin 2 lausetta. UX-ero on dramaattinen."
+      },
+      "ab-6": {
+        "title": "Viisi yleistä integraatiovirhettä",
+        "time": "4 min",
+        "why": "Nämä viisi virhettä aiheuttavat yhdessä 80% integraatiobugeja. Niiden tunteminen etukäteen säästää tunteja debugauksessa.",
+        "instructions": {
+          "0": "1. Kovakoodattu API-avain: käytä os.environ.get('ANTHROPIC_API_KEY'), lisää .env .gitignore-tiedostoon.",
+          "1": "2. Ei retry-logiikkaa: kääri kutsut eksponentiaaliseen backoffiin (viiveet 1s, 2s, 4s).",
+          "2": "3. Ei streamausta pitkille vastauksille: käyttäjät lähtevät latauspyöritteistä.",
+          "3": "4. Keskusteluhistorian menettäminen: tallenna messages-taulukko tietokantaan, ei vain muistiin.",
+          "4": "5. Väärä malli tehtävälle: profiloi laatu vs kustannus oikealla datalla ennen mallin valintaa.",
+          "5": "Bonus: testaa todellisilla reunatapauksilla aikaisin — tyhjät syötteet, hyvin pitkät syötteet, erikoismerkit."
+        },
+        "validate": "Sinulla on 5 sudenkuopan tarkistuslista katselmoitavaksi ennen Claude-integraation julkaisua.",
+        "tip": "Anthropicin viralliset keittokirjat osoitteessa github.com/anthropics/anthropic-cookbook sisältävät tuotantovalmiita malleja.",
+        "troubleshoot": {
+          "Saan 401-virheen": "API-avain puuttuu tai on väärä. Tarkista, että ANTHROPIC_API_KEY on asetettu ympäristöön ja luet sen os.environ.get():lla.",
+          "Saan 429-virheen": "Rate limit ylitetty. Lisää sleep-komento kutsujen väliin silmukoissa tai toteuta eksponentiaalinen backoff.",
+          "Vastaus katkeaa": "max_tokens on liian pieni. Kasvata sitä tai tunnista stop_reason: 'max_tokens' -signaali ja jatka generointia."
+        }
+      }
+    },
+    "trigger": "Integroit Clauden tuotteeseen tai skriptiin — tarvitset ensimmäisen toimivan API-kutsun.",
+    "inputs": [
+      "Anthropic Console API-avain",
+      "Integraation kieli (Python / Node / curl)",
+      "Skenaario: chat, luokittelu tai generointi"
+    ],
+    "outputs": [
+      "Toimiva ensimmäinen pyyntö mallin vastauksella",
+      "Ymmärrys messages / system / max_tokens -käsitteistä",
+      "Avainten ja rate limitsien turvallisuuden tarkistuslista"
+    ],
+    "tools": [
+      {
+        "name": "Anthropic SDK",
+        "role": "Python/Node"
+      },
+      {
+        "name": "Sonnet 4",
+        "role": "oletusmalli aloitukseen"
+      },
+      {
+        "name": "Console",
+        "role": "avaimet + käyttö"
+      }
+    ],
+    "savings": "~2 tuntia dokkareiden lukua vs käynnistys 18 minuutissa"
+  },
+  "mcp-advanced": {
+    "title": "Advanced MCP: rakenna oma palvelin",
+    "subtitle": "Valmiista integraatioista omaan production-tason palvelimeen",
+    "totalTime": "45 min",
+    "whatItIs": "Valmiit [[node:mcp|MCP]]-palvelimet kattavat 80% tapauksista. Mutta ennemmin tai myöhemmin törmäät seinään: sisäinen palvelu, legacy-tietokanta omalla skeemalla, suljettu API, epästandardi auth — valmista palvelinta ei ole. Silloin kirjoitat oman.\n\nOma MCP ei ole \"hello world 50 rivillä\". Se on backend-komponentti production-ympäristön vieressä: transport, skeemat, virheet, retryt, observability, security. Tämä workflow näyttää miten rakentaa se niin että se ei nolostuta rekisterissä eikä herätä kolmelta yöllä.",
+    "approach": "Ensin gateway-päätös (valmis vs oma), sitten minimaalinen palvelin SDK:lla, sen jälkeen kerroksittain resources/prompts, HTTP-transport, Inspector, security, julkaisu. Älä kirjoita kaikkea kerralla — kasva kerroksissa, jokainen vaihe validoidaan Inspectorissa.",
+    "outcomes": [
+      "Ymmärrät milloin MCP on oikea vastaus ja milloin ei",
+      "Rakensit toimivan palvelimen virallisella TypeScript- tai Python-SDK:lla",
+      "Erotat tools / resources / prompts ja tiedät minne kukin kuuluu",
+      "Käytät stdio- ja HTTP/SSE-transportia ja ymmärrät trade-offin",
+      "Debuggaat MCP Inspectorin kautta, et console.logilla",
+      "Suljit security-tarkistuslistan: scope, sandboxing, secrets, rate limits",
+      "Julkaisit palvelimen rekisteriin tai sisäiseen NPM/PyPI:hin"
+    ],
+    "applyIn": [
+      {
+        "title": "Sisäiset tietolähteet",
+        "description": "Oma tietokanta, sisäinen REST, gRPC-palvelu — avoinna Claudelle ilman julkista APIa."
+      },
+      {
+        "title": "Tiimin omat työkalut",
+        "description": "Code search, buildijärjestelmä, deploy pipeline."
+      },
+      {
+        "title": "Compliance-skenaariot",
+        "description": "Data ei voi mennä SaaS-pilveen — sandbox-palvelin lokaalisti, audit log jokaisesta kutsusta."
+      }
+    ],
+    "pitfalls": [
+      "Oman palvelimen kirjoittaminen ennen spec:in ymmärtämistä — kirjoitat sen uudestaan myöhemmin.",
+      "Kaiken laittaminen tools:iin — resources ja prompts ovat olemassa syystä.",
+      "HTTP-transport kun stdio riittää — auth, TLS, deploy nollahyödyllä.",
+      "Inspectorin ignoroiminen — debug clientin kautta on 10× hitaampi.",
+      "Tools laajoilla scope:illa (\"delete_all\") ilman confirm-flow:ta."
+    ],
+    "exercises": [
+      {
+        "question": "Ota sisäinen tiimin API ja kääri se MCP-palvelimeen 2 tools:lla ja 1 resourcella. Aja se Inspectorin läpi vihreäksi.",
+        "hint": "Aloita read-only tools:lla. Write-operaatiot omana vaiheena — helpompi reviewoida."
+      },
+      {
+        "question": "Vertaa stdio- ja HTTP-transportia palvelimellesi. Mittaa latenssi, deploy-mukavuus, auth-kompleksisuus. Tee päätös ja kirjaa perustelu.",
+        "hint": "stdio = paikallinen, zero-config, ei auth:ia. HTTP = remote, multi-tenant, auth tarvitaan. Ei \"parempi\" vaan eri tarkoituksiin."
+      }
+    ],
+    "steps": {
+      "ma-1": {
+        "title": "Gateway-päätös: omat vai valmiit",
+        "time": "5 min",
+        "why": "Oma palvelin on ylläpitokuorma ikuisesti. Varmista ettei valmista ratkaisua ole ennen sitoutumista.",
+        "instructions": [
+          "Avaa Anthropicin MCP-rekisteri ja community-lista (awesome-mcp-servers).",
+          "Etsi palvelun nimellä plus 2-3 synonyymillä. Palvelimet on usein nimetty epäselvästi.",
+          "Jos löytyi — tarkista viimeisin commit, avoimet issuet, scope. Forkkaaminen on parempi kuin nollasta kirjoittaminen.",
+          "Jos ei — kirjoita ne 3-5 operaatiota jotka oikeasti tarvitset (ei \"koko API\")."
+        ],
+        "example": "Sisäinen trace-storage:\n- valmista ei ole (tarkistettu awesome-mcp-servers, npm, PyPI)\n- tarvitaan: search_traces, get_trace, get_service_map\n- EI tarvita: delete, admin-operaatiot\n\nPäätös: kirjoitan oman, scope read-only, 3 tools.",
+        "validate": "Kirjallinen lista 3-5 operaatiosta ja perustelu miksi valmiit eivät sovi.",
+        "tip": "Jos valmiista puuttuu yksi operaatio — avaa PR, älä forkkaa. Säästät vuoden ylläpidolta.",
+        "troubleshoot": {
+          "En ole varma mitä spec kattaa": "Avaa modelcontextprotocol.io/specification — Server features. Mappaa listasi: mikä on tool, mikä resource, mikä prompt."
+        }
+      },
+      "ma-2": {
+        "title": "Minimaalinen palvelin SDK:lla",
+        "time": "8 min",
+        "why": "Virallinen SDK hoitaa transportin, JSON-RPC:n, lifecyclen. Oma käsin tehty protokolla socketeilla on kuukauden työ ja bugeja.",
+        "instructions": [
+          "Valitse kieli: TypeScript (`@modelcontextprotocol/sdk`) tai Python (`mcp`). Ota se mille infra on jo olemassa.",
+          "Scaffold: `npm init mcp-server` tai klooni virallinen quickstart-template.",
+          "Julista YKSI tool minimaalisella skeemalla ja stub-vastauksella. Ei vielä bisneslogiikkaa.",
+          "Aja stdio:n kautta (`node dist/index.js`), varmista että prosessi pysyy pystyssä."
+        ],
+        "example": "// src/index.ts\nimport { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\n\nconst server = new Server(\n  { name: \"trace-storage\", version: \"0.1.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(\"tools/list\", async () => ({\n  tools: [{\n    name: \"search_traces\",\n    description: \"Search traces by service and time range\",\n    inputSchema: {\n      type: \"object\",\n      properties: {\n        service: { type: \"string\" },\n        since: { type: \"string\", format: \"date-time\" }\n      },\n      required: [\"service\"]\n    }\n  }]\n}));\n\nserver.setRequestHandler(\"tools/call\", async (req) => ({\n  content: [{ type: \"text\", text: `stub: ${JSON.stringify(req.params)}` }]\n}));\n\nconst transport = new StdioServerTransport();\nawait server.connect(transport);",
+        "validate": "Palvelin käynnistyy, ei kaadu, vastaa `tools/list`-kutsuun (validoidaan Inspectorilla seuraavassa vaiheessa).",
+        "troubleshoot": {
+          "TypeError: Cannot find module @modelcontextprotocol/sdk": "Asenna `npm i @modelcontextprotocol/sdk`. Varmista että package.json sisältää `\"type\": \"module\"`.",
+          "Prosessi sulkeutuu heti": "Unohdit `await server.connect(transport)`. Ilman `await` prosessi sulkeutuu ennen yhteyttä."
+        }
+      },
+      "ma-3": {
+        "title": "Tools vs Resources vs Prompts — jaa oikein",
+        "time": "6 min",
+        "why": "Spec antaa kolme primitiviä syystä. Jos kaikki menee tools:iin, client ei voi cachettaa eikä esittää käyttäjälle kunnolla.",
+        "instructions": [
+          "Tools = toimintoja side-effecteillä tai laskennalla (search, create, calculate). Malli kutsuu tarpeen mukaan.",
+          "Resources = data joka luetaan URI:llä (tiedostot, tietueet, dokumentit). Client voi pre-fetchata ja näyttää käyttäjälle.",
+          "Prompts = workflow-pohjia jotka käyttäjä valitsee selkeästi (\"tee code review\"). Parametrisoitu.",
+          "Käy listasi läpi: jokainen operaatio yhteen kolmesta."
+        ],
+        "example": "trace-storage:\n- search_traces → tool (parametrit, laskenta)\n- get_trace(id) → resource (`trace://abc123`) — client cachettaa\n- review_incident → prompt (pohja: \"analysoi trace X vs baseline Y\")",
+        "validate": "Jokainen operaatio sijoitettu yhteen kolmesta primitiivistä kirjallisella perustelulla.",
+        "tip": "Epävarmana — tool. Yhteensopivin primitiivi, tukee kaikkia clientteja.",
+        "troubleshoot": {
+          "En ole varma onko resource vai tool": "Kysy: \"haluaisiko client näyttää tämän objektin ENNEN kuin malli mainitsee sen?\" Jos kyllä — resource."
+        }
+      },
+      "ma-4": {
+        "title": "Debug MCP Inspectorilla",
+        "time": "5 min",
+        "why": "Inspector on MCP:n virallinen devtools. Näyttää JSON-RPC-liikenteen, skeemavalidoinnin, vastaukset. Ilman sitä debug on `console.log` pimeässä.",
+        "instructions": [
+          "Käynnistä Inspector: `npx @modelcontextprotocol/inspector node dist/index.js`.",
+          "Web-UI avautuu localhostiin. Näet capabilities, tools, resources.",
+          "Kutsu jokaista toolia testiparametreilla UI:sta. Katso request/response JSON.",
+          "Testaa reunatapauksia: tyhjät parametrit, väärä tyyppi, puuttuva required.",
+          "Kirjaa löydetyt bugit — korjaa ennen seuraavaa vaihetta."
+        ],
+        "validate": "Kaikki ilmoitetut tools/resources kutsuttavissa Inspectorilla oikeilla vastauksilla.",
+        "tip": "Inspector osaa myös HTTP-palvelimet: `npx @modelcontextprotocol/inspector --transport http http://localhost:3000`. Hyödyllinen ennen deployta.",
+        "troubleshoot": {
+          "Inspector ei yhdistä": "Tarkista että palvelin kirjoittaa stderr:iin, ei stdoutiin. stdout on varattu JSON-RPC:lle.",
+          "Tool vastaa mutta Inspector näyttää schema errorin": "Vastauksesi ei vastaa ilmoitettua outputSchemaa. Joko korjaa vastaus tai poista outputSchema (se on valinnainen)."
+        }
+      },
+      "ma-5": {
+        "title": "HTTP/SSE-transport — milloin ja miten",
+        "time": "7 min",
+        "why": "stdio on hyvä paikalliseen kehitykseen ja Claude Desktopiin. Tiimin yhteinen palvelin tai remote-deploy — HTTP SSE:llä streamiin.",
+        "instructions": [
+          "Päätä: HTTP perusteltu jos palvelin on yhteinen (useita clientteja) tai etänä.",
+          "Käytä `StreamableHTTPServerTransport`-SDK:ta — hoitaa SSE:n.",
+          "Lisää auth-middleware: bearer token headerissa, OAuth, mTLS — security-mallin mukaan.",
+          "`/health`-endpoint erillään MCP-routesta — tarvitaan load balanceria varten.",
+          "Loggaa request-id jokaiseen vastaukseen tracingia varten."
+        ],
+        "example": "// HTTP-versio\nimport express from \"express\";\nimport { StreamableHTTPServerTransport } from \"@modelcontextprotocol/sdk/server/streamableHttp.js\";\n\nconst app = express();\napp.use((req, res, next) => {\n  const token = req.headers.authorization?.replace(\"Bearer \", \"\");\n  if (!verifyToken(token)) return res.status(401).end();\n  next();\n});\n\napp.get(\"/health\", (_, res) => res.json({ ok: true }));\n\napp.all(\"/mcp\", async (req, res) => {\n  const transport = new StreamableHTTPServerTransport({\n    sessionIdGenerator: () => crypto.randomUUID()\n  });\n  await server.connect(transport);\n  await transport.handleRequest(req, res);\n});\n\napp.listen(3000);",
+        "validate": "Palvelin palauttaa 401 ilman tokenia, 200 validilla; Inspector yhdistää HTTP:llä ja näkee kaikki tools.",
+        "troubleshoot": {
+          "SSE-yhteys katkeaa 30 sek jälkeen": "Proxy (nginx/cloudflare) sulkee idle. Aseta `proxy_read_timeout 3600s` tai ota käyttöön keep-alive ping SDK:ssa.",
+          "CORS-virheet browser-clientistä": "Lisää `Access-Control-Allow-Origin` tunnetuille origineille. ÄLÄ aseta `*` prodissa — leak-haavoittuvuus."
+        }
+      },
+      "ma-6": {
+        "title": "Security: scope, sandboxing, secrets",
+        "time": "7 min",
+        "why": "MCP-palvelin on RCE-pinta LLM:lle. Yksi huolimaton tool `exec()`:lla — ja malli voi pyyhkiä prodin.",
+        "instructions": [
+          "Token scoping: env:n token — varmista minimioikeudet upstreamissa. Ei root-key.",
+          "Sandboxing: jos tool ajaa koodia/shellia — eristä (Docker, firejail, vm2). Älä koskaan `child_process.exec` raakaparametreilla mallilta.",
+          "Confirm-flow destruktiivisille: DELETE/UPDATE tools — eksplisiittinen vahvistus vastauksessa (\"kutsu confirm_delete samalla id:llä\").",
+          "Per-tool rate limits: muuten malli polttaa quotan loopissa.",
+          "Audit log: jokainen tool-kutsu structured logiin timestampin, parametrien, tulos-yhteenvedon ja caller-id:n kanssa.",
+          "Secrets: vain env:n kautta, ei koskaan koodissa. Käytä secret manageria (1Password / AWS SM / Vault) injektioon."
+        ],
+        "example": "Bad:\n```ts\n{ name: \"run_query\", handler: (args) => db.query(args.sql) } // SQL injection mallin kautta\n```\n\nGood:\n```ts\n{\n  name: \"search_users\",\n  inputSchema: { properties: { email: { type: \"string\", format: \"email\" } } },\n  handler: (args) => db.query(\"SELECT id, name FROM users WHERE email = $1\", [args.email])\n}\n```",
+        "validate": "Security-tarkistuslista (6 kohtaa) täytetty, jokainen done/skip perusteluineen.",
+        "tip": "Threat model: \"entä jos mallia käytetään sinua vastaan?\" Ei paranoiaa — prompt injection resources:n kautta on todellinen.",
+        "troubleshoot": {
+          "Malli spammaa toolia loopissa": "Joko bug logiikassa (tool palauttaa \"retry\") tai rate limit tarvitaan. Lisää circuit breaker — N peräkkäisen samanlaisen kutsun jälkeen palauta error."
+        }
+      },
+      "ma-7": {
+        "title": "Julkaisu rekisteriin",
+        "time": "7 min",
+        "why": "Ilman julkaisua palvelin elää vain koneellasi. Rekisteri = distribuutio + discovery + versiointi.",
+        "instructions": [
+          "Valmistele README: mitä tekee, mitkä tools, env-vars, install-komento, minimaalinen example-config Claude Desktopille.",
+          "Versioi semverillä. 0.x kun API muuttuu, 1.0 = public stable.",
+          "Julkaise npm:ään (TypeScript) tai PyPI:hin (Python) prefiksillä `mcp-server-` tai scoped `@org/mcp-*`.",
+          "Lähetä PR `modelcontextprotocol/servers`:iin (community) TAI sisäiseen rekisteriin.",
+          "Lisää CI: jokainen PR ajaa `inspector` smoke-testin ja schema-validoinnin."
+        ],
+        "example": "package.json:\n{\n  \"name\": \"@acme/mcp-trace-storage\",\n  \"version\": \"1.0.0\",\n  \"bin\": { \"mcp-trace-storage\": \"./dist/index.js\" },\n  \"files\": [\"dist\", \"README.md\"],\n  \"engines\": { \"node\": \">=18\" },\n  \"keywords\": [\"mcp\", \"model-context-protocol\", \"observability\"]\n}\n\nClient config:\n{\n  \"mcpServers\": {\n    \"traces\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@acme/mcp-trace-storage\"],\n      \"env\": { \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }\n    }\n  }\n}",
+        "validate": "Palvelin asentuu `npx @org/mcp-name`:lla, config yhdistää Claude Desktopiin, tools näkyvät.",
+        "tip": "Sisäinen palvelin? Hostaa private rekisterissä (npm Enterprise, internal PyPI). Älä julkaise publiciin — paljastaa sisäisiä yksityiskohtia."
+      }
+    },
+    "trigger": "Valmis MCP-palvelin ei kata käyttötapausta: sisäinen palvelu, custom auth, erityinen datamalli.",
+    "inputs": [
+      "Pääsy upstream-API:in/palveluun jota käärit",
+      "MCP-spec:in ymmärrys (modelcontextprotocol.io)",
+      "Node 18+ tai Python 3.10+ ympäristö"
+    ],
+    "outputs": [
+      "Production-ready MCP-palvelin tools/resources/prompts:lla",
+      "Toimiva stdio + HTTP transport",
+      "Julkaistu paketti rekisterissä README:n ja CI:n kanssa"
+    ],
+    "tools": [
+      {
+        "name": "@modelcontextprotocol/sdk",
+        "role": "virallinen SDK (TS/Python)"
+      },
+      {
+        "name": "MCP Inspector",
+        "role": "devtools debugiin"
+      },
+      {
+        "name": "npm / PyPI",
+        "role": "distribution-rekisteri"
+      }
+    ],
+    "savings": "Oma palvelin lopettaa copy-pasten sisäisistä työkaluista — ~5-10 tuntia viikossa."
+  },
+  "claude-code-project": {
+    "title": "Production-tason projekti Claude Codella",
+    "subtitle": "CLAUDE.md, hooks, subagents, MCP — iso projekti joka ei muutu kaaokseen",
+    "totalTime": "50 min",
+    "whatItIs": "[[node:claude-code|Claude Code]] sellaisenaan on jo tehokas. Mutta isossa projektissa ilman asetuksia siitä tulee nopeasti \"fiksu mutta arvaamaton tiimiläinen\": rikkoo tyyliä, menee väärään suuntaan, polttaa tokeneita samaan asiaan.\n\nProduction-tason setup tekee Claude Codesta luotettavan contributorin: tuntee arkkitehtuurisi, ei koske kiellettyihin alueisiin, erikoistuu tehtävän mukaan, näkee sisäiset työkalut, tarkistuu joka committissa.",
+    "approach": "Kerroksittain. Ensin CLAUDE.md-hierarkia (konteksti ja säännöt), sitten slash-komennot (toistuvat operaatiot), sitten hooks (guard-railit), subagents (erikoistuminen), MCP (integraatiot), ja lopuksi headless mode CI:hin. Jokainen kerros validoidaan erikseen.",
+    "outcomes": [
+      "Rakennat CLAUDE.md-hierarkian (root → alue → paketti) ilman päällekkäisyyttä",
+      "Teet custom slash-komennot tiimin toistuviin workfloweihin",
+      "Konfiguroit [[node:cc-hooks|hooks]] (pre/post-tool-use) linttiin, audittiin, secret-scaniin",
+      "Otat käyttöön [[node:cc-subagents|subagents]] erikoistumiseen (reviewer, test-writer, debugger)",
+      "Liität MCP:n tiimin sisäisiin palveluihin",
+      "Asetat permission policyn (allow/deny) turvallisella defaultilla",
+      "Ajat Claude Coden headless modessa CI:ssä"
+    ],
+    "applyIn": [
+      {
+        "title": "Monorepo 10+ paketilla",
+        "description": "CLAUDE.md-hierarkia + per-paketti override — Claude kunnioittaa paikallisia sääntöjä."
+      },
+      {
+        "title": "Code review -automaatio",
+        "description": "Subagent + headless CI:ssä — review-kommentit PR:iin ilman human-in-the-loopia rutiinille."
+      },
+      {
+        "title": "On-call incident-apulainen",
+        "description": "MCP lokeihin/metriikoihin + slash-komento `/incident` → nopea triage."
+      }
+    ],
+    "pitfalls": [
+      "Yksi jättimäinen 2000-rivinen CLAUDE.md — malli ohittaa osan.",
+      "Hooks jotka eivät palauta exit code 0 oikein — blokkaavat kaikki tool callit.",
+      "Subagent jokaiseen mikrotehtävään — overhead suurempi kuin hyöty.",
+      "Permission policy `allow all` headless CI:ssä — ennemmin tai myöhemmin puree.",
+      "`.claude/settings.local.json` unohtuu .gitignoresta — committaat secretit."
+    ],
+    "exercises": [
+      {
+        "question": "Luo 3-tasoinen CLAUDE.md-hierarkia (root, alue, paketti). Varmista että Claude näkee kontekstin joka tasolla — kysy kysymys paketin sisältä ja pyydä viittaamaan sääntöihin.",
+        "hint": "Älä toista — lapsissa vain delta vanhempaan."
+      },
+      {
+        "question": "Konfiguroi pre-tool-use hook joka blokkaa `git push --force` mainiin. Riko tarkoituksella — Claude saa virheen, selittää sen, ehdottaa vaihtoehtoa.",
+        "hint": "Hook exit code 2 = blokkaus viestin kanssa mallille."
+      }
+    ],
+    "steps": {
+      "ccp-1": {
+        "title": "CLAUDE.md-hierarkia",
+        "time": "7 min",
+        "why": "CLAUDE.md on pysyvä konteksti. Ilman hierarkiaa monorepossa kaikki on yhdessä tiedostossa — malli hukkuu.",
+        "instructions": [
+          "Root `/CLAUDE.md` — globaalit säännöt: stack, conventions, mikä on kielletty.",
+          "Aluetaso `/apps/web/CLAUDE.md` — alueen erityispiirteet (front, back, infra).",
+          "Pakettitaso `/packages/auth/CLAUDE.md` — vain delta vanhempaan (paketin spesifit).",
+          "Sääntö: lapsi ei toista vanhempaa, vain laajentaa/täsmentää.",
+          "Koko: root ≤ 200 riviä, lapset ≤ 100. Jos isompi — siirrä `/docs`:iin ja linkitä."
+        ],
+        "example": "/CLAUDE.md (root):\n```\n# Stack: TypeScript, pnpm, Turborepo\n# Conventions: ESM only, ei default exporteja, vitest testeille\n# Kielletty: any TS:ssä, console.log productionissa, suora SQL koodissa (vain ORM)\n```\n\n/apps/web/CLAUDE.md:\n```\n# Web-appin spesifit\n# Routing: TanStack Router (file-based)\n# State: Zustand globaaliin, React Query serveriin\n# Testit: vitest + Testing Library, EI enzymeä\n```",
+        "validate": "Hierarkia näkyy Claudelle (kysy init-tyyppinen kysymys — näet että lukee useita CLAUDE.md-tiedostoja).",
+        "tip": "CLAUDE.md:hen kirjoita \"säännöt\", ei \"tutoriaalit\". Pitkät selitykset → /docs:iin linkillä.",
+        "troubleshoot": {
+          "Claude ohittaa osan säännöistä": "Tiedosto liian pitkä tai säännöt ristiriidassa. Lyhennä, siirrä harvinaiset /docs:iin."
+        }
+      },
+      "ccp-2": {
+        "title": "Custom slash-komennot",
+        "time": "6 min",
+        "why": "Jos toistat saman promptin 3+ kertaa viikossa — se on slash-komento. Säästää kirjoittamista ja standardoi.",
+        "instructions": [
+          "Komennot ovat `.claude/commands/<name>.md`:ssä.",
+          "Jokainen = markdown ohjeineen + `$ARGUMENTS`-placeholderit.",
+          "Tiedostonimi = komennon nimi (`.claude/commands/review-pr.md` → `/review-pr`).",
+          "Komennon alussa frontmatter: `description`, `allowed-tools`.",
+          "Committoi repoon — komento muuttuu tiimin yhteiseksi."
+        ],
+        "example": ".claude/commands/release-notes.md:\n```md\n---\ndescription: Generate release notes from commits since last tag\nallowed-tools: Bash, Read\n---\n\nHae commitit viime tagista: `git log $(git describe --tags --abbrev=0)..HEAD --oneline`.\n\nRyhmittele tyypin mukaan (feat/fix/chore/docs), kirjoita ihmiselle luettava yhteenveto.\n\nTulosta CHANGELOG.md-formaatissa, versio: $ARGUMENTS\n```\n\nKutsu: `/release-notes v2.4.0`",
+        "validate": "`/help` näyttää komentosi, kutsu toimii, argumentit substituoituvat.",
+        "tip": "Henkilökohtaiset komennot — `~/.claude/commands/`. Projekti — repoon. Projekti tärkeämpi: jaetut workflow:t = consistency."
+      },
+      "ccp-3": {
+        "title": "Hooks: pre/post-tool-use guard-railit",
+        "time": "8 min",
+        "why": "[[node:cc-hooks|Hooks]] ovat shell-skriptejä jotka Claude Code ajaa ennen/jälkeen tool callien. Ilman niitä mallilla ei ole valvontaa. Niiden kanssa jokainen Bash, Write, Edit kulkee policyn läpi.",
+        "instructions": [
+          "Hooks-konfiguraatio `.claude/settings.json`:ssa (projekti) tai `~/.claude/settings.json`:ssa (user).",
+          "`PreToolUse` voi blokata tool:n (exit code 2 = block + viesti mallille).",
+          "`PostToolUse` audittiin, notifikaatioihin. Ei blokkaa.",
+          "Matcher — regex tool:n nimelle. `Bash`, `Write`, `Edit|MultiEdit`.",
+          "Hook lukee JSON:in stdin:istä (tool-parametrit), kirjoittaa JSON:in stdoutiin (vastaus/error)."
+        ],
+        "example": ".claude/settings.json:\n```json\n{\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Bash\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \".claude/hooks/guard-bash.sh\" }]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \".claude/hooks/secret-scan.sh\" }]\n      }\n    ]\n  }\n}\n```\n\n.claude/hooks/guard-bash.sh:\n```bash\n#!/usr/bin/env bash\nINPUT=$(cat)\nCMD=$(echo \"$INPUT\" | jq -r \".tool_input.command\")\n\nif echo \"$CMD\" | grep -qE \"rm -rf|git push.*--force.*main|DROP TABLE\"; then\n  echo '{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}'\n  exit 2\nfi\nexit 0\n```",
+        "validate": "Pyydä Claudea ajamaan kielletty komento — saa virheen perusteluineen.",
+        "troubleshoot": {
+          "Hook ohitetaan hiljaa": "Tarkista chmod +x shell-skriptiltä ja että polku settings.json:ssa on projektijuureen suhteellinen tai absoluuttinen.",
+          "Hook blokkaa kaiken": "Exit code 0 = pass, 2 = block, muut = warning. Tarkista exit code skriptin lopussa."
+        }
+      },
+      "ccp-4": {
+        "title": "Subagents: erikoistuminen",
+        "time": "7 min",
+        "why": "[[node:cc-subagents|Subagents]] = erillinen konteksti kapealla roolilla (reviewer, test-writer, debugger). Pitävät pääkeskustelun puhtaana ja ratkaisevat tehtävän paremmin fokusoidulla promptilla.",
+        "instructions": [
+          "Subagent on `.claude/agents/<name>.md` (projekti) tai `~/.claude/agents/` (user).",
+          "Frontmatter: `name`, `description` (milloin kutsua), `tools` (whitelist), valinnainen `model`.",
+          "Body — subagentin system prompt: rooli, tyyli, output-formaatti.",
+          "Claude Code päättää milloin kutsuu subagenttia (descriptionin perusteella) — tai kutsut `@<name>` eksplisiittisesti.",
+          "Yksi subagent = yksi kapea tehtävä. Ei \"universaali apulainen\"."
+        ],
+        "example": ".claude/agents/test-writer.md:\n```md\n---\nname: test-writer\ndescription: Write vitest unit tests for new/modified TypeScript functions\ntools: Read, Write, Edit, Bash\nmodel: sonnet\n---\n\nKirjoitat vitest unit testejä. Säännöt:\n- Yksi *.test.ts per moduuli.\n- AAA-rakenne (Arrange/Act/Assert).\n- Mock `vi.mock`:lla, ei käsin tehdyillä factory:illa.\n- Kata: happy path, edge case:t, error path.\n- Et kirjoita integration testejä — se on toinen agent.\n```",
+        "validate": "Sano \"kirjoita testit src/auth/token.ts:lle\" — pääkeskustelu delegoi test-writerille, näet sen logissa.",
+        "tip": "Subagent ei \"ajattele puolestasi\" — se suorittaa selkeästi rajatun työn. Jos kuvaus on epämääräinen, pääkeskustelu ei kutsu sitä.",
+        "troubleshoot": {
+          "Subagentia ei kutsuta automaattisesti": "Description liian yleinen tai ristiriidassa toisen agentin kanssa. Tarkenna: \"vitest unit tests for TypeScript modules\"."
+        }
+      },
+      "ccp-5": {
+        "title": "MCP sisäisiin palveluihin",
+        "time": "7 min",
+        "why": "Ilman [[node:mcp|MCP]]:tä Claude Code tuntee vain tiedostot ja shellin. MCP:n kanssa — näkee trackerin, dokit, tietokannan, metriikat.",
+        "instructions": [
+          "Konfiguraatio — `.mcp.json` projektin juuressa (project-scoped, menee gittiin) TAI `~/.claude/mcp.json` (user).",
+          "Jokaiselle MCP-palvelimelle: `command`, `args`, `env`. Secrets `${ENV_VAR}`-syntaksilla, ei hardcoodattuna.",
+          "Tarkista token-scope:t — read-only mieluummin kuin admin.",
+          "Lisäämisen jälkeen — `/mcp` Claude Codessa → näet yhteyden statuksen ja tool-listan.",
+          "Jos sinulla on oma palvelin (ks. \"Advanced MCP\") — julkaise sisäisesti ja yhdistä tähän."
+        ],
+        "example": ".mcp.json:\n```json\n{\n  \"mcpServers\": {\n    \"linear\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-linear\"],\n      \"env\": { \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\" }\n    },\n    \"internal-traces\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@acme/mcp-trace-storage\"],\n      \"env\": { \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }\n    }\n  }\n}\n```\n\n.envrc (direnviä varten):\n```bash\nexport LINEAR_API_KEY=$(op read \"op://Eng/linear/api-key\")\nexport TRACE_API_KEY=$(op read \"op://Eng/traces/api-key\")\n```",
+        "validate": "`/mcp` näyttää kaikki palvelimet yhdistetyiksi, tools näkyvät.",
+        "troubleshoot": {
+          "Palvelin connected mutta tools tyhjät": "Palvelin käynnistyi mutta ei ilmoittanut capabilitieseja. Tarkista palvelimen lokit: `claude --mcp-debug` tai kutsu Inspectorilla manuaalisesti."
+        }
+      },
+      "ccp-6": {
+        "title": "Permission policy: allow/deny oletuksena",
+        "time": "5 min",
+        "why": "Oletuksena Claude Code kysyy luvan jokaiseen tuntemattomaan toimintoon. Production-projektissa tämä muuttuu joko \"hyväksy kaikki sokeasti\":ksi tai \"ikuiseksi keskeyttäjäksi\" — molemmat huonoja. Policy päättää etukäteen.",
+        "instructions": [
+          "`.claude/settings.json` → `permissions`-osio.",
+          "`allow`: lista pattern:eista (tool + matcher) jotka sallittu ilman kysymistä.",
+          "`deny`: lista jotka KIELLETTY aina (ohittaa allow:n).",
+          "Periaate: deny — destruktiivinen (rm, force push, drop), allow — usein toistuvat turvalliset (read, lint, test).",
+          "Muut — kysytään. Ne kysymykset ovat signaaleja \"lisää allow:hun tai deny:yn\"."
+        ],
+        "example": ".claude/settings.json:\n```json\n{\n  \"permissions\": {\n    \"allow\": [\n      \"Bash(npm test:*)\",\n      \"Bash(pnpm lint:*)\",\n      \"Bash(git status)\",\n      \"Bash(git diff:*)\",\n      \"Read(**)\",\n      \"Edit(src/**)\"\n    ],\n    \"deny\": [\n      \"Bash(rm -rf:*)\",\n      \"Bash(git push --force*)\",\n      \"Bash(curl:*sh)\",\n      \"Write(.env*)\"\n    ]\n  }\n}\n```",
+        "validate": "Testaa kielletyllä: pyydä Claudea `git push --force` — saa deny:n. Allow-komento (esim. `npm test`) — ajetaan ilman kysymistä.",
+        "tip": "Projektiasetukset (committoitu) = tiimin policy. Henkilökohtaiset (`settings.local.json`, .gitignoressa) = sinun yksilölliset luvat.",
+        "troubleshoot": {
+          "Claude kysyy silti allowed:ssa": "Matcher ei mätsännyt. Tarkista pattern: `Bash(npm test)` ≠ `Bash(npm test -- --watch)`. Käytä `:*` wildcardiksi: `Bash(npm test:*)`."
+        }
+      },
+      "ccp-7": {
+        "title": "Headless mode CI:ssä",
+        "time": "10 min",
+        "why": "Claude Code ei ole vain interaktiivinen. `claude -p` (headless) on täysi CLI CI:hin: code review PR:lle, auto-fix linttiin, changelogin generointi.",
+        "instructions": [
+          "Headless-syntaksi: `claude -p \"<prompt>\" --output-format json`.",
+          "Auth CI:ssä: muuttuja `ANTHROPIC_API_KEY` (GitHub Secretsin kautta).",
+          "Permission CI:ssä: eksplisiittinen `--permission-mode acceptEdits` tai `--dangerously-skip-permissions` (vain sandbox CI runnerissa!).",
+          "Output: stream JSON — parsaat actionissa.",
+          "Time budget: max 5-10 min per run, muuten CI muuttuu pullonkaulaksi."
+        ],
+        "example": ".github/workflows/claude-review.yml:\n```yaml\nname: Claude code review\non: pull_request\n\njobs:\n  review:\n    runs-on: ubuntu-latest\n    permissions:\n      contents: read\n      pull-requests: write\n    steps:\n      - uses: actions/checkout@v4\n        with: { fetch-depth: 0 }\n\n      - uses: anthropics/claude-code-action@v1\n        with:\n          api-key: ${{ secrets.ANTHROPIC_API_KEY }}\n          mode: review\n          prompt: |\n            Review the diff against main. Focus:\n            - bugs, edge cases\n            - missing error handling\n            - test coverage gaps\n            Skip: style/formatting (handled by linters).\n            Post inline comments.\n          allowed-tools: \"Read,Bash(git diff:*),Bash(pnpm test:*)\"\n```",
+        "validate": "PR avautuu → action käynnistyy → näet inline-kommentit Claudelta 5 minuutissa.",
+        "tip": "Cost control: CI:ssä käytä mallia `sonnet` (ei opus) rutiinitehtäviin + `--max-tokens` raja. Muuten budjetti räjähtää.",
+        "troubleshoot": {
+          "Action ylittää timeoutin": "Pienennä scopea promptissa (\"vain diff, ei koko tiedosto\"), karsi allowed-tools, aseta max-turns.",
+          "Permission denied Bashissa CI:ssä": "CI sandbox on eristetty — siellä `--permission-mode acceptEdits` on turvallinen. Mutta ÄLÄ käytä self-hosted runnerissa prodissa."
+        }
+      }
+    },
+    "trigger": "Tiimi käyttää Claude Codea mutta ilman sääntöjä jokainen kehittäjä konfiguroi sen eri tavalla — ei consistencya, ei guard-raileja CI:ssä.",
+    "inputs": [
+      "Olemassa oleva projekti Claude Codella",
+      "Repo-pääsy committoida `.claude/` ja `.mcp.json`",
+      "CI runner (GitHub Actions / GitLab CI / etc.)"
+    ],
+    "outputs": [
+      "CLAUDE.md-hierarkia, jaetut slash-komennot, hooks, subagents",
+      "MCP-integraatiot tiimin palveluihin",
+      "Headless Claude Code CI:ssä code review -automaatiolla"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "CLI host"
+      },
+      {
+        "name": ".claude/settings.json",
+        "role": "policy + hooks-konfig"
+      },
+      {
+        "name": "GitHub Actions",
+        "role": "CI runner headlessille"
+      }
+    ],
+    "savings": "8 kehittäjän tiimi säästää ~15 tuntia viikossa rutiini code review:ssä ja chore-tehtävissä."
+  },
+  "building-evaluations": {
+    "title": "Evaluaatioiden rakentaminen: AI-laadun mittaaminen",
+    "subtitle": "\"Näyttää toimivan\" -tilasta toistettaviin metriikkoihin ja regression detection:iin",
+    "totalTime": "40 min",
+    "whatItIs": "Production AI ilman evaluaatioita on \"deploy ja rukoile\". Vaihdoit promptin, vaihdoit mallin, päivitit RAG:n — miten tiedät että parani? Ettet rikkonut vanhoja caseja?\n\n[[node:sys-evals-benchmarks|Evaluaatiot]] ovat LLM-järjestelmäsi testisuite: kiinteä joukko tehtäviä, tapa arvioida vastaukset, metriikka, CI. Ei vaikeampia kuin unit testit, mutta muuttavat työskentelytapaa fundamentaalisti: numeroita arvausten sijaan, run-vs-run diff \"näyttää ok\":n sijaan.",
+    "approach": "Ensin golden dataset (pieni mutta laadukas), sitten scorer (rule tai LLM-judge), sitten agg-metriikka, sitten regression detection, lopuksi CI. Älä aloita \"100 caseä ja custom framework\":lla — aloita 20 caseä ja shell-skripti. Laatu kasvaa ajan myötä.",
+    "outcomes": [
+      "Koottu golden dataset 20-50 esimerkillä referenssivastauksin",
+      "Tiedät milloin rule-based scorer, milloin LLM-as-judge",
+      "Lasket agg-metriikan (accuracy, F1, custom rubric)",
+      "Teet run-vs-run diff:n ja näet regressiot",
+      "Integroit evaluaatiot CI:hin: PR promptlib-muutoksella → auto-eval",
+      "Tasapainotat cost vs quality eval-ajossa"
+    ],
+    "applyIn": [
+      {
+        "title": "Promptlib-regressiot",
+        "description": "Jokainen prompt-muutos ajetaan evaluaation läpi — regressiot kiinni ennen mergeä."
+      },
+      {
+        "title": "Mallin migraatio",
+        "description": "Sonnet 4 → 4.5: yksi eval-ajo = päätös \"migroi vai odota\"."
+      },
+      {
+        "title": "RAG-tuunaus",
+        "description": "Vaihdat chunk size / embedding / retriever — eval retrieval+answer:lle näyttää mikä parani."
+      }
+    ],
+    "pitfalls": [
+      "5 esimerkin dataset — tilastot merkityksettömiä, tarvitaan ≥ 20.",
+      "LLM-as-judge tiukasti formatoiduille tehtäville (regexin sijaan) — kallista ja kohinaa.",
+      "Eval ilman baselineä — epäselvää onko parempi vai huonompi.",
+      "Eval-ajo joka committissa — budjetti räjähtää. Aja PR:llä tai yöllä.",
+      "Vain keskiarvon seuraaminen — ohitat regressiot yksittäisissä caseissa."
+    ],
+    "exercises": [
+      {
+        "question": "Ota yksi production-prompt. Kokoa 20 esimerkkiä (input + odotettu output / kriteeri). Aja nykyisellä promptilla — mikä on baseline accuracy?",
+        "hint": "Jos accuracy on 95%+ — dataset liian helppo. Lisää edge case:ja."
+      },
+      {
+        "question": "Vaihda malli (esim. sonnet → haiku) ja aja sama dataset. Vertaa tuloksia. Onko säästö laadun arvoinen?",
+        "hint": "Katso ei vain keskiarvoa, vaan missä haiku fail:aa — ehkä tietyssä case-tyypissä."
+      }
+    ],
+    "steps": {
+      "be-1": {
+        "title": "Golden dataset: laatu > määrä",
+        "time": "8 min",
+        "why": "Eval on yhtä hyvä kuin golden dataset on edustava. 20 oikeaa caseä parempi kuin 200 satunnaista.",
+        "instructions": [
+          "Kirjoita ylös 5-7 tehtävätyyppiä joita järjestelmä ratkaisee prodissa (lokien mukaan, ei mielikuvituksen).",
+          "Jokaiselle tyypille — 3-5 esimerkkiä: 1 happy path, 2 tyypillistä, 1-2 edge caseä.",
+          "Jokaiselle: input (tarkalleen kuten prodissa) + joko exact expected output tai \"oikeellisuuskriteeri\".",
+          "Tallenna JSONL:nä tai CSV:nä — ei Exceliin. Pitää diffautua gitissä.",
+          "Versioi (`evals/v1/dataset.jsonl`) — vanhaa datasetia ei heitetä pois."
+        ],
+        "example": "evals/customer-support/v1.jsonl:\n```json\n{\"id\": \"cs-001\", \"input\": \"Missä tilaukseni #4521 on?\", \"expected_intent\": \"order_status\", \"expected_action\": \"fetch_order\"}\n{\"id\": \"cs-002\", \"input\": \"Haluan palauttaa tuotteen\", \"expected_intent\": \"return_request\", \"expected_action\": \"start_return_flow\"}\n{\"id\": \"cs-003\", \"input\": \"Myyttekö ekologisia tuotteita?\", \"expected_intent\": \"general_inquiry\", \"expected_action\": \"answer_from_kb\"}\n{\"id\": \"cs-004\", \"input\": \"KIIRE OLETTE VARASTANEET RAHANI PALAUTTAKAA\", \"expected_intent\": \"complaint_escalation\", \"expected_action\": \"escalate_to_human\"}\n```",
+        "validate": "Dataset kattaa kaikki pääasialliset intent-luokat prodista, sisältää edge case:t, asuu gitissä.",
+        "tip": "Casejen lähde — production-lokit (jos compliance sallii) + support-tiketit + käyttäjien claimit. ÄLÄ keksi — todellisuus aina poikkeaa.",
+        "troubleshoot": {
+          "En tiedä mitä edge caseja lisätä": "Katso prod-virheitä kuukauden ajalta. Mihin järjestelmä vastasi väärin? Siinä edge case:si."
+        }
+      },
+      "be-2": {
+        "title": "Scorer: rule-based vs LLM-as-judge",
+        "time": "7 min",
+        "why": "Scorer = miten päätät \"vastaus on oikein\". Valinta rule:n (regex/equality) ja LLM-judge:n (toinen LLM tuomarina) välillä on kriittinen cost/precision trade-off.",
+        "instructions": [
+          "Rule-based jos on exact match: classification labels, JSON shape, numeeriset arvot, format validation.",
+          "LLM-as-judge jos subjektiivinen: selityksen laatu, sävy, factual correctness free-form-tekstissä.",
+          "Hybrid: rule struktuurille (JSON valid, sisältää kentän X) + LLM sisällölle.",
+          "LLM-judge:lle: käytä eri mallia (tai ainakin eri promptia), kiinteä 1-5 rubric, structured output.",
+          "Kalibroi judge: ota 10 caseä human-rating:lla, varmista korrelaatio ≥ 0.7."
+        ],
+        "example": "Rule-based (classification):\n```python\ndef score(predicted, expected):\n    return 1.0 if predicted[\"intent\"] == expected[\"intent\"] else 0.0\n```\n\nLLM-as-judge (quality):\n```python\nJUDGE_PROMPT = \"\"\"Rate the answer 1-5:\n- 5: factually correct, addresses question, appropriate tone\n- 3: mostly correct, minor issues\n- 1: incorrect or off-topic\n\nQuestion: {q}\nReference: {ref}\nAnswer: {ans}\n\nReturn JSON: {{\"score\": int, \"reasoning\": str}}\"\"\"\n\ndef judge_score(q, ref, ans):\n    resp = client.messages.create(\n        model=\"claude-sonnet-4-5\",\n        messages=[{\"role\": \"user\", \"content\": JUDGE_PROMPT.format(q=q, ref=ref, ans=ans)}],\n        max_tokens=200\n    )\n    return json.loads(resp.content[0].text)\n```",
+        "validate": "Jokaisella datasetin casella on scorer function (tai luokitus scorer-tyypille).",
+        "tip": "CI:hin mieluummin rule-based — halvempi ja deterministinen. LLM-judge weekly deep-evaluun.",
+        "troubleshoot": {
+          "LLM-judge antaa eri pisteet samasta casesta": "Aseta `temperature=0`, fix seed jos tuettu, käytä structured output:ia. Jos vieläkin kohinaa — yksinkertaista rubricia (5 tasoa → 3)."
+        }
+      },
+      "be-3": {
+        "title": "Run-loop ja agg-metriikka",
+        "time": "6 min",
+        "why": "Run = (model, prompt) applied (dataset):iin → aggregated metrics. Ilman aggregointia näet vain hajanaiset pisteet.",
+        "instructions": [
+          "Loop: jokaiselle tietueelle datasetissä — kutsu järjestelmää, scorer, talleta {id, input, output, score, metadata}.",
+          "Talleta täysi run tiedostoon timestampin ja git SHA:n kanssa: `evals/runs/2026-05-27-abc1234.jsonl`.",
+          "Agg-metriikat: avg score, % yli kynnyksen, breakdown tehtävätyypin mukaan, edge_case=true/false:n mukaan.",
+          "Rinnakkaisuus: käytä asyncia (`asyncio.gather` / `Promise.all`) — mutta rate-limit:in kanssa.",
+          "Cost-tracking: laske input+output tokenit, $-estimaatti per run."
+        ],
+        "example": "run_eval.py:\n```python\nimport asyncio, json, time, subprocess\nfrom anthropic import AsyncAnthropic\n\nasync def run_case(client, case, system_prompt):\n    resp = await client.messages.create(\n        model=\"claude-sonnet-4-5\",\n        max_tokens=500,\n        system=system_prompt,\n        messages=[{\"role\": \"user\", \"content\": case[\"input\"]}]\n    )\n    return {\n        \"id\": case[\"id\"],\n        \"output\": resp.content[0].text,\n        \"input_tokens\": resp.usage.input_tokens,\n        \"output_tokens\": resp.usage.output_tokens\n    }\n\nasync def main():\n    sha = subprocess.check_output([\"git\", \"rev-parse\", \"--short\", \"HEAD\"]).decode().strip()\n    dataset = [json.loads(l) for l in open(\"evals/dataset.jsonl\")]\n    client = AsyncAnthropic()\n    results = await asyncio.gather(*[run_case(client, c, SYSTEM) for c in dataset])\n    for r, c in zip(results, dataset):\n        r[\"score\"] = score(r[\"output\"], c[\"expected\"])\n    out = f\"evals/runs/{int(time.time())}-{sha}.jsonl\"\n    with open(out, \"w\") as f:\n        for r in results: f.write(json.dumps(r) + \"\\n\")\n    avg = sum(r[\"score\"] for r in results) / len(results)\n    cost = sum(r[\"input_tokens\"] * 3 + r[\"output_tokens\"] * 15 for r in results) / 1_000_000\n    print(f\"avg={avg:.3f}  cost=${cost:.4f}  saved={out}\")\n\nasyncio.run(main())\n```",
+        "validate": "Ajo tuottaa tiedoston per-case-pisteillä, aggregated avg:llä, kustannuksella.",
+        "troubleshoot": {
+          "Rate limit errors": "Lisää semafori: `sem = asyncio.Semaphore(5)` ja kääri kutsut. Tai käytä Batch API:a non-realtime-evaluaatioihin — 50% alennus."
+        }
+      },
+      "be-4": {
+        "title": "Regression detection: run-vs-run diff",
+        "time": "6 min",
+        "why": "Avg score nousi 0.82:sta 0.84:ään — onnistuminen? Ehkä korjasit 5 caseä ja rikoit 3. Diff näyttää totuuden.",
+        "instructions": [
+          "Diff = kahden runin join `id`:n mukaan → score delta per case.",
+          "Luokittele: improved, regressed (score laski), stable, new (ei baselinessä).",
+          "Threshold: regressio merkittävä jos score laskee ≥ 0.2 yksittäisessä casessä tai ≥ 0.05 keskimäärin per kategoria.",
+          "Jos ≥ 1 merkittävä regressio — fail PR, vaadi review.",
+          "Output — markdown-taulukko PR-kommenttiin, konkreettiset regressed case:t (input, vanha output, uusi output)."
+        ],
+        "example": "diff_runs.py:\n```python\nimport json, sys\n\nbase = {r[\"id\"]: r for r in (json.loads(l) for l in open(sys.argv[1]))}\nnew = {r[\"id\"]: r for r in (json.loads(l) for l in open(sys.argv[2]))}\n\nregressed, improved = [], []\nfor id, n in new.items():\n    b = base.get(id)\n    if b and n[\"score\"] - b[\"score\"] <= -0.2:\n        regressed.append((id, b[\"score\"], n[\"score\"]))\n    elif b and n[\"score\"] - b[\"score\"] >= 0.2:\n        improved.append((id, b[\"score\"], n[\"score\"]))\n\nprint(f\"## Eval diff\\n\\n- improved: {len(improved)}\\n- regressed: {len(regressed)}\\n\")\nif regressed:\n    print(\"### Regressions\\n| id | before | after |\\n|---|---|---|\")\n    for id, b, n in regressed:\n        print(f\"| {id} | {b:.2f} | {n:.2f} |\")\n    sys.exit(1)\n```",
+        "validate": "Diff kahden runin välillä tuottaa luettavan raportin; regressiollinen PR fail:aa.",
+        "tip": "Säilytä \"hyväksytyt regressiot\" (esim. edge case jonka olemme valmiita hyväksymään) erillisellä allowlistillä. Diff ohittaa ne."
+      },
+      "be-5": {
+        "title": "CI-integraatio",
+        "time": "7 min",
+        "why": "Eval joka ei aja automaattisesti, kuolee ajan myötä. CI on ainoa tapa pitää se elossa.",
+        "instructions": [
+          "Trigger: PR joka muuttaa tiedostoja `prompts/`:ssa, `evals/`:ssa, `src/llm/`:ssa.",
+          "Steps: run eval → diff vs baseline (viimeisin main-ajo) → comment PR:iin.",
+          "Säilytä baseline artifact:na tai committoi `evals/runs/main/`:iin.",
+          "API key — secrets-kautta, EI koodissa/configissa.",
+          "Timeout: 10-15 min max. Jos dataset on iso — Batch API tai sample (random 30 caseä)."
+        ],
+        "example": ".github/workflows/eval.yml:\n```yaml\nname: Eval\non:\n  pull_request:\n    paths: [\"prompts/**\", \"src/llm/**\", \"evals/dataset.jsonl\"]\n\njobs:\n  eval:\n    runs-on: ubuntu-latest\n    timeout-minutes: 15\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with: { python-version: \"3.11\" }\n      - run: pip install anthropic\n      - name: Run eval\n        env:\n          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}\n        run: python evals/run_eval.py | tee eval-output.txt\n      - name: Diff vs baseline\n        run: python evals/diff_runs.py evals/runs/main/latest.jsonl evals/runs/$(ls -t evals/runs | head -1)\n      - uses: marocchino/sticky-pull-request-comment@v2\n        if: always()\n        with:\n          path: eval-output.txt\n```",
+        "validate": "PR prompt-muutoksella → action käynnistyy, postaa kommentin avg:llä, kustannuksella, diff:llä.",
+        "troubleshoot": {
+          "CI eval kaatuu satunnaisesti": "Verkkovirheet API:in. Lisää retry exponential backoff:lla (3 yritystä), tenacity-tyylillä."
+        }
+      },
+      "be-6": {
+        "title": "Cost-quality trade-off ja missä rajat ovat",
+        "time": "6 min",
+        "why": "Täydellinen eval on äärettömän kallis. Todellinen tasapainottaa cost vs signal. Ilman eksplisiittistä trade-off:ia budjetti räjähtää ja evaluaatiot sammutetaan.",
+        "instructions": [
+          "Budjetti per run = $0.10-$1 CI:hin (PR:lle), $5-$20 weekly deep-eval:lle.",
+          "Sampling: 30-50 caseä PR:lle (fast feedback), täysi dataset nightly/weekly.",
+          "Tiered evals: smoke (5 caseä, $0.01, joka commit) → full (50 caseä, PR:llä) → deep (200 + LLM-judge, weekly).",
+          "Cache:tys: sama input + sama prompt — cache:ta vastaus. Muuttuu vain promptin/mallin muuttuessa.",
+          "Batch API non-realtime:lle — puoli hintaa, jopa 24h viive."
+        ],
+        "example": "Triggerit:\n- commit → smoke (5 caseä, $0.01, 30 sek) — pre-commit hookilla\n- PR → fast (30 caseä, rule-based, $0.30, 2 min) — github action\n- nightly main → full (50 caseä, $0.80, 5 min) — cron\n- weekly → deep (200 caseä + LLM-judge, $15, 30 min) — manual / schedule\n\nTämä jako kattaa 90% tapauksista järkevällä kustannuksella.",
+        "validate": "Sinulla on kirjallinen budjetti evaluaatioille (per PR / per week) ja tiering joka mahtuu siihen.",
+        "tip": "Kun tuote on vakaa — deep eval voi olla kuukausittain, ei viikoittain. Mittaa evaluaatioiden ROI (kiinniotetut bugit) — se on argumentti johdolle että budjetti on perusteltu."
+      }
+    },
+    "trigger": "Production AI-järjestelmä muuttuu eikä ole selvää tekeekö jokainen muutos sen paremmaksi vai huonommaksi — tarvitaan mitattava feedback loop.",
+    "inputs": [
+      "Production prompt(it) ja API-pääsy",
+      "20-50 todellista caseä referenssivastauksin / kriteerein",
+      "CI runner automaatioon"
+    ],
+    "outputs": [
+      "Golden dataset gitissä, versioitu",
+      "Run-skripti + scorer + agg-metriikat",
+      "CI workflow regression detection:lla ja PR-kommenteilla"
+    ],
+    "tools": [
+      {
+        "name": "Anthropic SDK",
+        "role": "mallien kutsuminen eval-loopissa"
+      },
+      {
+        "name": "Batch API",
+        "role": "50% alennus non-realtime-evaluaatioihin"
+      },
+      {
+        "name": "GitHub Actions",
+        "role": "CI runner"
+      }
+    ],
+    "savings": "Eval ottaa kiinni ~80% regressioista ennen prodia. Yksi estetty incident maksaa neljänneksen evaluaatioista."
+  }
+}

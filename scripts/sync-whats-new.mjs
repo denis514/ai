@@ -267,7 +267,9 @@ try {
   const { execSync } = await import('node:child_process');
   console.log('');
   execSync('node scripts/split-nodes.mjs', { stdio: 'inherit' });
+  console.log('');
+  execSync('node scripts/split-tutorials.mjs', { stdio: 'inherit' });
 } catch (e) {
-  console.error('⚠ split-nodes.mjs не отработал — секции могут быть устаревшими:', e.message);
+  console.error('⚠ splitter не отработал — секции могут быть устаревшими:', e.message);
   process.exit(1);
 }
