@@ -5196,7 +5196,7 @@
         ],
         "example": "Bad:\n```ts\n{ name: \"run_query\", handler: (args) => db.query(args.sql) } // SQL injection mallin kautta\n```\n\nGood:\n```ts\n{\n  name: \"search_users\",\n  inputSchema: { properties: { email: { type: \"string\", format: \"email\" } } },\n  handler: (args) => db.query(\"SELECT id, name FROM users WHERE email = $1\", [args.email])\n}\n```",
         "validate": "Security-tarkistuslista (6 kohtaa) täytetty, jokainen done/skip perusteluineen.",
-        "tip": "Threat model: \"mitä tapahtuu jos malli yrittää vahingoittaa sinua?\" Ei paranoiaa — prompt injection resources:n kautta on todellinen.",
+        "tip": "Threat model: \"entä jos mallia käytetään sinua vastaan?\" Ei paranoiaa — prompt injection resources:n kautta on todellinen.",
         "troubleshoot": {
           "Malli spammaa toolia loopissa": "Joko bug logiikassa (tool palauttaa \"retry\") tai rate limit tarvitaan. Lisää circuit breaker — N peräkkäisen samanlaisen kutsun jälkeen palauta error."
         }
