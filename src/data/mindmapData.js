@@ -624,12 +624,27 @@ export const mindmapData = {
           "icon": "flash",
           "category": "foundation",
           "relatedIds": [
-            "cap-caching",
-            "cap-search",
-            "cap-computer"
+            "cap-input-modalities",
+            "cap-tools",
+            "cap-thinking",
+            "cap-memory",
+            "cap-limitations"
           ],
           "minLevel": "intermediate",
           "children": [
+            {
+              "id": "cap-input-modalities",
+              "icon": "compass",
+              "category": "foundation",
+              "relatedIds": [
+                "cap-vision",
+                "cap-files",
+                "cap-search",
+                "cap-citations",
+                "cap-code-exec",
+                "cap-tools"
+              ]
+            },
             {
               "id": "cap-vision",
               "icon": "eye",

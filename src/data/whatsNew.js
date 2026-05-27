@@ -49,6 +49,7 @@ export const WHATS_NEW = {
   'cap-tools': { date: '2026-05-27', type: 'updated' },
   'cap-thinking': { date: '2026-05-27', type: 'updated' },
   'cap-memory': { date: '2026-05-27', type: 'updated' },
+  'cap-input-modalities': { date: '2026-05-27', type: 'new' },
   'ai-native-ecommerce': { date: '2026-05-26', type: 'updated' },
   'ec-pdp-gen': { date: '2026-05-26', type: 'updated' },
   'ec-search-opt': { date: '2026-05-26', type: 'updated' },
