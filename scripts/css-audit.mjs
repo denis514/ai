@@ -58,18 +58,45 @@ const jsSource = sourceFiles
   .map(f => readFileSync(f, 'utf8'))
   .join('\n');
 
-for (const cls of cssClasses) {
-  // CSS class name regex: [A-Za-z0-9_-]+
-  // A class is REFERENCED in JS if it appears surrounded by chars NOT in that set.
-  // Covers: "cls", 'cls', `cls`, ` cls`, `${...}cls`, `cls${...}` (template literals).
-  const re = new RegExp(`(^|[^A-Za-z0-9_-])${escape(cls)}([^A-Za-z0-9_-]|$)`);
-  if (re.test(jsSource)) {
-    used.add(cls);
-  } else {
-    unused.add(cls);
-  }
-}
 function escape(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+// Variant detection: for class `prefix--variant` or `prefix-variant`, check if
+// `prefix--${` or `prefix-${` appears in JS source — that's a template-literal
+// suffix pattern (the runtime class is composed dynamically).
+const variantPrefixes = new Set();
+const templateMatches = jsSource.matchAll(/[a-z][a-z0-9_-]*(?:__|-{1,2})\$\{/g);
+for (const m of templateMatches) {
+  // m[0] is e.g. "builder-node__status--${" — keep prefix before ${
+  variantPrefixes.add(m[0].slice(0, -2)); // drop ${
+}
+
+// Vendor classes (used by libraries at runtime, never directly in JSX)
+const VENDOR_WHITELIST = [
+  /^react-flow/,         // React Flow library
+  /^react-dnd/,          // (if added later)
+  /^hugeicons/,          // Icon library internals (if added)
+];
+
+const variantKept = new Set();
+const vendorKept = new Set();
+
+for (const cls of cssClasses) {
+  const re = new RegExp(`(^|[^A-Za-z0-9_-])${escape(cls)}([^A-Za-z0-9_-]|$)`);
+  if (re.test(jsSource)) { used.add(cls); continue; }
+
+  // Variant detection: does the class start with any known template prefix?
+  let isVariant = false;
+  for (const pfx of variantPrefixes) {
+    if (cls.startsWith(pfx)) { isVariant = true; break; }
+  }
+  if (isVariant) { used.add(cls); variantKept.add(cls); continue; }
+
+  // Vendor whitelist
+  const isVendor = VENDOR_WHITELIST.some(re => re.test(cls));
+  if (isVendor) { used.add(cls); vendorKept.add(cls); continue; }
+
+  unused.add(cls);
+}
 
 // 5. Categorize unused by prefix (likely component bucket)
 const buckets = {};

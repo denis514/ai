@@ -612,10 +612,7 @@
     rgba(255, 255, 255, 0.55) 0%,
     transparent 320px
   );
-}
-
-/* Cosmos cursor glow — warmer, subtle */
-.pg__glow--cosmos {
+}/* Cosmos cursor glow — warmer{
   background: radial-gradient(
     circle at var(--mx) var(--my),
     rgba(80, 130, 255, 0.07) 0%,
@@ -963,9 +960,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   flex: 1;
   min-height: 0;
   display: flex;
-}.toolbar__search-toggle.has-query {
-  border-color: var(--line);
-  color: var(--line);
 }@keyframes toolbar-search-expand {
   from { transform: scaleX(0.85); opacity: 0; transform-origin: left center; }
   to   { transform: scaleX(1);    opacity: 1; transform-origin: left center; }
@@ -1098,21 +1092,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .canvas-filters__menu-item.is-active { background: var(--surface-2); }
 .canvas-filters__menu-item > span:not(.chip__dot) { flex: 1; min-width: 0; }
 .canvas-filters__menu-item .icon { color: var(--accent); }
-.canvas-filters__label {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  font-weight: 600;
-  white-space: nowrap;
-}
-.canvas-filters__chips {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
 /* ============================================================
    Canvas Header — плавающая шапка в top-left (desktop)
    ============================================================ */
@@ -1324,12 +1303,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   letter-spacing: 0.05em;
   vertical-align: middle;
 }
-.canvas-header__menu-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 4px 8px;
-}
-
 @media (max-width: 720px) {
   /* На mobile работает FAB-система, header скрыт */
   .canvas-header { display: none; }
@@ -2054,11 +2027,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   flex-direction: column;
   gap: 20px;
   animation: intro-slide-in .28s ease;
-}
-.intro-slide--back {
-  animation: intro-slide-in-back .28s ease;
-}
-@keyframes intro-slide-in {
+}@keyframes intro-slide-in {
   from { opacity: 0; transform: translateX(18px); }
   to   { opacity: 1; transform: translateX(0); }
 }
@@ -2364,15 +2333,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .account-input:focus { outline: none; border-color: var(--accent); }
 .account-input--danger:focus { border-color: #ef4444; }
-
-.account-msg {
-  font-size: 12px;
-  font-weight: 500;
-  padding: 4px 0;
-}
-.account-msg.is-ok  { color: #22c55e; }
-.account-msg.is-err { color: #ef4444; }
-
 /* Language buttons */
 .account-lang-row {
   display: flex;
@@ -2440,8 +2400,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: #ef4444;
 }
 .account-btn--danger:hover:not(:disabled) { background: rgba(239,68,68,.2); }
-.account-btn--sm { padding: 7px 12px; font-size: 13px; }
-
 /* Delete confirm */
 .account-delete-confirm {
   display: flex;
@@ -3638,9 +3596,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
    MOBILE: показать FAB-кнопки, скрыть Toolbar и PromptsSection
    ============================================================ */
 @media (max-width: 720px) {
-  .toolbar {
-    display: none;
-  }
   .prompts {
     display: none;
   }
@@ -3902,16 +3857,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: white;
   display: grid;
   place-items: center;
-}
-
-.mm-node__root-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: white;
-  letter-spacing: 0.02em;
-  user-select: none;
-}
-.mm-node--root:hover { box-shadow: 0 14px 50px rgba(20,20,20, 0.18); }
+}.mm-node--root:hover { box-shadow: 0 14px 50px rgba(20,20,20, 0.18); }
 
 /* Filter-match подсветка root: рамка + glow цвета фильтра, фон остаётся тёмным. */
 .mm-node--root.is-matched {
@@ -4167,20 +4113,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   border-color: #2c7a4b;
   color: white;
 }
-
-/* В нижней секции с промптами кнопки на светлом фоне */
-.prompt-card .copy-btn {
-  position: static;
-  background: #1a1a1a;
-  border: 1px solid #1a1a1a;
-  color: white;
-}
-.prompt-card .copy-btn:hover { background: #2a2a2a; }
-.prompt-card .copy-btn.is-copied {
-  background: #2c7a4b;
-  border-color: #2c7a4b;
-}
-
 /* ============= Tooltip ============= */
 .tooltip {
   position: relative;
@@ -4285,45 +4217,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-.prompts.is-collapsed { max-height: 56px; }
-
-.prompts__head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  flex: 0 0 auto;
-}
-.prompts__head h3 {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-}
-.prompts__head p {
-  margin: 2px 0 0;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-.prompts__collapse {
-  margin-left: auto;
-  width: 32px; height: 32px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 50%;
-  font-size: 12px;
-}
-
-.prompts__grid {
-  flex: 1;
-  overflow-y: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 10px;
-  padding: 12px 16px 16px;
-}.prompt-card.is-open { background: var(--surface); border-color: var(--border-strong); }
-/* ============= Responsive ============= */
+}/* ============= Responsive ============= */
 @media (max-width: 980px) {
   .detail {
     top: 24px;
@@ -4335,23 +4229,8 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 
 @media (max-width: 720px) {
-  .toolbar__row {
-    padding: 8px 12px;
-    gap: 8px;
-  }
-  .toolbar__brand { display: none; }
-  .toolbar__search { min-width: 0; max-width: none; flex: 1 0 100%; }
-  .toolbar__zoom, .toolbar__actions { font-size: 12px; }
-  .toolbar__actions button { padding: 6px 10px; font-size: 12px; }
-
   /* На mobile DetailPanel рендерится через BottomSheet, aside не используется */
-  .detail { display: none; }
-
-  .prompts__grid {
-    grid-template-columns: 1fr;
-    padding: 10px 12px 14px;
-  }
-  .prompts { max-height: 60vh; }
+  .detail { display: none; }  .prompts { max-height: 60vh; }
 
   .mm-node { font-size: 12px; padding: 8px 12px; }
   .mm-node--branch { font-size: 13px; padding: 10px 14px; }
@@ -4448,14 +4327,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .detail__tutorial-cta.is-done .detail__tutorial-cta__icon {
   background: rgba(255,255,255,0.2);
 }
-
-.detail__empty-hint {
-  margin-top: 12px !important;
-  font-size: 12px !important;
-  color: var(--text-dim) !important;
-  font-style: italic;
-}
-
 /* ============= Tutorial Modal ============= */
 .tut-overlay {
   position: fixed;
@@ -4704,12 +4575,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-.tut-side__time {
-  font-size: 10.5px;
-  color: var(--text-muted);
-}
-.tut-side__done {
+}.tut-side__done {
   margin: 4px 12px 12px;
   padding: 12px;
   background: #ecfdf5;
@@ -4791,12 +4657,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .tut-gate__btn:hover { opacity: 0.88; transform: translateY(-1px); }
 .tut-gate__btn:active { transform: translateY(0); }
-.tut-gate__hint {
-  font-size: 12px;
-  color: var(--text-dim, var(--text-muted));
-  margin-top: 2px;
-}
-
 /* Замок на заблокированных шагах в сайдбаре */
 .tut-side__item.is-locked {
   opacity: 0.55;
@@ -4822,12 +4682,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   text-transform: uppercase;
   padding: 3px 10px;
   border-radius: var(--radius-pill);
-}
-.tut-step__time {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-.tut-step__title {
+}.tut-step__title {
   margin: 4px 0 18px;
   font-size: 24px;
   line-height: 1.25;
@@ -5422,11 +5277,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   .course__cta { display: none; }
   .course__icon { width: 40px; height: 40px; font-size: 18px; }
 }
-
-@media (max-width: 720px) {
-  .toolbar__courses span:not(.toolbar__courses-count) { display: none; }
-}
-
 /* ============================================================
    Icon system (Hugeicons)
    Inline-flex via currentColor — иконки наследуют цвет родителя
@@ -5436,30 +5286,19 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   flex-shrink: 0;
   vertical-align: middle;
   color: currentColor;
-}
-
-/* Cells / wrappers, which previously hosted эмодзи как текст */
-.toolbar__logo,
-.toolbar__search-icon,
+}/* Cells / wrappers,
 .detail__icon,
-.detail__empty-icon,
 .mm-node__icon,
-.prompt-card__icon,
 .tut-header__icon,
-.course__icon {
+.course__icon{
   display: inline-flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
-}
-
-/* Buttons that now wrap icons: center vertical & gap with text */
-.toolbar__zoom button,
-.toolbar__search-clear,
-.detail__close,
+}.detail__close,
 .courses-close,
 .tut-header__close,
-.tut-header__expand {
+.tut-header__expand{
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -5503,13 +5342,9 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   display: inline-flex;
   align-items: center;
   gap: 4px;
-}
-
-/* Tutorial step time / validate / tip — icon+text rows */
-.tut-step__time,
-.tut-block--validate h4,
+}.tut-block--validate h4,
 .tut-block--tip h4,
-.tut-side__done strong {
+.tut-side__done strong{
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -5535,12 +5370,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .detail__icon {
   color: var(--cat-color, var(--text));
 }
-
-/* Empty state — заглушенный цвет */
-.detail__empty-icon {
-  color: var(--text-dim);
-}
-
 /* Tutorial finish heading icon */
 .tut-finish__head {
   display: flex;
@@ -5715,11 +5544,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   .prompt-modal__footer .btn { width: 100%; }
   .prompt-modal__actions { flex-direction: column; width: 100%; }
   .prompt-modal__hint { justify-content: center; }
-}@media (max-width: 720px) {
-  .toolbar__library span { display: none; }
-  .toolbar__library { padding: 8px 10px; }
 }
-
 /* ============================================================
    Prompt Library Modal
    Layout: header → filterbar → body (sidebar + main) → hotkeys
@@ -6744,9 +6569,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   padding: 2px 8px;
   border-radius: 4px;
   background: color-mix(in srgb, var(--lvl-color) 12%, transparent);
-}
-.tut-detail__time,
-.tut-detail__steps-count {
+}.tut-detail__steps-count{
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -7742,12 +7565,8 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .welcome-card__close:hover {
   background: var(--surface-2);
   color: var(--text);
-}
-
-/* Lesson-вариант — развёрнутая карточка для первого визита: «что такое
-   Claude», «что такое Atlas», 4 шага «что попробовать», safe-note и CTA.
-   Карточка значительно выше; внутренний скролл при необходимости. */
-.welcome-card--lesson {
+}/* Lesson-вариант — развёрнутая карточка для первого визита: «что такое
+   Claude», «что такое Atlas», 4 шага «что попробовать»{
   display: block;
   width: min(560px, calc(100% - 40px));
   max-width: 560px;
@@ -7755,18 +7574,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   overflow-y: auto;
   padding: 20px 24px 20px 24px;
   line-height: 1.5;
-}
-.welcome-card--lesson .welcome-card__close {
-  top: 10px;
-  right: 10px;
-}.welcome-lesson__head .welcome-card__icon {
-  width: 44px;
-  height: 44px;
-}
-.welcome-lesson__head .welcome-card__kicker {
-  margin-bottom: 4px;
-}
-/* Mobile / небольшие экраны — стек, без занятия топа фильтров */
+}/* Mobile / небольшие экраны — стек, без занятия топа фильтров */
 @media (max-width: 720px) {
   .welcome-card {
     top: auto;
@@ -7787,19 +7595,6 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   }
   .welcome-card__cta,
   .welcome-card__ghost { justify-content: center; }
-  /* Lesson-вариант на mobile — bottom-anchored, занимает почти весь viewport */
-  .welcome-card--lesson {
-    display: block;
-    bottom: 20px;
-    max-height: 72vh;
-    width: calc(100% - 24px);
-    padding: 18px 18px 18px 18px;
-  }
-  .welcome-card--lesson .welcome-lesson__head {
-    grid-template-columns: 40px 1fr;
-  }
-  .welcome-card--lesson .welcome-card__icon { display: grid; width: 40px; height: 40px; }
-  .welcome-lesson__actions { flex-direction: column; align-items: stretch; }
 }
 
 
