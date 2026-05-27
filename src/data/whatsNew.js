@@ -13,6 +13,9 @@
  */
 export const WHATS_NEW = {
   // ─── Туториалы ─────────────────────────────────────────────────────────────
+  'mcp-advanced': { date: '2026-05-27', type: 'new', kind: 'tutorial' },
+  'claude-code-project': { date: '2026-05-27', type: 'new', kind: 'tutorial' },
+  'building-evaluations': { date: '2026-05-27', type: 'new', kind: 'tutorial' },
   'claude-project-architecture': { date: '2026-05-23', type: 'updated', kind: 'tutorial' },
   'claude-for-business': { date: '2026-05-23', type: 'updated', kind: 'tutorial' },
   'ai-limitations': { date: '2026-05-23', type: 'updated', kind: 'tutorial' },
@@ -64,6 +67,7 @@ export const WHATS_NEW = {
   'af-fine-tuning': { date: '2026-05-27', type: 'updated' },
   'cap-search': { date: '2026-05-27', type: 'updated' },
   'cap-vision': { date: '2026-05-27', type: 'updated' },
+  'ec-support': { date: '2026-05-27', type: 'updated' },
   'ai-native-ecommerce': { date: '2026-05-26', type: 'updated' },
   'ec-pdp-gen': { date: '2026-05-26', type: 'updated' },
   'ec-search-opt': { date: '2026-05-26', type: 'updated' },
@@ -72,7 +76,6 @@ export const WHATS_NEW = {
   'ec-experimentation': { date: '2026-05-26', type: 'updated' },
   'ec-checkout-opt': { date: '2026-05-26', type: 'updated' },
   'ec-recommendations': { date: '2026-05-26', type: 'updated' },
-  'ec-support': { date: '2026-05-26', type: 'updated' },
   'ec-loyalty': { date: '2026-05-26', type: 'updated' },
   'ec-analytics': { date: '2026-05-26', type: 'updated' },
   'ec-pricing': { date: '2026-05-26', type: 'updated' },

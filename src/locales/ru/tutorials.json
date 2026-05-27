@@ -5027,5 +5027,573 @@
       }
     ],
     "savings": "~6-10 часов в неделю на типовых задачах своей функции"
+  },
+  "mcp-advanced": {
+    "title": "Advanced MCP: пишем свой сервер",
+    "subtitle": "От готовых интеграций — к собственному production-grade серверу",
+    "totalTime": "45 мин",
+    "whatItIs": "Готовые [[node:mcp|MCP]]-серверы закрывают 80% сценариев. Но рано или поздно ты упираешься: внутренний сервис, legacy-БД с custom-схемой, gated API, нестандартный auth — готового сервера нет. Тогда пишешь свой.\n\nСвой MCP — это не «hello world на 50 строк». Это backend-компонент, который живёт рядом с production: транспорт, схемы, ошибки, ретраи, обсёрвабилити, security. Этот workflow — как сделать его так, чтобы не было стыдно в registry и не дёргали в три часа ночи.",
+    "approach": "Сначала прими gateway-decision (готовое vs своё), потом — минимальный сервер на SDK, дальше — слои: resources/prompts, HTTP-транспорт, Inspector, security, publish. Не пиши «всё сразу» — расти по слоям, каждый шаг валидируется в Inspector.",
+    "outcomes": [
+      "Понимаешь, когда MCP — правильный ответ, а когда нет",
+      "Собрал работающий сервер на официальном TypeScript или Python SDK",
+      "Различаешь tools / resources / prompts и знаешь, что куда класть",
+      "Поднимаешь stdio и HTTP/SSE транспорты, понимаешь trade-off",
+      "Дебажишь через MCP Inspector, не через console.log",
+      "Закрыл security-чеклист: scopes, sandboxing, secrets, rate-limits",
+      "Опубликовал сервер в registry или внутреннем NPM/PyPI"
+    ],
+    "applyIn": [
+      {
+        "title": "Internal data sources",
+        "description": "Своя БД, internal REST, gRPC-сервис — открыть для Claude без публичного API."
+      },
+      {
+        "title": "Domain tooling",
+        "description": "Custom инструменты команды: code search, билд-система, deploy pipeline."
+      },
+      {
+        "title": "Compliance-сценарии",
+        "description": "Данные нельзя выпускать в SaaS — sandbox-сервер локально, аудит-лог каждого вызова."
+      }
+    ],
+    "pitfalls": [
+      "Писать свой сервер раньше, чем понял spec — потом всё переписывать.",
+      "Класть всё в tools — resources и prompts существуют не зря.",
+      "Брать HTTP-транспорт, когда хватает stdio — добавляешь auth, TLS, deploy ради нуля выигрыша.",
+      "Игнорировать Inspector — debug через клиента в 10× дольше.",
+      "Отдавать инструменты с широкими scopes («delete_all») без confirm-схемы."
+    ],
+    "exercises": [
+      {
+        "question": "Возьми внутренний API команды и обвяжи его MCP-сервером с 2 tools и 1 resource. Прогон через Inspector, добей до зелёного.",
+        "hint": "Начни с read-only tools. Write-операции добавляй отдельным шагом — проще ревьюить."
+      },
+      {
+        "question": "Сравни stdio и HTTP-транспорт для своего сервера. Замерь latency, удобство deploy, complexity auth. Прими решение и зафиксируй reasoning.",
+        "hint": "stdio = локально, zero-config, без auth. HTTP = remote, multi-tenant, нужна auth. Не «лучше», а разные ниши."
+      }
+    ],
+    "steps": {
+      "ma-1": {
+        "title": "Gateway-decision: писать свой или взять готовый",
+        "time": "5 мин",
+        "why": "Свой сервер — это maintenance burden навсегда. Проверь, что готового реально нет, прежде чем коммититься.",
+        "instructions": [
+          "Открой реестр Anthropic MCP и community-список (awesome-mcp-servers).",
+          "Поищи по названию сервиса + 2-3 синонимам. Часто сервер называется не очевидно.",
+          "Если нашёл — проверь last commit, открытые issues, scope. Лучше форкнуть готовое, чем писать с нуля.",
+          "Если нет — выпиши, какие 3-5 операций тебе реально нужны (а не «всё API»)."
+        ],
+        "example": "Внутренний trace-storage:\n- готового нет (проверил awesome-mcp-servers, npm, PyPI)\n- нужны: search_traces, get_trace, get_service_map\n- НЕ нужны: delete, admin-операции\n\nРешение: пишу свой, scope — read-only, 3 tools.",
+        "validate": "Есть письменный list из 3-5 операций и обоснование, почему готового не подходит.",
+        "tip": "Если в готовом не хватает одной операции — open PR, не форкай. Сэкономишь себе maintenance на год вперёд.",
+        "troubleshoot": {
+          "Не уверен, что охватывает spec": "Открой modelcontextprotocol.io/specification — раздел Server features. Сверь со своим списком: что — tool, что — resource, что — prompt."
+        }
+      },
+      "ma-2": {
+        "title": "Минимальный сервер на SDK",
+        "time": "8 мин",
+        "why": "Официальный SDK закрывает transport, JSON-RPC, lifecycle. Свой ручной протокол на сокетах = месяц работы и баги.",
+        "instructions": [
+          "Выбери язык: TypeScript (`@modelcontextprotocol/sdk`) или Python (`mcp`). Бери тот, на котором у тебя уже есть инфра.",
+          "Скаффолд: `npm init mcp-server` или клонируй официальный quickstart-template.",
+          "Объяви ОДИН tool с минимальной схемой и заглушкой ответа. Без бизнес-логики пока.",
+          "Запусти через stdio (`node dist/index.js`), убедись что процесс не падает."
+        ],
+        "example": "// src/index.ts\nimport { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\n\nconst server = new Server(\n  { name: \"trace-storage\", version: \"0.1.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(\"tools/list\", async () => ({\n  tools: [{\n    name: \"search_traces\",\n    description: \"Search traces by service and time range\",\n    inputSchema: {\n      type: \"object\",\n      properties: {\n        service: { type: \"string\" },\n        since: { type: \"string\", format: \"date-time\" }\n      },\n      required: [\"service\"]\n    }\n  }]\n}));\n\nserver.setRequestHandler(\"tools/call\", async (req) => ({\n  content: [{ type: \"text\", text: `stub: ${JSON.stringify(req.params)}` }]\n}));\n\nconst transport = new StdioServerTransport();\nawait server.connect(transport);",
+        "validate": "Сервер запускается, не падает, отвечает на `tools/list` (проверим в Inspector следующим шагом).",
+        "troubleshoot": {
+          "TypeError: Cannot find module @modelcontextprotocol/sdk": "Поставь `npm i @modelcontextprotocol/sdk`. Проверь, что в package.json есть `\"type\": \"module\"`.",
+          "Process exits immediately": "Не забыл `await server.connect(transport)`. Без `await` процесс закроется до подключения."
+        }
+      },
+      "ma-3": {
+        "title": "Tools vs Resources vs Prompts — распределить правильно",
+        "time": "6 мин",
+        "why": "Spec даёт три примитива не от скуки. Если положить всё в tools — клиент не сможет нормально кэшировать и подсказывать пользователю.",
+        "instructions": [
+          "Tools = действия с side-effects или вычислением (search, create, calculate). Модель вызывает по необходимости.",
+          "Resources = данные, которые можно прочитать по URI (файлы, записи БД, документы). Клиент может pre-fetch и показать пользователю.",
+          "Prompts = шаблоны workflow, которые пользователь явно выбирает («сделай code review»). Параметризованы.",
+          "Прогон по своему списку: каждой операции — свой примитив."
+        ],
+        "example": "trace-storage:\n- search_traces → tool (есть параметры, вычисление)\n- get_trace(id) → resource (`trace://abc123`) — клиент кэширует\n- review_incident → prompt (шаблон: «проанализируй trace X и сравни с baseline Y»)",
+        "validate": "Каждая операция распределена в один из трёх примитивов с письменным обоснованием.",
+        "tip": "Если сомневаешься — tool. Это самый совместимый примитив, его поддерживают все клиенты.",
+        "troubleshoot": {
+          "Не уверен, resource или tool": "Спроси: «может ли клиент захотеть показать этот объект ДО того, как модель его упомянет?» Если да — resource."
+        }
+      },
+      "ma-4": {
+        "title": "Debug через MCP Inspector",
+        "time": "5 мин",
+        "why": "Inspector — официальный devtools для MCP. Показывает JSON-RPC traffic, schema validation, ответы. Без него debug — это `console.log` в темноте.",
+        "instructions": [
+          "Запусти Inspector: `npx @modelcontextprotocol/inspector node dist/index.js`.",
+          "Откроется web UI на localhost. Видишь capabilities, tools, resources.",
+          "Вызови каждый tool с тестовыми параметрами через UI. Смотри request/response JSON.",
+          "Проверь edge cases: пустые параметры, невалидный тип, отсутствующий required.",
+          "Зафиксируй найденные баги — fix перед следующим шагом."
+        ],
+        "validate": "Все объявленные tools/resources успешно вызываются через Inspector, видны корректные ответы.",
+        "tip": "Inspector умеет inspect HTTP-серверы тоже: `npx @modelcontextprotocol/inspector --transport http http://localhost:3000`. Полезно перед deploy.",
+        "troubleshoot": {
+          "Inspector не подключается": "Проверь, что сервер пишет в stderr, а не в stdout. stdout зарезервирован под JSON-RPC.",
+          "Tool отвечает, но Inspector показывает schema error": "Твой response не соответствует объявленной outputSchema. Либо выровняй ответ, либо убери outputSchema (она опциональна)."
+        }
+      },
+      "ma-5": {
+        "title": "HTTP/SSE транспорт — когда и как",
+        "time": "7 мин",
+        "why": "stdio хорош для локального dev и Claude Desktop. Для shared-сервера в команде или remote-deploy — нужен HTTP с SSE для streaming.",
+        "instructions": [
+          "Прими решение: HTTP оправдан, если сервер shared (несколько клиентов) или живёт на удалённом хосте.",
+          "Используй `StreamableHTTPServerTransport` из SDK — он сам делает SSE.",
+          "Добавь auth-middleware: bearer token из заголовка, OAuth, mTLS — в зависимости от security модели.",
+          "Health-check endpoint `/health` отдельно от MCP-роута — нужен для load balancer.",
+          "Логируй request-id в каждый response для трейсинга."
+        ],
+        "example": "// HTTP-вариант\nimport express from \"express\";\nimport { StreamableHTTPServerTransport } from \"@modelcontextprotocol/sdk/server/streamableHttp.js\";\n\nconst app = express();\napp.use((req, res, next) => {\n  const token = req.headers.authorization?.replace(\"Bearer \", \"\");\n  if (!verifyToken(token)) return res.status(401).end();\n  next();\n});\n\napp.get(\"/health\", (_, res) => res.json({ ok: true }));\n\napp.all(\"/mcp\", async (req, res) => {\n  const transport = new StreamableHTTPServerTransport({\n    sessionIdGenerator: () => crypto.randomUUID()\n  });\n  await server.connect(transport);\n  await transport.handleRequest(req, res);\n});\n\napp.listen(3000);",
+        "validate": "Сервер отдаёт 401 без токена, 200 с валидным; Inspector подключается по HTTP и видит все tools.",
+        "troubleshoot": {
+          "SSE-соединение рвётся через 30 сек": "Proxy (nginx/cloudflare) закрывает idle. Добавь `proxy_read_timeout 3600s` или включи keep-alive ping в SDK.",
+          "CORS errors из браузерного клиента": "Добавь `Access-Control-Allow-Origin` для известных origin. НЕ ставь `*` для prod — leak уязвимость."
+        }
+      },
+      "ma-6": {
+        "title": "Security: scopes, sandboxing, secrets",
+        "time": "7 мин",
+        "why": "MCP-сервер — это RCE-suface для LLM. Один небрежный tool с `exec()` — и модель может удалить prod.",
+        "instructions": [
+          "Token scoping: тот же токен, что в env — проверь, что у него минимальные права в upstream-сервисе. Не root-key.",
+          "Sandboxing: если tool запускает код / shell — изолируй (Docker, firejail, vm2). Никогда `child_process.exec` на сырых параметрах от модели.",
+          "Confirm-flow для destructive: tools с DELETE/UPDATE — отдельный явный confirmation в ответе («call confirm_delete с тем же id»).",
+          "Rate-limits per tool: иначе модель в цикле сожжёт quota.",
+          "Audit log: каждый вызов tool — в structured log с timestamp, params, result-summary, caller-id.",
+          "Secrets: только через env, никогда в коде. Используй secret manager (1Password / AWS SM / Vault) для inject."
+        ],
+        "example": "Bad:\n```ts\n{ name: \"run_query\", handler: (args) => db.query(args.sql) } // SQL injection через модель\n```\n\nGood:\n```ts\n{\n  name: \"search_users\",\n  inputSchema: { properties: { email: { type: \"string\", format: \"email\" } } },\n  handler: (args) => db.query(\"SELECT id, name FROM users WHERE email = $1\", [args.email])\n}\n```",
+        "validate": "Заполнен security-чеклист (6 пунктов выше), каждый — done/skip с обоснованием.",
+        "tip": "Threat model: «что произойдёт, если модель попытается тебе навредить?» Это не паранойя — prompt injection через resources реален.",
+        "troubleshoot": {
+          "Модель спамит tool в цикле": "Либо bug в логике (tool возвращает «retry»), либо нужен rate-limit. Добавь circuit-breaker — после N подряд однотипных вызовов отвечай error."
+        }
+      },
+      "ma-7": {
+        "title": "Publish в registry",
+        "time": "7 мин",
+        "why": "Без publish сервер живёт только у тебя на машине. Registry — это distribution + discovery + версионирование.",
+        "instructions": [
+          "Подготовь README: что делает, какие tools, env-vars, install-команда, минимальный example config для Claude Desktop.",
+          "Версионируй по semver. 0.x — пока ломаешь API, 1.0 — public stable.",
+          "Опубликуй в npm (TypeScript) или PyPI (Python) с префиксом `mcp-server-` или scoped `@org/mcp-*`.",
+          "Submit PR в `modelcontextprotocol/servers` (community) ИЛИ внутренний registry команды.",
+          "Добавь CI: на каждый PR — `inspector` smoke-test, schema-validation."
+        ],
+        "example": "package.json:\n{\n  \"name\": \"@acme/mcp-trace-storage\",\n  \"version\": \"1.0.0\",\n  \"bin\": { \"mcp-trace-storage\": \"./dist/index.js\" },\n  \"files\": [\"dist\", \"README.md\"],\n  \"engines\": { \"node\": \">=18\" },\n  \"keywords\": [\"mcp\", \"model-context-protocol\", \"observability\"]\n}\n\nClient config:\n{\n  \"mcpServers\": {\n    \"traces\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@acme/mcp-trace-storage\"],\n      \"env\": { \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }\n    }\n  }\n}",
+        "validate": "Сервер ставится через `npx @org/mcp-name`, конфиг подключается к Claude Desktop, tools видны.",
+        "tip": "Внутренний сервер? Хост в private registry (npm Enterprise, internal PyPI). Не тащи на public — leak inner workings."
+      }
+    },
+    "trigger": "Готовый MCP-сервер не покрывает кейс: внутренний сервис, custom auth, специфичная схема данных.",
+    "inputs": [
+      "Доступ к upstream-API/сервису, который оборачиваем",
+      "Понимание spec MCP (см. modelcontextprotocol.io)",
+      "Node 18+ или Python 3.10+ окружение"
+    ],
+    "outputs": [
+      "Production-ready MCP-сервер с tools/resources/prompts",
+      "Работающий stdio + HTTP транспорт",
+      "Опубликованный пакет в registry с README и CI"
+    ],
+    "tools": [
+      {
+        "name": "@modelcontextprotocol/sdk",
+        "role": "official SDK (TS/Python)"
+      },
+      {
+        "name": "MCP Inspector",
+        "role": "devtools для debug"
+      },
+      {
+        "name": "npm / PyPI",
+        "role": "distribution registry"
+      }
+    ],
+    "savings": "Свой сервер = команда перестаёт копипастить из internal-tools, ~5-10 часов в неделю на людей."
+  },
+  "claude-code-project": {
+    "title": "Production-grade проект с Claude Code",
+    "subtitle": "CLAUDE.md, hooks, subagents, MCP — большой проект, который не превращается в хаос",
+    "totalTime": "50 мин",
+    "whatItIs": "[[node:claude-code|Claude Code]] из коробки — это уже мощно. Но в большом проекте без настройки он быстро становится «умный, но непредсказуемый коллега»: то ломает стиль, то делает не туда, то жжёт токены на одном и том же.\n\nProduction-grade setup — это превратить Claude Code в надёжного контрибьютора: знает твою архитектуру, не трогает запретное, специализируется под задачу, видит твои внутренние тулзы, проверяется на каждом коммите.",
+    "approach": "Слоями. Сначала иерархия CLAUDE.md (контекст и правила), потом slash-команды (повторяемые операции), затем hooks (guard-rails), subagents (специализация), MCP (integrations), и финал — headless mode для CI. Каждый слой проверяется отдельно.",
+    "outcomes": [
+      "Строишь иерархию CLAUDE.md (root → область → пакет) без дублирования",
+      "Заводишь custom slash-команды для повторяющихся workflow команды",
+      "Настраиваешь [[node:cc-hooks|hooks]] (pre/post-tool-use) под линт, audit, secret-scan",
+      "Разворачиваешь [[node:cc-subagents|subagents]] для специализации (reviewer, test-writer, debugger)",
+      "Прикручиваешь MCP к внутренним сервисам команды",
+      "Настраиваешь permission policy (allow/deny) под безопасный default",
+      "Запускаешь Claude Code в headless mode в CI"
+    ],
+    "applyIn": [
+      {
+        "title": "Monorepo с 10+ пакетами",
+        "description": "CLAUDE.md hierarchy + per-package overrides — Claude уважает локальные правила."
+      },
+      {
+        "title": "Code review автоматизация",
+        "description": "Subagent + headless mode в CI — review-комментарии на PR без human-in-the-loop для рутины."
+      },
+      {
+        "title": "On-call инцидент-помощник",
+        "description": "MCP к логам/метрикам + slash-команда `/incident` → быстрый triage."
+      }
+    ],
+    "pitfalls": [
+      "Один гигантский CLAUDE.md на 2000 строк — модель его игнорирует частично.",
+      "Hooks, которые не возвращают exit code 0 правильно — блокируют все tool calls.",
+      "Subagent на каждую микро-задачу — overhead больше пользы.",
+      "Permission policy `allow all` в headless CI — рано или поздно прилетит.",
+      "Забыть про `.claude/settings.local.json` в .gitignore — закоммитишь secrets."
+    ],
+    "exercises": [
+      {
+        "question": "Заведи 3-уровневую иерархию CLAUDE.md (root, область, пакет). Проверь, что Claude видит контекст в каждом — задай вопрос изнутри пакета и попроси сослаться на правила.",
+        "hint": "Не дублируй — в дочерних только дельта от родителя."
+      },
+      {
+        "question": "Настрой pre-tool-use hook, который блокирует `git push --force` к main. Сломай намеренно — Claude должен получить ошибку, объяснить и предложить альтернативу.",
+        "hint": "Hook exit code 2 = блокировка с сообщением для модели."
+      }
+    ],
+    "steps": {
+      "ccp-1": {
+        "title": "Иерархия CLAUDE.md",
+        "time": "7 мин",
+        "why": "CLAUDE.md — это persistent context. Без иерархии в монорепо весь контекст в одном файле — модель тонет.",
+        "instructions": [
+          "Root `/CLAUDE.md` — глобальные правила: стек, conventions, что нельзя.",
+          "Area-level `/apps/web/CLAUDE.md` — особенности этой области (фронт, бэк, infra).",
+          "Package-level `/packages/auth/CLAUDE.md` — только дельта от родителя (специфика пакета).",
+          "Правило: дочерний не повторяет родителя, только дополняет/уточняет.",
+          "Размер: root ≤ 200 строк, дочерние ≤ 100. Если больше — выноси в `/docs` и ссылайся."
+        ],
+        "example": "/CLAUDE.md (root):\n```\n# Stack: TypeScript, pnpm, Turborepo\n# Conventions: ESM only, no default exports, vitest для тестов\n# Forbidden: any in TS, console.log в production, прямые SQL в коде (только через ORM)\n```\n\n/apps/web/CLAUDE.md:\n```\n# Web app specifics\n# Routing: TanStack Router (file-based)\n# State: Zustand для глобального, React Query для server\n# Test: vitest + Testing Library, NO enzyme\n```",
+        "validate": "Иерархия видна Claude (задай `/init`-like вопрос — увидишь, как читает несколько CLAUDE.md).",
+        "tip": "В CLAUDE.md пиши «правила», не «туториалы». Длинные объяснения → в /docs со ссылкой.",
+        "troubleshoot": {
+          "Claude игнорирует часть правил": "Файл слишком длинный или правила противоречивы. Сокращай, переноси редкое в /docs."
+        }
+      },
+      "ccp-2": {
+        "title": "Custom slash-команды",
+        "time": "6 мин",
+        "why": "Если повторяешь один и тот же prompt 3+ раз в неделю — это slash-команда. Экономит typing и стандартизирует.",
+        "instructions": [
+          "Команды лежат в `.claude/commands/<name>.md`.",
+          "Каждая = markdown с инструкцией + плейсхолдеры `$ARGUMENTS`.",
+          "Имя файла = имя команды (`.claude/commands/review-pr.md` → `/review-pr`).",
+          "В начале команды — frontmatter с `description`, `allowed-tools`.",
+          "Закоммить в репо — команда становится shared для всей команды."
+        ],
+        "example": ".claude/commands/release-notes.md:\n```md\n---\ndescription: Generate release notes from commits since last tag\nallowed-tools: Bash, Read\n---\n\nПолучи commits с последнего тега через `git log $(git describe --tags --abbrev=0)..HEAD --oneline`.\n\nСгруппируй по типу (feat/fix/chore/docs), напиши human-readable summary.\n\nВыведи в формате CHANGELOG.md, версия: $ARGUMENTS\n```\n\nВызов: `/release-notes v2.4.0`",
+        "validate": "`/help` показывает твою команду, вызов работает, аргументы подставляются.",
+        "tip": "Personal команды — в `~/.claude/commands/`. Project — в репо. Project важнее: shared workflows = consistency."
+      },
+      "ccp-3": {
+        "title": "Hooks: pre/post-tool-use guard-rails",
+        "time": "8 мин",
+        "why": "[[node:cc-hooks|Hooks]] — это shell-скрипты, которые Claude Code запускает до/после tool calls. Без них модель — без supervision. С ними — каждый Bash, Write, Edit проходит твою policy.",
+        "instructions": [
+          "Конфиг hooks — в `.claude/settings.json` (project) или `~/.claude/settings.json` (user).",
+          "`PreToolUse` — может блокировать tool (exit code 2 = block + сообщение модели).",
+          "`PostToolUse` — для аудита, нотификаций. Не блокирует.",
+          "Matcher — regex по имени tool. `Bash`, `Write`, `Edit|MultiEdit`.",
+          "Hook читает JSON с stdin (tool params), пишет JSON в stdout (response/error)."
+        ],
+        "example": ".claude/settings.json:\n```json\n{\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Bash\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \".claude/hooks/guard-bash.sh\" }]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \".claude/hooks/secret-scan.sh\" }]\n      }\n    ]\n  }\n}\n```\n\n.claude/hooks/guard-bash.sh:\n```bash\n#!/usr/bin/env bash\nINPUT=$(cat)\nCMD=$(echo \"$INPUT\" | jq -r \".tool_input.command\")\n\nif echo \"$CMD\" | grep -qE \"rm -rf|git push.*--force.*main|DROP TABLE\"; then\n  echo '{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}' \n  exit 2\nfi\nexit 0\n```",
+        "validate": "Попроси Claude выполнить запретную команду — получает ошибку с твоим объяснением.",
+        "troubleshoot": {
+          "Hook молча игнорируется": "Проверь chmod +x на shell-скрипте, и что путь в settings.json — относительный от корня проекта или абсолютный.",
+          "Hook блокирует всё подряд": "Exit code 0 = pass, 2 = block, остальные = warning. Проверь exit code в конце скрипта."
+        }
+      },
+      "ccp-4": {
+        "title": "Subagents: специализация",
+        "time": "7 мин",
+        "why": "[[node:cc-subagents|Subagents]] = отдельный контекст с узкой ролью (reviewer, test-writer, debugger). Сохраняют основной чат чистым и выполняют задачу качественнее за счёт фокусного промпта.",
+        "instructions": [
+          "Subagent живёт в `.claude/agents/<name>.md` (project) или `~/.claude/agents/` (user).",
+          "Frontmatter: `name`, `description` (когда вызывать), `tools` (whitelist), опц. `model`.",
+          "Body — system prompt subagent: роль, стиль, output format.",
+          "Claude Code сам решает, когда вызвать subagent (по description) — или явно `@<name>`.",
+          "Один subagent = одна узкая задача. Не «универсальный помощник»."
+        ],
+        "example": ".claude/agents/test-writer.md:\n```md\n---\nname: test-writer\ndescription: Write vitest unit tests for new/modified TypeScript functions\ntools: Read, Write, Edit, Bash\nmodel: sonnet\n---\n\nТы пишешь vitest unit tests. Правила:\n- Один файл *.test.ts на каждый модуль.\n- AAA-структура (Arrange/Act/Assert).\n- Mock через `vi.mock`, не через ручные factories.\n- Покрываешь: happy path, edge cases, error path.\n- Не пишешь integration tests — это другой agent.\n```",
+        "validate": "Скажи «напиши тесты для src/auth/token.ts» — основной чат делегирует test-writer, ты видишь это в логе.",
+        "tip": "Subagent не должен «думать за тебя» — он должен выполнять чётко очерченную работу. Если описание расплывчатое, основной чат не будет его вызывать.",
+        "troubleshoot": {
+          "Subagent не вызывается автоматически": "Description слишком общий или конфликтует с другим agent. Сделай конкретнее: «vitest unit tests for TypeScript modules»."
+        }
+      },
+      "ccp-5": {
+        "title": "MCP к internal сервисам",
+        "time": "7 мин",
+        "why": "Без [[node:mcp|MCP]] Claude Code знает только файлы и shell. С MCP — видит ваш tracker, доку, БД, метрики.",
+        "instructions": [
+          "Конфиг — `.mcp.json` в корне проекта (project-scoped, попадает в git) ИЛИ `~/.claude/mcp.json` (user).",
+          "Для каждого MCP-сервера: `command`, `args`, `env`. Secrets — через `${ENV_VAR}`, не хардкодь.",
+          "Проверь scope токенов — лучше read-only, чем admin.",
+          "После добавления — `/mcp` в Claude Code → видишь статус подключения и список tools.",
+          "Если есть свой сервер (см. workflow «Advanced MCP») — публикуй внутренне и подключай тут."
+        ],
+        "example": ".mcp.json:\n```json\n{\n  \"mcpServers\": {\n    \"linear\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-linear\"],\n      \"env\": { \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\" }\n    },\n    \"internal-traces\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@acme/mcp-trace-storage\"],\n      \"env\": { \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }\n    }\n  }\n}\n```\n\n.envrc (для direnv):\n```bash\nexport LINEAR_API_KEY=$(op read \"op://Eng/linear/api-key\")\nexport TRACE_API_KEY=$(op read \"op://Eng/traces/api-key\")\n```",
+        "validate": "`/mcp` показывает все серверы в статусе connected, tools видны.",
+        "troubleshoot": {
+          "Сервер connected, но tools пустые": "Сервер запустился, но не объявил capabilities. Проверь логи сервера: `claude --mcp-debug` или вызови сервер вручную через Inspector."
+        }
+      },
+      "ccp-6": {
+        "title": "Permission policy: allow/deny по умолчанию",
+        "time": "5 мин",
+        "why": "По умолчанию Claude Code спрашивает разрешение на каждое неизвестное действие. В production-проекте это либо паттерн «пропускаю всё не глядя», либо «вечно дёргает» — оба плохо. Policy решает заранее.",
+        "instructions": [
+          "В `.claude/settings.json` → секция `permissions`.",
+          "`allow`: список pattern (tool + matcher), которые разрешены без спроса.",
+          "`deny`: список, которые ЗАПРЕЩЕНЫ всегда (overrides allow).",
+          "Принцип: deny — destructive (rm, force push, drop), allow — частые safe (read, lint, test).",
+          "Остальное — будет спрашиваться. Эти спросы — сигнал «добавить в allow или deny»."
+        ],
+        "example": ".claude/settings.json:\n```json\n{\n  \"permissions\": {\n    \"allow\": [\n      \"Bash(npm test:*)\",\n      \"Bash(pnpm lint:*)\",\n      \"Bash(git status)\",\n      \"Bash(git diff:*)\",\n      \"Read(**)\",\n      \"Edit(src/**)\"\n    ],\n    \"deny\": [\n      \"Bash(rm -rf:*)\",\n      \"Bash(git push --force*)\",\n      \"Bash(curl:*sh)\",\n      \"Write(.env*)\"\n    ]\n  }\n}\n```",
+        "validate": "Запрети тестом: попроси Claude `git push --force` — получает deny. Allow-команда (например `npm test`) — выполняется без вопроса.",
+        "tip": "Project settings (commited) = team policy. Personal (`settings.local.json`, в .gitignore) = твои индивидуальные разрешения.",
+        "troubleshoot": {
+          "Claude всё равно спрашивает на allowed": "Matcher не совпал. Проверь pattern: `Bash(npm test)` ≠ `Bash(npm test -- --watch)`. Используй `:*` для wildcards: `Bash(npm test:*)`."
+        }
+      },
+      "ccp-7": {
+        "title": "Headless mode в CI",
+        "time": "10 мин",
+        "why": "Claude Code не только для интерактива. `claude -p` (headless) — это полноценный CLI для CI: code review на PR, auto-fix линта, генерация changelog.",
+        "instructions": [
+          "Headless syntax: `claude -p \"<prompt>\" --output-format json`.",
+          "Auth в CI: переменная `ANTHROPIC_API_KEY` (через GitHub Secrets).",
+          "Permission в CI: явно `--permission-mode acceptEdits` или `--dangerously-skip-permissions` (только в sandbox CI runner!).",
+          "Output: stream JSON — парсишь в action.",
+          "Time budget: max 5-10 минут per run, иначе CI становится узким горлом."
+        ],
+        "example": ".github/workflows/claude-review.yml:\n```yaml\nname: Claude code review\non: pull_request\n\njobs:\n  review:\n    runs-on: ubuntu-latest\n    permissions:\n      contents: read\n      pull-requests: write\n    steps:\n      - uses: actions/checkout@v4\n        with: { fetch-depth: 0 }\n\n      - uses: anthropics/claude-code-action@v1\n        with:\n          api-key: ${{ secrets.ANTHROPIC_API_KEY }}\n          mode: review\n          prompt: |\n            Review the diff against main. Focus:\n            - bugs, edge cases\n            - missing error handling\n            - test coverage gaps\n            Skip: style/formatting (handled by linters).\n            Post inline comments.\n          allowed-tools: \"Read,Bash(git diff:*),Bash(pnpm test:*)\"\n```",
+        "validate": "PR открывается → action запускается → видишь inline-комментарии от Claude в течение 5 минут.",
+        "tip": "Cost-control: в CI поставь model `sonnet` (не opus) для рутинных задач + `--max-tokens` лимит. Иначе бюджет улетит.",
+        "troubleshoot": {
+          "Action превышает таймаут": "Сократи scope в prompt («только diff, не весь файл»), уменьши allowed-tools, поставь max-turns.",
+          "Permission denied на Bash в CI": "CI sandbox изолирован — там `--permission-mode acceptEdits` безопасен. Но НЕ используй в self-hosted runner на проде."
+        }
+      }
+    },
+    "trigger": "Команда использует Claude Code, но без правил каждый разработчик настраивает по-своему — нет consistency, нет guard-rails в CI.",
+    "inputs": [
+      "Существующий проект с Claude Code",
+      "Доступ к репо для коммита `.claude/` и `.mcp.json`",
+      "CI runner (GitHub Actions / GitLab CI / etc.)"
+    ],
+    "outputs": [
+      "Иерархия CLAUDE.md, shared slash-команды, hooks, subagents",
+      "MCP-интеграции с командными сервисами",
+      "Headless Claude Code в CI с code review автоматизацией"
+    ],
+    "tools": [
+      {
+        "name": "Claude Code",
+        "role": "CLI хост"
+      },
+      {
+        "name": ".claude/settings.json",
+        "role": "policy + hooks конфиг"
+      },
+      {
+        "name": "GitHub Actions",
+        "role": "CI runner для headless"
+      }
+    ],
+    "savings": "Команда из 8 разработчиков экономит ~15 часов в неделю на рутинном code review и chore-задачах."
+  },
+  "building-evaluations": {
+    "title": "Building evaluations: как мерить AI-качество",
+    "subtitle": "От «вроде работает» к воспроизводимым метрикам и regression detection",
+    "totalTime": "40 мин",
+    "whatItIs": "Production AI без evals — это «деплой и молись». Поменял prompt, поменял модель, обновил RAG — а как ты узнаешь, что стало лучше? Что не сломал старые кейсы?\n\n[[node:sys-evals-benchmarks|Evals]] — это твой test suite для LLM-системы: фиксированный набор задач, способ оценить ответ, метрика, CI. Не сложнее unit-тестов, но фундаментально меняет режим работы: вместо догадок — числа, вместо «вроде ок» — diff между прогонами.",
+    "approach": "Сначала golden dataset (маленький, но качественный), потом scorer (rule или LLM-judge), затем agg-метрика, потом regression detection, и финал — CI. Не начинай с «100 кейсов и custom-фреймворк» — начни с 20 кейсов и shell-скрипта. Качество вырастет постепенно.",
+    "outcomes": [
+      "Собран golden dataset 20-50 примеров с эталонными ответами",
+      "Понимаешь, когда rule-based scorer, когда LLM-as-judge",
+      "Считаешь agg-метрику (accuracy, F1, custom rubric)",
+      "Делаешь run-vs-run diff и видишь regressions",
+      "Интегрируешь evals в CI: PR с promptlib-изменением → авто-eval",
+      "Балансируешь cost vs quality для eval-прогона"
+    ],
+    "applyIn": [
+      {
+        "title": "Promptlib regression",
+        "description": "Каждое изменение в промптах прогоняется через eval — ловит regressions до merge."
+      },
+      {
+        "title": "Model migration",
+        "description": "Sonnet 4 → 4.5: один прогон evals = решение «мигрировать или ждать»."
+      },
+      {
+        "title": "RAG-tuning",
+        "description": "Меняешь chunk size / embedding / retriever — eval на retrieval+answer показывает, что улучшилось."
+      }
+    ],
+    "pitfalls": [
+      "Dataset из 5 примеров — статистика бессмысленна, нужно ≥ 20.",
+      "LLM-as-judge для строго-форматных задач (вместо regex) — дорого и шумно.",
+      "Eval без baseline — не понятно, лучше или хуже стало.",
+      "Прогон evals на каждый commit — бюджет улетит, делай на PR или nightly.",
+      "Считать только средний score — пропустишь регрессии на конкретных кейсах."
+    ],
+    "exercises": [
+      {
+        "question": "Возьми один свой production-prompt. Собери 20 примеров (input + ожидаемый output / критерий). Прогон через текущий prompt — каков baseline accuracy?",
+        "hint": "Если accuracy 95%+ — dataset слишком простой. Добавь edge cases."
+      },
+      {
+        "question": "Замени модель (например sonnet → haiku) и прогон тот же dataset. Сравни results. Стоит ли экономия качества?",
+        "hint": "Смотри не только avg, а где именно haiku фейлит — может, на конкретном типе кейсов."
+      }
+    ],
+    "steps": {
+      "be-1": {
+        "title": "Golden dataset: качество > количество",
+        "time": "8 мин",
+        "why": "Eval хорош ровно настолько, насколько golden dataset репрезентативен. 20 правильных кейсов лучше 200 случайных.",
+        "instructions": [
+          "Выпиши 5-7 типов задач, которые система решает в проде (по логам, не по воображению).",
+          "Для каждого типа — 3-5 примеров: 1 happy path, 2 typical, 1-2 edge case.",
+          "Для каждого: input (точно как в проде) + либо exact expected output, либо «критерий правильности».",
+          "Храни в JSONL или CSV — не в Excel. Должен diff в git.",
+          "Версионируй (`evals/v1/dataset.jsonl`) — старый dataset не выкидывай."
+        ],
+        "example": "evals/customer-support/v1.jsonl:\n```json\n{\"id\": \"cs-001\", \"input\": \"Где мой заказ #4521?\", \"expected_intent\": \"order_status\", \"expected_action\": \"fetch_order\"}\n{\"id\": \"cs-002\", \"input\": \"Хочу вернуть товар\", \"expected_intent\": \"return_request\", \"expected_action\": \"start_return_flow\"}\n{\"id\": \"cs-003\", \"input\": \"Вы продаёте экологичные товары?\", \"expected_intent\": \"general_inquiry\", \"expected_action\": \"answer_from_kb\"}\n{\"id\": \"cs-004\", \"input\": \"СРОЧНО ВЫ УКРАЛИ МОИ ДЕНЬГИ ВЕРНИТЕ\", \"expected_intent\": \"complaint_escalation\", \"expected_action\": \"escalate_to_human\"}\n```",
+        "validate": "Dataset покрывает все основные intent-классы из прода, есть edge cases, лежит в git.",
+        "tip": "Источник кейсов — production logs (если можно по compliance) + support tickets + claims пользователей. НЕ выдумывай — реальность всегда отличается.",
+        "troubleshoot": {
+          "Не знаю, какие edge cases добавить": "Посмотри на ошибки в проде за месяц. Что system отвечала неправильно? Это твои edge cases."
+        }
+      },
+      "be-2": {
+        "title": "Scorer: rule-based vs LLM-as-judge",
+        "time": "7 мин",
+        "why": "Scorer = как оценить «ответ правильный». Выбор между rule (regex/equality) и LLM-judge (другая LLM судит) — критический trade-off cost/precision.",
+        "instructions": [
+          "Rule-based если есть exact match: classification labels, JSON shape, numeric values, format validation.",
+          "LLM-as-judge если subjective: качество объяснения, тон, factual correctness в free-form тексте.",
+          "Hybrid: rule на structure (JSON valid, contains field X) + LLM на содержательной части.",
+          "Для LLM-judge: используй другую модель (или хотя бы другой prompt), фиксированный rubric с 1-5 шкалой, structured output.",
+          "Калибруй judge: возьми 10 кейсов с human-rating, проверь корреляцию ≥ 0.7."
+        ],
+        "example": "Rule-based (classification):\n```python\ndef score(predicted, expected):\n    return 1.0 if predicted[\"intent\"] == expected[\"intent\"] else 0.0\n```\n\nLLM-as-judge (quality):\n```python\nJUDGE_PROMPT = \"\"\"Rate the answer 1-5:\n- 5: factually correct, addresses question, appropriate tone\n- 3: mostly correct, minor issues\n- 1: incorrect or off-topic\n\nQuestion: {q}\nReference: {ref}\nAnswer: {ans}\n\nReturn JSON: {{\"score\": int, \"reasoning\": str}}\"\"\"\n\ndef judge_score(q, ref, ans):\n    resp = client.messages.create(\n        model=\"claude-sonnet-4-5\",\n        messages=[{\"role\": \"user\", \"content\": JUDGE_PROMPT.format(q=q, ref=ref, ans=ans)}],\n        max_tokens=200\n    )\n    return json.loads(resp.content[0].text)\n```",
+        "validate": "У каждого кейса в dataset есть scorer function (или классификация типа scorer).",
+        "tip": "Для CI чаще rule-based — дешевле и детерминированно. LLM-judge — для weekly deep-eval.",
+        "troubleshoot": {
+          "LLM-judge даёт разные оценки на одном кейсе": "Поставь `temperature=0`, fix seed если поддерживается, используй structured output. Если всё равно шум — упрощай rubric (5 уровней → 3)."
+        }
+      },
+      "be-3": {
+        "title": "Run-loop и agg-метрика",
+        "time": "6 мин",
+        "why": "Прогон = applied (model, prompt) on (dataset) → aggregated metrics. Без агрегации видишь только разрозненные scores.",
+        "instructions": [
+          "Loop: для каждой записи в dataset — вызов системы, scorer, сохрани {id, input, output, score, metadata}.",
+          "Сохрани полный run в файл с timestamp и git SHA: `evals/runs/2026-05-27-abc1234.jsonl`.",
+          "Agg-метрики: avg score, % above threshold, breakdown по типу задачи, по edge_case=true/false.",
+          "Параллельность: используй async (`asyncio.gather` / `Promise.all`) — но с rate-limit.",
+          "Cost-tracking: считай input+output tokens, оценка $ за прогон."
+        ],
+        "example": "run_eval.py:\n```python\nimport asyncio, json, time, subprocess\nfrom anthropic import AsyncAnthropic\n\nasync def run_case(client, case, system_prompt):\n    resp = await client.messages.create(\n        model=\"claude-sonnet-4-5\",\n        max_tokens=500,\n        system=system_prompt,\n        messages=[{\"role\": \"user\", \"content\": case[\"input\"]}]\n    )\n    return {\n        \"id\": case[\"id\"],\n        \"output\": resp.content[0].text,\n        \"input_tokens\": resp.usage.input_tokens,\n        \"output_tokens\": resp.usage.output_tokens\n    }\n\nasync def main():\n    sha = subprocess.check_output([\"git\", \"rev-parse\", \"--short\", \"HEAD\"]).decode().strip()\n    dataset = [json.loads(l) for l in open(\"evals/dataset.jsonl\")]\n    client = AsyncAnthropic()\n    results = await asyncio.gather(*[run_case(client, c, SYSTEM) for c in dataset])\n    # scoring\n    for r, c in zip(results, dataset):\n        r[\"score\"] = score(r[\"output\"], c[\"expected\"])\n    # save\n    out = f\"evals/runs/{int(time.time())}-{sha}.jsonl\"\n    with open(out, \"w\") as f:\n        for r in results: f.write(json.dumps(r) + \"\\n\")\n    avg = sum(r[\"score\"] for r in results) / len(results)\n    cost = sum(r[\"input_tokens\"] * 3 + r[\"output_tokens\"] * 15 for r in results) / 1_000_000\n    print(f\"avg={avg:.3f}  cost=${cost:.4f}  saved={out}\")\n\nasyncio.run(main())\n```",
+        "validate": "Прогон даёт файл с per-case scores и aggregated avg, cost оценён.",
+        "troubleshoot": {
+          "Rate limit errors": "Добавь semaphore: `sem = asyncio.Semaphore(5)` и оборачивай вызовы. Или используй Batch API для non-realtime evals — 50% скидка."
+        }
+      },
+      "be-4": {
+        "title": "Regression detection: run-vs-run diff",
+        "time": "6 мин",
+        "why": "Avg score вырос с 0.82 до 0.84 — успех? Может, ты починил 5 кейсов и сломал 3. Diff показывает истину.",
+        "instructions": [
+          "Diff = join по `id` двух runs → разница scores per case.",
+          "Категоризируй: improved, regressed (score упал), stable, new (нет в baseline).",
+          "Threshold: regression значим, если score упал на ≥ 0.2 на конкретном кейсе или на ≥ 0.05 в среднем по категории.",
+          "Если ≥ 1 значимая regression — fail PR, требуй ревью.",
+          "Output — markdown table в PR comment, с конкретными regressed cases (input, old output, new output)."
+        ],
+        "example": "diff_runs.py:\n```python\nimport json, sys\n\nbase = {r[\"id\"]: r for r in (json.loads(l) for l in open(sys.argv[1]))}\nnew = {r[\"id\"]: r for r in (json.loads(l) for l in open(sys.argv[2]))}\n\nregressed, improved = [], []\nfor id, n in new.items():\n    b = base.get(id)\n    if b and n[\"score\"] - b[\"score\"] <= -0.2:\n        regressed.append((id, b[\"score\"], n[\"score\"]))\n    elif b and n[\"score\"] - b[\"score\"] >= 0.2:\n        improved.append((id, b[\"score\"], n[\"score\"]))\n\nprint(f\"## Eval diff\\n\\n- improved: {len(improved)}\\n- regressed: {len(regressed)}\\n\")\nif regressed:\n    print(\"### Regressions\\n| id | before | after |\\n|---|---|---|\")\n    for id, b, n in regressed:\n        print(f\"| {id} | {b:.2f} | {n:.2f} |\")\n    sys.exit(1)\n```",
+        "validate": "Diff между двумя runs выдаёт читаемый отчёт; PR с regression фейлится.",
+        "tip": "Сохрани «accepted regressions» (например, edge case, который мы готовы принять) в отдельный allowlist. Diff игнорирует их."
+      },
+      "be-5": {
+        "title": "CI integration",
+        "time": "7 мин",
+        "why": "Eval, который не запускается автоматически, со временем умирает. CI — единственный способ держать его живым.",
+        "instructions": [
+          "Trigger: на PR, который меняет файлы в `prompts/`, `evals/`, `src/llm/`.",
+          "Steps: run eval → diff vs baseline (последний run на main) → comment в PR.",
+          "Baseline хранить как artifact или коммитить в `evals/runs/main/`.",
+          "API key — через secrets, НЕ в коде/конфиге.",
+          "Timeout: 10-15 минут max. Если dataset большой — Batch API или sample (random 30 кейсов)."
+        ],
+        "example": ".github/workflows/eval.yml:\n```yaml\nname: Eval\non:\n  pull_request:\n    paths: [\"prompts/**\", \"src/llm/**\", \"evals/dataset.jsonl\"]\n\njobs:\n  eval:\n    runs-on: ubuntu-latest\n    timeout-minutes: 15\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with: { python-version: \"3.11\" }\n      - run: pip install anthropic\n      - name: Run eval\n        env:\n          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}\n        run: python evals/run_eval.py | tee eval-output.txt\n      - name: Diff vs baseline\n        run: python evals/diff_runs.py evals/runs/main/latest.jsonl evals/runs/$(ls -t evals/runs | head -1)\n      - uses: marocchino/sticky-pull-request-comment@v2\n        if: always()\n        with:\n          path: eval-output.txt\n```",
+        "validate": "PR с изменением промпта → action запускается, постит comment с avg, cost и diff.",
+        "troubleshoot": {
+          "CI eval падает intermittently": "Сетевые ошибки к API. Добавь retry с exponential backoff (3 попытки), tenacity-стиль."
+        }
+      },
+      "be-6": {
+        "title": "Cost-quality trade-off и где границы",
+        "time": "6 мин",
+        "why": "Идеальный eval бесконечно дорог. Реальный — балансирует cost vs signal. Без явного решения trade-off бюджет улетит, и evals выключат.",
+        "instructions": [
+          "Budget per run = $0.10-$1 для CI (на PR), $5-$20 для weekly deep-eval.",
+          "Sampling: 30-50 кейсов для PR (fast feedback), full dataset для nightly/weekly.",
+          "Tiered evals: smoke (5 кейсов, $0.01, на каждый commit) → full (50 кейсов, на PR) → deep (200 + LLM-judge, weekly).",
+          "Кэширование: одинаковый input + одинаковый промпт — закэшируй ответ. Меняется только при изменении prompt/model.",
+          "Batch API для не-realtime — половина цены, до 24ч задержка."
+        ],
+        "example": "Триггеры:\n- commit → smoke (5 cases, $0.01, 30 sec) — на pre-commit hook\n- PR → fast (30 cases, rule-based, $0.30, 2 min) — github action\n- nightly main → full (50 cases, $0.80, 5 min) — cron\n- weekly → deep (200 cases + LLM-judge, $15, 30 min) — manual / schedule\n\nЭто разделение покрывает 90% случаев при разумной стоимости.",
+        "validate": "У тебя есть письменный budget на eval (per PR / per week) и tiering, который в него вписывается.",
+        "tip": "Когда продукт стабилен — deep eval может быть раз в месяц, не в неделю. Меряй ROI evals (сколько багов поймал) — это аргумент перед менеджментом, что бюджет оправдан."
+      }
+    },
+    "trigger": "Production AI-система меняется, и непонятно, делает каждое изменение лучше или хуже — нужен measurable feedback loop.",
+    "inputs": [
+      "Production-prompt(ы) и доступ к API",
+      "20-50 реальных кейсов с эталонными ответами / критериями",
+      "CI runner для автоматизации"
+    ],
+    "outputs": [
+      "Golden dataset в git, версионированный",
+      "Run-скрипт + scorer + agg-метрики",
+      "CI workflow с regression detection и PR-комментариями"
+    ],
+    "tools": [
+      {
+        "name": "Anthropic SDK",
+        "role": "вызов моделей в eval-loop"
+      },
+      {
+        "name": "Batch API",
+        "role": "50% скидка для non-realtime evals"
+      },
+      {
+        "name": "GitHub Actions",
+        "role": "CI запускалка"
+      }
+    ],
+    "savings": "Eval ловит ~80% regressions до prod. Один предотвращённый incident окупает квартал evals."
   }
 }

@@ -1226,6 +1226,118 @@ export const tutorials = {
         "id": "ruc-6"
       }
     ]
+  },
+  "mcp-advanced": {
+    "nodeId": "mcp",
+    "icon": "plug",
+    "level": "advanced",
+    "audience": "developers",
+    "prerequisites": [
+      "mcp",
+      "claude-code"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agents",
+      "subagents"
+    ],
+    "steps": [
+      {
+        "id": "ma-1"
+      },
+      {
+        "id": "ma-2"
+      },
+      {
+        "id": "ma-3"
+      },
+      {
+        "id": "ma-4"
+      },
+      {
+        "id": "ma-5"
+      },
+      {
+        "id": "ma-6"
+      },
+      {
+        "id": "ma-7"
+      }
+    ]
+  },
+  "claude-code-project": {
+    "nodeId": "claude-code",
+    "icon": "terminal",
+    "level": "advanced",
+    "audience": "developers",
+    "prerequisites": [
+      "claude-code",
+      "first-project"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "mcp-advanced",
+      "subagents",
+      "hooks"
+    ],
+    "steps": [
+      {
+        "id": "ccp-1"
+      },
+      {
+        "id": "ccp-2"
+      },
+      {
+        "id": "ccp-3"
+      },
+      {
+        "id": "ccp-4"
+      },
+      {
+        "id": "ccp-5"
+      },
+      {
+        "id": "ccp-6"
+      },
+      {
+        "id": "ccp-7"
+      }
+    ]
+  },
+  "building-evaluations": {
+    "nodeId": "sys-evals-benchmarks",
+    "icon": "microscope",
+    "level": "advanced",
+    "audience": "developers",
+    "prerequisites": [
+      "api-basics",
+      "prompting-techniques"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agents",
+      "mcp-advanced"
+    ],
+    "steps": [
+      {
+        "id": "be-1"
+      },
+      {
+        "id": "be-2"
+      },
+      {
+        "id": "be-3"
+      },
+      {
+        "id": "be-4"
+      },
+      {
+        "id": "be-5"
+      },
+      {
+        "id": "be-6"
+      }
+    ]
   }
 };
 
