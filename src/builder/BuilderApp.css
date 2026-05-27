@@ -1427,6 +1427,202 @@
 }
 
 /* ────────────────────────────────────────────────── */
+/* Onboarding tour                                    */
+/* ────────────────────────────────────────────────── */
+
+/* Welcome / Done backdrop — full-screen modal */
+.builder-tour-backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in srgb, #000 55%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(4px);
+  animation: builder-fade-in 200ms ease;
+}
+
+.builder-tour-welcome {
+  position: relative;
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 440px;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  animation: builder-modal-pop 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.builder-tour-welcome__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent, #2563eb) 14%, transparent);
+  color: var(--accent, #2563eb);
+  margin-bottom: 16px;
+}
+
+.builder-tour-welcome__icon--success {
+  background: color-mix(in srgb, #16a34a 14%, transparent);
+  color: #16a34a;
+}
+
+.builder-tour-welcome__title {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.builder-tour-welcome__subtitle {
+  margin: 0 0 24px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+.builder-tour-welcome__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.builder-tour-welcome__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.builder-tour-welcome__close:hover {
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+/* Spotlight steps — dim panels around target */
+.builder-tour-dim {
+  position: fixed;
+  background: color-mix(in srgb, #000 55%, transparent);
+  z-index: 180;
+  pointer-events: none;
+  transition: all 200ms ease;
+}
+
+.builder-tour-dim--top {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.builder-tour-dim--bottom {
+  left: 0;
+  right: 0;
+  bottom: auto;
+}
+
+/* Highlight ring around target */
+.builder-tour-highlight {
+  position: fixed;
+  z-index: 181;
+  pointer-events: none;
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent, #2563eb) 70%, transparent),
+    0 0 20px color-mix(in srgb, var(--accent, #2563eb) 50%, transparent);
+  transition: all 200ms ease;
+  animation: builder-tour-pulse 2s ease-in-out infinite;
+}
+
+@keyframes builder-tour-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--accent, #2563eb) 70%, transparent),
+      0 0 16px color-mix(in srgb, var(--accent, #2563eb) 40%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--accent, #2563eb) 80%, transparent),
+      0 0 28px color-mix(in srgb, var(--accent, #2563eb) 60%, transparent);
+  }
+}
+
+/* Step bubble */
+.builder-tour-bubble {
+  position: fixed;
+  z-index: 190;
+  width: 320px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  animation: builder-tooltip-in 220ms ease;
+}
+
+.builder-tour-bubble__progress {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent, #2563eb);
+  margin-bottom: 6px;
+}
+
+.builder-tour-bubble__title {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.builder-tour-bubble__body {
+  margin: 0 0 14px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-soft);
+}
+
+.builder-tour-bubble__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.builder-tour-bubble__nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Mobile — show только welcome + done, skip spotlight steps */
+@media (max-width: 768px) {
+  .builder-tour-dim,
+  .builder-tour-highlight,
+  .builder-tour-bubble {
+    display: none;
+  }
+}
+
+/* ────────────────────────────────────────────────── */
 /* Mobile fallback (Day 87 будет proper)               */
 /* ────────────────────────────────────────────────── */
 

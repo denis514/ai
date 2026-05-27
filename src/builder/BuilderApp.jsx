@@ -18,6 +18,7 @@ import { nodeTypes } from './components/canvas/index.js';
 import ToolboxItem from './components/canvas/ToolboxItem.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
 import AtlasNodePreview from './components/education/AtlasNodePreview.jsx';
+import BuilderTour, { isTourSeen } from './components/education/BuilderTour.jsx';
 import TemplateGallery from './components/panels/TemplateGallery.jsx';
 import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
 import { createExecution } from './services/mockExecutor.js';
@@ -64,6 +65,9 @@ function BuilderAppInner() {
 
   // Atlas preview state — когда установлено, заменяет NodeDetails в sidebar.
   const [atlasPreviewId, setAtlasPreviewId] = useState(null);
+
+  // Onboarding tour — показываем при first visit
+  const [tourOpen, setTourOpen] = useState(() => !isTourSeen());
 
   const openAtlasPreview = useCallback((atlasId) => {
     if (!atlasId) return;
@@ -357,6 +361,15 @@ function BuilderAppInner() {
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
+            onClick={() => setTourOpen(true)}
+            title={t('builder.tour.openBtn') || 'Take the tour'}
+            aria-label={t('builder.tour.openBtn') || 'Take the tour'}
+          >
+            <Icon name="question" size={14} strokeWidth={1.5} />
+          </button>
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost"
             onClick={() => setGalleryOpen(true)}
             title={t('builder.gallery.open') || 'Open templates'}
           >
@@ -575,6 +588,17 @@ function BuilderAppInner() {
           onShow={handleTooltipShow}
           onHide={handleTooltipHide}
           onOpenAtlas={openAtlasPreview}
+        />
+      )}
+
+      {/* Onboarding tour — first-time visitors + replay через ? button */}
+      {tourOpen && (
+        <BuilderTour
+          nodes={nodes}
+          edges={edges}
+          execStatus={execStatus}
+          onClose={() => setTourOpen(false)}
+          onOpenTemplates={() => setGalleryOpen(true)}
         />
       )}
     </div>
