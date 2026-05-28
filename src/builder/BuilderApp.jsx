@@ -23,6 +23,7 @@ import BuilderTour, { isTourSeen } from './components/education/BuilderTour.jsx'
 import TemplateGallery from './components/panels/TemplateGallery.jsx';
 import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
 import WorkflowSwitcher from './components/panels/WorkflowSwitcher.jsx';
+import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
 import { createExecution } from './services/mockExecutor.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import './BuilderApp.css';
@@ -687,6 +688,8 @@ function BuilderAppInner() {
                 <Icon name="books" size={14} strokeWidth={1.5} />
                 <span>{t('builder.canvas.browseTemplates') || 'Browse templates'}</span>
               </button>
+
+              <RecentWorkflows userId={userId} onOpen={handleLoadWorkflow} />
             </div>
           )}
 
