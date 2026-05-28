@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 
@@ -24,12 +24,36 @@ export default function ExecutionPanel({
   nodesTotal,
   nodesDone,
   nodesFailed,
+  result,
   onStop,
   onClear,
   onClose,
 }) {
   const t = useT();
   const bodyRef = useRef(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (!result?.output) return;
+    try {
+      navigator.clipboard.writeText(result.output);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch { /* noop */ }
+  };
+
+  const handleDownload = () => {
+    if (!result?.output) return;
+    try {
+      const blob = new Blob([result.output], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `workflow-result-${new Date().toISOString().slice(0, 10)}.md`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch { /* noop */ }
+  };
 
   // Auto-scroll к bottom при appearing новых логов
   useEffect(() => {
@@ -90,6 +114,28 @@ export default function ExecutionPanel({
           </button>
         </div>
       </div>
+
+      {result?.output && (
+        <div className="builder-exec__result">
+          <div className="builder-exec__result-head">
+            <span className="builder-exec__result-title">
+              {t('builder.exec.resultTitle') || 'Result'}
+              {result.tokensUsed ? <span className="builder-exec__result-tokens"> · {result.tokensUsed} {t('builder.exec.tokens') || 'tokens'}</span> : null}
+            </span>
+            <span className="builder-exec__result-actions">
+              <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={handleCopy}>
+                <Icon name={copied ? 'check' : 'clipboard'} size={12} strokeWidth={1.75} />
+                <span>{copied ? (t('builder.exec.copied') || 'Copied') : (t('builder.exec.copy') || 'Copy')}</span>
+              </button>
+              <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={handleDownload}>
+                <Icon name="file" size={12} strokeWidth={1.75} />
+                <span>{t('builder.exec.download') || 'Download'}</span>
+              </button>
+            </span>
+          </div>
+          <div className="builder-exec__result-text">{result.output}</div>
+        </div>
+      )}
 
       <div className="builder-exec__body" ref={bodyRef}>
         {logs.length === 0 ? (

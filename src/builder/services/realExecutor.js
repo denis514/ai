@@ -22,7 +22,7 @@ const FN_URL = import.meta.env.VITE_SUPABASE_URL
   : null;
 const ANON = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export function createRealExecution({ workflowId, input, onUpdate, onLog, onComplete }) {
+export function createRealExecution({ workflowId, input, tier, onUpdate, onLog, onComplete, onResult }) {
   const executionId =
     (crypto.randomUUID && crypto.randomUUID()) ||
     `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -88,13 +88,14 @@ export function createRealExecution({ workflowId, input, onUpdate, onLog, onComp
             apikey: ANON,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ executionId, workflowId, input }),
+          body: JSON.stringify({ executionId, workflowId, input, tier }),
         });
         const out = await res.json().catch(() => ({}));
         if (!res.ok) {
           onLog?.({ level: 'error', message: out.error || `http_${res.status}`, ts: new Date().toISOString() });
           return finish('failed');
         }
+        if (out.output != null) onResult?.({ output: out.output, tokensUsed: out.tokensUsed || 0 });
         // Функция завершилась — финал (на случай если UPDATE-событие не дошло).
         finish(out.status || 'completed');
       } catch (e) {

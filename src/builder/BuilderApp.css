@@ -579,6 +579,98 @@
   color: var(--text-muted);
 }
 
+/* Result size tier selector */
+.builder-app .builder-tier__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.builder-app .builder-tier__opts {
+  display: flex;
+  gap: 6px;
+}
+.builder-app .builder-tier__opt {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.builder-app .builder-tier__opt:hover {
+  background: var(--surface-2);
+}
+.builder-app .builder-tier__opt.is-active {
+  border-color: var(--accent, #2563eb);
+  background: color-mix(in srgb, var(--accent, #2563eb) 8%, transparent);
+}
+.builder-app .builder-tier__opt-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.builder-app .builder-tier__opt-desc {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+.builder-app .builder-runinput__est {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--text);
+}
+.builder-app .builder-runinput__est-note {
+  color: var(--text-muted);
+}
+
+/* Execution result block */
+.builder-app .builder-exec__result {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  background: color-mix(in srgb, var(--accent, #2563eb) 5%, transparent);
+}
+.builder-app .builder-exec__result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.builder-app .builder-exec__result-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+.builder-app .builder-exec__result-tokens {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.builder-app .builder-exec__result-actions {
+  display: flex;
+  gap: 6px;
+}
+.builder-app .builder-exec__result-text {
+  max-height: 280px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
 .builder-app .builder-btn--primary {
   background: var(--accent, #2563eb);
   color: #fff;

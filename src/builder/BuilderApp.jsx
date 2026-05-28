@@ -27,6 +27,7 @@ import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
 import ApiKeysModal from './components/panels/ApiKeysModal.jsx';
 import AuthModal from '../components/AuthModal.jsx';
 import { TEMPLATES } from './data/templates.js';
+import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data/outputTiers.js';
 import { createExecution } from './services/mockExecutor.js';
 import { createRealExecution } from './services/realExecutor.js';
 import { getKeyStatus } from './services/apiKeyService.js';
@@ -201,6 +202,8 @@ function BuilderAppInner() {
     try { return sessionStorage.getItem(REAL_INTENT_KEY) === '1'; } catch { return false; }
   });
   const [realConfirmOpen, setRealConfirmOpen] = useState(false); // окно «осторожно, реальный режим»
+  const [outputTier, setOutputTier] = useState(DEFAULT_TIER);    // 's' | 'm' | 'l'
+  const [execResult, setExecResult] = useState(null);            // { output, tokensUsed } реального запуска
   // Счётчик версии списка workflow — бампается при save/delete, чтобы
   // «Недавние» в центре экрана и список в dropdown пере-загружались.
   const [wfVersion, setWfVersion] = useState(0);
@@ -517,14 +520,17 @@ function BuilderAppInner() {
   }, [nodes, edges, beginExecUi, makeCallbacks]);
 
   /* ────────── Real execution (B-2.2) ────────── */
-  const runReal = useCallback((input) => {
+  const runReal = useCallback((input, tier) => {
     const stats = beginExecUi();
+    setExecResult(null);
     execRef.current = createRealExecution({
       workflowId: currentWorkflowId,
       input,
+      tier: tier || outputTier,
       ...makeCallbacks(stats),
+      onResult: ({ output, tokensUsed }) => setExecResult({ output, tokensUsed }),
     });
-  }, [currentWorkflowId, beginExecUi, makeCallbacks]);
+  }, [currentWorkflowId, outputTier, beginExecUi, makeCallbacks]);
 
   // Кнопка Run: в реальном режиме — валидация + окно ввода; иначе mock.
   const handleRun = useCallback(() => {
@@ -919,8 +925,9 @@ function BuilderAppInner() {
             nodesTotal={execStats.total}
             nodesDone={execStats.done}
             nodesFailed={execStats.failed}
+            result={execResult}
             onStop={handleStopExec}
-            onClear={handleClearLogs}
+            onClear={() => { setExecResult(null); handleClearLogs(); }}
             onClose={() => setExecPanelOpen(false)}
           />
         )}
@@ -1141,6 +1148,40 @@ function BuilderAppInner() {
               rows={4}
               autoFocus
             />
+
+            {/* Размер результата = контроль токенов */}
+            <div className="builder-tier" role="radiogroup" aria-label={t('builder.tier.aria') || 'Result size'}>
+              <span className="builder-tier__label">{t('builder.tier.heading') || 'Result size'}</span>
+              <div className="builder-tier__opts">
+                {Object.values(OUTPUT_TIERS).map(tier => (
+                  <button
+                    key={tier.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={outputTier === tier.id}
+                    className={`builder-tier__opt ${outputTier === tier.id ? 'is-active' : ''}`}
+                    onClick={() => setOutputTier(tier.id)}
+                  >
+                    <span className="builder-tier__opt-name">{t(tier.labelKey) || tier.id.toUpperCase()}</span>
+                    <span className="builder-tier__opt-desc">{t(tier.descKey) || ''}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Локальная оценка стоимости — без вызова API */}
+            {(() => {
+              const est = estimateRun(countAgentNodes(nodes), outputTier);
+              return (
+                <p className="builder-runinput__est">
+                  {t('builder.runInput.estimate') || 'Estimated:'}{' '}
+                  <strong>≈ {est.totalMax.toLocaleString()} {t('builder.runInput.tokens') || 'tokens'}</strong>
+                  {' · '}≈ ${est.costUsd < 0.01 ? '0.01' : est.costUsd.toFixed(2)}
+                  <span className="builder-runinput__est-note"> ({t('builder.runInput.estNote') || 'rough max, on your key'})</span>
+                </p>
+              );
+            })()}
+
             <p className="builder-runinput__warn">
               <Icon name="flash" size={13} strokeWidth={1.75} />
               {t('builder.runInput.costWarn') || 'This runs on the real Claude API and uses tokens on your key.'}
@@ -1152,7 +1193,7 @@ function BuilderAppInner() {
               <button
                 type="button"
                 className="builder-btn builder-btn--primary builder-btn--real"
-                onClick={() => { setRunInputOpen(false); runReal(runInput.trim()); }}
+                onClick={() => { setRunInputOpen(false); runReal(runInput.trim(), outputTier); }}
               >
                 <Icon name="flash" size={14} strokeWidth={1.5} />
                 {t('builder.runInput.run') || 'Run for real'}

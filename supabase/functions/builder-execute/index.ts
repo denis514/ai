@@ -24,8 +24,11 @@ import { systemPromptForRole, roleLabel } from '../_shared/rolePrompts.ts';
 
 const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL = 'claude-sonnet-4-5';
-const MAX_TOKENS = 1024;
 const MAX_NODES = 25; // защита от runaway: не больше 25 узлов за запуск
+
+// Размер результата → max_tokens на агент-вызов (см. outputTiers.js на клиенте).
+const TIER_MAX_TOKENS: Record<string, number> = { s: 512, m: 2048, l: 4096 };
+const DEFAULT_TIER = 's';
 
 type Node = { client_id: string; node_type: string; role: string | null; def_id: string };
 type Edge = { source_client_id: string; target_client_id: string };
@@ -55,7 +58,7 @@ function topoOrder(nodes: Node[], edges: Edge[]): string[] {
   return order;
 }
 
-async function callClaude(apiKey: string, system: string, userContent: string) {
+async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number) {
   const res = await fetch(CLAUDE_URL, {
     method: 'POST',
     headers: {
@@ -65,7 +68,7 @@ async function callClaude(apiKey: string, system: string, userContent: string) {
     },
     body: JSON.stringify({
       model: MODEL,
-      max_tokens: MAX_TOKENS,
+      max_tokens: maxTokens,
       system,
       messages: [{ role: 'user', content: userContent }],
     }),
@@ -86,12 +89,14 @@ Deno.serve(async (req) => {
   const user = await getUser(req);
   if (!user) return json({ error: 'unauthorized' }, 401);
 
-  let body: { executionId?: string; workflowId?: string; input?: string };
+  let body: { executionId?: string; workflowId?: string; input?: string; tier?: string };
   try { body = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
 
   const executionId = body.executionId;
   const workflowId = body.workflowId;
   const input = (body.input || '').trim();
+  const tier = (body.tier || DEFAULT_TIER).toLowerCase();
+  const maxTokens = TIER_MAX_TOKENS[tier] || TIER_MAX_TOKENS[DEFAULT_TIER];
   if (!executionId || !workflowId) return json({ error: 'missing_params' }, 400);
 
   const admin = adminClient();
@@ -123,7 +128,7 @@ Deno.serve(async (req) => {
   // Создаём execution-строку (status running) с клиентским id.
   await admin.from('builder_executions').insert({
     id: executionId, workflow_id: workflowId, user_id: user.id,
-    status: 'running', input_data: { input },
+    status: 'running', input_data: { input, tier },
   });
 
   const log = async (nodeId: string | null, level: string, message: string, data?: unknown) => {
@@ -172,7 +177,7 @@ Deno.serve(async (req) => {
       const context = incoming.length ? incoming.join('\n\n') : input;
       const system = systemPromptForRole(node.role || 'main');
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
-      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.');
+      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens);
       totalTokens += tokens;
       outputs.set(id, text);
       lastText = text;
