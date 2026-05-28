@@ -302,6 +302,12 @@ function BuilderAppInner() {
     };
   }, [persist, workflowName, nodes.length]);
 
+  // Если не авторизован — сразу окно входа; иначе окно ключей.
+  const openKeysOrAuth = useCallback(() => {
+    if (!user) setAuthOpen(true);
+    else setKeysModalOpen(true);
+  }, [user]);
+
   // Проверка подключённого ключа — для доступности реального режима.
   // Перечитываем при монтировании и при закрытии модалки ключей.
   useEffect(() => {
@@ -494,7 +500,7 @@ function BuilderAppInner() {
   const handleRun = useCallback(() => {
     if (nodes.length === 0 || execStatus === 'running') return;
     if (runMode === 'real') {
-      if (!keyConnected) { setKeysModalOpen(true); return; }
+      if (!keyConnected) { openKeysOrAuth(); return; }
       if (!currentWorkflowId || isDirtyRef.current) {
         // Нужно сохранить перед реальным запуском (серверу нужна сохранённая схема).
         if (!workflowName.trim()) { setNameDraft(''); setNameModalStep('name'); setNameModalOpen(true); return; }
@@ -506,7 +512,7 @@ function BuilderAppInner() {
       return;
     }
     runMock();
-  }, [nodes.length, execStatus, runMode, keyConnected, currentWorkflowId, workflowName, runMock, doSave]);
+  }, [nodes.length, execStatus, runMode, keyConnected, currentWorkflowId, workflowName, runMock, doSave, openKeysOrAuth]);
 
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
@@ -596,7 +602,7 @@ function BuilderAppInner() {
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
-            onClick={() => setKeysModalOpen(true)}
+            onClick={openKeysOrAuth}
             title={t('builder.keys.openBtn') || 'API keys'}
             aria-label={t('builder.keys.openBtn') || 'API keys'}
           >
@@ -719,7 +725,7 @@ function BuilderAppInner() {
             <button
               type="button"
               className={`builder-runmode__opt ${runMode === 'real' ? 'is-active' : ''}`}
-              onClick={() => keyConnected ? setRunMode('real') : setKeysModalOpen(true)}
+              onClick={() => keyConnected ? setRunMode('real') : openKeysOrAuth()}
               title={keyConnected ? '' : (t('builder.runmode.needKey') || 'Connect a Claude key first')}
             >
               {t('builder.runmode.real') || 'Real'}
