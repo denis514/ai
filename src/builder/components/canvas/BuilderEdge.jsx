@@ -20,6 +20,7 @@ export default function BuilderEdge({
 }) {
   const { setEdges } = useReactFlow();
   const [hovered, setHovered] = useState(false);
+  const [btnHover, setBtnHover] = useState(false);
 
   const [path, labelX, labelY] = getBezierPath({
     sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition,
@@ -72,13 +73,13 @@ export default function BuilderEdge({
           <div
             className="builder-edge__unlink"
             style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
+            onMouseEnter={() => { setHovered(true); setBtnHover(true); }}
+            onMouseLeave={() => { setHovered(false); setBtnHover(false); }}
             onClick={unlink}
             role="button"
             title="Unlink"
           >
-            <Icon name="link" size={12} strokeWidth={2} />
+            <Icon name={btnHover ? 'unlink' : 'link'} size={12} strokeWidth={2} />
           </div>
         </EdgeLabelRenderer>
       )}

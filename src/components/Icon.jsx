@@ -9,6 +9,7 @@ import {
   KeyboardIcon,
   FlashIcon,
   Link01Icon,
+  Unlink01Icon,
   Edit01Icon,
   PencilIcon,
   SparklesIcon,
@@ -108,6 +109,7 @@ const REGISTRY = {
   keyboard:     KeyboardIcon,             // ⌨️
   flash:        FlashIcon,                // ⚡
   link:         Link01Icon,               // ⛓️ chain
+  unlink:       Unlink01Icon,             // ⛓️‍💥 разорванная цепь
   edit:         Edit01Icon,               // ✍️
   pencil:       PencilIcon,               // ✏️
   sparkles:     SparklesIcon,             // ✨ / ✦
