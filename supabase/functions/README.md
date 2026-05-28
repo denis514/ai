@@ -31,6 +31,7 @@ supabase secrets set BUILDER_KEY_ENCRYPTION_SECRET="<вставить_сгене
 ```bash
 supabase functions deploy builder-connect-key
 supabase functions deploy builder-disconnect-key
+supabase functions deploy builder-execute
 ```
 
 ## Перед этим — миграции
@@ -38,6 +39,7 @@ supabase functions deploy builder-disconnect-key
 В Supabase Dashboard → SQL Editor выполнить (по порядку):
 1. `docs/agent-builder/migrations/001_builder_core.sql` (если ещё не делал)
 2. `docs/agent-builder/migrations/002_builder_api_keys.sql`
+3. `docs/agent-builder/migrations/003_builder_executions.sql` (для реального запуска)
 
 ## Проверка
 
