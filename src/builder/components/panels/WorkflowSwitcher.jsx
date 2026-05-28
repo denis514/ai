@@ -20,6 +20,7 @@ export default function WorkflowSwitcher({ userId, currentId, onOpen, onNew, onC
   const t = useT();
   const [items, setItems] = useState(null); // null = loading
   const [error, setError] = useState(false);
+  const [confirmId, setConfirmId] = useState(null); // id workflow в режиме подтверждения удаления
   const ref = useRef(null);
 
   const refresh = useCallback(() => {
@@ -43,15 +44,28 @@ export default function WorkflowSwitcher({ userId, currentId, onOpen, onNew, onC
     };
   }, [onClose]);
 
-  const handleDelete = useCallback(async (e, id) => {
+  // Шаг 1: клик по × → запросить подтверждение (не удаляем сразу).
+  const askDelete = useCallback((e, id) => {
+    e.stopPropagation();
+    setConfirmId(id);
+  }, []);
+
+  // Шаг 2: подтверждено → удаляем.
+  const confirmDelete = useCallback(async (e, id) => {
     e.stopPropagation();
     try {
       await deleteWorkflow(id, userId);
+      setConfirmId(null);
       refresh();
     } catch (err) {
       console.error('[Builder] delete failed', err);
     }
   }, [userId, refresh]);
+
+  const cancelDelete = useCallback((e) => {
+    e.stopPropagation();
+    setConfirmId(null);
+  }, []);
 
   const fmtDate = (ts) => {
     if (!ts) return '';
@@ -88,28 +102,57 @@ export default function WorkflowSwitcher({ userId, currentId, onOpen, onNew, onC
           </div>
         )}
         {items !== null && items.map(w => (
-          <button
-            key={w.id}
-            type="button"
-            className={`builder-switcher__item ${w.id === currentId ? 'is-current' : ''}`}
-            onClick={() => onOpen(w.id)}
-            role="menuitem"
-          >
-            <span className="builder-switcher__item-main">
-              <span className="builder-switcher__item-name">{w.name}</span>
-              <span className="builder-switcher__item-date">{fmtDate(w.updatedAt)}</span>
-            </span>
-            <span
-              className="builder-switcher__item-del"
-              onClick={(e) => handleDelete(e, w.id)}
-              role="button"
-              tabIndex={0}
-              aria-label={t('builder.workflows.delete') || 'Delete'}
-              title={t('builder.workflows.delete') || 'Delete'}
+          confirmId === w.id ? (
+            <div
+              key={w.id}
+              className="builder-switcher__item builder-switcher__item--confirm"
+              role="alertdialog"
+              aria-label={t('builder.workflows.confirmTitle') || 'Delete this workflow?'}
             >
-              <Icon name="close" size={12} strokeWidth={1.75} />
-            </span>
-          </button>
+              <span className="builder-switcher__confirm-text">
+                {t('builder.workflows.confirmText') || 'Delete this workflow?'}
+              </span>
+              <span className="builder-switcher__confirm-actions">
+                <button
+                  type="button"
+                  className="builder-switcher__confirm-cancel"
+                  onClick={cancelDelete}
+                >
+                  {t('builder.workflows.confirmCancel') || 'Cancel'}
+                </button>
+                <button
+                  type="button"
+                  className="builder-switcher__confirm-yes"
+                  onClick={(e) => confirmDelete(e, w.id)}
+                >
+                  {t('builder.workflows.confirmYes') || 'Delete'}
+                </button>
+              </span>
+            </div>
+          ) : (
+            <button
+              key={w.id}
+              type="button"
+              className={`builder-switcher__item ${w.id === currentId ? 'is-current' : ''}`}
+              onClick={() => onOpen(w.id)}
+              role="menuitem"
+            >
+              <span className="builder-switcher__item-main">
+                <span className="builder-switcher__item-name">{w.name}</span>
+                <span className="builder-switcher__item-date">{fmtDate(w.updatedAt)}</span>
+              </span>
+              <span
+                className="builder-switcher__item-del"
+                onClick={(e) => askDelete(e, w.id)}
+                role="button"
+                tabIndex={0}
+                aria-label={t('builder.workflows.delete') || 'Delete'}
+                title={t('builder.workflows.delete') || 'Delete'}
+              >
+                <Icon name="close" size={12} strokeWidth={1.75} />
+              </span>
+            </button>
+          )
         ))}
       </div>
     </div>
