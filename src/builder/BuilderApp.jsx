@@ -451,6 +451,31 @@ function BuilderAppInner() {
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
   const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
 
+  // Удалить узел кнопкой (надёжно, без зависимости от фокуса/клавиш).
+  const handleDeleteNode = useCallback((nodeId) => {
+    pushHistoryRef.current?.();
+    setNodes(nds => nds.filter(n => n.id !== nodeId));
+    setEdges(eds => eds.filter(e => e.source !== nodeId && e.target !== nodeId));
+    setSelectedNodeId(null);
+  }, [setNodes, setEdges]);
+
+  // Дублировать узел вместе с инструкцией (со смещением).
+  const handleDuplicateNode = useCallback((nodeId) => {
+    setNodes(nds => {
+      const src = nds.find(n => n.id === nodeId);
+      if (!src) return nds;
+      pushHistoryRef.current?.();
+      const copy = {
+        ...src,
+        id: genNodeId(),
+        position: { x: (src.position?.x || 0) + 40, y: (src.position?.y || 0) + 40 },
+        selected: false,
+        data: { ...src.data, status: 'idle', orderLevel: undefined },
+      };
+      return nds.concat(copy);
+    });
+  }, [setNodes]);
+
   // Задать/обновить инструкцию узла (data.prompt + флаг hasPrompt для значка).
   const handleSetPrompt = useCallback((nodeId, value) => {
     setNodes(nds => nds.map(n =>
@@ -462,6 +487,7 @@ function BuilderAppInner() {
 
   /* ────────── Undo / Redo (H1) ────────── */
   const historyRef = useRef({ past: [], future: [] });
+  const pushHistoryRef = useRef(null); // мост: handlers выше используют его
   const snapshot = useCallback(
     () => ({ nodes: JSON.parse(JSON.stringify(nodes)), edges: JSON.parse(JSON.stringify(edges)) }),
     [nodes, edges]
@@ -473,6 +499,7 @@ function BuilderAppInner() {
     if (h.past.length > 50) h.past.shift();
     h.future = [];
   }, [snapshot]);
+  pushHistoryRef.current = pushHistory; // мост для handlers, объявленных выше
   const [histVer, setHistVer] = useState(0); // для перерисовки кнопок
   const undo = useCallback(() => {
     const h = historyRef.current;
@@ -1003,6 +1030,30 @@ function BuilderAppInner() {
             <Background gap={20} size={1} />
             <Controls />
             <MiniMap pannable zoomable />
+
+            {/* Панель действий узла — сверху, для любого выбранного узла */}
+            {selectedNodeId && (
+              <NodeToolbar nodeId={selectedNodeId} isVisible position={Position.Top} offset={10}>
+                <div className="builder-node-actions" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    type="button"
+                    className="builder-node-actions__btn"
+                    onClick={() => handleDuplicateNode(selectedNodeId)}
+                    title={t('builder.nodeActions.duplicate') || 'Duplicate'}
+                  >
+                    <Icon name="clipboard" size={13} strokeWidth={1.75} />
+                  </button>
+                  <button
+                    type="button"
+                    className="builder-node-actions__btn builder-node-actions__btn--danger"
+                    onClick={() => handleDeleteNode(selectedNodeId)}
+                    title={t('builder.nodeActions.delete') || 'Delete (Del)'}
+                  >
+                    <Icon name="close" size={13} strokeWidth={2} />
+                  </button>
+                </div>
+              </NodeToolbar>
+            )}
 
             {/* Плавающее окно инструкции — привязано к узлу, едет за ним */}
             {selectedAgentNode && (

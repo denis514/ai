@@ -1043,6 +1043,35 @@
   transition: opacity 150ms ease;
 }
 
+/* Node action toolbar (NodeToolbar Top) — duplicate / delete */
+.builder-node-actions {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 8px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.3);
+}
+.builder-node-actions__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text, #111827);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.builder-node-actions__btn:hover { background: var(--surface-2, #f3f4f6); }
+.builder-node-actions__btn--danger:hover {
+  background: color-mix(in srgb, var(--danger, #e2484f) 14%, transparent);
+  color: var(--danger, #e2484f);
+}
+
 /* Order badge — номер очерёдности выполнения */
 .builder-app .builder-node__order {
   position: absolute;
