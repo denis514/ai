@@ -122,10 +122,8 @@ export function deserializeFromDb(dbNodes = [], dbEdges = [], edgeStyle = undefi
     id: row.client_id,
     source: row.source_client_id,
     target: row.target_client_id,
+    type: 'builder',
     ...(row.label ? { label: row.label } : {}),
-    animated: row.config?.animated ?? false,
-    ...(edgeStyle ? { style: edgeStyle } : {}),
-    markerEnd: { type: 'arrowclosed', width: 18, height: 18, color: '#94a3b8' },
   }));
 
   return { nodes, edges };

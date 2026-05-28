@@ -20,6 +20,7 @@ import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data
 import { nodeTypes } from './components/canvas/index.js';
 import ToolboxItem from './components/canvas/ToolboxItem.jsx';
 import ConnectionLine from './components/canvas/ConnectionLine.jsx';
+import BuilderEdge from './components/canvas/BuilderEdge.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
 import AtlasNodePreview from './components/education/AtlasNodePreview.jsx';
 import BuilderTour, { isTourSeen } from './components/education/BuilderTour.jsx';
@@ -92,8 +93,7 @@ function buildTemplateGraph(template, edgeStyle) {
     id: `e${i}-${tempIdMap[e.from]}-${tempIdMap[e.to]}`,
     source: tempIdMap[e.from],
     target: tempIdMap[e.to],
-    style: edgeStyle,
-    markerEnd: { type: 'arrowclosed', width: 18, height: 18, color: '#94a3b8' },
+    type: 'builder',
   }));
 
   return { nodes, edges };
@@ -108,8 +108,8 @@ const EDGE_STYLE = {
   strokeWidth: 2,
 };
 
-// Наконечник-стрелка — показывает направление «откуда → куда».
-const EDGE_MARKER = { type: 'arrowclosed', width: 18, height: 18, color: '#94a3b8' };
+// Кастомный тип связи — градиент + анимированный пунктир, без стрелки.
+const edgeTypes = { builder: BuilderEdge };
 
 /**
  * Уровни очерёдности выполнения (топологическая глубина). Узлы без входящих
@@ -534,7 +534,7 @@ function BuilderAppInner() {
   const onConnect = useCallback(
     (params) => {
       pushHistory();
-      setEdges(eds => addEdge({ ...params, animated: false, style: EDGE_STYLE, markerEnd: EDGE_MARKER }, eds));
+      setEdges(eds => addEdge({ ...params, type: 'builder' }, eds));
     },
     [setEdges, pushHistory]
   );
@@ -1043,6 +1043,7 @@ function BuilderAppInner() {
             nodes={nodes}
             edges={edges}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
