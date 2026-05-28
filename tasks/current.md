@@ -111,7 +111,17 @@
   `skills/builder-node-architect/`. ADR-0007 + INDEX.
 - [ ] **Фаза 4 — B-3**: edge-функция трактует ATTACH как способности агента + реальные интеграции инструментов.
 
-**Параллельный трек (backend готов, нужен фронт):** Telegram-доставка — узел-выход Telegram в тулбоксе, подключение токена в «Мои ключи», поле chatId в попапе узла.
+### 📦 Расширение каталога узлов (2026-05-28)
+
+План + фазировка → `docs/agent-builder/11-node-catalog-roadmap.md`.
+
+- [x] **Batch A** (commit ниже): +4 агента (`agent-code`/`designer`/`pm`/`content`),
+  +4 инструмента (`tool-code-exec`/`computer`/`citations`/`mcp`), +`output-telegram`.
+  Заземлены на Atlas (atlasAnchor), i18n ru/en/fi, в палитре, lint:builder passed (19 узлов).
+- [ ] **Telegram функционально**: подключение Telegram-токена в «Мои ключи» (provider 'telegram',
+  бэкенд готов) + поле chatId на узле `output-telegram`.
+- [ ] **Batch B (Фаза 4)**: триггеры (webhook/schedule), выходы email/webhook, категория `logic`.
+- [ ] **Фаза 4 — исполнение**: ATTACH-инструменты как реальные tool-defs + интеграции.
 
 ---
 

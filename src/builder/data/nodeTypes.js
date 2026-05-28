@@ -60,6 +60,42 @@ export const NODE_DEFS = {
     descKey: 'builder.node.agent_analytics_desc',
     atlasAnchor: 'sc-analysis',
   },
+  'agent-code': {
+    kind: 'agent',
+    role: 'code',
+    icon: 'developer',
+    color: '#0d9488',
+    labelKey: 'builder.node.agent_code',
+    descKey: 'builder.node.agent_code_desc',
+    atlasAnchor: 'ag-code',
+  },
+  'agent-designer': {
+    kind: 'agent',
+    role: 'designer',
+    icon: 'pencil',
+    color: '#c026d3',
+    labelKey: 'builder.node.agent_designer',
+    descKey: 'builder.node.agent_designer_desc',
+    atlasAnchor: 'ag-designer',
+  },
+  'agent-pm': {
+    kind: 'agent',
+    role: 'pm',
+    icon: 'clipboard',
+    color: '#ea580c',
+    labelKey: 'builder.node.agent_pm',
+    descKey: 'builder.node.agent_pm_desc',
+    atlasAnchor: 'ag-pm',
+  },
+  'agent-content': {
+    kind: 'agent',
+    role: 'content',
+    icon: 'scroll',
+    color: '#ca8a04',
+    labelKey: 'builder.node.agent_content',
+    descKey: 'builder.node.agent_content_desc',
+    atlasAnchor: 'sc-content',
+  },
 
   // ────────── Tools ──────────
   'tool-search': {
@@ -98,6 +134,42 @@ export const NODE_DEFS = {
     descKey: 'builder.node.tool_memory_desc',
     atlasAnchor: 'cap-memory',
   },
+  'tool-code-exec': {
+    kind: 'tool',
+    role: 'code_exec',
+    icon: 'terminal',
+    color: '#0ea5e9',
+    labelKey: 'builder.node.tool_code_exec',
+    descKey: 'builder.node.tool_code_exec_desc',
+    atlasAnchor: 'cap-code-exec',
+  },
+  'tool-computer': {
+    kind: 'tool',
+    role: 'computer',
+    icon: 'laptop',
+    color: '#0ea5e9',
+    labelKey: 'builder.node.tool_computer',
+    descKey: 'builder.node.tool_computer_desc',
+    atlasAnchor: 'cap-computer',
+  },
+  'tool-citations': {
+    kind: 'tool',
+    role: 'citations',
+    icon: 'quote',
+    color: '#0ea5e9',
+    labelKey: 'builder.node.tool_citations',
+    descKey: 'builder.node.tool_citations_desc',
+    atlasAnchor: 'cap-citations',
+  },
+  'tool-mcp': {
+    kind: 'tool',
+    role: 'mcp',
+    icon: 'plug',
+    color: '#0ea5e9',
+    labelKey: 'builder.node.tool_mcp',
+    descKey: 'builder.node.tool_mcp_desc',
+    atlasAnchor: 'mcp',
+  },
 
   // ────────── Flow ──────────
   'trigger-input': {
@@ -118,6 +190,15 @@ export const NODE_DEFS = {
     descKey: 'builder.node.output_text_desc',
     atlasAnchor: 'sys-workflows-basics',
   },
+  'output-telegram': {
+    kind: 'output',
+    role: 'telegram',
+    icon: 'send',
+    color: '#0088cc',
+    labelKey: 'builder.node.output_telegram',
+    descKey: 'builder.node.output_telegram_desc',
+    atlasAnchor: 'sys-api-patterns',
+  },
 };
 
 /**
@@ -127,17 +208,17 @@ export const TOOLBOX_GROUPS = [
   {
     id: 'agents',
     labelKey: 'builder.toolbox.agents',
-    items: ['agent-main', 'agent-research', 'agent-ux', 'agent-analytics'],
+    items: ['agent-main', 'agent-research', 'agent-ux', 'agent-analytics', 'agent-code', 'agent-designer', 'agent-pm', 'agent-content'],
   },
   {
     id: 'tools',
     labelKey: 'builder.toolbox.tools',
-    items: ['tool-search', 'tool-file', 'tool-vision', 'tool-memory'],
+    items: ['tool-search', 'tool-file', 'tool-vision', 'tool-memory', 'tool-code-exec', 'tool-computer', 'tool-citations', 'tool-mcp'],
   },
   {
     id: 'flow',
     labelKey: 'builder.toolbox.flow',
-    items: ['trigger-input', 'output-text'],
+    items: ['trigger-input', 'output-text', 'output-telegram'],
   },
 ];
 
