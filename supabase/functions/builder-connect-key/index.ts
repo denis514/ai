@@ -17,6 +17,7 @@ import { getUser, adminClient, json, cors } from '../_shared/auth.ts';
 import { encrypt, secretConfigured } from '../_shared/crypto.ts';
 
 const VALIDATE_URL = 'https://api.anthropic.com/v1/messages';
+const SUPPORTED = ['anthropic', 'telegram'];
 
 async function validateAnthropicKey(apiKey: string): Promise<boolean> {
   try {
@@ -33,13 +34,28 @@ async function validateAnthropicKey(apiKey: string): Promise<boolean> {
         messages: [{ role: 'user', content: 'hi' }],
       }),
     });
-    // 200 = валиден. 400 (bad request) тоже значит, что ключ принят авторизацией.
-    // 401/403 = ключ невалиден.
     if (res.status === 401 || res.status === 403) return false;
     return res.status < 500;
   } catch {
     return false;
   }
+}
+
+// Валидация Telegram bot-токена через getMe.
+async function validateTelegramToken(token: string): Promise<boolean> {
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/getMe`);
+    const data = await res.json().catch(() => ({}));
+    return res.ok && data?.ok === true;
+  } catch {
+    return false;
+  }
+}
+
+async function validateKey(provider: string, key: string): Promise<boolean> {
+  if (provider === 'anthropic') return validateAnthropicKey(key);
+  if (provider === 'telegram') return validateTelegramToken(key);
+  return false;
 }
 
 Deno.serve(async (req) => {
@@ -62,10 +78,10 @@ Deno.serve(async (req) => {
 
   const provider = (body.provider || 'anthropic').toLowerCase();
   const apiKey = (body.apiKey || '').trim();
-  if (provider !== 'anthropic') return json({ error: 'unsupported_provider' }, 400);
+  if (!SUPPORTED.includes(provider)) return json({ error: 'unsupported_provider' }, 400);
   if (!apiKey || apiKey.length < 20) return json({ error: 'invalid_key_format' }, 400);
 
-  const valid = await validateAnthropicKey(apiKey);
+  const valid = await validateKey(provider, apiKey);
   if (!valid) return json({ error: 'key_rejected' }, 400);
 
   const encrypted = await encrypt(apiKey);

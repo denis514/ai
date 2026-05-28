@@ -127,6 +127,15 @@ Deno.serve(async (req) => {
   try { apiKey = await decrypt(conn.encrypted_key); }
   catch { return json({ error: 'key_decrypt_failed' }, 500); }
 
+  // Telegram-токен (опционально) — для узлов доставки в Telegram.
+  let telegramToken = '';
+  const { data: tgConn } = await admin
+    .from('builder_api_connections')
+    .select('encrypted_key, is_active').eq('user_id', user.id).eq('provider', 'telegram').maybeSingle();
+  if (tgConn?.is_active) {
+    try { telegramToken = await decrypt(tgConn.encrypted_key); } catch { telegramToken = ''; }
+  }
+
   // Узлы и рёбра.
   const [{ data: nodes }, { data: edges }] = await Promise.all([
     admin.from('builder_workflow_nodes').select('client_id, node_type, role, def_id, config').eq('workflow_id', workflowId),
@@ -171,8 +180,36 @@ Deno.serve(async (req) => {
         // Собираем результаты входящих узлов.
         const incoming = (edges || []).filter((e: Edge) => e.target_client_id === id)
           .map((e: Edge) => outputs.get(e.source_client_id)).filter(Boolean);
-        lastText = incoming.join('\n\n---\n\n') || lastText;
-        outputs.set(id, lastText);
+        const collected = incoming.join('\n\n---\n\n') || lastText;
+        lastText = collected;
+        outputs.set(id, collected);
+
+        // Доставка в Telegram (роль telegram + config.chatId + подключённый токен).
+        if (node.role === 'telegram') {
+          const chatId = typeof node.config?.chatId === 'string' ? node.config.chatId.trim() : '';
+          if (!telegramToken) {
+            await log(id, 'warn', 'Telegram not connected — skipped delivery', { status: 'completed' });
+          } else if (!chatId) {
+            await log(id, 'warn', 'No chat ID set on this Telegram node — skipped', { status: 'completed' });
+          } else {
+            try {
+              const tgRes = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: collected.slice(0, 4000) }),
+              });
+              if (tgRes.ok) await log(id, 'info', 'Sent to Telegram ✓', { status: 'completed' });
+              else {
+                const e = await tgRes.json().catch(() => ({}));
+                await log(id, 'error', `Telegram error: ${e.description || tgRes.status}`, { status: 'failed' });
+              }
+            } catch (err) {
+              await log(id, 'error', `Telegram send failed: ${(err as Error).message}`, { status: 'failed' });
+            }
+          }
+          continue;
+        }
+
         await log(id, 'info', 'Result collected', { status: 'completed' });
         continue;
       }
