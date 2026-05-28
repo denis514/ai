@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 import { OUTPUT_TIERS } from '../../data/outputTiers.js';
+import Markdown from './Markdown.jsx';
 
 /**
  * ExecutionPanel — bottom panel с live логами выполнения.
@@ -172,7 +173,7 @@ export default function ExecutionPanel({
               </button>
             </span>
           </div>
-          <div className="builder-exec__result-text">{result.output}</div>
+          <Markdown text={result.output} className="builder-exec__result-text" />
         </div>
       )}
 

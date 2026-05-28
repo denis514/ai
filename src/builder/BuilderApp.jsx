@@ -138,6 +138,23 @@ function computeOrderLevels(nodes, edges) {
   return level;
 }
 
+// Проверка схемы перед РЕАЛЬНЫМ запуском (защита от пустой траты токенов).
+// errors блокируют запуск; warnings позволяют «запустить всё равно».
+function validateWorkflow(nodes, edges) {
+  const errors = [];
+  const warnings = [];
+  const agents = nodes.filter(n => n.data?.kind === 'agent');
+  if (agents.length === 0) errors.push('no-agent');
+
+  if (nodes.length > 1) {
+    const hasOut = new Set(edges.map(e => e.source));
+    const hasIn = new Set(edges.map(e => e.target));
+    const isolated = nodes.filter(n => !hasOut.has(n.id) && !hasIn.has(n.id));
+    if (isolated.length) warnings.push({ type: 'isolated', count: isolated.length });
+  }
+  return { errors, warnings };
+}
+
 function BuilderApp() {
   return (
     <ReactFlowProvider>
@@ -239,6 +256,7 @@ function BuilderAppInner() {
   });
   const [realConfirmOpen, setRealConfirmOpen] = useState(false); // окно «осторожно, реальный режим»
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
+  const [validation, setValidation] = useState(null); // { errors:[], warnings:[] } перед реальным запуском
   const [outputTier, setOutputTier] = useState(DEFAULT_TIER);    // 's' | 'm' | 'l'
   const [execResult, setExecResult] = useState(null);            // { output, tokensUsed } реального запуска
   // Счётчик версии списка workflow — бампается при save/delete, чтобы
@@ -754,23 +772,32 @@ function BuilderAppInner() {
   }, [currentWorkflowId, outputTier, locale, beginExecUi, makeCallbacks]);
 
   // Кнопка Run: задача вводится заранее в панели выполнения; Run запускает сразу.
+  // Реальный запуск без валидации (вызывается после прохождения проверки).
+  const proceedRealRun = useCallback(() => {
+    setExecPanelOpen(true); // показать поле задачи/результат
+    if (!currentWorkflowId || isDirtyRef.current) {
+      // Перед реальным запуском схема должна быть сохранена.
+      if (!workflowName.trim()) { setNameDraft(''); setNameModalStep('name'); setNameModalOpen(true); return; }
+      doSave().then(() => { if (runInput.trim()) runReal(runInput.trim(), outputTier); });
+      return;
+    }
+    if (!runInput.trim()) return; // поле пустое — пользователь введёт задачу в панели
+    runReal(runInput.trim(), outputTier);
+  }, [currentWorkflowId, workflowName, runInput, outputTier, runReal, doSave]);
+
   const handleRun = useCallback(() => {
     if (nodes.length === 0 || execStatus === 'running') return;
     if (runMode === 'real') {
       if (!keyConnected) { requestRealMode(); return; }
-      setExecPanelOpen(true); // показать поле задачи/результат
-      if (!currentWorkflowId || isDirtyRef.current) {
-        // Перед реальным запуском схема должна быть сохранена.
-        if (!workflowName.trim()) { setNameDraft(''); setNameModalStep('name'); setNameModalOpen(true); return; }
-        doSave().then(() => { if (runInput.trim()) runReal(runInput.trim(), outputTier); });
-        return;
-      }
-      if (!runInput.trim()) return; // поле пустое — пользователь введёт задачу в панели
-      runReal(runInput.trim(), outputTier);
+      // C1: проверка схемы перед тратой токенов. Ошибки блокируют, предупреждения
+      // дают «запустить всё равно». Чисто → запускаем сразу.
+      const v = validateWorkflow(nodes, edges);
+      if (v.errors.length || v.warnings.length) { setValidation(v); return; }
+      proceedRealRun();
       return;
     }
     runMock();
-  }, [nodes.length, execStatus, runMode, keyConnected, currentWorkflowId, workflowName, runInput, outputTier, runMock, runReal, doSave, requestRealMode]);
+  }, [nodes, edges, execStatus, runMode, keyConnected, runMock, requestRealMode, proceedRealRun]);
 
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
@@ -1431,6 +1458,68 @@ function BuilderAppInner() {
       {authOpen && <AuthModal onClose={() => setAuthOpen(false)} />}
 
       {/* Real-mode confirm — после входа+ключа, раз юзер жал «Реально» */}
+      {validation && (
+        <div className="builder-name-modal__overlay" onClick={() => setValidation(null)}>
+          <div
+            className="builder-name-modal builder-validation"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('builder.validation.title') || 'Проверьте схему перед запуском'}
+          >
+            <h3 className="builder-name-modal__title">
+              {validation.errors.length
+                ? (t('builder.validation.blockTitle') || 'Схему пока нельзя запустить')
+                : (t('builder.validation.warnTitle') || 'Проверьте схему перед запуском')}
+            </h3>
+
+            <ul className="builder-validation__list">
+              {validation.errors.map((code) => (
+                <li key={code} className="builder-validation__item builder-validation__item--error">
+                  <Icon name="close" size={14} strokeWidth={2} />
+                  <span>
+                    {code === 'no-agent'
+                      ? (t('builder.validation.noAgent') || 'Нет ни одного агента — нечего исполнять. Добавьте хотя бы один узел-агент.')
+                      : code}
+                  </span>
+                </li>
+              ))}
+              {validation.warnings.map((w, i) => (
+                <li key={`w${i}`} className="builder-validation__item builder-validation__item--warn">
+                  <Icon name="flash" size={14} strokeWidth={1.75} />
+                  <span>
+                    {w.type === 'isolated'
+                      ? `${t('builder.validation.isolated') || 'Есть несоединённые узлы (не участвуют в потоке)'}: ${w.count}`
+                      : w.type}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="builder-name-modal__actions">
+              <button
+                type="button"
+                className="builder-btn builder-btn--ghost"
+                onClick={() => setValidation(null)}
+              >
+                {validation.errors.length
+                  ? (t('builder.validation.fix') || 'Исправить')
+                  : (t('common.cancel') || 'Отмена')}
+              </button>
+              {validation.errors.length === 0 && (
+                <button
+                  type="button"
+                  className="builder-btn builder-btn--primary builder-btn--real"
+                  onClick={() => { setValidation(null); proceedRealRun(); }}
+                >
+                  {t('builder.validation.runAnyway') || 'Запустить всё равно'}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {realConfirmOpen && (
         <div className="builder-name-modal__overlay" onClick={() => setRealConfirmOpen(false)}>
           <div
