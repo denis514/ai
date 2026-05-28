@@ -183,6 +183,9 @@ function BuilderAppInner() {
   const [nameModalOpen, setNameModalOpen] = useState(false);
   const [nameModalStep, setNameModalStep] = useState('name'); // 'name' | 'template'
   const [nameDraft, setNameDraft] = useState('');
+  // Счётчик версии списка workflow — бампается при save/delete, чтобы
+  // «Недавние» в центре экрана и список в dropdown пере-загружались.
+  const [wfVersion, setWfVersion] = useState(0);
   const isDirtyRef = useRef(false);
   const saveTimerRef = useRef(null);
   const skipDirtyRef = useRef(false); // подавляет dirty при программной загрузке
@@ -217,6 +220,7 @@ function BuilderAppInner() {
       setWorkflowName(name);
       isDirtyRef.current = false;
       setSaveStatus('saved');
+      setWfVersion(v => v + 1); // список изменился → обновить «Недавние»/dropdown
     } catch (e) {
       console.error('[Builder] save failed', e);
       setSaveStatus('error');
@@ -609,8 +613,17 @@ function BuilderAppInner() {
               <WorkflowSwitcher
                 userId={userId}
                 currentId={currentWorkflowId}
+                refreshKey={wfVersion}
                 onOpen={handleLoadWorkflow}
                 onNew={handleNewWorkflow}
+                onDeleted={(deletedId) => {
+                  setWfVersion(v => v + 1); // обновить «Недавние» в центре
+                  // Если удалили текущий открытый — сбрасываем привязку.
+                  if (deletedId && deletedId === currentWorkflowId) {
+                    setCurrentWorkflowId(null);
+                    setWorkflowName('');
+                  }
+                }}
                 onClose={() => setSwitcherOpen(false)}
               />
             )}
@@ -711,8 +724,9 @@ function BuilderAppInner() {
             <MiniMap pannable zoomable />
           </ReactFlow>
 
-          {/* Empty state — when no nodes */}
-          {nodes.length === 0 && (
+          {/* Onboarding empty state — только когда НЕТ активного workflow.
+              После «Создать» (currentWorkflowId задан) показываем чистый холст. */}
+          {nodes.length === 0 && !currentWorkflowId && (
             <div className="builder-empty-canvas">
               <Icon name="sparkles" size={32} strokeWidth={1.25} />
               <h2>{t('builder.canvas.emptyTitle') || 'Build your first agent'}</h2>
@@ -727,7 +741,11 @@ function BuilderAppInner() {
                 <span>{t('builder.canvas.browseTemplates') || 'Browse templates'}</span>
               </button>
 
-              <RecentWorkflows userId={userId} onOpen={handleLoadWorkflow} />
+              <RecentWorkflows
+                userId={userId}
+                onOpen={handleLoadWorkflow}
+                refreshKey={wfVersion}
+              />
             </div>
           )}
 

@@ -15,7 +15,7 @@ import { listWorkflows } from '../../services/workflowStorage.js';
  *  • onOpen(id)— открыть workflow
  *  • limit     — сколько показать (default 4)
  */
-export default function RecentWorkflows({ userId, onOpen, limit = 4 }) {
+export default function RecentWorkflows({ userId, onOpen, limit = 4, refreshKey }) {
   const t = useT();
   const [items, setItems] = useState(null);
 
@@ -25,7 +25,7 @@ export default function RecentWorkflows({ userId, onOpen, limit = 4 }) {
       .then(list => { if (alive) setItems(list.slice(0, limit)); })
       .catch(() => { if (alive) setItems([]); });
     return () => { alive = false; };
-  }, [userId, limit]);
+  }, [userId, limit, refreshKey]);
 
   if (!items || items.length === 0) return null;
 

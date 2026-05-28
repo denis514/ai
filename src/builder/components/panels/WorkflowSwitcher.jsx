@@ -16,7 +16,7 @@ import { listWorkflows, deleteWorkflow } from '../../services/workflowStorage.js
  *  • onNew()     — создать пустой
  *  • onClose()   — закрыть dropdown
  */
-export default function WorkflowSwitcher({ userId, currentId, onOpen, onNew, onClose }) {
+export default function WorkflowSwitcher({ userId, currentId, refreshKey, onOpen, onNew, onDeleted, onClose }) {
   const t = useT();
   const [items, setItems] = useState(null); // null = loading
   const [error, setError] = useState(false);
@@ -30,7 +30,8 @@ export default function WorkflowSwitcher({ userId, currentId, onOpen, onNew, onC
       .catch((e) => { console.error('[Builder] list failed', e); setError(true); setItems([]); });
   }, [userId]);
 
-  useEffect(() => { refresh(); }, [refresh]);
+  // Перезагружаем при открытии и при изменении refreshKey (save/delete снаружи).
+  useEffect(() => { refresh(); }, [refresh, refreshKey]);
 
   // Закрытие по клику вне / Esc.
   useEffect(() => {
@@ -57,10 +58,11 @@ export default function WorkflowSwitcher({ userId, currentId, onOpen, onNew, onC
       await deleteWorkflow(id, userId);
       setConfirmId(null);
       refresh();
+      onDeleted?.(id); // уведомить родителя → обновить «Недавние» в центре
     } catch (err) {
       console.error('[Builder] delete failed', err);
     }
-  }, [userId, refresh]);
+  }, [userId, refresh, onDeleted]);
 
   const cancelDelete = useCallback((e) => {
     e.stopPropagation();
