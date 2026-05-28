@@ -533,10 +533,31 @@ function BuilderAppInner() {
   void histVer; // canUndo/canRedo пересчитываются на ререндере (histVer триггерит)
 
   /* ────────── Edge connection ────────── */
+  // Запоминаем узел, ОТ которого пользователь потянул линию. Это и есть
+  // родитель — независимо от того, выше или ниже окажется цель на холсте.
+  const connectOriginRef = useRef(null);
+  const onConnectStart = useCallback((_evt, { nodeId }) => {
+    connectOriginRef.current = nodeId;
+  }, []);
+
   const onConnect = useCallback(
     (params) => {
+      let p = params;
+      const origin = connectOriginRef.current;
+      // В loose-режиме React Flow может назначить source/target по геометрии.
+      // Принудительно делаем source = узел, от которого тянули (родитель).
+      if (origin && params.target === origin && params.source !== origin) {
+        p = {
+          ...params,
+          source: params.target,
+          target: params.source,
+          sourceHandle: params.targetHandle,
+          targetHandle: params.sourceHandle,
+        };
+      }
+      connectOriginRef.current = null;
       pushHistory();
-      setEdges(eds => addEdge({ ...params, type: 'builder' }, eds));
+      setEdges(eds => addEdge({ ...p, type: 'builder' }, eds));
     },
     [setEdges, pushHistory]
   );
@@ -1048,6 +1069,7 @@ function BuilderAppInner() {
             edgeTypes={edgeTypes}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onConnectStart={onConnectStart}
             onConnect={onConnect}
             isValidConnection={isValidConnection}
             connectionMode="loose"
