@@ -20,10 +20,19 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
 
+  // Telegram (доставка результата) — отдельный провайдер.
+  const [tgStatus, setTgStatus] = useState(null);
+  const [tgDraft, setTgDraft] = useState('');
+  const [tgBusy, setTgBusy] = useState(false);
+  const [tgError, setTgError] = useState(null);
+
   const refresh = useCallback(() => {
     getKeyStatus('anthropic')
       .then(setStatus)
       .catch(() => setStatus({ connected: false, hint: null }));
+    getKeyStatus('telegram')
+      .then(setTgStatus)
+      .catch(() => setTgStatus({ connected: false, hint: null }));
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
@@ -65,6 +74,44 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
       setBusy(false);
     }
   }, [refresh, errMessage]);
+
+  const tgErrMessage = useCallback((code) => {
+    const map = {
+      key_rejected: t('builder.keys.tgErrRejected') || 'Telegram отклонил этот токен. Проверьте и попробуйте снова.',
+      invalid_key_format: t('builder.keys.tgErrFormat') || 'Это не похоже на токен бота.',
+      not_authenticated: t('builder.keys.errAuth') || 'Sign in first to connect a key.',
+      backend_unavailable: t('builder.keys.errBackend') || 'Backend is not available right now.',
+      server_misconfigured: t('builder.keys.errServer') || 'Server is not configured yet.',
+    };
+    return map[code] || (t('builder.keys.errGeneric') || 'Something went wrong. Try again.');
+  }, [t]);
+
+  const handleTgConnect = useCallback(async () => {
+    const tok = tgDraft.trim();
+    if (!tok) return;
+    setTgBusy(true); setTgError(null);
+    try {
+      await connectKey(tok, 'telegram');
+      setTgDraft('');
+      refresh();
+    } catch (e) {
+      setTgError(tgErrMessage(e.code || e.message));
+    } finally {
+      setTgBusy(false);
+    }
+  }, [tgDraft, refresh, tgErrMessage]);
+
+  const handleTgDisconnect = useCallback(async () => {
+    setTgBusy(true); setTgError(null);
+    try {
+      await disconnectKey('telegram');
+      refresh();
+    } catch (e) {
+      setTgError(tgErrMessage(e.code || e.message));
+    } finally {
+      setTgBusy(false);
+    }
+  }, [refresh, tgErrMessage]);
 
   return (
     <div className="builder-name-modal__overlay" onClick={onClose}>
@@ -138,6 +185,50 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
         )}
 
         {error && <div className="builder-keys__error">{error}</div>}
+
+        {/* ── Telegram (доставка результата) ── */}
+        {isLoggedIn && (
+          <div className="builder-keys__provider">
+            <h4 className="builder-keys__provider-title">
+              <Icon name="send" size={14} strokeWidth={1.75} />
+              {t('builder.keys.tgTitle') || 'Telegram-доставка (необязательно)'}
+            </h4>
+            <p className="builder-name-modal__hint" style={{ marginTop: 0 }}>
+              {t('builder.keys.tgDesc') || 'Подключите токен бота, чтобы узел «Telegram» слал результат в чат. Токен шифруется на сервере.'}
+            </p>
+            {tgStatus === null ? (
+              <div className="builder-keys__notice">{t('builder.keys.loading') || 'Loading…'}</div>
+            ) : tgStatus.connected ? (
+              <div className="builder-keys__connected">
+                <span className="builder-keys__badge">
+                  <Icon name="check-circle" size={16} strokeWidth={1.75} />
+                  {t('builder.keys.connected') || 'Connected'} ••••{tgStatus.hint}
+                </span>
+                <button type="button" className="builder-btn builder-btn--ghost" onClick={handleTgDisconnect} disabled={tgBusy}>
+                  {t('builder.keys.disconnect') || 'Disconnect'}
+                </button>
+              </div>
+            ) : (
+              <div className="builder-keys__form">
+                <input
+                  type="password"
+                  className="builder-name-modal__input"
+                  value={tgDraft}
+                  onChange={(e) => setTgDraft(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter' && tgDraft.trim()) handleTgConnect(); }}
+                  placeholder={t('builder.keys.tgPlaceholder') || '123456:ABC-DEF...'}
+                  autoComplete="off"
+                  spellCheck={false}
+                  disabled={tgBusy}
+                />
+                <button type="button" className="builder-btn builder-btn--primary" onClick={handleTgConnect} disabled={tgBusy || !tgDraft.trim()}>
+                  {tgBusy ? (t('builder.keys.connecting') || 'Checking…') : (t('builder.keys.connect') || 'Connect')}
+                </button>
+              </div>
+            )}
+            {tgError && <div className="builder-keys__error">{tgError}</div>}
+          </div>
+        )}
 
         <div className="builder-name-modal__actions">
           <button type="button" className="builder-btn builder-btn--ghost" onClick={onClose}>

@@ -118,8 +118,9 @@
 - [x] **Batch A** (commit ниже): +4 агента (`agent-code`/`designer`/`pm`/`content`),
   +4 инструмента (`tool-code-exec`/`computer`/`citations`/`mcp`), +`output-telegram`.
   Заземлены на Atlas (atlasAnchor), i18n ru/en/fi, в палитре, lint:builder passed (19 узлов).
-- [ ] **Telegram функционально**: подключение Telegram-токена в «Мои ключи» (provider 'telegram',
-  бэкенд готов) + поле chatId на узле `output-telegram`.
+- [x] **Telegram функционально** (commit ниже): секция Telegram в `ApiKeysModal` (подключение/отключение
+  токена бота, provider 'telegram', валидация через getMe на сервере) + попап `TelegramConfigPopover`
+  с полем chatId на узле `output-telegram` (сохраняется в config → бэкенд шлёт `sendMessage`). i18n ru/en/fi.
 - [ ] **Batch B (Фаза 4)**: триггеры (webhook/schedule), выходы email/webhook, категория `logic`.
 - [ ] **Фаза 4 — исполнение**: ATTACH-инструменты как реальные tool-defs + интеграции.
 

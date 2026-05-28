@@ -231,6 +231,7 @@ function BuilderAppInner() {
   // Реальный запуск (B-2.2)
   const [runMode, setRunMode] = useState('mock');     // 'mock' | 'real'
   const [keyConnected, setKeyConnected] = useState(false);
+  const [telegramConnected, setTelegramConnected] = useState(false);
   const [runInput, setRunInput] = useState('');
   // Намерение «Реально» переживает перезагрузку страницы (вход через
   // Google/magic-link = редирект). Храним в sessionStorage.
@@ -398,6 +399,9 @@ function BuilderAppInner() {
     getKeyStatus('anthropic')
       .then(s => { if (alive) setKeyConnected(!!s.connected); })
       .catch(() => { if (alive) setKeyConnected(false); });
+    getKeyStatus('telegram')
+      .then(s => { if (alive) setTelegramConnected(!!s.connected); })
+      .catch(() => { if (alive) setTelegramConnected(false); });
     return () => { alive = false; };
   }, [keysModalOpen, user]);
 
@@ -457,6 +461,7 @@ function BuilderAppInner() {
 
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
   const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
+  const selectedTelegramNode = selectedNode && selectedNode.data?.role === 'telegram' ? selectedNode : null;
 
   // Удалить узел кнопкой (надёжно, без зависимости от фокуса/клавиш).
   const handleDeleteNode = useCallback((nodeId) => {
@@ -489,6 +494,13 @@ function BuilderAppInner() {
       n.id === nodeId
         ? { ...n, data: { ...n.data, prompt: value, hasPrompt: !!value.trim() } }
         : n
+    ));
+  }, [setNodes]);
+
+  // Задать chatId для Telegram-выхода (сохраняется в config через сериализатор).
+  const handleSetChatId = useCallback((nodeId, value) => {
+    setNodes(nds => nds.map(n =>
+      n.id === nodeId ? { ...n, data: { ...n.data, chatId: value } } : n
     ));
   }, [setNodes]);
 
@@ -1165,6 +1177,25 @@ function BuilderAppInner() {
                 />
               </NodeToolbar>
             )}
+
+            {/* Конфиг Telegram-выхода — поле «куда слать» (chatId) */}
+            {selectedTelegramNode && (
+              <NodeToolbar
+                nodeId={selectedNodeId}
+                isVisible
+                position={Position.Right}
+                offset={28}
+              >
+                <TelegramConfigPopover
+                  node={selectedTelegramNode}
+                  t={t}
+                  telegramConnected={telegramConnected}
+                  onSetChatId={handleSetChatId}
+                  onConnect={() => setKeysModalOpen(true)}
+                  onClose={() => setSelectedNodeId(null)}
+                />
+              </NodeToolbar>
+            )}
           </ReactFlow>
 
           {/* Onboarding empty state — только когда НЕТ активного workflow.
@@ -1665,6 +1696,56 @@ function NodePromptPopover({ node, t, locale, onSetPrompt, onClose }) {
           onChange={handleFile}
         />
       </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* TelegramConfigPopover — поле «куда слать» + статус токена бота */
+/* ─────────────────────────────────────────────────────────── */
+
+function TelegramConfigPopover({ node, t, telegramConnected, onSetChatId, onConnect, onClose }) {
+  const { labelKey, chatId = '' } = node.data;
+  return (
+    <div className="builder-prompt-pop" onClick={(e) => e.stopPropagation()}>
+      <div className="builder-prompt-pop__head">
+        <span className="builder-prompt-pop__title">
+          {t(labelKey) || labelKey} · {t('builder.telegram.title') || 'Доставка'}
+        </span>
+        <button
+          type="button"
+          className="builder-prompt-pop__close"
+          onClick={onClose}
+          aria-label={t('builder.prompt.close') || 'Close'}
+        >
+          <Icon name="close" size={12} strokeWidth={1.75} />
+        </button>
+      </div>
+
+      {!telegramConnected ? (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.telegram.needToken') || 'Сначала подключите токен Telegram-бота в «Мои ключи».'}
+          </p>
+          <button type="button" className="builder-btn builder-btn--primary builder-btn--small" onClick={onConnect}>
+            <Icon name="plug" size={12} strokeWidth={1.5} />
+            <span>{t('builder.telegram.connectBtn') || 'Подключить бота'}</span>
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.telegram.chatHint') || 'ID чата или @username, куда бот пришлёт результат.'}
+          </p>
+          <input
+            className="builder-name-modal__input"
+            value={chatId}
+            onChange={(e) => onSetChatId(node.id, e.target.value)}
+            placeholder={t('builder.telegram.chatPlaceholder') || 'например, @my_channel или 123456789'}
+            autoFocus
+          />
+        </>
+      )}
     </div>
   );
 }
