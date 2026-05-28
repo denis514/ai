@@ -235,6 +235,7 @@ function BuilderAppInner() {
     try { return sessionStorage.getItem(REAL_INTENT_KEY) === '1'; } catch { return false; }
   });
   const [realConfirmOpen, setRealConfirmOpen] = useState(false); // окно «осторожно, реальный режим»
+  const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
   const [outputTier, setOutputTier] = useState(DEFAULT_TIER);    // 's' | 'm' | 'l'
   const [execResult, setExecResult] = useState(null);            // { output, tokensUsed } реального запуска
   // Счётчик версии списка workflow — бампается при save/delete, чтобы
@@ -452,10 +453,53 @@ function BuilderAppInner() {
     ));
   }, [setNodes]);
 
+  /* ────────── Undo / Redo (H1) ────────── */
+  const historyRef = useRef({ past: [], future: [] });
+  const snapshot = useCallback(
+    () => ({ nodes: JSON.parse(JSON.stringify(nodes)), edges: JSON.parse(JSON.stringify(edges)) }),
+    [nodes, edges]
+  );
+  // Снимок ТЕКУЩЕГО состояния — вызывать ПЕРЕД мутацией.
+  const pushHistory = useCallback(() => {
+    const h = historyRef.current;
+    h.past.push(snapshot());
+    if (h.past.length > 50) h.past.shift();
+    h.future = [];
+  }, [snapshot]);
+  const [histVer, setHistVer] = useState(0); // для перерисовки кнопок
+  const undo = useCallback(() => {
+    const h = historyRef.current;
+    if (h.past.length === 0) return;
+    h.future.push(snapshot());
+    const prev = h.past.pop();
+    skipDirtyRef.current = true;
+    setNodes(prev.nodes);
+    setEdges(prev.edges);
+    setSelectedNodeId(null);
+    setHistVer(v => v + 1);
+  }, [snapshot, setNodes, setEdges]);
+  const redo = useCallback(() => {
+    const h = historyRef.current;
+    if (h.future.length === 0) return;
+    h.past.push(snapshot());
+    const next = h.future.pop();
+    skipDirtyRef.current = true;
+    setNodes(next.nodes);
+    setEdges(next.edges);
+    setSelectedNodeId(null);
+    setHistVer(v => v + 1);
+  }, [snapshot, setNodes, setEdges]);
+  const canUndo = historyRef.current.past.length > 0;
+  const canRedo = historyRef.current.future.length > 0;
+  void histVer; // canUndo/canRedo пересчитываются на ререндере (histVer триггерит)
+
   /* ────────── Edge connection ────────── */
   const onConnect = useCallback(
-    (params) => setEdges(eds => addEdge({ ...params, animated: false, style: EDGE_STYLE, markerEnd: EDGE_MARKER }, eds)),
-    [setEdges]
+    (params) => {
+      pushHistory();
+      setEdges(eds => addEdge({ ...params, animated: false, style: EDGE_STYLE, markerEnd: EDGE_MARKER }, eds));
+    },
+    [setEdges, pushHistory]
   );
 
   /* ────────── Drag-drop из toolbox ────────── */
@@ -494,14 +538,16 @@ function BuilderAppInner() {
         },
       };
 
+      pushHistory();
       setNodes(nds => nds.concat(newNode));
     },
-    [screenToFlowPosition, setNodes]
+    [screenToFlowPosition, setNodes, pushHistory]
   );
 
   /* ────────── Load template (из галереи) ────────── */
   const loadTemplate = useCallback((template) => {
     const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE);
+    if (nodes.length > 0) pushHistory(); // даём откат, если на холсте уже было
     skipDirtyRef.current = true;
     setNodes(newNodes);
     setEdges(newEdges);
@@ -516,7 +562,7 @@ function BuilderAppInner() {
     // Reset exec state
     setExecLogs([]);
     setExecStatus('idle');
-  }, [setNodes, setEdges, t]);
+  }, [setNodes, setEdges, t, nodes.length, pushHistory]);
 
   /* ────────── Selection ────────── */
   const onNodeClick = useCallback((event, node) => {
@@ -535,6 +581,7 @@ function BuilderAppInner() {
         if (selectedNodeId) {
           const tag = document.activeElement?.tagName;
           if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+          pushHistory();
           setNodes(nds => nds.filter(n => n.id !== selectedNodeId));
           setEdges(eds => eds.filter(e => e.source !== selectedNodeId && e.target !== selectedNodeId));
           setSelectedNodeId(null);
@@ -631,17 +678,33 @@ function BuilderAppInner() {
     setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'idle' } })));
   }, [setNodes]);
 
-  const handleClearCanvas = useCallback(() => {
+  // Очистка холста — через подтверждение (H2). Само действие восстановимо Undo.
+  const doClearCanvas = useCallback(() => {
+    pushHistory();
     setNodes([]);
     setEdges([]);
     setSelectedNodeId(null);
     setExecLogs([]);
     setExecStatus('idle');
-  }, [setNodes, setEdges]);
+    setClearConfirmOpen(false);
+  }, [setNodes, setEdges, pushHistory]);
+  const handleClearCanvas = useCallback(() => {
+    if (nodes.length === 0) return;
+    setClearConfirmOpen(true);
+  }, [nodes.length]);
 
   /* ────────── Keyboard shortcuts ────────── */
   useEffect(() => {
     const handler = (e) => {
+      // Undo / Redo — работают даже из полей (стандартное поведение).
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'z' || e.key === 'Z')) {
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA') return; // не мешаем правке текста
+        e.preventDefault();
+        if (e.shiftKey) redo(); else undo();
+        return;
+      }
+
       const tag = document.activeElement?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA') return;
 
@@ -658,7 +721,7 @@ function BuilderAppInner() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleRun, galleryOpen]);
+  }, [handleRun, galleryOpen, undo, redo]);
 
   return (
     <div
@@ -693,6 +756,26 @@ function BuilderAppInner() {
         </div>
 
         <div className="builder-header__actions">
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost"
+            onClick={undo}
+            disabled={!canUndo}
+            title={t('builder.undo') || 'Undo (Cmd/Ctrl+Z)'}
+            aria-label={t('builder.undo') || 'Undo'}
+          >
+            <Icon name="arrow-left" size={14} strokeWidth={1.75} />
+          </button>
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost"
+            onClick={redo}
+            disabled={!canRedo}
+            title={t('builder.redo') || 'Redo (Cmd/Ctrl+Shift+Z)'}
+            aria-label={t('builder.redo') || 'Redo'}
+          >
+            <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+          </button>
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
@@ -1160,6 +1243,32 @@ function BuilderAppInner() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Clear-canvas confirm (H2) */}
+      {clearConfirmOpen && (
+        <div className="builder-name-modal__overlay" onClick={() => setClearConfirmOpen(false)}>
+          <div className="builder-name-modal" onClick={(e) => e.stopPropagation()} role="alertdialog" aria-modal="true">
+            <h3 className="builder-name-modal__title">
+              {t('builder.clearConfirm.title') || 'Clear the whole canvas?'}
+            </h3>
+            <p className="builder-name-modal__hint">
+              {t('builder.clearConfirm.body') || 'All nodes and connections will be removed. You can undo with Cmd/Ctrl+Z.'}
+            </p>
+            <div className="builder-name-modal__actions">
+              <button type="button" className="builder-btn builder-btn--ghost" onClick={() => setClearConfirmOpen(false)}>
+                {t('builder.clearConfirm.cancel') || 'Cancel'}
+              </button>
+              <button
+                type="button"
+                className="builder-btn builder-btn--primary builder-btn--real"
+                onClick={doClearCanvas}
+              >
+                {t('builder.clearConfirm.confirm') || 'Clear canvas'}
+              </button>
+            </div>
           </div>
         </div>
       )}
