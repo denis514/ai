@@ -12,7 +12,7 @@ import { connectKey, disconnectKey, getKeyStatus } from '../../services/apiKeySe
  *
  * Props: onClose()
  */
-export default function ApiKeysModal({ onClose }) {
+export default function ApiKeysModal({ onClose, onSignIn }) {
   const t = useT();
   const { isLoggedIn } = useAuth();
   const [status, setStatus] = useState(null);   // null=loading | {connected, hint}
@@ -84,7 +84,17 @@ export default function ApiKeysModal({ onClose }) {
 
         {!isLoggedIn ? (
           <div className="builder-keys__notice">
-            {t('builder.keys.signInFirst') || 'Sign in to connect a key.'}
+            <p style={{ margin: '0 0 12px' }}>
+              {t('builder.keys.signInFirst') || 'Sign in to connect a key.'}
+            </p>
+            <button
+              type="button"
+              className="builder-btn builder-btn--primary"
+              onClick={() => onSignIn?.()}
+            >
+              <Icon name="lock" size={14} strokeWidth={1.5} />
+              {t('builder.keys.signInBtn') || 'Sign in'}
+            </button>
           </div>
         ) : status === null ? (
           <div className="builder-keys__notice">{t('builder.keys.loading') || 'Loading…'}</div>

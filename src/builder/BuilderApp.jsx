@@ -25,6 +25,7 @@ import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
 import WorkflowSwitcher from './components/panels/WorkflowSwitcher.jsx';
 import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
 import ApiKeysModal from './components/panels/ApiKeysModal.jsx';
+import AuthModal from '../components/AuthModal.jsx';
 import { TEMPLATES } from './data/templates.js';
 import { createExecution } from './services/mockExecutor.js';
 import { createRealExecution } from './services/realExecutor.js';
@@ -187,6 +188,7 @@ function BuilderAppInner() {
   const [nameModalStep, setNameModalStep] = useState('name'); // 'name' | 'template'
   const [nameDraft, setNameDraft] = useState('');
   const [keysModalOpen, setKeysModalOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
   // Реальный запуск (B-2.2)
   const [runMode, setRunMode] = useState('mock');     // 'mock' | 'real'
   const [keyConnected, setKeyConnected] = useState(false);
@@ -1025,7 +1027,15 @@ function BuilderAppInner() {
       )}
 
       {/* API keys modal */}
-      {keysModalOpen && <ApiKeysModal onClose={() => setKeysModalOpen(false)} />}
+      {keysModalOpen && (
+        <ApiKeysModal
+          onClose={() => setKeysModalOpen(false)}
+          onSignIn={() => setAuthOpen(true)}
+        />
+      )}
+
+      {/* Auth modal — Builder рендерится вместо Atlas, поэтому свой инстанс */}
+      {authOpen && <AuthModal onClose={() => setAuthOpen(false)} />}
 
       {/* Run-input modal — перед реальным запуском */}
       {runInputOpen && (
