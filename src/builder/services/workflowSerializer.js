@@ -92,6 +92,10 @@ export function serializeForDb(rfNodes = [], rfEdges = []) {
     label: e.label || null,
     config: {
       ...(e.animated != null ? { animated: e.animated } : {}),
+      // Стороны связи (loose-mode: 'l'/'r'/'top'/'bottom'/null). Храним в config,
+      // т.к. в таблице нет отдельных колонок — иначе геометрия теряется при load.
+      ...(e.sourceHandle != null ? { sourceHandle: e.sourceHandle } : {}),
+      ...(e.targetHandle != null ? { targetHandle: e.targetHandle } : {}),
     },
   }));
 
@@ -118,13 +122,18 @@ export function deserializeFromDb(dbNodes = [], dbEdges = [], edgeStyle = undefi
     };
   });
 
-  const edges = dbEdges.map(row => ({
-    id: row.client_id,
-    source: row.source_client_id,
-    target: row.target_client_id,
-    type: 'builder',
-    ...(row.label ? { label: row.label } : {}),
-  }));
+  const edges = dbEdges.map(row => {
+    const cfg = row.config || {};
+    return {
+      id: row.client_id,
+      source: row.source_client_id,
+      target: row.target_client_id,
+      type: 'builder',
+      ...(row.label ? { label: row.label } : {}),
+      ...(cfg.sourceHandle != null ? { sourceHandle: cfg.sourceHandle } : {}),
+      ...(cfg.targetHandle != null ? { targetHandle: cfg.targetHandle } : {}),
+    };
+  });
 
   return { nodes, edges };
 }

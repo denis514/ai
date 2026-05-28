@@ -504,7 +504,12 @@ function BuilderAppInner() {
     h.future = [];
   }, [snapshot]);
   pushHistoryRef.current = pushHistory; // мост для handlers, объявленных выше
-  historyBridge.push = pushHistory; // мост для BuilderEdge (кнопка «разъединить»)
+  // Мост для BuilderEdge (кнопка «разъединить»). В effect + cleanup, чтобы не
+  // оставлять глобальную ссылку на stale-замыкание после размонтирования.
+  useEffect(() => {
+    historyBridge.push = pushHistory;
+    return () => { historyBridge.push = () => {}; };
+  }, [pushHistory]);
   const [histVer, setHistVer] = useState(0); // для перерисовки кнопок
   const undo = useCallback(() => {
     const h = historyRef.current;
@@ -565,7 +570,14 @@ function BuilderAppInner() {
   // Поток только вперёд: запрещаем связь на себя, дубликаты и циклы
   // (если цель уже может дойти до источника — соединение создало бы петлю).
   const isValidConnection = useCallback((conn) => {
-    const { source, target } = conn;
+    let { source, target } = conn;
+    // Нормализуем направление по узлу-источнику перетаскивания: в loose-режиме
+    // React Flow мог назначить source/target по геометрии — проверяем цикл/дубль
+    // в РЕАЛЬНОМ направлении (родитель → ребёнок), как и создаём связь в onConnect.
+    const origin = connectOriginRef.current;
+    if (origin && target === origin && source !== origin) {
+      [source, target] = [target, source];
+    }
     if (!source || !target || source === target) return false;
     if (edges.some(e => e.source === source && e.target === target)) return false;
     // Проверка цикла: дойти от target до source по существующим связям.
