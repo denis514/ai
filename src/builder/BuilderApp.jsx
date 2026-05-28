@@ -874,7 +874,6 @@ function BuilderAppInner() {
                     type="button"
                     className="builder-btn builder-btn--ghost"
                     onClick={() => setNameModalStep('template')}
-                    disabled={!nameDraft.trim()}
                   >
                     <Icon name="books" size={14} strokeWidth={1.5} />
                     {t('builder.nameModal.fromTemplate') || 'From template'}
@@ -885,7 +884,7 @@ function BuilderAppInner() {
                     onClick={startBlank}
                     disabled={!nameDraft.trim()}
                   >
-                    {t('builder.nameModal.blank') || 'Blank canvas'}
+                    {t('builder.nameModal.blank') || 'Create'}
                   </button>
                 </div>
               </>
