@@ -27,6 +27,8 @@ import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
 import ApiKeysModal from './components/panels/ApiKeysModal.jsx';
 import { TEMPLATES } from './data/templates.js';
 import { createExecution } from './services/mockExecutor.js';
+import { createRealExecution } from './services/realExecutor.js';
+import { getKeyStatus } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import './BuilderApp.css';
 
@@ -185,6 +187,11 @@ function BuilderAppInner() {
   const [nameModalStep, setNameModalStep] = useState('name'); // 'name' | 'template'
   const [nameDraft, setNameDraft] = useState('');
   const [keysModalOpen, setKeysModalOpen] = useState(false);
+  // Реальный запуск (B-2.2)
+  const [runMode, setRunMode] = useState('mock');     // 'mock' | 'real'
+  const [keyConnected, setKeyConnected] = useState(false);
+  const [runInputOpen, setRunInputOpen] = useState(false);
+  const [runInput, setRunInput] = useState('');
   // Счётчик версии списка workflow — бампается при save/delete, чтобы
   // «Недавние» в центре экрана и список в dropdown пере-загружались.
   const [wfVersion, setWfVersion] = useState(0);
@@ -292,6 +299,21 @@ function BuilderAppInner() {
       if (saveTimerRef.current) clearInterval(saveTimerRef.current);
     };
   }, [persist, workflowName, nodes.length]);
+
+  // Проверка подключённого ключа — для доступности реального режима.
+  // Перечитываем при монтировании и при закрытии модалки ключей.
+  useEffect(() => {
+    let alive = true;
+    getKeyStatus('anthropic')
+      .then(s => { if (alive) setKeyConnected(!!s.connected); })
+      .catch(() => { if (alive) setKeyConnected(false); });
+    return () => { alive = false; };
+  }, [keysModalOpen]);
+
+  // Если ключ отключили — принудительно вернуть демо-режим.
+  useEffect(() => {
+    if (!keyConnected && runMode === 'real') setRunMode('mock');
+  }, [keyConnected, runMode]);
 
   // Загрузка существующего workflow по id.
   const handleLoadWorkflow = useCallback(async (wfId) => {
@@ -422,45 +444,67 @@ function BuilderAppInner() {
     window.location.hash = '';
   }, []);
 
-  /* ────────── Mock execution ────────── */
-  const handleRun = useCallback(() => {
-    if (nodes.length === 0) return;
-    if (execStatus === 'running') return;
-
-    // Reset all node statuses
+  // Общие колбэки статуса/логов для обоих режимов.
+  const beginExecUi = useCallback(() => {
     setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'idle' } })));
     setExecLogs([]);
     setExecStatus('running');
     setExecPanelOpen(true);
-
     const stats = { total: nodes.length, done: 0, failed: 0 };
     setExecStats(stats);
+    return stats;
+  }, [nodes.length, setNodes]);
 
-    execRef.current = createExecution({
-      nodes,
-      edges,
-      onUpdate: (nodeId, status) => {
-        setNodes(nds => nds.map(n => n.id === nodeId ? { ...n, data: { ...n.data, status } } : n));
-        if (status === 'completed') {
-          stats.done += 1;
-          setExecStats({ ...stats });
-        } else if (status === 'failed') {
-          stats.failed += 1;
-          setExecStats({ ...stats });
-        }
-      },
-      onLog: (entry) => {
-        setExecLogs(prev => [...prev, entry]);
-      },
-      onComplete: () => {
-        setExecStatus(prev => {
-          if (prev === 'stopped') return 'stopped';
-          return stats.failed > 0 ? 'failed' : 'completed';
-        });
-        execRef.current = null;
-      },
+  const makeCallbacks = useCallback((stats) => ({
+    onUpdate: (nodeId, status) => {
+      setNodes(nds => nds.map(n => n.id === nodeId ? { ...n, data: { ...n.data, status } } : n));
+      if (status === 'completed') { stats.done += 1; setExecStats({ ...stats }); }
+      else if (status === 'failed') { stats.failed += 1; setExecStats({ ...stats }); }
+    },
+    onLog: (entry) => setExecLogs(prev => [...prev, entry]),
+    onComplete: (finalStatus) => {
+      setExecStatus(prev => {
+        if (prev === 'stopped') return 'stopped';
+        if (finalStatus === 'failed') return 'failed';
+        return stats.failed > 0 ? 'failed' : 'completed';
+      });
+      execRef.current = null;
+    },
+  }), [setNodes]);
+
+  /* ────────── Mock execution ────────── */
+  const runMock = useCallback(() => {
+    const stats = beginExecUi();
+    execRef.current = createExecution({ nodes, edges, ...makeCallbacks(stats) });
+  }, [nodes, edges, beginExecUi, makeCallbacks]);
+
+  /* ────────── Real execution (B-2.2) ────────── */
+  const runReal = useCallback((input) => {
+    const stats = beginExecUi();
+    execRef.current = createRealExecution({
+      workflowId: currentWorkflowId,
+      input,
+      ...makeCallbacks(stats),
     });
-  }, [nodes, edges, execStatus, setNodes]);
+  }, [currentWorkflowId, beginExecUi, makeCallbacks]);
+
+  // Кнопка Run: в реальном режиме — валидация + окно ввода; иначе mock.
+  const handleRun = useCallback(() => {
+    if (nodes.length === 0 || execStatus === 'running') return;
+    if (runMode === 'real') {
+      if (!keyConnected) { setKeysModalOpen(true); return; }
+      if (!currentWorkflowId || isDirtyRef.current) {
+        // Нужно сохранить перед реальным запуском (серверу нужна сохранённая схема).
+        if (!workflowName.trim()) { setNameDraft(''); setNameModalStep('name'); setNameModalOpen(true); return; }
+        doSave().then(() => { setRunInput(''); setRunInputOpen(true); });
+        return;
+      }
+      setRunInput('');
+      setRunInputOpen(true);
+      return;
+    }
+    runMock();
+  }, [nodes.length, execStatus, runMode, keyConnected, currentWorkflowId, workflowName, runMock, doSave]);
 
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
@@ -661,17 +705,39 @@ function BuilderAppInner() {
             }</span>
           </button>
 
+          {/* Режим запуска: Демо / Реально (Реально доступно только с ключом) */}
+          <div className="builder-runmode" role="group" aria-label={t('builder.runmode.aria') || 'Run mode'}>
+            <button
+              type="button"
+              className={`builder-runmode__opt ${runMode === 'mock' ? 'is-active' : ''}`}
+              onClick={() => setRunMode('mock')}
+            >
+              {t('builder.runmode.mock') || 'Demo'}
+            </button>
+            <button
+              type="button"
+              className={`builder-runmode__opt ${runMode === 'real' ? 'is-active' : ''}`}
+              onClick={() => keyConnected ? setRunMode('real') : setKeysModalOpen(true)}
+              title={keyConnected ? '' : (t('builder.runmode.needKey') || 'Connect a Claude key first')}
+            >
+              {t('builder.runmode.real') || 'Real'}
+              {!keyConnected && <Icon name="lock" size={11} strokeWidth={1.75} />}
+            </button>
+          </div>
+
           <button
             type="button"
-            className="builder-btn builder-btn--primary"
+            className={`builder-btn builder-btn--primary ${runMode === 'real' ? 'builder-btn--real' : ''}`}
             onClick={handleRun}
             disabled={nodes.length === 0 || execStatus === 'running'}
-            title={t('builder.header.runHint') || 'Run (R)'}
+            title={runMode === 'real'
+              ? (t('builder.runmode.realHint') || 'Runs on real Claude API — uses tokens')
+              : (t('builder.header.runHint') || 'Run (R)')}
           >
             <Icon name={execStatus === 'running' ? 'refresh' : 'flash'} size={14} strokeWidth={1.5} />
             <span>{execStatus === 'running'
               ? (t('builder.running') || 'Running…')
-              : (t('builder.run') || 'Run')}</span>
+              : runMode === 'real' ? (t('builder.runReal') || 'Run for real') : (t('builder.run') || 'Run')}</span>
           </button>
         </div>
       </header>
@@ -960,6 +1026,48 @@ function BuilderAppInner() {
 
       {/* API keys modal */}
       {keysModalOpen && <ApiKeysModal onClose={() => setKeysModalOpen(false)} />}
+
+      {/* Run-input modal — перед реальным запуском */}
+      {runInputOpen && (
+        <div className="builder-name-modal__overlay" onClick={() => setRunInputOpen(false)}>
+          <div
+            className="builder-name-modal"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('builder.runInput.title') || 'Run input'}
+          >
+            <h3 className="builder-name-modal__title">
+              {t('builder.runInput.title') || 'What should the workflow work on?'}
+            </h3>
+            <textarea
+              className="builder-name-modal__input builder-runinput__area"
+              value={runInput}
+              onChange={(e) => setRunInput(e.target.value)}
+              placeholder={t('builder.runInput.placeholder') || 'Describe the task, paste text, ask a question…'}
+              rows={4}
+              autoFocus
+            />
+            <p className="builder-runinput__warn">
+              <Icon name="flash" size={13} strokeWidth={1.75} />
+              {t('builder.runInput.costWarn') || 'This runs on the real Claude API and uses tokens on your key.'}
+            </p>
+            <div className="builder-name-modal__actions">
+              <button type="button" className="builder-btn builder-btn--ghost" onClick={() => setRunInputOpen(false)}>
+                {t('builder.runInput.cancel') || 'Cancel'}
+              </button>
+              <button
+                type="button"
+                className="builder-btn builder-btn--primary builder-btn--real"
+                onClick={() => { setRunInputOpen(false); runReal(runInput.trim()); }}
+              >
+                <Icon name="flash" size={14} strokeWidth={1.5} />
+                {t('builder.runInput.run') || 'Run for real'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile blocker — отображается через CSS @media on small screens */}
       <div className="builder-mobile-blocker" aria-hidden="false">
