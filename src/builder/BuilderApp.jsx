@@ -193,7 +193,6 @@ function BuilderAppInner() {
   // Реальный запуск (B-2.2)
   const [runMode, setRunMode] = useState('mock');     // 'mock' | 'real'
   const [keyConnected, setKeyConnected] = useState(false);
-  const [runInputOpen, setRunInputOpen] = useState(false);
   const [runInput, setRunInput] = useState('');
   // Намерение «Реально» переживает перезагрузку страницы (вход через
   // Google/magic-link = редирект). Храним в sessionStorage.
@@ -340,6 +339,11 @@ function BuilderAppInner() {
   useEffect(() => {
     if (!keyConnected && runMode === 'real') setRunMode('mock');
   }, [keyConnected, runMode]);
+
+  // В реальном режиме сразу показываем панель выполнения — там поле задачи.
+  useEffect(() => {
+    if (runMode === 'real') setExecPanelOpen(true);
+  }, [runMode]);
 
   // Авто-переход в реальный режим после того, как пользователь вошёл и ключ есть
   // (он жал «Реально» раньше). Показываем предупреждающее окно.
@@ -532,23 +536,24 @@ function BuilderAppInner() {
     });
   }, [currentWorkflowId, outputTier, beginExecUi, makeCallbacks]);
 
-  // Кнопка Run: в реальном режиме — валидация + окно ввода; иначе mock.
+  // Кнопка Run: задача вводится заранее в панели выполнения; Run запускает сразу.
   const handleRun = useCallback(() => {
     if (nodes.length === 0 || execStatus === 'running') return;
     if (runMode === 'real') {
       if (!keyConnected) { requestRealMode(); return; }
+      setExecPanelOpen(true); // показать поле задачи/результат
       if (!currentWorkflowId || isDirtyRef.current) {
-        // Нужно сохранить перед реальным запуском (серверу нужна сохранённая схема).
+        // Перед реальным запуском схема должна быть сохранена.
         if (!workflowName.trim()) { setNameDraft(''); setNameModalStep('name'); setNameModalOpen(true); return; }
-        doSave().then(() => { setRunInput(''); setRunInputOpen(true); });
+        doSave().then(() => { if (runInput.trim()) runReal(runInput.trim(), outputTier); });
         return;
       }
-      setRunInput('');
-      setRunInputOpen(true);
+      if (!runInput.trim()) return; // поле пустое — пользователь введёт задачу в панели
+      runReal(runInput.trim(), outputTier);
       return;
     }
     runMock();
-  }, [nodes.length, execStatus, runMode, keyConnected, currentWorkflowId, workflowName, runMock, doSave, requestRealMode]);
+  }, [nodes.length, execStatus, runMode, keyConnected, currentWorkflowId, workflowName, runInput, outputTier, runMock, runReal, doSave, requestRealMode]);
 
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
@@ -926,6 +931,13 @@ function BuilderAppInner() {
             nodesDone={execStats.done}
             nodesFailed={execStats.failed}
             result={execResult}
+            runSetup={runMode === 'real' ? {
+              task: runInput,
+              onTaskChange: setRunInput,
+              tierId: outputTier,
+              onTierChange: setOutputTier,
+              estimate: estimateRun(countAgentNodes(nodes), outputTier),
+            } : null}
             onStop={handleStopExec}
             onClear={() => { setExecResult(null); handleClearLogs(); }}
             onClose={() => setExecPanelOpen(false)}
@@ -1121,82 +1133,6 @@ function BuilderAppInner() {
                 onClick={() => setRealConfirmOpen(false)}
               >
                 {t('builder.realConfirm.gotIt') || 'Got it'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Run-input modal — перед реальным запуском */}
-      {runInputOpen && (
-        <div className="builder-name-modal__overlay" onClick={() => setRunInputOpen(false)}>
-          <div
-            className="builder-name-modal"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-label={t('builder.runInput.title') || 'Run input'}
-          >
-            <h3 className="builder-name-modal__title">
-              {t('builder.runInput.title') || 'What should the workflow work on?'}
-            </h3>
-            <textarea
-              className="builder-name-modal__input builder-runinput__area"
-              value={runInput}
-              onChange={(e) => setRunInput(e.target.value)}
-              placeholder={t('builder.runInput.placeholder') || 'Describe the task, paste text, ask a question…'}
-              rows={4}
-              autoFocus
-            />
-
-            {/* Размер результата = контроль токенов */}
-            <div className="builder-tier" role="radiogroup" aria-label={t('builder.tier.aria') || 'Result size'}>
-              <span className="builder-tier__label">{t('builder.tier.heading') || 'Result size'}</span>
-              <div className="builder-tier__opts">
-                {Object.values(OUTPUT_TIERS).map(tier => (
-                  <button
-                    key={tier.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={outputTier === tier.id}
-                    className={`builder-tier__opt ${outputTier === tier.id ? 'is-active' : ''}`}
-                    onClick={() => setOutputTier(tier.id)}
-                  >
-                    <span className="builder-tier__opt-name">{t(tier.labelKey) || tier.id.toUpperCase()}</span>
-                    <span className="builder-tier__opt-desc">{t(tier.descKey) || ''}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Локальная оценка стоимости — без вызова API */}
-            {(() => {
-              const est = estimateRun(countAgentNodes(nodes), outputTier);
-              return (
-                <p className="builder-runinput__est">
-                  {t('builder.runInput.estimate') || 'Estimated:'}{' '}
-                  <strong>≈ {est.totalMax.toLocaleString()} {t('builder.runInput.tokens') || 'tokens'}</strong>
-                  {' · '}≈ ${est.costUsd < 0.01 ? '0.01' : est.costUsd.toFixed(2)}
-                  <span className="builder-runinput__est-note"> ({t('builder.runInput.estNote') || 'rough max, on your key'})</span>
-                </p>
-              );
-            })()}
-
-            <p className="builder-runinput__warn">
-              <Icon name="flash" size={13} strokeWidth={1.75} />
-              {t('builder.runInput.costWarn') || 'This runs on the real Claude API and uses tokens on your key.'}
-            </p>
-            <div className="builder-name-modal__actions">
-              <button type="button" className="builder-btn builder-btn--ghost" onClick={() => setRunInputOpen(false)}>
-                {t('builder.runInput.cancel') || 'Cancel'}
-              </button>
-              <button
-                type="button"
-                className="builder-btn builder-btn--primary builder-btn--real"
-                onClick={() => { setRunInputOpen(false); runReal(runInput.trim(), outputTier); }}
-              >
-                <Icon name="flash" size={14} strokeWidth={1.5} />
-                {t('builder.runInput.run') || 'Run for real'}
               </button>
             </div>
           </div>

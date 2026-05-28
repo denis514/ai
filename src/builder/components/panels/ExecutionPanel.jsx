@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
+import { OUTPUT_TIERS } from '../../data/outputTiers.js';
 
 /**
  * ExecutionPanel — bottom panel с live логами выполнения.
@@ -25,6 +26,7 @@ export default function ExecutionPanel({
   nodesDone,
   nodesFailed,
   result,
+  runSetup,   // { task, onTaskChange, tierId, onTierChange, estimate } | null — только real-режим
   onStop,
   onClear,
   onClose,
@@ -114,6 +116,43 @@ export default function ExecutionPanel({
           </button>
         </div>
       </div>
+
+      {runSetup && status !== 'running' && (
+        <div className="builder-exec__setup">
+          <label className="builder-exec__setup-label" htmlFor="builder-task-input">
+            {t('builder.runInput.title') || 'What should the workflow work on?'}
+          </label>
+          <textarea
+            id="builder-task-input"
+            className="builder-name-modal__input builder-runinput__area"
+            value={runSetup.task}
+            onChange={(e) => runSetup.onTaskChange(e.target.value)}
+            placeholder={t('builder.runInput.placeholder') || 'Describe the task, paste text, ask a question…'}
+            rows={2}
+          />
+          <div className="builder-tier builder-tier--compact">
+            <div className="builder-tier__opts">
+              {Object.values(OUTPUT_TIERS).map(tier => (
+                <button
+                  key={tier.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={runSetup.tierId === tier.id}
+                  className={`builder-tier__opt ${runSetup.tierId === tier.id ? 'is-active' : ''}`}
+                  onClick={() => runSetup.onTierChange(tier.id)}
+                  title={t(tier.descKey) || ''}
+                >
+                  <span className="builder-tier__opt-name">{t(tier.labelKey) || tier.id.toUpperCase()}</span>
+                </button>
+              ))}
+            </div>
+            <span className="builder-exec__setup-est">
+              ≈ {runSetup.estimate.totalMax.toLocaleString()} {t('builder.runInput.tokens') || 'tokens'}
+              {' · '}≈ ${runSetup.estimate.costUsd < 0.01 ? '0.01' : runSetup.estimate.costUsd.toFixed(2)}
+            </span>
+          </div>
+        </div>
+      )}
 
       {result?.output && (
         <div className="builder-exec__result">
