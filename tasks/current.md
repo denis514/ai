@@ -100,7 +100,10 @@
   `connectionRules.js` (`evaluateConnection`/`validateGraph`/`validTargetKinds`, 11/11 тестов),
   подключено в `isValidConnection` + pre-run валидацию. Новые предупреждения: multi-trigger,
   output-empty, tool-unattached (i18n ru/en/fi). Doc `10-node-capability-model.md`.
-- [ ] **Фаза 2 — палитра**: сетка квадратных плиток + поиск + подсветка валидных целей при перетягивании (`NodePalette.jsx`).
+- [x] **Фаза 2 — палитра** (commit ниже): `NodePalette.jsx` — сетка квадратных плиток + поиск
+  (по названию/описанию/роли/id в локали) + клик = добавить узел в центр (M4). Подсветка при
+  перетягивании: показываем все хэндлы (`.is-connecting`), валидная цель — зелёный ореол
+  (класс `.valid` от React Flow). i18n палитры ru/en/fi.
 - [ ] **Фаза 3 — governance**: lint-скрипт реестра/шаблонов + скилл `builder-node-architect` + ADR-0007.
 - [ ] **Фаза 4 — B-3**: edge-функция трактует ATTACH как способности агента + реальные интеграции инструментов.
 

@@ -19,7 +19,7 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 const HOVER_DELAY_MS = 400;
 
-export default function ToolboxItem({ defId, def, onShow, onHide }) {
+export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant = 'row' }) {
   const t = useT();
   const buttonRef = useRef(null);
   const hoverTimerRef = useRef(null);
@@ -55,7 +55,7 @@ export default function ToolboxItem({ defId, def, onShow, onHide }) {
     <button
       ref={buttonRef}
       type="button"
-      className="builder-toolbox__item"
+      className={variant === 'tile' ? 'builder-palette__tile' : 'builder-toolbox__item'}
       style={{ '--node-color': def.color }}
       draggable
       onDragStart={(e) => {
@@ -64,13 +64,14 @@ export default function ToolboxItem({ defId, def, onShow, onHide }) {
         e.dataTransfer.setData('application/builder-node', defId);
         e.dataTransfer.effectAllowed = 'copy';
       }}
+      onClick={() => { handleLeave(); onAdd?.(defId); }}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       onFocus={handleEnter}
       onBlur={handleLeave}
       aria-label={t(def.labelKey) || defId}
     >
-      <Icon name={def.icon} size={14} strokeWidth={1.5} />
+      <Icon name={def.icon} size={variant === 'tile' ? 18 : 14} strokeWidth={1.5} />
       <span>{t(def.labelKey) || defId}</span>
     </button>
   );

@@ -18,7 +18,7 @@ import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data/nodeTypes.js';
 import { nodeTypes } from './components/canvas/index.js';
-import ToolboxItem from './components/canvas/ToolboxItem.jsx';
+import NodePalette from './components/canvas/NodePalette.jsx';
 import ConnectionLine from './components/canvas/ConnectionLine.jsx';
 import BuilderEdge from './components/canvas/BuilderEdge.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
@@ -544,8 +544,14 @@ function BuilderAppInner() {
   // Запоминаем узел, ОТ которого пользователь потянул линию. Это и есть
   // родитель — независимо от того, выше или ниже окажется цель на холсте.
   const connectOriginRef = useRef(null);
+  const [isConnecting, setIsConnecting] = useState(false);
   const onConnectStart = useCallback((_evt, { nodeId }) => {
     connectOriginRef.current = nodeId;
+    setIsConnecting(true);
+  }, []);
+  const onConnectEnd = useCallback(() => {
+    connectOriginRef.current = null;
+    setIsConnecting(false);
   }, []);
 
   const onConnect = useCallback(
@@ -624,6 +630,37 @@ function BuilderAppInner() {
     },
     [screenToFlowPosition, setNodes, pushHistory]
   );
+
+  // Клик по плитке в палитре — добавить узел в центр видимой области холста (M4).
+  const addNodeAtCenter = useCallback((defId) => {
+    const def = getNodeDef(defId);
+    if (!def) return;
+    const rect = reactFlowWrapper.current?.getBoundingClientRect();
+    const screen = rect
+      ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+      : { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const center = screenToFlowPosition(screen);
+    // Небольшой случайный сдвиг, чтобы повторные добавления не ложились стопкой.
+    const jitter = () => (Math.random() - 0.5) * 60;
+    const newNode = {
+      id: genNodeId(),
+      type: KIND_TO_NODE_TYPE[def.kind] || 'agentNode',
+      position: { x: center.x + jitter(), y: center.y + jitter() },
+      data: {
+        defId,
+        icon: def.icon,
+        color: def.color,
+        labelKey: def.labelKey,
+        descKey: def.descKey,
+        atlasAnchor: def.atlasAnchor,
+        kind: def.kind,
+        role: def.role,
+        status: 'idle',
+      },
+    };
+    pushHistory();
+    setNodes(nds => nds.concat(newNode));
+  }, [screenToFlowPosition, setNodes, pushHistory]);
 
   /* ────────── Load template (из галереи) ────────── */
   const loadTemplate = useCallback((template) => {
@@ -1046,37 +1083,19 @@ function BuilderAppInner() {
             <div className="builder-toolbox__header">
               <span>{t('builder.toolbox.title') || 'Nodes'}</span>
             </div>
-            <div className="builder-toolbox__body">
-              {TOOLBOX_GROUPS.map(group => (
-                <div key={group.id} className="builder-toolbox__group">
-                  <div className="builder-toolbox__group-label">
-                    {t(group.labelKey) || group.id}
-                  </div>
-                  {group.items.map(defId => {
-                    const def = NODE_DEFS[defId];
-                    if (!def) return null;
-                    return (
-                      <ToolboxItem
-                        key={defId}
-                        defId={defId}
-                        def={def}
-                        onShow={handleTooltipShow}
-                        onHide={handleTooltipHide}
-                      />
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-            <div className="builder-toolbox__hint">
-              {t('builder.toolbox.hint') || 'Drag nodes to the canvas'}
-            </div>
+            <NodePalette
+              groups={TOOLBOX_GROUPS}
+              defs={NODE_DEFS}
+              onShow={handleTooltipShow}
+              onHide={handleTooltipHide}
+              onAdd={addNodeAtCenter}
+            />
           </aside>
         )}
 
         {/* Canvas (center) */}
         <main
-          className={`builder-canvas-wrap ${selectedAgentNode ? 'is-node-focused' : ''}`}
+          className={`builder-canvas-wrap ${selectedAgentNode ? 'is-node-focused' : ''} ${isConnecting ? 'is-connecting' : ''}`}
           ref={reactFlowWrapper}
         >
           <ReactFlow
@@ -1087,6 +1106,7 @@ function BuilderAppInner() {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnectStart={onConnectStart}
+            onConnectEnd={onConnectEnd}
             onConnect={onConnect}
             isValidConnection={isValidConnection}
             connectionMode="loose"
