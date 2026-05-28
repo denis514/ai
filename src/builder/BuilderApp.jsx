@@ -137,6 +137,8 @@ function BuilderAppInner() {
   const [workflowName, setWorkflowName] = useState('');
   const [saveStatus, setSaveStatus] = useState('idle'); // 'idle' | 'saving' | 'saved' | 'error'
   const [switcherOpen, setSwitcherOpen] = useState(false);
+  const [nameModalOpen, setNameModalOpen] = useState(false);
+  const [nameDraft, setNameDraft] = useState('');
   const isDirtyRef = useRef(false);
   const saveTimerRef = useRef(null);
   const skipDirtyRef = useRef(false); // подавляет dirty при программной загрузке
@@ -152,35 +154,61 @@ function BuilderAppInner() {
     setSaveStatus(s => (s === 'saved' ? 'idle' : s));
   }, [nodes, edges]);
 
-  // Сохранение (manual + auto).
-  const doSave = useCallback(async () => {
-    if (nodes.length === 0) return; // нечего сохранять
+  // Низкоуровневое сохранение с явным именем.
+  const persist = useCallback(async (name) => {
     setSaveStatus('saving');
     try {
-      const name = workflowName.trim() || (t('builder.save.untitled') || 'Untitled workflow');
       const { id } = await storageSave(
         { id: currentWorkflowId, name, rfNodes: nodes, rfEdges: edges },
         userId
       );
       setCurrentWorkflowId(id);
-      if (!workflowName.trim()) setWorkflowName(name);
+      setWorkflowName(name);
       isDirtyRef.current = false;
       setSaveStatus('saved');
     } catch (e) {
       console.error('[Builder] save failed', e);
       setSaveStatus('error');
     }
-  }, [nodes, edges, workflowName, currentWorkflowId, userId, t]);
+  }, [nodes, edges, currentWorkflowId, userId]);
 
-  // Auto-save: каждые 30с, только если dirty.
+  // Сохранение (manual + auto). Если имени нет — запрашиваем через модалку.
+  const doSave = useCallback(async () => {
+    if (nodes.length === 0) return; // нечего сохранять
+    const name = workflowName.trim();
+    if (!name) {
+      setNameDraft('');
+      setNameModalOpen(true); // спросить имя перед первым сохранением
+      return;
+    }
+    await persist(name);
+  }, [nodes.length, workflowName, persist]);
+
+  // Подтверждение имени из модалки.
+  const confirmName = useCallback(async () => {
+    const name = nameDraft.trim();
+    if (!name) return; // пустое имя недопустимо
+    setNameModalOpen(false);
+    if (nodes.length === 0) {
+      // Новый пустой workflow — только запоминаем имя, сохраним при первом контенте.
+      setWorkflowName(name);
+      return;
+    }
+    await persist(name);
+  }, [nameDraft, nodes.length, persist]);
+
+  // Auto-save: каждые 30с, только если dirty И уже есть имя.
+  // Без имени НЕ автосейвим (иначе модалка имени всплывёт сама).
   useEffect(() => {
     saveTimerRef.current = setInterval(() => {
-      if (isDirtyRef.current && nodes.length > 0) doSave();
+      if (isDirtyRef.current && nodes.length > 0 && workflowName.trim()) {
+        persist(workflowName.trim());
+      }
     }, 30000);
     return () => {
       if (saveTimerRef.current) clearInterval(saveTimerRef.current);
     };
-  }, [doSave, nodes.length]);
+  }, [persist, workflowName, nodes.length]);
 
   // Загрузка существующего workflow по id.
   const handleLoadWorkflow = useCallback(async (wfId) => {
@@ -201,7 +229,7 @@ function BuilderAppInner() {
     }
   }, [userId, setNodes, setEdges]);
 
-  // Новый пустой workflow.
+  // Новый пустой workflow — сразу спрашиваем имя.
   const handleNewWorkflow = useCallback(() => {
     skipDirtyRef.current = true;
     setNodes([]);
@@ -212,6 +240,9 @@ function BuilderAppInner() {
     setSwitcherOpen(false);
     isDirtyRef.current = false;
     setSaveStatus('idle');
+    // Спрашиваем имя нового workflow сразу (можно отменить и назвать позже при Save).
+    setNameDraft('');
+    setNameModalOpen(true);
   }, [setNodes, setEdges]);
 
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
@@ -298,14 +329,21 @@ function BuilderAppInner() {
       style: EDGE_STYLE,
     }));
 
+    skipDirtyRef.current = true;
     setNodes(newNodes);
     setEdges(newEdges);
     setSelectedNodeId(null);
     setGalleryOpen(false);
+    // Имя нового workflow берём из шаблона (localized). Это новый workflow —
+    // сбрасываем currentWorkflowId, чтобы Save создал новую запись.
+    setWorkflowName(template.nameKey ? (t(template.nameKey) || '') : '');
+    setCurrentWorkflowId(null);
+    setSaveStatus('idle');
+    isDirtyRef.current = false;
     // Reset exec state
     setExecLogs([]);
     setExecStatus('idle');
-  }, [setNodes, setEdges]);
+  }, [setNodes, setEdges, t]);
 
   /* ────────── Selection ────────── */
   const onNodeClick = useCallback((event, node) => {
@@ -747,6 +785,56 @@ function BuilderAppInner() {
           onClose={() => setTourOpen(false)}
           onOpenTemplates={() => setGalleryOpen(true)}
         />
+      )}
+
+      {/* Name prompt modal — при сохранении без имени или новом workflow */}
+      {nameModalOpen && (
+        <div
+          className="builder-name-modal__overlay"
+          onClick={() => setNameModalOpen(false)}
+        >
+          <div
+            className="builder-name-modal"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('builder.nameModal.title') || 'Name your workflow'}
+          >
+            <h3 className="builder-name-modal__title">
+              {t('builder.nameModal.title') || 'Name your workflow'}
+            </h3>
+            <input
+              type="text"
+              className="builder-name-modal__input"
+              value={nameDraft}
+              onChange={(e) => setNameDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') confirmName();
+                if (e.key === 'Escape') setNameModalOpen(false);
+              }}
+              placeholder={t('builder.nameModal.placeholder') || 'e.g. Customer support triage'}
+              autoFocus
+              maxLength={80}
+            />
+            <div className="builder-name-modal__actions">
+              <button
+                type="button"
+                className="builder-btn builder-btn--ghost"
+                onClick={() => setNameModalOpen(false)}
+              >
+                {t('builder.nameModal.cancel') || 'Cancel'}
+              </button>
+              <button
+                type="button"
+                className="builder-btn builder-btn--primary"
+                onClick={confirmName}
+                disabled={!nameDraft.trim()}
+              >
+                {t('builder.nameModal.save') || 'Save'}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Mobile blocker — отображается через CSS @media on small screens */}

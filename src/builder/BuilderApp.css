@@ -284,6 +284,62 @@
   color: var(--danger, #dc2626);
 }
 
+/* ────────────────────────────────────────────────── */
+/* Name prompt modal (B-2.1)                          */
+/* ────────────────────────────────────────────────── */
+.builder-app .builder-name-modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.builder-app .builder-name-modal {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 14px;
+  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.35);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.builder-app .builder-name-modal__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text, #111827);
+}
+.builder-app .builder-name-modal__input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--surface, #fff);
+  color: var(--text, #111827);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 120ms ease;
+}
+.builder-app .builder-name-modal__input:focus {
+  border-color: var(--accent, #2563eb);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, #2563eb) 18%, transparent);
+}
+.builder-app .builder-name-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.builder-app .builder-btn--primary:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .builder-app .builder-btn--primary {
   background: var(--accent, #2563eb);
   color: #fff;
