@@ -28,6 +28,7 @@ import ApiKeysModal from './components/panels/ApiKeysModal.jsx';
 import AuthModal from '../components/AuthModal.jsx';
 import { TEMPLATES } from './data/templates.js';
 import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data/outputTiers.js';
+import { templateForRole } from './data/rolePrompts.js';
 import { createExecution } from './services/mockExecutor.js';
 import { createRealExecution } from './services/realExecutor.js';
 import { getKeyStatus } from './services/apiKeyService.js';
@@ -437,6 +438,15 @@ function BuilderAppInner() {
   }, []);
 
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
+
+  // Задать/обновить инструкцию узла (data.prompt + флаг hasPrompt для значка).
+  const handleSetPrompt = useCallback((nodeId, value) => {
+    setNodes(nds => nds.map(n =>
+      n.id === nodeId
+        ? { ...n, data: { ...n.data, prompt: value, hasPrompt: !!value.trim() } }
+        : n
+    ));
+  }, [setNodes]);
 
   /* ────────── Edge connection ────────── */
   const onConnect = useCallback(
@@ -956,7 +966,7 @@ function BuilderAppInner() {
                 </div>
                 <div className="builder-sidebar__body">
                   {selectedNode ? (
-                    <NodeDetails node={selectedNode} t={t} onAtlasLink={openAtlasPreview} />
+                    <NodeDetails node={selectedNode} t={t} onAtlasLink={openAtlasPreview} onSetPrompt={handleSetPrompt} />
                   ) : (
                     <div className="builder-empty-state">
                       <Icon name="idea" size={24} strokeWidth={1.5} />
@@ -1214,8 +1224,23 @@ function BuilderAppInner() {
 /* NodeDetails — содержимое sidebar для выбранного узла        */
 /* ─────────────────────────────────────────────────────────── */
 
-function NodeDetails({ node, t, onAtlasLink }) {
-  const { icon, color, labelKey, descKey, atlasAnchor, kind, role, status } = node.data;
+function NodeDetails({ node, t, onAtlasLink, onSetPrompt }) {
+  const { icon, color, labelKey, descKey, atlasAnchor, kind, role, status, prompt = '' } = node.data;
+  const isAgent = kind === 'agent';
+  const fileRef = useRef(null);
+
+  const handleFile = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = String(reader.result || '').slice(0, 8000);
+      onSetPrompt(node.id, (prompt ? prompt + '\n\n' : '') + text);
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
   return (
     <div className="builder-node-details">
       <div className="builder-node-details__head" style={{ '--node-color': color }}>
@@ -1232,6 +1257,61 @@ function NodeDetails({ node, t, onAtlasLink }) {
         <p className="builder-node-details__desc">
           {t(descKey) || ''}
         </p>
+      )}
+
+      {/* Редактор инструкции — только для агент-узлов */}
+      {isAgent && (
+        <div className="builder-prompt-editor">
+          <div className="builder-prompt-editor__head">
+            <span className="builder-prompt-editor__title">
+              {t('builder.prompt.title') || 'Instruction for this agent'}
+            </span>
+          </div>
+          <p className="builder-prompt-editor__hint">
+            {t('builder.prompt.hint') || 'Tell this agent exactly what to do. Empty = use the built-in role behaviour.'}
+          </p>
+          <textarea
+            className="builder-prompt-editor__area"
+            value={prompt}
+            onChange={(e) => onSetPrompt(node.id, e.target.value)}
+            placeholder={t('builder.prompt.placeholder') || 'e.g. Study the site example.com and list the top UX problems.'}
+            rows={5}
+          />
+          <div className="builder-prompt-editor__actions">
+            <button
+              type="button"
+              className="builder-btn builder-btn--ghost builder-btn--small"
+              onClick={() => onSetPrompt(node.id, templateForRole(role))}
+            >
+              <Icon name="books" size={12} strokeWidth={1.5} />
+              <span>{t('builder.prompt.useTemplate') || 'Use template'}</span>
+            </button>
+            <button
+              type="button"
+              className="builder-btn builder-btn--ghost builder-btn--small"
+              onClick={() => fileRef.current?.click()}
+            >
+              <Icon name="file" size={12} strokeWidth={1.5} />
+              <span>{t('builder.prompt.fromFile') || 'From file'}</span>
+            </button>
+            {prompt && (
+              <button
+                type="button"
+                className="builder-btn builder-btn--ghost builder-btn--small"
+                onClick={() => onSetPrompt(node.id, '')}
+              >
+                <span>{t('builder.prompt.clear') || 'Clear'}</span>
+              </button>
+            )}
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".txt,.md,.json,text/*"
+              style={{ display: 'none' }}
+              onChange={handleFile}
+            />
+          </div>
+        </div>
       )}
 
       <dl className="builder-node-details__meta">

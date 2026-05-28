@@ -30,7 +30,7 @@ const MAX_NODES = 25; // защита от runaway: не больше 25 узл�
 const TIER_MAX_TOKENS: Record<string, number> = { s: 512, m: 2048, l: 4096 };
 const DEFAULT_TIER = 's';
 
-type Node = { client_id: string; node_type: string; role: string | null; def_id: string };
+type Node = { client_id: string; node_type: string; role: string | null; def_id: string; config?: Record<string, unknown> };
 type Edge = { source_client_id: string; target_client_id: string };
 
 // Топологическая сортировка (Kahn). Возвращает порядок client_id.
@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
 
   // Узлы и рёбра.
   const [{ data: nodes }, { data: edges }] = await Promise.all([
-    admin.from('builder_workflow_nodes').select('client_id, node_type, role, def_id').eq('workflow_id', workflowId),
+    admin.from('builder_workflow_nodes').select('client_id, node_type, role, def_id, config').eq('workflow_id', workflowId),
     admin.from('builder_workflow_edges').select('source_client_id, target_client_id').eq('workflow_id', workflowId),
   ]);
   if (!nodes || nodes.length === 0) return json({ error: 'empty_workflow' }, 400);
@@ -175,7 +175,10 @@ Deno.serve(async (req) => {
       const incoming = (edges || []).filter((e: Edge) => e.target_client_id === id)
         .map((e: Edge) => outputs.get(e.source_client_id)).filter(Boolean);
       const context = incoming.length ? incoming.join('\n\n') : input;
-      const system = systemPromptForRole(node.role || 'main');
+      // Если у узла задана своя инструкция (config.prompt) — используем её,
+      // иначе встроенный роль-дефолт.
+      const customPrompt = typeof node.config?.prompt === 'string' ? node.config.prompt.trim() : '';
+      const system = customPrompt || systemPromptForRole(node.role || 'main');
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
       const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens);
       totalTokens += tokens;
