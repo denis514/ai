@@ -37,6 +37,7 @@ import { createExecution } from './services/mockExecutor.js';
 import { createRealExecution } from './services/realExecutor.js';
 import { getKeyStatus } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
+import { historyBridge } from './services/historyBridge.js';
 import './BuilderApp.css';
 
 /**
@@ -503,6 +504,7 @@ function BuilderAppInner() {
     h.future = [];
   }, [snapshot]);
   pushHistoryRef.current = pushHistory; // мост для handlers, объявленных выше
+  historyBridge.push = pushHistory; // мост для BuilderEdge (кнопка «разъединить»)
   const [histVer, setHistVer] = useState(0); // для перерисовки кнопок
   const undo = useCallback(() => {
     const h = historyRef.current;

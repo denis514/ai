@@ -1,28 +1,39 @@
-import React from 'react';
-import { getBezierPath, useStore } from 'reactflow';
+import React, { useState } from 'react';
+import { getBezierPath, useStore, useReactFlow, EdgeLabelRenderer } from 'reactflow';
+import Icon from '../../../components/Icon.jsx';
+import { historyBridge } from '../../services/historyBridge.js';
 
 /**
- * BuilderEdge — кастомная связь между узлами.
+ * BuilderEdge — кастомная связь.
  *
  *  • Без стрелки.
- *  • Градиент: от цвета источника к цвету цели (показывает «откуда → куда»).
- *  • Пунктир с анимацией, текущей в сторону цели — видно направление потока.
- *
- * Цвета берём из текущих узлов (store), поэтому связь сама подхватывает цвет,
- * даже если узел перекрасили/продублировали.
+ *  • Градиент: цвет источника → цвет цели.
+ *  • Пунктир с анимацией, текущей ВСЕГДА от родителя (source) к цели —
+ *    независимо от того, с какой стороны подключены порты.
+ *  • На hover — красный кружок с иконкой «разъединить»; клик удаляет связь,
+ *    узлы остаются.
  */
 export default function BuilderEdge({
   id, source, target,
   sourceX, sourceY, targetX, targetY,
   sourcePosition, targetPosition,
 }) {
-  const [path] = getBezierPath({
+  const { setEdges } = useReactFlow();
+  const [hovered, setHovered] = useState(false);
+
+  const [path, labelX, labelY] = getBezierPath({
     sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition,
   });
 
   const sColor = useStore(s => s.nodeInternals.get(source)?.data?.color) || '#94a3b8';
   const tColor = useStore(s => s.nodeInternals.get(target)?.data?.color) || sColor;
   const gid = `builder-edge-grad-${id}`;
+
+  const unlink = (e) => {
+    e.stopPropagation();
+    historyBridge.push?.();
+    setEdges(eds => eds.filter(ed => ed.id !== id));
+  };
 
   return (
     <>
@@ -36,6 +47,8 @@ export default function BuilderEdge({
           <stop offset="100%" stopColor={tColor} />
         </linearGradient>
       </defs>
+
+      {/* Видимая связь */}
       <path
         id={id}
         className="builder-edge__path react-flow__edge-path"
@@ -43,6 +56,32 @@ export default function BuilderEdge({
         fill="none"
         style={{ stroke: `url(#${gid})` }}
       />
+      {/* Невидимая широкая дорожка — ловит наведение для кнопки */}
+      <path
+        d={path}
+        fill="none"
+        strokeWidth={18}
+        stroke="transparent"
+        style={{ cursor: 'pointer' }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      />
+
+      {hovered && (
+        <EdgeLabelRenderer>
+          <div
+            className="builder-edge__unlink"
+            style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            onClick={unlink}
+            role="button"
+            title="Unlink"
+          >
+            <Icon name="link" size={12} strokeWidth={2} />
+          </div>
+        </EdgeLabelRenderer>
+      )}
     </>
   );
 }
