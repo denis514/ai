@@ -79,11 +79,15 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
     const map = {
       key_rejected: t('builder.keys.tgErrRejected') || 'Telegram отклонил этот токен. Проверьте и попробуйте снова.',
       invalid_key_format: t('builder.keys.tgErrFormat') || 'Это не похоже на токен бота.',
+      unsupported_provider: t('builder.keys.tgErrUnsupported') || 'Сервер ещё не обновлён для Telegram — нужно переразвернуть функцию подключения ключа.',
+      storage_failed: t('builder.keys.tgErrStorage') || 'Не удалось сохранить токен на сервере.',
       not_authenticated: t('builder.keys.errAuth') || 'Sign in first to connect a key.',
+      unauthorized: t('builder.keys.errAuth') || 'Sign in first to connect a key.',
       backend_unavailable: t('builder.keys.errBackend') || 'Backend is not available right now.',
       server_misconfigured: t('builder.keys.errServer') || 'Server is not configured yet.',
     };
-    return map[code] || (t('builder.keys.errGeneric') || 'Something went wrong. Try again.');
+    // Для неизвестных кодов показываем сам код — чтобы быстро диагностировать.
+    return map[code] || `${t('builder.keys.errGeneric') || 'Something went wrong. Try again.'} (${code})`;
   }, [t]);
 
   const handleTgConnect = useCallback(async () => {
