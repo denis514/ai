@@ -125,6 +125,7 @@ export function deserializeFromDb(dbNodes = [], dbEdges = [], edgeStyle = undefi
     ...(row.label ? { label: row.label } : {}),
     animated: row.config?.animated ?? false,
     ...(edgeStyle ? { style: edgeStyle } : {}),
+    markerEnd: { type: 'arrowclosed', width: 18, height: 18, color: '#94a3b8' },
   }));
 
   return { nodes, edges };

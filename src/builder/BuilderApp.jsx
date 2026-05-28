@@ -89,6 +89,7 @@ function buildTemplateGraph(template, edgeStyle) {
     source: tempIdMap[e.from],
     target: tempIdMap[e.to],
     style: edgeStyle,
+    markerEnd: { type: 'arrowclosed', width: 18, height: 18, color: '#94a3b8' },
   }));
 
   return { nodes, edges };
@@ -102,6 +103,35 @@ const EDGE_STYLE = {
   stroke: '#94a3b8',
   strokeWidth: 2,
 };
+
+// Наконечник-стрелка — показывает направление «откуда → куда».
+const EDGE_MARKER = { type: 'arrowclosed', width: 18, height: 18, color: '#94a3b8' };
+
+/**
+ * Уровни очерёдности выполнения (топологическая глубина). Узлы без входящих
+ * связей = уровень 1; уровень узла = max(уровни источников) + 1. Узлы одного
+ * уровня выполняются параллельно. Возвращает Map(client_id → level).
+ */
+function computeOrderLevels(nodes, edges) {
+  const incoming = new Map(nodes.map(n => [n.id, []]));
+  for (const e of edges) {
+    if (incoming.has(e.target)) incoming.get(e.target).push(e.source);
+  }
+  const level = new Map();
+  const visiting = new Set();
+  const compute = (id) => {
+    if (level.has(id)) return level.get(id);
+    if (visiting.has(id)) return 1; // цикл — обрываем
+    visiting.add(id);
+    const srcs = incoming.get(id) || [];
+    const lvl = srcs.length === 0 ? 1 : Math.max(...srcs.map(compute)) + 1;
+    visiting.delete(id);
+    level.set(id, lvl);
+    return lvl;
+  };
+  for (const n of nodes) compute(n.id);
+  return level;
+}
 
 function BuilderApp() {
   return (
@@ -220,6 +250,23 @@ function BuilderAppInner() {
     isDirtyRef.current = true;
     setSaveStatus(s => (s === 'saved' ? 'idle' : s));
   }, [nodes, edges]);
+
+  // Номера очерёдности на узлах. Пересчитываем при изменении структуры
+  // (набор узлов/связей), не при перетаскивании. Guarded — без лупа.
+  const structSig = nodes.map(n => n.id).join(',') + '|' + edges.map(e => `${e.source}>${e.target}`).join(',');
+  useEffect(() => {
+    const levels = computeOrderLevels(nodes, edges);
+    setNodes(nds => {
+      let changed = false;
+      const next = nds.map(n => {
+        const lvl = levels.get(n.id) ?? null;
+        if (n.data?.orderLevel !== lvl) { changed = true; return { ...n, data: { ...n.data, orderLevel: lvl } }; }
+        return n;
+      });
+      return changed ? next : nds;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [structSig]);
 
   // Низкоуровневое сохранение с явным именем.
   // overrideNodes/overrideEdges — для случаев, когда state ещё не успел
@@ -393,7 +440,7 @@ function BuilderAppInner() {
 
   /* ────────── Edge connection ────────── */
   const onConnect = useCallback(
-    (params) => setEdges(eds => addEdge({ ...params, animated: false, style: EDGE_STYLE }, eds)),
+    (params) => setEdges(eds => addEdge({ ...params, animated: false, style: EDGE_STYLE, markerEnd: EDGE_MARKER }, eds)),
     [setEdges]
   );
 

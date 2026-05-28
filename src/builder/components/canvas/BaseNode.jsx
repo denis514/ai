@@ -27,7 +27,7 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 function BaseNodeInner({ data, selected }) {
   const t = useT();
-  const { icon, color, labelKey, kind, status = 'idle' } = data || {};
+  const { icon, color, labelKey, kind, status = 'idle', orderLevel, hasPrompt } = data || {};
 
   const showTop = kind !== 'trigger';
   const showBottom = kind !== 'output';
@@ -42,6 +42,17 @@ function BaseNodeInner({ data, selected }) {
       ].join(' ').trim()}
       style={{ '--node-color': color }}
     >
+      {orderLevel != null && (
+        <span className="builder-node__order" aria-hidden="true" title={`Step ${orderLevel}`}>
+          {orderLevel}
+        </span>
+      )}
+      {hasPrompt && kind === 'agent' && (
+        <span className="builder-node__configured" aria-hidden="true" title="Custom instruction set">
+          <Icon name="check" size={9} strokeWidth={3} />
+        </span>
+      )}
+
       {showTop && (
         <Handle
           type="target"
