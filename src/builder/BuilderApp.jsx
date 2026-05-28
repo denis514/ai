@@ -24,6 +24,7 @@ import TemplateGallery from './components/panels/TemplateGallery.jsx';
 import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
 import WorkflowSwitcher from './components/panels/WorkflowSwitcher.jsx';
 import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
+import ApiKeysModal from './components/panels/ApiKeysModal.jsx';
 import { TEMPLATES } from './data/templates.js';
 import { createExecution } from './services/mockExecutor.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
@@ -183,6 +184,7 @@ function BuilderAppInner() {
   const [nameModalOpen, setNameModalOpen] = useState(false);
   const [nameModalStep, setNameModalStep] = useState('name'); // 'name' | 'template'
   const [nameDraft, setNameDraft] = useState('');
+  const [keysModalOpen, setKeysModalOpen] = useState(false);
   // Счётчик версии списка workflow — бампается при save/delete, чтобы
   // «Недавние» в центре экрана и список в dropdown пере-загружались.
   const [wfVersion, setWfVersion] = useState(0);
@@ -544,6 +546,15 @@ function BuilderAppInner() {
             aria-label={t('builder.tour.openBtn') || 'Take the tour'}
           >
             <Icon name="question" size={14} strokeWidth={1.5} />
+          </button>
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost"
+            onClick={() => setKeysModalOpen(true)}
+            title={t('builder.keys.openBtn') || 'API keys'}
+            aria-label={t('builder.keys.openBtn') || 'API keys'}
+          >
+            <Icon name="lock" size={14} strokeWidth={1.5} />
           </button>
           <button
             type="button"
@@ -946,6 +957,9 @@ function BuilderAppInner() {
           </div>
         </div>
       )}
+
+      {/* API keys modal */}
+      {keysModalOpen && <ApiKeysModal onClose={() => setKeysModalOpen(false)} />}
 
       {/* Mobile blocker — отображается через CSS @media on small screens */}
       <div className="builder-mobile-blocker" aria-hidden="false">

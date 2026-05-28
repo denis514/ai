@@ -1,0 +1,12 @@
+# Supabase Edge Functions config для Builder.
+#
+# verify_jwt = false: JWT мы проверяем сами внутри функции (getUser в _shared/auth.ts),
+# чтобы корректно обрабатывать CORS preflight (OPTIONS) и возвращать понятные ошибки.
+
+project_id = "builder"
+
+[functions.builder-connect-key]
+verify_jwt = false
+
+[functions.builder-disconnect-key]
+verify_jwt = false
