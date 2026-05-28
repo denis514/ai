@@ -1050,6 +1050,7 @@ function BuilderAppInner() {
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             isValidConnection={isValidConnection}
+            connectionMode="loose"
             connectionLineComponent={ConnectionLine}
             onNodeClick={onNodeClick}
             onPaneClick={onPaneClick}
