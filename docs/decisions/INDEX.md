@@ -11,6 +11,7 @@ Architecture Decision Records (ADRs) для 105 Atlas.
 | [0003](./0003-pivot-product-first.md) | 2026-05-27 | Pivot — product-first focus, freeze distribution | accepted | business, strategy |
 | [0004](./0004-bundle-splitting-strategy.md) | 2026-05-27 | Bundle splitting — per-locale sections + lazy modals + audience tutorials | accepted | architecture, performance, frontend |
 | [0005](./0005-css-cleanup-methodology.md) | 2026-05-27 | CSS cleanup methodology — audit-driven manual verification | accepted | architecture, performance, frontend, tooling |
+| [0006](./0006-builder-monetization-byok.md) | 2026-05-28 | Builder monetizes as a platform; BYOK trust feature; no token resale | accepted | business, strategy, builder |
 
 ---
 
