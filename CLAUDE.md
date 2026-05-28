@@ -435,6 +435,8 @@ Claude **обязан** написать короткий итог.
 | Еженедельный strategic review          | `node scripts/weekly-strategy-review.mjs` |
 | **Agent Builder — стратегия + планы**  | `docs/agent-builder/`      |
 | Проектирование agents и workflow       | `skills/agent-architecture/` |
+| Добавить/изменить узел Builder, правила связей, шаблон | `skills/builder-node-architect/` (+ `npm run lint:builder`) |
+| Модель способностей узлов и совместимости | `docs/agent-builder/10-node-capability-model.md` + ADR-0007 |
 | Visual builder UX (canvas, onboarding) | `skills/ux-flow-designer/` |
 | AI education snippets (tooltips, deep-links) | `skills/ai-education-designer/` |
 | Risk audit перед изменениями кода      | `skills/technical-risk-auditor/` |

@@ -35,7 +35,7 @@ export const TEMPLATES = [
     ],
     edges: [
       { from: 0, to: 1 }, // trigger → main
-      { from: 1, to: 2 }, // main → vision tool
+      { from: 2, to: 1 }, // vision tool ⇒ прикреплён к main (attach)
       { from: 1, to: 3 }, // main → research
       { from: 1, to: 4 }, // main → ux
       { from: 3, to: 5 }, // research → output
@@ -64,7 +64,7 @@ export const TEMPLATES = [
     ],
     edges: [
       { from: 0, to: 1 },
-      { from: 1, to: 2 },
+      { from: 2, to: 1 }, // file tool ⇒ прикреплён к main (attach)
       { from: 1, to: 3 },
       { from: 1, to: 4 },
       { from: 3, to: 5 },
@@ -93,13 +93,13 @@ export const TEMPLATES = [
       { defId: 'output-text',     position: { x: 100, y: 600 } },
     ],
     edges: [
-      { from: 0, to: 1 },
-      { from: 1, to: 2 },
-      { from: 2, to: 3 },
-      { from: 1, to: 4 },
-      { from: 1, to: 5 },
-      { from: 4, to: 6 },
-      { from: 5, to: 6 },
+      { from: 0, to: 1 }, // trigger → main
+      { from: 1, to: 2 }, // main → research
+      { from: 3, to: 2 }, // search tool ⇒ прикреплён к research (attach)
+      { from: 1, to: 4 }, // main → ux
+      { from: 5, to: 1 }, // memory tool ⇒ прикреплён к main (attach)
+      { from: 2, to: 6 }, // research → output
+      { from: 4, to: 6 }, // ux → output
     ],
   },
 
@@ -124,12 +124,12 @@ export const TEMPLATES = [
       { defId: 'output-text',     position: { x: 100, y: 500 } },
     ],
     edges: [
-      { from: 0, to: 1 },
-      { from: 1, to: 2 },
-      { from: 1, to: 3 },
-      { from: 1, to: 4 },
-      { from: 4, to: 5 },
-      { from: 5, to: 6 },
+      { from: 0, to: 1 }, // trigger → main
+      { from: 2, to: 1 }, // search tool ⇒ прикреплён к main (attach)
+      { from: 3, to: 1 }, // file tool ⇒ прикреплён к main (attach)
+      { from: 1, to: 4 }, // main → research
+      { from: 4, to: 5 }, // research → analytics
+      { from: 5, to: 6 }, // analytics → output
     ],
   },
 ];

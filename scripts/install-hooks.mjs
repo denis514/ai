@@ -58,6 +58,17 @@ if echo "$staged" | grep -qE '\\.css$'; then
   }
 fi
 
+# Builder layer → node-registry + connection-rules + templates consistency.
+if echo "$staged" | grep -qE '^src/builder/(data/(nodeTypes|nodeCapabilities|templates)\\.js|services/connectionRules\\.js)'; then
+  echo "→ pre-commit: linting Builder graph (registry/rules/templates changed)…"
+  npm run --silent lint:builder || {
+    echo ""
+    echo "✗ Builder graph lint failed. Fix incompatible edges / missing fields, re-stage, commit."
+    echo "  (Override with: git commit --no-verify — NOT recommended.)"
+    exit 1
+  }
+fi
+
 exit 0
 `;
 
