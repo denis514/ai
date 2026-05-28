@@ -194,7 +194,12 @@ function BuilderAppInner() {
   const [keyConnected, setKeyConnected] = useState(false);
   const [runInputOpen, setRunInputOpen] = useState(false);
   const [runInput, setRunInput] = useState('');
-  const [realIntent, setRealIntent] = useState(false);     // юзер хотел «Реально», но был заблокирован (нет входа/ключа)
+  // Намерение «Реально» переживает перезагрузку страницы (вход через
+  // Google/magic-link = редирект). Храним в sessionStorage.
+  const REAL_INTENT_KEY = 'atlas:builder:real-intent';
+  const [realIntent, setRealIntent] = useState(() => {
+    try { return sessionStorage.getItem(REAL_INTENT_KEY) === '1'; } catch { return false; }
+  });
   const [realConfirmOpen, setRealConfirmOpen] = useState(false); // окно «осторожно, реальный режим»
   // Счётчик версии списка workflow — бампается при save/delete, чтобы
   // «Недавние» в центре экрана и список в dropdown пере-загружались.
@@ -314,6 +319,7 @@ function BuilderAppInner() {
   // ко входу/ключу. После того как вход+ключ готовы — авто-переход (эффект ниже).
   const requestRealMode = useCallback(() => {
     setRealIntent(true);
+    try { sessionStorage.setItem(REAL_INTENT_KEY, '1'); } catch { /* noop */ }
     openKeysOrAuth();
   }, [openKeysOrAuth]);
 
@@ -340,6 +346,7 @@ function BuilderAppInner() {
       setRunMode('real');
       setRealConfirmOpen(true);
       setRealIntent(false);
+      try { sessionStorage.removeItem(REAL_INTENT_KEY); } catch { /* noop */ }
     } else {
       // Вошёл, но ключа нет — ведём подключать.
       setKeysModalOpen(true);
