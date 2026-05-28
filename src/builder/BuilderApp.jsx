@@ -13,6 +13,7 @@ import {
 import 'reactflow/dist/style.css';
 import Icon from '../components/Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data/nodeTypes.js';
 import { nodeTypes } from './components/canvas/index.js';
 import ToolboxItem from './components/canvas/ToolboxItem.jsx';
@@ -21,7 +22,9 @@ import AtlasNodePreview from './components/education/AtlasNodePreview.jsx';
 import BuilderTour, { isTourSeen } from './components/education/BuilderTour.jsx';
 import TemplateGallery from './components/panels/TemplateGallery.jsx';
 import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
+import WorkflowSwitcher from './components/panels/WorkflowSwitcher.jsx';
 import { createExecution } from './services/mockExecutor.js';
+import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import './BuilderApp.css';
 
 /**
@@ -126,6 +129,90 @@ function BuilderAppInner() {
 
   const reactFlowWrapper = useRef(null);
   const { screenToFlowPosition } = useReactFlow();
+
+  /* ────────── Persistence state (B-2.1) ────────── */
+  const { user } = useAuth();
+  const userId = user?.id || null;
+  const [currentWorkflowId, setCurrentWorkflowId] = useState(null);
+  const [workflowName, setWorkflowName] = useState('');
+  const [saveStatus, setSaveStatus] = useState('idle'); // 'idle' | 'saving' | 'saved' | 'error'
+  const [switcherOpen, setSwitcherOpen] = useState(false);
+  const isDirtyRef = useRef(false);
+  const saveTimerRef = useRef(null);
+  const skipDirtyRef = useRef(false); // подавляет dirty при программной загрузке
+
+  // Помечаем dirty при любом изменении nodes/edges (кроме программной загрузки).
+  useEffect(() => {
+    if (skipDirtyRef.current) {
+      skipDirtyRef.current = false;
+      return;
+    }
+    if (nodes.length === 0 && edges.length === 0) return;
+    isDirtyRef.current = true;
+    setSaveStatus(s => (s === 'saved' ? 'idle' : s));
+  }, [nodes, edges]);
+
+  // Сохранение (manual + auto).
+  const doSave = useCallback(async () => {
+    if (nodes.length === 0) return; // нечего сохранять
+    setSaveStatus('saving');
+    try {
+      const name = workflowName.trim() || (t('builder.save.untitled') || 'Untitled workflow');
+      const { id } = await storageSave(
+        { id: currentWorkflowId, name, rfNodes: nodes, rfEdges: edges },
+        userId
+      );
+      setCurrentWorkflowId(id);
+      if (!workflowName.trim()) setWorkflowName(name);
+      isDirtyRef.current = false;
+      setSaveStatus('saved');
+    } catch (e) {
+      console.error('[Builder] save failed', e);
+      setSaveStatus('error');
+    }
+  }, [nodes, edges, workflowName, currentWorkflowId, userId, t]);
+
+  // Auto-save: каждые 30с, только если dirty.
+  useEffect(() => {
+    saveTimerRef.current = setInterval(() => {
+      if (isDirtyRef.current && nodes.length > 0) doSave();
+    }, 30000);
+    return () => {
+      if (saveTimerRef.current) clearInterval(saveTimerRef.current);
+    };
+  }, [doSave, nodes.length]);
+
+  // Загрузка существующего workflow по id.
+  const handleLoadWorkflow = useCallback(async (wfId) => {
+    try {
+      const wf = await storageLoad(wfId, userId, EDGE_STYLE);
+      if (!wf) return;
+      skipDirtyRef.current = true;
+      setNodes(wf.nodes);
+      setEdges(wf.edges);
+      setCurrentWorkflowId(wf.id);
+      setWorkflowName(wf.name || '');
+      setSelectedNodeId(null);
+      setSwitcherOpen(false);
+      isDirtyRef.current = false;
+      setSaveStatus('saved');
+    } catch (e) {
+      console.error('[Builder] load failed', e);
+    }
+  }, [userId, setNodes, setEdges]);
+
+  // Новый пустой workflow.
+  const handleNewWorkflow = useCallback(() => {
+    skipDirtyRef.current = true;
+    setNodes([]);
+    setEdges([]);
+    setCurrentWorkflowId(null);
+    setWorkflowName('');
+    setSelectedNodeId(null);
+    setSwitcherOpen(false);
+    isDirtyRef.current = false;
+    setSaveStatus('idle');
+  }, [setNodes, setEdges]);
 
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
 
@@ -426,6 +513,53 @@ function BuilderAppInner() {
           >
             <Icon name="terminal" size={14} strokeWidth={1.5} />
           </button>
+          {/* Workflow switcher dropdown */}
+          <div className="builder-header__switcher-wrap">
+            <button
+              type="button"
+              className="builder-btn builder-btn--ghost"
+              onClick={() => setSwitcherOpen(v => !v)}
+              aria-expanded={switcherOpen}
+              title={t('builder.workflows.open') || 'My workflows'}
+            >
+              <Icon name="folder" size={14} strokeWidth={1.5} />
+              <span className="builder-header__wf-name">
+                {workflowName.trim() || (t('builder.workflows.untitled') || 'Untitled')}
+              </span>
+              <Icon name="arrow-down" size={12} strokeWidth={1.75} />
+            </button>
+            {switcherOpen && (
+              <WorkflowSwitcher
+                userId={userId}
+                currentId={currentWorkflowId}
+                onOpen={handleLoadWorkflow}
+                onNew={handleNewWorkflow}
+                onClose={() => setSwitcherOpen(false)}
+              />
+            )}
+          </div>
+
+          {/* Save */}
+          <button
+            type="button"
+            className={`builder-btn builder-btn--ghost builder-save builder-save--${saveStatus}`}
+            onClick={doSave}
+            disabled={nodes.length === 0 || saveStatus === 'saving'}
+            title={t('builder.save.hint') || 'Save workflow'}
+          >
+            <Icon
+              name={saveStatus === 'saved' ? 'check' : saveStatus === 'saving' ? 'refresh' : saveStatus === 'error' ? 'question' : 'archive'}
+              size={14}
+              strokeWidth={1.5}
+            />
+            <span>{
+              saveStatus === 'saving' ? (t('builder.save.saving') || 'Saving…')
+              : saveStatus === 'saved' ? (t('builder.save.saved') || 'Saved')
+              : saveStatus === 'error' ? (t('builder.save.error') || 'Retry')
+              : (t('builder.save.label') || 'Save')
+            }</span>
+          </button>
+
           <button
             type="button"
             className="builder-btn builder-btn--primary"
