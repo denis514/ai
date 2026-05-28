@@ -38,6 +38,7 @@ import { createRealExecution } from './services/realExecutor.js';
 import { getKeyStatus } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
+import { evaluateConnection, validateGraph } from './services/connectionRules.js';
 import './BuilderApp.css';
 
 /**
@@ -136,23 +137,6 @@ function computeOrderLevels(nodes, edges) {
   };
   for (const n of nodes) compute(n.id);
   return level;
-}
-
-// Проверка схемы перед РЕАЛЬНЫМ запуском (защита от пустой траты токенов).
-// errors блокируют запуск; warnings позволяют «запустить всё равно».
-function validateWorkflow(nodes, edges) {
-  const errors = [];
-  const warnings = [];
-  const agents = nodes.filter(n => n.data?.kind === 'agent');
-  if (agents.length === 0) errors.push('no-agent');
-
-  if (nodes.length > 1) {
-    const hasOut = new Set(edges.map(e => e.source));
-    const hasIn = new Set(edges.map(e => e.target));
-    const isolated = nodes.filter(n => !hasOut.has(n.id) && !hasIn.has(n.id));
-    if (isolated.length) warnings.push({ type: 'isolated', count: isolated.length });
-  }
-  return { errors, warnings };
 }
 
 function BuilderApp() {
@@ -586,36 +570,18 @@ function BuilderAppInner() {
     [setEdges, pushHistory]
   );
 
-  // Поток только вперёд: запрещаем связь на себя, дубликаты и циклы
-  // (если цель уже может дойти до источника — соединение создало бы петлю).
+  // Совместимость узлов — через движок connectionRules (порты + типы связей).
+  // Блокирует несовместимые пары (tool→output, →trigger, agent→tool…), дубликаты
+  // и циклы в DATA-потоке. Направление нормализуем по узлу-источнику перетягивания.
   const isValidConnection = useCallback((conn) => {
     let { source, target } = conn;
-    // Нормализуем направление по узлу-источнику перетаскивания: в loose-режиме
-    // React Flow мог назначить source/target по геометрии — проверяем цикл/дубль
-    // в РЕАЛЬНОМ направлении (родитель → ребёнок), как и создаём связь в onConnect.
     const origin = connectOriginRef.current;
     if (origin && target === origin && source !== origin) {
       [source, target] = [target, source];
     }
-    if (!source || !target || source === target) return false;
-    if (edges.some(e => e.source === source && e.target === target)) return false;
-    // Проверка цикла: дойти от target до source по существующим связям.
-    const adj = new Map();
-    for (const e of edges) {
-      if (!adj.has(e.source)) adj.set(e.source, []);
-      adj.get(e.source).push(e.target);
-    }
-    const seen = new Set();
-    const stack = [target];
-    while (stack.length) {
-      const cur = stack.pop();
-      if (cur === source) return false; // цикл
-      if (seen.has(cur)) continue;
-      seen.add(cur);
-      for (const nx of adj.get(cur) || []) stack.push(nx);
-    }
-    return true;
-  }, [edges]);
+    const nodeKind = Object.fromEntries(nodes.map(n => [n.id, n.data?.kind]));
+    return evaluateConnection({ source, target, nodeKind, edges }).ok;
+  }, [nodes, edges]);
 
   /* ────────── Drag-drop из toolbox ────────── */
   const onDragOver = useCallback((event) => {
@@ -791,7 +757,7 @@ function BuilderAppInner() {
       if (!keyConnected) { requestRealMode(); return; }
       // C1: проверка схемы перед тратой токенов. Ошибки блокируют, предупреждения
       // дают «запустить всё равно». Чисто → запускаем сразу.
-      const v = validateWorkflow(nodes, edges);
+      const v = validateGraph(nodes, edges);
       if (v.errors.length || v.warnings.length) { setValidation(v); return; }
       proceedRealRun();
       return;
@@ -1484,16 +1450,21 @@ function BuilderAppInner() {
                   </span>
                 </li>
               ))}
-              {validation.warnings.map((w, i) => (
-                <li key={`w${i}`} className="builder-validation__item builder-validation__item--warn">
-                  <Icon name="flash" size={14} strokeWidth={1.75} />
-                  <span>
-                    {w.type === 'isolated'
-                      ? `${t('builder.validation.isolated') || 'Есть несоединённые узлы (не участвуют в потоке)'}: ${w.count}`
-                      : w.type}
-                  </span>
-                </li>
-              ))}
+              {validation.warnings.map((w, i) => {
+                const fallback = {
+                  isolated: 'Есть несоединённые узлы (не участвуют в потоке)',
+                  'multi-trigger': 'Несколько стартовых узлов — поток может запуститься не так, как ожидаете',
+                  'output-empty': 'Узел-выход ни с чем не соединён — результата не будет',
+                  'tool-unattached': 'Инструмент не прикреплён к агенту — он не задействован',
+                };
+                const text = t(`builder.validation.${w.type}`) || fallback[w.type] || w.type;
+                return (
+                  <li key={`w${i}`} className="builder-validation__item builder-validation__item--warn">
+                    <Icon name="flash" size={14} strokeWidth={1.75} />
+                    <span>{w.count ? `${text}: ${w.count}` : text}</span>
+                  </li>
+                );
+              })}
             </ul>
 
             <div className="builder-name-modal__actions">
