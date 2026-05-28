@@ -33,13 +33,26 @@ const hookBody = `#!/usr/bin/env sh
 # 105 Atlas pre-commit — auto-installed by scripts/install-hooks.mjs
 # Bypass (rare): git commit --no-verify
 
-# Only run lint when content files changed.
+# Only run lint when relevant files changed.
 staged=$(git diff --cached --name-only --diff-filter=ACMR)
+
+# Content layer → data + inline-link lint.
 if echo "$staged" | grep -qE '^(src/locales/|src/data/(mindmapData|tutorials|prompts|promptLibrary|learningPaths)\\.js)'; then
   echo "→ pre-commit: linting content (staged changes touched data layer)…"
   npm run --silent lint:all || {
     echo ""
     echo "✗ Lint failed. Fix above issues, then re-stage and commit."
+    echo "  (Override with: git commit --no-verify — NOT recommended.)"
+    exit 1
+  }
+fi
+
+# CSS layer → CSS variable semantics lint (blocks BuilderApp.css regressions).
+if echo "$staged" | grep -qE '\\.css$'; then
+  echo "→ pre-commit: linting CSS variables (staged changes touched .css)…"
+  npm run --silent lint:css || {
+    echo ""
+    echo "✗ CSS var lint failed. Fix undefined/mis-semantic vars, re-stage, commit."
     echo "  (Override with: git commit --no-verify — NOT recommended.)"
     exit 1
   }
@@ -60,4 +73,5 @@ if (existsSync(hookPath)) {
 writeFileSync(hookPath, hookBody, 'utf8');
 chmodSync(hookPath, 0o755);
 console.log(`✓ pre-commit hook installed: ${hookPath}`);
-console.log(`  triggers on staged changes in src/locales/ or src/data/{mindmapData,tutorials,prompts,promptLibrary,learningPaths}.js`);
+console.log(`  content lint → staged changes in src/locales/ or src/data/{mindmapData,tutorials,prompts,promptLibrary,learningPaths}.js`);
+console.log(`  css var lint → staged changes in any *.css file`);
