@@ -775,7 +775,7 @@ function BuilderAppInner() {
             <Icon name={execStatus === 'running' ? 'refresh' : 'flash'} size={14} strokeWidth={1.5} />
             <span>{execStatus === 'running'
               ? (t('builder.running') || 'Running…')
-              : runMode === 'real' ? (t('builder.runReal') || 'Run for real') : (t('builder.run') || 'Run')}</span>
+              : (t('builder.run') || 'Run')}</span>
           </button>
         </div>
       </header>
