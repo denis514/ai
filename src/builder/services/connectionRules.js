@@ -120,6 +120,10 @@ export function validateGraph(nodes = [], edges = []) {
   const looseTools = nodes.filter(n => n.data?.kind === 'tool' && !attachSources.has(n.id));
   if (looseTools.length) warnings.push({ type: 'tool-unattached', count: looseTools.length });
 
+  // Telegram-выход без адреса чата — доставки не будет.
+  const tgNoChat = nodes.filter(n => n.data?.role === 'telegram' && !String(n.data?.chatId || '').trim());
+  if (tgNoChat.length) warnings.push({ type: 'telegram-no-chat', count: tgNoChat.length });
+
   return { errors, warnings };
 }
 

@@ -185,12 +185,16 @@ Deno.serve(async (req) => {
         outputs.set(id, collected);
 
         // Доставка в Telegram (роль telegram + config.chatId + подключённый токен).
+        // ВАЖНО: «не доставлено» помечаем status:'failed' (красным) — иначе
+        // пользователь видит зелёный узел и думает, что сообщение ушло.
         if (node.role === 'telegram') {
           const chatId = typeof node.config?.chatId === 'string' ? node.config.chatId.trim() : '';
           if (!telegramToken) {
-            await log(id, 'warn', 'Telegram not connected — skipped delivery', { status: 'completed' });
+            failed = true;
+            await log(id, 'error', 'Telegram bot not connected — connect a bot token in “My keys”.', { status: 'failed' });
           } else if (!chatId) {
-            await log(id, 'warn', 'No chat ID set on this Telegram node — skipped', { status: 'completed' });
+            failed = true;
+            await log(id, 'error', 'No chat ID set on this Telegram node — open it and enter a numeric chat ID.', { status: 'failed' });
           } else {
             try {
               const tgRes = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
@@ -198,12 +202,16 @@ Deno.serve(async (req) => {
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({ chat_id: chatId, text: collected.slice(0, 4000) }),
               });
-              if (tgRes.ok) await log(id, 'info', 'Sent to Telegram ✓', { status: 'completed' });
-              else {
-                const e = await tgRes.json().catch(() => ({}));
-                await log(id, 'error', `Telegram error: ${e.description || tgRes.status}`, { status: 'failed' });
+              const tgData = await tgRes.json().catch(() => ({}));
+              if (tgRes.ok && tgData?.ok) {
+                await log(id, 'info', `Sent to Telegram ✓ (chat ${chatId})`, { status: 'completed' });
+              } else {
+                failed = true;
+                const desc = tgData?.description || `http_${tgRes.status}`;
+                await log(id, 'error', `Telegram did not deliver: ${desc}. Tip: chat_id must be your numeric ID or a @channel where the bot is admin — not the bot's own @username.`, { status: 'failed' });
               }
             } catch (err) {
+              failed = true;
               await log(id, 'error', `Telegram send failed: ${(err as Error).message}`, { status: 'failed' });
             }
           }

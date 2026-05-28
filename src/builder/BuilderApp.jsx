@@ -1507,6 +1507,7 @@ function BuilderAppInner() {
                   'multi-trigger': 'Несколько стартовых узлов — поток может запуститься не так, как ожидаете',
                   'output-empty': 'Узел-выход ни с чем не соединён — результата не будет',
                   'tool-unattached': 'Инструмент не прикреплён к агенту — он не задействован',
+                  'telegram-no-chat': 'У узла Telegram не указан адрес чата — доставки не будет',
                 };
                 const text = t(`builder.validation.${w.type}`) || fallback[w.type] || w.type;
                 return (
