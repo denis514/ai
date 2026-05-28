@@ -152,6 +152,7 @@ function BuilderAppInner() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
+  const [selectedEdgeId, setSelectedEdgeId] = useState(null);
   const [toolboxOpen, setToolboxOpen] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [execPanelOpen, setExecPanelOpen] = useState(false);
@@ -663,30 +664,41 @@ function BuilderAppInner() {
   /* ────────── Selection ────────── */
   const onNodeClick = useCallback((event, node) => {
     setSelectedNodeId(node.id);
+    setSelectedEdgeId(null);
     setSidebarOpen(true);
+  }, []);
+
+  const onEdgeClick = useCallback((event, edge) => {
+    setSelectedEdgeId(edge.id);
+    setSelectedNodeId(null);
   }, []);
 
   const onPaneClick = useCallback(() => {
     setSelectedNodeId(null);
+    setSelectedEdgeId(null);
   }, []);
 
   /* ────────── Delete key ────────── */
   useEffect(() => {
     const handler = (e) => {
       if (e.key === 'Delete' || e.key === 'Backspace') {
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA') return;
         if (selectedNodeId) {
-          const tag = document.activeElement?.tagName;
-          if (tag === 'INPUT' || tag === 'TEXTAREA') return;
           pushHistory();
           setNodes(nds => nds.filter(n => n.id !== selectedNodeId));
           setEdges(eds => eds.filter(e => e.source !== selectedNodeId && e.target !== selectedNodeId));
           setSelectedNodeId(null);
+        } else if (selectedEdgeId) {
+          pushHistory();
+          setEdges(eds => eds.filter(ed => ed.id !== selectedEdgeId));
+          setSelectedEdgeId(null);
         }
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [selectedNodeId, setNodes, setEdges]);
+  }, [selectedNodeId, selectedEdgeId, setNodes, setEdges, pushHistory]);
 
   /* ────────── Header actions ────────── */
   const handleAtlasBack = useCallback(() => {
@@ -1087,6 +1099,7 @@ function BuilderAppInner() {
             connectionMode="loose"
             connectionLineComponent={ConnectionLine}
             onNodeClick={onNodeClick}
+            onEdgeClick={onEdgeClick}
             onPaneClick={onPaneClick}
             onDrop={onDrop}
             onDragOver={onDragOver}
@@ -1100,7 +1113,7 @@ function BuilderAppInner() {
 
             {/* Панель действий узла — сверху, для любого выбранного узла */}
             {selectedNodeId && (
-              <NodeToolbar nodeId={selectedNodeId} isVisible position={Position.Top} offset={10}>
+              <NodeToolbar nodeId={selectedNodeId} isVisible position={Position.Top} offset={28}>
                 <div className="builder-node-actions" onClick={(e) => e.stopPropagation()}>
                   <button
                     type="button"
@@ -1128,7 +1141,7 @@ function BuilderAppInner() {
                 nodeId={selectedNodeId}
                 isVisible
                 position={Position.Right}
-                offset={14}
+                offset={28}
               >
                 <NodePromptPopover
                   node={selectedAgentNode}

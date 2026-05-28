@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { getBezierPath, useStore, useReactFlow, EdgeLabelRenderer } from 'reactflow';
 import Icon from '../../../components/Icon.jsx';
 import { historyBridge } from '../../services/historyBridge.js';
@@ -21,6 +21,18 @@ export default function BuilderEdge({
   const { setEdges } = useReactFlow();
   const [hovered, setHovered] = useState(false);
   const [btnHover, setBtnHover] = useState(false);
+
+  // Grace-таймаут: кнопка «разъединить» не должна мгновенно прятаться, когда
+  // курсор перескакивает с тонкой линии на кружок (иначе её трудно поймать).
+  const hideTimer = useRef(null);
+  const show = () => {
+    if (hideTimer.current) { clearTimeout(hideTimer.current); hideTimer.current = null; }
+    setHovered(true);
+  };
+  const scheduleHide = () => {
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+    hideTimer.current = setTimeout(() => setHovered(false), 160);
+  };
 
   const [path, labelX, labelY] = getBezierPath({
     sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition,
@@ -64,8 +76,8 @@ export default function BuilderEdge({
         strokeWidth={18}
         stroke="transparent"
         style={{ cursor: 'pointer' }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseEnter={show}
+        onMouseLeave={scheduleHide}
       />
 
       {hovered && (
@@ -73,11 +85,12 @@ export default function BuilderEdge({
           <div
             className="builder-edge__unlink"
             style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}
-            onMouseEnter={() => { setHovered(true); setBtnHover(true); }}
-            onMouseLeave={() => { setHovered(false); setBtnHover(false); }}
+            onMouseEnter={() => { show(); setBtnHover(true); }}
+            onMouseLeave={() => { scheduleHide(); setBtnHover(false); }}
             onClick={unlink}
             role="button"
-            title="Unlink"
+            aria-label="Разъединить связь"
+            title="Разъединить связь"
           >
             <Icon name={btnHover ? 'unlink' : 'link'} size={12} strokeWidth={2} />
           </div>

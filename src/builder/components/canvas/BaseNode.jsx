@@ -62,7 +62,7 @@ function BaseNodeInner({ data, selected }) {
           type="target"
           position={Position.Top}
           className={`builder-node__handle builder-node__handle--in ${inPulse}`}
-          title={t('builder.connectInHint') || 'Connect into this agent'}
+          title={t('builder.connectInHint') || 'Точка входа: сюда приходит связь'}
         />
       )}
       {showIn && (
@@ -70,7 +70,7 @@ function BaseNodeInner({ data, selected }) {
           id="l"
           type="target"
           position={Position.Left}
-          className={`builder-node__handle builder-node__handle--left ${inPulse}`}
+          className="builder-node__handle builder-node__handle--left"
         />
       )}
 
@@ -96,7 +96,7 @@ function BaseNodeInner({ data, selected }) {
           type="source"
           position={Position.Bottom}
           className={`builder-node__handle builder-node__handle--out ${outPulse}`}
-          title={t('builder.connectHint') || 'Drag from here to connect'}
+          title={t('builder.connectHint') || 'Перетащите отсюда, чтобы соединить'}
         />
       )}
       {showOut && (
@@ -104,8 +104,8 @@ function BaseNodeInner({ data, selected }) {
           id="r"
           type="source"
           position={Position.Right}
-          className={`builder-node__handle builder-node__handle--right ${outPulse}`}
-          title={t('builder.connectHint') || 'Drag from here to connect'}
+          className="builder-node__handle builder-node__handle--right"
+          title={t('builder.connectHint') || 'Перетащите отсюда, чтобы соединить'}
         />
       )}
     </div>
