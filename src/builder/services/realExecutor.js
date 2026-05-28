@@ -40,6 +40,28 @@ export function createRealExecution({ workflowId, input, tier, locale, onUpdate,
     onComplete?.(status);
   }
 
+  // Завершение с дочиткой: перед закрытием канала вычитываем ВСЕ логи из БД и
+  // применяем последний статус по каждому узлу. Закрывает гонку, при которой
+  // Realtime-событие статуса ПОСЛЕДНЕГО узла приходит уже после HTTP-ответа
+  // функции (узел иначе «зависает» в running). Идемпотентно.
+  async function settle(status) {
+    if (done) return;
+    try {
+      const { data: logs } = await supabase
+        .from('builder_execution_logs')
+        .select('node_client_id, data, created_at')
+        .eq('execution_id', executionId)
+        .order('created_at', { ascending: true });
+      if (logs) {
+        for (const r of logs) {
+          const st = r.data?.status;
+          if (r.node_client_id && st) onUpdate?.(r.node_client_id, st);
+        }
+      }
+    } catch { /* noop — финал всё равно вызовем */ }
+    finish(status);
+  }
+
   if (!supabase || !FN_URL) {
     onLog?.({ level: 'error', message: 'Backend unavailable', ts: new Date().toISOString() });
     Promise.resolve().then(() => finish('failed'));
@@ -70,7 +92,7 @@ export function createRealExecution({ workflowId, input, tier, locale, onUpdate,
       { event: 'UPDATE', schema: 'public', table: 'builder_executions', filter: `id=eq.${executionId}` },
       (payload) => {
         const st = payload.new?.status;
-        if (st === 'completed' || st === 'failed') finish(st);
+        if (st === 'completed' || st === 'failed') settle(st);
       },
     )
     .subscribe(async (state) => {
@@ -96,8 +118,9 @@ export function createRealExecution({ workflowId, input, tier, locale, onUpdate,
           return finish('failed');
         }
         if (out.output != null) onResult?.({ output: out.output, tokensUsed: out.tokensUsed || 0 });
-        // Функция завершилась — финал (на случай если UPDATE-событие не дошло).
-        finish(out.status || 'completed');
+        // Функция завершилась — дочитываем финальные статусы узлов и финализируем
+        // (закрывает гонку: статус последнего узла мог не успеть прийти по Realtime).
+        settle(out.status || 'completed');
       } catch (e) {
         onLog?.({ level: 'error', message: e.message || 'request failed', ts: new Date().toISOString() });
         finish('failed');
