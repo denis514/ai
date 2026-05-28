@@ -1171,32 +1171,29 @@
 
 /* Handles — connection points */
 .builder-app .builder-node__handle {
-  width: 12px !important;
-  height: 12px !important;
+  width: 11px !important;
+  height: 11px !important;
   background: var(--node-color) !important;
   border: 2px solid var(--surface) !important;
-  transition: transform 120ms ease, box-shadow 120ms ease;
+  transition: box-shadow 120ms ease;
 }
 .builder-app .builder-node__handle:hover {
-  transform: scale(1.4);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--node-color) 25%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--node-color) 22%, transparent);
 }
 
-.builder-app .builder-node__handle--in {
-  top: -6px !important;
-}
+.builder-app .builder-node__handle--in    { top: -6px !important; }
+.builder-app .builder-node__handle--out   { bottom: -6px !important; }
+.builder-app .builder-node__handle--left  { left: -6px !important; }
+.builder-app .builder-node__handle--right { right: -6px !important; }
 
-.builder-app .builder-node__handle--out {
-  bottom: -6px !important;
-}
-
-/* Пульсация выходного хэндла, пока узел ни с чем не соединён — подсказка «тяни» */
-.builder-app .builder-node__handle--out.is-pulsing {
-  animation: builder-handle-pulse 1.6s ease-out infinite;
+/* Амбиентные волны от несоединённого порта — мягкая подсказка «тяни отсюда».
+   Не зависит от hover. Меньше и спокойнее прежнего. */
+.builder-app .builder-node__handle.is-pulsing {
+  animation: builder-handle-pulse 2s ease-out infinite;
 }
 @keyframes builder-handle-pulse {
-  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--node-color) 55%, transparent); }
-  70%  { box-shadow: 0 0 0 9px color-mix(in srgb, var(--node-color) 0%, transparent); }
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--node-color) 40%, transparent); }
+  70%  { box-shadow: 0 0 0 6px color-mix(in srgb, var(--node-color) 0%, transparent); }
   100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--node-color) 0%, transparent); }
 }
 

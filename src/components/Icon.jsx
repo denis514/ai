@@ -42,6 +42,7 @@ import {
   LockKeyIcon,
   MicroscopeIcon,
   FolderLibraryIcon,
+  Delete02Icon,
   ToolsIcon,
   Shield01Icon,
   Robot01Icon,
@@ -140,6 +141,7 @@ const REGISTRY = {
   lock:         LockKeyIcon,              // 🔐
   microscope:   MicroscopeIcon,           // 🔬
   archive:      FolderLibraryIcon,        // 🗂️
+  trash:        Delete02Icon,             // 🗑️
   tools:        ToolsIcon,                // 🛠️
   shield:       Shield01Icon,             // 🛡️
   robot:        Robot01Icon,              // 🤖

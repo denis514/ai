@@ -27,10 +27,14 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 function BaseNodeInner({ data, selected }) {
   const t = useT();
-  const { icon, color, labelKey, kind, status = 'idle', orderLevel, hasPrompt, unlinkedOut } = data || {};
+  const { icon, color, labelKey, kind, status = 'idle', orderLevel, hasPrompt, unlinkedOut, unlinkedIn } = data || {};
 
-  const showTop = kind !== 'trigger';
-  const showBottom = kind !== 'output';
+  // target-порты (вход): сверху + слева — для всех кроме trigger.
+  // source-порты (выход): снизу + справа — для всех кроме output.
+  const showIn = kind !== 'trigger';
+  const showOut = kind !== 'output';
+  const inPulse = unlinkedIn ? 'is-pulsing' : '';
+  const outPulse = unlinkedOut ? 'is-pulsing' : '';
 
   return (
     <div
@@ -53,11 +57,20 @@ function BaseNodeInner({ data, selected }) {
         </span>
       )}
 
-      {showTop && (
+      {showIn && (
         <Handle
           type="target"
           position={Position.Top}
-          className="builder-node__handle builder-node__handle--in"
+          className={`builder-node__handle builder-node__handle--in ${inPulse}`}
+          title={t('builder.connectInHint') || 'Connect into this agent'}
+        />
+      )}
+      {showIn && (
+        <Handle
+          id="l"
+          type="target"
+          position={Position.Left}
+          className={`builder-node__handle builder-node__handle--left ${inPulse}`}
         />
       )}
 
@@ -78,11 +91,20 @@ function BaseNodeInner({ data, selected }) {
         )}
       </div>
 
-      {showBottom && (
+      {showOut && (
         <Handle
           type="source"
           position={Position.Bottom}
-          className={`builder-node__handle builder-node__handle--out ${unlinkedOut ? 'is-pulsing' : ''}`}
+          className={`builder-node__handle builder-node__handle--out ${outPulse}`}
+          title={t('builder.connectHint') || 'Drag from here to connect'}
+        />
+      )}
+      {showOut && (
+        <Handle
+          id="r"
+          type="source"
+          position={Position.Right}
+          className={`builder-node__handle builder-node__handle--right ${outPulse}`}
           title={t('builder.connectHint') || 'Drag from here to connect'}
         />
       )}

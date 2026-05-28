@@ -262,16 +262,18 @@ function BuilderAppInner() {
   useEffect(() => {
     const levels = computeOrderLevels(nodes, edges);
     const hasOutgoing = new Set(edges.map(e => e.source));
+    const hasIncoming = new Set(edges.map(e => e.target));
     setNodes(nds => {
       let changed = false;
+      const multi = nds.length > 1;
       const next = nds.map(n => {
         const lvl = levels.get(n.id) ?? null;
-        // «Несоединённый выход» — узел не output и от него ещё нет связи.
-        // Подсвечиваем выходной хэндл пульсацией (подсказка «тяни отсюда»).
-        const unlinkedOut = n.data?.kind !== 'output' && !hasOutgoing.has(n.id) && nds.length > 1;
-        if (n.data?.orderLevel !== lvl || n.data?.unlinkedOut !== unlinkedOut) {
+        // Несоединённые порты пульсируют волнами — подсказка «тяни отсюда».
+        const unlinkedOut = n.data?.kind !== 'output' && !hasOutgoing.has(n.id) && multi;
+        const unlinkedIn = n.data?.kind !== 'trigger' && !hasIncoming.has(n.id) && multi;
+        if (n.data?.orderLevel !== lvl || n.data?.unlinkedOut !== unlinkedOut || n.data?.unlinkedIn !== unlinkedIn) {
           changed = true;
-          return { ...n, data: { ...n.data, orderLevel: lvl, unlinkedOut } };
+          return { ...n, data: { ...n.data, orderLevel: lvl, unlinkedOut, unlinkedIn } };
         }
         return n;
       });
@@ -1049,7 +1051,7 @@ function BuilderAppInner() {
                     onClick={() => handleDeleteNode(selectedNodeId)}
                     title={t('builder.nodeActions.delete') || 'Delete (Del)'}
                   >
-                    <Icon name="close" size={13} strokeWidth={2} />
+                    <Icon name="trash" size={14} strokeWidth={1.75} />
                   </button>
                 </div>
               </NodeToolbar>
