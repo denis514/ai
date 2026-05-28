@@ -194,6 +194,8 @@ function BuilderAppInner() {
   const [keyConnected, setKeyConnected] = useState(false);
   const [runInputOpen, setRunInputOpen] = useState(false);
   const [runInput, setRunInput] = useState('');
+  const [realIntent, setRealIntent] = useState(false);     // юзер хотел «Реально», но был заблокирован (нет входа/ключа)
+  const [realConfirmOpen, setRealConfirmOpen] = useState(false); // окно «осторожно, реальный режим»
   // Счётчик версии списка workflow — бампается при save/delete, чтобы
   // «Недавние» в центре экрана и список в dropdown пере-загружались.
   const [wfVersion, setWfVersion] = useState(0);
@@ -308,20 +310,41 @@ function BuilderAppInner() {
     else setKeysModalOpen(true);
   }, [user]);
 
-  // Проверка подключённого ключа — для доступности реального режима.
-  // Перечитываем при монтировании и при закрытии модалки ключей.
+  // Запрос реального режима когда он заблокирован: запоминаем намерение и ведём
+  // ко входу/ключу. После того как вход+ключ готовы — авто-переход (эффект ниже).
+  const requestRealMode = useCallback(() => {
+    setRealIntent(true);
+    openKeysOrAuth();
+  }, [openKeysOrAuth]);
+
+  // Проверка подключённого ключа. Перечитываем при монтировании, закрытии
+  // модалки ключей И при смене пользователя (после входа).
   useEffect(() => {
     let alive = true;
     getKeyStatus('anthropic')
       .then(s => { if (alive) setKeyConnected(!!s.connected); })
       .catch(() => { if (alive) setKeyConnected(false); });
     return () => { alive = false; };
-  }, [keysModalOpen]);
+  }, [keysModalOpen, user]);
 
   // Если ключ отключили — принудительно вернуть демо-режим.
   useEffect(() => {
     if (!keyConnected && runMode === 'real') setRunMode('mock');
   }, [keyConnected, runMode]);
+
+  // Авто-переход в реальный режим после того, как пользователь вошёл и ключ есть
+  // (он жал «Реально» раньше). Показываем предупреждающее окно.
+  useEffect(() => {
+    if (!realIntent || !user) return;
+    if (keyConnected) {
+      setRunMode('real');
+      setRealConfirmOpen(true);
+      setRealIntent(false);
+    } else {
+      // Вошёл, но ключа нет — ведём подключать.
+      setKeysModalOpen(true);
+    }
+  }, [realIntent, user, keyConnected]);
 
   // Загрузка существующего workflow по id.
   const handleLoadWorkflow = useCallback(async (wfId) => {
@@ -500,7 +523,7 @@ function BuilderAppInner() {
   const handleRun = useCallback(() => {
     if (nodes.length === 0 || execStatus === 'running') return;
     if (runMode === 'real') {
-      if (!keyConnected) { openKeysOrAuth(); return; }
+      if (!keyConnected) { requestRealMode(); return; }
       if (!currentWorkflowId || isDirtyRef.current) {
         // Нужно сохранить перед реальным запуском (серверу нужна сохранённая схема).
         if (!workflowName.trim()) { setNameDraft(''); setNameModalStep('name'); setNameModalOpen(true); return; }
@@ -512,7 +535,7 @@ function BuilderAppInner() {
       return;
     }
     runMock();
-  }, [nodes.length, execStatus, runMode, keyConnected, currentWorkflowId, workflowName, runMock, doSave, openKeysOrAuth]);
+  }, [nodes.length, execStatus, runMode, keyConnected, currentWorkflowId, workflowName, runMock, doSave, requestRealMode]);
 
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
@@ -725,7 +748,7 @@ function BuilderAppInner() {
             <button
               type="button"
               className={`builder-runmode__opt ${runMode === 'real' ? 'is-active' : ''}`}
-              onClick={() => keyConnected ? setRunMode('real') : openKeysOrAuth()}
+              onClick={() => keyConnected ? setRunMode('real') : requestRealMode()}
               title={keyConnected ? '' : (t('builder.runmode.needKey') || 'Connect a Claude key first')}
             >
               {t('builder.runmode.real') || 'Real'}
@@ -1042,6 +1065,53 @@ function BuilderAppInner() {
 
       {/* Auth modal — Builder рендерится вместо Atlas, поэтому свой инстанс */}
       {authOpen && <AuthModal onClose={() => setAuthOpen(false)} />}
+
+      {/* Real-mode confirm — после входа+ключа, раз юзер жал «Реально» */}
+      {realConfirmOpen && (
+        <div className="builder-name-modal__overlay" onClick={() => setRealConfirmOpen(false)}>
+          <div
+            className="builder-name-modal builder-realconfirm"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('builder.realConfirm.title') || 'Real-time mode is on'}
+          >
+            <h3 className="builder-name-modal__title">
+              {t('builder.realConfirm.title') || 'You are in real-time mode'}
+            </h3>
+
+            {/* Миниатюра кнопки режима — показываем, что активно «Реально» */}
+            <div className="builder-realconfirm__preview" aria-hidden="true">
+              <span className="builder-runmode">
+                <span className="builder-runmode__opt">{t('builder.runmode.mock') || 'Demo'}</span>
+                <span className="builder-runmode__opt is-active">{t('builder.runmode.real') || 'Real'}</span>
+              </span>
+            </div>
+
+            <p className="builder-realconfirm__warn">
+              <Icon name="flash" size={14} strokeWidth={1.75} />
+              {t('builder.realConfirm.body') || 'Careful: runs now use the real Claude API and spend tokens on your key. Switch back to Demo anytime — it is free.'}
+            </p>
+
+            <div className="builder-name-modal__actions">
+              <button
+                type="button"
+                className="builder-btn builder-btn--ghost"
+                onClick={() => { setRunMode('mock'); setRealConfirmOpen(false); }}
+              >
+                {t('builder.realConfirm.backToDemo') || 'Back to Demo'}
+              </button>
+              <button
+                type="button"
+                className="builder-btn builder-btn--primary builder-btn--real"
+                onClick={() => setRealConfirmOpen(false)}
+              >
+                {t('builder.realConfirm.gotIt') || 'Got it'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Run-input modal — перед реальным запуском */}
       {runInputOpen && (
