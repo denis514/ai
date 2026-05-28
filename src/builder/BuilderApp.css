@@ -1045,8 +1045,8 @@
 
 /* Connection line while dragging — animated dashed + arrow-in-circle end */
 .builder-app .builder-conn-line__path {
-  stroke: var(--accent, #2563eb);
-  stroke-width: 2.5;
+  stroke: var(--accent, #2563eb);   /* fallback; реальный цвет — inline из узла */
+  stroke-width: 2;                  /* как граница узла; зум масштабирует автоматически */
   stroke-dasharray: 6 5;
   animation: builder-conn-flow 0.5s linear infinite;
 }
@@ -1197,7 +1197,14 @@
   height: 11px !important;
   background: var(--node-color) !important;
   border: 2px solid var(--surface) !important;
-  transition: box-shadow 120ms ease;
+  opacity: 0;                                  /* скрыты по умолчанию */
+  transition: opacity 120ms ease, box-shadow 120ms ease;
+}
+/* Кружочки показываем при наведении на узел или когда он выбран */
+.builder-app .react-flow__node:hover .builder-node__handle,
+.builder-app .react-flow__node.selected .builder-node__handle,
+.builder-app .builder-node__handle.is-pulsing {
+  opacity: 1;
 }
 .builder-app .builder-node__handle:hover {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--node-color) 22%, transparent);
