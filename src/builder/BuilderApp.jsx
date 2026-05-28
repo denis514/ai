@@ -174,8 +174,8 @@ function BuilderAppInner() {
   }, [nodes, edges, currentWorkflowId, userId]);
 
   // Сохранение (manual + auto). Если имени нет — запрашиваем через модалку.
+  // Сохраняем даже пустой холст, если имя задано (это валидный черновик).
   const doSave = useCallback(async () => {
-    if (nodes.length === 0) return; // нечего сохранять
     const name = workflowName.trim();
     if (!name) {
       setNameDraft('');
@@ -183,20 +183,16 @@ function BuilderAppInner() {
       return;
     }
     await persist(name);
-  }, [nodes.length, workflowName, persist]);
+  }, [workflowName, persist]);
 
-  // Подтверждение имени из модалки.
+  // Подтверждение имени из модалки — сразу создаём запись (появляется в списке),
+  // даже если холст пуст. Это черновик, к которому пользователь вернётся.
   const confirmName = useCallback(async () => {
     const name = nameDraft.trim();
     if (!name) return; // пустое имя недопустимо
     setNameModalOpen(false);
-    if (nodes.length === 0) {
-      // Новый пустой workflow — только запоминаем имя, сохраним при первом контенте.
-      setWorkflowName(name);
-      return;
-    }
     await persist(name);
-  }, [nameDraft, nodes.length, persist]);
+  }, [nameDraft, persist]);
 
   // Auto-save: каждые 30с, только если dirty И уже есть имя.
   // Без имени НЕ автосейвим (иначе модалка имени всплывёт сама).
