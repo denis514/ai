@@ -27,7 +27,7 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 function BaseNodeInner({ data, selected }) {
   const t = useT();
-  const { icon, color, labelKey, kind, status = 'idle', orderLevel, hasPrompt } = data || {};
+  const { icon, color, labelKey, kind, status = 'idle', orderLevel, hasPrompt, unlinkedOut } = data || {};
 
   const showTop = kind !== 'trigger';
   const showBottom = kind !== 'output';
@@ -82,7 +82,8 @@ function BaseNodeInner({ data, selected }) {
         <Handle
           type="source"
           position={Position.Bottom}
-          className="builder-node__handle builder-node__handle--out"
+          className={`builder-node__handle builder-node__handle--out ${unlinkedOut ? 'is-pulsing' : ''}`}
+          title={t('builder.connectHint') || 'Drag from here to connect'}
         />
       )}
     </div>

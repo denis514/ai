@@ -261,11 +261,18 @@ function BuilderAppInner() {
   const structSig = nodes.map(n => n.id).join(',') + '|' + edges.map(e => `${e.source}>${e.target}`).join(',');
   useEffect(() => {
     const levels = computeOrderLevels(nodes, edges);
+    const hasOutgoing = new Set(edges.map(e => e.source));
     setNodes(nds => {
       let changed = false;
       const next = nds.map(n => {
         const lvl = levels.get(n.id) ?? null;
-        if (n.data?.orderLevel !== lvl) { changed = true; return { ...n, data: { ...n.data, orderLevel: lvl } }; }
+        // «Несоединённый выход» — узел не output и от него ещё нет связи.
+        // Подсвечиваем выходной хэндл пульсацией (подсказка «тяни отсюда»).
+        const unlinkedOut = n.data?.kind !== 'output' && !hasOutgoing.has(n.id) && nds.length > 1;
+        if (n.data?.orderLevel !== lvl || n.data?.unlinkedOut !== unlinkedOut) {
+          changed = true;
+          return { ...n, data: { ...n.data, orderLevel: lvl, unlinkedOut } };
+        }
         return n;
       });
       return changed ? next : nds;
@@ -1041,8 +1048,16 @@ function BuilderAppInner() {
             </div>
           )}
 
+          {/* Connect hint — есть узлы, но нет связей: учим соединять */}
+          {nodes.length >= 2 && edges.length === 0 && execStatus !== 'running' && (
+            <div className="builder-connect-banner">
+              <Icon name="link" size={15} strokeWidth={1.75} />
+              <span>{t('builder.connectBanner') || 'Drag from the dot at the bottom of one node to the top of another to connect them.'}</span>
+            </div>
+          )}
+
           {/* Status hint */}
-          {nodes.length > 0 && execStatus !== 'running' && (
+          {nodes.length > 0 && !(nodes.length >= 2 && edges.length === 0) && execStatus !== 'running' && (
             <div className="builder-status-hint">
               <Icon name="idea" size={14} strokeWidth={1.5} />
               <span>{t('builder.canvas.hint') || 'Click a node to see details. Drag handles to connect. Delete key to remove.'}</span>
