@@ -24,6 +24,7 @@ import TemplateGallery from './components/panels/TemplateGallery.jsx';
 import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
 import WorkflowSwitcher from './components/panels/WorkflowSwitcher.jsx';
 import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
+import { TEMPLATES } from './data/templates.js';
 import { createExecution } from './services/mockExecutor.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import './BuilderApp.css';
@@ -46,6 +47,47 @@ import './BuilderApp.css';
 
 let nodeIdCounter = 1;
 const genNodeId = () => `n${nodeIdCounter++}`;
+
+/**
+ * Строит React Flow nodes/edges из template-объекта.
+ * Pure (кроме genNodeId counter). Используется и для загрузки в canvas,
+ * и для немедленного persist при создании нового workflow из шаблона.
+ */
+function buildTemplateGraph(template, edgeStyle) {
+  const tempIdMap = {};
+  const nodes = template.nodes.map((tn, idx) => {
+    const def = getNodeDef(tn.defId);
+    if (!def) return null;
+    const id = genNodeId();
+    tempIdMap[idx] = id;
+    return {
+      id,
+      type: KIND_TO_NODE_TYPE[def.kind] || 'agentNode',
+      position: tn.position,
+      data: {
+        defId: tn.defId,
+        icon: def.icon,
+        color: def.color,
+        labelKey: def.labelKey,
+        descKey: def.descKey,
+        atlasAnchor: def.atlasAnchor,
+        kind: def.kind,
+        role: def.role,
+        status: 'idle',
+        ...(tn.dataOverride || {}),
+      },
+    };
+  }).filter(Boolean);
+
+  const edges = template.edges.map((e, i) => ({
+    id: `e${i}-${tempIdMap[e.from]}-${tempIdMap[e.to]}`,
+    source: tempIdMap[e.from],
+    target: tempIdMap[e.to],
+    style: edgeStyle,
+  }));
+
+  return { nodes, edges };
+}
 
 // Default edge style — apply inline чтобы перебить React Flow defaults.
 // Через CSS !important иногда не работает в production: React Flow может
@@ -139,6 +181,7 @@ function BuilderAppInner() {
   const [saveStatus, setSaveStatus] = useState('idle'); // 'idle' | 'saving' | 'saved' | 'error'
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [nameModalOpen, setNameModalOpen] = useState(false);
+  const [nameModalStep, setNameModalStep] = useState('name'); // 'name' | 'template'
   const [nameDraft, setNameDraft] = useState('');
   const isDirtyRef = useRef(false);
   const saveTimerRef = useRef(null);
@@ -156,11 +199,18 @@ function BuilderAppInner() {
   }, [nodes, edges]);
 
   // Низкоуровневое сохранение с явным именем.
-  const persist = useCallback(async (name) => {
+  // overrideNodes/overrideEdges — для случаев, когда state ещё не успел
+  // обновиться (создание из шаблона: setNodes async, closure видит старое).
+  const persist = useCallback(async (name, overrideNodes, overrideEdges, overrideId) => {
     setSaveStatus('saving');
     try {
       const { id } = await storageSave(
-        { id: currentWorkflowId, name, rfNodes: nodes, rfEdges: edges },
+        {
+          id: overrideId !== undefined ? overrideId : currentWorkflowId,
+          name,
+          rfNodes: overrideNodes ?? nodes,
+          rfEdges: overrideEdges ?? edges,
+        },
         userId
       );
       setCurrentWorkflowId(id);
@@ -179,20 +229,50 @@ function BuilderAppInner() {
     const name = workflowName.trim();
     if (!name) {
       setNameDraft('');
+      setNameModalStep('name');
       setNameModalOpen(true); // спросить имя перед первым сохранением
       return;
     }
     await persist(name);
   }, [workflowName, persist]);
 
-  // Подтверждение имени из модалки — сразу создаём запись (появляется в списке),
-  // даже если холст пуст. Это черновик, к которому пользователь вернётся.
-  const confirmName = useCallback(async () => {
+  // Шаг 1 «Чистый холст»: создаём пустой workflow с введённым именем.
+  const startBlank = useCallback(async () => {
     const name = nameDraft.trim();
-    if (!name) return; // пустое имя недопустимо
+    if (!name) return;
+    skipDirtyRef.current = true;
+    setNodes([]);
+    setEdges([]);
+    setSelectedNodeId(null);
+    setExecLogs([]);
+    setExecStatus('idle');
     setNameModalOpen(false);
-    await persist(name);
-  }, [nameDraft, persist]);
+    setNameModalStep('name');
+    // Создаём пустой черновик с этим именем (новая запись → id передаём null).
+    await persist(name, [], [], null);
+  }, [nameDraft, persist, setNodes, setEdges]);
+
+  // Шаг 2 «Из шаблона»: строим граф шаблона, имя берём из введённого
+  // пользователем (а не из шаблона), сразу создаём запись.
+  const pickTemplateForNew = useCallback(async (template) => {
+    const name = nameDraft.trim() || (template.nameKey ? t(template.nameKey) : '') || 'Workflow';
+    const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE);
+    skipDirtyRef.current = true;
+    setNodes(newNodes);
+    setEdges(newEdges);
+    setSelectedNodeId(null);
+    setExecLogs([]);
+    setExecStatus('idle');
+    setNameModalOpen(false);
+    setNameModalStep('name');
+    await persist(name, newNodes, newEdges, null);
+  }, [nameDraft, t, persist, setNodes, setEdges]);
+
+  // Закрытие модалки (cancel) — сброс на шаг имени.
+  const closeNameModal = useCallback(() => {
+    setNameModalOpen(false);
+    setNameModalStep('name');
+  }, []);
 
   // Auto-save: каждые 30с, только если dirty И уже есть имя.
   // Без имени НЕ автосейвим (иначе модалка имени всплывёт сама).
@@ -227,20 +307,14 @@ function BuilderAppInner() {
   }, [userId, setNodes, setEdges]);
 
   // Новый пустой workflow — сразу спрашиваем имя.
+  // «Новый workflow» — открываем модалку выбора. Холст НЕ трогаем до того,
+  // как пользователь подтвердит (Чистый / Из шаблона). Отмена ничего не теряет.
   const handleNewWorkflow = useCallback(() => {
-    skipDirtyRef.current = true;
-    setNodes([]);
-    setEdges([]);
-    setCurrentWorkflowId(null);
-    setWorkflowName('');
-    setSelectedNodeId(null);
     setSwitcherOpen(false);
-    isDirtyRef.current = false;
-    setSaveStatus('idle');
-    // Спрашиваем имя нового workflow сразу (можно отменить и назвать позже при Save).
     setNameDraft('');
+    setNameModalStep('name');
     setNameModalOpen(true);
-  }, [setNodes, setEdges]);
+  }, []);
 
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
 
@@ -291,41 +365,9 @@ function BuilderAppInner() {
     [screenToFlowPosition, setNodes]
   );
 
-  /* ────────── Load template ────────── */
+  /* ────────── Load template (из галереи) ────────── */
   const loadTemplate = useCallback((template) => {
-    // Generate IDs для nodes
-    const tempIdMap = {};
-    const newNodes = template.nodes.map((tn, idx) => {
-      const def = getNodeDef(tn.defId);
-      if (!def) return null;
-      const id = genNodeId();
-      tempIdMap[idx] = id;
-      return {
-        id,
-        type: KIND_TO_NODE_TYPE[def.kind] || 'agentNode',
-        position: tn.position,
-        data: {
-          defId: tn.defId,
-          icon: def.icon,
-          color: def.color,
-          labelKey: def.labelKey,
-          descKey: def.descKey,
-          atlasAnchor: def.atlasAnchor,
-          kind: def.kind,
-          role: def.role,
-          status: 'idle',
-          ...(tn.dataOverride || {}),
-        },
-      };
-    }).filter(Boolean);
-
-    const newEdges = template.edges.map((e, i) => ({
-      id: `e${i}-${tempIdMap[e.from]}-${tempIdMap[e.to]}`,
-      source: tempIdMap[e.from],
-      target: tempIdMap[e.to],
-      style: EDGE_STYLE,
-    }));
-
+    const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE);
     skipDirtyRef.current = true;
     setNodes(newNodes);
     setEdges(newEdges);
@@ -786,11 +828,11 @@ function BuilderAppInner() {
         />
       )}
 
-      {/* Name prompt modal — при сохранении без имени или новом workflow */}
+      {/* New-workflow wizard: шаг 1 — имя + выбор; шаг 2 — список шаблонов */}
       {nameModalOpen && (
         <div
           className="builder-name-modal__overlay"
-          onClick={() => setNameModalOpen(false)}
+          onClick={closeNameModal}
         >
           <div
             className="builder-name-modal"
@@ -799,39 +841,91 @@ function BuilderAppInner() {
             aria-modal="true"
             aria-label={t('builder.nameModal.title') || 'Name your workflow'}
           >
-            <h3 className="builder-name-modal__title">
-              {t('builder.nameModal.title') || 'Name your workflow'}
-            </h3>
-            <input
-              type="text"
-              className="builder-name-modal__input"
-              value={nameDraft}
-              onChange={(e) => setNameDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') confirmName();
-                if (e.key === 'Escape') setNameModalOpen(false);
-              }}
-              placeholder={t('builder.nameModal.placeholder') || 'e.g. Customer support triage'}
-              autoFocus
-              maxLength={80}
-            />
-            <div className="builder-name-modal__actions">
-              <button
-                type="button"
-                className="builder-btn builder-btn--ghost"
-                onClick={() => setNameModalOpen(false)}
-              >
-                {t('builder.nameModal.cancel') || 'Cancel'}
-              </button>
-              <button
-                type="button"
-                className="builder-btn builder-btn--primary"
-                onClick={confirmName}
-                disabled={!nameDraft.trim()}
-              >
-                {t('builder.nameModal.save') || 'Save'}
-              </button>
-            </div>
+            {nameModalStep === 'name' ? (
+              <>
+                <h3 className="builder-name-modal__title">
+                  {t('builder.nameModal.title') || 'Name your workflow'}
+                </h3>
+                <input
+                  type="text"
+                  className="builder-name-modal__input"
+                  value={nameDraft}
+                  onChange={(e) => setNameDraft(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && nameDraft.trim()) startBlank();
+                    if (e.key === 'Escape') closeNameModal();
+                  }}
+                  placeholder={t('builder.nameModal.placeholder') || 'e.g. Customer support triage'}
+                  autoFocus
+                  maxLength={80}
+                />
+                <p className="builder-name-modal__hint">
+                  {t('builder.nameModal.chooseHint') || 'Start blank, or pick a ready-made template.'}
+                </p>
+                <div className="builder-name-modal__actions">
+                  <button
+                    type="button"
+                    className="builder-btn builder-btn--ghost"
+                    onClick={closeNameModal}
+                  >
+                    {t('builder.nameModal.cancel') || 'Cancel'}
+                  </button>
+                  <button
+                    type="button"
+                    className="builder-btn builder-btn--ghost"
+                    onClick={() => setNameModalStep('template')}
+                    disabled={!nameDraft.trim()}
+                  >
+                    <Icon name="books" size={14} strokeWidth={1.5} />
+                    {t('builder.nameModal.fromTemplate') || 'From template'}
+                  </button>
+                  <button
+                    type="button"
+                    className="builder-btn builder-btn--primary"
+                    onClick={startBlank}
+                    disabled={!nameDraft.trim()}
+                  >
+                    {t('builder.nameModal.blank') || 'Blank canvas'}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="builder-name-modal__tpl-head">
+                  <button
+                    type="button"
+                    className="builder-name-modal__back"
+                    onClick={() => setNameModalStep('name')}
+                    aria-label={t('builder.nameModal.back') || 'Back'}
+                  >
+                    <Icon name="arrow-left" size={14} strokeWidth={1.75} />
+                    {t('builder.nameModal.back') || 'Back'}
+                  </button>
+                  <h3 className="builder-name-modal__title">
+                    {t('builder.nameModal.pickTemplate') || 'Pick a template'}
+                  </h3>
+                </div>
+                <div className="builder-name-modal__tpl-list">
+                  {TEMPLATES.map(tpl => (
+                    <button
+                      key={tpl.id}
+                      type="button"
+                      className="builder-name-modal__tpl"
+                      onClick={() => pickTemplateForNew(tpl)}
+                    >
+                      <span className="builder-name-modal__tpl-icon" aria-hidden="true">
+                        <Icon name={tpl.iconName || 'sparkles'} size={18} strokeWidth={1.5} />
+                      </span>
+                      <span className="builder-name-modal__tpl-main">
+                        <span className="builder-name-modal__tpl-name">{t(tpl.nameKey) || tpl.id}</span>
+                        <span className="builder-name-modal__tpl-desc">{t(tpl.descKey) || ''}</span>
+                      </span>
+                      <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

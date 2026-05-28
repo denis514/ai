@@ -379,10 +379,88 @@
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+  flex-wrap: wrap;
 }
-.builder-app .builder-btn--primary:disabled {
+.builder-app .builder-btn--primary:disabled,
+.builder-app .builder-btn--ghost:disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+.builder-app .builder-name-modal__hint {
+  margin: -4px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Name modal — template step */
+.builder-app .builder-name-modal__tpl-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.builder-app .builder-name-modal__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.builder-app .builder-name-modal__back:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.builder-app .builder-name-modal__tpl-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+.builder-app .builder-name-modal__tpl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.builder-app .builder-name-modal__tpl:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+.builder-app .builder-name-modal__tpl-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  color: var(--accent);
+}
+.builder-app .builder-name-modal__tpl-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.builder-app .builder-name-modal__tpl-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.builder-app .builder-name-modal__tpl-desc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.35;
 }
 
 .builder-app .builder-btn--primary {
