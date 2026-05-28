@@ -1043,6 +1043,28 @@
   transition: opacity 150ms ease;
 }
 
+/* Connection line while dragging — animated dashed + arrow-in-circle end */
+.builder-app .builder-conn-line__path {
+  stroke: var(--accent, #2563eb);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 5;
+  animation: builder-conn-flow 0.5s linear infinite;
+}
+@keyframes builder-conn-flow {
+  to { stroke-dashoffset: -11; }
+}
+.builder-app .builder-conn-line__end {
+  fill: var(--accent, #2563eb);
+  stroke: var(--surface, #fff);
+  stroke-width: 2;
+}
+.builder-app .builder-conn-line__arrow {
+  stroke: var(--surface, #fff);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* Node action toolbar (NodeToolbar Top) — duplicate / delete */
 .builder-node-actions {
   display: flex;

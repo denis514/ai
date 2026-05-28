@@ -19,6 +19,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data/nodeTypes.js';
 import { nodeTypes } from './components/canvas/index.js';
 import ToolboxItem from './components/canvas/ToolboxItem.jsx';
+import ConnectionLine from './components/canvas/ConnectionLine.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
 import AtlasNodePreview from './components/education/AtlasNodePreview.jsx';
 import BuilderTour, { isTourSeen } from './components/education/BuilderTour.jsx';
@@ -538,6 +539,30 @@ function BuilderAppInner() {
     [setEdges, pushHistory]
   );
 
+  // Поток только вперёд: запрещаем связь на себя, дубликаты и циклы
+  // (если цель уже может дойти до источника — соединение создало бы петлю).
+  const isValidConnection = useCallback((conn) => {
+    const { source, target } = conn;
+    if (!source || !target || source === target) return false;
+    if (edges.some(e => e.source === source && e.target === target)) return false;
+    // Проверка цикла: дойти от target до source по существующим связям.
+    const adj = new Map();
+    for (const e of edges) {
+      if (!adj.has(e.source)) adj.set(e.source, []);
+      adj.get(e.source).push(e.target);
+    }
+    const seen = new Set();
+    const stack = [target];
+    while (stack.length) {
+      const cur = stack.pop();
+      if (cur === source) return false; // цикл
+      if (seen.has(cur)) continue;
+      seen.add(cur);
+      for (const nx of adj.get(cur) || []) stack.push(nx);
+    }
+    return true;
+  }, [edges]);
+
   /* ────────── Drag-drop из toolbox ────────── */
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -1021,6 +1046,8 @@ function BuilderAppInner() {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
+            isValidConnection={isValidConnection}
+            connectionLineComponent={ConnectionLine}
             onNodeClick={onNodeClick}
             onPaneClick={onPaneClick}
             onDrop={onDrop}
