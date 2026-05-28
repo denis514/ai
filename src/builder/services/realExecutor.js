@@ -22,7 +22,7 @@ const FN_URL = import.meta.env.VITE_SUPABASE_URL
   : null;
 const ANON = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export function createRealExecution({ workflowId, input, tier, onUpdate, onLog, onComplete, onResult }) {
+export function createRealExecution({ workflowId, input, tier, locale, onUpdate, onLog, onComplete, onResult }) {
   const executionId =
     (crypto.randomUUID && crypto.randomUUID()) ||
     `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -88,7 +88,7 @@ export function createRealExecution({ workflowId, input, tier, onUpdate, onLog, 
             apikey: ANON,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ executionId, workflowId, input, tier }),
+          body: JSON.stringify({ executionId, workflowId, input, tier, locale }),
         });
         const out = await res.json().catch(() => ({}));
         if (!res.ok) {

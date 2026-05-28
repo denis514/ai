@@ -969,49 +969,78 @@
   width: 100%;
 }
 
-/* Per-node instruction editor (sidebar) */
-.builder-app .builder-prompt-editor {
-  margin: 12px 0;
+/* Node-anchored instruction popover (NodeToolbar) */
+.builder-app .builder-prompt-pop,
+.react-flow__node-toolbar .builder-prompt-pop {
+  width: 300px;
   padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface-2);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  background: var(--surface, #fff);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.35);
 }
-.builder-app .builder-prompt-editor__title {
+.builder-prompt-pop__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.builder-prompt-pop__title {
   font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text);
+  color: var(--text, #111827);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.builder-app .builder-prompt-editor__hint {
-  margin: 4px 0 8px;
+.builder-prompt-pop__close {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted, #6b7280);
+  cursor: pointer;
+}
+.builder-prompt-pop__close:hover { background: var(--surface-2, #f3f4f6); }
+.builder-prompt-pop__hint {
+  margin: 0 0 8px;
   font-size: 11.5px;
   line-height: 1.4;
-  color: var(--text-muted);
+  color: var(--text-muted, #6b7280);
 }
-.builder-app .builder-prompt-editor__area {
+.builder-prompt-pop__area {
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border, #e5e7eb);
   border-radius: 8px;
-  background: var(--surface);
-  color: var(--text);
+  background: var(--surface, #fff);
+  color: var(--text, #111827);
   font-size: 13px;
   font-family: inherit;
   line-height: 1.5;
   resize: vertical;
-  min-height: 80px;
+  min-height: 90px;
   outline: none;
+  box-sizing: border-box;
 }
-.builder-app .builder-prompt-editor__area:focus {
-  border-color: var(--accent, #2563eb);
-}
-.builder-app .builder-prompt-editor__actions {
+.builder-prompt-pop__area:focus { border-color: var(--accent, #2563eb); }
+.builder-prompt-pop__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 8px;
+}
+
+/* Затемнение остальных узлов при выбранном агенте (фокус) */
+.builder-app .builder-canvas-wrap.is-node-focused .react-flow__node:not(.selected) {
+  opacity: 0.35;
+  transition: opacity 150ms ease;
 }
 
 /* Order badge — номер очерёдности выполнения */

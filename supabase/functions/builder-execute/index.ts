@@ -30,6 +30,14 @@ const MAX_NODES = 25; // защита от runaway: не больше 25 узл�
 const TIER_MAX_TOKENS: Record<string, number> = { s: 512, m: 2048, l: 4096 };
 const DEFAULT_TIER = 's';
 
+// Локаль → язык ответа. Добавляется директивой в system, чтобы результат был
+// на языке пользователя независимо от языка инструкции.
+const LANG_NAME: Record<string, string> = { ru: 'Russian', en: 'English', fi: 'Finnish' };
+function langDirective(locale: string): string {
+  const lang = LANG_NAME[locale] || 'English';
+  return `\n\nAlways write your response in ${lang}.`;
+}
+
 type Node = { client_id: string; node_type: string; role: string | null; def_id: string; config?: Record<string, unknown> };
 type Edge = { source_client_id: string; target_client_id: string };
 
@@ -89,7 +97,7 @@ Deno.serve(async (req) => {
   const user = await getUser(req);
   if (!user) return json({ error: 'unauthorized' }, 401);
 
-  let body: { executionId?: string; workflowId?: string; input?: string; tier?: string };
+  let body: { executionId?: string; workflowId?: string; input?: string; tier?: string; locale?: string };
   try { body = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
 
   const executionId = body.executionId;
@@ -97,6 +105,8 @@ Deno.serve(async (req) => {
   const input = (body.input || '').trim();
   const tier = (body.tier || DEFAULT_TIER).toLowerCase();
   const maxTokens = TIER_MAX_TOKENS[tier] || TIER_MAX_TOKENS[DEFAULT_TIER];
+  const locale = (body.locale || 'en').toLowerCase();
+  const langSuffix = langDirective(locale);
   if (!executionId || !workflowId) return json({ error: 'missing_params' }, 400);
 
   const admin = adminClient();
@@ -178,7 +188,7 @@ Deno.serve(async (req) => {
       // Если у узла задана своя инструкция (config.prompt) — используем её,
       // иначе встроенный роль-дефолт.
       const customPrompt = typeof node.config?.prompt === 'string' ? node.config.prompt.trim() : '';
-      const system = customPrompt || systemPromptForRole(node.role || 'main');
+      const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix;
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
       const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens);
       totalTokens += tokens;

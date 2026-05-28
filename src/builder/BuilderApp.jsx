@@ -5,6 +5,8 @@ import {
   Controls,
   MiniMap,
   ReactFlowProvider,
+  NodeToolbar,
+  Position,
   addEdge,
   useNodesState,
   useEdgesState,
@@ -12,7 +14,7 @@ import {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import Icon from '../components/Icon.jsx';
-import { useT } from '../i18n/LocaleContext.jsx';
+import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data/nodeTypes.js';
 import { nodeTypes } from './components/canvas/index.js';
@@ -144,6 +146,7 @@ function BuilderApp() {
 
 function BuilderAppInner() {
   const t = useT();
+  const { locale } = useLocale();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
@@ -438,6 +441,7 @@ function BuilderAppInner() {
   }, []);
 
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
+  const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
 
   // Задать/обновить инструкцию узла (data.prompt + флаг hasPrompt для значка).
   const handleSetPrompt = useCallback((nodeId, value) => {
@@ -588,10 +592,11 @@ function BuilderAppInner() {
       workflowId: currentWorkflowId,
       input,
       tier: tier || outputTier,
+      locale,
       ...makeCallbacks(stats),
       onResult: ({ output, tokensUsed }) => setExecResult({ output, tokensUsed }),
     });
-  }, [currentWorkflowId, outputTier, beginExecUi, makeCallbacks]);
+  }, [currentWorkflowId, outputTier, locale, beginExecUi, makeCallbacks]);
 
   // Кнопка Run: задача вводится заранее в панели выполнения; Run запускает сразу.
   const handleRun = useCallback(() => {
@@ -886,7 +891,10 @@ function BuilderAppInner() {
         )}
 
         {/* Canvas (center) */}
-        <main className="builder-canvas-wrap" ref={reactFlowWrapper}>
+        <main
+          className={`builder-canvas-wrap ${selectedAgentNode ? 'is-node-focused' : ''}`}
+          ref={reactFlowWrapper}
+        >
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -905,6 +913,24 @@ function BuilderAppInner() {
             <Background gap={20} size={1} />
             <Controls />
             <MiniMap pannable zoomable />
+
+            {/* Плавающее окно инструкции — привязано к узлу, едет за ним */}
+            {selectedAgentNode && (
+              <NodeToolbar
+                nodeId={selectedNodeId}
+                isVisible
+                position={Position.Right}
+                offset={14}
+              >
+                <NodePromptPopover
+                  node={selectedAgentNode}
+                  t={t}
+                  locale={locale}
+                  onSetPrompt={handleSetPrompt}
+                  onClose={() => setSelectedNodeId(null)}
+                />
+              </NodeToolbar>
+            )}
           </ReactFlow>
 
           {/* Onboarding empty state — только когда НЕТ активного workflow.
@@ -966,7 +992,7 @@ function BuilderAppInner() {
                 </div>
                 <div className="builder-sidebar__body">
                   {selectedNode ? (
-                    <NodeDetails node={selectedNode} t={t} onAtlasLink={openAtlasPreview} onSetPrompt={handleSetPrompt} />
+                    <NodeDetails node={selectedNode} t={t} onAtlasLink={openAtlasPreview} />
                   ) : (
                     <div className="builder-empty-state">
                       <Icon name="idea" size={24} strokeWidth={1.5} />
@@ -1224,9 +1250,12 @@ function BuilderAppInner() {
 /* NodeDetails — содержимое sidebar для выбранного узла        */
 /* ─────────────────────────────────────────────────────────── */
 
-function NodeDetails({ node, t, onAtlasLink, onSetPrompt }) {
-  const { icon, color, labelKey, descKey, atlasAnchor, kind, role, status, prompt = '' } = node.data;
-  const isAgent = kind === 'agent';
+/* ─────────────────────────────────────────────────────────── */
+/* NodePromptPopover — плавающее окно инструкции у агент-узла   */
+/* ─────────────────────────────────────────────────────────── */
+
+function NodePromptPopover({ node, t, locale, onSetPrompt, onClose }) {
+  const { role, labelKey, prompt = '' } = node.data;
   const fileRef = useRef(null);
 
   const handleFile = (e) => {
@@ -1241,6 +1270,72 @@ function NodeDetails({ node, t, onAtlasLink, onSetPrompt }) {
     e.target.value = '';
   };
 
+  return (
+    <div className="builder-prompt-pop" onClick={(e) => e.stopPropagation()}>
+      <div className="builder-prompt-pop__head">
+        <span className="builder-prompt-pop__title">
+          {t(labelKey) || labelKey} · {t('builder.prompt.title') || 'Instruction'}
+        </span>
+        <button
+          type="button"
+          className="builder-prompt-pop__close"
+          onClick={onClose}
+          aria-label={t('builder.prompt.close') || 'Close'}
+        >
+          <Icon name="close" size={12} strokeWidth={1.75} />
+        </button>
+      </div>
+      <p className="builder-prompt-pop__hint">
+        {t('builder.prompt.hint') || 'Tell this agent exactly what to do. Empty = built-in role.'}
+      </p>
+      <textarea
+        className="builder-prompt-pop__area"
+        value={prompt}
+        onChange={(e) => onSetPrompt(node.id, e.target.value)}
+        placeholder={t('builder.prompt.placeholder') || 'e.g. Study the site example.com and list the top UX problems.'}
+        rows={5}
+        autoFocus
+      />
+      <div className="builder-prompt-pop__actions">
+        <button
+          type="button"
+          className="builder-btn builder-btn--ghost builder-btn--small"
+          onClick={() => onSetPrompt(node.id, templateForRole(role, locale))}
+        >
+          <Icon name="books" size={12} strokeWidth={1.5} />
+          <span>{t('builder.prompt.useTemplate') || 'Use template'}</span>
+        </button>
+        <button
+          type="button"
+          className="builder-btn builder-btn--ghost builder-btn--small"
+          onClick={() => fileRef.current?.click()}
+        >
+          <Icon name="file" size={12} strokeWidth={1.5} />
+          <span>{t('builder.prompt.fromFile') || 'From file'}</span>
+        </button>
+        {prompt && (
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost builder-btn--small"
+            onClick={() => onSetPrompt(node.id, '')}
+          >
+            <span>{t('builder.prompt.clear') || 'Clear'}</span>
+          </button>
+        )}
+        <input
+          ref={fileRef}
+          type="file"
+          accept=".txt,.md,.json,text/*"
+          style={{ display: 'none' }}
+          onChange={handleFile}
+        />
+      </div>
+    </div>
+  );
+}
+
+function NodeDetails({ node, t, onAtlasLink }) {
+  const { icon, color, labelKey, descKey, kind, role, status, atlasAnchor } = node.data;
   return (
     <div className="builder-node-details">
       <div className="builder-node-details__head" style={{ '--node-color': color }}>
@@ -1257,61 +1352,6 @@ function NodeDetails({ node, t, onAtlasLink, onSetPrompt }) {
         <p className="builder-node-details__desc">
           {t(descKey) || ''}
         </p>
-      )}
-
-      {/* Редактор инструкции — только для агент-узлов */}
-      {isAgent && (
-        <div className="builder-prompt-editor">
-          <div className="builder-prompt-editor__head">
-            <span className="builder-prompt-editor__title">
-              {t('builder.prompt.title') || 'Instruction for this agent'}
-            </span>
-          </div>
-          <p className="builder-prompt-editor__hint">
-            {t('builder.prompt.hint') || 'Tell this agent exactly what to do. Empty = use the built-in role behaviour.'}
-          </p>
-          <textarea
-            className="builder-prompt-editor__area"
-            value={prompt}
-            onChange={(e) => onSetPrompt(node.id, e.target.value)}
-            placeholder={t('builder.prompt.placeholder') || 'e.g. Study the site example.com and list the top UX problems.'}
-            rows={5}
-          />
-          <div className="builder-prompt-editor__actions">
-            <button
-              type="button"
-              className="builder-btn builder-btn--ghost builder-btn--small"
-              onClick={() => onSetPrompt(node.id, templateForRole(role))}
-            >
-              <Icon name="books" size={12} strokeWidth={1.5} />
-              <span>{t('builder.prompt.useTemplate') || 'Use template'}</span>
-            </button>
-            <button
-              type="button"
-              className="builder-btn builder-btn--ghost builder-btn--small"
-              onClick={() => fileRef.current?.click()}
-            >
-              <Icon name="file" size={12} strokeWidth={1.5} />
-              <span>{t('builder.prompt.fromFile') || 'From file'}</span>
-            </button>
-            {prompt && (
-              <button
-                type="button"
-                className="builder-btn builder-btn--ghost builder-btn--small"
-                onClick={() => onSetPrompt(node.id, '')}
-              >
-                <span>{t('builder.prompt.clear') || 'Clear'}</span>
-              </button>
-            )}
-            <input
-              ref={fileRef}
-              type="file"
-              accept=".txt,.md,.json,text/*"
-              style={{ display: 'none' }}
-              onChange={handleFile}
-            />
-          </div>
-        </div>
       )}
 
       <dl className="builder-node-details__meta">
