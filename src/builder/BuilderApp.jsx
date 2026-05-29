@@ -38,7 +38,7 @@ import { createRealExecution } from './services/realExecutor.js';
 import { getKeyStatus } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
-import { evaluateConnection, validateGraph } from './services/connectionRules.js';
+import { evaluateConnection, validateGraph, denyReasonKey } from './services/connectionRules.js';
 import './BuilderApp.css';
 
 /**
@@ -570,14 +570,32 @@ function BuilderAppInner() {
   // родитель — независимо от того, выше или ниже окажется цель на холсте.
   const connectOriginRef = useRef(null);
   const [isConnecting, setIsConnecting] = useState(false);
+  // Объяснение запрета связи: запоминаем последнюю причину отказа и, если связь
+  // в итоге не создалась, показываем понятную подсказку (а не «молчит как Flowise»).
+  const lastDenyRef = useRef(null);
+  const connectMadeRef = useRef(false);
+  const [connectHint, setConnectHint] = useState(null);
+  const hintTimerRef = useRef(null);
+  const showConnectHint = useCallback((code) => {
+    const msg = t(denyReasonKey(code)) || t('builder.connect.deny.unknown') || 'Так соединить нельзя.';
+    setConnectHint(msg);
+    if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
+    hintTimerRef.current = setTimeout(() => setConnectHint(null), 3200);
+  }, [t]);
   const onConnectStart = useCallback((_evt, { nodeId }) => {
     connectOriginRef.current = nodeId;
+    connectMadeRef.current = false;
+    lastDenyRef.current = null;
     setIsConnecting(true);
   }, []);
   const onConnectEnd = useCallback(() => {
     connectOriginRef.current = null;
     setIsConnecting(false);
-  }, []);
+    // Если тянули, но связь не появилась и была причина отказа — объясняем.
+    const code = lastDenyRef.current;
+    const made = connectMadeRef.current;
+    setTimeout(() => { if (!made && code) showConnectHint(code); }, 0);
+  }, [showConnectHint]);
 
   const onConnect = useCallback(
     (params) => {
@@ -593,6 +611,8 @@ function BuilderAppInner() {
         [sourceHandle, targetHandle] = [targetHandle, sourceHandle];
       }
       connectOriginRef.current = null;
+      connectMadeRef.current = true; // связь создана — подсказку-причину не показываем
+      lastDenyRef.current = null;
       pushHistory();
       setEdges(eds => addEdge(
         { ...params, source, target, sourceHandle, targetHandle, type: 'builder' },
@@ -616,7 +636,9 @@ function BuilderAppInner() {
     if (nodeKind[source] === 'agent' && nodeKind[target] === 'tool') {
       [source, target] = [target, source];
     }
-    return evaluateConnection({ source, target, nodeKind, edges }).ok;
+    const res = evaluateConnection({ source, target, nodeKind, edges });
+    if (!res.ok) lastDenyRef.current = res.code; // запомним причину для подсказки
+    return res.ok;
   }, [nodes, edges]);
 
   /* ────────── Drag-drop из toolbox ────────── */
@@ -1254,6 +1276,14 @@ function BuilderAppInner() {
             <div className="builder-status-hint">
               <Icon name="idea" size={14} strokeWidth={1.5} />
               <span>{t('builder.canvas.hint') || 'Click a node to see details. Drag handles to connect. Delete key to remove.'}</span>
+            </div>
+          )}
+
+          {/* Подсказка-причина, почему связь нельзя создать (исчезает сама) */}
+          {connectHint && (
+            <div className="builder-connect-hint" role="status">
+              <Icon name="close" size={13} strokeWidth={2} />
+              <span>{connectHint}</span>
             </div>
           )}
         </main>

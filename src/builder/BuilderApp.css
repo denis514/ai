@@ -1840,6 +1840,34 @@
   text-overflow: ellipsis;
 }
 
+/* Подсказка-причина отказа в соединении (всплывает над status-hint) */
+.builder-app .builder-connect-hint {
+  position: absolute;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--danger, #e2484f) 12%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--danger, #e2484f) 35%, transparent);
+  color: var(--text);
+  font-size: 12.5px;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  max-width: calc(100% - 32px);
+  animation: builder-hint-in 0.16s ease-out;
+}
+.builder-app .builder-connect-hint .hgi,
+.builder-app .builder-connect-hint svg { color: var(--danger, #e2484f); flex: 0 0 auto; }
+@keyframes builder-hint-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 /* ────────────────────────────────────────────────── */
 /* React Flow theme integration                       */
 /* ────────────────────────────────────────────────── */
