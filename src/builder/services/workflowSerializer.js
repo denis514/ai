@@ -122,18 +122,27 @@ export function deserializeFromDb(dbNodes = [], dbEdges = [], edgeStyle = undefi
     };
   });
 
-  const edges = dbEdges.map(row => {
+  // Дедуп: между одной парой узлов оставляем ОДНУ связь (в любую сторону).
+  // Чистит legacy-схемы, где раньше могли сохраниться две накладывающиеся линии
+  // (A→B и B→A) — на плавающих концах они сливались и блокировали переподключение.
+  const seenPairs = new Set();
+  const edges = dbEdges.reduce((acc, row) => {
+    const a = row.source_client_id, b = row.target_client_id;
+    const key = a < b ? `${a}|${b}` : `${b}|${a}`;
+    if (seenPairs.has(key)) return acc; // дубль пары — пропускаем
+    seenPairs.add(key);
     const cfg = row.config || {};
-    return {
+    acc.push({
       id: row.client_id,
-      source: row.source_client_id,
-      target: row.target_client_id,
+      source: a,
+      target: b,
       type: 'builder',
       ...(row.label ? { label: row.label } : {}),
       ...(cfg.sourceHandle != null ? { sourceHandle: cfg.sourceHandle } : {}),
       ...(cfg.targetHandle != null ? { targetHandle: cfg.targetHandle } : {}),
-    };
-  });
+    });
+    return acc;
+  }, []);
 
   return { nodes, edges };
 }
