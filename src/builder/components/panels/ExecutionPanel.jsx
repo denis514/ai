@@ -35,6 +35,40 @@ export default function ExecutionPanel({
   const t = useT();
   const bodyRef = useRef(null);
   const [copied, setCopied] = useState(false);
+  const [copiedAll, setCopiedAll] = useState(false);
+
+  // Режим окна: пристыковано снизу → плавающее → на весь экран.
+  const [floating, setFloating] = useState(false);
+  const [maximized, setMaximized] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+
+  // Перетаскивание плавающего окна за шапку (но не за кнопки).
+  const onHeaderPointerDown = (e) => {
+    if (!floating || maximized) return;
+    if (e.target.closest('button')) return;
+    const start = { mx: e.clientX, my: e.clientY, px: pos.x, py: pos.y };
+    const move = (ev) => setPos({ x: start.px + (ev.clientX - start.mx), y: start.py + (ev.clientY - start.my) });
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  // Копировать весь журнал + результат одним кликом.
+  const handleCopyAll = () => {
+    const text = [
+      ...logs.map(l => (l.nodeId ? `[${l.nodeId}] ` : '') + (l.message || '')),
+      result?.output ? `\n— — — РЕЗУЛЬТАТ — — —\n${result.output}` : '',
+    ].filter(Boolean).join('\n');
+    if (!text.trim()) return;
+    try {
+      navigator.clipboard.writeText(text);
+      setCopiedAll(true);
+      setTimeout(() => setCopiedAll(false), 1500);
+    } catch { /* noop */ }
+  };
 
   const handleCopy = () => {
     if (!result?.output) return;
@@ -75,8 +109,15 @@ export default function ExecutionPanel({
   })();
 
   return (
-    <section className="builder-exec" aria-label={t('builder.exec.aria') || 'Execution log'}>
-      <div className="builder-exec__header">
+    <section
+      className={`builder-exec ${floating ? 'builder-exec--floating' : ''} ${floating && maximized ? 'builder-exec--max' : ''}`}
+      style={floating && !maximized ? { transform: `translate(${pos.x}px, ${pos.y}px)` } : undefined}
+      aria-label={t('builder.exec.aria') || 'Execution log'}
+    >
+      <div
+        className={`builder-exec__header ${floating && !maximized ? 'builder-exec__header--drag' : ''}`}
+        onPointerDown={onHeaderPointerDown}
+      >
         <span className="builder-exec__title-wrap">
           <span className="builder-exec__title">{t('builder.exec.title') || 'Execution'}</span>
           <span className={`builder-exec__summary builder-exec__summary--${status}`}>
@@ -107,9 +148,42 @@ export default function ExecutionPanel({
               <span>{t('builder.exec.clear') || 'Clear'}</span>
             </button>
           )}
+          {(logs.length > 0 || result?.output) && (
+            <button
+              type="button"
+              className="builder-btn builder-btn--ghost builder-btn--small"
+              onClick={handleCopyAll}
+              title={t('builder.exec.copyAll') || 'Copy everything'}
+            >
+              <Icon name="clipboard" size={12} strokeWidth={1.75} />
+              <span>{copiedAll ? (t('builder.exec.copied') || 'Copied') : (t('builder.exec.copyAll') || 'Copy all')}</span>
+            </button>
+          )}
+          {/* Развернуть в плавающее окно / вернуть в док */}
           <button
             type="button"
-            className="builder-btn builder-btn--ghost builder-btn--small"
+            className="builder-btn builder-btn--ghost builder-btn--small builder-exec__icon-btn"
+            onClick={() => { setFloating(f => !f); setMaximized(false); }}
+            title={floating ? (t('builder.exec.dock') || 'Dock') : (t('builder.exec.popout') || 'Open as window')}
+            aria-pressed={floating}
+          >
+            <Icon name="expand" size={13} strokeWidth={1.75} />
+          </button>
+          {/* На весь экран (только в плавающем режиме) */}
+          {floating && (
+            <button
+              type="button"
+              className="builder-btn builder-btn--ghost builder-btn--small builder-exec__icon-btn"
+              onClick={() => setMaximized(m => !m)}
+              title={maximized ? (t('builder.exec.restore') || 'Restore') : (t('builder.exec.fullscreen') || 'Fullscreen')}
+              aria-pressed={maximized}
+            >
+              <Icon name={maximized ? 'minimize' : 'expand'} size={13} strokeWidth={1.75} />
+            </button>
+          )}
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost builder-btn--small builder-exec__icon-btn"
             onClick={onClose}
             aria-label={t('builder.exec.close') || 'Close panel'}
           >

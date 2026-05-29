@@ -70,6 +70,7 @@ import {
   Clock01Icon,
   Idea01Icon,
   Maximize01Icon,
+  Minimize01Icon,
   Bookmark01Icon,
   BookmarkCheck01Icon,
   LinkSquare01Icon,
@@ -171,6 +172,7 @@ const REGISTRY = {
   clock:       Clock01Icon,
   idea:        Idea01Icon,
   expand:      Maximize01Icon,
+  minimize:    Minimize01Icon,
   bookmark:    Bookmark01Icon,
   'bookmark-filled': BookmarkCheck01Icon,
   'check-circle':    CheckmarkCircle01Icon,  // бейдж «просмотрено»

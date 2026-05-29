@@ -1136,6 +1136,39 @@
   overflow: hidden;
 }
 
+/* Плавающее окно консоли: поверх холста, перетаскиваемое, с изменяемым размером */
+.builder-app .builder-exec--floating {
+  position: fixed;
+  top: 96px;
+  left: 50%;
+  margin-left: -320px;          /* центрируем окно ~640px */
+  width: 640px;
+  height: 440px;
+  z-index: 60;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.45);
+  resize: both;                 /* тянуть за правый-нижний угол */
+  overflow: hidden;
+  min-width: 360px;
+  min-height: 240px;
+  max-width: 96vw;
+  max-height: 90vh;
+}
+.builder-app .builder-exec--max {
+  top: 3vh;
+  left: 3vw;
+  margin-left: 0;
+  width: 94vw;
+  height: 94vh;
+  resize: none;
+  border-radius: 14px;
+}
+.builder-app .builder-exec__header--drag { cursor: grab; user-select: none; }
+.builder-app .builder-exec__header--drag:active { cursor: grabbing; }
+.builder-app .builder-exec__icon-btn { padding-left: 8px; padding-right: 8px; }
+
 .builder-app .builder-exec__header {
   flex: 0 0 auto;
   display: flex;
