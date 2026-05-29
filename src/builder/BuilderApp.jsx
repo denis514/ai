@@ -581,24 +581,27 @@ function BuilderAppInner() {
 
   const onConnect = useCallback(
     (params) => {
-      let p = params;
+      const nodeKind = Object.fromEntries(nodes.map(n => [n.id, n.data?.kind]));
+      let { source, target, sourceHandle, targetHandle } = params;
+      const swap = () => {
+        [source, target] = [target, source];
+        [sourceHandle, targetHandle] = [targetHandle, sourceHandle];
+      };
       const origin = connectOriginRef.current;
       // В loose-режиме React Flow может назначить source/target по геометрии.
-      // Принудительно делаем source = узел, от которого тянули (родитель).
-      if (origin && params.target === origin && params.source !== origin) {
-        p = {
-          ...params,
-          source: params.target,
-          target: params.source,
-          sourceHandle: params.targetHandle,
-          targetHandle: params.sourceHandle,
-        };
-      }
+      // Делаем source = узел, от которого тянули (родитель DATA-потока).
+      if (origin && target === origin && source !== origin) swap();
+      // Инструмент ↔ агент = прикрепление (ATTACH). Тянуть можно в любую сторону —
+      // связь всегда ориентируем как «инструмент → агент» (агент получает способность).
+      if (nodeKind[source] === 'agent' && nodeKind[target] === 'tool') swap();
       connectOriginRef.current = null;
       pushHistory();
-      setEdges(eds => addEdge({ ...p, type: 'builder' }, eds));
+      setEdges(eds => addEdge(
+        { ...params, source, target, sourceHandle, targetHandle, type: 'builder' },
+        eds,
+      ));
     },
-    [setEdges, pushHistory]
+    [setEdges, pushHistory, nodes]
   );
 
   // Совместимость узлов — через движок connectionRules (порты + типы связей).
@@ -606,11 +609,15 @@ function BuilderAppInner() {
   // и циклы в DATA-потоке. Направление нормализуем по узлу-источнику перетягивания.
   const isValidConnection = useCallback((conn) => {
     let { source, target } = conn;
+    const nodeKind = Object.fromEntries(nodes.map(n => [n.id, n.data?.kind]));
     const origin = connectOriginRef.current;
     if (origin && target === origin && source !== origin) {
       [source, target] = [target, source];
     }
-    const nodeKind = Object.fromEntries(nodes.map(n => [n.id, n.data?.kind]));
+    // Инструмент ↔ агент: разрешаем тянуть в любую сторону (ориентируем в onConnect).
+    if (nodeKind[source] === 'agent' && nodeKind[target] === 'tool') {
+      [source, target] = [target, source];
+    }
     return evaluateConnection({ source, target, nodeKind, edges }).ok;
   }, [nodes, edges]);
 
