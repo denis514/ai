@@ -2,14 +2,16 @@ import React, { useState, useRef } from 'react';
 import { getBezierPath, useStore, useReactFlow, EdgeLabelRenderer } from 'reactflow';
 import Icon from '../../../components/Icon.jsx';
 import { historyBridge } from '../../services/historyBridge.js';
+import { getFloatingEdgeParams } from './floatingEdge.js';
 
 /**
  * BuilderEdge — кастомная связь.
  *
  *  • Без стрелки.
  *  • Градиент: цвет источника → цвет цели.
- *  • Пунктир с анимацией, текущей ВСЕГДА от родителя (source) к цели —
- *    независимо от того, с какой стороны подключены порты.
+ *  • Пунктир с анимацией, текущей ВСЕГДА от источника (откуда тянули) к цели.
+ *  • «Плавающие» концы: точки подключения сами встают на грани узлов, обращённые
+ *    друг к другу — линия не «прыгает» на фиксированный коннектор при перемещении.
  *  • На hover — красный кружок с иконкой «разъединить»; клик удаляет связь,
  *    узлы остаются.
  */
@@ -34,12 +36,27 @@ export default function BuilderEdge({
     hideTimer.current = setTimeout(() => setHovered(false), 160);
   };
 
+  // Узлы из стора — для цвета и плавающей геометрии.
+  const sourceNode = useStore(s => s.nodeInternals.get(source));
+  const targetNode = useStore(s => s.nodeInternals.get(target));
+
+  // Плавающие концы (грань, обращённая к соседу). Пока размеры узла не измерены —
+  // падаем на хэндл-координаты из props.
+  const floating = getFloatingEdgeParams(sourceNode, targetNode);
+  const sx = floating ? floating.sx : sourceX;
+  const sy = floating ? floating.sy : sourceY;
+  const tx = floating ? floating.tx : targetX;
+  const ty = floating ? floating.ty : targetY;
+  const sPos = floating ? floating.sourcePos : sourcePosition;
+  const tPos = floating ? floating.targetPos : targetPosition;
+
   const [path, labelX, labelY] = getBezierPath({
-    sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition,
+    sourceX: sx, sourceY: sy, sourcePosition: sPos,
+    targetX: tx, targetY: ty, targetPosition: tPos,
   });
 
-  const sColor = useStore(s => s.nodeInternals.get(source)?.data?.color) || '#94a3b8';
-  const tColor = useStore(s => s.nodeInternals.get(target)?.data?.color) || sColor;
+  const sColor = sourceNode?.data?.color || '#94a3b8';
+  const tColor = targetNode?.data?.color || sColor;
   const gid = `builder-edge-grad-${id}`;
 
   const unlink = (e) => {
@@ -54,7 +71,7 @@ export default function BuilderEdge({
         <linearGradient
           id={gid}
           gradientUnits="userSpaceOnUse"
-          x1={sourceX} y1={sourceY} x2={targetX} y2={targetY}
+          x1={sx} y1={sy} x2={tx} y2={ty}
         >
           <stop offset="0%" stopColor={sColor} />
           <stop offset="100%" stopColor={tColor} />
