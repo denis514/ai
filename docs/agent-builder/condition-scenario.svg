@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" font-family="-apple-system, Segoe UI, Roboto, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="780" fill="#f8fafc"/>
+  <text x="40" y="48" font-size="26" font-weight="700" fill="#0f172a">Сценарий «Сортировка обращения на 3 типа»</text>
+  <text x="40" y="76" font-size="15" fill="#475569">Агент определяет тип одним словом → два «Условия» разводят поток в три разных действия.</text>
+
+  <!-- ===== connectors (draw first, under boxes) ===== -->
+  <!-- UserInput -> Agent -->
+  <path d="M190,176 L190,206" stroke="#94a3b8" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <!-- Agent -> Cond1 -->
+  <path d="M190,280 L190,310" stroke="#94a3b8" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <!-- Cond1 -Да-> Telegram -->
+  <path d="M320,330 L468,330" stroke="#16a34a" stroke-width="2.5" fill="none" marker-end="url(#arrowGreen)"/>
+  <!-- Cond1 -Нет-> Cond2 -->
+  <path d="M190,384 L190,452" stroke="#dc2626" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>
+  <!-- Cond2 -Да-> Markdown жалоба -->
+  <path d="M320,486 L468,470" stroke="#16a34a" stroke-width="2.5" fill="none" marker-end="url(#arrowGreen)"/>
+  <!-- Cond2 -Нет-> Markdown обычное -->
+  <path d="M190,520 L190,600 L468,600" stroke="#dc2626" stroke-width="2.5" fill="none" marker-end="url(#arrowRed)"/>
+
+  <!-- branch labels -->
+  <g font-size="13" font-weight="700">
+    <rect x="372" y="316" width="34" height="22" rx="11" fill="#dcfce7"/><text x="389" y="331" fill="#16a34a" text-anchor="middle">Да</text>
+    <rect x="200" y="404" width="40" height="22" rx="11" fill="#fee2e2"/><text x="220" y="419" fill="#dc2626" text-anchor="middle">Нет</text>
+    <rect x="372" y="462" width="34" height="22" rx="11" fill="#dcfce7"/><text x="389" y="477" fill="#16a34a" text-anchor="middle">Да</text>
+    <rect x="248" y="588" width="40" height="22" rx="11" fill="#fee2e2"/><text x="268" y="603" fill="#dc2626" text-anchor="middle">Нет</text>
+  </g>
+
+  <!-- ===== nodes ===== -->
+  <!-- helper visual: rounded rect with left accent -->
+  <!-- User Input -->
+  <g>
+    <rect x="60" y="112" width="260" height="64" rx="14" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <rect x="60" y="112" width="6" height="64" rx="3" fill="#f59e0b"/>
+    <text x="82" y="142" font-size="16" font-weight="700" fill="#0f172a">User Input</text>
+    <text x="82" y="162" font-size="12.5" fill="#64748b">Старт · сюда приходит задача</text>
+  </g>
+  <!-- Главный агент -->
+  <g>
+    <rect x="60" y="216" width="260" height="64" rx="14" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <rect x="60" y="216" width="6" height="64" rx="3" fill="#2563eb"/>
+    <text x="82" y="246" font-size="16" font-weight="700" fill="#0f172a">Главный агент</text>
+    <text x="82" y="266" font-size="12.5" fill="#64748b">Отвечает 1 словом: СРОЧНО / ЖАЛОБА / ОБЫЧНОЕ</text>
+  </g>
+  <!-- Условие 1 -->
+  <g>
+    <rect x="60" y="320" width="260" height="64" rx="14" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+    <rect x="60" y="320" width="6" height="64" rx="3" fill="#ea580c"/>
+    <text x="82" y="348" font-size="16" font-weight="700" fill="#0f172a">Условие 1</text>
+    <text x="82" y="368" font-size="12.5" fill="#9a3412">равно «срочно»</text>
+  </g>
+  <!-- Условие 2 -->
+  <g>
+    <rect x="60" y="456" width="260" height="64" rx="14" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+    <rect x="60" y="456" width="6" height="64" rx="3" fill="#ea580c"/>
+    <text x="82" y="484" font-size="16" font-weight="700" fill="#0f172a">Условие 2</text>
+    <text x="82" y="504" font-size="12.5" fill="#9a3412">содержит «жалоба»</text>
+  </g>
+  <!-- Telegram -->
+  <g>
+    <rect x="470" y="298" width="300" height="64" rx="14" fill="#ffffff" stroke="#229ED9" stroke-width="2"/>
+    <rect x="470" y="298" width="6" height="64" rx="3" fill="#229ED9"/>
+    <text x="492" y="328" font-size="16" font-weight="700" fill="#0f172a">Telegram &#128680;</text>
+    <text x="492" y="348" font-size="12.5" fill="#64748b">Срочное → сообщение тебе в чат</text>
+  </g>
+  <!-- Markdown жалоба -->
+  <g>
+    <rect x="470" y="438" width="300" height="64" rx="14" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <rect x="470" y="438" width="6" height="64" rx="3" fill="#64748b"/>
+    <text x="492" y="468" font-size="16" font-weight="700" fill="#0f172a">Markdown Output</text>
+    <text x="492" y="488" font-size="12.5" fill="#64748b">Жалоба → оформить ответ</text>
+  </g>
+  <!-- Markdown обычное -->
+  <g>
+    <rect x="470" y="568" width="300" height="64" rx="14" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <rect x="470" y="568" width="6" height="64" rx="3" fill="#64748b"/>
+    <text x="492" y="598" font-size="16" font-weight="700" fill="#0f172a">Markdown Output</text>
+    <text x="492" y="618" font-size="12.5" fill="#64748b">Обычное → обычный ответ</text>
+  </g>
+
+  <!-- ===== side panel: how it works ===== -->
+  <g>
+    <rect x="820" y="100" width="340" height="540" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+    <text x="844" y="134" font-size="16" font-weight="700" fill="#0f172a">Как это работает</text>
+
+    <text x="844" y="166" font-size="13.5" font-weight="700" fill="#334155">1. Один вопрос — два выхода</text>
+    <text x="844" y="186" font-size="12.5" fill="#475569">Каждое «Условие» = развилка на</text>
+    <text x="844" y="204" font-size="12.5" fill="#475569">«Да» (зелёный) и «Нет» (красный).</text>
+
+    <text x="844" y="234" font-size="13.5" font-weight="700" fill="#334155">2. Три исхода = два «Условия»</text>
+    <text x="844" y="254" font-size="12.5" fill="#475569">Ветка «Нет» первого ведёт во</text>
+    <text x="844" y="272" font-size="12.5" fill="#475569">второе «Условие» — получаем 3 пути.</text>
+
+    <text x="844" y="302" font-size="13.5" font-weight="700" fill="#334155">3. Три оператора (как спросить)</text>
+    <text x="844" y="322" font-size="12.5" fill="#475569">&#8226; <tspan font-weight="700">равно</tspan> — точное слово целиком</text>
+    <text x="844" y="340" font-size="12.5" fill="#475569">&#8226; <tspan font-weight="700">содержит</tspan> — слово есть внутри</text>
+    <text x="844" y="358" font-size="12.5" fill="#475569">&#8226; <tspan font-weight="700">не содержит</tspan> — слова нет внутри</text>
+
+    <text x="844" y="392" font-size="13.5" font-weight="700" fill="#334155">4. Пропущенные ветки</text>
+    <text x="844" y="412" font-size="12.5" fill="#475569">Поток идёт только по выбранной</text>
+    <text x="844" y="430" font-size="12.5" fill="#475569">ветке; другая гаснет (серая).</text>
+
+    <text x="844" y="464" font-size="13.5" font-weight="700" fill="#334155">Проверь на 3 примерах:</text>
+    <text x="844" y="484" font-size="12.5" fill="#16a34a">«Сайт упал!» → СРОЧНО → Telegram</text>
+    <text x="844" y="502" font-size="12.5" fill="#ea580c">«Хочу пожаловаться» → ЖАЛОБА</text>
+    <text x="844" y="520" font-size="12.5" fill="#64748b">«Часы работы?» → ОБЫЧНОЕ</text>
+
+    <line x1="844" y1="546" x2="1136" y2="546" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="844" y="572" font-size="12" fill="#94a3b8">Зелёная линия = ветка «Да»</text>
+    <text x="844" y="590" font-size="12" fill="#94a3b8">Красная линия = ветка «Нет»</text>
+    <text x="844" y="616" font-size="12" fill="#94a3b8">Один раз: deploy builder-execute</text>
+  </g>
+</svg>
