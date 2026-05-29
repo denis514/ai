@@ -33,8 +33,14 @@ export function evaluateConnection({ source, target, nodeKind, edges = [] }) {
   const lk = linkKind(sk, tk);
   if (!lk) return deny('incompatible');
 
-  // Дубликат (та же пара в том же направлении).
-  if (edges.some(e => e.source === source && e.target === target)) return deny('duplicate');
+  // Дубликат — любая уже существующая связь между этой парой узлов, в ЛЮБУЮ
+  // сторону. Иначе можно соединить A→B и тут же B→A: получаются две линии,
+  // которые на плавающих концах накладываются друг на друга. Уже соединённую
+  // пару повторно не связываем.
+  if (edges.some(e =>
+    (e.source === source && e.target === target) ||
+    (e.source === target && e.target === source)
+  )) return deny('duplicate');
 
   // Цикл — только для DATA-потока (ATTACH в topo не участвует).
   if (lk === LINK.DATA && createsDataCycle(source, target, edges, nodeKind)) {
