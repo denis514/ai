@@ -66,6 +66,65 @@ function topoOrder(nodes: Node[], edges: Edge[]): string[] {
   return order;
 }
 
+// ─── Web-инструмент (Фаза 4): реальная загрузка страниц ──────────────────────
+// Извлекаем URL из текста (вход/контекст).
+function extractUrls(text: string): string[] {
+  const re = /https?:\/\/[^\s)<>"'`]+/gi;
+  return [...new Set(text.match(re) || [])].slice(0, 3);
+}
+
+// SSRF-защита: не ходим на localhost/приватные/metadata-адреса.
+function isBlockedHost(host: string): boolean {
+  const h = host.toLowerCase();
+  if (h === 'localhost' || h.endsWith('.localhost') || h === '0.0.0.0') return true;
+  const m = h.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (m) {
+    const a = Number(m[1]), b = Number(m[2]);
+    if (a === 127 || a === 10 || a === 0) return true;       // loopback / private / reserved
+    if (a === 169 && b === 254) return true;                  // link-local / cloud metadata
+    if (a === 192 && b === 168) return true;                  // private
+    if (a === 172 && b >= 16 && b <= 31) return true;         // private
+  }
+  return false;
+}
+
+// Загружаем страницу и превращаем HTML в плоский текст (с лимитами и таймаутом).
+async function fetchPageText(url: string): Promise<string | null> {
+  let u: URL;
+  try { u = new URL(url); } catch { return null; }
+  if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+  if (isBlockedHost(u.hostname)) return null;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 12000);
+  try {
+    const res = await fetch(u.toString(), {
+      signal: ctrl.signal,
+      redirect: 'follow',
+      headers: { 'user-agent': 'AtlasBuilderBot/1.0 (+https://105atlas)' },
+    });
+    const ct = res.headers.get('content-type') || '';
+    const raw = (await res.text()).slice(0, 200000); // не тянем гигантов
+    let text = raw;
+    if (ct.includes('html') || /<html/i.test(raw)) {
+      text = raw
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<!--[\s\S]*?-->/g, ' ')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+    return text.slice(0, 6000) || null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number) {
   const res = await fetch(CLAUDE_URL, {
     method: 'POST',
@@ -222,14 +281,40 @@ Deno.serve(async (req) => {
         continue;
       }
       if (node.node_type === 'tool') {
-        // Реальные интеграции инструментов — Phase B-3. Пока пропускаем.
-        await log(id, 'warn', 'Tool nodes are not executed yet (coming in a later phase)', { status: 'completed' });
+        // Инструменты — это СПОСОБНОСТИ (ATTACH): исполняются в рамках агента,
+        // к которому прикреплены. Сам узел-инструмент только помечаем.
+        const note = node.role === 'web_search'
+          ? 'Web access — provided to the connected agent'
+          : 'Capability attached to the connected agent';
+        await log(id, 'info', note, { status: 'completed' });
         continue;
       }
       // agent → Claude
       const incoming = (edges || []).filter((e: Edge) => e.target_client_id === id)
         .map((e: Edge) => outputs.get(e.source_client_id)).filter(Boolean);
-      const context = incoming.length ? incoming.join('\n\n') : input;
+      let context = incoming.length ? incoming.join('\n\n') : input;
+
+      // Прикреплённые инструменты (ATTACH: tool → этот агент).
+      const attachedToolRoles = (edges || [])
+        .filter((e: Edge) => e.target_client_id === id)
+        .map((e: Edge) => byId.get(e.source_client_id))
+        .filter((n): n is Node => !!n && n.node_type === 'tool')
+        .map((n) => n.role || '');
+
+      // Web-инструмент: реально открываем ссылки из задачи/контекста (Фаза 4).
+      if (attachedToolRoles.includes('web_search')) {
+        const urls = extractUrls(`${context}\n${input}`);
+        for (const url of urls.slice(0, 2)) {
+          await log(id, 'info', `Opening ${url} …`, { status: 'running' });
+          const page = await fetchPageText(url);
+          if (page) {
+            context += `\n\n[Web content fetched from ${url}]:\n${page}`;
+            await log(id, 'info', `Fetched ${url} (${page.length} chars)`, { status: 'running' });
+          } else {
+            await log(id, 'warn', `Could not open ${url} (blocked, timeout, or non-text)`, {});
+          }
+        }
+      }
       // Если у узла задана своя инструкция (config.prompt) — используем её,
       // иначе встроенный роль-дефолт.
       const customPrompt = typeof node.config?.prompt === 'string' ? node.config.prompt.trim() : '';

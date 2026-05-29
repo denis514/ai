@@ -122,7 +122,12 @@
   токена бота, provider 'telegram', валидация через getMe на сервере) + попап `TelegramConfigPopover`
   с полем chatId на узле `output-telegram` (сохраняется в config → бэкенд шлёт `sendMessage`). i18n ru/en/fi.
 - [ ] **Batch B (Фаза 4)**: триггеры (webhook/schedule), выходы email/webhook, категория `logic`.
-- [ ] **Фаза 4 — исполнение**: ATTACH-инструменты как реальные tool-defs + интеграции.
+- [~] **Фаза 4 — исполнение (web готово)**: `builder-execute` трактует ATTACH как способности
+  агента. **Web Search оживлён**: при `tool-search`(web_search), прикреплённом к агенту,
+  сервер извлекает URL из задачи/контекста, реально загружает страницы (HTML→текст, лимит 6000,
+  таймаут 12с, SSRF-защита: блок localhost/private/metadata) и добавляет в контекст агента.
+  Лог «Opening …/Fetched …». ⚠️ Требуется `supabase functions deploy builder-execute`.
+  Осталось реальным сделать: Files (нужен upload-канал), Vision (image input), Code-exec, MCP.
 
 ---
 
