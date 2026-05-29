@@ -152,6 +152,56 @@ export default function ExecutionPanel({
               {' · '}≈ ${runSetup.estimate.costUsd < 0.01 ? '0.01' : runSetup.estimate.costUsd.toFixed(2)}
             </span>
           </div>
+
+          {/* Переменные {{ключ}} — для переиспользуемых схем */}
+          {runSetup.onVarsChange && (
+            <div className="builder-vars">
+              <div className="builder-vars__head">
+                <span>{t('builder.vars.title') || 'Variables'}</span>
+                <span className="builder-vars__hint">{t('builder.vars.hint') || 'Use {{name}} in the task or instructions'}</span>
+              </div>
+              {(runSetup.vars || []).map((row, i) => (
+                <div className="builder-vars__row" key={i}>
+                  <input
+                    className="builder-name-modal__input builder-vars__key"
+                    value={row.key}
+                    onChange={(e) => {
+                      const next = [...runSetup.vars];
+                      next[i] = { ...next[i], key: e.target.value };
+                      runSetup.onVarsChange(next);
+                    }}
+                    placeholder={t('builder.vars.keyPh') || 'name'}
+                  />
+                  <input
+                    className="builder-name-modal__input builder-vars__val"
+                    value={row.value}
+                    onChange={(e) => {
+                      const next = [...runSetup.vars];
+                      next[i] = { ...next[i], value: e.target.value };
+                      runSetup.onVarsChange(next);
+                    }}
+                    placeholder={t('builder.vars.valPh') || 'value'}
+                  />
+                  <button
+                    type="button"
+                    className="builder-vars__del"
+                    onClick={() => runSetup.onVarsChange(runSetup.vars.filter((_, j) => j !== i))}
+                    aria-label={t('builder.vars.remove') || 'Remove variable'}
+                  >
+                    <Icon name="close" size={12} strokeWidth={2} />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="builder-btn builder-btn--ghost builder-btn--small builder-vars__add"
+                onClick={() => runSetup.onVarsChange([...(runSetup.vars || []), { key: '', value: '' }])}
+              >
+                <Icon name="plus" size={12} strokeWidth={2} />
+                <span>{t('builder.vars.add') || 'Add variable'}</span>
+              </button>
+            </div>
+          )}
         </div>
       )}
 

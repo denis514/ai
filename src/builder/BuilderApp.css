@@ -581,6 +581,27 @@
   color: var(--accent, #2563eb);
 }
 
+/* Переменные {{ключ}} в панели запуска */
+.builder-app .builder-vars { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.builder-app .builder-vars__head {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  font-size: 12px; font-weight: 600; color: var(--text);
+}
+.builder-app .builder-vars__hint { font-weight: 400; font-size: 11px; color: var(--text-muted); }
+.builder-app .builder-vars__row { display: flex; gap: 6px; align-items: center; }
+.builder-app .builder-vars__key { flex: 0 0 34%; }
+.builder-app .builder-vars__val { flex: 1 1 auto; }
+.builder-app .builder-vars__del {
+  flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 6px; cursor: pointer;
+  background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+}
+.builder-app .builder-vars__del:hover {
+  color: var(--danger, #e2484f);
+  border-color: color-mix(in srgb, var(--danger, #e2484f) 40%, transparent);
+}
+.builder-app .builder-vars__add { align-self: flex-start; }
+
 /* Pre-run validation list (C1) */
 .builder-app .builder-validation__list {
   list-style: none;

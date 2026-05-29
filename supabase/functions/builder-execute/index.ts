@@ -156,7 +156,7 @@ Deno.serve(async (req) => {
   const user = await getUser(req);
   if (!user) return json({ error: 'unauthorized' }, 401);
 
-  let body: { executionId?: string; workflowId?: string; input?: string; tier?: string; locale?: string };
+  let body: { executionId?: string; workflowId?: string; input?: string; tier?: string; locale?: string; variables?: Record<string, string> };
   try { body = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
 
   const executionId = body.executionId;
@@ -167,6 +167,19 @@ Deno.serve(async (req) => {
   const locale = (body.locale || 'en').toLowerCase();
   const langSuffix = langDirective(locale);
   if (!executionId || !workflowId) return json({ error: 'missing_params' }, 400);
+
+  // Переменные для подстановки {{ключ}} в задачу/инструкции (переиспользуемые схемы).
+  // Встроенные: {{input}} (текст задачи), {{date}}/{{today}} (сегодня, YYYY-MM-DD).
+  const today = new Date().toISOString().slice(0, 10);
+  const vars: Record<string, string> = {
+    input, task: input, date: today, today,
+    ...(body.variables && typeof body.variables === 'object' ? body.variables : {}),
+  };
+  const applyVars = (text: string): string =>
+    String(text || '').replace(/\{\{\s*([\w.-]+)\s*\}\}/g, (m, key) => {
+      const v = vars[key] ?? vars[String(key).toLowerCase()];
+      return v != null ? String(v) : m; // неизвестные плейсхолдеры оставляем как есть
+    });
 
   const admin = adminClient();
 
@@ -322,7 +335,9 @@ Deno.serve(async (req) => {
       }
       // Если у узла задана своя инструкция (config.prompt) — используем её,
       // иначе встроенный роль-дефолт.
-      const customPrompt = typeof node.config?.prompt === 'string' ? node.config.prompt.trim() : '';
+      const customPromptRaw = typeof node.config?.prompt === 'string' ? node.config.prompt.trim() : '';
+      const customPrompt = applyVars(customPromptRaw); // подстановка {{переменных}}
+      context = applyVars(context);
       const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix;
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
       const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens);

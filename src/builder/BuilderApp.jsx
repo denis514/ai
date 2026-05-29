@@ -245,6 +245,8 @@ function BuilderAppInner() {
   const [keyConnected, setKeyConnected] = useState(false);
   const [telegramConnected, setTelegramConnected] = useState(false);
   const [runInput, setRunInput] = useState('');
+  // Переменные для переиспользуемых схем: {{ключ}} в задаче/инструкциях → значение.
+  const [runVars, setRunVars] = useState([]); // [{ key, value }]
   // Намерение «Реально» переживает перезагрузку страницы (вход через
   // Google/magic-link = редирект). Храним в sessionStorage.
   const REAL_INTENT_KEY = 'atlas:builder:real-intent';
@@ -816,15 +818,22 @@ function BuilderAppInner() {
   const runReal = useCallback((input, tier) => {
     const stats = beginExecUi();
     setExecResult(null);
+    // Переменные {{ключ}} → значение (для переиспользуемых схем).
+    const variables = {};
+    for (const { key, value } of runVars) {
+      const k = String(key || '').trim();
+      if (k) variables[k] = String(value ?? '');
+    }
     execRef.current = createRealExecution({
       workflowId: currentWorkflowId,
       input,
       tier: tier || outputTier,
       locale,
+      variables,
       ...makeCallbacks(stats),
       onResult: ({ output, tokensUsed }) => setExecResult({ output, tokensUsed }),
     });
-  }, [currentWorkflowId, outputTier, locale, beginExecUi, makeCallbacks]);
+  }, [currentWorkflowId, outputTier, locale, runVars, beginExecUi, makeCallbacks]);
 
   // Кнопка Run: задача вводится заранее в панели выполнения; Run запускает сразу.
   // Реальный запуск без валидации (вызывается после прохождения проверки).
@@ -1341,6 +1350,8 @@ function BuilderAppInner() {
               tierId: outputTier,
               onTierChange: setOutputTier,
               estimate: estimateRun(countAgentNodes(nodes), outputTier),
+              vars: runVars,
+              onVarsChange: setRunVars,
             } : null}
             onStop={handleStopExec}
             onClear={() => { setExecResult(null); handleClearLogs(); }}
