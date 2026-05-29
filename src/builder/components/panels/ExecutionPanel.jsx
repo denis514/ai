@@ -328,7 +328,14 @@ export default function ExecutionPanel({
   );
 }
 
-function formatTs(ms) {
-  const sec = (ms / 1000).toFixed(1);
-  return `+${sec}s`;
+// Лог приходит из двух источников: mock шлёт ts как ЧИСЛО (прошло мс от старта),
+// real — как ISO-строку (абсолютное время из БД). Раньше строку делили на 1000 →
+// получался «+NaNs». Теперь: число → «+X.Xs», строка/дата → часы:минуты:секунды.
+function formatTs(ts) {
+  if (typeof ts === 'number' && isFinite(ts)) {
+    return `+${(ts / 1000).toFixed(1)}s`;
+  }
+  const d = new Date(ts);
+  if (isNaN(d.getTime())) return '';
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
