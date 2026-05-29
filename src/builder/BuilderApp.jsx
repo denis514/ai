@@ -1697,7 +1697,11 @@ function NodePromptPopover({ node, t, locale, onSetPrompt, onClose }) {
   };
 
   return (
-    <div className="builder-prompt-pop" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="builder-prompt-pop nodrag nowheel"
+      onClick={(e) => e.stopPropagation()}
+      onWheelCapture={(e) => e.stopPropagation()}
+    >
       <div className="builder-prompt-pop__head">
         <span className="builder-prompt-pop__title">
           {t(labelKey) || labelKey} · {t('builder.prompt.title') || 'Instruction'}
@@ -1767,7 +1771,11 @@ function NodePromptPopover({ node, t, locale, onSetPrompt, onClose }) {
 function TelegramConfigPopover({ node, t, telegramConnected, onSetChatId, onConnect, onClose }) {
   const { labelKey, chatId = '' } = node.data;
   return (
-    <div className="builder-prompt-pop" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="builder-prompt-pop nodrag nowheel"
+      onClick={(e) => e.stopPropagation()}
+      onWheelCapture={(e) => e.stopPropagation()}
+    >
       <div className="builder-prompt-pop__head">
         <span className="builder-prompt-pop__title">
           {t(labelKey) || labelKey} · {t('builder.telegram.title') || 'Доставка'}
