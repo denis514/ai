@@ -159,7 +159,7 @@ export default function ExecutionPanel({
               <span>{copiedAll ? (t('builder.exec.copied') || 'Copied') : (t('builder.exec.copyAll') || 'Copy all')}</span>
             </button>
           )}
-          {/* Развернуть в плавающее окно / вернуть в док */}
+          {/* Открыть как отдельное окно / вернуть в док снизу */}
           <button
             type="button"
             className="builder-btn builder-btn--ghost builder-btn--small builder-exec__icon-btn"
@@ -167,9 +167,9 @@ export default function ExecutionPanel({
             title={floating ? (t('builder.exec.dock') || 'Dock') : (t('builder.exec.popout') || 'Open as window')}
             aria-pressed={floating}
           >
-            <Icon name="expand" size={13} strokeWidth={1.75} />
+            <Icon name={floating ? 'dock' : 'window'} size={13} strokeWidth={1.75} />
           </button>
-          {/* На весь экран (только в плавающем режиме) */}
+          {/* На весь экран / свернуть (только в плавающем режиме) */}
           {floating && (
             <button
               type="button"
@@ -178,7 +178,7 @@ export default function ExecutionPanel({
               title={maximized ? (t('builder.exec.restore') || 'Restore') : (t('builder.exec.fullscreen') || 'Fullscreen')}
               aria-pressed={maximized}
             >
-              <Icon name={maximized ? 'minimize' : 'expand'} size={13} strokeWidth={1.75} />
+              <Icon name={maximized ? 'restore' : 'fullscreen'} size={13} strokeWidth={1.75} />
             </button>
           )}
           <button

@@ -71,6 +71,10 @@ import {
   Idea01Icon,
   Maximize01Icon,
   Minimize01Icon,
+  BrowserIcon,
+  SidebarBottomIcon,
+  ArrowExpandDiagonal01Icon,
+  ArrowShrink01Icon,
   Bookmark01Icon,
   BookmarkCheck01Icon,
   LinkSquare01Icon,
@@ -173,6 +177,10 @@ const REGISTRY = {
   idea:        Idea01Icon,
   expand:      Maximize01Icon,
   minimize:    Minimize01Icon,
+  window:      BrowserIcon,                // ▢ открыть как отдельное окно
+  dock:        SidebarBottomIcon,          // ▭ вернуть в док снизу
+  fullscreen:  ArrowExpandDiagonal01Icon,  // ⤢ во весь экран
+  restore:     ArrowShrink01Icon,          // ⤡ свернуть из полноэкрана
   bookmark:    Bookmark01Icon,
   'bookmark-filled': BookmarkCheck01Icon,
   'check-circle':    CheckmarkCircle01Icon,  // бейдж «просмотрено»
