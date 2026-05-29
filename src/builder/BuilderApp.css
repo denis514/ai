@@ -1280,6 +1280,21 @@
   stroke-dasharray: 6 5;
   animation: builder-conn-flow 0.5s linear infinite;
 }
+/* Поток данных (trigger/agent → agent/output): крупный «бегущий» пунктир. */
+.builder-app .builder-edge__path--data {
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+  animation: builder-conn-flow 0.5s linear infinite;
+}
+/* Прикрепление способности (инструмент → агент): тонкий частый пунктир,
+   медленнее — читается как «насадка», а не поток. Направление то же:
+   «бежит» от инструмента к агенту. */
+.builder-app .builder-edge__path--attach {
+  stroke-width: 1.75;
+  stroke-dasharray: 2 4;
+  animation: builder-conn-flow-attach 0.9s linear infinite;
+  opacity: 0.85;
+}
 /* Выбранная связь (клик) — толще + лёгкое свечение, чтобы было видно, что
    удалит клавиша Delete. */
 .builder-app .react-flow__edge.selected .builder-edge__path {
@@ -1321,6 +1336,10 @@
 }
 @keyframes builder-conn-flow {
   to { stroke-dashoffset: -11; }
+}
+/* Для пунктира 2 4 период = 6 → смещение -6 даёт бесшовный цикл. */
+@keyframes builder-conn-flow-attach {
+  to { stroke-dashoffset: -6; }
 }
 .builder-app .builder-conn-line__end {
   fill: var(--accent, #2563eb);

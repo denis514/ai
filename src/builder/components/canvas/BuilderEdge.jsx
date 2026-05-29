@@ -40,6 +40,12 @@ export default function BuilderEdge({
 
   const sColor = useStore(s => s.nodeInternals.get(source)?.data?.color) || '#94a3b8';
   const tColor = useStore(s => s.nodeInternals.get(target)?.data?.color) || sColor;
+  // Тип связи: ATTACH (инструмент → агент) рисуем иначе, чем поток данных (DATA),
+  // чтобы пользователь видел разницу. Анимация в обоих случаях «бежит» от
+  // источника (родителя) к цели — направление = откуда тянули линию.
+  const sKind = useStore(s => s.nodeInternals.get(source)?.data?.kind);
+  const tKind = useStore(s => s.nodeInternals.get(target)?.data?.kind);
+  const isAttach = sKind === 'tool' && tKind === 'agent';
   const gid = `builder-edge-grad-${id}`;
 
   const unlink = (e) => {
@@ -61,10 +67,10 @@ export default function BuilderEdge({
         </linearGradient>
       </defs>
 
-      {/* Видимая связь */}
+      {/* Видимая связь. Модификатор --attach для прикрепления инструмента. */}
       <path
         id={id}
-        className="builder-edge__path react-flow__edge-path"
+        className={`builder-edge__path react-flow__edge-path${isAttach ? ' builder-edge__path--attach' : ' builder-edge__path--data'}`}
         d={path}
         fill="none"
         style={{ stroke: `url(#${gid})` }}
