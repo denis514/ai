@@ -96,9 +96,14 @@ export function validateGraph(nodes = [], edges = []) {
   const attachTargets = new Set(); // агенты, к которым прикреплён инструмент
   const attachSources = new Set(); // инструменты, которые куда-то прикреплены
   for (const e of edges) {
-    const lk = linkKind(nodeKind[e.source], nodeKind[e.target]);
+    const sk = nodeKind[e.source], tk = nodeKind[e.target];
+    const lk = linkKind(sk, tk);
     if (lk === LINK.DATA) { dataOut.add(e.source); dataIn.add(e.target); }
     else if (lk === LINK.ATTACH) { attachSources.add(e.source); attachTargets.add(e.target); }
+    // Связь инструмент↔агент пользователь мог нарисовать в любую сторону.
+    // «Перевёрнутый» вариант agent→tool тоже считаем прикреплением: инструмент —
+    // источник способности, агент — получатель.
+    else if (sk === 'agent' && tk === 'tool') { attachSources.add(e.target); attachTargets.add(e.source); }
   }
 
   // Изолированные узлы — без единой связи любого типа.

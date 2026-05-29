@@ -294,10 +294,15 @@ Deno.serve(async (req) => {
         .map((e: Edge) => outputs.get(e.source_client_id)).filter(Boolean);
       let context = incoming.length ? incoming.join('\n\n') : input;
 
-      // Прикреплённые инструменты (ATTACH: tool → этот агент).
+      // Прикреплённые инструменты. Связь инструмент↔агент пользователь мог
+      // нарисовать в любую сторону — учитываем оба направления (другой конец
+      // ребра является инструментом).
       const attachedToolRoles = (edges || [])
-        .filter((e: Edge) => e.target_client_id === id)
-        .map((e: Edge) => byId.get(e.source_client_id))
+        .filter((e: Edge) => e.source_client_id === id || e.target_client_id === id)
+        .map((e: Edge) => {
+          const otherId = e.source_client_id === id ? e.target_client_id : e.source_client_id;
+          return byId.get(otherId);
+        })
         .filter((n): n is Node => !!n && n.node_type === 'tool')
         .map((n) => n.role || '');
 

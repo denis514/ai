@@ -581,19 +581,17 @@ function BuilderAppInner() {
 
   const onConnect = useCallback(
     (params) => {
-      const nodeKind = Object.fromEntries(nodes.map(n => [n.id, n.data?.kind]));
       let { source, target, sourceHandle, targetHandle } = params;
-      const swap = () => {
-        [source, target] = [target, source];
-        [sourceHandle, targetHandle] = [targetHandle, sourceHandle];
-      };
       const origin = connectOriginRef.current;
       // В loose-режиме React Flow может назначить source/target по геометрии.
-      // Делаем source = узел, от которого тянули (родитель DATA-потока).
-      if (origin && target === origin && source !== origin) swap();
-      // Инструмент ↔ агент = прикрепление (ATTACH). Тянуть можно в любую сторону —
-      // связь всегда ориентируем как «инструмент → агент» (агент получает способность).
-      if (nodeKind[source] === 'agent' && nodeKind[target] === 'tool') swap();
+      // Делаем source = узел, ОТ которого тянули. Анимация/градиент идут от него
+      // к цели — ровно так, как пользователь нарисовал линию (в любую сторону,
+      // в т.ч. агент → инструмент). Семантику «инструмент↔агент = способность»
+      // система понимает независимо от направления (см. connectionRules/executor).
+      if (origin && target === origin && source !== origin) {
+        [source, target] = [target, source];
+        [sourceHandle, targetHandle] = [targetHandle, sourceHandle];
+      }
       connectOriginRef.current = null;
       pushHistory();
       setEdges(eds => addEdge(
@@ -601,7 +599,7 @@ function BuilderAppInner() {
         eds,
       ));
     },
-    [setEdges, pushHistory, nodes]
+    [setEdges, pushHistory]
   );
 
   // Совместимость узлов — через движок connectionRules (порты + типы связей).
