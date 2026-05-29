@@ -1866,6 +1866,40 @@
   text-overflow: ellipsis;
 }
 
+/* Свёрнутая консоль — кнопка возврата панели выполнения */
+.builder-app .builder-console-launcher {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  z-index: 11;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.3);
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+.builder-app .builder-console-launcher:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+.builder-app .builder-console-launcher .hgi,
+.builder-app .builder-console-launcher svg { color: var(--text-muted); }
+.builder-app .builder-console-launcher.is-running { border-color: var(--accent, #2563eb); }
+.builder-app .builder-console-launcher__dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent, #2563eb);
+  animation: builder-pulse-dot 1.2s ease-in-out infinite;
+}
+@keyframes builder-pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
 /* Подсказка-причина отказа в соединении (всплывает над status-hint) */
 .builder-app .builder-connect-hint {
   position: absolute;

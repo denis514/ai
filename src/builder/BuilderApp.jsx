@@ -1385,6 +1385,20 @@ function BuilderAppInner() {
           />
         )}
 
+        {/* Свёрнутая консоль — маленькая кнопка снизу, чтобы вернуть панель */}
+        {!execPanelOpen && nodes.length > 0 && (
+          <button
+            type="button"
+            className={`builder-console-launcher ${execStatus === 'running' ? 'is-running' : ''}`}
+            onClick={() => setExecPanelOpen(true)}
+            title={t('builder.exec.open') || 'Открыть консоль'}
+          >
+            <Icon name={execStatus === 'running' ? 'refresh' : 'terminal'} size={13} strokeWidth={1.75} />
+            <span>{t('builder.exec.console') || 'Консоль'}</span>
+            {execStatus === 'running' && <span className="builder-console-launcher__dot" />}
+          </button>
+        )}
+
       </div>
 
       {/* Template Gallery modal */}
