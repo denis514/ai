@@ -60,6 +60,18 @@ import './BuilderApp.css';
 let nodeIdCounter = 1;
 const genNodeId = () => `n${nodeIdCounter++}`;
 
+// Синхронизация счётчика id с уже существующими узлами (после загрузки схемы
+// из БД/localStorage). Без этого genNodeId() выдаёт id вида n1/n2…, которые
+// СОВПАДАЮТ с id загруженных узлов → новый узел «наезжает» на существующий.
+function syncNodeIdCounter(nodes) {
+  let max = 0;
+  for (const n of nodes || []) {
+    const m = /^n(\d+)$/.exec(n?.id || '');
+    if (m) max = Math.max(max, Number(m[1]));
+  }
+  if (nodeIdCounter <= max) nodeIdCounter = max + 1;
+}
+
 /**
  * Строит React Flow nodes/edges из template-объекта.
  * Pure (кроме genNodeId counter). Используется и для загрузки в canvas,
@@ -436,6 +448,7 @@ function BuilderAppInner() {
       const wf = await storageLoad(wfId, userId, EDGE_STYLE);
       if (!wf) return;
       skipDirtyRef.current = true;
+      syncNodeIdCounter(wf.nodes); // не дать новым id столкнуться с загруженными
       setNodes(wf.nodes);
       setEdges(wf.edges);
       setCurrentWorkflowId(wf.id);
