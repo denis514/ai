@@ -477,6 +477,7 @@ function BuilderAppInner() {
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
   const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
   const selectedTelegramNode = selectedNode && selectedNode.data?.role === 'telegram' ? selectedNode : null;
+  const selectedTriggerNode = selectedNode && selectedNode.data?.kind === 'trigger' ? selectedNode : null;
 
   // Удалить узел кнопкой (надёжно, без зависимости от фокуса/клавиш).
   const handleDeleteNode = useCallback((nodeId) => {
@@ -681,6 +682,8 @@ function BuilderAppInner() {
 
       pushHistory();
       setNodes(nds => nds.concat(newNode));
+      // Стартовый узел — сразу выделяем, чтобы рядом открылось окно задачи.
+      if (def.kind === 'trigger') { setSelectedNodeId(newNode.id); setSelectedEdgeId(null); }
     },
     [screenToFlowPosition, setNodes, pushHistory]
   );
@@ -714,6 +717,7 @@ function BuilderAppInner() {
     };
     pushHistory();
     setNodes(nds => nds.concat(newNode));
+    if (def.kind === 'trigger') { setSelectedNodeId(newNode.id); setSelectedEdgeId(null); }
   }, [screenToFlowPosition, setNodes, pushHistory]);
 
   /* ────────── Load template (из галереи) ────────── */
@@ -853,6 +857,12 @@ function BuilderAppInner() {
     if (nodes.length === 0 || execStatus === 'running') return;
     if (runMode === 'real') {
       if (!keyConnected) { requestRealMode(); return; }
+      // Задача пуста — открываем окно у стартового узла, чтобы было видно, куда писать.
+      if (!runInput.trim()) {
+        const trigger = nodes.find(n => n.data?.kind === 'trigger');
+        if (trigger) { setSelectedNodeId(trigger.id); setSelectedEdgeId(null); setSidebarOpen(true); }
+        return;
+      }
       // C1: проверка схемы перед тратой токенов. Ошибки блокируют, предупреждения
       // дают «запустить всё равно». Чисто → запускаем сразу.
       const v = validateGraph(nodes, edges);
@@ -861,7 +871,7 @@ function BuilderAppInner() {
       return;
     }
     runMock();
-  }, [nodes, edges, execStatus, runMode, keyConnected, runMock, requestRealMode, proceedRealRun]);
+  }, [nodes, edges, execStatus, runMode, keyConnected, runInput, runMock, requestRealMode, proceedRealRun]);
 
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
@@ -1245,6 +1255,30 @@ function BuilderAppInner() {
                 />
               </NodeToolbar>
             )}
+
+            {/* Задача рядом со стартовым узлом User Input — точка входа всего flow */}
+            {selectedTriggerNode && (
+              <NodeToolbar
+                nodeId={selectedNodeId}
+                isVisible
+                position={Position.Right}
+                offset={28}
+              >
+                <TriggerTaskPopover
+                  node={selectedTriggerNode}
+                  t={t}
+                  runMode={runMode}
+                  task={runInput}
+                  onTaskChange={setRunInput}
+                  tierId={outputTier}
+                  onTierChange={setOutputTier}
+                  estimate={estimateRun(countAgentNodes(nodes), outputTier)}
+                  vars={runVars}
+                  onVarsChange={setRunVars}
+                  onClose={() => setSelectedNodeId(null)}
+                />
+              </NodeToolbar>
+            )}
           </ReactFlow>
 
           {/* Onboarding empty state — только когда НЕТ активного workflow.
@@ -1344,15 +1378,7 @@ function BuilderAppInner() {
             nodesDone={execStats.done}
             nodesFailed={execStats.failed}
             result={execResult}
-            runSetup={runMode === 'real' ? {
-              task: runInput,
-              onTaskChange: setRunInput,
-              tierId: outputTier,
-              onTierChange: setOutputTier,
-              estimate: estimateRun(countAgentNodes(nodes), outputTier),
-              vars: runVars,
-              onVarsChange: setRunVars,
-            } : null}
+            runSetup={null}
             onStop={handleStopExec}
             onClear={() => { setExecResult(null); handleClearLogs(); }}
             onClose={() => setExecPanelOpen(false)}
@@ -1760,6 +1786,114 @@ function NodePromptPopover({ node, t, locale, onSetPrompt, onClose }) {
           onChange={handleFile}
         />
       </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* TriggerTaskPopover — задача рядом со стартовым узлом User Input */
+/* ─────────────────────────────────────────────────────────── */
+
+function TriggerTaskPopover({ node, t, runMode, task, onTaskChange, tierId, onTierChange, estimate, vars, onVarsChange, onClose }) {
+  const { labelKey } = node.data;
+  return (
+    <div
+      className="builder-prompt-pop nodrag nowheel"
+      onClick={(e) => e.stopPropagation()}
+      onWheelCapture={(e) => e.stopPropagation()}
+    >
+      <div className="builder-prompt-pop__head">
+        <span className="builder-prompt-pop__title">
+          {t(labelKey) || labelKey} · {t('builder.runInput.title') || 'Задача'}
+        </span>
+        <button
+          type="button"
+          className="builder-prompt-pop__close"
+          onClick={onClose}
+          aria-label={t('builder.prompt.close') || 'Close'}
+        >
+          <Icon name="close" size={12} strokeWidth={1.75} />
+        </button>
+      </div>
+      <p className="builder-prompt-pop__hint">
+        {t('builder.runInput.startHint') || 'Это вход всей схемы. Опиши задачу — она пойдёт по стрелкам к узлам.'}
+      </p>
+      <textarea
+        className="builder-prompt-pop__area"
+        value={task}
+        onChange={(e) => onTaskChange(e.target.value)}
+        placeholder={t('builder.runInput.placeholder') || 'Опиши задачу, вставь текст, задай вопрос…'}
+        rows={4}
+        autoFocus
+      />
+
+      {runMode === 'real' && (
+        <div className="builder-tier builder-tier--compact" style={{ marginTop: 10 }}>
+          <div className="builder-tier__opts">
+            {Object.values(OUTPUT_TIERS).map(tier => (
+              <button
+                key={tier.id}
+                type="button"
+                role="radio"
+                aria-checked={tierId === tier.id}
+                className={`builder-tier__opt ${tierId === tier.id ? 'is-active' : ''}`}
+                onClick={() => onTierChange(tier.id)}
+                title={t(tier.descKey) || ''}
+              >
+                <span className="builder-tier__opt-name">{t(tier.labelKey) || tier.id.toUpperCase()}</span>
+              </button>
+            ))}
+          </div>
+          {estimate && (
+            <span className="builder-exec__setup-est">
+              ≈ {estimate.totalMax.toLocaleString()} {t('builder.runInput.tokens') || 'tokens'}
+              {' · '}≈ ${estimate.costUsd < 0.01 ? '0.01' : estimate.costUsd.toFixed(2)}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Переменные {{ключ}} — для переиспользуемых схем */}
+      {runMode === 'real' && onVarsChange && (
+        <div className="builder-vars">
+          <div className="builder-vars__head">
+            <span>{t('builder.vars.title') || 'Variables'}</span>
+            <span className="builder-vars__hint">{t('builder.vars.hint') || 'Use {{name}} in the task or instructions'}</span>
+          </div>
+          {(vars || []).map((row, i) => (
+            <div className="builder-vars__row" key={i}>
+              <input
+                className="builder-name-modal__input builder-vars__key"
+                value={row.key}
+                onChange={(e) => { const n = [...vars]; n[i] = { ...n[i], key: e.target.value }; onVarsChange(n); }}
+                placeholder={t('builder.vars.keyPh') || 'name'}
+              />
+              <input
+                className="builder-name-modal__input builder-vars__val"
+                value={row.value}
+                onChange={(e) => { const n = [...vars]; n[i] = { ...n[i], value: e.target.value }; onVarsChange(n); }}
+                placeholder={t('builder.vars.valPh') || 'value'}
+              />
+              <button
+                type="button"
+                className="builder-vars__del"
+                onClick={() => onVarsChange(vars.filter((_, j) => j !== i))}
+                aria-label={t('builder.vars.remove') || 'Remove variable'}
+              >
+                <Icon name="close" size={12} strokeWidth={2} />
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost builder-btn--small builder-vars__add"
+            onClick={() => onVarsChange([...(vars || []), { key: '', value: '' }])}
+          >
+            <Icon name="plus" size={12} strokeWidth={2} />
+            <span>{t('builder.vars.add') || 'Add variable'}</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
