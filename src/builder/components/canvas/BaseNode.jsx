@@ -27,12 +27,14 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 function BaseNodeInner({ data, selected }) {
   const t = useT();
-  const { icon, color, labelKey, kind, status = 'idle', orderLevel, hasPrompt, unlinkedOut, unlinkedIn } = data || {};
+  const { icon, color, labelKey, kind, status = 'idle', orderLevel, hasPrompt, unlinkedOut, unlinkedIn, condValue } = data || {};
 
+  const isLogic = kind === 'logic';
   // target-порты (вход): сверху + слева — для всех кроме trigger.
   // source-порты (выход): снизу + справа — для всех кроме output.
+  // logic (Condition): вход сверху + ДВА подписанных выхода (Да/Нет) снизу.
   const showIn = kind !== 'trigger';
-  const showOut = kind !== 'output';
+  const showOut = kind !== 'output' && !isLogic;
   const inPulse = unlinkedIn ? 'is-pulsing' : '';
   const outPulse = unlinkedOut ? 'is-pulsing' : '';
 
@@ -79,6 +81,9 @@ function BaseNodeInner({ data, selected }) {
           <Icon name={icon} size={16} strokeWidth={1.5} />
         </span>
         <span className="builder-node__label">{t(labelKey) || labelKey || ''}</span>
+        {isLogic && condValue ? (
+          <span className="builder-node__cond" title={condValue}>«{condValue}»</span>
+        ) : null}
         {status !== 'idle' && (
           <span
             className={`builder-node__status builder-node__status--${status}`}
@@ -107,6 +112,34 @@ function BaseNodeInner({ data, selected }) {
           className="builder-node__handle builder-node__handle--right"
           title={t('builder.connectHint') || 'Перетащите отсюда, чтобы соединить'}
         />
+      )}
+
+      {/* Condition: два подписанных выхода — «Да» (true) и «Нет» (false) */}
+      {isLogic && (
+        <>
+          <Handle
+            id="true"
+            type="source"
+            position={Position.Bottom}
+            style={{ left: '30%' }}
+            className="builder-node__handle builder-node__handle--out builder-node__handle--true"
+            title={t('builder.condition.trueHint') || 'Ветка «Да» — если условие выполнено'}
+          />
+          <span className="builder-node__branch builder-node__branch--true" aria-hidden="true">
+            {t('builder.condition.yes') || 'Да'}
+          </span>
+          <Handle
+            id="false"
+            type="source"
+            position={Position.Bottom}
+            style={{ left: '70%' }}
+            className="builder-node__handle builder-node__handle--out builder-node__handle--false"
+            title={t('builder.condition.falseHint') || 'Ветка «Нет» — если условие не выполнено'}
+          />
+          <span className="builder-node__branch builder-node__branch--false" aria-hidden="true">
+            {t('builder.condition.no') || 'Нет'}
+          </span>
+        </>
       )}
     </div>
   );

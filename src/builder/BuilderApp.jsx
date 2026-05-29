@@ -477,6 +477,7 @@ function BuilderAppInner() {
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
   const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
   const selectedTelegramNode = selectedNode && selectedNode.data?.role === 'telegram' ? selectedNode : null;
+  const selectedConditionNode = selectedNode && selectedNode.data?.kind === 'logic' ? selectedNode : null;
   const selectedTriggerNode = selectedNode && selectedNode.data?.kind === 'trigger' ? selectedNode : null;
 
   // Удалить узел кнопкой (надёжно, без зависимости от фокуса/клавиш).
@@ -517,6 +518,13 @@ function BuilderAppInner() {
   const handleSetChatId = useCallback((nodeId, value) => {
     setNodes(nds => nds.map(n =>
       n.id === nodeId ? { ...n, data: { ...n.data, chatId: value } } : n
+    ));
+  }, [setNodes]);
+
+  // Настройка узла «Условие»: оператор + значение (сохраняются в config).
+  const handleSetCondition = useCallback((nodeId, patch) => {
+    setNodes(nds => nds.map(n =>
+      n.id === nodeId ? { ...n, data: { ...n.data, ...patch } } : n
     ));
   }, [setNodes]);
 
@@ -1256,6 +1264,23 @@ function BuilderAppInner() {
               </NodeToolbar>
             )}
 
+            {/* Конфиг узла «Условие» — оператор + значение */}
+            {selectedConditionNode && (
+              <NodeToolbar
+                nodeId={selectedNodeId}
+                isVisible
+                position={Position.Right}
+                offset={28}
+              >
+                <ConditionConfigPopover
+                  node={selectedConditionNode}
+                  t={t}
+                  onSet={handleSetCondition}
+                  onClose={() => setSelectedNodeId(null)}
+                />
+              </NodeToolbar>
+            )}
+
             {/* Задача рядом со стартовым узлом User Input — точка входа всего flow */}
             {selectedTriggerNode && (
               <NodeToolbar
@@ -1962,6 +1987,62 @@ function TelegramConfigPopover({ node, t, telegramConnected, onSetChatId, onConn
           />
         </>
       )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* ConditionConfigPopover — правило ветвления узла «Условие»     */
+/* ─────────────────────────────────────────────────────────── */
+
+function ConditionConfigPopover({ node, t, onSet, onClose }) {
+  const operator = node.data?.operator || 'contains';
+  const condValue = node.data?.condValue || '';
+  const OPS = [
+    { id: 'contains', label: t('builder.condition.opContains') || 'содержит' },
+    { id: 'not_contains', label: t('builder.condition.opNotContains') || 'не содержит' },
+    { id: 'equals', label: t('builder.condition.opEquals') || 'равно' },
+  ];
+  return (
+    <div
+      className="builder-prompt-pop nodrag nowheel"
+      onClick={(e) => e.stopPropagation()}
+      onWheelCapture={(e) => e.stopPropagation()}
+    >
+      <div className="builder-prompt-pop__head">
+        <span className="builder-prompt-pop__title">
+          {t('builder.condition.title') || 'Условие — куда пойдёт поток'}
+        </span>
+        <button
+          type="button"
+          className="builder-prompt-pop__close"
+          onClick={onClose}
+          aria-label={t('builder.prompt.close') || 'Закрыть'}
+        >
+          <Icon name="close" size={12} strokeWidth={1.75} />
+        </button>
+      </div>
+      <p className="builder-prompt-pop__hint">
+        {t('builder.condition.hint') || 'Если результат предыдущего узла проходит проверку — поток идёт по ветке «Да», иначе — «Нет».'}
+      </p>
+      <div className="builder-cond__row">
+        <span className="builder-cond__label">{t('builder.condition.ifResult') || 'Если результат'}</span>
+        <select
+          className="builder-cond__op"
+          value={operator}
+          onChange={(e) => onSet(node.id, { operator: e.target.value })}
+        >
+          {OPS.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
+        </select>
+      </div>
+      <input
+        type="text"
+        className="builder-prompt-pop__area"
+        value={condValue}
+        onChange={(e) => onSet(node.id, { condValue: e.target.value })}
+        placeholder={t('builder.condition.placeholder') || 'например: ошибка, успех, да…'}
+        autoFocus
+      />
     </div>
   );
 }

@@ -1457,6 +1457,48 @@
   color: #fff;
 }
 
+/* ── Узел «Условие» (logic) — ветки Да/Нет, значение, пропуск ── */
+.builder-app .builder-node__cond {
+  font-size: 11px;
+  color: var(--text-muted);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.builder-app .builder-node__branch {
+  position: absolute;
+  bottom: -16px;
+  font-size: 10px;
+  font-weight: 600;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.builder-app .builder-node__branch--true { left: 30%; color: var(--success, #2faa6a); }
+.builder-app .builder-node__branch--false { left: 70%; color: var(--danger, #e2484f); }
+.builder-app .builder-node__handle--true { background: var(--success, #2faa6a) !important; }
+.builder-app .builder-node__handle--false { background: var(--danger, #e2484f) !important; }
+/* Пропущенный узел (невыбранная ветка) — приглушён */
+.builder-app .builder-node--status-skipped { opacity: 0.45; filter: grayscale(0.6); }
+
+/* Строка настройки условия */
+.builder-app .builder-cond__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 6px;
+}
+.builder-app .builder-cond__label { font-size: 12px; color: var(--text-muted); }
+.builder-app .builder-cond__op {
+  flex: 1;
+  padding: 5px 8px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
 .builder-app .builder-node__icon {
   display: inline-flex;
   align-items: center;

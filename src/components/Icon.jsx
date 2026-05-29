@@ -75,6 +75,7 @@ import {
   SidebarBottomIcon,
   ArrowExpandDiagonal01Icon,
   ArrowShrink01Icon,
+  FlowCircleIcon,
   Bookmark01Icon,
   BookmarkCheck01Icon,
   LinkSquare01Icon,
@@ -181,6 +182,7 @@ const REGISTRY = {
   dock:        SidebarBottomIcon,          // ▭ вернуть в док снизу
   fullscreen:  ArrowExpandDiagonal01Icon,  // ⤢ во весь экран
   restore:     ArrowShrink01Icon,          // ⤡ свернуть из полноэкрана
+  branch:      FlowCircleIcon,             // ⌥ ветвление / условие
   bookmark:    Bookmark01Icon,
   'bookmark-filled': BookmarkCheck01Icon,
   'check-circle':    CheckmarkCircle01Icon,  // бейдж «просмотрено»

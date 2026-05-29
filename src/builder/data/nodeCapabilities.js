@@ -50,6 +50,12 @@ export const KIND_PORTS = {
     inputs: [{ type: LINK.DATA, max: Infinity, required: true }],
     outputs: [],
   },
+  // logic — управляющие узлы (Condition и т.п.): вход DATA, выходы DATA по веткам
+  // (true/false). Ветка кодируется в edge.sourceHandle, не отдельными портами в модели.
+  logic: {
+    inputs: [{ type: LINK.DATA, max: Infinity, required: false }],
+    outputs: [{ type: LINK.DATA, max: Infinity }],
+  },
 };
 
 /**

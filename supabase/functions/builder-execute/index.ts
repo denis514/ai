@@ -39,7 +39,16 @@ function langDirective(locale: string): string {
 }
 
 type Node = { client_id: string; node_type: string; role: string | null; def_id: string; config?: Record<string, unknown> };
-type Edge = { source_client_id: string; target_client_id: string };
+type Edge = { source_client_id: string; target_client_id: string; config?: Record<string, unknown> };
+
+// Ключ ребра (с учётом ветки sourceHandle) — для блокировки невыбранной ветки.
+function edgeKey(e: Edge): string {
+  return `${e.source_client_id}>${e.target_client_id}>${(e.config?.sourceHandle as string) || ''}`;
+}
+// Ветка ребра, выходящего из Condition: 'false' только если явно помечено, иначе 'true'.
+function edgeBranch(e: Edge): 'true' | 'false' {
+  return (e.config?.sourceHandle as string) === 'false' ? 'false' : 'true';
+}
 
 // Топологическая сортировка (Kahn). Возвращает порядок client_id.
 function topoOrder(nodes: Node[], edges: Edge[]): string[] {
@@ -211,7 +220,7 @@ Deno.serve(async (req) => {
   // Узлы и рёбра.
   const [{ data: nodes }, { data: edges }] = await Promise.all([
     admin.from('builder_workflow_nodes').select('client_id, node_type, role, def_id, config').eq('workflow_id', workflowId),
-    admin.from('builder_workflow_edges').select('source_client_id, target_client_id').eq('workflow_id', workflowId),
+    admin.from('builder_workflow_edges').select('source_client_id, target_client_id, config').eq('workflow_id', workflowId),
   ]);
   if (!nodes || nodes.length === 0) return json({ error: 'empty_workflow' }, 400);
   if (nodes.length > MAX_NODES) return json({ error: 'too_many_nodes' }, 400);
@@ -231,15 +240,35 @@ Deno.serve(async (req) => {
   const order = topoOrder(nodes as Node[], (edges || []) as Edge[]);
   const byId = new Map((nodes as Node[]).map(n => [n.client_id, n]));
   const outputs = new Map<string, string>(); // client_id → text result
+  const blocked = new Set<string>();         // ключи рёбер невыбранной ветки Condition
   let totalTokens = 0;
   let failed = false;
   let lastText = '';
+
+  const allEdges = (edges || []) as Edge[];
+  // DATA-входы узла (рёбра-данные; инструменты прикрепляются через ATTACH и не считаются).
+  const dataInEdges = (id: string) =>
+    allEdges.filter(e => e.target_client_id === id && byId.get(e.source_client_id)?.node_type !== 'tool');
 
   await log(null, 'info', input ? `Starting run with input: "${input.slice(0, 80)}"` : 'Starting run');
 
   for (const id of order) {
     const node = byId.get(id);
     if (!node) continue;
+
+    // Ветвление: если у узла есть входы-данные, но ни один из них не «активен»
+    // (источник не отработал или ребро заблокировано невыбранной веткой) — пропускаем.
+    if (node.node_type !== 'trigger') {
+      const din = dataInEdges(id);
+      if (din.length > 0) {
+        const active = din.some(e => outputs.has(e.source_client_id) && !blocked.has(edgeKey(e)));
+        if (!active) {
+          await log(id, 'info', 'Пропущено — ветка не выбрана', { status: 'skipped' });
+          continue;
+        }
+      }
+    }
+
     await log(id, 'info', '', { status: 'running' });
 
     try {
@@ -248,9 +277,33 @@ Deno.serve(async (req) => {
         await log(id, 'info', 'Input received', { status: 'completed' });
         continue;
       }
+      if (node.node_type === 'logic') {
+        // Condition: берём входной текст, проверяем правило, выбираем ветку.
+        const inText = dataInEdges(id)
+          .filter(e => !blocked.has(edgeKey(e)))
+          .map(e => outputs.get(e.source_client_id)).filter(Boolean).join('\n\n') || input;
+        const op = String(node.config?.operator || 'contains');
+        const val = String(node.config?.condValue || '').trim();
+        const hay = inText.toLowerCase();
+        const needle = val.toLowerCase();
+        let result = true;
+        if (op === 'contains') result = needle ? hay.includes(needle) : true;
+        else if (op === 'not_contains') result = needle ? !hay.includes(needle) : true;
+        else if (op === 'equals') result = needle ? hay.trim() === needle : true;
+        const taken: 'true' | 'false' = result ? 'true' : 'false';
+        outputs.set(id, inText); // пропускаем данные дальше по выбранной ветке
+        // Блокируем рёбра невыбранной ветки.
+        for (const e of allEdges.filter(e => e.source_client_id === id)) {
+          if (edgeBranch(e) !== taken) blocked.add(edgeKey(e));
+        }
+        await log(id, 'info',
+          `Условие: ${result ? '«Да»' : '«Нет»'}${val ? ` (${op}: «${val}»)` : ''}`,
+          { status: 'completed', branch: taken });
+        continue;
+      }
       if (node.node_type === 'output') {
-        // Собираем результаты входящих узлов.
-        const incoming = (edges || []).filter((e: Edge) => e.target_client_id === id)
+        // Собираем результаты входящих узлов (без заблокированных веток).
+        const incoming = (edges || []).filter((e: Edge) => e.target_client_id === id && !blocked.has(edgeKey(e)))
           .map((e: Edge) => outputs.get(e.source_client_id)).filter(Boolean);
         const collected = incoming.join('\n\n---\n\n') || lastText;
         lastText = collected;
@@ -302,8 +355,8 @@ Deno.serve(async (req) => {
         await log(id, 'info', note, { status: 'completed' });
         continue;
       }
-      // agent → Claude
-      const incoming = (edges || []).filter((e: Edge) => e.target_client_id === id)
+      // agent → Claude (без заблокированных веток)
+      const incoming = (edges || []).filter((e: Edge) => e.target_client_id === id && !blocked.has(edgeKey(e)))
         .map((e: Edge) => outputs.get(e.source_client_id)).filter(Boolean);
       let context = incoming.length ? incoming.join('\n\n') : input;
 

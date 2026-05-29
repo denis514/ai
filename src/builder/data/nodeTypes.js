@@ -171,6 +171,17 @@ export const NODE_DEFS = {
     atlasAnchor: 'mcp',
   },
 
+  // ────────── Logic (управление потоком) ──────────
+  'logic-condition': {
+    kind: 'logic',
+    role: 'condition',
+    icon: 'branch',
+    color: '#f59e0b',
+    labelKey: 'builder.node.condition',
+    descKey: 'builder.node.condition_desc',
+    atlasAnchor: 'sys-quality-gates',
+  },
+
   // ────────── Flow ──────────
   'trigger-input': {
     kind: 'trigger',
@@ -216,6 +227,11 @@ export const TOOLBOX_GROUPS = [
     items: ['tool-search', 'tool-file', 'tool-vision', 'tool-memory', 'tool-code-exec', 'tool-computer', 'tool-citations', 'tool-mcp'],
   },
   {
+    id: 'logic',
+    labelKey: 'builder.toolbox.logic',
+    items: ['logic-condition'],
+  },
+  {
     id: 'flow',
     labelKey: 'builder.toolbox.flow',
     items: ['trigger-input', 'output-text', 'output-telegram'],
@@ -237,4 +253,5 @@ export const KIND_TO_NODE_TYPE = {
   tool: 'toolNode',
   trigger: 'triggerNode',
   output: 'outputNode',
+  logic: 'conditionNode',
 };

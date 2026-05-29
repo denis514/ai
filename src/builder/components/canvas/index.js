@@ -15,4 +15,5 @@ export const nodeTypes = {
   toolNode: BaseNode,
   triggerNode: BaseNode,
   outputNode: BaseNode,
+  conditionNode: BaseNode,
 };
