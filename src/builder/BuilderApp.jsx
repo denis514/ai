@@ -19,6 +19,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data/nodeTypes.js';
 import { nodeTypes } from './components/canvas/index.js';
 import NodePalette from './components/canvas/NodePalette.jsx';
+import HelpPanel from './components/panels/HelpPanel.jsx';
 import ConnectionLine from './components/canvas/ConnectionLine.jsx';
 import BuilderEdge from './components/canvas/BuilderEdge.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
@@ -1222,6 +1223,17 @@ function BuilderAppInner() {
                 <Icon name="books" size={18} strokeWidth={1.6} />
                 <span>{t('builder.gallery.title') || 'Шаблоны'}</span>
               </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={toolboxTab === 'help'}
+                className={`builder-toolrail__tab ${toolboxTab === 'help' ? 'is-active' : ''}`}
+                onClick={() => setToolboxTab('help')}
+                title={t('builder.help.title') || 'Помощь'}
+              >
+                <Icon name="idea" size={18} strokeWidth={1.6} />
+                <span>{t('builder.help.title') || 'Помощь'}</span>
+              </button>
             </div>
 
             {/* Широкая панель — содержимое зависит от вкладки */}
@@ -1229,6 +1241,8 @@ function BuilderAppInner() {
               <div className="builder-toolbox__header">
                 <span>{toolboxTab === 'templates'
                   ? (t('builder.gallery.title') || 'Шаблоны')
+                  : toolboxTab === 'help'
+                  ? (t('builder.help.title') || 'Помощь')
                   : (t('builder.toolbox.title') || 'Узлы')}</span>
                 <button
                   type="button"
@@ -1240,7 +1254,9 @@ function BuilderAppInner() {
                   <Icon name="panel-left" size={15} strokeWidth={1.6} />
                 </button>
               </div>
-              {toolboxTab === 'nodes' ? (
+              {toolboxTab === 'help' ? (
+                <HelpPanel t={t} />
+              ) : toolboxTab === 'nodes' ? (
                 <NodePalette
                   groups={TOOLBOX_GROUPS}
                   defs={NODE_DEFS}
