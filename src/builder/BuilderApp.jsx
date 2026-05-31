@@ -1059,8 +1059,7 @@ function BuilderAppInner() {
         </button>
 
         <div className="builder-header__title">
-          <Icon name="sparkles" size={16} strokeWidth={1.5} />
-          <span>{t('builder.title') || 'Agent Builder'}</span>
+          <span>{t('builder.titleShort') || 'Builder'}</span>
           <span className="builder-header__beta">BETA</span>
           {nodes.length > 0 && (
             <span className="builder-header__counter">
@@ -1069,27 +1068,29 @@ function BuilderAppInner() {
           )}
         </div>
 
+        {/* Центр шапки: Демо / Реально */}
+        <div className="builder-header__center">
+          <div className="builder-runmode" role="group" aria-label={t('builder.runmode.aria') || 'Run mode'}>
+            <button
+              type="button"
+              className={`builder-runmode__opt ${runMode === 'mock' ? 'is-active' : ''}`}
+              onClick={() => setRunMode('mock')}
+            >
+              {t('builder.runmode.mock') || 'Demo'}
+            </button>
+            <button
+              type="button"
+              className={`builder-runmode__opt ${runMode === 'real' ? 'is-active' : ''}`}
+              onClick={() => keyConnected ? setRunMode('real') : requestRealMode()}
+              title={keyConnected ? '' : (t('builder.runmode.needKey') || 'Connect a Claude key first')}
+            >
+              {t('builder.runmode.real') || 'Real'}
+              {!keyConnected && <Icon name="lock" size={11} strokeWidth={1.75} />}
+            </button>
+          </div>
+        </div>
+
         <div className="builder-header__actions">
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
-            onClick={undo}
-            disabled={!canUndo}
-            title={t('builder.undo') || 'Undo (Cmd/Ctrl+Z)'}
-            aria-label={t('builder.undo') || 'Undo'}
-          >
-            <Icon name="arrow-left" size={14} strokeWidth={1.75} />
-          </button>
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
-            onClick={redo}
-            disabled={!canRedo}
-            title={t('builder.redo') || 'Redo (Cmd/Ctrl+Shift+Z)'}
-            aria-label={t('builder.redo') || 'Redo'}
-          >
-            <Icon name="arrow-right" size={14} strokeWidth={1.75} />
-          </button>
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
@@ -1111,11 +1112,12 @@ function BuilderAppInner() {
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
-            onClick={() => setGalleryOpen(true)}
-            title={t('builder.gallery.open') || 'Open templates'}
+            onClick={() => setExecPanelOpen(v => !v)}
+            aria-pressed={execPanelOpen}
+            title={t('builder.header.toggleExec') || 'Toggle execution panel'}
+            aria-label={t('builder.header.toggleExec') || 'Toggle execution panel'}
           >
-            <Icon name="books" size={14} strokeWidth={1.5} />
-            <span>{t('builder.gallery.openShort') || 'Templates'}</span>
+            <Icon name="terminal" size={14} strokeWidth={1.5} />
           </button>
           {nodes.length > 0 && (
             <button
@@ -1127,17 +1129,7 @@ function BuilderAppInner() {
               <Icon name="close" size={14} strokeWidth={1.5} />
             </button>
           )}
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
-            onClick={() => setExecPanelOpen(v => !v)}
-            aria-pressed={execPanelOpen}
-            title={t('builder.header.toggleExec') || 'Toggle execution panel'}
-            aria-label={t('builder.header.toggleExec') || 'Toggle execution panel'}
-          >
-            <Icon name="terminal" size={14} strokeWidth={1.5} />
-          </button>
-          {/* Workflow switcher dropdown */}
+          {/* Workflow switcher dropdown — крайний правый ряд */}
           <div className="builder-header__switcher-wrap">
             <button
               type="button"
@@ -1161,7 +1153,6 @@ function BuilderAppInner() {
                 onNew={handleNewWorkflow}
                 onDeleted={(deletedId) => {
                   setWfVersion(v => v + 1); // обновить «Недавние» в центре
-                  // Если удалили текущий открытый — сбрасываем привязку.
                   if (deletedId && deletedId === currentWorkflowId) {
                     setCurrentWorkflowId(null);
                     setWorkflowName('');
@@ -1172,60 +1163,25 @@ function BuilderAppInner() {
             )}
           </div>
 
-          {/* Save */}
+          {/* Сохранить — круглая иконка-кнопка в правом верхнем углу */}
           <button
             type="button"
-            className={`builder-btn builder-btn--ghost builder-save builder-save--${saveStatus}`}
+            className={`builder-save-round builder-save--${saveStatus}`}
             onClick={doSave}
             disabled={nodes.length === 0 || saveStatus === 'saving'}
-            title={t('builder.save.hint') || 'Save workflow'}
+            title={
+              saveStatus === 'saving' ? (t('builder.save.saving') || 'Сохранение…')
+              : saveStatus === 'saved' ? (t('builder.save.saved') || 'Сохранено')
+              : saveStatus === 'error' ? (t('builder.save.error') || 'Повторить')
+              : (t('builder.save.hint') || 'Сохранить схему')
+            }
+            aria-label={t('builder.save.label') || 'Сохранить'}
           >
             <Icon
               name={saveStatus === 'saved' ? 'check' : saveStatus === 'saving' ? 'refresh' : saveStatus === 'error' ? 'question' : 'archive'}
-              size={14}
-              strokeWidth={1.5}
+              size={15}
+              strokeWidth={1.6}
             />
-            <span>{
-              saveStatus === 'saving' ? (t('builder.save.saving') || 'Saving…')
-              : saveStatus === 'saved' ? (t('builder.save.saved') || 'Saved')
-              : saveStatus === 'error' ? (t('builder.save.error') || 'Retry')
-              : (t('builder.save.label') || 'Save')
-            }</span>
-          </button>
-
-          {/* Режим запуска: Демо / Реально (Реально доступно только с ключом) */}
-          <div className="builder-runmode" role="group" aria-label={t('builder.runmode.aria') || 'Run mode'}>
-            <button
-              type="button"
-              className={`builder-runmode__opt ${runMode === 'mock' ? 'is-active' : ''}`}
-              onClick={() => setRunMode('mock')}
-            >
-              {t('builder.runmode.mock') || 'Demo'}
-            </button>
-            <button
-              type="button"
-              className={`builder-runmode__opt ${runMode === 'real' ? 'is-active' : ''}`}
-              onClick={() => keyConnected ? setRunMode('real') : requestRealMode()}
-              title={keyConnected ? '' : (t('builder.runmode.needKey') || 'Connect a Claude key first')}
-            >
-              {t('builder.runmode.real') || 'Real'}
-              {!keyConnected && <Icon name="lock" size={11} strokeWidth={1.75} />}
-            </button>
-          </div>
-
-          <button
-            type="button"
-            className={`builder-btn builder-btn--primary ${runMode === 'real' ? 'builder-btn--real' : ''}`}
-            onClick={handleRun}
-            disabled={nodes.length === 0 || execStatus === 'running'}
-            title={runMode === 'real'
-              ? (t('builder.runmode.realHint') || 'Runs on real Claude API — uses tokens')
-              : (t('builder.header.runHint') || 'Run (R)')}
-          >
-            <Icon name={execStatus === 'running' ? 'refresh' : 'flash'} size={14} strokeWidth={1.5} />
-            <span>{execStatus === 'running'
-              ? (t('builder.running') || 'Running…')
-              : (t('builder.run') || 'Run')}</span>
           </button>
         </div>
       </header>
@@ -1254,6 +1210,7 @@ function BuilderAppInner() {
               onShow={handleTooltipShow}
               onHide={handleTooltipHide}
               onAdd={addNodeAtCenter}
+              onOpenTemplates={() => setGalleryOpen(true)}
             />
           </aside>
         )}
@@ -1286,6 +1243,22 @@ function BuilderAppInner() {
               <Icon name="arrow-left" size={14} strokeWidth={1.75} />
             </button>
           )}
+
+          {/* Запуск — всегда внизу-справа холста (над панелью выполнения, если открыта) */}
+          <button
+            type="button"
+            className={`builder-run-fab ${runMode === 'real' ? 'builder-run-fab--real' : ''}`}
+            onClick={handleRun}
+            disabled={nodes.length === 0 || execStatus === 'running'}
+            title={runMode === 'real'
+              ? (t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены')
+              : (t('builder.header.runHint') || 'Запуск (R)')}
+          >
+            <Icon name={execStatus === 'running' ? 'refresh' : 'flash'} size={16} strokeWidth={1.6} />
+            <span>{execStatus === 'running'
+              ? (t('builder.running') || 'Выполняется…')
+              : (t('builder.run') || 'Запуск')}</span>
+          </button>
           <ReactFlow
             nodes={nodes}
             edges={edges}

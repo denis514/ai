@@ -19,7 +19,7 @@ import ToolboxItem from './ToolboxItem.jsx';
  *  • onShow/onHide — управление tooltip (как у старого toolbox)
  *  • onAdd(defId) — клик по плитке: добавить узел в центр холста
  */
-export default function NodePalette({ groups, defs, onShow, onHide, onAdd }) {
+export default function NodePalette({ groups, defs, onShow, onHide, onAdd, onOpenTemplates }) {
   const t = useT();
   const [query, setQuery] = useState('');
 
@@ -99,6 +99,22 @@ export default function NodePalette({ groups, defs, onShow, onHide, onAdd }) {
             </div>
           </div>
         ))}
+        {/* Шаблоны — готовые сценарии, внизу палитры под группами узлов */}
+        {onOpenTemplates && !q && (
+          <div className="builder-palette__group">
+            <div className="builder-palette__group-label">
+              {t('builder.toolbox.templates') || 'Шаблоны'}
+            </div>
+            <button
+              type="button"
+              className="builder-palette__templates"
+              onClick={onOpenTemplates}
+            >
+              <Icon name="books" size={15} strokeWidth={1.5} />
+              <span>{t('builder.gallery.openShort') || 'Готовые шаблоны'}</span>
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="builder-palette__hint">

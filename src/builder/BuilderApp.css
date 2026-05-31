@@ -24,6 +24,7 @@
 
 .builder-app .builder-header {
   flex: 0 0 auto;
+  position: relative;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -32,6 +33,78 @@
   background: var(--surface);
   z-index: 20;
 }
+
+/* Центр шапки: переключатель Демо/Реально строго по центру */
+.builder-app .builder-header__center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Круглая кнопка «Сохранить» в правом верхнем углу */
+.builder-app .builder-save-round {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, transform 80ms ease;
+}
+.builder-app .builder-save-round:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.builder-app .builder-save-round:active { transform: scale(0.94); }
+.builder-app .builder-save-round:disabled { opacity: 0.5; cursor: default; }
+.builder-app .builder-save-round.builder-save--saved { color: var(--success, #16a34a); border-color: color-mix(in srgb, var(--success, #16a34a) 40%, var(--border)); }
+.builder-app .builder-save-round.builder-save--error { color: var(--danger, #dc2626); border-color: color-mix(in srgb, var(--danger, #dc2626) 40%, var(--border)); }
+
+/* Плавающая кнопка «Запуск» — низ-право холста */
+.builder-app .builder-run-fab {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 24px;
+  background: var(--accent, #2563eb);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.32);
+  transition: transform 80ms ease, box-shadow 0.15s ease, background 0.12s ease;
+}
+.builder-app .builder-run-fab:hover { background: color-mix(in srgb, var(--accent, #2563eb) 90%, #000); }
+.builder-app .builder-run-fab:active { transform: scale(0.96); }
+.builder-app .builder-run-fab:disabled { opacity: 0.5; cursor: default; box-shadow: none; }
+.builder-app .builder-run-fab--real { background: var(--danger, #e2484f); box-shadow: 0 6px 20px rgba(226, 72, 79, 0.32); }
+.builder-app .builder-run-fab--real:hover { background: color-mix(in srgb, var(--danger, #e2484f) 90%, #000); }
+
+/* «Шаблоны» внизу палитры */
+.builder-app .builder-palette__templates {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.12s ease, color 0.12s ease;
+}
+.builder-app .builder-palette__templates:hover { border-color: var(--accent, #2563eb); color: var(--accent, #2563eb); }
 
 .builder-app .builder-header__back {
   display: inline-flex;
