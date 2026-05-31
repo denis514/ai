@@ -600,6 +600,8 @@ function BuilderAppInner() {
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
   const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
   const selectedTelegramNode = selectedNode && selectedNode.data?.role === 'telegram' ? selectedNode : null;
+  const selectedToolNode = selectedNode && (selectedNode.data?.role === 'file_read' || selectedNode.data?.role === 'vision')
+    ? selectedNode : null;
   const selectedConditionNode = selectedNode && selectedNode.data?.kind === 'logic' && selectedNode.data?.role !== 'loop' ? selectedNode : null;
   const selectedLoopNode = selectedNode && selectedNode.data?.role === 'loop' ? selectedNode : null;
   const selectedTriggerNode = selectedNode && selectedNode.data?.kind === 'trigger' ? selectedNode : null;
@@ -642,6 +644,13 @@ function BuilderAppInner() {
   const handleSetChatId = useCallback((nodeId, value) => {
     setNodes(nds => nds.map(n =>
       n.id === nodeId ? { ...n, data: { ...n.data, chatId: value } } : n
+    ));
+  }, [setNodes]);
+
+  // Настройка инструмента (Файлы/Vision): загруженный контент в config узла.
+  const handleSetToolData = useCallback((nodeId, patch) => {
+    setNodes(nds => nds.map(n =>
+      n.id === nodeId ? { ...n, data: { ...n.data, ...patch } } : n
     ));
   }, [setNodes]);
 
@@ -1487,6 +1496,23 @@ function BuilderAppInner() {
               </NodeToolbar>
             )}
 
+            {/* Конфиг инструмента Файлы/Vision — загрузка контента */}
+            {selectedToolNode && (
+              <NodeToolbar
+                nodeId={selectedNodeId}
+                isVisible
+                position={Position.Right}
+                offset={28}
+              >
+                <ToolDataPopover
+                  node={selectedToolNode}
+                  t={t}
+                  onSet={handleSetToolData}
+                  onClose={() => setSelectedNodeId(null)}
+                />
+              </NodeToolbar>
+            )}
+
             {/* Конфиг узла «Условие» — оператор + значение */}
             {selectedConditionNode && (
               <NodeToolbar
@@ -2274,6 +2300,96 @@ function TelegramConfigPopover({ node, t, telegramConnected, onSetChatId, onConn
           />
         </>
       )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* ToolDataPopover — загрузка контента для Файлы / Vision        */
+/* ─────────────────────────────────────────────────────────── */
+
+const MAX_FILE_CHARS = 12000;
+const MAX_IMG_BYTES = 1.5 * 1024 * 1024; // 1.5 МБ
+
+function ToolDataPopover({ node, t, onSet, onClose }) {
+  const fileRef = useRef(null);
+  const isVision = node.data?.role === 'vision';
+  const { fileName, imageName } = node.data || {};
+
+  const onFile = (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    if (isVision) {
+      if (!file.type.startsWith('image/')) return;
+      if (file.size > MAX_IMG_BYTES) {
+        toast.error(t('builder.tool.imgTooBig') || 'Картинка больше 1.5 МБ — выберите меньше.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = String(reader.result || '');
+        const base64 = dataUrl.split(',')[1] || '';
+        onSet(node.id, { imageData: base64, imageMime: file.type, imageName: file.name, hasPrompt: !!base64 });
+        toast.success(t('builder.tool.imgLoaded') || 'Картинка загружена');
+      };
+      reader.readAsDataURL(file);
+    } else {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = String(reader.result || '').slice(0, MAX_FILE_CHARS);
+        onSet(node.id, { fileText: text, fileName: file.name, hasPrompt: !!text.trim() });
+        toast.success(t('builder.tool.fileLoaded') || 'Файл загружен');
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  const clear = () => onSet(node.id, isVision
+    ? { imageData: '', imageMime: '', imageName: '', hasPrompt: false }
+    : { fileText: '', fileName: '', hasPrompt: false });
+
+  const loadedName = isVision ? imageName : fileName;
+
+  return (
+    <div className="builder-prompt-pop nodrag nowheel" onClick={(e) => e.stopPropagation()} onWheelCapture={(e) => e.stopPropagation()}>
+      <div className="builder-prompt-pop__head">
+        <span className="builder-prompt-pop__title">
+          {isVision ? (t('builder.tool.visionTitle') || 'Картинка для анализа') : (t('builder.tool.fileTitle') || 'Файл для агента')}
+        </span>
+        <button type="button" className="builder-prompt-pop__close" onClick={onClose} aria-label={t('builder.prompt.close') || 'Закрыть'}>
+          <Icon name="close" size={12} strokeWidth={1.75} />
+        </button>
+      </div>
+      <p className="builder-prompt-pop__hint">
+        {isVision
+          ? (t('builder.tool.visionHint') || 'Загрузите картинку — прикреплённый агент её «увидит» при запуске. До 1.5 МБ.')
+          : (t('builder.tool.fileHint') || 'Загрузите текстовый файл — его содержимое получит прикреплённый агент.')}
+      </p>
+      {loadedName && (
+        <div className="builder-tool-file">
+          <Icon name={isVision ? 'eye' : 'file'} size={13} strokeWidth={1.5} />
+          <span className="builder-tool-file__name">{loadedName}</span>
+        </div>
+      )}
+      <div className="builder-prompt-pop__actions">
+        <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => fileRef.current?.click()}>
+          <Icon name="archive" size={12} strokeWidth={1.5} />
+          <span>{loadedName ? (t('builder.tool.replace') || 'Заменить') : (t('builder.tool.upload') || 'Загрузить')}</span>
+        </button>
+        {loadedName && (
+          <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={clear}>
+            <span>{t('builder.prompt.clear') || 'Очистить'}</span>
+          </button>
+        )}
+        <input
+          ref={fileRef}
+          type="file"
+          accept={isVision ? 'image/*' : '.txt,.md,.json,.csv,text/*'}
+          style={{ display: 'none' }}
+          onChange={onFile}
+        />
+      </div>
     </div>
   );
 }

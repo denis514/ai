@@ -134,7 +134,20 @@ async function fetchPageText(url: string): Promise<string | null> {
   }
 }
 
-async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number) {
+type ImageInput = { data: string; mime: string };
+
+async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = []) {
+  // Если есть картинки (Vision) — собираем мультимодальное сообщение: блоки
+  // image + текст. Иначе обычная строка.
+  const content = images.length
+    ? [
+        ...images.map((img) => ({
+          type: 'image',
+          source: { type: 'base64', media_type: img.mime || 'image/png', data: img.data },
+        })),
+        { type: 'text', text: userContent },
+      ]
+    : userContent;
   const res = await fetch(CLAUDE_URL, {
     method: 'POST',
     headers: {
@@ -146,7 +159,7 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
       model: MODEL,
       max_tokens: maxTokens,
       system,
-      messages: [{ role: 'user', content: userContent }],
+      messages: [{ role: 'user', content }],
     }),
   });
   const data = await res.json();
@@ -440,6 +453,10 @@ Deno.serve(async (req) => {
           ? 'Web access — provided to the connected agent'
           : node.role === 'memory'
           ? 'Memory — connected agent recalls all prior steps'
+          : node.role === 'file_read'
+          ? (node.config?.fileName ? `File ready: ${node.config.fileName}` : 'Files — upload a file on this node')
+          : node.role === 'vision'
+          ? (node.config?.imageData ? 'Image ready for the connected agent' : 'Vision — upload an image on this node')
           : 'Capability attached to the connected agent';
         await log(id, 'info', note, { status: 'completed' });
         continue;
@@ -452,14 +469,14 @@ Deno.serve(async (req) => {
       // Прикреплённые инструменты. Связь инструмент↔агент пользователь мог
       // нарисовать в любую сторону — учитываем оба направления (другой конец
       // ребра является инструментом).
-      const attachedToolRoles = (edges || [])
+      const attachedTools = (edges || [])
         .filter((e: Edge) => e.source_client_id === id || e.target_client_id === id)
         .map((e: Edge) => {
           const otherId = e.source_client_id === id ? e.target_client_id : e.source_client_id;
           return byId.get(otherId);
         })
-        .filter((n): n is Node => !!n && n.node_type === 'tool')
-        .map((n) => n.role || '');
+        .filter((n): n is Node => !!n && n.node_type === 'tool');
+      const attachedToolRoles = attachedTools.map((n) => n.role || '');
 
       // Web-инструмент: реально открываем ссылки из задачи/контекста (Фаза 4).
       if (attachedToolRoles.includes('web_search')) {
@@ -475,6 +492,27 @@ Deno.serve(async (req) => {
           }
         }
       }
+      // Файлы (Фаза 4): прикреплённый tool-file с загруженным текстом → в контекст.
+      for (const tn of attachedTools.filter(n => n.role === 'file_read')) {
+        const ft = typeof tn.config?.fileText === 'string' ? tn.config.fileText : '';
+        const fn = typeof tn.config?.fileName === 'string' ? tn.config.fileName : 'file';
+        if (ft.trim()) {
+          context += `\n\n[Файл «${fn}», приложен к агенту]:\n${ft}`;
+          await log(id, 'info', `File attached: ${fn} (${ft.length} chars)`, { status: 'running' });
+        }
+      }
+
+      // Vision (Фаза 4): прикреплённый tool-vision с картинкой → image-блок Claude.
+      const visionImages: ImageInput[] = [];
+      for (const tn of attachedTools.filter(n => n.role === 'vision')) {
+        const data = typeof tn.config?.imageData === 'string' ? tn.config.imageData : '';
+        const mime = typeof tn.config?.imageMime === 'string' ? tn.config.imageMime : 'image/png';
+        if (data) {
+          visionImages.push({ data, mime });
+          await log(id, 'info', `Image attached (${tn.config?.imageName || 'image'})`, { status: 'running' });
+        }
+      }
+
       // Память (Фаза 4): агент с прикреплённым tool-memory получает ВЕСЬ контекст
       // прогона (все прошлые шаги), а не только прямых предшественников.
       if (attachedToolRoles.includes('memory') && transcript.length) {
@@ -489,7 +527,7 @@ Deno.serve(async (req) => {
       context = applyVars(context);
       const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix;
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
-      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens);
+      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens, visionImages);
       totalTokens += tokens;
       outputs.set(id, text);
       transcript.push(`${roleLabel(node.role || 'main')}: ${text.slice(0, 1200)}`);
