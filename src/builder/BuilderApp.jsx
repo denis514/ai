@@ -459,18 +459,18 @@ function BuilderAppInner() {
     setNameModalStep('name');
   }, []);
 
-  // Auto-save: каждые 30с, только если dirty И уже есть имя.
-  // Без имени НЕ автосейвим (иначе модалка имени всплывёт сама).
+  // Авто-сохранение в облако: debounce ~2.5с после ПОСЛЕДНЕГО изменения
+  // (а не раз в 30с — иначе между тиками работа терялась). Срабатывает только
+  // если у схемы есть имя (без имени — только черновик-страховка) и есть узлы.
+  // Каждое изменение сбрасывает таймер → сохраняем, когда пользователь замер.
   useEffect(() => {
-    saveTimerRef.current = setInterval(() => {
-      if (isDirtyRef.current && nodes.length > 0 && workflowName.trim()) {
-        persist(workflowName.trim());
-      }
-    }, 30000);
-    return () => {
-      if (saveTimerRef.current) clearInterval(saveTimerRef.current);
-    };
-  }, [persist, workflowName, nodes.length]);
+    if (!workflowName.trim() || nodes.length === 0 || !isDirtyRef.current) return;
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      if (isDirtyRef.current) persist(workflowName.trim());
+    }, 2500);
+    return () => { if (saveTimerRef.current) clearTimeout(saveTimerRef.current); };
+  }, [nodes, edges, workflowName, persist]);
 
   // Если не авторизован — сразу окно входа; иначе окно ключей.
   const openKeysOrAuth = useCallback(() => {
