@@ -2,6 +2,10 @@ import React, { useEffect } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 import { TEMPLATES } from '../../data/templates.js';
+import { NODE_DEFS } from '../../data/nodeTypes.js';
+
+// Инструменты, реально работающие сегодня (остальные — «скоро»).
+const REAL_TOOLS = new Set(['web_search', 'memory', 'file_read', 'vision']);
 
 /**
  * TemplatePreview — модальное превью одного шаблона перед использованием.
@@ -30,6 +34,15 @@ export default function TemplatePreview({ index, onIndex, onUse, onClose }) {
   }, [index, total, onIndex, onClose]);
 
   if (!tpl) return null;
+
+  // Цепочка узлов потока (без инструментов-способностей) — «как устроено».
+  const flowNodes = tpl.nodes
+    .map(n => NODE_DEFS[n.defId])
+    .filter(d => d && d.kind !== 'tool');
+  // Инструменты в шаблоне — с пометкой «работает / скоро».
+  const toolNodes = tpl.nodes
+    .map(n => NODE_DEFS[n.defId])
+    .filter(d => d && d.kind === 'tool');
 
   return (
     <div className="builder-modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
@@ -60,6 +73,51 @@ export default function TemplatePreview({ index, onIndex, onUse, onClose }) {
             </span>
           </div>
           <p className="builder-tpl-preview__desc">{t(tpl.descKey) || ''}</p>
+
+          {tpl.inputKey && (
+            <div className="builder-tpl-preview__section">
+              <span className="builder-tpl-preview__label">{t('builder.tpl.input') || 'Что нужно на входе'}</span>
+              <p>{t(tpl.inputKey)}</p>
+            </div>
+          )}
+          {tpl.outputKey && (
+            <div className="builder-tpl-preview__section">
+              <span className="builder-tpl-preview__label">{t('builder.tpl.output') || 'Что на выходе'}</span>
+              <p>{t(tpl.outputKey)}</p>
+            </div>
+          )}
+
+          <div className="builder-tpl-preview__section">
+            <span className="builder-tpl-preview__label">{t('builder.tpl.how') || 'Как устроено'}</span>
+            <div className="builder-tpl-preview__flow">
+              {flowNodes.map((d, i) => (
+                <React.Fragment key={i}>
+                  <span className="builder-tpl-preview__chip" style={{ '--node-color': d.color }}>
+                    <Icon name={d.icon} size={12} strokeWidth={1.6} />
+                    {t(d.labelKey) || ''}
+                  </span>
+                  {i < flowNodes.length - 1 && <Icon name="arrow-right" size={11} strokeWidth={1.75} />}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+
+          {toolNodes.length > 0 && (
+            <div className="builder-tpl-preview__section">
+              <span className="builder-tpl-preview__label">{t('builder.tpl.tools') || 'Инструменты'}</span>
+              <div className="builder-tpl-preview__tools">
+                {toolNodes.map((d, i) => (
+                  <span key={i} className={`builder-tpl-preview__tool ${REAL_TOOLS.has(d.role) ? 'is-real' : 'is-soon'}`}>
+                    <Icon name={d.icon} size={12} strokeWidth={1.6} />
+                    {t(d.labelKey) || ''}
+                    <span className="builder-tpl-preview__tool-badge">
+                      {REAL_TOOLS.has(d.role) ? (t('builder.tpl.works') || 'работает') : (t('builder.tpl.soon') || 'скоро')}
+                    </span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="builder-tpl-preview__nav">
