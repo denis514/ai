@@ -114,19 +114,19 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
           )}
           <div className="builder-schedule__row">
             <label>{t('builder.schedule.minute') || 'Минута'}</label>
-            <div className="builder-schedule__input-help">
-              <input type="number" min="0" max="59" value={minute} onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
-              <button
-                type="button"
-                className="builder-schedule__help-btn"
-                onClick={() => setShowHelp(v => !v)}
-                aria-expanded={showHelp}
-                aria-label={t('builder.schedule.helpAria') || 'Что это значит'}
-                title={t('builder.schedule.helpAria') || 'Что это значит'}
-              >
-                <Icon name="question" size={14} strokeWidth={1.75} />
-              </button>
-            </div>
+            <input type="number" min="0" max="59" value={minute} onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
+          </div>
+          {/* Кнопка «Инструкция» под полями слева — открывает пояснение по частоте */}
+          <div className="builder-schedule__row--full">
+            <button
+              type="button"
+              className="builder-schedule__instr-btn"
+              onClick={() => setShowHelp(v => !v)}
+              aria-expanded={showHelp}
+            >
+              <Icon name="idea" size={13} strokeWidth={1.6} />
+              <span>{t('builder.schedule.instruction') || 'Инструкция'}</span>
+            </button>
           </div>
           {showHelp && (
             <div className="builder-schedule__help builder-schedule__row--full">
