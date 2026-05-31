@@ -665,20 +665,44 @@ function BuilderAppInner() {
     if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
     hintTimerRef.current = setTimeout(() => setConnectHint(null), 3200);
   }, [t]);
+  // Живой тултип у курсора во время перетягивания связи: показывает ПРИЧИНУ,
+  // как только наводишь на узел, к которому подключиться нельзя (а не после).
+  // Управляем DOM напрямую (без ререндеров на каждом mousemove).
+  const denyTipRef = useRef(null);
+  const showDenyTip = useCallback((code) => {
+    const el = denyTipRef.current;
+    if (!el) return;
+    el.textContent = t(denyReasonKey(code)) || t('builder.connect.deny.unknown') || 'Так соединить нельзя.';
+    el.style.display = 'block';
+  }, [t]);
+  const hideDenyTip = useCallback(() => {
+    const el = denyTipRef.current;
+    if (el) el.style.display = 'none';
+  }, []);
+
   const onConnectStart = useCallback((_evt, { nodeId }) => {
     connectOriginRef.current = nodeId;
     connectMadeRef.current = false;
     lastDenyRef.current = null;
     setIsConnecting(true);
-  }, []);
+    hideDenyTip();
+  }, [hideDenyTip]);
   const onConnectEnd = useCallback(() => {
     connectOriginRef.current = null;
     setIsConnecting(false);
-    // Если тянули, но связь не появилась и была причина отказа — объясняем.
-    const code = lastDenyRef.current;
-    const made = connectMadeRef.current;
-    setTimeout(() => { if (!made && code) showConnectHint(code); }, 0);
-  }, [showConnectHint]);
+    hideDenyTip(); // причину уже показали вживую во время тяги
+  }, [hideDenyTip]);
+
+  // Позиционируем живой тултип за курсором, пока тянем связь.
+  useEffect(() => {
+    if (!isConnecting) { hideDenyTip(); return; }
+    const move = (e) => {
+      const el = denyTipRef.current;
+      if (el) el.style.transform = `translate(${e.clientX + 16}px, ${e.clientY + 18}px)`;
+    };
+    window.addEventListener('mousemove', move);
+    return () => window.removeEventListener('mousemove', move);
+  }, [isConnecting, hideDenyTip]);
 
   const onConnect = useCallback(
     (params) => {
@@ -720,9 +744,10 @@ function BuilderAppInner() {
       [source, target] = [target, source];
     }
     const res = evaluateConnection({ source, target, nodeKind, edges });
-    if (!res.ok) lastDenyRef.current = res.code; // запомним причину для подсказки
+    if (!res.ok) { lastDenyRef.current = res.code; showDenyTip(res.code); } // живой тултип
+    else hideDenyTip();
     return res.ok;
-  }, [nodes, edges]);
+  }, [nodes, edges, showDenyTip, hideDenyTip]);
 
   /* ────────── Drag-drop из toolbox ────────── */
   const onDragOver = useCallback((event) => {
@@ -1533,6 +1558,9 @@ function BuilderAppInner() {
       )}
 
       {/* New-workflow wizard: шаг 1 — имя + выбор; шаг 2 — список шаблонов */}
+      {/* Живой тултип причины запрета связи — следует за курсором при тяге */}
+      <div ref={denyTipRef} className="builder-connect-tip" style={{ display: 'none' }} />
+
       {/* L1: предложение восстановить несохранённую работу из браузера */}
       {draftOffer && (
         <div className="builder-draft-restore" role="status">
