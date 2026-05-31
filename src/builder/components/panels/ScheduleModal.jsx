@@ -113,8 +113,9 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
             </div>
           )}
           <div className="builder-schedule__row">
-            <label className="builder-schedule__label-help">
-              {t('builder.schedule.minute') || 'Минута'}
+            <label>{t('builder.schedule.minute') || 'Минута'}</label>
+            <div className="builder-schedule__input-help">
+              <input type="number" min="0" max="59" value={minute} onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
               <button
                 type="button"
                 className="builder-schedule__help-btn"
@@ -123,10 +124,9 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
                 aria-label={t('builder.schedule.helpAria') || 'Что это значит'}
                 title={t('builder.schedule.helpAria') || 'Что это значит'}
               >
-                <Icon name="question" size={13} strokeWidth={1.75} />
+                <Icon name="question" size={14} strokeWidth={1.75} />
               </button>
-            </label>
-            <input type="number" min="0" max="59" value={minute} onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
+            </div>
           </div>
           {showHelp && (
             <div className="builder-schedule__help builder-schedule__row--full">
