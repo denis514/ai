@@ -29,6 +29,12 @@ const BATCH = 20; // максимум расписаний за один тик 
 function computeNext(now: Date, freq: string, hour: number, minute: number, weekday: number | null): string {
   const next = new Date(now);
   next.setUTCSeconds(0, 0);
+  if (freq === 'minutes') {
+    // «Каждые N минут»: minute хранит интервал N (1..59).
+    const n = Math.min(Math.max(minute || 1, 1), 59);
+    next.setUTCMinutes(next.getUTCMinutes() + n);
+    return next.toISOString();
+  }
   if (freq === 'hourly') {
     next.setUTCMinutes(minute);
     if (next <= now) next.setUTCHours(next.getUTCHours() + 1);

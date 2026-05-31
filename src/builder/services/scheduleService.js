@@ -17,6 +17,11 @@ function computeNext(freq, hour, minute, weekday) {
   const now = new Date();
   const n = new Date(now);
   n.setUTCSeconds(0, 0);
+  if (freq === 'minutes') {
+    const step = Math.min(Math.max(minute || 1, 1), 59);
+    n.setUTCMinutes(n.getUTCMinutes() + step);
+    return n.toISOString();
+  }
   if (freq === 'hourly') {
     n.setUTCMinutes(minute);
     if (n <= now) n.setUTCHours(n.getUTCHours() + 1);
