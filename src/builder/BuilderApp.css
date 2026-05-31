@@ -61,8 +61,12 @@
   justify-content: center;
   flex: 0 0 auto;
 }
-/* Левый кластер (Мои workflow) */
-.builder-app .builder-canvas-controls--left {
+/* Левый кластер (Мои workflow). Двойной класс — чтобы перебить
+   .builder-header__switcher-wrap{position:relative}, иначе кластер оставался
+   в потоке и сдвигал холст вниз → нижние Controls/MiniMap уходили за экран. */
+.builder-app .builder-canvas-controls.builder-canvas-controls--left {
+  position: absolute;
+  top: 12px;
   right: auto;
   left: 12px;
 }
@@ -2467,15 +2471,6 @@
   background: transparent;
 }
 
-/* Жёстко прибиваем холст к границам обёртки (overflow:hidden, relative) — иначе
-   React Flow по высоте чуть превышал ячейку грида, и нижние Controls/MiniMap
-   вылезали за край и подрезались. inset:0 = низ холста == низ видимой зоны. */
-.builder-app .builder-canvas-wrap .react-flow {
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  width: 100%;
-}
 
 .builder-app .react-flow__controls {
   background: var(--surface);
