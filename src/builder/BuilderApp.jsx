@@ -25,6 +25,7 @@ import ConceptTooltip from './components/education/ConceptTooltip.jsx';
 import AtlasNodePreview from './components/education/AtlasNodePreview.jsx';
 import BuilderTour, { isTourSeen } from './components/education/BuilderTour.jsx';
 import TemplateGallery from './components/panels/TemplateGallery.jsx';
+import TemplatePreview from './components/panels/TemplatePreview.jsx';
 import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
 import WorkflowSwitcher from './components/panels/WorkflowSwitcher.jsx';
 import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
@@ -172,6 +173,7 @@ function BuilderAppInner() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [execPanelOpen, setExecPanelOpen] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [previewTplIndex, setPreviewTplIndex] = useState(null); // превью шаблона из левого списка
   const [tooltipInfo, setTooltipInfo] = useState(null); // { defId, top, left }
   const tooltipHideTimerRef = useRef(null);
 
@@ -1231,12 +1233,12 @@ function BuilderAppInner() {
                 />
               ) : (
                 <div className="builder-template-list">
-                  {TEMPLATES.map(tpl => (
+                  {TEMPLATES.map((tpl, i) => (
                     <button
                       key={tpl.id}
                       type="button"
-                      className="builder-template-row"
-                      onClick={() => loadTemplate(tpl)}
+                      className={`builder-template-row ${previewTplIndex === i ? 'is-active' : ''}`}
+                      onClick={() => setPreviewTplIndex(i)}
                     >
                       <span className="builder-template-row__icon">
                         <Icon name={tpl.iconName} size={18} strokeWidth={1.5} />
@@ -1583,6 +1585,16 @@ function BuilderAppInner() {
           onUseTemplate={loadTemplate}
           onScratch={() => setGalleryOpen(false)}
           onClose={() => setGalleryOpen(false)}
+        />
+      )}
+
+      {/* Превью одного шаблона (из левого списка «Шаблоны») с навигацией */}
+      {previewTplIndex !== null && (
+        <TemplatePreview
+          index={previewTplIndex}
+          onIndex={setPreviewTplIndex}
+          onUse={(tpl) => { loadTemplate(tpl); setPreviewTplIndex(null); }}
+          onClose={() => setPreviewTplIndex(null)}
         />
       )}
 
