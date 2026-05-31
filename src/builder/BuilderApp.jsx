@@ -39,6 +39,7 @@ import { createRealExecution } from './services/realExecutor.js';
 import { getKeyStatus } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
+import ToastHost, { toast } from './components/Toast.jsx';
 import { saveDraft, loadDraft, clearDraft } from './services/draftBackup.js';
 import { evaluateConnection, validateGraph, denyReasonKey } from './services/connectionRules.js';
 import './BuilderApp.css';
@@ -410,6 +411,7 @@ function BuilderAppInner() {
     } catch (e) {
       console.error('[Builder] save failed', e);
       setSaveStatus('error');
+      toast.error(t('builder.toast.saveFailed') || 'Не удалось сохранить схему. Попробуйте ещё раз.');
     }
   }, [nodes, edges, currentWorkflowId, userId]);
 
@@ -562,8 +564,9 @@ function BuilderAppInner() {
       setSaveStatus('saved');
     } catch (e) {
       console.error('[Builder] load failed', e);
+      toast.error(t('builder.toast.loadFailed') || 'Не удалось открыть схему.');
     }
-  }, [userId, setNodes, setEdges]);
+  }, [userId, setNodes, setEdges, t]);
 
   // Новый пустой workflow — сразу спрашиваем имя.
   // «Новый workflow» — открываем модалку выбора. Холст НЕ трогаем до того,
@@ -944,9 +947,12 @@ function BuilderAppInner() {
         if (finalStatus === 'failed') return 'failed';
         return stats.failed > 0 ? 'failed' : 'completed';
       });
+      if (finalStatus === 'failed' || stats.failed > 0) {
+        toast.error(t('builder.toast.runFailed') || 'Запуск завершился с ошибкой — смотрите консоль.');
+      }
       execRef.current = null;
     },
-  }), [setNodes]);
+  }), [setNodes, t]);
 
   /* ────────── Mock execution ────────── */
   const runMock = useCallback(() => {
@@ -1078,6 +1084,7 @@ function BuilderAppInner() {
       ].join(' ')}
       style={{ '--toolbox-w': `${toolboxW}px` }}
     >
+      <ToastHost />
       {/* ── Header ─────────────────────────────────────────────── */}
       <header className="builder-header">
         <button

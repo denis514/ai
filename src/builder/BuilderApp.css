@@ -3575,3 +3575,98 @@
     display: none;
   }
 }
+
+/* ────────────────────────────────────────────────── */
+/* Toasts (push-сообщения)                            */
+/* ────────────────────────────────────────────────── */
+.builder-app .builder-toasts {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  pointer-events: none;
+}
+.builder-app .builder-toast {
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 420px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  font-size: 13px;
+  color: var(--text);
+  animation: builder-toast-in 0.18s ease;
+}
+@keyframes builder-toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.builder-app .builder-toast__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  color: #fff;
+}
+.builder-app .builder-toast--error .builder-toast__icon { background: var(--danger, #dc2626); }
+.builder-app .builder-toast--success .builder-toast__icon { background: var(--success, #16a34a); }
+.builder-app .builder-toast--info .builder-toast__icon { background: var(--accent, #2563eb); }
+.builder-app .builder-toast--error { border-color: color-mix(in srgb, var(--danger, #dc2626) 35%, var(--border)); }
+.builder-app .builder-toast--success { border-color: color-mix(in srgb, var(--success, #16a34a) 35%, var(--border)); }
+.builder-app .builder-toast__msg { flex: 1; line-height: 1.4; }
+.builder-app .builder-toast__close {
+  flex: 0 0 auto;
+  display: inline-flex;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+}
+.builder-app .builder-toast__close:hover { color: var(--text); }
+
+/* ────────────────────────────────────────────────── */
+/* Skeleton loading                                   */
+/* ────────────────────────────────────────────────── */
+.builder-app .builder-skeleton {
+  display: block;
+  background: linear-gradient(90deg,
+    var(--surface-2) 25%,
+    color-mix(in srgb, var(--surface-2) 60%, var(--border)) 50%,
+    var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: builder-skeleton-shimmer 1.3s ease-in-out infinite;
+}
+@keyframes builder-skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+.builder-app .builder-skeleton-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 6px 0;
+}
+.builder-app .builder-skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.builder-app .builder-skeleton-row__lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}

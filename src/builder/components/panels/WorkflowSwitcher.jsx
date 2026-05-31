@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 import { listWorkflows, deleteWorkflow, renameWorkflow } from '../../services/workflowStorage.js';
+import { SkeletonList } from '../Skeleton.jsx';
 
 /**
  * WorkflowSwitcher — dropdown в header Builder.
@@ -131,7 +132,7 @@ export default function WorkflowSwitcher({ userId, currentId, refreshKey, onOpen
 
       <div className="builder-switcher__list">
         {items === null && (
-          <div className="builder-switcher__empty">{t('builder.workflows.loading') || 'Loading…'}</div>
+          <div className="builder-switcher__loading"><SkeletonList rows={3} /></div>
         )}
         {items !== null && items.length === 0 && (
           <div className="builder-switcher__empty">
