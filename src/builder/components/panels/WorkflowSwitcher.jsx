@@ -25,6 +25,16 @@ export default function WorkflowSwitcher({ userId, currentId, refreshKey, onOpen
   const [editName, setEditName] = useState('');
   const ref = useRef(null);
 
+  const refresh = useCallback(() => {
+    setError(false);
+    listWorkflows(userId)
+      .then(setItems)
+      .catch((e) => { console.error('[Builder] list failed', e); setError(true); setItems([]); });
+  }, [userId]);
+
+  // Переименование. ВАЖНО: объявляем ПОСЛЕ refresh — saveRename держит его в
+  // зависимостях, и если объявить выше, обращение к refresh в deps падает в TDZ
+  // (ReferenceError → аварийный экран при открытии списка).
   const startRename = useCallback((e, w) => {
     e.stopPropagation();
     setConfirmId(null);
@@ -50,13 +60,6 @@ export default function WorkflowSwitcher({ userId, currentId, refreshKey, onOpen
       console.error('[Builder] rename failed', err);
     }
   }, [editName, userId, refresh, onRenamed, cancelRename]);
-
-  const refresh = useCallback(() => {
-    setError(false);
-    listWorkflows(userId)
-      .then(setItems)
-      .catch((e) => { console.error('[Builder] list failed', e); setError(true); setItems([]); });
-  }, [userId]);
 
   // Перезагружаем при открытии и при изменении refreshKey (save/delete снаружи).
   useEffect(() => { refresh(); }, [refresh, refreshKey]);
