@@ -558,7 +558,8 @@ function BuilderAppInner() {
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
   const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
   const selectedTelegramNode = selectedNode && selectedNode.data?.role === 'telegram' ? selectedNode : null;
-  const selectedConditionNode = selectedNode && selectedNode.data?.kind === 'logic' ? selectedNode : null;
+  const selectedConditionNode = selectedNode && selectedNode.data?.kind === 'logic' && selectedNode.data?.role !== 'loop' ? selectedNode : null;
+  const selectedLoopNode = selectedNode && selectedNode.data?.role === 'loop' ? selectedNode : null;
   const selectedTriggerNode = selectedNode && selectedNode.data?.kind === 'trigger' ? selectedNode : null;
 
   // Удалить узел кнопкой (надёжно, без зависимости от фокуса/клавиш).
@@ -1433,6 +1434,24 @@ function BuilderAppInner() {
               </NodeToolbar>
             )}
 
+            {/* Конфиг узла «Цикл» — к какому узлу вернуться + сколько раз */}
+            {selectedLoopNode && (
+              <NodeToolbar
+                nodeId={selectedNodeId}
+                isVisible
+                position={Position.Right}
+                offset={28}
+              >
+                <LoopConfigPopover
+                  node={selectedLoopNode}
+                  nodes={nodes}
+                  t={t}
+                  onSet={handleSetCondition}
+                  onClose={() => setSelectedNodeId(null)}
+                />
+              </NodeToolbar>
+            )}
+
             {/* Задача рядом со стартовым узлом User Input — точка входа всего flow */}
             {selectedTriggerNode && (
               <NodeToolbar
@@ -2264,6 +2283,65 @@ function ConditionConfigPopover({ node, t, onSet, onClose }) {
           />
         </>
       )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* LoopConfigPopover — настройка узла «Цикл»                     */
+/* ─────────────────────────────────────────────────────────── */
+
+function LoopConfigPopover({ node, nodes, t, onSet, onClose }) {
+  const loopBackTo = node.data?.loopBackTo || '';
+  const maxLoops = node.data?.maxLoops ?? 3;
+  // Кандидаты для возврата — агент-узлы (кроме самого цикла).
+  const targets = (nodes || []).filter(n => n.id !== node.id && n.data?.kind === 'agent');
+  return (
+    <div
+      className="builder-prompt-pop nodrag nowheel"
+      onClick={(e) => e.stopPropagation()}
+      onWheelCapture={(e) => e.stopPropagation()}
+    >
+      <div className="builder-prompt-pop__head">
+        <span className="builder-prompt-pop__title">
+          {t('builder.loop.title') || 'Цикл — повторить шаги'}
+        </span>
+        <button
+          type="button"
+          className="builder-prompt-pop__close"
+          onClick={onClose}
+          aria-label={t('builder.prompt.close') || 'Закрыть'}
+        >
+          <Icon name="close" size={12} strokeWidth={1.75} />
+        </button>
+      </div>
+      <p className="builder-prompt-pop__hint">
+        {t('builder.loop.hint') || 'Поток вернётся к выбранному узлу и повторит цепочку до этого цикла заданное число раз. Каждый повтор получает результат предыдущего.'}
+      </p>
+      <div className="builder-cond__row">
+        <span className="builder-cond__label">{t('builder.loop.backTo') || 'Вернуться к'}</span>
+        <select
+          className="builder-cond__op"
+          value={loopBackTo}
+          onChange={(e) => onSet(node.id, { loopBackTo: e.target.value })}
+        >
+          <option value="">{t('builder.loop.pick') || '— выберите узел —'}</option>
+          {targets.map(n => (
+            <option key={n.id} value={n.id}>{t(n.data.labelKey) || n.data.labelKey || n.id}</option>
+          ))}
+        </select>
+      </div>
+      <div className="builder-cond__row">
+        <span className="builder-cond__label">{t('builder.loop.maxLoops') || 'Сколько раз (макс.)'}</span>
+        <input
+          type="number"
+          min={1}
+          max={8}
+          className="builder-cond__op"
+          value={maxLoops}
+          onChange={(e) => onSet(node.id, { maxLoops: Math.min(Math.max(parseInt(e.target.value, 10) || 1, 1), 8) })}
+        />
+      </div>
     </div>
   );
 }

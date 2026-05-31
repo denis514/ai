@@ -250,6 +250,31 @@ Deno.serve(async (req) => {
   const dataInEdges = (id: string) =>
     allEdges.filter(e => e.target_client_id === id && byId.get(e.source_client_id)?.node_type !== 'tool');
 
+  // DATA-смежность (без tool-рёбер) — для вычисления тела цикла.
+  const dataEdgesOnly = allEdges.filter(e =>
+    byId.get(e.source_client_id)?.node_type !== 'tool' && byId.get(e.target_client_id)?.node_type !== 'tool');
+  const reach = (start: string, fwd: boolean): Set<string> => {
+    const seen = new Set<string>([start]);
+    const stack = [start];
+    while (stack.length) {
+      const cur = stack.pop()!;
+      for (const e of dataEdgesOnly) {
+        const [from, to] = fwd ? [e.source_client_id, e.target_client_id] : [e.target_client_id, e.source_client_id];
+        if (from === cur && !seen.has(to)) { seen.add(to); stack.push(to); }
+      }
+    }
+    return seen;
+  };
+
+  // Один прогон агент-узла с заданным контекстом (для повторов «Цикла»).
+  const runAgentNode = async (node: Node, ctx: string): Promise<string> => {
+    const cpRaw = typeof node.config?.prompt === 'string' ? node.config.prompt.trim() : '';
+    const sys = (applyVars(cpRaw) || systemPromptForRole(node.role || 'main')) + langSuffix;
+    const { text, tokens } = await callClaude(apiKey, sys, applyVars(ctx) || 'Proceed.', maxTokens);
+    totalTokens += tokens;
+    return text;
+  };
+
   await log(null, 'info', input ? `Starting run with input: "${input.slice(0, 80)}"` : 'Starting run');
 
   for (const id of order) {
@@ -282,6 +307,45 @@ Deno.serve(async (req) => {
         const inText = dataInEdges(id)
           .filter(e => !blocked.has(edgeKey(e)))
           .map(e => outputs.get(e.source_client_id)).filter(Boolean).join('\n\n') || input;
+
+        // ── Цикл (bounded loop) ──────────────────────────────────────────────
+        if (node.role === 'loop') {
+          const loopBackTo = String(node.config?.loopBackTo || '').trim();
+          const maxLoops = Math.min(Math.max(parseInt(String(node.config?.maxLoops ?? 3), 10) || 3, 1), 8);
+          const srcEdge = dataInEdges(id)[0];
+          const loopSrc = srcEdge?.source_client_id;
+          let result = inText;
+
+          if (!loopBackTo || !byId.get(loopBackTo) || !loopSrc) {
+            await log(id, 'warn', 'Цикл без цели — пропускаем повторы', { status: 'completed' });
+          } else {
+            // Тело цикла = узлы, что одновременно потомки loopBackTo и предки источника.
+            const desc = reach(loopBackTo, true);
+            const anc = reach(loopSrc, false);
+            const body = new Set([...desc].filter(x => anc.has(x)));
+            body.add(loopBackTo); body.add(loopSrc);
+            const bodyOrder = order.filter(x => body.has(x));
+            // Первый прогон уже сделан в основном проходе → добавляем (maxLoops-1).
+            for (let i = 1; i < maxLoops && !failed; i++) {
+              const iterOut = new Map<string, string>();
+              for (const bid of bodyOrder) {
+                const bnode = byId.get(bid)!;
+                const ctx = bid === loopBackTo
+                  ? result
+                  : dataInEdges(bid).map(e => iterOut.get(e.source_client_id) ?? outputs.get(e.source_client_id)).filter(Boolean).join('\n\n');
+                if (bnode.node_type === 'agent') iterOut.set(bid, await runAgentNode(bnode, ctx));
+                else iterOut.set(bid, ctx);
+              }
+              result = iterOut.get(loopSrc) ?? result;
+              await log(id, 'info', `Повтор ${i + 1} из ${maxLoops}`, { status: 'running' });
+            }
+          }
+          outputs.set(id, result);
+          lastText = result;
+          await log(id, 'info', `Цикл завершён (${maxLoops} прогон(ов))`, { status: 'completed' });
+          continue;
+        }
+
         let result = true;
         let detail = '';
 

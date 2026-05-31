@@ -27,14 +27,15 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 function BaseNodeInner({ data, selected }) {
   const t = useT();
-  const { icon, color, labelKey, kind, status = 'idle', orderLevel, hasPrompt, unlinkedOut, unlinkedIn, condValue } = data || {};
+  const { icon, color, labelKey, kind, role, status = 'idle', orderLevel, hasPrompt, unlinkedOut, unlinkedIn, condValue } = data || {};
 
-  const isLogic = kind === 'logic';
+  // Условие (condition / condition-agent) рисует ДВА выхода Да/Нет.
+  // Цикл (loop) — обычный узел с одним входом/выходом.
+  const isCondition = kind === 'logic' && role !== 'loop';
   // target-порты (вход): сверху + слева — для всех кроме trigger.
-  // source-порты (выход): снизу + справа — для всех кроме output.
-  // logic (Condition): вход сверху + ДВА подписанных выхода (Да/Нет) снизу.
+  // source-порты (выход): снизу + справа — для всех кроме output и condition.
   const showIn = kind !== 'trigger';
-  const showOut = kind !== 'output' && !isLogic;
+  const showOut = kind !== 'output' && !isCondition;
   const inPulse = unlinkedIn ? 'is-pulsing' : '';
   const outPulse = unlinkedOut ? 'is-pulsing' : '';
 
@@ -81,7 +82,7 @@ function BaseNodeInner({ data, selected }) {
           <Icon name={icon} size={16} strokeWidth={1.5} />
         </span>
         <span className="builder-node__label">{t(labelKey) || labelKey || ''}</span>
-        {isLogic && condValue ? (
+        {isCondition && condValue ? (
           <span className="builder-node__cond" title={condValue}>«{condValue}»</span>
         ) : null}
         {status !== 'idle' && (
@@ -115,7 +116,7 @@ function BaseNodeInner({ data, selected }) {
       )}
 
       {/* Condition: два подписанных выхода — «Да» (true) и «Нет» (false) */}
-      {isLogic && (
+      {isCondition && (
         <>
           <Handle
             id="true"
