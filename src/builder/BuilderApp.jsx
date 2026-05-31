@@ -107,11 +107,24 @@ function buildTemplateGraph(template, edgeStyle) {
     };
   }).filter(Boolean);
 
+  // Резолвим ссылку Цикла на узел по индексу шаблона → реальный client_id.
+  template.nodes.forEach((tn, idx) => {
+    if (tn.dataOverride?.loopBackToIndex != null) {
+      const node = nodes.find(n => n.id === tempIdMap[idx]);
+      if (node) {
+        node.data.loopBackTo = tempIdMap[tn.dataOverride.loopBackToIndex];
+        delete node.data.loopBackToIndex;
+      }
+    }
+  });
+
   const edges = template.edges.map((e, i) => ({
     id: `e${i}-${tempIdMap[e.from]}-${tempIdMap[e.to]}`,
     source: tempIdMap[e.from],
     target: tempIdMap[e.to],
     type: 'builder',
+    // Ветка Условия (Да/Нет) кодируется sourceHandle: 'true'|'false'.
+    ...(e.sourceHandle ? { sourceHandle: e.sourceHandle } : {}),
   }));
 
   return { nodes, edges };
