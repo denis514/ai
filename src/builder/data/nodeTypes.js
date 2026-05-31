@@ -181,6 +181,15 @@ export const NODE_DEFS = {
     descKey: 'builder.node.condition_desc',
     atlasAnchor: 'sys-quality-gates',
   },
+  'logic-condition-agent': {
+    kind: 'logic',
+    role: 'condition-agent',
+    icon: 'sparkles',
+    color: '#a855f7',
+    labelKey: 'builder.node.condition_agent',
+    descKey: 'builder.node.condition_agent_desc',
+    atlasAnchor: 'sys-multi-agent-patterns',
+  },
 
   // ────────── Flow ──────────
   'trigger-input': {
@@ -229,7 +238,7 @@ export const TOOLBOX_GROUPS = [
   {
     id: 'logic',
     labelKey: 'builder.toolbox.logic',
-    items: ['logic-condition'],
+    items: ['logic-condition', 'logic-condition-agent'],
   },
   {
     id: 'flow',

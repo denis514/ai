@@ -278,26 +278,48 @@ Deno.serve(async (req) => {
         continue;
       }
       if (node.node_type === 'logic') {
-        // Condition: берём входной текст, проверяем правило, выбираем ветку.
+        // Берём входной текст (без заблокированных веток).
         const inText = dataInEdges(id)
           .filter(e => !blocked.has(edgeKey(e)))
           .map(e => outputs.get(e.source_client_id)).filter(Boolean).join('\n\n') || input;
-        const op = String(node.config?.operator || 'contains');
-        const val = String(node.config?.condValue || '').trim();
-        const hay = inText.toLowerCase();
-        const needle = val.toLowerCase();
         let result = true;
-        if (op === 'contains') result = needle ? hay.includes(needle) : true;
-        else if (op === 'not_contains') result = needle ? !hay.includes(needle) : true;
-        else if (op === 'equals') result = needle ? hay.trim() === needle : true;
+        let detail = '';
+
+        if (node.role === 'condition-agent') {
+          // Ветку решает Claude по вопросу пользователя — отвечает строго ДА/НЕТ.
+          const question = String(node.config?.question || '').trim() || 'Подходит ли этот текст?';
+          const sys = 'Ты — маршрутизатор потока. Ответь СТРОГО одним словом: ДА или НЕТ. ' +
+            'Без пояснений, только одно слово.';
+          const userMsg = `Вопрос: ${question}\n\nТекст для оценки:\n${inText || '(пусто)'}`;
+          try {
+            const { text, tokens } = await callClaude(apiKey, sys, userMsg, 8);
+            totalTokens += tokens;
+            const ans = text.trim().toLowerCase();
+            result = ans.startsWith('да') || ans.startsWith('yes') || ans.startsWith('true');
+            detail = ` (агент: «${question}» → ${text.trim().slice(0, 20)})`;
+          } catch (err) {
+            await log(id, 'warn', `Агент-условие не ответил, идём по «Да»: ${(err as Error).message}`, {});
+            result = true;
+          }
+        } else {
+          // Детерминированное правило: содержит / не содержит / равно.
+          const op = String(node.config?.operator || 'contains');
+          const val = String(node.config?.condValue || '').trim();
+          const hay = inText.toLowerCase();
+          const needle = val.toLowerCase();
+          if (op === 'contains') result = needle ? hay.includes(needle) : true;
+          else if (op === 'not_contains') result = needle ? !hay.includes(needle) : true;
+          else if (op === 'equals') result = needle ? hay.trim() === needle : true;
+          detail = val ? ` (${op}: «${val}»)` : '';
+        }
+
         const taken: 'true' | 'false' = result ? 'true' : 'false';
         outputs.set(id, inText); // пропускаем данные дальше по выбранной ветке
-        // Блокируем рёбра невыбранной ветки.
         for (const e of allEdges.filter(e => e.source_client_id === id)) {
           if (edgeBranch(e) !== taken) blocked.add(edgeKey(e));
         }
         await log(id, 'info',
-          `Условие: ${result ? '«Да»' : '«Нет»'}${val ? ` (${op}: «${val}»)` : ''}`,
+          `Условие: ${result ? '«Да»' : '«Нет»'}${detail}`,
           { status: 'completed', branch: taken });
         continue;
       }

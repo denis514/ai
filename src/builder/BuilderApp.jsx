@@ -1996,8 +1996,10 @@ function TelegramConfigPopover({ node, t, telegramConnected, onSetChatId, onConn
 /* ─────────────────────────────────────────────────────────── */
 
 function ConditionConfigPopover({ node, t, onSet, onClose }) {
+  const isAgent = node.data?.role === 'condition-agent';
   const operator = node.data?.operator || 'contains';
   const condValue = node.data?.condValue || '';
+  const question = node.data?.question || '';
   const OPS = [
     { id: 'contains', label: t('builder.condition.opContains') || 'содержит' },
     { id: 'not_contains', label: t('builder.condition.opNotContains') || 'не содержит' },
@@ -2011,7 +2013,9 @@ function ConditionConfigPopover({ node, t, onSet, onClose }) {
     >
       <div className="builder-prompt-pop__head">
         <span className="builder-prompt-pop__title">
-          {t('builder.condition.title') || 'Условие — куда пойдёт поток'}
+          {isAgent
+            ? (t('builder.condition.agentTitle') || 'Условие-агент — вопрос для решения')
+            : (t('builder.condition.title') || 'Условие — куда пойдёт поток')}
         </span>
         <button
           type="button"
@@ -2022,27 +2026,46 @@ function ConditionConfigPopover({ node, t, onSet, onClose }) {
           <Icon name="close" size={12} strokeWidth={1.75} />
         </button>
       </div>
-      <p className="builder-prompt-pop__hint">
-        {t('builder.condition.hint') || 'Если результат предыдущего узла проходит проверку — поток идёт по ветке «Да», иначе — «Нет».'}
-      </p>
-      <div className="builder-cond__row">
-        <span className="builder-cond__label">{t('builder.condition.ifResult') || 'Если результат'}</span>
-        <select
-          className="builder-cond__op"
-          value={operator}
-          onChange={(e) => onSet(node.id, { operator: e.target.value })}
-        >
-          {OPS.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
-        </select>
-      </div>
-      <input
-        type="text"
-        className="builder-prompt-pop__area"
-        value={condValue}
-        onChange={(e) => onSet(node.id, { condValue: e.target.value })}
-        placeholder={t('builder.condition.placeholder') || 'например: ошибка, успех, да…'}
-        autoFocus
-      />
+
+      {isAgent ? (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.condition.agentHint') || 'Агент сам ответит «Да» или «Нет» на твой вопрос про результат предыдущего узла и направит поток.'}
+          </p>
+          <textarea
+            className="builder-prompt-pop__area"
+            value={question}
+            onChange={(e) => onSet(node.id, { question: e.target.value })}
+            placeholder={t('builder.condition.agentPlaceholder') || 'например: Это срочное обращение? Тон сообщения негативный?'}
+            rows={4}
+            autoFocus
+          />
+        </>
+      ) : (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.condition.hint') || 'Если результат предыдущего узла проходит проверку — поток идёт по ветке «Да», иначе — «Нет».'}
+          </p>
+          <div className="builder-cond__row">
+            <span className="builder-cond__label">{t('builder.condition.ifResult') || 'Если результат'}</span>
+            <select
+              className="builder-cond__op"
+              value={operator}
+              onChange={(e) => onSet(node.id, { operator: e.target.value })}
+            >
+              {OPS.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
+            </select>
+          </div>
+          <input
+            type="text"
+            className="builder-prompt-pop__area"
+            value={condValue}
+            onChange={(e) => onSet(node.id, { condValue: e.target.value })}
+            placeholder={t('builder.condition.placeholder') || 'например: ошибка, успех, да…'}
+            autoFocus
+          />
+        </>
+      )}
     </div>
   );
 }
