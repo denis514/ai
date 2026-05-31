@@ -1232,32 +1232,19 @@ function BuilderAppInner() {
           className={`builder-canvas-wrap ${selectedAgentNode ? 'is-node-focused' : ''} ${isConnecting ? 'is-connecting' : ''}`}
           ref={reactFlowWrapper}
         >
-          {/* Кнопки «показать панель» на краях, когда панель скрыта */}
-          {!toolboxOpen && (
-            <button
-              type="button"
-              className="builder-panel-reopen builder-panel-reopen--left"
-              onClick={() => setToolboxOpen(true)}
-              title={t('builder.header.toggleToolbox') || 'Показать узлы'}
-              aria-label={t('builder.header.toggleToolbox') || 'Показать узлы'}
-            >
-              <Icon name="arrow-right" size={14} strokeWidth={1.75} />
-            </button>
-          )}
-          {!sidebarOpen && (
-            <button
-              type="button"
-              className="builder-panel-reopen builder-panel-reopen--right"
-              onClick={() => setSidebarOpen(true)}
-              title={t('builder.header.toggleSidebar') || 'Показать детали'}
-              aria-label={t('builder.header.toggleSidebar') || 'Показать детали'}
-            >
-              <Icon name="arrow-left" size={14} strokeWidth={1.75} />
-            </button>
-          )}
-
-          {/* Мои workflow — на холсте, слева вверху (уровень кнопок Сохранить/Запуск) */}
+          {/* Слева вверху, одна линия: [показать узлы] + Мои workflow */}
           <div className="builder-canvas-controls builder-canvas-controls--left builder-header__switcher-wrap">
+            {!toolboxOpen && (
+              <button
+                type="button"
+                className="builder-canvas-btn builder-canvas-btn--icon"
+                onClick={() => setToolboxOpen(true)}
+                title={t('builder.header.toggleToolbox') || 'Показать узлы'}
+                aria-label={t('builder.header.toggleToolbox') || 'Показать узлы'}
+              >
+                <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+              </button>
+            )}
             <button
               type="button"
               className="builder-canvas-btn"
@@ -1328,6 +1315,18 @@ function BuilderAppInner() {
               <span>{execStatus === 'running'
                 ? (t('builder.running') || 'Выполняется…')
                 : (t('builder.run') || 'Запуск')}</span>
+            </button>
+            {/* Детали — сворачивает/разворачивает правую панель, на одной линии */}
+            <button
+              type="button"
+              className="builder-canvas-btn builder-canvas-btn--icon"
+              onClick={() => setSidebarOpen(v => !v)}
+              aria-pressed={sidebarOpen}
+              title={sidebarOpen
+                ? (t('builder.header.toggleSidebar') || 'Скрыть детали')
+                : (t('builder.header.toggleSidebar') || 'Показать детали')}
+            >
+              <Icon name={sidebarOpen ? 'arrow-right' : 'arrow-left'} size={14} strokeWidth={1.75} />
             </button>
           </div>
           <ReactFlow
