@@ -1352,11 +1352,16 @@ function BuilderAppInner() {
               </span>
               <Icon name="arrow-down" size={12} strokeWidth={1.75} />
             </button>
-            {currentWorkflowId && userId && (
+            {userId && nodes.length > 0 && (
               <button
                 type="button"
                 className="builder-canvas-btn builder-canvas-btn--icon"
-                onClick={() => setScheduleOpen(true)}
+                onClick={() => {
+                  if (currentWorkflowId) { setScheduleOpen(true); return; }
+                  // Расписание привязано к сохранённой схеме — сначала сохраняем.
+                  toast.info(t('builder.schedule.saveFirst') || 'Сначала сохраните схему — потом нажмите часики ещё раз.');
+                  doSave();
+                }}
                 title={t('builder.schedule.title') || 'Автозапуск по расписанию'}
                 aria-label={t('builder.schedule.title') || 'Автозапуск по расписанию'}
               >
