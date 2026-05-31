@@ -31,6 +31,7 @@ import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
 import WorkflowSwitcher from './components/panels/WorkflowSwitcher.jsx';
 import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
 import ApiKeysModal from './components/panels/ApiKeysModal.jsx';
+import ScheduleModal from './components/panels/ScheduleModal.jsx';
 import AuthModal from '../components/AuthModal.jsx';
 import { TEMPLATES } from './data/templates.js';
 import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data/outputTiers.js';
@@ -283,6 +284,7 @@ function BuilderAppInner() {
   // раньше «Сохранить» дёргало startBlank и теряло собранную схему.
   const [nameIntent, setNameIntent] = useState('create');
   const [keysModalOpen, setKeysModalOpen] = useState(false);
+  const [scheduleOpen, setScheduleOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   // Реальный запуск (B-2.2)
   const [runMode, setRunMode] = useState('mock');     // 'mock' | 'real'
@@ -1350,6 +1352,17 @@ function BuilderAppInner() {
               </span>
               <Icon name="arrow-down" size={12} strokeWidth={1.75} />
             </button>
+            {currentWorkflowId && userId && (
+              <button
+                type="button"
+                className="builder-canvas-btn builder-canvas-btn--icon"
+                onClick={() => setScheduleOpen(true)}
+                title={t('builder.schedule.title') || 'Автозапуск по расписанию'}
+                aria-label={t('builder.schedule.title') || 'Автозапуск по расписанию'}
+              >
+                <Icon name="clock" size={15} strokeWidth={1.6} />
+              </button>
+            )}
             {switcherOpen && (
               <WorkflowSwitcher
                 userId={userId}
@@ -1918,6 +1931,16 @@ function BuilderAppInner() {
         <ApiKeysModal
           onClose={() => setKeysModalOpen(false)}
           onSignIn={() => setAuthOpen(true)}
+        />
+      )}
+
+      {/* Schedule modal — автозапуск по расписанию (серверный планировщик) */}
+      {scheduleOpen && currentWorkflowId && (
+        <ScheduleModal
+          workflowId={currentWorkflowId}
+          workflowName={workflowName}
+          locale={locale}
+          onClose={() => setScheduleOpen(false)}
         />
       )}
 
