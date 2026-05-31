@@ -76,6 +76,8 @@ import {
   ArrowExpandDiagonal01Icon,
   ArrowShrink01Icon,
   FlowCircleIcon,
+  PanelLeftIcon,
+  PanelRightIcon,
   DashboardSquare01Icon,
   Bookmark01Icon,
   BookmarkCheck01Icon,
@@ -184,6 +186,8 @@ const REGISTRY = {
   fullscreen:  ArrowExpandDiagonal01Icon,  // ⤢ во весь экран
   restore:     ArrowShrink01Icon,          // ⤡ свернуть из полноэкрана
   branch:      FlowCircleIcon,             // ⌥ ветвление / условие
+  'panel-left':  PanelLeftIcon,            // ▥ свернуть/развернуть левую панель
+  'panel-right': PanelRightIcon,           // ▥ свернуть/развернуть правую панель
   grid:        DashboardSquare01Icon,      // ▦ сетка узлов
   bookmark:    Bookmark01Icon,
   'bookmark-filled': BookmarkCheck01Icon,

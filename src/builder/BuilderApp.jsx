@@ -1242,7 +1242,7 @@ function BuilderAppInner() {
                 title={t('builder.header.toggleToolbox') || 'Показать узлы'}
                 aria-label={t('builder.header.toggleToolbox') || 'Показать узлы'}
               >
-                <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+                <Icon name="panel-left" size={15} strokeWidth={1.6} />
               </button>
             )}
             <button
@@ -1316,18 +1316,19 @@ function BuilderAppInner() {
                 ? (t('builder.running') || 'Выполняется…')
                 : (t('builder.run') || 'Запуск')}</span>
             </button>
-            {/* Детали — сворачивает/разворачивает правую панель, на одной линии */}
-            <button
-              type="button"
-              className="builder-canvas-btn builder-canvas-btn--icon"
-              onClick={() => setSidebarOpen(v => !v)}
-              aria-pressed={sidebarOpen}
-              title={sidebarOpen
-                ? (t('builder.header.toggleSidebar') || 'Скрыть детали')
-                : (t('builder.header.toggleSidebar') || 'Показать детали')}
-            >
-              <Icon name={sidebarOpen ? 'arrow-right' : 'arrow-left'} size={14} strokeWidth={1.75} />
-            </button>
+            {/* Показать детали — только когда правая панель ЗАКРЫТА.
+                Свернуть открытую панель можно кнопкой внутри самой панели. */}
+            {!sidebarOpen && (
+              <button
+                type="button"
+                className="builder-canvas-btn builder-canvas-btn--icon"
+                onClick={() => setSidebarOpen(true)}
+                title={t('builder.header.toggleSidebar') || 'Показать детали'}
+                aria-label={t('builder.header.toggleSidebar') || 'Показать детали'}
+              >
+                <Icon name="panel-right" size={15} strokeWidth={1.6} />
+              </button>
+            )}
           </div>
           <ReactFlow
             nodes={nodes}
@@ -1555,7 +1556,7 @@ function BuilderAppInner() {
                     title={t('builder.header.toggleSidebar') || 'Скрыть панель деталей'}
                     aria-label={t('builder.header.toggleSidebar') || 'Скрыть панель деталей'}
                   >
-                    <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+                    <Icon name="panel-right" size={15} strokeWidth={1.6} />
                   </button>
                 </div>
                 <div className="builder-sidebar__body">
