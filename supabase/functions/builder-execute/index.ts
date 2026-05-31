@@ -175,11 +175,24 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
   if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
 
-  const user = await getUser(req);
-  if (!user) return json({ error: 'unauthorized' }, 401);
-
-  let body: { executionId?: string; workflowId?: string; input?: string; tier?: string; locale?: string; variables?: Record<string, string> };
+  let body: { executionId?: string; workflowId?: string; input?: string; tier?: string; locale?: string; variables?: Record<string, string>; userId?: string };
   try { body = await req.json(); } catch { return json({ error: 'bad_json' }, 400); }
+
+  // Сервисный режим: серверный планировщик (builder-scheduler) запускает схему
+  // БЕЗ JWT пользователя — по секрету BUILDER_SERVICE_SECRET + body.userId.
+  // Так схема исполняется на сервере, даже когда браузер закрыт.
+  const serviceSecret = Deno.env.get('BUILDER_SERVICE_SECRET') || '';
+  const isService = !!serviceSecret && req.headers.get('x-builder-service') === serviceSecret;
+
+  let userId: string;
+  if (isService) {
+    if (!body.userId) return json({ error: 'missing_user' }, 400);
+    userId = body.userId;
+  } else {
+    const user = await getUser(req);
+    if (!user) return json({ error: 'unauthorized' }, 401);
+    userId = user.id;
+  }
 
   const executionId = body.executionId;
   const workflowId = body.workflowId;
@@ -209,12 +222,12 @@ Deno.serve(async (req) => {
   const { data: wf, error: wfErr } = await admin
     .from('builder_workflows').select('id, user_id').eq('id', workflowId).single();
   if (wfErr || !wf) return json({ error: 'workflow_not_found' }, 404);
-  if (wf.user_id !== user.id) return json({ error: 'forbidden' }, 403);
+  if (wf.user_id !== userId) return json({ error: 'forbidden' }, 403);
 
   // Ключ пользователя.
   const { data: conn } = await admin
     .from('builder_api_connections')
-    .select('encrypted_key, is_active').eq('user_id', user.id).eq('provider', 'anthropic').maybeSingle();
+    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'anthropic').maybeSingle();
   if (!conn || !conn.is_active) return json({ error: 'no_api_key' }, 400);
 
   let apiKey: string;
@@ -225,7 +238,7 @@ Deno.serve(async (req) => {
   let telegramToken = '';
   const { data: tgConn } = await admin
     .from('builder_api_connections')
-    .select('encrypted_key, is_active').eq('user_id', user.id).eq('provider', 'telegram').maybeSingle();
+    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'telegram').maybeSingle();
   if (tgConn?.is_active) {
     try { telegramToken = await decrypt(tgConn.encrypted_key); } catch { telegramToken = ''; }
   }
@@ -240,7 +253,7 @@ Deno.serve(async (req) => {
 
   // Создаём execution-строку (status running) с клиентским id.
   await admin.from('builder_executions').insert({
-    id: executionId, workflow_id: workflowId, user_id: user.id,
+    id: executionId, workflow_id: workflowId, user_id: userId,
     status: 'running', input_data: { input, tier },
   });
 
@@ -543,7 +556,7 @@ Deno.serve(async (req) => {
   // Обновляем last_used_at ключа.
   await admin.from('builder_api_connections')
     .update({ last_used_at: new Date().toISOString() })
-    .eq('user_id', user.id).eq('provider', 'anthropic');
+    .eq('user_id', userId).eq('provider', 'anthropic');
 
   const finalStatus = failed ? 'failed' : 'completed';
   await admin.from('builder_executions').update({
