@@ -2467,6 +2467,16 @@
   background: transparent;
 }
 
+/* Жёстко прибиваем холст к границам обёртки (overflow:hidden, relative) — иначе
+   React Flow по высоте чуть превышал ячейку грида, и нижние Controls/MiniMap
+   вылезали за край и подрезались. inset:0 = низ холста == низ видимой зоны. */
+.builder-app .builder-canvas-wrap .react-flow {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+}
+
 .builder-app .react-flow__controls {
   background: var(--surface);
   border: 1px solid var(--border);
