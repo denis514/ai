@@ -1352,22 +1352,6 @@ function BuilderAppInner() {
               </span>
               <Icon name="arrow-down" size={12} strokeWidth={1.75} />
             </button>
-            {userId && nodes.length > 0 && (
-              <button
-                type="button"
-                className="builder-canvas-btn builder-canvas-btn--icon"
-                onClick={() => {
-                  if (currentWorkflowId) { setScheduleOpen(true); return; }
-                  // Расписание привязано к сохранённой схеме — сначала сохраняем.
-                  toast.info(t('builder.schedule.saveFirst') || 'Сначала сохраните схему — потом нажмите часики ещё раз.');
-                  doSave();
-                }}
-                title={t('builder.schedule.title') || 'Автозапуск по расписанию'}
-                aria-label={t('builder.schedule.title') || 'Автозапуск по расписанию'}
-              >
-                <Icon name="clock" size={15} strokeWidth={1.6} />
-              </button>
-            )}
             {switcherOpen && (
               <WorkflowSwitcher
                 userId={userId}
@@ -1412,20 +1396,38 @@ function BuilderAppInner() {
                 : (t('builder.save.label') || 'Сохранить')
               }</span>
             </button>
-            <button
-              type="button"
-              className={`builder-canvas-btn builder-canvas-btn--run ${runMode === 'real' ? 'builder-canvas-btn--real' : ''}`}
-              onClick={handleRun}
-              disabled={nodes.length === 0 || execStatus === 'running'}
-              title={runMode === 'real'
-                ? (t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены')
-                : (t('builder.header.runHint') || 'Запуск (R)')}
-            >
-              <Icon name={execStatus === 'running' ? 'refresh' : 'flash'} size={16} strokeWidth={1.6} />
-              <span>{execStatus === 'running'
-                ? (t('builder.running') || 'Выполняется…')
-                : (t('builder.run') || 'Запуск')}</span>
-            </button>
+            {/* Сплит-кнопка: «Запуск» | ⏱ (расписание). Молнию убрали. */}
+            <div className={`builder-run-split ${runMode === 'real' ? 'builder-run-split--real' : ''}`}>
+              <button
+                type="button"
+                className="builder-run-split__main"
+                onClick={handleRun}
+                disabled={nodes.length === 0 || execStatus === 'running'}
+                title={runMode === 'real'
+                  ? (t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены')
+                  : (t('builder.header.runHint') || 'Запуск (R)')}
+              >
+                {execStatus === 'running' && <Icon name="refresh" size={15} strokeWidth={1.6} />}
+                <span>{execStatus === 'running'
+                  ? (t('builder.running') || 'Выполняется…')
+                  : (t('builder.run') || 'Запуск')}</span>
+              </button>
+              {userId && nodes.length > 0 && (
+                <button
+                  type="button"
+                  className="builder-run-split__clock"
+                  onClick={() => {
+                    if (currentWorkflowId) { setScheduleOpen(true); return; }
+                    toast.info(t('builder.schedule.saveFirst') || 'Сначала сохраните схему — потом нажмите часики ещё раз.');
+                    doSave();
+                  }}
+                  title={t('builder.schedule.title') || 'Автозапуск по расписанию'}
+                  aria-label={t('builder.schedule.title') || 'Автозапуск по расписанию'}
+                >
+                  <Icon name="clock" size={15} strokeWidth={1.6} />
+                </button>
+              )}
+            </div>
             {/* Показать детали — только когда правая панель ЗАКРЫТА.
                 Свернуть открытую панель можно кнопкой внутри самой панели. */}
             {!sidebarOpen && (

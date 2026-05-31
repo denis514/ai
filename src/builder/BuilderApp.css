@@ -3869,3 +3869,54 @@
 .builder-app .builder-schedule__item-when { font-size: 12px; font-weight: 700; color: var(--accent, #2563eb); }
 .builder-app .builder-schedule__item-task { font-size: 12px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .builder-app .builder-schedule__del { color: var(--danger, #dc2626); }
+
+/* Сплит-кнопка «Запуск | ⏱» */
+.builder-app .builder-run-split {
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--accent, #2563eb);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.30);
+}
+.builder-app .builder-run-split--real {
+  background: var(--success, #16a34a);
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.32);
+}
+.builder-app .builder-run-split__main,
+.builder-app .builder-run-split__clock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.builder-app .builder-run-split__main { padding: 8px 14px; }
+.builder-app .builder-run-split__clock {
+  padding: 8px 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.35); /* дивидер */
+}
+.builder-app .builder-run-split__main:hover,
+.builder-app .builder-run-split__clock:hover { background: rgba(0, 0, 0, 0.12); }
+.builder-app .builder-run-split__main:disabled { opacity: 0.55; cursor: default; }
+
+/* Расписание как popover у кнопки (правый верхний угол), не центр-модалка */
+.builder-app .builder-schedule-pop-backdrop {
+  position: fixed; inset: 0; z-index: 90; background: transparent;
+}
+.builder-app .builder-schedule.builder-schedule--pop {
+  position: absolute;
+  top: 56px;
+  right: 12px;
+  max-width: 440px;
+  width: min(440px, calc(100vw - 24px));
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  animation: builder-toast-in 0.16s ease;
+}

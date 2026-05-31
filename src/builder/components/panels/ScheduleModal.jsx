@@ -55,8 +55,8 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   };
 
   return (
-    <div className="builder-modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
-      <div className="builder-modal builder-schedule" role="dialog" aria-modal="true">
+    <div className="builder-schedule-pop-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
+      <div className="builder-modal builder-schedule builder-schedule--pop" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
         <header className="builder-modal__header">
           <h2 className="builder-modal__title">
             <Icon name="clock" size={16} strokeWidth={1.6} /> {t('builder.schedule.title') || 'Автозапуск по расписанию'}
