@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
-import { listWorkflows, deleteWorkflow } from '../../services/workflowStorage.js';
+import { listWorkflows, deleteWorkflow, renameWorkflow } from '../../services/workflowStorage.js';
 
 /**
  * WorkflowSwitcher — dropdown в header Builder.
@@ -16,12 +16,40 @@ import { listWorkflows, deleteWorkflow } from '../../services/workflowStorage.js
  *  • onNew()     — создать пустой
  *  • onClose()   — закрыть dropdown
  */
-export default function WorkflowSwitcher({ userId, currentId, refreshKey, onOpen, onNew, onDeleted, onClose }) {
+export default function WorkflowSwitcher({ userId, currentId, refreshKey, onOpen, onNew, onDeleted, onRenamed, onClose }) {
   const t = useT();
   const [items, setItems] = useState(null); // null = loading
   const [error, setError] = useState(false);
   const [confirmId, setConfirmId] = useState(null); // id workflow в режиме подтверждения удаления
+  const [editId, setEditId] = useState(null);       // id workflow в режиме переименования
+  const [editName, setEditName] = useState('');
   const ref = useRef(null);
+
+  const startRename = useCallback((e, w) => {
+    e.stopPropagation();
+    setConfirmId(null);
+    setEditId(w.id);
+    setEditName(w.name || '');
+  }, []);
+  const cancelRename = useCallback((e) => {
+    e?.stopPropagation?.();
+    setEditId(null);
+    setEditName('');
+  }, []);
+  const saveRename = useCallback(async (e, id) => {
+    e?.stopPropagation?.();
+    const clean = editName.trim();
+    if (!clean) { cancelRename(); return; }
+    try {
+      await renameWorkflow(id, clean, userId);
+      setEditId(null);
+      setEditName('');
+      refresh();
+      onRenamed?.(id, clean); // уведомить родителя (обновить имя в шапке, если открыт этот)
+    } catch (err) {
+      console.error('[Builder] rename failed', err);
+    }
+  }, [editName, userId, refresh, onRenamed, cancelRename]);
 
   const refresh = useCallback(() => {
     setError(false);
@@ -33,9 +61,15 @@ export default function WorkflowSwitcher({ userId, currentId, refreshKey, onOpen
   // Перезагружаем при открытии и при изменении refreshKey (save/delete снаружи).
   useEffect(() => { refresh(); }, [refresh, refreshKey]);
 
-  // Закрытие по клику вне / Esc.
+  // Закрытие по клику вне / Esc. ВАЖНО: игнорируем клик по триггеру (он лежит в
+  // .builder-header__switcher-wrap рядом с дропдауном) — иначе mousedown закрывал
+  // бы список, а onClick триггера тут же открывал его снова (не закрыть вторым кликом).
   useEffect(() => {
-    const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target)) onClose?.(); };
+    const onDoc = (e) => {
+      if (ref.current && !ref.current.contains(e.target) && !e.target.closest?.('.builder-header__switcher-wrap')) {
+        onClose?.();
+      }
+    };
     const onKey = (e) => { if (e.key === 'Escape') onClose?.(); };
     document.addEventListener('mousedown', onDoc);
     document.addEventListener('keydown', onKey);
@@ -104,7 +138,31 @@ export default function WorkflowSwitcher({ userId, currentId, refreshKey, onOpen
           </div>
         )}
         {items !== null && items.map(w => (
-          confirmId === w.id ? (
+          editId === w.id ? (
+            <div key={w.id} className="builder-switcher__item builder-switcher__item--edit">
+              <input
+                type="text"
+                className="builder-switcher__edit-input"
+                value={editName}
+                autoFocus
+                onChange={(e) => setEditName(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') saveRename(e, w.id);
+                  else if (e.key === 'Escape') cancelRename(e);
+                }}
+                aria-label={t('builder.workflows.rename') || 'Переименовать'}
+              />
+              <span className="builder-switcher__confirm-actions">
+                <button type="button" className="builder-switcher__confirm-cancel" onClick={cancelRename}>
+                  {t('builder.workflows.confirmCancel') || 'Отмена'}
+                </button>
+                <button type="button" className="builder-switcher__confirm-yes" onClick={(e) => saveRename(e, w.id)}>
+                  {t('builder.save.label') || 'Сохранить'}
+                </button>
+              </span>
+            </div>
+          ) : confirmId === w.id ? (
             <div
               key={w.id}
               className="builder-switcher__item builder-switcher__item--confirm"
@@ -143,15 +201,27 @@ export default function WorkflowSwitcher({ userId, currentId, refreshKey, onOpen
                 <span className="builder-switcher__item-name">{w.name}</span>
                 <span className="builder-switcher__item-date">{fmtDate(w.updatedAt)}</span>
               </span>
-              <span
-                className="builder-switcher__item-del"
-                onClick={(e) => askDelete(e, w.id)}
-                role="button"
-                tabIndex={0}
-                aria-label={t('builder.workflows.delete') || 'Delete'}
-                title={t('builder.workflows.delete') || 'Delete'}
-              >
-                <Icon name="close" size={12} strokeWidth={1.75} />
+              <span className="builder-switcher__item-actions">
+                <span
+                  className="builder-switcher__item-edit"
+                  onClick={(e) => startRename(e, w)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={t('builder.workflows.rename') || 'Переименовать'}
+                  title={t('builder.workflows.rename') || 'Переименовать'}
+                >
+                  <Icon name="edit" size={12} strokeWidth={1.75} />
+                </span>
+                <span
+                  className="builder-switcher__item-del"
+                  onClick={(e) => askDelete(e, w.id)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={t('builder.workflows.delete') || 'Delete'}
+                  title={t('builder.workflows.delete') || 'Delete'}
+                >
+                  <Icon name="close" size={12} strokeWidth={1.75} />
+                </span>
               </span>
             </button>
           )

@@ -229,6 +229,26 @@ export async function deleteWorkflow(id, userId) {
 }
 
 /**
+ * Переименовать workflow (только имя; узлы/связи не трогаем).
+ */
+export async function renameWorkflow(id, name, userId) {
+  const clean = String(name || '').trim();
+  if (!clean) return false;
+  if (!useCloud(userId)) {
+    const list = readLocalAll();
+    const next = list.map(w => (w.id === id ? { ...w, name: clean, updatedAt: Date.now() } : w));
+    writeLocalAll(next);
+    return true;
+  }
+  const { error } = await supabase
+    .from('builder_workflows')
+    .update({ name: clean })
+    .eq('id', id);
+  if (error) throw error;
+  return true;
+}
+
+/**
  * Количество активных workflow (для tier-лимитов в будущем).
  */
 export async function countWorkflows(userId) {

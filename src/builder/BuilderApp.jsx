@@ -1167,6 +1167,10 @@ function BuilderAppInner() {
                     setWorkflowName('');
                   }
                 }}
+                onRenamed={(id, name) => {
+                  setWfVersion(v => v + 1);
+                  if (id === currentWorkflowId) setWorkflowName(name); // имя в шапке
+                }}
                 onClose={() => setSwitcherOpen(false)}
               />
             )}
