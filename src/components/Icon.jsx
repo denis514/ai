@@ -78,7 +78,6 @@ import {
   FlowCircleIcon,
   PanelLeftIcon,
   PanelRightIcon,
-  RepeatIcon,
   DashboardSquare01Icon,
   Bookmark01Icon,
   BookmarkCheck01Icon,
