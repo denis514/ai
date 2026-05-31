@@ -38,6 +38,7 @@ import { createRealExecution } from './services/realExecutor.js';
 import { getKeyStatus } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
+import { saveDraft, loadDraft, clearDraft } from './services/draftBackup.js';
 import { evaluateConnection, validateGraph, denyReasonKey } from './services/connectionRules.js';
 import './BuilderApp.css';
 
@@ -280,6 +281,41 @@ function BuilderAppInner() {
     setSaveStatus(s => (s === 'saved' ? 'idle' : s));
   }, [nodes, edges]);
 
+  // L1-страховка: непрерывный черновик холста в браузере (debounce 1.5с).
+  // Переживает перезагрузку/краш ДО облачного сохранения. См. docs 13.
+  const draftTimerRef = useRef(null);
+  useEffect(() => {
+    if (nodes.length === 0 && edges.length === 0) return;
+    if (draftTimerRef.current) clearTimeout(draftTimerRef.current);
+    draftTimerRef.current = setTimeout(() => {
+      saveDraft({ workflowId: currentWorkflowId, name: workflowName, nodes, edges });
+    }, 1500);
+    return () => { if (draftTimerRef.current) clearTimeout(draftTimerRef.current); };
+  }, [nodes, edges, currentWorkflowId, workflowName]);
+
+  // При загрузке: если в браузере есть несохранённый черновик с узлами, а холст
+  // пуст — предлагаем восстановить (не делаем молча, чтобы не перетереть выбор).
+  const [draftOffer, setDraftOffer] = useState(null);
+  useEffect(() => {
+    const d = loadDraft();
+    // Предлагаем только НЕсохранённую работу (без workflowId) — именно она
+    // теряется. Сохранённые схемы и так в облаке (доступны через список).
+    if (d && d.nodes.length > 0 && !d.workflowId) setDraftOffer(d);
+    // один раз на маунт
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const restoreDraft = useCallback(() => {
+    if (!draftOffer) return;
+    skipDirtyRef.current = true;
+    syncNodeIdCounter(draftOffer.nodes);
+    setNodes(draftOffer.nodes);
+    setEdges(draftOffer.edges || []);
+    setWorkflowName(draftOffer.name || '');
+    setCurrentWorkflowId(draftOffer.workflowId || null);
+    setDraftOffer(null);
+  }, [draftOffer, setNodes, setEdges]);
+  const dismissDraft = useCallback(() => { clearDraft(); setDraftOffer(null); }, []);
+
   // Номера очерёдности на узлах. Пересчитываем при изменении структуры
   // (набор узлов/связей), не при перетаскивании. Guarded — без лупа.
   const structSig = nodes.map(n => n.id).join(',') + '|' + edges.map(e => `${e.source}>${e.target}`).join(',');
@@ -325,6 +361,7 @@ function BuilderAppInner() {
       setWorkflowName(name);
       isDirtyRef.current = false;
       setSaveStatus('saved');
+      clearDraft(); // сохранили в облако → черновик-страховка больше не нужен
       setWfVersion(v => v + 1); // список изменился → обновить «Недавние»/dropdown
     } catch (e) {
       console.error('[Builder] save failed', e);
@@ -1482,6 +1519,22 @@ function BuilderAppInner() {
       )}
 
       {/* New-workflow wizard: шаг 1 — имя + выбор; шаг 2 — список шаблонов */}
+      {/* L1: предложение восстановить несохранённую работу из браузера */}
+      {draftOffer && (
+        <div className="builder-draft-restore" role="status">
+          <Icon name="archive" size={15} strokeWidth={1.75} />
+          <span className="builder-draft-restore__text">
+            {t('builder.draft.found') || 'Найдена несохранённая схема с прошлого раза.'}
+          </span>
+          <button type="button" className="builder-btn builder-btn--primary builder-btn--small" onClick={restoreDraft}>
+            {t('builder.draft.restore') || 'Восстановить'}
+          </button>
+          <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={dismissDraft}>
+            {t('builder.draft.dismiss') || 'Отклонить'}
+          </button>
+        </div>
+      )}
+
       {nameModalOpen && (
         <div
           className="builder-name-modal__overlay"
