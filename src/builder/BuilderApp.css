@@ -1005,11 +1005,97 @@
 .builder-app .builder-toolbox {
   grid-area: toolbox;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;            /* [рейка | панель] — как в Figma */
   background: var(--surface);
   border-right: 1px solid var(--border);
   overflow: hidden;
   min-width: 0;
+}
+
+/* Узкая вертикальная рейка вкладок (Узлы / Шаблоны) */
+.builder-app .builder-toolrail {
+  flex: 0 0 auto;
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 6px;
+  background: var(--surface-2);
+  border-right: 1px solid var(--border);
+}
+.builder-app .builder-toolrail__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 2px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.builder-app .builder-toolrail__tab:hover { background: var(--surface); color: var(--text); }
+.builder-app .builder-toolrail__tab.is-active {
+  background: color-mix(in srgb, var(--accent, #2563eb) 12%, transparent);
+  color: var(--accent, #2563eb);
+}
+
+/* Широкая панель — содержимое вкладки */
+.builder-app .builder-toolbox__panel {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Инлайновый список шаблонов */
+.builder-app .builder-template-list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.builder-app .builder-template-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+.builder-app .builder-template-row:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.builder-app .builder-template-row__icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--accent, #2563eb);
+}
+.builder-app .builder-template-row__body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.builder-app .builder-template-row__name { font-size: 13px; font-weight: 600; }
+.builder-app .builder-template-row__desc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .builder-app .builder-toolbox__header {

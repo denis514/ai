@@ -183,6 +183,7 @@ const REGISTRY = {
   fullscreen:  ArrowExpandDiagonal01Icon,  // ⤢ во весь экран
   restore:     ArrowShrink01Icon,          // ⤡ свернуть из полноэкрана
   branch:      FlowCircleIcon,             // ⌥ ветвление / условие
+  grid:        DashboardSquare01Icon,      // ▦ сетка узлов
   bookmark:    Bookmark01Icon,
   'bookmark-filled': BookmarkCheck01Icon,
   'check-circle':    CheckmarkCircle01Icon,  // бейдж «просмотрено»

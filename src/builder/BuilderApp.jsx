@@ -168,6 +168,7 @@ function BuilderAppInner() {
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState(null);
   const [toolboxOpen, setToolboxOpen] = useState(true);
+  const [toolboxTab, setToolboxTab] = useState('nodes'); // 'nodes' | 'templates'
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [execPanelOpen, setExecPanelOpen] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
@@ -1178,26 +1179,78 @@ function BuilderAppInner() {
         {/* Toolbox (left) */}
         {toolboxOpen && (
           <aside className="builder-toolbox" aria-label={t('builder.toolbox.aria') || 'Node toolbox'}>
-            <div className="builder-toolbox__header">
-              <span>{t('builder.toolbox.title') || 'Nodes'}</span>
+            {/* Узкая рейка вкладок — как в Figma (File / Assets) */}
+            <div className="builder-toolrail" role="tablist" aria-orientation="vertical">
               <button
                 type="button"
-                className="builder-panel-collapse"
-                onClick={() => setToolboxOpen(false)}
-                title={t('builder.header.toggleToolbox') || 'Скрыть панель узлов'}
-                aria-label={t('builder.header.toggleToolbox') || 'Скрыть панель узлов'}
+                role="tab"
+                aria-selected={toolboxTab === 'nodes'}
+                className={`builder-toolrail__tab ${toolboxTab === 'nodes' ? 'is-active' : ''}`}
+                onClick={() => setToolboxTab('nodes')}
+                title={t('builder.toolbox.title') || 'Узлы'}
               >
-                <Icon name="arrow-left" size={14} strokeWidth={1.75} />
+                <Icon name="grid" size={18} strokeWidth={1.6} />
+                <span>{t('builder.toolbox.title') || 'Узлы'}</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={toolboxTab === 'templates'}
+                className={`builder-toolrail__tab ${toolboxTab === 'templates' ? 'is-active' : ''}`}
+                onClick={() => setToolboxTab('templates')}
+                title={t('builder.gallery.title') || 'Шаблоны'}
+              >
+                <Icon name="books" size={18} strokeWidth={1.6} />
+                <span>{t('builder.gallery.title') || 'Шаблоны'}</span>
               </button>
             </div>
-            <NodePalette
-              groups={TOOLBOX_GROUPS}
-              defs={NODE_DEFS}
-              onShow={handleTooltipShow}
-              onHide={handleTooltipHide}
-              onAdd={addNodeAtCenter}
-              onOpenTemplates={() => setGalleryOpen(true)}
-            />
+
+            {/* Широкая панель — содержимое зависит от вкладки */}
+            <div className="builder-toolbox__panel">
+              <div className="builder-toolbox__header">
+                <span>{toolboxTab === 'templates'
+                  ? (t('builder.gallery.title') || 'Шаблоны')
+                  : (t('builder.toolbox.title') || 'Узлы')}</span>
+                <button
+                  type="button"
+                  className="builder-panel-collapse"
+                  onClick={() => setToolboxOpen(false)}
+                  title={t('builder.header.toggleToolbox') || 'Скрыть панель'}
+                  aria-label={t('builder.header.toggleToolbox') || 'Скрыть панель'}
+                >
+                  <Icon name="arrow-left" size={14} strokeWidth={1.75} />
+                </button>
+              </div>
+              {toolboxTab === 'nodes' ? (
+                <NodePalette
+                  groups={TOOLBOX_GROUPS}
+                  defs={NODE_DEFS}
+                  onShow={handleTooltipShow}
+                  onHide={handleTooltipHide}
+                  onAdd={addNodeAtCenter}
+                />
+              ) : (
+                <div className="builder-template-list">
+                  {TEMPLATES.map(tpl => (
+                    <button
+                      key={tpl.id}
+                      type="button"
+                      className="builder-template-row"
+                      onClick={() => loadTemplate(tpl)}
+                    >
+                      <span className="builder-template-row__icon">
+                        <Icon name={tpl.iconName} size={18} strokeWidth={1.5} />
+                      </span>
+                      <span className="builder-template-row__body">
+                        <span className="builder-template-row__name">{t(tpl.nameKey) || tpl.id}</span>
+                        <span className="builder-template-row__desc">{t(tpl.descKey) || ''}</span>
+                      </span>
+                      <Icon name="arrow-right" size={14} strokeWidth={1.5} />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </aside>
         )}
 
