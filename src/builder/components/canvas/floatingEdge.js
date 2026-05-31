@@ -58,6 +58,19 @@ function edgePosition(node, point) {
  * @returns {{sx,sy,tx,ty,sourcePos,targetPos}|null} null, если размеры ещё не
  *          измерены (узел только что добавлен) — тогда падаем на хэндл-геометрию.
  */
+/**
+ * Точка на грани узла `node`, обращённая к произвольной точке (px,py).
+ * Нужна для связей из «Условия»: источник закреплён на конкретном хэндле
+ * (Да/Нет), а цель должна «смотреть» именно на этот хэндл, а не на центр узла.
+ * @returns {{x,y,pos}|null}
+ */
+export function intersectionToward(node, px, py) {
+  if (!node || !node.width || !node.height) return null;
+  const fake = { positionAbsolute: { x: px, y: py }, width: 0, height: 0 };
+  const p = nodeIntersection(node, fake);
+  return { x: p.x, y: p.y, pos: edgePosition(node, p) };
+}
+
 export function getFloatingEdgeParams(source, target) {
   if (!source || !target) return null;
   if (!source.width || !source.height || !target.width || !target.height) return null;
