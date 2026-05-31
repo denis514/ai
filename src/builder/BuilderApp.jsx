@@ -268,6 +268,7 @@ function BuilderAppInner() {
   const [wfVersion, setWfVersion] = useState(0);
   const isDirtyRef = useRef(false);
   const saveTimerRef = useRef(null);
+  const savedResetTimerRef = useRef(null); // авто-возврат кнопки «Сохранено» → «Сохранить»
   const skipDirtyRef = useRef(false); // подавляет dirty при программной загрузке
 
   // Помечаем dirty при любом изменении nodes/edges (кроме программной загрузки).
@@ -375,6 +376,11 @@ function BuilderAppInner() {
       setWorkflowName(name);
       isDirtyRef.current = false;
       setSaveStatus('saved');
+      // Через ~2.5с вернуть кнопку в исходное «Сохранить» (если ничего не меняли).
+      if (savedResetTimerRef.current) clearTimeout(savedResetTimerRef.current);
+      savedResetTimerRef.current = setTimeout(() => {
+        setSaveStatus(s => (s === 'saved' ? 'idle' : s));
+      }, 2500);
       clearDraft(); // сохранили в облако → черновик-страховка больше не нужен
       setWfVersion(v => v + 1); // список изменился → обновить «Недавние»/dropdown
     } catch (e) {
