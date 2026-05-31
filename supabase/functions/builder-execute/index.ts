@@ -240,6 +240,7 @@ Deno.serve(async (req) => {
   const order = topoOrder(nodes as Node[], (edges || []) as Edge[]);
   const byId = new Map((nodes as Node[]).map(n => [n.client_id, n]));
   const outputs = new Map<string, string>(); // client_id → text result
+  const transcript: string[] = [];           // лента всех шагов — для инструмента «Память»
   const blocked = new Set<string>();         // ключи рёбер невыбранной ветки Condition
   let totalTokens = 0;
   let failed = false;
@@ -437,6 +438,8 @@ Deno.serve(async (req) => {
         // к которому прикреплены. Сам узел-инструмент только помечаем.
         const note = node.role === 'web_search'
           ? 'Web access — provided to the connected agent'
+          : node.role === 'memory'
+          ? 'Memory — connected agent recalls all prior steps'
           : 'Capability attached to the connected agent';
         await log(id, 'info', note, { status: 'completed' });
         continue;
@@ -472,6 +475,13 @@ Deno.serve(async (req) => {
           }
         }
       }
+      // Память (Фаза 4): агент с прикреплённым tool-memory получает ВЕСЬ контекст
+      // прогона (все прошлые шаги), а не только прямых предшественников.
+      if (attachedToolRoles.includes('memory') && transcript.length) {
+        context += `\n\n[Память прогона — что уже было сделано на предыдущих шагах]:\n${transcript.join('\n\n')}`;
+        await log(id, 'info', `Memory: recalled ${transcript.length} prior step(s)`, { status: 'running' });
+      }
+
       // Если у узла задана своя инструкция (config.prompt) — используем её,
       // иначе встроенный роль-дефолт.
       const customPromptRaw = typeof node.config?.prompt === 'string' ? node.config.prompt.trim() : '';
@@ -482,6 +492,7 @@ Deno.serve(async (req) => {
       const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens);
       totalTokens += tokens;
       outputs.set(id, text);
+      transcript.push(`${roleLabel(node.role || 'main')}: ${text.slice(0, 1200)}`);
       lastText = text;
       await log(id, 'info', text.slice(0, 4000), { status: 'completed', tokens });
     } catch (e) {
