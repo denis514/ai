@@ -293,27 +293,41 @@ function BuilderAppInner() {
     return () => { if (draftTimerRef.current) clearTimeout(draftTimerRef.current); };
   }, [nodes, edges, currentWorkflowId, workflowName]);
 
-  // При загрузке: если в браузере есть несохранённый черновик с узлами, а холст
-  // пуст — предлагаем восстановить (не делаем молча, чтобы не перетереть выбор).
+  // Предупреждение браузера ПЕРЕД перезагрузкой/закрытием, если есть
+  // несохранённая работа — чтобы не сбросить молча. Кнопки в этом окне рисует
+  // сам браузер; «Отмена» = остаться и сохранить.
+  const unsavedRef = useRef(false);
+  useEffect(() => { unsavedRef.current = isDirtyRef.current && nodes.length > 0; });
+  useEffect(() => {
+    const h = (e) => { if (unsavedRef.current) { e.preventDefault(); e.returnValue = ''; } };
+    window.addEventListener('beforeunload', h);
+    return () => window.removeEventListener('beforeunload', h);
+  }, []);
+
+  // На возврате: если осталась НЕсохранённая работа (черновик с узлами без id) —
+  // предлагаем решить: «Сохранить под именем» или «Сбросить». Без пассивного
+  // «восстановить» (бессмысленно: не сохранил при обновлении — теряешь).
   const [draftOffer, setDraftOffer] = useState(null);
   useEffect(() => {
     const d = loadDraft();
-    // Предлагаем только НЕсохранённую работу (без workflowId) — именно она
-    // теряется. Сохранённые схемы и так в облаке (доступны через список).
     if (d && d.nodes.length > 0 && !d.workflowId) setDraftOffer(d);
     // один раз на маунт
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const restoreDraft = useCallback(() => {
+  // «Сохранить»: возвращаем черновик на холст и сразу открываем окно имени (save).
+  const keepDraftAndName = useCallback(() => {
     if (!draftOffer) return;
     skipDirtyRef.current = true;
     syncNodeIdCounter(draftOffer.nodes);
     setNodes(draftOffer.nodes);
     setEdges(draftOffer.edges || []);
-    setWorkflowName(draftOffer.name || '');
-    setCurrentWorkflowId(draftOffer.workflowId || null);
+    setNameDraft(draftOffer.name || '');
     setDraftOffer(null);
+    setNameIntent('save');
+    setNameModalStep('name');
+    setNameModalOpen(true);
   }, [draftOffer, setNodes, setEdges]);
+  // «Сбросить»: чистим черновик, холст остаётся пустым.
   const dismissDraft = useCallback(() => { clearDraft(); setDraftOffer(null); }, []);
 
   // Номера очерёдности на узлах. Пересчитываем при изменении структуры
@@ -1524,13 +1538,13 @@ function BuilderAppInner() {
         <div className="builder-draft-restore" role="status">
           <Icon name="archive" size={15} strokeWidth={1.75} />
           <span className="builder-draft-restore__text">
-            {t('builder.draft.found') || 'Найдена несохранённая схема с прошлого раза.'}
+            {t('builder.draft.found') || 'Осталась несохранённая схема. Сохранить под именем или сбросить?'}
           </span>
-          <button type="button" className="builder-btn builder-btn--primary builder-btn--small" onClick={restoreDraft}>
-            {t('builder.draft.restore') || 'Восстановить'}
+          <button type="button" className="builder-btn builder-btn--primary builder-btn--small" onClick={keepDraftAndName}>
+            {t('builder.draft.save') || 'Сохранить'}
           </button>
           <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={dismissDraft}>
-            {t('builder.draft.dismiss') || 'Отклонить'}
+            {t('builder.draft.discard') || 'Сбросить'}
           </button>
         </div>
       )}
