@@ -170,6 +170,27 @@ function BuilderAppInner() {
   const [selectedEdgeId, setSelectedEdgeId] = useState(null);
   const [toolboxOpen, setToolboxOpen] = useState(true);
   const [toolboxTab, setToolboxTab] = useState('nodes'); // 'nodes' | 'templates'
+  // Ширина левой панели (px) — тянется за правый край, сохраняется в браузере.
+  const [toolboxW, setToolboxW] = useState(() => {
+    const v = parseInt(localStorage.getItem('atlas:builder:toolbox-w') || '', 10);
+    return v >= 200 && v <= 460 ? v : 240;
+  });
+  const startToolboxResize = useCallback((e) => {
+    e.preventDefault();
+    const onMove = (ev) => {
+      const w = Math.min(Math.max(ev.clientX, 200), 460); // от левого края окна
+      setToolboxW(w);
+    };
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.body.style.cursor = '';
+      setToolboxW(w => { try { localStorage.setItem('atlas:builder:toolbox-w', String(w)); } catch { /* noop */ } return w; });
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    document.body.style.cursor = 'col-resize';
+  }, []);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [execPanelOpen, setExecPanelOpen] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
@@ -1055,6 +1076,7 @@ function BuilderAppInner() {
         sidebarOpen ? 'has-sidebar' : 'no-sidebar',
         execPanelOpen ? 'has-exec' : 'no-exec',
       ].join(' ')}
+      style={{ '--toolbox-w': `${toolboxW}px` }}
     >
       {/* ── Header ─────────────────────────────────────────────── */}
       <header className="builder-header">
@@ -1191,7 +1213,7 @@ function BuilderAppInner() {
                   title={t('builder.header.toggleToolbox') || 'Скрыть панель'}
                   aria-label={t('builder.header.toggleToolbox') || 'Скрыть панель'}
                 >
-                  <Icon name="arrow-left" size={14} strokeWidth={1.75} />
+                  <Icon name="panel-left" size={15} strokeWidth={1.6} />
                 </button>
               </div>
               {toolboxTab === 'nodes' ? (
@@ -1224,6 +1246,14 @@ function BuilderAppInner() {
                 </div>
               )}
             </div>
+            {/* Ручка изменения ширины — тянуть за правый край */}
+            <div
+              className="builder-toolbox__resize"
+              onMouseDown={startToolboxResize}
+              role="separator"
+              aria-orientation="vertical"
+              title={t('builder.toolbox.resize') || 'Потяните, чтобы изменить ширину'}
+            />
           </aside>
         )}
 

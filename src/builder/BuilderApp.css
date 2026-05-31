@@ -16,6 +16,7 @@
   color: var(--text);
   font-family: inherit;
   overflow: hidden;
+  --toolbox-w: 240px; /* ширина левой панели; переопределяется inline при ресайзе */
 }
 
 /* ────────────────────────────────────────────────── */
@@ -1049,7 +1050,7 @@
 .builder-app .builder-grid {
   flex: 1 1 auto;
   display: grid;
-  grid-template-columns: 240px 1fr 280px;
+  grid-template-columns: var(--toolbox-w, 240px) 1fr 280px;
   grid-template-rows: 1fr 240px;
   grid-template-areas:
     "toolbox canvas  sidebar"
@@ -1064,7 +1065,24 @@
 }
 
 .builder-app.no-sidebar .builder-grid {
-  grid-template-columns: 240px 1fr 0;
+  grid-template-columns: var(--toolbox-w, 240px) 1fr 0;
+}
+
+/* Ручка изменения ширины левой панели (правый край) */
+.builder-app .builder-toolbox { position: relative; }
+.builder-app .builder-toolbox__resize {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 6;
+  background: transparent;
+}
+.builder-app .builder-toolbox__resize:hover,
+.builder-app .builder-toolbox__resize.is-dragging {
+  background: color-mix(in srgb, var(--accent, #2563eb) 35%, transparent);
 }
 
 .builder-app.no-toolbox.no-sidebar .builder-grid {
