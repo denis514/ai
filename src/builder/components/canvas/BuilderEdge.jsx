@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { getBezierPath, useStore, useReactFlow, EdgeLabelRenderer } from 'reactflow';
 import Icon from '../../../components/Icon.jsx';
 import { historyBridge } from '../../services/historyBridge.js';
-import { getFloatingEdgeParams, intersectionToward } from './floatingEdge.js';
+import { getFloatingEdgeParams } from './floatingEdge.js';
 
 const BRANCH_COLOR = { true: '#16a34a', false: '#dc2626' };
 const BRANCH_LABEL = { true: 'Да', false: 'Нет' };
@@ -44,30 +44,21 @@ export default function BuilderEdge({
   const sourceNode = useStore(s => s.nodeInternals.get(source));
   const targetNode = useStore(s => s.nodeInternals.get(target));
 
-  // Связь из «Условия»: ветка кодируется хэндлом 'true'/'false'.
+  // Связь из «Условия»: ветка кодируется хэндлом 'true'/'false' (для цвета и
+  // подписи). Геометрия — плавающая, как у всех связей (концы «крутятся» вокруг
+  // узла при перемещении). Зелёная точка = Да, красная = Нет.
   const branch = (sourceNode?.data?.kind === 'logic' && (sourceHandleId === 'true' || sourceHandleId === 'false'))
     ? sourceHandleId : null;
 
-  let sx, sy, tx, ty, sPos, tPos;
-  if (branch) {
-    // Источник закреплён на конкретном хэндле Да/Нет (из props — это его реальные
-    // координаты), цель «смотрит» именно на этот хэндл, а не на центр узла.
-    sx = sourceX; sy = sourceY; sPos = sourcePosition;
-    const te = intersectionToward(targetNode, sourceX, sourceY);
-    tx = te ? te.x : targetX;
-    ty = te ? te.y : targetY;
-    tPos = te ? te.pos : targetPosition;
-  } else {
-    // Плавающие концы (грань, обращённая к соседу). Пока размеры не измерены —
-    // падаем на хэндл-координаты из props.
-    const floating = getFloatingEdgeParams(sourceNode, targetNode);
-    sx = floating ? floating.sx : sourceX;
-    sy = floating ? floating.sy : sourceY;
-    tx = floating ? floating.tx : targetX;
-    ty = floating ? floating.ty : targetY;
-    sPos = floating ? floating.sourcePos : sourcePosition;
-    tPos = floating ? floating.targetPos : targetPosition;
-  }
+  // Плавающие концы (грань, обращённая к соседу). Пока размеры не измерены —
+  // падаем на хэндл-координаты из props.
+  const floating = getFloatingEdgeParams(sourceNode, targetNode);
+  const sx = floating ? floating.sx : sourceX;
+  const sy = floating ? floating.sy : sourceY;
+  const tx = floating ? floating.tx : targetX;
+  const ty = floating ? floating.ty : targetY;
+  const sPos = floating ? floating.sourcePos : sourcePosition;
+  const tPos = floating ? floating.targetPos : targetPosition;
 
   const [path, labelX, labelY] = getBezierPath({
     sourceX: sx, sourceY: sy, sourcePosition: sPos,
@@ -108,12 +99,13 @@ export default function BuilderEdge({
         style={{ stroke }}
       />
 
-      {/* Подпись ветки у начала линии — следует за хэндлом Да/Нет */}
-      {branch && (
+      {/* Подпись ветки ПРЯМО НА ЛИНИИ (середина) — следует за линией при
+          перемещении узлов. Чуть выше центра, чтобы не накрывать кнопку «разъединить». */}
+      {branch && !hovered && (
         <EdgeLabelRenderer>
           <div
             className={`builder-edge__branch builder-edge__branch--${branch}`}
-            style={{ transform: `translate(-50%, -50%) translate(${sx}px, ${sy + 14}px)` }}
+            style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}
           >
             {BRANCH_LABEL[branch]}
           </div>

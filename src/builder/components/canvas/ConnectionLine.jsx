@@ -12,12 +12,19 @@ import React from 'react';
  * Поток только вперёд (React Flow стартует тягу только с source-порта).
  */
 const ARROW_ROTATION = { top: 0, bottom: 180, left: 270, right: 90 };
+const BRANCH_COLOR = { true: '#16a34a', false: '#dc2626' };
+const BRANCH_LABEL = { true: 'Да', false: 'Нет' };
 
-export default function ConnectionLine({ fromX, fromY, toX, toY, fromPosition, fromNode }) {
-  const color = fromNode?.data?.color || '#2563eb';
+export default function ConnectionLine({ fromX, fromY, toX, toY, fromPosition, fromNode, fromHandle }) {
+  // Тянем из «Условия» по ветке Да/Нет → красим линию и показываем слово на ней.
+  const branch = (fromNode?.data?.kind === 'logic' && (fromHandle?.id === 'true' || fromHandle?.id === 'false'))
+    ? fromHandle.id : null;
+  const color = branch ? BRANCH_COLOR[branch] : (fromNode?.data?.color || '#2563eb');
   const midY = (fromY + toY) / 2;
   const d = `M${fromX},${fromY} C ${fromX},${midY} ${toX},${midY} ${toX},${toY}`;
   const deg = ARROW_ROTATION[fromPosition] ?? 0;
+  const mx = (fromX + toX) / 2;
+  const my = (fromY + toY) / 2;
 
   return (
     <g className="builder-conn-line">
@@ -30,6 +37,15 @@ export default function ConnectionLine({ fromX, fromY, toX, toY, fromPosition, f
         fill="none"
         transform={`rotate(${deg} ${toX} ${toY})`}
       />
+      {/* Слово ветки прямо на линии во время перетаскивания */}
+      {branch && (
+        <g>
+          <rect x={mx - 17} y={my - 11} width={34} height={20} rx={10} fill={color} />
+          <text x={mx} y={my + 4} textAnchor="middle" fontSize="11" fontWeight="700" fill="#fff">
+            {BRANCH_LABEL[branch]}
+          </text>
+        </g>
+      )}
     </g>
   );
 }
