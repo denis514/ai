@@ -76,6 +76,7 @@ import {
   ArrowExpandDiagonal01Icon,
   ArrowShrink01Icon,
   FlowCircleIcon,
+  DashboardSquare01Icon,
   Bookmark01Icon,
   BookmarkCheck01Icon,
   LinkSquare01Icon,
