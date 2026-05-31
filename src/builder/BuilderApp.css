@@ -1876,6 +1876,26 @@
   background: var(--success, #2faa6a);
   color: #fff;
 }
+/* Агент без инструкции — мягко зовёт настроить (янтарный пульс) */
+.builder-app .builder-node__needsetup {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--warning, #f59e0b);
+  color: #fff;
+  animation: builder-needsetup-pulse 2s ease-in-out infinite;
+}
+@keyframes builder-needsetup-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--warning, #f59e0b) 55%, transparent); }
+  50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--warning, #f59e0b) 0%, transparent); }
+}
 
 /* ── Узел «Условие» (logic) — ветки Да/Нет, значение, пропуск ── */
 .builder-app .builder-node__cond {

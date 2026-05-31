@@ -54,10 +54,16 @@ function BaseNodeInner({ data, selected }) {
           {orderLevel}
         </span>
       )}
-      {hasPrompt && kind === 'agent' && (
-        <span className="builder-node__configured" aria-hidden="true" title="Custom instruction set">
-          <Icon name="check" size={9} strokeWidth={3} />
-        </span>
+      {kind === 'agent' && (
+        hasPrompt ? (
+          <span className="builder-node__configured" aria-hidden="true" title={t('builder.node.configured') || 'Инструкция задана'}>
+            <Icon name="check" size={9} strokeWidth={3} />
+          </span>
+        ) : (
+          <span className="builder-node__needsetup" title={t('builder.node.needsSetup') || 'Нужна инструкция — кликните, чтобы настроить'}>
+            <Icon name="edit" size={9} strokeWidth={2.5} />
+          </span>
+        )
       )}
 
       {showIn && (
