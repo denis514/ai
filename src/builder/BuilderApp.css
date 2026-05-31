@@ -42,51 +42,50 @@
   transform: translate(-50%, -50%);
 }
 
-/* Круглая кнопка «Сохранить» в правом верхнем углу */
-.builder-app .builder-save-round {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-  transition: background 0.12s ease, border-color 0.12s ease, transform 80ms ease;
-}
-.builder-app .builder-save-round:hover { background: var(--surface-2); border-color: var(--border-strong); }
-.builder-app .builder-save-round:active { transform: scale(0.94); }
-.builder-app .builder-save-round:disabled { opacity: 0.5; cursor: default; }
-.builder-app .builder-save-round.builder-save--saved { color: var(--success, #16a34a); border-color: color-mix(in srgb, var(--success, #16a34a) 40%, var(--border)); }
-.builder-app .builder-save-round.builder-save--error { color: var(--danger, #dc2626); border-color: color-mix(in srgb, var(--danger, #dc2626) 40%, var(--border)); }
-
-/* Плавающая кнопка «Запуск» — низ-право холста */
-.builder-app .builder-run-fab {
+/* Кластер «Сохранить + Запуск» — на холсте, справа вверху */
+.builder-app .builder-canvas-controls {
   position: absolute;
-  right: 16px;
-  bottom: 16px;
+  top: 12px;
+  right: 12px;
   z-index: 25;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 24px;
-  background: var(--accent, #2563eb);
-  color: #fff;
-  font-size: 14px;
+}
+.builder-app .builder-canvas-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface, #fff);
+  color: var(--text);
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.32);
-  transition: transform 80ms ease, box-shadow 0.15s ease, background 0.12s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  transition: background 0.12s ease, border-color 0.12s ease, transform 80ms ease;
 }
-.builder-app .builder-run-fab:hover { background: color-mix(in srgb, var(--accent, #2563eb) 90%, #000); }
-.builder-app .builder-run-fab:active { transform: scale(0.96); }
-.builder-app .builder-run-fab:disabled { opacity: 0.5; cursor: default; box-shadow: none; }
-.builder-app .builder-run-fab--real { background: var(--danger, #e2484f); box-shadow: 0 6px 20px rgba(226, 72, 79, 0.32); }
-.builder-app .builder-run-fab--real:hover { background: color-mix(in srgb, var(--danger, #e2484f) 90%, #000); }
+.builder-app .builder-canvas-btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.builder-app .builder-canvas-btn:active { transform: scale(0.97); }
+.builder-app .builder-canvas-btn:disabled { opacity: 0.5; cursor: default; box-shadow: none; }
+.builder-app .builder-canvas-btn--save.builder-save--saved { color: var(--success, #16a34a); border-color: color-mix(in srgb, var(--success, #16a34a) 40%, var(--border)); }
+.builder-app .builder-canvas-btn--save.builder-save--error { color: var(--danger, #dc2626); border-color: color-mix(in srgb, var(--danger, #dc2626) 40%, var(--border)); }
+
+/* Запуск — синий (демо), зелёный (реально) */
+.builder-app .builder-canvas-btn--run {
+  border: none;
+  color: #fff;
+  background: var(--accent, #2563eb);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.30);
+}
+.builder-app .builder-canvas-btn--run:hover { background: color-mix(in srgb, var(--accent, #2563eb) 90%, #000); border: none; }
+.builder-app .builder-canvas-btn--real {
+  background: var(--success, #16a34a);
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.32);
+}
+.builder-app .builder-canvas-btn--real:hover { background: color-mix(in srgb, var(--success, #16a34a) 88%, #000); }
 
 /* «Шаблоны» внизу палитры */
 .builder-app .builder-palette__templates {
@@ -1067,7 +1066,8 @@
 }
 .builder-app .builder-panel-reopen:hover { color: var(--accent, #2563eb); border-color: var(--accent, #2563eb); }
 .builder-app .builder-panel-reopen--left { left: 12px; }
-.builder-app .builder-panel-reopen--right { right: 12px; }
+/* Ниже кластера «Сохранить/Запуск», чтобы не перекрывать его */
+.builder-app .builder-panel-reopen--right { right: 12px; top: 58px; }
 
 .builder-app .builder-toolbox__body {
   flex: 1 1 auto;

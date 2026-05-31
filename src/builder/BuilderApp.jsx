@@ -1163,26 +1163,6 @@ function BuilderAppInner() {
             )}
           </div>
 
-          {/* Сохранить — круглая иконка-кнопка в правом верхнем углу */}
-          <button
-            type="button"
-            className={`builder-save-round builder-save--${saveStatus}`}
-            onClick={doSave}
-            disabled={nodes.length === 0 || saveStatus === 'saving'}
-            title={
-              saveStatus === 'saving' ? (t('builder.save.saving') || 'Сохранение…')
-              : saveStatus === 'saved' ? (t('builder.save.saved') || 'Сохранено')
-              : saveStatus === 'error' ? (t('builder.save.error') || 'Повторить')
-              : (t('builder.save.hint') || 'Сохранить схему')
-            }
-            aria-label={t('builder.save.label') || 'Сохранить'}
-          >
-            <Icon
-              name={saveStatus === 'saved' ? 'check' : saveStatus === 'saving' ? 'refresh' : saveStatus === 'error' ? 'question' : 'archive'}
-              size={15}
-              strokeWidth={1.6}
-            />
-          </button>
         </div>
       </header>
 
@@ -1244,21 +1224,42 @@ function BuilderAppInner() {
             </button>
           )}
 
-          {/* Запуск — всегда внизу-справа холста (над панелью выполнения, если открыта) */}
-          <button
-            type="button"
-            className={`builder-run-fab ${runMode === 'real' ? 'builder-run-fab--real' : ''}`}
-            onClick={handleRun}
-            disabled={nodes.length === 0 || execStatus === 'running'}
-            title={runMode === 'real'
-              ? (t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены')
-              : (t('builder.header.runHint') || 'Запуск (R)')}
-          >
-            <Icon name={execStatus === 'running' ? 'refresh' : 'flash'} size={16} strokeWidth={1.6} />
-            <span>{execStatus === 'running'
-              ? (t('builder.running') || 'Выполняется…')
-              : (t('builder.run') || 'Запуск')}</span>
-          </button>
+          {/* Сохранить + Запуск — на холсте, справа вверху, с подписями */}
+          <div className="builder-canvas-controls">
+            <button
+              type="button"
+              className={`builder-canvas-btn builder-canvas-btn--save builder-save--${saveStatus}`}
+              onClick={doSave}
+              disabled={nodes.length === 0 || saveStatus === 'saving'}
+              title={t('builder.save.hint') || 'Сохранить схему'}
+            >
+              <Icon
+                name={saveStatus === 'saved' ? 'check' : saveStatus === 'saving' ? 'refresh' : saveStatus === 'error' ? 'question' : 'archive'}
+                size={15}
+                strokeWidth={1.6}
+              />
+              <span>{
+                saveStatus === 'saving' ? (t('builder.save.saving') || 'Сохранение…')
+                : saveStatus === 'saved' ? (t('builder.save.saved') || 'Сохранено')
+                : saveStatus === 'error' ? (t('builder.save.error') || 'Повторить')
+                : (t('builder.save.label') || 'Сохранить')
+              }</span>
+            </button>
+            <button
+              type="button"
+              className={`builder-canvas-btn builder-canvas-btn--run ${runMode === 'real' ? 'builder-canvas-btn--real' : ''}`}
+              onClick={handleRun}
+              disabled={nodes.length === 0 || execStatus === 'running'}
+              title={runMode === 'real'
+                ? (t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены')
+                : (t('builder.header.runHint') || 'Запуск (R)')}
+            >
+              <Icon name={execStatus === 'running' ? 'refresh' : 'flash'} size={16} strokeWidth={1.6} />
+              <span>{execStatus === 'running'
+                ? (t('builder.running') || 'Выполняется…')
+                : (t('builder.run') || 'Запуск')}</span>
+            </button>
+          </div>
           <ReactFlow
             nodes={nodes}
             edges={edges}
