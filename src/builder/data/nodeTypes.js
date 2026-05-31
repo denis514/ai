@@ -193,7 +193,7 @@ export const NODE_DEFS = {
   'logic-loop': {
     kind: 'logic',
     role: 'loop',
-    icon: 'refresh',
+    icon: 'loop',
     color: '#ea580c',
     labelKey: 'builder.node.loop',
     descKey: 'builder.node.loop_desc',

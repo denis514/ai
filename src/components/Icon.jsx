@@ -78,6 +78,7 @@ import {
   FlowCircleIcon,
   PanelLeftIcon,
   PanelRightIcon,
+  RepeatIcon,
   DashboardSquare01Icon,
   Bookmark01Icon,
   BookmarkCheck01Icon,
@@ -186,6 +187,7 @@ const REGISTRY = {
   fullscreen:  ArrowExpandDiagonal01Icon,  // ⤢ во весь экран
   restore:     ArrowShrink01Icon,          // ⤡ свернуть из полноэкрана
   branch:      FlowCircleIcon,             // ⌥ ветвление / условие
+  loop:        RepeatIcon,                 // 🔁 цикл (повтор)
   'panel-left':  PanelLeftIcon,            // ▥ свернуть/развернуть левую панель
   'panel-right': PanelRightIcon,           // ▥ свернуть/развернуть правую панель
   grid:        DashboardSquare01Icon,      // ▦ сетка узлов
