@@ -1138,43 +1138,6 @@ function BuilderAppInner() {
               <Icon name="close" size={14} strokeWidth={1.5} />
             </button>
           )}
-          {/* Workflow switcher dropdown — крайний правый ряд */}
-          <div className="builder-header__switcher-wrap">
-            <button
-              type="button"
-              className="builder-btn builder-btn--ghost"
-              onClick={() => setSwitcherOpen(v => !v)}
-              aria-expanded={switcherOpen}
-              title={t('builder.workflows.open') || 'My workflows'}
-            >
-              <Icon name="folder" size={14} strokeWidth={1.5} />
-              <span className="builder-header__wf-name">
-                {workflowName.trim() || (t('builder.workflows.untitled') || 'Untitled')}
-              </span>
-              <Icon name="arrow-down" size={12} strokeWidth={1.75} />
-            </button>
-            {switcherOpen && (
-              <WorkflowSwitcher
-                userId={userId}
-                currentId={currentWorkflowId}
-                refreshKey={wfVersion}
-                onOpen={handleLoadWorkflow}
-                onNew={handleNewWorkflow}
-                onDeleted={(deletedId) => {
-                  setWfVersion(v => v + 1); // обновить «Недавние» в центре
-                  if (deletedId && deletedId === currentWorkflowId) {
-                    setCurrentWorkflowId(null);
-                    setWorkflowName('');
-                  }
-                }}
-                onRenamed={(id, name) => {
-                  setWfVersion(v => v + 1);
-                  if (id === currentWorkflowId) setWorkflowName(name); // имя в шапке
-                }}
-                onClose={() => setSwitcherOpen(false)}
-              />
-            )}
-          </div>
 
         </div>
       </header>
@@ -1288,6 +1251,44 @@ function BuilderAppInner() {
               <Icon name="arrow-left" size={14} strokeWidth={1.75} />
             </button>
           )}
+
+          {/* Мои workflow — на холсте, слева вверху (уровень кнопок Сохранить/Запуск) */}
+          <div className="builder-canvas-controls builder-canvas-controls--left builder-header__switcher-wrap">
+            <button
+              type="button"
+              className="builder-canvas-btn"
+              onClick={() => setSwitcherOpen(v => !v)}
+              aria-expanded={switcherOpen}
+              title={t('builder.workflows.open') || 'My workflows'}
+            >
+              <Icon name="folder" size={14} strokeWidth={1.5} />
+              <span className="builder-header__wf-name">
+                {workflowName.trim() || (t('builder.workflows.untitled') || 'Untitled')}
+              </span>
+              <Icon name="arrow-down" size={12} strokeWidth={1.75} />
+            </button>
+            {switcherOpen && (
+              <WorkflowSwitcher
+                userId={userId}
+                currentId={currentWorkflowId}
+                refreshKey={wfVersion}
+                onOpen={handleLoadWorkflow}
+                onNew={handleNewWorkflow}
+                onDeleted={(deletedId) => {
+                  setWfVersion(v => v + 1);
+                  if (deletedId && deletedId === currentWorkflowId) {
+                    setCurrentWorkflowId(null);
+                    setWorkflowName('');
+                  }
+                }}
+                onRenamed={(id, name) => {
+                  setWfVersion(v => v + 1);
+                  if (id === currentWorkflowId) setWorkflowName(name);
+                }}
+                onClose={() => setSwitcherOpen(false)}
+              />
+            )}
+          </div>
 
           {/* Сохранить + Запуск — на холсте, справа вверху, с подписями */}
           <div className="builder-canvas-controls">
