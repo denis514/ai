@@ -23,6 +23,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   const [weekday, setWeekday] = useState(1);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   const refresh = useCallback(() => {
     listSchedules(workflowId).then(setItems).catch(() => { setItems([]); });
@@ -52,6 +53,23 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
     if (s.frequency === 'hourly') return `${t('builder.schedule.hourly') || 'Ежечасно'} :${pad(s.minute)}`;
     if (s.frequency === 'weekly') return `${WD[s.weekday ?? 1]} ${pad(s.hour)}:${pad(s.minute)} UTC`;
     return `${t('builder.schedule.daily') || 'Ежедневно'} ${pad(s.hour)}:${pad(s.minute)} UTC`;
+  };
+
+  // Конкретное пояснение для выбранной частоты + пример ближайших запусков.
+  const helpText = () => {
+    if (freq === 'hourly') {
+      return (t('builder.schedule.helpHourly')
+        || 'Запуск раз в час, на {m}-й минуте каждого часа. Пример: 13:{m}, 14:{m}, 15:{m}… «Минута» — это не интервал, а отметка минуты часа.')
+        .replaceAll('{m}', pad(minute));
+    }
+    if (freq === 'weekly') {
+      return (t('builder.schedule.helpWeekly')
+        || 'Запуск раз в неделю: {d} в {h}:{m} по UTC. Один раз каждую неделю в этот день и время.')
+        .replaceAll('{d}', WD[weekday] || '').replaceAll('{h}', pad(hour)).replaceAll('{m}', pad(minute));
+    }
+    return (t('builder.schedule.helpDaily')
+      || 'Запуск раз в день в {h}:{m} по UTC. Пример: сегодня и завтра в это же время.')
+      .replaceAll('{h}', pad(hour)).replaceAll('{m}', pad(minute));
   };
 
   return (
@@ -95,9 +113,26 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
             </div>
           )}
           <div className="builder-schedule__row">
-            <label>{t('builder.schedule.minute') || 'Минута'}</label>
+            <label className="builder-schedule__label-help">
+              {t('builder.schedule.minute') || 'Минута'}
+              <button
+                type="button"
+                className="builder-schedule__help-btn"
+                onClick={() => setShowHelp(v => !v)}
+                aria-expanded={showHelp}
+                aria-label={t('builder.schedule.helpAria') || 'Что это значит'}
+                title={t('builder.schedule.helpAria') || 'Что это значит'}
+              >
+                <Icon name="question" size={13} strokeWidth={1.75} />
+              </button>
+            </label>
             <input type="number" min="0" max="59" value={minute} onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
           </div>
+          {showHelp && (
+            <div className="builder-schedule__help builder-schedule__row--full">
+              {helpText()}
+            </div>
+          )}
           <div className="builder-schedule__row builder-schedule__row--full">
             <label>{t('builder.schedule.task') || 'Задача для автозапуска'}</label>
             <textarea
