@@ -238,6 +238,10 @@ function BuilderAppInner() {
   const [nameModalOpen, setNameModalOpen] = useState(false);
   const [nameModalStep, setNameModalStep] = useState('name'); // 'name' | 'template'
   const [nameDraft, setNameDraft] = useState('');
+  // Намерение окна имени: 'create' — новый workflow (холст можно очистить),
+  // 'save' — дать имя ТЕКУЩЕМУ холсту и сохранить его (НЕ стирать). Критично:
+  // раньше «Сохранить» дёргало startBlank и теряло собранную схему.
+  const [nameIntent, setNameIntent] = useState('create');
   const [keysModalOpen, setKeysModalOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   // Реальный запуск (B-2.2)
@@ -335,11 +339,27 @@ function BuilderAppInner() {
     if (!name) {
       setNameDraft('');
       setNameModalStep('name');
+      setNameIntent('save'); // дать имя ТЕКУЩЕМУ холсту, не стирая
       setNameModalOpen(true); // спросить имя перед первым сохранением
       return;
     }
     await persist(name);
   }, [workflowName, persist]);
+
+  // Подтверждение имени в окне: ветвимся по намерению. Для 'save' сохраняем
+  // ТЕКУЩИЙ холст (persist берёт actual nodes/edges), для 'create' — startBlank.
+  const confirmName = useCallback(() => {
+    const name = nameDraft.trim();
+    if (!name) return;
+    if (nameIntent === 'save') {
+      setNameModalOpen(false);
+      setNameModalStep('name');
+      persist(name);
+    } else {
+      startBlank();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameDraft, nameIntent, persist]);
 
   // Шаг 1 «Чистый холст»: создаём пустой workflow с введённым именем.
   const startBlank = useCallback(async () => {
@@ -471,6 +491,7 @@ function BuilderAppInner() {
     setSwitcherOpen(false);
     setNameDraft('');
     setNameModalStep('name');
+    setNameIntent('create'); // новый workflow (холст можно очистить)
     setNameModalOpen(true);
   }, []);
 
@@ -853,7 +874,7 @@ function BuilderAppInner() {
     setExecPanelOpen(true); // показать поле задачи/результат
     if (!currentWorkflowId || isDirtyRef.current) {
       // Перед реальным запуском схема должна быть сохранена.
-      if (!workflowName.trim()) { setNameDraft(''); setNameModalStep('name'); setNameModalOpen(true); return; }
+      if (!workflowName.trim()) { setNameDraft(''); setNameModalStep('name'); setNameIntent('save'); setNameModalOpen(true); return; }
       doSave().then(() => { if (runInput.trim()) runReal(runInput.trim(), outputTier); });
       return;
     }
@@ -1476,7 +1497,9 @@ function BuilderAppInner() {
             {nameModalStep === 'name' ? (
               <>
                 <h3 className="builder-name-modal__title">
-                  {t('builder.nameModal.title') || 'Name your workflow'}
+                  {nameIntent === 'save'
+                    ? (t('builder.nameModal.saveTitle') || 'Назовите схему, чтобы сохранить')
+                    : (t('builder.nameModal.title') || 'Name your workflow')}
                 </h3>
                 <input
                   type="text"
@@ -1484,7 +1507,7 @@ function BuilderAppInner() {
                   value={nameDraft}
                   onChange={(e) => setNameDraft(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && nameDraft.trim()) startBlank();
+                    if (e.key === 'Enter' && nameDraft.trim()) confirmName();
                     if (e.key === 'Escape') closeNameModal();
                   }}
                   placeholder={t('builder.nameModal.placeholder') || 'e.g. Customer support triage'}
@@ -1492,7 +1515,9 @@ function BuilderAppInner() {
                   maxLength={80}
                 />
                 <p className="builder-name-modal__hint">
-                  {t('builder.nameModal.chooseHint') || 'Start blank, or pick a ready-made template.'}
+                  {nameIntent === 'save'
+                    ? (t('builder.nameModal.saveHint') || 'Текущая схема сохранится под этим именем — ничего не потеряется.')
+                    : (t('builder.nameModal.chooseHint') || 'Start blank, or pick a ready-made template.')}
                 </p>
                 <div className="builder-name-modal__actions">
                   <button
@@ -1502,21 +1527,25 @@ function BuilderAppInner() {
                   >
                     {t('builder.nameModal.cancel') || 'Cancel'}
                   </button>
-                  <button
-                    type="button"
-                    className="builder-btn builder-btn--ghost"
-                    onClick={() => setNameModalStep('template')}
-                  >
-                    <Icon name="books" size={14} strokeWidth={1.5} />
-                    {t('builder.nameModal.fromTemplate') || 'From template'}
-                  </button>
+                  {nameIntent === 'create' && (
+                    <button
+                      type="button"
+                      className="builder-btn builder-btn--ghost"
+                      onClick={() => setNameModalStep('template')}
+                    >
+                      <Icon name="books" size={14} strokeWidth={1.5} />
+                      {t('builder.nameModal.fromTemplate') || 'From template'}
+                    </button>
+                  )}
                   <button
                     type="button"
                     className="builder-btn builder-btn--primary"
-                    onClick={startBlank}
+                    onClick={confirmName}
                     disabled={!nameDraft.trim()}
                   >
-                    {t('builder.nameModal.blank') || 'Create'}
+                    {nameIntent === 'save'
+                      ? (t('builder.nameModal.save') || 'Сохранить')
+                      : (t('builder.nameModal.blank') || 'Create')}
                   </button>
                 </div>
               </>
