@@ -1130,26 +1130,6 @@ function BuilderAppInner() {
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
-            onClick={() => setToolboxOpen(v => !v)}
-            aria-pressed={toolboxOpen}
-            title={t('builder.header.toggleToolbox') || 'Toggle toolbox'}
-            aria-label={t('builder.header.toggleToolbox') || 'Toggle toolbox'}
-          >
-            <Icon name="archive" size={14} strokeWidth={1.5} />
-          </button>
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
-            onClick={() => setSidebarOpen(v => !v)}
-            aria-pressed={sidebarOpen}
-            title={t('builder.header.toggleSidebar') || 'Toggle sidebar'}
-            aria-label={t('builder.header.toggleSidebar') || 'Toggle sidebar'}
-          >
-            <Icon name="clipboard" size={14} strokeWidth={1.5} />
-          </button>
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
             onClick={() => setExecPanelOpen(v => !v)}
             aria-pressed={execPanelOpen}
             title={t('builder.header.toggleExec') || 'Toggle execution panel'}
@@ -1258,6 +1238,15 @@ function BuilderAppInner() {
           <aside className="builder-toolbox" aria-label={t('builder.toolbox.aria') || 'Node toolbox'}>
             <div className="builder-toolbox__header">
               <span>{t('builder.toolbox.title') || 'Nodes'}</span>
+              <button
+                type="button"
+                className="builder-panel-collapse"
+                onClick={() => setToolboxOpen(false)}
+                title={t('builder.header.toggleToolbox') || 'Скрыть панель узлов'}
+                aria-label={t('builder.header.toggleToolbox') || 'Скрыть панель узлов'}
+              >
+                <Icon name="arrow-left" size={14} strokeWidth={1.75} />
+              </button>
             </div>
             <NodePalette
               groups={TOOLBOX_GROUPS}
@@ -1274,6 +1263,29 @@ function BuilderAppInner() {
           className={`builder-canvas-wrap ${selectedAgentNode ? 'is-node-focused' : ''} ${isConnecting ? 'is-connecting' : ''}`}
           ref={reactFlowWrapper}
         >
+          {/* Кнопки «показать панель» на краях, когда панель скрыта */}
+          {!toolboxOpen && (
+            <button
+              type="button"
+              className="builder-panel-reopen builder-panel-reopen--left"
+              onClick={() => setToolboxOpen(true)}
+              title={t('builder.header.toggleToolbox') || 'Показать узлы'}
+              aria-label={t('builder.header.toggleToolbox') || 'Показать узлы'}
+            >
+              <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+            </button>
+          )}
+          {!sidebarOpen && (
+            <button
+              type="button"
+              className="builder-panel-reopen builder-panel-reopen--right"
+              onClick={() => setSidebarOpen(true)}
+              title={t('builder.header.toggleSidebar') || 'Показать детали'}
+              aria-label={t('builder.header.toggleSidebar') || 'Показать детали'}
+            >
+              <Icon name="arrow-left" size={14} strokeWidth={1.75} />
+            </button>
+          )}
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -1475,6 +1487,15 @@ function BuilderAppInner() {
               <>
                 <div className="builder-sidebar__header">
                   <span>{t('builder.sidebar.title') || 'Details'}</span>
+                  <button
+                    type="button"
+                    className="builder-panel-collapse"
+                    onClick={() => setSidebarOpen(false)}
+                    title={t('builder.header.toggleSidebar') || 'Скрыть панель деталей'}
+                    aria-label={t('builder.header.toggleSidebar') || 'Скрыть панель деталей'}
+                  >
+                    <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+                  </button>
                 </div>
                 <div className="builder-sidebar__body">
                   {selectedNode ? (
