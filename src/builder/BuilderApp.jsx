@@ -356,6 +356,23 @@ function BuilderAppInner() {
   // «Сбросить»: чистим черновик, холст остаётся пустым.
   const dismissDraft = useCallback(() => { clearDraft(); setDraftOffer(null); }, []);
 
+  // Заливка узла User Input, когда в задаче есть текст. hasInput — runtime-флаг
+  // (не персистится). skipDirtyRef, чтобы ввод задачи не помечал схему «изменённой».
+  useEffect(() => {
+    const has = !!runInput.trim();
+    setNodes(nds => {
+      let changed = false;
+      const next = nds.map(n => {
+        if (n.data?.kind !== 'trigger') return n;
+        if (!!n.data.hasInput === has) return n;
+        changed = true;
+        return { ...n, data: { ...n.data, hasInput: has } };
+      });
+      if (changed) skipDirtyRef.current = true;
+      return changed ? next : nds;
+    });
+  }, [runInput, setNodes]);
+
   // Номера очерёдности на узлах. Пересчитываем при изменении структуры
   // (набор узлов/связей), не при перетаскивании. Guarded — без лупа.
   const structSig = nodes.map(n => n.id).join(',') + '|' + edges.map(e => `${e.source}>${e.target}`).join(',');

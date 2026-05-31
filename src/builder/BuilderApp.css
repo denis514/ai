@@ -1638,8 +1638,24 @@
   max-width: 220px;
   font-family: inherit;
   cursor: pointer;
-  transition: box-shadow 140ms ease, transform 80ms ease;
+  transition: box-shadow 140ms ease, transform 80ms ease, background 180ms ease;
   position: relative;
+}
+
+/* Заполненный узел — залит своим цветом, текст/иконка светлые (инверсия) */
+.builder-app .builder-node.is-filled {
+  background: var(--node-color);
+}
+.builder-app .builder-node.is-filled .builder-node__label,
+.builder-app .builder-node.is-filled .builder-node__icon,
+.builder-app .builder-node.is-filled .builder-node__icon .hgi,
+.builder-app .builder-node.is-filled .builder-node__icon svg {
+  color: #fff;
+}
+/* Номер очереди поверх заливки — белая подложка для читаемости */
+.builder-app .builder-node.is-filled .builder-node__order {
+  background: #fff;
+  color: var(--node-color);
 }
 
 .builder-app .builder-node:hover {

@@ -27,7 +27,11 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 function BaseNodeInner({ data, selected }) {
   const t = useT();
-  const { icon, color, labelKey, kind, role, status = 'idle', orderLevel, hasPrompt, unlinkedOut, unlinkedIn, condValue } = data || {};
+  const { icon, color, labelKey, kind, role, status = 'idle', orderLevel, hasPrompt, hasInput, unlinkedOut, unlinkedIn, condValue } = data || {};
+
+  // «Заполнен» → плашка заливается цветом узла (инверсия): агент с инструкцией
+  // или User Input с введённой задачей. Сразу видно, какие узлы готовы.
+  const filled = (kind === 'agent' && hasPrompt) || (kind === 'trigger' && hasInput);
 
   // Условие (condition / condition-agent) рисует ДВА выхода Да/Нет.
   // Цикл (loop) — обычный узел с одним входом/выходом.
@@ -46,6 +50,7 @@ function BaseNodeInner({ data, selected }) {
         `builder-node--${kind}`,
         `builder-node--status-${status}`,
         selected ? 'is-selected' : '',
+        filled ? 'is-filled' : '',
       ].join(' ').trim()}
       style={{ '--node-color': color }}
     >
@@ -54,16 +59,12 @@ function BaseNodeInner({ data, selected }) {
           {orderLevel}
         </span>
       )}
-      {kind === 'agent' && (
-        hasPrompt ? (
-          <span className="builder-node__configured" aria-hidden="true" title={t('builder.node.configured') || 'Инструкция задана'}>
-            <Icon name="check" size={9} strokeWidth={3} />
-          </span>
-        ) : (
-          <span className="builder-node__needsetup" title={t('builder.node.needsSetup') || 'Нужна инструкция — кликните, чтобы настроить'}>
-            <Icon name="edit" size={9} strokeWidth={2.5} />
-          </span>
-        )
+      {/* Заполненность показывает сама плашка (заливка). Пустому агенту —
+          янтарная точка «нужна инструкция». */}
+      {kind === 'agent' && !hasPrompt && (
+        <span className="builder-node__needsetup" title={t('builder.node.needsSetup') || 'Нужна инструкция — кликните, чтобы настроить'}>
+          <Icon name="edit" size={9} strokeWidth={2.5} />
+        </span>
       )}
 
       {showIn && (

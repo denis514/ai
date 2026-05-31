@@ -22,7 +22,7 @@ const DERIVED_DATA_KEYS = new Set([
   'icon', 'color', 'labelKey', 'descKey', 'atlasAnchor', 'kind', 'role',
 ]);
 // Runtime-поля, которые НЕ персистим.
-const RUNTIME_DATA_KEYS = new Set(['status']);
+const RUNTIME_DATA_KEYS = new Set(['status', 'hasInput', 'orderLevel', 'unlinkedOut', 'unlinkedIn']);
 
 /**
  * Извлекает config (пользовательские overrides) из node.data:
