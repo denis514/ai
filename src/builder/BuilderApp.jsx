@@ -1071,7 +1071,7 @@ function BuilderAppInner() {
           <span className="builder-header__logo" aria-hidden="true">
             <Icon name="sparkles" size={18} strokeWidth={1.5} />
           </span>
-          <strong>Atlas</strong>
+          <strong>Agent Builder</strong>
           <span className="builder-header__beta">BETA</span>
           {nodes.length > 0 && (
             <span className="builder-header__counter">
