@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Icon from '../../components/Icon.jsx';
+import { useT } from '../../i18n/LocaleContext.jsx';
 
 /**
  * Toast — всплывающие push-сообщения (ошибки / успех / инфо).
@@ -30,6 +31,7 @@ export const toast = {
 const ICON = { error: 'close', success: 'check', info: 'idea' };
 
 export default function ToastHost() {
+  const t = useT();
   const [items, setItems] = useState([]);
 
   const remove = useCallback((id) => setItems(list => list.filter(i => i.id !== id)), []);
@@ -57,7 +59,7 @@ export default function ToastHost() {
             type="button"
             className="builder-toast__close"
             onClick={() => remove(it.id)}
-            aria-label="Закрыть"
+            aria-label={t('common.close') || 'Закрыть'}
           >
             <Icon name="close" size={12} strokeWidth={2} />
           </button>

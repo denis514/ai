@@ -1,4 +1,5 @@
 import React from 'react';
+import { useT } from '../../../i18n/LocaleContext.jsx';
 
 /**
  * ConnectionLine — линия, видимая во время перетаскивания связи.
@@ -13,9 +14,10 @@ import React from 'react';
  */
 const ARROW_ROTATION = { top: 0, bottom: 180, left: 270, right: 90 };
 const BRANCH_COLOR = { true: '#16a34a', false: '#dc2626' };
-const BRANCH_LABEL = { true: 'Да', false: 'Нет' };
 
 export default function ConnectionLine({ fromX, fromY, toX, toY, fromPosition, fromNode, fromHandle }) {
+  const t = useT();
+  const BRANCH_LABEL = { true: t('builder.condition.yes') || 'Да', false: t('builder.condition.no') || 'Нет' };
   // Тянем из «Условия» по ветке Да/Нет → красим линию и показываем слово на ней.
   const branch = (fromNode?.data?.kind === 'logic' && (fromHandle?.id === 'true' || fromHandle?.id === 'false'))
     ? fromHandle.id : null;

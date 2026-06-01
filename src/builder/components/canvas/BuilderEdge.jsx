@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { getBezierPath, useStore, useReactFlow, EdgeLabelRenderer } from 'reactflow';
 import Icon from '../../../components/Icon.jsx';
+import { useT } from '../../../i18n/LocaleContext.jsx';
 import { historyBridge } from '../../services/historyBridge.js';
 import { getFloatingEdgeParams } from './floatingEdge.js';
 
 const BRANCH_COLOR = { true: '#16a34a', false: '#dc2626' };
-const BRANCH_LABEL = { true: 'Да', false: 'Нет' };
 
 /**
  * BuilderEdge — кастомная связь.
@@ -24,6 +24,8 @@ export default function BuilderEdge({
   sourcePosition, targetPosition,
   sourceHandleId,
 }) {
+  const t = useT();
+  const branchLabel = { true: t('builder.condition.yes') || 'Да', false: t('builder.condition.no') || 'Нет' };
   const { setEdges } = useReactFlow();
   const [hovered, setHovered] = useState(false);
   const [btnHover, setBtnHover] = useState(false);
@@ -107,7 +109,7 @@ export default function BuilderEdge({
             className={`builder-edge__branch builder-edge__branch--${branch}`}
             style={{ transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)` }}
           >
-            {BRANCH_LABEL[branch]}
+            {branchLabel[branch]}
           </div>
         </EdgeLabelRenderer>
       )}
@@ -131,8 +133,8 @@ export default function BuilderEdge({
             onMouseLeave={() => { scheduleHide(); setBtnHover(false); }}
             onClick={unlink}
             role="button"
-            aria-label="Разъединить связь"
-            title="Разъединить связь"
+            aria-label={t('builder.edge.unlink') || 'Разъединить связь'}
+            title={t('builder.edge.unlink') || 'Разъединить связь'}
           >
             <Icon name={btnHover ? 'unlink' : 'link'} size={12} strokeWidth={2} />
           </div>

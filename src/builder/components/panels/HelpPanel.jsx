@@ -125,7 +125,7 @@ export default function HelpPanel({ t }) {
           aria-label={t('builder.help.search') || 'Поиск по справке'}
         />
         {q && (
-          <button type="button" className="builder-palette__clear" onClick={() => setQ('')} aria-label="Очистить">
+          <button type="button" className="builder-palette__clear" onClick={() => setQ('')} aria-label={t('common.clear') || 'Очистить'}>
             <Icon name="close" size={12} strokeWidth={2} />
           </button>
         )}
