@@ -19,12 +19,15 @@ import { supabase } from '../lib/supabaseClient.js';
 // sessionStorage живёт в рамках одной вкладки/сессии браузера.
 const RETURN_ROUTE_KEY = 'atlas:post-auth-route';
 
-/** Сохранить текущий хэш перед OAuth-редиректом или отправкой Magic Link. */
+/** Сохранить текущий ПУТЬ перед OAuth-редиректом или отправкой Magic Link.
+ *  path-routing (ADR-0008): храним pathname (+search), а не hash —
+ *  хеш теперь занят токеном Supabase (#access_token=…). */
 function saveReturnRoute() {
-  const hash = window.location.hash;
-  // Сохраняем только если есть реальный маршрут (не просто '#' или '#/ru')
-  if (hash && hash.replace(/^#\/?([a-z]{2}\/)?/, '').length > 0) {
-    sessionStorage.setItem(RETURN_ROUTE_KEY, hash);
+  const path = window.location.pathname + window.location.search;
+  // Сохраняем только реальный маршрут (не корень '/' и не просто '/ru').
+  const stripped = path.replace(/^\/([a-z]{2})(?=\/|$)/i, '');
+  if (stripped.replace(/^\//, '').length > 0) {
+    sessionStorage.setItem(RETURN_ROUTE_KEY, path);
   }
 }
 

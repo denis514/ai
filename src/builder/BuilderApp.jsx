@@ -933,8 +933,11 @@ function BuilderAppInner() {
 
   /* ────────── Header actions ────────── */
   const handleAtlasBack = useCallback(() => {
-    window.location.hash = '';
-  }, []);
+    // Назад в Atlas (корень текущей локали) — path-routing.
+    const loc = (locale && ['ru', 'en', 'fi'].includes(locale)) ? `/${locale}` : '/';
+    window.history.pushState(null, '', loc);
+    window.dispatchEvent(new Event('atlas:routechange'));
+  }, [locale]);
 
   // Общие колбэки статуса/логов для обоих режимов.
   const beginExecUi = useCallback(() => {

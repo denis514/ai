@@ -75,7 +75,7 @@ export default class ErrorBoundary extends React.Component {
             </button>
             <button
               type="button"
-              onClick={() => { window.location.hash = ''; this.reset(); }}
+              onClick={() => { window.location.assign('/'); }}
               style={{
                 padding: '10px 18px',
                 background: 'transparent',

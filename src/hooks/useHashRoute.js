@@ -2,117 +2,111 @@ import { useCallback, useEffect, useState } from 'react';
 import { LOCALES, isLocale } from '../i18n/config.js';
 
 /**
- * Hash-based router c поддержкой locale-prefix.
+ * Path-based router c поддержкой locale-prefix (History API).
  *
- * Формат хеша:
- *   #/<lang>/<type>/<id>   — каноничный вид (lang ∈ en|ru|fi)
- *   #/<lang>               — корень в указанной локали
- *   #/<type>/<id>          — legacy (без локали); locale берётся из LocaleContext
- *   ''                      — корень в текущей локали
+ * Формат пути:
+ *   /<lang>/<type>/<id>   — каноничный вид (lang ∈ en|ru|fi), напр. /ru/node/cap-tools
+ *   /<lang>               — корень в указанной локали
+ *   /<type>/<id>          — legacy (без локали); locale из LocaleContext
+ *   /                     — корень
  *
- * Семантика типов (как и раньше):
- *   node/<id>     — DetailPanel
- *   tutorial/<id> — TutorialModal
- *   courses       — WorkflowsModal
- *   library       — PromptLibraryModal
- *   prompt/<id>   — шаблон в fullscreen
+ * Имя файла/экспортов сохранено (useHashRoute, parseHash) ради совместимости
+ * импортов — реализация теперь читает window.location.pathname, а не hash.
+ * См. ADR-0008. Это даёт реальные URL, которые индексирует Google.
+ *
+ * Семантика типов: node/<id>, tutorial/<id>, courses, library, prompt/<id>,
+ * help/<id>, builder.
  *
  * Возвращает [route, setRoute], где route = { type, id } | null.
- * Locale управляется отдельно через LocaleContext — она пишется/читается из
- * того же хеша, но это два разных concerns, чтобы компоненты не были вынуждены
- * пробрасывать locale в каждый setRoute.
+ * Locale управляется отдельно через LocaleContext (тот же путь, разные concerns).
  */
 
-export function parseHash(hash) {
-  if (!hash || hash === '#' || hash === '#/') return null;
-  const clean = hash.replace(/^#\/?/, '');
-  const parts = clean.split('/').filter(Boolean);
+const EVT = 'atlas:routechange';
+
+/** Разбор маршрута из строки пути (или legacy-хеша). */
+export function parseHash(input) {
+  let str = typeof input === 'string' ? input : '';
+  str = str.replace(/^#/, ''); // поддержка legacy '#/...' и обычного '/...'
+  const parts = str.split('/').filter(Boolean);
   if (parts.length === 0) return null;
 
-  // Если первый сегмент — поддерживаемая локаль, пропускаем её.
   let i = 0;
   if (isLocale(parts[0])) i = 1;
-
-  if (i >= parts.length) return null; // только локаль, без route
+  if (i >= parts.length) return null; // только локаль
   const type = parts[i];
   const id = parts[i + 1] || null;
   return { type, id };
 }
 
-function currentLocaleFromHash() {
+function localeFromPath() {
   if (typeof window === 'undefined') return null;
-  const h = window.location.hash || '';
-  const m = /^#\/?([a-z]{2})(?:\/|$)/i.exec(h);
+  const m = /^\/([a-z]{2})(?:\/|$)/i.exec(window.location.pathname || '');
   if (!m) return null;
   const code = m[1].toLowerCase();
   return isLocale(code) ? code : null;
 }
 
-function formatHash(route, locale) {
+function formatPath(route, locale) {
   const langSeg = isLocale(locale) ? `/${locale}` : '';
   if (!route || !route.type) {
-    return langSeg ? `#${langSeg}` : '';
+    return langSeg || '/';
   }
   const tail = route.id ? `/${route.type}/${route.id}` : `/${route.type}`;
-  return `#${langSeg}${tail}`;
+  return `${langSeg}${tail}`;
 }
 
-function readHash() {
+function readRoute() {
   if (typeof window === 'undefined') return null;
-  return parseHash(window.location.hash);
+  return parseHash(window.location.pathname);
+}
+
+/**
+ * Обратная совместимость: старые ссылки '#/<lang>/<type>/<id>' переписываем на
+ * новый путь при загрузке. Не трогаем auth-хеш Supabase ('#access_token=…').
+ * Возвращает true, если миграция была.
+ */
+export function migrateLegacyHash() {
+  if (typeof window === 'undefined') return false;
+  const h = window.location.hash || '';
+  if (!h.startsWith('#/')) return false; // не наш маршрут (или auth-токен)
+  const route = parseHash(h);
+  const m = /^#\/?([a-z]{2})(?:\/|$)/i.exec(h);
+  const locale = m && isLocale(m[1].toLowerCase()) ? m[1].toLowerCase() : null;
+  const path = formatPath(route, locale);
+  window.history.replaceState(null, '', path + window.location.search);
+  return true;
 }
 
 export function useHashRoute() {
-  const [route, setRouteState] = useState(readHash);
+  const [route, setRouteState] = useState(readRoute);
 
   useEffect(() => {
-    const onChange = () => setRouteState(readHash());
-    window.addEventListener('hashchange', onChange);
+    const onChange = () => setRouteState(readRoute());
     window.addEventListener('popstate', onChange);
+    window.addEventListener(EVT, onChange);
     return () => {
-      window.removeEventListener('hashchange', onChange);
       window.removeEventListener('popstate', onChange);
+      window.removeEventListener(EVT, onChange);
     };
   }, []);
 
   const setRoute = useCallback((next) => {
-    // Сохраняем существующую локаль в URL (или null — тогда без префикса).
-    const locale = currentLocaleFromHash();
-    const target = formatHash(next, locale);
-    const current = window.location.hash;
-    if (target === current) return;
+    const locale = localeFromPath();
+    const target = formatPath(next, locale) + window.location.search;
+    const current = window.location.pathname + window.location.search;
+    if (target === current) { setRouteState(next || null); return; }
 
     if (next) {
-      window.history.pushState(null, '', target || window.location.pathname + window.location.search);
-    } else if (locale) {
-      // Очистка route, но сохраняем locale-префикс в URL.
-      window.history.replaceState(null, '', `#/${locale}`);
+      window.history.pushState(null, '', target);
     } else {
-      window.history.replaceState(
-        null,
-        '',
-        window.location.pathname + window.location.search
-      );
+      window.history.replaceState(null, '', (locale ? `/${locale}` : '/') + window.location.search);
     }
     setRouteState(next || null);
-
-    // Notify other useHashRoute instances (например AppRouter top-level).
-    // pushState/replaceState не triggers hashchange сам по себе — нужно
-    // dispatch'ить вручную, иначе другие hook instances не sync'нутся.
-    // Без этого click на «Builder» в dropdown меняет URL, но AppRouter не
-    // переключается на BuilderApp (issue от 2026-05-24).
-    try {
-      window.dispatchEvent(new HashChangeEvent('hashchange'));
-    } catch {
-      // Старые браузеры — fallback
-      const evt = document.createEvent('Event');
-      evt.initEvent('hashchange', false, false);
-      window.dispatchEvent(evt);
-    }
+    // pushState/replaceState не триггерят popstate — оповещаем другие инстансы вручную.
+    window.dispatchEvent(new Event(EVT));
   }, []);
 
   return [route, setRoute];
 }
 
-// Реэкспорт констант для удобства потребителей.
 export { LOCALES };

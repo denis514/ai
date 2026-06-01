@@ -100,8 +100,8 @@ export default function AtlasNodePreview({ atlasId, onClose, onOpenAtlas }) {
   };
 
   const handleOpenInAtlas = () => {
-    // Опциональный fallback: открыть полную страницу Atlas в этой же вкладке
-    window.location.hash = `#/${locale}/node/${currentId}`;
+    // Открыть полную страницу узла Atlas в этой же вкладке (path-routing).
+    window.location.assign(`/${locale}/node/${currentId}`);
   };
 
   // Inline link navigators

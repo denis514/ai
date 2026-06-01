@@ -414,8 +414,12 @@ function AppInner() {
 
     const parsed = parseHash(saved);
     if (parsed?.type) {
-      // Небольшая задержка: дать React время завершить рендер после auth
-      setTimeout(() => setRoute(parsed), 50);
+      // Восстанавливаем ПОЛНЫЙ сохранённый путь (с локалью), затем оповещаем
+      // роутер/локаль. path-routing (ADR-0008).
+      setTimeout(() => {
+        try { window.history.replaceState(null, '', saved); } catch { /* noop */ }
+        window.dispatchEvent(new Event('atlas:routechange'));
+      }, 50);
     }
   }, [authLoading, isLoggedIn]); // eslint-disable-line
 

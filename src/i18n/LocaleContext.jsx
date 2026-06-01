@@ -14,10 +14,11 @@ const IP_CACHE_TTL  = 7 * 24 * 60 * 60 * 1000; // 7 дней
 // Удаляем устаревший ключ v1 если он ещё есть
 try { localStorage.removeItem('claude-mindmap:ip-locale:v1'); } catch {}
 
+// Локаль из первого сегмента ПУТИ: /ru/... (path-routing, ADR-0008).
+// Имя функции сохранено, чтобы не трогать вызовы.
 function readLocaleFromHash() {
   if (typeof window === 'undefined') return null;
-  const h = window.location.hash || '';
-  const m = /^#\/?([a-z]{2})(?:\/|$)/i.exec(h);
+  const m = /^\/([a-z]{2})(?:\/|$)/i.exec(window.location.pathname || '');
   if (!m) return null;
   const code = m[1].toLowerCase();
   return isLocale(code) ? code : null;
@@ -175,14 +176,18 @@ export function LocaleProvider({ children }) {
     return subscribeToContentChanges(() => setContentVersion(v => v + 1));
   }, []);
 
-  // Sync locale при смене hash (ссылки с #/fi/...)
+  // Sync locale при смене пути (ссылки /fi/..., навигация). path-routing.
   useEffect(() => {
-    const onHash = () => {
-      const fromHash = readLocaleFromHash();
-      if (fromHash && fromHash !== locale) setLocaleState(fromHash);
+    const onNav = () => {
+      const fromPath = readLocaleFromHash();
+      if (fromPath && fromPath !== locale) setLocaleState(fromPath);
     };
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
+    window.addEventListener('popstate', onNav);
+    window.addEventListener('atlas:routechange', onNav);
+    return () => {
+      window.removeEventListener('popstate', onNav);
+      window.removeEventListener('atlas:routechange', onNav);
+    };
   }, [locale]);
 
   // Sync <html lang>
@@ -190,22 +195,21 @@ export function LocaleProvider({ children }) {
     if (typeof document !== 'undefined') document.documentElement.lang = locale;
   }, [locale]);
 
-  // Ручная смена языка — пишет в обе storage-ячейки и обновляет URL
+  // Ручная смена языка — пишет в обе storage-ячейки и обновляет ПУТЬ (/<lang>/...).
   const setLocale = useCallback((next) => {
     if (!isLocale(next)) return;
     try {
       localStorage.setItem(STORAGE_KEY, next);  // явный выбор пользователя
       writeIPCache(next);                        // перебить IP-кеш (с новым TTL)
     } catch {}
-    const h = window.location.hash || '';
-    const stripped = h.replace(/^#\/?([a-z]{2})(\/|$)/i, (m, code, sep) =>
-      isLocale(code.toLowerCase()) ? (sep === '/' ? '#/' : '#') : m
-    );
-    const rest   = stripped.replace(/^#\/?/, '');
-    const target = rest ? `#/${next}/${rest}` : `#/${next}`;
+    // Подменяем первый сегмент пути на новую локаль, сохраняя остальной маршрут.
+    const path = window.location.pathname || '/';
+    const parts = path.split('/').filter(Boolean);
+    if (parts.length && isLocale(parts[0].toLowerCase())) parts.shift();
+    const target = '/' + [next, ...parts].join('/') + window.location.search;
     window.history.replaceState(null, '', target);
     setLocaleState(next);
-    window.dispatchEvent(new HashChangeEvent('hashchange'));
+    window.dispatchEvent(new Event('atlas:routechange'));
   }, []);
 
   const value = useMemo(() => ({
