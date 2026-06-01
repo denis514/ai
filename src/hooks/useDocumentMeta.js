@@ -126,6 +126,10 @@ export function useDocumentMeta(route, locale, contentVersion) {
     const url = siteOrigin() + (typeof window !== 'undefined' ? window.location.pathname : '/');
     setCanonical(url);
     setMeta('property', 'og:url', url);
+    // Картинка превью — абсолютный адрес на текущем домене (автоподстройка).
+    const ogImg = siteOrigin() + '/og-image.png';
+    setMeta('property', 'og:image', ogImg);
+    setMeta('name', 'twitter:image', ogImg);
     setAlternates();
   }, [route?.type, route?.id, locale, contentVersion]);
 }
