@@ -36,7 +36,6 @@ import AuthModal from '../components/AuthModal.jsx';
 import { TEMPLATES } from './data/templates.js';
 import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data/outputTiers.js';
 import { templateForRole } from './data/rolePrompts.js';
-import { createExecution } from './services/mockExecutor.js';
 import { createRealExecution } from './services/realExecutor.js';
 import { getKeyStatus } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
@@ -286,20 +285,13 @@ function BuilderAppInner() {
   const [keysModalOpen, setKeysModalOpen] = useState(false);
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  // Реальный запуск (B-2.2)
-  const [runMode, setRunMode] = useState('mock');     // 'mock' | 'real'
+  // Production-only: демо-режим удалён, запуск всегда реальный (на ключе Claude).
+  const runMode = 'real';
   const [keyConnected, setKeyConnected] = useState(false);
   const [telegramConnected, setTelegramConnected] = useState(false);
   const [runInput, setRunInput] = useState('');
   // Переменные для переиспользуемых схем: {{ключ}} в задаче/инструкциях → значение.
   const [runVars, setRunVars] = useState([]); // [{ key, value }]
-  // Намерение «Реально» переживает перезагрузку страницы (вход через
-  // Google/magic-link = редирект). Храним в sessionStorage.
-  const REAL_INTENT_KEY = 'atlas:builder:real-intent';
-  const [realIntent, setRealIntent] = useState(() => {
-    try { return sessionStorage.getItem(REAL_INTENT_KEY) === '1'; } catch { return false; }
-  });
-  const [realConfirmOpen, setRealConfirmOpen] = useState(false); // окно «осторожно, реальный режим»
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
   const [validation, setValidation] = useState(null); // { errors:[], warnings:[] } перед реальным запуском
   const [outputTier, setOutputTier] = useState(DEFAULT_TIER);    // 's' | 'm' | 'l'
@@ -534,11 +526,8 @@ function BuilderAppInner() {
     else setKeysModalOpen(true);
   }, [user]);
 
-  // Запрос реального режима когда он заблокирован: запоминаем намерение и ведём
-  // ко входу/ключу. После того как вход+ключ готовы — авто-переход (эффект ниже).
+  // Нет ключа/входа для запуска — ведём ко входу или подключению ключа.
   const requestRealMode = useCallback(() => {
-    setRealIntent(true);
-    try { sessionStorage.setItem(REAL_INTENT_KEY, '1'); } catch { /* noop */ }
     openKeysOrAuth();
   }, [openKeysOrAuth]);
 
@@ -555,30 +544,10 @@ function BuilderAppInner() {
     return () => { alive = false; };
   }, [keysModalOpen, user]);
 
-  // Если ключ отключили — принудительно вернуть демо-режим.
+  // Панель выполнения всегда доступна (там поле задачи) — production-only.
   useEffect(() => {
-    if (!keyConnected && runMode === 'real') setRunMode('mock');
-  }, [keyConnected, runMode]);
-
-  // В реальном режиме сразу показываем панель выполнения — там поле задачи.
-  useEffect(() => {
-    if (runMode === 'real') setExecPanelOpen(true);
-  }, [runMode]);
-
-  // Авто-переход в реальный режим после того, как пользователь вошёл и ключ есть
-  // (он жал «Реально» раньше). Показываем предупреждающее окно.
-  useEffect(() => {
-    if (!realIntent || !user) return;
-    if (keyConnected) {
-      setRunMode('real');
-      setRealConfirmOpen(true);
-      setRealIntent(false);
-      try { sessionStorage.removeItem(REAL_INTENT_KEY); } catch { /* noop */ }
-    } else {
-      // Вошёл, но ключа нет — ведём подключать.
-      setKeysModalOpen(true);
-    }
-  }, [realIntent, user, keyConnected]);
+    setExecPanelOpen(true);
+  }, []);
 
   // Загрузка существующего workflow по id.
   const handleLoadWorkflow = useCallback(async (wfId) => {
@@ -996,13 +965,7 @@ function BuilderAppInner() {
     },
   }), [setNodes, t]);
 
-  /* ────────── Mock execution ────────── */
-  const runMock = useCallback(() => {
-    const stats = beginExecUi();
-    execRef.current = createExecution({ nodes, edges, ...makeCallbacks(stats) });
-  }, [nodes, edges, beginExecUi, makeCallbacks]);
-
-  /* ────────── Real execution (B-2.2) ────────── */
+  /* ────────── Real execution (B-2.2, production-only) ────────── */
   const runReal = useCallback((input, tier) => {
     const stats = beginExecUi();
     setExecResult(null);
@@ -1039,23 +1002,19 @@ function BuilderAppInner() {
 
   const handleRun = useCallback(() => {
     if (nodes.length === 0 || execStatus === 'running') return;
-    if (runMode === 'real') {
-      if (!keyConnected) { requestRealMode(); return; }
-      // Задача пуста — открываем окно у стартового узла, чтобы было видно, куда писать.
-      if (!runInput.trim()) {
-        const trigger = nodes.find(n => n.data?.kind === 'trigger');
-        if (trigger) { setSelectedNodeId(trigger.id); setSelectedEdgeId(null); setSidebarOpen(true); }
-        return;
-      }
-      // C1: проверка схемы перед тратой токенов. Ошибки блокируют, предупреждения
-      // дают «запустить всё равно». Чисто → запускаем сразу.
-      const v = validateGraph(nodes, edges);
-      if (v.errors.length || v.warnings.length) { setValidation(v); return; }
-      proceedRealRun();
+    if (!keyConnected) { requestRealMode(); return; }
+    // Задача пуста — открываем окно у стартового узла, чтобы было видно, куда писать.
+    if (!runInput.trim()) {
+      const trigger = nodes.find(n => n.data?.kind === 'trigger');
+      if (trigger) { setSelectedNodeId(trigger.id); setSelectedEdgeId(null); setSidebarOpen(true); }
       return;
     }
-    runMock();
-  }, [nodes, edges, execStatus, runMode, keyConnected, runInput, runMock, requestRealMode, proceedRealRun]);
+    // C1: проверка схемы перед тратой токенов. Ошибки блокируют, предупреждения
+    // дают «запустить всё равно». Чисто → запускаем сразу.
+    const v = validateGraph(nodes, edges);
+    if (v.errors.length || v.warnings.length) { setValidation(v); return; }
+    proceedRealRun();
+  }, [nodes, edges, execStatus, keyConnected, runInput, requestRealMode, proceedRealRun]);
 
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
@@ -1152,27 +1111,6 @@ function BuilderAppInner() {
           )}
         </div>
 
-        {/* Центр шапки: Демо / Реально */}
-        <div className="builder-header__center">
-          <div className="builder-runmode" role="group" aria-label={t('builder.runmode.aria') || 'Run mode'}>
-            <button
-              type="button"
-              className={`builder-runmode__opt ${runMode === 'mock' ? 'is-active' : ''}`}
-              onClick={() => setRunMode('mock')}
-            >
-              {t('builder.runmode.mock') || 'Demo'}
-            </button>
-            <button
-              type="button"
-              className={`builder-runmode__opt ${runMode === 'real' ? 'is-active' : ''}`}
-              onClick={() => keyConnected ? setRunMode('real') : requestRealMode()}
-              title={keyConnected ? '' : (t('builder.runmode.needKey') || 'Connect a Claude key first')}
-            >
-              {t('builder.runmode.real') || 'Real'}
-              {!keyConnected && <Icon name="lock" size={11} strokeWidth={1.75} />}
-            </button>
-          </div>
-        </div>
 
         <div className="builder-header__actions">
           <button
@@ -1397,15 +1335,13 @@ function BuilderAppInner() {
               }</span>
             </button>
             {/* Сплит-кнопка: «Запуск» | ⏱ (расписание). Молнию убрали. */}
-            <div className={`builder-run-split ${runMode === 'real' ? 'builder-run-split--real' : ''}`}>
+            <div className="builder-run-split builder-run-split--real">
               <button
                 type="button"
                 className="builder-run-split__main"
                 onClick={handleRun}
                 disabled={nodes.length === 0 || execStatus === 'running'}
-                title={runMode === 'real'
-                  ? (t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены')
-                  : (t('builder.header.runHint') || 'Запуск (R)')}
+                title={t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены'}
               >
                 {execStatus === 'running' && <Icon name="refresh" size={15} strokeWidth={1.6} />}
                 <span>{execStatus === 'running'
@@ -2018,52 +1954,6 @@ function BuilderAppInner() {
                   {t('builder.validation.runAnyway') || 'Запустить всё равно'}
                 </button>
               )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {realConfirmOpen && (
-        <div className="builder-name-modal__overlay" onClick={() => setRealConfirmOpen(false)}>
-          <div
-            className="builder-name-modal builder-realconfirm"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-label={t('builder.realConfirm.title') || 'Real-time mode is on'}
-          >
-            <h3 className="builder-name-modal__title">
-              {t('builder.realConfirm.title') || 'You are in real-time mode'}
-            </h3>
-
-            {/* Миниатюра кнопки режима — показываем, что активно «Реально» */}
-            <div className="builder-realconfirm__preview" aria-hidden="true">
-              <span className="builder-runmode">
-                <span className="builder-runmode__opt">{t('builder.runmode.mock') || 'Demo'}</span>
-                <span className="builder-runmode__opt is-active">{t('builder.runmode.real') || 'Real'}</span>
-              </span>
-            </div>
-
-            <p className="builder-realconfirm__warn">
-              <Icon name="flash" size={14} strokeWidth={1.75} />
-              {t('builder.realConfirm.body') || 'Careful: runs now use the real Claude API and spend tokens on your key. Switch back to Demo anytime — it is free.'}
-            </p>
-
-            <div className="builder-name-modal__actions">
-              <button
-                type="button"
-                className="builder-btn builder-btn--ghost"
-                onClick={() => { setRunMode('mock'); setRealConfirmOpen(false); }}
-              >
-                {t('builder.realConfirm.backToDemo') || 'Back to Demo'}
-              </button>
-              <button
-                type="button"
-                className="builder-btn builder-btn--primary builder-btn--real"
-                onClick={() => setRealConfirmOpen(false)}
-              >
-                {t('builder.realConfirm.gotIt') || 'Got it'}
-              </button>
             </div>
           </div>
         </div>
