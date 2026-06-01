@@ -532,6 +532,15 @@ function BuilderAppInner() {
     setNameModalStep('name');
   }, []);
 
+  // Авто-имя: как только у безымянной схемы появились узлы — присваиваем имя
+  // по умолчанию. Без этого автосохранение не запустилось бы (оно требует имя),
+  // а отдельной кнопки «Сохранить» больше нет. Переименовать можно в переключателе.
+  useEffect(() => {
+    if (nodes.length > 0 && !workflowName.trim()) {
+      setWorkflowName(t('builder.workflows.defaultName') || 'Без названия');
+    }
+  }, [nodes.length, workflowName, t]);
+
   // Авто-сохранение в облако: debounce ~2.5с после ПОСЛЕДНЕГО изменения
   // (а не раз в 30с — иначе между тиками работа терялась). Срабатывает только
   // если у схемы есть имя (без имени — только черновик-страховка) и есть узлы.
@@ -1104,6 +1113,14 @@ function BuilderAppInner() {
   /* ────────── Keyboard shortcuts ────────── */
   useEffect(() => {
     const handler = (e) => {
+      // Cmd/Ctrl+S — форс-сохранение (страховка). Работает даже из полей.
+      // Кнопки «Сохранить» нет: схема и так автосохраняется, это лишь мгновенный flush.
+      if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        if (nodes.length > 0) doSave();
+        return;
+      }
+
       // Undo / Redo — работают даже из полей (стандартное поведение).
       if ((e.metaKey || e.ctrlKey) && (e.key === 'z' || e.key === 'Z')) {
         const tag = document.activeElement?.tagName;
@@ -1129,7 +1146,7 @@ function BuilderAppInner() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleRun, galleryOpen, undo, redo]);
+  }, [handleRun, galleryOpen, undo, redo, doSave, nodes.length]);
 
   return (
     <div
@@ -1144,29 +1161,82 @@ function BuilderAppInner() {
       <ToastHost />
       {/* ── Header ─────────────────────────────────────────────── */}
       <header className="builder-header">
-        <button
-          type="button"
-          className="builder-header__back"
-          onClick={handleAtlasBack}
-          aria-label={t('builder.backToAtlas') || 'Back to Atlas'}
-        >
-          <Icon name="arrow-left" size={16} strokeWidth={1.75} />
-          <span>{t('builder.backToAtlas') || 'Atlas'}</span>
-        </button>
+        <div className="builder-header__left">
+          <button
+            type="button"
+            className="builder-header__back"
+            onClick={handleAtlasBack}
+            aria-label={t('builder.backToAtlas') || 'Back to Atlas'}
+          >
+            <Icon name="arrow-left" size={16} strokeWidth={1.75} />
+            <span>{t('builder.backToAtlas') || 'Atlas'}</span>
+          </button>
 
-        <div className="builder-header__title">
-          <span className="builder-header__logo" aria-hidden="true">
-            <Icon name="sparkles" size={18} strokeWidth={1.5} />
-          </span>
-          <strong>Agent Builder</strong>
-          <span className="builder-header__beta">BETA</span>
-          {nodes.length > 0 && (
-            <span className="builder-header__counter">
-              {nodes.length} {t(nodes.length === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || (nodes.length === 1 ? 'node' : 'nodes')}
-            </span>
+          {!toolboxOpen && (
+            <button
+              type="button"
+              className="builder-btn builder-btn--ghost"
+              onClick={() => setToolboxOpen(true)}
+              title={t('builder.header.toggleToolbox') || 'Показать узлы'}
+              aria-label={t('builder.header.toggleToolbox') || 'Показать узлы'}
+            >
+              <Icon name="panel-left" size={15} strokeWidth={1.6} />
+            </button>
           )}
+
+          <div className="builder-header__title">
+            <span className="builder-header__logo" aria-hidden="true">
+              <Icon name="sparkles" size={18} strokeWidth={1.5} />
+            </span>
+            <strong>Agent Builder</strong>
+            <span className="builder-header__beta">BETA</span>
+            {nodes.length > 0 && (
+              <span className="builder-header__counter">
+                {nodes.length} {t(nodes.length === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || (nodes.length === 1 ? 'node' : 'nodes')}
+              </span>
+            )}
+          </div>
         </div>
 
+        {/* Центр: переключатель «Мои workflow» (имя текущей схемы + список) */}
+        <div className="builder-header__center">
+          <div className="builder-header__switcher-wrap">
+            <button
+              type="button"
+              className="builder-header__wf"
+              onClick={() => setSwitcherOpen(v => !v)}
+              aria-expanded={switcherOpen}
+              title={t('builder.workflows.open') || 'My workflows'}
+            >
+              <Icon name="folder" size={14} strokeWidth={1.5} />
+              <span className="builder-header__wf-name">
+                {workflowName.trim() || (t('builder.workflows.untitled') || 'Untitled')}
+              </span>
+              <Icon name="arrow-down" size={12} strokeWidth={1.75} />
+            </button>
+            {switcherOpen && (
+              <WorkflowSwitcher
+                userId={userId}
+                currentId={currentWorkflowId}
+                refreshKey={wfVersion}
+                onOpen={handleLoadWorkflow}
+                onNew={handleNewWorkflow}
+                onDeleted={(deletedId) => {
+                  setWfVersion(v => v + 1);
+                  if (deletedId && deletedId === currentWorkflowId) {
+                    setCurrentWorkflowId(null);
+                    setWorkflowName('');
+                  }
+                }}
+                onRenamed={(id, name) => {
+                  setWfVersion(v => v + 1);
+                  if (id === currentWorkflowId) setWorkflowName(name);
+                }}
+                onClose={() => setSwitcherOpen(false)}
+              />
+            )}
+          </div>
+        </div>
 
         <div className="builder-header__actions">
           <button
@@ -1320,76 +1390,23 @@ function BuilderAppInner() {
           className={`builder-canvas-wrap ${selectedAgentNode ? 'is-node-focused' : ''} ${isConnecting ? 'is-connecting' : ''}`}
           ref={reactFlowWrapper}
         >
-          {/* Слева вверху, одна линия: [показать узлы] + Мои workflow */}
-          <div className="builder-canvas-controls builder-canvas-controls--left builder-header__switcher-wrap">
-            {!toolboxOpen && (
-              <button
-                type="button"
-                className="builder-canvas-btn builder-canvas-btn--icon"
-                onClick={() => setToolboxOpen(true)}
-                title={t('builder.header.toggleToolbox') || 'Показать узлы'}
-                aria-label={t('builder.header.toggleToolbox') || 'Показать узлы'}
-              >
-                <Icon name="panel-left" size={15} strokeWidth={1.6} />
-              </button>
-            )}
-            <button
-              type="button"
-              className="builder-canvas-btn"
-              onClick={() => setSwitcherOpen(v => !v)}
-              aria-expanded={switcherOpen}
-              title={t('builder.workflows.open') || 'My workflows'}
+          {/* Живой статус сохранения — маленький бейдж под шапкой, по центру.
+              Появляется только при реальном результате (сохранено / сбой). */}
+          {(saveStatus === 'saved' || saveStatus === 'error') && (
+            <div
+              className={`builder-save-badge builder-save-badge--${saveStatus}`}
+              role="status"
+              aria-live="polite"
             >
-              <Icon name="folder" size={14} strokeWidth={1.5} />
-              <span className="builder-header__wf-name">
-                {workflowName.trim() || (t('builder.workflows.untitled') || 'Untitled')}
-              </span>
-              <Icon name="arrow-down" size={12} strokeWidth={1.75} />
-            </button>
-            {switcherOpen && (
-              <WorkflowSwitcher
-                userId={userId}
-                currentId={currentWorkflowId}
-                refreshKey={wfVersion}
-                onOpen={handleLoadWorkflow}
-                onNew={handleNewWorkflow}
-                onDeleted={(deletedId) => {
-                  setWfVersion(v => v + 1);
-                  if (deletedId && deletedId === currentWorkflowId) {
-                    setCurrentWorkflowId(null);
-                    setWorkflowName('');
-                  }
-                }}
-                onRenamed={(id, name) => {
-                  setWfVersion(v => v + 1);
-                  if (id === currentWorkflowId) setWorkflowName(name);
-                }}
-                onClose={() => setSwitcherOpen(false)}
-              />
-            )}
-          </div>
+              <Icon name={saveStatus === 'saved' ? 'check' : 'question'} size={12} strokeWidth={2} />
+              <span>{saveStatus === 'saved'
+                ? (t('builder.save.saved') || 'Сохранено')
+                : (t('builder.save.error') || 'Не удалось сохранить')}</span>
+            </div>
+          )}
 
-          {/* Сохранить + Запуск — на холсте, справа вверху, с подписями */}
+          {/* Запуск — на холсте, справа вверху, с подписью */}
           <div className="builder-canvas-controls">
-            <button
-              type="button"
-              className={`builder-canvas-btn builder-canvas-btn--save builder-save--${saveStatus}`}
-              onClick={doSave}
-              disabled={nodes.length === 0 || saveStatus === 'saving'}
-              title={t('builder.save.hint') || 'Сохранить схему'}
-            >
-              <Icon
-                name={saveStatus === 'saved' ? 'check' : saveStatus === 'saving' ? 'refresh' : saveStatus === 'error' ? 'question' : 'archive'}
-                size={15}
-                strokeWidth={1.6}
-              />
-              <span>{
-                saveStatus === 'saving' ? (t('builder.save.saving') || 'Сохранение…')
-                : saveStatus === 'saved' ? (t('builder.save.saved') || 'Сохранено')
-                : saveStatus === 'error' ? (t('builder.save.error') || 'Повторить')
-                : (t('builder.save.label') || 'Сохранить')
-              }</span>
-            </button>
             {/* Сплит-кнопка: «Запуск» | ⏱ (расписание). Молнию убрали. */}
             <div className="builder-run-split builder-run-split--real">
               <button
