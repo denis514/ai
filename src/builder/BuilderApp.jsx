@@ -169,6 +169,10 @@ function computeOrderLevels(nodes, edges) {
   return level;
 }
 
+// Модификатор-клавиша для подсказок: ⌘ на Mac, Ctrl на остальных платформах.
+const KBD_META = (typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || ''))
+  ? '⌘' : 'Ctrl';
+
 function BuilderApp() {
   return (
     <ReactFlowProvider>
@@ -1689,11 +1693,22 @@ function BuilderAppInner() {
             </div>
           )}
 
-          {/* Status hint */}
+          {/* Легенда горячих клавиш — keycap-чипы в стиле Atlas */}
           {nodes.length > 0 && !(nodes.length >= 2 && edges.length === 0) && execStatus !== 'running' && (
-            <div className="builder-status-hint">
-              <Icon name="idea" size={14} strokeWidth={1.5} />
-              <span>{t('builder.canvas.hint') || 'Click a node to see details. Drag handles to connect. Delete key to remove.'}</span>
+            <div className="builder-keyhint" aria-label={t('builder.kbd.aria') || 'Keyboard shortcuts'}>
+              {[
+                { keys: ['Del'], label: t('builder.kbd.delete') || 'удалить', when: !!selectedNodeId || !!selectedEdgeId },
+                { keys: [KBD_META, 'Z'], label: t('builder.kbd.undo') || 'отменить', when: true },
+                { keys: ['R'], label: t('builder.kbd.run') || 'запуск', when: true },
+                { keys: [KBD_META, 'S'], label: t('builder.kbd.save') || 'сохранить', when: true },
+              ].filter(s => s.when).map((s, i) => (
+                <span className="builder-keyhint__item" key={i}>
+                  <span className="builder-keyhint__keys">
+                    {s.keys.map((k, j) => <kbd className="builder-kbd" key={j}>{k}</kbd>)}
+                  </span>
+                  <span className="builder-keyhint__label">{s.label}</span>
+                </span>
+              ))}
             </div>
           )}
 
