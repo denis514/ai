@@ -51,11 +51,18 @@ export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
   }, []);
 
+  const cls = variant === 'cta'
+    ? 'builder-palette__cta'
+    : variant === 'tile'
+      ? 'builder-palette__tile'
+      : 'builder-toolbox__item';
+  const iconSize = variant === 'row' ? 14 : 18;
+
   return (
     <button
       ref={buttonRef}
       type="button"
-      className={variant === 'tile' ? 'builder-palette__tile' : 'builder-toolbox__item'}
+      className={cls}
       style={{ '--node-color': def.color }}
       draggable
       onDragStart={(e) => {
@@ -71,7 +78,7 @@ export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant
       onBlur={handleLeave}
       aria-label={t(def.labelKey) || defId}
     >
-      <Icon name={def.icon} size={variant === 'tile' ? 18 : 14} strokeWidth={1.5} />
+      <Icon name={def.icon} size={iconSize} strokeWidth={1.5} />
       <span>{t(def.labelKey) || defId}</span>
     </button>
   );

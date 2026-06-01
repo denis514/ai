@@ -74,6 +74,20 @@ export default function NodePalette({ groups, defs, onShow, onHide, onAdd, onOpe
       </div>
 
       <div className="builder-palette__body">
+        {/* «Старт» — точка входа схемы. Отдельная заметная кнопка наверху палитры
+            (мерцает, приглашая перетащить на холст). На холсте — обычный узел. */}
+        {defs['trigger-input'] && (!matches || matches.has('trigger-input')) && (
+          <div className="builder-palette__cta-wrap">
+            <ToolboxItem
+              defId="trigger-input"
+              def={defs['trigger-input']}
+              onShow={onShow}
+              onHide={onHide}
+              onAdd={onAdd}
+              variant="cta"
+            />
+          </div>
+        )}
         {visibleGroups.length === 0 && (
           <div className="builder-palette__empty">
             {t('builder.palette.noResults') || 'Ничего не найдено'}

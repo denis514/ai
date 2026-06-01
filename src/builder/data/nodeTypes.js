@@ -270,7 +270,8 @@ export const TOOLBOX_GROUPS = [
   {
     id: 'flow',
     labelKey: 'builder.toolbox.flow',
-    items: ['trigger-input', 'output-text', 'output-telegram', 'output-email', 'output-calendar'],
+    // 'trigger-input' (Старт) вынесен в отдельную CTA-кнопку наверху палитры.
+    items: ['output-text', 'output-telegram', 'output-email', 'output-calendar'],
   },
 ];
 
