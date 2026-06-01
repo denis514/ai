@@ -17,7 +17,7 @@ import { getNodeDef } from '../../data/nodeTypes.js';
  * Phase B-1 Day 22-23 (см. docs/agent-builder/03-mvp-30day.md).
  */
 
-export default function ConceptTooltip({ defId, top, left, onShow, onHide, onOpenAtlas }) {
+export default function ConceptTooltip({ defId, top, left, onShow, onHide, onOpenAtlas, onOpenGuide }) {
   const t = useT();
   const def = getNodeDef(defId);
   if (!def) return null;
@@ -67,17 +67,29 @@ export default function ConceptTooltip({ defId, top, left, onShow, onHide, onOpe
         <p className="builder-tooltip__desc">{t(descKey) || ''}</p>
       )}
 
-      {atlasAnchor && (
+      <div className="builder-tooltip__actions">
         <button
           type="button"
-          className="builder-tooltip__link"
-          onClick={handleAtlasOpen}
+          className="builder-tooltip__link builder-tooltip__link--guide"
+          onClick={(e) => { e.stopPropagation(); if (onOpenGuide) onOpenGuide(defId); }}
         >
-          <Icon name="compass" size={11} strokeWidth={1.75} />
-          <span>{t('builder.tooltip.learnMore') || 'Learn more in Atlas'}</span>
+          <Icon name="idea" size={11} strokeWidth={1.75} />
+          <span>{t('builder.tooltip.howTo') || 'Как использовать'}</span>
           <Icon name="arrow-right" size={11} strokeWidth={1.75} />
         </button>
-      )}
+
+        {atlasAnchor && (
+          <button
+            type="button"
+            className="builder-tooltip__link"
+            onClick={handleAtlasOpen}
+          >
+            <Icon name="compass" size={11} strokeWidth={1.75} />
+            <span>{t('builder.tooltip.learnMore') || 'Learn more in Atlas'}</span>
+            <Icon name="arrow-right" size={11} strokeWidth={1.75} />
+          </button>
+        )}
+      </div>
 
       <div className="builder-tooltip__hint">
         {t('builder.tooltip.dragHint') || 'Drag to canvas to use'}

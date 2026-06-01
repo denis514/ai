@@ -24,6 +24,7 @@ import ConnectionLine from './components/canvas/ConnectionLine.jsx';
 import BuilderEdge from './components/canvas/BuilderEdge.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
 import AtlasNodePreview from './components/education/AtlasNodePreview.jsx';
+import NodeGuidePanel from './components/education/NodeGuidePanel.jsx';
 import BuilderTour, { isTourSeen } from './components/education/BuilderTour.jsx';
 import TemplateGallery from './components/panels/TemplateGallery.jsx';
 import TemplatePreview from './components/panels/TemplatePreview.jsx';
@@ -215,12 +216,15 @@ function BuilderAppInner() {
 
   // Atlas preview state — когда установлено, заменяет NodeDetails в sidebar.
   const [atlasPreviewId, setAtlasPreviewId] = useState(null);
+  // Гайд «Как использовать узел» — defId типа узла; тоже заменяет NodeDetails.
+  const [guideDefId, setGuideDefId] = useState(null);
 
   // Onboarding tour — показываем при first visit
   const [tourOpen, setTourOpen] = useState(() => !isTourSeen());
 
   const openAtlasPreview = useCallback((atlasId) => {
     if (!atlasId) return;
+    setGuideDefId(null);     // взаимоисключение с гайдом
     setAtlasPreviewId(atlasId);
     setSidebarOpen(true); // open sidebar если был закрыт
     // Сразу скрываем tooltip — preview в sidebar более полный
@@ -233,6 +237,23 @@ function BuilderAppInner() {
 
   const closeAtlasPreview = useCallback(() => {
     setAtlasPreviewId(null);
+  }, []);
+
+  // Открыть гайд «Как использовать» по defId типа узла.
+  const openNodeGuide = useCallback((defId) => {
+    if (!defId) return;
+    setAtlasPreviewId(null); // взаимоисключение с превью Atlas
+    setGuideDefId(defId);
+    setSidebarOpen(true);
+    if (tooltipHideTimerRef.current) {
+      clearTimeout(tooltipHideTimerRef.current);
+      tooltipHideTimerRef.current = null;
+    }
+    setTooltipInfo(null);
+  }, []);
+
+  const closeNodeGuide = useCallback(() => {
+    setGuideDefId(null);
   }, []);
 
   /* ────────── Tooltip show/hide с graceful delay ────────── */
@@ -1673,13 +1694,22 @@ function BuilderAppInner() {
           <aside
             className={[
               'builder-sidebar',
-              atlasPreviewId ? 'builder-sidebar--preview' : '',
+              (atlasPreviewId || guideDefId) ? 'builder-sidebar--preview' : '',
             ].join(' ').trim()}
             aria-label={atlasPreviewId
               ? (t('builder.preview.aria') || 'Atlas preview')
-              : (t('builder.sidebar.aria') || 'Selection details')}
+              : guideDefId
+                ? (t('builder.guide.aria') || 'Node guide')
+                : (t('builder.sidebar.aria') || 'Selection details')}
           >
-            {atlasPreviewId ? (
+            {guideDefId ? (
+              // Гайд «Как использовать узел» — занимает sidebar, свой header внутри
+              <NodeGuidePanel
+                defId={guideDefId}
+                onClose={closeNodeGuide}
+                onOpenAtlas={openAtlasPreview}
+              />
+            ) : atlasPreviewId ? (
               // Atlas preview takes over entire sidebar — собственный header внутри
               <AtlasNodePreview
                 atlasId={atlasPreviewId}
@@ -1702,7 +1732,7 @@ function BuilderAppInner() {
                 </div>
                 <div className="builder-sidebar__body">
                   {selectedNode ? (
-                    <NodeDetails node={selectedNode} t={t} onAtlasLink={openAtlasPreview} />
+                    <NodeDetails node={selectedNode} t={t} onAtlasLink={openAtlasPreview} onGuide={openNodeGuide} />
                   ) : (
                     <div className="builder-empty-state">
                       <Icon name="idea" size={24} strokeWidth={1.5} />
@@ -1777,6 +1807,7 @@ function BuilderAppInner() {
           onShow={handleTooltipShow}
           onHide={handleTooltipHide}
           onOpenAtlas={openAtlasPreview}
+          onOpenGuide={openNodeGuide}
         />
       )}
 
@@ -2702,8 +2733,8 @@ function LoopConfigPopover({ node, nodes, t, onSet, onClose }) {
   );
 }
 
-function NodeDetails({ node, t, onAtlasLink }) {
-  const { icon, color, labelKey, descKey, kind, role, status, atlasAnchor } = node.data;
+function NodeDetails({ node, t, onAtlasLink, onGuide }) {
+  const { icon, color, labelKey, descKey, kind, role, status, atlasAnchor, defId } = node.data;
   return (
     <div className="builder-node-details">
       <div className="builder-node-details__head" style={{ '--node-color': color }}>
@@ -2736,6 +2767,18 @@ function NodeDetails({ node, t, onAtlasLink }) {
           </dd>
         </div>
       </dl>
+
+      {defId && onGuide && (
+        <button
+          type="button"
+          className="builder-atlas-link builder-atlas-link--guide"
+          onClick={() => onGuide(defId)}
+        >
+          <Icon name="idea" size={12} strokeWidth={1.5} />
+          <span>{t('builder.tooltip.howTo') || 'Как использовать'}</span>
+          <Icon name="arrow-right" size={12} strokeWidth={1.5} />
+        </button>
+      )}
 
       {atlasAnchor && (
         <button

@@ -3954,3 +3954,200 @@
 .builder-app .builder-mcpnode__item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); cursor: pointer; }
 .builder-app .builder-mcpnode__item input { accent-color: var(--accent, #2563eb); }
 .builder-app .builder-mcpnode__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ────────────────────────────────────────────────── */
+/* Tooltip actions (two buttons) + guide accents       */
+/* ────────────────────────────────────────────────── */
+.builder-app .builder-tooltip__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.builder-app .builder-tooltip__link--guide {
+  border-color: var(--node-color);
+  color: var(--node-color);
+  background: color-mix(in srgb, var(--node-color) 7%, var(--bg));
+}
+.builder-app .builder-tooltip__link--guide:hover {
+  background: color-mix(in srgb, var(--node-color) 14%, var(--bg));
+}
+.builder-app .builder-atlas-link--guide {
+  border-color: var(--node-color, #2563eb);
+  color: var(--node-color, #2563eb);
+}
+
+/* ────────────────────────────────────────────────── */
+/* Node guide panel «Как использовать» (sidebar)       */
+/* ────────────────────────────────────────────────── */
+.builder-app .builder-guide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+}
+.builder-app .builder-guide__head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.builder-app .builder-guide__head-main {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+.builder-app .builder-guide__head-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  flex: 0 0 auto;
+  background: color-mix(in srgb, var(--node-color) 12%, transparent);
+  color: var(--node-color);
+}
+.builder-app .builder-guide__head-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.builder-app .builder-guide__head-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+.builder-app .builder-guide__close {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.builder-app .builder-guide__close:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.builder-app .builder-guide__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 14px 14px 16px;
+}
+.builder-app .builder-guide__summary {
+  margin: 0 0 14px 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.builder-app .builder-guide__section {
+  margin-bottom: 14px;
+}
+.builder-app .builder-guide__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px 0;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+.builder-app .builder-guide__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.builder-app .builder-guide__step {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.builder-app .builder-guide__step-num {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--node-color) 14%, transparent);
+  color: var(--node-color);
+}
+.builder-app .builder-guide__tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 11px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.builder-app .builder-guide__tip svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--node-color);
+}
+.builder-app .builder-guide__missing {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.builder-app .builder-guide__footer {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+}
+.builder-app .builder-guide__atlas-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.builder-app .builder-guide__atlas-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--node-color, #2563eb);
+  color: var(--node-color, #2563eb);
+}
