@@ -30,6 +30,7 @@ import HelpModal from './components/HelpModal.jsx';
 import { useTutorialProgress } from './hooks/useTutorialProgress.js';
 import { useTheme } from './hooks/useTheme.js';
 import { useHashRoute, parseHash } from './hooks/useHashRoute.js';
+import { useDocumentMeta } from './hooks/useDocumentMeta.js';
 import { useBookmarks } from './hooks/useBookmarks.js';
 import { useNodeProgress } from './hooks/useNodeProgress.js';
 import { useWhatsNew } from './hooks/useWhatsNew.js';
@@ -249,6 +250,9 @@ function AppInner() {
 
   // Hash-роутер — единый источник истины о том, что открыто.
   const [route, setRoute] = useHashRoute();
+
+  // SEO: динамический <title>/description/canonical/og под маршрут и локаль.
+  useDocumentMeta(route, locale, contentVersion);
 
   // i18n + toast — нужны для soft-CTA после IntroModal.
   const t = useT();
