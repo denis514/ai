@@ -310,14 +310,15 @@ Deno.serve(async (req) => {
 
   // MCP-серверы пользователя (опционально) — для узла «MCP-коннектор».
   // Расшифровываем токены; передаём в запрос Claude, когда узел прикреплён.
-  const mcpServers: McpServer[] = [];
+  // _id храним внутри для фильтрации по выбору узла; перед отправкой Claude — убираем.
+  const mcpServers: (McpServer & { _id: string })[] = [];
   const { data: mcpRows } = await admin
     .from('builder_mcp_servers')
-    .select('name, url, encrypted_token, enabled').eq('user_id', userId).eq('enabled', true);
+    .select('id, name, url, encrypted_token, enabled').eq('user_id', userId).eq('enabled', true);
   for (const row of mcpRows || []) {
     let tok = '';
     if (row.encrypted_token) { try { tok = await decrypt(row.encrypted_token); } catch { tok = ''; } }
-    mcpServers.push({ type: 'url', url: row.url, name: row.name, ...(tok ? { authorization_token: tok } : {}) });
+    mcpServers.push({ _id: row.id, type: 'url', url: row.url, name: row.name, ...(tok ? { authorization_token: tok } : {}) });
   }
 
   // Узлы и рёбра.
@@ -698,12 +699,19 @@ Deno.serve(async (req) => {
       const customPrompt = applyVars(customPromptRaw); // подстановка {{переменных}}
       context = applyVars(context);
       const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix;
-      // MCP: если к агенту прикреплён узел «MCP-коннектор» и у пользователя есть
-      // серверы — отдаём их Claude (он сам вызовет инструменты сервера).
-      const useMcp = attachedToolRoles.includes('mcp') && mcpServers.length > 0;
-      if (useMcp) await log(id, 'info', `MCP: ${mcpServers.length} server(s) available`, { status: 'running' });
+      // MCP: если к агенту прикреплён узел «MCP-коннектор» — отдаём Claude серверы,
+      // ВЫБРАННЫЕ в этом узле (config.mcpServerIds); если ничего не выбрано — все.
+      const mcpNode = attachedTools.find((n) => n.role === 'mcp');
+      let pickedMcp: (McpServer & { _id: string })[] = [];
+      if (mcpNode && mcpServers.length) {
+        const ids = Array.isArray(mcpNode.config?.mcpServerIds) ? mcpNode.config.mcpServerIds as string[] : [];
+        pickedMcp = ids.length ? mcpServers.filter((s) => ids.includes(s._id)) : mcpServers;
+      }
+      // Убираем внутренний _id перед отправкой в Anthropic API.
+      const sendMcp: McpServer[] = pickedMcp.map(({ _id, ...s }) => { void _id; return s; });
+      if (sendMcp.length) await log(id, 'info', `MCP: ${sendMcp.length} server(s) provided`, { status: 'running' });
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
-      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens, visionImages, useMcp ? mcpServers : []);
+      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens, visionImages, sendMcp);
       totalTokens += tokens;
       outputs.set(id, text);
       transcript.push(`${roleLabel(node.role || 'main')}: ${text.slice(0, 1200)}`);

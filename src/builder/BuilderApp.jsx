@@ -37,7 +37,7 @@ import { TEMPLATES } from './data/templates.js';
 import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data/outputTiers.js';
 import { templateForRole } from './data/rolePrompts.js';
 import { createRealExecution } from './services/realExecutor.js';
-import { getKeyStatus } from './services/apiKeyService.js';
+import { getKeyStatus, listMcpServers } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
 import ToastHost, { toast } from './components/Toast.jsx';
@@ -615,6 +615,7 @@ function BuilderAppInner() {
   const selectedTelegramNode = selectedNode && selectedNode.data?.role === 'telegram' ? selectedNode : null;
   const selectedEmailNode = selectedNode && selectedNode.data?.role === 'email' ? selectedNode : null;
   const selectedCalendarNode = selectedNode && selectedNode.data?.role === 'calendar' ? selectedNode : null;
+  const selectedMcpNode = selectedNode && selectedNode.data?.role === 'mcp' ? selectedNode : null;
   const selectedToolNode = selectedNode && (selectedNode.data?.role === 'file_read' || selectedNode.data?.role === 'vision')
     ? selectedNode : null;
   const selectedConditionNode = selectedNode && selectedNode.data?.kind === 'logic' && selectedNode.data?.role !== 'loop' ? selectedNode : null;
@@ -1527,6 +1528,19 @@ function BuilderAppInner() {
               </NodeToolbar>
             )}
 
+            {/* Конфиг узла MCP — выбор сервера(ов) из подключённых */}
+            {selectedMcpNode && (
+              <NodeToolbar nodeId={selectedNodeId} isVisible position={Position.Right} offset={28}>
+                <McpNodeConfigPopover
+                  node={selectedMcpNode}
+                  t={t}
+                  onSet={handleSetToolData}
+                  onManage={() => setKeysModalOpen(true)}
+                  onClose={() => setSelectedNodeId(null)}
+                />
+              </NodeToolbar>
+            )}
+
             {/* Конфиг инструмента Файлы/Vision — загрузка контента */}
             {selectedToolNode && (
               <NodeToolbar
@@ -2398,6 +2412,62 @@ function CalendarConfigPopover({ node, t, gcalConnected, onSet, onConnect, onClo
             onChange={(e) => onSet(node.id, { calendarId: e.target.value })}
             placeholder={t('builder.calendar.idPlaceholder') || 'primary (по умолчанию) или ID календаря'}
           />
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* McpNodeConfigPopover — выбор MCP-серверов для этого агента     */
+/* ─────────────────────────────────────────────────────────── */
+
+function McpNodeConfigPopover({ node, t, onSet, onManage, onClose }) {
+  const [servers, setServers] = useState(null); // null = loading
+  useEffect(() => { listMcpServers().then(setServers).catch(() => setServers([])); }, []);
+  const selected = Array.isArray(node.data?.mcpServerIds) ? node.data.mcpServerIds : [];
+
+  const toggle = (id) => {
+    const next = selected.includes(id) ? selected.filter(x => x !== id) : [...selected, id];
+    onSet(node.id, { mcpServerIds: next });
+  };
+
+  return (
+    <div className="builder-prompt-pop nodrag nowheel" onClick={(e) => e.stopPropagation()} onWheelCapture={(e) => e.stopPropagation()}>
+      <div className="builder-prompt-pop__head">
+        <span className="builder-prompt-pop__title">
+          {t(node.data?.labelKey) || 'MCP'} · {t('builder.mcpNode.title') || 'Серверы'}
+        </span>
+        <button type="button" className="builder-prompt-pop__close" onClick={onClose} aria-label={t('builder.prompt.close') || 'Close'}>
+          <Icon name="close" size={12} strokeWidth={1.75} />
+        </button>
+      </div>
+
+      {servers === null ? (
+        <p className="builder-prompt-pop__hint">{t('builder.keys.loading') || 'Loading…'}</p>
+      ) : servers.length === 0 ? (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.mcpNode.empty') || 'Нет подключённых MCP-серверов. Добавьте сервер в «Мои ключи» → MCP-серверы.'}
+          </p>
+          <button type="button" className="builder-btn builder-btn--primary builder-btn--small" onClick={onManage}>
+            <Icon name="plug" size={12} strokeWidth={1.5} />
+            <span>{t('builder.mcpNode.manage') || 'Открыть MCP-серверы'}</span>
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.mcpNode.pick') || 'Какие серверы дать этому агенту. Если ничего не выбрано — будут доступны все.'}
+          </p>
+          <div className="builder-mcpnode__list">
+            {servers.map(s => (
+              <label key={s.id} className="builder-mcpnode__item">
+                <input type="checkbox" checked={selected.includes(s.id)} onChange={() => toggle(s.id)} />
+                <span className="builder-mcpnode__name">{s.name}</span>
+              </label>
+            ))}
+          </div>
         </>
       )}
     </div>
