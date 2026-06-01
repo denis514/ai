@@ -16,7 +16,13 @@ import { tutorialByNodeId } from '../data/tutorials.js';
  */
 
 const SITE = '105 Atlas';
-const BASE_URL = 'https://105-atlas.vercel.app';
+// Домен берём из адреса текущей страницы → canonical/og/hreflang автоматически
+// подстраиваются под ЛЮБОЙ домен (свой домен, preview-деплой) без правок кода.
+// Строка-фолбэк — только для SSR/без window.
+function siteOrigin() {
+  if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin;
+  return 'https://105-atlas.vercel.app';
+}
 
 const DEFAULTS = {
   ru: { title: '105 Atlas — карта AI-трансформации', desc: 'Интерактивная база знаний о Claude и экосистеме ИИ: навыки, агенты, MCP, автоматизация.' },
@@ -82,8 +88,9 @@ function setAlternates() {
     el.setAttribute('data-hreflang', '1');
     document.head.appendChild(el);
   };
-  for (const lng of LOCALES) add(lng, `${BASE_URL}/${lng}${tail}`);
-  add('x-default', `${BASE_URL}/en${tail}`);
+  const origin = siteOrigin();
+  for (const lng of LOCALES) add(lng, `${origin}/${lng}${tail}`);
+  add('x-default', `${origin}/en${tail}`);
 }
 
 export function useDocumentMeta(route, locale, contentVersion) {
@@ -116,7 +123,7 @@ export function useDocumentMeta(route, locale, contentVersion) {
     setMeta('name', 'twitter:description', desc);
 
     // Canonical и og:url — текущий путь.
-    const url = BASE_URL + (typeof window !== 'undefined' ? window.location.pathname : '/');
+    const url = siteOrigin() + (typeof window !== 'undefined' ? window.location.pathname : '/');
     setCanonical(url);
     setMeta('property', 'og:url', url);
     setAlternates();
