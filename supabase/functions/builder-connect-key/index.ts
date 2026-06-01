@@ -17,7 +17,7 @@ import { getUser, adminClient, json, cors } from '../_shared/auth.ts';
 import { encrypt, secretConfigured } from '../_shared/crypto.ts';
 
 const VALIDATE_URL = 'https://api.anthropic.com/v1/messages';
-const SUPPORTED = ['anthropic', 'telegram'];
+const SUPPORTED = ['anthropic', 'telegram', 'resend'];
 
 async function validateAnthropicKey(apiKey: string): Promise<boolean> {
   try {
@@ -52,9 +52,23 @@ async function validateTelegramToken(token: string): Promise<boolean> {
   }
 }
 
+// Валидация Resend API-ключа: лёгкий GET /domains (200/401).
+async function validateResendKey(key: string): Promise<boolean> {
+  try {
+    const res = await fetch('https://api.resend.com/domains', {
+      headers: { Authorization: `Bearer ${key}` },
+    });
+    if (res.status === 401 || res.status === 403) return false;
+    return res.status < 500;
+  } catch {
+    return false;
+  }
+}
+
 async function validateKey(provider: string, key: string): Promise<boolean> {
   if (provider === 'anthropic') return validateAnthropicKey(key);
   if (provider === 'telegram') return validateTelegramToken(key);
+  if (provider === 'resend') return validateResendKey(key);
   return false;
 }
 

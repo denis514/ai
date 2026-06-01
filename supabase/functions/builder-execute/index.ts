@@ -243,6 +243,15 @@ Deno.serve(async (req) => {
     try { telegramToken = await decrypt(tgConn.encrypted_key); } catch { telegramToken = ''; }
   }
 
+  // Resend-ключ (опционально) — для узлов доставки на email.
+  let resendKey = '';
+  const { data: rsConn } = await admin
+    .from('builder_api_connections')
+    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'resend').maybeSingle();
+  if (rsConn?.is_active) {
+    try { resendKey = await decrypt(rsConn.encrypted_key); } catch { resendKey = ''; }
+  }
+
   // Узлы и рёбра.
   const [{ data: nodes }, { data: edges }] = await Promise.all([
     admin.from('builder_workflow_nodes').select('client_id, node_type, role, def_id, config').eq('workflow_id', workflowId),
@@ -451,6 +460,43 @@ Deno.serve(async (req) => {
             } catch (err) {
               failed = true;
               await log(id, 'error', `Telegram send failed: ${(err as Error).message}`, { status: 'failed' });
+            }
+          }
+          continue;
+        }
+
+        // Доставка на email через Resend (роль email + config.toEmail + ключ Resend).
+        if (node.role === 'email') {
+          const toEmail = typeof node.config?.toEmail === 'string' ? node.config.toEmail.trim() : '';
+          const subject = (typeof node.config?.subject === 'string' && node.config.subject.trim())
+            ? node.config.subject.trim() : 'Atlas — результат автоматизации';
+          // from: Resend test-адрес (onboarding@resend.dev) или верифицированный домен.
+          const fromAddr = typeof node.config?.fromEmail === 'string' && node.config.fromEmail.trim()
+            ? node.config.fromEmail.trim() : 'Atlas <onboarding@resend.dev>';
+          if (!resendKey) {
+            failed = true;
+            await log(id, 'error', 'Email not connected — add a Resend API key in “My keys”.', { status: 'failed' });
+          } else if (!toEmail) {
+            failed = true;
+            await log(id, 'error', 'No recipient set on this Email node — open it and enter an address.', { status: 'failed' });
+          } else {
+            try {
+              const rsRes = await fetch('https://api.resend.com/emails', {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${resendKey}`, 'content-type': 'application/json' },
+                body: JSON.stringify({ from: fromAddr, to: [toEmail], subject, text: collected.slice(0, 100000) }),
+              });
+              const rsData = await rsRes.json().catch(() => ({}));
+              if (rsRes.ok && rsData?.id) {
+                await log(id, 'info', `Sent email ✓ (to ${toEmail})`, { status: 'completed' });
+              } else {
+                failed = true;
+                const msg = rsData?.message || rsData?.error?.message || `http_${rsRes.status}`;
+                await log(id, 'error', `Email not delivered: ${msg}. Tip: with the test sender (onboarding@resend.dev) you can only email your own Resend account address; verify a domain to send anywhere.`, { status: 'failed' });
+              }
+            } catch (err) {
+              failed = true;
+              await log(id, 'error', `Email send failed: ${(err as Error).message}`, { status: 'failed' });
             }
           }
           continue;

@@ -26,6 +26,12 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
   const [tgBusy, setTgBusy] = useState(false);
   const [tgError, setTgError] = useState(null);
 
+  // Resend (доставка на email) — отдельный провайдер.
+  const [rsStatus, setRsStatus] = useState(null);
+  const [rsDraft, setRsDraft] = useState('');
+  const [rsBusy, setRsBusy] = useState(false);
+  const [rsError, setRsError] = useState(null);
+
   const refresh = useCallback(() => {
     getKeyStatus('anthropic')
       .then(setStatus)
@@ -33,6 +39,9 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
     getKeyStatus('telegram')
       .then(setTgStatus)
       .catch(() => setTgStatus({ connected: false, hint: null }));
+    getKeyStatus('resend')
+      .then(setRsStatus)
+      .catch(() => setRsStatus({ connected: false, hint: null }));
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
@@ -116,6 +125,46 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
       setTgBusy(false);
     }
   }, [refresh, tgErrMessage]);
+
+  const rsErrMessage = useCallback((code) => {
+    const map = {
+      key_rejected: t('builder.keys.rsErrRejected') || 'Resend отклонил этот ключ. Проверьте и попробуйте снова.',
+      invalid_key_format: t('builder.keys.rsErrFormat') || 'Это не похоже на ключ Resend.',
+      unsupported_provider: t('builder.keys.rsErrUnsupported') || 'Сервер ещё не обновлён — переразверните функцию подключения ключа.',
+      not_authenticated: t('builder.keys.errAuth') || 'Sign in first to connect a key.',
+      unauthorized: t('builder.keys.errAuth') || 'Sign in first to connect a key.',
+      backend_unavailable: t('builder.keys.errBackend') || 'Backend is not available right now.',
+      server_misconfigured: t('builder.keys.errServer') || 'Server is not configured yet.',
+    };
+    return map[code] || `${t('builder.keys.errGeneric') || 'Something went wrong. Try again.'} (${code})`;
+  }, [t]);
+
+  const handleRsConnect = useCallback(async () => {
+    const key = rsDraft.trim();
+    if (!key) return;
+    setRsBusy(true); setRsError(null);
+    try {
+      await connectKey(key, 'resend');
+      setRsDraft('');
+      refresh();
+    } catch (e) {
+      setRsError(rsErrMessage(e.code || e.message));
+    } finally {
+      setRsBusy(false);
+    }
+  }, [rsDraft, refresh, rsErrMessage]);
+
+  const handleRsDisconnect = useCallback(async () => {
+    setRsBusy(true); setRsError(null);
+    try {
+      await disconnectKey('resend');
+      refresh();
+    } catch (e) {
+      setRsError(rsErrMessage(e.code || e.message));
+    } finally {
+      setRsBusy(false);
+    }
+  }, [refresh, rsErrMessage]);
 
   return (
     <div className="builder-name-modal__overlay" onClick={onClose}>
@@ -231,6 +280,50 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
               </div>
             )}
             {tgError && <div className="builder-keys__error">{tgError}</div>}
+          </div>
+        )}
+
+        {/* ── Resend (доставка на email) ── */}
+        {isLoggedIn && (
+          <div className="builder-keys__provider">
+            <h4 className="builder-keys__provider-title">
+              <Icon name="mail" size={14} strokeWidth={1.75} />
+              {t('builder.keys.rsTitle') || 'Email-доставка (необязательно)'}
+            </h4>
+            <p className="builder-name-modal__hint" style={{ marginTop: 0 }}>
+              {t('builder.keys.rsDesc') || 'Подключите ключ Resend, чтобы узел «Email» отправлял результат на почту. Ключ шифруется на сервере.'}
+            </p>
+            {rsStatus === null ? (
+              <div className="builder-keys__notice">{t('builder.keys.loading') || 'Loading…'}</div>
+            ) : rsStatus.connected ? (
+              <div className="builder-keys__connected">
+                <span className="builder-keys__badge">
+                  <Icon name="check-circle" size={16} strokeWidth={1.75} />
+                  {t('builder.keys.connected') || 'Connected'} ••••{rsStatus.hint}
+                </span>
+                <button type="button" className="builder-btn builder-btn--ghost" onClick={handleRsDisconnect} disabled={rsBusy}>
+                  {t('builder.keys.disconnect') || 'Disconnect'}
+                </button>
+              </div>
+            ) : (
+              <div className="builder-keys__form">
+                <input
+                  type="password"
+                  className="builder-name-modal__input"
+                  value={rsDraft}
+                  onChange={(e) => setRsDraft(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter' && rsDraft.trim()) handleRsConnect(); }}
+                  placeholder={t('builder.keys.rsPlaceholder') || 're_...'}
+                  autoComplete="off"
+                  spellCheck={false}
+                  disabled={rsBusy}
+                />
+                <button type="button" className="builder-btn builder-btn--primary" onClick={handleRsConnect} disabled={rsBusy || !rsDraft.trim()}>
+                  {rsBusy ? (t('builder.keys.connecting') || 'Checking…') : (t('builder.keys.connect') || 'Connect')}
+                </button>
+              </div>
+            )}
+            {rsError && <div className="builder-keys__error">{rsError}</div>}
           </div>
         )}
 

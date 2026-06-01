@@ -228,6 +228,15 @@ export const NODE_DEFS = {
     descKey: 'builder.node.output_telegram_desc',
     atlasAnchor: 'sys-api-patterns',
   },
+  'output-email': {
+    kind: 'output',
+    role: 'email',
+    icon: 'mail',
+    color: '#d97757',
+    labelKey: 'builder.node.output_email',
+    descKey: 'builder.node.output_email_desc',
+    atlasAnchor: 'sys-api-patterns',
+  },
 };
 
 /**
@@ -252,7 +261,7 @@ export const TOOLBOX_GROUPS = [
   {
     id: 'flow',
     labelKey: 'builder.toolbox.flow',
-    items: ['trigger-input', 'output-text', 'output-telegram'],
+    items: ['trigger-input', 'output-text', 'output-telegram', 'output-email'],
   },
 ];
 

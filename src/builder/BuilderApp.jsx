@@ -291,6 +291,7 @@ function BuilderAppInner() {
   const runMode = 'real';
   const [keyConnected, setKeyConnected] = useState(false);
   const [telegramConnected, setTelegramConnected] = useState(false);
+  const [resendConnected, setResendConnected] = useState(false);
   const [runInput, setRunInput] = useState('');
   // Переменные для переиспользуемых схем: {{ключ}} в задаче/инструкциях → значение.
   const [runVars, setRunVars] = useState([]); // [{ key, value }]
@@ -543,6 +544,9 @@ function BuilderAppInner() {
     getKeyStatus('telegram')
       .then(s => { if (alive) setTelegramConnected(!!s.connected); })
       .catch(() => { if (alive) setTelegramConnected(false); });
+    getKeyStatus('resend')
+      .then(s => { if (alive) setResendConnected(!!s.connected); })
+      .catch(() => { if (alive) setResendConnected(false); });
     return () => { alive = false; };
   }, [keysModalOpen, user]);
 
@@ -586,6 +590,7 @@ function BuilderAppInner() {
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
   const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
   const selectedTelegramNode = selectedNode && selectedNode.data?.role === 'telegram' ? selectedNode : null;
+  const selectedEmailNode = selectedNode && selectedNode.data?.role === 'email' ? selectedNode : null;
   const selectedToolNode = selectedNode && (selectedNode.data?.role === 'file_read' || selectedNode.data?.role === 'vision')
     ? selectedNode : null;
   const selectedConditionNode = selectedNode && selectedNode.data?.kind === 'logic' && selectedNode.data?.role !== 'loop' ? selectedNode : null;
@@ -1470,6 +1475,20 @@ function BuilderAppInner() {
               </NodeToolbar>
             )}
 
+            {/* Конфиг Email-выхода — адрес получателя + тема */}
+            {selectedEmailNode && (
+              <NodeToolbar nodeId={selectedNodeId} isVisible position={Position.Right} offset={28}>
+                <EmailConfigPopover
+                  node={selectedEmailNode}
+                  t={t}
+                  resendConnected={resendConnected}
+                  onSet={handleSetToolData}
+                  onConnect={() => setKeysModalOpen(true)}
+                  onClose={() => setSelectedNodeId(null)}
+                />
+              </NodeToolbar>
+            )}
+
             {/* Конфиг инструмента Файлы/Vision — загрузка контента */}
             {selectedToolNode && (
               <NodeToolbar
@@ -2235,6 +2254,63 @@ function TelegramConfigPopover({ node, t, telegramConnected, onSetChatId, onConn
             onChange={(e) => onSetChatId(node.id, e.target.value)}
             placeholder={t('builder.telegram.chatPlaceholder') || 'например, @my_channel или 123456789'}
             autoFocus
+          />
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* EmailConfigPopover — адрес получателя + тема (Resend)         */
+/* ─────────────────────────────────────────────────────────── */
+
+function EmailConfigPopover({ node, t, resendConnected, onSet, onConnect, onClose }) {
+  const { labelKey, toEmail = '', subject = '' } = node.data;
+  return (
+    <div
+      className="builder-prompt-pop nodrag nowheel"
+      onClick={(e) => e.stopPropagation()}
+      onWheelCapture={(e) => e.stopPropagation()}
+    >
+      <div className="builder-prompt-pop__head">
+        <span className="builder-prompt-pop__title">
+          {t(labelKey) || labelKey} · {t('builder.email.title') || 'Доставка на email'}
+        </span>
+        <button type="button" className="builder-prompt-pop__close" onClick={onClose} aria-label={t('builder.prompt.close') || 'Close'}>
+          <Icon name="close" size={12} strokeWidth={1.75} />
+        </button>
+      </div>
+
+      {!resendConnected ? (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.email.needKey') || 'Сначала подключите ключ Resend в «Мои ключи».'}
+          </p>
+          <button type="button" className="builder-btn builder-btn--primary builder-btn--small" onClick={onConnect}>
+            <Icon name="plug" size={12} strokeWidth={1.5} />
+            <span>{t('builder.email.connectBtn') || 'Подключить email'}</span>
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.email.toHint') || 'Email получателя, куда отправить результат.'}
+          </p>
+          <input
+            className="builder-name-modal__input"
+            type="email"
+            value={toEmail}
+            onChange={(e) => onSet(node.id, { toEmail: e.target.value })}
+            placeholder={t('builder.email.toPlaceholder') || 'name@example.com'}
+            autoFocus
+          />
+          <input
+            className="builder-name-modal__input"
+            style={{ marginTop: 8 }}
+            value={subject}
+            onChange={(e) => onSet(node.id, { subject: e.target.value })}
+            placeholder={t('builder.email.subjectPlaceholder') || 'Тема письма (необязательно)'}
           />
         </>
       )}
