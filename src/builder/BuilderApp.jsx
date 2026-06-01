@@ -65,6 +65,21 @@ import './BuilderApp.css';
 let nodeIdCounter = 1;
 const genNodeId = () => `n${nodeIdCounter++}`;
 
+// Свежий стартовый узел «Старт» — единая точка входа новой схемы.
+function buildStartNode(position = { x: 240, y: 110 }) {
+  const def = getNodeDef('trigger-input');
+  return {
+    id: genNodeId(),
+    type: KIND_TO_NODE_TYPE[def.kind] || 'triggerNode',
+    position,
+    data: {
+      defId: 'trigger-input', icon: def.icon, color: def.color,
+      labelKey: def.labelKey, descKey: def.descKey, atlasAnchor: def.atlasAnchor,
+      kind: def.kind, role: def.role, status: 'idle',
+    },
+  };
+}
+
 // Синхронизация счётчика id с уже существующими узлами (после загрузки схемы
 // из БД/localStorage). Без этого genNodeId() выдаёт id вида n1/n2…, которые
 // СОВПАДАЮТ с id загруженных узлов → новый узел «наезжает» на существующий.
@@ -498,20 +513,23 @@ function BuilderAppInner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nameDraft, nameIntent, persist]);
 
-  // Шаг 1 «Чистый холст»: создаём пустой workflow с введённым именем.
+  // Шаг 1 «Чистый холст»: создаём новый workflow с введённым именем.
+  // На холст СРАЗУ кладём стартовый узел «Старт» — единая, очевидная точка входа.
   const startBlank = useCallback(async () => {
     const name = nameDraft.trim();
     if (!name) return;
+    const startNode = buildStartNode();
+    const seed = [startNode];
     skipDirtyRef.current = true;
-    setNodes([]);
+    setNodes(seed);
     setEdges([]);
-    setSelectedNodeId(null);
+    setSelectedNodeId(startNode.id); // сразу выделяем → справа открывается поле задачи
     setExecLogs([]);
     setExecStatus('idle');
     setNameModalOpen(false);
     setNameModalStep('name');
-    // Создаём пустой черновик с этим именем (новая запись → id передаём null).
-    await persist(name, [], [], null);
+    // Создаём черновик с этим именем и стартовым узлом (новая запись → id = null).
+    await persist(name, seed, [], null);
   }, [nameDraft, persist, setNodes, setEdges]);
 
   // Шаг 2 «Из шаблона»: строим граф шаблона, имя берём из введённого
@@ -643,6 +661,20 @@ function BuilderAppInner() {
     setNameIntent('create'); // новый workflow (холст можно очистить)
     setNameModalOpen(true);
   }, []);
+
+  // «Начать с нуля» (из галереи): закрываем галерею и кладём стартовый узел на
+  // пустой холст. Имя присвоится автоматически, как только появятся узлы.
+  const startFromScratch = useCallback(() => {
+    setGalleryOpen(false);
+    if (nodes.length === 0) {
+      const startNode = buildStartNode();
+      skipDirtyRef.current = true;
+      setNodes([startNode]);
+      setEdges([]);
+      setSelectedNodeId(startNode.id);
+      setSidebarOpen(true);
+    }
+  }, [nodes.length, setNodes, setEdges]);
 
   const selectedNode = selectedNodeId ? nodes.find(n => n.id === selectedNodeId) : null;
   const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
@@ -1813,7 +1845,7 @@ function BuilderAppInner() {
       {galleryOpen && (
         <TemplateGallery
           onUseTemplate={loadTemplate}
-          onScratch={() => setGalleryOpen(false)}
+          onScratch={startFromScratch}
           onClose={() => setGalleryOpen(false)}
         />
       )}
