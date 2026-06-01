@@ -16,7 +16,7 @@ import 'reactflow/dist/style.css';
 import Icon from '../components/Icon.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
-import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE } from './data/nodeTypes.js';
+import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE, canAddNode } from './data/nodeTypes.js';
 import { nodeTypes } from './components/canvas/index.js';
 import NodePalette from './components/canvas/NodePalette.jsx';
 import HelpPanel from './components/panels/HelpPanel.jsx';
@@ -64,6 +64,10 @@ import './BuilderApp.css';
 
 let nodeIdCounter = 1;
 const genNodeId = () => `n${nodeIdCounter++}`;
+
+// Стабильные сеты (чтобы не пересоздавать объект на каждый рендер палитры).
+const EMPTY_SET = new Set();
+const TRIGGER_TAKEN = new Set(['trigger-input']);
 
 // Свежий стартовый узел «Старт» — единая точка входа новой схемы.
 function buildStartNode(position = { x: 240, y: 110 }) {
@@ -808,6 +812,12 @@ function BuilderAppInner() {
     if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
     hintTimerRef.current = setTimeout(() => setConnectHint(null), 3200);
   }, [t]);
+  // Показать произвольный текст подсказки в той же плашке (исчезает сама).
+  const showHintText = useCallback((msg) => {
+    setConnectHint(msg);
+    if (hintTimerRef.current) clearTimeout(hintTimerRef.current);
+    hintTimerRef.current = setTimeout(() => setConnectHint(null), 3200);
+  }, []);
   // Живой тултип у курсора во время перетягивания связи: показывает ПРИЧИНУ,
   // как только наводишь на узел, к которому подключиться нельзя (а не после).
   // Управляем DOM напрямую (без ререндеров на каждом mousemove).
@@ -905,6 +915,11 @@ function BuilderAppInner() {
       if (!defId) return;
       const def = getNodeDef(defId);
       if (!def) return;
+      // Singleton-узлы (Старт) — только один на схему.
+      if (!canAddNode(defId, nodes)) {
+        showHintText(t('builder.singleton.start') || '«Старт» уже есть на схеме — он может быть только один.');
+        return;
+      }
 
       const position = screenToFlowPosition({
         x: event.clientX,
@@ -933,13 +948,18 @@ function BuilderAppInner() {
       // Стартовый узел — сразу выделяем, чтобы рядом открылось окно задачи.
       if (def.kind === 'trigger') { setSelectedNodeId(newNode.id); setSelectedEdgeId(null); }
     },
-    [screenToFlowPosition, setNodes, pushHistory]
+    [screenToFlowPosition, setNodes, pushHistory, nodes, showHintText, t]
   );
 
   // Клик по плитке в палитре — добавить узел в центр видимой области холста (M4).
   const addNodeAtCenter = useCallback((defId) => {
     const def = getNodeDef(defId);
     if (!def) return;
+    // Singleton-узлы (Старт) — только один на схему.
+    if (!canAddNode(defId, nodes)) {
+      showHintText(t('builder.singleton.start') || '«Старт» уже есть на схеме — он может быть только один.');
+      return;
+    }
     const rect = reactFlowWrapper.current?.getBoundingClientRect();
     const screen = rect
       ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
@@ -966,7 +986,7 @@ function BuilderAppInner() {
     pushHistory();
     setNodes(nds => nds.concat(newNode));
     if (def.kind === 'trigger') { setSelectedNodeId(newNode.id); setSelectedEdgeId(null); }
-  }, [screenToFlowPosition, setNodes, pushHistory]);
+  }, [screenToFlowPosition, setNodes, pushHistory, nodes, showHintText, t]);
 
   /* ────────── Load template (из галереи) ────────── */
   const loadTemplate = useCallback((template) => {
@@ -1387,6 +1407,7 @@ function BuilderAppInner() {
                   onShow={handleTooltipShow}
                   onHide={handleTooltipHide}
                   onAdd={addNodeAtCenter}
+                  disabledDefs={nodes.some(n => n.data?.defId === 'trigger-input') ? TRIGGER_TAKEN : EMPTY_SET}
                 />
               ) : (
                 <div className="builder-template-list">

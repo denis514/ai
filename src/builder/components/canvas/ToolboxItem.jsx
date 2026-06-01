@@ -19,7 +19,7 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 const HOVER_DELAY_MS = 400;
 
-export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant = 'row' }) {
+export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant = 'row', disabled = false }) {
   const t = useT();
   const buttonRef = useRef(null);
   const hoverTimerRef = useRef(null);
@@ -62,16 +62,18 @@ export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant
     <button
       ref={buttonRef}
       type="button"
-      className={cls}
+      className={`${cls}${disabled ? ' is-disabled' : ''}`}
       style={{ '--node-color': def.color }}
-      draggable
+      draggable={!disabled}
+      aria-disabled={disabled || undefined}
       onDragStart={(e) => {
+        if (disabled) { e.preventDefault(); return; }
         // Hide tooltip during drag
         handleLeave();
         e.dataTransfer.setData('application/builder-node', defId);
         e.dataTransfer.effectAllowed = 'copy';
       }}
-      onClick={() => { handleLeave(); onAdd?.(defId); }}
+      onClick={() => { handleLeave(); if (!disabled) onAdd?.(defId); }}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       onFocus={handleEnter}

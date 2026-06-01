@@ -19,7 +19,8 @@ import ToolboxItem from './ToolboxItem.jsx';
  *  • onShow/onHide — управление tooltip (как у старого toolbox)
  *  • onAdd(defId) — клик по плитке: добавить узел в центр холста
  */
-export default function NodePalette({ groups, defs, onShow, onHide, onAdd, onOpenTemplates }) {
+export default function NodePalette({ groups, defs, onShow, onHide, onAdd, onOpenTemplates, disabledDefs }) {
+  const isDisabled = (id) => !!disabledDefs && disabledDefs.has(id);
   const t = useT();
   const [query, setQuery] = useState('');
 
@@ -85,6 +86,7 @@ export default function NodePalette({ groups, defs, onShow, onHide, onAdd, onOpe
               onHide={onHide}
               onAdd={onAdd}
               variant="cta"
+              disabled={isDisabled('trigger-input')}
             />
           </div>
         )}

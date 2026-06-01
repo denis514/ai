@@ -209,6 +209,7 @@ export const NODE_DEFS = {
     labelKey: 'builder.node.trigger_input',
     descKey: 'builder.node.trigger_input_desc',
     atlasAnchor: 'sys-workflows-basics',
+    singleton: true, // «Старт» — единственная точка входа: только один на схему
   },
   'output-text': {
     kind: 'output',
@@ -280,6 +281,20 @@ export const TOOLBOX_GROUPS = [
  */
 export function getNodeDef(defId) {
   return NODE_DEFS[defId] || null;
+}
+
+/**
+ * Можно ли добавить ещё один такой узел на холст.
+ * Singleton-узлы (например «Старт») допускаются в единственном экземпляре.
+ * @param {string} defId
+ * @param {Array} nodes — текущие узлы холста (с data.defId)
+ * @returns {boolean}
+ */
+export function canAddNode(defId, nodes = []) {
+  const def = NODE_DEFS[defId];
+  if (!def) return false;
+  if (!def.singleton) return true;
+  return !nodes.some(n => n.data?.defId === defId);
 }
 
 /**
