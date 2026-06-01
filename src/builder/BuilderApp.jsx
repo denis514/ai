@@ -254,9 +254,11 @@ function BuilderAppInner() {
     }, 200);
   }, []);
 
-  // Cleanup
+  // Cleanup при размонтировании: гасим тултип-таймер И живой запуск (иначе
+  // Realtime-подписка на логи остаётся открытой — утечка).
   useEffect(() => () => {
     if (tooltipHideTimerRef.current) clearTimeout(tooltipHideTimerRef.current);
+    if (execRef.current) execRef.current.stop();
   }, []);
 
   // Execution state

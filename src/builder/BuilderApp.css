@@ -35,14 +35,6 @@
   z-index: 20;
 }
 
-/* Центр шапки: переключатель Демо/Реально строго по центру */
-.builder-app .builder-header__center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
 /* Кластер «Сохранить + Запуск» — на холсте, справа вверху */
 .builder-app .builder-canvas-controls {
   position: absolute;
@@ -679,63 +671,9 @@
 .builder-app .builder-keys__provider-title .hgi,
 .builder-app .builder-keys__provider-title svg { color: #0088cc; }
 
-/* Run mode toggle (Demo / Real) */
-.builder-app .builder-runmode {
-  display: inline-flex;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-}
-.builder-app .builder-runmode__opt {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 10px;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 120ms ease, color 120ms ease;
-}
-.builder-app .builder-runmode__opt.is-active {
-  background: var(--surface-2);
-  color: var(--text);
-  font-weight: 600;
-}
-.builder-app .builder-runmode__opt:not(.is-active):hover {
-  background: var(--surface-2);
-}
-
-/* Real-run primary button — отличаем от demo акцентом opasnosti */
+/* Primary run button (production-only) */
 .builder-app .builder-btn--real {
   background: var(--accent, #2563eb);
-}
-
-/* Real-mode confirm modal */
-.builder-app .builder-realconfirm__preview {
-  display: flex;
-  justify-content: center;
-  padding: 6px 0 2px;
-}
-.builder-app .builder-realconfirm__warn {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin: 0;
-  padding: 10px 12px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--text);
-  background: color-mix(in srgb, var(--accent, #2563eb) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent, #2563eb) 25%, transparent);
-  border-radius: 8px;
-}
-.builder-app .builder-realconfirm__warn .hgi,
-.builder-app .builder-realconfirm__warn svg {
-  flex: 0 0 auto;
-  margin-top: 2px;
-  color: var(--accent, #2563eb);
 }
 
 /* Переменные {{ключ}} в панели запуска */
