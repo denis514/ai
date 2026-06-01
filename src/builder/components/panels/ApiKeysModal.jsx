@@ -14,50 +14,26 @@ import { connectKey, disconnectKey, getKeyStatus, connectGoogleCalendar } from '
  * Props: onClose(), onSignIn()
  */
 
-/* ─── Бренд-логотипы (inline SVG) ─────────────────────────────────────────── */
+/* ─── Бренд-логотипы (из public/connectors/*.svg) ─────────────────────────── */
+const LOGO_SRC = {
+  anthropic: '/connectors/claude.svg',
+  telegram: '/connectors/telegram.svg',
+  resend: '/connectors/resend.svg',
+  gcal: '/connectors/google-calendar.svg',
+};
 function ConnectorLogo({ id, size = 36 }) {
-  const s = { width: size, height: size, borderRadius: 9, display: 'block' };
-  if (id === 'anthropic') {
-    return (
-      <svg viewBox="0 0 36 36" style={s} aria-hidden="true">
-        <rect width="36" height="36" rx="9" fill="#d97757" />
-        <path d="M12.5 24l4-12h2.6l4 12h-2.7l-.8-2.6h-3.6L15.2 24h-2.7zm3.8-4.7h2.4L17.5 15l-1.2 4.3z" fill="#fff" />
-      </svg>
-    );
-  }
-  if (id === 'telegram') {
-    return (
-      <svg viewBox="0 0 36 36" style={s} aria-hidden="true">
-        <rect width="36" height="36" rx="9" fill="#2AABEE" />
-        <path d="M26.5 11.2L9.8 17.6c-1 .4-1 1.5-.1 1.8l4.2 1.3 1.6 5c.2.6.4.8 1 .3l2.3-2 4.3 3.2c.7.4 1.2.2 1.4-.6l2.5-11.8c.3-1.1-.5-1.6-1.5-1.2z" fill="#fff" />
-        <path d="M14 20.7l8-5c.4-.2.7.1.4.4l-6.6 6-.2 2.7-1.6-4.1z" fill="#C8DAEA" />
-      </svg>
-    );
-  }
-  if (id === 'resend') {
-    return (
-      <svg viewBox="0 0 36 36" style={s} aria-hidden="true">
-        <rect width="36" height="36" rx="9" fill="#111" />
-        <path d="M13 25V11h6.2c2.6 0 4.3 1.5 4.3 3.9 0 1.8-1 3.1-2.6 3.6l3 6.5h-3l-2.7-6h-2.5v6H13zm2.7-8.3h3.1c1.2 0 2-.7 2-1.8s-.8-1.7-2-1.7h-3.1v3.5z" fill="#fff" />
-      </svg>
-    );
-  }
-  if (id === 'gcal') {
-    return (
-      <svg viewBox="0 0 36 36" style={s} aria-hidden="true">
-        <rect x="4" y="4" width="28" height="28" rx="6" fill="#fff" stroke="#e3e3e3" />
-        <path d="M24 8h2.5C27.3 8 28 8.7 28 9.5V12h-4V8z" fill="#4285F4" />
-        <path d="M28 12h-4v6h4v-6z" fill="#EA4335" />
-        <path d="M28 18h-4v6h2.5c.8 0 1.5-.7 1.5-1.5V18z" fill="#34A853" />
-        <path d="M8 24h4v4H9.5C8.7 28 8 27.3 8 26.5V24z" fill="#188038" />
-        <path d="M8 12h4v6H8v-6zM8 18h4v6H8v-6z" fill="#1967D2" />
-        <path d="M12 8H9.5C8.7 8 8 8.7 8 9.5V12h4V8z" fill="#4285F4" />
-        <path d="M12 8h12v4H12V8z" fill="#4285F4" />
-        <text x="18" y="22" textAnchor="middle" fontSize="9" fontWeight="700" fill="#4285F4" fontFamily="Arial">31</text>
-      </svg>
-    );
-  }
-  return <span style={{ ...s, background: 'var(--surface-2)' }} />;
+  const src = LOGO_SRC[id];
+  if (!src) return <span style={{ width: size, height: size, borderRadius: 9, background: 'var(--surface-2)', display: 'block' }} />;
+  return (
+    <img
+      src={src}
+      alt=""
+      aria-hidden="true"
+      width={size}
+      height={size}
+      style={{ width: size, height: size, borderRadius: 9, display: 'block', objectFit: 'contain' }}
+    />
+  );
 }
 
 export default function ApiKeysModal({ onClose, onSignIn }) {
