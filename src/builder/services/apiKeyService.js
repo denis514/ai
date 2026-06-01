@@ -63,6 +63,32 @@ export async function connectGoogleCalendar() {
   if (out?.url) window.location.assign(out.url);
 }
 
+/* ─── MCP-серверы ─────────────────────────────────────────────────────────── */
+
+/** Список своих MCP-серверов (только метаданные, без токена) — напрямую из БД (RLS). */
+export async function listMcpServers() {
+  if (!supabase) return [];
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return [];
+  const { data, error } = await supabase
+    .from('builder_mcp_servers')
+    .select('id, name, url, token_hint, enabled')
+    .eq('enabled', true)
+    .order('created_at', { ascending: true });
+  if (error || !data) return [];
+  return data;
+}
+
+/** Добавить MCP-сервер (URL + опциональный токен; токен шифруется на сервере). */
+export function addMcpServer({ name, url, token }) {
+  return callFunction('builder-mcp-manage', { action: 'add', name, url, token });
+}
+
+/** Удалить MCP-сервер по id. */
+export function deleteMcpServer(id) {
+  return callFunction('builder-mcp-manage', { action: 'delete', id });
+}
+
 /**
  * Статус ключа для UI — только метаданные, без ciphertext.
  * @returns {{ connected: boolean, hint: string|null }}

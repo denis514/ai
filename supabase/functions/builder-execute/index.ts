@@ -136,7 +136,9 @@ async function fetchPageText(url: string): Promise<string | null> {
 
 type ImageInput = { data: string; mime: string };
 
-async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = []) {
+type McpServer = { type: 'url'; url: string; name: string; authorization_token?: string };
+
+async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = [], mcpServers: McpServer[] = []) {
   // Если есть картинки (Vision) — собираем мультимодальное сообщение: блоки
   // image + текст. Иначе обычная строка.
   const content = images.length
@@ -148,19 +150,26 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
         { type: 'text', text: userContent },
       ]
     : userContent;
+  const headers: Record<string, string> = {
+    'x-api-key': apiKey,
+    'anthropic-version': '2023-06-01',
+    'content-type': 'application/json',
+  };
+  const payload: Record<string, unknown> = {
+    model: MODEL,
+    max_tokens: maxTokens,
+    system,
+    messages: [{ role: 'user', content }],
+  };
+  // MCP-коннектор Anthropic (beta): Claude сам вызывает инструменты сервера.
+  if (mcpServers.length) {
+    headers['anthropic-beta'] = 'mcp-client-2025-04-04';
+    payload.mcp_servers = mcpServers;
+  }
   const res = await fetch(CLAUDE_URL, {
     method: 'POST',
-    headers: {
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: maxTokens,
-      system,
-      messages: [{ role: 'user', content }],
-    }),
+    headers,
+    body: JSON.stringify(payload),
   });
   const data = await res.json();
   if (!res.ok) {
@@ -297,6 +306,18 @@ Deno.serve(async (req) => {
     .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'gcal').maybeSingle();
   if (gcConn?.is_active) {
     try { gcalRefresh = await decrypt(gcConn.encrypted_key); } catch { gcalRefresh = ''; }
+  }
+
+  // MCP-серверы пользователя (опционально) — для узла «MCP-коннектор».
+  // Расшифровываем токены; передаём в запрос Claude, когда узел прикреплён.
+  const mcpServers: McpServer[] = [];
+  const { data: mcpRows } = await admin
+    .from('builder_mcp_servers')
+    .select('name, url, encrypted_token, enabled').eq('user_id', userId).eq('enabled', true);
+  for (const row of mcpRows || []) {
+    let tok = '';
+    if (row.encrypted_token) { try { tok = await decrypt(row.encrypted_token); } catch { tok = ''; } }
+    mcpServers.push({ type: 'url', url: row.url, name: row.name, ...(tok ? { authorization_token: tok } : {}) });
   }
 
   // Узлы и рёбра.
@@ -677,8 +698,12 @@ Deno.serve(async (req) => {
       const customPrompt = applyVars(customPromptRaw); // подстановка {{переменных}}
       context = applyVars(context);
       const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix;
+      // MCP: если к агенту прикреплён узел «MCP-коннектор» и у пользователя есть
+      // серверы — отдаём их Claude (он сам вызовет инструменты сервера).
+      const useMcp = attachedToolRoles.includes('mcp') && mcpServers.length > 0;
+      if (useMcp) await log(id, 'info', `MCP: ${mcpServers.length} server(s) available`, { status: 'running' });
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
-      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens, visionImages);
+      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens, visionImages, useMcp ? mcpServers : []);
       totalTokens += tokens;
       outputs.set(id, text);
       transcript.push(`${roleLabel(node.role || 'main')}: ${text.slice(0, 1200)}`);

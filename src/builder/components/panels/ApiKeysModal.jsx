@@ -2,7 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 import { useAuth } from '../../../context/AuthContext.jsx';
-import { connectKey, disconnectKey, getKeyStatus, connectGoogleCalendar } from '../../services/apiKeyService.js';
+import { connectKey, disconnectKey, getKeyStatus, connectGoogleCalendar,
+  listMcpServers, addMcpServer, deleteMcpServer } from '../../services/apiKeyService.js';
 
 /**
  * ApiKeysModal — каталог коннекторов в стиле Claude Directory.
@@ -23,6 +24,13 @@ const LOGO_SRC = {
 };
 function ConnectorLogo({ id, size = 36 }) {
   const src = LOGO_SRC[id];
+  if (id === 'mcp') {
+    return (
+      <span style={{ width: size, height: size, borderRadius: 9, background: 'var(--surface-2)', color: 'var(--accent, #2563eb)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name="plug" size={Math.round(size * 0.55)} strokeWidth={1.6} />
+      </span>
+    );
+  }
   if (!src) return <span style={{ width: size, height: size, borderRadius: 9, background: 'var(--surface-2)', display: 'block' }} />;
   return (
     <img
@@ -39,7 +47,41 @@ function ConnectorLogo({ id, size = 36 }) {
 export default function ApiKeysModal({ onClose, onSignIn }) {
   const t = useT();
   const { isLoggedIn } = useAuth();
+  const [tab, setTab] = useState('keys'); // 'keys' | 'mcp'
   const [openId, setOpenId] = useState(null); // открытая детальная карточка
+
+  // MCP-серверы
+  const [mcpList, setMcpList] = useState(null); // null = loading
+  const [mcpForm, setMcpForm] = useState({ name: '', url: '', token: '' });
+  const [mcpAdding, setMcpAdding] = useState(false);
+  const [mcpError, setMcpError] = useState(null);
+  const [mcpShowForm, setMcpShowForm] = useState(false);
+
+  const refreshMcp = useCallback(() => {
+    listMcpServers().then(setMcpList).catch(() => setMcpList([]));
+  }, []);
+  useEffect(() => { refreshMcp(); }, [refreshMcp]);
+
+  const handleMcpAdd = useCallback(async () => {
+    const name = mcpForm.name.trim(), url = mcpForm.url.trim();
+    if (!name || !url) return;
+    setMcpAdding(true); setMcpError(null);
+    try {
+      await addMcpServer({ name, url, token: mcpForm.token.trim() });
+      setMcpForm({ name: '', url: '', token: '' });
+      setMcpShowForm(false);
+      refreshMcp();
+    } catch (e) {
+      const code = e.code || e.message;
+      setMcpError(code === 'invalid_url'
+        ? (t('builder.mcp.errUrl') || 'Нужен корректный https-адрес сервера.')
+        : (t('builder.mcp.errAdd') || 'Не удалось добавить сервер.') + ` (${code})`);
+    } finally { setMcpAdding(false); }
+  }, [mcpForm, refreshMcp, t]);
+
+  const handleMcpDelete = useCallback(async (id) => {
+    try { await deleteMcpServer(id); refreshMcp(); } catch { /* noop */ }
+  }, [refreshMcp]);
 
   // anthropic
   const [status, setStatus] = useState(null);
@@ -159,7 +201,79 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
           </button>
         </div>
 
-        {!isLoggedIn ? (
+        {/* Табы: API-ключи / MCP-серверы */}
+        {isLoggedIn && (
+          <div className="builder-directory__tabs" role="tablist">
+            <button type="button" role="tab" aria-selected={tab === 'keys'}
+              className={`builder-directory__tab ${tab === 'keys' ? 'is-active' : ''}`}
+              onClick={() => { setTab('keys'); setOpenId(null); }}>
+              {t('builder.keys.tabKeys') || 'API-ключи'}
+            </button>
+            <button type="button" role="tab" aria-selected={tab === 'mcp'}
+              className={`builder-directory__tab ${tab === 'mcp' ? 'is-active' : ''}`}
+              onClick={() => setTab('mcp')}>
+              {t('builder.keys.tabMcp') || 'MCP-серверы'}
+            </button>
+          </div>
+        )}
+
+        {isLoggedIn && tab === 'mcp' ? (
+          /* ── MCP-серверы ── */
+          <div className="builder-mcp">
+            <p className="builder-name-modal__hint" style={{ marginTop: 0 }}>
+              {t('builder.mcp.desc') || 'Подключите удалённый MCP-сервер по URL — узел «MCP-коннектор» даст агенту его инструменты. Использование тратит токены вашего ключа Claude.'}
+            </p>
+            {mcpList === null ? (
+              <div className="builder-keys__notice">{t('builder.keys.loading') || 'Loading…'}</div>
+            ) : (
+              <>
+                {mcpList.length > 0 && (
+                  <div className="builder-mcp__list">
+                    {mcpList.map(s => (
+                      <div key={s.id} className="builder-directory__card builder-mcp__row">
+                        <ConnectorLogo id="mcp" size={32} />
+                        <span className="builder-directory__card-body">
+                          <span className="builder-directory__card-name">{s.name}</span>
+                          <span className="builder-directory__card-short">{s.url}</span>
+                        </span>
+                        <button type="button" className="builder-mcp__del" title={t('builder.keys.disconnect') || 'Удалить'}
+                          onClick={() => handleMcpDelete(s.id)}>
+                          <Icon name="trash" size={14} strokeWidth={1.6} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {mcpShowForm ? (
+                  <div className="builder-mcp__form">
+                    <input className="builder-name-modal__input" placeholder={t('builder.mcp.namePh') || 'Название'}
+                      value={mcpForm.name} onChange={(e) => setMcpForm(f => ({ ...f, name: e.target.value }))} autoFocus />
+                    <input className="builder-name-modal__input" placeholder={t('builder.mcp.urlPh') || 'https://… (URL MCP-сервера)'}
+                      value={mcpForm.url} onChange={(e) => setMcpForm(f => ({ ...f, url: e.target.value }))} />
+                    <input type="password" className="builder-name-modal__input" placeholder={t('builder.mcp.tokenPh') || 'Токен (необязательно)'}
+                      value={mcpForm.token} onChange={(e) => setMcpForm(f => ({ ...f, token: e.target.value }))} autoComplete="off" spellCheck={false} />
+                    <div className="builder-mcp__form-actions">
+                      <button type="button" className="builder-btn builder-btn--ghost" onClick={() => { setMcpShowForm(false); setMcpError(null); }}>
+                        {t('common.cancel') || 'Отмена'}
+                      </button>
+                      <button type="button" className="builder-btn builder-btn--primary" onClick={handleMcpAdd}
+                        disabled={mcpAdding || !mcpForm.name.trim() || !mcpForm.url.trim()}>
+                        {mcpAdding ? (t('builder.keys.connecting') || 'Проверка…') : (t('builder.mcp.add') || 'Добавить')}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button type="button" className="builder-directory__card builder-mcp__add" onClick={() => setMcpShowForm(true)}>
+                    <span className="builder-directory__plus"><Icon name="plus" size={15} strokeWidth={2} /></span>
+                    <span className="builder-directory__card-name">{t('builder.mcp.addServer') || 'Добавить MCP-сервер'}</span>
+                  </button>
+                )}
+                {mcpError && <div className="builder-keys__error">{mcpError}</div>}
+              </>
+            )}
+          </div>
+        ) : !isLoggedIn ? (
           <div className="builder-keys__notice">
             <p style={{ margin: '0 0 12px' }}>{t('builder.keys.signInFirst') || 'Войдите, чтобы подключать ключи.'}</p>
             <button type="button" className="builder-btn builder-btn--primary" onClick={() => onSignIn?.()}>
