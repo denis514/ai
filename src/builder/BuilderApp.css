@@ -1497,17 +1497,15 @@
 
 /* «Старт» — заметная прямоугольная CTA-кнопка наверху палитры */
 .builder-app .builder-palette__cta-wrap {
-  display: flex;
   margin-bottom: 14px;
 }
 .builder-app .builder-palette__cta {
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  width: fit-content;       /* объём по контенту, без пустого места справа */
-  max-width: 100%;
+  width: 100%;              /* в палитре — во всю ширину панели */
   height: 42px;
   padding: 0 18px;
   border: none;
@@ -1521,16 +1519,8 @@
   cursor: grab;
   overflow: hidden;
   box-shadow: 0 4px 14px color-mix(in srgb, var(--node-color, #f59e0b) 36%, transparent);
-  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+  transition: transform 120ms ease, box-shadow 120ms ease;
 }
-/* Старт уже на холсте — кнопка погашена, без блика */
-.builder-app .builder-palette__cta.is-disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-.builder-app .builder-palette__cta.is-disabled::after { animation: none; opacity: 0; }
-.builder-app .builder-palette__cta.is-disabled:hover { transform: none; box-shadow: none; }
 .builder-app .builder-palette__cta .hgi,
 .builder-app .builder-palette__cta svg {
   color: #fff;
