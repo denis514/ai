@@ -3877,3 +3877,51 @@
 .builder-app .builder-schedule__instr-btn:hover { color: var(--accent, #2563eb); border-color: var(--accent, #2563eb); }
 .builder-app .builder-schedule__instr-btn .hgi,
 .builder-app .builder-schedule__instr-btn svg { color: var(--accent, #2563eb); }
+
+/* ────────────────────────────────────────────────── */
+/* Connector Directory (стиль Claude Directory)        */
+/* ────────────────────────────────────────────────── */
+.builder-app .builder-directory { max-width: 640px; width: 92vw; }
+.builder-app .builder-directory__head {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+}
+.builder-app .builder-directory__title { margin: 0; font-size: 20px; font-weight: 700; color: var(--text); }
+
+.builder-app .builder-directory__grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+@media (max-width: 560px) { .builder-app .builder-directory__grid { grid-template-columns: 1fr; } }
+.builder-app .builder-directory__card {
+  display: flex; align-items: center; gap: 11px; text-align: left;
+  padding: 13px; border-radius: 12px; border: 1px solid var(--border);
+  background: var(--surface); cursor: pointer; transition: border-color .12s, background .12s, transform 80ms;
+}
+.builder-app .builder-directory__card:hover { border-color: var(--border-strong); background: var(--surface-2); }
+.builder-app .builder-directory__card:active { transform: scale(0.99); }
+.builder-app .builder-directory__card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.builder-app .builder-directory__card-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.builder-app .builder-directory__card-short { font-size: 12px; color: var(--text-muted); line-height: 1.35; }
+.builder-app .builder-directory__plus {
+  flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 7px; color: var(--text-muted); border: 1px solid var(--border);
+}
+.builder-app .builder-directory__card:hover .builder-directory__plus { color: var(--accent, #2563eb); border-color: var(--accent, #2563eb); }
+.builder-app .builder-directory__dot {
+  flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; background: var(--success, #16a34a); color: #fff;
+}
+
+/* Detail */
+.builder-app .builder-directory__back {
+  display: inline-flex; align-items: center; gap: 6px; background: none; border: none;
+  color: var(--text-muted); cursor: pointer; font-size: 13px; padding: 2px 0; margin-bottom: 12px;
+}
+.builder-app .builder-directory__back:hover { color: var(--text); }
+.builder-app .builder-directory__detail-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.builder-app .builder-directory__detail-name { font-size: 17px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.builder-app .builder-directory__req {
+  font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent, #2563eb) 14%, transparent); color: var(--accent, #2563eb);
+}
+.builder-app .builder-directory__detail-short { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+.builder-app .builder-directory__detail-desc { font-size: 13.5px; line-height: 1.55; color: var(--text); margin: 0 0 16px; }
