@@ -57,6 +57,35 @@ function setCanonical(href) {
   el.setAttribute('href', href);
 }
 
+const LOCALES = ['ru', 'en', 'fi'];
+
+/**
+ * hreflang-альтернаты: для текущего маршрута даём адрес той же страницы в каждой
+ * локали + x-default. Поисковик отдаёт пользователю правильную языковую версию.
+ */
+function setAlternates() {
+  if (typeof window === 'undefined') return;
+  // Путь без ведущего сегмента-локали → общий «хвост» маршрута.
+  const path = window.location.pathname || '/';
+  const parts = path.split('/').filter(Boolean);
+  if (parts.length && LOCALES.includes(parts[0].toLowerCase())) parts.shift();
+  const tail = parts.length ? '/' + parts.join('/') : '';
+
+  // Удаляем прошлые управляемые alternate-теги.
+  document.head.querySelectorAll('link[rel="alternate"][data-hreflang]').forEach(el => el.remove());
+
+  const add = (lang, href) => {
+    const el = document.createElement('link');
+    el.setAttribute('rel', 'alternate');
+    el.setAttribute('hreflang', lang);
+    el.setAttribute('href', href);
+    el.setAttribute('data-hreflang', '1');
+    document.head.appendChild(el);
+  };
+  for (const lng of LOCALES) add(lng, `${BASE_URL}/${lng}${tail}`);
+  add('x-default', `${BASE_URL}/en${tail}`);
+}
+
 export function useDocumentMeta(route, locale, contentVersion) {
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -90,5 +119,6 @@ export function useDocumentMeta(route, locale, contentVersion) {
     const url = BASE_URL + (typeof window !== 'undefined' ? window.location.pathname : '/');
     setCanonical(url);
     setMeta('property', 'og:url', url);
+    setAlternates();
   }, [route?.type, route?.id, locale, contentVersion]);
 }
