@@ -52,14 +52,20 @@ async function validateTelegramToken(token: string): Promise<boolean> {
   }
 }
 
-// Валидация Resend API-ключа: лёгкий GET /domains (200/401).
+// Валидация Resend API-ключа через сам эндпоинт отправки. /domains требует
+// прав «full access», а ключи «sending access» туда не пускают (403) — это зря
+// отклоняло рабочие ключи. POST /emails с пустым телом: 401/403 = неверный ключ;
+// 422 (тело невалидно) = ключ ВЕРНЫЙ (письмо не отправляется). Формат re_… тоже.
 async function validateResendKey(key: string): Promise<boolean> {
+  if (!key.startsWith('re_')) return false;
   try {
-    const res = await fetch('https://api.resend.com/domains', {
-      headers: { Authorization: `Bearer ${key}` },
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'content-type': 'application/json' },
+      body: '{}',
     });
-    if (res.status === 401 || res.status === 403) return false;
-    return res.status < 500;
+    if (res.status === 401 || res.status === 403) return false; // ключ отклонён
+    return true; // 422/400/200 — аутентификация прошла, ключ валиден
   } catch {
     return false;
   }
