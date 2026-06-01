@@ -292,6 +292,7 @@ function BuilderAppInner() {
   const [keyConnected, setKeyConnected] = useState(false);
   const [telegramConnected, setTelegramConnected] = useState(false);
   const [resendConnected, setResendConnected] = useState(false);
+  const [gcalConnected, setGcalConnected] = useState(false);
   const [runInput, setRunInput] = useState('');
   // Переменные для переиспользуемых схем: {{ключ}} в задаче/инструкциях → значение.
   const [runVars, setRunVars] = useState([]); // [{ key, value }]
@@ -547,8 +548,30 @@ function BuilderAppInner() {
     getKeyStatus('resend')
       .then(s => { if (alive) setResendConnected(!!s.connected); })
       .catch(() => { if (alive) setResendConnected(false); });
+    getKeyStatus('gcal')
+      .then(s => { if (alive) setGcalConnected(!!s.connected); })
+      .catch(() => { if (alive) setGcalConnected(false); });
     return () => { alive = false; };
   }, [keysModalOpen, user]);
+
+  // Возврат из OAuth Google Calendar: ?gcal=connected|denied|error|norefresh.
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    const g = p.get('gcal');
+    if (!g) return;
+    const map = {
+      connected: ['success', t('builder.gcal.ok') || 'Google Calendar подключён ✓'],
+      denied: ['info', t('builder.gcal.denied') || 'Доступ к календарю не выдан.'],
+      norefresh: ['error', t('builder.gcal.norefresh') || 'Google не вернул токен — отключите доступ приложения в аккаунте Google и подключите заново.'],
+      error: ['error', t('builder.gcal.err') || 'Не удалось подключить Google Calendar.'],
+    };
+    const m = map[g];
+    if (m) toast[m[0]]?.(m[1]);
+    // Убираем параметр из URL, чтобы тост не повторялся.
+    p.delete('gcal');
+    const q = p.toString();
+    window.history.replaceState(null, '', window.location.pathname + (q ? `?${q}` : ''));
+  }, [t]);
 
   // Панель выполнения всегда доступна (там поле задачи) — production-only.
   useEffect(() => {
@@ -591,6 +614,7 @@ function BuilderAppInner() {
   const selectedAgentNode = selectedNode && selectedNode.data?.kind === 'agent' ? selectedNode : null;
   const selectedTelegramNode = selectedNode && selectedNode.data?.role === 'telegram' ? selectedNode : null;
   const selectedEmailNode = selectedNode && selectedNode.data?.role === 'email' ? selectedNode : null;
+  const selectedCalendarNode = selectedNode && selectedNode.data?.role === 'calendar' ? selectedNode : null;
   const selectedToolNode = selectedNode && (selectedNode.data?.role === 'file_read' || selectedNode.data?.role === 'vision')
     ? selectedNode : null;
   const selectedConditionNode = selectedNode && selectedNode.data?.kind === 'logic' && selectedNode.data?.role !== 'loop' ? selectedNode : null;
@@ -1489,6 +1513,20 @@ function BuilderAppInner() {
               </NodeToolbar>
             )}
 
+            {/* Конфиг Calendar-выхода — подключение Google + выбор календаря */}
+            {selectedCalendarNode && (
+              <NodeToolbar nodeId={selectedNodeId} isVisible position={Position.Right} offset={28}>
+                <CalendarConfigPopover
+                  node={selectedCalendarNode}
+                  t={t}
+                  gcalConnected={gcalConnected}
+                  onSet={handleSetToolData}
+                  onConnect={() => setKeysModalOpen(true)}
+                  onClose={() => setSelectedNodeId(null)}
+                />
+              </NodeToolbar>
+            )}
+
             {/* Конфиг инструмента Файлы/Vision — загрузка контента */}
             {selectedToolNode && (
               <NodeToolbar
@@ -2311,6 +2349,54 @@ function EmailConfigPopover({ node, t, resendConnected, onSet, onConnect, onClos
             value={subject}
             onChange={(e) => onSet(node.id, { subject: e.target.value })}
             placeholder={t('builder.email.subjectPlaceholder') || 'Тема письма (необязательно)'}
+          />
+        </>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* CalendarConfigPopover — подключение Google + календарь        */
+/* ─────────────────────────────────────────────────────────── */
+
+function CalendarConfigPopover({ node, t, gcalConnected, onSet, onConnect, onClose }) {
+  const { labelKey, calendarId = '' } = node.data;
+  return (
+    <div
+      className="builder-prompt-pop nodrag nowheel"
+      onClick={(e) => e.stopPropagation()}
+      onWheelCapture={(e) => e.stopPropagation()}
+    >
+      <div className="builder-prompt-pop__head">
+        <span className="builder-prompt-pop__title">
+          {t(labelKey) || labelKey} · {t('builder.calendar.title') || 'Событие в календаре'}
+        </span>
+        <button type="button" className="builder-prompt-pop__close" onClick={onClose} aria-label={t('builder.prompt.close') || 'Close'}>
+          <Icon name="close" size={12} strokeWidth={1.75} />
+        </button>
+      </div>
+
+      {!gcalConnected ? (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.calendar.needConnect') || 'Сначала подключите Google Calendar в «Мои ключи».'}
+          </p>
+          <button type="button" className="builder-btn builder-btn--primary builder-btn--small" onClick={onConnect}>
+            <Icon name="calendar" size={12} strokeWidth={1.5} />
+            <span>{t('builder.calendar.connectBtn') || 'Подключить календарь'}</span>
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="builder-prompt-pop__hint">
+            {t('builder.calendar.hint') || 'Событие создаётся в основном календаре. Можно указать ID другого календаря.'}
+          </p>
+          <input
+            className="builder-name-modal__input"
+            value={calendarId}
+            onChange={(e) => onSet(node.id, { calendarId: e.target.value })}
+            placeholder={t('builder.calendar.idPlaceholder') || 'primary (по умолчанию) или ID календаря'}
           />
         </>
       )}

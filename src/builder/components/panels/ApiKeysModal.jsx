@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 import { useAuth } from '../../../context/AuthContext.jsx';
-import { connectKey, disconnectKey, getKeyStatus } from '../../services/apiKeyService.js';
+import { connectKey, disconnectKey, getKeyStatus, connectGoogleCalendar } from '../../services/apiKeyService.js';
 
 /**
  * ApiKeysModal — управление API-ключом Claude для реального запуска.
@@ -32,6 +32,11 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
   const [rsBusy, setRsBusy] = useState(false);
   const [rsError, setRsError] = useState(null);
 
+  // Google Calendar (OAuth) — подключение через редирект.
+  const [gcStatus, setGcStatus] = useState(null);
+  const [gcBusy, setGcBusy] = useState(false);
+  const [gcError, setGcError] = useState(null);
+
   const refresh = useCallback(() => {
     getKeyStatus('anthropic')
       .then(setStatus)
@@ -42,6 +47,9 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
     getKeyStatus('resend')
       .then(setRsStatus)
       .catch(() => setRsStatus({ connected: false, hint: null }));
+    getKeyStatus('gcal')
+      .then(setGcStatus)
+      .catch(() => setGcStatus({ connected: false, hint: null }));
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
@@ -165,6 +173,28 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
       setRsBusy(false);
     }
   }, [refresh, rsErrMessage]);
+
+  const handleGcConnect = useCallback(async () => {
+    setGcBusy(true); setGcError(null);
+    try {
+      await connectGoogleCalendar(); // редирект на согласие Google
+    } catch (e) {
+      setGcError(t('builder.keys.gcErr') || 'Не удалось начать подключение Google Calendar.');
+      setGcBusy(false);
+    }
+  }, [t]);
+
+  const handleGcDisconnect = useCallback(async () => {
+    setGcBusy(true); setGcError(null);
+    try {
+      await disconnectKey('gcal');
+      refresh();
+    } catch (e) {
+      setGcError(t('builder.keys.gcErr') || 'Ошибка отключения.');
+    } finally {
+      setGcBusy(false);
+    }
+  }, [refresh, t]);
 
   return (
     <div className="builder-name-modal__overlay" onClick={onClose}>
@@ -324,6 +354,38 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
               </div>
             )}
             {rsError && <div className="builder-keys__error">{rsError}</div>}
+          </div>
+        )}
+
+        {/* ── Google Calendar (OAuth) ── */}
+        {isLoggedIn && (
+          <div className="builder-keys__provider">
+            <h4 className="builder-keys__provider-title">
+              <Icon name="calendar" size={14} strokeWidth={1.75} />
+              {t('builder.keys.gcTitle') || 'Google Calendar (необязательно)'}
+            </h4>
+            <p className="builder-name-modal__hint" style={{ marginTop: 0 }}>
+              {t('builder.keys.gcDesc') || 'Подключите Google-аккаунт, чтобы узел «Календарь» создавал события. Доступ — только к событиям календаря.'}
+            </p>
+            {gcStatus === null ? (
+              <div className="builder-keys__notice">{t('builder.keys.loading') || 'Loading…'}</div>
+            ) : gcStatus.connected ? (
+              <div className="builder-keys__connected">
+                <span className="builder-keys__badge">
+                  <Icon name="check-circle" size={16} strokeWidth={1.75} />
+                  {t('builder.keys.connected') || 'Connected'}
+                </span>
+                <button type="button" className="builder-btn builder-btn--ghost" onClick={handleGcDisconnect} disabled={gcBusy}>
+                  {t('builder.keys.disconnect') || 'Disconnect'}
+                </button>
+              </div>
+            ) : (
+              <button type="button" className="builder-btn builder-btn--primary" onClick={handleGcConnect} disabled={gcBusy}>
+                <Icon name="calendar" size={13} strokeWidth={1.6} />
+                <span>{gcBusy ? (t('builder.keys.connecting') || 'Checking…') : (t('builder.keys.gcConnect') || 'Подключить Google Calendar')}</span>
+              </button>
+            )}
+            {gcError && <div className="builder-keys__error">{gcError}</div>}
           </div>
         )}
 

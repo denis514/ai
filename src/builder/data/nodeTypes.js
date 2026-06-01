@@ -237,6 +237,15 @@ export const NODE_DEFS = {
     descKey: 'builder.node.output_email_desc',
     atlasAnchor: 'sys-api-patterns',
   },
+  'output-calendar': {
+    kind: 'output',
+    role: 'calendar',
+    icon: 'calendar',
+    color: '#4285f4',
+    labelKey: 'builder.node.output_calendar',
+    descKey: 'builder.node.output_calendar_desc',
+    atlasAnchor: 'sys-api-patterns',
+  },
 };
 
 /**
@@ -261,7 +270,7 @@ export const TOOLBOX_GROUPS = [
   {
     id: 'flow',
     labelKey: 'builder.toolbox.flow',
-    items: ['trigger-input', 'output-text', 'output-telegram', 'output-email'],
+    items: ['trigger-input', 'output-text', 'output-telegram', 'output-email', 'output-calendar'],
   },
 ];
 

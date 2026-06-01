@@ -55,6 +55,15 @@ export function disconnectKey(provider = 'anthropic') {
 }
 
 /**
+ * Запустить OAuth Google Calendar: получаем URL согласия с сервера и редиректим.
+ * После согласия Google вернёт на callback → приложение откроется с ?gcal=connected.
+ */
+export async function connectGoogleCalendar() {
+  const out = await callFunction('builder-gcal-connect', {});
+  if (out?.url) window.location.assign(out.url);
+}
+
+/**
  * Статус ключа для UI — только метаданные, без ciphertext.
  * @returns {{ connected: boolean, hint: string|null }}
  */

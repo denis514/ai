@@ -171,6 +171,44 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
   return { text, tokens };
 }
 
+// ─── Google Calendar (ADR-0009) ──────────────────────────────────────────────
+async function gcalAccessToken(refresh: string): Promise<string | null> {
+  const id = Deno.env.get('GOOGLE_CLIENT_ID') || '';
+  const sec = Deno.env.get('GOOGLE_CLIENT_SECRET') || '';
+  if (!id || !sec) return null;
+  try {
+    const res = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ client_id: id, client_secret: sec, refresh_token: refresh, grant_type: 'refresh_token' }).toString(),
+    });
+    const d = await res.json();
+    return res.ok ? (d.access_token || null) : null;
+  } catch { return null; }
+}
+
+// Извлекаем событие из ответа агента: строгий JSON {title,start,end,description}.
+// Fallback: title = первая строка, start = now+1ч, end = +1ч.
+function parseEvent(text: string): { title: string; start: string; end: string; description?: string } {
+  try {
+    const m = text.match(/\{[\s\S]*\}/);
+    if (m) {
+      const o = JSON.parse(m[0]);
+      if (o.title && o.start) {
+        const start = new Date(o.start);
+        const end = o.end ? new Date(o.end) : new Date(start.getTime() + 60 * 60 * 1000);
+        if (!isNaN(start.getTime())) {
+          return { title: String(o.title), start: start.toISOString(), end: end.toISOString(), description: o.description ? String(o.description) : undefined };
+        }
+      }
+    }
+  } catch { /* fallthrough */ }
+  const title = (text.split('\n').find(l => l.trim()) || 'Событие').slice(0, 120).trim();
+  const start = new Date(Date.now() + 60 * 60 * 1000);
+  const end = new Date(start.getTime() + 60 * 60 * 1000);
+  return { title, start: start.toISOString(), end: end.toISOString(), description: text.slice(0, 2000) };
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
   if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
@@ -250,6 +288,15 @@ Deno.serve(async (req) => {
     .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'resend').maybeSingle();
   if (rsConn?.is_active) {
     try { resendKey = await decrypt(rsConn.encrypted_key); } catch { resendKey = ''; }
+  }
+
+  // Google Calendar refresh-токен (опционально) — для узлов-событий.
+  let gcalRefresh = '';
+  const { data: gcConn } = await admin
+    .from('builder_api_connections')
+    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'gcal').maybeSingle();
+  if (gcConn?.is_active) {
+    try { gcalRefresh = await decrypt(gcConn.encrypted_key); } catch { gcalRefresh = ''; }
   }
 
   // Узлы и рёбра.
@@ -497,6 +544,51 @@ Deno.serve(async (req) => {
             } catch (err) {
               failed = true;
               await log(id, 'error', `Email send failed: ${(err as Error).message}`, { status: 'failed' });
+            }
+          }
+          continue;
+        }
+
+        // Создание события в Google Calendar (роль calendar + подключённый gcal).
+        if (node.role === 'calendar') {
+          if (!gcalRefresh) {
+            failed = true;
+            await log(id, 'error', 'Google Calendar not connected — connect it in “My keys”.', { status: 'failed' });
+          } else {
+            try {
+              const accessToken = await gcalAccessToken(gcalRefresh);
+              if (!accessToken) {
+                failed = true;
+                await log(id, 'error', 'Could not refresh Google access token — reconnect Google Calendar.', { status: 'failed' });
+              } else {
+                const calId = typeof node.config?.calendarId === 'string' && node.config.calendarId.trim()
+                  ? node.config.calendarId.trim() : 'primary';
+                const ev = parseEvent(collected);
+                const gRes = await fetch(
+                  `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events`,
+                  {
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${accessToken}`, 'content-type': 'application/json' },
+                    body: JSON.stringify({
+                      summary: ev.title,
+                      description: ev.description || collected.slice(0, 4000),
+                      start: { dateTime: ev.start },
+                      end: { dateTime: ev.end },
+                    }),
+                  },
+                );
+                const gData = await gRes.json().catch(() => ({}));
+                if (gRes.ok && gData?.id) {
+                  await log(id, 'info', `Event created ✓ (${ev.title}, ${ev.start.slice(0, 16).replace('T', ' ')})`, { status: 'completed' });
+                } else {
+                  failed = true;
+                  const msg = gData?.error?.message || `http_${gRes.status}`;
+                  await log(id, 'error', `Calendar event not created: ${msg}`, { status: 'failed' });
+                }
+              }
+            } catch (err) {
+              failed = true;
+              await log(id, 'error', `Calendar failed: ${(err as Error).message}`, { status: 'failed' });
             }
           }
           continue;
