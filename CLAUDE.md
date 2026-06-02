@@ -434,6 +434,7 @@ Claude **обязан** написать короткий итог.
 | Decision-ready proposal docs           | `skills/proposal-generator/` |
 | Еженедельный strategic review          | `node scripts/weekly-strategy-review.mjs` |
 | **Agent Builder — стратегия + планы**  | `docs/agent-builder/`      |
+| Серверное исполнение, автозапуск, лимиты, защита кошелька | `docs/agent-builder/15-server-execution-and-autorun.md` |
 | Проектирование agents и workflow       | `skills/agent-architecture/` |
 | Добавить/изменить узел Builder, правила связей, шаблон | `skills/builder-node-architect/` (+ `npm run lint:builder`) |
 | Модель способностей узлов и совместимости | `docs/agent-builder/10-node-capability-model.md` + ADR-0007 |
