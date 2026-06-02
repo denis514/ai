@@ -284,6 +284,22 @@ export function getNodeDef(defId) {
 }
 
 /**
+ * Есть ли у узла окно настройки (ввод данных/текста), которое нужно открыть
+ * автоматически при попадании на холст. Узлы-способности без данных
+ * (веб-поиск, память, цитаты, запуск кода, управление, Markdown-выход) — false.
+ * @param {object} def — запись NODE_DEFS
+ * @returns {boolean}
+ */
+export function hasConfigPanel(def) {
+  if (!def) return false;
+  if (def.kind === 'agent') return true;        // инструкция агенту
+  if (def.kind === 'trigger') return true;      // задача (Старт)
+  if (def.kind === 'logic') return true;        // условие / условие-агент / цикл
+  // Выходы и инструменты с настройкой данных:
+  return ['telegram', 'email', 'calendar', 'mcp', 'file_read', 'vision'].includes(def.role);
+}
+
+/**
  * Можно ли добавить ещё один такой узел на холст.
  * Singleton-узлы (например «Старт») допускаются в единственном экземпляре.
  * @param {string} defId

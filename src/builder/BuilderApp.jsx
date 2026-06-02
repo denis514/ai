@@ -16,7 +16,7 @@ import 'reactflow/dist/style.css';
 import Icon from '../components/Icon.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
-import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE, canAddNode } from './data/nodeTypes.js';
+import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE, canAddNode, hasConfigPanel } from './data/nodeTypes.js';
 import { nodeTypes } from './components/canvas/index.js';
 import NodePalette from './components/canvas/NodePalette.jsx';
 import HelpPanel from './components/panels/HelpPanel.jsx';
@@ -945,8 +945,9 @@ function BuilderAppInner() {
 
       pushHistory();
       setNodes(nds => nds.concat(newNode));
-      // Стартовый узел — сразу выделяем, чтобы рядом открылось окно задачи.
-      if (def.kind === 'trigger') { setSelectedNodeId(newNode.id); setSelectedEdgeId(null); }
+      // Узлы с окном настройки (ввод данных/текста) — сразу выделяем, чтобы рядом
+      // открылось их окно и можно было сразу вводить.
+      if (hasConfigPanel(def)) { setSelectedNodeId(newNode.id); setSelectedEdgeId(null); }
     },
     [screenToFlowPosition, setNodes, pushHistory, nodes, showHintText, t]
   );
@@ -985,7 +986,8 @@ function BuilderAppInner() {
     };
     pushHistory();
     setNodes(nds => nds.concat(newNode));
-    if (def.kind === 'trigger') { setSelectedNodeId(newNode.id); setSelectedEdgeId(null); }
+    // Узлы с окном настройки — сразу открываем его рядом для ввода данных.
+    if (hasConfigPanel(def)) { setSelectedNodeId(newNode.id); setSelectedEdgeId(null); }
   }, [screenToFlowPosition, setNodes, pushHistory, nodes, showHintText, t]);
 
   /* ────────── Load template (из галереи) ────────── */
