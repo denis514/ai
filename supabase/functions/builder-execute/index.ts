@@ -138,7 +138,7 @@ type ImageInput = { data: string; mime: string };
 
 type McpServer = { type: 'url'; url: string; name: string; authorization_token?: string };
 
-async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = [], mcpServers: McpServer[] = [], webTools = false) {
+async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = [], mcpServers: McpServer[] = [], webTools = false, onRateWait?: (sec: number) => Promise<void>) {
   // Если есть картинки (Vision) — собираем мультимодальное сообщение: блоки
   // image + текст. Иначе обычная строка.
   const content = images.length
@@ -178,18 +178,28 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
     ];
   }
   if (betas.length) headers['anthropic-beta'] = betas.join(',');
-  const res = await fetch(CLAUDE_URL, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(payload),
-  });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data?.error?.message || `claude_http_${res.status}`);
+  const body = JSON.stringify(payload);
+  // При лимите запросов (429) НЕ падаем сразу: ждём (по retry-after) и повторяем,
+  // чтобы шаг всё-таки выполнился. Один повтор ≈ одно «минутное окно» лимита.
+  const MAX_ATTEMPTS = 2;
+  for (let attempt = 1; ; attempt++) {
+    const res = await fetch(CLAUDE_URL, { method: 'POST', headers, body });
+    if (res.status === 429 && attempt < MAX_ATTEMPTS) {
+      let waitSec = parseInt(res.headers.get('retry-after') || '', 10);
+      if (!Number.isFinite(waitSec) || waitSec <= 0) waitSec = 60;
+      waitSec = Math.min(waitSec, 60);
+      if (onRateWait) await onRateWait(waitSec);
+      await new Promise((r) => setTimeout(r, waitSec * 1000));
+      continue;
+    }
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data?.error?.message || `claude_http_${res.status}`);
+    }
+    const text = (data.content || []).filter((b: any) => b.type === 'text').map((b: any) => b.text).join('\n');
+    const tokens = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
+    return { text, tokens };
   }
-  const text = (data.content || []).filter((b: any) => b.type === 'text').map((b: any) => b.text).join('\n');
-  const tokens = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
-  return { text, tokens };
 }
 
 // ─── Google Calendar (ADR-0009) ──────────────────────────────────────────────
@@ -720,6 +730,12 @@ Deno.serve(async (req) => {
       const customPromptRaw = typeof node.config?.prompt === 'string' ? node.config.prompt.trim() : '';
       const customPrompt = applyVars(customPromptRaw); // подстановка {{переменных}}
       context = applyVars(context);
+      // Ограничиваем объём входа шага — защита от раздувания входных токенов
+      // (упираемся в лимит запросов в минуту) при больших веб-/файловых данных.
+      const CONTEXT_MAX = 16000;
+      if (context.length > CONTEXT_MAX) {
+        context = context.slice(0, CONTEXT_MAX) + '\n…[текст обрезан для экономии]';
+      }
       // Когда подключён веб-узел — невидимое правило исполнения: модель ОБЯЗАНА
       // реально сходить в интернет инструментами и отвечать ТОЛЬКО по полученному
       // (не из памяти). Так узел-правило пользователя «возьми с сайта» исполняется
@@ -740,7 +756,10 @@ Deno.serve(async (req) => {
       const sendMcp: McpServer[] = pickedMcp.map(({ _id, ...s }) => { void _id; return s; });
       if (sendMcp.length) await log(id, 'info', `MCP: ${sendMcp.length} server(s) provided`, { status: 'running' });
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
-      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens, visionImages, sendMcp, wantWeb);
+      const { text, tokens } = await callClaude(
+        apiKey, system, context || 'Proceed.', maxTokens, visionImages, sendMcp, wantWeb,
+        async (sec) => { await log(id, 'warn', `Лимит запросов Anthropic — ждём ${sec}с и продолжаем…`, { status: 'running' }); },
+      );
       totalTokens += tokens;
       outputs.set(id, text);
       transcript.push(`${roleLabel(node.role || 'main')}: ${text.slice(0, 1200)}`);
