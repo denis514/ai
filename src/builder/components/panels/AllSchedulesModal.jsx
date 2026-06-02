@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
-import { listAllSchedules, toggleSchedule, deleteSchedule, disableAllSchedules } from '../../services/scheduleService.js';
+import { listAllSchedules, toggleSchedule, deleteSchedule, disableAllSchedules, getTodayUsage } from '../../services/scheduleService.js';
 import { toast } from '../Toast.jsx';
 import { SkeletonList } from '../Skeleton.jsx';
 
@@ -20,9 +20,11 @@ export default function AllSchedulesModal({ onClose }) {
   const [items, setItems] = useState(null);
   const [confirmStopAll, setConfirmStopAll] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [usage, setUsage] = useState(null); // { runs, tokens } за сегодня
 
   const refresh = useCallback(() => {
     listAllSchedules().then(setItems).catch(() => setItems([]));
+    getTodayUsage().then(setUsage).catch(() => setUsage(null));
   }, []);
   useEffect(() => { refresh(); }, [refresh]);
 
@@ -71,6 +73,17 @@ export default function AllSchedulesModal({ onClose }) {
         <p className="builder-schedule__lead">
           {t('builder.allsched.lead') || 'Все автозапуски по всем вашим схемам. Они работают на сервере — даже когда компьютер выключен.'}
         </p>
+
+        {usage && (
+          <div className="builder-allsched__usage">
+            <Icon name="flash" size={13} strokeWidth={1.6} />
+            <span>
+              {(t('builder.allsched.usageToday') || 'Сегодня: {runs} запусков · ~{tokens} токенов')
+                .replace('{runs}', String(usage.runs))
+                .replace('{tokens}', usage.tokens.toLocaleString())}
+            </span>
+          </div>
+        )}
 
         {/* Сводка + аварийный стоп */}
         <div className="builder-allsched__bar">

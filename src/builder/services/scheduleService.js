@@ -95,6 +95,27 @@ export async function disableAllSchedules() {
   return (data || []).length;
 }
 
+/**
+ * Расход за сегодня (UTC-сутки) — для «защиты кошелька».
+ * @returns {{ runs: number, tokens: number }}
+ */
+export async function getTodayUsage() {
+  if (!supabase) return { runs: 0, tokens: 0 };
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { runs: 0, tokens: 0 };
+  const sod = new Date(); sod.setUTCHours(0, 0, 0, 0);
+  const { data, error } = await supabase
+    .from('builder_executions')
+    .select('tokens_used')
+    .eq('user_id', user.id)
+    .gte('created_at', sod.toISOString());
+  if (error || !data) return { runs: 0, tokens: 0 };
+  return {
+    runs: data.length,
+    tokens: data.reduce((s, r) => s + (r.tokens_used || 0), 0),
+  };
+}
+
 export async function createSchedule({ workflowId, frequency, hour, minute, weekday, tier, locale }) {
   if (!supabase) throw new Error('backend_unavailable');
   const { data: { user } } = await supabase.auth.getUser();

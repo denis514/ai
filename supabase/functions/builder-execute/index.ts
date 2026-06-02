@@ -368,6 +368,38 @@ Deno.serve(async (req) => {
     }
   }
 
+  // ─── Защита кошелька ────────────────────────────────────────────────────
+  // (1) Анти-наложение: не запускаем новый прогон поверх уже идущего по этой же
+  // схеме — иначе расписание/повторные клики множат траты и бьют в лимит.
+  const tenMinAgoIso = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+  {
+    const { data: running } = await admin.from('builder_executions')
+      .select('id').eq('workflow_id', workflowId).eq('status', 'running')
+      .gte('created_at', tenMinAgoIso).limit(1);
+    if (running && running.length) {
+      return json({ error: 'already_running' }, 409);
+    }
+  }
+  // (2) Суточный лимит запусков/токенов на пользователя (UTC-сутки). При
+  // превышении — авто-пауза всех его расписаний, чтобы фон не жёг бюджет.
+  const DAILY_RUN_CAP = parseInt(Deno.env.get('BUILDER_DAILY_RUN_CAP') || '50', 10);
+  const DAILY_TOKEN_CAP = parseInt(Deno.env.get('BUILDER_DAILY_TOKEN_CAP') || '500000', 10);
+  {
+    const sod = new Date(); sod.setUTCHours(0, 0, 0, 0);
+    const { data: todays } = await admin.from('builder_executions')
+      .select('tokens_used').eq('user_id', userId).gte('created_at', sod.toISOString());
+    const runsToday = (todays || []).length;
+    const tokensToday = (todays || []).reduce((s, r) => s + (r.tokens_used || 0), 0);
+    if (runsToday >= DAILY_RUN_CAP || tokensToday >= DAILY_TOKEN_CAP) {
+      await admin.from('builder_schedules')
+        .update({ enabled: false }).eq('user_id', userId).eq('enabled', true);
+      return json({
+        error: 'daily_limit', runsToday, tokensToday,
+        runCap: DAILY_RUN_CAP, tokenCap: DAILY_TOKEN_CAP,
+      }, 429);
+    }
+  }
+
   // Создаём execution-строку (status running) с клиентским id.
   await admin.from('builder_executions').insert({
     id: executionId, workflow_id: workflowId, user_id: userId,

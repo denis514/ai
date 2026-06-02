@@ -114,7 +114,15 @@ export function createRealExecution({ workflowId, input, tier, locale, variables
         });
         const out = await res.json().catch(() => ({}));
         if (!res.ok) {
-          onLog?.({ level: 'error', message: out.error || `http_${res.status}`, ts: new Date().toISOString() });
+          // Понятные сообщения для «защиты кошелька» и частых случаев.
+          const FRIENDLY = {
+            already_running: 'Предыдущий запуск ещё идёт — дождитесь его окончания.',
+            daily_limit: 'Достигнут дневной лимит запусков — автозапуски поставлены на паузу до завтра, чтобы не тратить лишнее.',
+            no_api_key: 'Не подключён ключ Anthropic — добавьте его в «Ключи».',
+            empty_workflow: 'Схема пустая — добавьте узлы.',
+          };
+          const msg = FRIENDLY[out.error] || out.error || `http_${res.status}`;
+          onLog?.({ level: 'error', message: msg, ts: new Date().toISOString() });
           return finish('failed');
         }
         if (out.output != null) onResult?.({ output: out.output, tokensUsed: out.tokensUsed || 0 });
