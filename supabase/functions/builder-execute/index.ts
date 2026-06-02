@@ -171,13 +171,11 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
   // на стороне Anthropic). web_fetch — открыть конкретный URL; web_search — найти.
   // web_fetch пока в beta. Серверные tools исполняются внутри одного запроса.
   if (webTools) {
-    betas.push('web-fetch-2025-09-10');
-    // Ограничиваем «аппетит» веб-инструментов, чтобы укладываться в лимит
-    // входных токенов в минуту: поиск (компактно) + ограниченное открытие
-    // страниц с кэпом объёма на страницу (max_content_tokens).
+    // Только веб-ПОИСК (компактные результаты). Открытие целых страниц (web_fetch)
+    // потребляет слишком много входных токенов и пробивает лимит 30k/мин на
+    // стартовом tier. Для свежих фактов/новостей поиска достаточно.
     payload.tools = [
       { type: 'web_search_20250305', name: 'web_search', max_uses: 3 },
-      { type: 'web_fetch_20250910', name: 'web_fetch', max_uses: 2, max_content_tokens: 6000 },
     ];
   }
   if (betas.length) headers['anthropic-beta'] = betas.join(',');
@@ -698,7 +696,7 @@ Deno.serve(async (req) => {
       // (которое не видит контент SPA вроде новостных сайтов).
       const wantWeb = attachedToolRoles.includes('web_search');
       if (wantWeb) {
-        await log(id, 'info', 'Web tools enabled — Claude will search & open pages', { status: 'running' });
+        await log(id, 'info', 'Web search enabled — Claude will search the web', { status: 'running' });
       }
       // Файлы (Фаза 4): прикреплённый tool-file с загруженным текстом → в контекст.
       for (const tn of attachedTools.filter(n => n.role === 'file_read')) {
@@ -744,7 +742,7 @@ Deno.serve(async (req) => {
       // (не из памяти). Так узел-правило пользователя «возьми с сайта» исполняется
       // по факту, а не подменяется выдумкой. Плюс знает текущую дату.
       const webGround = wantWeb
-        ? `\n\n[Исполнение] Сегодня: ${today}. К тебе подключён веб-доступ (web_search, web_fetch). Чтобы выполнить инструкцию, ОБЯЗАТЕЛЬНО используй эти инструменты и бери данные из интернета прямо сейчас. Отвечай ТОЛЬКО на основе реально полученного из веба в этом запросе — НЕ используй сведения из памяти. Если получить данные не удалось — честно напиши об этом и не выдумывай.`
+        ? `\n\n[Исполнение] Сегодня: ${today}. К тебе подключён веб-поиск. Чтобы выполнить инструкцию, ОБЯЗАТЕЛЬНО используй его и бери данные из интернета прямо сейчас. Отвечай ТОЛЬКО на основе реально найденного в вебе в этом запросе — НЕ используй сведения из памяти. Если найти не удалось — честно напиши об этом и не выдумывай.`
         : '';
       const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix + webGround;
       // MCP: если к агенту прикреплён узел «MCP-коннектор» — отдаём Claude серверы,
