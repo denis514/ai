@@ -225,6 +225,10 @@ export async function deleteWorkflow(id, userId) {
     .update({ is_archived: true })
     .eq('id', id);
   if (error) throw error;
+  // Удаляем расписания удалённой схемы — иначе серверный планировщик продолжит
+  // запускать её в фоне (схема «мягко» архивируется, поэтому FK-каскад не сработал
+  // бы). RLS owner-only гарантирует, что трогаем только свои.
+  await supabase.from('builder_schedules').delete().eq('workflow_id', id);
   return true;
 }
 

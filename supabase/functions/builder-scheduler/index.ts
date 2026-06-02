@@ -80,8 +80,30 @@ Deno.serve(async (req) => {
   if (error) return json({ error: 'query_failed', detail: error.message }, 500);
   if (!due || due.length === 0) return json({ ok: true, ran: 0 });
 
+  // Предохранитель: схема могла быть удалена (мягко → is_archived=true) или
+  // отсутствовать. Расписания таких схем не запускаем и сразу гасим, чтобы они
+  // не тикали в фоне и не тратили токены. Один запрос на все workflow из выборки.
+  const wfIds = [...new Set(due.map((s) => s.workflow_id).filter(Boolean))];
+  const liveWf = new Set<string>();
+  if (wfIds.length) {
+    const { data: wfs } = await admin
+      .from('builder_workflows')
+      .select('id, is_archived')
+      .in('id', wfIds);
+    for (const w of wfs || []) {
+      if (!w.is_archived) liveWf.add(w.id as string);
+    }
+  }
+
   let ran = 0;
+  let disabled = 0;
   for (const s of due) {
+    // Схема удалена/в архиве → выключаем это расписание и пропускаем запуск.
+    if (!liveWf.has(s.workflow_id)) {
+      await admin.from('builder_schedules').update({ enabled: false }).eq('id', s.id);
+      disabled++;
+      continue;
+    }
     // Сдвигаем next_run_at СРАЗУ (до запуска), чтобы тик не продублировал запуск.
     const next = computeNext(new Date(), s.frequency, s.hour, s.minute, s.weekday);
     await admin.from('builder_schedules')
@@ -111,5 +133,5 @@ Deno.serve(async (req) => {
     }
   }
 
-  return json({ ok: true, ran });
+  return json({ ok: true, ran, disabled });
 });
