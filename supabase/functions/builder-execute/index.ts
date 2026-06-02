@@ -138,7 +138,7 @@ type ImageInput = { data: string; mime: string };
 
 type McpServer = { type: 'url'; url: string; name: string; authorization_token?: string };
 
-async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = [], mcpServers: McpServer[] = []) {
+async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = [], mcpServers: McpServer[] = [], webTools = false) {
   // Если есть картинки (Vision) — собираем мультимодальное сообщение: блоки
   // image + текст. Иначе обычная строка.
   const content = images.length
@@ -161,11 +161,23 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
     system,
     messages: [{ role: 'user', content }],
   };
+  const betas: string[] = [];
   // MCP-коннектор Anthropic (beta): Claude сам вызывает инструменты сервера.
   if (mcpServers.length) {
-    headers['anthropic-beta'] = 'mcp-client-2025-04-04';
+    betas.push('mcp-client-2025-04-04');
     payload.mcp_servers = mcpServers;
   }
+  // Родные веб-инструменты: Claude САМ ищет и открывает страницы (рендер + чтение
+  // на стороне Anthropic). web_fetch — открыть конкретный URL; web_search — найти.
+  // web_fetch пока в beta. Серверные tools исполняются внутри одного запроса.
+  if (webTools) {
+    betas.push('web-fetch-2025-09-10');
+    payload.tools = [
+      { type: 'web_search_20250305', name: 'web_search', max_uses: 5 },
+      { type: 'web_fetch_20250910', name: 'web_fetch', max_uses: 5 },
+    ];
+  }
+  if (betas.length) headers['anthropic-beta'] = betas.join(',');
   const res = await fetch(CLAUDE_URL, {
     method: 'POST',
     headers,
@@ -667,19 +679,13 @@ Deno.serve(async (req) => {
         .filter((n): n is Node => !!n && n.node_type === 'tool');
       const attachedToolRoles = attachedTools.map((n) => n.role || '');
 
-      // Web-инструмент: реально открываем ссылки из задачи/контекста (Фаза 4).
-      if (attachedToolRoles.includes('web_search')) {
-        const urls = extractUrls(`${context}\n${input}`);
-        for (const url of urls.slice(0, 2)) {
-          await log(id, 'info', `Opening ${url} …`, { status: 'running' });
-          const page = await fetchPageText(url);
-          if (page) {
-            context += `\n\n[Web content fetched from ${url}]:\n${page}`;
-            await log(id, 'info', `Fetched ${url} (${page.length} chars)`, { status: 'running' });
-          } else {
-            await log(id, 'warn', `Could not open ${url} (blocked, timeout, or non-text)`, {});
-          }
-        }
+      // Веб-инструмент: используем РОДНЫЕ web-инструменты Claude (web_search +
+      // web_fetch). Claude сам ищет и открывает страницы — с рендером JS-сайтов
+      // и чтением на стороне Anthropic. Это надёжнее наивного скачивания HTML
+      // (которое не видит контент SPA вроде новостных сайтов).
+      const wantWeb = attachedToolRoles.includes('web_search');
+      if (wantWeb) {
+        await log(id, 'info', 'Web tools enabled — Claude will search & open pages', { status: 'running' });
       }
       // Файлы (Фаза 4): прикреплённый tool-file с загруженным текстом → в контекст.
       for (const tn of attachedTools.filter(n => n.role === 'file_read')) {
@@ -727,7 +733,7 @@ Deno.serve(async (req) => {
       const sendMcp: McpServer[] = pickedMcp.map(({ _id, ...s }) => { void _id; return s; });
       if (sendMcp.length) await log(id, 'info', `MCP: ${sendMcp.length} server(s) provided`, { status: 'running' });
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
-      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens, visionImages, sendMcp);
+      const { text, tokens } = await callClaude(apiKey, system, context || 'Proceed.', maxTokens, visionImages, sendMcp, wantWeb);
       totalTokens += tokens;
       outputs.set(id, text);
       transcript.push(`${roleLabel(node.role || 'main')}: ${text.slice(0, 1200)}`);
