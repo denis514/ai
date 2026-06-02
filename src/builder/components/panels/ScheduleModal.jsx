@@ -24,6 +24,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [pending, setPending] = useState(false); // показать экран подтверждения
 
   const refresh = useCallback(() => {
     listSchedules(workflowId).then(setItems).catch(() => { setItems([]); });
@@ -31,17 +32,32 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
 
   useEffect(() => { refresh(); }, [refresh]);
 
-  const add = async () => {
+  // Шаг 1: проверка и показ подтверждения (без записи).
+  const add = () => {
     if (!input.trim()) { toast.error(t('builder.schedule.needInput') || 'Впишите задачу для автозапуска.'); return; }
+    setPending(true);
+  };
+
+  // Шаг 2: реальное создание после подтверждения.
+  const confirmCreate = async () => {
     setBusy(true);
     try {
       await createSchedule({ workflowId, frequency: freq, hour, minute, weekday, input: input.trim(), tier: 's', locale });
       setInput('');
+      setPending(false);
       toast.success(t('builder.schedule.created') || 'Автозапуск создан');
       refresh();
     } catch (e) {
       toast.error((t('builder.schedule.err') || 'Не удалось создать') + (e?.message ? ` (${e.message})` : ''));
     } finally { setBusy(false); }
+  };
+
+  // Сколько запусков в день для выбранной частоты (для предупреждения о расходе).
+  const runsPerDay = () => {
+    if (freq === 'minutes') return Math.floor(1440 / Math.max(minute, 1));
+    if (freq === 'hourly') return 24;
+    if (freq === 'weekly') return null; // раз в неделю
+    return 1; // daily
   };
 
   const onToggle = async (s) => { try { await toggleSchedule(s.id, !s.enabled); refresh(); } catch { /* */ } };
@@ -149,10 +165,37 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
               placeholder={t('builder.schedule.taskPh') || 'Что схема должна делать при каждом запуске…'}
             />
           </div>
-          <button type="button" className="builder-btn builder-btn--primary" onClick={add} disabled={busy}>
-            <Icon name="check" size={14} strokeWidth={1.75} />
-            <span>{t('builder.schedule.add') || 'Создать автозапуск'}</span>
-          </button>
+          {!pending ? (
+            <button type="button" className="builder-btn builder-btn--primary" onClick={add} disabled={busy}>
+              <Icon name="check" size={14} strokeWidth={1.75} />
+              <span>{t('builder.schedule.add') || 'Создать автозапуск'}</span>
+            </button>
+          ) : (
+            <div className="builder-schedule__confirm builder-schedule__row--full">
+              <div className="builder-schedule__confirm-title">
+                <Icon name="clock" size={14} strokeWidth={1.7} />
+                <span>{(t('builder.schedule.confirmFreq') || 'Запуск: {f}').replace('{f}', fmtFreq({ frequency: freq, hour, minute, weekday }))}</span>
+              </div>
+              <p className="builder-schedule__confirm-warn">
+                {t('builder.schedule.confirmWarn') || 'Схема будет запускаться сама на сервере и тратить токены на вашем ключе при каждом запуске.'}
+              </p>
+              {runsPerDay() != null && (
+                <p className={`builder-schedule__confirm-runs ${runsPerDay() >= 48 ? 'is-high' : ''}`}>
+                  {(t('builder.schedule.confirmRuns') || '≈ {n} запусков в день').replace('{n}', String(runsPerDay()))}
+                  {runsPerDay() >= 48 && ' · ' + (t('builder.schedule.confirmHigh') || '⚠️ очень часто — расход будет быстрым')}
+                </p>
+              )}
+              <div className="builder-schedule__confirm-actions">
+                <button type="button" className="builder-btn builder-btn--primary" onClick={confirmCreate} disabled={busy}>
+                  <Icon name="check" size={14} strokeWidth={1.75} />
+                  <span>{t('builder.schedule.confirmYes') || 'Да, включить автозапуск'}</span>
+                </button>
+                <button type="button" className="builder-btn builder-btn--ghost" onClick={() => setPending(false)} disabled={busy}>
+                  {t('common.cancel') || 'Отмена'}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Список расписаний */}
