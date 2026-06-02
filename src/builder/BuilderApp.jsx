@@ -33,6 +33,7 @@ import WorkflowSwitcher from './components/panels/WorkflowSwitcher.jsx';
 import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
 import ApiKeysModal from './components/panels/ApiKeysModal.jsx';
 import ScheduleModal from './components/panels/ScheduleModal.jsx';
+import AllSchedulesModal from './components/panels/AllSchedulesModal.jsx';
 import AuthModal from '../components/AuthModal.jsx';
 import { TEMPLATES } from './data/templates.js';
 import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data/outputTiers.js';
@@ -330,6 +331,7 @@ function BuilderAppInner() {
   const [nameIntent, setNameIntent] = useState('create');
   const [keysModalOpen, setKeysModalOpen] = useState(false);
   const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [allSchedOpen, setAllSchedOpen] = useState(false); // общий обзор всех автозапусков
   const [authOpen, setAuthOpen] = useState(false);
   // Production-only: демо-режим удалён, запуск всегда реальный (на ключе Claude).
   const runMode = 'real';
@@ -1318,6 +1320,15 @@ function BuilderAppInner() {
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
+            onClick={() => setAllSchedOpen(true)}
+            title={t('builder.allsched.openBtn') || 'Все автозапуски'}
+            aria-label={t('builder.allsched.openBtn') || 'Все автозапуски'}
+          >
+            <Icon name="clock" size={14} strokeWidth={1.5} />
+          </button>
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost"
             onClick={() => setExecPanelOpen(v => !v)}
             aria-pressed={execPanelOpen}
             title={t('builder.header.toggleExec') || 'Toggle execution panel'}
@@ -2079,6 +2090,11 @@ function BuilderAppInner() {
           locale={locale}
           onClose={() => setScheduleOpen(false)}
         />
+      )}
+
+      {/* Общий обзор всех автозапусков по всем схемам + «Остановить все» */}
+      {allSchedOpen && (
+        <AllSchedulesModal onClose={() => setAllSchedOpen(false)} />
       )}
 
       {/* Auth modal — Builder рендерится вместо Atlas, поэтому свой инстанс */}

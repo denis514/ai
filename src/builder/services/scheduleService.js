@@ -51,6 +51,50 @@ export async function listSchedules(workflowId) {
   return data || [];
 }
 
+/**
+ * Все расписания пользователя по ВСЕМ схемам (а не только по открытой).
+ * Дополняет каждую запись именем схемы (workflowName) для отображения.
+ * RLS owner-only — вернёт только свои.
+ */
+export async function listAllSchedules() {
+  if (!supabase) return [];
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
+  const { data: rows, error } = await supabase
+    .from('builder_schedules')
+    .select('*')
+    .order('enabled', { ascending: false })
+    .order('last_run_at', { ascending: false, nullsFirst: false });
+  if (error) throw error;
+  const schedules = rows || [];
+  // Подтягиваем имена схем одним запросом.
+  const ids = [...new Set(schedules.map(s => s.workflow_id).filter(Boolean))];
+  let nameById = {};
+  if (ids.length) {
+    const { data: wfs } = await supabase
+      .from('builder_workflows')
+      .select('id, name')
+      .in('id', ids);
+    nameById = Object.fromEntries((wfs || []).map(w => [w.id, w.name]));
+  }
+  return schedules.map(s => ({ ...s, workflowName: nameById[s.workflow_id] || null }));
+}
+
+/**
+ * Аварийная остановка: выключить ВСЕ включённые расписания пользователя.
+ * Возвращает количество затронутых строк. RLS гарантирует, что только свои.
+ */
+export async function disableAllSchedules() {
+  if (!supabase) throw new Error('backend_unavailable');
+  const { data, error } = await supabase
+    .from('builder_schedules')
+    .update({ enabled: false })
+    .eq('enabled', true)
+    .select('id');
+  if (error) throw error;
+  return (data || []).length;
+}
+
 export async function createSchedule({ workflowId, frequency, hour, minute, weekday, input, tier, locale }) {
   if (!supabase) throw new Error('backend_unavailable');
   const { data: { user } } = await supabase.auth.getUser();

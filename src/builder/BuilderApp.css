@@ -4349,3 +4349,71 @@
   border-color: var(--border-strong);
   color: var(--text);
 }
+
+/* ────────────────────────────────────────────────── */
+/* Danger button + «Все автозапуски» (AllSchedulesModal)*/
+/* ────────────────────────────────────────────────── */
+.builder-app .builder-btn--danger {
+  border-color: color-mix(in srgb, var(--danger, #dc2626) 45%, var(--border));
+  color: var(--danger, #dc2626);
+  background: color-mix(in srgb, var(--danger, #dc2626) 8%, var(--surface));
+}
+.builder-app .builder-btn--danger:hover {
+  background: color-mix(in srgb, var(--danger, #dc2626) 16%, var(--surface));
+  border-color: var(--danger, #dc2626);
+}
+
+.builder-app .builder-allsched__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 4px 0 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+.builder-app .builder-allsched__count {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.builder-app .builder-allsched__count.is-active { color: var(--danger, #dc2626); }
+.builder-app .builder-allsched__confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--text);
+}
+.builder-app .builder-allsched__item { flex-wrap: wrap; }
+.builder-app .builder-allsched__wf {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.builder-app .builder-allsched__badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 7px;
+  border-radius: 999px;
+}
+.builder-app .builder-allsched__badge.is-on {
+  color: var(--danger, #dc2626);
+  background: color-mix(in srgb, var(--danger, #dc2626) 14%, transparent);
+}
+.builder-app .builder-allsched__badge.is-paused {
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--text-muted) 14%, transparent);
+}
+.builder-app .builder-allsched__runs {
+  font-size: 11px;
+  color: var(--text-muted);
+}
