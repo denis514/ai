@@ -720,7 +720,14 @@ Deno.serve(async (req) => {
       const customPromptRaw = typeof node.config?.prompt === 'string' ? node.config.prompt.trim() : '';
       const customPrompt = applyVars(customPromptRaw); // подстановка {{переменных}}
       context = applyVars(context);
-      const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix;
+      // Когда подключён веб-узел — невидимое правило исполнения: модель ОБЯЗАНА
+      // реально сходить в интернет инструментами и отвечать ТОЛЬКО по полученному
+      // (не из памяти). Так узел-правило пользователя «возьми с сайта» исполняется
+      // по факту, а не подменяется выдумкой. Плюс знает текущую дату.
+      const webGround = wantWeb
+        ? `\n\n[Исполнение] Сегодня: ${today}. К тебе подключён веб-доступ (web_search, web_fetch). Чтобы выполнить инструкцию, ОБЯЗАТЕЛЬНО используй эти инструменты и бери данные из интернета прямо сейчас. Отвечай ТОЛЬКО на основе реально полученного из веба в этом запросе — НЕ используй сведения из памяти. Если получить данные не удалось — честно напиши об этом и не выдумывай.`
+        : '';
+      const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix + webGround;
       // MCP: если к агенту прикреплён узел «MCP-коннектор» — отдаём Claude серверы,
       // ВЫБРАННЫЕ в этом узле (config.mcpServerIds); если ничего не выбрано — все.
       const mcpNode = attachedTools.find((n) => n.role === 'mcp');
