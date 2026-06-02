@@ -414,19 +414,22 @@ function BuilderAppInner() {
   // «Сбросить»: чистим черновик, холст остаётся пустым.
   const dismissDraft = useCallback(() => { clearDraft(); setDraftOffer(null); }, []);
 
-  // Заливка узла User Input, когда в задаче есть текст. hasInput — runtime-флаг
-  // (не персистится). skipDirtyRef, чтобы ввод задачи не помечал схему «изменённой».
+  // Синхронизируем задачу Старта В САМ узел (data.task) — чтобы она сохранялась
+  // вместе со схемой (сериализатор берёт config из node.data). Плюс hasInput —
+  // флаг заливки. Здесь НЕ ставим skipDirtyRef: правка задачи должна помечать
+  // схему изменённой, чтобы автосохранение записало текст. На загрузке task и
+  // hasInput уже выставлены в узле (см. handleLoadWorkflow) → changed=false → без
+  // ложной пометки dirty.
   useEffect(() => {
     const has = !!runInput.trim();
     setNodes(nds => {
       let changed = false;
       const next = nds.map(n => {
         if (n.data?.kind !== 'trigger') return n;
-        if (!!n.data.hasInput === has) return n;
+        if ((n.data.task || '') === runInput && !!n.data.hasInput === has) return n;
         changed = true;
-        return { ...n, data: { ...n.data, hasInput: has } };
+        return { ...n, data: { ...n.data, task: runInput, hasInput: has } };
       });
-      if (changed) skipDirtyRef.current = true;
       return changed ? next : nds;
     });
   }, [runInput, setNodes]);
@@ -643,10 +646,19 @@ function BuilderAppInner() {
       if (!wf) return;
       skipDirtyRef.current = true;
       syncNodeIdCounter(wf.nodes); // не дать новым id столкнуться с загруженными
-      setNodes(wf.nodes);
+      // Восстанавливаем задачу Старта из узла (data.task) и «запекаем» hasInput,
+      // чтобы эффект синхронизации не пометил схему изменённой сразу после загрузки.
+      const triggerTask = wf.nodes.find(n => n.data?.kind === 'trigger')?.data?.task || '';
+      const hydrated = wf.nodes.map(n =>
+        n.data?.kind === 'trigger'
+          ? { ...n, data: { ...n.data, hasInput: !!String(n.data?.task || '').trim() } }
+          : n
+      );
+      setNodes(hydrated);
       setEdges(wf.edges);
       setCurrentWorkflowId(wf.id);
       setWorkflowName(wf.name || '');
+      setRunInput(triggerTask);
       setSelectedNodeId(null);
       setSwitcherOpen(false);
       isDirtyRef.current = false;
