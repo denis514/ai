@@ -172,9 +172,12 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
   // web_fetch пока в beta. Серверные tools исполняются внутри одного запроса.
   if (webTools) {
     betas.push('web-fetch-2025-09-10');
+    // Ограничиваем «аппетит» веб-инструментов, чтобы укладываться в лимит
+    // входных токенов в минуту: поиск (компактно) + ограниченное открытие
+    // страниц с кэпом объёма на страницу (max_content_tokens).
     payload.tools = [
-      { type: 'web_search_20250305', name: 'web_search', max_uses: 5 },
-      { type: 'web_fetch_20250910', name: 'web_fetch', max_uses: 5 },
+      { type: 'web_search_20250305', name: 'web_search', max_uses: 3 },
+      { type: 'web_fetch_20250910', name: 'web_fetch', max_uses: 2, max_content_tokens: 6000 },
     ];
   }
   if (betas.length) headers['anthropic-beta'] = betas.join(',');
