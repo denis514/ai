@@ -151,13 +151,12 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
           </div>
           {showHelp && (
             <div className="builder-schedule__help builder-schedule__row--full">
-              {helpText()}
+              <p className="builder-schedule__help-p">
+                {t('builder.schedule.asCanvas') || 'Запустит схему как на холсте — задача берётся из узла «Старт». Меняете схему — меняется и автозапуск.'}
+              </p>
+              <p className="builder-schedule__help-p">{helpText()}</p>
             </div>
           )}
-          <div className="builder-schedule__asnote builder-schedule__row--full">
-            <Icon name="idea" size={13} strokeWidth={1.6} />
-            <span>{t('builder.schedule.asCanvas') || 'Запустит схему как на холсте — задача берётся из узла «Старт». Меняете схему — меняется и автозапуск.'}</span>
-          </div>
           {!pending ? (
             <button type="button" className="builder-btn builder-btn--primary" onClick={add} disabled={busy}>
               <Icon name="check" size={14} strokeWidth={1.75} />
@@ -200,8 +199,8 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
           {items !== null && items.map(s => (
             <div key={s.id} className={`builder-schedule__item ${s.enabled ? '' : 'is-off'}`}>
               <div className="builder-schedule__item-main">
+                <span className="builder-schedule__item-name">{workflowName || (t('builder.workflows.untitled') || 'Без названия')}</span>
                 <span className="builder-schedule__item-when">{fmtFreq(s)}</span>
-                <span className="builder-schedule__item-task">{t('builder.schedule.asCanvasShort') || 'как на холсте'}</span>
               </div>
               <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => onToggle(s)}>
                 {s.enabled ? (t('builder.schedule.pause') || 'Пауза') : (t('builder.schedule.resume') || 'Включить')}
