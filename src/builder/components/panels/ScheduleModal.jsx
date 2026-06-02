@@ -21,7 +21,6 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   const [hour, setHour] = useState(9);
   const [minute, setMinute] = useState(0);
   const [weekday, setWeekday] = useState(1);
-  const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [pending, setPending] = useState(false); // показать экран подтверждения
@@ -32,9 +31,9 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
 
   useEffect(() => { refresh(); }, [refresh]);
 
-  // Шаг 1: проверка и показ подтверждения (без записи).
+  // Шаг 1: показ подтверждения (без записи). Задачу не спрашиваем — она берётся
+  // из узла «Старт» схемы при каждом запуске («строго как на холсте»).
   const add = () => {
-    if (!input.trim()) { toast.error(t('builder.schedule.needInput') || 'Впишите задачу для автозапуска.'); return; }
     setPending(true);
   };
 
@@ -42,8 +41,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   const confirmCreate = async () => {
     setBusy(true);
     try {
-      await createSchedule({ workflowId, frequency: freq, hour, minute, weekday, input: input.trim(), tier: 's', locale });
-      setInput('');
+      await createSchedule({ workflowId, frequency: freq, hour, minute, weekday, tier: 's', locale });
       setPending(false);
       toast.success(t('builder.schedule.created') || 'Автозапуск создан');
       refresh();
@@ -156,14 +154,9 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
               {helpText()}
             </div>
           )}
-          <div className="builder-schedule__row builder-schedule__row--full">
-            <label>{t('builder.schedule.task') || 'Задача для автозапуска'}</label>
-            <textarea
-              rows={2}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder={t('builder.schedule.taskPh') || 'Что схема должна делать при каждом запуске…'}
-            />
+          <div className="builder-schedule__asnote builder-schedule__row--full">
+            <Icon name="idea" size={13} strokeWidth={1.6} />
+            <span>{t('builder.schedule.asCanvas') || 'Запустит схему как на холсте — задача берётся из узла «Старт». Меняете схему — меняется и автозапуск.'}</span>
           </div>
           {!pending ? (
             <button type="button" className="builder-btn builder-btn--primary" onClick={add} disabled={busy}>
@@ -208,7 +201,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
             <div key={s.id} className={`builder-schedule__item ${s.enabled ? '' : 'is-off'}`}>
               <div className="builder-schedule__item-main">
                 <span className="builder-schedule__item-when">{fmtFreq(s)}</span>
-                <span className="builder-schedule__item-task">{s.input}</span>
+                <span className="builder-schedule__item-task">{t('builder.schedule.asCanvasShort') || 'как на холсте'}</span>
               </div>
               <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => onToggle(s)}>
                 {s.enabled ? (t('builder.schedule.pause') || 'Пауза') : (t('builder.schedule.resume') || 'Включить')}

@@ -95,7 +95,7 @@ export async function disableAllSchedules() {
   return (data || []).length;
 }
 
-export async function createSchedule({ workflowId, frequency, hour, minute, weekday, input, tier, locale }) {
+export async function createSchedule({ workflowId, frequency, hour, minute, weekday, tier, locale }) {
   if (!supabase) throw new Error('backend_unavailable');
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('not_authenticated');
@@ -106,7 +106,8 @@ export async function createSchedule({ workflowId, frequency, hour, minute, week
     hour: hour ?? 9,
     minute: minute ?? 0,
     weekday: frequency === 'weekly' ? (weekday ?? 1) : null,
-    input: input || '',
+    // Задачу не храним: при запуске движок берёт её из узла «Старт» схемы.
+    input: '',
     tier: tier || 's',
     locale: locale || 'ru',
     enabled: true,

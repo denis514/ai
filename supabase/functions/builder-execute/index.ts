@@ -243,7 +243,10 @@ Deno.serve(async (req) => {
 
   const executionId = body.executionId;
   const workflowId = body.workflowId;
-  const input = (body.input || '').trim();
+  // «Строго как на холсте»: задача может прийти явно (ручной запуск) либо быть
+  // пустой (серверный автозапуск). Во втором случае ниже подставим её из узла
+  // «Старт» текущей схемы — расписание НЕ хранит свою копию задачи.
+  let input = (body.input || '').trim();
   const tier = (body.tier || DEFAULT_TIER).toLowerCase();
   const maxTokens = TIER_MAX_TOKENS[tier] || TIER_MAX_TOKENS[DEFAULT_TIER];
   const locale = (body.locale || 'en').toLowerCase();
@@ -328,6 +331,19 @@ Deno.serve(async (req) => {
   ]);
   if (!nodes || nodes.length === 0) return json({ error: 'empty_workflow' }, 400);
   if (nodes.length > MAX_NODES) return json({ error: 'too_many_nodes' }, 400);
+
+  // Задача не передана явно (автозапуск) → берём её из узла «Старт» схемы.
+  // Так автоматизация всегда исполняет схему «как на холсте», без замороженной копии.
+  if (!input) {
+    const trig = (nodes as Node[]).find(n => n.node_type === 'trigger');
+    const cfg = (trig?.config || {}) as { task?: string };
+    const task = typeof cfg.task === 'string' ? cfg.task.trim() : '';
+    if (task) {
+      input = task;
+      vars.input = input;
+      vars.task = input;
+    }
+  }
 
   // Создаём execution-строку (status running) с клиентским id.
   await admin.from('builder_executions').insert({

@@ -122,7 +122,9 @@ Deno.serve(async (req) => {
           executionId: uuid(),
           workflowId: s.workflow_id,
           userId: s.user_id,
-          input: s.input || '',
+          // Задачу НЕ передаём: движок берёт её из узла «Старт» текущей схемы
+          // («строго как на холсте», без замороженной копии в расписании).
+          input: '',
           tier: s.tier || 's',
           locale: s.locale || 'ru',
         }),
