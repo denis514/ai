@@ -4041,11 +4041,13 @@
   position: fixed; inset: 0; z-index: 90; background: transparent;
 }
 .builder-app .builder-schedule.builder-schedule--pop {
-  position: absolute;
-  top: 56px;
+  position: fixed;          /* привязка к окну: всегда у правого края, рядом с часами */
+  top: 64px;
   right: 12px;
-  max-width: 440px;
-  width: min(440px, calc(100vw - 24px));
+  left: auto;               /* перебиваем возможную растяжку .builder-modal (width:100%) */
+  margin: 0;
+  max-width: 420px;
+  width: min(420px, calc(100vw - 24px));
   max-height: calc(100vh - 80px);
   overflow-y: auto;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
