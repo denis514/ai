@@ -5615,5 +5615,248 @@
       }
     ],
     "savings": "Eval ottaa kiinni ~80% regressioista ennen prodia. Yksi estetty incident maksaa neljänneksen evaluaatioista."
+  },
+  "remote-computer-for-claude": {
+    "title": "Rakenna etätietokone Claudelle",
+    "subtitle": "Eristetty ympäristö, jossa agentti ohjaa tietokonetta — ei sinun",
+    "totalTime": "~1,5 t",
+    "whatItIs": "Vaiheittainen rakennus turvalliselle ympäristölle, jossa [[node:cap-computer|Claude ohjaa tietokonetta]] eristetyn ”laatikon” sisällä oikean koneesi sijaan. Käytämme Anthropicin esikuvallista Computer Use -konttia (Docker + työpöytä selaimessa). Tämän jälkeen osaat pystyttää saman järjestelmän kotona ja antaa agentille tehtäviä turvallisesti.",
+    "approach": "Pääperiaate: agentti EI KOSKAAN toimi siellä, missä henkilökohtaiset tiedostosi, salasanasi ja työverkkosi ovat. Ensin eristys — sitten tehtävät. Älä liitä kotikansioita, älä syötä oikeita salasanoja, pidä hätäkatkaisu ja kulutusraja käden ulottuvilla.",
+    "outcomes": [
+      "Eristetty ympäristö tietokoneen käytöllä on pystyssä",
+      "Claude toimii laatikon sisällä ja näkyy selaimessa",
+      "Oikeudet, verkko, salaisuudet, palautus ja hätäkatkaisu on asetettu",
+      "Ymmärrät, miten siirtää tämän pilvi-VM:ään"
+    ],
+    "applyIn": [
+      {
+        "title": "GUI-automaatio ilman APIa",
+        "description": "Agentti klikkaa vanhoissa ohjelmissa tai verkkopaneeleissa, joissa ei ole APIa — mutta turvallisessa hiekkalaatikossa."
+      },
+      {
+        "title": "Turvalliset kokeilut",
+        "description": "Kokeilet itsenäisiä skenaarioita vaarantamatta omaa konetta ja dataa."
+      }
+    ],
+    "pitfalls": [
+      "Tietokoneen käytön ajaminen suoraan omalla koneella, jolla on pääsy sähköpostiin ja pankkiin.",
+      "Kotikansioiden tai oikeiden salaisuuksien liittäminen konttiin — eristys menetetään.",
+      "Oikeiden salasanojen antaminen agentille kertakäyttötilien sijaan.",
+      "Kontin portin jättäminen avoimeksi julkiseen internetiin ilman salasanaa."
+    ],
+    "exercises": [
+      {
+        "question": "Käynnistä kontti ja anna agentille turvallinen tehtävä: ”avaa tekstieditori ja kirjoita Hello”. Varmista, että se toimii vain ympäristön sisällä.",
+        "hint": "Seuraa agentin työpöytää selaimessa osoitteessa http://localhost:8080. Jos se onnistui eikä mitään kontin ulkopuolella koskettu — vaihe on suoritettu."
+      },
+      {
+        "question": "Ota tilannevedos puhtaasta tilasta ja palaa siihen tehtävän jälkeen.",
+        "hint": "Dockerissa kontin uudelleenluonti kuvasta antaa jo puhtaan tilan; VM:ssä käytä palveluntarjoajan tilannevedosta."
+      }
+    ],
+    "trigger": "Haluat antaa Claudelle tietokoneen käytön, mutta pelkäät koneesi ja datasi puolesta.",
+    "inputs": [
+      "Tietokone, jossa on Docker, tai pilvi-VM",
+      "Anthropic-API-avain (erillinen, kulutusrajalla)",
+      "Selain agentin työpöydän katseluun"
+    ],
+    "outputs": [
+      "Eristetty Claude Computer Use -ympäristö",
+      "Turvallisuuden tarkistuslista ennen tuotantokäyttöä"
+    ],
+    "tools": [
+      {
+        "name": "Docker",
+        "role": "ympäristön eristys (kontti)"
+      },
+      {
+        "name": "Anthropic Computer Use",
+        "role": "esikuvallinen agenttikuva + noVNC"
+      },
+      {
+        "name": "Pilvi-VM (valinnainen)",
+        "role": "ympärivuorokautinen ylläpito"
+      }
+    ],
+    "savings": "Päiviä yritystä ja erehdystä sekä riski omalle koneelle → hallittu hiekkalaatikko ~1,5 tunnissa",
+    "steps": {
+      "rcc-1": {
+        "title": "Ymmärrä, mitä ja miksi rakennat",
+        "time": "5 min",
+        "why": "Ilman selkeää tavoitetta on helppo rakentaa turvattomasti. Tavoite on ”laatikko”, jossa agentti on eristetty.",
+        "instructions": [
+          "Lue solmu [[node:sys-agent-sandbox|Eristetty ympäristö agentille]] — se on aiheen kartta.",
+          "Muista sääntö: agentilla ei saa olla pääsyä henkilökohtaiseen dataan, salasanoihin tai työverkkoon.",
+          "Aloita helpoimmin toistettavalla tavalla — Docker-kontti omalla koneellasi."
+        ],
+        "validate": "Osaat selittää omin sanoin, miksi agentti tarvitsee erillisen ympäristön."
+      },
+      "rcc-2": {
+        "title": "Valitse alusta: oma kone vai pilvi-VM",
+        "time": "5 min",
+        "why": "Valinta ratkaisee, tarvitsetko ympärivuorokautisuutta ja etäkäyttöä.",
+        "instructions": [
+          "Oma kone + Docker: ilmainen ja nopea, mutta toimii vain koneen ollessa päällä.",
+          "Pilvi-VM (VPS): toimii ympäri vuorokauden, mutta on maksullinen ja vaatii etäkäytön. Katso [[node:sas-vm-vps|VM tai oma kone]].",
+          "Aloita oppimista varten omalla koneella; siirto VM:ään on vaihe 14."
+        ],
+        "validate": "Olet valinnut alustan ja ymmärrät sen edut ja haitat."
+      },
+      "rcc-3": {
+        "title": "Asenna Docker",
+        "time": "15 min",
+        "why": "Docker on ”laatikko”, joka eristää agentin järjestelmästäsi.",
+        "instructions": [
+          "Lataa Docker Desktop (Windows/Mac) tai Docker Engine (Linux) osoitteesta docker.com.",
+          "Asenna ja käynnistä. Tarkista päätteessä: `docker --version`.",
+          "Aja testikontti: `docker run hello-world` — sen pitäisi tulostaa tervehdys."
+        ],
+        "validate": "`docker run hello-world` toimi ilman virheitä."
+      },
+      "rcc-4": {
+        "title": "Hanki erillinen API-avain kulutusrajalla",
+        "time": "10 min",
+        "why": "Agentti kuluttaa tokeneita; erillinen avain rajalla suojaa lompakkoa (katso [[node:sas-snapshots-killswitch|hätäkatkaisu ja rajat]]).",
+        "instructions": [
+          "Luo osoitteessa console.anthropic.com UUSI API-avain juuri tälle ympäristölle.",
+          "Aseta Billing/Limits-osiossa kuukausittainen kulutusraja tilille.",
+          "Älä käytä muiden projektien avainta — erillinen avain on helppo perua."
+        ],
+        "validate": "Sinulla on erillinen avain ja kulutusraja on asetettu."
+      },
+      "rcc-5": {
+        "title": "Säilytä avain turvallisesti (env, ei koodissa)",
+        "time": "5 min",
+        "why": "Avain koodissa tai komentohistoriassa on vuoto. Katso [[node:sas-secrets|kertakäyttöiset tilit ja salaisuudet]].",
+        "instructions": [
+          "Laita avain ympäristömuuttujaan: `export ANTHROPIC_API_KEY=sk-...` (Linux/Mac).",
+          "Älä kirjoita avainta suoraan komentoihin, jotka päätyvät historiaan tai skripteihin.",
+          "Älä koskaan tallenna avainta gitiin äläkä näytä sitä agentille tehtävässä."
+        ],
+        "validate": "`echo $ANTHROPIC_API_KEY` näyttää avaimen, eikä se ole koodissa tai gitissä."
+      },
+      "rcc-6": {
+        "title": "Käynnistä esikuvallinen Computer Use -kontti",
+        "time": "15 min",
+        "why": "Tämä on Anthropicin virallinen hiekkalaatikko: työpöytä ja agentti ovat jo sisällä, mitään ei asenneta järjestelmääsi.",
+        "instructions": [
+          "Avaa anthropic-quickstarts-repositorio → computer-use-demo-kansio (siellä on ajantasainen komento ja kuvan versio).",
+          "Aja kontti välittäen avain ympäristön kautta, esim.: `docker run -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -p 8080:8080 -it <computer-use-demo-kuva>`.",
+          "Odota, että kontti nousee (käyttöliittymän osoite ilmestyy lokeihin)."
+        ],
+        "validate": "Kontti on käynnissä, eikä lokeissa ole virheitä avaimesta tai porteista."
+      },
+      "rcc-7": {
+        "title": "Avaa agentin työpöytä selaimessa",
+        "time": "5 min",
+        "why": "Selaimen (noVNC) kautta näet agentin näytön — se on ”valvontakamerasi”. Katso [[node:sas-remote-access|etäkäyttö]].",
+        "instructions": [
+          "Avaa selaimessa http://localhost:8080 (portti käynnistyskomennosta).",
+          "Vasemmalla — keskustelu agentin kanssa; oikealla — virtuaalityöpöytä.",
+          "Jos ei aukea — tarkista, että portti on julkaistu (`-p 8080:8080`) eikä varattu."
+        ],
+        "validate": "Näet agentin työpöydän ja tehtäväkentän selaimessa."
+      },
+      "rcc-8": {
+        "title": "Anna ensimmäinen turvallinen tehtävä",
+        "time": "10 min",
+        "why": "Tarkistamme, että agentti todella näkee näytön ja toimii — vaarattomalla tehtävällä.",
+        "instructions": [
+          "Sano agentille: ”Avaa tekstieditori ja kirjoita Hello”.",
+          "Seuraa, kuinka kursori liikkuu ja kirjoittaa itse virtuaalityöpöydällä.",
+          "Älä anna vielä tehtäviä, joissa on internet- tai datapääsy."
+        ],
+        "validate": "Agentti suoritti tehtävän ympäristön sisällä; oikealla koneellasi ei muuttunut mikään."
+      },
+      "rcc-9": {
+        "title": "Tarkkaile ja opi puuttumaan",
+        "time": "10 min",
+        "why": "Hallinta tarkoittaa mahdollisuutta pysäyttää milloin tahansa.",
+        "instructions": [
+          "Seuraa, kuinka agentti ottaa kuvakaappauksia ja klikkaa vaihe vaiheelta.",
+          "Etsi, kuinka pysäyttää agentti käyttöliittymässä (pysäytä/keskeytä).",
+          "Muista: tarkkaile aina uuden tehtävän ensimmäisiä ajoja."
+        ],
+        "validate": "Osaat pysäyttää agentin kesken tehtävän."
+      },
+      "rcc-10": {
+        "title": "Vähimmät oikeudet: mitään henkilökohtaista ei sisään",
+        "time": "10 min",
+        "why": "Konteissakaan ei saa antaa pääsyä tiedostoihisi. Katso [[node:sas-least-privilege|vähimmät oikeudet]].",
+        "instructions": [
+          "ÄLÄ liitä kotikansioitasi konttiin (ei `-v /Users/sinä:...`).",
+          "Jos tehtävä tarvitsee tiedostoja — laita vain ne erilliseen kansioon.",
+          "Työskentele ympäristössä tavallisena käyttäjänä, älä rootina, kun mahdollista."
+        ],
+        "validate": "Käynnistyskomennossa ei ole henkilökohtaisten kansioiden liitoksia; agentti näkee vain sen, mitä tehtävä tarvitsee."
+      },
+      "rcc-11": {
+        "title": "Rajaa verkko ja verkkotunnukset",
+        "time": "10 min",
+        "why": "Jotta agentti ei vuoda dataa eikä mene minne ei pidä. Katso [[node:sas-network-isolation|verkkoeristys]].",
+        "instructions": [
+          "Älä aluksi anna kontille pääsyä lähiverkkoosi tai reitittimeen.",
+          "Jos tehtävä ei tarvitse internetiä — aja rajoitetulla verkolla.",
+          "Kun internet tarvitaan — pidä tavoitteena sallittujen sivustojen lista (allowlist)."
+        ],
+        "validate": "Ymmärrät, mikä verkkopääsy ympäristöllä on, ja se on minimissään tarpeellinen."
+      },
+      "rcc-12": {
+        "title": "Tilannevedos ja palautus puhtaaseen tilaan",
+        "time": "5 min",
+        "why": "Peruutettavuus: tapahtui mitä tahansa, palautat ennalleen. Katso [[node:sas-snapshots-killswitch|tilannevedokset ja palautus]].",
+        "instructions": [
+          "Docker: puhdas tila = luo kontti uudelleen kuvasta (`docker rm` + `docker run` uudelleen).",
+          "VM: ota tilannevedos ennen kokeiluja palveluntarjoajan kautta.",
+          "Tee säännöksi: uusi riskialtis tehtävä → varmista ensin puhdas tila."
+        ],
+        "validate": "Osaat palauttaa ympäristön alkuperäiseen puhtaaseen tilaan."
+      },
+      "rcc-13": {
+        "title": "Hätäkatkaisu ja kulutusrajat",
+        "time": "5 min",
+        "why": "Lompakon ja hallinnan viimeinen puolustuslinja.",
+        "instructions": [
+          "Hätäpysäytys: `docker stop <kontti>` — pysäyttää agentin heti.",
+          "Tarkista, että avaimen kulutusraja (vaihe 4) on voimassa.",
+          "Päätä etukäteen: oudossa käytöksessä — ensin pysäytä, sitten selvitä."
+        ],
+        "validate": "Tiedät pysäytyskomennon ja kulutusraja on asetettu."
+      },
+      "rcc-14": {
+        "title": "(Valinnainen) Siirto pilvi-VM:ään",
+        "time": "20 min",
+        "why": "Jotta ympäristö toimii ympäri vuorokauden riippumatta koneestasi.",
+        "instructions": [
+          "Ota halpa pilvi-VM (erillinen, ei työpalvelin). Katso [[node:sas-vm-vps|VM tai oma kone]].",
+          "Asenna Docker VM:ään ja aja sama kontti.",
+          "Työpöytäpääsy: selaimella VM:n osoitteessa — suojaa se salasanalla/avaimella ja IP-rajauksella."
+        ],
+        "validate": "Sama kontti toimii VM:ssä, ja pääsy siihen on lukittu salasanalla/avaimella."
+      },
+      "rcc-15": {
+        "title": "Turvallisuuden tarkistuslista ennen tuotantokäyttöä",
+        "time": "10 min",
+        "why": "Yksi lista-ajo nappaa useimmat vaaralliset virheet.",
+        "instructions": [
+          "Kotikansioita EI ole liitetty. Oikeita salasanoja EI ole välitetty.",
+          "Avain on erillinen ja rajalla; säilytetään env:ssä, ei koodissa.",
+          "Verkko on minimissään; hätäkatkaisu ja palautus on testattu.",
+          "Etäkäyttö (jos on) on suojattu salasanalla/avaimella ja IP-rajauksella."
+        ],
+        "validate": "Jokainen listan kohta on rastittu — ympäristö on käyttövalmis."
+      },
+      "rcc-16": {
+        "title": "Mitä seuraavaksi",
+        "time": "5 min",
+        "why": "Vahvistaaksesi opitun ja nähdäksesi, mihin kasvaa.",
+        "instructions": [
+          "Käy [[node:sys-agent-sandbox|Eristetty ympäristö agentille]] -polku kokonaan, jos et vielä.",
+          "Aloita yksinkertaisista tehtävistä ja laajenna pääsyä asteittain ja harkiten.",
+          "Idea: anna agentille rutiininomainen GUI-tehtävä, jonka teet käsin — mutta hiekkalaatikossa."
+        ],
+        "validate": "Sinulla on toimiva turvallinen ympäristö ja suunnitelma ensimmäisille oikeille tehtäville."
+      }
+    }
   }
 }

@@ -5609,5 +5609,248 @@
       }
     ],
     "savings": "Eval catches ~80% of regressions before prod. One prevented incident pays for a quarter of evals."
+  },
+  "remote-computer-for-claude": {
+    "title": "Build a remote computer for Claude",
+    "subtitle": "An isolated environment where the agent controls a PC — not yours",
+    "totalTime": "~1.5 h",
+    "whatItIs": "A step-by-step build of a safe environment where [[node:cap-computer|Claude controls a computer]] inside an isolated “box” instead of on your real machine. We use Anthropic's reference Computer Use container (Docker + a desktop in the browser). After this tutorial you'll be able to set up such a system at home and safely give the agent tasks.",
+    "approach": "The core principle: the agent NEVER works where your personal files, passwords and work network are. Isolation first — tasks second. Don't mount home folders, don't type real passwords, keep a kill-switch and a spending cap at hand.",
+    "outcomes": [
+      "An isolated environment with computer use is up",
+      "Claude acts inside the box, visible in the browser",
+      "Privileges, network, secrets, rollback and a kill-switch are set",
+      "You understand how to move this to a cloud VM"
+    ],
+    "applyIn": [
+      {
+        "title": "GUI automation without an API",
+        "description": "The agent clicks in legacy software or web panels that have no API — but in a safe sandbox."
+      },
+      {
+        "title": "Safe experiments",
+        "description": "You try autonomous scenarios without risking your personal machine and data."
+      }
+    ],
+    "pitfalls": [
+      "Running computer use directly on your personal PC that has access to email and banking.",
+      "Mounting home folders or real secrets into the container — isolation is lost.",
+      "Giving the agent real passwords instead of one-time accounts.",
+      "Leaving the container's port open to the public internet without a password."
+    ],
+    "exercises": [
+      {
+        "question": "Bring up the container and give the agent a safe task: “open a text editor and type Hello”. Make sure it acts only inside the environment.",
+        "hint": "Watch the agent's desktop in the browser at http://localhost:8080. If it succeeded and nothing outside the container was touched — step done."
+      },
+      {
+        "question": "Take a snapshot of the clean state and roll back to it after the task.",
+        "hint": "For Docker, recreating the container from the image already gives a clean state; for a VM, use the provider's snapshot."
+      }
+    ],
+    "trigger": "You want to give Claude computer use but fear for your machine and data.",
+    "inputs": [
+      "A computer with Docker, or a cloud VM",
+      "An Anthropic API key (separate, with a spending cap)",
+      "A browser to view the agent's desktop"
+    ],
+    "outputs": [
+      "An isolated Claude Computer Use environment",
+      "A safety checklist before production use"
+    ],
+    "tools": [
+      {
+        "name": "Docker",
+        "role": "environment isolation (container)"
+      },
+      {
+        "name": "Anthropic Computer Use",
+        "role": "reference agent image + noVNC"
+      },
+      {
+        "name": "Cloud VM (optional)",
+        "role": "24/7 hosting"
+      }
+    ],
+    "savings": "Days of trial-and-error and risk to your personal PC → a managed sandbox in ~1.5 hours",
+    "steps": {
+      "rcc-1": {
+        "title": "Understand what and why you're building",
+        "time": "5 min",
+        "why": "Without a clear goal it's easy to build insecurely. The goal is a “box” where the agent is isolated.",
+        "instructions": [
+          "Read the node [[node:sys-agent-sandbox|Isolated environment for the agent]] — it is the map of the topic.",
+          "Remember the rule: the agent must have no access to personal data, passwords or the work network.",
+          "To start, pick the most reproducible path — a Docker container on your own PC."
+        ],
+        "validate": "You can explain in your own words why the agent needs a separate environment."
+      },
+      "rcc-2": {
+        "title": "Choose the host: your PC or a cloud VM",
+        "time": "5 min",
+        "why": "The choice decides whether you need 24/7 and remote access.",
+        "instructions": [
+          "Your PC + Docker: free and fast, but works only while the PC is on.",
+          "Cloud VM (VPS): runs around the clock, but is paid and needs remote access. See [[node:sas-vm-vps|VM or dedicated PC]].",
+          "For learning, start with your PC; moving to a VM is step 14."
+        ],
+        "validate": "You have chosen a host and understand its trade-offs."
+      },
+      "rcc-3": {
+        "title": "Install Docker",
+        "time": "15 min",
+        "why": "Docker is the “box” that isolates the agent from your system.",
+        "instructions": [
+          "Download Docker Desktop (Windows/Mac) or Docker Engine (Linux) from docker.com.",
+          "Install and start it. Check in the terminal: `docker --version`.",
+          "Run a test container: `docker run hello-world` — it should print a greeting."
+        ],
+        "validate": "`docker run hello-world` ran without errors."
+      },
+      "rcc-4": {
+        "title": "Get a separate API key with a spending cap",
+        "time": "10 min",
+        "why": "The agent spends tokens; a separate key with a cap protects your wallet (see [[node:sas-snapshots-killswitch|kill-switch and caps]]).",
+        "instructions": [
+          "In console.anthropic.com create a NEW API key just for this environment.",
+          "In Billing/Limits set a monthly spending cap on the account.",
+          "Don't reuse a key from other projects — a separate key is easy to revoke."
+        ],
+        "validate": "You have a separate key and a spending cap is set."
+      },
+      "rcc-5": {
+        "title": "Store the key safely (env, not in code)",
+        "time": "5 min",
+        "why": "A key in code or command history is a leak. See [[node:sas-secrets|one-time accounts and secrets]].",
+        "instructions": [
+          "Put the key in an environment variable: `export ANTHROPIC_API_KEY=sk-...` (Linux/Mac).",
+          "Don't write the key directly into commands that end up in history or scripts.",
+          "Never commit the key to git and never show it to the agent in a task."
+        ],
+        "validate": "`echo $ANTHROPIC_API_KEY` shows the key, and it is not in code or git."
+      },
+      "rcc-6": {
+        "title": "Launch the reference Computer Use container",
+        "time": "15 min",
+        "why": "This is Anthropic's official sandbox: the desktop and agent are already inside, nothing is installed on your system.",
+        "instructions": [
+          "Open the anthropic-quickstarts repo → the computer-use-demo folder (it has the current command and image version).",
+          "Run the container, passing the key via the environment, e.g.: `docker run -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -p 8080:8080 -it <computer-use-demo-image>`.",
+          "Wait for the container to come up (the interface address appears in the logs)."
+        ],
+        "validate": "The container is running, with no errors about the key or ports in the logs."
+      },
+      "rcc-7": {
+        "title": "Open the agent's desktop in the browser",
+        "time": "5 min",
+        "why": "Through the browser (noVNC) you see the agent's screen — your “CCTV”. See [[node:sas-remote-access|remote access]].",
+        "instructions": [
+          "Open http://localhost:8080 in the browser (the port from the launch command).",
+          "On the left — the chat with the agent; on the right — the virtual desktop.",
+          "If it won't open — check the port is published (`-p 8080:8080`) and not in use."
+        ],
+        "validate": "You see the agent's desktop and a task field in the browser."
+      },
+      "rcc-8": {
+        "title": "Give the first safe task",
+        "time": "10 min",
+        "why": "We check the agent really sees the screen and acts — on a harmless task.",
+        "instructions": [
+          "Tell the agent: “Open a text editor and type Hello”.",
+          "Watch the cursor move and type by itself on the virtual desktop.",
+          "Don't give tasks with internet or data access yet."
+        ],
+        "validate": "The agent did the task inside the environment; nothing changed on your real PC."
+      },
+      "rcc-9": {
+        "title": "Observe and learn to intervene",
+        "time": "10 min",
+        "why": "Control means the ability to stop at any moment.",
+        "instructions": [
+          "Watch how the agent takes screenshots and clicks step by step.",
+          "Find how to stop the agent in the interface (stop/interrupt).",
+          "Remember: always watch the first runs of a new task."
+        ],
+        "validate": "You can stop the agent mid-task."
+      },
+      "rcc-10": {
+        "title": "Least privilege: nothing personal inside",
+        "time": "10 min",
+        "why": "Even in a container you must not give access to your files. See [[node:sas-least-privilege|least privilege]].",
+        "instructions": [
+          "Do NOT mount your home folders into the container (no `-v /Users/you:...`).",
+          "If a task needs files — put only those in a separate folder.",
+          "Inside the environment, work as a regular user, not root, where possible."
+        ],
+        "validate": "The launch command has no personal-folder mounts; the agent sees only what the task needs."
+      },
+      "rcc-11": {
+        "title": "Limit the network and domains",
+        "time": "10 min",
+        "why": "So the agent can't leak data or go where it shouldn't. See [[node:sas-network-isolation|network isolation]].",
+        "instructions": [
+          "To start, don't give the container access to your local network or router.",
+          "If a task doesn't need the internet — run with a restricted network.",
+          "When internet is needed — keep a list of allowed sites (an allowlist) as the goal."
+        ],
+        "validate": "You understand what network access the environment has, and it is the minimum needed."
+      },
+      "rcc-12": {
+        "title": "Snapshot and rollback to a clean state",
+        "time": "5 min",
+        "why": "Reversibility: whatever happens, you put it back. See [[node:sas-snapshots-killswitch|snapshots and rollback]].",
+        "instructions": [
+          "Docker: a clean state = just recreate the container from the image (`docker rm` + `docker run` again).",
+          "VM: take a snapshot before experiments via the provider.",
+          "Make it a rule: a new risky task → first fix a clean state."
+        ],
+        "validate": "You can return the environment to its initial clean state."
+      },
+      "rcc-13": {
+        "title": "Kill-switch and spending caps",
+        "time": "5 min",
+        "why": "The last line of wallet and control defense.",
+        "instructions": [
+          "Emergency stop: `docker stop <container>` — instantly halts the agent.",
+          "Check the spending cap on the key (step 4) is active.",
+          "Decide in advance: on odd behavior — stop first, investigate later."
+        ],
+        "validate": "You know the stop command and a spending cap is set."
+      },
+      "rcc-14": {
+        "title": "(Optional) Move to a cloud VM",
+        "time": "20 min",
+        "why": "So the environment runs 24/7, independent of your PC.",
+        "instructions": [
+          "Take a cheap cloud VM (a separate one, not a work server). See [[node:sas-vm-vps|VM or dedicated PC]].",
+          "Install Docker on the VM and run the same container.",
+          "Desktop access — via the browser at the VM's address, protected with a password/key and an IP restriction."
+        ],
+        "validate": "The same container runs on the VM, and access to it is locked with a password/key."
+      },
+      "rcc-15": {
+        "title": "Safety checklist before production use",
+        "time": "10 min",
+        "why": "One pass through the list catches most dangerous mistakes.",
+        "instructions": [
+          "Home folders are NOT mounted. Real passwords are NOT passed.",
+          "The key is separate, with a cap; stored in env, not in code.",
+          "The network is minimal; the kill-switch and rollback are tested.",
+          "Remote access (if any) is protected with a password/key and an IP restriction."
+        ],
+        "validate": "Every checklist item is ticked — the environment is ready to use."
+      },
+      "rcc-16": {
+        "title": "What's next",
+        "time": "5 min",
+        "why": "To consolidate and see where to grow.",
+        "instructions": [
+          "Go through the [[node:sys-agent-sandbox|Isolated environment for the agent]] path in full if you haven't.",
+          "Start with simple tasks, and expand access gradually and deliberately.",
+          "Idea: give the agent a routine GUI task you do by hand — but in the sandbox."
+        ],
+        "validate": "You have a working safe environment and a plan for the first real tasks."
+      }
+    }
   }
 }
