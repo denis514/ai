@@ -455,6 +455,10 @@ UI (`*.css`, `src/**/*.jsx`, `src/builder/**`) ПОСЛЕ того как сде
 | **Барьер мобильной версии (после десктопа)** | `skills/mobile-gate/` |
 | Ревью адаптивной вёрстки (overflow/брейкпоинты) | `skills/mobile-responsive-reviewer/` |
 | Ревью тач-взаимодействия (тап-цели/hover-only) | `skills/mobile-interaction-reviewer/` |
+| **Периодический UX-аудит (каденция)**  | `skills/ux-audit/` + `docs/ux-audit/` |
+| Эвристическая оценка (10 эвристик Нильсена) | `skills/heuristic-evaluator/` |
+| Аудит опыта продукта (онбординг/активация/JTBD) | `skills/product-experience-auditor/` |
+| Каденция UX-аудита (раз в 2 недели)     | `node scripts/ux-audit-review.mjs` / `ux-audit.yml` |
 | Проектирование agents и workflow       | `skills/agent-architecture/` |
 | Добавить/изменить узел Builder, правила связей, шаблон | `skills/builder-node-architect/` (+ `npm run lint:builder`) |
 | Модель способностей узлов и совместимости | `docs/agent-builder/10-node-capability-model.md` + ADR-0007 |

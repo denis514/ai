@@ -1,0 +1,43 @@
+name: UX Audit
+
+# Раз в 2 недели (понедельник 08:00 UTC) создаёт агенду UX-аудита
+# docs/ux-audit/ux-audit-{YYYY-MM-DD}.md, коммитит и пушит.
+# Сам аудит (находки + топ-5 предложений) заполняет Claude по skills/ux-audit/.
+# Можно запустить вручную через workflow_dispatch.
+
+on:
+  schedule:
+    - cron: '0 8 1-7,15-21 * 1'  # 1-й и 3-й понедельник месяца, 08:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-ux-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 60  # нужны коммиты за ~14 дней для списка изменённого UI
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate UX-audit agenda
+        run: node scripts/ux-audit-review.mjs
+
+      - name: Commit + push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/ux-audit/ux-audit-*.md
+          if git diff --cached --quiet; then
+            echo "No new UX-audit agenda (skipped)"
+            exit 0
+          fi
+          git commit -m "chore(ux-audit): biweekly UX audit agenda"
+          git push
