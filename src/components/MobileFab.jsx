@@ -48,12 +48,6 @@ export default function MobileFab({
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // Открываем меню и фокусируемся на поиске через 350мс (BottomSheet анимация)
-  const openSearch = () => {
-    setMenuOpen(true);
-    setTimeout(() => searchInputRef.current?.focus(), 350);
-  };
-
   return (
     <>
       <div className="fab fab--tl">
@@ -68,19 +62,8 @@ export default function MobileFab({
         </button>
       </div>
 
-      {/* TR: Поиск — прямой доступ к поисковой строке */}
-      <div className="fab fab--tr">
-        <button
-          type="button"
-          className={`fab__btn ${query ? 'fab__btn--active' : ''}`}
-          onClick={openSearch}
-          aria-label={t('header.searchOpen')}
-          title={t('header.searchIdle')}
-        >
-          <Icon name="search" size={22} strokeWidth={1.5} />
-          {query && <span className="fab__dot" aria-hidden="true" />}
-        </button>
-      </div>
+      {/* TR-зона отдана кнопке профиля/входа (ProfileFab) — как на десктопе.
+          Поиск доступен внутри меню (кнопка-бренд слева). */}
 
       <div className="fab fab--bl">
         <button
