@@ -404,7 +404,7 @@ export default function DetailPanel({
                       )}
                       title={t('detail.progress.reviewTitle')}
                     >
-                      <Icon name="question" size={15} strokeWidth={1.75} />
+                      <Icon name="book-open" size={15} strokeWidth={1.75} />
                     </button>
                   </>
                 )}

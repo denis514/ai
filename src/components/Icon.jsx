@@ -32,6 +32,7 @@ import {
   ClipboardIcon,
   AttachmentIcon,
   Book01Icon,
+  BookOpen01Icon,
   Books01Icon,
   ScrollIcon,
   Note01Icon,
@@ -141,6 +142,7 @@ const REGISTRY = {
   clipboard:    ClipboardIcon,            // 📋
   attachment:   AttachmentIcon,           // 📎
   book:         Book01Icon,               // 📘
+  'book-open':  BookOpen01Icon,           // 📖
   books:        Books01Icon,              // 📚
   scroll:       ScrollIcon,               // 📜
   note:         Note01Icon,               // 📝
