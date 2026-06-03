@@ -41,10 +41,11 @@ Deno.serve(async (req) => {
   if (!hook) return json({ error: 'not_found' }, 404);
   if (!hook.enabled) return json({ error: 'disabled' }, 403);
 
-  // Анти-флуд: не чаще, чем раз в MIN_INTERVAL_MS.
+  // Анти-флуд: не чаще, чем раз в MIN_INTERVAL_MS. Время — ТОЛЬКО серверное
+  // (Date.now()); никаких параметров запроса, иначе атакующий обойдёт лимит.
   if (hook.last_triggered_at) {
     const last = new Date(hook.last_triggered_at).getTime();
-    const nowMs = new Date(url.searchParams.get('_now') || Date.now()).getTime();
+    const nowMs = Date.now();
     if (Number.isFinite(last) && nowMs - last < MIN_INTERVAL_MS) {
       return json({ error: 'too_frequent', retry_after_ms: MIN_INTERVAL_MS - (nowMs - last) }, 429);
     }
