@@ -134,6 +134,35 @@ async function fetchPageText(url: string): Promise<string | null> {
   }
 }
 
+// Markdown → формат Telegram (parse_mode=HTML). Делает доставку красивой:
+// заголовки и **жирный** → <b>, списки → •, [текст](url) → ссылка, код → <code>.
+// Telegram HTML допускает только b/i/u/s/a/code/pre/blockquote.
+function mdToTelegramHtml(md: string): string {
+  let s = String(md || '');
+  s = s.replace(/^\s*[-*_]{3,}\s*$/gm, '');                 // убрать разделители ---
+  s = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); // экранирование
+  s = s.replace(/```[\w-]*\n?([\s\S]*?)```/g, (_m, c) => `<pre>${String(c).replace(/\s+$/, '')}</pre>`);
+  s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');         // `код`
+  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2">$1</a>'); // ссылки
+  s = s.replace(/^\s{0,3}#{1,6}\s*(.+?)\s*#*\s*$/gm, '<b>$1</b>'); // # заголовки → жирный
+  s = s.replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>').replace(/__([^_\n]+)__/g, '<b>$1</b>'); // **жирный**
+  s = s.replace(/^\s*[-*]\s+/gm, '• ');                     // списки → •
+  s = s.replace(/\n{3,}/g, '\n\n');                         // схлопнуть пустые строки
+  return s.trim();
+}
+
+// Грубая зачистка markdown для текстового фолбэка (если HTML не принялся).
+function stripMd(md: string): string {
+  return String(md || '')
+    .replace(/^\s*[-*_]{3,}\s*$/gm, '')
+    .replace(/^\s{0,3}#{1,6}\s*/gm, '')
+    .replace(/\*\*([^*\n]+)\*\*/g, '$1').replace(/__([^_\n]+)__/g, '$1')
+    .replace(/`{1,3}/g, '')
+    .replace(/^\s*[-*]\s+/gm, '• ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
 type ImageInput = { data: string; mime: string };
 
 type McpServer = { type: 'url'; url: string; name: string; authorization_token?: string };
@@ -584,12 +613,25 @@ Deno.serve(async (req) => {
             await log(id, 'error', 'No chat ID set on this Telegram node — open it and enter a numeric chat ID.', { status: 'failed' });
           } else {
             try {
-              const tgRes = await fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'content-type': 'application/json' },
-                body: JSON.stringify({ chat_id: chatId, text: collected.slice(0, 4000) }),
-              });
-              const tgData = await tgRes.json().catch(() => ({}));
+              const sendTg = (text: string, parseMode?: string) =>
+                fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+                  method: 'POST',
+                  headers: { 'content-type': 'application/json' },
+                  body: JSON.stringify({
+                    chat_id: chatId,
+                    text,
+                    disable_web_page_preview: true,
+                    ...(parseMode ? { parse_mode: parseMode } : {}),
+                  }),
+                });
+              // 1) Красивый формат: Markdown → Telegram HTML.
+              let tgRes = await sendTg(mdToTelegramHtml(collected).slice(0, 3900), 'HTML');
+              let tgData = await tgRes.json().catch(() => ({}));
+              // 2) Фолбэк: если Telegram не принял разметку — шлём чистым текстом.
+              if (!(tgRes.ok && tgData?.ok)) {
+                tgRes = await sendTg(stripMd(collected).slice(0, 3900));
+                tgData = await tgRes.json().catch(() => ({}));
+              }
               if (tgRes.ok && tgData?.ok) {
                 await log(id, 'info', `Sent to Telegram ✓ (chat ${chatId})`, { status: 'completed' });
               } else {
