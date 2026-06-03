@@ -6337,19 +6337,23 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   font-size: 12px;
   color: var(--text-muted);
 }
-.detail__progress-btn {
+/* Кнопки строки действий узла — одинаковые круглые иконки (тултип по hover) */
+.detail__progress-btn,
+.detail__progress .share__btn {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   border: 1px solid var(--border);
   background: var(--surface);
-  border-radius: 6px;
-  font-size: 12px;
+  border-radius: 50%;
   color: var(--text-muted);
   cursor: pointer;
   transition: background .15s, color .15s, border-color .15s;
 }
+.detail__progress .share__btn:hover { background: var(--surface-3); color: var(--text); border-color: var(--border); }
 .detail__progress-btn:hover {
   background: var(--surface-3);
   color: var(--text);

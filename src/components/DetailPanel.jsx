@@ -385,8 +385,7 @@ export default function DetailPanel({
                 onClick={handleBookmarkToggle}
                 title={bookmarkOn ? t('detail.bookmark.added') : t('detail.bookmark.toAdd')}
               >
-                <Icon name={bookmarkOn ? 'bookmark-filled' : 'bookmark'} size={13} strokeWidth={1.75} />
-                {t('detail.bookmark.label') || 'Избранное'}
+                <Icon name={bookmarkOn ? 'bookmark-filled' : 'bookmark'} size={15} strokeWidth={1.75} />
               </button>
             )}
             {nodeProgressApi && (
@@ -400,8 +399,7 @@ export default function DetailPanel({
                   )}
                   title={t('detail.progress.viewedTitle')}
                 >
-                  <Icon name="check" size={13} strokeWidth={1.75} />
-                  {t('detail.progress.viewed')}
+                  <Icon name="check" size={15} strokeWidth={1.75} />
                 </button>
                 <button
                   type="button"
@@ -412,12 +410,11 @@ export default function DetailPanel({
                   )}
                   title={t('detail.progress.reviewTitle')}
                 >
-                  <Icon name="question" size={13} strokeWidth={1.75} />
-                  {t('detail.progress.review')}
+                  <Icon name="question" size={15} strokeWidth={1.75} />
                 </button>
               </>
             )}
-            <ShareButton type="node" id={node.id} title={title} variant="text" />
+            <ShareButton type="node" id={node.id} title={title} variant="icon" />
           </div>
         )}
 
