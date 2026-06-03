@@ -3901,6 +3901,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .detail.is-open {
   transform: translateX(0);
   pointer-events: auto;
+  z-index: 50; /* поверх верхней плашки (.canvas-header z-index:8), но ниже модалок */
 }
 
 .detail__header {
@@ -3937,6 +3938,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: var(--cat-color);
   border-radius: var(--radius-pill);
 }
+.detail__heading { flex: 1 1 auto; min-width: 0; }
 .detail__title {
   margin: 6px 0 0;
   font-size: 19px;
@@ -3945,13 +3947,17 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .detail__close {
   margin-left: auto;
+  flex: 0 0 auto;
   width: 30px; height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   border: 1px solid var(--border);
   background: var(--surface);
   border-radius: 50%;
-  font-size: 18px;
   color: var(--text-muted);
-  line-height: 1;
+  cursor: pointer;
 }
 .detail__close:hover { background: var(--surface-2); }
 
