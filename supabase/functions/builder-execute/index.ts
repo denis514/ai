@@ -404,7 +404,7 @@ Deno.serve(async (req) => {
   {
     const { data: running } = await admin.from('builder_executions')
       .select('id').eq('workflow_id', workflowId).eq('status', 'running')
-      .gte('created_at', tenMinAgoIso).limit(1);
+      .gte('started_at', tenMinAgoIso).limit(1);
     if (running && running.length) {
       return json({ error: 'already_running' }, 409);
     }
@@ -416,7 +416,7 @@ Deno.serve(async (req) => {
   {
     const sod = new Date(); sod.setUTCHours(0, 0, 0, 0);
     const { data: todays } = await admin.from('builder_executions')
-      .select('tokens_used').eq('user_id', userId).gte('created_at', sod.toISOString());
+      .select('tokens_used').eq('user_id', userId).gte('started_at', sod.toISOString());
     const runsToday = (todays || []).length;
     const tokensToday = (todays || []).reduce((s, r) => s + (r.tokens_used || 0), 0);
     if (runsToday >= DAILY_RUN_CAP || tokensToday >= DAILY_TOKEN_CAP) {

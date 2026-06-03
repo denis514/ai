@@ -108,7 +108,7 @@ export async function getTodayUsage() {
     .from('builder_executions')
     .select('tokens_used')
     .eq('user_id', user.id)
-    .gte('created_at', sod.toISOString());
+    .gte('started_at', sod.toISOString());
   if (error || !data) return { runs: 0, tokens: 0 };
   return {
     runs: data.length,
@@ -128,9 +128,9 @@ export async function listRecentRuns(limit = 20) {
   if (!user) return [];
   const { data: rows, error } = await supabase
     .from('builder_executions')
-    .select('id, workflow_id, status, tokens_used, error_message, input_data, created_at, completed_at')
+    .select('id, workflow_id, status, tokens_used, error_message, input_data, started_at, completed_at')
     .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
+    .order('started_at', { ascending: false })
     .limit(limit);
   if (error || !rows) return [];
   const ids = [...new Set(rows.map(r => r.workflow_id).filter(Boolean))];
@@ -142,6 +142,7 @@ export async function listRecentRuns(limit = 20) {
   }
   return rows.map(r => ({
     ...r,
+    created_at: r.started_at, // UI ждёт created_at; колонка называется started_at
     workflowName: nameById[r.workflow_id] || null,
     // Эвристика: автозапуск идёт без текста задачи (движок берёт её из «Старта»),
     // ручной — с введённым input. Не 100%, но для метки «по расписанию» достаточно.
