@@ -156,6 +156,11 @@
   Docker → эталонный Computer Use контейнер → noVNC → безопасность → облачная VM
   → чек-лист). Привязан к узлу `sys-agent-sandbox`. ru/en/fi, вычитан
   language-pedagogue (PASS). Commits `450168d`, `38d607c`.
+- ✅ **Аудит педагогами всего пакета** (ru язык + learning-content-auditor):
+  исправлено — грамматика ru, не хардкодить порты (README), `--network none`,
+  Windows-ветка ключа, честное время маршрута. Commit `6b86d44`.
+- ✅ **`sas-why-isolation` → «модель угроз»** (три угрозы вкл. prompt-injection),
+  чтобы не дублировать обзорный узел. Вычитан ru/en/fi педагогами. Commit `fa0117f`.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
