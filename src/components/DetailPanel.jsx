@@ -148,7 +148,6 @@ export default function DetailPanel({
 
       {nodeProgressApi && (
         <div className="detail__progress" role="group" aria-label={t('detail.progress.aria')}>
-          <span className="detail__progress-label">{t('detail.progress.label')}</span>
           <button
             type="button"
             className={`detail__progress-btn ${nodeProgressApi.getStatus(node.id) === 'viewed' ? 'is-on' : ''}`}
@@ -158,8 +157,7 @@ export default function DetailPanel({
             )}
             title={t('detail.progress.viewedTitle')}
           >
-            <Icon name="check" size={13} strokeWidth={1.75} />
-            {t('detail.progress.viewed')}
+            <Icon name="check" size={15} strokeWidth={1.75} />
           </button>
           <button
             type="button"
@@ -170,8 +168,7 @@ export default function DetailPanel({
             )}
             title={t('detail.progress.reviewTitle')}
           >
-            <Icon name="question" size={13} strokeWidth={1.75} />
-            {t('detail.progress.review')}
+            <Icon name="book-open" size={15} strokeWidth={1.75} />
           </button>
         </div>
       )}
