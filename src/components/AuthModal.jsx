@@ -77,7 +77,7 @@ export default function AuthModal({ onClose }) {
 
   return (
     <div
-      className="courses-overlay"
+      className="courses-overlay auth-overlay"
       role="dialog"
       aria-modal="true"
       aria-labelledby="auth-modal-title"

@@ -1521,6 +1521,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   background: var(--surface);
   width: 100%;
   max-width: 460px;
+  max-height: calc(100dvh - 80px);   /* не выше вьюпорта; тело скроллится */
   border-radius: var(--radius-lg);
   box-shadow: 0 24px 80px rgba(0,0,0,0.3);
   display: flex;
@@ -1565,6 +1566,23 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   display: flex;
   flex-direction: column;
   gap: 0;
+  overflow-y: auto;            /* скролл, если контент выше доступного места */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile: модалка входа — вверху экрана, над клавиатурой (она подъезжает снизу),
+   с внутренним скроллом. Высота считается от dvh, чтобы влезать на любом девайсе. */
+@media (max-width: 720px) {
+  .courses-overlay.auth-overlay {
+    align-items: flex-start;
+    padding: calc(env(safe-area-inset-top, 0px) + 12px) 12px 12px;
+  }
+  .courses-overlay.auth-overlay .auth-modal {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    max-height: calc(100dvh - env(safe-area-inset-top, 0px) - 24px);
+  }
 }
 
 /* ── GDPR consent block ── */
@@ -1775,13 +1793,15 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 
 @media (max-width: 600px) {
+  /* Вход — НЕ нижняя шторка: клавиатура подъезжает снизу и перекрывает её.
+     Крепим вверху экрана (overlay align-items:flex-start), полные скругления,
+     высота от dvh с внутренним скроллом. */
   .auth-modal {
     max-width: 100%;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: relative;
+    bottom: auto;
+    left: auto;
+    right: auto;
   }
 }
 
