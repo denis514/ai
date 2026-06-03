@@ -116,6 +116,39 @@ export async function getTodayUsage() {
   };
 }
 
+/**
+ * История последних прогонов пользователя (по всем схемам) — для «журнала
+ * автозапусков» в UI. Дополняет именем схемы. RLS owner-only.
+ * @param {number} limit
+ * @returns {Array<{id, workflowName, status, tokens_used, error_message, created_at, completed_at, scheduled}>}
+ */
+export async function listRecentRuns(limit = 20) {
+  if (!supabase) return [];
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
+  const { data: rows, error } = await supabase
+    .from('builder_executions')
+    .select('id, workflow_id, status, tokens_used, error_message, input_data, created_at, completed_at')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+  if (error || !rows) return [];
+  const ids = [...new Set(rows.map(r => r.workflow_id).filter(Boolean))];
+  let nameById = {};
+  if (ids.length) {
+    const { data: wfs } = await supabase
+      .from('builder_workflows').select('id, name').in('id', ids);
+    nameById = Object.fromEntries((wfs || []).map(w => [w.id, w.name]));
+  }
+  return rows.map(r => ({
+    ...r,
+    workflowName: nameById[r.workflow_id] || null,
+    // Эвристика: автозапуск идёт без текста задачи (движок берёт её из «Старта»),
+    // ручной — с введённым input. Не 100%, но для метки «по расписанию» достаточно.
+    scheduled: !((r.input_data && r.input_data.input) || '').toString().trim(),
+  }));
+}
+
 export async function createSchedule({ workflowId, frequency, hour, minute, weekday, tier, locale }) {
   if (!supabase) throw new Error('backend_unavailable');
   const { data: { user } } = await supabase.auth.getUser();

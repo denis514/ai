@@ -4477,3 +4477,52 @@
   color: var(--text-muted);
 }
 .builder-app .builder-allsched__usage svg { color: var(--accent, #2563eb); flex: 0 0 auto; }
+
+/* ────────────────────────────────────────────────── */
+/* Журнал автозапусков — история прогонов              */
+/* ────────────────────────────────────────────────── */
+.builder-app .builder-allsched__history {
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.builder-app .builder-allsched__history-head {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px;
+}
+.builder-app .builder-runrow {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 7px 0; border-bottom: 1px solid var(--border);
+}
+.builder-app .builder-runrow:last-child { border-bottom: none; }
+.builder-app .builder-runrow__dot {
+  flex: 0 0 auto; width: 18px; height: 18px; margin-top: 1px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; color: #fff;
+}
+.builder-app .builder-runrow__dot--completed { background: var(--success, #16a34a); }
+.builder-app .builder-runrow__dot--failed { background: var(--danger, #dc2626); }
+.builder-app .builder-runrow__dot--running,
+.builder-app .builder-runrow__dot--pending { background: var(--accent, #2563eb); }
+.builder-app .builder-runrow__pulse {
+  width: 7px; height: 7px; border-radius: 50%; background: #fff;
+  animation: builder-save-spin 1s linear infinite;
+}
+.builder-app .builder-runrow__main { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.builder-app .builder-runrow__wf {
+  font-size: 13px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.builder-app .builder-runrow__src {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--text-muted); background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: 999px; padding: 1px 7px;
+}
+.builder-app .builder-runrow__meta { font-size: 11.5px; color: var(--text-muted); }
+.builder-app .builder-runrow__err {
+  font-size: 11.5px; color: var(--danger, #dc2626); line-height: 1.4;
+  background: color-mix(in srgb, var(--danger, #dc2626) 8%, transparent);
+  border-radius: 6px; padding: 4px 7px; margin-top: 2px;
+}

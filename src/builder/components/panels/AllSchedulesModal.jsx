@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
-import { listAllSchedules, toggleSchedule, deleteSchedule, disableAllSchedules, getTodayUsage } from '../../services/scheduleService.js';
+import { listAllSchedules, toggleSchedule, deleteSchedule, disableAllSchedules, getTodayUsage, listRecentRuns } from '../../services/scheduleService.js';
 import { toast } from '../Toast.jsx';
 import { SkeletonList } from '../Skeleton.jsx';
 
@@ -21,10 +21,12 @@ export default function AllSchedulesModal({ onClose }) {
   const [confirmStopAll, setConfirmStopAll] = useState(false);
   const [busy, setBusy] = useState(false);
   const [usage, setUsage] = useState(null); // { runs, tokens } за сегодня
+  const [runs, setRuns] = useState(null);   // история последних прогонов
 
   const refresh = useCallback(() => {
     listAllSchedules().then(setItems).catch(() => setItems([]));
     getTodayUsage().then(setUsage).catch(() => setUsage(null));
+    listRecentRuns(20).then(setRuns).catch(() => setRuns([]));
   }, []);
   useEffect(() => { refresh(); }, [refresh]);
 
@@ -139,6 +141,42 @@ export default function AllSchedulesModal({ onClose }) {
               <button type="button" className="builder-btn builder-btn--ghost builder-btn--small builder-schedule__del" onClick={() => onDelete(s)} aria-label={t('common.delete') || 'Удалить'}>
                 <Icon name="trash" size={13} strokeWidth={1.6} />
               </button>
+            </div>
+          ))}
+        </div>
+
+        {/* История последних прогонов (ручных и по расписанию) */}
+        <div className="builder-allsched__history">
+          <div className="builder-allsched__history-head">
+            <Icon name="terminal" size={13} strokeWidth={1.6} />
+            <span>{t('builder.allsched.historyTitle') || 'История запусков'}</span>
+          </div>
+          {runs === null && <SkeletonList rows={3} />}
+          {runs !== null && runs.length === 0 && (
+            <div className="builder-schedule__empty">{t('builder.allsched.historyEmpty') || 'Запусков пока не было.'}</div>
+          )}
+          {runs !== null && runs.map(r => (
+            <div key={r.id} className={`builder-runrow builder-runrow--${r.status}`}>
+              <span className={`builder-runrow__dot builder-runrow__dot--${r.status}`} aria-hidden="true">
+                {r.status === 'completed' && <Icon name="check" size={11} strokeWidth={2.5} />}
+                {r.status === 'failed' && <Icon name="close" size={11} strokeWidth={2.5} />}
+                {(r.status === 'running' || r.status === 'pending') && <span className="builder-runrow__pulse" />}
+              </span>
+              <div className="builder-runrow__main">
+                <span className="builder-runrow__wf">
+                  {r.workflowName || (t('builder.allsched.orphan') || 'Схема удалена')}
+                  <span className="builder-runrow__src">
+                    {r.scheduled ? (t('builder.allsched.bySchedule') || 'по расписанию') : (t('builder.allsched.manual') || 'вручную')}
+                  </span>
+                </span>
+                <span className="builder-runrow__meta">
+                  {fmtTime(r.created_at)}
+                  {r.tokens_used ? ` · ${r.tokens_used.toLocaleString()} ${t('builder.allsched.tok') || 'ток.'}` : ''}
+                </span>
+                {r.status === 'failed' && r.error_message && (
+                  <span className="builder-runrow__err">{String(r.error_message).slice(0, 160)}</span>
+                )}
+              </div>
             </div>
           ))}
         </div>
