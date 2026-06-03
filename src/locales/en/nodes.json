@@ -2467,12 +2467,12 @@
   },
   "sas-why-isolation": {
     "title": "Why a separate machine",
-    "what": "Principle: an agent with computer access should live in an isolated environment, not where your personal data and credentials are.",
-    "why": "An AI agent can err, misread a task or be attacked via malicious content — isolation limits the damage to one box.",
-    "when": "Always when the agent performs system actions autonomously, not just writes text.",
-    "impact": "Turns a potentially catastrophic mistake into a manageable, reversible incident.",
-    "example": "The agent deletes files by mistake — but they belong to an empty VM, not your working project.",
-    "mistakes": "Assuming “I'm watching it” is enough: scheduled and fast actions leave no time to intervene."
+    "what": "A threat model for an agent with computer access: three ways things can go wrong — and why the answer to all three is the same (isolation).",
+    "why": "Understanding the SPECIFIC threats lets you protect deliberately, not “just in case”.",
+    "when": "Before giving the agent real actions — assess which of the threats apply to your task.",
+    "impact": "Turns a vague “something might break” into a clear list of risks, each closed by isolation.",
+    "example": "Three threats: (1) the agent errs and deletes the wrong thing; (2) it misreads the task and does too much; (3) it's tricked by malicious text on a page (prompt injection) and runs someone else's command. In every case the damage is confined to the “box”.",
+    "mistakes": "Thinking only about “the agent will make a mistake”. The most underrated threat is deception via content: a page or email hides an instruction and the agent executes it."
   },
   "sas-docker-computer-use": {
     "title": "Reference: Computer Use in Docker",

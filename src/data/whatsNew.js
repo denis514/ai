@@ -51,7 +51,7 @@ export const WHATS_NEW = {
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
   'sys-agent-sandbox': { date: '2026-06-03', type: 'new' },
-  'sas-why-isolation': { date: '2026-06-03', type: 'new' },
+  'sas-why-isolation': { date: '2026-06-03', type: 'updated' },
   'sas-docker-computer-use': { date: '2026-06-03', type: 'new' },
   'sas-vm-vps': { date: '2026-06-03', type: 'new' },
   'sas-least-privilege': { date: '2026-06-03', type: 'new' },
