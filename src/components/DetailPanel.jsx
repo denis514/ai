@@ -371,54 +371,53 @@ export default function DetailPanel({
             <span className="detail__cat">{catLabel}</span>
             <h2 className="detail__title">{title}</h2>
           </div>
-          {bookmarksApi && (
-            <button
-              type="button"
-              className={`detail__bookmark ${bookmarkOn ? 'is-on' : ''}`}
-              onClick={handleBookmarkToggle}
-              aria-label={bookmarkOn ? t('detail.bookmark.remove') : t('detail.bookmark.add')}
-              title={bookmarkOn ? t('detail.bookmark.added') : t('detail.bookmark.toAdd')}
-            >
-              <Icon
-                name={bookmarkOn ? 'bookmark-filled' : 'bookmark'}
-                size={18}
-                strokeWidth={1.5}
-              />
-            </button>
-          )}
-          <ShareButton type="node" id={node.id} title={title} />
           <button type="button" className="detail__close" onClick={onClose} aria-label={t('detail.closePanel')}>
             <Icon name="close" size={18} strokeWidth={1.75} />
           </button>
         </div>
 
-        {nodeProgressApi && (
+        {(nodeProgressApi || bookmarksApi) && (
           <div className="detail__progress" role="group" aria-label={t('detail.progress.aria')}>
-            <span className="detail__progress-label">{t('detail.progress.label')}</span>
-            <button
-              type="button"
-              className={`detail__progress-btn ${nodeProgressApi.getStatus(node.id) === 'viewed' ? 'is-on' : ''}`}
-              onClick={() => nodeProgressApi.setStatus(
-                node.id,
-                nodeProgressApi.getStatus(node.id) === 'viewed' ? null : 'viewed'
-              )}
-              title={t('detail.progress.viewedTitle')}
-            >
-              <Icon name="check" size={13} strokeWidth={1.75} />
-              {t('detail.progress.viewed')}
-            </button>
-            <button
-              type="button"
-              className={`detail__progress-btn detail__progress-btn--review ${nodeProgressApi.getStatus(node.id) === 'review' ? 'is-on' : ''}`}
-              onClick={() => nodeProgressApi.setStatus(
-                node.id,
-                nodeProgressApi.getStatus(node.id) === 'review' ? null : 'review'
-              )}
-              title={t('detail.progress.reviewTitle')}
-            >
-              <Icon name="question" size={13} strokeWidth={1.75} />
-              {t('detail.progress.review')}
-            </button>
+            {bookmarksApi && (
+              <button
+                type="button"
+                className={`detail__progress-btn detail__progress-btn--bookmark ${bookmarkOn ? 'is-on' : ''}`}
+                onClick={handleBookmarkToggle}
+                title={bookmarkOn ? t('detail.bookmark.added') : t('detail.bookmark.toAdd')}
+              >
+                <Icon name={bookmarkOn ? 'bookmark-filled' : 'bookmark'} size={13} strokeWidth={1.75} />
+                {t('detail.bookmark.label') || 'Избранное'}
+              </button>
+            )}
+            {nodeProgressApi && (
+              <>
+                <button
+                  type="button"
+                  className={`detail__progress-btn ${nodeProgressApi.getStatus(node.id) === 'viewed' ? 'is-on' : ''}`}
+                  onClick={() => nodeProgressApi.setStatus(
+                    node.id,
+                    nodeProgressApi.getStatus(node.id) === 'viewed' ? null : 'viewed'
+                  )}
+                  title={t('detail.progress.viewedTitle')}
+                >
+                  <Icon name="check" size={13} strokeWidth={1.75} />
+                  {t('detail.progress.viewed')}
+                </button>
+                <button
+                  type="button"
+                  className={`detail__progress-btn detail__progress-btn--review ${nodeProgressApi.getStatus(node.id) === 'review' ? 'is-on' : ''}`}
+                  onClick={() => nodeProgressApi.setStatus(
+                    node.id,
+                    nodeProgressApi.getStatus(node.id) === 'review' ? null : 'review'
+                  )}
+                  title={t('detail.progress.reviewTitle')}
+                >
+                  <Icon name="question" size={13} strokeWidth={1.75} />
+                  {t('detail.progress.review')}
+                </button>
+              </>
+            )}
+            <ShareButton type="node" id={node.id} title={title} variant="text" />
           </div>
         )}
 
