@@ -299,7 +299,7 @@ function AppInner() {
       setRoute(null);
     }
   }, [route, selected, setRoute]);
-  const coursesOpen   = route?.type === 'courses';
+  const coursesOpen   = route?.type === 'courses' || route?.type === 'path';
   const libraryOpen   = route?.type === 'library' || route?.type === 'prompt';
   const helpOpen      = route?.type === 'help';
   const accountOpen   = route?.type === 'account';
@@ -921,6 +921,7 @@ function AppInner() {
             initialSelectedTutorial={
               minimizedWorkflow?.type === 'workflows' ? minimizedWorkflow.selectedTutorialKey : null
             }
+            initialPathId={route?.type === 'path' ? route.id : null}
           />
         </Suspense>
       )}

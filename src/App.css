@@ -8336,3 +8336,38 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .bsheet__header:active {
   cursor: grabbing;
 }
+
+/* ─────────────────────────────────────────────── */
+/* Share button + menu (узлы/туториалы/промпты/маршруты) */
+/* ─────────────────────────────────────────────── */
+.share { position: relative; display: inline-flex; }
+.share__btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.share__btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.share__btn--text { padding: 6px 10px; font-size: 13px; }
+.share__menu {
+  position: absolute; top: calc(100% + 6px); right: 0; z-index: 50;
+  min-width: 200px; padding: 6px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; box-shadow: 0 12px 32px rgba(0,0,0,0.18);
+  display: flex; flex-direction: column; gap: 2px;
+  animation: share-pop 0.14s ease;
+}
+@keyframes share-pop { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.share__item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 10px; border: none; border-radius: 7px;
+  background: transparent; color: var(--text); font-size: 13px;
+  font-family: inherit; text-align: left; cursor: pointer; width: 100%;
+}
+.share__item:hover { background: var(--surface-2); }
+.prompt-modal__head-actions { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Share на карточке маршрута обучения (deep-link /path/<id>) */
+.paths-list .path { position: relative; }
+.path__share { position: absolute; top: 10px; right: 12px; z-index: 3; }

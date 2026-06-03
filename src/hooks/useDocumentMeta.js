@@ -110,6 +110,9 @@ export function useDocumentMeta(route, locale, contentVersion) {
       const key = tutorialByNodeId[id] || id;
       const tut = STRINGS[locale]?.tutorials?.[key] || STRINGS.en?.tutorials?.[key];
       if (tut?.title) { title = `${tut.title} — ${SITE}`; desc = clamp(tut.subtitle || tut.whatItIs || def.desc); }
+    } else if (type === 'path' && id) {
+      const pa = STRINGS[locale]?.paths?.[id] || STRINGS.en?.paths?.[id];
+      if (pa?.title) { title = `${pa.title} — ${SITE}`; desc = clamp(pa.description || def.desc); }
     } else if (type && SECTION[type]) {
       const label = SECTION[type][locale] || SECTION[type].en;
       title = `${label} — ${SITE}`;

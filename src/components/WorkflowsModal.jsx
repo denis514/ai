@@ -8,6 +8,7 @@ import { useFocusReturn } from '../hooks/useFocusReturn.js';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 import TutorialDetail from './TutorialDetail.jsx';
 import Icon from './Icon.jsx';
+import ShareButton from './ShareButton.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { getLocalizedLibraryTemplate, getLocalizedFeaturedPrompt } from '../i18n/usePrompt.js';
@@ -38,6 +39,7 @@ export default function WorkflowsModal({
   onClose, onOpen, onNavigate, progressApi, nodeProgressApi, onOpenPrompt,
   onMinimize,                  // (state) => void — свернуть в пилюлю
   initialSelectedTutorial,     // string | null — восстановить туториал при разворачивании
+  initialPathId,               // string | null — deep-link на конкретный маршрут (/path/<id>)
 }) {
   const t = useT();
   const { locale } = useLocale();
@@ -399,6 +401,7 @@ export default function WorkflowsModal({
             audience={audience}
             progressApi={progressApi}
             nodeProgressApi={nodeProgressApi}
+            initialPathId={initialPathId}
             onNavigate={(r) => {
               // setRoute сам закрывает модалку (route.type !== 'courses').
               // Дополнительный onClose() здесь побеждал бы в батче и обнулял маршрут.
@@ -456,10 +459,18 @@ function stepIcon(step) {
 
 const LEVEL_ORDER = { beginner: 0, intermediate: 1, advanced: 2, expert: 3 };
 
-function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate }) {
+function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate, initialPathId }) {
   const t = useT();
   const { locale } = useLocale();
-  const [openId, setOpenId] = useState(null);
+  const [openId, setOpenId] = useState(initialPathId || null);
+
+  // Deep-link /path/<id>: раскрыть нужный маршрут и подскроллить к нему.
+  useEffect(() => {
+    if (!initialPathId) return;
+    setOpenId(initialPathId);
+    const el = document.getElementById(`lp-${initialPathId}`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [initialPathId]);
   const TYPE_LABEL = {
     node: t('courses.kind.node'),
     tutorial: t('courses.kind.tutorial'),
@@ -482,7 +493,10 @@ function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate }
         const percent = Math.round((done / total) * 100);
         const isOpen = openId === path.id;
         return (
-          <div key={path.id} className={`path ${isOpen ? 'is-open' : ''}`}>
+          <div key={path.id} id={`lp-${path.id}`} className={`path ${isOpen ? 'is-open' : ''}`}>
+            <span className="path__share" onClick={(e) => e.stopPropagation()}>
+              <ShareButton type="path" id={path.id} title={path.title} />
+            </span>
             <button
               type="button"
               className="path__head"

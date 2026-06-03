@@ -3,6 +3,7 @@ import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { useFocusReturn } from '../hooks/useFocusReturn.js';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
+import ShareButton from './ShareButton.jsx';
 
 export default function PromptModal({ prompt, onClose }) {
   const t = useT();
@@ -61,14 +62,17 @@ export default function PromptModal({ prompt, onClose }) {
               <p className="prompt-modal__subtitle">{prompt.description}</p>
             </div>
           </div>
-          <button
-            type="button"
-            className="prompt-modal__close"
-            onClick={onClose}
-            aria-label={t('prompt.closeAria')}
-          >
-            <Icon name="close" size={20} strokeWidth={1.75} />
-          </button>
+          <div className="prompt-modal__head-actions">
+            {prompt.id && <ShareButton type="prompt" id={prompt.id} title={prompt.title} />}
+            <button
+              type="button"
+              className="prompt-modal__close"
+              onClick={onClose}
+              aria-label={t('prompt.closeAria')}
+            >
+              <Icon name="close" size={20} strokeWidth={1.75} />
+            </button>
+          </div>
         </header>
 
         <main className="prompt-modal__body">

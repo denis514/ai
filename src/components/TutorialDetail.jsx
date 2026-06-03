@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from './Icon.jsx';
 import InlineText from './InlineText.jsx';
+import ShareButton from './ShareButton.jsx';
 import { tutorials } from '../data/tutorials.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
@@ -79,6 +80,7 @@ export default function TutorialDetail({
               <span className="tut-detail__steps-count">
                 <Icon name="books" size={12} strokeWidth={1.5} /> {t('tutorialDetail.stepsCount', { n: total })}
               </span>
+              <ShareButton type="tutorial" id={tutId} title={tut.title} />
             </div>
             <h2 className="tut-detail__title">{tut.title}</h2>
             <p className="tut-detail__subtitle">{tut.subtitle}</p>

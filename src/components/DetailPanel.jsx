@@ -3,6 +3,7 @@ import Tooltip from './Tooltip.jsx';
 import Icon from './Icon.jsx';
 import BottomSheet from './BottomSheet.jsx';
 import InlineText from './InlineText.jsx';
+import ShareButton from './ShareButton.jsx';
 import { useIsMobile } from '../hooks/useIsMobile.js';
 import { CATEGORIES, getRelatedNodes } from '../data/mindmapData.js';
 import { tutorials, tutorialByNodeId } from '../data/tutorials.js';
@@ -141,6 +142,7 @@ export default function DetailPanel({
               />
             </button>
           )}
+          <ShareButton type="node" id={node.id} title={title} />
         </div>
       )}
 
