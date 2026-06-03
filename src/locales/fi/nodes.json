@@ -2455,5 +2455,86 @@
     "impact": "Hypothesis throughput: 2-3/viikko → 10-15/viikko. Time-to-postmortem: 2 päivää → 2 tuntia. Conversion uplift kvartaalissa: +15-25%.",
     "example": "Polku (7 vaihetta):\n\nWeek 1: Foundation.\n1. [[node:prompting|prompting]] — hypothesis-promptit\n2. [[node:pr-iterate|pr-iterate]] — iterative refinement\n3. [[node:sc-analysis|sc-analysis]] — datan analyysi\n\nWeek 2-3: Systems.\n4. [[node:sys-evals-benchmarks|sys-evals-benchmarks]] — laadun mittaus\n5. [[node:sys-quality-gates|sys-quality-gates]] — human review process\n\nWeek 4-5: Transformation.\n6. [[node:ec-cro|ec-cro]] — konkreettinen CRO workflow\n7. [[node:ec-experimentation|ec-experimentation]] — laajempi system\n\nWeek 6: Run 3 pilot tests.",
     "mistakes": "Luottaa AI-luotuihin variantteihin ilman human reviewia.\n\nTestata kaikkea peräkkäin. Discipline > speed.\n\nKorvata CRO-asiantuntija. AI = nopeutus, ei korvaaja."
+  },
+  "sys-agent-sandbox": {
+    "title": "Eristetty ympäristö agentille",
+    "what": "Erillinen (etä- tai virtuaalinen) kone, jossa Claude käyttää tietokonetta oman tietokoneesi sijaan. Agentti näkee ja koskee vain siihen koneeseen.",
+    "why": "Turvallisuus: agentin virhe tai ei-toivottu toiminto ei kosketa tiedostojasi, salasanojasi tai työverkkoasi — kaikki on rajattu hiekkalaatikkoon.",
+    "when": "Heti kun agentille annetaan [[node:cap-computer|tietokoneen käyttö]] tai laaja järjestelmäpääsy — etenkin valvomattomissa ajastetuissa ajoissa.",
+    "impact": "Laskee riskin tasolta ”agentti voi rikkoa koneeni” tasolle ”pahimmillaan kärsii kertakäyttöinen virtuaalikone, jonka voi helposti palauttaa”.",
+    "example": "Claude pyörii Docker-kontissa virtuaalityöpöydällä; seuraat selaimen kautta. Tehtävän jälkeen kontti poistetaan.",
+    "mistakes": "Tietokoneen käytön ajaminen suoraan omalla koneella, jolla on pääsy sähköpostiin, pankkiin ja työkansioihin."
+  },
+  "sas-why-isolation": {
+    "title": "Miksi erillinen kone",
+    "what": "Periaate: tietokonepääsyn saaneen agentin tulee elää eristetyssä ympäristössä, ei siellä missä henkilökohtaiset tietosi ja tunnuksesi ovat.",
+    "why": "AI-agentti voi erehtyä, ymmärtää tehtävän väärin tai joutua hyökkäyksen kohteeksi haitallisen sisällön kautta — eristys rajaa vahingon yhteen laatikkoon.",
+    "when": "Aina kun agentti suorittaa järjestelmätoimintoja itsenäisesti, ei vain kirjoita tekstiä.",
+    "impact": "Muuttaa mahdollisesti katastrofaalisen virheen hallittavaksi ja peruutettavaksi tapahtumaksi.",
+    "example": "Agentti poistaa tiedostoja vahingossa — mutta ne kuuluvat tyhjälle virtuaalikoneelle, eivät työprojektillesi.",
+    "mistakes": "Olettaa, että ”minähän valvon sitä” riittää: ajastetut ja nopeat toiminnot eivät jätä aikaa puuttua."
+  },
+  "sas-docker-computer-use": {
+    "title": "Esikuva: Computer Use Dockerissa",
+    "what": "Anthropicin virallinen tapa: valmis Docker-kontti virtuaalityöpöydällä (Linux + noVNC), jossa Claude klikkaa ja kirjoittaa sinun seuratessasi selaimella.",
+    "why": "Nopein turvallinen aloitus: kaikki on jo eristetty konttiin, mitään ei asenneta oikealle koneellesi.",
+    "when": "Tietokoneen käytön testaukseen ja tuotantoon, kun tarvitaan ennustettava ja toistettava työpöytä.",
+    "impact": "Valmis hiekkalaatikko minuuteissa sen sijaan, että virtuaalikone ja oikeudet asetettaisiin käsin.",
+    "example": "Käynnistät computer-use-kontin, avaat agentin näytön selaimessa ja annat tehtävän — Claude toimii vain kontin sisällä.",
+    "mistakes": "Henkilökohtaisten kansioiden tai oikeiden salaisuuksien liittäminen konttiin — se mitätöi eristyksen."
+  },
+  "sas-vm-vps": {
+    "title": "Pilvi-VM tai oma erillinen kone",
+    "what": "Erillinen pilven virtuaalikone (VPS) tai vanha fyysinen tietokone, joka on omistettu vain agentille.",
+    "why": "Täysi eristys työympäristöstäsi ja mahdollisuus pitää kone päällä ympäri vuorokauden ajastettuja ajoja varten.",
+    "when": "Kun agentti tarvitsee pysyvän ”kodin” tai kontti ei riitä ja tarvitaan täysi työpöytä tai erikoisohjelmistoja.",
+    "impact": "Agentti toimii silloinkin, kun tietokoneesi on sammutettu, ilman pääsyä siihen.",
+    "example": "Halpa pilvipalvelin virtuaalityöpöydällä; agentti ja sen selain elävät siellä.",
+    "mistakes": "Yrityksen työpalvelimen käyttö, jolla on pääsy sisäisiin järjestelmiin — eristys menetetään."
+  },
+  "sas-least-privilege": {
+    "title": "Vähimmät oikeudet",
+    "what": "Agentti toimii erillisellä tilillä ilman pääkäyttäjän oikeuksia ja ilman pääsyä henkilökohtaisiin tiedostoihin tai muiden tietoihin.",
+    "why": "Vaikka jokin menisi vikaan, agentti ei fyysisesti voi vahingoittaa mitään myönnettyjen vähimmäisoikeuksien ulkopuolella.",
+    "when": "Missä tahansa agenttiympäristön asetuksessa — asetetaan kerran tiliä luotaessa.",
+    "impact": "Rajaa virheen tai murron vaikutussäteen siihen vähään, mitä agentti todella tarvitsee.",
+    "example": "Erillinen käyttäjä ilman sudo-oikeuksia, tyhjä kotikansio ja pääsy vain tehtävän työhakemistoon.",
+    "mistakes": "Agentin ajaminen pääkäyttäjänä ”ettei tarvitse säätää oikeuksia” — yleisin ja vaarallisin oikotie."
+  },
+  "sas-network-isolation": {
+    "title": "Verkkoeristys ja sallittujen lista",
+    "what": "Rajataan, mihin agentin kone pääsee verkossa: palomuuri ja sallittujen verkkotunnusten lista (allowlist).",
+    "why": "Estää agenttia vuotamasta tietoa vieraaseen osoitteeseen, pääsemästä sisäverkkoon tai lataamasta haitallista sisältöä.",
+    "when": "Kun agentilla on internet-yhteys tai se on lähellä sisäisiä järjestelmiä.",
+    "impact": "Kaventaa hyökkäyspintaa: vaarantunutkin agentti puhuu vain sallittujen osoitteiden kanssa.",
+    "example": "Sallittu vain API-verkkotunnukset ja pari työsivustoa; muun liikenteen palomuuri estää.",
+    "mistakes": "Koko avoimen internetin ja lähiverkkopääsyn jättäminen päälle ”varmuuden vuoksi”."
+  },
+  "sas-secrets": {
+    "title": "Kertakäyttöiset tilit ja salaisuudet",
+    "what": "Agentille annetaan oikeiden salasanojesi sijaan kertakäyttöisiä tai rajattuja tilejä ja avaimia ympäristömuuttujien kautta, ei käsin kirjoittaen.",
+    "why": "Oikeat salasanat agentin käsissä ovat vuoto, joka odottaa hetkeään; rajatut avaimet on helppo perua.",
+    "when": "Aina kun agentti tarvitsee pääsyn palveluun tai joutuu kirjautumaan jonnekin.",
+    "impact": "Vaarantunut agentti ei tarkoita pääkäyttötunnustesi menetystä — peru avain, ja asia on hoidettu.",
+    "example": "Testitili vähimmäisoikeuksilla ja vain lukuoikeudet antava avain, joka annetaan tehtävän ajaksi.",
+    "mistakes": "Agentin pyytäminen ”kirjautumaan salasanallasi” tai salaisuuksien tallentaminen suoraan ohjeen tekstiin."
+  },
+  "sas-snapshots-killswitch": {
+    "title": "Tilannevedokset, palautus ja hätäkatkaisu",
+    "what": "Mahdollisuus palauttaa ympäristö heti puhtaaseen tilaan (tilannevedos) ja pysäyttää agentti hätätilanteessa, sekä kulutusrajat.",
+    "why": "Antaa peruutettavuuden ja hallinnan: tapahtui mitä tahansa, ympäristö palautetaan ja agentti pysäytetään yhdellä napilla.",
+    "when": "Mihin tahansa itsenäisiin ja pitkäkestoisiin tehtäviin, etenkin ajastettuihin.",
+    "impact": "Mikä tahansa tapahtuma lakkaa olemasta peruuttamaton — se on vain palautus vedokseen.",
+    "example": "Ennen ajoa otetaan tilannevedos; vian jälkeen ympäristö palautetaan; token-ylikulutuksessa raja laukaisee pysäytyksen.",
+    "mistakes": "Ei palautusta eikä rajoja — silloin vika muuttuu pitkäksi käsityöksi ja turhaksi kuluksi."
+  },
+  "sas-remote-access": {
+    "title": "Etäkäyttö ympäristöön",
+    "what": "Tavat yhdistää agentin koneeseen: SSH (komentorivi), RDP/VNC (työpöytä) tai selainpohjainen noVNC.",
+    "why": "Agenttia pitää tarkkailla, siihen puuttua ja tulos tarkistaa istumatta fyysisesti sen koneen ääressä.",
+    "when": "Kun ympäristö on etäinen (pilvi tai oma tietokone) tai kontti toisella isännällä.",
+    "impact": "Täysi hallinta ja agentin tarkkailu mistä tahansa — ja mahdollisuus puuttua nopeasti.",
+    "example": "Avaat agentin näytön selaimessa noVNC:n kautta ja näet reaaliajassa, mitä se tekee.",
+    "mistakes": "Etäkäytön avaaminen internetiin ilman salasanaa tai avainta ja IP-rajausta — suora tie koneen murtamiseen."
   }
 }
