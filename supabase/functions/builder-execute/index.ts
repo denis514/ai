@@ -435,7 +435,9 @@ Deno.serve(async (req) => {
     status: 'running', input_data: { input, tier },
   });
 
+  let lastError = ''; // последняя error-строка — пишем в executions.error_message
   const log = async (nodeId: string | null, level: string, message: string, data?: unknown) => {
+    if (level === 'error' && message) lastError = message.slice(0, 500);
     await admin.from('builder_execution_logs').insert({
       execution_id: executionId, node_client_id: nodeId, level, message, data: data || null,
     });
@@ -857,6 +859,7 @@ Deno.serve(async (req) => {
     status: finalStatus,
     output_data: { text: lastText },
     tokens_used: totalTokens,
+    error_message: failed ? (lastError || 'Run failed') : null,
     completed_at: new Date().toISOString(),
   }).eq('id', executionId);
 
