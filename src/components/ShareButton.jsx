@@ -20,19 +20,40 @@ export default function ShareButton({ type, id, title = '', variant = 'icon' }) 
   const t = useT();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [pos, setPos] = useState(null); // {top,left} — плавающее меню поверх всего
   const ref = useRef(null);
+  const btnRef = useRef(null);
 
   const url = buildShareUrl({ type, id });
   const targets = shareTargets(url, title);
   const canNative = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
 
+  const MENU_W = 208;
+  const toggle = () => {
+    if (open) { setOpen(false); return; }
+    const r = btnRef.current?.getBoundingClientRect();
+    if (r) {
+      const left = Math.max(8, Math.min(r.right - MENU_W, window.innerWidth - MENU_W - 8));
+      setPos({ top: r.bottom + 6, left });
+    }
+    setOpen(true);
+  };
+
   useEffect(() => {
     if (!open) return undefined;
     const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    const onKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    const onKey = (e) => { if (e.key === 'Escape') { e.stopPropagation(); setOpen(false); } };
+    const onScrollResize = () => setOpen(false); // меню фиксированное — закрываем при сдвиге
     document.addEventListener('mousedown', onDoc);
-    document.addEventListener('keydown', onKey);
-    return () => { document.removeEventListener('mousedown', onDoc); document.removeEventListener('keydown', onKey); };
+    document.addEventListener('keydown', onKey, true);
+    window.addEventListener('scroll', onScrollResize, true);
+    window.addEventListener('resize', onScrollResize);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey, true);
+      window.removeEventListener('scroll', onScrollResize, true);
+      window.removeEventListener('resize', onScrollResize);
+    };
   }, [open]);
 
   const copy = async () => {
@@ -57,9 +78,10 @@ export default function ShareButton({ type, id, title = '', variant = 'icon' }) 
   return (
     <div className="share" ref={ref}>
       <button
+        ref={btnRef}
         type="button"
         className={`share__btn ${variant === 'text' ? 'share__btn--text' : ''}`}
-        onClick={() => setOpen(v => !v)}
+        onClick={toggle}
         aria-expanded={open}
         aria-haspopup="menu"
         title={t('share.button') || 'Поделиться'}
@@ -70,7 +92,11 @@ export default function ShareButton({ type, id, title = '', variant = 'icon' }) 
       </button>
 
       {open && (
-        <div className="share__menu" role="menu">
+        <div
+          className="share__menu"
+          role="menu"
+          style={pos ? { position: 'fixed', top: pos.top, left: pos.left, right: 'auto' } : undefined}
+        >
           {canNative && (
             <button type="button" className="share__item" role="menuitem" onClick={native}>
               <Icon name="send" size={14} strokeWidth={1.6} />

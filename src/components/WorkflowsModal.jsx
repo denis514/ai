@@ -494,9 +494,7 @@ function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate, 
         const isOpen = openId === path.id;
         return (
           <div key={path.id} id={`lp-${path.id}`} className={`path ${isOpen ? 'is-open' : ''}`}>
-            <span className="path__share" onClick={(e) => e.stopPropagation()}>
-              <ShareButton type="path" id={path.id} title={path.title} />
-            </span>
+            <div className="path__row">
             <button
               type="button"
               className="path__head"
@@ -525,10 +523,21 @@ function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate, 
                   <span className="path__progress-bar" style={{ width: `${percent}%` }} />
                 </span>
               </span>
-              <span className="path__cta" aria-hidden="true">
-                <Icon name={isOpen ? 'minus' : 'plus'} size={16} strokeWidth={1.75} />
-              </span>
             </button>
+            <div className="path__aside">
+              <span className="path__share-wrap" onClick={(e) => e.stopPropagation()}>
+                <ShareButton type="path" id={path.id} title={path.title} />
+              </span>
+              <button
+                type="button"
+                className="path__cta"
+                onClick={() => setOpenId(isOpen ? null : path.id)}
+                aria-label={isOpen ? (t('common.collapse') || 'Свернуть') : (t('common.expand') || 'Развернуть')}
+              >
+                <Icon name={isOpen ? 'minus' : 'plus'} size={16} strokeWidth={1.75} />
+              </button>
+            </div>
+            </div>
 
             {isOpen && (
               <ol className="path__steps">
