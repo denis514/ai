@@ -1338,6 +1338,38 @@ export const tutorials = {
         "id": "be-6"
       }
     ]
+  },
+  "remote-computer-for-claude": {
+    "nodeId": "sys-agent-sandbox",
+    "icon": "laptop",
+    "level": "advanced",
+    "audience": "developers",
+    "prerequisites": [
+      "api-basics"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agents",
+      "mcp"
+    ],
+    "steps": [
+      { "id": "rcc-1" },
+      { "id": "rcc-2" },
+      { "id": "rcc-3" },
+      { "id": "rcc-4" },
+      { "id": "rcc-5" },
+      { "id": "rcc-6" },
+      { "id": "rcc-7" },
+      { "id": "rcc-8" },
+      { "id": "rcc-9" },
+      { "id": "rcc-10" },
+      { "id": "rcc-11" },
+      { "id": "rcc-12" },
+      { "id": "rcc-13" },
+      { "id": "rcc-14" },
+      { "id": "rcc-15" },
+      { "id": "rcc-16" }
+    ]
   }
 };
 

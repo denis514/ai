@@ -1681,5 +1681,77 @@
     "impact": "Across the whole direction the expected shifts: PDP time-to-publish 4h → 5min, search conversion +20-40%, average recommendation quality +30%, support load −50% on tier-1, time-to-insight on data days → hours.\n\nKey point — measurability: every rollout can be counted in revenue within 90 days.",
     "example": "15 nodes in the direction, grouped by value stream:\n\n**Catalog:** [[node:ec-pdp-gen|AI PDP Generation]], [[node:ec-search-opt|AI Search]], [[node:ec-merchandising|AI Merchandising]], [[node:ec-recommendations|AI Recommendations]]\n\n**Conversion:** [[node:ec-cro|AI CRO]], [[node:ec-experimentation|AI Experimentation]], [[node:ec-checkout-opt|AI Checkout Optimization]], [[node:ec-personalization|AI Personalization]]\n\n**Operations:** [[node:ec-support|AI Commerce Support]], [[node:ec-loyalty|AI Loyalty]], [[node:ec-analytics|AI Analytics]], [[node:ec-pricing|AI Pricing]], [[node:ec-inventory|AI Inventory]], [[node:ec-segmentation|AI Segmentation]]\n\n**Team:** [[node:ec-team-workflow|Team Workflow]]",
     "mistakes": "The main mistake — trying \"everything at once\". 15 nodes = a map of possibilities, not an adoption roadmap. Start with one node, give it 60-90 days, count ROI, then expand.\n\nSecond mistake: AI generation with no quality gate. On a 10k SKU catalog a badly tuned AI will produce 10k bad cards in an hour — worse than 100 good manual ones. A quality gate is mandatory.\n\nThird: not localizing brand voice. Generic AI-English on a Finnish or Russian market is spotted by shoppers instantly."
+  },
+  "sas-why-isolation": {
+    "title": "Why a separate machine",
+    "what": "Principle: an agent with computer access should live in an isolated environment, not where your personal data and credentials are.",
+    "why": "An AI agent can err, misread a task or be attacked via malicious content — isolation limits the damage to one box.",
+    "when": "Always when the agent performs system actions autonomously, not just writes text.",
+    "impact": "Turns a potentially catastrophic mistake into a manageable, reversible incident.",
+    "example": "The agent deletes files by mistake — but they belong to an empty VM, not your working project.",
+    "mistakes": "Assuming “I'm watching it” is enough: scheduled and fast actions leave no time to intervene."
+  },
+  "sas-docker-computer-use": {
+    "title": "Reference: Computer Use in Docker",
+    "what": "Anthropic's official approach: a ready Docker container with a virtual desktop (Linux + noVNC) where Claude clicks and types while you watch via the browser.",
+    "why": "The fastest safe start: everything is already isolated in the container, nothing is installed on your real computer.",
+    "when": "For testing and production computer use when you need a predictable, reproducible desktop.",
+    "impact": "A ready sandbox in minutes instead of manually setting up a VM and permissions.",
+    "example": "You start the computer-use container, open the agent's screen in the browser and give a task — Claude acts only inside the container.",
+    "mistakes": "Mounting personal folders or real secrets into the container — that defeats the isolation."
+  },
+  "sas-vm-vps": {
+    "title": "Cloud VM or dedicated PC",
+    "what": "A separate cloud virtual machine (VPS) or an old physical computer dedicated solely to the agent.",
+    "why": "Full isolation from your work environment plus the ability to keep the machine on 24/7 for scheduled runs.",
+    "when": "When the agent needs a permanent “home”, or a container isn't enough and a full desktop or software is required.",
+    "impact": "The agent works even when your computer is off, without any access to it.",
+    "example": "A cheap cloud server with a virtual desktop; the agent and its browser live there.",
+    "mistakes": "Using the company's work server that has access to internal systems — isolation is lost."
+  },
+  "sas-least-privilege": {
+    "title": "Least privilege",
+    "what": "The agent runs under a separate account without admin rights and without access to personal files or other people's data.",
+    "why": "Even if something goes wrong, the agent physically cannot harm anything beyond the minimal rights granted.",
+    "when": "In any agent environment setup — set once when creating the account.",
+    "impact": "Limits the blast radius of a mistake or breach to the little the agent actually needs.",
+    "example": "A separate user without sudo, an empty home folder, and access only to the task's working directory.",
+    "mistakes": "Running the agent as admin “to avoid fiddling with permissions” — the most common and dangerous shortcut."
+  },
+  "sas-network-isolation": {
+    "title": "Network isolation and allowlist",
+    "what": "Limiting where the agent's machine can go on the network: a firewall plus a list of allowed domains (allowlist).",
+    "why": "Prevents the agent from leaking data to a foreign address, reaching the internal network, or downloading something harmful.",
+    "when": "When the agent has internet access or sits near internal systems.",
+    "impact": "Narrows the attack surface: even a compromised agent can only reach allowed addresses.",
+    "example": "Only the API domains and a couple of work sites are allowed; all other traffic is blocked by the firewall.",
+    "mistakes": "Leaving the full open internet and local-network access enabled “just in case”."
+  },
+  "sas-secrets": {
+    "title": "One-time accounts and secrets",
+    "what": "The agent gets not your real passwords but one-time or limited accounts and tokens via environment variables, not typed by hand.",
+    "why": "Real passwords in an agent's hands are a leak waiting to happen; limited tokens are easy to revoke.",
+    "when": "Every time the agent needs access to a service or to log in somewhere.",
+    "impact": "A compromised agent doesn't mean losing your main credentials — revoke the token and you're done.",
+    "example": "A test account with minimal rights and a read-only token issued just for the duration of the task.",
+    "mistakes": "Asking the agent to “log in with your password”, or storing secrets right in the instruction text."
+  },
+  "sas-snapshots-killswitch": {
+    "title": "Snapshots, rollback and kill-switch",
+    "what": "The ability to instantly restore the environment to a clean state (a snapshot) and to stop the agent in an emergency, plus spending caps.",
+    "why": "Gives reversibility and control: whatever happens, the environment is rolled back and the agent stopped with one button.",
+    "when": "For any autonomous and long-running tasks, especially scheduled ones.",
+    "impact": "Any incident stops being irreversible — it is just a rollback to a snapshot.",
+    "example": "A snapshot is taken before the run; after a failure the environment is rolled back; on token overspend a cap triggers a stop.",
+    "mistakes": "Having neither rollback nor caps — then a failure turns into a long manual cleanup and wasted spend."
+  },
+  "sas-remote-access": {
+    "title": "Remote access to the environment",
+    "what": "Ways to connect to the agent's machine: SSH (command line), RDP/VNC (desktop), or browser-based noVNC.",
+    "why": "You need to observe the agent, intervene and check the result without physically sitting at that machine.",
+    "when": "When the environment is remote (cloud or a dedicated PC) or a container on another host.",
+    "impact": "Full control and observation of the agent from anywhere — and the ability to step in quickly.",
+    "example": "You open the agent's screen in the browser via noVNC and see in real time what it is doing.",
+    "mistakes": "Exposing remote access to the internet without a password/key and IP restriction — a direct path to getting the machine hacked."
   }
 }

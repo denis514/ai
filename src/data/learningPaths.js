@@ -490,7 +490,8 @@ export const learningPaths = [
       { "type": "node", "id": "sas-network-isolation" },
       { "type": "node", "id": "sas-secrets" },
       { "type": "node", "id": "sas-snapshots-killswitch" },
-      { "type": "node", "id": "sas-remote-access" }
+      { "type": "node", "id": "sas-remote-access" },
+      { "type": "tutorial", "id": "remote-computer-for-claude" }
     ]
   }
 ];
