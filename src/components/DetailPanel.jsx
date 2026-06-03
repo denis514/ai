@@ -386,6 +386,7 @@ export default function DetailPanel({
               />
             </button>
           )}
+          <ShareButton type="node" id={node.id} title={title} />
           <button type="button" className="detail__close" onClick={onClose} aria-label={t('detail.closePanel')}>
             <Icon name="close" size={18} strokeWidth={1.75} />
           </button>
