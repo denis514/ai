@@ -339,6 +339,7 @@ export default function DetailPanel({
         onClose={onClose}
         title={title}
         kicker={catLabel}
+        accent={cat.color}
         icon={node.icon || 'sparkles'}
         footer={footer}
         className="bsheet--detail"

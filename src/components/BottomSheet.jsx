@@ -28,6 +28,7 @@ export default function BottomSheet({
   onClose,
   title,
   kicker,
+  accent,
   icon,
   children,
   footer,
@@ -75,7 +76,7 @@ export default function BottomSheet({
       <div
         className="bsheet"
         ref={sheetRef}
-        style={dragY > 0 ? { transform: `translateY(${dragY}px)` } : undefined}
+        style={{ ...(accent ? { '--cat-color': accent } : {}), ...(dragY > 0 ? { transform: `translateY(${dragY}px)` } : {}) }}
       >
         {/* Swipe-зона: handle + header. Расширили с маленького handle на всю
             верхнюю зону sheet — стандартный iOS-pattern. Content (.bsheet__body)
