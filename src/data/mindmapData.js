@@ -1926,6 +1926,27 @@ export const mindmapData = {
               ]
             }
           ]
+        },
+        {
+          "id": "sys-agent-sandbox",
+          "icon": "robot",
+          "category": "systems",
+          "relatedIds": [
+            "cap-computer",
+            "agents",
+            "sys-rate-limiting",
+            "m-security"
+          ],
+          "children": [
+            { "id": "sas-why-isolation", "icon": "shield", "category": "systems", "relatedIds": ["cap-computer"] },
+            { "id": "sas-docker-computer-use", "icon": "laptop", "category": "systems", "relatedIds": ["cap-computer"] },
+            { "id": "sas-vm-vps", "icon": "globe", "category": "systems" },
+            { "id": "sas-least-privilege", "icon": "lock", "category": "systems", "relatedIds": ["m-security"] },
+            { "id": "sas-network-isolation", "icon": "link", "category": "systems" },
+            { "id": "sas-secrets", "icon": "lock", "category": "systems", "relatedIds": ["sas-least-privilege"] },
+            { "id": "sas-snapshots-killswitch", "icon": "flash", "category": "systems", "relatedIds": ["sys-rollback-strategies"] },
+            { "id": "sas-remote-access", "icon": "terminal", "category": "systems" }
+          ]
         }
       ]
     },

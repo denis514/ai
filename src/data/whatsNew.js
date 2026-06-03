@@ -49,6 +49,15 @@ export const WHATS_NEW = {
   'folders-workshop': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
+  'sys-agent-sandbox': { date: '2026-06-03', type: 'new' },
+  'sas-why-isolation': { date: '2026-06-03', type: 'new' },
+  'sas-docker-computer-use': { date: '2026-06-03', type: 'new' },
+  'sas-vm-vps': { date: '2026-06-03', type: 'new' },
+  'sas-least-privilege': { date: '2026-06-03', type: 'new' },
+  'sas-network-isolation': { date: '2026-06-03', type: 'new' },
+  'sas-secrets': { date: '2026-06-03', type: 'new' },
+  'sas-snapshots-killswitch': { date: '2026-06-03', type: 'new' },
+  'sas-remote-access': { date: '2026-06-03', type: 'new' },
   'cap-tools': { date: '2026-05-27', type: 'updated' },
   'cap-thinking': { date: '2026-05-27', type: 'updated' },
   'cap-memory': { date: '2026-05-27', type: 'updated' },
