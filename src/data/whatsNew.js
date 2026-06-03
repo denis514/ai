@@ -55,7 +55,7 @@ export const WHATS_NEW = {
   'sas-docker-computer-use': { date: '2026-06-03', type: 'new' },
   'sas-vm-vps': { date: '2026-06-03', type: 'new' },
   'sas-least-privilege': { date: '2026-06-03', type: 'new' },
-  'sas-network-isolation': { date: '2026-06-03', type: 'new' },
+  'sas-network-isolation': { date: '2026-06-03', type: 'updated' },
   'sas-secrets': { date: '2026-06-03', type: 'new' },
   'sas-snapshots-killswitch': { date: '2026-06-03', type: 'new' },
   'sas-remote-access': { date: '2026-06-03', type: 'new' },

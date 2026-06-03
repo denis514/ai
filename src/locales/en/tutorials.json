@@ -5724,6 +5724,7 @@
         "why": "A key in code or command history is a leak. See [[node:sas-secrets|one-time accounts and secrets]].",
         "instructions": [
           "Put the key in an environment variable: `export ANTHROPIC_API_KEY=sk-...` (Linux/Mac).",
+          "Windows: set it via `setx ANTHROPIC_API_KEY \"sk-...\"` and open a new terminal window.",
           "Don't write the key directly into commands that end up in history or scripts.",
           "Never commit the key to git and never show it to the agent in a task."
         ],
@@ -5734,8 +5735,8 @@
         "time": "15 min",
         "why": "This is Anthropic's official sandbox: the desktop and agent are already inside, nothing is installed on your system.",
         "instructions": [
-          "Open the anthropic-quickstarts repo → the computer-use-demo folder (it has the current command and image version).",
-          "Run the container, passing the key via the environment, e.g.: `docker run -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -p 8080:8080 -it <computer-use-demo-image>`.",
+          "Open the anthropic-quickstarts repo → the computer-use-demo folder — it has the current command, image name and ports (they can change).",
+          "Run the container, passing the key via the environment. Roughly: `docker run -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -p 8080:8080 -it <computer-use-demo-image>` — take the exact ports from the README.",
           "Wait for the container to come up (the interface address appears in the logs)."
         ],
         "validate": "The container is running, with no errors about the key or ports in the logs."
@@ -5745,9 +5746,9 @@
         "time": "5 min",
         "why": "Through the browser (noVNC) you see the agent's screen — your “CCTV”. See [[node:sas-remote-access|remote access]].",
         "instructions": [
-          "Open http://localhost:8080 in the browser (the port from the launch command).",
+          "Open the interface address from the README or launch logs in the browser (usually one combined URL, e.g. http://localhost:8080).",
           "On the left — the chat with the agent; on the right — the virtual desktop.",
-          "If it won't open — check the port is published (`-p 8080:8080`) and not in use."
+          "If it won't open — check the needed port is published (`-p ...`) and not in use."
         ],
         "validate": "You see the agent's desktop and a task field in the browser."
       },
@@ -5790,8 +5791,8 @@
         "why": "So the agent can't leak data or go where it shouldn't. See [[node:sas-network-isolation|network isolation]].",
         "instructions": [
           "To start, don't give the container access to your local network or router.",
-          "If a task doesn't need the internet — run with a restricted network.",
-          "When internet is needed — keep a list of allowed sites (an allowlist) as the goal."
+          "If a task doesn't need the internet — run the container with `--network none`.",
+          "When internet is needed — keep a list of allowed sites (an allowlist) via a proxy/firewall as the goal."
         ],
         "validate": "You understand what network access the environment has, and it is the minimum needed."
       },

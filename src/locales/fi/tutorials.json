@@ -5730,6 +5730,7 @@
         "why": "Avain koodissa tai komentohistoriassa on vuoto. Katso [[node:sas-secrets|kertakäyttöiset tilit ja salaisuudet]].",
         "instructions": [
           "Laita avain ympäristömuuttujaan: `export ANTHROPIC_API_KEY=sk-...` (Linux/Mac).",
+          "Windows: aseta se komennolla `setx ANTHROPIC_API_KEY \"sk-...\"` ja avaa uusi pääteikkuna.",
           "Älä kirjoita avainta suoraan komentoihin, jotka päätyvät historiaan tai skripteihin.",
           "Älä koskaan tallenna avainta gitiin äläkä näytä sitä agentille tehtävässä."
         ],
@@ -5740,8 +5741,8 @@
         "time": "15 min",
         "why": "Tämä on Anthropicin virallinen hiekkalaatikko: työpöytä ja agentti ovat jo sisällä, mitään ei asenneta järjestelmääsi.",
         "instructions": [
-          "Avaa anthropic-quickstarts-repositorio → computer-use-demo-kansio (siellä on ajantasainen komento ja kuvan versio).",
-          "Aja kontti välittäen avain ympäristön kautta, esim.: `docker run -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -p 8080:8080 -it <computer-use-demo-kuva>`.",
+          "Avaa anthropic-quickstarts-repositorio → computer-use-demo-kansio — siellä on ajantasainen komento, kuvan nimi ja portit (voivat muuttua).",
+          "Aja kontti välittäen avain ympäristön kautta. Suunnilleen näin: `docker run -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -p 8080:8080 -it <computer-use-demo-kuva>` — tarkat portit README:stä.",
           "Odota, että kontti nousee (käyttöliittymän osoite ilmestyy lokeihin)."
         ],
         "validate": "Kontti on käynnissä, eikä lokeissa ole virheitä avaimesta tai porteista."
@@ -5751,9 +5752,9 @@
         "time": "5 min",
         "why": "Selaimen (noVNC) kautta näet agentin näytön — se on ”valvontakamerasi”. Katso [[node:sas-remote-access|etäkäyttö]].",
         "instructions": [
-          "Avaa selaimessa http://localhost:8080 (portti käynnistyskomennosta).",
+          "Avaa selaimessa käyttöliittymän osoite README:stä tai käynnistyslokeista (yleensä yksi yhdistetty URL, esim. http://localhost:8080).",
           "Vasemmalla — keskustelu agentin kanssa; oikealla — virtuaalityöpöytä.",
-          "Jos ei aukea — tarkista, että portti on julkaistu (`-p 8080:8080`) eikä varattu."
+          "Jos ei aukea — tarkista, että tarvittava portti on julkaistu (`-p ...`) eikä varattu."
         ],
         "validate": "Näet agentin työpöydän ja tehtäväkentän selaimessa."
       },
@@ -5796,8 +5797,8 @@
         "why": "Jotta agentti ei vuoda dataa eikä mene minne ei pidä. Katso [[node:sas-network-isolation|verkkoeristys]].",
         "instructions": [
           "Älä aluksi anna kontille pääsyä lähiverkkoosi tai reitittimeen.",
-          "Jos tehtävä ei tarvitse internetiä — aja rajoitetulla verkolla.",
-          "Kun internet tarvitaan — pidä tavoitteena sallittujen sivustojen lista (allowlist)."
+          "Jos tehtävä ei tarvitse internetiä — aja kontti `--network none` -valinnalla.",
+          "Kun internet tarvitaan — pidä tavoitteena sallittujen sivustojen lista (allowlist) välityspalvelimen/palomuurin kautta."
         ],
         "validate": "Ymmärrät, mikä verkkopääsy ympäristöllä on, ja se on minimissään tarpeellinen."
       },
