@@ -13,6 +13,7 @@
 | `builder-execute` | `supabase/functions/builder-execute/` | Единая точка исполнения схемы (ручной запуск И автозапуск). Вызывает Anthropic Messages API, доставляет в Telegram/Email/Calendar. |
 | `builder-scheduler` | `supabase/functions/builder-scheduler/` | Серверный планировщик. Вызывается по cron (pg_cron) раз в минуту, находит «созревшие» расписания и дёргает `builder-execute` в сервисном режиме. |
 | `builder-mcp-manage` | `supabase/functions/builder-mcp-manage/` | Добавление/удаление MCP-серверов пользователя. |
+| `builder-webhook` | `supabase/functions/builder-webhook/` | Публичный триггер: POST на `/builder-webhook/<token>` запускает схему (сервисный режим). Тело запроса → input/variables, иначе задача из «Старта». Анти-флуд 5с + защита кошелька. Таблица `builder_webhooks` (миграция 007). Деплой `--no-verify-jwt`. |
 | `realExecutor.js` | `src/builder/services/` | Клиент: ручной запуск из браузера + Realtime-подписка на логи. |
 | `scheduleService.js` | `src/builder/services/` | CRUD расписаний, `getTodayUsage()`, `disableAllSchedules()`. |
 
@@ -148,6 +149,7 @@ supabase functions deploy builder-execute                      # JWT-прове�
 supabase functions deploy builder-scheduler --no-verify-jwt    # дёргает cron без JWT
 supabase functions deploy builder-mcp-manage                   # JWT-проверка ВКЛ
 supabase functions deploy builder-gcal-callback --no-verify-jwt
+supabase functions deploy builder-webhook --no-verify-jwt       # публичный триггер
 ```
 > Любая правка `builder-execute` (движок, веб, лимиты, кошелёк) → **обязательный
 > редеплой `builder-execute`**. Правка планировщика → редеплой `builder-scheduler

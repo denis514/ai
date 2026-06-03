@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 import { listSchedules, createSchedule, toggleSchedule, deleteSchedule } from '../../services/scheduleService.js';
+import { getWebhook, ensureWebhook, toggleWebhook, regenerateWebhook, deleteWebhook, webhookUrl } from '../../services/webhookService.js';
 import { toast } from '../Toast.jsx';
 import Skeleton, { SkeletonList } from '../Skeleton.jsx';
 
@@ -25,11 +26,44 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   const [showHelp, setShowHelp] = useState(false);
   const [pending, setPending] = useState(false); // показать экран подтверждения
 
+  const [hook, setHook] = useState(undefined); // undefined=загрузка, null=нет, obj=есть
+  const [hookBusy, setHookBusy] = useState(false);
+
   const refresh = useCallback(() => {
     listSchedules(workflowId).then(setItems).catch(() => { setItems([]); });
+    getWebhook(workflowId).then(setHook).catch(() => setHook(null));
   }, [workflowId]);
 
   useEffect(() => { refresh(); }, [refresh]);
+
+  const onCreateHook = async () => {
+    setHookBusy(true);
+    try { setHook(await ensureWebhook(workflowId, { locale })); toast.success(t('builder.webhook.created') || 'Ссылка-вебхук создана'); }
+    catch (e) { toast.error((t('builder.webhook.err') || 'Не удалось создать ссылку') + (e?.message ? ` (${e.message})` : '')); }
+    finally { setHookBusy(false); }
+  };
+  const onToggleHook = async () => {
+    if (!hook) return;
+    setHookBusy(true);
+    try { await toggleWebhook(hook.id, !hook.enabled); setHook({ ...hook, enabled: !hook.enabled }); }
+    catch { /* */ } finally { setHookBusy(false); }
+  };
+  const onRegenHook = async () => {
+    if (!hook) return;
+    setHookBusy(true);
+    try { const token = await regenerateWebhook(hook.id); setHook({ ...hook, token }); toast.success(t('builder.webhook.regen') || 'Ссылка обновлена — старая больше не работает'); }
+    catch { /* */ } finally { setHookBusy(false); }
+  };
+  const onDeleteHook = async () => {
+    if (!hook) return;
+    setHookBusy(true);
+    try { await deleteWebhook(hook.id); setHook(null); }
+    catch { /* */ } finally { setHookBusy(false); }
+  };
+  const onCopyHook = async () => {
+    try { await navigator.clipboard.writeText(webhookUrl(hook?.token)); toast.success(t('common.copied') || 'Скопировано'); }
+    catch { /* */ }
+  };
 
   // Шаг 1: показ подтверждения (без записи). Задачу не спрашиваем — она берётся
   // из узла «Старт» схемы при каждом запуске («строго как на холсте»).
@@ -210,6 +244,46 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
               </button>
             </div>
           ))}
+        </div>
+
+        {/* Вебхук — запуск схемы по внешнему событию (секретная ссылка) */}
+        <div className="builder-webhook">
+          <div className="builder-webhook__head">
+            <Icon name="link" size={14} strokeWidth={1.6} />
+            <span>{t('builder.webhook.title') || 'Вебхук — запуск извне'}</span>
+          </div>
+          <p className="builder-webhook__lead">
+            {t('builder.webhook.lead') || 'Секретная ссылка: POST-запрос на неё запускает схему. Данные запроса станут задачей (иначе — текст «Старта»).'}
+          </p>
+          {hook === undefined && <SkeletonList rows={1} />}
+          {hook === null && (
+            <button type="button" className="builder-btn builder-btn--primary" onClick={onCreateHook} disabled={hookBusy}>
+              <Icon name="plus" size={14} strokeWidth={1.75} />
+              <span>{t('builder.webhook.create') || 'Создать ссылку-вебхук'}</span>
+            </button>
+          )}
+          {hook && (
+            <>
+              <div className={`builder-webhook__url ${hook.enabled ? '' : 'is-off'}`}>
+                <input type="text" readOnly value={hook.enabled ? webhookUrl(hook.token) : (t('builder.webhook.disabled') || 'Выключен — включите, чтобы получить ссылку')} onFocus={(e) => e.target.select()} />
+                <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={onCopyHook} disabled={!hook.enabled} aria-label={t('common.copy') || 'Копировать'}>
+                  <Icon name="clipboard" size={13} strokeWidth={1.6} />
+                </button>
+              </div>
+              <div className="builder-webhook__actions">
+                <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={onToggleHook} disabled={hookBusy}>
+                  {hook.enabled ? (t('builder.schedule.pause') || 'Пауза') : (t('builder.schedule.resume') || 'Включить')}
+                </button>
+                <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={onRegenHook} disabled={hookBusy}>
+                  <Icon name="refresh" size={13} strokeWidth={1.6} />
+                  <span>{t('builder.webhook.regen_btn') || 'Новая ссылка'}</span>
+                </button>
+                <button type="button" className="builder-btn builder-btn--ghost builder-btn--small builder-schedule__del" onClick={onDeleteHook} disabled={hookBusy} aria-label={t('common.delete') || 'Удалить'}>
+                  <Icon name="trash" size={13} strokeWidth={1.6} />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
