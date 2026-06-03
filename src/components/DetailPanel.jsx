@@ -122,54 +122,45 @@ export default function DetailPanel({
 
   const metaBlock = (
     <>
-      {(bookmarksApi || nodeProgressApi) && (
-        <div className="detail__meta">
-          <span className="detail__cat detail__cat--inline" style={{ '--cat-color': cat.color }}>
-            {catLabel}
-          </span>
+      {(nodeProgressApi || bookmarksApi) && (
+        <div className="detail__progress" role="group" aria-label={t('detail.progress.aria')}>
           {bookmarksApi && (
             <button
               type="button"
-              className={`detail__bookmark detail__bookmark--inline ${bookmarkOn ? 'is-on' : ''}`}
+              className={`detail__progress-btn detail__progress-btn--bookmark ${bookmarkOn ? 'is-on' : ''}`}
               onClick={handleBookmarkToggle}
-              aria-label={bookmarkOn ? t('detail.bookmark.remove') : t('detail.bookmark.add')}
               title={bookmarkOn ? t('detail.bookmark.added') : t('detail.bookmark.toAdd')}
             >
-              <Icon
-                name={bookmarkOn ? 'bookmark-filled' : 'bookmark'}
-                size={16}
-                strokeWidth={1.5}
-              />
+              <Icon name={bookmarkOn ? 'bookmark-filled' : 'bookmark'} size={15} strokeWidth={1.75} />
             </button>
           )}
-          <ShareButton type="node" id={node.id} title={title} />
-        </div>
-      )}
-
-      {nodeProgressApi && (
-        <div className="detail__progress" role="group" aria-label={t('detail.progress.aria')}>
-          <button
-            type="button"
-            className={`detail__progress-btn ${nodeProgressApi.getStatus(node.id) === 'viewed' ? 'is-on' : ''}`}
-            onClick={() => nodeProgressApi.setStatus(
-              node.id,
-              nodeProgressApi.getStatus(node.id) === 'viewed' ? null : 'viewed'
-            )}
-            title={t('detail.progress.viewedTitle')}
-          >
-            <Icon name="check" size={15} strokeWidth={1.75} />
-          </button>
-          <button
-            type="button"
-            className={`detail__progress-btn detail__progress-btn--review ${nodeProgressApi.getStatus(node.id) === 'review' ? 'is-on' : ''}`}
-            onClick={() => nodeProgressApi.setStatus(
-              node.id,
-              nodeProgressApi.getStatus(node.id) === 'review' ? null : 'review'
-            )}
-            title={t('detail.progress.reviewTitle')}
-          >
-            <Icon name="book-open" size={15} strokeWidth={1.75} />
-          </button>
+          {nodeProgressApi && (
+            <>
+              <button
+                type="button"
+                className={`detail__progress-btn ${nodeProgressApi.getStatus(node.id) === 'viewed' ? 'is-on' : ''}`}
+                onClick={() => nodeProgressApi.setStatus(
+                  node.id,
+                  nodeProgressApi.getStatus(node.id) === 'viewed' ? null : 'viewed'
+                )}
+                title={t('detail.progress.viewedTitle')}
+              >
+                <Icon name="check" size={15} strokeWidth={1.75} />
+              </button>
+              <button
+                type="button"
+                className={`detail__progress-btn detail__progress-btn--review ${nodeProgressApi.getStatus(node.id) === 'review' ? 'is-on' : ''}`}
+                onClick={() => nodeProgressApi.setStatus(
+                  node.id,
+                  nodeProgressApi.getStatus(node.id) === 'review' ? null : 'review'
+                )}
+                title={t('detail.progress.reviewTitle')}
+              >
+                <Icon name="book-open" size={15} strokeWidth={1.75} />
+              </button>
+            </>
+          )}
+          <ShareButton type="node" id={node.id} title={title} variant="icon" />
         </div>
       )}
 
@@ -347,6 +338,7 @@ export default function DetailPanel({
         isOpen={isOpen}
         onClose={onClose}
         title={title}
+        kicker={catLabel}
         icon={node.icon || 'sparkles'}
         footer={footer}
         className="bsheet--detail"

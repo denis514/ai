@@ -27,6 +27,7 @@ export default function BottomSheet({
   isOpen,
   onClose,
   title,
+  kicker,
   icon,
   children,
   footer,
@@ -101,7 +102,10 @@ export default function BottomSheet({
                 <Icon name={icon} size={20} strokeWidth={1.5} />
               </span>
             )}
-            <h3 className="bsheet__title">{title}</h3>
+            <div className="bsheet__heading">
+              {kicker && <span className="bsheet__kicker">{kicker}</span>}
+              <h3 className="bsheet__title">{title}</h3>
+            </div>
             <button
               type="button"
               className="bsheet__close"

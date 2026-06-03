@@ -3311,7 +3311,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .bsheet__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   padding: 4px 18px 14px;
   border-bottom: 1px solid var(--border);
@@ -3319,6 +3319,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .bsheet__icon {
   width: 32px;
   height: 32px;
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3326,12 +3327,20 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   background: var(--accent-soft);
   color: var(--accent);
 }
+.bsheet__heading { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.bsheet__kicker {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cat-color, var(--accent));
+}
 .bsheet__title {
   margin: 0;
-  flex: 1;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
 }
 .bsheet__close {
   width: 32px;
