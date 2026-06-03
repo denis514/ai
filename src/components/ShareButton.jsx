@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { buildShareUrl, shareTargets } from '../utils/shareUrl.js';
@@ -23,6 +24,7 @@ export default function ShareButton({ type, id, title = '', variant = 'icon' }) 
   const [pos, setPos] = useState(null); // {top,left} — плавающее меню поверх всего
   const ref = useRef(null);
   const btnRef = useRef(null);
+  const menuRef = useRef(null);
 
   const url = buildShareUrl({ type, id });
   const targets = shareTargets(url, title);
@@ -41,7 +43,10 @@ export default function ShareButton({ type, id, title = '', variant = 'icon' }) 
 
   useEffect(() => {
     if (!open) return undefined;
-    const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const onDoc = (e) => {
+      if (ref.current?.contains(e.target) || menuRef.current?.contains(e.target)) return;
+      setOpen(false);
+    };
     const onKey = (e) => { if (e.key === 'Escape') { e.stopPropagation(); setOpen(false); } };
     const onScrollResize = () => setOpen(false); // меню фиксированное — закрываем при сдвиге
     document.addEventListener('mousedown', onDoc);
@@ -91,11 +96,12 @@ export default function ShareButton({ type, id, title = '', variant = 'icon' }) 
         {variant === 'text' && <span>{t('share.button') || 'Поделиться'}</span>}
       </button>
 
-      {open && (
+      {open && createPortal(
         <div
+          ref={menuRef}
           className="share__menu"
           role="menu"
-          style={pos ? { position: 'fixed', top: pos.top, left: pos.left, right: 'auto' } : undefined}
+          style={{ position: 'fixed', top: pos?.top ?? 0, left: pos?.left ?? 0, right: 'auto' }}
         >
           {canNative && (
             <button type="button" className="share__item" role="menuitem" onClick={native}>
@@ -119,7 +125,8 @@ export default function ShareButton({ type, id, title = '', variant = 'icon' }) 
             <Icon name="mail" size={14} strokeWidth={1.6} />
             <span>{t('share.email') || 'Почта'}</span>
           </button>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
