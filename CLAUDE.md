@@ -366,8 +366,15 @@ Claude **обязан** написать короткий итог.
 
 Порядок внутри сессии:
 ```
-выполнил задачу → git push → обновил tasks/current.md → git push tasks
+выполнил задачу → quality-gate (PASS) → git push → обновил tasks/current.md → git push tasks
 ```
+
+**Барьер качества (ОБЯЗАТЕЛЬНО перед push кода):** для изменений кода
+(`src/`, `supabase/functions/`, миграции, конфиги) перед `git push` прогнать
+`skills/quality-gate/` — команда ревьюеров по затронутым сегментам → адвокат
+дьявола → судья. Вердикт **BLOCK** = НЕ пушить, сперва исправить блокеры.
+Исключение: правки только контента/доков (Atlas-узлы, локали, `docs/`, `tasks/`)
+— достаточно build + sync-whats-new, барьер не обязателен.
 
 **Никогда не:**
 - создавать новый React-проект поверх существующего
@@ -435,6 +442,10 @@ Claude **обязан** написать короткий итог.
 | Еженедельный strategic review          | `node scripts/weekly-strategy-review.mjs` |
 | **Agent Builder — стратегия + планы**  | `docs/agent-builder/`      |
 | Серверное исполнение, автозапуск, лимиты, защита кошелька | `docs/agent-builder/15-server-execution-and-autorun.md` |
+| **Барьер качества перед push (команда ревью + судья)** | `skills/quality-gate/` |
+| Ревью движка (edge/исполнение/траты)   | `skills/engine-reviewer/`  |
+| Ревью безопасности (RLS/секреты/миграции) | `skills/security-reviewer/` |
+| Судья-арбитр PASS/BLOCK                 | `skills/code-judge/`       |
 | Проектирование agents и workflow       | `skills/agent-architecture/` |
 | Добавить/изменить узел Builder, правила связей, шаблон | `skills/builder-node-architect/` (+ `npm run lint:builder`) |
 | Модель способностей узлов и совместимости | `docs/agent-builder/10-node-capability-model.md` + ADR-0007 |
