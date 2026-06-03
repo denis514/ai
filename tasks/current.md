@@ -150,8 +150,12 @@
   переведено на EN/FI, вычитано language-pedagogue (PASS). Commits `e43b6c6`,
   `f561f24`.
 - ✅ **Learning path `secure-agent`** «Безопасный агент за компьютером»
-  (advanced/developers, ru/en/fi) — 10 шагов от cap-computer по всему дереву.
-  Commit `050527c`.
+  (advanced/developers, ru/en/fi) — 10 шагов от cap-computer по всему дереву,
+  финальным шагом подключён туториал ниже. Commits `050527c`, `38d607c`.
+- ✅ **Детальный туториал `remote-computer-for-claude`** (16 шагов, hands-on:
+  Docker → эталонный Computer Use контейнер → noVNC → безопасность → облачная VM
+  → чек-лист). Привязан к узлу `sys-agent-sandbox`. ru/en/fi, вычитан
+  language-pedagogue (PASS). Commits `450168d`, `38d607c`.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
