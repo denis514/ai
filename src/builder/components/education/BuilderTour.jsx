@@ -26,7 +26,9 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
  * Phase B-1 Day 24.
  */
 
-export const TOUR_SEEN_KEY = 'atlas:builder:tour-seen:v1';
+// v2 — тур переписан под актуальный поток (Старт/ключи/автозапуск/вебхук).
+// Поднятие версии = обновлённый тур покажется снова даже тем, кто видел v1.
+export const TOUR_SEEN_KEY = 'atlas:builder:tour-seen:v2';
 
 export function isTourSeen() {
   try { return !!localStorage.getItem(TOUR_SEEN_KEY); } catch { return false; }
@@ -35,9 +37,6 @@ export function isTourSeen() {
 export function markTourSeen() {
   try { localStorage.setItem(TOUR_SEEN_KEY, '1'); } catch {}
 }
-
-// Step definitions
-const STEP_COUNT = 7; // 0=welcome, 1..5 spotlight, 6 done
 
 export default function BuilderTour({
   onClose,
@@ -52,20 +51,21 @@ export default function BuilderTour({
   const completedRef = useRef({}); // chronological flags
   const autoTimerRef = useRef(null);
 
-  // Step config с selectors
+  // Step config (на сегодняшний поток): Старт → Агент → связи → ключ → запуск →
+  // консоль → автоматизация. Индекс 0 = welcome, последний = done (без spotlight).
   const STEPS = [
     null, // 0 = welcome (no spotlight)
     {
-      selector: '.builder-toolbox',
+      selector: '.builder-palette__cta',
       titleKey: 'builder.tour.step1.title',
       bodyKey: 'builder.tour.step1.body',
-      checkAdvance: () => nodes.some(n => n.data?.kind === 'agent'),
+      checkAdvance: () => nodes.some(n => n.data?.kind === 'trigger'),
     },
     {
-      selector: '.builder-toolbox',
+      selector: '.builder-palette',
       titleKey: 'builder.tour.step2.title',
       bodyKey: 'builder.tour.step2.body',
-      checkAdvance: () => nodes.some(n => n.data?.kind === 'tool'),
+      checkAdvance: () => nodes.some(n => n.data?.kind === 'agent'),
     },
     {
       selector: '.builder-canvas-wrap',
@@ -74,25 +74,40 @@ export default function BuilderTour({
       checkAdvance: () => edges.length > 0,
     },
     {
-      selector: '.builder-btn--primary',
+      selector: '.builder-header__actions',
       titleKey: 'builder.tour.step4.title',
       bodyKey: 'builder.tour.step4.body',
+      // ручной Next — подключение ключа не детектируем
+    },
+    {
+      selector: '.builder-run-split',
+      titleKey: 'builder.tour.step5.title',
+      bodyKey: 'builder.tour.step5.body',
       checkAdvance: () => execStatus === 'running' || execStatus === 'completed' || execStatus === 'failed',
     },
     {
       selector: '.builder-exec',
-      titleKey: 'builder.tour.step5.title',
-      bodyKey: 'builder.tour.step5.body',
+      titleKey: 'builder.tour.step6.title',
+      bodyKey: 'builder.tour.step6.body',
       checkAdvance: () => execStatus === 'completed' || execStatus === 'failed' || execStatus === 'stopped',
+      autoAdvanceMs: 8000,
     },
-    null, // 6 = done (no spotlight)
+    {
+      selector: '.builder-run-split__clock',
+      titleKey: 'builder.tour.step7.title',
+      bodyKey: 'builder.tour.step7.body',
+      // ручной Next — рассказываем про автозапуск и вебхук
+    },
+    null, // done (no spotlight)
   ];
+  const STEP_COUNT = STEPS.length;
+  const DONE_STEP = STEP_COUNT - 1;
 
   // Auto-advance детекция
   useEffect(() => {
-    if (step <= 0 || step >= 6) return;
+    if (step <= 0 || step >= DONE_STEP) return;
     const cur = STEPS[step];
-    if (!cur) return;
+    if (!cur || typeof cur.checkAdvance !== 'function') return;
     if (cur.checkAdvance()) {
       if (!completedRef.current[step]) {
         completedRef.current[step] = true;
@@ -123,12 +138,13 @@ export default function BuilderTour({
     };
   }, [step]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Step 5 — auto-advance after 5s даже если no execution событий (user скрыл panel)
+  // Авто-переход через autoAdvanceMs (для шага консоли — если событий нет/panel скрыт)
   useEffect(() => {
-    if (step !== 5) return;
-    autoTimerRef.current = setTimeout(() => setStep(s => Math.min(s + 1, STEP_COUNT - 1)), 8000);
+    const cur = STEPS[step];
+    if (!cur || !cur.autoAdvanceMs) return;
+    autoTimerRef.current = setTimeout(() => setStep(s => Math.min(s + 1, DONE_STEP)), cur.autoAdvanceMs);
     return () => clearTimeout(autoTimerRef.current);
-  }, [step]);
+  }, [step]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Close handler — mark seen
   const handleFinish = () => {
@@ -198,7 +214,7 @@ export default function BuilderTour({
   }
 
   /* ────────── Done card ────────── */
-  if (step === 6) {
+  if (step === DONE_STEP) {
     return (
       <div className="builder-tour-backdrop" onClick={(e) => { if (e.target === e.currentTarget) handleFinish(); }}>
         <div className="builder-tour-welcome" role="dialog" aria-modal="true">
@@ -292,7 +308,7 @@ export default function BuilderTour({
         <div className="builder-tour-bubble__progress">
           <span>
             {t('builder.tour.step') || 'Step'} {step} / {STEP_COUNT - 2}
-          </span>
+          </span>{/* STEP_COUNT-2 = число spotlight-шагов */}
         </div>
         <h3 className="builder-tour-bubble__title">{t(cur.titleKey) || ''}</h3>
         <p className="builder-tour-bubble__body">{t(cur.bodyKey) || ''}</p>
