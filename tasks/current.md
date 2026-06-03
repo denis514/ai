@@ -143,6 +143,15 @@
   (commit `aa80ab6`).
 - 📌 **Деплой-долг**: `supabase functions deploy builder-execute` и
   `builder-webhook --no-verify-jwt`.
+- ✅ **Контент Atlas: «Изолированная среда для агента»** — новый раздел
+  `sys-agent-sandbox` + 8 листьев (`sas-*`) про безопасный запуск Claude
+  computer-use на отдельной машине (Docker+noVNC, VM/VPS, наим. привилегии,
+  сеть/allowlist, секреты, снимки/kill-switch, удалённый доступ). RU →
+  переведено на EN/FI, вычитано language-pedagogue (PASS). Commits `e43b6c6`,
+  `f561f24`.
+- ✅ **Learning path `secure-agent`** «Безопасный агент за компьютером»
+  (advanced/developers, ru/en/fi) — 10 шагов от cap-computer по всему дереву.
+  Commit `050527c`.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
