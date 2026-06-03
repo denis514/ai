@@ -90,7 +90,6 @@ export default function BuilderTour({
       titleKey: 'builder.tour.step6.title',
       bodyKey: 'builder.tour.step6.body',
       checkAdvance: () => execStatus === 'completed' || execStatus === 'failed' || execStatus === 'stopped',
-      autoAdvanceMs: 8000,
     },
     {
       selector: '.builder-run-split__clock',
@@ -251,57 +250,54 @@ export default function BuilderTour({
 
   /* ────────── Spotlight step ────────── */
   const cur = STEPS[step];
-  if (!cur || !targetRect) return null;
+  if (!cur) return null;
 
-  // Position the bubble next to target — auto-detect best side
-  const { top, left, right, bottom, width, height } = targetRect;
   const viewportW = window.innerWidth;
   const viewportH = window.innerHeight;
 
-  // Default: place bubble right of target
+  // Если целевой элемент шага не найден на экране (например, кнопка-часы при
+  // не-залогиненном пользователе) — НЕ прячем шаг, а показываем пузырёк по центру
+  // без подсветки. Иначе тур «исчезал» и казался закрытым.
   let bubbleStyle = {};
-  let bubblePosition = 'right';
-  if (right + 340 < viewportW) {
-    bubbleStyle = { top: `${Math.max(16, top)}px`, left: `${right + 16}px` };
-    bubblePosition = 'right';
-  } else if (left > 340) {
-    bubbleStyle = { top: `${Math.max(16, top)}px`, left: `${left - 320 - 16}px` };
-    bubblePosition = 'left';
-  } else if (bottom + 220 < viewportH) {
-    bubbleStyle = { top: `${bottom + 12}px`, left: `${Math.max(16, Math.min(left, viewportW - 340))}px` };
-    bubblePosition = 'bottom';
+  let bubblePosition = 'center';
+  if (targetRect) {
+    const { top, left, right, bottom } = targetRect;
+    if (right + 340 < viewportW) {
+      bubbleStyle = { top: `${Math.max(16, top)}px`, left: `${right + 16}px` };
+      bubblePosition = 'right';
+    } else if (left > 340) {
+      bubbleStyle = { top: `${Math.max(16, top)}px`, left: `${left - 320 - 16}px` };
+      bubblePosition = 'left';
+    } else if (bottom + 220 < viewportH) {
+      bubbleStyle = { top: `${bottom + 12}px`, left: `${Math.max(16, Math.min(left, viewportW - 340))}px` };
+      bubblePosition = 'bottom';
+    } else {
+      bubbleStyle = { top: `${Math.max(16, top - 220)}px`, left: `${Math.max(16, Math.min(left, viewportW - 340))}px` };
+      bubblePosition = 'top';
+    }
   } else {
-    bubbleStyle = { top: `${Math.max(16, top - 220)}px`, left: `${Math.max(16, Math.min(left, viewportW - 340))}px` };
-    bubblePosition = 'top';
+    // центр экрана
+    bubbleStyle = { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+    bubblePosition = 'center';
   }
 
   return (
     <>
-      {/* Dim overlay c hole — 4 panels around target */}
-      <div className="builder-tour-dim builder-tour-dim--top" style={{ height: `${Math.max(0, top)}px` }} />
-      <div
-        className="builder-tour-dim builder-tour-dim--left"
-        style={{ top: `${top}px`, height: `${height}px`, width: `${Math.max(0, left)}px` }}
-      />
-      <div
-        className="builder-tour-dim builder-tour-dim--right"
-        style={{ top: `${top}px`, height: `${height}px`, left: `${right}px`, width: `${Math.max(0, viewportW - right)}px` }}
-      />
-      <div
-        className="builder-tour-dim builder-tour-dim--bottom"
-        style={{ top: `${bottom}px`, height: `${Math.max(0, viewportH - bottom)}px` }}
-      />
-
-      {/* Highlight box around target */}
-      <div
-        className="builder-tour-highlight"
-        style={{
-          top: `${top - 4}px`,
-          left: `${left - 4}px`,
-          width: `${width + 8}px`,
-          height: `${height + 8}px`,
-        }}
-      />
+      {/* Подсветка цели — только если элемент найден */}
+      {targetRect && (() => {
+        const { top, left, right, bottom, width, height } = targetRect;
+        return (
+          <>
+            <div className="builder-tour-dim builder-tour-dim--top" style={{ height: `${Math.max(0, top)}px` }} />
+            <div className="builder-tour-dim builder-tour-dim--left" style={{ top: `${top}px`, height: `${height}px`, width: `${Math.max(0, left)}px` }} />
+            <div className="builder-tour-dim builder-tour-dim--right" style={{ top: `${top}px`, height: `${height}px`, left: `${right}px`, width: `${Math.max(0, viewportW - right)}px` }} />
+            <div className="builder-tour-dim builder-tour-dim--bottom" style={{ top: `${bottom}px`, height: `${Math.max(0, viewportH - bottom)}px` }} />
+            <div className="builder-tour-highlight" style={{ top: `${top - 4}px`, left: `${left - 4}px`, width: `${width + 8}px`, height: `${height + 8}px` }} />
+          </>
+        );
+      })()}
+      {/* Затемнение всего экрана, когда цели нет (центрированный шаг) */}
+      {!targetRect && <div className="builder-tour-dim" style={{ inset: 0 }} />}
 
       {/* Step bubble */}
       <div className={`builder-tour-bubble builder-tour-bubble--${bubblePosition}`} style={bubbleStyle}>
