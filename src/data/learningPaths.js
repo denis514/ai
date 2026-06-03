@@ -474,6 +474,24 @@ export const learningPaths = [
         "id": "uc-ai-design-research-launch"
       }
     ]
+  },
+  {
+    "id": "secure-agent",
+    "icon": "shield",
+    "level": "advanced",
+    "audience": "developers",
+    "steps": [
+      { "type": "node", "id": "cap-computer" },
+      { "type": "node", "id": "sys-agent-sandbox" },
+      { "type": "node", "id": "sas-why-isolation" },
+      { "type": "node", "id": "sas-docker-computer-use" },
+      { "type": "node", "id": "sas-vm-vps" },
+      { "type": "node", "id": "sas-least-privilege" },
+      { "type": "node", "id": "sas-network-isolation" },
+      { "type": "node", "id": "sas-secrets" },
+      { "type": "node", "id": "sas-snapshots-killswitch" },
+      { "type": "node", "id": "sas-remote-access" }
+    ]
   }
 ];
 
