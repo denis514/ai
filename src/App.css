@@ -3300,7 +3300,11 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .bsheet {
   width: 100%;
   max-width: 720px;
-  max-height: 90vh;
+  /* Стандарт высоты bottom sheet: не выше 92% видимой высоты экрана.
+     dvh — динамическая высота вьюпорта; при появлении клавиатуры JS в
+     BottomSheet дополнительно сжимает лист через --bsheet-max (visualViewport),
+     а тело (.bsheet__body) прокручивается. */
+  max-height: var(--bsheet-max, 92dvh);
   background: var(--surface);
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
@@ -3362,9 +3366,15 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   letter-spacing: -0.01em;
   overflow-wrap: anywhere;
 }
-.bsheet__close {
-  width: 32px;
-  height: 32px;
+/* ── Единый стандарт закрывающей кнопки модалок (bottom sheet и др.) ──
+   34×34 круг, иконка строго по центру (flex), нейтральная, общий ховер. */
+.bsheet__close,
+.courses-close,
+.detail__close {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3373,8 +3383,15 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   border-radius: 50%;
   color: var(--text-muted);
   cursor: pointer;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
 }
-.bsheet__close:hover { background: var(--surface-3); color: var(--text); }
+.bsheet__close:hover,
+.courses-close:hover,
+.detail__close:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
 .bsheet__body {
   flex: 1;
   overflow-y: auto;
@@ -3382,7 +3399,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   -webkit-overflow-scrolling: touch;
 }
 .bsheet__footer {
-  padding: 12px 18px 16px;
+  padding: 12px 18px max(16px, env(safe-area-inset-bottom));
   border-top: 1px solid var(--border);
   background: var(--surface-2);
 }
@@ -3975,20 +3992,8 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   letter-spacing: -0.01em;
 }
 .detail__close {
-  margin-left: auto;
-  flex: 0 0 auto;
-  width: 30px; height: 30px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 50%;
-  color: var(--text-muted);
-  cursor: pointer;
+  margin-left: auto;   /* размер/центрирование/ховер — из единого стандарта закрытия */
 }
-.detail__close:hover { background: var(--surface-2); }
 
 .detail__body {
   overflow-y: auto;
@@ -5091,14 +5096,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .courses-header h2 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
 .courses-header p { margin: 4px 0 0; font-size: 13px; color: var(--text-muted); }
 .courses-close {
-  margin-left: auto;
-  width: 36px; height: 36px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 50%;
-  font-size: 22px;
-  line-height: 1;
-  color: var(--text-muted);
+  margin-left: auto;   /* размер/центрирование/ховер — из единого стандарта закрытия */
 }
 
 .courses-list {

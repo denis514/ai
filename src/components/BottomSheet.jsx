@@ -48,6 +48,25 @@ export default function BottomSheet({
   useFocusReturn(isOpen);
   useBodyScrollLock(isOpen);
 
+  // Адаптация под экранную клавиатуру: при её появлении visualViewport
+  // сжимается. Считаем перекрытие снизу (kbd) и видимую высоту (vh), чтобы
+  // поднять лист над клавиатурой и ограничить его высоту — тело само скроллится.
+  const [kbInset, setKbInset] = useState(0);
+  const [vvHeight, setVvHeight] = useState(0);
+  useEffect(() => {
+    const vp = typeof window !== 'undefined' && window.visualViewport;
+    if (!isOpen || !vp) { setKbInset(0); setVvHeight(0); return; }
+    const update = () => {
+      const overlap = Math.max(0, window.innerHeight - vp.height - vp.offsetTop);
+      setKbInset(overlap > 80 ? overlap : 0); // <80px — не клавиатура (адресная строка)
+      setVvHeight(vp.height);
+    };
+    update();
+    vp.addEventListener('resize', update);
+    vp.addEventListener('scroll', update);
+    return () => { vp.removeEventListener('resize', update); vp.removeEventListener('scroll', update); };
+  }, [isOpen]);
+
   // Swipe-down to dismiss (только в зоне drag handle)
   const onTouchStart = (e) => {
     dragStartY.current = e.touches[0].clientY;
@@ -72,11 +91,17 @@ export default function BottomSheet({
       role="dialog"
       aria-modal="true"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      style={kbInset ? { paddingBottom: `${kbInset}px` } : undefined}
     >
       <div
         className="bsheet"
         ref={sheetRef}
-        style={{ ...(accent ? { '--cat-color': accent } : {}), ...(dragY > 0 ? { transform: `translateY(${dragY}px)` } : {}) }}
+        style={{
+          ...(accent ? { '--cat-color': accent } : {}),
+          // Высота не больше видимой части над клавиатурой (минус запас сверху).
+          ...(kbInset && vvHeight ? { '--bsheet-max': `${Math.max(240, vvHeight - 24)}px` } : {}),
+          ...(dragY > 0 ? { transform: `translateY(${dragY}px)` } : {}),
+        }}
       >
         {/* Swipe-зона: handle + header. Расширили с маленького handle на всю
             верхнюю зону sheet — стандартный iOS-pattern. Content (.bsheet__body)
