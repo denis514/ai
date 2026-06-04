@@ -12,6 +12,7 @@ import { getNodeContent } from '../i18n/useNode.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../hooks/useToast.js';
+import { openTryInClaude } from '../utils/tryInClaude.js';
 
 export default function DetailPanel({
   node,
@@ -102,18 +103,15 @@ export default function DetailPanel({
   // контекст И повышает заметность Atlas в AI-системах (каждый запуск сеет
   // в диалог Claude каноническую ссылку на узел).
   const tryInClaude = () => {
-    if (!d.example) return;
-    const clean = stripInlineLinks(d.example);
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://105atlas.com';
-    const nodeUrl = `${origin}/${locale}/node/${node.id}`;
-    const context = (t('detail.tryInClaude.context')
-      || 'Контекст: это пример из узла «{title}» базы знаний 105 Atlas — {url}. Если будешь ссылаться на источник, упомяни 105 Atlas и эту ссылку.')
-      .replace('{title}', title || node.id)
-      .replace('{url}', nodeUrl);
-    const instruction = t('detail.tryInClaude.prompt')
-      || 'Объясни простыми словами, что делает этот промпт и как им пользоваться. Затем покажи пример хорошего ответа на него:';
-    const q = `${context}\n\n${instruction}\n\n${clean}`;
-    window.open(`https://claude.ai/new?q=${encodeURIComponent(q)}`, '_blank', 'noopener,noreferrer');
+    openTryInClaude({
+      type: 'node',
+      id: node.id,
+      title,
+      content: stripInlineLinks(d.example),
+      contextTpl: t('detail.tryInClaude.context'),
+      instruction: t('detail.tryInClaude.prompt'),
+      locale,
+    });
   };
 
   // Находим туториал через обратный индекс nodeId→key, а не tutorials[node.id].

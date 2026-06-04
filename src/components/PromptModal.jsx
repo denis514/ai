@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Icon from './Icon.jsx';
-import { useT } from '../i18n/LocaleContext.jsx';
+import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useFocusReturn } from '../hooks/useFocusReturn.js';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 import ShareButton from './ShareButton.jsx';
+import { openTryInClaude } from '../utils/tryInClaude.js';
 
 export default function PromptModal({ prompt, onClose }) {
   const t = useT();
+  const { locale } = useLocale();
   const [copied, setCopied] = useState(false);
   useFocusReturn();
   useBodyScrollLock();
@@ -84,16 +86,23 @@ export default function PromptModal({ prompt, onClose }) {
             <kbd>Esc</kbd> {t('prompt.escHint')}
           </span>
           <div className="prompt-modal__actions">
-            <a
+            <button
+              type="button"
               className="btn btn--ghost"
-              href={`https://claude.ai/new?q=${encodeURIComponent(prompt.text)}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() => openTryInClaude({
+                type: 'prompt',
+                id: prompt.id,
+                title: prompt.title,
+                content: prompt.text,
+                contextTpl: t('detail.tryInClaude.context'),
+                instruction: t('prompt.tryInstruction') || '',
+                locale,
+              })}
               title={t('prompt.openInClaude')}
             >
               <Icon name="external-link" size={14} strokeWidth={1.5} />
               {t('prompt.openClaude')}
-            </a>
+            </button>
             <button
               type="button"
               className={`btn btn--primary ${copied ? 'is-copied' : ''}`}

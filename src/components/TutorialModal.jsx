@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { tutorials } from '../data/tutorials.js';
 import { mindmapData } from '../data/mindmapData.js';
 import Icon from './Icon.jsx';
+import { openTryInClaude } from '../utils/tryInClaude.js';
 import InlineText from './InlineText.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useTutorialContent, getLocalizedTutorial } from '../i18n/useTutorial.js';
@@ -30,7 +31,7 @@ function stripInlineLinks(s) {
   );
 }
 
-function CopyableBlock({ text, label, copiedLabel, inlineNav }) {
+function CopyableBlock({ text, label, copiedLabel, inlineNav, tryMeta }) {
   const [copied, setCopied] = useState(false);
   const onCopy = async () => {
     const cleanText = stripInlineLinks(text);
@@ -50,17 +51,29 @@ function CopyableBlock({ text, label, copiedLabel, inlineNav }) {
   return (
     <div className="tut-code">
       <InlineText as="pre" text={text} onNavigate={inlineNav} />
-      <button
-        type="button"
-        className={`copy-btn ${copied ? 'is-copied' : ''}`}
-        onClick={onCopy}
-      >
-        {copied ? (
-          <>
-            <Icon name="check" size={14} strokeWidth={1.75} /> {copiedLabel}
-          </>
-        ) : label}
-      </button>
+      <div className="tut-code__actions">
+        <button
+          type="button"
+          className={`copy-btn ${copied ? 'is-copied' : ''}`}
+          onClick={onCopy}
+        >
+          {copied ? (
+            <>
+              <Icon name="check" size={14} strokeWidth={1.75} /> {copiedLabel}
+            </>
+          ) : label}
+        </button>
+        {tryMeta && (
+          <button
+            type="button"
+            className="tut-code__try"
+            onClick={() => openTryInClaude({ ...tryMeta, content: stripInlineLinks(text) })}
+          >
+            <Icon name="sparkles" size={13} strokeWidth={1.6} />
+            {tryMeta.label}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
@@ -458,21 +471,24 @@ export default function TutorialModal({
               {step.prompt && (
                 <section className="tut-block">
                   <h4>{t('tutorial.section.copy')}</h4>
-                  <CopyableBlock text={step.prompt} label={t('common.copy')} copiedLabel={t('common.copied')} inlineNav={inlineNav} />
+                  <CopyableBlock text={step.prompt} label={t('common.copy')} copiedLabel={t('common.copied')} inlineNav={inlineNav}
+                    tryMeta={{ type: 'tutorial', id: tutorialId, title: tut.title, contextTpl: t('detail.tryInClaude.context'), instruction: '', label: t('detail.tryInClaude.label') || 'Попробовать в Claude', locale }} />
                 </section>
               )}
 
               {step.example && !step.prompt && (
                 <section className="tut-block">
                   <h4>{t('tutorial.section.example')}</h4>
-                  <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} inlineNav={inlineNav} />
+                  <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} inlineNav={inlineNav}
+                    tryMeta={{ type: 'tutorial', id: tutorialId, title: tut.title, contextTpl: t('detail.tryInClaude.context'), instruction: t('detail.tryInClaude.prompt'), label: t('detail.tryInClaude.label') || 'Попробовать в Claude', locale }} />
                 </section>
               )}
 
               {step.example && step.prompt && (
                 <section className="tut-block">
                   <h4>{t('tutorial.section.exampleExtra')}</h4>
-                  <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} inlineNav={inlineNav} />
+                  <CopyableBlock text={step.example} label={t('tutorial.copyExample')} copiedLabel={t('common.copied')} inlineNav={inlineNav}
+                    tryMeta={{ type: 'tutorial', id: tutorialId, title: tut.title, contextTpl: t('detail.tryInClaude.context'), instruction: t('detail.tryInClaude.prompt'), label: t('detail.tryInClaude.label') || 'Попробовать в Claude', locale }} />
                 </section>
               )}
 
