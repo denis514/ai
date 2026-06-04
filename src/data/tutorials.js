@@ -2789,6 +2789,251 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "cc-install": {
+    "nodeId": "cc-install",
+    "icon": "download",
+    "level": "beginner",
+    "audience": "developers",
+    "prerequisites": [
+      "claude-code"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cc-terminal",
+      "cc-config",
+      "claude-code"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-terminal": {
+    "nodeId": "cc-terminal",
+    "icon": "terminal",
+    "level": "beginner",
+    "audience": "developers",
+    "prerequisites": [
+      "claude-code"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cc-plan-mode",
+      "cc-slash",
+      "claude-code"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-config": {
+    "nodeId": "cc-config",
+    "icon": "settings",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [
+      "claude-code"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cc-cfg-permissions",
+      "cc-md",
+      "claude-code"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-cfg-permissions": {
+    "nodeId": "cc-cfg-permissions",
+    "icon": "lock",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [
+      "claude-code"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cc-config",
+      "sys-agent-sandbox",
+      "claude-code"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-slash": {
+    "nodeId": "cc-slash",
+    "icon": "command",
+    "level": "beginner",
+    "audience": "developers",
+    "prerequisites": [
+      "claude-code"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cc-terminal",
+      "cc-subagents",
+      "claude-code"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-plan-mode": {
+    "nodeId": "cc-plan-mode",
+    "icon": "compass",
+    "level": "beginner",
+    "audience": "developers",
+    "prerequisites": [
+      "claude-code"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cc-terminal",
+      "cc-cfg-permissions",
+      "claude-code"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-ide": {
+    "nodeId": "cc-ide",
+    "icon": "laptop",
+    "level": "beginner",
+    "audience": "developers",
+    "prerequisites": [
+      "claude-code"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cc-install",
+      "cc-terminal",
+      "claude-code"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 

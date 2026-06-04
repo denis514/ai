@@ -3219,5 +3219,919 @@
         "tip": "Keep this checklist next to your project. The next \"won't connect\" you'll close in 5 minutes instead of an hour."
       }
     }
+  },
+  "cc-install": {
+    "title": "Installing and running Claude Code",
+    "subtitle": "From zero to a working terminal agent in 6 steps",
+    "totalTime": "6 steps",
+    "whatItIs": "A hands-on course on installing [[node:claude-code|Claude Code]] — Anthropic's CLI agent. You'll install it via npm, run it in a project folder, authenticate, and learn to fix common install failures.",
+    "approach": "We go strictly in order: requirements first (Node.js), then installation, launch, sign-in, version check, and a breakdown of common errors. Each step ends with a verification command so you never carry an unsolved problem forward.",
+    "outcomes": [
+      "Node.js of the required version is installed and the environment is verified ready",
+      "Claude Code is installed globally via npm and available as the claude command",
+      "You've completed the first claude run inside a real project folder",
+      "Authentication is done via subscription or API key",
+      "You can diagnose PATH, permissions, and Windows-specific install failures"
+    ],
+    "applyIn": [
+      {
+        "title": "New work machine",
+        "description": "Set up Claude Code from scratch on a fresh laptop or a new environment in a couple of minutes."
+      },
+      {
+        "title": "Team onboarding",
+        "description": "Give colleagues a reproducible install guide so everyone has the same working CLI."
+      },
+      {
+        "title": "Fixing someone else's install",
+        "description": "Quickly figure out why claude won't start — PATH, permissions, or Node.js version."
+      }
+    ],
+    "pitfalls": [
+      "Node.js too old — installation succeeds but claude crashes on launch",
+      "Installing without -g: the package goes local and the claude command isn't found globally",
+      "Running claude outside a git repository — you lose history context and some features",
+      "On Windows the global npm folder isn't on PATH — the command isn't recognized",
+      "Using sudo npm install -g, which breaks permissions on global packages"
+    ],
+    "exercises": [
+      {
+        "question": "Where do you check that Node.js is recent enough before installing Claude Code?",
+        "hint": "A command like node --version prints the installed version — compare it to the minimum required."
+      },
+      {
+        "question": "Why does it matter to run claude inside the project folder rather than in your home directory?",
+        "hint": "The agent takes context from the current directory — files, git history, [[node:cc-md|CLAUDE.md]]."
+      },
+      {
+        "question": "The claude command isn't found after installation. Where do you start diagnosing?",
+        "hint": "Check whether the global npm folder is on PATH, and whether the package was installed without the -g flag."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Check the requirements: Node.js",
+        "time": "",
+        "why": "Claude Code runs on Node.js. Without a suitable version the install either fails or claude crashes on start — this is the single most common cause of trouble.",
+        "instructions": [
+          "Open a terminal ([[node:cc-terminal|terminal]]) — Terminal on macOS/Linux, PowerShell on Windows.",
+          "Run node --version and check the version number.",
+          "If Node.js is missing or too old, install the current LTS version from nodejs.org.",
+          "Also check npm with npm --version — it ships together with Node.js."
+        ],
+        "validate": "node --version prints a version number without error, and it's not below the required minimum.",
+        "tip": "A version manager (nvm) is handy for juggling several Node.js versions, but one fresh LTS is enough to start."
+      },
+      "s2": {
+        "title": "Install Claude Code via npm",
+        "time": "",
+        "why": "A global install makes the claude command available from any folder. The -g flag is key: without it the package goes local and the command isn't found.",
+        "instructions": [
+          "In the terminal run npm install -g @anthropic-ai/claude-code.",
+          "Wait for it to finish — npm downloads the package and registers the claude command.",
+          "Don't use sudo: it breaks permissions on global packages. If you lack rights, set the npm prefix to a user folder.",
+          "Wait for the success line with no red errors."
+        ],
+        "validate": "npm finishes without errors and the output has no red EACCES or EEXIST lines.",
+        "tip": "If you hit a permissions error (EACCES), don't fix it with sudo — reassign the global npm prefix to a folder in your home directory."
+      },
+      "s3": {
+        "title": "First run of claude in the project folder",
+        "time": "",
+        "why": "[[node:claude-code|Claude Code]] takes context from the current directory — files and git history. Running in the right folder gives the agent the context it needs right away.",
+        "instructions": [
+          "Move into the project folder: cd ~/projects/your-project.",
+          "Make sure it's a git repository — otherwise you lose history context and some features.",
+          "Run the claude command.",
+          "Wait for the interactive session to start in the terminal."
+        ],
+        "validate": "After the claude command an interactive session opens and a prompt for your request appears.",
+        "tip": "Launch claude from the repo root, not a nested folder — that way the agent sees the whole project and [[node:cc-md|CLAUDE.md]]."
+      },
+      "s4": {
+        "title": "Authenticate",
+        "time": "",
+        "why": "Without signing in the agent can't reach the model. There are two paths: a Claude subscription or an API key — pick what suits you.",
+        "instructions": [
+          "On first launch claude offers a sign-in method — follow the on-screen prompts.",
+          "If you have a subscription, choose account sign-in and confirm in the browser.",
+          "If you use an API key, prepare the key from the Anthropic console and paste it when asked.",
+          "Wait for confirmation that the session is authorized."
+        ],
+        "validate": "Claude Code reports a successful sign-in and accepts your first request with no access error.",
+        "tip": "An API key is handier for teams and automation; subscription sign-in fits personal work. Never store the key in plain text in the repo."
+      },
+      "s5": {
+        "title": "Verify the install and version",
+        "time": "",
+        "why": "Checking the version confirms that claude is really installed and globally available. It's basic diagnostics before any work.",
+        "instructions": [
+          "Run claude --version and confirm a version number is printed.",
+          "Check that the command works from any folder, not just the project.",
+          "Note the installed version — it helps with updates and troubleshooting.",
+          "Optionally update to the latest with the same command npm install -g @anthropic-ai/claude-code."
+        ],
+        "validate": "claude --version from any directory prints a version number with no 'command not found' error.",
+        "tip": "If the version prints only from one folder, the package went local — reinstall with the -g flag."
+      },
+      "s6": {
+        "title": "Work through common install failures",
+        "time": "",
+        "why": "Most problems come down to three causes: PATH, permissions, and Windows specifics. Knowing them lets you fix the install in minutes, not hours.",
+        "instructions": [
+          "'command not found' / 'claude is not recognized': check that the global npm folder is on PATH (npm prefix -g shows the path).",
+          "Permissions error (EACCES) during install: don't use sudo, reassign the global npm prefix to a user folder.",
+          "On Windows: after installing, restart the terminal and make sure the npm folder is added to PATH; use PowerShell.",
+          "After any fix, run claude --version again to verify."
+        ],
+        "validate": "After the fix, claude --version works from any folder and in any new terminal window.",
+        "tip": "npm prefix -g shows where global packages land — compare that path against your PATH contents."
+      }
+    }
+  },
+  "cc-terminal": {
+    "title": "Working in the Claude Code terminal",
+    "subtitle": "Sessions, files, modes, and hotkeys — without switching windows",
+    "totalTime": "6 steps",
+    "whatItIs": "A hands-on course on terminal work with [[node:claude-code|Claude Code]]: how a session is structured, how to feed files into context, how to switch modes (normal / Plan / auto-accept), which hotkeys save time, how to continue yesterday's work, and how to interrupt the model on the fly.",
+    "approach": "We move from the session model to daily practices. Each step is a concrete terminal action with a command or hotkey you try right away on your own project. No theory for its own sake: only what changes your speed.",
+    "outcomes": [
+      "Understand what a session stores and why context isn't infinite",
+      "Add files to context via @-mentions and drag-and-drop",
+      "Switch between normal / Plan / auto-accept modes per task",
+      "Use hotkeys instead of the mouse — without leaving the flow",
+      "Continue past sessions via --resume and --continue"
+    ],
+    "applyIn": [
+      {
+        "title": "Daily development",
+        "description": "Any feature or fix: drop in the right files, keep the session in flow, continue it the next day with no re-briefing."
+      },
+      {
+        "title": "Review and code navigation",
+        "description": "@-mention a few files, ask Claude to explain the connections, interrupt and clarify if it goes off track."
+      },
+      {
+        "title": "Large changes",
+        "description": "Turn on Plan mode to agree on the plan, then auto-accept for routine edits — control where you need it."
+      }
+    ],
+    "pitfalls": [
+      "Starting from scratch every time instead of --resume — you lose accumulated context",
+      "Dumping dozens of files into context — the model drowns in noise, answers get worse",
+      "Leaving auto-accept on for sensitive edits — changes go through without your control",
+      "Waiting out a long wrong answer instead of hitting Esc — you waste time",
+      "Ignoring hotkeys and reaching for the mouse — every little thing takes 30 seconds"
+    ],
+    "exercises": [
+      {
+        "question": "You closed the terminal, and today you need to continue yesterday's task with the same context. What do you do?",
+        "hint": "There are two commands: one continues the last session instantly, the other lets you pick from a list of past ones."
+      },
+      {
+        "question": "Claude started rewriting the wrong file and went down a wrong path. How do you stop and correct it without killing the session?",
+        "hint": "One hotkey interrupts the current answer — after it you can type a clarification right away."
+      },
+      {
+        "question": "You need a large code change but want to agree on the approach first. Which mode do you enable, and how?",
+        "hint": "See [[node:cc-plan-mode|Plan Mode]] — it builds a plan before any edits."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "How a terminal session works",
+        "time": "",
+        "why": "A session is the container of your dialogue with the model: message history, files read, edits made. Understanding its boundaries explains why context isn't infinite and why it's worth conserving.",
+        "instructions": [
+          "Run claude in your project folder — an interactive session opens",
+          "Notice: everything Claude read or changed during the session stays in context until it ends",
+          "Watch the context indicator — when it nears the limit, older messages get pushed out",
+          "The /clear command resets context without leaving the session — handy when switching tasks"
+        ],
+        "validate": "You started a session and can see that Claude remembers files read earlier in the same dialogue.",
+        "tip": "One task — one session. Mixing unrelated tasks in one context is a path to junk answers."
+      },
+      "s2": {
+        "title": "Adding files to context",
+        "time": "",
+        "why": "Claude answers more accurately when it sees the right code. Two fast ways to provide a file — @-mention and drag-and-drop — save you from copy-paste and window switching.",
+        "instructions": [
+          "Type @ and start entering a path — autocomplete over project files appears",
+          "Pick a file, e.g. @src/App.jsx — Claude reads it on its own",
+          "Drag a file from your file manager straight into the terminal window — the path is inserted automatically",
+          "Mention only relevant files: 2-3 needed ones beat 20 just in case"
+        ],
+        "validate": "You added a file via @ or drag-and-drop, and Claude references its contents in the answer.",
+        "tip": "@ works for folders too — @src/components/ pulls in a directory overview without dumping all the code."
+      },
+      "s3": {
+        "title": "Modes: normal, Plan, auto-accept",
+        "time": "",
+        "why": "Different tasks need different levels of control. Normal mode asks for confirmation, Plan builds a plan before edits, auto-accept applies changes without asking. Choosing a mode = balancing speed and control.",
+        "instructions": [
+          "By default you're in normal mode: Claude asks permission before edits",
+          "Press Shift+Tab to switch modes right inside the session",
+          "Enable Plan mode to agree on the approach before changes — details in [[node:cc-plan-mode|Plan Mode]]",
+          "Turn on auto-accept only for routine, verified edits — it asks no confirmations",
+          "Return to normal mode on sensitive files to control every change"
+        ],
+        "validate": "You switched between normal mode and Plan via Shift+Tab and saw the behavior change.",
+        "tip": "The combo works like this: agree in Plan → switch to auto-accept for the mechanical part → return to normal for the final check."
+      },
+      "s4": {
+        "title": "Useful hotkeys",
+        "time": "",
+        "why": "Every reach for the mouse breaks the flow. A handful of hotkeys cover 90% of in-session actions and keep your hands on the keyboard.",
+        "instructions": [
+          "Esc — interrupts Claude's current answer without closing the session",
+          "Shift+Tab — cycles through modes (normal / auto-accept / Plan)",
+          "Up arrow — brings back your previous messages for re-entry",
+          "Ctrl+C — cancels input; pressing it again exits the session",
+          "Slash commands (e.g. /clear, /help) — quick access to features; see [[node:cc-slash|slash commands]]"
+        ],
+        "validate": "You interrupted an answer via Esc and switched mode via Shift+Tab without touching the mouse.",
+        "tip": "Memorize two first: Esc and Shift+Tab. The rest become habit on their own."
+      },
+      "s5": {
+        "title": "Session history and continuation",
+        "time": "",
+        "why": "Sessions don't vanish when you close the terminal. Returning to past work with accumulated context saves re-briefing and preserves your grasp of the task.",
+        "instructions": [
+          "Run claude --continue to immediately resume the last session in this folder",
+          "Run claude --resume to pick a session from a list of past ones",
+          "The session opens with full history — Claude remembers where you left off",
+          "Use --resume when you return to a task a day or two later instead of starting over"
+        ],
+        "validate": "You closed the terminal, ran claude --resume, picked yesterday's session, and continued from the same spot.",
+        "tip": "--continue for 'just closed it, carrying on', --resume when you need to pick from several past sessions."
+      },
+      "s6": {
+        "title": "Interrupting, correcting, and verifying",
+        "time": "",
+        "why": "Claude sometimes goes off track. Being able to stop it and steer on the fly — without restarting the session — is the key control skill. And always verify the result yourself.",
+        "instructions": [
+          "Spotted a wrong move — hit Esc, don't wait for the answer to finish",
+          "Immediately type a correcting message: what's wrong and where to go",
+          "If Claude edits the wrong file — point it to the right one via @-mention",
+          "After edits, verify the result: run tests or a build, read the diff",
+          "Don't trust blindly in auto-accept — the final review is always yours"
+        ],
+        "validate": "You interrupted a wrong answer via Esc, corrected the direction, and verified the result with a build or tests.",
+        "tip": "Better to interrupt early and rephrase than to wait out a long answer and redo everything."
+      }
+    }
+  },
+  "cc-config": {
+    "title": "Configuring Claude Code: three levels",
+    "subtitle": "Global, project, and local settings — what goes where",
+    "totalTime": "6 steps",
+    "whatItIs": "Claude Code reads settings from three places: global in ~/.claude/settings.json (yours across all projects), project in .claude/settings.json (shared with the team, lives in the repository), and local in .claude/settings.local.json (personal, never committed). This course shows what each level is responsible for, how they combine by priority, and exactly what to put in each.",
+    "approach": "We move from the priority model to practice: first understand why there are three levels and which overrides which, then configure each file in turn, split permissions and personal data across levels, and close with common mistakes plus a verification step.",
+    "outcomes": [
+      "Understand which three settings files Claude Code reads and the order in which they apply",
+      "Can set global preferences once in ~/.claude/settings.json for all projects",
+      "Can create team rules in .claude/settings.json and commit them to the repository",
+      "Keep personal settings and secrets in settings.local.json outside git",
+      "Place permissions at the correct level and avoid conflicts and leaks"
+    ],
+    "applyIn": [
+      {
+        "title": "Onboarding to a new project",
+        "description": "The team keeps shared rules in .claude/settings.json — a new developer gets a unified standard right after cloning the repository."
+      },
+      {
+        "title": "Personal experiments",
+        "description": "Try new permissions or MCP servers in settings.local.json without affecting the rest of the team or cluttering git history."
+      },
+      {
+        "title": "Reducing confirmations",
+        "description": "Add routine commands (npm test, linter) to the allow list at the right level — Claude stops asking for permission on every run."
+      }
+    ],
+    "pitfalls": [
+      "Storing secrets and tokens in .claude/settings.json — they'll go into git with the commit; they belong in settings.local.json",
+      "Not understanding priority: local overrides project, project overrides global; editing the wrong level looks like 'it didn't work'",
+      "Putting personal rules in the project file and forcing them on the whole team",
+      "Forgetting to add .claude/settings.local.json to .gitignore (it's ignored by default, but worth checking in non-standard projects)",
+      "Duplicating the same rule across several levels instead of one — then it's hard to tell which one actually applies"
+    ],
+    "exercises": [
+      {
+        "question": "You have a personal API token that Claude Code needs only on one project. Which of the three files should it go in, and why?",
+        "hint": "The token is personal and secret — it must not reach the repository. Which file is not committed by default?"
+      },
+      {
+        "question": "In .claude/settings.json the team allowed Bash(npm test). You want to additionally allow Bash(npm run e2e) just for yourself. Where do you add it, and does it override the team rule?",
+        "hint": "The local level supplements and overrides the project level rather than replacing it. The team permission stays."
+      },
+      {
+        "question": "You added a rule to ~/.claude/settings.json, but it doesn't apply on a specific project. Which level could have overridden it?",
+        "hint": "Recall the priority order: global is the weakest. Check that project's project and local files."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why three levels and their priority",
+        "time": "",
+        "why": "Without understanding priority, any setting becomes guesswork: you edit one file but another takes effect. Three levels exist to separate 'my personal', 'shared team', and 'secret local'.",
+        "instructions": [
+          "Remember three files: ~/.claude/settings.json (global, for all your projects), .claude/settings.json (project, in the repository), .claude/settings.local.json (local, not committed)",
+          "Remember the priority from weakest to strongest: global → project → local. A stronger level overrides a weaker one",
+          "Grasp the idea: global sets your general preferences, project sets the team standard, local sets personal additions and secrets for a specific project",
+          "More about the tool itself — see [[node:claude-code|Claude Code]]"
+        ],
+        "validate": "You can name the three settings files and say which one overrides the others in a conflict.",
+        "tip": "Mental rule: 'the closer a file is to the project and to you personally, the stronger it is'. Local beats everything."
+      },
+      "s2": {
+        "title": "Global settings (~/.claude/settings.json)",
+        "time": "",
+        "why": "The global level holds your preferences that should apply across all projects without re-configuring: shared permissions, default model, base rules.",
+        "instructions": [
+          "Open or create ~/.claude/settings.json in your home folder",
+          "Put settings you need on any project there — for example a shared allow list of safe commands",
+          "Don't put project-specific rules here: they'll clutter all your other projects",
+          "Check the JSON is valid — a stray comma breaks reading of the whole file"
+        ],
+        "validate": "The file ~/.claude/settings.json exists, is valid JSON, and contains only general, non-project-specific settings.",
+        "tip": "The global file is the weakest by priority: any project easily overrides it, and that's fine."
+      },
+      "s3": {
+        "title": "Project settings (.claude/settings.json in the repository)",
+        "time": "",
+        "why": "The project file is the team standard. It lives in git, so everyone who clones the repository gets the same rules for how Claude Code works.",
+        "instructions": [
+          "In the project root create a .claude folder and a .claude/settings.json file",
+          "Describe team-wide rules: allowed commands, file-edit permissions, project settings",
+          "Commit .claude/settings.json to the repository — this is intentionally a shared file",
+          "Never put secrets, tokens, or personal paths here — all of it would end up in git",
+          "Keep working instructions for Claude on the project separate — see [[node:cc-md|CLAUDE.md]]"
+        ],
+        "validate": "The file .claude/settings.json is in the repository, passes as valid JSON, and contains only what you'd be comfortable showing the whole team.",
+        "tip": "Think of this file as part of the project code: it's versioned and reviewed like everything else."
+      },
+      "s4": {
+        "title": "Local settings (settings.local.json — personal, don't commit)",
+        "time": "",
+        "why": "The local file is for everything that concerns only you on this project: personal permissions, experiments, secrets. It's not committed, so nothing personal leaks into the shared repository.",
+        "instructions": [
+          "Create .claude/settings.local.json in the project root",
+          "Put personal permission additions and secrets you specifically need on this project here",
+          "Make sure the file doesn't get into git: by default it's in .gitignore, but in a non-standard project check it manually",
+          "Remember: the local level overrides the project level — here you can precisely strengthen or extend team rules for yourself"
+        ],
+        "validate": "The file settings.local.json doesn't show up in git status, and your personal rules apply on top of the project ones.",
+        "tip": "If in doubt whether to commit — it's a local file, so no. Personal and secret things live only here."
+      },
+      "s5": {
+        "title": "What goes where: permissions by level",
+        "time": "",
+        "why": "The key practical skill is placing permissions at the right level. It determines whether the whole team sees them, only you, or they leak into git.",
+        "instructions": [
+          "Permissions needed everywhere and always (e.g. safe read commands) → global ~/.claude/settings.json",
+          "Permissions shared for the project and team (Bash(npm test), Edit(./src/**)) → project .claude/settings.json in the repository",
+          "Personal permissions and secrets for this project → local settings.local.json outside git",
+          "Don't duplicate one rule across several levels — pick one and keep it there",
+          "How permissions themselves work and their syntax — see [[node:cc-cfg-permissions|Permissions]]"
+        ],
+        "validate": "For any rule you can unambiguously say which level it should live at and why.",
+        "tip": "Simple test: 'Does the whole team need this?' → project. 'Only me?' → local. 'On all my projects?' → global."
+      },
+      "s6": {
+        "title": "Common mistakes and verification",
+        "time": "",
+        "why": "Two mistakes spoil configuration most often: secrets in a commit and level conflicts. The final check catches both before they become a team problem.",
+        "instructions": [
+          "Check that .claude/settings.json (the project file) has no secrets or tokens — everything secret should be in settings.local.json",
+          "Recheck conflicts: if a rule 'doesn't fire', look for whether a stronger level overrides it (local > project > global)",
+          "Run git status and confirm settings.local.json is not in the list to commit",
+          "Run Claude Code on the project and confirm routine commands pass without extra confirmations — that means permissions are set right"
+        ],
+        "validate": "git status doesn't show settings.local.json, the project file has no secrets, and Claude Code applies the expected level of rules without surprises.",
+        "tip": "If something 'doesn't apply', it's almost always about level priority, not syntax. Start the check from the local file."
+      }
+    }
+  },
+  "cc-cfg-permissions": {
+    "title": "Permissions in Claude Code",
+    "subtitle": "permissions.allow / permissions.deny rules — what Claude runs without confirmation, and what's always forbidden",
+    "totalTime": "6 steps",
+    "whatItIs": "Permissions are the safety valve for Claude Code's autonomy. The permissions.allow and permissions.deny lists define which actions (Bash commands, Edit, Read, network calls) run immediately, which require confirmation, and which are hard-blocked forever. This isn't cosmetic configuration — it's the line between convenient and safe.",
+    "approach": "We move from meaning to practice: first why permissions are needed at all as a brake on autonomy, then the allow/deny syntax and how rules are read, then which permissions are safe (reading, tests, lint), which are dangerous (rm, network, secrets) and why they belong in deny. We finish with the working modes (Ask / Auto-accept / Plan) and how they interact with your rules, then assemble a safe-configuration checklist and verify it on a real project.",
+    "outcomes": [
+      "You understand why permissions exist and why they're a safety valve, not an obstacle",
+      "You can write correct permissions.allow and permissions.deny rules with command patterns",
+      "You distinguish safe permissions (reading, tests) from dangerous ones (deletion, network, secrets)",
+      "You know the Ask / Auto-accept / Plan modes and how they interact with your rules",
+      "You can assemble and verify a safe permissions configuration for your project"
+    ],
+    "applyIn": [
+      {
+        "title": "Setting up a new project",
+        "description": "Set deny for dangerous commands and allow for routine right away — Claude works in flow but can't cause harm."
+      },
+      {
+        "title": "Team development",
+        "description": "Shared permissions rules in the repository protect every contributor from accidental destructive actions by the agent."
+      },
+      {
+        "title": "Autonomous and long sessions",
+        "description": "In Auto-accept or background mode, a correct deny is the only guarantee that Claude won't run rm or leak secrets."
+      }
+    ],
+    "pitfalls": [
+      "Rules too broad like allow: [Bash(*)] — you lose control over what actually runs",
+      "Relying on allow alone and forgetting deny — without explicit blocks a dangerous command can slip through",
+      "Assuming Bypass or Auto-accept are safe by default — they disable confirmations, not the deny protection",
+      "Storing secrets so Claude can read them via a command — no deny on reading .env opens a leak",
+      "Copying someone else's rule set without understanding it — command patterns from another project may permit too much"
+    ],
+    "exercises": [
+      {
+        "question": "In your project Claude asks for confirmation every time it runs npm test. Which rule removes this, and which list does it go in?",
+        "hint": "Think about which list safe repeated actions belong to, and how to write a specific command as a pattern."
+      },
+      {
+        "question": "Why isn't it enough to simply not add rm -rf to allow — why do you need an explicit deny on it?",
+        "hint": "Recall what happens in Auto-accept or with broad patterns: what hard-blocks a command versus what merely doesn't pre-approve it."
+      },
+      {
+        "question": "Name three categories of actions that belong in permissions.deny and explain the risk of each.",
+        "hint": "File deletion, network calls, access to secrets — what harm could the agent do in each case."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why permissions: a brake on autonomy",
+        "time": "",
+        "why": "Claude Code can run commands and change files on its own. Without boundaries, autonomy becomes risk: one bad command and the project is broken. Permissions are the brake that keeps the speed but removes the catastrophe.",
+        "instructions": [
+          "Open the Claude Code configuration and find the permissions section (see [[node:cc-config|Claude Code configuration]])",
+          "Remember the three outcomes for any action: allowed immediately, asks for confirmation, blocked forever",
+          "Connect the idea to the fact that [[node:claude-code|Claude Code]] is an agent that acts, not just advises",
+          "Decide for yourself: what in your project is unacceptable under any circumstances"
+        ],
+        "validate": "You can explain in one sentence why permissions are needed specifically for an agent, not an ordinary code editor.",
+        "tip": "Think of permissions as a seatbelt: it doesn't stop you driving, but it saves you in a crash."
+      },
+      "s2": {
+        "title": "allow vs deny and how rules are written",
+        "time": "",
+        "why": "Two lists decide everything: permissions.allow permits actions without confirmation, permissions.deny forbids them hard. deny always beats allow. Without understanding the syntax you'll either permit too much or permit nothing.",
+        "instructions": [
+          "Write a rule as action type plus pattern: Bash(npm test), Edit(./src/**), Read(./docs/**)",
+          "Add a safe command to permissions.allow and confirm the prompt disappears",
+          "Add a dangerous command to permissions.deny and verify Claude refuses to run it",
+          "Remember the priority: if an action is in both allow and deny — deny wins",
+          "Use a :* pattern for a group of commands (e.g. Bash(git push:*)) rather than allowing everything at once"
+        ],
+        "validate": "You wrote one working rule in allow and one in deny and verified they behave as expected.",
+        "tip": "Start with narrow patterns and widen as needed — tightening rules after the fact is harder."
+      },
+      "s3": {
+        "title": "Typical safe permissions",
+        "time": "",
+        "why": "Reading files, running tests, lint, formatting — actions with no irreversible consequences. It makes sense to put them in allow: they repeat dozens of times per session, and confirming each one breaks your flow.",
+        "instructions": [
+          "Add reading to permissions.allow: Read(./**) — reviewing code breaks nothing",
+          "Allow tests and checks: Bash(npm test:*), Bash(npm run lint:*)",
+          "Allow safe git status commands: Bash(git status), Bash(git diff:*)",
+          "Verify that routine actions then run without questions",
+          "Don't add commands here that change things irreversibly — reading and checks only"
+        ],
+        "validate": "Routine operations (tests, status, reading) run without confirmation, while mutating commands still ask.",
+        "tip": "A good sign of an allow candidate: the command can be run ten times in a row with no harm."
+      },
+      "s4": {
+        "title": "Dangerous actions: why they go in deny",
+        "time": "",
+        "why": "Deleting files, arbitrary network calls, access to secrets — actions with irreversible or leaking consequences. They belong in permissions.deny: even in autonomous mode Claude won't be able to run them.",
+        "instructions": [
+          "Block deletion: Bash(rm -rf:*) in permissions.deny",
+          "Block reading secrets: Read(./.env), Read(./**/*.key) — so values never enter the context",
+          "Limit arbitrary network: forbid Bash(curl:*) and Bash(wget:*) if the project doesn't need them",
+          "Protect critical files: Edit(./package.json), Edit(./.git/**)",
+          "Connect this to environment isolation — see [[node:sys-agent-sandbox|sandbox for the agent]]"
+        ],
+        "validate": "An attempt to run a forbidden command (e.g. rm -rf) is rejected rather than producing a confirmation prompt.",
+        "tip": "deny isn't \"ask permission\" — it's \"never allowed\". Put here what you don't want to even think about in a rush."
+      },
+      "s5": {
+        "title": "Ask / Auto-accept / Plan modes and their link to rules",
+        "time": "",
+        "why": "The mode sets the default behavior for actions that are in neither allow nor deny. Ask asks every time, Auto-accept runs without questions, Plan only plans without executing. But deny applies always, in any mode.",
+        "instructions": [
+          "Remember: Ask is the safe default mode — confirmation on every unapproved action",
+          "Auto-accept speeds up work but removes confirmations — it relies only on your deny rules",
+          "Plan shows a plan without executing — useful to see Claude's intentions in advance",
+          "Understand the key point: switching to Auto-accept or Bypass does NOT disable permissions.deny",
+          "Before Auto-accept or Bypass, make sure deny covers all dangerous actions"
+        ],
+        "validate": "You can explain what happens to an rm -rf command in Auto-accept mode when a deny rule exists (it will be blocked).",
+        "tip": "Auto-accept without a solid deny is the most common cause of incidents. Deny first, speed second."
+      },
+      "s6": {
+        "title": "Safe-configuration checklist and verification",
+        "time": "",
+        "why": "Scattered rules easily leave gaps. A checklist turns permissions into deliberate protection: you explicitly verify that the dangerous is blocked and the routine is allowed before trusting Claude with autonomy.",
+        "instructions": [
+          "Check deny: rm -rf, reading secrets (.env, keys), arbitrary network, critical files — all in place",
+          "Check allow: reading, tests, lint, safe git commands — routine needs no confirmation",
+          "Make sure there are no broad rules like allow: [Bash(*)] — narrow them with patterns",
+          "Run a typical session and see where Claude still asks or where something slips through",
+          "Commit the configuration in the project (see [[node:cc-config|Claude Code configuration]]) so rules are shared across the team"
+        ],
+        "validate": "Your permissions file passes the checklist: dangerous in deny, routine in allow, no broad rules, verified in a real session.",
+        "tip": "Revisit permissions with every new type of task — the rule set lives alongside the project."
+      }
+    }
+  },
+  "cc-slash": {
+    "title": "Claude Code slash commands",
+    "subtitle": "/init, /clear, /compact, /agents and your own commands — in one keystroke",
+    "totalTime": "6 steps",
+    "whatItIs": "Slash commands are short commands starting with `/` that launch a ready-made scenario instead of a long prompt. In [[node:claude-code|Claude Code]] they handle the routine: [[node:cc-cmd-init|/init]] analyzes the project and creates a [[node:cc-md|CLAUDE.md]], /clear resets the context, /compact compresses the history, /agents manages [[node:cc-subagents|subagents]].\n\nThere are built-in commands (shipped with Claude Code) and custom ones — which you define yourself as markdown files. Commands work both in the terminal and in claude.ai chats. This is your lever for controlling the session: context, quality, configuration — all through `/`.",
+    "approach": "Don't memorize the list. Open Claude Code, type `/` and browse the autocomplete — it shows you what's available. Run every command from this course in a real project: the effect is immediate.",
+    "outcomes": [
+      "You invoke commands via `/` and autocomplete, without memorizing them",
+      "You know the purpose of the key built-ins: /init, /clear, /compact, /help",
+      "You consciously manage session context (when to clear, when to compact)",
+      "You apply quality and config commands (/security-review, /config)",
+      "You create your own slash command for your routine"
+    ],
+    "applyIn": [
+      {
+        "title": "Starting a new project",
+        "description": "First thing — /init: Claude studies the codebase and creates a CLAUDE.md so it can work meaningfully from then on."
+      },
+      {
+        "title": "A long session",
+        "description": "Context has gone stale or is overloaded — /compact compresses the history, /clear resets it. Answer quality recovers."
+      },
+      {
+        "title": "Repeating routine",
+        "description": "The same scenario every day — wrap it in your own command and launch it with three characters."
+      }
+    ],
+    "pitfalls": [
+      "Typing commands from memory instead of `/` + autocomplete — one typo and the command won't fire.",
+      "Ignoring /clear when context is overloaded — answers degrade and you blame the model.",
+      "Confusing /clear (wipes everything) with /compact (compresses, keeps the gist) — losing needed history.",
+      "Inventing nonexistent commands — if it's not in autocomplete or /help, it doesn't exist.",
+      "Making a custom command for every trifle — files pile up and you can't keep track."
+    ],
+    "exercises": [
+      {
+        "question": "Open Claude Code in any project, type `/` and scroll the list. Run /help and find three commands you didn't know.",
+        "hint": "If the list doesn't appear — `/` must be at the very start of the input line, with no space before it."
+      },
+      {
+        "question": "In a filled-up session run /compact, then compare the behavior with /clear in a new session. Notice the difference in what Claude 'remembers'.",
+        "hint": "After /compact the key conclusions remain; after /clear the model starts from a blank slate."
+      },
+      {
+        "question": "Create your own command for a frequent task (e.g. reviewing the current branch) and invoke it via `/`.",
+        "hint": "A custom command is a markdown file in the project's commands folder; the file name becomes the command name."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What slash commands are and how to invoke them",
+        "time": "",
+        "why": "Without this you'll write long prompts where three characters suffice. Commands are the main way to control a [[node:claude-code|Claude Code]] session.",
+        "instructions": [
+          "Open Claude Code in any project.",
+          "Place the cursor at the start of the input line and type `/` — a list of available commands with autocomplete appears.",
+          "Type a couple of letters (e.g. `/cl`) — the list filters. Pick a command and press Enter.",
+          "Remember the principle: don't memorize, invoke via `/` + autocomplete."
+        ],
+        "validate": "Typing `/` shows a dropdown of commands, and filtering by letters narrows it down.",
+        "tip": "Commands work both in the terminal and in claude.ai chats — the `/` syntax is the same."
+      },
+      "s2": {
+        "title": "Key built-in commands: /init, /clear, /compact, /help",
+        "time": "",
+        "why": "This is the daily-use core. Without them you explain the project by hand and get lost in an overloaded context.",
+        "instructions": [
+          "In a new project run [[node:cc-cmd-init|/init]] — Claude studies the code and creates a [[node:cc-md|CLAUDE.md]] describing the project.",
+          "Run /help — review the full list of available commands and their purpose.",
+          "Remember /clear — a full reset of the current session's context.",
+          "Remember [[node:cc-cmd-compact|/compact]] — compressing the history while keeping the gist, without a full reset."
+        ],
+        "validate": "After /init a CLAUDE.md appears at the project root; /help shows the command list.",
+        "tip": "/help is your source of truth: if a command isn't there, it doesn't exist — don't invent it."
+      },
+      "s3": {
+        "title": "Managing the session and context with commands",
+        "time": "",
+        "why": "Context is a limited resource. When it's overloaded or stale, answer quality drops. Commands give you control back.",
+        "instructions": [
+          "Work in a session until answers get worse or the model 'forgets' the beginning.",
+          "Run [[node:cc-cmd-compact|/compact]] — the history compresses, key conclusions remain.",
+          "If the task changed completely — run /clear to start with fresh context.",
+          "Choosing rule: same task but bloated context → /compact; new task → /clear."
+        ],
+        "validate": "After /compact Claude still remembers the gist; after /clear it starts from scratch.",
+        "tip": "Don't wait for full degradation — compact context ahead of time, at logical task boundaries."
+      },
+      "s4": {
+        "title": "Quality and config commands: /security-review, /config",
+        "time": "",
+        "why": "Some commands are ready-made checks and access to settings. They give you quality and control without manual fuss.",
+        "instructions": [
+          "Run /help and find the quality and configuration commands in the list.",
+          "Run /security-review on the current changes — get a structured breakdown of vulnerabilities.",
+          "Open /config — review and, if needed, change Claude Code settings.",
+          "Use /review (if available) for a structured code review of the current branch."
+        ],
+        "validate": "/security-review produces a report on the changes; /config opens the settings.",
+        "tip": "The exact command set depends on the version — check /help, not your memory."
+      },
+      "s5": {
+        "title": "Creating your own command (custom slash command)",
+        "time": "",
+        "why": "A custom command turns a repeating prompt into a single call. It's personal automation of routine inside [[node:claude-code|Claude Code]].",
+        "instructions": [
+          "Create the project commands folder (`.claude/commands/`) if it doesn't exist yet.",
+          "Add a markdown file, e.g. `review-branch.md` — the file name becomes the command name (`/review-branch`).",
+          "Inside, describe the prompt scenario: goal, what to check, output format.",
+          "Save it, type `/` — your command appears in autocomplete. Invoke it."
+        ],
+        "validate": "A command named after your file shows up in the `/` list and runs the defined scenario.",
+        "tip": "Keep custom commands short and parameterizable — one command = one repeating task."
+      },
+      "s6": {
+        "title": "How not to get lost + a check",
+        "time": "",
+        "why": "There are many commands and versions change. A few simple habits save you from typos and invented commands.",
+        "instructions": [
+          "Always invoke via `/` + autocomplete, not from memory.",
+          "Unsure whether a command exists — check via /help.",
+          "For context keep the pair in mind: /compact (compress) vs /clear (reset).",
+          "Name your commands by action — so in a month you still know what they do.",
+          "Test yourself: run /init, /help, /compact, /clear and one of your own commands in a row."
+        ],
+        "validate": "You invoke any needed command via `/`, tell /compact from /clear, and verify a command's existence via /help.",
+        "tip": "If a command isn't in autocomplete and not in /help — it doesn't exist in your version, don't invent it."
+      }
+    }
+  },
+  "cc-plan-mode": {
+    "title": "Plan Mode in Claude Code",
+    "subtitle": "Think first, change later: the model builds a plan with no edits and executes only after your OK",
+    "totalTime": "6 steps",
+    "whatItIs": "Plan Mode is a [[node:claude-code|Claude Code]] mode where the model does not touch files but assembles a change plan as a structured list of steps. You read the plan, edit it, and approve — and only then does execution begin. It is a barrier between the AI's intent and real edits.",
+    "approach": "The course goes from understanding the point of Plan Mode to practice: enable the mode, let the model think through a hard task, read and fix the plan before a single edit, move to execution, and learn when the mode is overkill. Grounded in real work in the [[node:cc-terminal|Claude Code terminal]].",
+    "outcomes": [
+      "You understand how Plan Mode differs from the normal mode and why thinking and execution are separated",
+      "You can enable and disable Plan Mode right in a session",
+      "You recognize tasks where a plan is mandatory (large, multi-step, sensitive)",
+      "You read the model's plan and fix it before any file is changed",
+      "You control the move from plan to execution, including via Auto-accept"
+    ],
+    "applyIn": [
+      {
+        "title": "Large refactor",
+        "description": "Before editing 10+ files the plan shows every step in advance — you see if the AI is about to touch something it shouldn't."
+      },
+      {
+        "title": "Sensitive areas",
+        "description": "Auth, payments, DB migrations: the plan lets you read the model's intent before it becomes irreversible."
+      },
+      {
+        "title": "Unfamiliar code",
+        "description": "In someone else's or legacy project the plan is a map: first you understand what and why, then you allow edits."
+      }
+    ],
+    "pitfalls": [
+      "Enabling Plan Mode on trivial edits (one line, one file) — overhead without benefit",
+      "Approving the plan without reading it — the whole point of the mode is lost, you might as well work without it",
+      "Confusing \"the model showed a plan\" with \"the model already did everything\": before approval no files are touched",
+      "Forgetting to leave Plan Mode and wondering why edits aren't applied",
+      "Turning on Auto-accept for a complex plan right away without checking the first steps manually"
+    ],
+    "exercises": [
+      {
+        "question": "You need to rename a variable in one file and run a DB schema migration across ten. For which of the two tasks is Plan Mode justified, and why?",
+        "hint": "Weigh the cost of a mistake against reversibility. Where is rollback cheap, and where is it not?"
+      },
+      {
+        "question": "The model showed a 7-step plan; step 4 touches a file you didn't want changed. What do you do before approving?",
+        "hint": "The plan is edited with words in chat before execution — ask to remove or change the specific step."
+      },
+      {
+        "question": "After approving a 15-step plan you'd rather not confirm each edit manually. What execution mode gives you that, and what should you watch for?",
+        "hint": "Auto-accept speeds things up, but check the first steps before trusting the rest."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What Plan Mode is and why",
+        "time": "",
+        "why": "Without grasping the point, the mode looks like an extra click. In fact it separates two stages — think and change — and that is exactly what removes the risk of irreversible edits.",
+        "instructions": [
+          "Remember the core: in Plan Mode the model does NOT apply edits but assembles a change plan as a list of steps",
+          "Compare with the normal mode where [[node:claude-code|Claude Code]] changes files as it answers",
+          "Adopt the principle \"think first, change later\": the plan is a barrier between the AI's intent and real files",
+          "Realize the payoff: 5 minutes reviewing the plan saves an hour of rollback when the model goes off-track"
+        ],
+        "validate": "You can explain in one sentence how Plan Mode differs from the normal mode, without mentioning UI.",
+        "tip": "Think of the plan as a surgeon's draft before an operation: the cut is made only after sign-off."
+      },
+      "s2": {
+        "title": "How to enable Plan Mode",
+        "time": "",
+        "why": "The mode is useless if you can't turn it on at the right moment. Enabling it is a deliberate decision: \"let's plan first.\"",
+        "instructions": [
+          "Open a [[node:cc-terminal|Claude Code session in the terminal]]",
+          "Enter Plan Mode via the mode switch in the current session",
+          "Or ask in words: \"Enter plan mode and propose a plan, no edits until my OK\"",
+          "Make sure the session shows Plan Mode active before giving the task"
+        ],
+        "validate": "You enabled Plan Mode and see the model respond with a plan rather than editing files.",
+        "tip": "If unsure of the mode state — just ask the model which mode it's in right now."
+      },
+      "s3": {
+        "title": "When to use Plan Mode",
+        "time": "",
+        "why": "The mode pays off on hard and dangerous tasks, and only slows you down on trivial ones. Choosing the moment matters more than enabling it.",
+        "instructions": [
+          "Turn on the plan before mass changes — a 10+ files guideline",
+          "Turn it on before migrations and edits in sensitive places: auth, payments, DB schema",
+          "Turn it on in unfamiliar or legacy code where mistake cost and rollback are high",
+          "Assess reversibility: the more expensive the rollback, the stronger the need for a plan"
+        ],
+        "validate": "From a task description you quickly decide whether Plan Mode is needed and can justify the choice.",
+        "tip": "Simple rule: \"many steps OR a dangerous place\" — plan; \"one line\" — don't."
+      },
+      "s4": {
+        "title": "How to read and fix the plan before execution",
+        "time": "",
+        "why": "The mode's main value is the chance to step in before edits. A plan approved without reading protects against nothing.",
+        "instructions": [
+          "Read the whole plan: what steps, which files are touched, in what order",
+          "Check for extra or dangerous steps — for example, edits where you didn't ask",
+          "Fix the plan with words in chat: ask to remove, change, or add a specific step",
+          "Let the model update the plan and reread it once more before approval"
+        ],
+        "validate": "You made at least one edit to the plan via chat and confirmed the model rebuilt it.",
+        "tip": "Pay special attention to steps touching config and permissions: cross-check the [[node:cc-cfg-permissions|permission settings]]."
+      },
+      "s5": {
+        "title": "Moving from plan to execution (Auto-accept)",
+        "time": "",
+        "why": "After approval you still pick the pace of execution. Auto-accept speeds things up, but on a complex plan it's better to check the first steps manually first.",
+        "instructions": [
+          "Approve the plan — only then does the model start applying edits",
+          "Decide the execution mode: confirm each edit, or enable Auto-accept",
+          "Auto-accept makes sense when the plan is already read and the steps are predictable",
+          "On a large plan check the first edits manually before trusting the rest"
+        ],
+        "validate": "You consciously chose between manual confirmation and Auto-accept and understand the risk of each.",
+        "tip": "Auto-accept is trust given in advance: grant it only to a carefully read plan."
+      },
+      "s6": {
+        "title": "When Plan Mode is overkill + check",
+        "time": "",
+        "why": "Applying the plan everywhere is an antipattern: on small edits it adds steps without benefit. The final check cements when the mode fits and when it doesn't.",
+        "instructions": [
+          "Don't enable Plan Mode on trivial work: one line, one file, an obvious edit",
+          "Weigh the balance: the plan's benefit must outweigh the time spent reviewing",
+          "Re-test yourself on two of your recent tasks: where would a plan fit, where would it be excess",
+          "Lock in the choice rule and keep it handy for the next sessions"
+        ],
+        "validate": "You can name a task where Plan Mode fits and one where it's overkill, with reasoning.",
+        "tip": "When in doubt whether a plan is needed, ask yourself: \"is rollback expensive if the AI goes off-track?\" — if no, you don't need the plan."
+      }
+    }
+  },
+  "cc-ide": {
+    "title": "Claude Code in the IDE: VS Code and JetBrains",
+    "subtitle": "The same agent, but inside the editor: inline diffs, accept/reject, and sync with open tabs",
+    "totalTime": "6 steps",
+    "whatItIs": "The [[node:claude-code|Claude Code]] extension for VS Code and JetBrains. It is not a separate product but the same agent you use in the terminal, embedded in the editor: edits arrive as inline diffs, changes are accepted or rejected with buttons, and the agent sees your open tabs as visual context. Installed from the marketplace.",
+    "approach": "We go from \"why keep the agent in the editor at all\" to installation, linking with the terminal version through shared settings and CLAUDE.md, working with diffs, and consciously choosing between IDE and terminal. We finish with common problems and a quick check that everything works.",
+    "outcomes": [
+      "You understand that the IDE extension and terminal Claude Code are one agent, not two tools",
+      "You installed the extension in VS Code or JetBrains and ran your first edit",
+      "You linked the IDE with the terminal version through shared settings and CLAUDE.md",
+      "You can accept and reject changes via the diff view right in the editor",
+      "You consciously choose when the IDE is more convenient and when the terminal is"
+    ],
+    "applyIn": [
+      {
+        "title": "Fast edit loop",
+        "description": "You ask for an edit in the current file — you see the diff in the context of the surrounding code and accept or reject it with one button."
+      },
+      {
+        "title": "Reviewing the agent's changes",
+        "description": "The agent proposes several edits — you review them visually across tabs instead of reading patches in the terminal."
+      },
+      {
+        "title": "Working in your usual editor",
+        "description": "You never leave VS Code or JetBrains: the agent is at hand, not in a separate terminal window."
+      }
+    ],
+    "pitfalls": [
+      "Using only the IDE extension and not knowing the CLI — you lose sessions, --resume, and plugins",
+      "Thinking these are two different products: it is really one agent with shared settings",
+      "Not setting up CLAUDE.md — the agent in the IDE works without project rules just as in the terminal",
+      "Accepting diffs without looking: the inline view is convenient, but the review is still yours",
+      "Expecting capabilities the IDE doesn't have: the extension adds a visual layer, but the logic is the same as in the terminal"
+    ],
+    "exercises": [
+      {
+        "question": "How is the Claude Code IDE extension fundamentally different from the terminal version?",
+        "hint": "Think about the agent and the presentation layer: what changes and what stays the same."
+      },
+      {
+        "question": "Why keep CLAUDE.md in the project if you work through the IDE extension?",
+        "hint": "Where does the agent get project rules — does it depend on how it is launched?"
+      },
+      {
+        "question": "In what situation is the terminal more convenient than the IDE extension?",
+        "hint": "Recall sessions, --resume, and plugins."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why Claude Code in the IDE",
+        "time": "",
+        "why": "Before installing the extension, it is important to understand: this is not a new tool but the same agent in a different environment. Otherwise you will look for \"IDE-version features\" that don't exist.",
+        "instructions": [
+          "Remember: the extension is [[node:claude-code|Claude Code]] inside the editor, the same agent as in the terminal",
+          "The main benefit is visual context: edits arrive as inline diffs right in the code",
+          "Open tabs become context — the agent sees what you are working on",
+          "The accept/reject loop speeds up: fewer switches between terminal and editor"
+        ],
+        "validate": "You can explain in one sentence why the IDE extension and the CLI are one agent, not two tools.",
+        "tip": "Don't treat the extension as a replacement for the terminal — it is a second entry point to the same agent."
+      },
+      "s2": {
+        "title": "Installing the extension (VS Code / JetBrains)",
+        "time": "",
+        "why": "Without the installed extension the agent stays only in the terminal. Installing from the marketplace is the only supported way.",
+        "instructions": [
+          "Open your editor's marketplace: VS Code Marketplace or JetBrains Marketplace",
+          "Find the Claude Code extension and install it",
+          "Restart the editor if it asks you to",
+          "Check that the Claude command appears (in VS Code — via Cmd+Shift+P)"
+        ],
+        "validate": "The Claude command is available in the editor's command palette, and the extension is in the installed list.",
+        "tip": "If the extension isn't listed — make sure your editor version is recent enough; see [[node:cc-install|installing Claude Code]]."
+      },
+      "s3": {
+        "title": "Linking with terminal Claude Code",
+        "time": "",
+        "why": "The IDE extension and [[node:cc-terminal|terminal Claude Code]] share the same settings and project rules. If you don't realize this, you will start duplicating configuration.",
+        "instructions": [
+          "Remember: the extension and the CLI use the same shared settings and account",
+          "Put CLAUDE.md in the project root — the agent reads it both in the IDE and in the terminal",
+          "Check that project rules from CLAUDE.md work the same in both modes",
+          "Don't configure the agent twice — there is one setup per project"
+        ],
+        "validate": "A rule written in CLAUDE.md is honored by the agent both in the IDE and in the terminal.",
+        "tip": "CLAUDE.md is a single source of rules: change it once and the effect shows everywhere."
+      },
+      "s4": {
+        "title": "Working with files and diffs in the IDE",
+        "time": "",
+        "why": "The main value of the IDE version is visual diffs. Being able to read and apply them is the core working loop.",
+        "instructions": [
+          "Ask for an edit to the current file (in VS Code — Cmd+Shift+P → Claude: ask in current file)",
+          "Wait for the edit — it arrives as an inline diff right in the editor",
+          "Review the change in the context of the surrounding code",
+          "Accept or reject the change with the button in the diff view"
+        ],
+        "validate": "You triggered an edit, saw the inline diff, and consciously accepted or rejected it.",
+        "tip": "The inline view is convenient, but the review stays with you — don't accept diffs blindly."
+      },
+      "s5": {
+        "title": "When the IDE beats the terminal and vice versa",
+        "time": "",
+        "why": "It is not either/or. The extension and the [[node:cc-terminal|terminal]] complement each other — the choice depends on the task.",
+        "instructions": [
+          "Choose the IDE when the main work is in the editor and you need a fast edit loop with visual diffs",
+          "Choose the terminal when you need sessions, --resume, and plugins",
+          "Use the IDE's visual context to review several edits at once",
+          "Switch between them freely — it is one agent with shared settings"
+        ],
+        "validate": "For a specific task you can justify where it is more convenient to do it — in the IDE or the terminal.",
+        "tip": "Knowing the CLI doesn't lose value after you install the extension — on the contrary, it remains the foundation."
+      },
+      "s6": {
+        "title": "Common problems and a check",
+        "time": "",
+        "why": "If the extension doesn't respond or behaves oddly, the cause is usually settings or not realizing it is the same agent. A quick check saves time.",
+        "instructions": [
+          "The extension doesn't see project rules — check that CLAUDE.md is in the root",
+          "The Claude command didn't appear — restart the editor and verify the extension is installed",
+          "You expect features that don't exist — remember the logic is the same as in the terminal, the IDE only adds a visual layer",
+          "Make a test edit to the current file and confirm the diff arrives and can be accepted"
+        ],
+        "validate": "The extension is installed, sees CLAUDE.md, and a test edit goes through the diff view without errors.",
+        "tip": "If something behaves strangely in the IDE — repeat the same task in the terminal: that tells you whether the problem is in the extension or in the request itself."
+      }
+    }
   }
 }

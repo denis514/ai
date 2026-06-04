@@ -11057,5 +11057,919 @@
         "tip": "Säilytä tämä lista projektin vieressä. Seuraavan «ei kytkeydy» suljet 5 minuutissa tunnin sijaan."
       }
     }
+  },
+  "cc-install": {
+    "title": "Claude Coden asennus ja käynnistys",
+    "subtitle": "Nollasta toimivaan terminaaliagenttiin 6 vaiheessa",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Käytännönläheinen kurssi [[node:claude-code|Claude Coden]] asennuksesta — Anthropicin CLI-agentti. Asennat sen npm:llä, käynnistät projektikansiossa, kirjaudut sisään ja opit korjaamaan yleiset asennusvirheet.",
+    "approach": "Etenemme tiukasti järjestyksessä: ensin vaatimukset (Node.js), sitten asennus, käynnistys, kirjautuminen, version tarkistus ja yleisten virheiden läpikäynti. Jokainen vaihe päättyy tarkistuskomentoon, jotta ratkaisematon ongelma ei kulje eteenpäin.",
+    "outcomes": [
+      "Vaaditun version Node.js on asennettu ja ympäristön valmius tarkistettu",
+      "Claude Code on asennettu globaalisti npm:llä ja käytettävissä komennolla claude",
+      "Ensimmäinen claude-käynnistys on tehty oikeassa projektikansiossa",
+      "Kirjautuminen on tehty tilauksella tai API-avaimella",
+      "Osaat diagnosoida PATH-, käyttöoikeus- ja Windows-kohtaiset asennusvirheet"
+    ],
+    "applyIn": [
+      {
+        "title": "Uusi työkone",
+        "description": "Pystytä Claude Code tyhjästä uudelle läppärille tai uuteen ympäristöön parissa minuutissa."
+      },
+      {
+        "title": "Tiimin perehdytys",
+        "description": "Anna kollegoille toistettava asennusohje, jotta kaikilla on sama toimiva CLI."
+      },
+      {
+        "title": "Toisen asennuksen korjaaminen",
+        "description": "Selvitä nopeasti, miksi claude ei käynnisty — PATH, käyttöoikeudet vai Node.js-versio."
+      }
+    ],
+    "pitfalls": [
+      "Liian vanha Node.js — asennus onnistuu, mutta claude kaatuu käynnistyksessä",
+      "Asennus ilman -g:tä: paketti menee paikalliseksi eikä claude-komentoa löydy globaalisti",
+      "claude:n käynnistäminen git-repositorion ulkopuolella — menetät historian kontekstin ja osan ominaisuuksista",
+      "Windowsissa globaali npm-kansio ei ole PATH:issa — komentoa ei tunnisteta",
+      "sudo npm install -g:n käyttö, mikä rikkoo globaalien pakettien käyttöoikeudet"
+    ],
+    "exercises": [
+      {
+        "question": "Mistä tarkistat, että Node.js on tarpeeksi tuore ennen Claude Coden asennusta?",
+        "hint": "Komento node --version tulostaa asennetun version — vertaa sitä vaadittuun vähimmäisversioon."
+      },
+      {
+        "question": "Miksi claude kannattaa käynnistää projektikansiossa eikä kotihakemistossa?",
+        "hint": "Agentti ottaa kontekstin nykyisestä hakemistosta — tiedostot, git-historia, [[node:cc-md|CLAUDE.md]]."
+      },
+      {
+        "question": "claude-komentoa ei löydy asennuksen jälkeen. Mistä aloitat diagnoosin?",
+        "hint": "Tarkista, onko globaali npm-kansio PATH:issa ja asennettiinko paketti ilman -g-lippua."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Tarkista vaatimukset: Node.js",
+        "time": "",
+        "why": "Claude Code toimii Node.js:n päällä. Ilman sopivaa versiota asennus joko epäonnistuu tai claude kaatuu käynnistyksessä — tämä on yleisin ongelmien syy.",
+        "instructions": [
+          "Avaa terminaali ([[node:cc-terminal|terminaali]]) — macOS/Linuxissa Terminal, Windowsissa PowerShell.",
+          "Aja node --version ja katso versionumero.",
+          "Jos Node.js puuttuu tai on liian vanha, asenna nykyinen LTS-versio osoitteesta nodejs.org.",
+          "Tarkista myös npm komennolla npm --version — se tulee Node.js:n mukana."
+        ],
+        "validate": "node --version tulostaa versionumeron ilman virhettä, eikä se ole vaadittua vähimmäismäärää pienempi.",
+        "tip": "Versionhallinta (nvm) on kätevä useiden Node.js-versioiden hallintaan, mutta yksi tuore LTS riittää alkuun."
+      },
+      "s2": {
+        "title": "Asenna Claude Code npm:llä",
+        "time": "",
+        "why": "Globaali asennus tekee claude-komennosta käytettävän mistä tahansa kansiosta. -g-lippu on ratkaiseva: ilman sitä paketti menee paikalliseksi eikä komentoa löydy.",
+        "instructions": [
+          "Aja terminaalissa npm install -g @anthropic-ai/claude-code.",
+          "Odota valmistumista — npm lataa paketin ja rekisteröi claude-komennon.",
+          "Älä käytä sudoa: se rikkoo globaalien pakettien käyttöoikeudet. Jos oikeudet puuttuvat, aseta npm-prefix käyttäjän kansioon.",
+          "Odota onnistumisriviä ilman punaisia virheitä."
+        ],
+        "validate": "npm valmistui ilman virheitä, eikä tulosteessa ole punaisia EACCES- tai EEXIST-rivejä.",
+        "tip": "Jos saat käyttöoikeusvirheen (EACCES), älä korjaa sitä sudolla — siirrä globaali npm-prefix kotihakemiston kansioon."
+      },
+      "s3": {
+        "title": "claude:n ensimmäinen käynnistys projektikansiossa",
+        "time": "",
+        "why": "[[node:claude-code|Claude Code]] ottaa kontekstin nykyisestä hakemistosta — tiedostot ja git-historia. Oikeassa kansiossa käynnistäminen antaa agentille heti tarvittavan kontekstin.",
+        "instructions": [
+          "Siirry projektikansioon: cd ~/projects/sinun-projekti.",
+          "Varmista, että se on git-repositorio — muuten menetät historian kontekstin ja osan ominaisuuksista.",
+          "Aja komento claude.",
+          "Odota, että interaktiivinen istunto käynnistyy terminaalissa."
+        ],
+        "validate": "claude-komennon jälkeen aukeaa interaktiivinen istunto ja näkyviin tulee kehote pyynnön syöttämistä varten.",
+        "tip": "Käynnistä claude repositorion juuresta, ei sisäkkäisestä kansiosta — niin agentti näkee koko projektin ja [[node:cc-md|CLAUDE.md]]:n."
+      },
+      "s4": {
+        "title": "Kirjaudu sisään",
+        "time": "",
+        "why": "Ilman kirjautumista agentti ei pääse malliin. Vaihtoehtoja on kaksi: Claude-tilaus tai API-avain — valitse sinulle sopiva.",
+        "instructions": [
+          "Ensimmäisellä käynnistyksellä claude tarjoaa kirjautumistavan — seuraa näytön ohjeita.",
+          "Jos sinulla on tilaus, valitse tilikirjautuminen ja vahvista selaimessa.",
+          "Jos käytät API-avainta, hae avain Anthropicin konsolista ja liitä se pyydettäessä.",
+          "Odota vahvistusta, että istunto on valtuutettu."
+        ],
+        "validate": "Claude Code ilmoittaa onnistuneesta kirjautumisesta ja hyväksyy ensimmäisen pyyntösi ilman pääsyvirhettä.",
+        "tip": "API-avain on kätevämpi tiimille ja automaatiolle; tilauskirjautuminen sopii henkilökohtaiseen työhön. Älä säilytä avainta selkokielisenä repositoriossa."
+      },
+      "s5": {
+        "title": "Tarkista asennus ja versio",
+        "time": "",
+        "why": "Version tarkistus vahvistaa, että claude on todella asennettu ja globaalisti käytettävissä. Se on perusdiagnostiikka ennen mitään työtä.",
+        "instructions": [
+          "Aja claude --version ja varmista, että versionumero tulostuu.",
+          "Tarkista, että komento toimii mistä tahansa kansiosta, ei vain projektista.",
+          "Merkitse muistiin asennettu versio — siitä on apua päivityksissä ja ongelmien etsinnässä.",
+          "Halutessasi päivitä uusimpaan samalla komennolla npm install -g @anthropic-ai/claude-code."
+        ],
+        "validate": "claude --version tulostaa mistä tahansa hakemistosta versionumeron ilman 'command not found' -virhettä.",
+        "tip": "Jos versio tulostuu vain yhdestä kansiosta, paketti meni paikalliseksi — asenna uudelleen -g-lipulla."
+      },
+      "s6": {
+        "title": "Käy läpi yleiset asennusvirheet",
+        "time": "",
+        "why": "Useimmat ongelmat johtuvat kolmesta syystä: PATH, käyttöoikeudet ja Windowsin erityispiirteet. Kun tunnet ne, korjaat asennuksen minuuteissa, et tunneissa.",
+        "instructions": [
+          "'command not found' / 'claude ei tunnistettu': tarkista, että globaali npm-kansio on PATH:issa (npm prefix -g näyttää polun).",
+          "Käyttöoikeusvirhe (EACCES) asennuksessa: älä käytä sudoa, siirrä globaali npm-prefix käyttäjän kansioon.",
+          "Windowsissa: asennuksen jälkeen käynnistä terminaali uudelleen ja varmista, että npm-kansio on lisätty PATH:iin; käytä PowerShelliä.",
+          "Jokaisen korjauksen jälkeen aja claude --version uudelleen tarkistukseksi."
+        ],
+        "validate": "Korjauksen jälkeen claude --version toimii mistä tahansa kansiosta ja jokaisessa uudessa terminaali-ikkunassa.",
+        "tip": "npm prefix -g näyttää, minne globaalit paketit menevät — vertaa tätä polkua PATH:in sisältöön."
+      }
+    }
+  },
+  "cc-terminal": {
+    "title": "Työskentely Claude Coden terminaalissa",
+    "subtitle": "Sessiot, tiedostot, tilat ja hotkeyt — ilman ikkunoiden vaihtoa",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Käytännön kurssi terminaalityöstä [[node:claude-code|Claude Coden]] kanssa: miten sessio rakentuu, miten syöttää tiedostoja kontekstiin, miten vaihtaa tiloja (normaali / Plan / auto-accept), mitkä hotkeyt säästävät aikaa, miten jatkaa eilistä työtä ja miten keskeyttää malli lennossa.",
+    "approach": "Etenemme session mallista päivittäisiin käytäntöihin. Jokainen vaihe on konkreettinen terminaalitoiminto komennolla tai hotkeyllä, jonka kokeilet heti omassa projektissasi. Ei teoriaa teorian vuoksi: vain se, mikä muuttaa nopeuttasi.",
+    "outcomes": [
+      "Ymmärrät, mitä sessio tallentaa ja miksi konteksti ei ole rajaton",
+      "Lisäät tiedostoja kontekstiin @-maininnoilla ja drag-and-dropilla",
+      "Vaihdat tilojen normaali / Plan / auto-accept välillä tehtävän mukaan",
+      "Käytät hotkeyta hiiren sijaan — poistumatta flowsta",
+      "Jatkat menneitä sessioita komennoilla --resume ja --continue"
+    ],
+    "applyIn": [
+      {
+        "title": "Päivittäinen kehitys",
+        "description": "Mikä tahansa ominaisuus tai korjaus: pudotat oikeat tiedostot, pidät session flowssa, jatkat sitä seuraavana päivänä ilman uudelleenbriiffausta."
+      },
+      {
+        "title": "Katselmointi ja koodin navigointi",
+        "description": "@-mainitset muutaman tiedoston, pyydät Claudea selittämään yhteydet, keskeytät ja tarkennat, jos se eksyy."
+      },
+      {
+        "title": "Suuret muutokset",
+        "description": "Kytket Plan-tilan päälle sopiaksesi suunnitelmasta, sitten auto-acceptin rutiinimuokkauksille — hallinta siellä, missä sitä tarvitset."
+      }
+    ],
+    "pitfalls": [
+      "Aloittaa joka kerta tyhjästä --resumen sijaan — menetät kertyneen kontekstin",
+      "Kaataa kontekstiin kymmeniä tiedostoja — malli hukkuu kohinaan, vastaukset huononevat",
+      "Pitää auto-accept päällä herkissä muokkauksissa — muutokset menevät läpi ilman hallintaasi",
+      "Odottaa pitkän väärän vastauksen loppua Esc:n sijaan — hukkaat aikaa",
+      "Sivuuttaa hotkeyt ja tarttua hiireen — joka tippu vie 30 sekuntia"
+    ],
+    "exercises": [
+      {
+        "question": "Suljit terminaalin, ja tänään pitää jatkaa eilistä tehtävää samalla kontekstilla. Mitä teet?",
+        "hint": "On kaksi komentoa: toinen jatkaa viimeistä sessiota heti, toinen antaa valita listasta menneitä."
+      },
+      {
+        "question": "Claude alkoi kirjoittaa väärää tiedostoa uudelleen ja meni väärälle polulle. Miten pysäytät ja korjaat tappamatta sessiota?",
+        "hint": "Yksi hotkey keskeyttää nykyisen vastauksen — sen jälkeen voit heti kirjoittaa tarkennuksen."
+      },
+      {
+        "question": "Tarvitset suuren koodimuutoksen, mutta haluat ensin sopia lähestymistavasta. Minkä tilan kytket päälle ja miten?",
+        "hint": "Katso [[node:cc-plan-mode|Plan Mode]] — se rakentaa suunnitelman ennen muokkauksia."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miten terminaalisessio rakentuu",
+        "time": "",
+        "why": "Sessio on dialogisi säiliö mallin kanssa: viestihistoria, luetut tiedostot, tehdyt muokkaukset. Sen rajojen ymmärtäminen selittää, miksi konteksti ei ole rajaton ja miksi sitä kannattaa säästää.",
+        "instructions": [
+          "Suorita claude projektikansiossa — interaktiivinen sessio avautuu",
+          "Huomaa: kaikki minkä Claude luki tai muutti session aikana pysyy kontekstissa sen loppuun asti",
+          "Seuraa kontekstin ilmaisinta — kun se lähestyy rajaa, vanhat viestit työntyvät pois",
+          "Komento /clear nollaa kontekstin poistumatta sessiosta — kätevää tehtävää vaihdettaessa"
+        ],
+        "validate": "Käynnistit session ja näet, että Claude muistaa aiemmin samassa dialogissa luetut tiedostot.",
+        "tip": "Yksi tehtävä — yksi sessio. Toisiinsa liittymättömien tehtävien sekoittaminen yhteen kontekstiin johtaa roskavastauksiin."
+      },
+      "s2": {
+        "title": "Tiedostojen lisääminen kontekstiin",
+        "time": "",
+        "why": "Claude vastaa tarkemmin nähdessään oikean koodin. Kaksi nopeaa tapaa antaa tiedosto — @-maininta ja drag-and-drop — säästävät kopioinnilta ja ikkunoiden vaihdolta.",
+        "instructions": [
+          "Kirjoita @ ja aloita polun syöttäminen — automaattitäydennys projektin tiedostoista ilmestyy",
+          "Valitse tiedosto, esim. @src/App.jsx — Claude lukee sen itse",
+          "Raahaa tiedosto tiedostonhallinnasta suoraan terminaali-ikkunaan — polku lisätään automaattisesti",
+          "Mainitse vain olennaiset tiedostot: 2-3 tarvittavaa on parempi kuin 20 varmuuden vuoksi"
+        ],
+        "validate": "Lisäsit tiedoston @:lla tai drag-and-dropilla, ja Claude viittaa sen sisältöön vastauksessa.",
+        "tip": "@ toimii myös kansioille — @src/components/ tuo hakemiston yleiskatsauksen kaatamatta kaikkea koodia."
+      },
+      "s3": {
+        "title": "Tilat: normaali, Plan, auto-accept",
+        "time": "",
+        "why": "Eri tehtävät vaativat eri hallinnan tasoa. Normaalitila kysyy vahvistuksen, Plan rakentaa suunnitelman ennen muokkauksia, auto-accept soveltaa muutokset kysymättä. Tilan valinta = nopeuden ja hallinnan tasapaino.",
+        "instructions": [
+          "Oletuksena olet normaalitilassa: Claude pyytää luvan ennen muokkauksia",
+          "Paina Shift+Tab vaihtaaksesi tiloja suoraan sessiossa",
+          "Kytke Plan-tila sopiaksesi lähestymistavasta ennen muutoksia — yksityiskohdat: [[node:cc-plan-mode|Plan Mode]]",
+          "Kytke auto-accept päälle vain rutiininomaisille, todennetuille muokkauksille — se ei kysy vahvistuksia",
+          "Palaa normaalitilaan herkissä tiedostoissa hallitaksesi jokaisen muutoksen"
+        ],
+        "validate": "Vaihdoit normaalitilan ja Planin välillä Shift+Tabilla ja näit käytöksen muuttuvan.",
+        "tip": "Yhdistelmä toimii näin: sovit Planissa → vaihdat auto-acceptiin mekaaniselle osalle → palaat normaaliin lopputarkistukseen."
+      },
+      "s4": {
+        "title": "Hyödylliset hotkeyt",
+        "time": "",
+        "why": "Jokainen hiireen tarttuminen rikkoo flown. Kourallinen hotkeyta kattaa 90 % session toiminnoista ja pitää kädet näppäimistöllä.",
+        "instructions": [
+          "Esc — keskeyttää Clauden nykyisen vastauksen sulkematta sessiota",
+          "Shift+Tab — kiertää tilojen läpi (normaali / auto-accept / Plan)",
+          "Ylänuoli — tuo takaisin aiemmat viestisi uudelleensyöttöä varten",
+          "Ctrl+C — peruuttaa syötteen; uudelleen painaminen poistuu sessiosta",
+          "Kauttaviivakomennot (esim. /clear, /help) — nopea pääsy toimintoihin; katso [[node:cc-slash|slash-komennot]]"
+        ],
+        "validate": "Keskeytit vastauksen Esc:llä ja vaihdoit tilaa Shift+Tabilla koskematta hiireen.",
+        "tip": "Opettele ensin kaksi: Esc ja Shift+Tab. Loput tarttuvat tavaksi itsestään."
+      },
+      "s5": {
+        "title": "Session historia ja jatkaminen",
+        "time": "",
+        "why": "Sessiot eivät katoa terminaalin sulkeutuessa. Paluu menneeseen työhön kertyneen kontekstin kanssa säästää uudelleenbriiffaukselta ja säilyttää otteen tehtävästä.",
+        "instructions": [
+          "Suorita claude --continue jatkaaksesi heti tämän kansion viimeistä sessiota",
+          "Suorita claude --resume valitaksesi session menneiden listasta",
+          "Sessio avautuu koko historian kanssa — Claude muistaa, mihin jäit",
+          "Käytä --resumea, kun palaat tehtävään päivän tai parin päästä etkä aloita alusta"
+        ],
+        "validate": "Suljit terminaalin, suoritit claude --resume, valitsit eilisen session ja jatkoit samasta kohdasta.",
+        "tip": "--continue 'juuri suljin, jatkan', --resume kun pitää valita useammasta menneestä sessiosta."
+      },
+      "s6": {
+        "title": "Keskeytys, korjaus ja tarkistus",
+        "time": "",
+        "why": "Claude eksyy joskus. Kyky pysäyttää se ja ohjata lennossa — ilman session uudelleenkäynnistystä — on keskeinen hallinnan taito. Ja tarkista tulos aina itse.",
+        "instructions": [
+          "Huomasit väärän liikkeen — paina Esc odottamatta vastauksen loppua",
+          "Kirjoita heti korjaava viesti: mikä on vialla ja minne mennä",
+          "Jos Claude muokkaa väärää tiedostoa — osoita oikea @-maininnalla",
+          "Muokkausten jälkeen tarkista tulos: aja testit tai build, lue diff",
+          "Älä luota sokeasti auto-acceptissa — lopullinen katselmointi on aina sinun"
+        ],
+        "validate": "Keskeytit väärän vastauksen Esc:llä, korjasit suunnan ja tarkistit tuloksen buildilla tai testeillä.",
+        "tip": "Parempi keskeyttää aikaisin ja muotoilla uudelleen kuin odottaa pitkä vastaus ja tehdä kaikki uusiksi."
+      }
+    }
+  },
+  "cc-config": {
+    "title": "Claude Coden asetukset: kolme tasoa",
+    "subtitle": "Globaalit, projekti- ja paikalliset asetukset — mikä mihinkin",
+    "totalTime": "6 askelta",
+    "whatItIs": "Claude Code lukee asetuksia kolmesta paikasta: globaalit tiedostossa ~/.claude/settings.json (sinun kaikissa projekteissasi), projektikohtaiset tiedostossa .claude/settings.json (tiimin yhteiset, repositoriossa) ja paikalliset tiedostossa .claude/settings.local.json (henkilökohtaiset, ei koskaan committoida). Kurssi näyttää, mistä kukin taso vastaa, miten ne yhdistyvät prioriteetin mukaan ja mitä kuhunkin laitetaan.",
+    "approach": "Etenemme prioriteettimallista käytäntöön: ensin ymmärrämme, miksi tasoja on kolme ja mikä ohittaa minkä, sitten konfiguroimme kunkin tiedoston vuorollaan, jaamme käyttöoikeudet ja henkilökohtaiset tiedot tasoille ja lopetamme tyypillisiin virheisiin sekä tarkistukseen.",
+    "outcomes": [
+      "Ymmärrät, mitkä kolme asetustiedostoa Claude Code lukee ja missä järjestyksessä ne sovelletaan",
+      "Osaat asettaa globaalit preferenssit kerran tiedostoon ~/.claude/settings.json kaikille projekteille",
+      "Osaat luoda tiimisäännöt tiedostoon .claude/settings.json ja committoida ne repositorioon",
+      "Pidät henkilökohtaiset asetukset ja salaisuudet tiedostossa settings.local.json gitin ulkopuolella",
+      "Sijoitat käyttöoikeudet (permissions) oikealle tasolle ja vältät konfliktit ja vuodot"
+    ],
+    "applyIn": [
+      {
+        "title": "Uuteen projektiin perehdyttäminen",
+        "description": "Tiimi pitää yhteiset säännöt tiedostossa .claude/settings.json — uusi kehittäjä saa yhtenäisen standardin heti repositorion kloonauksen jälkeen."
+      },
+      {
+        "title": "Henkilökohtaiset kokeilut",
+        "description": "Kokeile uusia käyttöoikeuksia tai MCP-palvelimia tiedostossa settings.local.json vaikuttamatta muuhun tiimiin tai sotkematta gitin historiaa."
+      },
+      {
+        "title": "Vahvistusten vähentäminen",
+        "description": "Lisää rutiinikomennot (npm test, linter) allow-listalle oikealle tasolle — Claude lakkaa kysymästä lupaa joka ajolla."
+      }
+    ],
+    "pitfalls": [
+      "Säilyttää salaisuuksia ja tokeneita tiedostossa .claude/settings.json — ne joutuvat gitiin commitin mukana; niiden paikka on settings.local.json",
+      "Ei ymmärrä prioriteettia: paikallinen ohittaa projektin, projekti ohittaa globaalin; väärän tason muokkaaminen näyttää siltä että 'ei toiminut'",
+      "Laittaa henkilökohtaiset säännöt projektitiedostoon ja pakottaa ne koko tiimille",
+      "Unohtaa lisätä .claude/settings.local.json tiedostoon .gitignore (se on oletuksena ohitettu, mutta epästandardeissa projekteissa kannattaa tarkistaa)",
+      "Monistaa saman säännön useille tasoille yhden sijaan — sitten on vaikea tietää, mikä niistä oikeasti vaikuttaa"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on henkilökohtainen API-token, jota Claude Code tarvitsee vain yhdessä projektissa. Mihin kolmesta tiedostosta se kuuluu ja miksi?",
+        "hint": "Token on henkilökohtainen ja salainen — sen ei pidä päätyä repositorioon. Mikä tiedosto ei oletuksena committoidu?"
+      },
+      {
+        "question": "Tiedostossa .claude/settings.json tiimi salli Bash(npm test). Haluat lisäksi sallia Bash(npm run e2e) vain itsellesi. Mihin lisäät sen, ja ohittaako se tiimisäännön?",
+        "hint": "Paikallinen taso täydentää ja ohittaa projektitason, ei korvaa sitä. Tiimin lupa jää voimaan."
+      },
+      {
+        "question": "Lisäsit säännön tiedostoon ~/.claude/settings.json, mutta se ei vaikuta tietyssä projektissa. Mikä taso saattoi ohittaa sen?",
+        "hint": "Muista prioriteettijärjestys: globaali on heikoin. Tarkista kyseisen projektin projekti- ja paikallistiedostot."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi kolme tasoa ja niiden prioriteetti",
+        "time": "",
+        "why": "Ilman prioriteetin ymmärtämistä mikä tahansa asetus muuttuu arvailuksi: muokkaat yhtä tiedostoa, mutta toinen vaikuttaa. Kolme tasoa on olemassa erottaakseen 'minun henkilökohtainen', 'tiimin yhteinen' ja 'salainen paikallinen'.",
+        "instructions": [
+          "Muista kolme tiedostoa: ~/.claude/settings.json (globaali, kaikille projekteillesi), .claude/settings.json (projekti, repositoriossa), .claude/settings.local.json (paikallinen, ei committoida)",
+          "Muista prioriteetti heikoimmasta vahvimpaan: globaali → projekti → paikallinen. Vahvempi taso ohittaa heikomman",
+          "Ymmärrä idea: globaali asettaa yleiset preferenssisi, projekti asettaa tiimistandardin, paikallinen asettaa henkilökohtaiset lisäykset ja salaisuudet tietylle projektille",
+          "Lisää itse työkalusta — katso [[node:claude-code|Claude Code]]"
+        ],
+        "validate": "Osaat nimetä kolme asetustiedostoa ja sanoa, mikä niistä ohittaa muut konfliktissa.",
+        "tip": "Muistisääntö: 'mitä lähempänä tiedosto on projektia ja sinua henkilökohtaisesti, sitä vahvempi se on'. Paikallinen voittaa kaiken."
+      },
+      "s2": {
+        "title": "Globaalit asetukset (~/.claude/settings.json)",
+        "time": "",
+        "why": "Globaali taso sisältää preferenssisi, joiden tulisi vaikuttaa kaikissa projekteissa ilman uudelleenkonfigurointia: yhteiset käyttöoikeudet, oletusmalli, perussäännöt.",
+        "instructions": [
+          "Avaa tai luo ~/.claude/settings.json kotikansiossasi",
+          "Laita sinne asetukset, joita tarvitset missä tahansa projektissa — esimerkiksi yhteinen allow-lista turvallisille komennoille",
+          "Älä laita tänne projektikohtaisia sääntöjä: ne sotkevat kaikki muut projektisi",
+          "Tarkista, että JSON on validia — ylimääräinen pilkku rikkoo koko tiedoston lukemisen"
+        ],
+        "validate": "Tiedosto ~/.claude/settings.json on olemassa, on validia JSONia ja sisältää vain yleisiä, ei-projektikohtaisia asetuksia.",
+        "tip": "Globaali tiedosto on prioriteetiltaan heikoin: mikä tahansa projekti ohittaa sen helposti, ja se on ihan ok."
+      },
+      "s3": {
+        "title": "Projektiasetukset (.claude/settings.json repositoriossa)",
+        "time": "",
+        "why": "Projektitiedosto on tiimistandardi. Se on gitissä, joten jokainen repositorion kloonaava saa samat säännöt sille, miten Claude Code toimii.",
+        "instructions": [
+          "Luo projektin juureen .claude-kansio ja tiedosto .claude/settings.json",
+          "Kuvaa tiiminlaajuiset säännöt: sallitut komennot, tiedostonmuokkausoikeudet, projektiasetukset",
+          "Committoi .claude/settings.json repositorioon — tämä on tarkoituksella yhteinen tiedosto",
+          "Älä koskaan laita tänne salaisuuksia, tokeneita tai henkilökohtaisia polkuja — kaikki se päätyisi gitiin",
+          "Pidä Clauden työohjeet projektille erillään — katso [[node:cc-md|CLAUDE.md]]"
+        ],
+        "validate": "Tiedosto .claude/settings.json on repositoriossa, läpäisee validin JSONin ja sisältää vain sen, mitä kehtaisi näyttää koko tiimille.",
+        "tip": "Ajattele tätä tiedostoa osana projektin koodia: se versioidaan ja katselmoidaan kuten kaikki muukin."
+      },
+      "s4": {
+        "title": "Paikalliset asetukset (settings.local.json — henkilökohtainen, älä committoi)",
+        "time": "",
+        "why": "Paikallinen tiedosto on kaikelle, mikä koskee vain sinua tässä projektissa: henkilökohtaiset käyttöoikeudet, kokeilut, salaisuudet. Sitä ei committoida, joten mikään henkilökohtainen ei vuoda yhteiseen repositorioon.",
+        "instructions": [
+          "Luo .claude/settings.local.json projektin juureen",
+          "Laita tänne henkilökohtaiset käyttöoikeuslisäykset ja salaisuudet, joita juuri sinä tarvitset tässä projektissa",
+          "Varmista, ettei tiedosto päädy gitiin: oletuksena se on tiedostossa .gitignore, mutta epästandardissa projektissa tarkista se käsin",
+          "Muista: paikallinen taso ohittaa projektitason — täällä voit täsmällisesti vahvistaa tai laajentaa tiimisääntöjä itsellesi"
+        ],
+        "validate": "Tiedosto settings.local.json ei näy git statusissa, ja henkilökohtaiset sääntösi vaikuttavat projektisääntöjen päällä.",
+        "tip": "Jos epäilet, committoidako vai et — se on paikallinen tiedosto, joten ei. Henkilökohtainen ja salainen elää vain täällä."
+      },
+      "s5": {
+        "title": "Mikä mihinkin: käyttöoikeudet tasoittain",
+        "time": "",
+        "why": "Keskeinen käytännön taito on sijoittaa käyttöoikeudet oikealle tasolle. Se ratkaisee, näkeekö koko tiimi ne, vain sinä, vai vuotavatko ne gitiin.",
+        "instructions": [
+          "Kaikkialla ja aina tarvittavat oikeudet (esim. turvalliset read-komennot) → globaali ~/.claude/settings.json",
+          "Projektin ja tiimin yhteiset oikeudet (Bash(npm test), Edit(./src/**)) → projekti .claude/settings.json repositoriossa",
+          "Henkilökohtaiset oikeudet ja salaisuudet tälle projektille → paikallinen settings.local.json gitin ulkopuolella",
+          "Älä monista yhtä sääntöä useille tasoille — valitse yksi ja pidä se siellä",
+          "Miten käyttöoikeudet itse toimivat ja niiden syntaksi — katso [[node:cc-cfg-permissions|Permissions]]"
+        ],
+        "validate": "Mille tahansa säännölle osaat yksiselitteisesti sanoa, millä tasolla sen tulisi sijaita ja miksi.",
+        "tip": "Yksinkertainen testi: 'Tarvitseeko koko tiimi tätä?' → projekti. 'Vain minä?' → paikallinen. 'Kaikissa projekteissani?' → globaali."
+      },
+      "s6": {
+        "title": "Tyypilliset virheet ja tarkistus",
+        "time": "",
+        "why": "Kaksi virhettä pilaa konfiguraation useimmin: salaisuudet commitissa ja tasokonfliktit. Lopputarkistus nappaa molemmat ennen kuin niistä tulee tiimiongelma.",
+        "instructions": [
+          "Tarkista, ettei tiedostossa .claude/settings.json (projektitiedosto) ole yhtään salaisuutta tai tokenia — kaiken salaisen tulee olla tiedostossa settings.local.json",
+          "Tarkista konfliktit uudelleen: jos sääntö 'ei laukea', etsi, ohittaako vahvempi taso sen (paikallinen > projekti > globaali)",
+          "Aja git status ja varmista, ettei settings.local.json ole committoitavien listalla",
+          "Aja Claude Code projektissa ja varmista, että rutiinikomennot menevät läpi ilman ylimääräisiä vahvistuksia — se tarkoittaa, että oikeudet on asetettu oikein"
+        ],
+        "validate": "git status ei näytä tiedostoa settings.local.json, projektitiedostossa ei ole salaisuuksia, ja Claude Code soveltaa odotettua sääntötasoa ilman yllätyksiä.",
+        "tip": "Jos jokin 'ei vaikuta', kyse on lähes aina tasoprioriteetista, ei syntaksista. Aloita tarkistus paikallisesta tiedostosta."
+      }
+    }
+  },
+  "cc-cfg-permissions": {
+    "title": "Permissions Claude Codessa",
+    "subtitle": "permissions.allow / permissions.deny -säännöt — mitä Claude suorittaa ilman vahvistusta ja mikä on aina kielletty",
+    "totalTime": "6 steps",
+    "whatItIs": "Permissions on Claude Coden autonomian varoventtiili. Listat permissions.allow ja permissions.deny määräävät, mitkä toimet (Bash-komennot, Edit, Read, verkkokutsut) suoritetaan heti, mitkä vaativat vahvistuksen ja mitkä on estetty tiukasti ja pysyvästi. Tämä ei ole kosmeettinen asetus vaan raja mukavan ja turvallisen välillä.",
+    "approach": "Etenemme merkityksestä käytäntöön: ensin miksi permissions ylipäätään tarvitaan autonomian jarruna, sitten allow/deny-syntaksi ja miten sääntöjä luetaan, sitten mitkä luvat ovat turvallisia (luku, testit, lint), mitkä vaarallisia (rm, verkko, salaisuudet) ja miksi ne kuuluvat deny-listaan. Lopuksi käymme läpi toimintatilat (Ask / Auto-accept / Plan) ja niiden suhteen sääntöihin, minkä jälkeen kokoamme turvallisen konfiguraation tarkistuslistan ja varmistamme sen oikealla projektilla.",
+    "outcomes": [
+      "Ymmärrät miksi permissions on olemassa ja miksi se on varoventtiili, ei este",
+      "Osaat kirjoittaa oikeat permissions.allow- ja permissions.deny-säännöt komentokuvioilla",
+      "Erotat turvalliset luvat (luku, testit) vaarallisista (poisto, verkko, salaisuudet)",
+      "Tunnet Ask / Auto-accept / Plan -tilat ja miten ne toimivat sääntöjesi kanssa",
+      "Osaat koota ja tarkistaa turvallisen permissions-konfiguraation projektillesi"
+    ],
+    "applyIn": [
+      {
+        "title": "Uuden projektin pystytys",
+        "description": "Asetat heti deny vaarallisille komennoille ja allow rutiinille — Claude työskentelee flowssa muttei voi aiheuttaa vahinkoa."
+      },
+      {
+        "title": "Tiimikehitys",
+        "description": "Yhteiset permissions-säännöt repositoriossa suojaavat kaikkia osallistujia agentin vahingollisilta toimilta."
+      },
+      {
+        "title": "Autonomiset ja pitkät istunnot",
+        "description": "Auto-accept- tai taustatilassa oikea deny on ainoa takuu siitä, ettei Claude suorita rm:ää tai vuoda salaisuuksia."
+      }
+    ],
+    "pitfalls": [
+      "Liian laajat säännöt kuten allow: [Bash(*)] — menetät kontrollin siitä, mitä todella suoritetaan",
+      "Luottaa pelkkään allow-listaan ja unohtaa deny — ilman selkeitä estoja vaarallinen komento voi livahtaa läpi",
+      "Olettaa että Bypass tai Auto-accept ovat oletuksena turvallisia — ne poistavat vahvistukset, eivät deny-suojaa",
+      "Säilyttää salaisuudet niin että Claude voi lukea ne komennolla — deny:n puute .env-tiedoston lukuun avaa vuodon",
+      "Kopioida toisen sääntöjoukon ilman ymmärrystä — toisen projektin komentokuviot voivat sallia liikaa"
+    ],
+    "exercises": [
+      {
+        "question": "Projektissasi Claude kysyy vahvistusta joka kerta, kun se ajaa npm test -komennon. Mikä sääntö poistaa tämän ja mihin listaan se kuuluu?",
+        "hint": "Mieti mihin listaan turvalliset toistuvat toimet kuuluvat ja miten kirjoittaa tietty komento kuviona."
+      },
+      {
+        "question": "Miksi ei riitä, että jättää rm -rf vain pois allow-listalta — miksi siihen tarvitaan selkeä deny?",
+        "hint": "Muista mitä tapahtuu Auto-acceptissa tai laajoilla kuvioilla: mikä estää komennon tiukasti ja mikä vain jättää sen ennalta hyväksymättä."
+      },
+      {
+        "question": "Nimeä kolme toimien luokkaa, jotka kuuluvat permissions.deny-listaan, ja selitä kunkin riski.",
+        "hint": "Tiedostojen poisto, verkkokutsut, pääsy salaisuuksiin — mitä vahinkoa agentti voisi tehdä kussakin tapauksessa."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi permissions: autonomian jarru",
+        "time": "",
+        "why": "Claude Code voi suorittaa komentoja ja muuttaa tiedostoja itse. Ilman rajoja autonomiasta tulee riski: yksi huono komento ja projekti on rikki. Permissions on jarru, joka säilyttää nopeuden mutta poistaa katastrofin.",
+        "instructions": [
+          "Avaa Claude Coden konfiguraatio ja etsi permissions-osio (ks. [[node:cc-config|Claude Coden konfiguraatio]])",
+          "Muista kolme lopputulosta mille tahansa toimelle: sallittu heti, kysyy vahvistuksen, estetty pysyvästi",
+          "Yhdistä ajatus siihen, että [[node:claude-code|Claude Code]] on agentti, joka toimii, ei vain neuvo",
+          "Päätä itse: mikä projektissasi on mahdotonta hyväksyä missään olosuhteissa"
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miksi permissions tarvitaan nimenomaan agentille eikä tavalliselle koodieditorille.",
+        "tip": "Ajattele permissions turvavyönä: se ei estä ajamista, mutta pelastaa kolarissa."
+      },
+      "s2": {
+        "title": "allow vs deny ja miten sääntöjä kirjoitetaan",
+        "time": "",
+        "why": "Kaksi listaa ratkaisee kaiken: permissions.allow sallii toimet ilman vahvistusta, permissions.deny kieltää ne tiukasti. deny voittaa aina allow:n. Ilman syntaksin ymmärrystä sallit joko liikaa tai et mitään.",
+        "instructions": [
+          "Kirjoita sääntö toimityyppinä ja kuviona: Bash(npm test), Edit(./src/**), Read(./docs/**)",
+          "Lisää turvallinen komento permissions.allow-listaan ja varmista, että vahvistuskysely katoaa",
+          "Lisää vaarallinen komento permissions.deny-listaan ja tarkista, että Claude kieltäytyy suorittamasta sitä",
+          "Muista prioriteetti: jos toimi on sekä allow- että deny-listalla — deny voittaa",
+          "Käytä :*-kuviota komentoryhmälle (esim. Bash(git push:*)) sen sijaan että sallisit kaiken kerralla"
+        ],
+        "validate": "Kirjoitit yhden toimivan säännön allow- ja yhden deny-listaan ja varmistit, että ne toimivat odotetusti.",
+        "tip": "Aloita kapeilla kuvioilla ja laajenna tarpeen mukaan — sääntöjen kiristäminen jälkikäteen on vaikeampaa."
+      },
+      "s3": {
+        "title": "Tyypilliset turvalliset luvat",
+        "time": "",
+        "why": "Tiedostojen luku, testien ajo, lint, muotoilu — toimia ilman peruuttamattomia seurauksia. Ne kannattaa laittaa allow-listaan: ne toistuvat kymmeniä kertoja istunnossa, ja jokaisen vahvistaminen rikkoo työn flown.",
+        "instructions": [
+          "Lisää luku permissions.allow-listaan: Read(./**) — koodin tarkastelu ei riko mitään",
+          "Salli testit ja tarkistukset: Bash(npm test:*), Bash(npm run lint:*)",
+          "Salli turvalliset git-tilakomennot: Bash(git status), Bash(git diff:*)",
+          "Varmista, että rutiinitoimet menevät tämän jälkeen ilman kysymyksiä",
+          "Älä lisää tähän komentoja, jotka muuttavat asioita peruuttamattomasti — vain luku ja tarkistukset"
+        ],
+        "validate": "Rutiinitoimet (testit, status, luku) suoritetaan ilman vahvistuksia, kun taas muuttavat komennot kysyvät yhä.",
+        "tip": "Hyvä merkki allow-ehdokkaasta: komennon voi ajaa kymmenen kertaa peräkkäin ilman haittaa."
+      },
+      "s4": {
+        "title": "Vaaralliset toimet: miksi ne kuuluvat deny-listaan",
+        "time": "",
+        "why": "Tiedostojen poisto, mielivaltaiset verkkokutsut, pääsy salaisuuksiin — toimia peruuttamattomin tai vuotavin seurauksin. Ne kuuluvat permissions.deny-listaan: jopa autonomisessa tilassa Claude ei pysty suorittamaan niitä.",
+        "instructions": [
+          "Estä poisto: Bash(rm -rf:*) permissions.deny-listaan",
+          "Estä salaisuuksien luku: Read(./.env), Read(./**/*.key) — jotta arvot eivät päädy kontekstiin",
+          "Rajoita mielivaltaista verkkoa: kiellä Bash(curl:*) ja Bash(wget:*), jos projekti ei tarvitse niitä",
+          "Suojaa kriittiset tiedostot: Edit(./package.json), Edit(./.git/**)",
+          "Yhdistä tämä ympäristön eristykseen — ks. [[node:sys-agent-sandbox|hiekkalaatikko agentille]]"
+        ],
+        "validate": "Yritys suorittaa kielletty komento (esim. rm -rf) hylätään sen sijaan että tuotettaisiin vahvistuskysely.",
+        "tip": "deny ei ole \"kysy lupa\" vaan \"ei koskaan sallittu\". Laita tänne se, mitä et halua edes miettiä kiireessä."
+      },
+      "s5": {
+        "title": "Ask / Auto-accept / Plan -tilat ja niiden suhde sääntöihin",
+        "time": "",
+        "why": "Tila määrää oletuskäyttäytymisen toimille, joita ei ole allow- eikä deny-listalla. Ask kysyy joka kerta, Auto-accept suorittaa ilman kysymyksiä, Plan vain suunnittelee suorittamatta. Mutta deny pätee aina, missä tahansa tilassa.",
+        "instructions": [
+          "Muista: Ask on turvallinen oletustila — vahvistus joka hyväksymättömälle toimelle",
+          "Auto-accept nopeuttaa työtä mutta poistaa vahvistukset — se nojaa vain deny-sääntöihisi",
+          "Plan näyttää suunnitelman suorittamatta — hyödyllinen nähdäksesi Clauden aikeet etukäteen",
+          "Ymmärrä ydinasia: siirtyminen Auto-acceptiin tai Bypassiin EI poista permissions.deny-listaa",
+          "Ennen Auto-acceptia tai Bypassia varmista, että deny kattaa kaikki vaaralliset toimet"
+        ],
+        "validate": "Osaat selittää, mitä tapahtuu rm -rf -komennolle Auto-accept-tilassa, kun deny-sääntö on olemassa (se estetään).",
+        "tip": "Auto-accept ilman kunnollista deny:tä on yleisin syy ongelmiin. Ensin deny, sitten nopeus."
+      },
+      "s6": {
+        "title": "Turvallisen konfiguraation tarkistuslista ja varmistus",
+        "time": "",
+        "why": "Hajanaiset säännöt jättävät helposti aukkoja. Tarkistuslista muuttaa permissions tietoiseksi suojaksi: tarkistat eksplisiittisesti, että vaarallinen on estetty ja rutiini sallittu ennen kuin luotat Claudelle autonomian.",
+        "instructions": [
+          "Tarkista deny: rm -rf, salaisuuksien luku (.env, avaimet), mielivaltainen verkko, kriittiset tiedostot — kaikki paikoillaan",
+          "Tarkista allow: luku, testit, lint, turvalliset git-komennot — rutiini ei vaadi vahvistusta",
+          "Varmista, ettei ole laajoja sääntöjä kuten allow: [Bash(*)] — kavenna ne kuvioilla",
+          "Aja tyypillinen istunto ja katso, missä Claude yhä kysyy tai missä jokin livahtaa läpi",
+          "Tallenna konfiguraatio projektiin (ks. [[node:cc-config|Claude Coden konfiguraatio]]), jotta säännöt ovat yhteisiä tiimille"
+        ],
+        "validate": "permissions-tiedostosi läpäisee tarkistuslistan: vaarallinen deny-listalla, rutiini allow-listalla, ei laajoja sääntöjä, varmistettu oikeassa istunnossa.",
+        "tip": "Tarkista permissions jokaisen uuden tehtävätyypin kohdalla — sääntöjoukko elää projektin mukana."
+      }
+    }
+  },
+  "cc-slash": {
+    "title": "Claude Coden slash-komennot",
+    "subtitle": "/init, /clear, /compact, /agents ja omat komennot — yhdellä painalluksella",
+    "totalTime": "6 steps",
+    "whatItIs": "Slash-komennot ovat lyhyitä `/`-merkillä alkavia komentoja, jotka käynnistävät valmiin skenaarion pitkän promptin sijaan. [[node:claude-code|Claude Codessa]] ne hoitavat rutiinin: [[node:cc-cmd-init|/init]] analysoi projektin ja luo [[node:cc-md|CLAUDE.md]]-tiedoston, /clear nollaa kontekstin, /compact tiivistää historian, /agents hallitsee [[node:cc-subagents|aliagentteja]].\n\nOn sisäänrakennettuja komentoja (tulevat Claude Coden mukana) ja omia (custom) — jotka määrität itse markdown-tiedostoina. Komennot toimivat sekä terminaalissa että claude.ai:n chateissa. Tämä on vipusi session hallintaan: konteksti, laatu, asetukset — kaikki `/`-merkin kautta.",
+    "approach": "Älä opettele listaa ulkoa. Avaa Claude Code, kirjoita `/` ja selaa automaattitäydennystä — se näyttää mitä on saatavilla. Aja jokainen kurssin komento oikeassa projektissa: vaikutus näkyy heti.",
+    "outcomes": [
+      "Kutsut komentoja `/`-merkin ja automaattitäydennyksen kautta, ilman ulkoa opettelua",
+      "Tiedät keskeisten sisäänrakennettujen tarkoituksen: /init, /clear, /compact, /help",
+      "Hallitset tietoisesti session kontekstia (milloin tyhjentää, milloin tiivistää)",
+      "Sovellat laatu- ja asetuskomentoja (/security-review, /config)",
+      "Luot oman slash-komennon rutiiniisi"
+    ],
+    "applyIn": [
+      {
+        "title": "Uuden projektin aloitus",
+        "description": "Ensimmäisenä — /init: Claude tutkii koodikannan ja luo CLAUDE.md-tiedoston, jotta se voi jatkossa työskennellä järkevästi."
+      },
+      {
+        "title": "Pitkä sessio",
+        "description": "Konteksti on pilaantunut tai ylikuormittunut — /compact tiivistää historian, /clear nollaa sen. Vastausten laatu palautuu."
+      },
+      {
+        "title": "Toistuva rutiini",
+        "description": "Sama skenaario joka päivä — käärit sen omaksi komennoksi ja käynnistät kolmella merkillä."
+      }
+    ],
+    "pitfalls": [
+      "Komentojen kirjoittaminen muistista `/` + automaattitäydennyksen sijaan — yksi kirjoitusvirhe ja komento ei toimi.",
+      "/clearin sivuuttaminen kun konteksti on ylikuormittunut — vastaukset heikkenevät ja syytät mallia.",
+      "/clearin (pyyhkii kaiken) ja /compactin (tiivistää, säilyttää olennaisen) sekoittaminen — tarpeellisen historian menetys.",
+      "Olemattomien komentojen keksiminen — jos sitä ei ole automaattitäydennyksessä tai /help-listassa, sitä ei ole.",
+      "Oman komennon tekeminen joka pikkuasiaan — tiedostoja kertyy, etkä enää pysy kärryillä."
+    ],
+    "exercises": [
+      {
+        "question": "Avaa Claude Code missä tahansa projektissa, kirjoita `/` ja selaa listaa. Aja /help ja löydä kolme komentoa, joita et tuntenut.",
+        "hint": "Jos lista ei ilmesty — `/` täytyy olla aivan syöterivin alussa, ilman välilyöntiä ennen sitä."
+      },
+      {
+        "question": "Aja täydessä sessiossa /compact, vertaa sitten käytöstä uuden session /clear-komentoon. Huomaa ero siinä, mitä Claude «muistaa».",
+        "hint": "/compactin jälkeen keskeiset johtopäätökset säilyvät; /clearin jälkeen malli aloittaa puhtaalta pöydältä."
+      },
+      {
+        "question": "Luo oma komento usein toistuvaan tehtävään (esim. nykyisen haaran review) ja kutsu sitä `/`-merkillä.",
+        "hint": "Oma komento on markdown-tiedosto projektin komentokansiossa; tiedoston nimestä tulee komennon nimi."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mitä slash-komennot ovat ja miten ne kutsutaan",
+        "time": "",
+        "why": "Ilman tätä kirjoitat pitkiä prompteja siellä missä kolme merkkiä riittää. Komennot ovat pääasiallinen tapa hallita [[node:claude-code|Claude Code]] -sessiota.",
+        "instructions": [
+          "Avaa Claude Code missä tahansa projektissa.",
+          "Vie kursori syöterivin alkuun ja kirjoita `/` — esiin tulee lista saatavilla olevista komennoista automaattitäydennyksellä.",
+          "Kirjoita pari kirjainta (esim. `/cl`) — lista suodattuu. Valitse komento ja paina Enter.",
+          "Muista periaate: älä opettele ulkoa, kutsu `/` + automaattitäydennyksen kautta."
+        ],
+        "validate": "Kun kirjoitat `/`, näet pudotusvalikon komennoista, ja kirjainten suodatus kaventaa sitä.",
+        "tip": "Komennot toimivat sekä terminaalissa että claude.ai:n chateissa — `/`-syntaksi on sama."
+      },
+      "s2": {
+        "title": "Keskeiset sisäänrakennetut komennot: /init, /clear, /compact, /help",
+        "time": "",
+        "why": "Tämä on päivittäisen käytön ydin. Ilman niitä selität projektin käsin ja eksyt ylikuormittuneeseen kontekstiin.",
+        "instructions": [
+          "Aja uudessa projektissa [[node:cc-cmd-init|/init]] — Claude tutkii koodin ja luo projektia kuvaavan [[node:cc-md|CLAUDE.md]]-tiedoston.",
+          "Aja /help — katso täydellinen lista saatavilla olevista komennoista ja niiden tarkoituksesta.",
+          "Muista /clear — nykyisen session kontekstin täysi nollaus.",
+          "Muista [[node:cc-cmd-compact|/compact]] — historian tiivistys olennaisen säilyttäen, ilman täyttä nollausta."
+        ],
+        "validate": "/initin jälkeen projektin juureen ilmestyy CLAUDE.md; /help näyttää komentolistan.",
+        "tip": "/help on totuuden lähteesi: jos komentoa ei ole siellä, sitä ei ole olemassa — älä keksi sitä."
+      },
+      "s3": {
+        "title": "Session ja kontekstin hallinta komennoilla",
+        "time": "",
+        "why": "Konteksti on rajallinen resurssi. Kun se on ylikuormittunut tai pilaantunut, vastausten laatu laskee. Komennot palauttavat hallinnan.",
+        "instructions": [
+          "Työskentele sessiossa siihen asti, kun vastaukset heikkenevät tai malli «unohtaa» alun.",
+          "Aja [[node:cc-cmd-compact|/compact]] — historia tiivistyy, keskeiset johtopäätökset säilyvät.",
+          "Jos tehtävä vaihtui kokonaan — aja /clear aloittaaksesi puhtaalla kontekstilla.",
+          "Valintasääntö: sama tehtävä mutta paisunut konteksti → /compact; uusi tehtävä → /clear."
+        ],
+        "validate": "/compactin jälkeen Claude muistaa yhä olennaisen; /clearin jälkeen se aloittaa alusta.",
+        "tip": "Älä odota täydellistä heikkenemistä — tiivistä konteksti etukäteen, tehtävän loogisilla rajoilla."
+      },
+      "s4": {
+        "title": "Laatu- ja asetuskomennot: /security-review, /config",
+        "time": "",
+        "why": "Osa komennoista on valmiita tarkistuksia ja pääsy asetuksiin. Ne antavat laatua ja hallintaa ilman käsin näpertämistä.",
+        "instructions": [
+          "Aja /help ja löydä laatu- ja asetuskomennot listalta.",
+          "Aja /security-review nykyisiin muutoksiin — saat strukturoidun erittelyn haavoittuvuuksista.",
+          "Avaa /config — katso ja tarvittaessa muuta Claude Coden asetuksia.",
+          "Käytä /review (jos saatavilla) nykyisen haaran strukturoituun code review’hyn."
+        ],
+        "validate": "/security-review tuottaa raportin muutoksista; /config avaa asetukset.",
+        "tip": "Tarkka komentojoukko riippuu versiosta — tarkista /help, älä muistia."
+      },
+      "s5": {
+        "title": "Oman komennon luonti (custom slash command)",
+        "time": "",
+        "why": "Oma komento muuttaa toistuvan promptin yhdeksi kutsuksi. Se on henkilökohtaista rutiinin automatisointia [[node:claude-code|Claude Coden]] sisällä.",
+        "instructions": [
+          "Luo projektin komentokansio (`.claude/commands/`), jos sitä ei vielä ole.",
+          "Lisää markdown-tiedosto, esim. `review-branch.md` — tiedoston nimestä tulee komennon nimi (`/review-branch`).",
+          "Kuvaa sisällä prompt-skenaario: tavoite, mitä tarkistaa, tulostusmuoto.",
+          "Tallenna, kirjoita `/` — komentosi ilmestyy automaattitäydennykseen. Kutsu sitä."
+        ],
+        "validate": "Tiedostosi mukaan nimetty komento näkyy `/`-listalla ja ajaa määritellyn skenaarion.",
+        "tip": "Pidä omat komennot lyhyinä ja parametroitavina — yksi komento = yksi toistuva tehtävä."
+      },
+      "s6": {
+        "title": "Miten et eksy + tarkistus",
+        "time": "",
+        "why": "Komentoja on paljon ja versiot muuttuvat. Muutama yksinkertainen tapa pelastaa kirjoitusvirheiltä ja keksityiltä komennoilta.",
+        "instructions": [
+          "Kutsu aina `/` + automaattitäydennyksen kautta, älä muistista.",
+          "Epäiletkö, onko komento olemassa — tarkista /helpin kautta.",
+          "Pidä kontekstia varten pari mielessä: /compact (tiivistä) vs /clear (nollaa).",
+          "Nimeä omat komentosi toiminnan mukaan — jotta tiedät kuukauden päästä, mitä ne tekevät.",
+          "Testaa itsesi: aja /init, /help, /compact, /clear ja yksi oma komentosi peräkkäin."
+        ],
+        "validate": "Kutsut minkä tahansa tarvittavan komennon `/`-merkillä, erotat /compactin /clearista ja varmistat komennon olemassaolon /helpin kautta.",
+        "tip": "Jos komentoa ei ole automaattitäydennyksessä eikä /helpissä — sitä ei ole sinun versiossasi, älä keksi sitä."
+      }
+    }
+  },
+  "cc-plan-mode": {
+    "title": "Plan Mode Claude Codessa",
+    "subtitle": "Mieti ensin, muuta sitten: malli rakentaa suunnitelman ilman muutoksia ja suorittaa vasta sinun OK:si jälkeen",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Plan Mode on [[node:claude-code|Claude Coden]] tila, jossa malli ei kosketa tiedostoja vaan kokoaa muutossuunnitelman strukturoituna vaihelistana. Sinä luet suunnitelman, muokkaat sitä ja hyväksyt — ja vasta sitten suoritus alkaa. Se on este AI:n aikomuksen ja todellisten muutosten välillä.",
+    "approach": "Kurssi etenee Plan Moden idean ymmärtämisestä käytäntöön: ota tila käyttöön, anna mallin miettiä vaikea tehtävä, lue ja korjaa suunnitelma ennen yhtäkään muutosta, siirry suoritukseen ja opi, milloin tila on tarpeeton. Pohjana todellinen työ [[node:cc-terminal|Claude Coden terminaalissa]].",
+    "outcomes": [
+      "Ymmärrät, miten Plan Mode eroaa tavallisesta tilasta ja miksi mietintä ja suoritus erotetaan",
+      "Osaat ottaa Plan Moden käyttöön ja pois suoraan istunnossa",
+      "Tunnistat tehtävät, joissa suunnitelma on pakollinen (suuret, monivaiheiset, arkaluonteiset)",
+      "Luet mallin suunnitelman ja korjaat sitä ennen kuin yhtäkään tiedostoa muutetaan",
+      "Hallitset siirtymän suunnitelmasta suoritukseen, myös Auto-acceptin kautta"
+    ],
+    "applyIn": [
+      {
+        "title": "Suuri refaktorointi",
+        "description": "Ennen 10+ tiedoston muokkausta suunnitelma näyttää kaikki vaiheet etukäteen — näet, jos AI on koskemassa väärään."
+      },
+      {
+        "title": "Arkaluonteiset alueet",
+        "description": "Auth, maksut, DB-migraatiot: suunnitelma antaa lukea mallin aikomuksen ennen kuin siitä tulee peruuttamaton."
+      },
+      {
+        "title": "Tuntematon koodi",
+        "description": "Vieraassa tai legacy-projektissa suunnitelma on kartta: ensin ymmärrät mitä ja miksi, vasta sitten sallit muutokset."
+      }
+    ],
+    "pitfalls": [
+      "Plan Moden käyttöönotto triviaaleissa muutoksissa (yksi rivi, yksi tiedosto) — overhead ilman hyötyä",
+      "Suunnitelman hyväksyminen lukematta — koko tilan idea katoaa, yhtä hyvin voisi työskennellä ilman sitä",
+      "Sekoittaa \"malli näytti suunnitelman\" ja \"malli teki jo kaiken\": ennen hyväksyntää tiedostoihin ei kosketa",
+      "Unohtaa poistua Plan Modesta ja ihmetellä, miksi muutokset eivät tule voimaan",
+      "Laittaa Auto-accept päälle monimutkaiselle suunnitelmalle heti tarkistamatta ensimmäisiä vaiheita käsin"
+    ],
+    "exercises": [
+      {
+        "question": "Sinun pitää nimetä muuttuja uudelleen yhdessä tiedostossa ja ajaa DB-skeeman migraatio kymmenessä. Kummalle tehtävälle Plan Mode on perusteltu ja miksi?",
+        "hint": "Punnitse virheen hintaa ja peruutettavuutta. Missä peruutus on halpa ja missä ei?"
+      },
+      {
+        "question": "Malli näytti 7-vaiheisen suunnitelman; vaihe 4 koskettaa tiedostoa, jota et halunnut muuttaa. Mitä teet ennen hyväksyntää?",
+        "hint": "Suunnitelmaa muokataan sanoin chatissa ennen suoritusta — pyydä poistamaan tai muuttamaan tietty vaihe."
+      },
+      {
+        "question": "Hyväksyttyäsi 15-vaiheisen suunnitelman et halua vahvistaa jokaista muutosta käsin. Mikä suoritustila antaa tämän, ja mitä pitää tarkkailla?",
+        "hint": "Auto-accept nopeuttaa, mutta tarkista ensimmäiset vaiheet ennen kuin luotat loppuihin."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä Plan Mode on ja miksi",
+        "time": "",
+        "why": "Ilman idean ymmärtämistä tila näyttää ylimääräiseltä klikkaukselta. Itse asiassa se erottaa kaksi vaihetta — mieti ja muuta — ja juuri se poistaa peruuttamattomien muutosten riskin.",
+        "instructions": [
+          "Muista ydin: Plan Modessa malli EI tee muutoksia vaan kokoaa muutossuunnitelman vaihelistana",
+          "Vertaa tavalliseen tilaan, jossa [[node:claude-code|Claude Code]] muuttaa tiedostoja vastatessaan",
+          "Omaksu periaate \"mieti ensin, muuta sitten\": suunnitelma on este AI:n aikomuksen ja todellisten tiedostojen välillä",
+          "Tajua hyöty: 5 min suunnitelman tarkistusta säästää tunnin peruutusta, kun malli menee harhaan"
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miten Plan Mode eroaa tavallisesta tilasta, mainitsematta käyttöliittymää.",
+        "tip": "Ajattele suunnitelmaa kirurgin luonnoksena ennen leikkausta: viilto tehdään vasta hyväksynnän jälkeen."
+      },
+      "s2": {
+        "title": "Miten Plan Mode otetaan käyttöön",
+        "time": "",
+        "why": "Tila on hyödytön, jos et osaa kytkeä sitä päälle oikeaan hetkeen. Käyttöönotto on tietoinen päätös: \"suunnitellaan ensin.\"",
+        "instructions": [
+          "Avaa [[node:cc-terminal|Claude Code -istunto terminaalissa]]",
+          "Siirry Plan Modeen tilanvalitsimella nykyisessä istunnossa",
+          "Tai pyydä sanoin: \"Mene plan modeen ja ehdota suunnitelma, ei muutoksia OK:hon asti\"",
+          "Varmista, että istunto näyttää Plan Moden aktiivisena ennen tehtävän antamista"
+        ],
+        "validate": "Otit Plan Moden käyttöön ja näet mallin vastaavan suunnitelmalla eikä muokkaavan tiedostoja.",
+        "tip": "Jos et ole varma tilasta — kysy suoraan mallilta, missä tilassa se nyt on."
+      },
+      "s3": {
+        "title": "Milloin Plan Modea käytetään",
+        "time": "",
+        "why": "Tila kannattaa vaikeissa ja vaarallisissa tehtävissä, ja pelkästään hidastaa triviaaleissa. Hetken valinta on tärkeämpi kuin itse käyttöönotto.",
+        "instructions": [
+          "Kytke suunnitelma päälle ennen massamuutoksia — ohjenuora 10+ tiedostoa",
+          "Kytke se ennen migraatioita ja muutoksia arkaluonteisiin paikkoihin: auth, maksut, DB-skeema",
+          "Kytke se tuntemattomassa tai legacy-koodissa, jossa virheen hinta ja peruutus ovat korkeat",
+          "Arvioi peruutettavuus: mitä kalliimpi peruutus, sitä vahvempi tarve suunnitelmalle"
+        ],
+        "validate": "Tehtävän kuvauksesta päätät nopeasti, tarvitaanko Plan Mode, ja osaat perustella valinnan.",
+        "tip": "Yksinkertainen sääntö: \"monta vaihetta TAI vaarallinen paikka\" — suunnittele; \"yksi rivi\" — älä."
+      },
+      "s4": {
+        "title": "Miten suunnitelma luetaan ja korjataan ennen suoritusta",
+        "time": "",
+        "why": "Tilan tärkein arvo on mahdollisuus puuttua ennen muutoksia. Lukematta hyväksytty suunnitelma ei suojaa miltään.",
+        "instructions": [
+          "Lue koko suunnitelma: mitkä vaiheet, mitä tiedostoja kosketetaan, missä järjestyksessä",
+          "Tarkista ylimääräiset tai vaaralliset vaiheet — esimerkiksi muutokset siellä, missä et pyytänyt",
+          "Korjaa suunnitelmaa sanoin chatissa: pyydä poistamaan, muuttamaan tai lisäämään tietty vaihe",
+          "Anna mallin päivittää suunnitelma ja lue se uudelleen ennen hyväksyntää"
+        ],
+        "validate": "Teit vähintään yhden muutoksen suunnitelmaan chatin kautta ja varmistit mallin koonneen sen uudelleen.",
+        "tip": "Kiinnitä erityishuomio vaiheisiin, jotka koskettavat konfiguraatiota ja oikeuksia: tarkista [[node:cc-cfg-permissions|oikeusasetukset]]."
+      },
+      "s5": {
+        "title": "Siirtymä suunnitelmasta suoritukseen (Auto-accept)",
+        "time": "",
+        "why": "Hyväksynnän jälkeen valitset vielä suorituksen tahdin. Auto-accept nopeuttaa, mutta monimutkaisessa suunnitelmassa kannattaa tarkistaa ensimmäiset vaiheet käsin ensin.",
+        "instructions": [
+          "Hyväksy suunnitelma — vasta sitten malli alkaa tehdä muutoksia",
+          "Päätä suoritustila: vahvista jokainen muutos vai ota Auto-accept käyttöön",
+          "Auto-accept on järkevä, kun suunnitelma on jo luettu ja vaiheet ovat ennustettavia",
+          "Suuressa suunnitelmassa tarkista ensimmäiset muutokset käsin ennen kuin luotat loppuihin"
+        ],
+        "validate": "Valitsit tietoisesti käsivahvistuksen ja Auto-acceptin välillä ja ymmärrät kummankin riskin.",
+        "tip": "Auto-accept on etukäteen annettua luottamusta: anna se vain huolella luetulle suunnitelmalle."
+      },
+      "s6": {
+        "title": "Milloin Plan Mode on tarpeeton + tarkistus",
+        "time": "",
+        "why": "Suunnitelman käyttö kaikkialla on antipattern: pienissä muutoksissa se lisää vaiheita ilman hyötyä. Lopputarkistus lukitsee, milloin tila sopii ja milloin ei.",
+        "instructions": [
+          "Älä ota Plan Modea käyttöön triviaaliin: yksi rivi, yksi tiedosto, ilmeinen muutos",
+          "Punnitse tasapaino: suunnitelman hyödyn pitää ylittää tarkistukseen käytetty aika",
+          "Testaa itseäsi kahdella viimeaikaisella tehtävälläsi: missä suunnitelma sopisi, missä olisi liikaa",
+          "Lukitse valintasääntö ja pidä se käsillä seuraavia istuntoja varten"
+        ],
+        "validate": "Osaat nimetä tehtävän, jossa Plan Mode sopii, ja yhden, jossa se on tarpeeton, perusteluineen.",
+        "tip": "Jos epäröit tarvitaanko suunnitelmaa, kysy: \"onko peruutus kallista, jos AI menee harhaan?\" — jos ei, suunnitelmaa ei tarvita."
+      }
+    }
+  },
+  "cc-ide": {
+    "title": "Claude Code IDE:ssä: VS Code ja JetBrains",
+    "subtitle": "Sama agentti, mutta editorin sisällä: inline-diffit, accept/reject ja synkronointi auki olevien välilehtien kanssa",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "[[node:claude-code|Claude Code]] -laajennus VS Codelle ja JetBrainsille. Se ei ole erillinen tuote vaan sama agentti, jota käytät terminaalissa, upotettuna editoriin: muutokset tulevat inline-diffeinä, muutokset hyväksytään tai hylätään painikkeilla, ja agentti näkee auki olevat välilehdet visuaalisena kontekstina. Asennetaan marketplacesta.",
+    "approach": "Etenemme kysymyksestä «miksi pitää agenttia editorissa ylipäätään» asennukseen, terminaaliversioon yhdistämiseen jaettujen asetusten ja CLAUDE.md:n kautta, diffien kanssa työskentelyyn ja tietoiseen valintaan IDE:n ja terminaalin välillä. Lopuksi tyypilliset ongelmat ja nopea tarkistus, että kaikki toimii.",
+    "outcomes": [
+      "Ymmärrät, että IDE-laajennus ja terminaalin Claude Code ovat yksi agentti, eivät kaksi työkalua",
+      "Asensit laajennuksen VS Codeen tai JetBrainsiin ja ajoit ensimmäisen muutoksesi",
+      "Yhdistit IDE:n terminaaliversioon jaettujen asetusten ja CLAUDE.md:n kautta",
+      "Osaat hyväksyä ja hylätä muutoksia diff-view'n kautta suoraan editorissa",
+      "Valitset tietoisesti, milloin IDE on kätevämpi ja milloin terminaali"
+    ],
+    "applyIn": [
+      {
+        "title": "Nopea muutossykli",
+        "description": "Pyydät muutosta nykyiseen tiedostoon — näet diffin ympäröivän koodin kontekstissa ja hyväksyt tai hylkäät sen yhdellä painikkeella."
+      },
+      {
+        "title": "Agentin muutosten katselmus",
+        "description": "Agentti ehdottaa useita muutoksia — katselmoit ne visuaalisesti välilehdillä sen sijaan, että lukisit patcheja terminaalissa."
+      },
+      {
+        "title": "Työskentely tutussa editorissa",
+        "description": "Et poistu VS Codesta tai JetBrainsista: agentti on käden ulottuvilla, ei erillisessä terminaali-ikkunassa."
+      }
+    ],
+    "pitfalls": [
+      "Käyttää vain IDE-laajennusta tuntematta CLI:tä — menetät sessiot, --resume ja pluginit",
+      "Luulla, että nämä ovat kaksi eri tuotetta: todellisuudessa se on yksi agentti jaetuilla asetuksilla",
+      "Olla määrittämättä CLAUDE.md:tä — agentti IDE:ssä toimii ilman projektisääntöjä aivan kuten terminaalissakin",
+      "Hyväksyä diffit katsomatta: inline-näkymä on kätevä, mutta katselmus on silti sinun vastuullasi",
+      "Odottaa ominaisuuksia, joita IDE:llä ei ole: laajennus lisää visuaalisen kerroksen, mutta logiikka on sama kuin terminaalissa"
+    ],
+    "exercises": [
+      {
+        "question": "Miten Claude Code -IDE-laajennus eroaa periaatteessa terminaaliversiosta?",
+        "hint": "Mieti agenttia ja esityskerrosta: mikä muuttuu ja mikä pysyy samana."
+      },
+      {
+        "question": "Miksi pitää CLAUDE.md projektissa, jos työskentelet IDE-laajennuksen kautta?",
+        "hint": "Mistä agentti saa projektisäännöt — riippuuko se käynnistystavasta?"
+      },
+      {
+        "question": "Missä tilanteessa terminaali on kätevämpi kuin IDE-laajennus?",
+        "hint": "Muista sessiot, --resume ja pluginit."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi Claude Code IDE:ssä",
+        "time": "",
+        "why": "Ennen laajennuksen asentamista on tärkeää ymmärtää: tämä ei ole uusi työkalu vaan sama agentti eri ympäristössä. Muuten etsit «IDE-version ominaisuuksia», joita ei ole.",
+        "instructions": [
+          "Muista: laajennus on [[node:claude-code|Claude Code]] editorin sisällä, sama agentti kuin terminaalissa",
+          "Päähyöty on visuaalinen konteksti: muutokset tulevat inline-diffeinä suoraan koodiin",
+          "Auki olevat välilehdet muuttuvat kontekstiksi — agentti näkee, minkä parissa työskentelet",
+          "Accept/reject-sykli nopeutuu: vähemmän vaihteluita terminaalin ja editorin välillä"
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miksi IDE-laajennus ja CLI ovat yksi agentti, eivät kaksi työkalua.",
+        "tip": "Älä kohtele laajennusta terminaalin korvaajana — se on toinen sisäänkäynti samaan agenttiin."
+      },
+      "s2": {
+        "title": "Laajennuksen asennus (VS Code / JetBrains)",
+        "time": "",
+        "why": "Ilman asennettua laajennusta agentti pysyy vain terminaalissa. Asennus marketplacesta on ainoa tuettu tapa.",
+        "instructions": [
+          "Avaa editorisi marketplace: VS Code Marketplace tai JetBrains Marketplace",
+          "Etsi Claude Code -laajennus ja asenna se",
+          "Käynnistä editori uudelleen, jos se pyytää",
+          "Tarkista, että Claude-komento ilmestyy (VS Codessa — Cmd+Shift+P kautta)"
+        ],
+        "validate": "Claude-komento on saatavilla editorin komentopaletissa, ja laajennus on asennettujen listalla.",
+        "tip": "Jos laajennusta ei ole listalla — varmista, että editorisi versio on riittävän tuore; ks. [[node:cc-install|Claude Coden asennus]]."
+      },
+      "s3": {
+        "title": "Yhteys terminaalin Claude Codeen",
+        "time": "",
+        "why": "IDE-laajennus ja [[node:cc-terminal|terminaalin Claude Code]] jakavat samat asetukset ja projektisäännöt. Jos et tajua tätä, alat duplikoida konfiguraatiota.",
+        "instructions": [
+          "Muista: laajennus ja CLI käyttävät samoja jaettuja asetuksia ja tiliä",
+          "Sijoita CLAUDE.md projektin juureen — agentti lukee sen sekä IDE:ssä että terminaalissa",
+          "Tarkista, että CLAUDE.md:n projektisäännöt toimivat samalla tavalla molemmissa tiloissa",
+          "Älä määritä agenttia kahdesti — määritys on yksi per projekti"
+        ],
+        "validate": "CLAUDE.md:hen kirjoitettua sääntöä agentti noudattaa sekä IDE:ssä että terminaalissa.",
+        "tip": "CLAUDE.md on yksi sääntöjen lähde: muutat sen kerran ja vaikutus näkyy kaikkialla."
+      },
+      "s4": {
+        "title": "Tiedostojen ja diffien kanssa työskentely IDE:ssä",
+        "time": "",
+        "why": "IDE-version pääarvo ovat visuaaliset diffit. Kyky lukea ja soveltaa niitä on ydintyösykli.",
+        "instructions": [
+          "Pyydä muutosta nykyiseen tiedostoon (VS Codessa — Cmd+Shift+P → Claude: ask in current file)",
+          "Odota muutosta — se tulee inline-diffinä suoraan editoriin",
+          "Katselmoi muutos ympäröivän koodin kontekstissa",
+          "Hyväksy (accept) tai hylkää (reject) muutos diff-view'n painikkeella"
+        ],
+        "validate": "Käynnistit muutoksen, näit inline-diffin ja hyväksyit tai hylkäsit sen tietoisesti.",
+        "tip": "Inline-näkymä on kätevä, mutta katselmus pysyy sinun vastuullasi — älä hyväksy diffejä sokeasti."
+      },
+      "s5": {
+        "title": "Milloin IDE voittaa terminaalin ja päinvastoin",
+        "time": "",
+        "why": "Kyse ei ole joko-tai-valinnasta. Laajennus ja [[node:cc-terminal|terminaali]] täydentävät toisiaan — valinta riippuu tehtävästä.",
+        "instructions": [
+          "Valitse IDE, kun päätyö on editorissa ja tarvitset nopean muutossyklin visuaalisilla diffeillä",
+          "Valitse terminaali, kun tarvitset sessioita, --resume ja plugineja",
+          "Käytä IDE:n visuaalista kontekstia useiden muutosten katselmointiin kerralla",
+          "Vaihda niiden välillä vapaasti — se on yksi agentti jaetuilla asetuksilla"
+        ],
+        "validate": "Tietyn tehtävän osalta osaat perustella, missä se on kätevämpi tehdä — IDE:ssä vai terminaalissa.",
+        "tip": "CLI:n osaaminen ei menetä arvoaan laajennuksen asennuksen jälkeen — päinvastoin, se pysyy perustana."
+      },
+      "s6": {
+        "title": "Tyypilliset ongelmat ja tarkistus",
+        "time": "",
+        "why": "Jos laajennus ei vastaa tai käyttäytyy oudosti, syy on yleensä asetuksissa tai siinä, ettei tajua sen olevan sama agentti. Nopea tarkistus säästää aikaa.",
+        "instructions": [
+          "Laajennus ei näe projektisääntöjä — tarkista, että CLAUDE.md on juuressa",
+          "Claude-komento ei ilmestynyt — käynnistä editori uudelleen ja varmista laajennuksen asennus",
+          "Odotat ominaisuuksia, joita ei ole — muista, että logiikka on sama kuin terminaalissa, IDE lisää vain visuaalisen kerroksen",
+          "Tee testimuutos nykyiseen tiedostoon ja varmista, että diff tulee ja se voidaan hyväksyä"
+        ],
+        "validate": "Laajennus on asennettu, näkee CLAUDE.md:n, ja testimuutos menee diff-view'n läpi virheittä.",
+        "tip": "Jos jokin käyttäytyy oudosti IDE:ssä — toista sama tehtävä terminaalissa: siitä näet, onko ongelma laajennuksessa vai itse pyynnössä."
+      }
+    }
   }
 }
