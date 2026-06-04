@@ -8573,8 +8573,11 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   /* Верхний тоггл шагов и боковая панель заменяются нижним баром. */
   .tut-steps-toggle { display: none; }
   .tut-side { display: none; }
-  /* «Развернуть на весь экран» — только для десктопа. */
-  .tut-header__expand { display: none; }
+  /* «Развернуть на весь экран» — только для планшетов и десктопа (>720px).
+     На телефонах функции expand нет ни в одной модалке (см. docs/architecture.md). */
+  .tut-header__expand,
+  .courses-expand,
+  .lib-header__expand { display: none; }
 
   .tut-stepbar {
     display: flex;
