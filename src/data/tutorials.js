@@ -6570,6 +6570,533 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "cc-tty-sessions": {
+    "nodeId": "cc-tty-sessions",
+    "icon": "repeat",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-terminal"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-tty-files": {
+    "nodeId": "cc-tty-files",
+    "icon": "file",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-terminal"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-tty-modes": {
+    "nodeId": "cc-tty-modes",
+    "icon": "compass",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-terminal"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-tty-keys": {
+    "nodeId": "cc-tty-keys",
+    "icon": "flash",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-terminal"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-cfg-settings": {
+    "nodeId": "cc-cfg-settings",
+    "icon": "note",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-config"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-cfg-local": {
+    "nodeId": "cc-cfg-local",
+    "icon": "lock",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-config"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-cfg-global": {
+    "nodeId": "cc-cfg-global",
+    "icon": "globe",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-config"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-cfg-statusline": {
+    "nodeId": "cc-cfg-statusline",
+    "icon": "mixer",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-config"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-grp-session": {
+    "nodeId": "cc-grp-session",
+    "icon": "repeat",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-slash"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-grp-context": {
+    "nodeId": "cc-grp-context",
+    "icon": "folder",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-slash"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-grp-model": {
+    "nodeId": "cc-grp-model",
+    "icon": "mixer",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-slash"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-grp-ui": {
+    "nodeId": "cc-grp-ui",
+    "icon": "paint",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-slash"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-grp-config": {
+    "nodeId": "cc-grp-config",
+    "icon": "settings",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-slash"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-grp-integrations": {
+    "nodeId": "cc-grp-integrations",
+    "icon": "plug",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-slash"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-grp-automation": {
+    "nodeId": "cc-grp-automation",
+    "icon": "rocket",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-slash"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-grp-quality": {
+    "nodeId": "cc-grp-quality",
+    "icon": "microscope",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-slash"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cc-grp-help": {
+    "nodeId": "cc-grp-help",
+    "icon": "question",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "cc-slash"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 

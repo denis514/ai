@@ -26724,5 +26724,2210 @@
         "tip": "Älä skaalaa työnkulkua ilman vahvistettua ROI:ta: parempi 3 toimivaa Skilliä kuin 10 hylättyä."
       }
     }
+  },
+  "cc-tty-sessions": {
+    "title": "Sessiot ja historia Claude Codessa",
+    "subtitle": "Säilytä konteksti, jatka työtä sekunneissa, hallitse useita projekteja",
+    "totalTime": "6 шагов",
+    "whatItIs": "Jokainen claude-käynnistys luo session — tallennetun tallenteen keskustelustasi mallin kanssa. Voit tallentaa sen, jatkaa viimeisintä tai valita minkä tahansa aiemman session. Se on muistia taukojen yli: konteksti ei katoa, eikä tehtävää tarvitse selittää uudelleen.",
+    "approach": "Etenemme session käsitteestä käytäntöön: aloitamme uuden, jatkamme aiempaa komennoilla --continue ja --resume, luemme historiaa, karsimme kontekstia /compact-komennolla ja pidämme useita rinnakkaisia sessioita projektia kohti. Lopuksi yleiset virheet ja taidon tarkistus.",
+    "outcomes": [
+      "Ymmärrät, että sessio = tallennettu keskusteluhistoria, joka on sidottu projektikansioon",
+      "Aloitat uuden session tai palaat aiempaan yhdellä komennolla",
+      "Erotat --continue (viimeisin) ja --resume (valinta listalta)",
+      "Hallitset kontekstin kokoa /compact-komennolla menettämättä ydintä",
+      "Pidät useita sessioita rinnakkain eri tehtävissä ja projekteissa"
+    ],
+    "applyIn": [
+      {
+        "title": "Pitkä tehtävä useassa osassa",
+        "description": "Iso refaktorointi venyy päiviksi. Suljet terminaalin illalla, jatkat aamulla samasta kohdasta — malli muistaa kaiken, mistä keskustelitte."
+      },
+      {
+        "title": "Rinnakkaiset haarat ja ominaisuudet",
+        "description": "Kaksi itsenäistä tehtävää samassa repositoriossa. Pidät kaksi sessiota ja vaihdat niiden välillä sekoittamatta kontekstia."
+      },
+      {
+        "title": "Paluu keskeytyksen jälkeen",
+        "description": "Puhelu tuli väliin tai terminaali kaatui. --continue tuo heti takaisin viimeisen keskustelun, mitään ei tarvitse muistella käsin."
+      }
+    ],
+    "pitfalls": [
+      "Aloittaa joka kerta nollasta --continuen sijaan — menetät kontekstin ja poltat tokeneita uudelleenbriiffaukseen",
+      "Sekoittaa --continue (ottaa hiljaa viimeisimmän) ja --resume (antaa valita listalta) — avaat väärän session",
+      "Jättää /compact ajamatta pitkässä sessiossa — konteksti ylivuotaa ja vastaukset heikkenevät",
+      "Ajaa --continuen eri kansiosta ja ihmetellä, että historia on väärä — sessiot on sidottu projektihakemistoon",
+      "Odottaa, että /compact säilyttää kaiken sanatarkasti — se tiivistää yhteenvedoksi, joten pienet yksityiskohdat voivat kadota"
+    ],
+    "exercises": [
+      {
+        "question": "Mikä on ero komennoilla claude --continue ja claude --resume?",
+        "hint": "Mieti, kumpi komento ei kysy mitään ja kumpi näyttää listan valittavaksi."
+      },
+      {
+        "question": "Miksi --continue kansiossa project-a tuo eri historian kuin odotit kansiosta project-b?",
+        "hint": "Sessiot on sidottu hakemistoon, josta claude käynnistettiin."
+      },
+      {
+        "question": "Milloin kannattaa ajaa /compact ja milloin on parempi aloittaa uusi sessio?",
+        "hint": "Vertaa: sama aihe mutta paisunut konteksti — vai tehtävä on vaihtunut kokonaan."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä sessio ja historia ovat",
+        "time": "",
+        "why": "Ilman ymmärrystä siitä, että jokainen käynnistys luo tallennettavaa historiaa, briiffaat mallin joka kerta uudelleen ja menetät kontekstin.",
+        "instructions": [
+          "Aja claude projektikansiossa — tämä luo uuden session",
+          "Tee työtä: esitä pari kysymystä, pyydä muutos tiedostoon",
+          "Huomaa: koko keskustelu on session historiaa, sidottuna nykyiseen kansioon",
+          "Sulje terminaali — sessio tallentuu automaattisesti, mitään ei tarvitse tehdä käsin"
+        ],
+        "validate": "Osaat selittää omin sanoin: sessio = tallennettu keskusteluhistoria, sidottuna projektihakemistoon.",
+        "tip": "Sessio elää siellä, missä sen käynnistit: yhden kansion historia ei sekoitu toisen kanssa."
+      },
+      "s2": {
+        "title": "Uusi sessio vai jatkaminen",
+        "time": "",
+        "why": "Paluu työhön sekunneissa tehtävän uudelleenselityksen sijaan on sessioiden tärkein hyöty. Pitää tietää, millä komennolla jatketaan.",
+        "instructions": [
+          "Tuoreeseen aloitukseen aja vain claude — uusi puhdas sessio",
+          "Tuodaksesi hiljaa tämän kansion viimeisimmän session — claude --continue",
+          "Valitaksesi tietyn aiemman session listalta — claude --resume",
+          "Muista sääntö: --continue = ei kysymyksiä, viimeisin; --resume = valinta listalta"
+        ],
+        "validate": "Jatkoit eilistä keskustelua komennolla --continue ja jatkoit samasta kohdasta ilman uudelleenbriiffausta.",
+        "tip": "Jos et muista, mikä sessio on viimeisin, käytä --resume — se näyttää listan kuvauksineen."
+      },
+      "s3": {
+        "title": "Historian katselu",
+        "time": "",
+        "why": "Valitaksesi oikean session monesta ja muistaaksesi mihin jäit, pitää osata katsoa lista ja selata historiaa.",
+        "instructions": [
+          "Aja claude --resume — aukeaa lista aiemmista sessioista lyhyine kuvauksineen",
+          "Valitse tarvitsemasi aiheen tai ajan mukaan ja avaa se",
+          "Session sisällä vieritä keskustelua ylöspäin nähdäksesi koko vaihdon historian",
+          "Varmista, että malli muistaa aiemmin puhutun — kysy jotain keskustelun alusta"
+        ],
+        "validate": "Löysit oikean session --resume-listalta ja varmistit, että sen konteksti on tallella.",
+        "tip": "Kuvaus --resume-listalla auttaa erottamaan sessiot — anna tehtäville selkeät aloitusviestit."
+      },
+      "s4": {
+        "title": "/compact ja kontekstin hallinta",
+        "time": "",
+        "why": "Pitkässä sessiossa konteksti ylivuotaa ja vastaukset heikkenevät. /compact tiivistää historian yhteenvedoksi ja vapauttaa tilaa säilyttäen ytimen.",
+        "instructions": [
+          "Pitkässä sessiossa kirjoita /compact",
+          "Odota, että historia tiivistyy lyhyeksi yhteenvedoksi avainfaktoista ja päätöksistä",
+          "Jatka työtä — malli pitää ytimen mutta käyttää vähemmän kontekstia",
+          "Jos tehtävä vaihtui kokonaan — aloita mieluummin uusi sessio kuin tiivistä vanhaa"
+        ],
+        "validate": "Ajoit /compactin paisuneessa sessiossa, ja keskustelu jatkui menettämättä pääjuonta.",
+        "tip": "/compact tiivistää yhteenvedoksi, ei tallenna sanatarkasti — pienet yksityiskohdat voivat kadota, joten toista tärkeä uudelleen."
+      },
+      "s5": {
+        "title": "Useita sessioita ja projekteja",
+        "time": "",
+        "why": "Rinnakkaiset tehtävät tarvitsevat erillisen kontekstin. Sessiot on sidottu kansioon, joten jokainen projekti pitää oman historiansa erillään.",
+        "instructions": [
+          "Avaa kaksi projektikansiota erillisissä terminaalivälilehdissä",
+          "Aja claude kummassakin — saat kaksi itsenäistä sessiota",
+          "Vaihda välilehtien välillä: yhden konteksti ei vuoda toiseen",
+          "Palataksesi käytä --continue oikeassa kansiossa — se tuo juuri sen kansion viimeisimmän session"
+        ],
+        "validate": "Pidät kahta rinnakkaista sessiota eri kansioissa, eivätkä niiden kontekstit mene päällekkäin.",
+        "tip": "Kansiosidonta on ystäväsi: yksi tehtävä = yksi hakemisto = yksi session linja."
+      },
+      "s6": {
+        "title": "Yleiset virheet ja tarkistus",
+        "time": "",
+        "why": "Tuntemalla antipatternit et polta tokeneita uudelleenbriiffaukseen etkä avaa väärää sessiota. Lopputarkistus lukitsee taidon.",
+        "instructions": [
+          "Lopeta nollasta aloittaminen: tuoreen käynnistyksen sijaan totu --continueen",
+          "Älä sekoita --continue (viimeisin, hiljaa) ja --resume (valinta listalta)",
+          "Aja --continue oikeasta kansiosta — muuten tulee väärä historia",
+          "Pitkässä sessiossa aja /compact ajoissa; aiheen vaihtuessa — uusi sessio",
+          "Testaa itsesi: jatka eilistä työtä, tiivistä konteksti, aloita toinen sessio toisessa kansiossa"
+        ],
+        "validate": "Kävit läpi koko syklin: --continue → /compact → toinen sessio toisessa kansiossa — menettämättä kontekstia tai tokeneita.",
+        "tip": "Jos et ole varma, jatkatko oikeaa sessiota — --resume ja lista ratkaisevat asian sekunnissa."
+      }
+    }
+  },
+  "cc-tty-files": {
+    "title": "Tiedostot Claude Code -chatissa",
+    "subtitle": "Miten antaa Claudelle oikeat tiedostot ilman copy-pastea: @-maininnat, liitteet, koodiviittaukset",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Kurssi tiedostojen välittämisestä Claude Coden kontekstiin terminaalissa: @-maininnalla, raahaamalla ja liitteinä. Claude lukee tiedoston itse Read-työkalulla — sinun ei tarvitse liittää sen sisältöä chattiin käsin.",
+    "approach": "Etenemme motivaatiosta käytäntöön: ensin miksi annat tiedoston etkä sen tekstiä; sitten kolme tapaa välittää se (@, raahaus, liitteet); sitten koodifragmenttien tarkka osoittaminen; ja lopuksi kontekstin rajojen hallinta sekä tyypilliset virheet ja niiden tarkistus.",
+    "outcomes": [
+      "Ymmärrät, miksi tiedostoviittaus voittaa sen tekstin liittämisen chattiin",
+      "Osaat liittää tiedostoja @-maininnalla polun automaattitäydennyksellä",
+      "Liität kuvia ja PDF-tiedostoja raahaamalla tai liitteinä",
+      "Osoitat tarkan koodifragmentin «koko tiedoston» sijaan",
+      "Hallitset kontekstin kokoa ja vältät vanhentunutta dataa"
+    ],
+    "applyIn": [
+      {
+        "title": "Koodin parissa työskentely",
+        "description": "Liität tietyn moduulin @path-viittauksella ja pyydät Claudea analysoimaan tai muuttamaan juuri sen, kertomatta sen sisältöä uudelleen."
+      },
+      {
+        "title": "Lokien ja konfiguraatioiden luku",
+        "description": "Välität loki- tai konfiguraatiotiedoston viittauksella — Claude lukee ajantasaisen version ja löytää ongelman oikeasta datasta."
+      },
+      {
+        "title": "Kuvakaappaukset ja dokumentit",
+        "description": "Raahaat virheen kuvakaappauksen tai määrittely-PDF:n suoraan chattiin, jotta Claude näkee visuaalisen kontekstin."
+      }
+    ],
+    "pitfalls": [
+      "Tiedoston sisällön kopioiminen chattiin käsin — paisuttaa kontekstia ja vanhenee nopeasti",
+      "Koko valtavan tiedoston liittäminen, kun tarvitaan vain yksi koodiosio",
+      "Unohtaa, että @ viittaa polkuun suhteessa projektin työkansioon",
+      "Kymmenien tiedostojen heittäminen kerralla — konteksti ylivuotaa ja vastaus menettää fokuksen",
+      "Olettaa, että Claude «muistaa» tiedoston muokkauksen jälkeen — muutoksen jälkeen se on luettava uudelleen"
+    ],
+    "exercises": [
+      {
+        "question": "Miksi viittaus @src/App.jsx on parempi kuin koko tiedoston koodin liittäminen suoraan viestiin?",
+        "hint": "Mieti kahta asiaa: kontekstin koko ja kuinka ajantasaisena sisältö pysyy muokkausten jälkeen."
+      },
+      {
+        "question": "Sinun täytyy näyttää Claudelle virhe, joka näkyy vain käyttöliittymän kuvakaappauksessa. Miten välität sen chattiin?",
+        "hint": "Tekstiviittaus ei käy tässä — tarvitset visuaalisen syötekanavan."
+      },
+      {
+        "question": "5000 rivin tiedosto, mutta kysymys koskee vain yhtä funktiota. Miten kavennat kontekstin?",
+        "hint": "Osoita tietty osio, älä koko tiedostoa."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi antaa tiedosto eikä sen tekstiä",
+        "time": "",
+        "why": "Kurssin ydinajatus: välität viittauksen tiedostoon, et sen sisältöä. Claude lukee ajantasaisen version itse Read-työkalulla. Tämä säästää kontekstia ja sulkee pois työskentelyn vanhentuneesta kopiosta.",
+        "instructions": [
+          "Avaa Claude Code terminaalissa projektikansiosi sisällä",
+          "Vertaa kahta tapaa: koko koodin liittäminen viestiin vs. tiedostopolkuun osoittaminen",
+          "Muista sääntö: tiedoston sisältö ei ole se, mitä kirjoitat, vaan se, minkä Claude lukee itse",
+          "Ymmärrä hyöty: vähemmän tokeneita menee «tässä koodini»:in, enemmän itse tehtävälle"
+        ],
+        "validate": "Osaat selittää, miksi koodin liittäminen käsin on antipattern Claude Codessa.",
+        "tip": "Mitä vähemmän «kuorrutusta» viestissä, sitä enemmän tilaa ja huomiota jää itse pyynnölle."
+      },
+      "s2": {
+        "title": "Tiedostojen @-maininta",
+        "time": "",
+        "why": "@-maininta on pääasiallinen tapa liittää tiedosto. Kirjoitat @ ja polun, Claude lukee tiedoston automaattisesti ja ottaa sen huomioon vastauksessa.",
+        "instructions": [
+          "Kirjoita syötekenttään @-merkki ja ala kirjoittaa tiedoston nimeä",
+          "Käytä polun automaattitäydennystä virheiden välttämiseksi: @src/App.jsx",
+          "Muista, että polku lasketaan projektin työkansiosta",
+          "Voit mainita useita tiedostoja yhdessä viestissä — jokainen omalla @-merkillään",
+          "Muotoile tehtävä viittauksen viereen: «@src/App.jsx — etsi ylimääräinen uudelleenrenderöinti»"
+        ],
+        "validate": "Claude on lukenut mainitun tiedoston ja viittaa sen todelliseen sisältöön sen sijaan, että pyytäisi liittämään koodin.",
+        "tip": "@-merkin jälkeinen automaattitäydennys vähentää huomattavasti polun kirjoitusvirheen mahdollisuutta."
+      },
+      "s3": {
+        "title": "Raahaus ja liitteet",
+        "time": "",
+        "why": "Kaikkea ei välitetä tekstinä. Kuvat, kuvakaappaukset ja PDF:t lisätään raahaamalla tiedosto ikkunaan tai liitteenä — se antaa Claudelle visuaalisen kontekstin.",
+        "instructions": [
+          "Raahaa tiedosto tiedostonhallinnasta suoraan terminaali-ikkunaan, jossa Claude Code on",
+          "Käytä virheen kuvakaappaukseen kuvaa — tekstiviittaus ei välitä visuaalia",
+          "Liitä määrittely- tai dokumentti-PDF liitteenä",
+          "Lisäyksen jälkeen kuvaile sanoin, mitä liitteelle tarkalleen tehdään"
+        ],
+        "validate": "Kuva tai PDF ilmestyy kontekstiin, ja Claude kommentoi sitä, mitä siinä näkee.",
+        "tip": "Kuvakaappaus selittää visuaalisen ongelman usein nopeammin kuin pitkä tekstikuvaus."
+      },
+      "s4": {
+        "title": "Miten viitata koodin osiin",
+        "time": "",
+        "why": "Usein tarvitaan ei koko tiedostoa vaan tietty osio. Fragmentin tarkka osoittaminen säästää kontekstia ja kohdentaa vastauksen oikeaan paikkaan.",
+        "instructions": [
+          "Jos kysymys koskee yhtä funktiota — nimeä se ja tiedosto, älä liitä jättitiedostoa kokonaan",
+          "Anna kiintopisteet: funktion nimi, luokka tai riviväli",
+          "Suuressa tiedostossa muotoile, mikä fragmentti on tärkeä: «@utils.js:ssä — funktio parseDate»",
+          "Pyydä Claudea lukemaan ensin vain tarvittava osa ennen muuttamista"
+        ],
+        "validate": "Claude työskentelee juuri osoitetun fragmentin parissa eikä kerro koko tiedostoa uudelleen.",
+        "tip": "Mitä tarkempi fragmentin osoite, sitä tarkempi ja lyhyempi vastaus."
+      },
+      "s5": {
+        "title": "Konteksti ja rajat",
+        "time": "",
+        "why": "Konteksti ei ole ääretön. Kymmenet suuret tiedostot kerralla ylivuotavat sen, ja vastaus menettää fokuksen. Anna juuri se, mitä tehtävä tarvitsee.",
+        "instructions": [
+          "Liitä vain nykyiseen kysymykseen liittyvät tiedostot",
+          "Suuressa tiedostossa suosi osoitettua fragmenttia (ks. vaihe 4) koko volyymin sijaan",
+          "Tarkkaile kokoa: mitä enemmän ylimääräistä kontekstissa, sitä epämääräisempi vastaus",
+          "Jos tiedostoja on todella paljon — jaa työ useaan vaiheeseen eri tiedostojoukoilla"
+        ],
+        "validate": "Kontekstissa on vain relevantit tiedostot, ja vastaukset pysyvät tarkkoina ja kohdennettuina.",
+        "tip": "Vähemmän tiedostoja kontekstissa tarkoittaa suurempaa huomion tiheyttä oikeassa tehtävässäsi."
+      },
+      "s6": {
+        "title": "Virheet ja tarkistus",
+        "time": "",
+        "why": "Viimeinen vaihe vahvistaa tavat: älä liitä koodia käsin, muista lukea uudelleen muokkausten jälkeen ja tarkista, että Claude näkee ajantasaisen version.",
+        "instructions": [
+          "Älä koskaan kopioi tiedoston sisältöä chattiin käsin — käytä @ tai liitettä",
+          "Kun tiedosto on muuttunut, anna Clauden lukea se uudelleen",
+          "Tarkista polku: @ lasketaan projektin työkansiosta",
+          "Älä heitä kaikkea sisään — ylimääräiset tiedostot vain haittaavat",
+          "Varmista, että vastaus nojaa todelliseen sisältöön eikä vanhentuneeseen kopioon"
+        ],
+        "validate": "Välität tiedostot vain viittauksella tai liitteenä, hallitset koon ja työskentelet ajantasaisten versioiden kanssa.",
+        "tip": "Jos vastaus näyttää siltä, että Claude näkee vanhaa koodia — pyydä lukemaan tiedosto uudelleen."
+      }
+    }
+  },
+  "cc-tty-modes": {
+    "title": "Claude Coden terminaalin toimintatilat",
+    "subtitle": "Tavallinen, auto-accept edits ja plan mode: milloin mitäkin ja miten vaihtaa",
+    "totalTime": "6 шагов",
+    "whatItIs": "Claude Code toimii terminaalissa yhdessä lupatilassa: tavallinen (jokainen toiminto vaatii vahvistuksen), auto-accept edits (tiedostomuutokset tehdään kysymättä) ja plan mode (vain luku ja suunnittelu, ei muutoksia). Tila määrää, kuinka paljon vapautta agentilla on ja kuinka paljon hallintaa sinulla säilyy.",
+    "approach": "Käymme kolme tilaa läpi yksi kerrallaan: mitä kukin tekee, minkä riskin se kantaa ja minkä työrytmin se luo. Opit vaihtamaan niitä kesken istunnon Shift+Tab-näppäimellä ja valitsemaan oikean tilan tehtävän mukaan — turvallisesta vieraan koodin tutkimisesta nopeisiin rutiinimuutoksiin.",
+    "outcomes": [
+      "Ymmärrät eron tavallisen tilan, auto-accept editsin ja plan moden välillä",
+      "Vaihdat tilaa lennossa Shift+Tab-näppäimellä istuntoa keskeyttämättä",
+      "Valitset tilan tehtävän mukaan: plan tiedusteluun, auto-accept rutiiniin, tavallinen oletuksena",
+      "Tunnistat bypass-tilan vaaran ja miksi sitä ei saa ottaa käyttöön ajattelematta",
+      "Vältät molemmat ääripäät: kaiken vahvistamisen käsin tai kaiken sallimisen sokeasti"
+    ],
+    "applyIn": [
+      {
+        "title": "Vieraan koodin tutkiminen",
+        "description": "Otat plan moden käyttöön, jotta Claude lukee ja ehdottaa suunnitelman mutta ei fyysisesti koske tiedostoihin — turvallinen tiedustelu ennen mitään muutosta."
+      },
+      {
+        "title": "Rutiininomaiset massamuutokset",
+        "description": "Uudelleennimeämiset, muotoilu, pienet korjaukset luotetussa projektissa — auto-accept edits poistaa vahvistusten virran ja nopeuttaa työtä."
+      },
+      {
+        "title": "Kriittiset muutokset",
+        "description": "Tuotantokonfigurointien ja migraatioiden muokkaus, tiedostojen poisto — tavallinen tila, jossa jokainen toiminto kulkee vahvistuksesi kautta."
+      }
+    ],
+    "pitfalls": [
+      "Pysyminen ikuisesti yhdessä tilassa: joko hidasta (kaikki käsin) tai vaarallista (kaikki sallittu)",
+      "Auto-accept editsin käyttöönotto vieraassa tai tuotantoprojektissa ja tuhoisan muutoksen ohittaminen",
+      "Plan moden sekoittaminen tavalliseen: planissä muutoksia ei tehdä, joten voit odottaa tulosta turhaan",
+      "Bypass permissions -tilan ajattelematon käyttöönotto — agentti suorittaa kaiken kysymättä, mukaan lukien vaaralliset komennot",
+      "Unohtaa, mikä tila on aktiivinen, ja ihmetellä miksi muutokset tehdään (tai eivät tehdä)"
+    ],
+    "exercises": [
+      {
+        "question": "Sait jonkun toisen repon ja sinun on hahmotettava arkkitehtuuri rikkomatta mitään. Mikä tila ja miksi?",
+        "hint": "Tarvitset tilan, jossa Claude lukee ja suunnittelee mutta ei fyysisesti muuta tiedostoja."
+      },
+      {
+        "question": "Teet 30 samankaltaista uudelleennimeämistä omassa luotetussa projektissasi ja olet väsynyt painamaan vahvista. Mitä otat käyttöön?",
+        "hint": "Tila, jossa tiedostomuutokset tehdään vahvistamatta kutakin erikseen."
+      },
+      {
+        "question": "Miksi bypass permissions on vaarallisempi kuin auto-accept edits?",
+        "hint": "Mieti, mitä kukin tila oikeasti sallii: vain tiedostomuutokset vai minkä tahansa toiminnon, mukaan lukien komennot."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mitä tiloja on ja miksi",
+        "time": "",
+        "why": "Ilman tilojen karttaa joko jumiudut vahvistuksiin tai annat agentille vahingossa ylimääräistä vapautta. Kolmen tilan ymmärtäminen on turvallisen ja nopean työn perusta.",
+        "instructions": [
+          "Opettele kolme ydintä: tavallinen (vahvista jokainen toiminto), auto-accept edits (muutokset kysymättä), plan mode (vain luku ja suunnittelu, ei muutoksia)",
+          "Hahmota pääakseli: tila säätää tasapainoa \"hallinta ↔ nopeus\"",
+          "Pidä bypass permissions mielessä erikseen — äärimmäinen tila ilman vahvistuksia, erikoistapauksiin",
+          "Sido tila tehtävän riskiin: mitä vaarallisempi muutos, sitä enemmän hallintaa tarvitset"
+        ],
+        "validate": "Osaat nimetä kolme ydintilaa ja kuvata yhdellä sanalla, mitä kukin sallii.",
+        "tip": "Ajattele tiloja kuin vaihteita: ei \"mikä on paras\" vaan \"mikä sopii nykyiselle tielle\"."
+      },
+      "s2": {
+        "title": "Tavallinen tila — vahvista joka askel",
+        "time": "",
+        "why": "Tämä on oletus- ja turvallisin tila: yksikään tiedostomuutos tai komento ei suoritu ilman \"kyllä\"-vastaustasi. Aloita tästä missä tahansa vieraassa kontekstissa.",
+        "instructions": [
+          "Käynnistä Claude Code projektissa — oletuksena olet jo tavallisessa tilassa",
+          "Anna tehtävä, joka vaatii tiedostomuutoksen, ja odota vahvistuspyyntöä",
+          "Lue, mitä tarkalleen ehdotetaan, ennen kuin vahvistat",
+          "Hylkää yksi ehdotus ja varmista, ettei muutosta tehty"
+        ],
+        "validate": "Ennen jokaista muutosta näet pyynnön ja voit hyväksyä tai hylätä sen.",
+        "tip": "Älä vahvista automaattiohjauksella — diffin lukeminen ennen \"kyllä\" on tämän tilan koko arvo."
+      },
+      "s3": {
+        "title": "Auto-accept edits — muutokset kysymättä",
+        "time": "",
+        "why": "Kun tehtävä on rutiininomainen ja projekti tuttu, vahvistusten virta vain haittaa. Auto-accept edits tekee tiedostomuutokset automaattisesti antaen sinulle nopeutta klikkausten sijaan.",
+        "instructions": [
+          "Ota auto-accept edits käyttöön vaihtamalla tilaa (Shift+Tab)",
+          "Anna sarja samankaltaisia muutoksia: muotoilu, uudelleennimeämiset, pienet korjaukset",
+          "Huomaa, että tiedostomuutokset tehdään heti ilman erillistä vahvistusta",
+          "Muista: tämä tila poistaa vain tiedostomuutosten kysymisen, se ei tee agentista kaikkivaltiasta"
+        ],
+        "validate": "Tiedostomuutokset tehdään automaattisesti ja ymmärrät tämän koskevan vain muutoksia.",
+        "tip": "Ota auto-accept käyttöön vain siellä, missä luotat sekä projektiin että tehtävän luonteeseen — rutiini tutussa koodissa."
+      },
+      "s4": {
+        "title": "Plan mode — vain suunnittelu, ei muutoksia",
+        "time": "",
+        "why": "Ennen suurta tai riskialtista muutosta kannattaa saada ensin suunnitelma, ei muutoksia. Plan mode antaa Clauden lukea koodia ja ehdottaa strategian muuttamatta fyysisesti mitään.",
+        "instructions": [
+          "Vaihda plan modeen (Shift+Tab) ennen suurta tehtävää",
+          "Pyydä tutkimaan koodin osa ja ehdottamaan muutossuunnitelma",
+          "Varmista, että Claude vastaa suunnitelmalla ja tiedostot pysyvät koskemattomina",
+          "Hyväksyttyäsi suunnitelman poistu plan modesta ja vaihda tilaan, jossa muutokset tehdään"
+        ],
+        "validate": "Plan modessa saat suunnitelman eikä yhtäkään tiedostoa muuteta ennen kuin poistut tilasta.",
+        "tip": "Plan mode on paras tiedustelu ennen arkkitehtonista askelta tai massamuutosta: paperilla on halpa erehtyä."
+      },
+      "s5": {
+        "title": "Tilojen vaihto Shift+Tab-näppäimellä",
+        "time": "",
+        "why": "Tila ei ole koko istunnon asetus: vaihdat sitä lennossa sopimaan nykyiseen askeleeseen. Shift+Tab kiertää tiloja keskustelua keskeyttämättä.",
+        "instructions": [
+          "Paina Shift+Tab istunnossa ja seuraa, miten aktiivisen tilan ilmaisin muuttuu",
+          "Käy kierros: tavallinen → auto-accept edits → plan mode → takaisin",
+          "Tarkista nopeasti ennen jokaista tehtävää, mikä tila on aktiivinen",
+          "Rakenna tapa: tiedustelu → plan, rutiini → auto-accept, riski → tavallinen"
+        ],
+        "validate": "Vaihdat tilaa yhdellä näppäilyllä ja tiedät aina, missä tilassa olet.",
+        "tip": "Tehtävä ensin, sitten tila: kysy itseltäsi \"kuinka riskialtista tämä on?\" ja vaihda vastauksen mukaan."
+      },
+      "s6": {
+        "title": "Mikä milloin, bypass-vaara ja tarkistus",
+        "time": "",
+        "why": "Päävirhe on jumiutua yhteen tilaan. Viimeinen askel vahvistaa tilan valinnan tehtävän mukaan ja varoittaa bypass permissions -tilasta, jossa agentti toimii ilman mitään vahvistuksia.",
+        "instructions": [
+          "Muodosta sääntö: vieras/riskialtis → plan tai tavallinen, rutiini tutussa koodissa → auto-accept",
+          "Hahmota bypass permissionsin vaara: mikä tahansa toiminto on sallittu, mukaan lukien komennot, ilman kysymyksiä",
+          "Älä ota bypassia käyttöön tuotannossa, vieraassa koodissa tai kun et hallitse seurauksia",
+          "Tarkista joka vaihdon jälkeen: muutokset tehdään / ei tehdä juuri kuten odotat",
+          "Jos tila käyttäytyy odottamattomasti — pysähdy ja tarkista aktiivisen tilan ilmaisin"
+        ],
+        "validate": "Kolmelle eri tehtävälle nimeät oikean tilan ja selität, miksi bypass ei ole oletusvaihtoehto.",
+        "tip": "Bypass on kuin ratti ilman jarruja: joskus tarpeen, mutta ei päivittäiseen ajoon eikä ruuhkaan."
+      }
+    }
+  },
+  "cc-tty-keys": {
+    "title": "Claude Coden terminaalin hotkeyt",
+    "subtitle": "Session hallinta näppäimistöltä: keskeytys, tilat, syöttö, historia ja ohje",
+    "totalTime": "6 шагов",
+    "whatItIs": "Joukko Claude Coden terminaalin pikanäppäimiä, jotka hallitsevat sessiota ilman hiirtä: pysäytä generointi (Esc), poistu (Ctrl+C), vaihda tila (Shift+Tab), syötä monirivinen teksti, selaa historiaa (↑/↓, Ctrl+R) ja täydennä polut automaattisesti (Tab).",
+    "approach": "Etenemme merkityksen, emme aakkosten mukaan: ensin miksi hotkeyt ylipäätään, sitten ryhmät tehtävittäin — pysäytys, tilat, syöttö, historia, ohje. Jokainen vaihe harjoitellaan käsin elävässä sessiossa, kunnes yhdistelmä muuttuu lihasmuistiksi.",
+    "outcomes": [
+      "Pysäytät generoinnin ja poistut sessiosta rauhallisesti ja ilman hiirtä",
+      "Vaihdat Claude Coden työtilat yhdellä Shift+Tab:lla",
+      "Syötät pitkät moniriviset kehotteet lähettämättä niitä vahingossa",
+      "Löydät ja käytät uudelleen aiempia komentoja näppäimillä ↑/↓ ja Ctrl+R",
+      "Avaat sisäänrakennetun hotkey-ohjeen ja tarkistat itsesi ilman lunttilappua"
+    ],
+    "applyIn": [
+      {
+        "title": "Pitkän vastauksen keskeytys",
+        "description": "Claude meni harhaan — Esc pysäyttää generoinnin heti tappamatta sessiota."
+      },
+      {
+        "title": "Tilan vaihto tehtävän mukaan",
+        "description": "Shift+Tab vaihtaa tilan (esim. auto-accept) kesken työn, ilman uudelleenkäynnistystä."
+      },
+      {
+        "title": "Komentojen toisto ja muokkaus",
+        "description": "↑ tuo edellisen kehotteen, Ctrl+R hakee historiasta — ei pitkien kehotteiden kirjoittamista käsin uudelleen."
+      }
+    ],
+    "pitfalls": [
+      "Sekoittaa Esc (keskeytä vastaus) ja Ctrl+C (poistu sessiosta) — Ctrl+C kahdesti sulkee Claude Coden",
+      "Painaa Enteriä kesken monirivisen syötön ja lähettää vahingossa keskeneräisen kehotteen",
+      "Käyttää hiirtä terminaalissa — menetät CLI:n pääedun ja nopeuden",
+      "Olla tietämättä Shift+Tab:sta ja käynnistää sessio uudelleen käsin vain tilan vaihtamiseksi",
+      "Sivuuttaa Ctrl+R ja kirjoittaa pitkät komennot uudelleen historiahaun sijaan"
+    ],
+    "exercises": [
+      {
+        "question": "Mikä on Esc:n ja Ctrl+C:n ero Claude Coden työskennellessä?",
+        "hint": "Toinen pysäyttää nykyisen vastauksen ja pitää session elossa, toinen poistuu itse Claude Codesta."
+      },
+      {
+        "question": "Sinun pitää toistaa 5-rivinen kehote, jonka syötit 10 kehotetta sitten. Mikä on nopeampaa kuin uudelleen kirjoittaminen?",
+        "hint": "Ajattele historiaa: selaus ↑/↓ tai osamerkkijonohaku."
+      },
+      {
+        "question": "Miten syötät monirivisen kehotteen lähettämättä sitä liian aikaisin?",
+        "hint": "Enter lähettää; rivinvaihto vaatii eri syötön — tarkista hotkey-ohjeesta."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi terminaalin hotkeyt",
+        "time": "",
+        "why": "Ilman hotkeyta jokainen toimi tarkoittaa hiireen tarttumista ja uudelleen kirjoittamista. Se rikkoo flow'n ja tuplaa ajan terminaalissa.",
+        "instructions": [
+          "Avaa Claude Code ja aja yksi tavallinen sessio kuten yleensä — hiirellä ja käsin kirjoittaen",
+          "Laske karkeasti, kuinka usein tartuit hiireen tai kirjoitit uudelleen jo syöttämääsi",
+          "Muista periaate: kädet pysyvät näppäimistöllä — terminaalityö soljuu",
+          "Muotoile kurssin tavoite: pysäytys, tilat, syöttö, historia ja ohje — kaikki näppäimistöltä"
+        ],
+        "validate": "Osaat nimetä vähintään 3 kohtaa sessiossasi, joissa hiiri tai uudelleen kirjoittaminen hidasti sinua.",
+        "tip": "Tunti terminaalissa hotkeyilla muuttuu 30 minuutiksi — hyöty ei ole kosmeettinen."
+      },
+      "s2": {
+        "title": "Keskeytys ja pysäytys: Esc ja Ctrl+C",
+        "time": "",
+        "why": "Claude menee usein harhaan. Kyky pysäyttää vastaus heti on session hallintaa ja säästettyä aikaa.",
+        "instructions": [
+          "Anna Claudelle mikä tahansa tehtävä ja paina generoinnin aikana Esc — vastaus pysähtyy, sessio pysyy elossa",
+          "Varmista, että Esc:n jälkeen voit heti kirjoittaa uuden kehotteen — uudelleenkäynnistystä ei tarvita",
+          "Paina Ctrl+C kerran — huomaa, että se on poistumissignaali, ei vain pysäytys",
+          "Muista ero: Esc keskeyttää vastauksen, Ctrl+C poistuu Claude Codesta"
+        ],
+        "validate": "Pysäytit generoinnin Esc:llä ja jatkoit työtä käynnistämättä sessiota uudelleen.",
+        "tip": "Jos haluat vain pysäyttää vastauksen — aina Esc. Säästä Ctrl+C poistumiseen."
+      },
+      "s3": {
+        "title": "Tilojen vaihto: Shift+Tab",
+        "time": "",
+        "why": "Eri tehtävät vaativat eri työtiloja. Niiden vaihto yhdellä näppäimellä session sisällä on nopeampaa kuin uudelleenkäynnistys.",
+        "instructions": [
+          "Paina aktiivisessa sessiossa Shift+Tab — työtila vaihtuu, ilmaisin muuttuu",
+          "Paina Shift+Tab muutaman kerran ja seuraa, miten käyttäytyminen ja tilan nimi muuttuvat",
+          "Valitse nykyiseen tehtävään sopiva tila ja pidä se",
+          "Muista: tilan vaihto ei vaadi uudelleenkäynnistystä — se on lennossa tapahtuva vaihto"
+        ],
+        "validate": "Vaihdoit tilan Shift+Tab:lla ja näet muuttuneen tilan ilmaisimen.",
+        "tip": "Valitse tila ennen ison tehtävän aloitusta — vähemmän keskeytyksiä matkan varrella."
+      },
+      "s4": {
+        "title": "Syöttö ja monirivisyys",
+        "time": "",
+        "why": "Pitkät moniriviset kehotteet ovat normaali. Ilman oikeaa syöttöä Enter lähettää keskeneräisen tekstin ja katkaisee ajatuksen.",
+        "instructions": [
+          "Aloita kehotteen kirjoittaminen ja huomaa: Enter lähettää viestin",
+          "Avaa hotkey-ohje (ks. vaihe 6) ja etsi rivinvaihdon yhdistelmä",
+          "Syötä 3-4 rivin kehote rivinvaihtoja käyttäen ja lähetä vasta sitten Enterillä",
+          "Varmista, että monirivinen teksti lähti kokonaisena, ei osissa"
+        ],
+        "validate": "Lähetit yhden monirivisen kehotteen rikkomatta sitä vahingossa painetulla Enterillä.",
+        "tip": "Jos kehote on pitkä — kirjoita koko teksti ensin, lähetä vasta aivan lopuksi."
+      },
+      "s5": {
+        "title": "Historia ja automaattitäydennys",
+        "time": "",
+        "why": "Pitkien komentojen kirjoittaminen käsin uudelleen on hukattua aikaa. Historia ja Tab palauttavat jo kirjoitetun sekunneissa.",
+        "instructions": [
+          "Syötä useita eri kehotteita, selaa sitten historiaa näppäimillä ↑ ja ↓",
+          "Paina Ctrl+R ja ala kirjoittaa palaa aiemmasta komennosta — haku löytää sen osamerkkijonolla",
+          "Kirjoita tiedostopolun alku ja paina Tab — polku täydentyy ilman nimen kirjoittamista",
+          "Kokeile Tab @src/-merkin jälkeen — täydennys ehdottaa sisällä olevia tiedostoja"
+        ],
+        "validate": "Löysit aiemman komennon Ctrl+R:llä ja täydensit tiedostopolun Tab:lla.",
+        "tip": "↑ — viimeiselle parille komentoja, Ctrl+R — kun komento oli kauan sitten ja muistat vain palan."
+      },
+      "s6": {
+        "title": "Hotkey-ohje ja tarkistus",
+        "time": "",
+        "why": "Kaiken muistaminen kerralla on mahdotonta. Sisäänrakennettu ohje on lunttilappu käsillä, kunnes yhdistelmät muuttuvat lihasmuistiksi.",
+        "instructions": [
+          "Avaa Claude Coden sisäänrakennettu hotkey-ohje ja käy läpi koko lista",
+          "Tarkista listasta kaikki harjoittelemasi: Esc, Ctrl+C, Shift+Tab, rivinvaihto, ↑/↓, Ctrl+R, Tab",
+          "Aja yksi kokonainen sessio ilman hiirtä, nojaten ohjeeseen kun jumitut",
+          "Merkitse yhdistelmät, jotka eivät vielä ole automaattisia, ja toista niitä joka sessio"
+        ],
+        "validate": "Ajoit kokonaisen session ilman hiirtä ja osaat ulkomuistista nimetä hotkeyn kurssin 6 tehtävälle.",
+        "tip": "Viikon päivittäisen harjoittelun jälkeen kaikki nämä yhdistelmät muuttuvat lihasmuistiksi — ohjetta ei enää tarvita."
+      }
+    }
+  },
+  "cc-cfg-settings": {
+    "title": "Projektin settings.json Claude Codessa",
+    "subtitle": "Tiimin yhteiset säännöt repositoriossa: permissions, hooks, env",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Tiedosto .claude/settings.json projektin juuressa on Claude Coden tiimikonfiguraatio: oikeudet (permissions), automaattiset toiminnot (hooks) ja ympäristömuuttujat (env). Se commitataan repositorioon, joten jokainen tiimin jäsen saa samat säännöt agentin kanssa työskentelyyn.",
+    "approach": "Etenemme tiedoston tarkoituksen ymmärtämisestä sen rakenteeseen ja keskeisiin kenttiin, sitten käsittelemme miksi se commitataan gitiin ja miten se yhdistyy globaaliin ja paikalliseen tasoon. Lopuksi pääasiallinen virhe — salaisuudet settings.json:ssa — ja tarkistus.",
+    "outcomes": [
+      "Ymmärrät, että .claude/settings.json määrittää tiimin yhteiset säännöt ja sijaitsee repositoriossa",
+      "Tunnet tiedoston rakenteen ja kolme keskeistä lohkoa: permissions, hooks, env",
+      "Osaat asettaa perusoikeudet ja hookin, joka ajetaan tiedoston muokkauksen jälkeen",
+      "Ymmärrät eron globaalin, projekti- ja paikallisen asetustason välillä",
+      "Et laita salaisuuksia tai API-avaimia settings.json:iin ja osaat tarkistaa konfiguraation"
+    ],
+    "applyIn": [
+      {
+        "title": "Uusien kehittäjien perehdytys",
+        "description": "Uusi henkilö kloonaa repon ja saa heti samat permissions ja hooks kuin koko tiimi — ilman «aseta ohjeideni mukaan»."
+      },
+      {
+        "title": "Yhtenäinen agenttistandardi",
+        "description": "Kaikki ajavat Claude Coden samoilla oikeuksilla ja automaattisilla toiminnoilla, joten agentti käyttäytyy ennustettavasti jokaisella jäsenellä."
+      },
+      {
+        "title": "Rutiinin automatisointi hookeilla",
+        "description": "Muotoilu, lint tai testit ajetaan automaattisesti agentin toimien jälkeen, koska hook on määritelty yhteisessä projektitiedostossa."
+      }
+    ],
+    "pitfalls": [
+      "Henkilökohtaisten salaisuuksien tai API-avainten säilyttäminen settings.json:ssa — tiedosto menee gitiin ja näkyy kaikille",
+      "Henkilökohtaisten asetusten laittaminen projektitiedostoon paikallisen settings.local.json:n sijaan",
+      "settings.json:n commitoinnin unohtaminen, jolloin tiimi työskentelee eri säännöillä",
+      "Liian laajat permissions.allow (esimerkiksi salli kaikki) — vahvistukset menettävät merkityksensä",
+      "Virheellinen JSON (roikkuva pilkku, väärät lainausmerkit) — Claude Code ei voi lukea konfiguraatiota"
+    ],
+    "exercises": [
+      {
+        "question": "Miksi API-avainta ei saa laittaa .claude/settings.json:iin vaan ympäristömuuttujaan tai paikalliseen tiedostoon?",
+        "hint": "Muista, mihin settings.json commitataan ja kuka sen näkee git pushin jälkeen."
+      },
+      {
+        "question": "Miten projektin .claude/settings.json eroaa tarkoitukseltaan .claude/settings.local.json:sta?",
+        "hint": "Toinen on tiimin yhteinen ja menee gitiin, toinen on henkilökohtainen eikä päädy gitiin."
+      },
+      {
+        "question": "Mikä merkintä permissions.allow:ssa antaa agentin ajaa testit ilman vahvistusta?",
+        "hint": "Muoto on työkalu komentomallilla, esim. Bash(npm test)."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä .claude/settings.json on ja miksi",
+        "time": "",
+        "why": "Ilman yhteistä asetustiedostoa jokainen tiimin jäsen konfiguroi agentin omalla tavallaan, ja Claude Code käyttäytyy eri tavoin koneesta toiseen.",
+        "instructions": [
+          "Avaa projektin juuri ja etsi (tai luo) .claude-kansio",
+          "Sen sisällä on settings.json — Claude Coden tiimikonfiguraatio",
+          "Muista tiedoston kolme tehtävää: oikeudet (permissions), automaattiset toiminnot (hooks) ja ympäristömuuttujat (env)",
+          "Tiedosto on yhteinen: Claude Code lukee sen kaikille, jotka ovat kloonanneet repositorion"
+        ],
+        "validate": "Osaat selittää yhdellä lauseella: settings.json määrittää tiimin yhteiset säännöt agentin kanssa työskentelyyn.",
+        "tip": "Kätevintä on luoda tiedosto heti /init:n jälkeen, kun projektin perusrakenne on jo kuvattu."
+      },
+      "s2": {
+        "title": "Tiedoston rakenne",
+        "time": "",
+        "why": "Claude Code lukee settings.json:n JSON:na: rakenteen ymmärtäminen mahdollistaa asetusten lisäämisen rikkomatta tiedostoa.",
+        "instructions": [
+          "Tiedosto on yksi JSON-objekti aaltosulkeineen ylätasolla",
+          "Sisällä on nimettyjä lohkoja: permissions, hooks, env ja muita (esimerkiksi statusline)",
+          "Arvot ovat objekteja, taulukoita tai merkkijonoja lohkosta riippuen",
+          "Noudata JSON-syntaksia: kaksoislainausmerkit, pilkut kenttien välissä, ei roikkuvaa pilkkua lopussa"
+        ],
+        "validate": "Minimaalinen kelvollinen tiedosto { } luetaan ilman virheitä, ja näet mihin lisätä lohkoja.",
+        "tip": "Tarkista syntaksi editorissa, jossa on JSON-korostus — se ilmoittaa ylimääräisestä pilkusta heti."
+      },
+      "s3": {
+        "title": "Keskeiset kentät: permissions, hooks, env",
+        "time": "",
+        "why": "Nämä kolme lohkoa kattavat tiimin pääasialliset tarpeet: mitä agentti saa tehdä, mikä ajetaan automaattisesti ja minkä ympäristön se näkee.",
+        "instructions": [
+          "permissions.allow — taulukko sallituista toiminnoista, esim. Bash(npm test) ja Edit(./src/**)",
+          "permissions.deny — mikä on nimenomaisesti kielletty, vaikka se sopisi allow-listaan",
+          "hooks — automaattiset toiminnot tapahtumiin, esim. PostToolUse:Write ajaa prettierin tiedoston kirjoituksen jälkeen",
+          "env — projektin ympäristömuuttujat (ei salaisuudet), jotka agentti näkee"
+        ],
+        "validate": "Tiedostossa on permissions-lohko ei-tyhjällä allow:lla, ja tiedät miten lisätä yksinkertainen hook.",
+        "tip": "Aloita minimistä: salli usein toistuvat turvalliset komennot, jätä loput vahvistettavaksi."
+      },
+      "s4": {
+        "title": "Commitoi repositorioon",
+        "time": "",
+        "why": "Projektin settings.json:n koko idea on yhteiset säännöt kaikille; ne toimivat vain jos tiedosto on gitissä.",
+        "instructions": [
+          "Varmista, ettei .claude/settings.json ole suljettu pois .gitignore:ssa",
+          "Lisää tiedosto indeksiin: git add .claude/settings.json",
+          "Commitoi se muun projektin asetuksen kanssa",
+          "git pushin jälkeen tiimikaverit saavat samat permissions ja hooks seuraavalla pullilla"
+        ],
+        "validate": "git status näyttää settings.json:n seurattuna, ja kloonauksen jälkeen toisella jäsenellä on samat säännöt.",
+        "tip": "Sopikaa tiimissä, että yhteisten sääntöjen muutokset käyvät läpi normaalin katselmoinnin, kuten koodi."
+      },
+      "s5": {
+        "title": "Yhteys globaaliin ja paikalliseen tasoon",
+        "time": "",
+        "why": "Asetukset kerrostuvat tasoittain: henkilökohtaiset mieltymykset eivät saa päätyä yhteiseen tiedostoon, ja projektiasetusten tulee ohittaa globaalit.",
+        "instructions": [
+          "Globaali taso — käyttäjän asetukset, jotka ovat yhteisiä kaikille koneesi projekteille",
+          "Projektitaso — .claude/settings.json, tiimin yhteinen ja gitiin commitattu",
+          "Paikallinen taso — .claude/settings.local.json, henkilökohtainen JA ei commitattu (yleensä .gitignore:ssa)",
+          "Pidä henkilökohtaiset salaisuudet ja mieltymykset paikallisessa tiedostossa tai ympäristössä, ei projektitiedostossa"
+        ],
+        "validate": "Ymmärrät, minkä tason valita tiimisäännölle ja minkä henkilökohtaiselle asetukselle.",
+        "tip": "Jos sääntö on tarpeen vain sinulle, se on merkki siitä että se kuuluu settings.local.json:iin, ei settings.json:iin."
+      },
+      "s6": {
+        "title": "Virheet: salaisuudet settings.json:ssa + tarkistus",
+        "time": "",
+        "why": "Vaarallisin virhe on laittaa salaisuus tiedostoon, joka commitataan: pushin jälkeen koko tiimi ja git-historia näkevät sen.",
+        "instructions": [
+          "Älä koskaan kirjoita API-avaimia tai salasanoja .claude/settings.json:iin — se menee gitiin",
+          "Välitä salaisuudet ympäristömuuttujilla tai paikallisella tiedostolla gitin ulkopuolella",
+          "Varmista, että JSON on kelvollinen (ei roikkuvia pilkkuja eikä yksittäisiä lainausmerkkejä)",
+          "Aja Claude Code projektissa ja varmista, että permissions ja hooks tulivat voimaan"
+        ],
+        "validate": "settings.json:ssa ei ole yhtään salaisuutta, tiedosto on kelvollinen JSON, ja asettamasi säännöt todella toimivat.",
+        "tip": "Jos salaisuus on jo päätynyt commitiin, sen poistaminen ei riitä — avain täytyy peruuttaa ja vaihtaa."
+      }
+    }
+  },
+  "cc-cfg-local": {
+    "title": "settings.local.json: henkilökohtaiset Claude Code -asetukset",
+    "subtitle": "Henkilökohtainen konfiguraatio, joka ei päädy jaettuun repoon",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "settings.local.json sijaitsee .claude-kansiossa projektin settings.jsonin vieressä. Siinä on samat kentät, mutta sitä ei committata gitiin: se pysyy paikallisena ja sisältää sen, mikä on spesifistä vain sinun koneellesi — henkilökohtaiset oikeudet, polut, ENV-muuttujat, kokeilut.",
+    "approach": "Etenemme siitä, miten local-tiedosto eroaa jaetusta, oikean täyttämisen ja gitistä poissulkemisen kautta sen prioriteettiin projektiasetusten yli ja yleisten virheiden käsittelyyn (committasit localin, vuosi salaisuus). Jokainen vaihe on teknisesti tarkka ja pohjautuu Claude Coden konfiguraatiomalliin.",
+    "outcomes": [
+      "Ymmärrät .claude/settings.local.jsonin tarkoituksen ja eron settings.jsoniin",
+      "Tiedät, mikä kuuluu localiin ja mikä jaettuun projektitiedostoon",
+      "Osaat sulkea local-tiedoston pois gitistä .gitignoren kautta",
+      "Ymmärrät prioriteettijärjestyksen: local ohittaa projektiasetukset",
+      "Vältät salaisuuksien vuotamisen ja desynkronoinnin tiimin kanssa"
+    ],
+    "applyIn": [
+      {
+        "title": "Henkilökohtaiset komentojen allow-listat",
+        "description": "Sallit localissa komennot, joihin itse luotat, pakottamatta niitä koko tiimille jaetun settings.jsonin kautta."
+      },
+      {
+        "title": "Konekohtaiset polut ja ENV",
+        "description": "Säilytät koneesi paikalliset polut ja ympäristömuuttujat, jotka ovat kollegoilla erilaiset."
+      },
+      {
+        "title": "Kokeilut ilman riskiä repolle",
+        "description": "Kokeilet uusia asetuksia ja oikeuksia sotkematta commit-historiaa tai koskematta jaettuun konfiguraatioon."
+      }
+    ],
+    "pitfalls": [
+      "settings.local.jsonin committaaminen — se päätyy repoon ja rikkoo 'henkilökohtaisen' tiedoston idean",
+      "Salaisuuksien tai API-avainten laittaminen paikkaan, josta ne voivat vuotaa committiin",
+      "Sen duplikoiminen localiin, minkä pitäisi olla jaetussa settings.jsonissa — desynkronointi tiimin kanssa",
+      "Prioriteetin unohtaminen: local ohittaa projektiasetukset hiljaa, ja käytös muuttuu 'ilman selvää syytä'",
+      "Koko tiimin asetusten laittaminen localiin — kollegat eivät saa niitä"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on API-avain, jota tarvitaan vain koneellasi. Kumpaan kahdesta tiedostosta se kuuluu ja miksi?",
+        "hint": "Mieti, kumpi tiedosto menee jaettuun repoon ja kumpi pysyy paikallisena."
+      },
+      {
+        "question": "Tiimi valittaa, että oikeus toimii sinulla mutta ei heillä. Missä syy voisi olla?",
+        "hint": "Tarkista, onko tarvittu sääntö vain sinun local-tiedostossasi jaetun settings.jsonin sijaan."
+      },
+      {
+        "question": "Miten varmistat, ettei settings.local.json varmasti päädy committiin?",
+        "hint": "Katso .gitignore ja tarkista git status."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä settings.local.json on ja miksi sitä tarvitaan",
+        "time": "",
+        "why": "Ilman tarkoituksen ymmärtämistä localin ja projektitiedoston voi helposti sekoittaa ja laittaa asetukset väärään paikkaan.",
+        "instructions": [
+          "Avaa .claude-kansio projektin juuressa — settings.local.json voi olla settings.jsonin vieressä",
+          "Muista: localin kentät ovat samat kuin settings.jsonissa — rakenne on identtinen",
+          "Keskeinen ero: local EI mene gitiin; se sisältää konfiguraation vain koneellesi",
+          "Käytä sitä henkilökohtaisiin oikeuksiin, paikallisiin polkuihin, ENV-muuttujiin ja kokeiluihin"
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miksi erillistä local-tiedostoa tarvitaan pelkän jaetun sijaan.",
+        "tip": "Jos tiedostoa ei ole — se on normaalia: Claude Code luo sen, kun localiin kirjoitetaan ensimmäistä kertaa."
+      },
+      "s2": {
+        "title": "Miten local eroaa settings.jsonista",
+        "time": "",
+        "why": "Raja 'jaetun' ja 'henkilökohtaisen' välillä on koko aiheen perusta; jos sekoitat sen, joko vuotaa salaisuus tai tiimi jää ilman tarvitsemaansa.",
+        "instructions": [
+          "settings.json — jaettu: committataan gitiin ja koskee koko tiimiä",
+          "settings.local.json — henkilökohtainen: ei committata, koskee vain sinua",
+          "Kentät ovat identtiset; ero on laajuudessa ja siinä, päätyykö repoon",
+          "Sääntö: tiimille jaettu → settings.json; koneelle henkilökohtainen → settings.local.json"
+        ],
+        "validate": "Osaat sanoa mille tahansa asetukselle, kumpaan tiedostoon se kuuluu.",
+        "tip": "Jos epäröit 'jaettu vai henkilökohtainen', kysy: pitäisikö kollegoiden saada tämä? Kyllä → settings.json."
+      },
+      "s3": {
+        "title": "Mitä settings.local.jsoniin laitetaan",
+        "time": "",
+        "why": "Oikea sisältö tekee localista hyödyllisen; väärä muuttaa sen desynkronoinnin lähteeksi.",
+        "instructions": [
+          "Laita henkilökohtaiset allow-listat komennoille, joihin vain sinä luotat",
+          "Laita koneellesi spesifiset paikalliset polut ja ENV-muuttujat",
+          "Laita kokeelliset asetukset, joita et halua pakottaa tiimille",
+          "ÄLÄ laita tänne sitä, minkä pitäisi toimia kaikilla — se on jaetun settings.jsonin tehtävä"
+        ],
+        "validate": "Localissasi on vain koneellesi spesifistä eikä mitään tiimitason asiaa.",
+        "tip": "Henkilökohtaiset allow-listat ovat yleisin tapaus: ne säästävät ylimääräisiltä vahvistuksilta koskematta tiimiin."
+      },
+      "s4": {
+        "title": ".gitignore — älä committaa local-tiedostoa",
+        "time": "",
+        "why": "Localin koko idea perustuu siihen, ettei se päädy repoon; ilman gitistä poissulkemista suoja ei toimi.",
+        "instructions": [
+          "Avaa projektin .gitignore ja varmista, että settings.local.json on siinä listattuna",
+          "Jos rivi puuttuu — lisää local-tiedoston polku .gitignoreen",
+          "Aja git status ja tarkista, ettei settings.local.json näy muutettuna/uutena",
+          "Jos tiedosto on jo gitin seurannassa — se on merkki, että se committattiin aiemmin (käsitellään vaiheessa 6)"
+        ],
+        "validate": "git status ei näytä settings.local.jsonia committattavien tiedostojen joukossa.",
+        "tip": "Claude Coden projektimalleissa local-tiedoston poissulku on usein jo valmiina — mutta tarkistus ei haittaa."
+      },
+      "s5": {
+        "title": "Localin prioriteetti projektiasetusten yli",
+        "time": "",
+        "why": "Jos et tiedä, että local ohittaa settings.jsonin, käytös muuttuu 'ilman selvää syytä'.",
+        "instructions": [
+          "Muista: kun kentät menevät päällekkäin, settings.local.json on etusijalla settings.jsoniin nähden",
+          "Tämä antaa ohittaa jaetun asetuksen paikallisesti itsellesi koskematta jaettuun tiedostoon",
+          "Käytöstä debugatessa katso ensin localia — se on voinut hiljaa ohittaa projektin arvon",
+          "Älä duplikoi kenttiä turhaan: duplikaatti localissa piilottaa arvon settings.jsonista"
+        ],
+        "validate": "Ymmärrät, mikä arvo pätee, kun kenttä on asetettu sekä localissa että projektitiedostossa.",
+        "tip": "Jos jokin on 'ei kuten settings.jsonissa', etsi se kenttä ensimmäisenä settings.local.jsonista."
+      },
+      "s6": {
+        "title": "Virheet ja tarkistus: committasit localin / vuosi salaisuus",
+        "time": "",
+        "why": "Aiheen kaksi päävirhettä ovat kalliita: salaisuus gitissä ja desynkronointi tiimin kanssa; ne pitää osata löytää ja estää.",
+        "instructions": [
+          "Virhe 1: settings.local.json on committattu — lisää se .gitignoreen ja poista gitin seurannasta (poistamatta itse tiedostoa)",
+          "Virhe 2: salaisuus/avain päätyi committiin — pidä sitä vaarantuneena, kumoa ja vaihda avain",
+          "Virhe 3: tiimiasetus duplikoitu localiin — siirrä se jaettuun settings.jsoniin",
+          "Tarkistus: git log ja git status eivät sisällä local-tiedostoa eivätkä salaisuuksia; tiimi saa jaetut asetukset settings.jsonin kautta"
+        ],
+        "validate": "Git-historiassa ei ole settings.local.jsonia eikä salaisuuksia, ja tiimiasetukset ovat jaetussa tiedostossa.",
+        "tip": "Pidä mitä tahansa avainta, joka on kerran päätynyt git-historiaan, vuotaneena — pelkkä commitin poisto ei riitä, avain on vaihdettava."
+      }
+    }
+  },
+  "cc-cfg-global": {
+    "title": "Claude Coden globaalit asetukset",
+    "subtitle": "Henkilökohtaiset oletukset kaikille projekteille ~/.claude/ kautta",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Tiedosto ~/.claude/settings.json sisältää henkilökohtaiset Claude Code -asetuksesi, joita sovelletaan jokaiseen tämän koneen projektiin: kieli, vastausten muoto, Statusline, komentojen oikeudet. Sen vieressä on globaali ~/.claude/CLAUDE.md, jossa on käyttäytymissäännöt, joita haluat kaikkialle. Tämä on peruskerros, jonka päälle projektikohtaiset asetukset asettuvat.",
+    "approach": "Etenemme merkityksestä käytäntöön: ensin ymmärrämme mikä globaali kerros on ja miksi se on, sitten mitä sinne tarkalleen laitetaan, lisäämme globaalin CLAUDE.md:n, hallitsemme kerrosten etusijajärjestyksen (globaali < projekti < paikallinen), opimme huomaamaan milloin globaalit asetukset häiritsevät, ja päätämme tyypillisiin virheisiin ja tarkistukseen. Kurssin jälkeen asennat uuden koneen kerran etkä copy-pastettaa konfigeja projektista toiseen.",
+    "outcomes": [
+      "Ymmärrät ~/.claude/settings.json:n ja globaalin CLAUDE.md:n tarkoituksen",
+      "Tiedät mikä kuuluu globaaliin kerrokseen ja mikä jätetään projektille",
+      "Osaat asettaa henkilökohtaiset oletukset: kieli, allow turvallisille komennoille, Statusline",
+      "Ymmärrät kerrosten etusijan: globaali < projekti < paikallinen",
+      "Huomaat milloin globaali asetus haittaa tiettyä projektia ja korjaat sen"
+    ],
+    "applyIn": [
+      {
+        "title": "Uuden koneen asennus",
+        "description": "Aseta kieli, suosikkityökalut ja perusoikeudet ~/.claude/-kansioon kerran — ja kaikki tulevat projektit noudattavat heti sääntöjäsi."
+      },
+      {
+        "title": "Yhtenäinen työskentelytapa",
+        "description": "Globaali CLAUDE.md asettaa tavat (vastausten muoto, sävy, suosikkilähestymistavat), jotka seuraavat sinua jokaisessa repositoriossa ilman toistoa."
+      },
+      {
+        "title": "Vahvistusten säästäminen",
+        "description": "Globaali allow turvallisille Bash-komennoille (ls, git status, npm test) poistaa rutiininomaiset vahvistuspyynnöt jokaisesta projektista."
+      }
+    ],
+    "pitfalls": [
+      "Yhden projektin asetusten laittaminen globaaliin settings.json:iin — roskaa ja konfliktiriski projektikohtaisten asetusten kanssa",
+      "Globaali allow vaarallisille komennoille (rm -rf, git push --force) poistaa suojan kaikkialta kerralla",
+      "Olettaa että globaali asetus voittaa projektikohtaisen — todellisuudessa projekti- ja paikallinen kerros ohittavat sen",
+      "settings.json:n muokkaaminen rikkinäisellä JSON:lla (ylimääräinen pilkku, lainausmerkit) — koko tiedostoa ei enää lueta",
+      "Globaalin CLAUDE.md:n unohtaminen odottamattoman käytöksen lähteenä, kun sääntö tuntuu tulevan tyhjästä"
+    ],
+    "exercises": [
+      {
+        "question": "Haluat Clauden vastaavan kaikkialla suomeksi eikä kysyvän vahvistusta git status -komennolle. Minne tämä laitetaan?",
+        "hint": "Nämä ovat projektista riippumattomia sääntöjä → globaali ~/.claude/-kerros. Kieli/tyyli CLAUDE.md:hen, komennon allow settings.json:iin (permissions.allow)."
+      },
+      {
+        "question": "Yhdessä projektissa globaali allow npm test -komennolle on ongelma, koska testit ovat siellä hitaita ja maksullisia. Mitä teet?",
+        "hint": "Projektikerros ohittaa globaalin. Lisää tiukempi sääntö tai deny kyseisen projektin .claude/settings.json:iin — se voittaa koskematta globaaliin konfiguraatioon."
+      },
+      {
+        "question": "~/.claude/settings.json:n muokkauksen jälkeen Claude Code lakkasi soveltamasta asetuksiasi. Mikä tarkistetaan ensin?",
+        "hint": "Todennäköisesti rikkinäinen JSON — ylimääräinen pilkku tai sulkematon lainausmerkki. Tarkista tiedosto JSON-validaattorilla; virheen sattuessa koko tiedosto ohitetaan."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä ~/.claude/settings.json on ja miksi",
+        "time": "",
+        "why": "Ilman globaalin kerroksen tarkoituksen ymmärtämistä copy-pastettaat samoja konfigeja jokaiseen projektiin etkä ymmärrä mistä tietty käytös tulee.",
+        "instructions": [
+          "Avaa kotikansiosi ja etsi ~/.claude/-hakemisto — se luodaan [[node:claude-code|Claude Coden]] ensimmäisellä käytöllä.",
+          "Tiedosto ~/.claude/settings.json on henkilökohtaiset oletuksesi kaikille tämän koneen projekteille: kieli, vastausten muoto, Statusline, oikeudet.",
+          "Muista periaate: tänne tulee kaikki projektista riippumaton, jonka pitää toimia kaikkialla.",
+          "Jos tiedostoa ei ole, se on normaalia — voit luoda sen käsin kelvollisena JSON-objektina {}."
+        ],
+        "validate": "Osaat selittää omin sanoin, miten globaali settings.json eroaa projektin sisäisistä asetuksista.",
+        "tip": "Globaali kerros koskee sinua käyttäjänä, projektikerros koskee tiettyä repositoriota. Pidä tämä ero mielessä."
+      },
+      "s2": {
+        "title": "Mitä laittaa globaaleihin asetuksiin",
+        "time": "",
+        "why": "Globaalin kerroksen oikea täyttäminen säästää aikaa kaikissa projekteissa kerralla; väärä täyttäminen sotkee konfiguraation ja luo konflikteja.",
+        "instructions": [
+          "Laita tänne ensisijainen vastauskieli ja yleinen muoto — se mikä on sama kaikissa projekteissasi.",
+          "Laita globaali allow turvallisille Bash-komennoille (ls, git status, npm test) — tämä poistaa rutiininomaiset vahvistukset.",
+          "Laita Statusline-asetus ja suosikkityökalut, jos tarvitset niitä kaikkialla.",
+          "ÄLÄ laita projektikohtaisia asioita: polkuja, palvelunimiä, projektin deploy-komentoja.",
+          "Lisää konfiguraatiokentistä — katso [[node:cc-config|Claude Coden konfiguraatio]]."
+        ],
+        "validate": "Jokaiselle konfiguraatiosi kohdalle osaat vastata: tarvitaanko tämä KAIKISSA projekteissa vai vain yhdessä?",
+        "tip": "Yksinkertainen testi: jos asetus on järkevä jonkun toisen koneella eri projekteilla — se on globaali. Jos ei — se on projektitason."
+      },
+      "s3": {
+        "title": "Globaali CLAUDE.md",
+        "time": "",
+        "why": "settings.json asettaa tekniset oikeudet, kun taas globaali CLAUDE.md asettaa käyttäytymissäännöt — sävyn, tavat, lähestymistavat, joita haluat kaikkiin projekteihin.",
+        "instructions": [
+          "Luo ~/.claude/CLAUDE.md-tiedosto settings.json:n viereen.",
+          "Kirjoita sinne henkilökohtaiset käyttäytymissääntösi: viestintäkieli, yhteenvedon muoto, suosikkilähestymistavat koodiin.",
+          "Pidä se lyhyenä — se on peruskerros, ei paikka projektispesifiselle.",
+          "Muista: CLAUDE.md:n rakenteesta ja tarkoituksesta katso [[node:cc-md|CLAUDE.md]]."
+        ],
+        "validate": "Globaali CLAUDE.md sisältää vain sääntöjä, jotka sopivat mihin tahansa projektiisi, ilman mainintaa tietyistä repositorioista.",
+        "tip": "settings.json = 'mikä on sallittua', CLAUDE.md = 'miten käyttäytyä'. Älä sekoita näitä kahta roolia."
+      },
+      "s4": {
+        "title": "Kerrosten etusija: globaali < projekti < paikallinen",
+        "time": "",
+        "why": "Ilman etusijan ymmärtämistä ihmettelet miksi globaali asetus 'ei toimi' projektissa — todellisuudessa kapeampi kerros ohittaa sen.",
+        "instructions": [
+          "Muista voimajärjestys: globaali (~/.claude/) on heikoin, projekti (.claude/settings.json repositoriossa) on vahvempi, paikallinen (.claude/settings.local.json) on vahvin.",
+          "Kapeampi kerros ohittaa laajemman, kun sama parametri on ristiriidassa.",
+          "Paikallinen kerros (settings.local.json) on henkilökohtaisia muokkauksia yhdelle projektille, yleensä ei committoida.",
+          "Käytä tätä harkiten: pidä yleiset asetukset globaalisti, aseta poikkeukset projekti- tai paikallistasolla."
+        ],
+        "validate": "Osaat ennustaa minkä arvon järjestelmä soveltaa, jos yksi parametri on asetettu sekä globaalisti että projektissa.",
+        "tip": "Ajattele kerroksia suodattimina: jokainen seuraava tarkentaa edellistä, ei pyyhi kaikkea pois."
+      },
+      "s5": {
+        "title": "Milloin globaali häiritsee",
+        "time": "",
+        "why": "Globaali asetus, joka on kätevä useimmissa projekteissa, haittaa joskus tiettyä — pitää osata huomata se ja kiertää rikkomatta yhteistä konfiguraatiota.",
+        "instructions": [
+          "Ongelman merkki: yhdessä projektissa Claude käyttäytyy odottamattomalla tavalla ilman näkyvää syytä — etsi globaalia sääntöä.",
+          "Jos globaali allow on vaarallinen tälle projektille (hitaat/maksulliset testit, herkkä deploy) — lisää tiukempi sääntö projektitasolle.",
+          "Projektin deny ohittaa globaalin allow:n — tämä on vakiotapa tehdä poikkeus.",
+          "Älä muokkaa globaalia konfiguraatiota yhden projektin takia — se rikkoo muut; korjaa projektitasolla."
+        ],
+        "validate": "Teit poikkeuksen yhdelle projektille muuttamatta ~/.claude/-kansiota ja varmistit, että muut projektit eivät kärsineet.",
+        "tip": "Sääntö: muuta globaalia vain jos ongelma toistuu kaikissa projekteissa. Yksittäistapaus hoidetaan projektikerroksella."
+      },
+      "s6": {
+        "title": "Tyypilliset virheet ja tarkistus",
+        "time": "",
+        "why": "Useimmat globaalien asetusten ongelmat ovat rikkinäistä JSON:ia ja sopimatonta sisältöä; nopea tarkistus säästää tunteja sekavaa käytöstä.",
+        "instructions": [
+          "Tarkista että settings.json on kelvollista JSON:ia: ylimääräinen pilkku tai sulkematon lainausmerkki poistaa koko tiedoston käytöstä.",
+          "Varmista että globaalissa kerroksessa ei ole projektikohtaista roskaa eikä vaarallisia allow-merkintöjä.",
+          "Tarkista että globaali CLAUDE.md ei sisällä projektikohtaisten kanssa ristiriitaisia sääntöjä.",
+          "Käynnistä Claude Code -istunto uudelleen ja varmista että asetukset astuivat voimaan odotetusti.",
+          "Jos jokin käyttäytyy oudosti — käy kerrokset läpi ylhäältä alas: paikallinen → projekti → globaali."
+        ],
+        "validate": "settings.json jäsentyy kelvollisena JSON:ina, globaali kerros on puhdas projektispesifeistä, ja Clauden käytös vastaa odotuksiasi.",
+        "tip": "Pidä globaali konfiguraatio minimaalisena: mitä vähemmän sääntöjä siinä on, sitä vähemmän odottamattomia konflikteja projektien kanssa."
+      }
+    }
+  },
+  "cc-cfg-statusline": {
+    "title": "Statusline Claude Codessa",
+    "subtitle": "Oma tilarivi: malli, haara ja konteksti aina näkyvissä",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Statusline on Claude Coden räätälöity terminaalin alarivi, jonka täytät itse settings.json-tiedoston statusLine-asetuksen kautta. Se näyttää session kontekstin: nykyisen mallin, git-haaran, jäljellä olevan kontekstin, projektin polun ja omat merkkisi. Konepellin alla se on shell-komento, joka saa session JSONin stdin-syötteenä ja tulostaa tilarivin stdout-tulosteeseen.",
+    "approach": "Etenemme ymmärryksestä käytäntöön: ensin hahmotamme miksi rivi on tärkeä ja mitä siihen laitetaan, sitten otamme käyttöön sisäänrakennetun statusLinen, kirjoitamme oman skriptin, valitsemme aidosti hyödylliset kentät, seuraamme suorituskykyä ja päätämme virheenkäsittelyyn ja tarkistukseen. Jokainen vaihe tuottaa toimivan tuloksen, joka näkyy suoraan terminaalissa.",
+    "outcomes": [
+      "Ymmärrät mikä statusline on ja minkä session kontekstin se tarjoaa",
+      "Osaat ottaa käyttöön ja määrittää statusLinen settings.json-tiedostossa",
+      "Osaat kirjoittaa oman tilariviskriptin, joka lukee session JSONin",
+      "Tiedät mitkä kentät ovat aidosti hyödyllisiä ja mitkä vain melua",
+      "Pidät rivin nopeana, jotta se ei hidasta jokaista muutosta"
+    ],
+    "applyIn": [
+      {
+        "title": "Useiden projektien rinnakkainen työ",
+        "description": "Haara ja projektin polku tilarivillä estävät commitoinnin väärään paikkaan, kun vaihdat repositorioiden välillä."
+      },
+      {
+        "title": "Kontekstin kulutuksen seuranta",
+        "description": "Jäljellä oleva konteksti näkyvissä vihjaa, milloin on aika tiivistää historiaa tai aloittaa uusi sessio."
+      },
+      {
+        "title": "Mallin valinta tehtävän mukaan",
+        "description": "Näkyvä malli rivillä muistuttaa, millä mallilla olet, ennen kalliin pyynnön lähettämistä."
+      }
+    ],
+    "pitfalls": [
+      "Raskas skripti statuslineissa — se ajetaan usein ja hidastaa jokaista muutosta",
+      "Verkkokutsut tai ulkoiset API-pyynnöt tilariviskriptin sisällä",
+      "Liian monta kenttää: rivi muuttuu lukukelvottomaksi ja terminaali katkaisee sen",
+      "Skripti kaatuu tai kirjoittaa stderriin — tilarivi katoaa hiljaa",
+      "Kovakoodatut polut ja oletus, että git on aina saatavilla hakemistossa"
+    ],
+    "exercises": [
+      {
+        "question": "Miksi statusLine-skriptin pitää olla kevyt ja ilman verkkokutsuja?",
+        "hint": "Muista kuinka usein rivi piirretään uudelleen ja että Claude Code välimuistittaa sen vain ~300ms ajaksi."
+      },
+      {
+        "question": "Mistä statusline-skripti saa tiedon nykyisestä mallista ja sessiosta?",
+        "hint": "Claude Code välittää JSONin skriptin stdin-syötteeseen — malli, polku, versio jne."
+      },
+      {
+        "question": "Mitä riville tapahtuu, jos skripti päättyy virheeseen?",
+        "hint": "Pohdi, näkyykö virhe käyttäjälle ja kannattaako lisätä fallback-tuloste."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä statusline on ja miksi se on tärkeä",
+        "time": "",
+        "why": "Ennen määrittämistä ymmärrä, minkä ongelman rivi ratkaisee: session konteksti (malli, haara, jäljellä oleva konteksti) pysyy näkyvissä ilman komentojen suorittamista.",
+        "instructions": [
+          "Avaa Claude Code ja katso terminaalin alaosaa — oletuksena tilarivi on minimaalinen",
+          "Päätä, minkä kontekstin todella tarvitset käden ulottuvilla: malli, git-haara, polku, jäljellä oleva konteksti",
+          "Huomioi skenaario, jossa se on tärkeintä — esim. vaihtelu useiden projektien välillä",
+          "Muista: statusline ei ole komento vaan pysyvä tilan ilmaisin"
+        ],
+        "validate": "Osaat nimetä 3-4 kenttää, jotka haluat riville, ja selittää miksi kukin on siinä.",
+        "tip": "Ajattele statuslinea kojelautana: laita siihen vain se, mihin todella vilkaiset työskennellessäsi."
+      },
+      "s2": {
+        "title": "Miten statusLine otetaan käyttöön ja määritetään",
+        "time": "",
+        "why": "Rivi määritetään statusLine-avaimella settings.json-tiedostossa — perustapa sitoa mikä tahansa komento tilariviin.",
+        "instructions": [
+          "Avaa settings.json (käyttäjä- tai projektitasolla)",
+          "Lisää statusLine-lohko kentällä type: \"command\" ja command-kentällä — shell-komennolla, joka tulostaa rivin",
+          "Aloita yksinkertaisella komennolla, esim. echo \"hello statusline\"",
+          "Käynnistä tai päivitä Claude Code -sessio ja varmista, että rivi näkyy alhaalla"
+        ],
+        "validate": "Testirivisi näkyy terminaalin alaosassa oletusrivin sijaan.",
+        "tip": "Aloita triviaalilla echolla — se erottaa määritysongelman skriptiongelmasta."
+      },
+      "s3": {
+        "title": "Räätälöity statusline-skripti",
+        "why": "Todellinen hyöty syntyy, kun skriptisi rakentaa rivin: se saa session JSONin stdin-syötteenä ja tulostaa mielekkään tilan.",
+        "time": "",
+        "instructions": [
+          "Luo erillinen skripti (esim. statusline.sh) ja tee siitä suoritettava",
+          "Lue skriptissä stdin — Claude Code välittää sinne session JSONin (malli, polku jne.)",
+          "Jäsennä tarvittavat kentät (esim. jq:llä) ja kokoa tulostusrivi stdoutiin",
+          "Aseta statusLine.command osoittamaan tähän skriptiin",
+          "Varmista, että rivi päivittyy ja näyttää JSONin dataa"
+        ],
+        "validate": "Tilarivi näyttää skriptisi kokoamaa todellista session dataa.",
+        "tip": "Debuggaa skripti erillään: echo '{...}' | ./statusline.sh — näet tulosteen ilman Claude Coden uudelleenkäynnistystä."
+      },
+      "s4": {
+        "title": "Mitä on hyödyllistä näyttää",
+        "time": "",
+        "why": "Rivin arvo on kenttien hyvässä valinnassa. Ylimääräinen sotkee; oikeat säästävät vaihteluita ja estävät virheitä.",
+        "instructions": [
+          "Lisää git-haara (git rev-parse:lla tai välitetystä polusta) — ankkuri väärään paikkaan commitointia vastaan",
+          "Näytä nykyinen malli session JSONista — muistutus ennen kalliita pyyntöjä",
+          "Lisää jäljellä oleva konteksti tai lyhyt projektin polku, jos työskentelet useassa projektissa",
+          "Poista kaikki mitä et katso — rivin pitää lukeutua sekunnin murto-osassa"
+        ],
+        "validate": "Rivillä on vain ne 3-4 kenttää, jotka aidosti vaikuttavat päätöksiisi työskennellessäsi.",
+        "tip": "Erota kentät lyhyellä merkillä ja käytä väriä säästeliäästi — silmän pitää löytää haara ja malli heti."
+      },
+      "s5": {
+        "title": "Suorituskyky: skripti ei saa hidastaa",
+        "time": "",
+        "why": "Rivi piirretään usein uudelleen ja välimuistitetaan vain ~300ms ajaksi — raskas skripti tekee jokaisesta muutoksesta hitaan.",
+        "instructions": [
+          "Poista skriptistä verkkokutsut ja ulkoiset API-pyynnöt",
+          "Minimoi aliprosessien käynnistykset — jokainen git/jq maksaa aikaa",
+          "Mittaa: time (echo '{...}' | ./statusline.sh) — tähtää kymmeniin millisekunteihin",
+          "Välimuistita harvoin muuttuva data, jos sitä todella tarvitset, sen sijaan että haet sen joka kerta"
+        ],
+        "validate": "Skripti suoriutuu kymmenissä millisekunneissa eikä työ Claude Codessa nykäile.",
+        "tip": "Mikä tahansa operaatio statuslineissa ajetaan jokaisella päivityksellä — kohtele sitä kuin koodia kuumassa silmukassa."
+      },
+      "s6": {
+        "title": "Virheet ja tarkistus",
+        "time": "",
+        "why": "Riviskripti kaatuu hiljaa: virheen sattuessa rivi vain katoaa. Tarvitset kestävyyttä ja lopputarkistuksen.",
+        "instructions": [
+          "Suojaa skripti puuttuvalta git/jq:lta ja tyhjältä stdiniltä — älä kaadu vaan tulosta fallback",
+          "Älä kirjoita ylimääräistä stderriin — se voi rikkoa piirtämisen",
+          "Testaa toiminta git-repon ulkopuolella ja hitaalla levyllä",
+          "Aja rivi todellisessa sessiossa useassa projektissa ja varmista datan oikeellisuus",
+          "Tarkista settings.jsonin JSON — syntaksivirhe poistaa statusLinen kokonaan käytöstä"
+        ],
+        "validate": "Rivi näkyy oikein kaikissa testatuissa skenaarioissa, myös git-repon ulkopuolella ja tyhjällä datalla.",
+        "tip": "Lisää skriptiin oletusarvoinen paikkamerkki: vaikka skripti epäonnistuisi, käyttäjä näkee jotain tyhjyyden sijaan."
+      }
+    }
+  },
+  "cc-grp-session": {
+    "title": "Istunnonhallinta Claude Codessa",
+    "subtitle": "Slash-komentojen ryhmä kontekstin hallintaan, tilan palautukseen ja laitteiden vaihtoon",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Istunnot Claude Codessa ovat pysyviä: niitä voi keskeyttää, jatkaa, haarauttaa, viedä ulos ja siirtää toiselle laitteelle. Istunnonhallinnan komentoryhmä antaa täyden hallinnan kontekstiin ja keskusteluhistoriaan — tyhjentämisestä ja tiivistämisestä koodin palauttamiseen ja työn jatkamiseen puhelimesta.",
+    "approach": "Etenemme yleisestä yksityiskohtaiseen: ensin ymmärrämme, mikä ryhmä on ja miksi se on olemassa, sitten käymme komennot läpi merkityslohkoittain (konteksti, keskustelu, laitteet, sulkeminen) — yksi tai kaksi komentoa per vaihe, mukana 'mitä tekee / milloin'. Lopuksi opimme yhdistelemään komentoja ja välttämään yleisiä virheitä. Tarkista komennot aina /help-komennolla — lista vastaa juuri sinun versiotasi.",
+    "outcomes": [
+      "Ymmärrät eron /clearin ja /compactin välillä etkä menetä kontekstia vahingossa",
+      "Palautat aiempia istuntoja /resumella ja peruutat virheet /rewindillä",
+      "Hallitset keskustelua: nimeäminen, haarauttaminen, yhteenveto, vienti",
+      "Siirrät työn terminaalin, Desktopin, claude.ai:n ja puhelimen välillä",
+      "Tarkistat käytettävissä olevat komennot /helpillä arvaamisen sijaan"
+    ],
+    "applyIn": [
+      {
+        "title": "Pitkä koodaussessio",
+        "description": "Monituntinen tehtävä, jonka konteksti kasvaa: tiivistä historia ajoissa /compactilla, ettet törmää rajaan, ja säilytä johtopäätökset."
+      },
+      {
+        "title": "Riskialtis refaktorointi",
+        "description": "Ennen vaarallista muutosta aja /branch, kokeile vapaasti, ja jos epäonnistuu, pääistunto pysyy koskemattomana."
+      },
+      {
+        "title": "Laitteen vaihto",
+        "description": "Aloitit terminaalissa, jatkoit Claude Desktopissa /desktopilla tai claude.ai:ssa /teleportilla — ilman edistymisen menetystä."
+      }
+    ],
+    "pitfalls": [
+      "/clearin käyttö /compactin sijaan: /clear poistaa koko kontekstin, /compact tiivistää sen ja säilyttää johtopäätökset",
+      "/rewindin unohtaminen huonon muutoksen jälkeen ja koodin palauttaminen käsin",
+      "Terminaalin sulkeminen ilman /backgroundia, jolloin pitkä taustatehtävä menetetään",
+      "Komentojen arvaaminen muistista sen sijaan, että tarkistaisi listan /helpillä",
+      "Riskialttiiden kokeilujen haarauttamatta jättäminen /branchilla ja pääkeskustelun pilaaminen"
+    ],
+    "exercises": [
+      {
+        "question": "Konteksti on kasvanut ja olet törmäämässä rajaan, mutta tarvitset keskustelun johtopäätökset. Minkä komennon valitset ja miksi et /cleariä?",
+        "hint": "Vertaa, mitä /compact tekee keskusteluhistorialle ja mitä /clear tekee."
+      },
+      {
+        "question": "Aiot refaktoroida moduulin riskialttiisti mutta pelkäät rikkovasi toimivan istunnon. Mikä komentojen sarja suojaa sinua?",
+        "hint": "Mieti haarauttamista ennen muutosta ja palautusta sen jälkeen — /branch ja /rewind."
+      },
+      {
+        "question": "Et ole varma, onko versiossasi /teleport-komentoa. Miten tarkistat arvaamatta?",
+        "hint": "Yksi sisäänrakennettu komento listaa kaikki käytettävissä olevat komennot."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä tämä komentoryhmä on",
+        "time": "",
+        "why": "Jotta istuntoja voi käyttää harkiten, on ensin ymmärrettävä: istunto Claude Codessa ei ole kertasuoritus vaan pysyvä tila, jota voi hallita. Ryhmän komennot jakautuvat neljään merkityslohkoon.",
+        "instructions": [
+          "Muista idea: istunto on pysyvä — sen voi keskeyttää, jatkaa, haarauttaa, viedä ulos ja siirtää",
+          "Jaa komennot lohkoihin: kontekstin hallinta (/clear, /compact, /resume, /rewind), keskustelun hallinta (/rename, /branch, /recap, /export, /copy), laitteiden vaihto (/background, /desktop, /teleport, /remote-control), sulkeminen (/exit)",
+          "Avaa Claude Code ja kirjoita /help — katso, mitkä sessiokomennot ovat oikeasti käytettävissä versiossasi"
+        ],
+        "validate": "Osaat nimetä neljä komentolohkoa ja löysit ne /help-tulosteesta",
+        "tip": "Komentolista muuttuu versioiden välillä — /help näyttää aina ajantasaisen joukon sinulle."
+      },
+      "s2": {
+        "title": "Kontekstin hallinta: /clear ja /compact",
+        "time": "",
+        "why": "Tämä on tärkein komentopari ja yleisimmän virheen lähde. Molemmat vapauttavat kontekstia, mutta tekevät sen perustavasti eri tavoin.",
+        "instructions": [
+          "/clear — mitä tekee: aloittaa uuden istunnon puhtaalta pöydältä poistaen kontekstin. Milloin: tehtävä on valmis ja aloitat jotain liittymätöntä",
+          "/compact — mitä tekee: tiivistää historian säilyttäen johtopäätökset. Milloin: konteksti on kasvanut mutta keskustelun on jatkuttava",
+          "Muista keskeinen ero: /clear poistaa kontekstin, /compact tiivistää sen",
+          "Kokeile molempia komentoja testikeskustelussa ja vertaa tulosta"
+        ],
+        "validate": "Osaat selittää, milloin /clear ja milloin /compact, ja miksi niitä ei saa sekoittaa",
+        "tip": "Jos epäröit, /compact on lähes aina oikea: se on turvallisempi, koska se ei menetä johtopäätöksiä."
+      },
+      "s3": {
+        "title": "Palautus: /resume ja /rewind",
+        "time": "",
+        "why": "Nämä komennot pelastavat menetetyltä työltä ja virheiden seurauksilta — kaksi eri palautusskenaariota.",
+        "instructions": [
+          "/resume — mitä tekee: jatkaa edellistä istuntoa. Milloin: palaat tehtävään seuraavana päivänä tai terminaalin uudelleenkäynnistyksen jälkeen",
+          "/rewind — mitä tekee: palauttaa koodin ja chatin aiempaan tilaan. Milloin: tehty muutos osoittautui virheelliseksi ja on palattava taaksepäin",
+          "Erota toisistaan: /resume on jatkamista siitä mihin jäit; /rewind on palauttamista ajassa taaksepäin",
+          "Testaa molemmat skenaariot: sulje ja jatka istuntoa /resumella; tee muokkaus ja palauta se /rewindillä"
+        ],
+        "validate": "Ymmärrät eron istunnon jatkamisen (/resume) ja tilan palautuksen (/rewind) välillä",
+        "tip": "/rewind palauttaa sekä koodin että chatin — oikea aikakone, ei pelkkä viimeisen viestin peruutus."
+      },
+      "s4": {
+        "title": "Keskustelun hallinta: /branch, /rename, /recap, /export, /copy",
+        "time": "",
+        "why": "Nämä komennot kohtelevat keskustelua itsenään objektina: sen voi nimetä, haarauttaa, tiivistää, tallentaa ja kopioida vastauksen.",
+        "instructions": [
+          "/branch — mitä tekee: haaroittaa keskustelun nykyhetkestä. Milloin: haluat kokeilla koskematta päälinjaan",
+          "/rename — nimeä keskustelu; /recap — lyhyt yhteenveto sessiosta. Milloin: järjestelet ja muistat nopeasti, mistä oli puhe",
+          "/export — tallenna keskustelu tiedostoon; /copy — kopioi viimeisin vastaus. Milloin: tarvitset tuloksen ulos",
+          "Kokeile /recap pitkän session keskellä nähdäksesi lyhyen yhteenvedon"
+        ],
+        "validate": "Teit haaran /branchilla ja sait yhteenvedon /recapilla",
+        "tip": "/branch on riskialttiiden kokeilujen paras ystävä: pääkeskustelu pysyy koskemattomana."
+      },
+      "s5": {
+        "title": "Laitteiden vaihto ja sulkeminen",
+        "time": "",
+        "why": "Työ ei ole sidottu yhteen terminaaliin: sen voi siirtää taustalle, Desktopiin, verkkoon tai hallita puhelimesta — ja sitten sulkea siististi.",
+        "instructions": [
+          "/background — jatka työtä terminaalin sulkemisen jälkeen; /exit — sulje CLI. Milloin: lähdet mutta tehtävän on jatkuttava / lopetat työn",
+          "/desktop — siirrä Claude Desktopiin; /teleport — jatka claude.ai:sta. Milloin: vaihdat laitetta mutta haluat saman kontekstin",
+          "/remote-control — hallinta puhelimesta. Milloin: haluat seurata tehtävää poissa tietokoneelta",
+          "Kokeile /background ennen terminaalin sulkemista pitkässä tehtävässä"
+        ],
+        "validate": "Osaat yhdistää jokaisen vaihtokomennon kohdelaitteeseensa",
+        "tip": "Ennen terminaalin sulkemista pitkässä tehtävässä aja ensin /background, tai työ keskeytyy."
+      },
+      "s6": {
+        "title": "Yhdistely, virheet ja tarkistus /helpillä",
+        "time": "",
+        "why": "Komentojen voima paljastuu ketjuissa. Viimeinen vaihe lukitsee toimivat yhdistelmät ja suojaa yleisiltä virheiltä.",
+        "instructions": [
+          "Kokeiluketju: /branch → kokeile → jos menee pieleen, pääistunto on ehjä (tai /rewind palautukseen)",
+          "Pitkän session ketju: /compact kontekstin kasvaessa → /background ennen lähtöä → /resume seuraavana päivänä",
+          "Laitteenvaihtoketju: /export tai /desktop → jatka muualla",
+          "Päävirhe — /clear /compactin sijaan: muista, että /clear poistaa, /compact tiivistää",
+          "Tarkista aina /helpillä äläkä arvaa komentoja — joukko riippuu versiosta"
+        ],
+        "validate": "Kokosit ainakin yhden mielekkään komentoketjun ja tiedät, miten tarkistaa saatavuus /helpillä",
+        "tip": "Älä keksi komentoja analogialla — jos sitä ei ole /helpissä, sitä ei ole versiossasi."
+      }
+    }
+  },
+  "cc-grp-context": {
+    "title": "Konteksti ja koodi Claude Codessa",
+    "subtitle": "Slash-komentoryhmä, joka hallitsee mitä Claude näkee ja mihin sen huomio kohdistuu",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "\"Konteksti ja koodi\" on Claude Coden sisäänrakennettu slash-komentoryhmä: /add-dir, /context, /memory, /diff, /focus, /goal ja /init. Ne kaikki käsittelevät yhtä resurssia — konteksti-ikkunaa — ja auttavat hallitsemaan tarkasti, mitkä tiedostot ja kansiot Claude pitää näkyvissä, miten kontekstia kuluu ja mihin työ on keskittynyt.",
+    "approach": "Etenemme yleisestä yksityiskohtaiseen: ensin ymmärrämme, miksi ryhmä jakaa yhden resurssin — konteksti-ikkunan — sitten käymme komennot läpi pareittain (mitä tekee / milloin käyttää), ja lopuksi opimme yhdistämään ne todellisessa sessiossa ja tarkistamaan tuloksen. Komennot otetaan suoraan solmusta, mitään ei keksitä; täydellinen lista löytyy aina /help-komennosta.",
+    "outcomes": [
+      "Ymmärrät, että jokainen ryhmän komento hallitsee yhtä resurssia — konteksti-ikkunaa",
+      "Tiedät mitä kukin komento tekee: /add-dir, /context, /memory, /diff, /focus, /goal, /init",
+      "Osaat lisätä kontekstiin vain tarvittavat kansiot koko repositorion sijaan",
+      "Seuraat kontekstin käyttöä /context-komennolla ja keskität session /focus- ja /goal-komennoilla",
+      "Tarkastat sitoutumattomat muutokset /diff-komennolla ja löydät komentolistan /help-komennolla"
+    ],
+    "applyIn": [
+      {
+        "title": "Suuri koodipohja",
+        "description": "Lisää /add-dir-komennolla vain tarvittavat kansiot (esim. src/components) koko repositorion sijaan, jotta kontekstia ei tuhlata."
+      },
+      {
+        "title": "Pitkä sessio",
+        "description": "Tarkista /context säännöllisesti nähdäksesi kuinka paljon kontekstia on käytössä, ja /focus poistaaksesi ylimääräisen kohinan tulosteesta."
+      },
+      {
+        "title": "Uuden projektin aloitus",
+        "description": "Aja /init luodaksesi CLAUDE.md-tiedoston, ja muokkaa muistia /memory-komennolla projektin kasvaessa."
+      }
+    ],
+    "pitfalls": [
+      "Koko repositorion lisääminen /add-dir-komennolla kun yksi kansio riittää — tuhlaa kontekstia ja hidastaa Claudea",
+      "Kontekstin (/context) seuraamatta jättäminen pitkässä sessiossa ja konteksti-ikkunan rajan saavuttaminen yllättäen",
+      "Komentojen arvaaminen muistista ajantasaisen listan tarkistamisen (/help) sijaan",
+      "Olemattomien lippujen tai komentojen keksiminen — ryhmässä on tasan solmun seitsemän komentoa",
+      "/diff-komennon sivuuttaminen ja hallinnan menettäminen siitä, mitkä sitoutumattomat muutokset on jo tehty"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on suuri monorepo, mutta työskentelet vain kansiossa src/api. Mikä komento lisää juuri sen kontekstiin, ja miksi koko repoa ei kannata lisätä?",
+        "hint": "Solmun komento alkaa /add — se lisää hakemiston. Muista, että konteksti-ikkuna on rajallinen."
+      },
+      {
+        "question": "Sessio on kestänyt kauan ja vastaukset hidastuivat. Mikä komento näyttää kuinka paljon kontekstia on käytössä, ja mikä poistaa ylimääräisen työkalutulosteen?",
+        "hint": "Yksi komento visualisoi kontekstin käytön ruudukkona, toinen näyttää vain kehotteen, työkaluyhteenvedon ja lopullisen vastauksen."
+      },
+      {
+        "question": "Et muista tämän ryhmän tarkkaa komentolistaa. Mistä katsot ajantasaisen joukon keksimättä komentoja?",
+        "hint": "Claude Coden sisäänrakennettu ohjekomento."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi \"Konteksti ja koodi\" -ryhmä on olemassa",
+        "time": "",
+        "why": "Konteksti-ikkuna on rajallinen. Ennen yksittäisiin komentoihin syventymistä ymmärrä yhteinen idea: koko ryhmä on olemassa hallitakseen mitä Claude näkee ja mihin sen huomio kohdistuu.",
+        "instructions": [
+          "Opettele ryhmän jäsenet: /add-dir, /context, /memory, /diff, /focus, /goal, /init — solmun seitsemän komentoa.",
+          "Ymmärrä yhteinen periaate: ne kaikki hallitsevat yhtä resurssia — konteksti-ikkunaa.",
+          "Tiedosta vaikutus: mitä tarkempi konteksti, sitä paremmat vastaukset, vähemmän hallusinaatioita ja nopeampi toiminta.",
+          "Avaa /help nähdäksesi täydellisen ajantasaisen slash-komentojen listan versiossasi."
+        ],
+        "validate": "Osaat nimetä kaikki seitsemän komentoa ja selittää yhdellä lauseella mitä yhteistä resurssia ne hallitsevat.",
+        "tip": "Älä opettele lippuja ulkoa — pidä mielessä idea \"Clauden huomion hallinta\" ja katso yksityiskohdat /help-komennolla."
+      },
+      "s2": {
+        "title": "/add-dir ja /context — mitä kontekstissa on ja kuinka paljon",
+        "time": "",
+        "why": "Peruspari: yksi komento lisää tarvittavat kansiot kontekstiin, toinen näyttää kuinka paljon kontekstia on jo käytössä. Tietoinen hallinta alkaa tästä.",
+        "instructions": [
+          "/add-dir — lisää hakemiston Clauden työkontekstiin. Käytä kun Clauden pitää nähdä tietty kansio kokonaan.",
+          "Esimerkki: /add-dir src/components → Claude lukee kaikki komponentit automaattisesti viittaamatta jokaiseen tiedostoon.",
+          "/context — visualisoi nykyisen kontekstin käytön ruudukkona. Käytä pitkissä sessioissa nähdäksesi liikkumavaran.",
+          "Lisää vain tarvittavat kansiot, ei koko repoa — tämä säästää kontekstia."
+        ],
+        "validate": "Lisäsit yhden kohdekansion /add-dir-komennolla ja katsoit /context-komennolla miten kontekstin täyttö muuttui.",
+        "tip": "Jos /context näyttää korkean täytön session alussa, lisäsit todennäköisesti turhia hakemistoja /add-dir-komennolla."
+      },
+      "s3": {
+        "title": "/memory ja /init — projektin muisti",
+        "time": "",
+        "why": "CLAUDE.md on projektin pysyvä muisti, jonka Claude lukee automaattisesti. Tämä pari luo ja muokkaa sitä.",
+        "instructions": [
+          "/init — luo CLAUDE.md-tiedoston nykyiselle projektille. Käytä aloittaessasi uuden repon kanssa.",
+          "/memory — avaa muistitiedostot (CLAUDE.md) muokattavaksi. Käytä laajentaaksesi tai korjataksesi projektin sääntöjä.",
+          "Aja ensin /init perustiedostoa varten, sitten /memory projektin kerätessä käytäntöjä.",
+          "Tarkista /help-komennosta miten molemmat komennot kutsutaan versiossasi."
+        ],
+        "validate": "Projektissa on /init-komennolla luotu CLAUDE.md, ja olet avannut sen muokattavaksi /memory-komennolla.",
+        "tip": "Muisti on \"pitkä\" konteksti: mitä CLAUDE.md:ssä on, otetaan huomioon joka sessiossa ilman /add-dir-komennon toistoa."
+      },
+      "s4": {
+        "title": "/diff ja /focus — seuraa koodia ja poista kohina",
+        "time": "",
+        "why": "Aktiivisen työn aikana sinun pitää nähdä mikä koodissa muuttuu hukkumatta ylimääräiseen tulosteeseen. Tämä pari hoitaa muutosten katselun ja puhtaan keskittymisen.",
+        "instructions": [
+          "/diff — näyttää sitoutumattomat muutokset ja vuorokohtaiset diffit. Käytä hallitaksesi mitä on jo tehty.",
+          "/focus — näyttää vain kehotteen, työkaluyhteenvedon ja lopullisen vastauksen. Käytä kun tuloste muuttuu kohinaiseksi.",
+          "Käytä /diff ennen sitoutusta varmistaaksesi, että muutokset ovat juuri haluamasi.",
+          "Ota /focus käyttöön pitkissä sessioissa, joissa yksityiskohtaiset työkalulokit häiritsevät."
+        ],
+        "validate": "Tarkastelit nykyisiä muutoksia /diff-komennolla ja vaihdoit tulosteen kompaktiin tilaan /focus-komennolla.",
+        "tip": "/diff ei korvaa gitiä — se on nopea session aikainen näkymä; tee lopullinen tarkistus silti omilla työkaluillasi."
+      },
+      "s5": {
+        "title": "/goal — aseta tavoite ja työskentele tulokseen",
+        "time": "",
+        "why": "Joskus sinun pitää ohjata koko sessio yhteen tehtävään, ei vain nähdä kontekstia. /goal keskittää työn ehdon täyttämiseen.",
+        "instructions": [
+          "/goal — asettaa tavoitteen ja jatkaa kunnes se täyttyy. Käytä tehtäviin, joilla on selkeä valmistumisehto.",
+          "Muotoile tavoite todennettavasti: on selvää mistä merkistä se on saavutettu.",
+          "Yhdistä /context-komentoon nähdäksesi riittääkö konteksti tavoitteeseen pääsyyn.",
+          "Tarkista /help-komennosta /goal-komennon tarkka syntaksi versiossasi."
+        ],
+        "validate": "Asetit todennettavan tavoitteen /goal-komennolla ja ymmärrät mistä merkistä Claude tietää sen olevan saavutettu.",
+        "tip": "Epämääräinen tavoite (\"tee paremmaksi\") estää /goal-komentoa tietämästä milloin lopettaa — muotoile mitattavasti."
+      },
+      "s6": {
+        "title": "Komentojen ketjutus, virheet ja tarkistus",
+        "time": "",
+        "why": "Komennot loistavat yhdistelmänä. Viimeinen vaihe: kokoa toimiva skenaario ja lukitse miten välttää yleiset virheet ja tarkistaa itsesi.",
+        "instructions": [
+          "Rakenna ketju: /init → /add-dir tarvittavat kansiot → /context seurantaan → /goal tehtävään → /diff ennen sitoutusta.",
+          "Vältä päävirhe: älä lisää koko repoa /add-dir-komennolla kun tarvitaan yksi kansio.",
+          "Tarkista pitkässä sessiossa /context säännöllisesti, jotta et osu rajaan yllättäen.",
+          "Älä keksi komentoja tai lippuja — seitsemän komennon lista on kiinteä; katso ajantasainen joukko /help-komennosta.",
+          "Tarkista tulos: /diff-komennon jälkeen varmista että juuri halutut muutokset ovat paikoillaan."
+        ],
+        "validate": "Ajoit täyden skenaarion /init-komennosta /diff-komentoon todellisessa tehtävässä etkä kertaakaan arvannut komentoja — vain solmusta tai /help-komennosta.",
+        "tip": "Hyvä tapa: aloita sessio /context-komennolla nähdäksesi heti kuinka paljon kontekstin liikkumavaraa sinulla on."
+      }
+    }
+  },
+  "cc-grp-model": {
+    "title": "Malli ja rajat Claude Codessa",
+    "subtitle": "Slash-komentojen ryhmä mallin valintaan, vaivannäön hallintaan ja kulutuksen seurantaan",
+    "totalTime": "6 steps",
+    "whatItIs": "Joukko Claude Coden slash-komentoja, jotka hallitsevat mikä malli istunnossa toimii, kuinka kovaa se ajattelee ja kuinka paljon kulutat: /model, /fast, /effort, /advisor, /upgrade, /usage, /status, /extra-usage.",
+    "approach": "Etenemme yleisestä yksityiskohtiin: ensin miksi ryhmä on olemassa, sitten mallin ja tilan vaihtokomennot, sitten kulutuksen ja tilan komennot, ja lopuksi yhdistämme kaiken 'oikea malli tehtävään' -strategiaksi, jonka tarkistat /usagella.",
+    "outcomes": [
+      "Tiedät, mitä ryhmän komentoa käyttää kussakin tilanteessa",
+      "Osaat vaihtaa mallin ja vaivannäön tason kesken istunnon menettämättä kontekstia",
+      "Seuraat tokenikulutusta /usagella ja vältät yllätyslaskut",
+      "Diagnosoit yhteys- ja tiliongelmat /statuksella",
+      "Rakennat oman strategian mallin valintaan tehtävätyypin mukaan"
+    ],
+    "applyIn": [
+      {
+        "title": "Sekoitettu kehitysistunto",
+        "description": "Nopeat muokkaukset /fastilla, monimutkainen algoritmi vahvemmalla mallilla /modelin kautta, sitten takaisin — ilman istunnon uudelleenkäynnistystä."
+      },
+      {
+        "title": "Budjetin hallinta",
+        "description": "Säännölliset /usage-tarkistukset kuukauden aikana, jotta kulutus pysyy ennustettavana eivätkä rajat tule yllätyksenä."
+      },
+      {
+        "title": "Vianmääritys",
+        "description": "Kun Claude Code käyttäytyy oudosti, /status näyttää version, mallin, tilin ja API-yhteyden."
+      }
+    ],
+    "pitfalls": [
+      "Ei koskaan tarkisteta /usagea — ja saadaan yllätyslasku kuun lopussa",
+      "Pidetään vahva malli päällä koko istunnon ajan, myös triviaaleissa muokkauksissa — turhaa kulutusta",
+      "Unohdetaan /fast rutiinityössä kuten testien kirjoittamisessa tai koodin siivoamisessa",
+      "Sivuutetaan /status vikatilanteissa ja syytetään mallia yhteysongelman sijaan",
+      "Ajetaan /upgrade sokeasti tarkistamatta ensin todellista kulutusta /usagella"
+    ],
+    "exercises": [
+      {
+        "question": "Kirjoitat toistuvia testejä, siirryt sitten sotkuiseen algoritmiin ja siivoat lopuksi koodia. Mitä komentoja käytät ja missä järjestyksessä?",
+        "hint": "Muista solmun esimerkki: rutiini — pikamodi, vaikea työ — mallin vaihto, sitten takaisin."
+      },
+      {
+        "question": "Viikon lopussa haluat tietää, lähestytkö tilauksesi rajoja. Minkä komennon ajat?",
+        "hint": "Komento näyttää tokenikulutuksen ja tilauksen käytön."
+      },
+      {
+        "question": "Claude Code lakkasi vastaamasta. Ennen mallin vaihtoa, mitä tarkistat?",
+        "hint": "On komento, joka näyttää version, tilin ja API-yhteyden."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä tämä komentoryhmä on",
+        "time": "",
+        "why": "Ennen komentojen painamista ymmärrä idea: eri tehtävät tarvitsevat eri malleja, ja vaihto kesken istunnon säästää kustannuksia menettämättä kontekstia. Malli ja rajat -ryhmä antaa vivut mallin valintaan, vaivannäön tasoon ja kulutuksen hallintaan.",
+        "instructions": [
+          "Avaa Claude Code ja kirjoita /help — katso saatavilla olevien slash-komentojen lista",
+          "Etsi listasta ryhmän komennot: /model, /fast, /effort, /advisor, /upgrade, /usage, /status, /extra-usage",
+          "Ryhmittele ne mielessäsi: malli ja tila (/model, /fast, /effort, /advisor), tilaus ja rajat (/upgrade, /extra-usage), hallinta (/usage, /status)"
+        ],
+        "validate": "Osaat nimetä, mikä komento vaihtaa mallin, mikä seuraa kulutusta ja mikä näyttää yhteyden tilan.",
+        "tip": "/help on pääsisäänkäynti — se näyttää aina juuri sinun versiosi ajantasaisen komentojoukon."
+      },
+      "s2": {
+        "title": "Mallin vaihto: /model ja /fast",
+        "time": "",
+        "why": "Nämä ovat kaksi keskeistä valintakomentoa. /model vaihtaa istunnon mallin raskaampaan työhön; /fast kytkee pikamodin (Haiku) rutiinityöhön. Istunnon konteksti säilyy molemmissa tapauksissa.",
+        "instructions": [
+          "Kirjoita /fast kytkeäksesi pikamodin — se käyttää Haikua ja sopii yksinkertaisiin muokkauksiin",
+          "Kirjoita /model vaihtaaksesi istunnon mallin vahvempaan arkkitehtuuri- tai monimutkaiseen työhön",
+          "Tee yksinkertainen muutos /fastilla, vaihda sitten /modelin kautta ja huomaa, ettei konteksti katoa"
+        ],
+        "validate": "Vaihdoit pikamodin ja vahvemman mallin välillä yhdessä istunnossa menettämättä keskusteluhistoriaa.",
+        "tip": "/fast nopeisiin muokkauksiin, /model arkkitehtuurityöhön — solmun perussääntö."
+      },
+      "s3": {
+        "title": "Hienosäätö: /effort ja /advisor",
+        "time": "",
+        "why": "Joskus mallia ei tarvitse vaihtaa — riittää säätää kuinka kovaa se ajattelee (/effort) tai pyytää vahvempaa mallia avainhetkellä (/advisor). Tämä tasapainottaa laatua ja kulutusta.",
+        "instructions": [
+          "Kirjoita /effort ja aseta mallin vaivannäön taso nykyiseen tehtävään",
+          "Käytä /advisoria kun haluat konsultoida vahvempaa mallia tärkeällä hetkellä vaihtamatta koko istuntoa",
+          "Vertaa: yhteen vaikeaan päätökseen — /advisor kerran; jatkuvaan raskaaseen työhön — /model"
+        ],
+        "validate": "Ymmärrät eron kertakonsultoinnin (/advisor), vaivannäön säädön (/effort) ja täyden mallin vaihdon (/model) välillä.",
+        "tip": "/advisor on halvempi kuin pitää koko istunto vahvalla mallilla parin vaikean kohdan vuoksi."
+      },
+      "s4": {
+        "title": "Rajat ja tilaus: /upgrade ja /extra-usage",
+        "time": "",
+        "why": "Kun rajat tulevat vastaan, on kaksi reittiä: /upgrade — siirry Max-tilaukselle korkeampien rajojen vuoksi, ja /extra-usage — määritä lisäkäyttö rajojen saavuttaessa. Tämä koskee kattoa, ei yksittäistä istuntoa.",
+        "instructions": [
+          "Kirjoita /upgrade nähdäksesi siirtymisen Max-tilaukselle korkeampien rajojen vuoksi",
+          "Kirjoita /extra-usage määrittääksesi lisäkäytön rajojen saavuttaessa",
+          "Päätä itsellesi: tarvitsetko pysyvästi korkeamman rajan (upgrade) vai kertaluonteisen puskurin (extra-usage)"
+        ],
+        "validate": "Tiedät, mikä komento nostaa tilausta pysyvästi ja mikä lisää käyttöä kertaluonteisesti.",
+        "tip": "Älä päivitä sokeasti — tarkista ensin todellinen kulutus /usagella (seuraava vaihe)."
+      },
+      "s5": {
+        "title": "Kulutuksen hallinta: /usage ja /status",
+        "time": "",
+        "why": "Pääpuolustus yllätyslaskua vastaan. /usage näyttää tokenikulutuksen, tilauksen käytön ja tilastot. /status näyttää Claude Code -version, mallin, tilin ja API-yhteyden — hyödyllinen sekä rahalle että vianmääritykselle.",
+        "instructions": [
+          "Kirjoita /usage ja tarkastele istunnon tokenikulutusta ja tilauksen käyttöä",
+          "Kirjoita /status nähdäksesi nykyisen mallin, tilin ja API-yhteyden tilan",
+          "Tee /usagesta tapa — esimerkiksi jokaisen työpäivän lopussa"
+        ],
+        "validate": "Osaat tarkistaa milloin tahansa, kuinka paljon olet kuluttanut ja mitä mallia ajat.",
+        "tip": "/usage kulutuksen seurantaan, /status yhteysongelmien diagnosointiin — solmun suora sääntö."
+      },
+      "s6": {
+        "title": "Strategia, virheet ja tarkistus",
+        "time": "",
+        "why": "Nyt yhdistämme komennot työnkuluksi: oikea malli tehtävään plus säännöllinen hallinta. Pääsyvirhe on olla koskaan tarkistamatta /usagea ja saada yllätyslasku kuun lopussa.",
+        "instructions": [
+          "Rakenna reitti tyypilliselle istunnolle: /fast rutiiniin → /model monimutkaiseen → takaisin /fastiin",
+          "Lisää /advisor kertaluonteisiin vaikeisiin päätöksiin ja /effort vaivannäön hienosäätöön",
+          "Lukitse tapa: ajoittain /usage, vikatilanteissa /status, ja vasta sitten /upgrade tai /extra-usage jos rajat tulevat vastaan",
+          "Testaa itseäsi solmun esimerkillä: /fast testien kirjoittamiseen → /model Opus monimutkaiseen algoritmiin → takaisin /fastiin siivoukseen"
+        ],
+        "validate": "Osaat koota komentosarjan sekoitettuun istuntoon ilman apua ja nimetä, miten hallitset kulutusta.",
+        "tip": "Yleisin virhe on olla katsomatta /usagea. Tee kulutuksen tarkistuksesta tapa, ei reaktio laskuun."
+      }
+    }
+  },
+  "cc-grp-ui": {
+    "title": "Claude Coden käyttöliittymä ja ulkoasu",
+    "subtitle": "Slash-komentoryhmä teemaan, väriin, renderöintiin ja istunnon mukavuuteen",
+    "totalTime": "6 шагов",
+    "whatItIs": "Joukko Claude Coden slash-komentoja, jotka ohjaavat terminaali-istunnon ulkoasua ja ergonomiaa: /color, /theme, /tui, /terminal-setup, /voice, /focus, /radio, /stickers. Ne eivät muuta agentin logiikkaa — vain sitä, miltä istunto näyttää ja tuntuu.",
+    "approach": "Etene yleisestä yksityiskohtiin: ymmärrä ensin, miksi ryhmä on olemassa, käsittele sitten 1-2 komentoa per askel — teema ja väri, renderer ja terminaalin asetus, tulostustilat ja mukavuudet. Lopuksi kokoa oma ulkoasu, yleiset virheet ja varmistus /help-komennolla.",
+    "outcomes": [
+      "Ymmärrät, mitkä komennot kuuluvat Käyttöliittymä ja ulkoasu -ryhmään ja mitä kukin tekee",
+      "Osaat vaihtaa teeman ja kehoterivin värin terminaaliisi sopivaksi",
+      "Tiedät, mitä /tui tekee ja miksi /terminal-setup ajetaan kerran asennuksen jälkeen",
+      "Osaat vähentää tulostuksen melua /focus-komennolla ja käyttää /voice, /radio, /stickers",
+      "Varmistat komentojen saatavuuden ja tarkat nimet /help-komennolla"
+    ],
+    "applyIn": [
+      {
+        "title": "Pitkät koodaussessiot",
+        "description": "Tumma teema, rauhallinen kehoterivin väri ja /focus vähentävät silmien rasitusta ja kognitiivista kuormaa tuntien työssä."
+      },
+      {
+        "title": "Monta terminaalia yhtä aikaa",
+        "description": "Oma /color ja /theme tekevät Claude-ikkunasta visuaalisesti erottuvan muista välilehdistä ja terminaaleista — vähemmän sekaannusta."
+      },
+      {
+        "title": "Ensimmäinen asetus asennuksen jälkeen",
+        "description": "/terminal-setup kerran ottaa käyttöön Option+Enterin moniriviisille kehotteille ja visuaalisen kellon — mukavan työn perusta macOS:llä."
+      }
+    ],
+    "pitfalls": [
+      "/terminal-setupin ohittaminen asennuksen jälkeen — macOS:llä Option+Enter ei tee rivinvaihtoa moniriviisissä kehotteissa",
+      "/tui (UI-renderer: oletus tai koko näyttö) sekoittaminen /theme-komentoon (väriteema)",
+      "Luulla, että /color vaihtaa teeman pysyvästi — se asettaa kehoterivin värin tälle istunnolle",
+      "Komentojen nimien keksiminen muistista /help-tarkistuksen sijaan — lista ja tarkat nimet voivat vaihdella version mukaan",
+      "Meluisan tulostuksen jättäminen /focus-komennon sijaan, kun tarvitset vain kehotteen, yhteenvedon ja vastauksen"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on kolme terminaalia auki ja sekoitat jatkuvasti, missä Claude on. Mitkä kaksi ryhmän komentoa auttavat erottamaan ikkunan?",
+        "hint": "Toinen vaihtaa yleisen teeman, toinen kehoterivin värin istunnolle."
+      },
+      {
+        "question": "macOS:llä Option+Enter ei tee rivinvaihtoa pitkässä kehotteessa. Mitä unohdit tehdä asennuksen jälkeen?",
+        "hint": "On erillinen kertaluonteinen terminaalin asetuskomento."
+      },
+      {
+        "question": "Miten varmistat, että komento on juuri sen niminen kuin muistat ja saatavilla versiossasi?",
+        "hint": "Sisäänrakennettu help-komento listaa kaikki saatavilla olevat slash-komennot."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä tämä komentoryhmä on",
+        "time": "",
+        "why": "Ennen ulkoasun säätöä ymmärrä ryhmän rajat: nämä komennot vaikuttavat vain istunnon ulkoasuun ja ergonomiaan, eivät agentin toimintaan.",
+        "instructions": [
+          "Muista ryhmä: /color, /theme, /tui, /terminal-setup, /voice, /focus, /radio, /stickers",
+          "Ymmärrä periaate: mukava käyttöliittymä vähentää väsymystä pitkissä koodaussessioissa",
+          "Huomaa, että osa on kertaluonteista asetusta (/terminal-setup) ja osa tilan vaihtoja (/focus, /voice)",
+          "Avaa /help ja etsi nämä komennot koko listasta"
+        ],
+        "validate": "Osaat nimetä vähintään 5 ryhmän komentoa ja sanoa, että ne muuttavat ulkoasua, eivät työn logiikkaa.",
+        "tip": "Älä ota kaikkea käyttöön kerralla — aloita teemasta ja väristä, lisää muut tarpeen mukaan."
+      },
+      "s2": {
+        "title": "Teema ja väri: /theme ja /color",
+        "time": "",
+        "why": "Teema ja väri ovat yleisin visuaalinen asetus: ne parantavat luettavuutta ja auttavat erottamaan Claude-ikkunan muista terminaaleista.",
+        "instructions": [
+          "Aja /theme ja valitse yleinen teema (esimerkiksi tumma)",
+          "Aja /color asettaaksesi kehoterivin värin tälle istunnolle",
+          "Muista ero: /theme on yleinen teema, /color on tämän istunnon kehoterivin väri",
+          "Tarkista luettavuus: teksti ei saa sulautua terminaalin taustaan"
+        ],
+        "validate": "Teema vaihtui, kehoterivi on valittu väri ja ikkuna erottuu naapureista.",
+        "tip": "Yhdistelmä /theme dark ja oma /color tekee Claude-terminaalista heti tunnistettavan muiden välilehtien joukossa."
+      },
+      "s3": {
+        "title": "Renderer ja terminaalin asetus: /tui ja /terminal-setup",
+        "time": "",
+        "why": "/tui määrää, miten käyttöliittymä piirretään, ja /terminal-setup on kertaluonteinen asetus, jota ilman Option+Enter ei toimi macOS:llä.",
+        "instructions": [
+          "Aja /tui ja valitse terminaalin UI-renderer: oletus tai koko näyttö",
+          "Heti asennuksen jälkeen aja /terminal-setup kerran",
+          "Varmista, että /terminal-setupin jälkeen Option+Enter rivinvaihdolle ja visuaalinen kello ovat käytössä",
+          "Testaa monirivinen kehote: Option+Enterin pitäisi lisätä uusi rivi, ei lähettää viestiä"
+        ],
+        "validate": "Renderer on valittu ja Option+Enter tekee rivinvaihdon moniriviisessä kehotteessa macOS:llä.",
+        "tip": "/terminal-setup riittää ajaa kerran per kone — älä sekoita sitä teeman vaihtoon."
+      },
+      "s4": {
+        "title": "Tulostustilat: /focus ja /voice",
+        "time": "",
+        "why": "Kun tulostus on liian meluisaa, /focus jättää vain olennaisen; /voice lisää äänivuorovaikutustilan.",
+        "instructions": [
+          "Aja /focus saadaksesi minimaalisen tulostuksen: vain kehote, yhteenveto ja vastaus",
+          "Vertaa: /focus-tilassa näyttö on siistimpi ja työtä on helpompi seurata",
+          "Aja /voice vaihtaaksesi äänitilan",
+          "Sammuta tilat, kun tarvitset täyden yksityiskohtaisen tulostuksen"
+        ],
+        "validate": "/focus-tilassa näytölle jää vain kehote, yhteenveto ja vastaus; /voice vaihtaa äänitilan.",
+        "tip": "Käytä /focus-tilaa pitkissä sessioissa, kun yksityiskohtaiset lokit haittaavat tuloksen näkemistä."
+      },
+      "s5": {
+        "title": "Mukavuudet: /radio ja /stickers",
+        "time": "",
+        "why": "Nämä komennot eivät liity työhön vaan tunnelmaan: taustamusiikki keskittymiseen ja fyysiset tarrat.",
+        "instructions": [
+          "Aja /radio soittaaksesi Claude FM lo-fi taustamusiikkia",
+          "Käytä /radio-komentoa, kun haluat tasaisen taustan keskittymiseen pitkässä sessiossa",
+          "Aja /stickers tilataksesi fyysisiä Claude Code -tarroja",
+          "Sammuta /radio, jos musiikki häiritsee tai tarvitset täyden keskittymisen järjestelmän ääniin"
+        ],
+        "validate": "Ymmärrät, että /radio soittaa taustamusiikkia ja /stickers tilaa tarroja; kumpikaan ei vaikuta koodiin.",
+        "tip": "Yksityiskohdat itse työkalusta löytyvät [[node:claude-code|Claude Code]] -solmusta."
+      },
+      "s6": {
+        "title": "Kokoa oma ulkoasu, virheet ja varmistus",
+        "time": "",
+        "why": "Viimeinen askel lukitsee oman ulkoasukonfiguraation, välttää yleiset virheet ja opettaa varmistamaan komennot /help-komennolla.",
+        "instructions": [
+          "Kokoa oma yhdistelmäsi: /theme + /color + /focus melun aikana + /tui maun mukaan",
+          "Varmista, että /terminal-setup on ajettu — muuten Option+Enter ei toimi macOS:llä",
+          "Älä sekoita /tui (renderer) /theme-komentoon (väriteema) ja /color-komentoon (istunnon kehoterivin väri)",
+          "Ennen komennon käyttöä varmista sen nimi ja saatavuus /help-komennolla",
+          "Aja /help ja varmista, että kaikki tarvitsemasi ryhmän komennot ovat paikalla"
+        ],
+        "validate": "Ulkoasusi on asetettu, /terminal-setup on tehty, ja varmistat komennot /help-komennolla etkä muistista.",
+        "tip": "Jos komentoa ei ole /help-listassa, se voi olla eri niminen versiossasi — älä keksi nimeä."
+      }
+    }
+  },
+  "cc-grp-config": {
+    "title": "Claude Coden konfigurointi ja asetukset",
+    "subtitle": "Slash-komentoryhmä luville, näppäinmäärityksille ja CLI:n käytökselle",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Claude Coden slash-komentoryhmä, joka hallitsee työkalun konfiguraatiota: työkalujen suorituslupia (/permissions), näppäinmäärityksiä (/keybindings), yleistä asetuspaneelia (/config), tietosuojaa (/privacy-settings), settings.json-tiedoston muokkausta luonnollisella kielellä (/update-config), suorituksen hiekkalaatikkoa (/sandbox) ja oletusetäympäristöä (/remote-env).",
+    "approach": "Etenemme yleiskuvasta yksityiskohtiin: ensin ymmärrämme, mikä ryhmä on ja miten näemme koko komentolistan /help-komennolla, sitten opettelemme keskeiset komennot yksi kerrallaan — luvat, näppäinmääritykset, asetuspaneelin ja luonnollisen kielen konfiguroinnin, tietosuojan ja ympäristön. Lopuksi käymme yleiset virheet ja tarkistuksen, että kaikki on asetettu turvallisesti.",
+    "outcomes": [
+      "Ymmärtää, mitkä komennot kuuluvat konfigurointiryhmään ja mitä kukin tekee",
+      "Asettaa työkalujen luvat /permissions-komennolla täsmällisesti, ei globaalisti",
+      "Muuttaa näppäinmäärityksiä /keybindings-komennolla (esim. Cmd+Enter lähetykseksi)",
+      "Avata ja lukea asetuspaneelin /config-komennolla ja muokata settings.json-tiedostoa /update-config-komennolla",
+      "Hallita tietosuojaa, hiekkalaatikkoa ja etäympäristöä harkiten"
+    ],
+    "applyIn": [
+      {
+        "title": "Ensimmäinen asennus",
+        "description": "Heti Claude Coden asennuksen jälkeen salli yleiset työkalut /permissions-komennolla ja aseta kätevät näppäinmääritykset /keybindings-komennolla, jotta et vahvista jokaista toimintoa."
+      },
+      {
+        "title": "Tiimiprojekti",
+        "description": "Säädä luvat ja settings.json tiimin yhteisten sääntöjen mukaisiksi /update-config-komennolla, jotta kaikki työskentelevät samassa turvallisessa ympäristössä."
+      },
+      {
+        "title": "Arkaluonteinen koodi",
+        "description": "Yksityistä dataa sisältävissä projekteissa ota hiekkalaatikko käyttöön /sandbox-komennolla ja tarkista /privacy-settings rajoittaaksesi suoritusta ja datan jakamista."
+      }
+    ],
+    "pitfalls": [
+      "Kaikkien bash-komentojen salliminen globaalisti 'Bash(*)' — vakava tietoturvariski. Ole täsmällinen: 'Bash(npm run *)'.",
+      "Komentojen koko listan tuntematta jättäminen ja sokkona konfigurointi /help-komennon sijaan.",
+      "/config-komennon (yleiskatsauspaneeli) ja /update-config-komennon (settings.json luonnollisella kielellä) sekoittaminen.",
+      "/permissions-komennon ohittaminen ja jatkuvista vahvistuspyynnöistä kärsiminen.",
+      "/privacy-settings- tai /sandbox-asetusten muuttaminen ymmärtämättä turvallisuus- ja datanjakoseurauksia."
+    ],
+    "exercises": [
+      {
+        "question": "Mitä eroa on komennoilla /config ja /update-config?",
+        "hint": "Toinen näyttää asetusten yleiskatsauksen, toinen muokkaa settings.json-tiedostoa luonnollisen kielen kuvauksella."
+      },
+      {
+        "question": "Miksi sääntö 'Bash(npm run *)' on turvallisempi kuin 'Bash(*)'?",
+        "hint": "Mieti, mitä kumpikin sääntö sallii ja minkä komentojoukon Claude voi ajaa ilman vahvistusta."
+      },
+      {
+        "question": "Miten näet konfigurointiryhmän koko komentolistan ilman ulkoa opettelua?",
+        "hint": "On olemassa sisäänrakennettu komento, joka tulostaa kaikki saatavilla olevat slash-komennot."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä ryhmä on ja miten näet kaikki komennot",
+        "time": "",
+        "why": "Ennen konfigurointia sinun täytyy tuntea ryhmän jäsenet ja osata katsoa ajantasainen lista — se riippuu CLI-versiosta.",
+        "instructions": [
+          "Opettele ryhmän jäsenet: /config, /keybindings, /permissions, /privacy-settings, /update-config, /sandbox, /remote-env.",
+          "Kirjoita /help Claude Codessa nähdäksesi koko ajantasaisen slash-komentolistan.",
+          "Etsi tulosteesta konfigurointikomennot ja lue niiden lyhyet kuvaukset.",
+          "Huomaa, mitkä liittyvät turvallisuuteen (/permissions, /sandbox, /privacy-settings)."
+        ],
+        "validate": "Osaat nimetä vähintään 5 ryhmän komentoa ja selittää kunkin tarkoituksen yhdellä lauseella.",
+        "tip": "/help-lista on totuuden lähde: komentoja voidaan lisätä versioiden välillä."
+      },
+      "s2": {
+        "title": "Työkalujen luvat: /permissions",
+        "time": "",
+        "why": "Luvat ovat turvallisen ja nopean työn perusta. Ilman niitä jokainen toiminto vaatii vahvistuksen, ja liian laajat säännöt ovat vaarallisia.",
+        "instructions": [
+          "Kirjoita /permissions avataksesi salli- ja estä-sääntöjen hallinnan.",
+          "Lisää täsmällinen sallimissääntö, esim. 'Bash(npm run *)'.",
+          "Varmista, ettet käytä laajoja kuvioita kuten 'Bash(*)'.",
+          "Tallenna ja aja sallittu komento — Claude suorittaa sen kysymättä."
+        ],
+        "validate": "Sallittu työkalu ajetaan ilman vahvistusta, kun muut yhä kysyvät.",
+        "tip": "Esimerkki: /permissions → salli 'Bash(npm run *)' → npm-skriptit ajetaan ilman vahvistusta joka kerta."
+      },
+      "s3": {
+        "title": "Näppäinmääritykset: /keybindings",
+        "time": "",
+        "why": "Kätevät näppäinmääritykset nopeuttavat päivittäistä työtä ja poistavat pienen kitkan kuten hankalan lähetyksen.",
+        "instructions": [
+          "Kirjoita /keybindings avataksesi tai luodaksesi näppäinmääritystiedoston.",
+          "Etsi viestin lähetystoiminto ja sido se esim. Cmd+Enter-yhdistelmään.",
+          "Tallenna tiedosto ja palaa keskusteluun.",
+          "Testaa uusi yhdistelmä oikeassa syötössä."
+        ],
+        "validate": "Määritetty yhdistelmä toimii odotetusti (esim. Cmd+Enter lähettää viestin).",
+        "tip": "Muuta vain näppäimiä, jotka oikeasti häiritsevät — jätä loput oletuksiin."
+      },
+      "s4": {
+        "title": "Asetuspaneeli ja luonnollisen kielen konfigurointi: /config ja /update-config",
+        "time": "",
+        "why": "Nämä kaksi komentoa ovat pääsisäänkäynti yleisasetuksiin: toinen näyttää yleiskatsauksen, toinen antaa muokata settings.json-tiedostoa tavallisella kuvauksella.",
+        "instructions": [
+          "Kirjoita /config avataksesi asetuspaneelin ja nähdäksesi nykyiset parametrit yhdessä paikassa.",
+          "Selaa saatavilla olevia vaihtoehtoja muuttamatta niitä heti.",
+          "Kirjoita /update-config ja kuvaile haluttu settings.json-muutos tavallisin sanoin.",
+          "Tarkista, että muutos otettiin käyttöön kuvauksesi mukaisesti."
+        ],
+        "validate": "/config näyttää nykyiset asetukset, ja /update-config muokkaa settings.json-tiedostoa kuvauksesi mukaan oikein.",
+        "tip": "/config on katsomista varten, /update-config muuttamista varten. Älä sekoita näitä rooleja."
+      },
+      "s5": {
+        "title": "Tietosuoja, hiekkalaatikko ja ympäristö: /privacy-settings, /sandbox, /remote-env",
+        "time": "",
+        "why": "Nämä komennot hallitsevat suorituksen turvallisuutta ja datan jakamista — konfiguroi ne harkiten, etenkin arkaluonteisissa projekteissa.",
+        "instructions": [
+          "Kirjoita /privacy-settings nähdäksesi ja tarvittaessa päivittääksesi tietosuoja-asetukset.",
+          "Kirjoita /sandbox konfiguroidaksesi hiekkalaatikon työkalujen suoritukselle eristetyssä ympäristössä.",
+          "Kirjoita /remote-env asettaaksesi oletusetäympäristön, jos työskentelet etänä.",
+          "Muuta vain sitä, mistä olet varma; jätä loput oletuksiin."
+        ],
+        "validate": "Ymmärrät, mitä kukin kolmesta komennosta tekee, ja muutit asetuksia vain harkiten.",
+        "tip": "Hiekkalaatikko ja tietosuoja vaikuttavat turvallisuuteen — älä kytke niitä päälle tai pois sattumanvaraisesti."
+      },
+      "s6": {
+        "title": "Virheet ja asetusten tarkistus",
+        "time": "",
+        "why": "Lopputarkistus nappaa yleisimmät virheet — liian laajat luvat, komentojen sekoittamisen ja turvattomat asetukset.",
+        "instructions": [
+          "Tarkista /permissions-säännöt: ei laajoja kuvioita kuten 'Bash(*)'.",
+          "Varmista, ettet sekoita komentoja /config (yleiskatsaus) ja /update-config (muokkaus).",
+          "Käytä /help-komentoa varmistaaksesi, että käytät oikeita ryhmän komentoja, et keksittyjä.",
+          "Aja sallittu työkalu ja varmista, ettei ylimääräisiä vahvistuspyyntöjä ole."
+        ],
+        "validate": "Luvat ovat täsmällisiä, komentoja käytetään tarkoitukseensa, ylimääräisiä vahvistuksia ei ole, ja arkaluonteiset asetukset on tehty harkiten.",
+        "tip": "Jos epäröit sääntöä, tee siitä kapeampi, ei laajempi. Turvallisuus voittaa pari ylimääräistä vahvistusta."
+      }
+    }
+  },
+  "cc-grp-integrations": {
+    "title": "Kauttaviiva-komennot: Integraatiot",
+    "subtitle": "Yhdistetään Claude Code editoriin, MCP:hen, GitHubiin, Slackiin, selaimeen ja liitännäisiin",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Integraatiot-komentoryhmä upottaa Claude Coden todelliseen kehitystyönkulkuusi. Komennot ovat /mcp, /ide, /chrome, /hooks, /plugin, /reload-plugins, /agents, /install-github-app, /install-slack-app ja /web-setup. Jokainen omistaa oman liitäntäpisteensä: IDE, MCP-palvelimet, selain, työkalutapahtumat, liitännäiset, agentit ja ulkoiset palvelut.",
+    "approach": "Etenemme yleiskatsauksesta käytäntöön. Ensin katsomme koko ryhmän /help-komennolla, sitten jaottelemme komennot tarkoituksen mukaan: editoriyhteys (/ide, /chrome), data /mcp:n kautta, laajennus /plugin-, /reload-plugins-, /agents- ja /hooks-komennoilla sekä ulkoiset palvelut (/install-github-app, /install-slack-app, /web-setup). Lopuksi käymme läpi yleiset virheet ja tarkistuksen, että integraatio on todella aktiivinen.",
+    "outcomes": [
+      "Tiedät, mitkä komennot kuuluvat integraatioihin ja mitä kukin tekee",
+      "Yhdistät Claude Coden editoriin /ide-komennolla ja dataan /mcp-komennolla",
+      "Hallitset liitännäisiä ja agentteja komennoilla /plugin, /reload-plugins, /agents",
+      "Asetat ulkoiset palvelut: /install-github-app, /install-slack-app, /web-setup",
+      "Osaat tarkistaa, että integraatio on aktiivinen, ja selvittää syyn jos ei ole"
+    ],
+    "applyIn": [
+      {
+        "title": "Työskentely editorissa",
+        "description": "VS Code -laajennuksen asennuksen jälkeen ajat /ide-komennon, ja Claude näkee avoimet tiedostot ja diagnostiikan automaattisesti suoraan editorissa."
+      },
+      {
+        "title": "Datan ja API:en yhdistäminen",
+        "description": "/mcp-komennolla lisäät MCP-palvelimia tietokannan tai ulkoisen API:n käyttöä varten, jolloin Claude toimii oikeiden datalähteidesi kanssa."
+      },
+      {
+        "title": "Tiimin automaatio",
+        "description": "/install-github-app- ja /install-slack-app-komennoilla tuot Clauden GitHub Actionsiin ja Slackiin, jotta koko tiimi käyttää sitä yhteisissä työnkuluissa."
+      }
+    ],
+    "pitfalls": [
+      "/reload-pluginsin ajamatta jättäminen liitännäisen lisäämisen jälkeen — se ei aktivoidu ennen seuraavaa istuntoa",
+      "/ide:n ajaminen ennen IDE-laajennuksen asennusta — integraatiota ei ole, joten komento ei tee mitään",
+      "/mcp:n (palvelinten hallinta) ja /hooksin (työkalutapahtumat) sekoittaminen — ne ovat eri liitäntäpisteitä",
+      "Oletus, että /install-github-app asentaa kaiken heti — se käynnistää ohjatun toiminnon, joka pitää viedä loppuun",
+      "Tilan tarkistamatta jättäminen yhdistämisen jälkeen ja oletus, että integraatio toimii oletuksena"
+    ],
+    "exercises": [
+      {
+        "question": "Haluat, että Claude näkee avoimet tiedostot ja virheet suoraan VS Codessa. Mitkä vaiheet ja mikä komento?",
+        "hint": "Ensin IDE-laajennus, sitten integraatioryhmän komento, joka näyttää tilan ja aktivoi yhteyden."
+      },
+      {
+        "question": "Lisäsit uuden liitännäisen, mutta Claude ei 'näe' sitä. Mitä unohdit?",
+        "hint": "Ryhmässä on oma komento, joka aktivoi odottavat liitännäismuutokset ilman istunnon uudelleenkäynnistystä."
+      },
+      {
+        "question": "Tiimisi tarvitsee Clauden GitHub pull requestiin ja Slack-kanavaan. Mitkä kaksi asennuskomentoa ajat?",
+        "hint": "Molemmat alkavat /install-..."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä Integraatiot-ryhmä on",
+        "time": "",
+        "why": "Ennen kuin yhdistät mitään, sinun on ymmärrettävä ryhmän kokoonpano ja tarkoitus: integraatiot upottavat Claude Coden koko työnkulkuusi — IDE, GitHub, Slack, selain — sen sijaan, että se toimisi rinnalla.",
+        "instructions": [
+          "Käynnistä Claude Code ja kirjoita /help nähdäksesi kaikkien komentojen listan",
+          "Etsi integraatioryhmän komennot: /mcp, /ide, /chrome, /hooks, /plugin, /reload-plugins, /agents, /install-github-app, /install-slack-app, /web-setup",
+          "Lue jokaisen lyhyt kuvaus — merkitse, mikä on editorille, mikä datalle, mikä ulkoisille palveluille",
+          "Muista ydinajatus: Claude toimii työkalujesi sisällä, ei niiden vieressä"
+        ],
+        "validate": "Pystyt nimeämään vähintään 6 ryhmän komentoa ja kertomaan, mitä kukin yhdistää.",
+        "tip": "/help on karttasi: integraatiokomennot näkyvät siellä aina ajantasaisella kuvauksella versiotasi varten."
+      },
+      "s2": {
+        "title": "Editoriyhteys: /ide ja /chrome",
+        "time": "",
+        "why": "Yleisin integraatio on editori. /ide yhdistää Claude Coden VS Codeen tai JetBrainsiin, ja /chrome hallitsee Claude Chrome -asetuksia. Näin Claude näkee kontekstin siellä, missä todella työskentelet.",
+        "instructions": [
+          "Asenna Claude-laajennus VS Codeen tai JetBrainsiin (tehdään itse editorissa)",
+          "Aja Claude Codessa /ide — komento näyttää integraation tilan ja aktivoi yhteyden",
+          "Varmista, että Claude näkee avoimet tiedostot ja sisäisen diagnostiikan",
+          "Jos työskentelet selaimessa, aja /chrome Claude Chrome (beta) -asetuksia varten"
+        ],
+        "validate": "/ide:n jälkeen tila näyttää aktiivisen integraation, ja Claude viittaa avoimeen tiedostoosi ilman että annat polkua.",
+        "tip": "/ide vaatii ensin asennetun IDE-laajennuksen — ilman sitä komennolla ei ole mitään yhdistettävää."
+      },
+      "s3": {
+        "title": "Datan yhdistäminen: /mcp",
+        "time": "",
+        "why": "/mcp hallitsee MCP-palvelimia: lisää, poista ja listaa ne. MCP:n kautta Claude saa pääsyn tietokantoihin ja ulkoisiin API:hin — se on pääasiallinen tapa antaa sille oikeat datalähteesi.",
+        "instructions": [
+          "Aja /mcp nähdäksesi jo yhdistettyjen MCP-palvelinten listan",
+          "Lisää /mcp:n kautta tarvitsemasi palvelin — esimerkiksi pääsy tietokantaan tai ulkoiseen API:in",
+          "Tarkista, että palvelin näkyy listalla ja on merkitty aktiiviseksi",
+          "Pyydä Claudea käyttämään yhdistettyä lähdettä ja varmista, että se vastaa oikealla datalla"
+        ],
+        "validate": "/mcp:n tulosteessa palvelimesi näkyy ja on aktiivinen, ja Claude hakee siitä dataa onnistuneesti.",
+        "tip": "Yhdistä vain tarvitsemasi MCP-palvelimet: ylimääräiset kasvattavat kontekstia ja työkalulistaa ilman hyötyä."
+      },
+      "s4": {
+        "title": "Toiminnallisuuden laajentaminen: /plugin, /reload-plugins, /agents, /hooks",
+        "time": "",
+        "why": "Nämä komennot laajentavat Claude Coden toimintaa. /plugin hallitsee liitännäisiä, /reload-plugins aktivoi niiden muutokset, /agents hallitsee agenttien konfiguraatioita, ja /hooks näyttää koukkujen konfiguraatiot työkalutapahtumille (ennen/jälkeen suorituksen).",
+        "instructions": [
+          "Aja /plugin nähdäksesi ja määrittääksesi liitännäiset",
+          "Liitännäisen lisäämisen tai muuttamisen jälkeen aja aina /reload-plugins — muuten muutokset eivät tule voimaan",
+          "Käytä /agents-komentoa nähdäksesi ja määrittääksesi agenttiasetukset",
+          "Aja /hooks nähdäksesi, mitkä koukut laukeavat ennen työkaluja ja niiden jälkeen"
+        ],
+        "validate": "/reload-pluginsin jälkeen uusi liitännäinen on käytettävissä nykyisessä istunnossa, ja /hooks näyttää määritetyt koukkusi.",
+        "tip": "Yleisin virhe on /reload-pluginsin unohtaminen: ilman sitä uusi liitännäinen aktivoituu vasta seuraavassa istunnossa."
+      },
+      "s5": {
+        "title": "Ulkoiset palvelut: /install-github-app, /install-slack-app, /web-setup",
+        "time": "",
+        "why": "Nämä komennot vievät Clauden paikallisen koneesi ulkopuolelle. /install-github-app asentaa Claude GitHub Actionsin, /install-slack-app asentaa Clauden Slackiin, ja /web-setup asentaa Claude Coden webiin — jotta koko tiimi työskentelee Clauden kanssa yhteisissä palveluissa.",
+        "instructions": [
+          "Aja /install-github-app ja vie ohjattu toiminto loppuun yhdistääksesi Clauden GitHub Actionsiin",
+          "Aja /install-slack-app asentaaksesi Claude-sovelluksen Slackiin",
+          "Aja /web-setup asentaaksesi Claude Coden webiin",
+          "Vie jokaisen komennon jälkeen prosessi lopulliseen vahvistukseen asti — ohjattu toiminto ei pääty itsestään"
+        ],
+        "validate": "GitHub-sovellus vastaa pull requestissa, Slack-sovellus on asennettu työtilaan, ja web-pääsy on asetettu.",
+        "tip": "Nämä komennot käynnistävät ohjatut asennukset — minkä tahansa vaiheen ohittaminen jättää integraation keskeneräiseksi."
+      },
+      "s6": {
+        "title": "Virheet ja tarkistus",
+        "time": "",
+        "why": "Integraatiot eivät usein 'toimi' bugin takia vaan ohitetun vaiheen takia. Lopputarkistus säästää aikaa: vahvistat, että jokainen yhteys on todella aktiivinen.",
+        "instructions": [
+          "Liitännäisen lisäämisen jälkeen vahvista, että ajoit /reload-plugins ja että se on aktiivinen",
+          "Ennen /ide:tä varmista, että editorin laajennus on asennettu, muuten integraatiota ei ole",
+          "Tarkista /mcp:llä, että tarvitsemasi palvelimet ovat listalla ja aktiivisia, ei vain lisättyjä",
+          "Komennoille /install-github-app ja /install-slack-app vahvista, että ohjattu toiminto vietiin loppuun",
+          "Jos jokin ei yhdistynyt — palaa /help-komentoon ja vertaa komennon kuvausta siihen, mitä teit"
+        ],
+        "validate": "Jokainen tarvittava integraatio on nimenomaisesti vahvistettu aktiiviseksi (/ide-tila, /mcp-lista, GitHub/Slack-sovelluksen toiminta), ei oletettu toimivaksi.",
+        "tip": "Sääntö: jokaisen integraatiokomennon jälkeen tarkista tila heti — älä oleta, että kaikki yhdistyi oletuksena."
+      }
+    }
+  },
+  "cc-grp-automation": {
+    "title": "Automaatio ja AI-tehtävät Claude Codessa",
+    "subtitle": "Slash-komentojen ryhmä, joka muuttaa Clauden autonomiseksi taustatyöntekijäksi",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "\"Automaatio ja AI-tehtävät\" -komentoryhmä on joukko Claude Coden slash-komentoja (/plan, /tasks, /background, /loop, /schedule, /batch, /goal, /autofix-pr, /ultraplan, /ultrareview), jotka muuttavat Clauden chat-assistentista autonomiseksi työntekijäksi. Ne ajavat työtä taustalla, aikataululla tai rinnakkain — kun keskityt muuhun.",
+    "approach": "Etenemme yksinkertaisesta vaativaan: ensin ymmärrämme, mikä ryhmä on ja mistä näkee listan (/help), sitten käymme komennot läpi pareittain roolin mukaan — tausta ja rinnakkaisuus, aikataulut ja silmukat, tavoitteet ja web-agentit. Lopuksi turvallisen automaation säännöt ja varmistus, että tehtävät todella valmistuvat.",
+    "outcomes": [
+      "Ymmärrät, mitkä komennot kuuluvat automaatioryhmään ja mistä lista löytyy",
+      "Käynnistät tausta- ja rinnakkaistehtäviä komennoilla /background, /tasks ja /batch",
+      "Määrität toistuvat ja ajastetut ajot komennoilla /loop ja /schedule",
+      "Asetat tavoitteita ja tarkistat PR:t autonomisesti komennoilla /goal, /autofix-pr, /ultrareview",
+      "Vältät yleiset automaatiovirheet — kuten /batchin ajamisen ilman /plania ensin"
+    ],
+    "applyIn": [
+      {
+        "title": "Laaja refaktorointi",
+        "description": "Jaa yhtenäinen muutos kymmeniin tiedostoihin komennolla /batch — rinnakkaiset agentit, joista jokainen avaa oman PR:nsä."
+      },
+      {
+        "title": "Yöautomaatio",
+        "description": "Käytä /schedulea ajamaan etäagenttia aikataululla: yötarkistukset, raportit, riippuvuuspäivitykset."
+      },
+      {
+        "title": "Julkaisun laadunvalvonta",
+        "description": "Ennen suurta julkaisua aja /ultrareview syvään virheiden etsintään ja /autofix-pr korjaamaan PR-ongelmat automaattisesti."
+      }
+    ],
+    "pitfalls": [
+      "/batchin ajaminen ilman /plania ensin — rinnakkaiset agentit aloittavat työn hyväksymättömästä suunnitelmasta",
+      "/ultrareview'n käyttö jokaiseen pieneen PR:ään — se on maksullinen komento ($5-20), ylimitoitettu rutiiniin",
+      "Hallitsematon /loop ilman pysäytysehtoa — komento pyörii loputtomasti ja kuluttaa resursseja",
+      "Ryhmän nykyisen kokoonpanon tuntemattomuus — komentolista muuttuu, varmista aina /help-komennolla",
+      "/loopin (paikallinen toistoväli) ja /schedulen (etäagentti cronilla) sekoittaminen — eri työkalut"
+    ],
+    "exercises": [
+      {
+        "question": "Sinun on lisättävä JSDoc-kommentit kaikkiin funktioihin suuressa src/-kansiossa. Mikä komento sopii ja mitä on pakko tehdä ennen sitä?",
+        "hint": "Mieti rinnakkaisuutta kymmenien tiedostojen yli. Ja muista tärkein turvasääntö /plan-solmusta."
+      },
+      {
+        "question": "Sinun on ajettava riippuvuustarkistus joka yö ilman osallistumistasi. Minkä komennon valitset ja miten se eroaa /loopista?",
+        "hint": "Aikataulu ja etäagentti vastaan paikallinen toistoväli."
+      },
+      {
+        "question": "Miten löydät nopeasti automaatiokomentojen täyden nykyisen listan omassa Claude Code -versiossasi?",
+        "hint": "Yksi sisäänrakennettu komento näyttää kaikki käytettävissä olevat slash-komennot."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä ryhmä on ja mistä lista löytyy",
+        "time": "",
+        "why": "Ennen automatisointia on ymmärrettävä työkalun rajat: mitkä komennot kuuluvat ryhmään ja miten Claude muuttuu keskustelijasta taustatehtävien suorittajaksi.",
+        "instructions": [
+          "Sisäistä ryhmän idea: automaatiokomennot ajavat työtä taustalla, aikataululla tai rinnakkain kun keskityt muuhun.",
+          "Avaa komentojen täysi lista komennolla /help — se näyttää oman versiosi nykyisen slash-komentojen joukon.",
+          "Etsi listasta automaatiokomennot: /plan, /tasks, /background, /loop, /schedule, /batch, /goal, /autofix-pr, /ultraplan, /ultrareview.",
+          "Huomaa, että osa komennoista toimii paikallisesti ja osa (esim. /ultraplan, /ultrareview) webissä ja maksullisina."
+        ],
+        "validate": "Osaat nimetä vähintään 5 ryhmän komentoa ja selittää yhdellä lauseella, miten autonominen työntekijä eroaa chat-assistentista.",
+        "tip": "Ryhmän kokoonpano kehittyy Claude Coden mukana — /help näyttää aina sen, mikä on todella saatavilla nyt."
+      },
+      "s2": {
+        "title": "Taustatehtävät: /background ja /tasks",
+        "time": "",
+        "why": "Automaation perusta on osata lähettää työ taustalle ja seurata sitä. Ilman tätä muut komennot menettävät merkityksensä.",
+        "instructions": [
+          "Käytä /backgroundia jatkaaksesi nykyistä istuntoa taustalla ja vapauttaaksesi chatin muuhun työhön.",
+          "Avaa /tasks — se listaa ja hallitsee taustatehtäviä: näet mikä on käynnissä ja mikä valmista.",
+          "Seuraa tilaa /tasksin kautta ja tarvittaessa pysäytä tehtävä tai palaa siihen.",
+          "Muista pari: /background lähettää taustalle, /tasks hallitsee siellä pyörivää."
+        ],
+        "validate": "Käynnistit tehtävän taustalle komennolla /background ja löysit sen /tasks-listasta.",
+        "tip": "Tausta ei tarkoita \"unohda\": vilkaise /tasksia, jotta taustaagentit eivät pyöri turhaan."
+      },
+      "s3": {
+        "title": "Rinnakkaisuus ja suunnittelu: /batch ja /plan",
+        "time": "",
+        "why": "Suuret yhtenäiset muutokset ovat nopeampia kymmenillä rinnakkaisilla agenteilla. Mutta rinnakkaisuus on vaarallista ilman hyväksyttyä suunnitelmaa.",
+        "instructions": [
+          "Kutsu ensin /plan — suunnittelutila — jotta Claude laatii muutossuunnitelman ennen sen suoritusta.",
+          "Hyväksy suunnitelma: tämä on tärkein turvasääntö ennen rinnakkaista ajoa.",
+          "Aja /batch suureen muutokseen — se jakaa työn 5-30 rinnakkaiselle agentille, joista jokainen avaa oman PR:nsä.",
+          "Esimerkki: /batch 'lisää JSDoc kaikkiin funktioihin src/:ssä' → 20 agenttia, jokainen ottaa oman tiedostoryhmänsä."
+        ],
+        "validate": "Ymmärrät, miksi /batch seuraa aina hyväksyttyä /plania, ja osaat kuvata, mitä rinnakkaiset agentit palauttavat (PR per tiedostoryhmä).",
+        "tip": "Mitä selkeämpi suunnitelma, sitä vähemmän eroavaisuuksia rinnakkaisten agenttien välillä — suunnitelma säästää aikaa tulosten käsittelyssä."
+      },
+      "s4": {
+        "title": "Aikataulut ja silmukat: /schedule ja /loop",
+        "time": "",
+        "why": "Monet tehtävät toistuvat. /loop ja /schedule poistavat rutiinin: ajot aikavälein tai aikataululla ilman osallistumistasi.",
+        "instructions": [
+          "Käytä /loopia ajaaksesi komennon aikavälein — toistuviin paikallisiin tehtäviin.",
+          "Käytä /schedulea luodaksesi ajastettuja etäagenttirutiineja — esim. yöautomaatioon.",
+          "Vedä selvä raja: /loop on paikallinen toistoväli, /schedule on etäagentti aikataululla (cron).",
+          "Pidä /loopissa pysäytysehto mielessä, jottei silmukka pyöri loputtomasti."
+        ],
+        "validate": "Osaat valita oikean komennon tehtävään: \"toista paikallisesti\" → /loop, \"yöllä etänä\" → /schedule.",
+        "tip": "Yöautomaatio /schedulella on aliarvostetuin skenaario: tarkistukset ja raportit tehdään, kun nukut."
+      },
+      "s5": {
+        "title": "Tavoitteet ja web-agentit: /goal, /autofix-pr, /ultraplan, /ultrareview",
+        "time": "",
+        "why": "Automaation korkein taso on tavoitteen asettaminen ja tehtävän vieminen valmiiksi, samalla kun raskaat tarkistukset siirretään web-agenteille.",
+        "instructions": [
+          "Käytä /goalia asettaaksesi täyttymisehdon ja työskennelläksesi jatkuvasti, kunnes tavoite täyttyy.",
+          "Käytä /autofix-pr:ää seurataksesi PR:ää ja korjataksesi löydetyt ongelmat automaattisesti.",
+          "Suuren suunnitelman sopimiseksi käytä /ultraplania — suunnitelman luonnos valmistellaan webissä muokkausta ja hyväksyntää varten.",
+          "Ennen suurta julkaisua aja /ultrareview — syvä virheiden etsintä webissä (maksullinen, $5-20)."
+        ],
+        "validate": "Osaat sanoa, mitkä näistä komennoista ovat maksullisia ja toimivat webissä (/ultraplan, /ultrareview) ja mitkä asettavat työtilan (/goal, /autofix-pr).",
+        "tip": "/ultrareview säästää rahaa, kun sitä ajaa valikoidusti — ennen julkaisua, ei jokaiseen pieneen PR:ään."
+      },
+      "s6": {
+        "title": "Automaatiovirheet ja varmistus",
+        "time": "",
+        "why": "Autonominen työntekijä on vaarallinen ilman kuria: rinnakkaisuus ilman suunnitelmaa, loputtomat silmukat ja turhat maksulliset ajot muuttavat hyödyn nopeasti haitaksi.",
+        "instructions": [
+          "Pääsääntö: älä koskaan aja /batchia ilman edeltävää, hyväksyttyä /plania.",
+          "Älä käytä liikaa maksullisia komentoja: /ultrareview on vain tärkeisiin tarkistuksiin, ei rutiiniin.",
+          "Pidä /loopissa aina pysäytysehto, jottei komento pyöri turhaan.",
+          "Varmista säännöllisesti nykyinen komentolista komennolla /help — ryhmän kokoonpano muuttuu.",
+          "Varmista tulokset: avaa /tasks varmistaaksesi, että taustatehtävät valmistuivat oikein."
+        ],
+        "validate": "Osaat luetella vähintään 3 yleistä automaatiovirhettä ja kullekin nimetä, miten se vältetään.",
+        "tip": "Kuri \"suunnittele → aja → varmista /tasksilla\" tekee automaatiosta luotettavaa eikä riskialtista."
+      }
+    }
+  },
+  "cc-grp-quality": {
+    "title": "Koodin laatu ja katselmointi",
+    "subtitle": "Claude Coden slash-komentoryhmä koodin laadun ja tietoturvan tarkistamiseen ennen toimitusta",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Ryhmä Claude Coden komentoja, jotka toimivat laadun portteina: /review analysoi pull requestin, /security-review etsii haavoittuvuuksia, /simplify karsii ylimääräistä monimutkaisuutta, /diff näyttää sitoutumattomat muutokset, /debug ottaa käyttöön session diagnostiikan ja /fewer-permission-prompts vähentää lupakeskeytyksiä. Claude löytää sen, minkä linttaajat missaavat: logiikkavirheet, tietoturvaongelmat ja ylisuunnittelun.",
+    "approach": "Etenemme yleisestä yksityiskohtiin: ensin ymmärrämme, miksi ryhmä on olemassa kokonaisuutena, sitten käymme komennot läpi 1-2 vaihetta kohden oikealla koodilla, sitten kytkemme tarkistukset työskentelysykliin (ennen yhdistämistä, ennen käyttöönottoa, pitkän session jälkeen) ja lopuksi käsittelemme yleiset virheet ja itsetarkistuksen. Jokaista komentoa harjoitellaan omalla sitoutumattomalla muutoksella, ja /help pidetään käsillä viitteenä.",
+    "outcomes": [
+      "Tiedät, mikä komento tekee mitä: PR-katselmointi, tietoturva, yksinkertaistus, muutosten katselu, diagnostiikka",
+      "Osaat ajaa /review-komennon ja lukea tulosteen vakavuuden mukaan (Kriittinen / Varoitus / Info)",
+      "Ajat /security-review ennen käyttöönottoa ja ymmärrät haavoittuvuusraportin",
+      "Kytket laatutarkistukset jatkuvaan sykliin: ennen yhdistämistä, ennen käyttöönottoa, session jälkeen",
+      "Vältät katselmoinnin kohtelua muodollisuutena ja varmistat tulokset itsetarkistuksella"
+    ],
+    "applyIn": [
+      {
+        "title": "Ennen pull requestin yhdistämistä",
+        "description": "Aja /review ennen haaran yhdistämistä — Claude listaa ongelmat vakavuuden mukaan, ja korjaat Kriittiset kohdat ennen kuin koodi päätyy päähaaraan."
+      },
+      {
+        "title": "Ennen tuotantoon vientiä",
+        "description": "Aja /security-review haaran muutoksille saadaksesi kiinni riskit kuten SQL-injektiot tai vuotaneet salaisuudet ennen kuin ne päätyvät käyttäjille."
+      },
+      {
+        "title": "Pitkän kehityssession jälkeen",
+        "description": "Käytä /simplify, jotta Claude löytää session aikana kertyneen toiston ja ylisuunnittelun ja ehdottaa puhtaampaa koodia."
+      }
+    ],
+    "pitfalls": [
+      "/reviewin käyttäminen muodollisuutena — lue tuloste huolellisesti, erityisesti Kriittiset kohdat",
+      "/security-review ajaminen vain ison julkaisun lopussa säännöllisten ennen jokaista käyttöönottoa -ajojen sijaan",
+      "/simplifyn (laadun siivous) sekoittaminen bugien etsintään — /simplify ei löydä logiikkavirheitä, sen tekee /review",
+      "/diffin ohittaminen ennen katselmointia eikä tiedä, mitkä muutokset menevät tarkistukseen",
+      "/helpin unohtaminen ja komentojen lippujen arvaaminen sisäänrakennetun viitteen lukemisen sijaan"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on sitoutumaton muutos haarassa. Mikä komento antaa jäsennellyn erittelyn vakavuuden mukaan ennen yhdistämistä?",
+        "hint": "Se on ryhmän keskeinen PR-katselmointikomento; tuloste jaetaan Kriittinen / Varoitus / Info."
+      },
+      {
+        "question": "Ennen käyttöönottoa pitää varmistaa, ettei muutoksissa ole tietoturvariskejä. Mikä komento se on ja miten sen tuloste eroaa tavallisesta katselmoinnista?",
+        "hint": "Komento on nimenomaan tietoturvasta; se etsii haavoittuvuuksia kuten injektioita ja vuotaneita salaisuuksia, ei yleistä laatua."
+      },
+      {
+        "question": "Miten löydät ryhmän komentojen tarkan listan ja tarkoituksen suoraan Claude Codessa muistista arvaamatta?",
+        "hint": "Sisäänrakennettu viitekomento, joka on yhteinen kaikille slash-komennoille."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä ryhmä on ja miksi se on olemassa",
+        "time": "",
+        "why": "Ennen komentojen ajamista ymmärrä niiden yhteinen rooli: ne ovat laadun portteja ennen toimitusta. Ilman tätä kuvaa on helppo kohdella katselmointia muodollisuutena ja ohittaa kriittiset ongelmat.",
+        "instructions": [
+          "Avaa Claude Code projektissa, jossa on sitoutumattomia muutoksia tai aktiivinen haara",
+          "Aja /help ja paikanna ryhmän komennot: /review, /security-review, /simplify, /diff, /debug, /fewer-permission-prompts",
+          "Lue jokaisen komennon lyhyt kuvaus /help-tulosteessa",
+          "Muotoile ryhmän rooli itsellesi: saada kiinni se mitä linttaajat missaavat — logiikka, tietoturva, monimutkaisuus"
+        ],
+        "validate": "Osaat nimetä kaikki kuusi ryhmän komentoa ja kertoa, mikä on katselmointiin, mikä tietoturvaan ja mikä yksinkertaistukseen.",
+        "tip": "/help on ensimmäinen totuuden lähteesi komennoista: se näyttää nykyisen joukon ilman arvailua."
+      },
+      "s2": {
+        "title": "/review — muutosten jäsennelty katselmointi",
+        "time": "",
+        "why": "/review on ryhmän keskeinen komento. Se analysoi muutokset ja listaa ongelmat vakavuuden mukaan, mikä tekee katselmoinnista toistettavaa ja riippumatonta mielialastasi ja väsymyksestäsi.",
+        "instructions": [
+          "Aja ensin /diff nähdäksesi, mitkä sitoutumattomat muutokset menevät katselmointiin",
+          "Aja /review",
+          "Lue tuloste tasoittain: Kriittinen, Varoitus, Info",
+          "Aloita Kriittisistä kohdista — esimerkiksi SQL-injektion riski — ja päätä, mitä korjata heti",
+          "Merkitse Info-kohdat tuleviksi parannuksiksi, jos ne eivät estä yhdistämistä"
+        ],
+        "validate": "Sait listan ongelmista vakavuuden mukaan jaoteltuna ja ymmärrät, mitkä kohdat ovat Kriittisiä ja mitkä suosituksia.",
+        "tip": "Esimerkkituloste: Kriittinen (SQL-injektion riski), Varoitus (ei virheenkäsittelyä), Info (nimeä uudelleen selkeyden vuoksi)."
+      },
+      "s3": {
+        "title": "/security-review — tietoturvatarkastus ennen käyttöönottoa",
+        "time": "",
+        "why": "Yleinen katselmointi ei korvaa erityistä tietoturvatarkastusta. /security-review etsii tarkoituksella haavoittuvuuksia haaran muutoksista saadakseen ne kiinni ennen kuin koodi päätyy käyttäjille.",
+        "instructions": [
+          "Varmista, että käyttöönottoon menevät muutokset ovat nykyisessä haarassa",
+          "Aja /security-review",
+          "Lue haavoittuvuusraportti — tarkkaile injektioita, vuotaneita salaisuuksia, turvatonta syötteen käsittelyä",
+          "Vertaa sen painopistettä tavalliseen /review-komentoon: tässä prioriteetti on tietoturva, ei yleinen laatu",
+          "Korjaa tunnistetut riskit ennen käyttöönottoa"
+        ],
+        "validate": "Ajoit tietoturvatarkastuksen ja osaat selittää, miten sen raportti eroaa /review-tulosteesta.",
+        "tip": "Aja /security-review säännöllisesti ennen jokaista käyttöönottoa, ei vain ison julkaisun lopussa."
+      },
+      "s4": {
+        "title": "/simplify ja /diff — koodin puhtaus ja muutosten hallinta",
+        "time": "",
+        "why": "Pitkän session jälkeen koodiin kertyy toistoa ja ylisuunnittelua. /simplify siivoaa laatua, ja /diff antaa selkeän kuvan siitä, mitä tarkalleen muutat ja lähetät katselmointiin.",
+        "instructions": [
+          "Aja /diff nähdäksesi täyden listan sitoutumattomista muutoksista",
+          "Aja /simplify, jotta Claude löytää uudelleenkäytettäviä osia ja ylisuunnittelua",
+          "Lue ehdotukset ja sovella ne, jotka parantavat koodia menettämättä selkeyttä",
+          "Muista jako: /simplify on laadusta, ei bugien etsinnästä; /review hoitaa logiikan",
+          "Aja /diff uudelleen muokkausten jälkeen nähdäksesi lopullisen tilan"
+        ],
+        "validate": "Sait /simplifyltä yksinkertaistusehdotuksia ja näet /diffin kautta, miten koodi muuttui.",
+        "tip": "Käytä /simplify pitkän session lopussa — silloin ylimääräinen monimutkaisuus kertyy."
+      },
+      "s5": {
+        "title": "/debug ja /fewer-permission-prompts — diagnostiikka ja vähemmän keskeytyksiä",
+        "time": "",
+        "why": "Kaksi apukomentoa poistaa kitkaa: /debug auttaa ymmärtämään, mikä sessiossa meni pieleen, ja /fewer-permission-prompts vähentää lupapyyntöjen virtaa, jotta laatutarkistukset etenevät ilman jatkuvia taukoja.",
+        "instructions": [
+          "Jos sessio käyttäytyy oudosti, aja /debug ottaaksesi käyttöön debug-lokituksen diagnoosia varten",
+          "Tutki lisätiedot, jotka ilmestyvät tulosteeseen diagnostiikan ollessa päällä",
+          "Aja /fewer-permission-prompts — se skannaa transkriptit ja rakentaa allowlistin yleisistä turvallisista toiminnoista",
+          "Tarkista ehdotettu allowlist ennen hyväksymistä: salli vain se, mikä on aidosti turvallista",
+          "Aja /review tai /simplify uudelleen ja huomaa, että lupakeskeytyksiä on vähemmän"
+        ],
+        "validate": "Ymmärrät, milloin /debug tarvitaan, ja ajoit /fewer-permission-prompts tarkistettuasi tietoisesti ehdotetun lupalistan.",
+        "tip": "Älä salli kaikkea /fewer-permission-prompts-komennolla — lisää allowlistiin vain varmistetut read-only-toiminnot."
+      },
+      "s6": {
+        "title": "Yleiset virheet ja syklin itsetarkistus",
+        "time": "",
+        "why": "Komennot maksavat itsensä takaisin vain, kun ne on kytketty jatkuvaan sykliin eivätkä muutu muodollisuudeksi. Viimeinen vaihe vakiinnuttaa tavan ja auttaa tarkistamaan itsesi.",
+        "instructions": [
+          "Vakiinnuta syklisi: /diff → /review ennen yhdistämistä, /security-review ennen käyttöönottoa, /simplify session jälkeen",
+          "Tarkista, ettet käytä /reviewia muodollisesti: lue uudelleen viimeisen katselmointisi Kriittiset kohdat",
+          "Varmista, että /security-review ajetaan säännöllisesti, ei kerran julkaisua kohden",
+          "Jos olet epävarma lipuista tai komentojoukosta — avaa /help arvaamisen sijaan",
+          "Kirjoita itsellesi lyhyt tarkistuslista komennoista ja siitä, milloin kutakin käyttää"
+        ],
+        "validate": "Sinulla on selkeä henkilökohtainen laatutarkistussykli ja osaat nimetä jokaisen komennon päävirheen ja miten välttää sen.",
+        "tip": "Ryhmän päävirhe on kohdella katselmointia leimasimena. Arvo on siinä, että oikeasti lukee ja korjaa Kriittiset kohdat."
+      }
+    }
+  },
+  "cc-grp-help": {
+    "title": "Ohje, oppiminen ja tili Claude Codessa",
+    "subtitle": "Slash-komentojen ryhmä, joka auttaa oppimaan, diagnosoimaan ongelmia ja hallitsemaan tiliä — poistumatta CLI:stä",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Tämä on Claude Coden apukomentojen joukko, joka kattaa kolme tehtävää: perehdytys ja oppiminen (/help, /powerup, /release-notes, /skills, /team-onboarding), apu tehtävän aikana (/btw, /insights) sekä tilin ja asennuksen kunnon hallinta (/login, /logout, /feedback, /doctor, /mobile). Kaikki ne ajetaan suoraan syöttöriviltä poistumatta nykyisestä tehtävästä.",
+    "approach": "Ensin ymmärretään ryhmän tarkoitus, sitten käydään komennot läpi loogisina pareina: oppiminen, apu tehtävän aikana, taidot ja tiimin perehdytys, tili, diagnostiikka. Jokaisessa vaiheessa kokeillaan komentoa elävänä ja opitaan lukemaan sen tulosta. Peruslähtökohta on aina /help: se näyttää ajantasaisen listan siitä, mitä versiossasi on todella saatavilla.",
+    "outcomes": [
+      "Tiedät, mitkä slash-komennot hoitavat ohjeen, oppimisen ja tilin",
+      "Osaat esittää sivukysymyksen /btw-komennolla menettämättä päätehtävän kontekstia",
+      "Osaat diagnosoida asennusongelmat itse /doctor-komennolla",
+      "Ymmärrät, miten kirjaudut tiliin sisään ja ulos (/login, /logout)",
+      "Tiedät, mistä löydät uudet ominaisuudet ja taitojen listan (/release-notes, /skills)"
+    ],
+    "applyIn": [
+      {
+        "title": "Uuden projektin aloitus",
+        "description": "Aja /powerup interaktiivisia oppitunteja varten ja /help päivittääksesi käytettävissä olevien komentojen listan ennen sukellusta."
+      },
+      {
+        "title": "Kysymys tehtävän keskellä",
+        "description": "Refaktoroinnin keskellä käytä /btw esittääksesi nopean tarkennuksen katkaisematta päätyölinjaa."
+      },
+      {
+        "title": "Jokin meni rikki",
+        "description": "CLI käyttäytyy oudosti — aja /doctor, joka nappaa 90 % yleisistä asennusongelmista heti."
+      }
+    ],
+    "pitfalls": [
+      "/doctorin ajamatta jättäminen kun CLI käyttäytyy oudosti — se korjaa useimmat yleiset ongelmat heti",
+      "Päätehtävän keskeyttäminen tavallisella kysymyksellä kevyen /btw:n sijaan, jolloin konteksti katoaa",
+      "/insightsin sivuuttaminen — sessiomallien analyysi näyttää, mihin aikasi kuluu",
+      "/release-notesin unohtaminen ja uusien ominaisuuksien ohittaminen, vanhalla tavalla työskentely",
+      "Uloskirjautumatta jättäminen /logout-komennolla jaetulla tai lainatulla laitteella, jolloin tili jää aktiiviseksi"
+    ],
+    "exercises": [
+      {
+        "question": "Olet keskellä isoa tehtävää ja haluat nopeasti tarkentaa, mitä jokin malli tekee keskeyttämättä työtäsi. Mitä komentoa käytät ja miksi?",
+        "hint": "Etsi komento sivukysymykseen ilman päätehtävän keskeyttämistä."
+      },
+      {
+        "question": "CLI alkoi käyttäytyä oudosti päivityksen jälkeen. Millä komennolla aloitat diagnoosin?",
+        "hint": "Tämä komento tarkistaa asennuksen kunnon ja nappaa jopa 90 % yleisistä ongelmista."
+      },
+      {
+        "question": "Miten löydät täyden, ajantasaisen komentolistan juuri sinun Claude Code -versiossasi?",
+        "hint": "Ryhmän perustavin komento, ohjeen sisääntulokohta."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä tämä komentoryhmä on",
+        "time": "",
+        "why": "Ennen yksittäisten komentojen erittelyä on tärkeää nähdä koko ryhmä: että se kattaa kolme eri tehtävää — oppiminen, apu tehtävän aikana ja tili — ja miksi ne on ryhmitelty yhteen.",
+        "instructions": [
+          "Muista ryhmän kolme aluetta: oppiminen (/help, /powerup, /release-notes, /skills, /team-onboarding), apu tehtävän aikana (/btw, /insights), tili ja kunto (/login, /logout, /feedback, /doctor, /mobile)",
+          "Avaa Claude Coden syöttörivi ja kirjoita / — näet käytettävissä olevien komentojen listan",
+          "Etsi tämän ryhmän komennot listasta ja merkitse, mitkä tunnet ja mitkä et",
+          "Muista, että koko ohjeen sisääntulokohta on /help-komento"
+        ],
+        "validate": "Osaat nimetä ryhmän kolme aluetta ja vähintään yhden komennon kustakin.",
+        "tip": "Älä yritä opetella kaikkia komentoja ulkoa — riittää tietää, että /help näyttää aina ajantasaisen listan."
+      },
+      "s2": {
+        "title": "Oppiminen: /help ja /powerup",
+        "time": "",
+        "why": "Nämä ovat kaksi pääkomentoa Claude Codeen pääsemiseksi: /help antaa kartan kaikista komennoista, ja /powerup opettaa ominaisuuksia lyhyiden interaktiivisten oppituntien kautta.",
+        "instructions": [
+          "Aja /help ja käy läpi täysi lista käytettävissä olevista komennoista",
+          "Etsi /help-tulosteesta seuraavaksi käsiteltävät komennot varmistaaksesi, että ne ovat versiossasi",
+          "Aja /powerup ja suorita yksi interaktiivinen oppitunti Claude Coden ominaisuuksista",
+          "Pane merkille, mitä oppitunti opetti — näin jatkuva oppiminen toimii"
+        ],
+        "validate": "/helpin jälkeen näet täyden komentolistan, ja /powerupin jälkeen suoritit vähintään yhden oppitunnin.",
+        "tip": "/powerup on kätevä työn alussa — pari minuuttia oppitunteja säästää tunteja yritys-erehdys-ominaisuuksien parissa."
+      },
+      "s3": {
+        "title": "Apu tehtävän aikana: /btw ja /insights",
+        "time": "",
+        "why": "Nämä ovat ryhmän aliarvostettuja helmiä: /btw antaa esittää sivukysymyksen keskeyttämättä päätehtävää, ja /insights näyttää sessiomallisi viikoittain.",
+        "instructions": [
+          "Kirjoita minkä tahansa tehtävän keskellä /btw ja esitä lyhyt kysymys, esimerkiksi tuntemattomasta mallista",
+          "Varmista, että Claude vastasi lyhyesti ja päätehtävä jatkui menettämättä kontekstia",
+          "Aja /insights ja katso sessiomalliesi analyysi",
+          "Ota tavaksi ajaa /insights viikoittain analysoidaksesi, mihin aikasi kuluu"
+        ],
+        "validate": "Esitit kysymyksen /btw:llä keskeyttämättä tehtävää ja avasit /insightsin vähintään kerran.",
+        "tip": "/btw yksinään säästää kymmeniä kontekstia rikkovia keskeytyksiä päivässä — se on nopein tapa tarkentaa pieni asia."
+      },
+      "s4": {
+        "title": "Taidot ja perehdytys: /skills, /team-onboarding, /release-notes",
+        "time": "",
+        "why": "Nämä komennot auttavat näkemään käytettävissä olevat taidot, perehdyttämään tiimin nopeasti ja seuraamaan Claude Coden uusia ominaisuuksia.",
+        "instructions": [
+          "Aja /skills ja katso lista käytettävissä olevista asennetuista taidoista",
+          "Aja /release-notes ja katso, mitä uutta Claude Codessa on",
+          "Aja /team-onboarding luodaksesi oppaan tiimin perehdytykseen",
+          "Vertaa /skillsin taitolistaa aiempaan — näin huomaat uudet kyvyt"
+        ],
+        "validate": "Näit taitolistan /skillsillä, opit uutuudet /release-notesilla ja loit perehdytysoppaan.",
+        "tip": "Tarkista /release-notes ajoittain — muuten jatkat vanhalla tavalla tietämättä uusista ominaisuuksista."
+      },
+      "s5": {
+        "title": "Tili: /login, /logout, /mobile",
+        "time": "",
+        "why": "Nämä komennot hallitsevat pääsyäsi: tiliin sisään- ja uloskirjautuminen sekä mobiilisovelluksen liittäminen QR-koodilla.",
+        "instructions": [
+          "Aja /login jos sinun täytyy kirjautua sisään, tai varmista että olet jo kirjautunut",
+          "Muista /logout-komento — se on hyödyllinen jaetulla tai lainatulla laitteella",
+          "Aja /mobile saadaksesi QR-koodin mobiilisovellukseen",
+          "Skannaa QR-koodi puhelimellasi, jos haluat liittää mobiilisovelluksen"
+        ],
+        "validate": "Ymmärrät, miten kirjaudut sisään ja ulos, ja sait QR-koodin /mobilella.",
+        "tip": "Jaetulla tietokoneella päätä sessio aina /logoutilla, jottei tili jää aktiiviseksi."
+      },
+      "s6": {
+        "title": "Diagnostiikka ja virheet: /doctor ja /feedback",
+        "time": "",
+        "why": "Viimeinen vaihe vahvistaa ryhmän pääsäännön: aina kun CLI käyttäytyy oudosti, ajat ensin /doctorin, ja lähetät huomattavat ongelmat Anthropicille /feedbackilla.",
+        "instructions": [
+          "Aja /doctor ja lue raportti asennuksesi kunnosta",
+          "Muista pääsääntö: kun CLI käyttäytyy oudosti, aja ensin /doctor — se nappaa 90 % yleisistä ongelmista heti",
+          "Jos löysit ongelman tai sinulla on idea — lähetä se Anthropicille /feedbackilla",
+          "Toista itsellesi: /help on komenttokartta, /btw on nopea kysymys, /doctor on diagnostiikka"
+        ],
+        "validate": "Ajoit /doctorin, luit sen raportin ja tiedät, miten lähettää /feedback.",
+        "tip": "Suurin virhe on jättää /doctor ajamatta kun jokin menee rikki. Tee siitä ensimmäinen refleksi, ei viimeinen oljenkorsi."
+      }
+    }
   }
 }

@@ -7440,5 +7440,2210 @@
         "tip": "Once a quarter, run a \"fire-drill outage\" — deliberately take the primary down in staging. A fallback never tested under load most likely will not work in the real moment."
       }
     }
+  },
+  "cc-tty-sessions": {
+    "title": "Sessions and history in Claude Code",
+    "subtitle": "Keep context, resume work in seconds, manage several projects",
+    "totalTime": "6 шагов",
+    "whatItIs": "Every claude launch creates a session — a saved record of your conversation with the model. You can save it, continue the last one, or pick any past session. It's memory across breaks: context isn't lost, and you don't need to re-explain the task.",
+    "approach": "We go from understanding what a session is to practice: start a new one, continue a prior one with --continue and --resume, read history, trim context with /compact, and keep several parallel sessions per project. We finish with common mistakes and a skill check.",
+    "outcomes": [
+      "You understand that a session = saved conversation history tied to a project folder",
+      "You start a new session or return to a prior one with a single command",
+      "You distinguish --continue (the latest) from --resume (pick from a list)",
+      "You manage context size with /compact without losing the gist",
+      "You run several sessions in parallel across different tasks and projects"
+    ],
+    "applyIn": [
+      {
+        "title": "A long task across several sittings",
+        "description": "A big refactor spread over days. You close the terminal at night, continue in the morning from the same spot — the model remembers everything you discussed."
+      },
+      {
+        "title": "Parallel branches and features",
+        "description": "Two independent tasks in one repository. You keep two sessions and switch between them without mixing context."
+      },
+      {
+        "title": "Resuming after an interruption",
+        "description": "A call dropped in or the terminal crashed. --continue instantly brings back the last conversation, with nothing to recall by hand."
+      }
+    ],
+    "pitfalls": [
+      "Starting from scratch every time instead of --continue — you lose context and burn tokens on re-briefing",
+      "Confusing --continue (silently takes the latest) with --resume (lets you pick from a list) — you open the wrong session",
+      "Not running /compact on a long session — context overflows and answers degrade",
+      "Running --continue from a different folder and being surprised it's the wrong history — sessions are tied to the project directory",
+      "Expecting /compact to keep everything verbatim — it condenses into a summary, so small details can be lost"
+    ],
+    "exercises": [
+      {
+        "question": "What's the difference between claude --continue and claude --resume?",
+        "hint": "Think about which command asks no questions and which shows a list to pick from."
+      },
+      {
+        "question": "Why does --continue in folder project-a bring up history different from what you expected in project-b?",
+        "hint": "Sessions are tied to the directory you launched claude from."
+      },
+      {
+        "question": "When should you run /compact, and when is it better to start a new session?",
+        "hint": "Compare: same topic but bloated context — versus the task has changed entirely."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What a session and history are",
+        "time": "",
+        "why": "Without grasping that each launch creates savable history, you'll re-brief the model every time and lose context.",
+        "instructions": [
+          "Run claude in a project folder — this creates a new session",
+          "Do some work: ask a couple of questions, request a file change",
+          "Notice: the whole dialogue is the session history, tied to the current folder",
+          "Close the terminal — the session is saved automatically, nothing to do by hand"
+        ],
+        "validate": "You can explain in your own words: a session = saved conversation history tied to a project directory.",
+        "tip": "A session lives where you launched it: one folder's history doesn't mix with another's."
+      },
+      "s2": {
+        "title": "New session or continuation",
+        "time": "",
+        "why": "Returning to work in seconds instead of re-explaining the task is the main payoff of sessions. You need to know which command resumes.",
+        "instructions": [
+          "For a fresh start, just run claude — a new clean session",
+          "To silently bring up this folder's latest session — claude --continue",
+          "To pick a specific past session from a list — claude --resume",
+          "Remember the rule: --continue = no questions, the latest; --resume = pick from a list"
+        ],
+        "validate": "You resumed yesterday's dialogue with --continue and continued from the same spot, no re-briefing.",
+        "tip": "If you don't recall which session is the latest, use --resume — it shows a list with descriptions."
+      },
+      "s3": {
+        "title": "Viewing history",
+        "time": "",
+        "why": "To pick the right session out of many and recall where you left off, you must be able to view the list and scroll the history.",
+        "instructions": [
+          "Run claude --resume — a list of past sessions with brief descriptions opens",
+          "Pick the one you need by topic or time and open it",
+          "Inside the session, scroll the dialogue up to see the full exchange history",
+          "Confirm the model remembers earlier discussion — ask about something from the start"
+        ],
+        "validate": "You found the right session in the --resume list and confirmed its context is intact.",
+        "tip": "The description in the --resume list helps tell sessions apart — give tasks clear opening messages."
+      },
+      "s4": {
+        "title": "/compact and managing context",
+        "time": "",
+        "why": "On a long session context overflows and answers degrade. /compact condenses history into a summary and frees room while keeping the gist.",
+        "instructions": [
+          "In a long session, type /compact",
+          "Wait for the history to fold into a brief summary of key facts and decisions",
+          "Keep working — the model holds the gist but uses less context",
+          "If the task changed entirely — better start a new session rather than compact the old one"
+        ],
+        "validate": "You ran /compact on a bloated session, and the dialogue continued without losing the main thread.",
+        "tip": "/compact condenses into a summary rather than storing verbatim — small details can be lost, so restate what matters."
+      },
+      "s5": {
+        "title": "Several sessions and projects",
+        "time": "",
+        "why": "Parallel tasks need separate context. Sessions are tied to the folder, so each project keeps its own history apart.",
+        "instructions": [
+          "Open two project folders in separate terminal tabs",
+          "Run claude in each — you get two independent sessions",
+          "Switch between tabs: one's context doesn't leak into the other",
+          "To return, use --continue in the right folder — it brings up that folder's latest session"
+        ],
+        "validate": "You run two parallel sessions in different folders, and their contexts don't overlap.",
+        "tip": "The folder binding is your friend: one task = one directory = one session line."
+      },
+      "s6": {
+        "title": "Common mistakes and a check",
+        "time": "",
+        "why": "Knowing the antipatterns, you won't burn tokens on re-briefing or open the wrong session. The final check locks in the skill.",
+        "instructions": [
+          "Stop starting from scratch: instead of a fresh launch, get used to --continue",
+          "Don't confuse --continue (the latest, silently) with --resume (pick from a list)",
+          "Run --continue from the correct folder — otherwise the wrong history comes up",
+          "On a long session, run /compact in time; when the topic changes — a new session",
+          "Test yourself: resume yesterday's work, compact the context, start a second session in another folder"
+        ],
+        "validate": "You went through the whole cycle: --continue → /compact → a second session in another folder — without losing context or tokens.",
+        "tip": "If you're unsure you'll resume the right session — --resume and the list settle it in a second."
+      }
+    }
+  },
+  "cc-tty-files": {
+    "title": "Files in the Claude Code chat",
+    "subtitle": "How to give Claude the right files without copy-paste: @-mentions, attachments, code references",
+    "totalTime": "6 steps",
+    "whatItIs": "A course on passing files into Claude Code's context in the terminal: via @-mention, drag-and-drop, and attachments. Claude reads the file itself with the Read tool — you don't need to paste its contents into the chat manually.",
+    "approach": "We move from motivation to practice: first why you give a file rather than its text; then three ways to pass it (@, drag-and-drop, attachments); then precise addressing of code fragments; and we finish with managing context limits and the typical mistakes plus how to verify.",
+    "outcomes": [
+      "You understand why a file reference beats pasting its text into chat",
+      "You can attach files via @-mention with path autocomplete",
+      "You attach images and PDFs by dragging them in or as attachments",
+      "You point at the exact code fragment instead of the \"whole file\"",
+      "You control context size and avoid stale data"
+    ],
+    "applyIn": [
+      {
+        "title": "Working with code",
+        "description": "You attach a specific module via @path and ask Claude to analyze or change exactly that, without retelling its contents."
+      },
+      {
+        "title": "Reading logs and configs",
+        "description": "You pass a log or config file by reference — Claude reads the current version and finds the issue from real data."
+      },
+      {
+        "title": "Screenshots and documents",
+        "description": "You drag an error screenshot or a spec PDF straight into the chat so Claude sees the visual context."
+      }
+    ],
+    "pitfalls": [
+      "Copying file contents into chat manually — it bloats the context and goes stale fast",
+      "Attaching a whole huge file when only one code section is needed",
+      "Forgetting that @ references a path relative to the project's working folder",
+      "Dropping in dozens of files at once — the context overflows and the answer loses focus",
+      "Assuming Claude \"remembers\" a file after an edit — once changed, it must be re-read"
+    ],
+    "exercises": [
+      {
+        "question": "Why is the reference @src/App.jsx better than pasting the whole file's code right into the message?",
+        "hint": "Think about two things: context size and how current the content stays after edits."
+      },
+      {
+        "question": "You need to show Claude an error visible only in an interface screenshot. How do you pass it into the chat?",
+        "hint": "A text reference won't do here — you need a visual input channel."
+      },
+      {
+        "question": "A 5000-line file, but the question is only about one function. How do you narrow the context?",
+        "hint": "Address the specific section, not the entire file."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why give a file, not its text",
+        "time": "",
+        "why": "The core idea of the course: you pass a reference to a file, not its contents. Claude reads the current version itself with the Read tool. This saves context and rules out working from a stale copy.",
+        "instructions": [
+          "Open Claude Code in the terminal inside your project folder",
+          "Compare two approaches: pasting all the code into the message vs. pointing at the file path",
+          "Remember the rule: a file's contents are not what you type, but what Claude reads itself",
+          "Grasp the benefit: fewer tokens go to \"here's my code\", more to the task itself"
+        ],
+        "validate": "You can explain why pasting code manually is an anti-pattern in Claude Code.",
+        "tip": "The less wrapping in your message, the more room and attention left for the request itself."
+      },
+      "s2": {
+        "title": "@-mentioning files",
+        "time": "",
+        "why": "The @-mention is the main way to attach a file. You type @ and the path, Claude reads the file automatically and factors it into the answer.",
+        "instructions": [
+          "In the input field type the @ symbol and start typing the file name",
+          "Use path autocomplete to avoid mistakes: @src/App.jsx",
+          "Remember the path is counted from the project's working folder",
+          "You can mention several files in one message — each with its own @",
+          "State the task next to the reference: \"@src/App.jsx — find the extra re-render\""
+        ],
+        "validate": "Claude has read the mentioned file and refers to its real contents instead of asking you to paste the code.",
+        "tip": "Autocomplete after @ noticeably reduces the chance of a path typo."
+      },
+      "s3": {
+        "title": "Drag-and-drop and attachments",
+        "time": "",
+        "why": "Not everything is passed as text. Images, screenshots, and PDFs are added by dragging the file into the window or as an attachment — that gives Claude visual context.",
+        "instructions": [
+          "Drag the file from the file manager straight into the terminal window with Claude Code",
+          "For an error screenshot use an image — a text reference won't convey the visual",
+          "Attach a spec or document PDF as an attachment",
+          "After adding it, describe in words what exactly to do with the attachment"
+        ],
+        "validate": "The image or PDF appears in the context, and Claude comments on what it sees in it.",
+        "tip": "A screenshot often explains a visual problem faster than a long text description."
+      },
+      "s4": {
+        "title": "How to reference parts of code",
+        "time": "",
+        "why": "Often you need not the whole file but a specific section. Precise fragment addressing saves context and focuses the answer on the right place.",
+        "instructions": [
+          "If the question is about one function — name it and the file, don't attach a giant file whole",
+          "Give landmarks: a function name, a class, or a line range",
+          "For a large file, state which fragment matters: \"in @utils.js — the parseDate function\"",
+          "Ask Claude to first read only the needed part before changing it"
+        ],
+        "validate": "Claude works with exactly the specified fragment instead of retelling the whole file.",
+        "tip": "The more precise the fragment address, the more precise and shorter the answer."
+      },
+      "s5": {
+        "title": "Context and limits",
+        "time": "",
+        "why": "Context is not infinite. Dozens of large files at once overflow it, and the answer loses focus. Give exactly what the task needs.",
+        "instructions": [
+          "Attach only files relevant to the current question",
+          "For a large file, prefer an addressed fragment (see step 4) over the whole volume",
+          "Watch the size: the more clutter in the context, the vaguer the answer",
+          "If there really are many files — split the work into several steps with different sets"
+        ],
+        "validate": "Only relevant files are in the context, and answers stay precise and focused.",
+        "tip": "Fewer files in context means higher density of attention on your real task."
+      },
+      "s6": {
+        "title": "Mistakes and verification",
+        "time": "",
+        "why": "The final step cements the habits: don't paste code manually, remember to re-read after edits, and verify Claude sees the current version.",
+        "instructions": [
+          "Never copy a file's contents into chat by hand — use @ or an attachment",
+          "After a file has changed, let Claude re-read it",
+          "Check the path: @ is counted from the project's working folder",
+          "Don't dump everything in — extra files only get in the way",
+          "Make sure the answer relies on the real contents, not a stale copy"
+        ],
+        "validate": "You pass files only by reference or attachment, control the size, and work with current versions.",
+        "tip": "If the answer looks like Claude sees old code — ask it to re-read the file."
+      }
+    }
+  },
+  "cc-tty-modes": {
+    "title": "Claude Code terminal operating modes",
+    "subtitle": "Normal, auto-accept edits and plan mode: which to use when and how to switch",
+    "totalTime": "6 шагов",
+    "whatItIs": "Claude Code in the terminal runs in one of several permission modes: normal (every action needs confirmation), auto-accept edits (file edits apply without asking) and plan mode (read and plan only, no edits). The mode sets how much freedom the agent has and how much control you keep.",
+    "approach": "We walk through the three modes one by one: what each does, what risk it carries and what work rhythm it creates. You learn to switch them mid-session with Shift+Tab and pick the right mode per task — from safely exploring unfamiliar code to fast routine edits.",
+    "outcomes": [
+      "Understand the difference between normal mode, auto-accept edits and plan mode",
+      "Switch mode on the fly with Shift+Tab without interrupting the session",
+      "Pick the mode per task: plan for recon, auto-accept for routine, normal by default",
+      "Recognize the danger of bypass mode and why it must not be enabled carelessly",
+      "Avoid both extremes: confirming everything by hand or allowing everything blindly"
+    ],
+    "applyIn": [
+      {
+        "title": "Exploring unfamiliar code",
+        "description": "Turn on plan mode so Claude reads and proposes a plan but physically never touches files — safe recon before any change."
+      },
+      {
+        "title": "Routine mass edits",
+        "description": "Renames, formatting, small fixes in a trusted project — auto-accept edits removes the stream of confirmations and speeds things up."
+      },
+      {
+        "title": "Critical changes",
+        "description": "Editing prod configs, migrations, deleting files — normal mode, where every action passes through your confirmation."
+      }
+    ],
+    "pitfalls": [
+      "Staying in one mode forever: either slow (everything by hand) or dangerous (everything allowed)",
+      "Enabling auto-accept edits in an unfamiliar or prod project and missing a destructive edit",
+      "Confusing plan mode with normal: in plan, edits are not applied, so you may wait for a result in vain",
+      "Carelessly enabling bypass permissions — the agent runs everything with no questions, including risky commands",
+      "Forgetting which mode is active and being surprised why edits do (or do not) apply"
+    ],
+    "exercises": [
+      {
+        "question": "You were handed someone else's repo and need to grasp the architecture without breaking anything. Which mode and why?",
+        "hint": "You need a mode where Claude reads and plans but physically does not change files."
+      },
+      {
+        "question": "You are doing 30 similar renames in your own trusted project and are tired of pressing confirm. What do you enable?",
+        "hint": "A mode where file edits apply without confirming each one separately."
+      },
+      {
+        "question": "Why is bypass permissions more dangerous than auto-accept edits?",
+        "hint": "Consider what each mode actually allows: only file edits, or any action at all, including commands."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What the modes are and why",
+        "time": "",
+        "why": "Without a map of the modes you either stall on confirmations or accidentally give the agent extra freedom. Understanding the three modes is the basis of safe and fast work.",
+        "instructions": [
+          "Memorize the three core modes: normal (confirm every action), auto-accept edits (edits without asking), plan mode (read and plan only, no edits)",
+          "Grasp the main axis: a mode tunes the balance of \"control ↔ speed\"",
+          "Keep bypass permissions in mind separately — an extreme mode with no confirmations, for special cases",
+          "Tie mode to task risk: the more dangerous the edit, the more control you need"
+        ],
+        "validate": "You can name the three core modes and describe in one word what each allows.",
+        "tip": "Think of modes like gears: not \"which is best\" but \"which fits the current road\"."
+      },
+      "s2": {
+        "title": "Normal mode — confirm every step",
+        "time": "",
+        "why": "This is the default and safest mode: no file edit or command runs without your \"yes\". Start here in any unfamiliar context.",
+        "instructions": [
+          "Launch Claude Code in a project — by default you are already in normal mode",
+          "Give a task that requires a file edit and wait for the confirmation prompt",
+          "Read exactly what is proposed before you confirm",
+          "Reject one proposal and confirm the edit was not applied"
+        ],
+        "validate": "Before each edit you see a prompt and can accept or reject it.",
+        "tip": "Don't confirm on autopilot — reading the diff before \"yes\" is the whole value of this mode."
+      },
+      "s3": {
+        "title": "Auto-accept edits — edits without asking",
+        "time": "",
+        "why": "When the task is routine and the project familiar, the stream of confirmations only gets in the way. Auto-accept edits applies file edits automatically, giving you speed instead of clicks.",
+        "instructions": [
+          "Enable auto-accept edits by switching mode (Shift+Tab)",
+          "Give a series of similar edits: formatting, renames, small fixes",
+          "Notice that file edits apply immediately, without separate confirmation",
+          "Remember: this mode only removes asking about file edits, it does not make the agent all-permissive"
+        ],
+        "validate": "File edits apply automatically and you understand this only concerns edits.",
+        "tip": "Enable auto-accept only where you trust both the project and the nature of the task — routine in familiar code."
+      },
+      "s4": {
+        "title": "Plan mode — planning only, no edits",
+        "time": "",
+        "why": "Before a large or risky change it helps to get a plan first, not edits. Plan mode lets Claude read code and propose a strategy while physically changing nothing.",
+        "instructions": [
+          "Switch to plan mode (Shift+Tab) before a large task",
+          "Ask it to study a section of code and propose a plan of changes",
+          "Confirm Claude responds with a plan and files stay untouched",
+          "Once you approve the plan, leave plan mode and switch to a mode where edits apply"
+        ],
+        "validate": "In plan mode you get a plan and no file is changed until you leave the mode.",
+        "tip": "Plan mode is the best recon before an architectural step or a mass edit: it's cheap to be wrong on paper."
+      },
+      "s5": {
+        "title": "Switching modes with Shift+Tab",
+        "time": "",
+        "why": "A mode is not a whole-session setting: you change it on the fly to fit the current step. Shift+Tab cycles through modes without interrupting the conversation.",
+        "instructions": [
+          "Press Shift+Tab in a session and watch the active-mode indicator change",
+          "Go through the cycle: normal → auto-accept edits → plan mode → back",
+          "Before each task quickly check which mode is currently active",
+          "Build the habit: recon → plan, routine → auto-accept, risk → normal"
+        ],
+        "validate": "You switch mode in one keystroke and always know which one you're in.",
+        "tip": "Task first, then mode: ask yourself \"how risky is this?\" and switch to fit the answer."
+      },
+      "s6": {
+        "title": "Which when, the bypass danger and checking",
+        "time": "",
+        "why": "The main mistake is getting stuck in one mode. The final step cements picking the mode per task and warns about bypass permissions, where the agent acts with no confirmations at all.",
+        "instructions": [
+          "Form the rule: unfamiliar/risky → plan or normal, routine in familiar code → auto-accept",
+          "Grasp the danger of bypass permissions: any action is allowed, including commands, with no questions",
+          "Don't enable bypass on prod, in someone else's code, or when you don't control the consequences",
+          "After each switch double-check: edits apply / don't apply exactly as you expect",
+          "If a mode behaves unexpectedly — stop and check the active-mode indicator"
+        ],
+        "validate": "For three different tasks you name the right mode and explain why bypass is not a default option.",
+        "tip": "Bypass is like a wheel with no brakes: occasionally needed, but not for daily driving or crowded places."
+      }
+    }
+  },
+  "cc-tty-keys": {
+    "title": "Claude Code terminal hotkeys",
+    "subtitle": "Keyboard-driven session control: interrupt, modes, input, history and help",
+    "totalTime": "6 шагов",
+    "whatItIs": "The set of Claude Code terminal shortcuts that control a session without a mouse: stop generation (Esc), exit (Ctrl+C), switch mode (Shift+Tab), enter multiline text, scroll history (↑/↓, Ctrl+R) and autocomplete paths (Tab).",
+    "approach": "We go by meaning, not alphabet: first why hotkeys matter at all, then groups by task — stopping, modes, input, history, help. Each step is practiced by hand in a live session until the combo becomes muscle memory.",
+    "outcomes": [
+      "Stop generation and exit a session calmly and without a mouse",
+      "Switch Claude Code work modes with a single Shift+Tab",
+      "Enter long multiline prompts without sending them by accident",
+      "Find and reuse past commands via ↑/↓ and Ctrl+R",
+      "Open the built-in hotkey help and self-check without a cheat sheet"
+    ],
+    "applyIn": [
+      {
+        "title": "Interrupting a long answer",
+        "description": "Claude went off track — Esc stops generation instantly without killing the session."
+      },
+      {
+        "title": "Switching mode for the task",
+        "description": "Shift+Tab toggles the mode (e.g. auto-accept) mid-flow, no restart needed."
+      },
+      {
+        "title": "Repeating and editing commands",
+        "description": "↑ brings back the last prompt, Ctrl+R searches history — no retyping long prompts by hand."
+      }
+    ],
+    "pitfalls": [
+      "Confusing Esc (interrupt the answer) with Ctrl+C (exit the session) — Ctrl+C twice closes Claude Code",
+      "Pressing Enter mid-multiline and accidentally sending an unfinished prompt",
+      "Using the mouse in the terminal — you lose the main CLI advantage and speed",
+      "Not knowing Shift+Tab and manually restarting the session just to change mode",
+      "Ignoring Ctrl+R and retyping long commands instead of searching history"
+    ],
+    "exercises": [
+      {
+        "question": "What is the difference between Esc and Ctrl+C while Claude Code is working?",
+        "hint": "One stops the current answer and keeps the session alive, the other exits Claude Code itself."
+      },
+      {
+        "question": "You need to repeat a 5-line prompt you entered 10 prompts ago. What is faster than retyping it?",
+        "hint": "Think history: scrolling ↑/↓ or substring search."
+      },
+      {
+        "question": "How do you enter a multi-line prompt without sending it too early?",
+        "hint": "Enter sends; a line break needs a different input — check the hotkey help."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why terminal hotkeys",
+        "time": "",
+        "why": "Without hotkeys every action means reaching for the mouse and retyping. That breaks flow and doubles your time in the terminal.",
+        "instructions": [
+          "Open Claude Code and run one normal session the way you usually do — with mouse and manual typing",
+          "Roughly count how often you reached for the mouse or retyped something you had already entered",
+          "Remember the principle: hands stay on the keyboard — terminal work flows",
+          "State the course goal: stopping, modes, input, history and help — all from the keyboard"
+        ],
+        "validate": "You can name at least 3 moments in your session where the mouse or retyping slowed you down.",
+        "tip": "An hour in the terminal on hotkeys becomes 30 minutes — the gain is not cosmetic."
+      },
+      "s2": {
+        "title": "Interrupt and stop: Esc and Ctrl+C",
+        "time": "",
+        "why": "Claude often goes off track. Being able to stop an answer instantly is control over the session and saved time.",
+        "instructions": [
+          "Give Claude any task and during generation press Esc — the answer stops, the session stays alive",
+          "Confirm that after Esc you can immediately type a new prompt — no restart needed",
+          "Press Ctrl+C once — note that it is an exit signal, not just a stop",
+          "Remember the difference: Esc interrupts the answer, Ctrl+C exits Claude Code"
+        ],
+        "validate": "You stopped generation with Esc and continued working without restarting the session.",
+        "tip": "If you only want to stop the answer — always Esc. Save Ctrl+C for exiting."
+      },
+      "s3": {
+        "title": "Switching modes: Shift+Tab",
+        "time": "",
+        "why": "Different tasks need different work modes. Changing them with one key inside the session is faster than restarting.",
+        "instructions": [
+          "In an active session press Shift+Tab — the work mode switches, the indicator changes",
+          "Press Shift+Tab a few times and watch how the behavior and mode label change",
+          "Pick the mode that fits the current task and keep it",
+          "Remember: changing mode needs no restart — it is an on-the-fly toggle"
+        ],
+        "validate": "You switched mode with Shift+Tab and can see the changed mode indicator.",
+        "tip": "Pick the mode before starting a big task — fewer interruptions along the way."
+      },
+      "s4": {
+        "title": "Input and multiline",
+        "time": "",
+        "why": "Long multi-line prompts are normal. Without correct input, Enter sends unfinished text and breaks your train of thought.",
+        "instructions": [
+          "Start typing a prompt and notice: Enter sends the message",
+          "Open the hotkey help (see step 6) and find the combo for a line break",
+          "Enter a 3-4 line prompt using line breaks, and only then send with Enter",
+          "Confirm the multiline text was sent whole, not in pieces"
+        ],
+        "validate": "You sent one multi-line prompt without breaking it with an accidental Enter.",
+        "tip": "If the prompt is long — type the whole text first, send only at the very end."
+      },
+      "s5": {
+        "title": "History and autocomplete",
+        "time": "",
+        "why": "Retyping long commands by hand is wasted time. History and Tab return what you already typed in seconds.",
+        "instructions": [
+          "Enter several different prompts, then scroll history with ↑ and ↓",
+          "Press Ctrl+R and start typing a piece of a past command — search finds it by substring",
+          "Type the start of a file path and press Tab — the path autocompletes without typing the name",
+          "Try Tab after @src/ — autocomplete suggests the files inside"
+        ],
+        "validate": "You found a past command with Ctrl+R and autocompleted a file path with Tab.",
+        "tip": "↑ — for the last couple of commands, Ctrl+R — when it was long ago and you only recall a fragment."
+      },
+      "s6": {
+        "title": "Hotkey help and self-check",
+        "time": "",
+        "why": "Memorizing it all at once is impossible. The built-in help is a cheat sheet at hand until the combos become muscle memory.",
+        "instructions": [
+          "Open the built-in Claude Code hotkey help and review the full list",
+          "Cross-check everything you practiced: Esc, Ctrl+C, Shift+Tab, line break, ↑/↓, Ctrl+R, Tab",
+          "Run one full session without a mouse, leaning on the help when you stall",
+          "Mark the combos not yet automatic and repeat them every session"
+        ],
+        "validate": "You ran a full session without a mouse and can name from memory the hotkey for each of the 6 course tasks.",
+        "tip": "After a week of daily practice all these combos become muscle memory — you no longer need the help."
+      }
+    }
+  },
+  "cc-cfg-settings": {
+    "title": "Project settings.json in Claude Code",
+    "subtitle": "Shared team rules in the repository: permissions, hooks, env",
+    "totalTime": "6 steps",
+    "whatItIs": "The .claude/settings.json file in the project root is the team configuration for Claude Code: permissions, automated actions (hooks), and environment variables (env). It is committed to the repository, so every team member gets the same rules for working with the agent.",
+    "approach": "We move from understanding the file's purpose to its structure and key fields, then cover why it is committed to git and how it combines with global and local settings levels. We finish with the main mistake — secrets in settings.json — and validation.",
+    "outcomes": [
+      "You understand that .claude/settings.json defines shared team rules and lives in the repository",
+      "You know the file structure and the three key blocks: permissions, hooks, env",
+      "You can set base permissions and a hook that runs after editing a file",
+      "You understand the difference between the global, project, and local settings levels",
+      "You keep secrets and API keys out of settings.json and can validate the config"
+    ],
+    "applyIn": [
+      {
+        "title": "Onboarding new developers",
+        "description": "A new person clones the repo and immediately gets the same permissions and hooks as the whole team — no \"set it up per my instructions\"."
+      },
+      {
+        "title": "A unified agent standard",
+        "description": "Everyone runs Claude Code with the same permissions and automated actions, so the agent behaves predictably for each member."
+      },
+      {
+        "title": "Automating routine via hooks",
+        "description": "Formatting, linting, or tests run automatically after the agent's actions because the hook is declared in the shared project file."
+      }
+    ],
+    "pitfalls": [
+      "Storing personal secrets or API keys in settings.json — the file goes to git and is visible to everyone",
+      "Putting personal preferences in the project file instead of the local settings.local.json",
+      "Forgetting to commit settings.json, so the team ends up working with different rules",
+      "Overly broad permissions.allow (for example, allowing everything) — confirmations lose their meaning",
+      "Invalid JSON (trailing comma, wrong quotes) — Claude Code cannot read the config"
+    ],
+    "exercises": [
+      {
+        "question": "Why must an API key not go into .claude/settings.json, but into an env variable or a local file instead?",
+        "hint": "Recall where settings.json is committed and who sees it after git push."
+      },
+      {
+        "question": "How does the project .claude/settings.json differ in purpose from .claude/settings.local.json?",
+        "hint": "One is shared with the team and goes to git, the other is personal and stays out of git."
+      },
+      {
+        "question": "Which entry in permissions.allow lets the agent run tests without confirmation?",
+        "hint": "The format is a tool with a command pattern, e.g. Bash(npm test)."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What .claude/settings.json is and why",
+        "time": "",
+        "why": "Without a shared settings file each team member configures the agent their own way, and Claude Code behaves differently from machine to machine.",
+        "instructions": [
+          "Open the project root and find (or create) the .claude folder",
+          "Inside it lives settings.json — the team configuration for Claude Code",
+          "Remember the three jobs of the file: permissions, hooks, and environment variables (env)",
+          "The file is shared: Claude Code reads it for everyone who cloned the repository"
+        ],
+        "validate": "You can explain in one sentence: settings.json defines shared team rules for working with the agent.",
+        "tip": "It is most convenient to create the file right after /init, once the base project structure is described."
+      },
+      "s2": {
+        "title": "File structure",
+        "time": "",
+        "why": "Claude Code reads settings.json as JSON: understanding the structure lets you add settings without breaking the file.",
+        "instructions": [
+          "The file is a single JSON object with curly braces at the top level",
+          "Inside are named blocks: permissions, hooks, env, and others (for example statusline)",
+          "Values are objects, arrays, or strings depending on the block",
+          "Follow JSON syntax: double quotes, commas between fields, no trailing comma at the end"
+        ],
+        "validate": "A minimal valid file { } reads without errors, and you can see where to add blocks.",
+        "tip": "Check syntax in an editor with JSON highlighting — it will flag an extra comma instantly."
+      },
+      "s3": {
+        "title": "Key fields: permissions, hooks, env",
+        "time": "",
+        "why": "These three blocks cover the team's main needs: what the agent is allowed to do, what runs automatically, and what environment it sees.",
+        "instructions": [
+          "permissions.allow — an array of allowed actions, e.g. Bash(npm test) and Edit(./src/**)",
+          "permissions.deny — what is explicitly forbidden, even if it would match allow",
+          "hooks — automated actions on events, e.g. PostToolUse:Write runs prettier after a file write",
+          "env — project environment variables (not secrets) the agent sees"
+        ],
+        "validate": "The file has a permissions block with a non-empty allow, and you know how to add a simple hook.",
+        "tip": "Start minimal: allow frequent safe commands, leave the rest to confirmation."
+      },
+      "s4": {
+        "title": "Commit it to the repository",
+        "time": "",
+        "why": "The whole point of the project settings.json is shared rules for everyone; they work only if the file is in git.",
+        "instructions": [
+          "Make sure .claude/settings.json is not excluded in .gitignore",
+          "Add the file to the index: git add .claude/settings.json",
+          "Commit it together with the rest of the project setup",
+          "After git push, teammates get the same permissions and hooks on their next pull"
+        ],
+        "validate": "git status shows settings.json as tracked, and after a clone another member has the same rules.",
+        "tip": "Agree as a team that changes to shared rules go through normal review, just like code."
+      },
+      "s5": {
+        "title": "Relation to global and local levels",
+        "time": "",
+        "why": "Settings layer by level: personal preferences must not land in the shared file, while project settings should override global ones.",
+        "instructions": [
+          "Global level — user settings shared across all projects on your machine",
+          "Project level — .claude/settings.json, shared with the team and committed to git",
+          "Local level — .claude/settings.local.json, personal and NOT committed (usually in .gitignore)",
+          "Keep personal secrets and preferences in the local file or environment, not in the project file"
+        ],
+        "validate": "You understand which level to pick for a team rule versus a personal setting.",
+        "tip": "If a rule is needed only by you, that is a signal it belongs in settings.local.json, not settings.json."
+      },
+      "s6": {
+        "title": "Mistakes: secrets in settings.json + validation",
+        "time": "",
+        "why": "The most dangerous mistake is putting a secret into a file that is committed: after push the whole team and git history see it.",
+        "instructions": [
+          "Never write API keys or passwords in .claude/settings.json — it goes to git",
+          "Pass secrets via environment variables or a local file outside git",
+          "Verify the JSON is valid (no trailing commas or single quotes)",
+          "Run Claude Code in the project and confirm permissions and hooks took effect"
+        ],
+        "validate": "There is no secret in settings.json, the file is valid JSON, and the rules you set actually work.",
+        "tip": "If a secret already landed in a commit, deleting it is not enough — the key must be revoked and rotated."
+      }
+    }
+  },
+  "cc-cfg-local": {
+    "title": "settings.local.json: personal Claude Code settings",
+    "subtitle": "Personal configuration that never lands in the shared repository",
+    "totalTime": "6 steps",
+    "whatItIs": "settings.local.json lives in the .claude folder next to the project's settings.json. It has the same fields, but it is not committed to git: it stays local and holds whatever is specific to your machine only — personal permissions, paths, ENV variables, experiments.",
+    "approach": "We move from understanding how the local file differs from the shared one, through filling it correctly and excluding it from git, to its priority over project settings and a breakdown of common mistakes (committed the local file, leaked a secret). Every step is technically accurate and grounded in the Claude Code config model.",
+    "outcomes": [
+      "You understand the purpose of .claude/settings.local.json and how it differs from settings.json",
+      "You know what belongs in local versus the shared project file",
+      "You can exclude the local file from git via .gitignore",
+      "You understand the priority order: local overrides project settings",
+      "You avoid leaking secrets and desyncing with the team"
+    ],
+    "applyIn": [
+      {
+        "title": "Personal command allow-lists",
+        "description": "Allow commands you personally trust in local without forcing them on the whole team via the shared settings.json."
+      },
+      {
+        "title": "Machine-specific paths and ENV",
+        "description": "Store local paths and environment variables of your machine that will differ for your colleagues."
+      },
+      {
+        "title": "Experiments without risk to the repo",
+        "description": "Try new settings and permissions without polluting commit history or touching the shared config."
+      }
+    ],
+    "pitfalls": [
+      "Committing settings.local.json — it lands in the repo and breaks the idea of a 'personal' file",
+      "Putting secrets or API keys somewhere they might leak into a commit",
+      "Duplicating in local what should be in the shared settings.json — desync with the team",
+      "Forgetting the priority: local silently overrides project settings, and behavior changes 'for no clear reason'",
+      "Putting team-wide settings in local — colleagues won't receive them"
+    ],
+    "exercises": [
+      {
+        "question": "You have an API key needed only on your machine. Which of the two files should hold it, and why?",
+        "hint": "Think about which file goes into the shared repository and which stays local."
+      },
+      {
+        "question": "The team complains that a permission works for you but not for them. Where could the cause be?",
+        "hint": "Check whether the needed rule lives only in your local file instead of the shared settings.json."
+      },
+      {
+        "question": "How do you make sure settings.local.json definitely won't end up in a commit?",
+        "hint": "Look at .gitignore and check git status."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What settings.local.json is and why you need it",
+        "time": "",
+        "why": "Without understanding its purpose it's easy to confuse local with the project file and put settings in the wrong place.",
+        "instructions": [
+          "Open the .claude folder in the project root — settings.local.json may sit next to settings.json",
+          "Remember: the fields in local are the same as in settings.json — the structure is identical",
+          "Key difference: local does NOT go to git; it holds configuration for your machine only",
+          "Use it for personal permissions, local paths, ENV variables, and experiments"
+        ],
+        "validate": "You can explain in one sentence why a separate local file is needed instead of just the shared one.",
+        "tip": "If the file doesn't exist — that's fine: Claude Code creates it on the first write of local settings."
+      },
+      "s2": {
+        "title": "How local differs from settings.json",
+        "time": "",
+        "why": "The boundary between 'shared' and 'personal' is the foundation of the whole topic; mix it up and you either leak a secret or the team misses something it needs.",
+        "instructions": [
+          "settings.json — shared: committed to git and applies to the whole team",
+          "settings.local.json — personal: not committed, applies only to you",
+          "The fields are identical; the difference is scope and whether it lands in the repository",
+          "Rule: shared for the team → settings.json; personal for the machine → settings.local.json"
+        ],
+        "validate": "For any setting you can say which of the two files it should go into.",
+        "tip": "If unsure 'shared or personal', ask: should colleagues receive this? Yes → settings.json."
+      },
+      "s3": {
+        "title": "What to put in settings.local.json",
+        "time": "",
+        "why": "Correct content makes local useful; wrong content turns it into a source of desync.",
+        "instructions": [
+          "Put personal allow-lists for commands that only you trust",
+          "Put local paths and ENV variables specific to your machine",
+          "Put experimental settings you don't want to impose on the team",
+          "Do NOT put here what should work for everyone — that's the shared settings.json's job"
+        ],
+        "validate": "Your local holds only what is specific to your machine and nothing team-wide.",
+        "tip": "Personal allow-lists are the most common case: they spare you extra confirmations without touching the team."
+      },
+      "s4": {
+        "title": ".gitignore — don't commit the local file",
+        "time": "",
+        "why": "The whole point of local rests on it not landing in the repository; without excluding it from git the protection doesn't work.",
+        "instructions": [
+          "Open the project's .gitignore and confirm settings.local.json is listed there",
+          "If the line is missing — add the path to the local file to .gitignore",
+          "Run git status and verify settings.local.json is not shown as modified/new",
+          "If the file is already tracked by git — that signals it was committed earlier (covered in step 6)"
+        ],
+        "validate": "git status does not show settings.local.json among files to commit.",
+        "tip": "In Claude Code project templates the local file exclusion is often already in place — but checking won't hurt."
+      },
+      "s5": {
+        "title": "Priority of local over project settings",
+        "time": "",
+        "why": "If you don't know that local overrides settings.json, behavior will change 'for no clear reason'.",
+        "instructions": [
+          "Remember: when fields overlap, settings.local.json takes priority over settings.json",
+          "This lets you locally override a shared setting for yourself without touching the shared file",
+          "When debugging behavior, look at local first — it may have silently overridden the project value",
+          "Don't duplicate fields needlessly: a duplicate in local hides the value from settings.json"
+        ],
+        "validate": "You understand which value applies when a field is set in both local and the project file.",
+        "tip": "If something is 'not like in settings.json', first look for that field in settings.local.json."
+      },
+      "s6": {
+        "title": "Mistakes and verification: committed the local file / leaked a secret",
+        "time": "",
+        "why": "The two main mistakes of this topic are costly: a secret in git and desync with the team; you need to find and prevent them.",
+        "instructions": [
+          "Mistake 1: settings.local.json is committed — add it to .gitignore and remove it from git tracking (without deleting the file itself)",
+          "Mistake 2: a secret/key landed in a commit — treat it as compromised, revoke and replace the key",
+          "Mistake 3: a team setting duplicated in local — move it to the shared settings.json",
+          "Verification: git log and git status contain no local file and no secrets; the team gets shared settings via settings.json"
+        ],
+        "validate": "Git history contains neither settings.local.json nor secrets, and team settings live in the shared file.",
+        "tip": "Treat any key that ever entered git history as leaked — simply deleting the commit isn't enough, the key must be rotated."
+      }
+    }
+  },
+  "cc-cfg-global": {
+    "title": "Claude Code global settings",
+    "subtitle": "Personal defaults for all projects via ~/.claude/",
+    "totalTime": "6 steps",
+    "whatItIs": "The ~/.claude/settings.json file holds your personal Claude Code settings that apply to every project on this machine: language, response format, Statusline, command permissions. Alongside it lives a global ~/.claude/CLAUDE.md with behavior rules you want everywhere. This is the base layer that project-specific settings sit on top of.",
+    "approach": "We go from meaning to practice: first understand what the global layer is and why it exists, then what exactly to put there, add a global CLAUDE.md, master the precedence of layers (global < project < local), learn to notice when global settings get in the way, and close with common mistakes plus a checkout. After this course you set up a new machine once and stop copy-pasting configs across projects.",
+    "outcomes": [
+      "Understand the purpose of ~/.claude/settings.json and the global CLAUDE.md",
+      "Know what belongs in the global layer and what to leave to the project",
+      "Can set personal defaults: language, allow for safe commands, Statusline",
+      "Understand layer precedence: global < project < local",
+      "Notice when a global setting hurts a specific project and fix it"
+    ],
+    "applyIn": [
+      {
+        "title": "Setting up a new machine",
+        "description": "Set language, favorite tools and baseline permissions in ~/.claude/ once — and all future projects immediately follow your rules."
+      },
+      {
+        "title": "A consistent way of working",
+        "description": "A global CLAUDE.md sets habits (response format, tone, preferred approaches) that follow you across every repository without duplication."
+      },
+      {
+        "title": "Saving on confirmations",
+        "description": "A global allow for safe Bash commands (ls, git status, npm test) removes routine confirmation prompts in every project."
+      }
+    ],
+    "pitfalls": [
+      "Putting project-specific settings in the global settings.json — junk and risk of conflicts with project settings",
+      "A global allow on dangerous commands (rm -rf, git push --force) removes protection everywhere at once",
+      "Expecting a global setting to win over a project one — in reality the project and local layers override it",
+      "Editing settings.json with broken JSON (extra comma, quotes) — the whole file stops being read",
+      "Forgetting the global CLAUDE.md as a source of unexpected behavior when a rule seems to come out of nowhere"
+    ],
+    "exercises": [
+      {
+        "question": "You want Claude to answer in English everywhere and not ask for confirmation on git status. Where do you put this?",
+        "hint": "These are project-independent rules → the global ~/.claude/ layer. Language/style go in CLAUDE.md, the command allow goes in settings.json (permissions.allow)."
+      },
+      {
+        "question": "In one project a global allow on npm test is a problem because tests there are slow and costly. What do you do?",
+        "hint": "The project layer overrides the global one. Add a stricter rule or deny in that project's .claude/settings.json — it wins without touching the global config."
+      },
+      {
+        "question": "After editing ~/.claude/settings.json, Claude Code stopped applying your settings. First thing to check?",
+        "hint": "Most likely broken JSON — an extra comma or an unclosed quote. Validate the file with a JSON validator; on error the whole file is ignored."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What ~/.claude/settings.json is and why",
+        "time": "",
+        "why": "Without understanding the purpose of the global layer you'll copy-paste the same configs into every project and won't understand where a given behavior comes from.",
+        "instructions": [
+          "Open your home folder and find the ~/.claude/ directory — it's created on first use of [[node:claude-code|Claude Code]].",
+          "The ~/.claude/settings.json file is your personal defaults for all projects on this machine: language, response format, Statusline, permissions.",
+          "Remember the principle: this is where anything project-independent that should work everywhere goes.",
+          "If the file doesn't exist that's fine — you can create it manually as a valid JSON object {}."
+        ],
+        "validate": "You can explain in your own words how the global settings.json differs from settings inside a project.",
+        "tip": "The global layer is about you as a user, the project layer is about a specific repository. Keep that distinction in mind."
+      },
+      "s2": {
+        "title": "What to put in global settings",
+        "time": "",
+        "why": "Filling the global layer correctly saves time across all projects at once; filling it wrong clutters the config and creates conflicts.",
+        "instructions": [
+          "Put your preferred response language and general format here — what's the same across all your projects.",
+          "Put a global allow for safe Bash commands (ls, git status, npm test) — this removes routine confirmations.",
+          "Put the Statusline setting and favorite tools if you need them everywhere.",
+          "Do NOT put project-specific things: paths, service names, project deploy commands.",
+          "More on config fields — see [[node:cc-config|Claude Code configuration]]."
+        ],
+        "validate": "For each item in your config you can answer: is this needed in ALL projects or just one?",
+        "tip": "Simple test: if a setting makes sense on someone else's machine with different projects — it's global. If not — it's project-level."
+      },
+      "s3": {
+        "title": "The global CLAUDE.md",
+        "time": "",
+        "why": "settings.json sets technical permissions, while the global CLAUDE.md sets behavior rules — tone, habits, approaches you want in all projects.",
+        "instructions": [
+          "Create a ~/.claude/CLAUDE.md file next to settings.json.",
+          "Write your personal behavior rules there: communication language, summary format, preferred coding approaches.",
+          "Keep it short — it's a base layer, not a place for project specifics.",
+          "Remember: for the structure and purpose of CLAUDE.md see [[node:cc-md|CLAUDE.md]]."
+        ],
+        "validate": "The global CLAUDE.md contains only rules appropriate for any of your projects, with no mention of specific repositories.",
+        "tip": "settings.json = 'what's allowed', CLAUDE.md = 'how to behave'. Don't mix the two roles."
+      },
+      "s4": {
+        "title": "Layer precedence: global < project < local",
+        "time": "",
+        "why": "Without understanding precedence you'll be surprised why a global setting 'doesn't work' in a project — in fact a narrower layer overrides it.",
+        "instructions": [
+          "Remember the order of strength: global (~/.claude/) is weakest, project (.claude/settings.json in the repo) is stronger, local (.claude/settings.local.json) is strongest.",
+          "A narrower layer overrides a wider one when the same parameter conflicts.",
+          "The local layer (settings.local.json) is personal tweaks for one project, usually not committed.",
+          "Use this deliberately: keep the general settings global, set exceptions at the project or local level."
+        ],
+        "validate": "You can predict which value applies if one parameter is set both globally and in the project.",
+        "tip": "Think of layers as filters: each next one refines the previous, it doesn't wipe everything out."
+      },
+      "s5": {
+        "title": "When global settings get in the way",
+        "time": "",
+        "why": "A global setting that's handy in most projects sometimes harms a specific one — you need to spot it and work around it without breaking the shared config.",
+        "instructions": [
+          "Sign of trouble: in one project Claude behaves differently than expected for no visible reason — look for a global rule.",
+          "If a global allow is dangerous for this project (slow/costly tests, sensitive deploy) — add a stricter rule at the project level.",
+          "A project deny overrides a global allow — this is the standard way to make an exception.",
+          "Don't edit the global config for one project — it'll break the others; fix it at the project level."
+        ],
+        "validate": "You made an exception for one project without changing ~/.claude/, and confirmed other projects are unaffected.",
+        "tip": "Rule: change the global only if the problem repeats across all projects. A single case is cured at the project layer."
+      },
+      "s6": {
+        "title": "Common mistakes and the checkout",
+        "time": "",
+        "why": "Most problems with global settings are broken JSON and inappropriate content; a quick check saves hours of confusing behavior.",
+        "instructions": [
+          "Verify settings.json is valid JSON: an extra comma or unclosed quote disables the whole file.",
+          "Make sure the global layer has no project-specific junk and no dangerous allow entries.",
+          "Check that the global CLAUDE.md has no rules conflicting with project ones.",
+          "Restart the Claude Code session and confirm the settings applied as expected.",
+          "If something behaves oddly — walk the layers top to bottom: local → project → global."
+        ],
+        "validate": "settings.json parses as valid JSON, the global layer is clean of project specifics, and Claude's behavior matches your expectation.",
+        "tip": "Keep the global config minimal: the fewer rules in it, the fewer unexpected conflicts with projects."
+      }
+    }
+  },
+  "cc-cfg-statusline": {
+    "title": "Statusline in Claude Code",
+    "subtitle": "Your own status line: model, branch and context always in view",
+    "totalTime": "6 steps",
+    "whatItIs": "Statusline is a custom terminal bottom line in Claude Code that you populate yourself via the statusLine setting in settings.json. It shows session context: current model, git branch, remaining context, project path, and any markers of yours. Under the hood it's a shell command that receives session JSON on stdin and prints the status line to stdout.",
+    "approach": "We move from understanding to practice: first grasp why the line matters and what people put in it, then enable the built-in statusLine, then write your own script, pick the genuinely useful fields, watch performance, and close with error handling and verification. Each step yields a working result visible right in the terminal.",
+    "outcomes": [
+      "You understand what statusline is and what session context it exposes",
+      "You can enable and configure statusLine via settings.json",
+      "You can write your own status line script that reads the session JSON",
+      "You know which fields are truly useful and which are just noise",
+      "You keep the line fast so it doesn't slow down every edit"
+    ],
+    "applyIn": [
+      {
+        "title": "Working on projects in parallel",
+        "description": "Branch and project path in the status line stop you from committing to the wrong place when switching repos."
+      },
+      {
+        "title": "Tracking context usage",
+        "description": "Remaining context in view hints when it's time to compact history or start a new session."
+      },
+      {
+        "title": "Picking the model for the task",
+        "description": "A visible model in the line reminds you which model you're on before sending an expensive request."
+      }
+    ],
+    "pitfalls": [
+      "A heavy script in statusline — it runs often and slows down every edit",
+      "Network calls or external API requests inside the status script",
+      "Too many fields: the line becomes unreadable and gets truncated by the terminal",
+      "The script crashes or writes to stderr — the status line silently disappears",
+      "Hardcoded paths and assuming git is always available in the directory"
+    ],
+    "exercises": [
+      {
+        "question": "Why must the statusLine script be lightweight and free of network calls?",
+        "hint": "Recall how often the line is redrawn and that Claude Code caches it only for ~300ms."
+      },
+      {
+        "question": "Where does the statusline script get data about the current model and session?",
+        "hint": "Claude Code passes JSON on the script's stdin — model, path, version, etc."
+      },
+      {
+        "question": "What happens to the line if the script exits with an error?",
+        "hint": "Consider whether the error is visible to the user and whether you should add fallback output."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What statusline is and why it matters",
+        "time": "",
+        "why": "Before configuring, understand the problem the line solves: session context (model, branch, remaining context) stays visible without running commands.",
+        "instructions": [
+          "Open Claude Code and look at the bottom of the terminal — by default the status line is minimal",
+          "Decide what context you actually need at hand: model, git branch, path, remaining context",
+          "Note the scenario where it matters most — e.g. switching between several projects",
+          "Remember: a statusline is not a command but a persistent state indicator"
+        ],
+        "validate": "You can name 3-4 fields you want in the line and explain why each one is there.",
+        "tip": "Think of statusline as a dashboard: put only what you actually glance at while working."
+      },
+      "s2": {
+        "title": "How to enable and configure statusLine",
+        "time": "",
+        "why": "The line is defined via the statusLine key in settings.json — the basic way to bind any command to the status line.",
+        "instructions": [
+          "Open settings.json (user or project level)",
+          "Add a statusLine block with type: \"command\" and a command field — a shell command that prints the line",
+          "Start with a simple command, e.g. echo \"hello statusline\"",
+          "Restart or refresh the Claude Code session and confirm the line shows at the bottom"
+        ],
+        "validate": "Your test line appears at the bottom of the terminal instead of the default one.",
+        "tip": "Start with a trivial echo — that separates a config problem from a script problem."
+      },
+      "s3": {
+        "title": "A custom statusline script",
+        "why": "Real value appears when your script builds the line: it gets session JSON on stdin and prints a meaningful status.",
+        "time": "",
+        "instructions": [
+          "Create a separate script (e.g. statusline.sh) and make it executable",
+          "In the script, read stdin — Claude Code passes session JSON there (model, path, etc.)",
+          "Parse the needed fields (e.g. with jq) and assemble the output line on stdout",
+          "Set statusLine.command to the path of this script",
+          "Confirm the line updates and shows data from the JSON"
+        ],
+        "validate": "The status line shows real session data assembled by your script.",
+        "tip": "Debug the script in isolation: echo '{...}' | ./statusline.sh — you see the output without restarting Claude Code."
+      },
+      "s4": {
+        "title": "What is useful to show",
+        "time": "",
+        "why": "The line's value is in choosing fields well. Extras clutter; the right ones save switches and prevent mistakes.",
+        "instructions": [
+          "Add the git branch (via git rev-parse or from the passed path) — an anchor against committing to the wrong place",
+          "Show the current model from the session JSON — a reminder before expensive requests",
+          "Add remaining context or a short project path if you work across several projects",
+          "Drop anything you don't look at — the line must read in a fraction of a second"
+        ],
+        "validate": "The line holds only the 3-4 fields that genuinely affect your decisions while working.",
+        "tip": "Separate fields with a short symbol and use color sparingly — the eye should instantly find branch and model."
+      },
+      "s5": {
+        "title": "Performance: the script must not slow you down",
+        "time": "",
+        "why": "The line is redrawn often and cached only for ~300ms — a heavy script makes every edit slow.",
+        "instructions": [
+          "Remove network calls and external API requests from the script",
+          "Minimize subprocess launches — every git/jq call costs time",
+          "Measure it: time (echo '{...}' | ./statusline.sh) — aim for tens of milliseconds",
+          "Cache rarely changing data if you truly need it, instead of fetching it every time"
+        ],
+        "validate": "The script runs in tens of milliseconds and working in Claude Code doesn't lag.",
+        "tip": "Any operation in statusline runs on every update — treat it like code in a hot loop."
+      },
+      "s6": {
+        "title": "Errors and verification",
+        "time": "",
+        "why": "The line script fails silently: on error the line just disappears. You need resilience and a final check.",
+        "instructions": [
+          "Guard the script against missing git/jq and empty stdin — don't crash, print a fallback instead",
+          "Don't write extra noise to stderr — it can break rendering",
+          "Test behavior outside a git repo and on a slow disk",
+          "Run the line in a real session across several projects and confirm the data is correct",
+          "Validate the JSON in settings.json — a syntax error disables statusLine entirely"
+        ],
+        "validate": "The line displays correctly in all tested scenarios, including outside git and with empty data.",
+        "tip": "Add a default placeholder string in the script: even on failure the user sees something rather than emptiness."
+      }
+    }
+  },
+  "cc-grp-session": {
+    "title": "Session management in Claude Code",
+    "subtitle": "The slash-command group for controlling context, restoring state, and switching devices",
+    "totalTime": "6 steps",
+    "whatItIs": "Sessions in Claude Code are persistent: you can pause, resume, fork, export, and move them to another device. The Session management command group gives you full control over context and conversation history — from clearing and compacting to rolling back code and continuing from your phone.",
+    "approach": "We go from general to specific: first understand what the group is and why it exists, then break the commands down by meaning (context, conversation, devices, exit) — one or two commands per step with a 'what it does / when' breakdown. Finally we learn to combine commands and avoid common mistakes. Always verify commands with /help — the list reflects exactly your version.",
+    "outcomes": [
+      "Understand the difference between /clear and /compact and never lose context by accident",
+      "Restore past sessions with /resume and undo mistakes with /rewind",
+      "Manage the conversation: rename, branch, recap, export",
+      "Move work between terminal, Desktop, claude.ai, and phone",
+      "Check available commands with /help instead of guessing"
+    ],
+    "applyIn": [
+      {
+        "title": "Long coding session",
+        "description": "A multi-hour task with growing context: compact the history in time with /compact so you don't hit the limit, while keeping the conclusions."
+      },
+      {
+        "title": "Risky refactor",
+        "description": "Before a dangerous change run /branch, experiment freely, and if it fails the main session stays untouched."
+      },
+      {
+        "title": "Switching devices",
+        "description": "Started in the terminal, continued in Claude Desktop via /desktop or on claude.ai via /teleport — with no loss of progress."
+      }
+    ],
+    "pitfalls": [
+      "Using /clear when you meant /compact: /clear erases all context, /compact compresses it and keeps the conclusions",
+      "Forgetting /rewind after a bad change and rolling back code by hand",
+      "Closing the terminal without /background, losing a long background task",
+      "Guessing commands from memory instead of checking the live list with /help",
+      "Not branching risky experiments with /branch and corrupting the main conversation"
+    ],
+    "exercises": [
+      {
+        "question": "Context has grown and you're about to hit the limit, but you need the conclusions from the discussion. Which command do you pick, and why not /clear?",
+        "hint": "Compare what /compact does to the conversation history versus what /clear does."
+      },
+      {
+        "question": "You're about to risk a refactor of a module but fear breaking the working session. Which sequence of commands protects you?",
+        "hint": "Think about forking before the change and rolling back after — /branch and /rewind."
+      },
+      {
+        "question": "You're not sure whether your version has the /teleport command. How do you check without guessing?",
+        "hint": "One built-in command lists every available command."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What this command group is",
+        "time": "",
+        "why": "To use sessions deliberately you must first understand: a session in Claude Code isn't a one-off run but a persistent state you can manage. The group's commands fall into four meaningful blocks.",
+        "instructions": [
+          "Remember the idea: a session is persistent — you can pause, resume, fork, export, and move it",
+          "Split the commands into blocks: context control (/clear, /compact, /resume, /rewind), conversation control (/rename, /branch, /recap, /export, /copy), switching devices (/background, /desktop, /teleport, /remote-control), exit (/exit)",
+          "Open Claude Code and type /help — see which session commands are actually available in your version"
+        ],
+        "validate": "You can name the four command blocks and found them in the /help output",
+        "tip": "The command list changes between versions — /help always shows the live set for you."
+      },
+      "s2": {
+        "title": "Context control: /clear and /compact",
+        "time": "",
+        "why": "This is the most important pair and the source of the most common mistake. Both free up context, but in fundamentally different ways.",
+        "instructions": [
+          "/clear — what it does: starts a new session from scratch, deleting context. When: the task is done and you start something unrelated",
+          "/compact — what it does: compresses history while keeping conclusions. When: context has grown but the discussion must continue",
+          "Remember the key difference: /clear deletes context, /compact compresses it",
+          "Try both commands on a test conversation and compare the result"
+        ],
+        "validate": "You can explain when to use /clear versus /compact and why they must not be confused",
+        "tip": "When in doubt, /compact is almost always the answer: it's safer because it doesn't lose conclusions."
+      },
+      "s3": {
+        "title": "Restoring: /resume and /rewind",
+        "time": "",
+        "why": "These commands save you from lost work and from the consequences of mistakes — two different recovery scenarios.",
+        "instructions": [
+          "/resume — what it does: continues the previous session. When: you return to a task the next day or after restarting the terminal",
+          "/rewind — what it does: rolls code and chat back to a previous state. When: a change turned out to be wrong and you need to go back",
+          "Distinguish them: /resume is about continuing where you stopped; /rewind is about rolling back in time",
+          "Test both scenarios: close and continue a session with /resume; make an edit and roll it back with /rewind"
+        ],
+        "validate": "You understand the difference between continuing a session (/resume) and rolling back state (/rewind)",
+        "tip": "/rewind rolls back both code and chat — a real time machine, not just undoing the last message."
+      },
+      "s4": {
+        "title": "Conversation control: /branch, /rename, /recap, /export, /copy",
+        "time": "",
+        "why": "These commands treat the conversation itself as an object: you can name it, fork it, summarize it, save it, and copy a response.",
+        "instructions": [
+          "/branch — what it does: forks the conversation at the current point. When: you want to experiment without touching the main line",
+          "/rename — name the conversation; /recap — short session summary. When: you organize and quickly recall what was discussed",
+          "/export — save the conversation to a file; /copy — copy the last response. When: you need to take the result outside",
+          "Try /recap in the middle of a long session to see a short summary"
+        ],
+        "validate": "You forked with /branch and got a summary with /recap",
+        "tip": "/branch is the best friend of risky experiments: the main conversation stays untouched."
+      },
+      "s5": {
+        "title": "Switching devices and exit",
+        "time": "",
+        "why": "Work isn't tied to one terminal: you can push it to the background, move it to Desktop, the web, or control it from a phone — then exit cleanly.",
+        "instructions": [
+          "/background — keep working after closing the terminal; /exit — close the CLI. When: you leave but the task must continue / you finish the work",
+          "/desktop — move to Claude Desktop; /teleport — continue from claude.ai. When: you change devices but want the same context",
+          "/remote-control — control from a phone. When: you need to watch a task away from the computer",
+          "Try /background before closing the terminal on a long task"
+        ],
+        "validate": "You can match each switching command to its destination device",
+        "tip": "Before closing the terminal on a long task, run /background first, or the work will stop."
+      },
+      "s6": {
+        "title": "Combining, mistakes, and checking with /help",
+        "time": "",
+        "why": "The power of the commands shows in chains. The final step locks in working combinations and guards against common mistakes.",
+        "instructions": [
+          "Experiment chain: /branch → experiment → if it goes wrong, the main session is intact (or /rewind to roll back)",
+          "Long-session chain: /compact as context grows → /background before you leave → /resume the next day",
+          "Device-switch chain: /export or /desktop → continue elsewhere",
+          "The main mistake — /clear instead of /compact: remember /clear deletes, /compact compresses",
+          "Always check with /help instead of guessing — the set depends on the version"
+        ],
+        "validate": "You assembled at least one meaningful command chain and know how to check availability with /help",
+        "tip": "Don't invent commands by analogy — if it's not in /help, it's not in your version."
+      }
+    }
+  },
+  "cc-grp-context": {
+    "title": "Context and code in Claude Code",
+    "subtitle": "The slash-command group that controls what Claude sees and where its attention goes",
+    "totalTime": "6 steps",
+    "whatItIs": "\"Context and code\" is a group of built-in Claude Code slash commands: /add-dir, /context, /memory, /diff, /focus, /goal, and /init. They all operate on a single resource — the context window — and help you precisely control which files and folders Claude keeps in view, how context is being spent, and what the work is focused on.",
+    "approach": "We move from the general to the specific: first understand why the group shares one resource — the context window — then go through the commands in pairs (what it does / when to use it), and finally learn to combine them in a real session and verify the result. Commands come straight from the node, nothing invented; for the full list always go to /help.",
+    "outcomes": [
+      "Understand that every command in the group manages one resource — the context window",
+      "Know what each command does: /add-dir, /context, /memory, /diff, /focus, /goal, /init",
+      "Be able to add only the needed folders to context instead of the whole repo",
+      "Monitor context usage with /context and focus the session with /focus and /goal",
+      "Review uncommitted changes with /diff and find the full command list with /help"
+    ],
+    "applyIn": [
+      {
+        "title": "Large codebase",
+        "description": "Use /add-dir to add only the relevant folders (e.g. src/components) instead of the entire repo, so you don't waste context."
+      },
+      {
+        "title": "Long session",
+        "description": "Check /context periodically to see how much context is used, and /focus to strip extra noise from the output."
+      },
+      {
+        "title": "Starting a new project",
+        "description": "Run /init to generate CLAUDE.md, then edit memory with /memory as the project grows."
+      }
+    ],
+    "pitfalls": [
+      "Adding the whole repo with /add-dir when one folder is enough — wastes context and slows Claude down",
+      "Not watching /context in a long session and hitting the context-window limit unexpectedly",
+      "Guessing commands from memory instead of checking the current list with /help",
+      "Inventing non-existent flags or commands — the group has exactly the seven commands from the node",
+      "Ignoring /diff and losing track of which uncommitted changes are already in place"
+    ],
+    "exercises": [
+      {
+        "question": "You have a large monorepo but only work in src/api. Which command adds just that folder to context, and why not add the whole repo?",
+        "hint": "The node command starts with /add — it adds a directory. Recall that the context window is finite."
+      },
+      {
+        "question": "A session has run long and answers got slower. Which command shows how much context is used, and which one strips extra tool output?",
+        "hint": "One command visualizes context usage as a grid, the other shows only the prompt, tool summary, and final response."
+      },
+      {
+        "question": "You don't remember the exact command list for this group. Where do you look to see the current set without inventing commands?",
+        "hint": "The built-in help command in Claude Code."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why the \"Context and code\" group exists",
+        "time": "",
+        "why": "The context window is finite. Before going into individual commands, grasp the shared idea: the whole group exists to control what Claude sees and where its attention goes.",
+        "instructions": [
+          "Memorize the group's members: /add-dir, /context, /memory, /diff, /focus, /goal, /init — seven commands from the node.",
+          "Get the common principle: they all manage one resource — the context window.",
+          "Realize the effect: the more precise the context, the better the answers, fewer hallucinations, and faster responses.",
+          "Open /help to see the full current list of slash commands in your version."
+        ],
+        "validate": "You can name all seven commands and explain in one sentence which shared resource they control.",
+        "tip": "Don't memorize flags — hold the idea of \"managing Claude's attention\" and look up details with /help."
+      },
+      "s2": {
+        "title": "/add-dir and /context — what's in context and how much",
+        "time": "",
+        "why": "The base pair: one command adds the needed folders to context, the other shows how much context is already used. Conscious management starts here.",
+        "instructions": [
+          "/add-dir — adds a directory to Claude's working context. Use it when Claude needs to see a specific folder in full.",
+          "Example: /add-dir src/components → Claude reads all components automatically without referencing each file.",
+          "/context — visualizes current context usage as a grid. Use it in long sessions to know your headroom.",
+          "Add only the needed folders, not the whole repo — this saves context."
+        ],
+        "validate": "You added one target folder with /add-dir and used /context to see how context filling changed.",
+        "tip": "If /context shows high filling early in a session, you probably added unnecessary directories with /add-dir."
+      },
+      "s3": {
+        "title": "/memory and /init — project memory",
+        "time": "",
+        "why": "CLAUDE.md is the project's persistent memory that Claude reads automatically. This pair creates and edits it.",
+        "instructions": [
+          "/init — generates CLAUDE.md for the current project. Use it when starting with a new repo.",
+          "/memory — opens the memory files (CLAUDE.md) for editing. Use it to extend or fix project rules.",
+          "Run /init first for the base file, then /memory as the project accumulates conventions.",
+          "Check /help for exactly how both commands are invoked in your version."
+        ],
+        "validate": "The project has a CLAUDE.md created via /init, and you have opened it for editing with /memory.",
+        "tip": "Memory is \"long\" context: whatever is in CLAUDE.md is considered every session without re-running /add-dir."
+      },
+      "s4": {
+        "title": "/diff and /focus — track code and cut noise",
+        "time": "",
+        "why": "During active work you need to see what changes in the code without drowning in extra output. This pair handles change review and a clean focus.",
+        "instructions": [
+          "/diff — shows uncommitted changes and per-turn diffs. Use it to control what has already been applied.",
+          "/focus — shows only the prompt, tool summary, and final response. Use it when output gets noisy.",
+          "Use /diff before committing to confirm the changes are exactly what you wanted.",
+          "Turn on /focus in long sessions where detailed tool logs are distracting."
+        ],
+        "validate": "You reviewed current changes with /diff and switched output to compact mode with /focus.",
+        "tip": "/diff doesn't replace git — it's a quick in-session view; still do the final check with your own tools."
+      },
+      "s5": {
+        "title": "/goal — set a goal and work to the result",
+        "time": "",
+        "why": "Sometimes you need to direct the whole session at one task, not just see context. /goal focuses work on meeting a condition.",
+        "instructions": [
+          "/goal — sets a goal and keeps working until it's met. Use it for tasks with a clear done condition.",
+          "Phrase the goal verifiably: it's clear by what sign it's achieved.",
+          "Combine with /context to see whether there's enough context for the path to the goal.",
+          "Check /help for the exact syntax of /goal in your version."
+        ],
+        "validate": "You set a verifiable goal with /goal and understand by what sign Claude knows it's reached.",
+        "tip": "A vague goal (\"make it better\") prevents /goal from knowing when to stop — phrase it measurably."
+      },
+      "s6": {
+        "title": "Chaining commands, mistakes, and verification",
+        "time": "",
+        "why": "The commands shine in combination. The final step: assemble a working scenario and lock in how to avoid common mistakes and check yourself.",
+        "instructions": [
+          "Build a chain: /init → /add-dir the needed folders → /context to monitor → /goal on the task → /diff before committing.",
+          "Avoid the main mistake: don't add the whole repo with /add-dir when one folder is needed.",
+          "In a long session, check /context regularly so you don't hit the limit unexpectedly.",
+          "Don't invent commands or flags — the seven-command list is fixed; see the current set with /help.",
+          "Verify the result: after /diff confirm exactly the intended changes are in place."
+        ],
+        "validate": "You ran the full scenario from /init to /diff on a real task and never guessed commands — only from the node or /help.",
+        "tip": "A good habit: start the session with /context so you immediately see how much context headroom you begin with."
+      }
+    }
+  },
+  "cc-grp-model": {
+    "title": "Model and limits in Claude Code",
+    "subtitle": "The slash-command group for choosing a model, controlling effort, and tracking spend",
+    "totalTime": "6 steps",
+    "whatItIs": "A set of Claude Code slash commands that control which model runs your session, how hard it thinks, and how much you spend: /model, /fast, /effort, /advisor, /upgrade, /usage, /status, /extra-usage.",
+    "approach": "We move from the big picture to specifics: first why the group exists, then the model- and mode-switching commands, then the spend and status commands, and finally we tie it all into a 'right model for the task' strategy verified with /usage.",
+    "outcomes": [
+      "You know which command in the group to use in each situation",
+      "You can switch model and effort level mid-session without losing context",
+      "You track token spend with /usage and avoid surprise bills",
+      "You diagnose connection and account issues with /status",
+      "You build a personal strategy for picking a model by task type"
+    ],
+    "applyIn": [
+      {
+        "title": "Mixed development session",
+        "description": "Quick edits on /fast, a tricky algorithm on a stronger model via /model, then back — no session restart."
+      },
+      {
+        "title": "Budget control",
+        "description": "Regular /usage checks through the month so spend stays predictable and limits never hit you by surprise."
+      },
+      {
+        "title": "Troubleshooting",
+        "description": "When Claude Code acts strange, /status shows version, model, account, and API connectivity."
+      }
+    ],
+    "pitfalls": [
+      "Never checking /usage — and getting a surprise bill at the end of the month",
+      "Keeping a strong model on for the whole session, including trivial edits — wasted spend",
+      "Forgetting /fast for routine work like writing tests or cleaning up code",
+      "Ignoring /status during failures and blaming the model instead of a connection issue",
+      "Running /upgrade blindly without first checking real spend in /usage"
+    ],
+    "exercises": [
+      {
+        "question": "You write repetitive tests, then move to a tangled algorithm, then clean up code. Which commands do you use, and in what order?",
+        "hint": "Recall the node's example: routine — fast mode, hard work — switch model, then back."
+      },
+      {
+        "question": "At the end of the week you want to know whether you're nearing your plan limits. What do you run?",
+        "hint": "The command shows token spend and plan usage."
+      },
+      {
+        "question": "Claude Code stopped responding. Before changing the model, what do you check?",
+        "hint": "There is a command that shows version, account, and API connectivity."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What this command group is",
+        "time": "",
+        "why": "Before pressing commands, grasp the idea: different tasks need different models, and switching mid-session saves cost without losing context. The Model and limits group gives you levers for model choice, effort level, and spend control.",
+        "instructions": [
+          "Open Claude Code and type /help — review the list of available slash commands",
+          "Find the group's commands in the list: /model, /fast, /effort, /advisor, /upgrade, /usage, /status, /extra-usage",
+          "Group them mentally: model and mode (/model, /fast, /effort, /advisor), plan and limits (/upgrade, /extra-usage), control (/usage, /status)"
+        ],
+        "validate": "You can name which command handles switching the model, which one tracks spend, and which one shows connection status.",
+        "tip": "/help is the main entry point — it always shows the current command set for your exact version."
+      },
+      "s2": {
+        "title": "Switching the model: /model and /fast",
+        "time": "",
+        "why": "These are the two core selection commands. /model switches the model for the current session for heavier work; /fast toggles fast mode (Haiku) for routine work. Session context is preserved either way.",
+        "instructions": [
+          "Type /fast to enable fast mode — it uses Haiku and suits simple edits",
+          "Type /model to switch the session model to a stronger one for architecture or complex work",
+          "Make a simple change on /fast, then switch via /model and notice the context is not lost"
+        ],
+        "validate": "You switched between fast mode and a stronger model in one session without losing the conversation history.",
+        "tip": "/fast for quick edits, /model for architecture work — the base rule from the node."
+      },
+      "s3": {
+        "title": "Fine-tuning: /effort and /advisor",
+        "time": "",
+        "why": "Sometimes you don't need to change the model itself — just tune how hard it thinks (/effort) or pull in a stronger model at a key moment (/advisor). This balances quality against spend.",
+        "instructions": [
+          "Type /effort and set the model's effort level for the current task",
+          "Use /advisor when you want to consult a stronger model at an important moment without switching the whole session",
+          "Compare: for one tough decision — /advisor once; for sustained heavy work — /model"
+        ],
+        "validate": "You understand the difference between a one-off consult (/advisor), tuning effort (/effort), and a full model switch (/model).",
+        "tip": "/advisor is cheaper than keeping the whole session on a strong model for just a couple of hard spots."
+      },
+      "s4": {
+        "title": "Limits and plan: /upgrade and /extra-usage",
+        "time": "",
+        "why": "When you hit plan limits there are two routes: /upgrade — move to Max for higher limits, and /extra-usage — configure extra usage when limits hit. This is about managing the ceiling, not a specific session.",
+        "instructions": [
+          "Type /upgrade to look at moving to Max for higher limits",
+          "Type /extra-usage to configure extra usage when limits are hit",
+          "Decide for yourself: do you need a permanently higher limit (upgrade) or a one-off buffer (extra-usage)"
+        ],
+        "validate": "You know which command raises the plan permanently and which adds usage on a one-off basis.",
+        "tip": "Don't upgrade blindly — first check your real spend in /usage (next step)."
+      },
+      "s5": {
+        "title": "Spend control: /usage and /status",
+        "time": "",
+        "why": "Your main defense against a surprise bill. /usage shows token spend, plan usage, and activity stats. /status shows your Claude Code version, model, account, and API connectivity — useful for both money and diagnostics.",
+        "instructions": [
+          "Type /usage and review token spend and plan usage for the session",
+          "Type /status to see the current model, account, and API connection state",
+          "Make /usage a habit — for example, at the end of each working day"
+        ],
+        "validate": "You can check at any moment how much you've spent and which model you're running.",
+        "tip": "/usage to track spend, /status to diagnose connection issues — the direct rule from the node."
+      },
+      "s6": {
+        "title": "Strategy, mistakes, and verification",
+        "time": "",
+        "why": "Now tie the commands into a workflow: the right model for the task plus regular control. The main mistake is never checking /usage and getting a surprise bill at the end of the month.",
+        "instructions": [
+          "Build a route for a typical session: /fast for routine → /model for complex → back to /fast",
+          "Add /advisor for one-off hard decisions and /effort to fine-tune effort",
+          "Lock in the habit: periodic /usage, /status on failures, and only then /upgrade or /extra-usage if you hit a limit",
+          "Test yourself on the node's example: /fast for writing tests → /model Opus for the tricky algorithm → back to /fast for cleanup"
+        ],
+        "validate": "You can assemble a command sequence for a mixed session unaided and name how you control spend.",
+        "tip": "The most common mistake is not looking at /usage. Make the spend check a habit, not a reaction to a bill."
+      }
+    }
+  },
+  "cc-grp-ui": {
+    "title": "Claude Code interface and appearance",
+    "subtitle": "The slash-command group for theme, color, rendering, and session comfort",
+    "totalTime": "6 шагов",
+    "whatItIs": "A set of Claude Code slash commands that control the look and ergonomics of the terminal session: /color, /theme, /tui, /terminal-setup, /voice, /focus, /radio, /stickers. They don't change the agent's logic — only how the session looks and feels.",
+    "approach": "Go from general to specific: first understand why the group exists, then cover 1-2 commands per step — theme and color, renderer and terminal setup, output modes, and nice-to-haves. Finish by assembling your own look, common mistakes, and verifying via /help.",
+    "outcomes": [
+      "Understand which commands belong to the Interface and appearance group and what each does",
+      "Can change the theme and prompt bar color to fit your terminal",
+      "Know what /tui does and why to run /terminal-setup once after install",
+      "Can reduce output noise with /focus and use /voice, /radio, /stickers",
+      "Verify command availability and exact names via /help"
+    ],
+    "applyIn": [
+      {
+        "title": "Long coding sessions",
+        "description": "A dark theme, a calm prompt color, and /focus reduce eye strain and cognitive load over many hours of work."
+      },
+      {
+        "title": "Multiple terminals at once",
+        "description": "Your own /color and /theme make the Claude window visually distinct from other tabs and terminals — less confusion."
+      },
+      {
+        "title": "First-time setup after install",
+        "description": "/terminal-setup once enables Option+Enter for multi-line prompts and a visual bell — the basis of comfortable work on macOS."
+      }
+    ],
+    "pitfalls": [
+      "Skipping /terminal-setup after install — on macOS Option+Enter won't add newlines in multi-line prompts",
+      "Confusing /tui (the UI renderer: default or fullscreen) with /theme (the color theme)",
+      "Thinking /color changes the theme permanently — it sets the prompt bar color for the current session",
+      "Inventing command names from memory instead of checking /help — the list and exact names may differ by version",
+      "Leaving noisy output instead of using /focus when you only need prompt, summary, and response"
+    ],
+    "exercises": [
+      {
+        "question": "You have three terminals open and keep losing track of which one runs Claude. Which two commands from the group help distinguish the window?",
+        "hint": "One changes the overall theme, the other the prompt bar color for the session."
+      },
+      {
+        "question": "On macOS, Option+Enter doesn't add a newline in a long prompt. What did you forget to do after install?",
+        "hint": "There's a separate one-time terminal setup command."
+      },
+      {
+        "question": "How do you confirm a command is named exactly as you remember and available in your version?",
+        "hint": "The built-in help command lists all available slash commands."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What this command group is",
+        "time": "",
+        "why": "Before tweaking the look, understand the group's scope: these commands affect only the session's appearance and ergonomics, not the agent's behavior.",
+        "instructions": [
+          "Memorize the group: /color, /theme, /tui, /terminal-setup, /voice, /focus, /radio, /stickers",
+          "Grasp the principle: a comfortable interface reduces fatigue in long coding sessions",
+          "Note that some are one-time setup (/terminal-setup) and some are mode toggles (/focus, /voice)",
+          "Open /help and find these commands in the full list"
+        ],
+        "validate": "You can name at least 5 commands in the group and say they change the look, not the working logic.",
+        "tip": "Don't apply everything at once — start with theme and color, add the rest as needed."
+      },
+      "s2": {
+        "title": "Theme and color: /theme and /color",
+        "time": "",
+        "why": "Theme and color are the most common visual setting: they improve readability and help tell the Claude window apart from other terminals.",
+        "instructions": [
+          "Run /theme and pick an overall theme (for example, dark)",
+          "Run /color to set the prompt bar color for the current session",
+          "Remember the difference: /theme is the overall theme, /color is the prompt bar color for this session",
+          "Check readability: text should not blend into the terminal background"
+        ],
+        "validate": "The theme changed, the prompt bar is the chosen color, and the window looks distinct from neighbors.",
+        "tip": "Pairing /theme dark with your own /color makes the Claude terminal instantly recognizable among other tabs."
+      },
+      "s3": {
+        "title": "Renderer and terminal setup: /tui and /terminal-setup",
+        "time": "",
+        "why": "/tui sets how the interface is drawn, and /terminal-setup is a one-time setup without which Option+Enter won't work on macOS.",
+        "instructions": [
+          "Run /tui and pick the terminal UI renderer: default or fullscreen",
+          "Right after install, run /terminal-setup once",
+          "Confirm that after /terminal-setup Option+Enter for newlines and the visual bell are enabled",
+          "Test a multi-line prompt: Option+Enter should add a new line, not send the message"
+        ],
+        "validate": "The renderer is chosen and Option+Enter adds a newline in a multi-line prompt on macOS.",
+        "tip": "/terminal-setup only needs to run once per machine — don't confuse it with switching the theme."
+      },
+      "s4": {
+        "title": "Output modes: /focus and /voice",
+        "time": "",
+        "why": "When output is too noisy, /focus keeps only the essentials; /voice adds a voice interaction mode.",
+        "instructions": [
+          "Run /focus for minimal output: prompt, summary, and response only",
+          "Compare: with /focus the screen is cleaner and the workflow is easier to follow",
+          "Run /voice to toggle voice mode",
+          "Turn the modes off when you need full, detailed output"
+        ],
+        "validate": "In /focus mode only the prompt, summary, and response remain on screen; /voice toggles voice mode.",
+        "tip": "Use /focus in long sessions when verbose logs make the result hard to see."
+      },
+      "s5": {
+        "title": "Nice-to-haves: /radio and /stickers",
+        "time": "",
+        "why": "These commands aren't about work but about atmosphere: background music for focus and physical stickers.",
+        "instructions": [
+          "Run /radio to play Claude FM lo-fi background music",
+          "Use /radio when you want a steady background to concentrate in a long session",
+          "Run /stickers to order physical Claude Code stickers",
+          "Turn /radio off if the music distracts or you need full focus on system sounds"
+        ],
+        "validate": "You understand /radio plays background music and /stickers orders stickers; neither affects the code.",
+        "tip": "Details about the tool itself are in the [[node:claude-code|Claude Code]] node."
+      },
+      "s6": {
+        "title": "Assemble your look, mistakes, and verification",
+        "time": "",
+        "why": "The final step locks in your appearance config, avoids common mistakes, and teaches verifying commands via /help.",
+        "instructions": [
+          "Assemble your combo: /theme + /color + /focus when noisy + /tui to taste",
+          "Confirm /terminal-setup was run — otherwise Option+Enter won't work on macOS",
+          "Don't confuse /tui (renderer) with /theme (color theme) and /color (session prompt bar color)",
+          "Before using a command, verify its name and availability via /help",
+          "Run /help and confirm all the group's commands you need are present"
+        ],
+        "validate": "Your look is set, /terminal-setup is done, and you verify commands via /help rather than from memory.",
+        "tip": "If a command isn't in /help, it may be named differently in your version — don't invent a name."
+      }
+    }
+  },
+  "cc-grp-config": {
+    "title": "Claude Code configuration and settings",
+    "subtitle": "The slash-command group for permissions, keybindings, and CLI behavior",
+    "totalTime": "6 steps",
+    "whatItIs": "The Claude Code slash-command group that manages the tool's configuration: tool execution permissions (/permissions), keybindings (/keybindings), the overall settings panel (/config), privacy (/privacy-settings), natural-language editing of settings.json (/update-config), the execution sandbox (/sandbox), and the default remote environment (/remote-env).",
+    "approach": "We move from overview to detail: first understand what the group is and how to see the full command list via /help, then learn the key commands one by one — permissions, keybindings, the settings panel and natural-language config, privacy and environment. We finish with common mistakes and a check that everything is set up safely.",
+    "outcomes": [
+      "Understand which commands belong to the configuration group and what each does",
+      "Set tool permissions via /permissions specifically rather than globally",
+      "Override keybindings via /keybindings (e.g. Cmd+Enter as submit)",
+      "Open and read the settings panel via /config and edit settings.json via /update-config",
+      "Manage privacy, sandbox, and remote environment deliberately"
+    ],
+    "applyIn": [
+      {
+        "title": "First setup after install",
+        "description": "Right after installing Claude Code, allowlist common tools via /permissions and set convenient keybindings via /keybindings so you don't confirm every action."
+      },
+      {
+        "title": "Team project",
+        "description": "Tune permissions and settings.json to the team's shared rules via /update-config so everyone works in the same safe environment."
+      },
+      {
+        "title": "Sensitive code",
+        "description": "In projects with private data, enable the sandbox via /sandbox and review /privacy-settings to limit execution and data sharing."
+      }
+    ],
+    "pitfalls": [
+      "Allowing all bash commands globally via 'Bash(*)' — a serious security risk. Be specific: 'Bash(npm run *)'.",
+      "Not knowing the full command list and configuring blindly instead of using /help.",
+      "Confusing /config (the overview panel) with /update-config (natural-language editing of settings.json).",
+      "Ignoring /permissions and suffering constant approval prompts.",
+      "Changing /privacy-settings or /sandbox without understanding the security and data-sharing consequences."
+    ],
+    "exercises": [
+      {
+        "question": "What is the difference between /config and /update-config?",
+        "hint": "One shows a settings overview, the other edits settings.json via a natural-language description."
+      },
+      {
+        "question": "Why is the rule 'Bash(npm run *)' safer than 'Bash(*)'?",
+        "hint": "Think about what each rule allows and which set of commands Claude can run without confirmation."
+      },
+      {
+        "question": "How do you see the full list of configuration-group commands without memorizing them?",
+        "hint": "There's a built-in command that prints all available slash commands."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What the group is and how to see all commands",
+        "time": "",
+        "why": "Before configuring anything you need to know the group's members and how to view the current list — it depends on your CLI version.",
+        "instructions": [
+          "Memorize the group's members: /config, /keybindings, /permissions, /privacy-settings, /update-config, /sandbox, /remote-env.",
+          "Type /help in Claude Code to see the full current list of slash commands.",
+          "Find the configuration commands in the output and read their short descriptions.",
+          "Note which ones relate to security (/permissions, /sandbox, /privacy-settings)."
+        ],
+        "validate": "You can name at least 5 commands in the group and explain each one's purpose in a phrase.",
+        "tip": "The /help list is the source of truth: commands may be added between versions."
+      },
+      "s2": {
+        "title": "Tool permissions: /permissions",
+        "time": "",
+        "why": "Permissions are the foundation of safe, fast work. Without them every action needs confirmation, and overly broad rules are dangerous.",
+        "instructions": [
+          "Type /permissions to open the allow and deny rule management.",
+          "Add a specific allow rule, e.g. 'Bash(npm run *)'.",
+          "Make sure you don't use broad patterns like 'Bash(*)'.",
+          "Save and run an allowed command — Claude executes it without asking."
+        ],
+        "validate": "An allowed tool runs without confirmation while others still ask.",
+        "tip": "Example: /permissions → allow 'Bash(npm run *)' → npm scripts run without asking every time."
+      },
+      "s3": {
+        "title": "Keybindings: /keybindings",
+        "time": "",
+        "why": "Convenient keybindings speed up daily work and remove small friction like an awkward submit.",
+        "instructions": [
+          "Type /keybindings to open or create the keybindings config file.",
+          "Find the submit-message action and bind it to, e.g., Cmd+Enter.",
+          "Save the file and return to the chat.",
+          "Test the new combination in real input."
+        ],
+        "validate": "The assigned combination works as expected (e.g. Cmd+Enter submits the message).",
+        "tip": "Only change keys that actually bother you — leave the rest at their defaults."
+      },
+      "s4": {
+        "title": "Settings panel and natural-language config: /config and /update-config",
+        "time": "",
+        "why": "These two commands are the main entry to general settings: one shows an overview, the other lets you edit settings.json with a plain description.",
+        "instructions": [
+          "Type /config to open the settings panel and see current parameters in one place.",
+          "Review the available options without changing them right away.",
+          "Type /update-config and describe the desired settings.json change in plain words.",
+          "Verify the change was applied as you described."
+        ],
+        "validate": "/config shows the current settings, and /update-config correctly edits settings.json from your description.",
+        "tip": "/config is to look, /update-config is to change. Don't mix up these roles."
+      },
+      "s5": {
+        "title": "Privacy, sandbox, and environment: /privacy-settings, /sandbox, /remote-env",
+        "time": "",
+        "why": "These commands govern execution safety and data sharing — configure them deliberately, especially in sensitive projects.",
+        "instructions": [
+          "Type /privacy-settings to view and, if needed, update privacy settings.",
+          "Type /sandbox to configure the sandbox for tool execution in an isolated environment.",
+          "Type /remote-env to set the default remote environment if you work remotely.",
+          "Change only what you're sure about; leave the rest at defaults."
+        ],
+        "validate": "You understand what each of the three commands does and changed settings only deliberately.",
+        "tip": "Sandbox and privacy affect security — don't toggle them at random."
+      },
+      "s6": {
+        "title": "Mistakes and verifying the setup",
+        "time": "",
+        "why": "A final check catches the most common mistakes — overly broad permissions, command confusion, and unsafe settings.",
+        "instructions": [
+          "Check your /permissions rules: no broad patterns like 'Bash(*)'.",
+          "Make sure you're not confusing /config (overview) and /update-config (editing).",
+          "Use /help to confirm you're using real group commands, not invented ones.",
+          "Run an allowed tool and confirm there are no extra approval prompts."
+        ],
+        "validate": "Permissions are specific, commands are used for their intended purpose, there are no extra confirmations, and sensitive settings are deliberate.",
+        "tip": "If unsure about a rule, make it narrower, not broader. Safety beats a couple of extra confirmations."
+      }
+    }
+  },
+  "cc-grp-integrations": {
+    "title": "Slash Commands: Integrations",
+    "subtitle": "Connecting Claude Code to your IDE, MCP, GitHub, Slack, browser, and plugins",
+    "totalTime": "6 steps",
+    "whatItIs": "The Integrations slash-command group embeds Claude Code into your real development workflow. These are /mcp, /ide, /chrome, /hooks, /plugin, /reload-plugins, /agents, /install-github-app, /install-slack-app, and /web-setup. Each one owns a connection point: the IDE, MCP servers, the browser, tool events, plugins, agents, and external services.",
+    "approach": "We move from overview to practice. First we view the whole group via /help, then break the commands down by purpose: editor connection (/ide, /chrome), data via /mcp, extension via /plugin, /reload-plugins, /agents, and /hooks, and reaching external services (/install-github-app, /install-slack-app, /web-setup). We finish with common mistakes and verifying that an integration is actually active.",
+    "outcomes": [
+      "You know which commands belong to integrations and what each one does",
+      "You connect Claude Code to your IDE via /ide and to data via /mcp",
+      "You manage plugins and agents via /plugin, /reload-plugins, /agents",
+      "You set up external services: /install-github-app, /install-slack-app, /web-setup",
+      "You can verify an integration is active and diagnose it when it isn't"
+    ],
+    "applyIn": [
+      {
+        "title": "Working in the IDE",
+        "description": "After installing the VS Code extension you run /ide, and Claude automatically sees your open files and diagnostics right in the editor."
+      },
+      {
+        "title": "Connecting data and APIs",
+        "description": "Via /mcp you add MCP servers for access to a database or external API, so Claude works with your real data sources."
+      },
+      {
+        "title": "Team automation",
+        "description": "Via /install-github-app and /install-slack-app you bring Claude into GitHub Actions and Slack so the whole team uses it in shared workflows."
+      }
+    ],
+    "pitfalls": [
+      "Not calling /reload-plugins after adding a plugin — it won't activate until the next session",
+      "Calling /ide before installing the IDE extension — there's no integration, so the command does nothing",
+      "Confusing /mcp (managing servers) with /hooks (tool events) — they are different connection points",
+      "Assuming /install-github-app sets everything up instantly — it launches a wizard you must finish",
+      "Not checking status after connecting and assuming the integration works by default"
+    ],
+    "exercises": [
+      {
+        "question": "You want Claude to see your open files and errors right inside VS Code. What steps and which command?",
+        "hint": "First the IDE extension, then the integrations command that shows status and activates the link."
+      },
+      {
+        "question": "You added a new plugin, but Claude doesn't 'see' it. What did you forget?",
+        "hint": "The group has a dedicated command that activates pending plugin changes without restarting the session."
+      },
+      {
+        "question": "Your team needs to invoke Claude in a GitHub pull request and a Slack channel. Which two setup commands do you run?",
+        "hint": "Both start with /install-..."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What the Integrations group is",
+        "time": "",
+        "why": "Before connecting anything, you need to understand the group's makeup and purpose: integrations embed Claude Code into your full workflow — IDE, GitHub, Slack, browser — instead of running alongside it.",
+        "instructions": [
+          "Start Claude Code and type /help to see the list of all commands",
+          "Find the integration group commands: /mcp, /ide, /chrome, /hooks, /plugin, /reload-plugins, /agents, /install-github-app, /install-slack-app, /web-setup",
+          "Read the short description next to each — note which is for the editor, which for data, which for external services",
+          "Remember the core idea: Claude works inside your tools, not next to them"
+        ],
+        "validate": "You can name at least 6 commands in the group and say what each one connects.",
+        "tip": "/help is your map: integration commands always appear there with the up-to-date description for your version."
+      },
+      "s2": {
+        "title": "Editor connection: /ide and /chrome",
+        "time": "",
+        "why": "The most common integration is the editor. /ide links Claude Code to VS Code or JetBrains, and /chrome manages Claude in Chrome settings. This lets Claude see context where you actually work.",
+        "instructions": [
+          "Install the Claude extension in VS Code or JetBrains (done inside the editor itself)",
+          "In Claude Code run /ide — the command shows integration status and activates the link",
+          "Confirm Claude sees your open files and inline diagnostics",
+          "If you work in the browser, run /chrome for Claude in Chrome (beta) settings"
+        ],
+        "validate": "After /ide the status shows an active integration, and Claude references your open file without you giving the path.",
+        "tip": "/ide requires the IDE extension to be installed first — without it there's nothing for the command to connect."
+      },
+      "s3": {
+        "title": "Connecting data: /mcp",
+        "time": "",
+        "why": "/mcp manages MCP servers: add, remove, and list them. Through MCP Claude gains access to databases and external APIs — it's the main way to give it your real data sources.",
+        "instructions": [
+          "Run /mcp to see the list of already connected MCP servers",
+          "Via /mcp add the server you need — for example, access to a database or external API",
+          "Check that the server appears in the list and is marked active",
+          "Ask Claude to reach the connected source and confirm it answers with real data"
+        ],
+        "validate": "In the /mcp output your server is visible and active, and Claude successfully retrieves data from it.",
+        "tip": "Connect only the MCP servers you need: extra ones grow the context and tool list with no benefit."
+      },
+      "s4": {
+        "title": "Extending capabilities: /plugin, /reload-plugins, /agents, /hooks",
+        "time": "",
+        "why": "These commands extend Claude Code's behavior. /plugin manages plugins, /reload-plugins activates their changes, /agents manages agent configurations, and /hooks shows hook configurations for tool events (pre/post-execution).",
+        "instructions": [
+          "Run /plugin to view and configure plugins",
+          "After adding or changing a plugin, always run /reload-plugins — otherwise the changes won't apply",
+          "Use /agents to view and configure agent setups",
+          "Run /hooks to see which hooks fire before and after tools"
+        ],
+        "validate": "After /reload-plugins the new plugin is available in the current session, and /hooks shows your configured hooks.",
+        "tip": "The most common mistake is forgetting /reload-plugins: without it a new plugin only activates in the next session."
+      },
+      "s5": {
+        "title": "External services: /install-github-app, /install-slack-app, /web-setup",
+        "time": "",
+        "why": "These commands take Claude beyond your local machine. /install-github-app sets up Claude GitHub Actions, /install-slack-app installs Claude in Slack, and /web-setup sets up Claude Code on the web — so the whole team works with Claude in shared services.",
+        "instructions": [
+          "Run /install-github-app and finish the wizard to connect Claude to GitHub Actions",
+          "Run /install-slack-app to install the Claude app in Slack",
+          "Run /web-setup to set up Claude Code on the web",
+          "After each command go through to the final confirmation — the wizard doesn't finish on its own"
+        ],
+        "validate": "The GitHub app responds in a pull request, the Slack app is installed in the workspace, and web access is set up.",
+        "tip": "These commands launch setup wizards — skipping any step leaves the integration incomplete."
+      },
+      "s6": {
+        "title": "Mistakes and verification",
+        "time": "",
+        "why": "Integrations often 'don't work' not because of a bug but because of a skipped step. A final check saves time: you confirm each connection is actually active.",
+        "instructions": [
+          "After adding a plugin, confirm you called /reload-plugins and that it's active",
+          "Before /ide make sure the editor extension is installed, otherwise there's no integration",
+          "Via /mcp check that the servers you need are listed and active, not just added",
+          "For /install-github-app and /install-slack-app confirm the wizard was completed",
+          "If something didn't connect — go back to /help and compare the command's description with what you did"
+        ],
+        "validate": "Each needed integration is explicitly confirmed active (via /ide status, /mcp list, the GitHub/Slack app's action), not assumed to work.",
+        "tip": "Rule: after any integration command, check status immediately — don't assume everything connected by default."
+      }
+    }
+  },
+  "cc-grp-automation": {
+    "title": "Automation and AI tasks in Claude Code",
+    "subtitle": "The group of slash commands that turn Claude into an autonomous background worker",
+    "totalTime": "6 steps",
+    "whatItIs": "The \"Automation and AI tasks\" command group is a set of Claude Code slash commands (/plan, /tasks, /background, /loop, /schedule, /batch, /goal, /autofix-pr, /ultraplan, /ultrareview) that turn Claude from a chat assistant into an autonomous worker. They run work in the background, on a schedule, or in parallel — while you focus elsewhere.",
+    "approach": "We go from simple to advanced: first understand what the group is and where to see its list (/help), then break down the commands in pairs by role — background and parallelism, schedules and loops, goals and web agents. We finish with safe-automation rules and verifying that tasks actually complete.",
+    "outcomes": [
+      "Understand which commands belong to the automation group and where to find the list",
+      "Launch background and parallel tasks via /background, /tasks and /batch",
+      "Set up recurring and scheduled runs via /loop and /schedule",
+      "Set goals and review PRs autonomously via /goal, /autofix-pr, /ultrareview",
+      "Avoid common automation mistakes — such as running /batch without /plan first"
+    ],
+    "applyIn": [
+      {
+        "title": "Large-scale refactor",
+        "description": "Split a uniform change across dozens of files with /batch — parallel agents, each opening its own PR."
+      },
+      {
+        "title": "Nightly automation",
+        "description": "Use /schedule to run a remote agent on a schedule: nightly checks, reports, dependency updates."
+      },
+      {
+        "title": "Release quality control",
+        "description": "Before a major release, run /ultrareview for deep bug finding and /autofix-pr to auto-fix PR issues."
+      }
+    ],
+    "pitfalls": [
+      "Running /batch without /plan first — parallel agents start working from an unapproved plan",
+      "Using /ultrareview on every small PR — it's a paid command ($5-20), overkill for routine work",
+      "An uncontrolled /loop with no stop condition — the command runs forever and burns resources",
+      "Not knowing the current group lineup — the command list changes, always verify via /help",
+      "Confusing /loop (local recurring interval) with /schedule (remote agent on cron) — different tools"
+    ],
+    "exercises": [
+      {
+        "question": "You need to add JSDoc comments to all functions in a large src/ folder. Which command fits, and what must you do before it?",
+        "hint": "Think about parallelism across dozens of files. And recall the key safety rule from the node about /plan."
+      },
+      {
+        "question": "You need to run a dependency check every night without your involvement. Which command do you pick and how does it differ from /loop?",
+        "hint": "Schedule and remote agent versus local recurring interval."
+      },
+      {
+        "question": "How do you quickly find the full current list of automation commands in your version of Claude Code?",
+        "hint": "One built-in command shows all available slash commands."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What the group is and where its list lives",
+        "time": "",
+        "why": "Before automating, understand the tool's boundaries: which commands belong to the group and how Claude shifts from conversationalist to background-task executor.",
+        "instructions": [
+          "Grasp the group's idea: automation commands run work in the background, on a schedule, or in parallel while you focus elsewhere.",
+          "Open the full command list via /help — it shows the current set of slash commands for your version.",
+          "Find the automation commands in the list: /plan, /tasks, /background, /loop, /schedule, /batch, /goal, /autofix-pr, /ultraplan, /ultrareview.",
+          "Note that some commands run locally and some (e.g. /ultraplan, /ultrareview) run on the web and are paid."
+        ],
+        "validate": "You can name at least 5 commands from the group and explain in one sentence how an autonomous worker differs from a chat assistant.",
+        "tip": "The group's lineup evolves with Claude Code — /help always shows what is actually available now."
+      },
+      "s2": {
+        "title": "Background tasks: /background and /tasks",
+        "time": "",
+        "why": "The foundation of automation is sending work to the background and tracking it. Without this, the other commands lose their point.",
+        "instructions": [
+          "Use /background to continue the current session in the background and free up your chat for other work.",
+          "Open /tasks — this lists and manages background tasks: you see what's running and what's done.",
+          "Through /tasks, monitor status and, if needed, stop or return to a task.",
+          "Remember the pairing: /background sends to the background, /tasks controls what runs there."
+        ],
+        "validate": "You launched a task in the background via /background and found it in the /tasks list.",
+        "tip": "Background doesn't mean \"forget\": check /tasks so background agents don't run pointlessly."
+      },
+      "s3": {
+        "title": "Parallelism and planning: /batch and /plan",
+        "time": "",
+        "why": "Large uniform changes are faster with dozens of parallel agents. But parallelism is dangerous without an approved plan.",
+        "instructions": [
+          "First call /plan — plan mode — so Claude drafts the change plan before executing it.",
+          "Approve the plan: this is the key safety rule before any parallel run.",
+          "Run /batch for a large-scale change — it spreads work across 5-30 parallel agents, each opening its own PR.",
+          "Example: /batch 'add JSDoc to all functions in src/' → 20 agents, each taking its file group."
+        ],
+        "validate": "You understand why /batch always follows an approved /plan, and you can describe what parallel agents return (a PR per file group).",
+        "tip": "The clearer the plan, the fewer divergences between parallel agents — a plan saves time sorting results."
+      },
+      "s4": {
+        "title": "Schedules and loops: /schedule and /loop",
+        "time": "",
+        "why": "Many tasks repeat. /loop and /schedule remove the routine: runs on an interval or on a schedule without your involvement.",
+        "instructions": [
+          "Use /loop to run a command on an interval — for recurring local tasks.",
+          "Use /schedule to create scheduled remote agent routines — e.g. nightly automation.",
+          "Draw a clear line: /loop is a local recurring interval, /schedule is a remote agent on a schedule (cron).",
+          "For /loop, keep a stop condition in mind so the loop doesn't run forever."
+        ],
+        "validate": "You can pick the right command for the task: \"repeat locally\" → /loop, \"nightly remote\" → /schedule.",
+        "tip": "Nightly automation via /schedule is the most underrated scenario: checks and reports get done while you sleep."
+      },
+      "s5": {
+        "title": "Goals and web agents: /goal, /autofix-pr, /ultraplan, /ultrareview",
+        "time": "",
+        "why": "The highest tier of automation is setting a goal and driving the task to completion, while offloading heavy reviews to web agents.",
+        "instructions": [
+          "Use /goal to set a completion condition and keep working until the goal is met.",
+          "Use /autofix-pr to monitor a PR and automatically fix issues found.",
+          "To align on a large plan, use /ultraplan — the plan draft is prepared on the web for editing and approval.",
+          "Before a major release, run /ultrareview — deep bug finding on the web (paid, $5-20)."
+        ],
+        "validate": "You can state which of these commands are paid and run on the web (/ultraplan, /ultrareview) and which set the work mode (/goal, /autofix-pr).",
+        "tip": "/ultrareview saves money when run selectively — before a release, not on every small PR."
+      },
+      "s6": {
+        "title": "Automation mistakes and verification",
+        "time": "",
+        "why": "An autonomous worker is dangerous without discipline: parallelism without a plan, endless loops, and needless paid runs quickly turn benefit into harm.",
+        "instructions": [
+          "Top rule: never run /batch without a prior, approved /plan.",
+          "Don't overuse paid commands: /ultrareview is only for important checks, not routine.",
+          "For /loop, always keep a stop condition so the command doesn't spin pointlessly.",
+          "Regularly verify the current command list via /help — the group's lineup changes.",
+          "Verify results: open /tasks to confirm background tasks completed correctly."
+        ],
+        "validate": "You can list at least 3 common automation mistakes and, for each, name how to avoid it.",
+        "tip": "The discipline of \"plan → run → verify via /tasks\" makes automation reliable rather than risky."
+      }
+    }
+  },
+  "cc-grp-quality": {
+    "title": "Code quality and review",
+    "subtitle": "The Claude Code slash-command group for checking code quality and security before shipping",
+    "totalTime": "6 steps",
+    "whatItIs": "A group of Claude Code commands that act as quality gates: /review analyzes a pull request, /security-review hunts for vulnerabilities, /simplify strips out over-engineering, /diff shows uncommitted changes, /debug enables session diagnostics, and /fewer-permission-prompts reduces permission interruptions. Claude catches what linters miss: logic errors, security issues, and over-engineering.",
+    "approach": "We move from the big picture to specifics: first understand why the group exists as a whole, then walk through the commands one or two per step on real code, then wire the checks into your working cycle (before merge, before deploy, after a long session), and finish with common mistakes and a self-check. Each command is practiced on your own uncommitted change, with /help kept handy as a reference.",
+    "outcomes": [
+      "Know which command does what: PR review, security, simplification, viewing changes, diagnostics",
+      "Run /review and read its output by severity (Critical / Warning / Info)",
+      "Run /security-review before deploy and understand the vulnerability report",
+      "Wire quality checks into a steady cycle: before merge, before deploy, after a session",
+      "Avoid treating review as a rubber stamp and confirm results with a self-check"
+    ],
+    "applyIn": [
+      {
+        "title": "Before merging a pull request",
+        "description": "Run /review before merging the branch — Claude lists issues by severity, and you fix Critical items before the code reaches the main branch."
+      },
+      {
+        "title": "Before deploying to production",
+        "description": "Run /security-review over the branch changes to catch risks like SQL injection or leaked secrets before they reach users."
+      },
+      {
+        "title": "After a long development session",
+        "description": "Use /simplify so Claude finds the duplication and over-engineering that piled up during the session and suggests cleaner code."
+      }
+    ],
+    "pitfalls": [
+      "Using /review as a rubber stamp — read the output carefully, especially Critical items",
+      "Running /security-review only at the end of a big release instead of regularly before every deploy",
+      "Confusing /simplify (quality cleanup) with bug hunting — /simplify does not find logic errors, /review does",
+      "Skipping /diff before review and not knowing exactly which changes go into the check",
+      "Forgetting /help and guessing command flags instead of reading the built-in reference"
+    ],
+    "exercises": [
+      {
+        "question": "You have an uncommitted change on a branch. Which command gives you a structured breakdown by severity before merging?",
+        "hint": "It's the core PR-review command of the group; output is split into Critical / Warning / Info."
+      },
+      {
+        "question": "Before deploy you must confirm the changes carry no security risks. Which command is it, and how does its output differ from a normal review?",
+        "hint": "The command is specifically about security; it looks for vulnerabilities like injections and leaked secrets, not general quality."
+      },
+      {
+        "question": "How do you find the exact list and purpose of the group's commands right inside Claude Code, without guessing from memory?",
+        "hint": "The built-in reference command, shared by all slash commands."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What the group is and why it exists",
+        "time": "",
+        "why": "Before running commands, understand their shared role: they are quality gates before shipping. Without that picture it's easy to treat review as a formality and skip critical issues.",
+        "instructions": [
+          "Open Claude Code in a project with uncommitted changes or an active branch",
+          "Run /help and locate the group commands: /review, /security-review, /simplify, /diff, /debug, /fewer-permission-prompts",
+          "Read the short description of each command in the /help output",
+          "Phrase the group's role for yourself: catch what linters miss — logic, security, complexity"
+        ],
+        "validate": "You can name all six group commands and say which is for review, which for security, and which for simplification.",
+        "tip": "/help is your first source of truth about the commands: it shows the current set without guesswork."
+      },
+      "s2": {
+        "title": "/review — structured review of changes",
+        "time": "",
+        "why": "/review is the group's central command. It analyzes changes and lists issues by severity, making review repeatable and independent of your mood and fatigue.",
+        "instructions": [
+          "First run /diff to see which uncommitted changes will go into the review",
+          "Run /review",
+          "Read the output by level: Critical, Warning, Info",
+          "Start with Critical items — for example, a SQL injection risk — and decide what to fix immediately",
+          "Mark Info items as future improvements if they don't block the merge"
+        ],
+        "validate": "You got a list of issues split by severity and understand which items are Critical versus recommendations.",
+        "tip": "Example output: Critical (SQL injection risk), Warning (no error handling), Info (rename for clarity)."
+      },
+      "s3": {
+        "title": "/security-review — security check before deploy",
+        "time": "",
+        "why": "A general review doesn't replace a dedicated security check. /security-review deliberately hunts for vulnerabilities in the branch changes to catch them before the code reaches users.",
+        "instructions": [
+          "Make sure the changes going to deploy are on the current branch",
+          "Run /security-review",
+          "Read the vulnerability report — watch for injections, leaked secrets, unsafe input handling",
+          "Compare its focus with a regular /review: here the priority is security, not general quality",
+          "Fix the identified risks before deploy"
+        ],
+        "validate": "You ran the security check and can explain how its report differs from /review output.",
+        "tip": "Run /security-review regularly before every deploy, not just at the end of a big release."
+      },
+      "s4": {
+        "title": "/simplify and /diff — code cleanliness and change control",
+        "time": "",
+        "why": "After a long session, code accumulates duplication and over-engineering. /simplify cleans up quality, and /diff gives a clear picture of exactly what you're changing and sending into review.",
+        "instructions": [
+          "Run /diff to see the full list of uncommitted changes",
+          "Run /simplify so Claude finds reusable pieces and over-engineering",
+          "Read the suggestions and apply the ones that improve the code without losing clarity",
+          "Remember the split: /simplify is about quality, not bug hunting; /review handles logic",
+          "Run /diff again after the edits to see the final state"
+        ],
+        "validate": "You received simplification suggestions from /simplify and can see via /diff how the code changed.",
+        "tip": "Use /simplify at the end of a long session — that's when extra complexity piles up."
+      },
+      "s5": {
+        "title": "/debug and /fewer-permission-prompts — diagnostics and fewer interruptions",
+        "time": "",
+        "why": "Two helper commands remove friction: /debug helps you understand what went wrong in a session, and /fewer-permission-prompts cuts the stream of permission requests so quality checks run without constant pauses.",
+        "instructions": [
+          "If a session behaves oddly, run /debug to enable debug logging for diagnostics",
+          "Study the extra detail that appears in the output once diagnostics are on",
+          "Run /fewer-permission-prompts — it scans transcripts and builds an allowlist of frequent safe actions",
+          "Review the proposed allowlist before accepting: only allow what is genuinely safe",
+          "Run /review or /simplify again and notice there are fewer permission interruptions"
+        ],
+        "validate": "You understand when /debug is needed and ran /fewer-permission-prompts after deliberately reviewing the proposed permission list.",
+        "tip": "Don't allow everything via /fewer-permission-prompts — add only verified read-only actions to the allowlist."
+      },
+      "s6": {
+        "title": "Common mistakes and a self-check of the cycle",
+        "time": "",
+        "why": "The commands only pay off when wired into a steady cycle and not turned into a formality. The final step cements the habit and helps you check yourself.",
+        "instructions": [
+          "Fix your cycle: /diff → /review before merge, /security-review before deploy, /simplify after a session",
+          "Check you don't use /review formally: re-read the Critical items of your last review",
+          "Make sure /security-review runs regularly, not once per release",
+          "If unsure about flags or the command set — open /help instead of guessing",
+          "Write yourself a short checklist of the commands and when to apply each"
+        ],
+        "validate": "You have a clear personal quality-check cycle and can name the main mistake of each command and how to avoid it.",
+        "tip": "The group's main mistake is treating review as a stamp. The value is in actually reading and fixing the Critical items."
+      }
+    }
+  },
+  "cc-grp-help": {
+    "title": "Help, learning and account in Claude Code",
+    "subtitle": "The group of slash commands that help you learn, diagnose problems and manage your account — without leaving the CLI",
+    "totalTime": "6 steps",
+    "whatItIs": "This is the set of utility slash commands in Claude Code covering three jobs: onboarding and learning (/help, /powerup, /release-notes, /skills, /team-onboarding), help mid-task (/btw, /insights), and managing your account and installation health (/login, /logout, /feedback, /doctor, /mobile). They all run straight from the input line without leaving your current task.",
+    "approach": "First understand what the group is for, then work through the commands in logical pairs: learning, help mid-task, skills and team onboarding, account, diagnostics. At each step you try a command live and learn to read its output. The base entry point is always /help: it shows the current list of what's actually available in your version.",
+    "outcomes": [
+      "Know which slash commands handle help, learning and account",
+      "Can ask a side question with /btw without losing the main task's context",
+      "Can diagnose installation issues yourself with /doctor",
+      "Understand how to sign in and out of your account (/login, /logout)",
+      "Know where to find new features and the list of skills (/release-notes, /skills)"
+    ],
+    "applyIn": [
+      {
+        "title": "Starting work on a new project",
+        "description": "Run /powerup for interactive lessons and /help to refresh the list of available commands before diving in."
+      },
+      {
+        "title": "A question mid-task",
+        "description": "In the middle of a refactor, use /btw to ask a quick clarification without breaking your main line of work."
+      },
+      {
+        "title": "Something broke",
+        "description": "The CLI behaves strangely — run /doctor, which catches 90% of common installation issues instantly."
+      }
+    ],
+    "pitfalls": [
+      "Not running /doctor when the CLI behaves strangely — it fixes most common issues right away",
+      "Interrupting your main task with a plain question instead of a lightweight /btw, losing context",
+      "Ignoring /insights — analyzing session patterns shows where your time goes",
+      "Forgetting /release-notes and missing new features, working the old way",
+      "Not signing out with /logout on a shared or borrowed device, leaving the account active"
+    ],
+    "exercises": [
+      {
+        "question": "You're mid-way through a big task and want to quickly clarify what a pattern does without interrupting your work. Which command do you use and why?",
+        "hint": "Look for the command for a side question without interrupting the main task."
+      },
+      {
+        "question": "The CLI started behaving strangely after an update. Which command do you start the diagnosis with?",
+        "hint": "This command checks installation health and catches up to 90% of common issues."
+      },
+      {
+        "question": "How do you find the full, current list of commands in your specific version of Claude Code?",
+        "hint": "The most basic command of the group, the entry point to help."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What this command group is",
+        "time": "",
+        "why": "Before dissecting individual commands, it's important to see the whole group: that it covers three different jobs — learning, help mid-task and account — and why they're grouped together.",
+        "instructions": [
+          "Remember the group's three areas: learning (/help, /powerup, /release-notes, /skills, /team-onboarding), help mid-task (/btw, /insights), account and health (/login, /logout, /feedback, /doctor, /mobile)",
+          "Open the Claude Code input line and type / — you'll see the list of available commands",
+          "Find the commands from this group in the list and note which ones you know and which you don't",
+          "Remember that the entry point to all help is the /help command"
+        ],
+        "validate": "You can name the group's three areas and at least one command in each.",
+        "tip": "Don't try to memorize every command — it's enough to know that /help always shows the current list."
+      },
+      "s2": {
+        "title": "Learning: /help and /powerup",
+        "time": "",
+        "why": "These are the two main commands for getting into Claude Code: /help gives you a map of all commands, and /powerup teaches features through short interactive lessons.",
+        "instructions": [
+          "Run /help and review the full list of available commands",
+          "Find the commands we'll cover next in the /help output to confirm they exist in your version",
+          "Run /powerup and complete one interactive lesson on Claude Code features",
+          "Note what the lesson taught you — this is how continuous learning works"
+        ],
+        "validate": "After /help you see the full command list, and after /powerup you completed at least one lesson.",
+        "tip": "/powerup is handy at the start of work — a couple of minutes of lessons saves hours of trial-and-error on features."
+      },
+      "s3": {
+        "title": "Help mid-task: /btw and /insights",
+        "time": "",
+        "why": "These are the group's underused gems: /btw lets you ask a side question without interrupting the main task, and /insights shows your session patterns weekly.",
+        "instructions": [
+          "In the middle of any task, type /btw and ask a short question, for example about an unfamiliar pattern",
+          "Confirm that Claude answered briefly and the main task continued without losing context",
+          "Run /insights and look at the analysis of your session patterns",
+          "Make a habit of running /insights weekly to analyze where your time goes"
+        ],
+        "validate": "You asked a question via /btw without interrupting the task and opened /insights at least once.",
+        "tip": "/btw alone saves dozens of context-breaking interruptions per day — it's the fastest way to clarify a small thing."
+      },
+      "s4": {
+        "title": "Skills and onboarding: /skills, /team-onboarding, /release-notes",
+        "time": "",
+        "why": "These commands help you see available skills, quickly get a team up to speed, and keep track of new Claude Code features.",
+        "instructions": [
+          "Run /skills and look at the list of available installed skills",
+          "Run /release-notes and see what's new in Claude Code",
+          "Run /team-onboarding to generate a guide for onboarding your team",
+          "Compare the skills list from /skills with what was there before — that's how you spot new capabilities"
+        ],
+        "validate": "You saw the skills list via /skills, learned what's new via /release-notes, and generated an onboarding guide.",
+        "tip": "Check /release-notes periodically — otherwise you'll keep working the old way, unaware of new features."
+      },
+      "s5": {
+        "title": "Account: /login, /logout, /mobile",
+        "time": "",
+        "why": "These commands manage your access: signing in and out of your account, plus linking the mobile app via a QR code.",
+        "instructions": [
+          "Run /login if you need to sign in, or confirm you're already signed in",
+          "Remember the /logout command — it's useful on a shared or borrowed device",
+          "Run /mobile to get a QR code for the mobile app",
+          "Scan the QR code with your phone if you want to link the mobile app"
+        ],
+        "validate": "You understand how to sign in and out, and you got a QR code via /mobile.",
+        "tip": "On a shared computer, always end your session with /logout so the account doesn't stay active."
+      },
+      "s6": {
+        "title": "Diagnostics and mistakes: /doctor and /feedback",
+        "time": "",
+        "why": "The final step reinforces the group's main rule: whenever the CLI behaves strangely you run /doctor first, and you send notable issues to Anthropic via /feedback.",
+        "instructions": [
+          "Run /doctor and read the report on your installation's health",
+          "Remember the main rule: when the CLI behaves strangely, run /doctor first — it catches 90% of common issues instantly",
+          "If you found a problem or have an idea — send it to Anthropic via /feedback",
+          "Repeat to yourself: /help is the command map, /btw is a quick question, /doctor is diagnostics"
+        ],
+        "validate": "You ran /doctor, read its report, and know how to send /feedback.",
+        "tip": "The main mistake is not running /doctor when things break. Make it your first reflex, not a last resort."
+      }
+    }
   }
 }
