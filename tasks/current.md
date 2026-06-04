@@ -261,6 +261,11 @@
   - [ ] Остаток (по желанию): обзорные курсы на контейнерах-«шапках» (foundation/systems/
     transformation/use-cases/ai-native-*/platform/instructions/mcp уже частично с курсами).
     Прогон языковых педагогов EN/FI по новым курсам — по желанию.
+  - [x] **Вычитка педагогами EN/FI** ✅: выборка по всем веткам. Вердикт — проза близка к
+    native, грубых ошибок/калек нет. Исправлен единственный системный дефект: поле totalTime
+    нормализовано (ru «6 шагов» / en «6 steps» / fi «6 vaihetta»), EN behaviour→behavior.
+    P2-полировка (финские англицизмы pipeline/output/surface, кавычки «»/"") — отмечена как
+    необязательная, не делалась.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
