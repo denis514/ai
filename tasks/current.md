@@ -255,8 +255,12 @@
   - [x] **Раскатка node-course по всем содержательным веткам ЗАВЕРШЕНА** ✅: Projects,
     Prompting, Agents, Capabilities, Instructions, MCP, Claude Code (ключевое+cc-md),
     AI Fundamentals, Use Cases, Systems, Transformation. 196 курсов.
-  - [ ] Остаток (по желанию): обзорные курсы на контейнерах (foundation/systems/
-    transformation/use-cases/ai-native-*), мелкие узлы Claude Code (cc-grp-*/cc-tty-*/cc-cfg-*).
+  - [x] **Мелкие узлы Claude Code закрыты** ✅: 17 курсов (cc-tty-*, cc-cfg-*, cc-grp-*),
+    каждая группа slash-команд/настроек плотно на 6 шагов, ru/en/fi. **Итого 213 курсов.**
+    Теперь у КАЖДОГО листа Claude Code есть курс.
+  - [ ] Остаток (по желанию): обзорные курсы на контейнерах-«шапках» (foundation/systems/
+    transformation/use-cases/ai-native-*/platform/instructions/mcp уже частично с курсами).
+    Прогон языковых педагогов EN/FI по новым курсам — по желанию.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
