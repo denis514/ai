@@ -5,136 +5,127 @@
     "totalTime": "25 min",
     "whatItIs": "Caught yourself writing the same instructions to Claude every time? 'First check X, then do Y, in format Z...'. A Skill is your ready-made checklist for a recurring task: described once, Claude invokes it on its own when the task matches.\n\nA Skill is a folder with SKILL.md and supporting materials. Turns a one-off prompt into a stable tool — consistent quality from run to run, no rewriting rules.",
     "approach": "The key is the precise `description` in the frontmatter. Whether the Skill activates depends on it. 'Does an audit' — too vague. 'Use when user asks for audit of X with Y' — a working description.",
-    "outcomes": {
-      "0": "You understand when a Skill pays off and when it's overkill",
-      "1": "You write a SKILL.md that Claude activates correctly",
-      "2": "You use supporting files (templates, schemas)",
-      "3": "You define anti-triggers — when the skill should NOT fire"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "You understand when a Skill pays off and when it's overkill",
+      "You write a SKILL.md that Claude activates correctly",
+      "You use supporting files (templates, schemas)",
+      "You define anti-triggers — when the skill should NOT fire"
+    ],
+    "applyIn": [
+      {
         "title": "Regular audits",
         "description": "A Skill with a fixed report template — every audit comes out in the same format, the team reads consistently."
       },
-      "1": {
+      {
         "title": "Standard task prep",
         "description": "A 'prep ticket' Skill with a user story + AC + risks template — turns 10 minutes of work into 1 command."
       },
-      "2": {
+      {
         "title": "Reproducible analysis",
         "description": "A Skill with a baked-in methodology — consistent analysis quality regardless of which team member ran it."
       }
-    },
-    "pitfalls": {
-      "0": "Making a Skill for a one-off task — there's no return on investment.",
-      "1": "A vague description 'does X' — Claude won't understand the trigger.",
-      "2": "Stuffing everything into SKILL.md — it balloons to an unreadable state."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Making a Skill for a one-off task — there's no return on investment.",
+      "A vague description 'does X' — Claude won't understand the trigger.",
+      "Stuffing everything into SKILL.md — it balloons to an unreadable state."
+    ],
+    "exercises": [
+      {
         "question": "Write down your 5 recurring tasks. For the most frequent one, draft a SKILL.md (name, description, 5–7 steps).",
         "hint": "If the task repeats fewer than 5 times a week — pick a different one."
       },
-      "1": {
+      {
         "question": "Test the Skill: ask Claude a question where it SHOULD activate, and an anti-trigger question where it should NOT.",
         "hint": "Doesn't activate when it should → loosen the description. Activates when it shouldn't → add anti-triggers."
       }
-    },
+    ],
     "steps": {
-      "s-1": {
+      "s1": {
         "title": "Choose a routine to formalize",
-        "time": "3 min",
+        "time": "",
         "why": "A Skill pays off when the process repeats ≥ 5 times a week. Otherwise you'll spend more time building it than you save.",
-        "instructions": {
-          "0": "Write down 3 tasks you repeat regularly with a similar context.",
-          "1": "For each, answer: how similar is the process? (≥80% → Skill candidate).",
-          "2": "Choose one — the most frequent and stable. Start there."
-        },
-        "example": "Candidates:\n1. ✅ Regular audit of your items — every week, same process\n2. ❌ 'Help with a task' — too varied, doesn't formalize\n3. ✅ Preparing a standard document — several times a day, same template\n\nI choose: preparing the standard document — most frequent.",
+        "instructions": [
+          "Write down 3 tasks you repeat regularly with a similar context.",
+          "For each, answer: how similar is the process? (≥80% → Skill candidate).",
+          "Choose one — the most frequent and stable. Start there."
+        ],
         "validate": "One routine is chosen and you can clearly say: 'input → steps → output'.",
-        "tip": "A good Skill signal — you're ALREADY catching yourself copying an old prompt."
+        "tip": "A good Skill signal — you're ALREADY catching yourself copying an old prompt.",
+        "example": "Candidates:\n1. ✅ Regular audit of your items — every week, same process\n2. ❌ 'Help with a task' — too varied, doesn't formalize\n3. ✅ Preparing a standard document — several times a day, same template\n\nI choose: preparing the standard document — most frequent."
       },
-      "s-2": {
+      "s2": {
         "title": "Launch skill-creator",
-        "time": "2 min",
+        "time": "",
         "why": "skill-creator is Anthropic's official skill that asks everything needed and formats SKILL.md correctly.",
-        "instructions": {
-          "0": "In claude.ai (Pro+) or Claude Code: ask to activate skill-creator.",
-          "1": "If it doesn't activate automatically — write explicitly: 'Use skill anthropic-skills:skill-creator to create a new skill'.",
-          "2": "skill-creator will ask a series of questions — answer in detail."
-        },
-        "prompt": "Use skill-creator to create a Skill for preparing developer tickets. Ask me all the necessary questions one by one.",
+        "instructions": [
+          "In claude.ai (Pro+) or Claude Code: ask to activate skill-creator.",
+          "If it doesn't activate automatically — write explicitly: 'Use skill anthropic-skills:skill-creator to create a new skill'.",
+          "skill-creator will ask a series of questions — answer in detail."
+        ],
         "validate": "Claude asks questions following the skill-creator structure: name, goal, triggers, steps.",
+        "prompt": "Use skill-creator to create a Skill for preparing developer tickets. Ask me all the necessary questions one by one.",
         "troubleshoot": {
           "skill-creator does not activate": "skill-creator ei aktivoidu",
           "skill-creator doesn't activate": "You may not have access to skills. In Claude Code they're always available; in claude.ai — on paid plans."
         }
       },
-      "s-3": {
+      "s3": {
         "title": "Define the role and description",
-        "time": "5 min",
+        "time": "",
         "why": "Description = trigger. Whether the Skill fires when needed depends on its precision.",
-        "instructions": {
-          "0": "Name: kebab-case, short and clear (e.g., dev-task-prep).",
-          "1": "Description: explicit triggers (when to invoke) + explicit anti-triggers (when NOT to invoke).",
-          "2": "Use the template below."
-        },
-        "example": "name: dev-task-prep\n\ndescription: Use this skill when the user asks to convert an idea, bug, or\nfeature request into a developer-ready ticket. Triggers on phrases like\n\"prepare a ticket\", \"make a user story\", \"turn this into a task for\nengineering\", or when user pastes raw feature descriptions and wants\nstructured output.\n\nDO NOT use for: code review, architecture discussions, or when user\nexplicitly asks for a quick informal note.",
+        "instructions": [
+          "Name: kebab-case, short and clear (e.g., dev-task-prep).",
+          "Description: explicit triggers (when to invoke) + explicit anti-triggers (when NOT to invoke).",
+          "Use the template below."
+        ],
         "validate": "Description contains specific trigger phrases and anti-triggers.",
-        "tip": "If your description is a single generic phrase like 'helps with tasks' — the Skill will fire on everything. Be specific."
+        "tip": "If your description is a single generic phrase like 'helps with tasks' — the Skill will fire on everything. Be specific.",
+        "example": "name: dev-task-prep\n\ndescription: Use this skill when the user asks to convert an idea, bug, or\nfeature request into a developer-ready ticket. Triggers on phrases like\n\"prepare a ticket\", \"make a user story\", \"turn this into a task for\nengineering\", or when user pastes raw feature descriptions and wants\nstructured output.\n\nDO NOT use for: code review, architecture discussions, or when user\nexplicitly asks for a quick informal note."
       },
-      "s-4": {
+      "s4": {
         "title": "Describe the step-by-step workflow",
-        "time": "6 min",
+        "time": "",
         "why": "Workflow is a 'recipe'. The clearer it is, the more stable the result from run to run.",
-        "instructions": {
-          "0": "Describe 5–8 steps Claude should execute.",
-          "1": "For each step: what it does + what output it passes to the next step.",
-          "2": "The final step — format of the output."
-        },
-        "example": "## Workflow\n\n1. **Clarify the idea**: if description is shorter than 2 lines — ask 3 clarifying questions (context, user goal, constraints).\n2. **Formulate User Story**: format 'As a [role] I want [action] so that [value]'.\n3. **Acceptance Criteria**: 4–7 points in Given/When/Then format.\n4. **Technical notes**: what we touch / what we do NOT touch (if applicable).\n5. **Edge cases**: 3–5 negative scenarios.\n6. **Estimate**: XS/S/M/L/XL with a one-line justification.\n7. **DoD**: 3–5 'done when…' points.\n\n## Output format\nMarkdown, ready to paste into Linear/Jira.",
+        "instructions": [
+          "Describe 5–8 steps Claude should execute.",
+          "For each step: what it does + what output it passes to the next step.",
+          "The final step — format of the output."
+        ],
         "validate": "The workflow reads like a recipe: the cook (Claude) knows each step.",
-        "tip": "If there are > 10 steps — the Skill is too big. Split into two linked Skills."
+        "tip": "If there are > 10 steps — the Skill is too big. Split into two linked Skills.",
+        "example": "## Workflow\n\n1. **Clarify the idea**: if description is shorter than 2 lines — ask 3 clarifying questions (context, user goal, constraints).\n2. **Formulate User Story**: format 'As a [role] I want [action] so that [value]'.\n3. **Acceptance Criteria**: 4–7 points in Given/When/Then format.\n4. **Technical notes**: what we touch / what we do NOT touch (if applicable).\n5. **Edge cases**: 3–5 negative scenarios.\n6. **Estimate**: XS/S/M/L/XL with a one-line justification.\n7. **DoD**: 3–5 'done when…' points.\n\n## Output format\nMarkdown, ready to paste into Linear/Jira."
       },
-      "s-5": {
+      "s5": {
         "title": "Add templates/ — templates for repeatability",
-        "time": "4 min",
+        "time": "",
         "why": "Templates move details out of SKILL.md and keep it short. They also guarantee a consistent format.",
-        "instructions": {
-          "0": "Create a file templates/ticket.md inside the skill folder.",
-          "1": "Describe in it exactly the format that should appear in the output.",
-          "2": "In SKILL.md refer to the template: 'follow the format from templates/ticket.md'."
-        },
-        "example": "# templates/ticket.md\n\n## User Story\nAs a {role}, I want {action} so that {value}.\n\n## Acceptance Criteria\n- [ ] Given {context}, When {action}, Then {outcome}\n- [ ] ...\n\n## Technical notes\n**Touch:** ...\n**Don't touch:** ...\n\n## Edge cases\n- ...\n\n## Estimate: {XS|S|M|L|XL}\n{Reason in one line}\n\n## Definition of Done\n- [ ] Tests pass\n- [ ] Code reviewed\n- [ ] ...",
+        "instructions": [
+          "Create a file templates/ticket.md inside the skill folder.",
+          "Describe in it exactly the format that should appear in the output.",
+          "In SKILL.md refer to the template: 'follow the format from templates/ticket.md'."
+        ],
         "validate": "The template is saved and SKILL.md references it.",
-        "tip": "A template is a contract. It's easier to change than to rewrite SKILL.md every time."
+        "tip": "A template is a contract. It's easier to change than to rewrite SKILL.md every time.",
+        "example": "# templates/ticket.md\n\n## User Story\nAs a {role}, I want {action} so that {value}.\n\n## Acceptance Criteria\n- [ ] Given {context}, When {action}, Then {outcome}\n- [ ] ...\n\n## Technical notes\n**Touch:** ...\n**Don't touch:** ...\n\n## Edge cases\n- ...\n\n## Estimate: {XS|S|M|L|XL}\n{Reason in one line}\n\n## Definition of Done\n- [ ] Tests pass\n- [ ] Code reviewed\n- [ ] ..."
       },
-      "s-6": {
-        "title": "Test the trigger",
-        "time": "3 min",
-        "why": "A Skill that doesn't activate when needed is dead. Trigger testing is mandatory.",
-        "instructions": {
-          "0": "Write Claude a natural phrase that the Skill should fire on.",
-          "1": "Check: did it activate or not.",
-          "2": "Then — a phrase it should NOT fire on (anti-trigger). Confirm Claude doesn't activate the Skill.",
-          "3": "If triggers misbehave — go back to step 3 and tighten the description."
-        },
-        "example": "✅ Should fire: 'Help me turn this idea into a ticket for developers'\n✅ Should fire: 'Make a user story with AC from this feature description'\n❌ Should NOT: 'Tell me in general terms how to write user stories' (that's a learning request, not ticket prep)",
-        "validate": "The Skill fires on all ✅ and does not fire on ❌.",
-        "tip": "The most common problem — the Skill fires too often. The fix is to add more anti-triggers to the description."
-      },
-      "s-7": {
-        "title": "Run it on a real task and improve",
-        "time": "2 min",
-        "why": "A real test surfaces things invisible in synthetic examples.",
-        "instructions": {
-          "0": "Take a real task from your backlog.",
-          "1": "Run it through the Skill 2–3 times.",
-          "2": "Where the result is weak — add a rule to the Workflow or an anti-trigger to the description.",
-          "3": "After 5–10 runs the Skill stabilizes."
-        },
-        "validate": "The Skill is used in real work; you're not writing the same prompt by hand.",
-        "tip": "Share the Skill with the team via the repository (skills/). One Skill × 5 people = 5× the return."
+      "s6": {
+        "title": "Test the trigger and run it on a real task",
+        "time": "",
+        "why": "A Skill that doesn't activate when needed is dead, and a real test surfaces things invisible in synthetic examples. First verify the trigger, then stabilize it on real tasks.",
+        "instructions": [
+          "Write Claude a natural phrase that the Skill should fire on.",
+          "Check: did it activate or not.",
+          "Then — a phrase it should NOT fire on (anti-trigger). Confirm Claude doesn't activate the Skill.",
+          "If triggers misbehave — go back to step 3 and tighten the description.",
+          "Take a real task from your backlog.",
+          "Run it through the Skill 2–3 times.",
+          "Where the result is weak — add a rule to the Workflow or an anti-trigger to the description.",
+          "After 5–10 runs the Skill stabilizes."
+        ],
+        "validate": "The Skill fires on all ✅ and not on ❌; it's used in real work and you're not writing the same prompt by hand.",
+        "tip": "The most common problem is the Skill firing too often; the fix is to add anti-triggers. Share the Skill with the team via the repository (skills/): one Skill × 5 people = 5× the return.",
+        "example": "✅ Should fire: 'Help me turn this idea into a ticket for developers'\n✅ Should fire: 'Make a user story with AC from this feature description'\n❌ Should NOT: 'Tell me in general terms how to write user stories' (that's a learning request, not ticket prep)"
       }
     },
     "trigger": "You notice you write the same checklist \"first X, then Y, in format Z\" every time.",
@@ -167,158 +158,125 @@
   "claude-code": {
     "title": "Install and configure Claude Code",
     "subtitle": "A full AI agent in the terminal",
-    "totalTime": "30 min",
+    "totalTime": "",
     "whatItIs": "You know VS Code Copilot that completes lines of code? [[node:claude-code|Claude Code]] does the same, but 10× the scope: reads your whole project, edits dozens of files, runs commands, does refactors. And it lives in your terminal, not your editor.\n\nAnthropic's CLI tool for working with Claude directly in the terminal. Uses [[node:cc-cmd-init|/init]], sub-agents, [[node:mcp|MCP servers]] and [[node:cc-md|CLAUDE.md]] as project memory. Turns the terminal into a full AI-powered development environment.",
     "approach": "Don't try to master everything at once. Install → run [[node:cc-cmd-init|/init]] → try one real edit → tune [[node:cc-md|CLAUDE.md]]. Most of Claude Code's power unlocks through the CLAUDE.md you write for your own project.",
-    "outcomes": {
-      "0": "Installed Claude Code and launched it in your project",
-      "1": "Generated CLAUDE.md with /init and tuned it",
-      "2": "Configured basic permissions for safe commands",
-      "3": "Understand the main slash commands and modes (Plan / Fast)"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Installed Claude Code and launched it in your project",
+      "Generated CLAUDE.md with /init and tuned it",
+      "Configured basic permissions for safe commands",
+      "Understand the main slash commands and modes (Plan / Fast)"
+    ],
+    "applyIn": [
+      {
         "title": "Code review",
         "description": "claude in the repo → /review → a structured audit at the level of an experienced developer in minutes."
       },
-      "1": {
+      {
         "title": "Safe refactoring",
         "description": "Plan mode → a change plan → you approve → execution. No surprises in the code."
       },
-      "2": {
+      {
         "title": "Auto-documentation",
         "description": "Add Hooks: README and CHANGELOG update automatically whenever files change."
       }
-    },
-    "pitfalls": {
-      "0": "Running outside a git repo — you lose history context.",
-      "1": "Without CLAUDE.md the model rediscovers the project every time.",
-      "2": "Overly broad permissions (allow: [Bash(*)]) — loss of control."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Running outside a git repo — you lose history context.",
+      "Without CLAUDE.md the model rediscovers the project every time.",
+      "Overly broad permissions (allow: [Bash(*)]) — loss of control."
+    ],
+    "exercises": [
+      {
         "question": "In your real repo: run claude → /init → tune CLAUDE.md (add a 'forbidden' section with your rules).",
         "hint": "At least 3 lines in the forbidden section — this shows the result immediately."
       },
-      "1": {
+      {
         "question": "Make a small edit (rename a variable) through Plan mode. Compare with doing the same in normal mode.",
         "hint": "Plan mode = 'show the plan first, I'll approve'. Very quickly becomes the default."
       }
-    },
+    ],
     "steps": {
-      "cc-1": {
-        "title": "Install Node.js (if not present)",
-        "time": "3 min",
-        "why": "Claude Code is an npm package. Without Node.js it won't run.",
-        "instructions": {
-          "0": "Check: open terminal → `node -v`.",
-          "1": "If there's no version or it's < 18 — install a fresh Node.js.",
-          "2": "macOS: `brew install node`. Windows: download the installer from nodejs.org."
-        },
-        "validate": "In the terminal `node -v` shows 18.x or higher.",
-        "troubleshoot": {
-          "command not found: node": "Restart the terminal after installing. Or check PATH."
-        }
+      "s1": {
+        "title": "Install Node.js and install Claude Code globally",
+        "time": "",
+        "why": "Claude Code is an npm package — without Node.js it won't run. A global install lets you call `claude` from any folder.",
+        "instructions": [
+          "Check Node.js: open terminal → `node -v`.",
+          "If there's no version or it's < 18 — install a fresh Node.js. macOS: `brew install node`. Windows: download the installer from nodejs.org.",
+          "`node -v` should show 18.x or higher.",
+          "Install Claude Code: `npm install -g @anthropic-ai/claude-code`.",
+          "Wait ~30 seconds, then verify: `claude --version`.",
+          "`claude --version` prints the version number without errors."
+        ],
+        "validate": "`node -v` shows 18.x or higher, and `claude --version` prints the version number without errors.",
+        "tip": "If `command not found: node` — restart the terminal after installing or check PATH. On `EACCES permission denied` (macOS/Linux) use `sudo npm install -g ...` or configure npm prefix to your own ~/.npm-global. On `EEXIST file already exists` remove the old version first: `npm uninstall -g @anthropic-ai/claude-code`."
       },
-      "cc-2": {
-        "title": "Install Claude Code globally",
-        "time": "2 min",
-        "why": "A global install lets you call `claude` from any folder.",
-        "instructions": {
-          "0": "In the terminal: `npm install -g @anthropic-ai/claude-code`.",
-          "1": "Wait ~30 seconds.",
-          "2": "Verify: `claude --version`."
-        },
-        "prompt": "npm install -g @anthropic-ai/claude-code",
-        "validate": "`claude --version` prints the version number without errors.",
-        "troubleshoot": {
-          "EACCES permission denied": "macOS/Linux: use `sudo npm install -g ...` or configure npm prefix to your own ~/.npm-global.",
-          "EEXIST file already exists": "An old version is sitting there. Remove: `npm uninstall -g @anthropic-ai/claude-code`, then install again."
-        }
-      },
-      "cc-3": {
+      "s2": {
         "title": "Launch in a repository and authenticate",
-        "time": "3 min",
+        "time": "",
         "why": "Claude Code works in the context of a folder. Authentication is once per machine.",
-        "instructions": {
-          "0": "Navigate to any project folder: `cd ~/projects/my-project`.",
-          "1": "Run: `claude`.",
-          "2": "On first run a browser opens for Anthropic authentication — sign in.",
-          "3": "After that you're in an interactive Claude session."
-        },
+        "instructions": [
+          "Navigate to any project folder: `cd ~/projects/my-project`.",
+          "Run: `claude`.",
+          "On first run a browser opens for Anthropic authentication — sign in.",
+          "After that you're in an interactive Claude session."
+        ],
         "validate": "The terminal shows a Claude prompt; you can type messages.",
         "tip": "Works best in a git repository — Claude sees the history and diff. Outside a repo it loses half its features."
       },
-      "cc-4": {
+      "s3": {
         "title": "Generate CLAUDE.md with /init",
-        "time": "5 min",
+        "time": "",
         "why": "CLAUDE.md is the project's 'personality'. Claude reads it on every launch and doesn't ask about the obvious.",
-        "instructions": {
-          "0": "In the Claude session type: `/init`.",
-          "1": "Claude scans the project and proposes a CLAUDE.md draft.",
-          "2": "Read it. Remove what's inaccurate, add rules and forbidden actions (see example).",
-          "3": "Save. The file lives in the project root."
-        },
-        "example": "# CLAUDE.md\n\n## Stack\n- Next.js 14, App Router\n- Tailwind CSS\n- TypeScript (strict)\n\n## Conventions\n- NEVER use `any`. Only `unknown` or strict types.\n- Tests — Vitest, not Jest. Files next to source: `foo.ts` + `foo.test.ts`.\n- All components — functional with TypeScript.\n\n## Forbidden\n- Don't add extra UI libraries. Tailwind + our components only.\n- Don't rewrite `auth/` without sign-off — there's legal compliance there.\n\n## Entry points\n- src/app/(routes)/page.tsx — main\n- src/lib/api.ts — all external calls (no direct fetch outside)",
+        "instructions": [
+          "In the Claude session type: `/init`.",
+          "Claude scans the project and proposes a CLAUDE.md draft.",
+          "Read it. Remove what's inaccurate, add rules and forbidden actions.",
+          "Save. The file lives in the project root.",
+          "Example CLAUDE.md content:\n\n# CLAUDE.md\n\n## Stack\n- Next.js 14, App Router\n- Tailwind CSS\n- TypeScript (strict)\n\n## Conventions\n- NEVER use `any`. Only `unknown` or strict types.\n- Tests — Vitest, not Jest. Files next to source: `foo.ts` + `foo.test.ts`.\n- All components — functional with TypeScript.\n\n## Forbidden\n- Don't add extra UI libraries. Tailwind + our components only.\n- Don't rewrite `auth/` without sign-off — there's legal compliance there.\n\n## Entry points\n- src/app/(routes)/page.tsx — main\n- src/lib/api.ts — all external calls (no direct fetch outside)"
+        ],
         "validate": "CLAUDE.md is in the repo root, filled with rules specific to YOUR project.",
         "tip": "Don't describe the obvious. 'This is a React project' — noise. 'Only functional components' — a rule."
       },
-      "cc-5": {
-        "title": "Run /security-review on a branch",
-        "time": "4 min",
-        "why": "A useful built-in workflow — lets you feel the power of slash commands.",
-        "instructions": {
-          "0": "Make a simple code change, commit it (but don't push).",
-          "1": "In the Claude session: `/security-review`.",
-          "2": "Claude analyzes the diff and produces a list of security findings.",
-          "3": "Study the report — even if the code is clean you'll see what Claude can do."
-        },
-        "validate": "A structured security report received.",
-        "tip": "Build /security-review into a pre-merge habit for serious changes. More thorough than any junior."
+      "s4": {
+        "title": "Run /security-review and configure your first Hook",
+        "time": "",
+        "why": "Slash commands give you ready-made workflows, and Hooks automate behavior you don't want to rely on Claude 'remembering'.",
+        "instructions": [
+          "Make a simple code change, commit it (but don't push).",
+          "In the Claude session: `/security-review` — Claude analyzes the diff and produces a list of security findings.",
+          "Study the report — even if the code is clean you'll see what Claude can do.",
+          "Now configure a Hook: create the file `.claude/settings.json` (or open the existing one).",
+          "Add a PostToolUse:Write hook — it will run prettier after every file edit. Restart claude and make a test edit.",
+          "Example `.claude/settings.json`:\n\n{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Write|Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write \\\"$CLAUDE_FILE_PATH\\\"\"\n          }\n        ]\n      }\n    ]\n  }\n}"
+        ],
+        "validate": "A structured security report received, and after every file edit Claude automatically runs prettier.",
+        "tip": "Build /security-review into a pre-merge habit for serious changes — more thorough than any junior. Hooks = 'junior's discipline': linter, tests, typecheck — all in hooks, the model won't forget. If a hook does not fire — check that settings.json is valid JSON and restart `claude`. In the command use `$CLAUDE_FILE_PATH`, don't guess the path."
       },
-      "cc-6": {
-        "title": "Configure your first Hook",
-        "time": "5 min",
-        "why": "Hooks automate behavior you don't want to rely on Claude 'remembering'.",
-        "instructions": {
-          "0": "Create the file `.claude/settings.json` (or open the existing one).",
-          "1": "Add a PostToolUse:Write hook — it will run prettier after every file edit.",
-          "2": "Restart claude.",
-          "3": "Make a test edit — you'll see prettier ran automatically."
-        },
-        "example": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Write|Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write \\\"$CLAUDE_FILE_PATH\\\"\"\n          }\n        ]\n      }\n    ]\n  }\n}",
-        "validate": "After every file edit, Claude automatically runs prettier.",
-        "tip": "Hooks = 'junior's discipline'. Linter, tests, typecheck — all in hooks. The model won't forget.",
-        "troubleshoot": {
-          "Hook does not trigger": "Hook ei laukea",
-          "Hook doesn't fire": "Check — is settings.json valid JSON? Restart `claude`.",
-          "Hook throws a path error": "Hook valittaa polusta",
-          "Hook complains about the path": "Use `$CLAUDE_FILE_PATH` (available env variable), don't guess the path."
-        }
-      },
-      "cc-7": {
+      "s5": {
         "title": "Create a custom subagent",
-        "time": "6 min",
+        "time": "",
         "why": "A subagent takes over a large task and doesn't pollute the main context. The best investment in productivity.",
-        "instructions": {
-          "0": "Create the file `.claude/agents/code-reviewer.md`.",
-          "1": "Describe the role, tools, and instructions (see example below).",
-          "2": "In the chat ask: 'run code-reviewer on the current changes'.",
-          "3": "Claude will invoke the subagent, which returns a structured report."
-        },
-        "example": "---\nname: code-reviewer\ndescription: Use when user asks to review code changes, current diff, or specific files. Output is a structured list of issues by severity.\ntools: Read, Bash\n---\n\nYou are a senior code reviewer. Your job:\n\n1. Read the diff with `git diff`.\n2. For each change, check: correctness, security, readability, tests.\n3. Return a markdown report:\n   - 🔴 Critical (blocks merge)\n   - 🟡 Important (should fix)\n   - 🟢 Nit (optional)\n4. For each issue: file:line + what's wrong + how to fix.\n\nDo NOT make architectural arguments — focus on the diff in front of you.\nDo NOT rewrite code yourself — only point out issues.",
+        "instructions": [
+          "Create the file `.claude/agents/code-reviewer.md`.",
+          "Describe the role, tools, and instructions.",
+          "In the chat ask: 'run code-reviewer on the current changes'.",
+          "Claude will invoke the subagent, which returns a structured report.",
+          "Example `.claude/agents/code-reviewer.md`:\n\n---\nname: code-reviewer\ndescription: Use when user asks to review code changes, current diff, or specific files. Output is a structured list of issues by severity.\ntools: Read, Bash\n---\n\nYou are a senior code reviewer. Your job:\n\n1. Read the diff with `git diff`.\n2. For each change, check: correctness, security, readability, tests.\n3. Return a markdown report:\n   - 🔴 Critical (blocks merge)\n   - 🟡 Important (should fix)\n   - 🟢 Nit (optional)\n4. For each issue: file:line + what's wrong + how to fix.\n\nDo NOT make architectural arguments — focus on the diff in front of you.\nDo NOT rewrite code yourself — only point out issues."
+        ],
         "validate": "The subagent activates and produces a structured report.",
         "tip": "The description is again critical. The parent agent uses it to decide whether to delegate."
       },
-      "cc-8": {
+      "s6": {
         "title": "Lock it in — embed Claude Code in your workflow",
-        "time": "2 min",
+        "time": "",
         "why": "Without building it into a habit, Claude Code stays a toy. The goal — it's part of your workday.",
-        "instructions": {
-          "0": "Set up 3 regular scenarios: e.g., '/security-review before PR', 'code-reviewer on big diffs', '/init on new projects'.",
-          "1": "Document them in the team README.",
-          "2": "After a week — calculate how much time you saved."
-        },
+        "instructions": [
+          "Set up 3 regular scenarios: e.g., '/security-review before PR', 'code-reviewer on big diffs', '/init on new projects'.",
+          "Document them in the team README.",
+          "After a week — calculate how much time you saved."
+        ],
         "validate": "You have 3 scenarios you use by habit, without consciously thinking 'let me try Claude'.",
         "tip": "Next step — MCP. Connecting Linear/Figma/DB turns Claude Code from a code assistant into a product assistant."
       }
@@ -356,140 +314,122 @@
     "totalTime": "20 min",
     "whatItIs": "You know how USB-C is one cable for everything — laptop, monitor, headphones, charger? MCP is 'USB-C for AI'. One standard so Claude can connect to anything: your Linear, Notion, database, files, GitHub — without copy-paste or homemade integrations.\n\n[[node:mcp|MCP (Model Context Protocol)]] is Anthropic's open standard. Through an MCP server, Claude sees your real tools and works directly inside them.",
     "approach": "Start with an existing server (filesystem or github), not your own. First understand the ecosystem and data formats through a working example, then design your own.",
-    "outcomes": {
-      "0": "Understand MCP architecture: server / client / transport",
-      "1": "Connected an existing MCP server to Claude Code",
-      "2": "Tell the difference between stdio and HTTP/SSE transports",
-      "3": "Can debug 'why MCP doesn't see data'"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Understand MCP architecture: server / client / transport",
+      "Connected an existing MCP server to [[node:claude-code|Claude Code]]",
+      "Tell the difference between stdio and HTTP/SSE transports",
+      "Can debug 'why MCP doesn't see data'"
+    ],
+    "applyIn": [
+      {
         "title": "Context from a tracker",
         "description": "MCP to a task tracker → Claude sees fresh tickets, can comment and suggest decompositions."
       },
-      "1": {
+      {
         "title": "Documentation in context",
         "description": "MCP to Confluence/Notion → Claude answers with your internal documentation in mind."
       },
-      "2": {
+      {
         "title": "Code access",
         "description": "MCP to GitHub → Claude sees PRs, can comment, make review observations."
       }
-    },
-    "pitfalls": {
-      "0": "Connecting everything — each server loads on startup.",
-      "1": "Destructive tools without a confirm step — risky.",
-      "2": "Storing tokens in the project settings.json (will end up in git) instead of settings.local.json."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Connecting everything — each server loads on startup.",
+      "Destructive tools without a confirm step — risky.",
+      "Storing tokens in the project settings.json (will end up in git) instead of settings.local.json."
+    ],
+    "exercises": [
+      {
         "question": "Set up an MCP server for filesystem. Ask Claude to find all .md files in your documents folder and make a table of contents.",
         "hint": "Filesystem is the safest for a first MCP. Completely local."
       },
-      "1": {
+      {
         "question": "Connect MCP to one external system you use (github / linear / notion). Ask a real question: 'what's happening in project X'.",
         "hint": "If nothing found — check /mcp in Claude Code: did the server start? Are tools visible?"
       }
-    },
+    ],
     "steps": {
-      "m-1": {
+      "s1": {
         "title": "Understand why you need MCP",
-        "time": "2 min",
+        "time": "",
         "why": "Without MCP, Claude only sees what you paste manually. With MCP — it lives in your environment.",
-        "instructions": {
-          "0": "Write down 3 tools you use daily (Linear, Figma, DB, Slack...).",
-          "1": "For each: 'what could Claude do if it could see this?'.",
-          "2": "Choose ONE — the most frequent. Start there."
-        },
-        "example": "Candidates:\n1. ✅ Linear — daily, lots of context in tickets\n2. ✅ Figma — weekly, designs, need handoff to code\n3. ❌ Notion — rarely\n\nI'll start with: Linear.",
+        "instructions": [
+          "Write down 3 tools you use daily (Linear, Figma, DB, Slack...).",
+          "For each: 'what could Claude do if it could see this?'.",
+          "Choose ONE — the most frequent. Start there.",
+          "Example. Candidates: Linear (daily, lots of context in tickets), Figma (weekly, designs, need handoff to code), Notion (rarely) — I'll start with Linear."
+        ],
         "validate": "One server chosen for connection.",
         "tip": "Good sign: you catch yourself copy-pasting from this tool into a Claude chat. That's the MCP ROI signal."
       },
-      "m-2": {
+      "s2": {
         "title": "Find an existing server in the catalog",
-        "time": "3 min",
+        "time": "",
         "why": "95% of services already have a server. Don't write your own — it's a waste of time.",
-        "instructions": {
-          "0": "Open the Anthropic MCP catalog or the official docs of your chosen service.",
-          "1": "Find the server for your tool.",
-          "2": "Copy the connection configuration."
-        },
+        "instructions": [
+          "Open the Anthropic MCP catalog or the official docs of your chosen service.",
+          "Find the server for your tool.",
+          "Copy the connection configuration.",
+          "No server in the catalog — search community repos or MCP-registry. As a last resort write your own, but that's advanced."
+        ],
         "validate": "You have a snippet for settings/config with the url, tokens, and scope.",
-        "troubleshoot": {
-          "No server found in the directory": "Palvelinta ei löydy hakemistosta",
-          "No server in the catalog": "Search community repos or MCP-registry. As a last resort — write your own, but that's advanced."
-        }
+        "tip": "A prebuilt server saves hours — check the catalog before writing your own."
       },
-      "m-3": {
+      "s3": {
         "title": "Create an access token / API key",
-        "time": "4 min",
+        "time": "",
         "why": "The token is the security checkpoint. What MCP can read and change depends on its scope.",
-        "instructions": {
-          "0": "In the service (Linear/Figma/etc.) → Settings → API → Create token.",
-          "1": "Grant the minimum necessary permissions. Prefer read-only; if writes are needed — a separate token.",
-          "2": "Copy the token somewhere safe (1Password / Bitwarden). It's shown ONCE."
-        },
+        "instructions": [
+          "In the service (Linear/Figma/etc.) → Settings → API → Create token.",
+          "Grant the minimum necessary permissions. Prefer read-only; if writes are needed — a separate token.",
+          "Copy the token somewhere safe (1Password / Bitwarden). It's shown ONCE.",
+          "Not sure which scopes you need — take 'read-only on main resources' (e.g., Issues for Linear), expand later."
+        ],
         "validate": "Token created, stored in the password manager, permissions are the minimum needed.",
-        "tip": "For the first connection — read-only. You can add write permission later, once you trust the server.",
-        "troubleshoot": {
-          "I don't understand which scopes are needed": "En ymmärrä mitä scopeja tarvitaan",
-          "Not sure which scopes I need": "Take 'read-only on main resources' (e.g., Issues for Linear). Expand later."
-        }
+        "tip": "For the first connection — read-only. You can add write permission later, once you trust the server."
       },
-      "m-4": {
+      "s4": {
         "title": "Connect the MCP server to Claude Code or claude.ai",
-        "time": "4 min",
+        "time": "",
         "why": "Configuration is the most common source of errors. Follow the checklist.",
-        "instructions": {
-          "0": "Open `~/.config/claude-code/mcp.json` (Code) or Settings → Connectors (claude.ai).",
-          "1": "Add the server configuration block (see example).",
-          "2": "Insert the token from your password manager (DON'T hardcode it — use ENV).",
-          "3": "Restart Claude."
-        },
-        "example": "{\n  \"mcpServers\": {\n    \"linear\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-linear\"],\n      \"env\": {\n        \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\"\n      }\n    }\n  }\n}",
+        "instructions": [
+          "Open `~/.config/claude-code/mcp.json` (Code) or Settings → Connectors ([[node:pl-web-setup|claude.ai]]).",
+          "Add the server configuration block (see example).",
+          "Insert the token from your password manager (DON'T hardcode it — use ENV).",
+          "Restart Claude.",
+          "Example config:\n{\n  \"mcpServers\": {\n    \"linear\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-linear\"],\n      \"env\": {\n        \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\"\n      }\n    }\n  }\n}",
+          "Server doesn't start — check JSON validity and that the token is set in ENV; run `npx <package>` separately, you'll see the error.",
+          "Authentication failed — token was copied with a space or has the wrong scope; create a new one and verify."
+        ],
         "validate": "Claude restarted without errors; logs contain a line like `connected: linear` or similar.",
-        "troubleshoot": {
-          "Server does not start": "Palvelin ei käynnisty",
-          "Server doesn't start": "Check JSON validity and that the token is set in ENV. Run `npx <package>` separately — you'll see the error.",
-          "Authentication failed": "Token was copied with a space or has the wrong scope. Create a new one and verify."
-        }
+        "tip": "Never hardcode the token in config — use ENV only, otherwise it ends up in git."
       },
-      "m-5": {
-        "title": "Check the available tools",
-        "time": "2 min",
-        "why": "Without checking you don't know what the MCP server actually offers. This is the first thing to do.",
-        "instructions": {
-          "0": "In the chat ask: 'show me what tools are available via MCP'.",
-          "1": "Claude will list tools with their parameter schemas.",
-          "2": "Read — mark 2–3 that you definitely need."
-        },
-        "prompt": "Show the list of MCP tools available to you. For each — name and short description from the schema.",
-        "validate": "You received a list of tools with descriptions.",
-        "tip": "If there are too many tools — ask 'keep only those for Issues and Comments active'. Less noise."
-      },
-      "m-6": {
-        "title": "Make the first real request with MCP",
-        "time": "3 min",
-        "why": "A real request shows the actual value. Without it, MCP is setup for the sake of setup.",
-        "instructions": {
-          "0": "Take a typical task from your practice (see examples).",
-          "1": "Send Claude the request — it will choose the right MCP tools automatically.",
-          "2": "Evaluate: does the answer rely on fresh data from the service, not guesses."
-        },
-        "example": "Linear: 'Show all P0 bugs in the current sprint, grouped by component, with a short risk assessment for each.'\n\nFigma: 'Open node [URL] and convert it to a React component in our design system style.'\n\nGitHub: 'Give me a summary of all PRs opened in the last 7 days, with authors and CI status.'",
-        "validate": "The answer contains fresh, accurate data from the service.",
+      "s5": {
+        "title": "Check the tools and make the first real request",
+        "time": "",
+        "why": "Without checking you don't know what the MCP server actually offers. And a real request shows the actual value — without it, MCP is setup for the sake of setup.",
+        "instructions": [
+          "In the chat ask: 'show me what tools are available via MCP' — Claude will list tools with their parameter schemas.",
+          "Read the list, mark 2–3 tools that you definitely need.",
+          "If there are too many tools — ask 'keep only those for Issues and Comments active', less noise.",
+          "Take a typical task from your practice and send Claude the request — it will choose the right MCP tools automatically.",
+          "Evaluate: does the answer rely on fresh data from the service, not guesses.",
+          "Example requests. Linear: 'Show all P0 bugs in the current sprint, grouped by component, with a short risk assessment for each.' Figma: 'Open node [URL] and convert it to a React component in our design system style.' GitHub: 'Give me a summary of all PRs opened in the last 7 days, with authors and CI status.'"
+        ],
+        "validate": "You received a list of tools with descriptions, and the answer to the real request contains fresh, accurate data from the service.",
         "tip": "If Claude is uncertain — ask 'verify through MCP, not from memory'. Sometimes the model gets lazy and guesses."
       },
-      "m-7": {
+      "s6": {
         "title": "Security audit of the connection",
-        "time": "2 min",
+        "time": "",
         "why": "The MCP server sees what the token sees. Checking scope = insurance.",
-        "instructions": {
-          "0": "Open the token panel in the service → check what permissions it has.",
-          "1": "If there's write permission — ask yourself: do I actually need write?",
-          "2": "If in doubt — recreate the token with fewer permissions.",
-          "3": "Enable 2FA in the service if not already."
-        },
+        "instructions": [
+          "Open the token panel in the service → check what permissions it has.",
+          "If there's write permission — ask yourself: do I actually need write?",
+          "If in doubt — recreate the token with fewer permissions.",
+          "Enable 2FA in the service if not already."
+        ],
         "validate": "The token has exactly the scopes you use, no more.",
         "tip": "Never use one token for different servers. One service = one token. This simplifies revocation."
       }
@@ -1154,206 +1094,139 @@
     "subtitle": "From an empty computer to Claude Code running",
     "totalTime": "30 min",
     "whatItIs": "An end-to-end tutorial for the absolute beginner: install Node.js, open the terminal, create a folder, install [[node:claude-code|Claude Code]], run the first [[node:cc-cmd-init|/init]] and send the first real prompt. No assumption that \"you already know cd\".",
-    "approach": "The tutorial branches at step 1: [[node:pl-web-setup|claude.ai]] (no terminal, you finish at step 2) or Claude Code (everything through step 10). Pick by what matters: a quick start without installs, or full control over the project files.",
-    "outcomes": {
-      "0": "Understand the difference between a claude.ai Project and a local folder",
-      "1": "Installed Node.js and can check the version",
-      "2": "Opened the terminal and don't fear it",
-      "3": "Created your first working folder (two ways)",
-      "4": "Installed Claude Code and completed authentication",
-      "5": "Generated CLAUDE.md and sent your first real prompt"
-    },
-    "applyIn": {
-      "0": {
+    "approach": "The tutorial branches at step 1: [[node:pl-web-setup|claude.ai]] (no terminal, you finish at step 2) or Claude Code (everything through step 6). Pick by what matters: a quick start without installs, or full control over the project files.",
+    "outcomes": [
+      "Understand the difference between a claude.ai Project and a local folder",
+      "Installed Node.js and can check the version",
+      "Opened the terminal and don't fear it",
+      "Created your first working folder (two ways)",
+      "Installed Claude Code and completed authentication",
+      "Generated [[node:cc-md|CLAUDE.md]] and sent your first real prompt"
+    ],
+    "applyIn": [
+      {
         "title": "First day with Claude",
         "description": "Replaces \"I read the docs and nothing works\" with \"in 30 minutes I'm already doing things\"."
       },
-      "1": {
+      {
         "title": "Onboarding a coworker",
         "description": "Share the link — and a colleague reaches the same starting state as you in half an hour."
       },
-      "2": {
+      {
         "title": "Clean install",
         "description": "Got a new Mac or switched to Windows — run the tutorial and rebuild your work environment."
       }
-    },
-    "pitfalls": {
-      "0": "Skipping step 1 (choosing the path) and rushing into the terminal — only to realize a claude.ai Project would have been enough.",
-      "1": "Creating a folder with spaces or non-ASCII in the name — then cd complains and you don't know why.",
-      "2": "Installing an old Node.js (<18) — Claude Code will complain \"engine not supported\".",
-      "3": "Skipping /init — Claude re-discovers the project every time."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Skipping step 1 (choosing the path) and rushing into the terminal — only to realize a claude.ai Project would have been enough.",
+      "Creating a folder with spaces or non-ASCII in the name — then cd complains and you don't know why.",
+      "Installing an old Node.js (<18) — Claude Code will complain \"engine not supported\".",
+      "Skipping /init — Claude re-discovers the project every time."
+    ],
+    "exercises": [
+      {
         "question": "Walk the tutorial to the end along the path you chose at step 1. Time yourself.",
         "hint": "Path A (claude.ai) — 5–10 min. Path B (Claude Code) — 25–35 min."
       },
-      "1": {
+      {
         "question": "After finishing — create a second folder for a second project and verify that Claude Code picks up a different CLAUDE.md correctly.",
         "hint": "This checks you understood isolation: one project = one folder = its own context."
       }
-    },
+    ],
     "steps": {
-      "fp-1": {
+      "s1": {
         "title": "Choose your path: claude.ai or Claude Code",
-        "time": "2 min",
+        "time": "",
         "why": "These are two different ways to work with Claude, both valid. Better to choose now than redo it an hour later.",
-        "instructions": {
-          "0": "claude.ai (path A): browser chat, Projects, Artifacts. No terminal. No install. Enough for most tasks: writing, analysis, discussion.",
-          "1": "Claude Code (path B): a CLI tool that works with your local files, uses git and MCP. Needs a terminal and Node.js. For development and automation.",
-          "2": "Rule of thumb: if your task is \"discuss a document\" — path A is enough. If it's \"edit code in a repo\" — path B.",
-          "3": "Pick a path and commit: A → go to step 2 and finish. B → go to step 3 and the rest of the tutorial."
-        },
+        "instructions": [
+          "claude.ai (path A): browser chat, Projects, Artifacts. No terminal. No install. Enough for most tasks: writing, analysis, discussion.",
+          "Claude Code (path B): a CLI tool that works with your local files, uses git and MCP. Needs a terminal and Node.js. For development and automation.",
+          "Rule of thumb: if your task is \"discuss a document\" — path A is enough. If it's \"edit code in a repo\" — path B.",
+          "Pick a path and commit: A → go to step 2 and finish. B → go to step 3 and the rest of the tutorial."
+        ],
         "validate": "You can explain to yourself in one sentence why you picked this path.",
         "tip": "Unsure — start with A. Moving to B later is no harder than now."
       },
-      "fp-2": {
+      "s2": {
         "title": "Path A — create a Project in claude.ai",
-        "time": "3 min",
+        "time": "",
         "why": "A Project is your persistent workspace in claude.ai with its own instructions and knowledge base. This is the final step of the short path.",
-        "instructions": {
-          "0": "Open claude.ai → sign in (Free is enough to start, Pro is needed for Projects).",
-          "1": "In the left sidebar find \"Projects\" → \"+ New project\".",
-          "2": "Name: what you do + for what (e.g., \"Regular report audit\").",
-          "3": "Description: 1–2 lines — what this project is for and what result you expect.",
-          "4": "Upload 1–3 files into Project knowledge (if you have any). That's enough to start.",
-          "5": "Done. Open the first chat in the Project and send a real prompt."
-        },
-        "prompt": "Using the uploaded files from Project knowledge, do the first analysis for the input: [URL / document / description]. Format — top-5 observations by priority.",
+        "instructions": [
+          "Open claude.ai → sign in (Free is enough to start, Pro is needed for Projects).",
+          "In the left sidebar find \"Projects\" → \"+ New project\".",
+          "Name: what you do + for what (e.g., \"Regular report audit\").",
+          "Description: 1–2 lines — what this project is for and what result you expect.",
+          "Upload 1–3 files into Project knowledge (if you have any). That's enough to start.",
+          "Done. Open the first chat in the Project and send a real prompt. Example prompt: \"Using the uploaded files from Project knowledge, do the first analysis for the input: [URL / document / description]. Format — top-5 observations by priority.\"",
+          "If you want to continue along path B later — go to step 3. The knowledge won't be lost.",
+          "If there's no Projects section: it's a Pro feature, the Free plan hides it — either upgrade to Pro or work in regular chats without a Project.",
+          "If you don't see \"New project\": you may have a free Team tier — check your subscription in the top-right."
+        ],
         "validate": "You have a Project with at least one real chat, and Claude's answer is concrete and references the uploaded files.",
-        "tip": "If you want to continue along path B later — go to step 3. The knowledge won't be lost.",
-        "troubleshoot": {
-          "No Projects section": "This is a Pro feature. Free plan hides it. Either upgrade to Pro or work in regular chats without a Project.",
-          "I don't see \"New project\"": "You may have a free Team tier. Check your subscription in the top-right."
-        }
+        "tip": "If you want to continue along path B later — go to step 3. The knowledge won't be lost."
       },
-      "fp-3": {
-        "title": "Path B — install Node.js",
-        "time": "3 min",
-        "why": "Node.js is required to run npm packages, including Claude Code. Without it nothing will install.",
-        "instructions": {
-          "0": "macOS (recommended): open Terminal.app (Cmd+Space → \"Terminal\" → Enter) and run `brew install node`. If brew isn't installed — install it first from brew.sh.",
-          "1": "macOS (alternative): download the installer from nodejs.org → run the .pkg → follow the steps.",
-          "2": "Windows: download the installer from nodejs.org → run the .msi → tick \"Add to PATH\" → restart PowerShell.",
-          "3": "Verify: in the terminal run `node -v`. It should print a version like v20.11.0 or newer."
-        },
-        "validate": "`node -v` prints version ≥ 18. `npm -v` also works.",
-        "tip": "Version 20 or 22 LTS is optimal. 14 or 16 is old and may have issues with Claude Code.",
-        "troubleshoot": {
-          "command not found: node": "The terminal doesn't see the install. Close and reopen it. On Windows — make sure you ticked \"Add to PATH\" in the installer.",
-          "command not found: brew (mac)": "Brew isn't installed. Open brew.sh, copy the install command, paste into the terminal, run it. Takes 5 minutes."
-        }
-      },
-      "fp-4": {
-        "title": "Open the terminal and figure out where you are",
-        "time": "2 min",
-        "why": "The terminal is the workspace for Claude Code. It's worth seeing what it even looks like and getting over the fear.",
-        "instructions": {
-          "0": "macOS: Cmd+Space → type \"Terminal\" → Enter. A black (or white) window with a cursor opens.",
-          "1": "Windows: open the Start menu → type \"PowerShell\" or \"Windows Terminal\" → Enter.",
-          "2": "In the terminal type `pwd` (mac) or `pwd` / `echo %cd%` (Windows) → press Enter. It shows where you are.",
-          "3": "Usually this is your home folder: /Users/name (mac) or C:\\\\Users\\\\name (Windows). That's normal."
-        },
-        "prompt": "pwd",
-        "validate": "Terminal is open, `pwd` prints the path to your home folder.",
+      "s3": {
+        "title": "Path B — install Node.js and open the terminal",
+        "time": "",
+        "why": "Node.js is required to run npm packages, including Claude Code — without it nothing will install. The terminal is the workspace for Claude Code, and it's worth getting over the fear of it.",
+        "instructions": [
+          "Install Node.js, macOS (recommended): open Terminal.app (Cmd+Space → \"Terminal\" → Enter) and run `brew install node`. If brew isn't installed — install it first from brew.sh.",
+          "Install Node.js, macOS (alternative): download the installer from nodejs.org → run the .pkg → follow the steps.",
+          "Install Node.js, Windows: download the installer from nodejs.org → run the .msi → tick \"Add to PATH\" → restart PowerShell.",
+          "Verify Node.js: in the terminal run `node -v`. It should print a version like v20.11.0 or newer (≥ 18). `npm -v` should also work. Version 20 or 22 LTS is optimal; 14 or 16 is old and may have issues.",
+          "If `command not found: node` — the terminal doesn't see the install: close and reopen it; on Windows make sure you ticked \"Add to PATH\". If `command not found: brew (mac)` — open brew.sh, copy the install command, run it in the terminal (≈5 minutes).",
+          "Open the terminal, macOS: Cmd+Space → \"Terminal\" → Enter. A black (or white) window with a cursor opens. Windows: Start menu → \"PowerShell\" or \"Windows Terminal\" → Enter.",
+          "Figure out where you are: run `pwd` (mac) or `pwd` / `echo %cd%` (Windows) → press Enter. It shows the current folder — usually your home: /Users/name (mac) or C:\\Users\\name (Windows). That's normal."
+        ],
+        "validate": "`node -v` prints version ≥ 18, `npm -v` works; the terminal is open and `pwd` prints the path to your home folder.",
         "tip": "The \"black screen\" does nothing scary on its own. Only specific commands (rm -rf and similar) are dangerous, and you won't type them in this tutorial."
       },
-      "fp-5": {
-        "title": "Create a working folder",
-        "time": "3 min",
-        "why": "A folder is the \"home\" of your project. Without one, files will pile up wherever.",
-        "instructions": {
-          "0": "Decision: where all your projects will live. I recommend `~/projects/` in home.",
-          "1": "In the terminal: `mkdir -p ~/projects/my-first-claude-project` — creates the folder (and the parent `projects/` if it didn't exist).",
-          "2": "Alternative via Finder/Explorer: open home → create a `projects` folder → inside it another one `my-first-claude-project`.",
-          "3": "Name — ASCII only, no spaces. Use hyphens or underscores instead of spaces."
-        },
-        "prompt": "mkdir -p ~/projects/my-first-claude-project",
-        "validate": "The folder exists. Verify: `ls ~/projects/` (mac) or `dir %USERPROFILE%\\\\projects\\\\` (Windows) — you'll see `my-first-claude-project` in the list.",
-        "tip": "The project name is easy to change later — it's just a folder. The key things are ASCII and no spaces.",
-        "troubleshoot": {
-          "permission denied": "You're trying to create a folder where you don't have rights. ~/ (home) is always yours. Don't create folders in /Applications or /System.",
-          "mkdir: -p: command not found": "Most likely you're on Windows using cmd.exe (old), not PowerShell. Switch to PowerShell or use `mkdir my-first-claude-project` without `-p`."
-        }
+      "s4": {
+        "title": "Create a working folder and enter it",
+        "time": "",
+        "why": "A folder is the \"home\" of your project — without one, files pile up wherever. And Claude Code operates in the folder where you launched it: if you're not in the right one, Claude will see the wrong files.",
+        "instructions": [
+          "Decide where all your projects will live. I recommend `~/projects/` in home.",
+          "Create the folder: `mkdir -p ~/projects/my-first-claude-project` — creates the folder (and the parent `projects/` if it didn't exist). Alternative via Finder/Explorer: open home → create a `projects` folder → inside it another one `my-first-claude-project`.",
+          "Name — ASCII only, no spaces. Use hyphens or underscores instead of spaces.",
+          "Verify it was created: `ls ~/projects/` (mac) or `dir %USERPROFILE%\\projects\\` (Windows) — you'll see `my-first-claude-project` in the list.",
+          "Enter the folder: `cd ~/projects/my-first-claude-project`. Check: `pwd` → should print /Users/.../projects/my-first-claude-project.",
+          "Check what's inside: `ls` (mac) or `dir` (Windows). The folder is empty — that's normal for a new project. Memorize `cd ~/projects/my-first-claude-project` — you'll use it every time you start working.",
+          "If `permission denied` — you're creating a folder where you don't have rights: ~/ (home) is always yours, don't create folders in /Applications or /System. If `mkdir: -p: command not found` — you're on Windows in cmd.exe (old): switch to PowerShell or use `mkdir my-first-claude-project` without `-p`."
+        ],
+        "validate": "The folder exists, `pwd` prints the path to the new folder — you're in it.",
+        "tip": "`cd ..` — go up one level. `cd ~` — return home. The project name is easy to change later — it's just a folder; the key things are ASCII and no spaces."
       },
-      "fp-6": {
-        "title": "Enter the folder and verify yourself",
-        "time": "2 min",
-        "why": "Claude Code operates in the folder where you launched it. If you're not in the right one, Claude will see the wrong files.",
-        "instructions": {
-          "0": "In the terminal: `cd ~/projects/my-first-claude-project`.",
-          "1": "Check: `pwd` → should print /Users/.../projects/my-first-claude-project.",
-          "2": "Check what's inside: `ls` (mac) or `dir` (Windows). The folder is empty — that's normal for a new project.",
-          "3": "Memorize `cd ~/projects/my-first-claude-project` — you'll use it every time you start working."
-        },
-        "prompt": "cd ~/projects/my-first-claude-project && pwd",
-        "validate": "`pwd` prints the path to the new folder. You're in it.",
-        "tip": "`cd ..` — go up one level. `cd ~` — return home. That's the whole navigation vocabulary."
+      "s5": {
+        "title": "Install Claude Code and complete authentication",
+        "time": "",
+        "why": "Claude Code is Claude's \"hands\" in your terminal; after install the `claude` command is available everywhere. First launch is short: you authenticate once via the browser, after that Claude Code remembers you.",
+        "instructions": [
+          "Install Claude Code (any folder): `npm install -g @anthropic-ai/claude-code`. Wait 30–60 seconds — npm will download and install the package globally.",
+          "Verify the install: `claude --version` → it should print the version number with no errors.",
+          "If you get EACCES — on mac/Linux run with sudo: `sudo npm install -g @anthropic-ai/claude-code`, or configure npm prefix into your own folder (~/.npm-global, google \"npm permission EACCES\"). If EEXIST — an old version is installed: `npm uninstall -g @anthropic-ai/claude-code`, then install again.",
+          "Make sure you're in your working folder: `pwd` → my-first-claude-project. Run: `claude`.",
+          "A browser opens with Anthropic auth → sign in with the same account as in claude.ai. Return to the terminal — you'll see Claude Code's interactive prompt, you can type messages.",
+          "If the browser doesn't open — copy the URL from the terminal manually and open it in the browser."
+        ],
+        "validate": "`claude --version` works; the terminal shows Claude Code's input field and the session is active.",
+        "tip": "If you accidentally closed the session — just run `claude` again from the same folder. The session's context isn't preserved, but [[node:cc-md|CLAUDE.md]] (if you have one) is picked up on the next launch."
       },
-      "fp-7": {
-        "title": "Install Claude Code",
-        "time": "3 min",
-        "why": "Claude Code is Claude's \"hands\" in your terminal. After install the `claude` command is available everywhere.",
-        "instructions": {
-          "0": "In the terminal (any folder): `npm install -g @anthropic-ai/claude-code`.",
-          "1": "Wait 30–60 seconds. npm will download and install the package globally.",
-          "2": "Verify: `claude --version` → it should print the version number with no errors.",
-          "3": "If you get EACCES — on mac/Linux run with sudo: `sudo npm install -g @anthropic-ai/claude-code`."
-        },
-        "prompt": "npm install -g @anthropic-ai/claude-code",
-        "validate": "`claude --version` works and prints a version.",
-        "troubleshoot": {
-          "EACCES permission denied": "On mac/Linux — permissions are needed. Either `sudo npm install -g ...`, or configure npm prefix into your own folder (~/.npm-global) — google \"npm permission EACCES\".",
-          "EEXIST file already exists": "An old version is installed. `npm uninstall -g @anthropic-ai/claude-code`, then install again."
-        }
-      },
-      "fp-8": {
-        "title": "Launch claude and complete authentication",
-        "time": "2 min",
-        "why": "First launch is short: you authenticate once via the browser, after that Claude Code remembers you.",
-        "instructions": {
-          "0": "Make sure you're in your working folder: `pwd` → my-first-claude-project.",
-          "1": "Run: `claude`.",
-          "2": "A browser opens with Anthropic auth → sign in with the same account as in claude.ai.",
-          "3": "Return to the terminal. You'll see Claude Code's interactive prompt — you can type messages."
-        },
-        "prompt": "claude",
-        "validate": "The terminal shows Claude Code's input field. The session is active.",
-        "tip": "If you accidentally closed the session — just run `claude` again from the same folder. The session's context isn't preserved, but [[node:cc-md|CLAUDE.md]] (if you have one) is picked up on the next launch.",
-        "troubleshoot": {
-          "Browser doesn't open": "Copy the URL from the terminal manually and open it in the browser."
-        }
-      },
-      "fp-9": {
-        "title": "Create CLAUDE.md via /init",
-        "time": "5 min",
-        "why": "CLAUDE.md is the project's \"character\". Claude reads it on every launch so it doesn't ask the same questions.",
-        "instructions": {
-          "0": "In the Claude session run: `/init`.",
-          "1": "Claude scans the folder (it's empty right now — that's fine) and suggests a CLAUDE.md draft.",
-          "2": "Read the draft. Remove what doesn't fit. Add rules — e.g., \"I'm not a developer, explain in plain words\", or \"This project is about regular report audits\".",
-          "3": "Save the file (Ctrl+S or :wq in Vim, depending on your editor)."
-        },
-        "prompt": "/init",
-        "validate": "A CLAUDE.md file appeared in the project folder with your custom rules. Run `ls` (mac) or `dir` (Windows) — you'll see it.",
-        "tip": "Don't try to make a perfect CLAUDE.md on the first try. It's a living document — you'll keep extending it as you go.",
-        "troubleshoot": {
-          "/init doesn't work": "You may have typed it in a regular claude.ai chat, not Claude Code. /init is a Claude Code slash command. Make sure you're in the terminal session."
-        }
-      },
-      "fp-10": {
-        "title": "First real prompt on your own context",
-        "time": "3 min",
-        "why": "Without a real prompt all of this is just an exercise. This is what the whole tutorial was for.",
-        "instructions": {
-          "0": "Think: what real task would you delegate to Claude right now? E.g., \"help me structure my notes\", \"let's analyze this document\", \"sketch a plan for project X\".",
-          "1": "Phrase the request in the \"Role → Task → Format\" style (if you don't remember — do the basics tutorial afterward).",
-          "2": "Send it to Claude Code. Read the answer.",
-          "3": "If Claude wants to create a file — allow it. That's normal in your working folder."
-        },
-        "prompt": "I'm working on <your context>. Help me <specific task> in <markdown / list / table> format. If you need inputs — ask questions.",
-        "validate": "Claude gave a meaningful answer tied to your context. Possibly created a file in the project folder.",
-        "tip": "Next learning steps: the basics tutorial — for theory of models and context, the claude-code tutorial — for deeper /security-review, hooks, subagents."
+      "s6": {
+        "title": "Create CLAUDE.md via /init and send your first real prompt",
+        "time": "",
+        "why": "CLAUDE.md is the project's \"character\": Claude reads it on every launch so it doesn't ask the same questions. And without a real prompt all of this is just an exercise — the first prompt is what the whole tutorial was for.",
+        "instructions": [
+          "In the Claude session run: `/init`. Claude scans the folder (it's empty right now — that's fine) and suggests a CLAUDE.md draft.",
+          "Read the draft. Remove what doesn't fit. Add rules — e.g., \"I'm not a developer, explain in plain words\", or \"This project is about regular report audits\".",
+          "Save the file (Ctrl+S or :wq in Vim, depending on your editor). Verify: `ls` (mac) or `dir` (Windows) — you'll see CLAUDE.md in the project folder.",
+          "If /init doesn't work — you may have typed it in a regular claude.ai chat, not Claude Code: /init is a Claude Code slash command, make sure you're in the terminal session.",
+          "Now think: what real task would you delegate to Claude right now? E.g., \"help me structure my notes\", \"let's analyze this document\", \"sketch a plan for project X\".",
+          "Phrase the request in the \"Role → Task → Format\" style (if you don't remember — do the basics tutorial afterward). Example: \"I'm working on <your context>. Help me <specific task> in <markdown / list / table> format. If you need inputs — ask questions.\"",
+          "Send it to Claude Code, read the answer. If Claude wants to create a file — allow it, that's normal in your working folder."
+        ],
+        "validate": "A CLAUDE.md file appeared in the folder with your custom rules; Claude gave a meaningful answer tied to your context, possibly created a file in the project folder.",
+        "tip": "Don't try to make a perfect CLAUDE.md on the first try — it's a living document. Next learning steps: the basics tutorial — for theory of models and context, the claude-code tutorial — for deeper /security-review, hooks, subagents."
       }
     },
     "trigger": "You've never used a terminal — but you want to try Claude Code on a real task.",
@@ -1895,96 +1768,75 @@
       }
     ],
     "steps": {
-      "ma-1": {
+      "s1": {
         "title": "Gateway decision: build your own or take an existing one",
-        "time": "5 min",
+        "time": "",
         "why": "Your own server is maintenance forever. Verify nothing existing fits before you commit.",
         "instructions": [
           "Open the Anthropic MCP registry and the community list (awesome-mcp-servers).",
           "Search by service name plus 2-3 synonyms. Servers are often named non-obviously.",
           "If found — check last commit, open issues, scope. Forking an existing one beats writing from scratch.",
-          "If not — write down the 3-5 operations you actually need (not \"all of the API\")."
+          "If an existing server is missing one operation — open a PR, do not fork. Saves you a year of maintenance.",
+          "If nothing fits — write down the 3-5 operations you actually need (not \"all of the API\").",
+          "Example. Internal trace-storage: nothing exists (checked awesome-mcp-servers, npm, PyPI); needed search_traces, get_trace, get_service_map; NOT needed delete and admin operations. Decision: build my own, scope read-only, 3 tools.",
+          "Not sure what the spec covers? Open modelcontextprotocol.io/specification — Server features section. Map your list: what is a tool, what is a resource, what is a prompt."
         ],
-        "example": "Internal trace-storage:\n- nothing exists (checked awesome-mcp-servers, npm, PyPI)\n- needed: search_traces, get_trace, get_service_map\n- NOT needed: delete, admin operations\n\nDecision: build my own, scope read-only, 3 tools.",
         "validate": "There is a written list of 3-5 operations and a rationale for why existing servers do not fit.",
-        "tip": "If an existing server is missing one operation — open a PR, do not fork. Saves you a year of maintenance.",
-        "troubleshoot": {
-          "Not sure what spec covers": "Open modelcontextprotocol.io/specification — Server features section. Map your list: what is a tool, what is a resource, what is a prompt."
-        }
+        "tip": "If an existing server is missing one operation — open a PR, do not fork. Saves you a year of maintenance."
       },
-      "ma-2": {
-        "title": "Minimal server on the SDK",
-        "time": "8 min",
-        "why": "The official SDK handles transport, JSON-RPC, lifecycle. Your own hand-rolled protocol on sockets is a month of work and bugs.",
+      "s2": {
+        "title": "Minimal server on the SDK + distributing tools/resources/prompts",
+        "time": "",
+        "why": "The official SDK handles transport, JSON-RPC, lifecycle — a hand-rolled protocol on sockets is a month of work and bugs. And the spec gives three primitives for a reason: stuff everything into tools and the client cannot cache or surface things to the user properly.",
         "instructions": [
           "Pick a language: TypeScript (`@modelcontextprotocol/sdk`) or Python (`mcp`). Use the one you already have infra for.",
           "Scaffold: `npm init mcp-server` or clone the official quickstart template.",
           "Declare ONE tool with a minimal schema and a stub response. No business logic yet.",
-          "Run via stdio (`node dist/index.js`), confirm the process stays up."
+          "Run via stdio (`node dist/index.js`), confirm the process stays up.",
+          "Distribute the primitives. Tools = actions with side-effects or computation (search, create, calculate) — the model calls them as needed. Resources = data readable by URI (files, DB records, documents) — the client can pre-fetch and show to the user. Prompts = workflow templates the user explicitly picks (\"do a code review\"), parameterized.",
+          "Walk through your list: each operation lands in one of the three. In doubt — tool (most compatible, supported by all clients). Resource vs tool: \"would the client want to show this object BEFORE the model mentions it?\" If yes — resource.",
+          "Distribution example for trace-storage: search_traces → tool (has parameters, computation); get_trace(id) → resource (`trace://abc123`) — client caches; review_incident → prompt (template: \"analyze trace X vs baseline Y\").",
+          "Minimal server example (TypeScript):\n// src/index.ts\nimport { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\n\nconst server = new Server(\n  { name: \"trace-storage\", version: \"0.1.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(\"tools/list\", async () => ({\n  tools: [{\n    name: \"search_traces\",\n    description: \"Search traces by service and time range\",\n    inputSchema: {\n      type: \"object\",\n      properties: {\n        service: { type: \"string\" },\n        since: { type: \"string\", format: \"date-time\" }\n      },\n      required: [\"service\"]\n    }\n  }]\n}));\n\nserver.setRequestHandler(\"tools/call\", async (req) => ({\n  content: [{ type: \"text\", text: `stub: ${JSON.stringify(req.params)}` }]\n}));\n\nconst transport = new StdioServerTransport();\nawait server.connect(transport);",
+          "If `TypeError: Cannot find module @modelcontextprotocol/sdk` — run `npm i @modelcontextprotocol/sdk`, make sure package.json has `\"type\": \"module\"`. If the process exits immediately — you forgot `await server.connect(transport)`: without `await` the process closes before connection."
         ],
-        "example": "// src/index.ts\nimport { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\n\nconst server = new Server(\n  { name: \"trace-storage\", version: \"0.1.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(\"tools/list\", async () => ({\n  tools: [{\n    name: \"search_traces\",\n    description: \"Search traces by service and time range\",\n    inputSchema: {\n      type: \"object\",\n      properties: {\n        service: { type: \"string\" },\n        since: { type: \"string\", format: \"date-time\" }\n      },\n      required: [\"service\"]\n    }\n  }]\n}));\n\nserver.setRequestHandler(\"tools/call\", async (req) => ({\n  content: [{ type: \"text\", text: `stub: ${JSON.stringify(req.params)}` }]\n}));\n\nconst transport = new StdioServerTransport();\nawait server.connect(transport);",
-        "validate": "Server starts, does not crash, responds to `tools/list` (we verify in Inspector next step).",
-        "troubleshoot": {
-          "TypeError: Cannot find module @modelcontextprotocol/sdk": "Run `npm i @modelcontextprotocol/sdk`. Make sure package.json has `\"type\": \"module\"`.",
-          "Process exits immediately": "You forgot `await server.connect(transport)`. Without `await` the process closes before connection."
-        }
+        "validate": "Server starts, does not crash, responds to `tools/list`; each operation is mapped to one of three primitives with a written rationale.",
+        "tip": "In doubt about a primitive — tool. Most compatible primitive, supported by all clients."
       },
-      "ma-3": {
-        "title": "Tools vs Resources vs Prompts — distribute correctly",
-        "time": "6 min",
-        "why": "The spec gives three primitives for a reason. Stuff everything into tools and the client cannot cache or surface things to the user properly.",
-        "instructions": [
-          "Tools = actions with side-effects or computation (search, create, calculate). The model calls them as needed.",
-          "Resources = data readable by URI (files, DB records, documents). The client can pre-fetch and show to the user.",
-          "Prompts = workflow templates the user explicitly picks (\"do a code review\"). Parameterized.",
-          "Walk through your list: each operation lands in one of the three."
-        ],
-        "example": "trace-storage:\n- search_traces → tool (has parameters, computation)\n- get_trace(id) → resource (`trace://abc123`) — client caches\n- review_incident → prompt (template: \"analyze trace X vs baseline Y\")",
-        "validate": "Each operation is mapped to one of three primitives with a written rationale.",
-        "tip": "In doubt — tool. Most compatible primitive, supported by all clients.",
-        "troubleshoot": {
-          "Not sure if resource or tool": "Ask: \"would the client want to show this object BEFORE the model mentions it?\" If yes — resource."
-        }
-      },
-      "ma-4": {
+      "s3": {
         "title": "Debug through MCP Inspector",
-        "time": "5 min",
+        "time": "",
         "why": "Inspector is the official MCP devtools. Shows JSON-RPC traffic, schema validation, responses. Without it debugging is `console.log` in the dark.",
         "instructions": [
           "Launch Inspector: `npx @modelcontextprotocol/inspector node dist/index.js`.",
           "A web UI opens on localhost. You see capabilities, tools, resources.",
           "Call each tool with test parameters from the UI. Look at request/response JSON.",
           "Test edge cases: empty params, wrong type, missing required.",
-          "Capture found bugs — fix before the next step."
+          "Capture found bugs — fix before the next step.",
+          "Inspector can also inspect HTTP servers: `npx @modelcontextprotocol/inspector --transport http http://localhost:3000`. Useful before deploy.",
+          "If Inspector does not connect — check the server writes to stderr, not stdout (stdout is reserved for JSON-RPC). If a tool responds but Inspector shows a schema error — your response does not match the declared outputSchema: either align the response or drop outputSchema (it is optional)."
         ],
         "validate": "All declared tools/resources are callable through Inspector with correct responses.",
-        "tip": "Inspector can also inspect HTTP servers: `npx @modelcontextprotocol/inspector --transport http http://localhost:3000`. Useful before deploy.",
-        "troubleshoot": {
-          "Inspector does not connect": "Check the server writes to stderr, not stdout. stdout is reserved for JSON-RPC.",
-          "Tool responds but Inspector shows schema error": "Your response does not match the declared outputSchema. Either align the response or drop outputSchema (it is optional)."
-        }
+        "tip": "Inspector can also inspect HTTP servers: `npx @modelcontextprotocol/inspector --transport http http://localhost:3000`. Useful before deploy."
       },
-      "ma-5": {
+      "s4": {
         "title": "HTTP/SSE transport — when and how",
-        "time": "7 min",
+        "time": "",
         "why": "stdio is great for local dev and Claude Desktop. For a shared team server or remote deploy you need HTTP with SSE for streaming.",
         "instructions": [
           "Decide: HTTP is justified if the server is shared (multiple clients) or hosted remotely.",
           "Use `StreamableHTTPServerTransport` from the SDK — it handles SSE.",
           "Add auth middleware: bearer token in header, OAuth, mTLS — pick per security model.",
           "A `/health` endpoint separate from the MCP route — needed for load balancers.",
-          "Log a request-id with each response for tracing."
+          "Log a request-id with each response for tracing.",
+          "Example (HTTP variant):\n// HTTP variant\nimport express from \"express\";\nimport { StreamableHTTPServerTransport } from \"@modelcontextprotocol/sdk/server/streamableHttp.js\";\n\nconst app = express();\napp.use((req, res, next) => {\n  const token = req.headers.authorization?.replace(\"Bearer \", \"\");\n  if (!verifyToken(token)) return res.status(401).end();\n  next();\n});\n\napp.get(\"/health\", (_, res) => res.json({ ok: true }));\n\napp.all(\"/mcp\", async (req, res) => {\n  const transport = new StreamableHTTPServerTransport({\n    sessionIdGenerator: () => crypto.randomUUID()\n  });\n  await server.connect(transport);\n  await transport.handleRequest(req, res);\n});\n\napp.listen(3000);",
+          "If the SSE connection drops after 30 sec — a proxy (nginx/cloudflare) closes idle: set `proxy_read_timeout 3600s` or enable keep-alive ping in the SDK. CORS errors from a browser client — add `Access-Control-Allow-Origin` for known origins; do NOT set `*` in prod — leak vulnerability."
         ],
-        "example": "// HTTP variant\nimport express from \"express\";\nimport { StreamableHTTPServerTransport } from \"@modelcontextprotocol/sdk/server/streamableHttp.js\";\n\nconst app = express();\napp.use((req, res, next) => {\n  const token = req.headers.authorization?.replace(\"Bearer \", \"\");\n  if (!verifyToken(token)) return res.status(401).end();\n  next();\n});\n\napp.get(\"/health\", (_, res) => res.json({ ok: true }));\n\napp.all(\"/mcp\", async (req, res) => {\n  const transport = new StreamableHTTPServerTransport({\n    sessionIdGenerator: () => crypto.randomUUID()\n  });\n  await server.connect(transport);\n  await transport.handleRequest(req, res);\n});\n\napp.listen(3000);",
         "validate": "Server returns 401 without a token, 200 with a valid one; Inspector connects over HTTP and sees all tools.",
-        "troubleshoot": {
-          "SSE connection drops after 30 sec": "Proxy (nginx/cloudflare) closes idle. Set `proxy_read_timeout 3600s` or enable keep-alive ping in SDK.",
-          "CORS errors from a browser client": "Add `Access-Control-Allow-Origin` for known origins. Do NOT set `*` in prod — leak vulnerability."
-        }
+        "tip": "Do not set `Access-Control-Allow-Origin: *` in prod — it is a leak vulnerability. List only known origins."
       },
-      "ma-6": {
+      "s5": {
         "title": "Security: scopes, sandboxing, secrets",
-        "time": "7 min",
+        "time": "",
         "why": "An MCP server is RCE surface for an LLM. One careless tool with `exec()` and the model can wipe prod.",
         "instructions": [
           "Token scoping: the token in env — verify minimum permissions upstream. Not a root key.",
@@ -1992,27 +1844,26 @@
           "Confirm flow for destructive: tools with DELETE/UPDATE — explicit confirmation in response (\"call confirm_delete with the same id\").",
           "Per-tool rate limits: otherwise the model burns quota in a loop.",
           "Audit log: every tool call into structured logs with timestamp, params, result summary, caller id.",
-          "Secrets: only via env, never in code. Use a secret manager (1Password / AWS SM / Vault) to inject."
+          "Secrets: only via env, never in code. Use a secret manager (1Password / AWS SM / Vault) to inject.",
+          "Bad vs good example:\nBad:\n```ts\n{ name: \"run_query\", handler: (args) => db.query(args.sql) } // SQL injection via the model\n```\n\nGood:\n```ts\n{\n  name: \"search_users\",\n  inputSchema: { properties: { email: { type: \"string\", format: \"email\" } } },\n  handler: (args) => db.query(\"SELECT id, name FROM users WHERE email = $1\", [args.email])\n}\n```",
+          "If the model spams a tool in a loop — either a bug in logic (tool returns \"retry\") or rate limit needed: add a circuit breaker, after N consecutive identical calls return error."
         ],
-        "example": "Bad:\n```ts\n{ name: \"run_query\", handler: (args) => db.query(args.sql) } // SQL injection via the model\n```\n\nGood:\n```ts\n{\n  name: \"search_users\",\n  inputSchema: { properties: { email: { type: \"string\", format: \"email\" } } },\n  handler: (args) => db.query(\"SELECT id, name FROM users WHERE email = $1\", [args.email])\n}\n```",
         "validate": "The security checklist (6 items above) is filled in, each done/skip with rationale.",
-        "tip": "Threat model: \"what happens if the model tries to harm you?\" Not paranoia — prompt injection through resources is real.",
-        "troubleshoot": {
-          "Model spams a tool in a loop": "Either a bug in logic (tool returns \"retry\"), or rate limit needed. Add a circuit breaker — after N consecutive identical calls return error."
-        }
+        "tip": "Threat model: \"what happens if the model tries to harm you?\" Not paranoia — prompt injection through resources is real."
       },
-      "ma-7": {
+      "s6": {
         "title": "Publish to registry",
-        "time": "7 min",
+        "time": "",
         "why": "Without publishing the server only lives on your machine. Registry = distribution + discovery + versioning.",
         "instructions": [
           "Prepare README: what it does, which tools, env vars, install command, minimal example config for Claude Desktop.",
           "Version with semver. 0.x while API breaks, 1.0 = public stable.",
           "Publish to npm (TypeScript) or PyPI (Python) with prefix `mcp-server-` or scoped `@org/mcp-*`.",
           "Submit a PR to `modelcontextprotocol/servers` (community) OR your internal registry.",
-          "Add CI: every PR runs `inspector` smoke test and schema validation."
+          "Add CI: every PR runs `inspector` smoke test and schema validation.",
+          "Internal server? Host in a private registry (npm Enterprise, internal PyPI). Do not push to public — leaks inner workings.",
+          "Config example:\npackage.json:\n{\n  \"name\": \"@acme/mcp-trace-storage\",\n  \"version\": \"1.0.0\",\n  \"bin\": { \"mcp-trace-storage\": \"./dist/index.js\" },\n  \"files\": [\"dist\", \"README.md\"],\n  \"engines\": { \"node\": \">=18\" },\n  \"keywords\": [\"mcp\", \"model-context-protocol\", \"observability\"]\n}\n\nClient config:\n{\n  \"mcpServers\": {\n    \"traces\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@acme/mcp-trace-storage\"],\n      \"env\": { \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }\n    }\n  }\n}"
         ],
-        "example": "package.json:\n{\n  \"name\": \"@acme/mcp-trace-storage\",\n  \"version\": \"1.0.0\",\n  \"bin\": { \"mcp-trace-storage\": \"./dist/index.js\" },\n  \"files\": [\"dist\", \"README.md\"],\n  \"engines\": { \"node\": \">=18\" },\n  \"keywords\": [\"mcp\", \"model-context-protocol\", \"observability\"]\n}\n\nClient config:\n{\n  \"mcpServers\": {\n    \"traces\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@acme/mcp-trace-storage\"],\n      \"env\": { \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }\n    }\n  }\n}",
         "validate": "The server installs via `npx @org/mcp-name`, the config connects to Claude Desktop, tools are visible.",
         "tip": "Internal server? Host in a private registry (npm Enterprise, internal PyPI). Do not push to public — leaks inner workings."
       }
@@ -2049,7 +1900,7 @@
     "subtitle": "CLAUDE.md, hooks, subagents, MCP — a big project that does not turn into chaos",
     "totalTime": "50 min",
     "whatItIs": "[[node:claude-code|Claude Code]] out of the box is already powerful. But in a big project without setup it quickly becomes the \"smart but unpredictable teammate\": breaks style, goes the wrong direction, burns tokens on the same thing.\n\nA production-grade setup turns Claude Code into a reliable contributor: knows your architecture, does not touch what is off-limits, specializes per task, sees your internal tools, gets verified on every commit.",
-    "approach": "In layers. First the CLAUDE.md hierarchy (context and rules), then slash commands (repeatable operations), then hooks (guard-rails), subagents (specialization), MCP (integrations), and finally headless mode for CI. Each layer is verified separately.",
+    "approach": "In layers. First the CLAUDE.md hierarchy (context and rules), then slash commands (repeatable operations), then guard-rails (hooks + permission policy), subagents (specialization), MCP (integrations), and finally headless mode for CI. Each layer is verified separately.",
     "outcomes": [
       "You build a CLAUDE.md hierarchy (root → area → package) without duplication",
       "You author custom slash commands for repeatable team workflows",
@@ -2091,128 +1942,102 @@
       }
     ],
     "steps": {
-      "ccp-1": {
+      "s1": {
         "title": "CLAUDE.md hierarchy",
-        "time": "7 min",
+        "time": "",
         "why": "CLAUDE.md is persistent context. Without a hierarchy in a monorepo everything is in one file — the model drowns.",
         "instructions": [
           "Root `/CLAUDE.md` — global rules: stack, conventions, what is forbidden.",
           "Area-level `/apps/web/CLAUDE.md` — specifics of that area (front, back, infra).",
           "Package-level `/packages/auth/CLAUDE.md` — only delta from parent (package specifics).",
           "Rule: child does not repeat parent, only extends/refines.",
-          "Size: root ≤ 200 lines, children ≤ 100. If bigger — move to `/docs` and link."
+          "Size: root ≤ 200 lines, children ≤ 100. If bigger — move to `/docs` and link.",
+          "Example. /CLAUDE.md (root): `# Stack: TypeScript, pnpm, Turborepo` / `# Conventions: ESM only, no default exports, vitest for tests` / `# Forbidden: any in TS, console.log in production, raw SQL in code (ORM only)`. /apps/web/CLAUDE.md: `# Web app specifics` / `# Routing: TanStack Router (file-based)` / `# State: Zustand for global, React Query for server` / `# Tests: vitest + Testing Library, NO enzyme`.",
+          "If Claude ignores some rules — file too long or rules conflicting; shorten, move rare ones to /docs."
         ],
-        "example": "/CLAUDE.md (root):\n```\n# Stack: TypeScript, pnpm, Turborepo\n# Conventions: ESM only, no default exports, vitest for tests\n# Forbidden: any in TS, console.log in production, raw SQL in code (ORM only)\n```\n\n/apps/web/CLAUDE.md:\n```\n# Web app specifics\n# Routing: TanStack Router (file-based)\n# State: Zustand for global, React Query for server\n# Tests: vitest + Testing Library, NO enzyme\n```",
         "validate": "The hierarchy is visible to Claude (ask an init-like question — you see it reads multiple CLAUDE.md files).",
-        "tip": "In CLAUDE.md write \"rules\", not \"tutorials\". Long explanations → /docs with a link.",
-        "troubleshoot": {
-          "Claude ignores some rules": "File too long or rules conflicting. Shorten, move rare ones to /docs."
-        }
+        "tip": "In CLAUDE.md write \"rules\", not \"tutorials\". Long explanations → /docs with a link."
       },
-      "ccp-2": {
+      "s2": {
         "title": "Custom slash commands",
-        "time": "6 min",
+        "time": "",
         "why": "If you repeat the same prompt 3+ times a week — it is a slash command. Saves typing and standardizes.",
         "instructions": [
           "Commands live in `.claude/commands/<name>.md`.",
           "Each = markdown with instructions + `$ARGUMENTS` placeholders.",
           "Filename = command name (`.claude/commands/review-pr.md` → `/review-pr`).",
           "At the top of the command — frontmatter with `description`, `allowed-tools`.",
-          "Commit to the repo — the command becomes shared for the team."
+          "Commit to the repo — the command becomes shared for the team.",
+          "Example. `.claude/commands/release-notes.md` with frontmatter (`description: Generate release notes from commits since last tag`, `allowed-tools: Bash, Read`) and body: get commits since the last tag via `git log $(git describe --tags --abbrev=0)..HEAD --oneline`, group by type (feat/fix/chore/docs), write a human-readable summary, output in CHANGELOG.md format, version: $ARGUMENTS. Call: `/release-notes v2.4.0`."
         ],
-        "example": ".claude/commands/release-notes.md:\n```md\n---\ndescription: Generate release notes from commits since last tag\nallowed-tools: Bash, Read\n---\n\nGet commits since the last tag via `git log $(git describe --tags --abbrev=0)..HEAD --oneline`.\n\nGroup by type (feat/fix/chore/docs), write a human-readable summary.\n\nOutput in CHANGELOG.md format, version: $ARGUMENTS\n```\n\nCall: `/release-notes v2.4.0`",
         "validate": "`/help` shows your command, the call works, arguments are substituted.",
         "tip": "Personal commands — in `~/.claude/commands/`. Project — in the repo. Project matters more: shared workflows = consistency."
       },
-      "ccp-3": {
-        "title": "Hooks: pre/post-tool-use guard-rails",
-        "time": "8 min",
-        "why": "[[node:cc-hooks|Hooks]] are shell scripts that Claude Code runs before/after tool calls. Without them the model has no supervision. With them every Bash, Write, Edit goes through your policy.",
+      "s3": {
+        "title": "Guard-rails: hooks and permission policy",
+        "time": "",
+        "why": "[[node:cc-hooks|Hooks]] are shell scripts that Claude Code runs before/after tool calls: every Bash, Write, Edit goes through your policy. A permission policy (allow/deny) decides ahead of time what is allowed without asking and what is forbidden always — otherwise you get either \"approve all blindly\" or \"constantly interrupts\".",
         "instructions": [
-          "Hooks config in `.claude/settings.json` (project) or `~/.claude/settings.json` (user).",
-          "`PreToolUse` can block a tool (exit code 2 = block + message for the model).",
-          "`PostToolUse` for audit, notifications. Does not block.",
-          "Matcher — regex on tool name. `Bash`, `Write`, `Edit|MultiEdit`.",
-          "Hook reads JSON from stdin (tool params), writes JSON to stdout (response/error)."
+          "Hooks and permissions config in `.claude/settings.json` (project) or `~/.claude/settings.json` (user).",
+          "Hooks: `PreToolUse` can block a tool (exit code 2 = block + message for the model); `PostToolUse` for audit, notifications, does not block.",
+          "Matcher — regex on tool name: `Bash`, `Write`, `Edit|MultiEdit`. Hook reads JSON from stdin (tool params), writes JSON to stdout (response/error).",
+          "Example settings.json hooks: `PreToolUse` matcher `Bash` → command `.claude/hooks/guard-bash.sh`; `PostToolUse` matcher `Edit|Write` → command `.claude/hooks/secret-scan.sh`. The guard-bash.sh script reads stdin, extracts `.tool_input.command` via jq, and on match against `rm -rf|git push.*--force.*main|DROP TABLE` prints `{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}` and exits 2, otherwise exits 0.",
+          "Permission policy: `permissions` section in settings.json. `allow` — list of patterns (tool + matcher) allowed without asking. `deny` — list FORBIDDEN always (overrides allow).",
+          "Principle: deny — destructive (rm, force push, drop), allow — frequent safe (read, lint, test). Everything else will be asked — those questions signal \"add to allow or deny\".",
+          "Example permissions: allow = [`Bash(npm test:*)`, `Bash(pnpm lint:*)`, `Bash(git status)`, `Bash(git diff:*)`, `Read(**)`, `Edit(src/**)`]; deny = [`Bash(rm -rf:*)`, `Bash(git push --force*)`, `Bash(curl:*sh)`, `Write(.env*)`].",
+          "If a hook is silently ignored — check chmod +x on the script and that the path in settings.json is project-root-relative or absolute. If a hook blocks everything — exit code 0 = pass, 2 = block, others = warning; check the exit code at the end of the script.",
+          "If Claude still asks on allowed — the matcher did not match: `Bash(npm test)` ≠ `Bash(npm test -- --watch)`; use `:*` for wildcards (`Bash(npm test:*)`)."
         ],
-        "example": ".claude/settings.json:\n```json\n{\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Bash\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \".claude/hooks/guard-bash.sh\" }]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [{ \"type\": \"command\", \"command\": \".claude/hooks/secret-scan.sh\" }]\n      }\n    ]\n  }\n}\n```\n\n.claude/hooks/guard-bash.sh:\n```bash\n#!/usr/bin/env bash\nINPUT=$(cat)\nCMD=$(echo \"$INPUT\" | jq -r \".tool_input.command\")\n\nif echo \"$CMD\" | grep -qE \"rm -rf|git push.*--force.*main|DROP TABLE\"; then\n  echo '{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}'\n  exit 2\nfi\nexit 0\n```",
-        "validate": "Ask Claude to run a forbidden command — it gets an error with your explanation.",
-        "troubleshoot": {
-          "Hook is silently ignored": "Check chmod +x on the shell script and that the path in settings.json is project-root-relative or absolute.",
-          "Hook blocks everything": "Exit code 0 = pass, 2 = block, others = warning. Check the exit code at the end of the script."
-        }
+        "validate": "Ask Claude to run a forbidden command (`git push --force`) — it gets a deny/error with your explanation. An allow command (e.g. `npm test`) — runs without asking.",
+        "tip": "Project settings (committed) = team policy. Personal (`settings.local.json`, in .gitignore) = your individual permissions."
       },
-      "ccp-4": {
+      "s4": {
         "title": "Subagents: specialization",
-        "time": "7 min",
+        "time": "",
         "why": "[[node:cc-subagents|Subagents]] = separate context with a narrow role (reviewer, test-writer, debugger). They keep the main chat clean and solve the task better due to a focused prompt.",
         "instructions": [
           "A subagent lives in `.claude/agents/<name>.md` (project) or `~/.claude/agents/` (user).",
           "Frontmatter: `name`, `description` (when to invoke), `tools` (whitelist), optional `model`.",
           "Body — the subagent's system prompt: role, style, output format.",
           "Claude Code decides when to call a subagent (from the description) — or you call `@<name>` explicitly.",
-          "One subagent = one narrow task. Not a \"universal assistant\"."
+          "One subagent = one narrow task. Not a \"universal assistant\".",
+          "Example. `.claude/agents/test-writer.md` with frontmatter (`name: test-writer`, `description: Write vitest unit tests for new/modified TypeScript functions`, `tools: Read, Write, Edit, Bash`, `model: sonnet`) and body: \"You write vitest unit tests. Rules: one *.test.ts file per module; AAA structure (Arrange/Act/Assert); mock via `vi.mock`, not hand-rolled factories; cover happy path, edge cases, error path; do not write integration tests — that is another agent.\"",
+          "If a subagent is not auto-invoked — description too generic or conflicts with another agent; make it concrete: \"vitest unit tests for TypeScript modules\"."
         ],
-        "example": ".claude/agents/test-writer.md:\n```md\n---\nname: test-writer\ndescription: Write vitest unit tests for new/modified TypeScript functions\ntools: Read, Write, Edit, Bash\nmodel: sonnet\n---\n\nYou write vitest unit tests. Rules:\n- One *.test.ts file per module.\n- AAA structure (Arrange/Act/Assert).\n- Mock via `vi.mock`, not hand-rolled factories.\n- Cover: happy path, edge cases, error path.\n- Do not write integration tests — that is another agent.\n```",
         "validate": "Say \"write tests for src/auth/token.ts\" — the main chat delegates to test-writer, you see it in the log.",
-        "tip": "A subagent should not \"think for you\" — it should execute clearly bounded work. If the description is vague, the main chat will not invoke it.",
-        "troubleshoot": {
-          "Subagent is not auto-invoked": "Description too generic or conflicts with another agent. Make it concrete: \"vitest unit tests for TypeScript modules\"."
-        }
+        "tip": "A subagent should not \"think for you\" — it should execute clearly bounded work. If the description is vague, the main chat will not invoke it."
       },
-      "ccp-5": {
+      "s5": {
         "title": "MCP to internal services",
-        "time": "7 min",
+        "time": "",
         "why": "Without [[node:mcp|MCP]] Claude Code only knows files and shell. With MCP — it sees your tracker, docs, DB, metrics.",
         "instructions": [
           "Config — `.mcp.json` at the project root (project-scoped, goes to git) OR `~/.claude/mcp.json` (user).",
           "For each MCP server: `command`, `args`, `env`. Secrets via `${ENV_VAR}`, do not hardcode.",
           "Check token scopes — prefer read-only over admin.",
           "After adding — `/mcp` in Claude Code → you see connection status and tool list.",
-          "If you have your own server (see \"Advanced MCP\") — publish internally and connect here."
+          "If you have your own server (see \"Advanced MCP\") — publish internally and connect here.",
+          "Example. `.mcp.json` with `mcpServers`: `linear` (command `npx`, args `[\"-y\", \"@modelcontextprotocol/server-linear\"]`, env `{ \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\" }`) and `internal-traces` (command `npx`, args `[\"-y\", \"@acme/mcp-trace-storage\"]`, env `{ \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }`). Secrets come from `.envrc` (direnv): `export LINEAR_API_KEY=$(op read \"op://Eng/linear/api-key\")` and `export TRACE_API_KEY=$(op read \"op://Eng/traces/api-key\")`.",
+          "If a server is connected but tools are empty — the server started but declared no capabilities; check server logs via `claude --mcp-debug` or call the server manually via Inspector."
         ],
-        "example": ".mcp.json:\n```json\n{\n  \"mcpServers\": {\n    \"linear\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-linear\"],\n      \"env\": { \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\" }\n    },\n    \"internal-traces\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@acme/mcp-trace-storage\"],\n      \"env\": { \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }\n    }\n  }\n}\n```\n\n.envrc (for direnv):\n```bash\nexport LINEAR_API_KEY=$(op read \"op://Eng/linear/api-key\")\nexport TRACE_API_KEY=$(op read \"op://Eng/traces/api-key\")\n```",
         "validate": "`/mcp` shows all servers connected, tools visible.",
-        "troubleshoot": {
-          "Server connected but tools empty": "Server started but declared no capabilities. Check server logs: `claude --mcp-debug` or call the server manually via Inspector."
-        }
+        "tip": "Secrets — only via `${ENV_VAR}` from a secrets manager, never hardcode in `.mcp.json`. Keep token scopes read-only."
       },
-      "ccp-6": {
-        "title": "Permission policy: allow/deny by default",
-        "time": "5 min",
-        "why": "By default Claude Code asks permission for every unknown action. In a production project this becomes either \"approve all blindly\" or \"constantly interrupts\" — both bad. Policy decides ahead of time.",
-        "instructions": [
-          "In `.claude/settings.json` → `permissions` section.",
-          "`allow`: list of patterns (tool + matcher) allowed without asking.",
-          "`deny`: list FORBIDDEN always (overrides allow).",
-          "Principle: deny — destructive (rm, force push, drop), allow — frequent safe (read, lint, test).",
-          "Everything else — will be asked. Those questions are signals \"add to allow or deny\"."
-        ],
-        "example": ".claude/settings.json:\n```json\n{\n  \"permissions\": {\n    \"allow\": [\n      \"Bash(npm test:*)\",\n      \"Bash(pnpm lint:*)\",\n      \"Bash(git status)\",\n      \"Bash(git diff:*)\",\n      \"Read(**)\",\n      \"Edit(src/**)\"\n    ],\n    \"deny\": [\n      \"Bash(rm -rf:*)\",\n      \"Bash(git push --force*)\",\n      \"Bash(curl:*sh)\",\n      \"Write(.env*)\"\n    ]\n  }\n}\n```",
-        "validate": "Test by forbidden: ask Claude `git push --force` — gets deny. Allow command (e.g. `npm test`) — runs without asking.",
-        "tip": "Project settings (committed) = team policy. Personal (`settings.local.json`, in .gitignore) = your individual permissions.",
-        "troubleshoot": {
-          "Claude still asks on allowed": "Matcher did not match. Check pattern: `Bash(npm test)` ≠ `Bash(npm test -- --watch)`. Use `:*` for wildcards: `Bash(npm test:*)`."
-        }
-      },
-      "ccp-7": {
+      "s6": {
         "title": "Headless mode in CI",
-        "time": "10 min",
+        "time": "",
         "why": "Claude Code is not only interactive. `claude -p` (headless) is a full CLI for CI: code review on PRs, auto-fix lint, generate changelog.",
         "instructions": [
           "Headless syntax: `claude -p \"<prompt>\" --output-format json`.",
           "Auth in CI: `ANTHROPIC_API_KEY` env (via GitHub Secrets).",
           "Permissions in CI: explicit `--permission-mode acceptEdits` or `--dangerously-skip-permissions` (only in sandbox CI runner!).",
           "Output: stream JSON — parse in your action.",
-          "Time budget: max 5-10 min per run, otherwise CI becomes a bottleneck."
+          "Time budget: max 5-10 min per run, otherwise CI becomes a bottleneck.",
+          "Example. `.github/workflows/claude-review.yml`: trigger `on: pull_request`, job `review` on `ubuntu-latest` with permissions `contents: read` and `pull-requests: write`. Steps: `actions/checkout@v4` with `fetch-depth: 0`, then `anthropics/claude-code-action@v1` with `api-key: ${{ secrets.ANTHROPIC_API_KEY }}`, `mode: review`, prompt \"Review the diff against main. Focus: bugs/edge cases, missing error handling, test coverage gaps. Skip: style/formatting (handled by linters). Post inline comments.\" and `allowed-tools: \"Read,Bash(git diff:*),Bash(pnpm test:*)\"`.",
+          "If the action exceeds the timeout — reduce scope in prompt (\"only diff, not the whole file\"), shrink allowed-tools, set max-turns. Permission denied on Bash in CI — the CI sandbox is isolated, there `--permission-mode acceptEdits` is safe, but do NOT use it on a self-hosted runner in prod."
         ],
-        "example": ".github/workflows/claude-review.yml:\n```yaml\nname: Claude code review\non: pull_request\n\njobs:\n  review:\n    runs-on: ubuntu-latest\n    permissions:\n      contents: read\n      pull-requests: write\n    steps:\n      - uses: actions/checkout@v4\n        with: { fetch-depth: 0 }\n\n      - uses: anthropics/claude-code-action@v1\n        with:\n          api-key: ${{ secrets.ANTHROPIC_API_KEY }}\n          mode: review\n          prompt: |\n            Review the diff against main. Focus:\n            - bugs, edge cases\n            - missing error handling\n            - test coverage gaps\n            Skip: style/formatting (handled by linters).\n            Post inline comments.\n          allowed-tools: \"Read,Bash(git diff:*),Bash(pnpm test:*)\"\n```",
         "validate": "PR opens → action runs → you see inline comments from Claude within 5 minutes.",
-        "tip": "Cost control: in CI use model `sonnet` (not opus) for routine tasks + `--max-tokens` cap. Otherwise budget blows up.",
-        "troubleshoot": {
-          "Action exceeds timeout": "Reduce scope in prompt (\"only diff, not the whole file\"), shrink allowed-tools, set max-turns.",
-          "Permission denied on Bash in CI": "CI sandbox is isolated — there `--permission-mode acceptEdits` is safe. But do NOT use it on a self-hosted runner in prod."
-        }
+        "tip": "Cost control: in CI use model `sonnet` (not opus) for routine tasks + `--max-tokens` cap. Otherwise budget blows up."
       }
     },
     "trigger": "The team uses Claude Code but without rules each developer configures it differently — no consistency, no guard-rails in CI.",
@@ -2480,183 +2305,90 @@
     ],
     "savings": "Days of trial-and-error and risk to your personal PC → a managed sandbox in ~1.5 hours",
     "steps": {
-      "rcc-1": {
-        "title": "Understand what and why you're building",
-        "time": "5 min",
-        "why": "Without a clear goal it's easy to build insecurely. The goal is a “box” where the agent is isolated.",
+      "s1": {
+        "title": "Why isolation: threat model and choosing a host",
+        "time": "",
+        "why": "Without a clear goal it's easy to build insecurely. The goal is a “box” where the agent is isolated from your personal data, passwords and work network.",
         "instructions": [
           "Read the node [[node:sys-agent-sandbox|Isolated environment for the agent]] — it is the map of the topic.",
           "Remember the rule: the agent must have no access to personal data, passwords or the work network.",
-          "To start, pick the most reproducible path — a Docker container on your own PC."
-        ],
-        "validate": "You can explain in your own words why the agent needs a separate environment."
-      },
-      "rcc-2": {
-        "title": "Choose the host: your PC or a cloud VM",
-        "time": "5 min",
-        "why": "The choice decides whether you need 24/7 and remote access.",
-        "instructions": [
-          "Your PC + Docker: free and fast, but works only while the PC is on.",
+          "Threat model: the agent sees the screen, clicks and types — so it can open your email, bank, or exfiltrate files if they are reachable. Isolation removes that reachability.",
+          "Choose a host. Your PC + Docker: free and fast, but works only while the PC is on.",
           "Cloud VM (VPS): runs around the clock, but is paid and needs remote access. See [[node:sas-vm-vps|VM or dedicated PC]].",
-          "For learning, start with your PC; moving to a VM is step 14."
+          "For learning, start with your PC — the most reproducible path; moving to a VM is step s5."
         ],
-        "validate": "You have chosen a host and understand its trade-offs."
+        "validate": "You can explain why the agent needs a separate environment, and you've chosen a host understanding its trade-offs.",
+        "tip": "Isolation first — tasks second. Not the other way around."
       },
-      "rcc-3": {
-        "title": "Install Docker",
-        "time": "15 min",
-        "why": "Docker is the “box” that isolates the agent from your system.",
+      "s2": {
+        "title": "Docker and the reference Computer Use container",
+        "time": "",
+        "why": "Docker is the “box” that isolates the agent from your system. Anthropic's reference container is the official sandbox: the desktop and agent are already inside, nothing is installed on your system.",
         "instructions": [
-          "Download Docker Desktop (Windows/Mac) or Docker Engine (Linux) from docker.com.",
-          "Install and start it. Check in the terminal: `docker --version`.",
-          "Run a test container: `docker run hello-world` — it should print a greeting."
-        ],
-        "validate": "`docker run hello-world` ran without errors."
-      },
-      "rcc-4": {
-        "title": "Get a separate API key with a spending cap",
-        "time": "10 min",
-        "why": "The agent spends tokens; a separate key with a cap protects your wallet (see [[node:sas-snapshots-killswitch|kill-switch and caps]]).",
-        "instructions": [
-          "In console.anthropic.com create a NEW API key just for this environment.",
-          "In Billing/Limits set a monthly spending cap on the account.",
-          "Don't reuse a key from other projects — a separate key is easy to revoke."
-        ],
-        "validate": "You have a separate key and a spending cap is set."
-      },
-      "rcc-5": {
-        "title": "Store the key safely (env, not in code)",
-        "time": "5 min",
-        "why": "A key in code or command history is a leak. See [[node:sas-secrets|one-time accounts and secrets]].",
-        "instructions": [
-          "Put the key in an environment variable: `export ANTHROPIC_API_KEY=sk-...` (Linux/Mac).",
-          "Windows: set it via `setx ANTHROPIC_API_KEY \"sk-...\"` and open a new terminal window.",
-          "Don't write the key directly into commands that end up in history or scripts.",
-          "Never commit the key to git and never show it to the agent in a task."
-        ],
-        "validate": "`echo $ANTHROPIC_API_KEY` shows the key, and it is not in code or git."
-      },
-      "rcc-6": {
-        "title": "Launch the reference Computer Use container",
-        "time": "15 min",
-        "why": "This is Anthropic's official sandbox: the desktop and agent are already inside, nothing is installed on your system.",
-        "instructions": [
+          "Download Docker Desktop (Windows/Mac) or Docker Engine (Linux) from docker.com, install and start it.",
+          "Check in the terminal: `docker --version`.",
+          "Run a test container: `docker run hello-world` — it should print a greeting.",
           "Open the anthropic-quickstarts repo → the computer-use-demo folder — it has the current command, image name and ports (they can change).",
           "Run the container, passing the key via the environment. Roughly: `docker run -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -p 8080:8080 -it <computer-use-demo-image>` — take the exact ports from the README.",
-          "Wait for the container to come up (the interface address appears in the logs)."
+          "Wait for the container to come up (the interface address appears in the logs). The key is set up in step s4 — come back here after it if you haven't set the variable yet."
         ],
-        "validate": "The container is running, with no errors about the key or ports in the logs."
+        "validate": "`docker run hello-world` ran without errors, the reference container is running, and there are no errors about the key or ports in the logs.",
+        "tip": "Take the image name and ports from the computer-use-demo README — they can change between versions."
       },
-      "rcc-7": {
-        "title": "Open the agent's desktop in the browser",
-        "time": "5 min",
-        "why": "Through the browser (noVNC) you see the agent's screen — your “CCTV”. See [[node:sas-remote-access|remote access]].",
+      "s3": {
+        "title": "noVNC: the agent's desktop in the browser and a first task",
+        "time": "",
+        "why": "Through the browser (noVNC) you see the agent's screen — your “CCTV” and control. See [[node:sas-remote-access|remote access]]. Control means the ability to stop at any moment.",
         "instructions": [
           "Open the interface address from the README or launch logs in the browser (usually one combined URL, e.g. http://localhost:8080).",
-          "On the left — the chat with the agent; on the right — the virtual desktop.",
-          "If it won't open — check the needed port is published (`-p ...`) and not in use."
+          "On the left — the chat with the agent; on the right — the virtual desktop. If it won't open — check the needed port is published (`-p ...`) and not in use.",
+          "Give the first safe task: “Open a text editor and type Hello”. Don't give tasks with internet or data access yet.",
+          "Watch the cursor move and type by itself on the virtual desktop, and how the agent takes screenshots and clicks step by step.",
+          "Find how to stop the agent in the interface (stop/interrupt). Remember: always watch the first runs of a new task."
         ],
-        "validate": "You see the agent's desktop and a task field in the browser."
+        "validate": "You see the agent's desktop, it did a harmless task inside the environment (nothing changed on your real PC), and you can stop it mid-task.",
+        "tip": "Always watch the first runs of a new task live — keep stop within reach."
       },
-      "rcc-8": {
-        "title": "Give the first safe task",
-        "time": "10 min",
-        "why": "We check the agent really sees the screen and acts — on a harmless task.",
+      "s4": {
+        "title": "Security: least privilege, network and secrets",
+        "time": "",
+        "why": "Even in a container you must not give the agent more than needed: no access to your files, your local network, or secrets in code. See [[node:sas-least-privilege|least privilege]], [[node:sas-network-isolation|network isolation]], [[node:sas-secrets|one-time accounts and secrets]].",
         "instructions": [
-          "Tell the agent: “Open a text editor and type Hello”.",
-          "Watch the cursor move and type by itself on the virtual desktop.",
-          "Don't give tasks with internet or data access yet."
-        ],
-        "validate": "The agent did the task inside the environment; nothing changed on your real PC."
-      },
-      "rcc-9": {
-        "title": "Observe and learn to intervene",
-        "time": "10 min",
-        "why": "Control means the ability to stop at any moment.",
-        "instructions": [
-          "Watch how the agent takes screenshots and clicks step by step.",
-          "Find how to stop the agent in the interface (stop/interrupt).",
-          "Remember: always watch the first runs of a new task."
-        ],
-        "validate": "You can stop the agent mid-task."
-      },
-      "rcc-10": {
-        "title": "Least privilege: nothing personal inside",
-        "time": "10 min",
-        "why": "Even in a container you must not give access to your files. See [[node:sas-least-privilege|least privilege]].",
-        "instructions": [
-          "Do NOT mount your home folders into the container (no `-v /Users/you:...`).",
-          "If a task needs files — put only those in a separate folder.",
-          "Inside the environment, work as a regular user, not root, where possible."
-        ],
-        "validate": "The launch command has no personal-folder mounts; the agent sees only what the task needs."
-      },
-      "rcc-11": {
-        "title": "Limit the network and domains",
-        "time": "10 min",
-        "why": "So the agent can't leak data or go where it shouldn't. See [[node:sas-network-isolation|network isolation]].",
-        "instructions": [
-          "To start, don't give the container access to your local network or router.",
-          "If a task doesn't need the internet — run the container with `--network none`.",
+          "Separate key with a cap: in console.anthropic.com create a NEW API key just for this environment; in Billing/Limits set a monthly spending cap. Don't reuse a key from other projects — a separate one is easy to revoke (see [[node:sas-snapshots-killswitch|kill-switch and caps]]).",
+          "Store the key in the environment, not in code: `export ANTHROPIC_API_KEY=sk-...` (Linux/Mac) or `setx ANTHROPIC_API_KEY \"sk-...\"` + a new terminal window (Windows). Check: `echo $ANTHROPIC_API_KEY`. Never commit the key to git and never show it to the agent in a task.",
+          "Least privilege: do NOT mount your home folders into the container (no `-v /Users/you:...`). If a task needs files — put only those in a separate folder. Inside the environment, work as a regular user, not root, where possible.",
+          "Network: to start, don't give the container access to your local network or router. If a task doesn't need the internet — run the container with `--network none`.",
           "When internet is needed — keep a list of allowed sites (an allowlist) via a proxy/firewall as the goal."
         ],
-        "validate": "You understand what network access the environment has, and it is the minimum needed."
+        "validate": "The key is separate, capped, stored in env and not in git; the launch command has no personal-folder mounts; the environment's network access is the minimum needed.",
+        "tip": "Real passwords — never. Only one-time accounts inside the sandbox."
       },
-      "rcc-12": {
-        "title": "Snapshot and rollback to a clean state",
-        "time": "5 min",
-        "why": "Reversibility: whatever happens, you put it back. See [[node:sas-snapshots-killswitch|snapshots and rollback]].",
-        "instructions": [
-          "Docker: a clean state = just recreate the container from the image (`docker rm` + `docker run` again).",
-          "VM: take a snapshot before experiments via the provider.",
-          "Make it a rule: a new risky task → first fix a clean state."
-        ],
-        "validate": "You can return the environment to its initial clean state."
-      },
-      "rcc-13": {
-        "title": "Kill-switch and spending caps",
-        "time": "5 min",
-        "why": "The last line of wallet and control defense.",
-        "instructions": [
-          "Emergency stop: `docker stop <container>` — instantly halts the agent.",
-          "Check the spending cap on the key (step 4) is active.",
-          "Decide in advance: on odd behavior — stop first, investigate later."
-        ],
-        "validate": "You know the stop command and a spending cap is set."
-      },
-      "rcc-14": {
-        "title": "(Optional) Move to a cloud VM",
-        "time": "20 min",
+      "s5": {
+        "title": "Cloud VM/VPS and remote access (optional)",
+        "time": "",
         "why": "So the environment runs 24/7, independent of your PC.",
         "instructions": [
-          "Take a cheap cloud VM (a separate one, not a work server). See [[node:sas-vm-vps|VM or dedicated PC]].",
-          "Install Docker on the VM and run the same container.",
-          "Desktop access — via the browser at the VM's address, protected with a password/key and an IP restriction."
+          "Take a cheap cloud VM — a separate one, not a work server. See [[node:sas-vm-vps|VM or dedicated PC]].",
+          "Install Docker on the VM and run the same Computer Use container (everything from steps s2–s4 carries over unchanged).",
+          "Desktop access — via the browser at the VM's address, protected with a password/key and an IP restriction.",
+          "Don't leave the port open to the public internet without a password — it's one of the main risks."
         ],
-        "validate": "The same container runs on the VM, and access to it is locked with a password/key."
+        "validate": "The same container runs on the VM, and access to it is locked with a password/key and restricted by IP.",
+        "tip": "The VM should be an isolated, disposable one, not your work server."
       },
-      "rcc-15": {
-        "title": "Safety checklist before production use",
-        "time": "10 min",
-        "why": "One pass through the list catches most dangerous mistakes.",
+      "s6": {
+        "title": "Snapshots, kill-switch and the final checklist",
+        "time": "",
+        "why": "Reversibility and control: whatever happens, you put it back and stop it instantly. One pass through the checklist catches most dangerous mistakes. See [[node:sas-snapshots-killswitch|snapshots, rollback and kill-switch]].",
         "instructions": [
-          "Home folders are NOT mounted. Real passwords are NOT passed.",
-          "The key is separate, with a cap; stored in env, not in code.",
-          "The network is minimal; the kill-switch and rollback are tested.",
-          "Remote access (if any) is protected with a password/key and an IP restriction."
+          "Snapshot and rollback. Docker: a clean state = recreate the container from the image (`docker rm` + `docker run` again). VM: take a snapshot before experiments via the provider. Rule: a new risky task → first fix a clean state.",
+          "Kill-switch: `docker stop <container>` instantly halts the agent. Check the spending cap on the key (step s4) is active. Decide in advance: on odd behavior — stop first, investigate later.",
+          "Final checklist: home folders are NOT mounted; real passwords are NOT passed; the key is separate, capped, in env, not in code; the network is minimal; the kill-switch and rollback are tested; remote access (if any) is protected with a password/key and an IP restriction.",
+          "What's next: go through the [[node:sys-agent-sandbox|Isolated environment for the agent]] path in full, start with simple tasks, and expand access gradually and deliberately.",
+          "Practice idea: give the agent a routine GUI task you do by hand — but in the sandbox."
         ],
-        "validate": "Every checklist item is ticked — the environment is ready to use."
-      },
-      "rcc-16": {
-        "title": "What's next",
-        "time": "5 min",
-        "why": "To consolidate and see where to grow.",
-        "instructions": [
-          "Go through the [[node:sys-agent-sandbox|Isolated environment for the agent]] path in full if you haven't.",
-          "Start with simple tasks, and expand access gradually and deliberately.",
-          "Idea: give the agent a routine GUI task you do by hand — but in the sandbox."
-        ],
-        "validate": "You have a working safe environment and a plan for the first real tasks."
+        "validate": "Every checklist item is ticked, you can roll back the environment and stop the agent — the environment is ready to use.",
+        "tip": "Stop first, investigate second — it's cheaper than the other way around."
       }
     }
   }

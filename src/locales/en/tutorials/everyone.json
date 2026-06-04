@@ -300,165 +300,120 @@
     "totalTime": "20 min",
     "whatItIs": "You have 5 recurring tasks every week (content, audits, reviews)? Each time you re-explain context to Claude from scratch? A Project turns Claude into a specialist for that specific task — set up once, remembered always.\n\nA Project is a 'folder' in [[node:pl-web-setup|claude.ai]] with its own instructions and knowledge base files. Every chat inside knows the context without re-briefing.",
     "approach": "The key is to choose ONE recurring task for the first Project. Not 'everything about work' — something specific. Narrow focus = high quality.",
-    "outcomes": {
-      "0": "Create a Project for a recurring task",
-      "1": "Write Custom Instructions that change answer quality",
-      "2": "Upload the right materials to Project Knowledge",
-      "3": "Know when a Project is needed and when a regular chat is enough"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Create a Project for a recurring task",
+      "Write [[node:instructions|Custom Instructions]] that change answer quality",
+      "Upload the right materials to Project Knowledge",
+      "Know when a Project is needed and when a regular chat is enough"
+    ],
+    "applyIn": [
+      {
         "title": "Regular audits",
         "description": "A Project with guides and cases — every week you review new material against the same criteria."
       },
-      "1": {
+      {
         "title": "Template documents",
         "description": "Templates and examples in Knowledge → Claude drafts in your style, you refine."
       },
-      "2": {
+      {
         "title": "Onboarding a new hire",
         "description": "Share the Project — a new employee immediately gets a 'specialized' Claude for the project."
       }
-    },
-    "pitfalls": {
-      "0": "Making one Project for everything. Better 3–5 narrow ones than one universal.",
-      "1": "Uploading everything into Knowledge — the model loses focus on irrelevant content.",
-      "2": "Writing instructions like 'be helpful' — that's noise, not a rule."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Making one Project for everything. Better 3–5 narrow ones than one universal.",
+      "Uploading everything into Knowledge — the model loses focus on irrelevant content.",
+      "Writing instructions like 'be helpful' — that's noise, not a rule."
+    ],
+    "exercises": [
+      {
         "question": "Write down your 3 recurring tasks. For the most frequent one — create a Project with minimal instructions and 1–2 files.",
         "hint": "Recurring = repeats ≥ once a week with a similar process."
       },
-      "1": {
+      {
         "question": "Run your next real task through this Project. Compare with how you did it in a regular chat.",
         "hint": "If you see no difference — the instructions are weak; refine them based on results."
       }
-    },
+    ],
     "steps": {
-      "p-1": {
-        "title": "Confirm Pro/Team plan and open Projects",
-        "time": "1 min",
-        "why": "Projects are only available on paid plans. Without one the next steps are impossible — better to know this upfront.",
-        "instructions": {
-          "0": "Go to claude.ai → top-right corner → check your subscription.",
-          "1": "If Free — upgrade to Pro ($20/month) or use a team account.",
-          "2": "In the left sidebar find 'Projects' → '+ New project'."
-        },
-        "validate": "The Project creation form opened with Name and Description fields.",
-        "troubleshoot": {
-          "I don't see a Projects section": "Projects-osiota ei ole",
-          "No Projects section": "Are you sure you have Pro? Sometimes you need to log out and back in after an upgrade."
-        }
-      },
-      "p-2": {
-        "title": "Give the Project a meaningful name and description",
-        "time": "2 min",
-        "why": "The name is an anchor. 'Project 1' you won't remember in 2 weeks; 'Regular Report Audit' you will.",
-        "instructions": {
-          "0": "Name: '<what we do> <for whom / what>'. E.g., 'Regular Report Audit' or 'Client Meeting Prep'.",
-          "1": "Description: 1–2 lines — what the project is for, who will work in it, what result is expected.",
-          "2": "Click Create."
-        },
-        "example": "Name: <Your regular process> for <your domain>\nDescription: We come here before each iteration to prepare/review results. Core materials and templates are here.",
+      "s1": {
+        "title": "Open Projects and create one with a name",
+        "time": "",
+        "why": "Projects are only available on paid plans — without one the next steps are impossible. And a meaningful name becomes an anchor: 'Project 1' you won't remember in 2 weeks; 'Regular Report Audit' you will.",
+        "instructions": [
+          "Go to claude.ai → top-right corner → check your subscription. If Free — upgrade to Pro ($20/month) or use a team account.",
+          "In the left sidebar find 'Projects' → '+ New project'.",
+          "Name: '<what we do> <for whom / what>'. E.g., 'Regular Report Audit' or 'Client Meeting Prep'.",
+          "Description: 1–2 lines — what the project is for, who will work in it, what result is expected. Example: 'We come here before each iteration to prepare/review results. Core materials and templates are here.'",
+          "Click Create.",
+          "If you don't see a Projects section — are you sure you have Pro? Sometimes you need to log out and back in after an upgrade."
+        ],
         "validate": "Project created, you see an empty chat and the 'Project knowledge' / 'Instructions' panel.",
         "tip": "Don't make one Project for everything. Better 3–5 specialized ones than one universal."
       },
-      "p-3": {
+      "s2": {
         "title": "Write Custom Instructions",
-        "time": "5 min",
+        "time": "",
         "why": "This is the highest-ROI time investment in the Project. Without instructions — a folder with files; with them — a specialized assistant.",
-        "instructions": {
-          "0": "Open the Project panel → Custom instructions.",
-          "1": "Use the framework below. Fill in your domain.",
-          "2": "Save. All future chats in this Project will automatically pick up the instructions."
-        },
-        "prompt": "You are a [role] with [N] years of experience in [niche].\n\nWork context:\n- Task type: [the main thing we do]\n- Audience for results: [who will read]\n- Team style: [how we communicate, format]\n\nAnswer format:\n- Key point first, then details\n- Bullet lists for enumerations\n- For recommendations: problem → impact → what to do\n- Length: exactly what's needed — no fluff\n\nWhat you do NOT do:\n- Don't give generic advice without grounding in context\n- Don't suggest solutions that require resources we don't have\n- Don't mix languages unnecessarily",
+        "instructions": [
+          "Open the Project panel → Custom instructions.",
+          "Use the framework below, filling in your domain:\n\nYou are a [role] with [N] years of experience in [niche].\n\nWork context:\n- Task type: [the main thing we do]\n- Audience for results: [who will read]\n- Team style: [how we communicate, format]\n\nAnswer format:\n- Key point first, then details\n- Bullet lists for enumerations\n- For recommendations: problem → impact → what to do\n- Length: exactly what's needed — no fluff\n\nWhat you do NOT do:\n- Don't give generic advice without grounding in context\n- Don't suggest solutions that require resources we don't have\n- Don't mix languages unnecessarily",
+          "Save. All future chats in this Project will automatically pick up the instructions."
+        ],
         "validate": "After saving, send 'who are you?' — Claude should answer as the assigned role, not a generic assistant.",
         "tip": "The most common mistake — overly generic instructions like 'be helpful'. That's noise. Specificity > politeness."
       },
-      "p-4": {
+      "s3": {
         "title": "Upload key files to Project knowledge",
-        "time": "4 min",
+        "time": "",
         "why": "Files become 'permanent memory' — Claude sees them in all Project chats, no need to repeat context.",
-        "instructions": {
-          "0": "In the right Project panel → Project knowledge → Add content / Upload.",
-          "1": "Upload 3–7 KEY documents: brand guide, brief, guidelines, reference cases.",
-          "2": "Don't upload everything — 5 precise ones beat 50 random ones. Each extra file dilutes focus.",
-          "3": "Give each file a clear name — Claude uses it for navigation."
-        },
+        "instructions": [
+          "In the right Project panel → Project knowledge → Add content / Upload.",
+          "Upload 3–7 KEY documents: brand guide, brief, guidelines, reference cases.",
+          "Don't upload everything — 5 precise ones beat 50 random ones. Each extra file dilutes focus.",
+          "Give each file a clear name — Claude uses it for navigation.",
+          "If a file is too large — the limit is usually 30 MB per file; compress images or split the PDF. For long PDFs, extract the key sections into a separate markdown."
+        ],
         "validate": "You see the list of uploaded files in Project knowledge with a 'ready' checkmark.",
-        "tip": "For long PDFs — extract the key sections into a separate markdown. Less noise, higher accuracy.",
-        "troubleshoot": {
-          "File is too large": "Tiedosto on liian suuri",
-          "File too large": "Limit is usually 30 MB per file. Compress images or split the PDF."
-        }
+        "tip": "Less noise, higher accuracy: 5 precise documents work better than 50 random ones."
       },
-      "p-5": {
+      "s4": {
         "title": "Run the first real request",
-        "time": "4 min",
+        "time": "",
         "why": "Without a real test the Project is just a hypothesis. The request will show how well the instructions and files are tuned.",
-        "instructions": {
-          "0": "In the Project open a new chat.",
-          "1": "Send the prompt below (adapt it to your task).",
-          "2": "Evaluate: did Claude answer in the right format, did it use the uploaded files."
-        },
-        "prompt": "Using the materials from knowledge: do your regular task for the input data — [URL / document / description]. Give the result in the format described in the instructions.",
+        "instructions": [
+          "In the Project open a new chat.",
+          "Send the prompt (adapt it to your task): 'Using the materials from knowledge: do your regular task for the input data — [URL / document / description]. Give the result in the format described in the instructions.'",
+          "Evaluate: did Claude answer in the right format, did it use the uploaded files."
+        ],
         "validate": "The answer is in the format from the instructions, with explicit references to the uploaded files.",
         "tip": "If Claude doesn't use knowledge — ask explicitly: 'rely on the materials from Project knowledge'."
       },
-      "p-6": {
+      "s5": {
         "title": "Iterate the instructions based on results",
-        "time": "3 min",
+        "time": "",
         "why": "The first Project is rarely perfect. Real conversations show what needs tightening in the instructions.",
-        "instructions": {
-          "0": "After 2–3 chats write down: what does Claude do wrong?",
-          "1": "Rephrase each 'wrong' as a rule and add it to Custom instructions.",
-          "2": "Save. New chats will immediately apply the changes."
-        },
-        "example": "BEFORE: long fluffy answers\nAFTER (added to instructions): 'Never write openers like 'great question'. Get straight to the point.'\n\nBEFORE: generic advice not tied to our stack\nAFTER: 'All recommendations — only within the Next.js + Tailwind stack described in knowledge.'",
+        "instructions": [
+          "After 2–3 chats write down: what does Claude do wrong?",
+          "Rephrase each 'wrong' as a rule and add it to Custom instructions. Example: BEFORE — long fluffy answers; AFTER — 'Never write openers like 'great question'. Get straight to the point.' BEFORE — generic advice not tied to our stack; AFTER — 'All recommendations — only within the Next.js + Tailwind stack described in knowledge.'",
+          "Save. New chats will immediately apply the changes."
+        ],
         "validate": "[[node:instructions|Custom instructions]] grew by 3–5 rules, each born from a real problem.",
         "tip": "A Project is a living document. 10 minutes of instruction review every month saves hours of routine."
       },
-      "p-7": {
+      "s6": {
         "title": "Share with the team (if Team plan)",
-        "time": "1 min",
+        "time": "",
         "why": "One Project for the team = one quality standard. Everyone stops 'inventing their own Claude'.",
-        "instructions": {
-          "0": "Open the Project → Share → Add team members.",
-          "1": "Choose access level: Editor (can change instructions) / Viewer (read chats only).",
-          "2": "Pin the Project in the team wiki / Notion with a short note: 'when and how to use it'."
-        },
+        "instructions": [
+          "Open the Project → Share → Add team members.",
+          "Choose access level: Editor (can change instructions) / Viewer (read chats only).",
+          "Pin the Project in the team wiki / Notion with a short note: 'when and how to use it'."
+        ],
         "validate": "Colleagues see the Project in their lists and can open chats.",
         "tip": "Designate one 'Project curator' — they own the cleanliness of instructions and knowledge. Without a curator the Project degrades within a month."
       }
-    },
-    "trigger": "You catch yourself re-explaining the same context to Claude 3+ times a week.",
-    "inputs": [
-      "List of recurring tasks (content, review, audit)",
-      "Knowledge base materials (docs, brand book)",
-      "Desired Claude response format"
-    ],
-    "outputs": [
-      "Ready Project with custom instructions",
-      "Loaded knowledge base (up to 200K tokens)",
-      "Starter prompt templates for the team"
-    ],
-    "tools": [
-      {
-        "name": "Claude Projects",
-        "role": "container"
-      },
-      {
-        "name": "Knowledge base",
-        "role": "project memory"
-      },
-      {
-        "name": "Custom Instructions",
-        "role": "role and style"
-      }
-    ],
-    "savings": "~15-20 min per new chat — Claude is already up to speed"
+    }
   },
   "artifacts": {
     "title": "Create your first interactive Artifact",
@@ -734,131 +689,121 @@
     "totalTime": "20 min",
     "whatItIs": "Same request to Claude — one gives a hollow 'here's a general overview of the topic...', another gives a concrete plan with numbers. The only difference is the wording. That's prompt engineering — the skill of 'how to ask so AI answers usefully'.\n\nFive levers: structure, context, examples, role, constraints. Same AI, results 5-10× apart — all the difference is in how you phrase the request.",
     "approach": "Don't study techniques from a list. Take your REAL weak prompt and upgrade it step by step. Each step = +one technique. By the end of the tutorial this prompt works 3–5× better — and you understand why.",
-    "outcomes": {
-      "0": "You write prompts using the schema context → role → task → format → constraints",
-      "1": "You use XML tags to separate instructions from data",
-      "2": "You apply few-shot when the model doesn't catch the pattern",
-      "3": "You enable Chain of Thought on analytical tasks"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "You write prompts using the schema context → role → task → format → constraints",
+      "You use XML tags to separate instructions from data",
+      "You apply few-shot when the model doesn't catch the pattern",
+      "You enable Chain of Thought on analytical tasks"
+    ],
+    "applyIn": [
+      {
         "title": "Any non-trivial task",
         "description": "Before a complex request — 30 seconds on structure. The cheapest way to raise quality."
       },
-      "1": {
+      {
         "title": "Analytical tasks",
         "description": "Comparisons, assessments, conclusions — always with Chain of Thought or Tree of Thought."
       },
-      "2": {
+      {
         "title": "Reproducible formats",
         "description": "If the result needs to be in JSON/table — describe the schema explicitly and give 1–2 examples."
       }
-    },
-    "pitfalls": {
-      "0": "A one-liner 'do it well' — the most common source of bad answers.",
-      "1": "Too many few-shot examples — the model 'confuses' patterns.",
-      "2": "CoT on simple tasks — just extra noise."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "A one-liner 'do it well' — the most common source of bad answers.",
+      "Too many few-shot examples — the model 'confuses' patterns.",
+      "CoT on simple tasks — just extra noise."
+    ],
+    "exercises": [
+      {
         "question": "Find your weak prompt from history. Rewrite it using the full schema (role/context/task/format/constraints). Compare answers.",
         "hint": "The worse the original prompt — the more noticeable the upgrade effect."
       },
-      "1": {
+      {
         "question": "Take a complex analytical task. Do it TWICE: without CoT and with a CoT trigger. Measure the difference.",
         "hint": "CoT trigger: 'Think step by step before answering' at the end of the prompt."
       }
-    },
+    ],
     "steps": {
-      "pr-1": {
+      "s1": {
         "title": "Take your real prompt",
-        "time": "2 min",
+        "time": "",
         "why": "Learning on your own tasks is 10× more effective than on synthetic ones. Find yours.",
-        "instructions": {
-          "0": "Find in the chat history a prompt that Claude answered 'not great'.",
-          "1": "Copy it into notes — we'll upgrade it step by step.",
-          "2": "Write down what in the answer you did NOT like (vague? generic? wrong format?)."
-        },
-        "example": "My prompt: 'Help me improve my project'.\nWhat I didn't like: the answer — generic textbook advice. Not tied to my product, audience, or tools.",
+        "instructions": [
+          "Find in the chat history a prompt that Claude answered 'not great'.",
+          "Copy it into notes — we'll upgrade it step by step.",
+          "Write down what in the answer you did NOT like (vague? generic? wrong format?).",
+          "Example. My prompt: 'Help me improve my project'. What I didn't like: the answer — generic textbook advice. Not tied to my product, audience, or tools."
+        ],
         "validate": "You have a real 'weak' prompt in hand and a list of complaints about the answer.",
         "tip": "The worse the prompt — the more noticeable the upgrade. Don't pick a good one — pick a typical one."
       },
-      "pr-2": {
+      "s2": {
         "title": "Apply the basic structure",
-        "time": "4 min",
+        "time": "",
         "why": "The structure 'context → role → task → format → constraints' solves 80% of weak-prompt problems.",
-        "instructions": {
-          "0": "Rewrite your prompt using the template below.",
-          "1": "Fill in all fields — missing ones = weak spots.",
-          "2": "Send to Claude and compare with the previous answer."
-        },
-        "example": "[CONTEXT]\n<Briefly describe your project, audience, current stage (1–2 sentences).>\n\n[ROLE]\nYou are an expert in my domain with a specific focus (describe).\n\n[TASK]\nGive 5 recommendations for <your object>. Input data: [URL / document / description].\n\n[FORMAT]\nFor each problem:\n- what's wrong (1 line)\n- impact (high / medium / low)\n- what to do (concrete action, not abstraction)\n\n[CONSTRAINTS]\n- Only things that can be implemented within <realistic timeframe>\n- No recommendations requiring a fundamental rewrite\n- Draw on proven principles / standards in your domain",
+        "instructions": [
+          "Rewrite your prompt using the template below.",
+          "Fill in all fields — missing ones = weak spots.",
+          "Send to Claude and compare with the previous answer.",
+          "Template:\n[CONTEXT]\n<Briefly describe your project, audience, current stage (1–2 sentences).>\n\n[ROLE]\nYou are an expert in my domain with a specific focus (describe).\n\n[TASK]\nGive 5 recommendations for <your object>. Input data: [URL / document / description].\n\n[FORMAT]\nFor each problem:\n- what's wrong (1 line)\n- impact (high / medium / low)\n- what to do (concrete action, not abstraction)\n\n[CONSTRAINTS]\n- Only things that can be implemented within <realistic timeframe>\n- No recommendations requiring a fundamental rewrite\n- Draw on proven principles / standards in your domain"
+        ],
         "validate": "The answer is specific, tied to context, in the right format.",
         "tip": "If even one field is empty — fill it in. Each field improves answer accuracy."
       },
-      "pr-3": {
+      "s3": {
         "title": "Add XML tags for long prompts",
-        "time": "3 min",
+        "time": "",
         "why": "XML markup separates instructions from data. Claude is trained on it — understands it perfectly.",
-        "instructions": {
-          "0": "If the prompt contains data / examples / code — wrap them in XML tags.",
-          "1": "Use meaningful tag names: <context>, <task>, <example>, <code>.",
-          "2": "This is especially important when instructions and data could get mixed up."
-        },
-        "example": "<context>\n<Brief description of the task and domain.>\n</context>\n\n<input_data>\n[all the material here — text, description, code or other inputs]\n</input_data>\n\n<task>\nFind the critical problems in this material.\n</task>\n\n<format>\n- problem\n- impact\n- recommendation\n</format>",
+        "instructions": [
+          "If the prompt contains data / examples / code — wrap them in XML tags.",
+          "Use meaningful tag names: <context>, <task>, <example>, <code>.",
+          "This is especially important when instructions and data could get mixed up.",
+          "Example:\n<context>\n<Brief description of the task and domain.>\n</context>\n\n<input_data>\n[all the material here — text, description, code or other inputs]\n</input_data>\n\n<task>\nFind the critical problems in this material.\n</task>\n\n<format>\n- problem\n- impact\n- recommendation\n</format>"
+        ],
         "validate": "The prompt reads clearly: where are the instructions, where is the data.",
         "tip": "XML is for long prompts with data. For short ones — overkill."
       },
-      "pr-4": {
+      "s4": {
         "title": "Give a few-shot example",
-        "time": "4 min",
+        "time": "",
         "why": "'Input → output' examples are stronger than any description. This is the most underrated technique.",
-        "instructions": {
-          "0": "Give 1–3 examples: what input → what output.",
-          "1": "Examples — for the SAME type of task as the real request.",
-          "2": "After the examples — your real request."
-        },
-        "example": "<example>\nInput: \"SaaS login form\"\nOutput:\n- Problem: 6 fields including password repeat and captcha — that causes 30% drop-off at this step.\n- Impact: high — this is a critical funnel point.\n- Recommendation: remove captcha (show only on suspicion), remove 'repeat password' (there's a 'show password' option).\n</example>\n\n<example>\nInput: \"SaaS landing hero section\"\nOutput:\n- Problem: headline 'Business Solution' — generic, doesn't explain the value.\n- Impact: high — the user doesn't understand what the product is.\n- Recommendation: rewrite in the format '<verb> <result> <in time>' — e.g., 'Track your team's work hours in 5 minutes a day'.\n</example>\n\nNow do the same for my material: [URL / document / description]",
+        "instructions": [
+          "Give 1–3 examples: what input → what output.",
+          "Examples — for the SAME type of task as the real request.",
+          "After the examples — your real request.",
+          "Example:\n<example>\nInput: \"SaaS login form\"\nOutput:\n- Problem: 6 fields including password repeat and captcha — that causes 30% drop-off at this step.\n- Impact: high — this is a critical funnel point.\n- Recommendation: remove captcha (show only on suspicion), remove 'repeat password' (there's a 'show password' option).\n</example>\n\n<example>\nInput: \"SaaS landing hero section\"\nOutput:\n- Problem: headline 'Business Solution' — generic, doesn't explain the value.\n- Impact: high — the user doesn't understand what the product is.\n- Recommendation: rewrite in the format '<verb> <result> <in time>' — e.g., 'Track your team's work hours in 5 minutes a day'.\n</example>\n\nNow do the same for my material: [URL / document / description]"
+        ],
         "validate": "The answer is in exactly the same format as the examples. The style is copied.",
         "tip": "2 examples are stronger than 5. Too many examples — the model 'confuses' patterns."
       },
-      "pr-5": {
+      "s5": {
         "title": "Add Chain of Thought (for analytical tasks)",
-        "time": "3 min",
+        "time": "",
         "why": "CoT improves accuracy on complex tasks by 1.2–1.4×. For simple ones — just extra noise.",
-        "instructions": {
-          "0": "If the task requires REASONING (not 'extract a fact'), add a CoT trigger.",
-          "1": "Simple trigger: 'Think step by step before answering'.",
-          "2": "Advanced: give explicit reasoning steps."
-        },
-        "example": "Task: evaluate which of three architectures is faster for our use case.\n\nThink step by step before answering:\n1. Write out my load parameters (RPS, request size, write frequency).\n2. For each architecture — where is the bottleneck under this load.\n3. Which architecture is easier to scale vertically / horizontally.\n4. Only then — the recommendation and justification.",
+        "instructions": [
+          "If the task requires REASONING (not 'extract a fact'), add a CoT trigger.",
+          "Simple trigger: 'Think step by step before answering'.",
+          "Advanced: give explicit reasoning steps.",
+          "Example:\nTask: evaluate which of three architectures is faster for our use case.\n\nThink step by step before answering:\n1. Write out my load parameters (RPS, request size, write frequency).\n2. For each architecture — where is the bottleneck under this load.\n3. Which architecture is easier to scale vertically / horizontally.\n4. Only then — the recommendation and justification."
+        ],
         "validate": "The answer shows the reasoning process, then the final recommendation.",
         "tip": "Don't use CoT for creative or short tasks — it'll be a 'parody of reasoning'."
       },
-      "pr-6": {
-        "title": "Compare 'before' and 'after'",
-        "time": "2 min",
-        "why": "Without an explicit comparison you won't feel the effect — and won't lock in the skill.",
-        "instructions": {
-          "0": "Run the original 'weak' prompt in a new chat.",
-          "1": "Run the improved one in another.",
-          "2": "Put them side by side. Note: length doesn't matter, accuracy and usability do.",
-          "3": "Save the improved version as a template."
-        },
-        "validate": "A clear qualitative difference is visible. The improved version is usable without editing; the original — isn't.",
-        "tip": "Copy prompt templates into Notion / your 'prompt-library' repository. In a year that's your main asset."
-      },
-      "pr-7": {
-        "title": "Turn it into a ready-to-use template",
-        "time": "2 min",
-        "why": "One tuned prompt = a template you'll use hundreds of times. Don't lose it.",
-        "instructions": {
-          "0": "Replace specific values with placeholders [...] (product, link, audience).",
-          "1": "Save in your library (Notion, text file, snippets).",
-          "2": "Use it every time — don't write from scratch."
-        },
-        "validate": "The template is in your library; you can apply it in 30 seconds.",
-        "tip": "Next — the 'Ready prompts' section in the map: 10 templates for typical tasks."
+      "s6": {
+        "title": "Compare 'before/after' and save as a template",
+        "time": "",
+        "why": "Without an explicit comparison you won't feel the effect — and won't lock in the skill. And one tuned prompt = a template you'll use hundreds of times. Don't lose it.",
+        "instructions": [
+          "Run the original 'weak' prompt in a new chat.",
+          "Run the improved one in another.",
+          "Put them side by side. Note: length doesn't matter, accuracy and usability do.",
+          "Replace specific values with placeholders [...] (product, link, audience).",
+          "Save the improved version as a template in your library (Notion, text file, snippets).",
+          "Use it every time — don't write from scratch."
+        ],
+        "validate": "A clear qualitative difference is visible: the improved version is usable without editing, the original isn't. The template is in your library; you can apply it in 30 seconds.",
+        "tip": "Copy prompt templates into Notion / your 'prompt-library' repository. In a year that's your main asset. Next — the 'Ready prompts' section in the map: 10 templates for typical tasks."
       }
     },
     "trigger": "Same question gives a usable plan one day and a \"general overview\" the next — instability is killing you.",
@@ -1404,147 +1349,121 @@
     "totalTime": "20 min",
     "whatItIs": "A workshop on 5 fundamental techniques that turn an 'average' prompt into a reliable tool. You apply each technique to the same task to see what each one affects.",
     "approach": "One baseline prompt → 5 versions with different techniques → comparison. Without comparison you won't feel the effect; with it — the techniques settle into muscle memory.",
-    "outcomes": {
-      "0": "Apply Few-shot, CoT, XML, Prefill consciously — to a specific problem",
-      "1": "Get JSON output that parses on the first try",
-      "2": "Know which technique helps with which prompt failure",
-      "3": "Can iteratively improve a prompt in 3–5 targeted steps"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Apply Few-shot, CoT, XML, Prefill consciously — to a specific problem",
+      "Get JSON output that parses on the first try",
+      "Know which technique helps with which prompt failure",
+      "Can iteratively improve a prompt in 3–5 targeted steps"
+    ],
+    "applyIn": [
+      {
         "title": "Exact format",
         "description": "If you need JSON/table/markdown — Prefill + Structured output technique."
       },
-      "1": {
+      {
         "title": "Complex reasoning",
         "description": "Analytics, cause-and-effect chains — Chain of Thought."
       },
-      "2": {
+      {
         "title": "Subtle style / tone",
         "description": "Brand voice, a specific report format — Few-shot examples."
       }
-    },
-    "pitfalls": {
-      "0": "Applying all 5 techniques at once — you won't know what helped. Use one at a time.",
-      "1": "Giving contradictory few-shot examples — the model will pick a random pattern.",
-      "2": "Prefilling a long starting text — the model stretches to reach it and loses quality. 1–3 anchor tokens is enough.",
-      "3": "Asking for 'JSON' without a schema and example — Claude will invent the fields."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Applying all 5 techniques at once — you won't know what helped. Use one at a time.",
+      "Giving contradictory few-shot examples — the model will pick a random pattern.",
+      "Prefilling a long starting text — the model stretches to reach it and loses quality. 1–3 anchor tokens is enough.",
+      "Asking for 'JSON' without a schema and example — Claude will invent the fields."
+    ],
+    "exercises": [
+      {
         "question": "Take your baseline prompt and make 5 versions: +CoT, +Few-shot, +XML, +Prefill, +Structured. Compare results.",
         "hint": "Works best on a medium-difficulty task — a simple one will be solved by one technique; a very complex one won't be saved by five."
       },
-      "1": {
+      {
         "question": "Find a task in your work routine where you currently manually parse Claude's answer. Rewrite the prompt using Structured output.",
         "hint": "Compare time 'prompt + manual parse' vs 'prompt + auto-parse'. Should be 5–10× savings."
       },
-      "2": {
+      {
         "question": "Take a prompt that gives ~70% results. Make 3 iterations using 'one fix → check → next fix'.",
         "hint": "After each iteration write down: what improved, what broke."
       }
-    },
+    ],
     "steps": {
-      "pt-1": {
+      "s1": {
         "title": "Lock in a baseline prompt",
-        "time": "2 min",
+        "time": "",
         "why": "Without a baseline you won't see what each technique improved.",
-        "instructions": {
-          "0": "Take a real task from your work (document audit / data analysis / text structuring).",
-          "1": "Phrase the prompt in ONE line — the way you'd normally write in a chat.",
-          "2": "Run in Sonnet, save the result as the baseline."
-        },
-        "prompt": "Analyze this text and give conclusions.",
+        "instructions": [
+          "Take a real task from your work (document audit / data analysis / text structuring).",
+          "Phrase the prompt in ONE line — the way you'd normally write in a chat. Example: 'Analyze this text and give conclusions.'",
+          "Run in Sonnet, save the result as the baseline."
+        ],
         "validate": "You have a one-liner prompt + Claude's answer as the baseline.",
         "tip": "The more 'average' the baseline quality — the more noticeable the technique's effect. A great baseline is already good; a terrible one — techniques won't save it."
       },
-      "pt-2": {
+      "s2": {
         "title": "Apply Chain of Thought",
-        "time": "3 min",
+        "time": "",
         "why": "CoT (Chain-of-Thought — asking AI to \"think out loud\" step by step) gives +20–40% accuracy on tasks where you need to 'derive', not 'recall'.",
-        "instructions": {
-          "0": "Add to the baseline: 'Think step by step. First list the facts, then hypotheses, then conclusions.'",
-          "1": "Run in a new chat on the same task.",
-          "2": "Compare the reasoning depth with the baseline."
-        },
-        "prompt": "Analyze this text. Think step by step: 1) list the facts 2) formulate 2–3 hypotheses 3) check each one 4) give a recommendation.",
+        "instructions": [
+          "Add to the baseline: 'Think step by step. First list the facts, then hypotheses, then conclusions.'",
+          "Run in a new chat on the same task. Example prompt: 'Analyze this text. Think step by step: 1) list the facts 2) formulate 2–3 hypotheses 3) check each one 4) give a recommendation.'",
+          "Compare the reasoning depth with the baseline."
+        ],
         "validate": "The answer contains explicit reasoning stages, not just the conclusion.",
         "tip": "CoT is not needed for simple questions — just a longer answer. Use it where there's 'logic', not 'fact'."
       },
-      "pt-3": {
+      "s3": {
         "title": "Add Few-shot examples",
-        "time": "4 min",
+        "time": "",
         "why": "Few-shot (a handful of examples in the prompt that AI mimics) is the most powerful technique for non-standard formats and tone.",
-        "instructions": {
-          "0": "Come up with 2 mini-examples: what input → what output you want.",
-          "1": "Structure: 'Example 1: input: ... output: ... Example 2: ... Now do for: ...'",
-          "2": "Run. Check — did the model reproduce the style of the examples?"
-        },
-        "prompt": "Example 1: input: <short text> → output: <in your format>.\nExample 2: input: <another text> → output: <in your format>.\nNow do for: <your real input>.",
+        "instructions": [
+          "Come up with 2 mini-examples: what input → what output you want.",
+          "Structure: 'Example 1: input: ... output: ... Example 2: ... Now do for: ...'. Example prompt: 'Example 1: input: <short text> → output: <in your format>. Example 2: input: <another text> → output: <in your format>. Now do for: <your real input>.'",
+          "Run. Check — did the model reproduce the style of the examples?",
+          "If the model copies the example verbatim — the examples are too close to your input: make them on-topic but not same-content. If it ignores the example format — add explicitly: 'Format — strictly as in the examples'."
+        ],
         "validate": "Output follows the pattern of the examples, not its 'own'.",
-        "tip": "2–3 examples are usually better than 5+ — more noise, not signal. Use varied examples.",
-        "troubleshoot": {
-          "Model copies the example verbatim": "The examples are too close to your input. Make them on-topic but not same-content.",
-          "Ignores the example format": "Add explicitly: 'Format — strictly as in the examples'."
-        }
+        "tip": "2–3 examples are usually better than 5+ — more noise, not signal. Use varied examples."
       },
-      "pt-4": {
+      "s4": {
         "title": "Structure with XML tags",
-        "time": "3 min",
+        "time": "",
         "why": "XML gives +2–3× stability on long prompts with different data types.",
-        "instructions": {
-          "0": "Split the prompt into blocks: <context>, <task>, <examples>, <constraints>.",
-          "1": "Put each piece in its own tag. Text inside — plain.",
-          "2": "Run. Notice — the model 'confuses' data and instructions less."
-        },
-        "prompt": "<context>...</context>\n<task>Analyze the text from <input></task>\n<input>...</input>\n<constraints>English only. No introductory phrases. Maximum 5 points.</constraints>",
+        "instructions": [
+          "Split the prompt into blocks: <context>, <task>, <examples>, <constraints>.",
+          "Put each piece in its own tag. Text inside — plain. Example: '<context>...</context> <task>Analyze the text from <input></task> <input>...</input> <constraints>English only. No introductory phrases. Maximum 5 points.</constraints>'",
+          "Run. Notice — the model 'confuses' data and instructions less."
+        ],
         "validate": "The prompt reads as a structure, not a 'wall of text'. The model clearly separates data from instructions.",
         "tip": "XML is for long prompts with different blocks. On a short request — overkill."
       },
-      "pt-5": {
-        "title": "Lock in format via Prefill",
-        "time": "3 min",
-        "why": "Prefill (starting AI's response for it to lock tone/format) firmly sets the start of the answer — the model doesn't 'drift' from the format.",
-        "instructions": {
-          "0": "In the chat — write: 'Start the answer exactly with <YOUR_ANCHOR>'.",
-          "1": "Anchor = the first character of the needed format: { for JSON, | for a table, # for a markdown heading.",
-          "2": "Run. The model 'jumps' straight into the format."
-        },
-        "prompt": "<your request>. Start the answer exactly with | (this is a markdown table). No preamble.",
-        "validate": "The answer starts with your anchor, without 'Sure, here is...' openers.",
-        "tip": "In the API, prefill goes as a role: 'assistant' message at the end of messages — the model continues from it."
+      "s5": {
+        "title": "Lock in format via Prefill and get JSON (Structured output)",
+        "time": "",
+        "why": "Prefill firmly sets the start of the answer — the model doesn't 'drift' from the format; together with Structured output it turns the answer into parseable JSON.",
+        "instructions": [
+          "Prefill: in the chat write 'Start the answer exactly with <YOUR_ANCHOR>'. Anchor = the first character of the needed format: { for JSON, | for a table, # for a markdown heading. Example: '<your request>. Start the answer exactly with | (this is a markdown table). No preamble.' In the API, prefill goes as a role: 'assistant' message at the end of messages — the model continues from it.",
+          "Structured output: describe the JSON schema explicitly (which fields, types, enum values), give a mini-example of valid output, and close with a Prefill on `{`.",
+          "Example prompt: 'Return JSON with schema: {\"summary\": string (≤200), \"topics\": [{\"name\": string, \"weight\": \"low\"|\"med\"|\"high\"}], \"actions\": string[]} Example: {\"summary\": \"...\", \"topics\": [{\"name\": \"X\", \"weight\": \"high\"}], \"actions\": [\"...\"]} Data: <your input>. Start the answer exactly with {. No markdown wrapper.'",
+          "Run through JSON.parse() — should work on the first try. If the model adds ```json — prefill didn't work, strengthen: 'WITHOUT markdown wrapper. Raw JSON only'.",
+          "If fields are sometimes missing — add 'all fields are required' to the schema. If fields contain extra noise — show a bad and good example: 'don't do this: ...; do this: ...'."
+        ],
+        "validate": "The answer starts with your anchor, without 'Sure, here is...' openers; JSON parses on the first try, fields match the schema.",
+        "tip": "Prefill 1–3 anchor tokens — no more. Don't rely on 'the model will figure it out': write the schema and required fields explicitly."
       },
-      "pt-6": {
-        "title": "Get JSON via Structured output",
-        "time": "3 min",
-        "why": "The final technique — turns the answer into parseable JSON.",
-        "instructions": {
-          "0": "Describe the JSON schema explicitly: which fields, which types, which enum values.",
-          "1": "Give a mini-example of valid output.",
-          "2": "Close with a Prefill on `{`.",
-          "3": "Run through JSON.parse() — should work on the first try."
-        },
-        "prompt": "Return JSON with schema:\n{\"summary\": string (≤200), \"topics\": [{\"name\": string, \"weight\": \"low\"|\"med\"|\"high\"}], \"actions\": string[]}\nExample: {\"summary\": \"...\", \"topics\": [{\"name\": \"X\", \"weight\": \"high\"}], \"actions\": [\"...\"]}\nData: <your input>.\nStart the answer exactly with {. No markdown wrapper.",
-        "validate": "JSON parses on the first try. Fields match the schema.",
-        "tip": "If the model adds ```json — prefill didn't work. Strengthen: 'WITHOUT markdown wrapper. Raw JSON only'.",
-        "troubleshoot": {
-          "Fields are sometimes missing": "Kenttiä puuttuu joskus",
-          "Fields sometimes missing": "Add 'all fields are required' to the schema. Don't rely on 'the model will figure it out'.",
-          "Fields contain extra noise": "Kentissä on ylimääräistä roskaa",
-          "Fields with extra garbage": "Show a bad and good example: 'don't do this: ...; do this: ...'."
-        }
-      },
-      "pt-7": {
+      "s6": {
         "title": "Iteration: one failure — one fix",
-        "time": "2 min",
+        "time": "",
         "why": "A method for improving a prompt without rewriting from scratch.",
-        "instructions": {
-          "0": "Take a prompt that gives ~70%.",
-          "1": "Find ONE specific failure (e.g., 'the output is too generic').",
-          "2": "Make ONE change (role / constraint / example).",
-          "3": "Run on 2–3 different inputs. Record: helped / didn't.",
-          "4": "Repeat 2–3 times."
-        },
+        "instructions": [
+          "Take a prompt that gives ~70%.",
+          "Find ONE specific failure (e.g., 'the output is too generic').",
+          "Make ONE change (role / constraint / example).",
+          "Run on 2–3 different inputs. Record: helped / didn't.",
+          "Repeat 2–3 times."
+        ],
         "validate": "You have v4 vs v1 of the prompt — a noticeable difference without a full rewrite.",
         "tip": "Change 5 things at once — you won't know what helped. One step = one hypothesis."
       }
@@ -1582,236 +1501,207 @@
     "totalTime": "12 minutes",
     "whatItIs": "The very first lesson. Explains what Claude is, how it differs from other assistants, what its working modes are (Chat, Cowork, Code), and how to make it useful for your own tasks.",
     "approach": "Every step has buttons that open the right place for you. You do not need to hunt for things in the menus. Read, click, try.",
-    "outcomes": {
-      "0": "You know what Claude is and who built it",
-      "1": "You understand how Haiku, Sonnet and Opus models differ",
-      "2": "You can tell Chat, Cowork and Code apart",
-      "3": "You picked the version you need: the website, the app, or Code",
-      "4": "You know how to tune Claude with Custom Instructions and Projects"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "You know what Claude is and who built it",
+      "You understand how Haiku, Sonnet and Opus models differ",
+      "You can tell Chat, Cowork and Code apart",
+      "You picked the version you need: the website, the app, or Code",
+      "You know how to tune Claude with Custom Instructions and Projects"
+    ],
+    "applyIn": [
+      {
         "title": "Light tasks",
         "description": "A letter, a translation, an explanation, a short summary. Chat at claude.ai is enough."
       },
-      "1": {
+      {
         "title": "Long work on one task",
         "description": "Going through documents, multi-step tasks. Cowork in the desktop app fits."
       },
-      "2": {
+      {
         "title": "Code and files",
         "description": "Programming, automation. Claude Code in the terminal is what you want."
       }
-    },
-    "pitfalls": {
-      "0": "Sticking to one mode only. Each one has its strengths. Different tools for different jobs.",
-      "1": "Not setting Claude up for yourself. Without Custom Instructions it answers generically, with no idea about your context.",
-      "2": "Ignoring model trade-offs. Haiku is fast but less accurate. Opus is smart but slow and pricey."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Sticking to one mode only. Each one has its strengths. Different tools for different jobs.",
+      "Not setting Claude up for yourself. Without Custom Instructions it answers generically, with no idea about your context.",
+      "Ignoring model trade-offs. Haiku is fast but less accurate. Opus is smart but slow and pricey."
+    ],
+    "exercises": [
+      {
         "question": "Open claude.ai and ask Claude to list three points that make it different from ChatGPT.",
         "hint": "Compare the answer with what you read in this lesson. It shows you how Claude thinks about itself."
       }
-    },
+    ],
     "steps": {
-      "w-1": {
+      "s1": {
         "title": "What Claude is",
-        "time": "1 minute",
+        "time": "",
         "why": "To know who you are about to use.",
-        "instructions": {
-          "0": "Claude is a family of smart assistants that reply to you in text. They are built by a company called Anthropic, founded in 2021 by former OpenAI researchers.",
-          "1": "Inside Claude there are three models of different power. Haiku is the fast and cheap one. Sonnet is the middle ground and the default. Opus is the smartest, for hard tasks.",
-          "2": "You usually do not pick the model by hand. Claude picks the right one for the task. You can switch in settings when you need to.",
-          "3": "Claude looks similar to ChatGPT in spirit, but differs in details. It has longer memory inside one chat, is more careful with facts, and stays calmer on touchy topics."
-        },
+        "instructions": [
+          "Claude is a family of smart assistants that reply to you in text. They are built by a company called Anthropic, founded in 2021 by former OpenAI researchers.",
+          "Inside Claude there are three models of different power. Haiku is the fast and cheap one. Sonnet is the middle ground and the default. Opus is the smartest, for hard tasks.",
+          "You usually do not pick the model by hand. Claude picks the right one for the task. You can switch in settings when you need to.",
+          "Claude looks similar to ChatGPT in spirit, but differs in details. It has longer memory inside one chat, is more careful with facts, and stays calmer on touchy topics."
+        ],
         "validate": "You understand that Claude is built by Anthropic and comes in three models (Haiku, Sonnet, Opus).",
         "tip": "Sonnet covers about 95 percent of tasks. Switch to Opus only when you need deeper reasoning.",
-        "actions": {
-          "0": {
+        "actions": [
+          {
             "type": "open-node",
             "id": "b-models",
             "label": "More about the models"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "b-anthropic",
             "label": "Who is Anthropic"
           }
-        }
+        ]
       },
-      "w-2": {
+      "s2": {
         "title": "Three ways to work with Claude",
-        "time": "1 minute",
+        "time": "",
         "why": "Understand the difference between modes so you can pick yours.",
-        "instructions": {
-          "0": "Chat. A regular conversation in your browser or app. Ask a question, get an answer. Best for short tasks: letters, translations, explanations, idea brainstorming.",
-          "1": "Cowork. A mode in the desktop app where Claude can work with your files, documents and even your screen, step by step. Best for long tasks: working through documents, writing long texts, doing analysis.",
-          "2": "Code. A separate tool for programmers. It runs in the terminal on your computer. It can read and change code files, run commands. You only need it if you write code.",
-          "3": "Next, we will walk through each of these three modes one by one. If you are not a programmer, the Code step is safe to skip."
-        },
+        "instructions": [
+          "Chat. A regular conversation in your browser or app. Ask a question, get an answer. Best for short tasks: letters, translations, explanations, idea brainstorming.",
+          "Cowork. A mode in the desktop app where Claude can work with your files, documents and even your screen, step by step. Best for long tasks: working through documents, writing long texts, doing analysis.",
+          "Code. A separate tool for programmers. It runs in the terminal on your computer. It can read and change code files, run commands. You only need it if you write code.",
+          "Next, we will walk through the modes: we start with the simplest one, Chat, then cover Cowork and Code together. If you are not a programmer, the Code part is safe to skip."
+        ],
         "validate": "You remember the three names and what they are for: Chat for short tasks, Cowork for long ones, Code for programmers.",
         "tip": "Most people only need Chat. Cowork and Code are for those who want to go deeper."
       },
-      "w-3": {
+      "s3": {
         "title": "Chat. The easiest way to start",
-        "time": "2 minutes",
+        "time": "",
         "why": "This is the basic mode everyone starts with. Nothing to install.",
-        "instructions": {
-          "0": "Press the button below to open claude.ai in a new tab.",
-          "1": "Sign in by email or through Google. Sign-up is free. You do not need a paid plan to begin.",
-          "2": "After signing in you will see an input field. That is Chat.",
-          "3": "Copy the question below and paste it into the field. Press send and read the answer."
-        },
+        "instructions": [
+          "Press the button below to open claude.ai in a new tab.",
+          "Sign in by email or through Google. Sign-up is free. You do not need a paid plan to begin.",
+          "After signing in you will see an input field. That is Chat.",
+          "Copy the question below and paste it into the field. Press send and read the answer."
+        ],
         "prompt": "In three simple sentences, tell me how you are different from ChatGPT and what you do best.",
         "validate": "You got a reply from Claude in Chat on [[node:pl-web-setup|claude.ai]].",
         "tip": "If the answer is too long, write: shorter, one sentence. Claude will get it.",
-        "actions": {
-          "0": {
+        "actions": [
+          {
             "type": "external",
             "url": "https://claude.ai",
             "label": "Open claude.ai"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "pl-plans",
             "label": "Pricing plans"
           }
-        }
+        ]
       },
-      "w-4": {
-        "title": "Cowork. When the task is bigger than one question",
-        "time": "2 minutes",
-        "why": "For cases when you work on one topic for a while: writing a long text, going through a document, preparing a report.",
-        "instructions": {
-          "0": "Cowork lives in a separate app for Mac or Windows. Download it from Claude's website with the button below.",
-          "1": "In Cowork you can give Claude files (documents, spreadsheets, images) or grant it screen access. It then works with them on its own, step by step.",
-          "2": "Example tasks: go through these 50 pages and surface the key risks; read my email and draft replies; help me write a long article from this outline.",
-          "3": "It is not for every task. If you only have a quick question, stay in Chat. Cowork pays off when there is ongoing work with your own files."
-        },
-        "validate": "You understand that Cowork is the desktop app for long tasks involving files.",
-        "tip": "Serious Cowork work needs a Pro subscription. You can try it for free in a limited way.",
-        "actions": {
-          "0": {
+      "s4": {
+        "title": "Cowork and Code. When the task is bigger than one question",
+        "time": "",
+        "why": "Cowork is for working on one topic for a while (a long text, going through a document, a report). Code is Claude's most powerful mode for people who work with code. If you are not a programmer, you can just read about Code.",
+        "instructions": [
+          "Cowork lives in a separate app for Mac or Windows. Download it from Claude's website with the button below.",
+          "In Cowork you can give Claude files (documents, spreadsheets, images) or grant it screen access. It then works with them on its own, step by step. Examples: go through these 50 pages and surface the key risks; read my email and draft replies; help me write a long article from this outline.",
+          "Cowork is not for every task. If you only have a quick question, stay in Chat. Serious Cowork work needs a Pro subscription, but you can try it for free in a limited way.",
+          "Claude Code is a tool for developers that runs in your terminal (the dark window with a command line on your computer). It can read and edit code files directly on your disk, run commands, find bugs, refactor, explain unfamiliar code.",
+          "Installing Code is one terminal command. It needs Node.js, a free program that runs commands. There is a dedicated tutorial that walks through it. Code does not replace Chat or Cowork, it adds to them. If you are not a programmer, you can skip Code entirely, and that is fine."
+        ],
+        "validate": "You understand that Cowork is the desktop app for long tasks involving files, and Code is a terminal tool for people who work with code.",
+        "tip": "Not sure whether you need Cowork or Code? Start with Chat. You can always come back to the advanced modes.",
+        "actions": [
+          {
             "type": "external",
             "url": "https://claude.ai/download",
             "label": "Download the Claude app"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "projects",
             "label": "What is a Project"
-          }
-        }
-      },
-      "w-5": {
-        "title": "Code. For people who work with code",
-        "time": "2 minutes",
-        "why": "If you write code or live in the terminal, this is Claude's most powerful mode. If you do not, feel free to skip.",
-        "instructions": {
-          "0": "Claude Code is a tool that runs in your terminal (the dark window with a command line on your computer).",
-          "1": "It can read and edit code files directly on your disk, run commands, find bugs, refactor, explain unfamiliar code.",
-          "2": "Install is one terminal command. It needs Node.js, a free program that runs commands. There is a dedicated tutorial that walks through it.",
-          "3": "Code does not replace Chat or Cowork. It is a tool for developers, in addition to the rest."
-        },
-        "validate": "You understand: Code is a terminal tool, for people who work with code.",
-        "tip": "If you are not a programmer, you can skip Code entirely and use only Chat. That is fine.",
-        "actions": {
-          "0": {
+          },
+          {
             "type": "open-tutorial",
             "id": "first-project",
             "label": "Install Claude Code step by step"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "claude-code",
             "label": "More about Claude Code"
           }
-        }
+        ]
       },
-      "w-6": {
-        "title": "Tuning. Make Claude yours with Custom Instructions",
-        "time": "2 minutes",
-        "why": "By default Claude answers in a generic way. To make it understand your context, you give it [[node:instructions|Custom Instructions]]. A short note about you.",
-        "instructions": {
-          "0": "Custom Instructions is a short message Claude sees inside every conversation of yours. You write your role, your industry, the tone you want, and what NOT to do.",
-          "1": "Where to find it on the website: in claude.ai open your profile (top right), then Settings → Custom Instructions. The desktop app has a similar setting.",
-          "2": "Example note: I am an accountant in a small business. Answer briefly, without fluff, in simple words. Do not give legal advice.",
-          "3": "This changes the quality of answers a lot. Set it once and it always works. Update it when something starts to annoy you in the replies."
-        },
-        "validate": "You understand that Custom Instructions is your profile card for Claude.",
-        "tip": "Do not write a wall of text. Five to ten lines about you and how you want to talk is more than enough.",
-        "actions": {
-          "0": {
+      "s5": {
+        "title": "Tuning. Make Claude yours",
+        "time": "",
+        "why": "By default Claude answers in a generic way. [[node:instructions|Custom Instructions]] help it understand your context, and Projects are handy when you have a series of similar tasks.",
+        "instructions": [
+          "Custom Instructions is a short message Claude sees inside every conversation of yours. You write your role, your industry, the tone you want, and what NOT to do. Example: I am an accountant in a small business. Answer briefly, without fluff, in simple words. Do not give legal advice.",
+          "Where to find it on the website: in claude.ai open your profile (top right), then Settings → Custom Instructions. The desktop app has a similar setting. Set it once and it always works. Update it when something starts to annoy you in the replies.",
+          "A Project is a folder where you keep several chats on one topic. All chats inside a Project share knowledge and instructions. Example: a Project called Marketing for company X, with 20 chats all sharing the same uploaded files: the brand guide, past reports, the yearly plan.",
+          "Where to find Projects: on claude.ai look in the left menu for Projects, then New Project. Serious use needs a Pro plan. Do not make a Project for a single task, use it for things that repeat."
+        ],
+        "validate": "You understand that Custom Instructions is your profile card for Claude, and a Project is a workspace for a series of related tasks.",
+        "tip": "Do not write a wall of text in Custom Instructions. Five to ten lines about you and how you want to talk is more than enough.",
+        "actions": [
+          {
             "type": "open-tutorial",
             "id": "instructions",
             "label": "Custom Instructions tutorial"
           },
-          "1": {
+          {
             "type": "external",
             "url": "https://claude.ai/settings/profile",
             "label": "Open settings on claude.ai"
-          }
-        }
-      },
-      "w-7": {
-        "title": "Tuning. Projects for a series of related tasks",
-        "time": "1 minute",
-        "why": "When you have a series of similar tasks, a Project is handy. It is a workspace with shared context.",
-        "instructions": {
-          "0": "A Project is a folder where you keep several chats on one topic. All chats inside a Project share knowledge and instructions.",
-          "1": "Example: a Project called Marketing for company X. Inside, 20 chats with different questions about marketing. All of them share the same uploaded files: the brand guide, past reports, the yearly plan.",
-          "2": "Where: on claude.ai look in the left menu for Projects, then New Project. Serious use needs a Pro plan.",
-          "3": "If you keep working on one topic for weeks, a Project will save you hours of repeating context."
-        },
-        "validate": "You understand that a Project is a workspace for a series of related tasks.",
-        "tip": "Do not make a Project for a single task. Use it for things that repeat.",
-        "actions": {
-          "0": {
+          },
+          {
             "type": "open-tutorial",
             "id": "projects",
             "label": "Projects tutorial"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "projects",
             "label": "More about Projects"
           }
-        }
+        ]
       },
-      "w-8": {
+      "s6": {
         "title": "What to do right now",
-        "time": "1 minute",
+        "time": "",
         "why": "Knowledge fades without action. Make at least one move.",
-        "instructions": {
-          "0": "If you are just meeting Claude for the first time, open claude.ai and ask your first question in Chat.",
-          "1": "If you already like Claude and want to use it regularly, set up Custom Instructions. The quality jump is large.",
-          "2": "If you need long work with files and documents, download the Claude app with Cowork support.",
-          "3": "If you are a programmer and want the advanced mode, take the tutorial that installs Claude Code."
-        },
+        "instructions": [
+          "If you are just meeting Claude for the first time, open claude.ai and ask your first question in Chat.",
+          "If you already like Claude and want to use it regularly, set up Custom Instructions. The quality jump is large.",
+          "If you need long work with files and documents, download the Claude app with Cowork support.",
+          "If you are a programmer and want the advanced mode, take the tutorial that installs Claude Code."
+        ],
         "validate": "You picked what to try next and made at least one click in that direction.",
         "tip": "Do not try to master everything in a day. Come back to the map when questions show up in your real work.",
-        "actions": {
-          "0": {
+        "actions": [
+          {
             "type": "external",
             "url": "https://claude.ai",
             "label": "Open Chat (claude.ai)"
           },
-          "1": {
+          {
             "type": "open-tutorial",
             "id": "instructions",
             "label": "Set up Custom Instructions"
           },
-          "2": {
+          {
             "type": "open-tutorial",
             "id": "first-project",
             "label": "Install Claude Code"
           },
-          "3": {
+          {
             "type": "open-courses",
             "label": "All learning paths"
           }
-        }
+        ]
       }
     },
     "trigger": "First touch with Claude — you need a 5-minute map of \"what's here and how to use it\".",
@@ -2648,216 +2538,99 @@
       }
     ],
     "steps": {
-      "ws-1": {
-        "title": "Install and first sign-in",
+      "s1": {
+        "title": "Install and the three modes: Chat, Cowork, Code",
         "time": "",
-        "why": "Desktop gives you what the browser can't: parallel sessions, local files, a terminal, and extensions. But it has requirements.",
+        "why": "This is the entry point: install sets the requirements, and the three modes are the app’s main fork. Pick the wrong mode and you won’t find the features you need.",
         "instructions": [
-          "Download the app: claude.com/download (macOS — universal, Windows — x64 or ARM64). Linux isn't supported — use the CLI there.",
-          "Launch it and sign in. For the Code tab on Windows you need Git for Windows — install it and restart the app.",
+          "Install: download the app at claude.com/download (macOS — universal, Windows — x64/ARM64; Linux isn’t supported — use the CLI there), launch it and sign in. For the Code tab on Windows you need Git for Windows — install it and restart. Version — macOS: Claude → About Claude, Windows: Help → About.",
           "The web version ([[node:pl-web-setup|claude.ai]]) runs in the browser with no install, but without local files, a terminal, or the Desktop app section.",
-          "You can see the app version in the menu: macOS — Claude → About Claude; Windows — Help → About."
-        ],
-        "validate": "The app opened, you're signed in, and three tabs are visible at the top: Chat, Cowork, Code.",
-        "tip": "Desktop and the CLI can live side by side on one machine and even on the same project — they share the same config (CLAUDE.md, MCP)."
-      },
-      "ws-2": {
-        "title": "Three modes: Chat / Cowork / Code",
-        "time": "",
-        "why": "This is the app's main fork. Pick the wrong mode and you won't find the features you need.",
-        "instructions": [
-          "Chat — a regular conversation: questions, text, working through files. The left menu is the list of conversations.",
+          "Chat — a regular conversation (questions, text, working through files); the left menu is the list of conversations. This is where 80% of everyday work happens.",
           "Cowork — agentic and long-running tasks: New task, Projects, Scheduled, Live artifacts, Dispatch (from your phone), Customize.",
           "Code — development: each conversation is a \"session\" with its own history, project folder, and code changes; the menu has New session, Routines, Customize.",
-          "Rule of thumb: ask / write / work through something → Chat; hand off something long-running or scheduled → Cowork; code in a repository → Code."
+          "Rule of thumb: ask / write / work through something → Chat; hand off something long-running or scheduled → Cowork; code in a repository → Code. You can switch modes at the top at any time.",
+          "Chat composer: input field + Enter, next to it the model picker (e.g. Opus/Sonnet) and the voice button (microphone); model and effort change right inside a conversation. The \"+\" button on the left: attach files, connect [[node:skills|Skills]], [[node:mcp|Connectors]], and plugins. Drag files straight into the field — Claude works through images and PDFs ([[node:cap-input-modalities|file and image support]])."
         ],
-        "validate": "You can explain in one sentence what each of the three tabs is for.",
-        "tip": "You can switch modes at the top at any time — no data is lost, and each mode keeps its own list on the left."
+        "validate": "The app opened, you’re signed in, you see the three tabs at the top and can explain what each (Chat, Cowork, Code) is for and where the composer’s “+” is.",
+        "tip": "Desktop and the CLI can live side by side on one machine and even on the same project — they share the same config (CLAUDE.md, MCP). You can switch modes at the top at any time with no data loss."
       },
-      "ws-3": {
-        "title": "Chat mode: the composer and the \"+\"",
+      "s2": {
+        "title": "Code mode: starting a session and permission modes",
         "time": "",
-        "why": "This is where 80% of everyday work happens. The composer hides more than it looks.",
+        "why": "Before your first message in Code you need to set up the environment and pick a permission mode — the main safeguard that decides whether Claude asks before edits and commands.",
         "instructions": [
-          "Input field: type text + Enter. Next to it — the model picker (e.g. Opus/Sonnet) and the voice button (microphone).",
-          "The \"+\" button to the left of the field: attach files, connect [[node:skills|Skills]], [[node:mcp|Connectors]], and plugins.",
-          "You can change the model and the effort right inside a conversation — this affects reasoning depth and usage.",
-          "Drag files straight into the field — Claude will work through images and PDFs ([[node:cap-input-modalities|file and image support]])."
-        ],
-        "validate": "You found the model switcher and the \"+\" button and understand what each item behind them does.",
-        "tip": "Voice and response style are configured more deeply in Settings → General (Voice) — more on that below."
-      },
-      "ws-4": {
-        "title": "Cowork mode: tasks, schedules, Dispatch",
-        "time": "",
-        "why": "Cowork is Claude working on its own and over long stretches — including while you're away from the computer.",
-        "instructions": [
-          "New task — set up a task; \"Work in a project\" ties it to a [[node:projects|project]] with its knowledge and instructions.",
-          "Scheduled — recurring tasks on a schedule (for example, a daily digest).",
-          "Live artifacts — result artifacts that keep updating; Dispatch (Beta) — sending tasks to Claude from your phone.",
-          "Customize — manage connectors, skills, and plugins in one place.",
-          "A detailed walkthrough of Cowork is in a separate tutorial: [[tutorial:claude-cowork|Claude Cowork]]."
-        ],
-        "validate": "You understand how New task differs from Scheduled and what Dispatch is.",
-        "tip": "Dispatch and schedules require a Pro or Max plan and don't work on Team/Enterprise."
-      },
-      "ws-5": {
-        "title": "Code mode: starting a session",
-        "time": "",
-        "why": "Before your first message in Code you need to set four things — otherwise Claude will start in the wrong place and the wrong way.",
-        "instructions": [
-          "Environment — where it runs: Local (your machine), Remote (Anthropic's cloud, keeps going when the app is closed), SSH (your own server).",
-          "Project folder — the folder or repository Claude works with. For Remote you can add several repositories.",
-          "Model — the model picker next to the send button; change it as you go.",
-          "Permission mode — how much freedom Claude has (the next step). Enter your task and hit Enter."
-        ],
-        "validate": "Before sending, you can see the Environment, folder, model, and permission mode pickers.",
-        "tip": "For long refactors and test runs, choose Remote — the task won't be interrupted even if you close the app."
-      },
-      "ws-6": {
-        "title": "Permission modes",
-        "time": "",
-        "why": "This is the main safeguard: it decides whether Claude asks before changing files and running commands.",
-        "instructions": [
-          "Ask permissions (default) — asks before every edit/command and shows a diff. Recommended for beginners.",
+          "Environment — where it runs: Local (your machine), Remote (Anthropic’s cloud, keeps going when the app is closed), SSH (your own server).",
+          "Project folder — the folder or repository Claude works with; for Remote you can add several repositories. Model — the picker next to the send button, change it as you go. Enter your task and hit Enter.",
+          "Ask permissions (default) — asks before every edit/command and shows a diff; recommended for beginners.",
           "Auto accept edits — accepts file edits and safe commands (mkdir, mv) on its own, but asks about other commands.",
-          "Plan mode — explores and proposes a plan without touching the source. Great for complex \"think first\" tasks.",
+          "Plan mode — explores and proposes a plan without touching the source; great for complex \"think first\" tasks.",
           "Auto — does everything with background safety checks (research preview, requires a recent Opus/Sonnet).",
-          "Bypass permissions — no confirmations at all. Sandbox/VM only; enabled in Settings → Claude Code."
+          "Bypass permissions — no confirmations at all; sandbox/VM only, enabled in Settings → Claude Code."
         ],
-        "validate": "You can pick the right mode for a task and know which one is dangerous outside a sandbox.",
-        "tip": "A solid workflow: start in Plan → approve the plan → switch to Auto accept edits to carry it out."
+        "validate": "Before sending you can see the Environment, folder, and model pickers and can pick the right permission mode for the task, knowing which is dangerous outside a sandbox.",
+        "tip": "A solid workflow: start in Plan → approve the plan → switch to Auto accept edits to carry it out. For long refactors and test runs choose Remote — the task won’t be interrupted even if you close the app."
       },
-      "ws-7": {
-        "title": "Working with code: context and control",
+      "s3": {
+        "title": "Working with code: context, preview, diff, and review",
         "time": "",
-        "why": "The sharper the context and the better you steer Claude, the less rework you get.",
+        "why": "The sharper the context and the better you steer Claude, the less rework you get; and the visual preview and diff review remove “blind” edits.",
         "instructions": [
           "@-mention a file: type @ and the name — the file goes into context (not available in Remote).",
-          "Attachments: images, PDFs, screenshots of bugs — via the button or by dragging them in.",
-          "Interrupting: the stop button halts immediately; or just type a correction and hit Enter — Claude will factor it in after the current step.",
-          "Claude reads the project files, makes edits, and runs commands according to the permission mode you chose."
-        ],
-        "validate": "You added a file via @ and steered Claude with a correction without stopping its work.",
-        "tip": "A short clarifying correction mid-run is cheaper than fully restarting the task."
-      },
-      "ws-8": {
-        "title": "Preview, diff, and code review",
-        "time": "",
-        "why": "Desktop shows changes visually and checks them itself — this removes \"blind\" edits.",
-        "instructions": [
+          "Attachments: images, PDFs, screenshots of bugs — via the button or by dragging them in. Claude reads the project files, makes edits, and runs commands according to the permission mode you chose.",
+          "Interrupting: the stop button halts immediately; or just type a correction and hit Enter — Claude factors it in after the current step.",
           "Preview — Claude spins up a dev server and opens a built-in browser; auto-verification takes screenshots and clicks elements after edits.",
-          "Diff: an indicator like \"+12 −1\" opens the per-file change view; click a line to leave a comment.",
-          "Submit comments: macOS — Cmd+Enter, Windows — Ctrl+Enter; Claude makes the edits and shows a new diff.",
-          "\"Review code\" in the diff view — Claude looks for bugs, logic issues, and security problems on its own (not style).",
-          "After a PR, a CI panel appears: Auto-fix and Auto-merge toggles."
+          "Diff: an indicator like \"+12 −1\" opens the per-file change view; click a line to leave a comment. Submit comments: macOS — Cmd+Enter, Windows — Ctrl+Enter; Claude makes the edits and shows a new diff.",
+          "\"Review code\" in the diff view — Claude looks for bugs, logic issues, and security problems on its own (not style). After a PR, a CI panel appears: Auto-fix and Auto-merge toggles."
         ],
-        "validate": "You opened a diff, left a comment, and requested \"Review code\".",
-        "tip": "The preview server config lives in .claude/launch.json — that's where you put your own launch command and port."
+        "validate": "You added a file via @, steered Claude with a correction without stopping its work, opened a diff, left a comment, and requested “Review code”.",
+        "tip": "A short clarifying correction mid-run is cheaper than fully restarting the task. The preview server config lives in .claude/launch.json — that’s where you put your own launch command and port."
       },
-      "ws-9": {
-        "title": "The workspace: panels and shortcuts",
+      "s4": {
+        "title": "The workspace: panels, shortcuts, parallel sessions, Computer use",
         "time": "",
-        "why": "Code is built from panels you arrange to suit yourself — this speeds up your work enormously.",
+        "why": "Code is built from panels you arrange to suit yourself; parallel sessions and Computer use add power but require understanding isolation and access boundaries.",
         "instructions": [
-          "Panels: chat, diff, preview, terminal, file, plan, tasks, subagent. Open them from the Views menu and drag them by the title.",
-          "Terminal: Ctrl+` — opens in the session folder, the same environment Claude uses (npm test, git status).",
-          "Files: click a path to open the file; make targeted edits + Save.",
-          "Transcript modes (Normal/Verbose/Summary) — Ctrl+O. All shortcuts — Cmd+/ (macOS) or Ctrl+/ (Windows)."
+          "Panels: chat, diff, preview, terminal, file, plan, tasks, subagent — open them from the Views menu and drag them by the title.",
+          "Terminal: Ctrl+` — opens in the session folder, the same environment Claude uses (npm test, git status). Files: click a path to open the file, make targeted edits + Save.",
+          "Transcript modes (Normal/Verbose/Summary) — Ctrl+O. All shortcuts — Cmd+/ (macOS) or Ctrl+/ (Windows).",
+          "Parallel sessions: + New session (Cmd+N), Ctrl+Tab switches between them; for Git repositories each session gets its own isolated copy via a worktree — edits don’t overlap until a commit.",
+          "Side-chat (Cmd+; or /btw) — an aside question with the session’s context, without cluttering the main conversation. The Tasks panel shows background work: subagents and background commands.",
+          "Computer use — controlling apps on your screen: enabled in Settings → General (Desktop app section) with the Computer use toggle; on macOS it needs Accessibility and Screen Recording; requires a Pro/Max plan (not Team/Enterprise) and a running Desktop app.",
+          "Computer use access tiers are fixed: browsers — view only, terminals/IDEs — clicks only, everything else — full control. More on safe, isolated execution — [[node:sys-agent-sandbox|an isolated environment for the agent]] and [[node:cap-computer|Computer use]]."
         ],
-        "validate": "You opened a second panel from Views and switched the transcript mode.",
-        "tip": "Verbose shows every step Claude takes — handy when you need to understand why it did something a certain way."
+        "validate": "You opened a second panel from Views, switched the transcript mode, opened a second session, and understand which permissions Computer use needs.",
+        "tip": "Verbose shows every step Claude takes — handy to understand why it did something a certain way. Auto-archive after a merge/closed PR (Settings → Claude Code) clears out finished sessions for you."
       },
-      "ws-10": {
-        "title": "Parallel sessions and isolation",
+      "s5": {
+        "title": "Settings, part 1: General, Account, Privacy, Billing, Usage, Capabilities",
         "time": "",
-        "why": "You can run several tasks at once without worrying they'll get mixed up.",
-        "instructions": [
-          "+ New session (Cmd+N) — a new parallel session; Ctrl+Tab switches between them.",
-          "For Git repositories, each session gets its own isolated copy via a worktree — edits don't overlap until a commit.",
-          "Side-chat (Cmd+; or /btw) — an aside question with the session's context, without cluttering the main conversation.",
-          "The Tasks panel shows background work: subagents and background commands."
-        ],
-        "validate": "You opened two sessions and understand why their edits don't conflict.",
-        "tip": "Auto-archive after a merge/closed PR (Settings → Claude Code) clears out finished sessions for you."
-      },
-      "ws-11": {
-        "title": "Computer use: screen control",
-        "time": "",
-        "why": "Claude can control apps on your screen — powerful, but it requires deliberate boundaries.",
-        "instructions": [
-          "Enabled in Settings → General (Desktop app section) with the Computer use toggle. On macOS it needs Accessibility and Screen Recording permissions.",
-          "Requires a Pro or Max plan (not Team/Enterprise) and a running Desktop app.",
-          "Access tiers are fixed: browsers — view only, terminals/IDEs — clicks only, everything else — full control.",
-          "More on safe, isolated execution — [[node:sys-agent-sandbox|an isolated environment for the agent]] and [[node:cap-computer|Computer use]]."
-        ],
-        "validate": "You understand which permissions are needed and why a browser is \"view only\".",
-        "tip": "Claude flags suspicious on-screen text as possible prompt injection, but the trust boundary here is different — don't run it on sensitive data."
-      },
-      "ws-12": {
-        "title": "Settings — part 1: General and Account",
-        "time": "",
-        "why": "General sets how Claude addresses you and behaves everywhere; Account is about devices and sign-in security.",
+        "why": "These Settings sections define how Claude behaves everywhere, sign-in security, data privacy, money, and the set of available tools.",
         "instructions": [
           "General → Profile: name, \"what to call you\", occupation, and Instructions for Claude — general guidance for all chats and Cowork ([[node:i-global|global instructions]]).",
-          "General → Preferences: Appearance (system/light/dark), Chat font.",
-          "General → Voice (voice style and speed) and Notifications (response completion, Code notifications, permission requests, Dispatch messages).",
-          "Account: \"Log out of all devices\", Organization ID, the list of active sessions (device, city, dates), account deletion."
-        ],
-        "validate": "You filled in Instructions for Claude and found the list of active sessions in Account.",
-        "tip": "Instructions for Claude is the most underrated item: one setting improves the tone and format across all your future conversations."
-      },
-      "ws-13": {
-        "title": "Settings — part 2: Privacy, Billing, Usage, Capabilities",
-        "time": "",
-        "why": "This is where data privacy, money, and which tools Claude can use at all live.",
-        "instructions": [
+          "General → Preferences: Appearance (system/light/dark), Chat font. General → Voice (voice style and speed) and Notifications (response completion, Code notifications, permission requests, Dispatch messages).",
+          "Account: \"Log out of all devices\", Organization ID, the list of active sessions (device, city, dates), account deletion.",
           "Privacy — how your data is used and model training; go through this section deliberately ([[node:pl-privacy|privacy]]).",
           "Billing — plan and payment; Usage — usage by period and by model (the plan is shared across all Claude surfaces).",
-          "Capabilities — toggles for Claude's capabilities (web search, analysis, and so on).",
-          "The usage ring next to the model picker in Code shows the session context and the plan's overall usage."
+          "Capabilities — toggles for Claude’s capabilities (web search, analysis, and so on). The usage ring next to the model picker in Code shows the session context and the plan’s overall usage."
         ],
-        "validate": "You know where to check usage and where to turn capabilities on and off.",
-        "tip": "If you're hitting limits — check Usage first and compare models before upgrading your plan."
+        "validate": "You filled in Instructions for Claude, found the active sessions in Account, and know where to check usage (Usage) and toggle capabilities (Capabilities).",
+        "tip": "Instructions for Claude is the most underrated item: one setting improves tone and format across all conversations. If you’re hitting limits, check Usage and compare models first before upgrading."
       },
-      "ws-14": {
-        "title": "Settings — part 3: Connectors, Claude Code, Cowork",
+      "s6": {
+        "title": "Settings, part 2 and the Desktop app section: Cowork, Connectors, Claude Code, Extensions, Developer, CLI",
         "time": "",
-        "why": "These are the app's \"sockets\": external services, the behavior of code sessions, and agentic-mode settings.",
+        "why": "Here live the Cowork agentic mode, the app’s “sockets” (Connectors/MCP), code-session behavior, local Desktop extensions, and the link with the CLI — everything beyond the browser.",
         "instructions": [
-          "Connectors — integrations (Google Calendar, Slack, GitHub, Linear, Notion …). These are [[node:mcp|MCP servers]] with a graphical setup; they can also be added from the \"+\" in the composer.",
-          "For services not on the list — add MCP manually via the config files; custom connectors exist too.",
-          "Claude Code — the behavior of Code sessions: allow Bypass permissions, worktree location, auto-archive after a PR, turning Preview and Persist sessions on/off.",
-          "Cowork — agentic-mode and Dispatch settings."
+          "Cowork: New task sets up a task, \"Work in a project\" ties it to a [[node:projects|project]] with its knowledge and instructions; Scheduled — recurring tasks on a schedule; Live artifacts — result artifacts that keep updating; Dispatch (Beta) — sending tasks from your phone (requires Pro/Max, not Team/Enterprise); Customize — connectors, skills, and plugins in one place. A detailed walkthrough is in the tutorial [[tutorial:claude-cowork|Claude Cowork]].",
+          "Settings → Connectors — integrations (Google Calendar, Slack, GitHub, Linear, Notion …): these are [[node:mcp|MCP servers]] with a graphical setup, also added from the \"+\" in the composer; for services not on the list, add MCP manually via the config files (custom connectors exist too).",
+          "Settings → Claude Code — the behavior of Code sessions: allow Bypass permissions, worktree location, auto-archive after a PR, turning Preview and Persist sessions on/off. Settings → Cowork — agentic-mode and Dispatch settings.",
+          "The Desktop app → General section: the Computer use toggle, the status of system permissions, Denied apps (apps Claude won’t touch), and \"Unhide apps when Claude finishes\".",
+          "Desktop app → Extensions — install extensions/connectors in one click, no terminal needed. Desktop app → Developer — connect local MCP servers and developer configuration; MCP from the chat app (claude_desktop_config.json) is picked up in the Code tab too.",
+          "CLI ↔ Desktop: it’s one engine with shared config (CLAUDE.md, MCP servers ~/.claude.json and .mcp.json, hooks, skills, settings); move a session from the terminal with the /desktop command ([[node:claude-code|CLI]]). What Desktop lacks: third-party providers (Bedrock/Vertex/Foundry), Linux, inline suggestions, agent teams, terminal dialogs (/permissions, /config, /agents).",
+          "Troubleshooting: 403 — sign out and back in; blank screen — restart/update; on Windows, Code needs Git; if an MCP server isn’t responding on Windows — check the config, restart the app, and see whether the server process is still alive in Task Manager."
         ],
-        "validate": "You opened Connectors and understand that these are MCP with a convenient connection wizard.",
-        "tip": "Disconnect/Manage connectors — right there in Settings → Connectors, or via \"Manage connectors\" in the composer."
-      },
-      "ws-15": {
-        "title": "The Desktop app section: General, Extensions, Developer",
-        "time": "",
-        "why": "This is what the browser doesn't have: local extensions and connecting your own MCP servers.",
-        "instructions": [
-          "Desktop app → General: the Computer use toggle, the status of system permissions, Denied apps (apps Claude won't touch), and \"Unhide apps when Claude finishes\".",
-          "Extensions — install extensions/connectors in one click, no terminal needed.",
-          "Developer — connect local MCP servers and developer configuration.",
-          "MCP from the chat app (claude_desktop_config.json) is picked up in the Code tab too."
-        ],
-        "validate": "You found the Computer use toggle in Desktop app → General and understand what Developer is for.",
-        "tip": "If an MCP server isn't responding on Windows — check the config, restart the app, and see whether the server process is still alive in Task Manager."
-      },
-      "ws-16": {
-        "title": "CLI ↔ Desktop and troubleshooting",
-        "time": "",
-        "why": "Desktop and the [[node:claude-code|CLI]] are one engine; knowing the link, you don't lose settings and you fix issues fast.",
-        "instructions": [
-          "Shared config: CLAUDE.md, MCP servers (~/.claude.json, .mcp.json), hooks, skills, settings — all work in both.",
-          "Move a session from the terminal to Desktop: the /desktop command (when signed in with a subscription).",
-          "What Desktop lacks: third-party providers (Bedrock/Vertex/Foundry), Linux, inline suggestions, agent teams, terminal dialogs (/permissions, /config, /agents).",
-          "Troubleshooting: 403 — sign out and back in; blank screen — restart/update; on Windows, Code needs Git."
-        ],
-        "validate": "You understand that the config is shared and know the first thing to do on a 403 error.",
-        "tip": "Use Desktop for parallel sessions and visual review, and the CLI for scripts and automation."
+        "validate": "You opened Connectors (understanding they’re MCP), found the Computer use toggle in Desktop app → General, and know the first thing to do on a 403 error.",
+        "tip": "Disconnect/Manage connectors — in Settings → Connectors or via “Manage connectors” in the composer. On a 403, sign out and back in; blank screen — restart/update; on Windows, Code needs Git."
       }
     }
   },

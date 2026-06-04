@@ -156,22 +156,24 @@ export const tutorials = {
       "claude-code"
     ],
     "steps": [
-      { "id": "ws-1" },
-      { "id": "ws-2" },
-      { "id": "ws-3" },
-      { "id": "ws-4" },
-      { "id": "ws-5" },
-      { "id": "ws-6" },
-      { "id": "ws-7" },
-      { "id": "ws-8" },
-      { "id": "ws-9" },
-      { "id": "ws-10" },
-      { "id": "ws-11" },
-      { "id": "ws-12" },
-      { "id": "ws-13" },
-      { "id": "ws-14" },
-      { "id": "ws-15" },
-      { "id": "ws-16" }
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
     ]
   },
   "project-files": {
@@ -189,12 +191,24 @@ export const tutorials = {
       "instructions"
     ],
     "steps": [
-      { "id": "pf-1" },
-      { "id": "pf-2" },
-      { "id": "pf-3" },
-      { "id": "pf-4" },
-      { "id": "pf-5" },
-      { "id": "pf-6" }
+      {
+        "id": "pf-1"
+      },
+      {
+        "id": "pf-2"
+      },
+      {
+        "id": "pf-3"
+      },
+      {
+        "id": "pf-4"
+      },
+      {
+        "id": "pf-5"
+      },
+      {
+        "id": "pf-6"
+      }
     ]
   },
   "basics": {
@@ -252,25 +266,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "p-1"
+        "id": "s1"
       },
       {
-        "id": "p-2"
+        "id": "s2"
       },
       {
-        "id": "p-3"
+        "id": "s3"
       },
       {
-        "id": "p-4"
+        "id": "s4"
       },
       {
-        "id": "p-5"
+        "id": "s5"
       },
       {
-        "id": "p-6"
-      },
-      {
-        "id": "p-7"
+        "id": "s6"
       }
     ]
   },
@@ -332,25 +343,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "s-1"
+        "id": "s1"
       },
       {
-        "id": "s-2"
+        "id": "s2"
       },
       {
-        "id": "s-3"
+        "id": "s3"
       },
       {
-        "id": "s-4"
+        "id": "s4"
       },
       {
-        "id": "s-5"
+        "id": "s5"
       },
       {
-        "id": "s-6"
-      },
-      {
-        "id": "s-7"
+        "id": "s6"
       }
     ]
   },
@@ -374,28 +382,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "cc-1"
+        "id": "s1"
       },
       {
-        "id": "cc-2"
+        "id": "s2"
       },
       {
-        "id": "cc-3"
+        "id": "s3"
       },
       {
-        "id": "cc-4"
+        "id": "s4"
       },
       {
-        "id": "cc-5"
+        "id": "s5"
       },
       {
-        "id": "cc-6"
-      },
-      {
-        "id": "cc-7"
-      },
-      {
-        "id": "cc-8"
+        "id": "s6"
       }
     ]
   },
@@ -421,25 +423,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "m-1"
+        "id": "s1"
       },
       {
-        "id": "m-2"
+        "id": "s2"
       },
       {
-        "id": "m-3"
+        "id": "s3"
       },
       {
-        "id": "m-4"
+        "id": "s4"
       },
       {
-        "id": "m-5"
+        "id": "s5"
       },
       {
-        "id": "m-6"
-      },
-      {
-        "id": "m-7"
+        "id": "s6"
       }
     ]
   },
@@ -500,25 +499,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "pr-1"
+        "id": "s1"
       },
       {
-        "id": "pr-2"
+        "id": "s2"
       },
       {
-        "id": "pr-3"
+        "id": "s3"
       },
       {
-        "id": "pr-4"
+        "id": "s4"
       },
       {
-        "id": "pr-5"
+        "id": "s5"
       },
       {
-        "id": "pr-6"
-      },
-      {
-        "id": "pr-7"
+        "id": "s6"
       }
     ]
   },
@@ -761,25 +757,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "pt-1"
+        "id": "s1"
       },
       {
-        "id": "pt-2"
+        "id": "s2"
       },
       {
-        "id": "pt-3"
+        "id": "s3"
       },
       {
-        "id": "pt-4"
+        "id": "s4"
       },
       {
-        "id": "pt-5"
+        "id": "s5"
       },
       {
-        "id": "pt-6"
-      },
-      {
-        "id": "pt-7"
+        "id": "s6"
       }
     ]
   },
@@ -913,34 +906,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "fp-1"
+        "id": "s1"
       },
       {
-        "id": "fp-2"
+        "id": "s2"
       },
       {
-        "id": "fp-3"
+        "id": "s3"
       },
       {
-        "id": "fp-4"
+        "id": "s4"
       },
       {
-        "id": "fp-5"
+        "id": "s5"
       },
       {
-        "id": "fp-6"
-      },
-      {
-        "id": "fp-7"
-      },
-      {
-        "id": "fp-8"
-      },
-      {
-        "id": "fp-9"
-      },
-      {
-        "id": "fp-10"
+        "id": "s6"
       }
     ]
   },
@@ -1017,28 +998,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "w-1"
+        "id": "s1"
       },
       {
-        "id": "w-2"
+        "id": "s2"
       },
       {
-        "id": "w-3"
+        "id": "s3"
       },
       {
-        "id": "w-4"
+        "id": "s4"
       },
       {
-        "id": "w-5"
+        "id": "s5"
       },
       {
-        "id": "w-6"
-      },
-      {
-        "id": "w-7"
-      },
-      {
-        "id": "w-8"
+        "id": "s6"
       }
     ]
   },
@@ -1300,25 +1275,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "ma-1"
+        "id": "s1"
       },
       {
-        "id": "ma-2"
+        "id": "s2"
       },
       {
-        "id": "ma-3"
+        "id": "s3"
       },
       {
-        "id": "ma-4"
+        "id": "s4"
       },
       {
-        "id": "ma-5"
+        "id": "s5"
       },
       {
-        "id": "ma-6"
-      },
-      {
-        "id": "ma-7"
+        "id": "s6"
       }
     ]
   },
@@ -1339,25 +1311,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "ccp-1"
+        "id": "s1"
       },
       {
-        "id": "ccp-2"
+        "id": "s2"
       },
       {
-        "id": "ccp-3"
+        "id": "s3"
       },
       {
-        "id": "ccp-4"
+        "id": "s4"
       },
       {
-        "id": "ccp-5"
+        "id": "s5"
       },
       {
-        "id": "ccp-6"
-      },
-      {
-        "id": "ccp-7"
+        "id": "s6"
       }
     ]
   },
@@ -1410,22 +1379,24 @@ export const tutorials = {
       "mcp"
     ],
     "steps": [
-      { "id": "rcc-1" },
-      { "id": "rcc-2" },
-      { "id": "rcc-3" },
-      { "id": "rcc-4" },
-      { "id": "rcc-5" },
-      { "id": "rcc-6" },
-      { "id": "rcc-7" },
-      { "id": "rcc-8" },
-      { "id": "rcc-9" },
-      { "id": "rcc-10" },
-      { "id": "rcc-11" },
-      { "id": "rcc-12" },
-      { "id": "rcc-13" },
-      { "id": "rcc-14" },
-      { "id": "rcc-15" },
-      { "id": "rcc-16" }
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
     ]
   }
 };

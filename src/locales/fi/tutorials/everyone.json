@@ -300,165 +300,120 @@
     "totalTime": "20 min",
     "whatItIs": "Sinulla on 5 toistuvaa tehtävää joka viikko (sisältö, auditointi, review)? Selität Claudelle kontekstia uudelleen joka kerta? Project muuttaa Clauden tietyn tehtävän asiantuntijaksi — asetat kerran, muistaa aina.\n\nProject on [[node:pl-web-setup|claude.ai]]:n «kansio» omilla ohjeillaan ja tietopohjatiedostoillaan. Jokainen siellä oleva keskustelu tuntee kontekstin ilman uudelleenbriifausta.",
     "approach": "Tärkeintä on valita YKSI toistuva tehtävä ensimmäiselle Project:lle. Ei \"kaikki työasiat\", vaan jotain konkreettista. Kapea fokus = korkea laatu.",
-    "outcomes": {
-      "0": "Luot Project:n toistuvaan tehtävään",
-      "1": "Kirjoitat Custom Instructions, jotka muuttavat vastausten laatua",
-      "2": "Lataat oikeat materiaalit Project Knowledge:en",
-      "3": "Ymmärrät milloin Project on tarpeen ja milloin keskustelu riittää"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Luot Project:n toistuvaan tehtävään",
+      "Kirjoitat [[node:instructions|Custom Instructions]], jotka muuttavat vastausten laatua",
+      "Lataat oikeat materiaalit Project Knowledge:en",
+      "Ymmärrät milloin Project on tarpeen ja milloin keskustelu riittää"
+    ],
+    "applyIn": [
+      {
         "title": "Säännöllinen auditointi",
         "description": "Project oppailla ja esimerkkitapauksilla — joka viikko tarkistat uuden materiaalin samoilla kriteereillä."
       },
-      "1": {
+      {
         "title": "Tyyppidokumentit",
         "description": "Mallit ja esimerkit Knowledge:ssa → Claude tuottaa luonnokset omalla tyylilläsi, sinä viimeistelet."
       },
-      "2": {
+      {
         "title": "Uuden työntekijän perehdytys",
         "description": "Jaa Project — uudella työntekijällä on heti \"erikoistunut\" Claude omaan projektiin."
       }
-    },
-    "pitfalls": {
-      "0": "Tehdä yksi Project \"kaikkeen\". Parempi 3–5 kapeaa kuin yksi yleispätevä.",
-      "1": "Ladata Knowledge:en kaikkea sekaisin — malli hämärtyy epäolennaisesta.",
-      "2": "Kirjoittaa ohjeita tyyliin \"ole hyödyllinen\" — se on melua, ei sääntö."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Tehdä yksi Project \"kaikkeen\". Parempi 3–5 kapeaa kuin yksi yleispätevä.",
+      "Ladata Knowledge:en kaikkea sekaisin — malli hämärtyy epäolennaisesta.",
+      "Kirjoittaa ohjeita tyyliin \"ole hyödyllinen\" — se on melua, ei sääntö."
+    ],
+    "exercises": [
+      {
         "question": "Listaa 3 omaa säännöllistä tehtävääsi. Yleisimmälle — luo Project minimaalisilla instructions:eilla ja 1–2 tiedostolla.",
         "hint": "Säännöllinen = toistuu ≥ kerran viikossa samankaltaisella prosessilla."
       },
-      "1": {
+      {
         "question": "Aja seuraava oikea tehtäväsi tämän Project:n kautta. Vertaa siihen, miten teit sen tavallisessa keskustelussa.",
         "hint": "Jos eroa ei näy — ohjeet ovat heikot, viilaa tuloksen mukaan."
       }
-    },
+    ],
     "steps": {
-      "p-1": {
-        "title": "Varmista Pro/Team-plan ja avaa Projects",
-        "time": "1 min",
-        "why": "Projects on vain maksullisissa planeissa. Ilman sitä seuraavat askeleet eivät onnistu — parempi tajuta tämä heti.",
-        "instructions": {
-          "0": "Mene claude.ai → oikea yläkulma → tarkista tilauksesi.",
-          "1": "Jos Free — päivitä Pro:ksi (20 $/kk) tai käytä tiimitiliä.",
-          "2": "Vasemmasta sivupalkista löydä osio \"Projects\" → \"+ New project\"."
-        },
-        "validate": "Aukesi Project:n luontilomake kentillä Name, Description.",
-        "troubleshoot": {
-          "Ei Projects-osiota": "Oletko varmasti Pro:ssa? Joskus pitää kirjautua uudelleen päivityksen jälkeen.",
-          "En näe Projects-osiota": "Projects-osiota ei ole"
-        }
-      },
-      "p-2": {
-        "title": "Anna Project:lle mielekäs nimi ja kuvaus",
-        "time": "2 min",
-        "why": "Nimi on ankkuri. \"Project 1\" ei muistu 2 viikon päästä, mutta \"Raporttiemme säännöllinen auditointi\" muistuu.",
-        "instructions": {
-          "0": "Nimi: \"<mitä teemme> <kenelle / mihin>\". Esim. \"Raporttien säännöllinen auditointi\" tai \"Asiakastapaamisten valmistelu\".",
-          "1": "Description: 1–2 riviä — mihin projekti on, kuka työskentelee, mitä tulosta odotetaan.",
-          "2": "Paina Create."
-        },
-        "example": "Nimi: <Säännöllinen prosessisi> <omalle alueellesi>\nKuvaus: Tänne mennään ennen jokaista iteraatiota tuloksen valmisteluun/tarkistukseen. Täällä — perusmateriaalit ja tarvittavat pohjat.",
+      "s1": {
+        "title": "Avaa Projects ja luo projekti nimellä",
+        "time": "",
+        "why": "Projects on vain maksullisissa planeissa — ilman sitä seuraavat askeleet eivät onnistu. Ja mielekäs nimi on ankkuri: \"Project 1\" ei muistu 2 viikon päästä, mutta \"Raporttiemme säännöllinen auditointi\" muistuu.",
+        "instructions": [
+          "Mene claude.ai → oikea yläkulma → tarkista tilauksesi. Jos Free — päivitä Pro:ksi (20 $/kk) tai käytä tiimitiliä.",
+          "Vasemmasta sivupalkista löydä osio \"Projects\" → \"+ New project\".",
+          "Nimi: \"<mitä teemme> <kenelle / mihin>\". Esim. \"Raporttien säännöllinen auditointi\" tai \"Asiakastapaamisten valmistelu\".",
+          "Description: 1–2 riviä — mihin projekti on, kuka työskentelee, mitä tulosta odotetaan. Esim.: \"Tänne mennään ennen jokaista iteraatiota tuloksen valmisteluun/tarkistukseen. Täällä — perusmateriaalit ja tarvittavat pohjat.\"",
+          "Paina Create.",
+          "Jos Projects-osiota ei näy — oletko varmasti Pro:ssa? Joskus pitää kirjautua uudelleen päivityksen jälkeen."
+        ],
         "validate": "Project on luotu, näet tyhjän keskustelun ja paneelin \"Project knowledge\" / \"Instructions\".",
         "tip": "Älä tee yhtä Project:ta \"kaikkeen\". Parempi 3–5 kapeasti erikoistunutta kuin yksi yleispätevä."
       },
-      "p-3": {
+      "s2": {
         "title": "Kirjoita Custom Instructions",
-        "time": "5 min",
+        "time": "",
         "why": "Tämä on vahvin ajansijoitus Project:iin. Ilman ohjeita — kansio tiedostoja; niiden kanssa — erikoistunut assistentti.",
-        "instructions": {
-          "0": "Avaa Project-paneeli → Custom instructions.",
-          "1": "Käytä alla olevaa runkoa. Sijoita siihen oma aihealueesi.",
-          "2": "Tallenna. Kaikki tulevat keskustelut tässä Project:ssa poimivat ohjeet automaattisesti."
-        },
-        "prompt": "Olet [rooli], jolla on [N] vuoden kokemus [nichestä].\n\nTyökonteksti:\n- Tehtävätyyppi: [pääasia, mitä teemme]\n- Tuloksen yleisö: [kuka lukee]\n- Tiimin tyyli: [miten tiimissä puhutaan, formaatti]\n\nVastausten muoto:\n- Ensin pääajatus, sitten yksityiskohdat\n- Käytä luettelomerkkejä luetteloihin\n- Suosituksille: ongelma → vaikutus → mitä tehdä\n- Pituus: täsmälleen sen verran kuin tarvitaan — ilman vesitystä\n\nMitä EI tehdä:\n- Älä anna yleisluontoisia neuvoja ilman sidosta kontekstiin\n- Älä ehdota ratkaisuja, jotka vaativat resursseja, joita meillä ei ole\n- Älä vastaa suomeksi englanninkielisillä sanoilla turhaan",
+        "instructions": [
+          "Avaa Project-paneeli → Custom instructions.",
+          "Käytä alla olevaa runkoa ja sijoita siihen oma aihealueesi:\n\nOlet [rooli], jolla on [N] vuoden kokemus [nichestä].\n\nTyökonteksti:\n- Tehtävätyyppi: [pääasia, mitä teemme]\n- Tuloksen yleisö: [kuka lukee]\n- Tiimin tyyli: [miten tiimissä puhutaan, formaatti]\n\nVastausten muoto:\n- Ensin pääajatus, sitten yksityiskohdat\n- Käytä luettelomerkkejä luetteloihin\n- Suosituksille: ongelma → vaikutus → mitä tehdä\n- Pituus: täsmälleen sen verran kuin tarvitaan — ilman vesitystä\n\nMitä EI tehdä:\n- Älä anna yleisluontoisia neuvoja ilman sidosta kontekstiin\n- Älä ehdota ratkaisuja, jotka vaativat resursseja, joita meillä ei ole\n- Älä vastaa suomeksi englanninkielisillä sanoilla turhaan",
+          "Tallenna. Kaikki tulevat keskustelut tässä Project:ssa poimivat ohjeet automaattisesti."
+        ],
         "validate": "Tallennuksen jälkeen lähetä \"kuka olet?\" — Clauden pitää vastata asetetun roolin mukaisesti, ei tavallisena assistenttina.",
         "tip": "Yleisin virhe — liian yleiset ohjeet tyyliin \"ole hyödyllinen\". Se on melua. Konkreettisuus > kohteliaisuus."
       },
-      "p-4": {
+      "s3": {
         "title": "Lataa avain-tiedostot Project knowledge:en",
-        "time": "4 min",
+        "time": "",
         "why": "Tiedostoista tulee \"pysyvä muisti\" — Claude näkee ne kaikissa Project:n keskusteluissa, kontekstia ei tarvitse toistaa.",
-        "instructions": {
-          "0": "Project:n oikeassa paneelissa → Project knowledge → Add content / Upload.",
-          "1": "Lataa 3–7 AVAIN-dokumenttia: brändiohje, toimeksianto, ohjeistukset, esimerkkitapaukset.",
-          "2": "Älä lataa kaikkea peräkkäin — parempi 5 osuvaa kuin 50 satunnaista. Jokainen ylimääräinen tiedosto hämärtää fokusta.",
-          "3": "Anna jokaiselle tiedostolle selkeä nimi — Claude käyttää nimeä navigointiin."
-        },
+        "instructions": [
+          "Project:n oikeassa paneelissa → Project knowledge → Add content / Upload.",
+          "Lataa 3–7 AVAIN-dokumenttia: brändiohje, toimeksianto, ohjeistukset, esimerkkitapaukset.",
+          "Älä lataa kaikkea peräkkäin — parempi 5 osuvaa kuin 50 satunnaista. Jokainen ylimääräinen tiedosto hämärtää fokusta.",
+          "Anna jokaiselle tiedostolle selkeä nimi — Claude käyttää nimeä navigointiin.",
+          "Jos tiedosto on liian iso — raja on yleensä 30 MB per tiedosto; pakkaa kuvat tai pilko PDF. Pitkät PDF-tiedostot kannattaa poimia erilliseen markdowniin avainluvuilla."
+        ],
         "validate": "Näet ladattujen tiedostojen listan Project knowledge:ssa \"ready\"-merkinnällä.",
-        "tip": "Jos on pitkiä PDF-tiedostoja — parempi poimia avainluvut erilliseen markdowniin. Vähemmän kohinaa, korkeampi tarkkuus.",
-        "troubleshoot": {
-          "Tiedosto on liian iso": "Raja on yleensä 30 MB per tiedosto. Pakkaa kuvat tai pilko PDF.",
-          "Tiedosto on liian suuri": "Tiedosto on liian suuri"
-        }
+        "tip": "Vähemmän kohinaa, korkeampi tarkkuus: 5 osuvaa dokumenttia toimii paremmin kuin 50 satunnaista."
       },
-      "p-5": {
+      "s4": {
         "title": "Käynnistä ensimmäinen oikea pyyntö",
-        "time": "4 min",
+        "time": "",
         "why": "Ilman taistelutestiä Project on hypoteesi. Pyyntö näyttää, miten hyvin ohjeet ja tiedostot on valittu.",
-        "instructions": {
-          "0": "Avaa Project:ssa uusi keskustelu.",
-          "1": "Lähetä alla oleva kehote (mukauta omaan tehtävääsi).",
-          "2": "Arvioi: vastasiko Claude halutussa muodossa, käyttikö ladattuja tiedostoja."
-        },
-        "prompt": "Käyttäen materiaaleja knowledge:sta: suorita säännöllinen tehtäväsi syötteelle — [URL / dokumentti / kuvaus]. Anna tulos siinä muodossa, joka on kuvattu ohjeissa.",
+        "instructions": [
+          "Avaa Project:ssa uusi keskustelu.",
+          "Lähetä kehote (mukauta omaan tehtävääsi): \"Käyttäen materiaaleja knowledge:sta: suorita säännöllinen tehtäväsi syötteelle — [URL / dokumentti / kuvaus]. Anna tulos siinä muodossa, joka on kuvattu ohjeissa.\"",
+          "Arvioi: vastasiko Claude halutussa muodossa, käyttikö ladattuja tiedostoja."
+        ],
         "validate": "Vastaus on ohjeissa kuvatussa muodossa, viittaa selvästi ladattuihin tiedostoihin.",
         "tip": "Jos Claude ei käytä knowledge:a — pyydä suoraan: \"nojaa Project knowledge:n materiaaleihin\"."
       },
-      "p-6": {
+      "s5": {
         "title": "Iteroi ohjeita tuloksen perusteella",
-        "time": "3 min",
+        "time": "",
         "why": "Ensimmäinen Project on harvoin täydellinen. Oikeat keskustelut näyttävät, mitä ohjeissa pitää viilata.",
-        "instructions": {
-          "0": "Kun 2–3 keskustelua on takana, listaa: mitä Claude tekee väärin?",
-          "1": "Jokainen \"väärin\" muotoile säännöksi ja lisää Custom instructions:eihin.",
-          "2": "Tallenna. Uudet keskustelut ottavat muutokset heti huomioon."
-        },
-        "example": "OLI: pitkiä vastauksia vesityksellä\nNYT (lisäsin ohjeisiin): \"Älä koskaan kirjoita johdantoja tyyliin 'hyvä kysymys'. Suoraan asiaan.\"\n\nOLI: yleisluontoisia neuvoja ilman sidosta meidän stack:iin\nNYT: \"Kaikki suositukset — vain Next.js + Tailwind -stack:in puitteissa, joka on kuvattu knowledge:ssa.\"",
+        "instructions": [
+          "Kun 2–3 keskustelua on takana, listaa: mitä Claude tekee väärin?",
+          "Jokainen \"väärin\" muotoile säännöksi ja lisää Custom instructions:eihin. Esim.: OLI — pitkiä vastauksia vesityksellä; NYT — \"Älä koskaan kirjoita johdantoja tyyliin 'hyvä kysymys'. Suoraan asiaan.\" OLI — yleisluontoisia neuvoja ilman sidosta meidän stack:iin; NYT — \"Kaikki suositukset — vain Next.js + Tailwind -stack:in puitteissa, joka on kuvattu knowledge:ssa.\"",
+          "Tallenna. Uudet keskustelut ottavat muutokset heti huomioon."
+        ],
         "validate": "[[node:instructions|Custom instructions]] on kasvanut 3–5 säännöllä, jokainen syntyi oikeasta ongelmasta.",
         "tip": "Project on elävä dokumentti. Joka kuukausi 10 minuuttia ohjeiden tarkasteluun säästää tunteja rutiinia."
       },
-      "p-7": {
+      "s6": {
         "title": "Jaa tiimin kanssa (jos Team)",
-        "time": "1 min",
+        "time": "",
         "why": "Yksi Project tiimille = yhtenäinen laatutaso. Kukaan ei enää \"keksi omaa Claudea\".",
-        "instructions": {
-          "0": "Avaa Project → Share → Add team members.",
-          "1": "Valitse käyttötaso: Editor (voivat muuttaa ohjeita) / Viewer (vain lukea keskusteluja).",
-          "2": "Kiinnitä Project tiimin wikiin / Notioniin lyhyellä ohjeella: \"milloin ja miten käyttää\"."
-        },
+        "instructions": [
+          "Avaa Project → Share → Add team members.",
+          "Valitse käyttötaso: Editor (voivat muuttaa ohjeita) / Viewer (vain lukea keskusteluja).",
+          "Kiinnitä Project tiimin wikiin / Notioniin lyhyellä ohjeella: \"milloin ja miten käyttää\"."
+        ],
         "validate": "Kollegat näkevät Project:n omissa listoissaan ja voivat avata keskusteluja.",
         "tip": "Nimeä yksi \"kuraattori\" Project:lle — hän vastaa ohjeiden ja knowledge:n siisteydestä. Ilman kuraattoria Project rappeutuu kuukaudessa."
       }
-    },
-    "trigger": "Huomaat selittäväsi Claudelle saman kontekstin 3+ kertaa viikossa.",
-    "inputs": [
-      "Toistuvien tehtävien lista (sisältö, katselmointi, auditointi)",
-      "Materiaalit knowledge baseen (docs, brand book)",
-      "Haluttu Clauden vastausformaatti"
-    ],
-    "outputs": [
-      "Valmis Project custom instructionseilla",
-      "Ladattu knowledge base (jopa 200K tokenia)",
-      "Aloituspromptien pohjat tiimille"
-    ],
-    "tools": [
-      {
-        "name": "Claude Projects",
-        "role": "säilö"
-      },
-      {
-        "name": "Knowledge base",
-        "role": "projektin muisti"
-      },
-      {
-        "name": "Custom Instructions",
-        "role": "rooli ja tyyli"
-      }
-    ],
-    "savings": "~15-20 min per uusi chat — Claude on jo perillä"
+    }
   },
   "artifacts": {
     "title": "Luo ensimmäinen interaktiivinen Artifact",
@@ -734,131 +689,121 @@
     "totalTime": "20 min",
     "whatItIs": "Sama pyyntö Claudelle — yksi antaa tyhjän «tässä yleiskatsaus aiheeseen...», toinen antaa konkreettisen suunnitelman numeroineen. Ero on vain sanamuodossa. Tämä on prompt engineering — taito «miten kysyä jotta AI vastaa hyödyllisesti».\n\nViisi vipua: rakenne, konteksti, esimerkit, rooli, rajoitukset. Sama AI, tulos 5-10× erilainen — kaikki ero on siinä miten muotoilet pyynnön.",
     "approach": "Älä opettele tekniikoita listana. Ota oma OIKEA heikko kehotteesi ja päivitä sitä askel kerrallaan. Jokainen askel = +tekniikka. Oppitunnin lopussa tämä kehote toimii 3–5× paremmin — ja ymmärrät miksi.",
-    "outcomes": {
-      "0": "Kirjoitat kehotteen kaavalla konteksti → rooli → tehtävä → muoto → rajoitukset",
-      "1": "Käytät XML-tageja erottamaan ohjeet datasta",
-      "2": "Sovellat Few-shot:ia, kun malli ei nappaa kaavaa",
-      "3": "Otat Chain of Thought:in käyttöön analyyttisissä tehtävissä"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Kirjoitat kehotteen kaavalla konteksti → rooli → tehtävä → muoto → rajoitukset",
+      "Käytät XML-tageja erottamaan ohjeet datasta",
+      "Sovellat Few-shot:ia, kun malli ei nappaa kaavaa",
+      "Otat Chain of Thought:in käyttöön analyyttisissä tehtävissä"
+    ],
+    "applyIn": [
+      {
         "title": "Mikä tahansa epätriviaali tehtävä",
         "description": "Ennen vaikeaa pyyntöä — 30 sekuntia rakenteeseen. Halvin tapa nostaa laatua."
       },
-      "1": {
+      {
         "title": "Analyyttiset tehtävät",
         "description": "Vertailut, arviot, johtopäätökset — pakollinen Chain of Thought tai Tree of Thought."
       },
-      "2": {
+      {
         "title": "Toistettavat muodot",
         "description": "Jos tuloksen pitää olla JSON:issa/taulukossa — kuvaa schema selvästi ja anna 1–2 esimerkkiä."
       }
-    },
-    "pitfalls": {
-      "0": "Yksirivinen pyyntö \"tee hyvin\" on yleisin huonojen vastausten lähde.",
-      "1": "Liikaa Few-shot-esimerkkejä — malli \"sekoittaa\" kaavat.",
-      "2": "CoT yksinkertaisissa tehtävissä — turhaa kohinaa."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Yksirivinen pyyntö \"tee hyvin\" on yleisin huonojen vastausten lähde.",
+      "Liikaa Few-shot-esimerkkejä — malli \"sekoittaa\" kaavat.",
+      "CoT yksinkertaisissa tehtävissä — turhaa kohinaa."
+    ],
+    "exercises": [
+      {
         "question": "Etsi heikko kehotteesi historiasta. Kirjoita uudelleen täydellä kaavalla (rooli/konteksti/tehtävä/muoto/rajoitukset). Vertaile vastauksia.",
         "hint": "Mitä huonompi alkuperäinen kehote — sitä selkeämpi päivityksen vaikutus."
       },
-      "1": {
+      {
         "question": "Ota vaikea analyyttinen tehtävä. Tee se KAHDESTI: ilman CoT:ia ja CoT-triggerin kanssa. Mittaa ero.",
         "hint": "CoT-trigger: \"Mieti askel askeleelta ennen vastausta\" kehotteen lopussa."
       }
-    },
+    ],
     "steps": {
-      "pr-1": {
+      "s1": {
         "title": "Ota oma oikea kehotteesi",
-        "time": "2 min",
+        "time": "",
         "why": "Omiin tehtäviin oppiminen on 10× tehokkaampaa kuin synteettisiin. Etsi omasi.",
-        "instructions": {
-          "0": "Etsi keskusteluhistoriasta kehote, johon Claude vastasi \"ei kovin hyvin\".",
-          "1": "Kopioi se muistiinpanoihin — päivitämme sitä askel askeleelta.",
-          "2": "Kirjaa ylös, mikä vastauksessa EI tyydyttänyt (epäselvä? yleinen? ei muodossa?)."
-        },
-        "example": "Kehotteeni: \"Auta parantamaan projektiani\".\nMikä ei tyydyttänyt: vastaus — yleisiä neuvoja oppikirjasta. Ei sidottu tuotteeseeni, yleisööni, työkaluihini.",
+        "instructions": [
+          "Etsi keskusteluhistoriasta kehote, johon Claude vastasi \"ei kovin hyvin\".",
+          "Kopioi se muistiinpanoihin — päivitämme sitä askel askeleelta.",
+          "Kirjaa ylös, mikä vastauksessa EI tyydyttänyt (epäselvä? yleinen? ei muodossa?).",
+          "Esimerkki. Kehotteeni: \"Auta parantamaan projektiani\". Mikä ei tyydyttänyt: vastaus — yleisiä neuvoja oppikirjasta. Ei sidottu tuotteeseeni, yleisööni, työkaluihini."
+        ],
         "validate": "Sinulla on oikea \"heikko\" kehote ja lista valituksista vastaukseen.",
         "tip": "Mitä huonompi kehote — sitä selkeämpi päivityksen vaikutus. Älä valitse täydellistä — valitse tyyppi."
       },
-      "pr-2": {
+      "s2": {
         "title": "Sovella perusrakennetta",
-        "time": "4 min",
+        "time": "",
         "why": "Rakenne \"konteksti → rooli → tehtävä → muoto → rajoitukset\" ratkaisee 80 % heikkojen kehotteiden ongelmista.",
-        "instructions": {
-          "0": "Kirjoita kehotteesi uudelleen alla olevan pohjan mukaan.",
-          "1": "Täytä kaikki kentät — väliin jätetyt = heikot kohdat.",
-          "2": "Lähetä Claudelle ja vertaile edelliseen vastaukseen."
-        },
-        "example": "[KONTEKSTI]\n<Kuvaa lyhyesti projektisi, yleisösi, nykyinen vaihe (1–2 lausetta).>\n\n[ROOLI]\nOlet asiantuntija aihealueellani konkreettisella fokuksella (kuvaa).\n\n[TEHTÄVÄ]\nAnna 5 suositusta <kohteellesi>. Syöte: [URL / dokumentti / kuvaus].\n\n[MUOTO]\nJokaisesta ongelmasta:\n- mikä ei toimi (1 rivi)\n- vaikutus (korkea / keskitaso / matala)\n- mitä tehdä (konkreettinen toiminto, ei abstraktio)\n\n[RAJOITUKSET]\n- Vain sellaista, minkä voi toteuttaa <realistinen aikataulu>\n- Ei suosituksia, jotka vaatisivat täydellisen uudelleenkirjoittamisen\n- Nojaa todennettuihin periaatteisiin / oman alueesi standardeihin",
+        "instructions": [
+          "Kirjoita kehotteesi uudelleen alla olevan pohjan mukaan.",
+          "Täytä kaikki kentät — väliin jätetyt = heikot kohdat.",
+          "Lähetä Claudelle ja vertaile edelliseen vastaukseen.",
+          "Pohja:\n[KONTEKSTI]\n<Kuvaa lyhyesti projektisi, yleisösi, nykyinen vaihe (1–2 lausetta).>\n\n[ROOLI]\nOlet asiantuntija aihealueellani konkreettisella fokuksella (kuvaa).\n\n[TEHTÄVÄ]\nAnna 5 suositusta <kohteellesi>. Syöte: [URL / dokumentti / kuvaus].\n\n[MUOTO]\nJokaisesta ongelmasta:\n- mikä ei toimi (1 rivi)\n- vaikutus (korkea / keskitaso / matala)\n- mitä tehdä (konkreettinen toiminto, ei abstraktio)\n\n[RAJOITUKSET]\n- Vain sellaista, minkä voi toteuttaa <realistinen aikataulu>\n- Ei suosituksia, jotka vaatisivat täydellisen uudelleenkirjoittamisen\n- Nojaa todennettuihin periaatteisiin / oman alueesi standardeihin"
+        ],
         "validate": "Vastaus on konkreettinen, sidottu kontekstiin, oikeassa muodossa.",
         "tip": "Jos edes yksi kenttä on tyhjä — täytä. Jokainen kenttä nostaa vastauksen tarkkuutta."
       },
-      "pr-3": {
+      "s3": {
         "title": "Lisää XML-tagit pitkille kehotteille",
-        "time": "3 min",
+        "time": "",
         "why": "XML-merkintä erottaa ohjeet datasta. Claude on koulutettu siihen — ymmärtää täydellisesti.",
-        "instructions": {
-          "0": "Jos kehotteessa on dataa / esimerkkejä / koodia — kääri ne XML-tageihin.",
-          "1": "Käytä mielekkäitä tagien nimiä: <context>, <task>, <example>, <code>.",
-          "2": "Tämä on erityisen tärkeää, kun ohjeet ja data voivat mennä sekaisin."
-        },
-        "example": "<context>\n<Lyhyt kuvaus tehtävästä ja aihealueesta.>\n</context>\n\n<input_data>\n[tähän koko materiaali — teksti, kuvaus, koodi tai muu syöte]\n</input_data>\n\n<task>\nEtsi kriittiset ongelmat tästä materiaalista.\n</task>\n\n<format>\n- ongelma\n- vaikutus\n- suositus\n</format>",
+        "instructions": [
+          "Jos kehotteessa on dataa / esimerkkejä / koodia — kääri ne XML-tageihin.",
+          "Käytä mielekkäitä tagien nimiä: <context>, <task>, <example>, <code>.",
+          "Tämä on erityisen tärkeää, kun ohjeet ja data voivat mennä sekaisin.",
+          "Esimerkki:\n<context>\n<Lyhyt kuvaus tehtävästä ja aihealueesta.>\n</context>\n\n<input_data>\n[tähän koko materiaali — teksti, kuvaus, koodi tai muu syöte]\n</input_data>\n\n<task>\nEtsi kriittiset ongelmat tästä materiaalista.\n</task>\n\n<format>\n- ongelma\n- vaikutus\n- suositus\n</format>"
+        ],
         "validate": "Kehote lukeutuu selvästi: missä ovat ohjeet, missä data.",
         "tip": "XML — pitkille kehotteille datan kanssa. Lyhyille on overkill."
       },
-      "pr-4": {
+      "s4": {
         "title": "Anna Few-shot-esimerkki",
-        "time": "4 min",
+        "time": "",
         "why": "\"Syöte → tulos\" -esimerkit ovat voimakkaampia kuin mikään kuvaus. Tämä on aliarvostetuin tekniikka.",
-        "instructions": {
-          "0": "Anna 1–3 esimerkkiä: millainen syöte → millainen tulos.",
-          "1": "Esimerkit — SAMAA tehtävätyyppiä kuin oikea pyyntö.",
-          "2": "Esimerkkien jälkeen — oma oikea pyyntösi."
-        },
-        "example": "<example>\nInput: \"SaaS:in kirjautumislomake\"\nOutput:\n- Ongelma: 6 kenttää, salasanan toisto ja captcha — 30 %:n drop-off tässä vaiheessa.\n- Vaikutus: korkea — tämä on suppilon kriittinen kohta.\n- Suositus: poista captcha (kytke päälle vain epäilyttävissä tilanteissa), poista \"toista salasana\" (on jo \"näytä salasana\").\n</example>\n\n<example>\nInput: \"SaaS-laskeutumissivun hero-osio\"\nOutput:\n- Ongelma: otsikko \"Ratkaisu yrityksellesi\" on generic, ei selitä arvoa.\n- Vaikutus: korkea — käyttäjä ei ymmärrä, mikä tuote tämä on.\n- Suositus: kirjoita uudelleen muodossa \"<verbi> <tulos> <ajassa>\" — esim. \"Laske tiimisi työaika 5 minuutissa päivässä\".\n</example>\n\nTee nyt sama omalle materiaalilleni: [URL / dokumentti / kuvaus]",
+        "instructions": [
+          "Anna 1–3 esimerkkiä: millainen syöte → millainen tulos.",
+          "Esimerkit — SAMAA tehtävätyyppiä kuin oikea pyyntö.",
+          "Esimerkkien jälkeen — oma oikea pyyntösi.",
+          "Esimerkki:\n<example>\nInput: \"SaaS:in kirjautumislomake\"\nOutput:\n- Ongelma: 6 kenttää, salasanan toisto ja captcha — 30 %:n drop-off tässä vaiheessa.\n- Vaikutus: korkea — tämä on suppilon kriittinen kohta.\n- Suositus: poista captcha (kytke päälle vain epäilyttävissä tilanteissa), poista \"toista salasana\" (on jo \"näytä salasana\").\n</example>\n\n<example>\nInput: \"SaaS-laskeutumissivun hero-osio\"\nOutput:\n- Ongelma: otsikko \"Ratkaisu yrityksellesi\" on generic, ei selitä arvoa.\n- Vaikutus: korkea — käyttäjä ei ymmärrä, mikä tuote tämä on.\n- Suositus: kirjoita uudelleen muodossa \"<verbi> <tulos> <ajassa>\" — esim. \"Laske tiimisi työaika 5 minuutissa päivässä\".\n</example>\n\nTee nyt sama omalle materiaalilleni: [URL / dokumentti / kuvaus]"
+        ],
         "validate": "Vastaus on täsmälleen samassa muodossa kuin esimerkit. Tyyli on kopioitu.",
         "tip": "2 esimerkkiä on voimakkaampi kuin 5. Liikaa esimerkkejä — malli \"sekoittaa\" kaavat."
       },
-      "pr-5": {
+      "s5": {
         "title": "Lisää Chain of Thought (jos tehtävä on analyyttinen)",
-        "time": "3 min",
+        "time": "",
         "why": "CoT nostaa tarkkuutta vaikeissa tehtävissä 1.2–1.4×. Yksinkertaisissa — turhaa kohinaa.",
-        "instructions": {
-          "0": "Jos tehtävä vaatii PÄÄTTELYÄ (ei \"poimi fakta\"), lisää CoT-trigger.",
-          "1": "Yksinkertainen trigger: \"Mieti askel askeleelta ennen vastausta\".",
-          "2": "Edistynyt: anna eksplisiittiset päättelyaskeleet."
-        },
-        "example": "Tehtävä: arvioi, mikä kolmesta arkkitehtuurista on nopein meidän kaseillemme.\n\nMieti askel askeleelta ennen vastausta:\n1. Listaa kuormani parametrit (RPS, pyynnön koko, kirjoituksen tiheys).\n2. Jokaisesta arkkitehtuurista — missä on pullonkaula tällä kuormalla.\n3. Mikä arkkitehtuuri skaalautuu helpommin pysty- / vaakasuoraan.\n4. Vasta sen jälkeen — suositus ja perustelu.",
+        "instructions": [
+          "Jos tehtävä vaatii PÄÄTTELYÄ (ei \"poimi fakta\"), lisää CoT-trigger.",
+          "Yksinkertainen trigger: \"Mieti askel askeleelta ennen vastausta\".",
+          "Edistynyt: anna eksplisiittiset päättelyaskeleet.",
+          "Esimerkki:\nTehtävä: arvioi, mikä kolmesta arkkitehtuurista on nopein meidän kaseillemme.\n\nMieti askel askeleelta ennen vastausta:\n1. Listaa kuormani parametrit (RPS, pyynnön koko, kirjoituksen tiheys).\n2. Jokaisesta arkkitehtuurista — missä on pullonkaula tällä kuormalla.\n3. Mikä arkkitehtuuri skaalautuu helpommin pysty- / vaakasuoraan.\n4. Vasta sen jälkeen — suositus ja perustelu."
+        ],
         "validate": "Vastauksessa näkyy päättelyn kulku, sitten — lopullinen suositus.",
         "tip": "Älä käytä CoT:ia luoviin tai lyhyihin tehtäviin — saat \"päättelyn parodian\"."
       },
-      "pr-6": {
-        "title": "Vertaa \"ennen\" ja \"jälkeen\"",
-        "time": "2 min",
-        "why": "Ilman selvää vertailua et tunne vaikutusta — etkä vahvista taitoa.",
-        "instructions": {
-          "0": "Aja alkuperäinen \"heikko\" kehote uudessa keskustelussa.",
-          "1": "Aja parannettu — toisessa.",
-          "2": "Aseta rinnakkain. Huomaa: pituus ei ole tärkeä, tarkkuus ja käytettävyys ovat.",
-          "3": "Tallenna parannettu versio pohjaksi."
-        },
-        "validate": "Näkyy laadullinen ero. Parannettu versio on käytettävissä ilman muokkausta; alkuperäinen ei.",
-        "tip": "Tallenna kehotepohjia Notion:iin / omaan \"prompt-library\"-repositorioon. Vuoden kuluttua se on pääpääomasi."
-      },
-      "pr-7": {
-        "title": "Muuta valmiiksi kehotepohjaksi",
-        "time": "2 min",
-        "why": "Yksi viilattu kehote = pohja, jota käytät sata kertaa. Älä menetä sitä.",
-        "instructions": {
-          "0": "Korvaa konkreettiset arvot paikkamerkeillä [...] (tuote, linkki, yleisö).",
-          "1": "Tallenna omaan kirjastoosi (Notion, tekstitiedosto, snippets).",
-          "2": "Käytä joka kerta — älä kirjoita tyhjästä."
-        },
-        "validate": "Pohja on kirjastossasi, ja voit soveltaa sen 30 sekunnissa.",
-        "tip": "Seuraavaksi — osio \"Valmiit kehotteet\" kartalla: siellä 10 pohjaa tyyppi-tehtäviin."
+      "s6": {
+        "title": "Vertaa \"ennen/jälkeen\" ja tallenna pohjaksi",
+        "time": "",
+        "why": "Ilman selvää vertailua et tunne vaikutusta — etkä vahvista taitoa. Ja yksi viilattu kehote = pohja, jota käytät sata kertaa. Älä menetä sitä.",
+        "instructions": [
+          "Aja alkuperäinen \"heikko\" kehote uudessa keskustelussa.",
+          "Aja parannettu — toisessa.",
+          "Aseta rinnakkain. Huomaa: pituus ei ole tärkeä, tarkkuus ja käytettävyys ovat.",
+          "Korvaa konkreettiset arvot paikkamerkeillä [...] (tuote, linkki, yleisö).",
+          "Tallenna parannettu versio pohjaksi omaan kirjastoosi (Notion, tekstitiedosto, snippets).",
+          "Käytä joka kerta — älä kirjoita tyhjästä."
+        ],
+        "validate": "Näkyy laadullinen ero: parannettu versio on käytettävissä ilman muokkausta, alkuperäinen ei. Pohja on kirjastossasi, ja voit soveltaa sen 30 sekunnissa.",
+        "tip": "Tallenna kehotepohjia Notion:iin / omaan \"prompt-library\"-repositorioon. Vuoden kuluttua se on pääpääomasi. Seuraavaksi — osio \"Valmiit kehotteet\" kartalla: siellä 10 pohjaa tyyppi-tehtäviin."
       }
     },
     "trigger": "Sama kysymys antaa joskus käyttökelpoisen suunnitelman, joskus «yleiskatsauksen» — epävakaus rasittaa.",
@@ -1404,148 +1349,121 @@
     "totalTime": "20 min",
     "whatItIs": "Käytännön kurssi 5 perustekniikkaan, jotka muuttavat \"keskinkertaisen\" kehotteen luotettavaksi työkaluksi. Sovellat jokaista tekniikkaa samaan tehtävään nähdäksesi, mikä vaikuttaa mihinkin.",
     "approach": "Yksi baseline-kehote → 5 versiota eri tekniikoilla → vertailu. Ilman vertailua et tunne vaikutusta; sen kanssa — tekniikat painautuvat lihasmuistiin.",
-    "outcomes": {
-      "0": "Sovellat Few-shot:ia, CoT:ia, XML:ää, Prefill:iä tietoisesti — konkreettiseen ongelmaan",
-      "1": "Saat JSON-tulosteen, joka parsii ensiyrittämällä",
-      "2": "Tiedät, mikä tekniikka auttaa missäkin kehotteen vikatilassa",
-      "3": "Voit parantaa kehotetta iteratiivisesti 3–5 täsmäaskeleessa"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Sovellat Few-shot:ia, CoT:ia, XML:ää, Prefill:iä tietoisesti — konkreettiseen ongelmaan",
+      "Saat JSON-tulosteen, joka parsii ensiyrittämällä",
+      "Tiedät, mikä tekniikka auttaa missäkin kehotteen vikatilassa",
+      "Voit parantaa kehotetta iteratiivisesti 3–5 täsmäaskeleessa"
+    ],
+    "applyIn": [
+      {
         "title": "Tarkka muoto",
         "description": "Jos tarvitaan JSON/taulukko/markdown — Prefill + Structured output -tekniikka."
       },
-      "1": {
+      {
         "title": "Vaikea päättely",
         "description": "Analytiikka, syy-seurausketjut — Chain of Thought."
       },
-      "2": {
+      {
         "title": "Hieno tyyli / sävy",
         "description": "Brändi-ääni, raportin erityismuoto — Few-shot examples."
       }
-    },
-    "pitfalls": {
-      "0": "Soveltaa kaikkia 5 tekniikkaa kerralla — et ymmärrä, mikä auttoi. Käytä yksi kerrallaan.",
-      "1": "Antaa ristiriitaisia Few-shot-esimerkkejä — malli valitsee satunnaisen kaavan.",
-      "2": "Prefill:ata pitkä aloitusteksti — malli venyttää siihen asti ja menettää laatua. 1–3 ankkuritokenia riittää.",
-      "3": "Pyytää \"JSON:ia\" ilman schemaa ja esimerkkiä — Claude keksii kentät."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Soveltaa kaikkia 5 tekniikkaa kerralla — et ymmärrä, mikä auttoi. Käytä yksi kerrallaan.",
+      "Antaa ristiriitaisia Few-shot-esimerkkejä — malli valitsee satunnaisen kaavan.",
+      "Prefill:ata pitkä aloitusteksti — malli venyttää siihen asti ja menettää laatua. 1–3 ankkuritokenia riittää.",
+      "Pyytää \"JSON:ia\" ilman schemaa ja esimerkkiä — Claude keksii kentät."
+    ],
+    "exercises": [
+      {
         "question": "Ota baseline-kehotteesi ja tee 5 versiota: +CoT, +Few-shot, +XML, +Prefill, +Structured. Vertaile tuloksia.",
         "hint": "Toimii parhaiten keskitason tehtävällä — yksinkertaiseen yksikin tekniikka riittää, vaikeaan eivät viisikään riitä."
       },
-      "1": {
+      {
         "question": "Etsi työrutiinistasi tehtävä, jossa parsit Clauden vastauksen nyt käsin. Kirjoita kehote uudelleen Structured output:in kautta.",
         "hint": "Vertaa aikaa \"kehote + manuaalinen parse\" vs \"kehote + autoparse\". Pitää olla 5–10× säästö."
       },
-      "2": {
+      {
         "question": "Ota kehote, joka tuottaa ~70 % tuloksesta. Tee 3 iteraatiota periaatteella \"yksi korjaus → tarkistus → seuraava korjaus\".",
         "hint": "Jokaisen iteraation jälkeen kirjaa: mikä parani, mikä rikkoutui."
       }
-    },
+    ],
     "steps": {
-      "pt-1": {
+      "s1": {
         "title": "Kiinnitä baseline-kehote",
-        "time": "2 min",
+        "time": "",
         "why": "Ilman lähtöpistettä et näe, mikä tekniikka mitäkin paransi.",
-        "instructions": {
-          "0": "Ota oikea tehtävä työstäsi (dokumentin auditointi / datan erittely / tekstin strukturointi).",
-          "1": "Muotoile kehote YHDELLÄ rivillä — kuten yleensä kirjoitat keskusteluun.",
-          "2": "Aja Sonnetissa, tallenna tulos baseline:nä."
-        },
-        "prompt": "Analysoi tämä teksti ja anna johtopäätökset.",
+        "instructions": [
+          "Ota oikea tehtävä työstäsi (dokumentin auditointi / datan erittely / tekstin strukturointi).",
+          "Muotoile kehote YHDELLÄ rivillä — kuten yleensä kirjoitat keskusteluun. Esimerkki: \"Analysoi tämä teksti ja anna johtopäätökset.\"",
+          "Aja Sonnetissa, tallenna tulos baseline:nä."
+        ],
         "validate": "Sinulla on yksirivinen kehote + Clauden vastaus lähtöpisteenä.",
         "tip": "Mitä \"keskinkertaisempi\" baseline — sitä selkeämpi tekniikoiden vaikutus. Täydellinen baseline on jo hyvä, surkea — tekniikat eivät riitä."
       },
-      "pt-2": {
+      "s2": {
         "title": "Sovella Chain of Thought:ia",
-        "time": "3 min",
+        "time": "",
         "why": "CoT (Chain-of-Thought — pyydä AI:ta «ajattelemaan ääneen» askel askeleelta) antaa +20–40 % tarkkuutta tehtävissä, joissa pitää \"johtaa\", ei \"tietää\".",
-        "instructions": {
-          "0": "Lisää baselinen perään lause: \"Mieti askel askeleelta. Kirjaa ensin faktat, sitten hypoteesit, sitten johtopäätös.\"",
-          "1": "Aja uudessa keskustelussa samalla tehtävällä.",
-          "2": "Vertaa päättelyn syvyyttä baselineen."
-        },
-        "prompt": "Analysoi tämä teksti. Mieti askel askeleelta: 1) kirjaa faktat 2) muotoile 2–3 hypoteesia 3) tarkista jokainen 4) anna suositus.",
+        "instructions": [
+          "Lisää baselinen perään lause: \"Mieti askel askeleelta. Kirjaa ensin faktat, sitten hypoteesit, sitten johtopäätös.\"",
+          "Aja uudessa keskustelussa samalla tehtävällä. Esimerkkikehote: \"Analysoi tämä teksti. Mieti askel askeleelta: 1) kirjaa faktat 2) muotoile 2–3 hypoteesia 3) tarkista jokainen 4) anna suositus.\"",
+          "Vertaa päättelyn syvyyttä baselineen."
+        ],
         "validate": "Vastaus sisältää selvät päättelyn vaiheet, ei vain lopputulosta.",
         "tip": "CoT:ia ei tarvita yksinkertaisissa kysymyksissä — turhan pitkä vastaus. Käytä siellä, missä on \"logiikkaa\", ei \"faktaa\"."
       },
-      "pt-3": {
+      "s3": {
         "title": "Lisää Few-shot examples",
-        "time": "4 min",
+        "time": "",
         "why": "Few-shot (muutama esimerkki promptissa joita AI matkii) on voimakkain tekniikka epätyypilliselle muodolle ja sävylle.",
-        "instructions": {
-          "0": "Keksi 2 miniesimerkkiä: millainen syöte → millainen tulos haluat.",
-          "1": "Rakenne: \"Esimerkki 1: input: ... output: ... Esimerkki 2: ... Tee nyt tälle: ...\"",
-          "2": "Aja. Tarkista — toistiko malli esimerkkien tyylin?"
-        },
-        "prompt": "Esimerkki 1: input: <lyhyt teksti> → output: <omassa muodossasi>.\nEsimerkki 2: input: <toinen teksti> → output: <omassa muodossasi>.\nTee nyt tälle: <oma todellinen input>.",
+        "instructions": [
+          "Keksi 2 miniesimerkkiä: millainen syöte → millainen tulos haluat.",
+          "Rakenne: \"Esimerkki 1: input: ... output: ... Esimerkki 2: ... Tee nyt tälle: ...\". Esimerkkikehote: \"Esimerkki 1: input: <lyhyt teksti> → output: <omassa muodossasi>. Esimerkki 2: input: <toinen teksti> → output: <omassa muodossasi>. Tee nyt tälle: <oma todellinen input>.\"",
+          "Aja. Tarkista — toistiko malli esimerkkien tyylin?",
+          "Jos malli kopioi esimerkin sanasta sanaan — esimerkit ovat liian lähellä input:iasi: tee niistä aihepiiriin liittyviä mutta ei samansisältöisiä. Jos se ohittaa esimerkkien muodon — lisää eksplisiittisesti: \"Muoto — tarkalleen kuten esimerkeissä\"."
+        ],
         "validate": "Output noudattaa esimerkkien kaavaa, ei \"omaansa\".",
-        "tip": "2–3 esimerkkiä on yleensä parempi kuin 5+ — enemmän kohinaa, ei signaalia. Käytä erilaisia esimerkkejä.",
-        "troubleshoot": {
-          "Malli kopioi esimerkin sanasta sanaan": "Malli kopioi esimerkin sanasta sanaan",
-          "Sivuuttaa esimerkkien muodon": "Lisää eksplisiittisesti: \"Muoto — tarkalleen kuten esimerkeissä\".",
-          "Ohittaa esimerkin muodon": "Ohittaa esimerkkien muodon"
-        }
+        "tip": "2–3 esimerkkiä on yleensä parempi kuin 5+ — enemmän kohinaa, ei signaalia. Käytä erilaisia esimerkkejä."
       },
-      "pt-4": {
+      "s4": {
         "title": "Strukturoi XML-tageilla",
-        "time": "3 min",
+        "time": "",
         "why": "XML antaa +2–3× vakautta pitkille kehotteille, joissa on erilaista dataa.",
-        "instructions": {
-          "0": "Jaa kehote lohkoihin: <context>, <task>, <examples>, <constraints>.",
-          "1": "Sijoita jokainen pala omaan tagiin. Sisällä — tavallinen teksti.",
-          "2": "Aja. Huomaa — malli sekoittaa dataa ja ohjeita vähemmän."
-        },
-        "prompt": "<context>...</context>\n<task>Analysoi <input>-tagista teksti</task>\n<input>...</input>\n<constraints>Vain suomeksi. Ei alustavia lauseita. Enintään 5 kohtaa.</constraints>",
+        "instructions": [
+          "Jaa kehote lohkoihin: <context>, <task>, <examples>, <constraints>.",
+          "Sijoita jokainen pala omaan tagiin. Sisällä — tavallinen teksti. Esimerkki: \"<context>...</context> <task>Analysoi <input>-tagista teksti</task> <input>...</input> <constraints>Vain suomeksi. Ei alustavia lauseita. Enintään 5 kohtaa.</constraints>\"",
+          "Aja. Huomaa — malli sekoittaa dataa ja ohjeita vähemmän."
+        ],
         "validate": "Kehote lukeutuu rakenteena, ei \"tekstiseinänä\". Malli erottaa selvästi datan ohjeista.",
         "tip": "XML — pitkille kehotteille eri lohkoineen. Lyhyessä pyynnössä se on kohinaa."
       },
-      "pt-5": {
-        "title": "Kiinnitä muoto Prefill:llä",
-        "time": "3 min",
-        "why": "Prefill (aloitat AI:n vastauksen itse lukitaksesi sävyn/muodon) kiinnittää vastauksen alun jämäkästi — malli ei \"livahda\" muodosta.",
-        "instructions": {
-          "0": "Keskustelussa — kirjoita: \"Aloita vastaus tarkalleen merkillä <OMA_ANKKURISI>\".",
-          "1": "Ankkuri = tarvittavan muodon ensimmäinen merkki: { JSON:ille, | taulukolle, # markdown-otsikolle.",
-          "2": "Aja. Malli \"hyppää\" suoraan muotoon."
-        },
-        "prompt": "<oma pyyntösi>. Aloita vastaus tarkalleen merkillä | (tämä on markdown-taulukko). Ei alustavia lauseita.",
-        "validate": "Vastaus alkaa ankkurillasi, ilman \"Toki, tässä ...\" -alustuksia.",
-        "tip": "API:ssa prefill menee role: \"assistant\" -viestinä messages:in lopussa — malli jatkaa siitä."
+      "s5": {
+        "title": "Kiinnitä muoto Prefill:llä ja saa JSON (Structured output)",
+        "time": "",
+        "why": "Prefill kiinnittää vastauksen alun jämäkästi — malli ei \"livahda\" muodosta; yhdessä Structured output:in kanssa se muuttaa vastauksen parsittavaksi JSON:iksi.",
+        "instructions": [
+          "Prefill: kirjoita keskusteluun \"Aloita vastaus tarkalleen merkillä <OMA_ANKKURISI>\". Ankkuri = tarvittavan muodon ensimmäinen merkki: { JSON:ille, | taulukolle, # markdown-otsikolle. Esimerkki: \"<oma pyyntösi>. Aloita vastaus tarkalleen merkillä | (tämä on markdown-taulukko). Ei alustavia lauseita.\" API:ssa prefill menee role: \"assistant\" -viestinä messages:in lopussa — malli jatkaa siitä.",
+          "Structured output: kuvaa JSON-schema eksplisiittisesti (mitkä kentät, tyypit, enum-arvot), anna miniesimerkki validista output:ista ja sulje Prefill:llä `{`:hon.",
+          "Esimerkkikehote: \"Palauta JSON schemalla: {\"summary\": string (≤200), \"topics\": [{\"name\": string, \"weight\": \"low\"|\"med\"|\"high\"}], \"actions\": string[]} Esimerkki: {\"summary\": \"...\", \"topics\": [{\"name\": \"X\", \"weight\": \"high\"}], \"actions\": [\"...\"]} Data: <oma input:isi>. Aloita vastaus tarkalleen merkillä {. Ilman markdown-kuorta.\"",
+          "Aja JSON.parse():n läpi — pitää onnistua ensiyrittämällä. Jos malli lisää ```json — prefill ei toiminut, vahvista: \"ILMAN markdown-kuorta. Vain raaka JSON\".",
+          "Jos kenttiä puuttuu joskus — lisää schemaan \"kaikki kentät pakollisia\". Jos kentissä on ylimääräistä roskaa — näytä huono ja hyvä esimerkki: \"älä tee näin: ...; tee näin: ...\"."
+        ],
+        "validate": "Vastaus alkaa ankkurillasi, ilman \"Toki, tässä ...\" -alustuksia; JSON parsii ensiyrittämällä, kentät vastaavat schemaa.",
+        "tip": "Prefill 1–3 ankkuritokenia — ei enempää. Älä luota \"malli arvaa\": kirjoita schema ja pakolliset kentät eksplisiittisesti."
       },
-      "pt-6": {
-        "title": "Saa JSON Structured output:in kautta",
-        "time": "3 min",
-        "why": "Viimeinen tekniikka — muuttaa vastauksen parsittavaksi JSON:iksi.",
-        "instructions": {
-          "0": "Kuvaa JSON-schema eksplisiittisesti: mitkä kentät, mitkä tyypit, mitkä enum-arvot.",
-          "1": "Anna miniesimerkki validista output:ista.",
-          "2": "Sulje Prefill:llä `{`:hon.",
-          "3": "Aja JSON.parse():n läpi — pitää onnistua ensiyrittämällä."
-        },
-        "prompt": "Palauta JSON schemalla:\n{\"summary\": string (≤200), \"topics\": [{\"name\": string, \"weight\": \"low\"|\"med\"|\"high\"}], \"actions\": string[]}\nEsimerkki: {\"summary\": \"...\", \"topics\": [{\"name\": \"X\", \"weight\": \"high\"}], \"actions\": [\"...\"]}\nData: <oma input:isi>.\nAloita vastaus tarkalleen merkillä {. Ilman markdown-kuorta.",
-        "validate": "JSON parsii ensiyrittämällä. Kentät vastaavat schemaa.",
-        "tip": "Jos malli lisää ```json — prefill ei toiminut. Vahvista: \"ILMAN markdown-kuorta. Vain raaka JSON\".",
-        "troubleshoot": {
-          "Kentät puuttuvat joskus": "Lisää schemaan \"kaikki kentät pakollisia\". Älä luota \"malli arvaa\".",
-          "Kenttiä puuttuu toisinaan": "Kenttiä puuttuu joskus",
-          "Kentät ylimääräisen roskan kanssa": "Näytä huono ja hyvä esimerkki: \"älä tee näin: ...; tee näin: ...\".",
-          "Kentissä on ylimääräistä sisältöä": "Kentissä on ylimääräistä roskaa"
-        }
-      },
-      "pt-7": {
+      "s6": {
         "title": "Iteraatio: yksi epäonnistuminen — yksi korjaus",
-        "time": "2 min",
+        "time": "",
         "why": "Tapa parantaa kehotetta ilman tyhjästä kirjoittamista.",
-        "instructions": {
-          "0": "Ota kehote, joka tuottaa ~70 %.",
-          "1": "Etsi YKSI konkreettinen epäonnistuminen (esim. \"output on liian yleinen\").",
-          "2": "Tee YKSI korjaus (rooli / rajoitus / esimerkki).",
-          "3": "Aja 2–3 eri syötteellä. Kirjaa: auttoi / ei.",
-          "4": "Toista 2–3 kertaa."
-        },
+        "instructions": [
+          "Ota kehote, joka tuottaa ~70 %.",
+          "Etsi YKSI konkreettinen epäonnistuminen (esim. \"output on liian yleinen\").",
+          "Tee YKSI korjaus (rooli / rajoitus / esimerkki).",
+          "Aja 2–3 eri syötteellä. Kirjaa: auttoi / ei.",
+          "Toista 2–3 kertaa."
+        ],
         "validate": "Sinulla on kehotteen versio v4 vs v1 — selvä ero ilman täydellistä uudelleenkirjoittamista.",
         "tip": "Muutat 5 asiaa kerralla — et ymmärrä, mikä auttoi. Yksi askel = yksi hypoteesi."
       }
@@ -1583,236 +1501,207 @@
     "totalTime": "12 minuuttia",
     "whatItIs": "Aivan ensimmäinen oppitunti. Selittää mikä Claude on, miten se eroaa muista avustajista, mitkä sen työtilat ovat (Chat, Cowork, Code) ja miten teet siitä sinulle sopivan.",
     "approach": "Jokaisessa vaiheessa on painikkeet, jotka avaavat oikean paikan suoraan. Mitään ei tarvitse etsiä valikoista. Lue, klikkaa, kokeile.",
-    "outcomes": {
-      "0": "Tiedät, mikä Claude on ja kuka sen teki",
-      "1": "Ymmärrät, miten Haiku, Sonnet ja Opus -mallit eroavat",
-      "2": "Erotat Chat-, Cowork- ja Code-tilat toisistaan",
-      "3": "Valitsit, minkä version otat käyttöön: sivusto, sovellus vai Code",
-      "4": "Tiedät, miten viritetään Claude Custom Instructions- ja Projects-asetuksilla"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Tiedät, mikä Claude on ja kuka sen teki",
+      "Ymmärrät, miten Haiku, Sonnet ja Opus -mallit eroavat",
+      "Erotat Chat-, Cowork- ja Code-tilat toisistaan",
+      "Valitsit, minkä version otat käyttöön: sivusto, sovellus vai Code",
+      "Tiedät, miten viritetään Claude Custom Instructions- ja Projects-asetuksilla"
+    ],
+    "applyIn": [
+      {
         "title": "Kevyet tehtävät",
         "description": "Kirje, käännös, selitys, lyhyt yhteenveto. Riittää Chat sivustolla claude.ai."
       },
-      "1": {
+      {
         "title": "Pitkä työ yhden tehtävän parissa",
         "description": "Dokumenttien läpikäynti, monivaiheiset tehtävät. Sopii Cowork tietokoneen sovelluksessa."
       },
-      "2": {
+      {
         "title": "Koodi ja tiedostot",
         "description": "Ohjelmointi, automaatio. Sopii Claude Code terminaalissa."
       }
-    },
-    "pitfalls": {
-      "0": "Käyttää vain yhtä tilaa. Jokaisella on omat vahvuutensa. Eri tehtäville eri työkalut.",
-      "1": "Olla virittämättä Claude itselleen. Ilman Custom Instructions:eja se vastaa yleisellä tasolla, ilman ymmärrystä sinun kontekstistasi.",
-      "2": "Sivuuttaa mallien kompromissit. Haiku on nopea mutta vähemmän tarkka. Opus on fiksu mutta hidas ja kallis."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Käyttää vain yhtä tilaa. Jokaisella on omat vahvuutensa. Eri tehtäville eri työkalut.",
+      "Olla virittämättä Claude itselleen. Ilman Custom Instructions:eja se vastaa yleisellä tasolla, ilman ymmärrystä sinun kontekstistasi.",
+      "Sivuuttaa mallien kompromissit. Haiku on nopea mutta vähemmän tarkka. Opus on fiksu mutta hidas ja kallis."
+    ],
+    "exercises": [
+      {
         "question": "Avaa claude.ai ja pyydä Claudea kertomaan kolmessa kohdassa, miten se eroaa ChatGPT:stä.",
         "hint": "Vertaa vastausta siihen, mitä luit tässä oppitunnissa. Se näyttää sinulle, miten Claude ajattelee itsestään."
       }
-    },
+    ],
     "steps": {
-      "w-1": {
+      "s1": {
         "title": "Mikä Claude on",
-        "time": "1 minuutti",
+        "time": "",
         "why": "Jotta tiedät, ketä olet aikeissa käyttää.",
-        "instructions": {
-          "0": "Claude on fiksujen avustajien perhe, jotka vastaavat sinulle tekstillä. Niiden takana on Anthropic-niminen yhtiö. Sen perustivat OpenAI:n entiset tutkijat vuonna 2021.",
-          "1": "Clauden sisällä on kolme eri tehoista mallia. Haiku on nopea ja halpa. Sonnet on kultainen keskitie ja oletuksena käytössä. Opus on fiksuin vaikeisiin tehtäviin.",
-          "2": "Yleensä et valitse mallia käsin. Claude valitsee sopivan tehtävään. Asetuksista voi tarvittaessa vaihtaa.",
-          "3": "Claude muistuttaa ChatGPT:tä ideana, mutta eroaa vivahteissa. Sillä on pidempi muisti yhden keskustelun sisällä, se on tarkempi faktoissa ja rauhallisempi kiistanalaisissa aiheissa."
-        },
+        "instructions": [
+          "Claude on fiksujen avustajien perhe, jotka vastaavat sinulle tekstillä. Niiden takana on Anthropic-niminen yhtiö. Sen perustivat OpenAI:n entiset tutkijat vuonna 2021.",
+          "Clauden sisällä on kolme eri tehoista mallia. Haiku on nopea ja halpa. Sonnet on kultainen keskitie ja oletuksena käytössä. Opus on fiksuin vaikeisiin tehtäviin.",
+          "Yleensä et valitse mallia käsin. Claude valitsee sopivan tehtävään. Asetuksista voi tarvittaessa vaihtaa.",
+          "Claude muistuttaa ChatGPT:tä ideana, mutta eroaa vivahteissa. Sillä on pidempi muisti yhden keskustelun sisällä, se on tarkempi faktoissa ja rauhallisempi kiistanalaisissa aiheissa."
+        ],
         "validate": "Ymmärrät: Claude on Anthropic:n tuote, jossa on kolme mallia (Haiku, Sonnet, Opus).",
         "tip": "Sonnet riittää noin 95 prosenttiin tehtävistä. Opus vain silloin, kun tarvitset syvempää päättelyä.",
-        "actions": {
-          "0": {
+        "actions": [
+          {
             "type": "open-node",
             "id": "b-models",
             "label": "Lisää malleista"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "b-anthropic",
             "label": "Kuka Anthropic on"
           }
-        }
+        ]
       },
-      "w-2": {
+      "s2": {
         "title": "Kolme tapaa käyttää Claudea",
-        "time": "1 minuutti",
+        "time": "",
         "why": "Ymmärtää eri tilojen ero, jotta valitset omasi.",
-        "instructions": {
-          "0": "Chat. Tavallinen keskustelu selaimessa tai sovelluksessa. Esität kysymyksen, saat vastauksen. Sopii lyhyisiin tehtäviin: kirjeet, käännökset, selitykset, ideointi.",
-          "1": "Cowork. Tila tietokoneen sovelluksessa, jossa Claude voi työskennellä omien tiedostojesi ja asiakirjojesi parissa, avata ohjelmia ja auttaa askelittain. Sopii pitkiin tehtäviin: dokumenttien läpikäynti, pitkän tekstin kirjoittaminen, analyysi.",
-          "2": "Code. Erillinen työkalu ohjelmoijille. Se toimii tietokoneesi terminaalissa. Se voi lukea ja muokata koodi-tiedostoja, ajaa komentoja. Tarvitset sitä vain, jos ohjelmoit.",
-          "3": "Käydään seuraavaksi jokainen kolmesta tilasta läpi erikseen. Jos et ole ohjelmoija, Code-vaiheen voi ohittaa."
-        },
+        "instructions": [
+          "Chat. Tavallinen keskustelu selaimessa tai sovelluksessa. Esität kysymyksen, saat vastauksen. Sopii lyhyisiin tehtäviin: kirjeet, käännökset, selitykset, ideointi.",
+          "Cowork. Tila tietokoneen sovelluksessa, jossa Claude voi työskennellä omien tiedostojesi ja asiakirjojesi parissa, avata ohjelmia ja auttaa askelittain. Sopii pitkiin tehtäviin: dokumenttien läpikäynti, pitkän tekstin kirjoittaminen, analyysi.",
+          "Code. Erillinen työkalu ohjelmoijille. Se toimii tietokoneesi terminaalissa. Se voi lukea ja muokata koodi-tiedostoja, ajaa komentoja. Tarvitset sitä vain, jos ohjelmoit.",
+          "Käydään seuraavaksi tilat läpi: aloitamme yksinkertaisimmasta eli Chat:ista, sitten Cowork ja Code yhdessä. Jos et ole ohjelmoija, Code-osan voi ohittaa."
+        ],
         "validate": "Muistat kolme nimeä ja niiden käyttötarkoitukset: Chat lyhyisiin tehtäviin, Cowork pitkiin, Code ohjelmoijille.",
         "tip": "Useimmille riittää pelkkä Chat. Cowork ja Code ovat niille, jotka haluavat mennä syvemmälle."
       },
-      "w-3": {
+      "s3": {
         "title": "Chat. Yksinkertaisin tapa aloittaa",
-        "time": "2 minuuttia",
+        "time": "",
         "why": "Tämä on perustila, josta kaikki aloittavat. Mitään ei tarvitse asentaa.",
-        "instructions": {
-          "0": "Paina alla olevaa painiketta avataksesi claude.ai uuteen välilehteen.",
-          "1": "Kirjaudu sisään sähköpostilla tai Googlen kautta. Rekisteröityminen on ilmaista. Aloittamiseen ei tarvitse tilausta.",
-          "2": "Sisäänkirjautumisen jälkeen näet syöttökentän. Se on Chat.",
-          "3": "Kopioi alla oleva kysymys ja liitä se kenttään. Paina lähetä ja lue vastaus."
-        },
+        "instructions": [
+          "Paina alla olevaa painiketta avataksesi claude.ai uuteen välilehteen.",
+          "Kirjaudu sisään sähköpostilla tai Googlen kautta. Rekisteröityminen on ilmaista. Aloittamiseen ei tarvitse tilausta.",
+          "Sisäänkirjautumisen jälkeen näet syöttökentän. Se on Chat.",
+          "Kopioi alla oleva kysymys ja liitä se kenttään. Paina lähetä ja lue vastaus."
+        ],
         "prompt": "Selitä kolmessa yksinkertaisessa lauseessa, miten eroat ChatGPT:stä ja missä omat vahvuutesi ovat.",
         "validate": "Sait Claudelta vastauksen Chat:issa sivustolla [[node:pl-web-setup|claude.ai]].",
         "tip": "Jos vastaus on liian pitkä, pyydä: lyhyemmin, yhdessä lauseessa. Claude ymmärtää.",
-        "actions": {
-          "0": {
+        "actions": [
+          {
             "type": "external",
             "url": "https://claude.ai",
             "label": "Avaa claude.ai"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "pl-plans",
             "label": "Hintapaketit"
           }
-        }
+        ]
       },
-      "w-4": {
-        "title": "Cowork. Kun tehtävä on isompi kuin yksi kysymys",
-        "time": "2 minuuttia",
-        "why": "Tilanteisiin, joissa työskentelet yhden aiheen parissa pitkään: kirjoitat pitkää tekstiä, käyt läpi dokumentin, valmistelet raporttia.",
-        "instructions": {
-          "0": "Cowork asuu erillisessä sovelluksessa Macille tai Windowsille. Lataus tapahtuu Clauden sivustolta alla olevalla painikkeella.",
-          "1": "Cowork:issa voit antaa Claudelle tiedostoja (dokumentit, taulukot, kuvat) tai sallia sille pääsyn näytölle. Se työskentelee niiden parissa itse, askel askeleelta.",
-          "2": "Esimerkkitehtäviä: käy nämä 50 raportin sivua läpi ja löydä keskeiset riskit; lue sähköpostit ja luonnostele vastaukset; auta kirjoittamaan pitkä artikkeli tämän rungon pohjalta.",
-          "3": "Ei jokaiseen tehtävään. Jos sinulla on lyhyt kysymys, pysy Chat:issa. Cowork tuottaa arvoa siellä, missä työskentelet jatkuvasti omien tiedostojesi kanssa."
-        },
-        "validate": "Ymmärrät: Cowork on työpöytäsovellus pitkille tehtäville tiedostojen kanssa.",
-        "tip": "Vakavaa Cowork-työtä varten tarvitaan Pro-tilaus. Ilmaiseksi voi kokeilla rajoitetusti.",
-        "actions": {
-          "0": {
+      "s4": {
+        "title": "Cowork ja Code. Kun tehtävä on isompi kuin yksi kysymys",
+        "time": "",
+        "why": "Cowork on yhden aiheen pitkään työstämiseen (pitkä teksti, dokumentin läpikäynti, raportti). Code on Clauden tehokkain tila niille, jotka tekevät koodia. Jos et ole ohjelmoija, Code:sta voi vain lukea.",
+        "instructions": [
+          "Cowork asuu erillisessä sovelluksessa Macille tai Windowsille. Lataus tapahtuu Clauden sivustolta alla olevalla painikkeella.",
+          "Cowork:issa voit antaa Claudelle tiedostoja (dokumentit, taulukot, kuvat) tai sallia sille pääsyn näytölle. Se työskentelee niiden parissa itse, askel askeleelta. Esimerkkejä: käy nämä 50 raportin sivua läpi ja löydä keskeiset riskit; lue sähköpostit ja luonnostele vastaukset; auta kirjoittamaan pitkä artikkeli rungon pohjalta.",
+          "Cowork ei sovi jokaiseen tehtävään. Jos sinulla on lyhyt kysymys, pysy Chat:issa. Vakavaa Cowork-työtä varten tarvitaan Pro-tilaus, ilmaiseksi voi kokeilla rajoitetusti.",
+          "Claude Code on kehittäjien työkalu, joka toimii terminaalissasi (tumma ikkuna komentorivillä tietokoneellasi). Se voi lukea ja muokata koodi-tiedostoja suoraan levyllesi, ajaa komentoja, etsiä bugeja, refaktoroida, selittää vierasta koodia.",
+          "Code:n asennus tehdään yhdellä terminaalikomennolla. Tarvitaan Node.js, ilmainen ohjelma komentojen ajamiseen. Tämä on omassa oppitunnissa pidemmälle selitetty. Code ei korvaa Chat:ia tai Cowork:ia, vaan täydentää niitä. Jos et ole ohjelmoija, voit ohittaa Code:n täysin, ja se on ihan ok."
+        ],
+        "validate": "Ymmärrät: Cowork on työpöytäsovellus pitkille tehtäville tiedostojen kanssa, ja Code on työkalu terminaaliin niille, jotka tekevät koodia.",
+        "tip": "Etkö ole varma, tarvitsetko Cowork:ia vai Code:a? Aloita Chat:ista. Edistyneisiin tiloihin voi aina palata.",
+        "actions": [
+          {
             "type": "external",
             "url": "https://claude.ai/download",
             "label": "Lataa Claude-sovellus"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "projects",
             "label": "Mikä Project on"
-          }
-        }
-      },
-      "w-5": {
-        "title": "Code. Niille, jotka tekevät koodia",
-        "time": "2 minuuttia",
-        "why": "Jos kirjoitat koodia tai elät terminaalissa, tämä on Clauden tehokkain tila. Jos et, ohita vaihe.",
-        "instructions": {
-          "0": "Claude Code on työkalu, joka toimii terminaalissasi (tumma ikkuna komentorivillä tietokoneellasi).",
-          "1": "Se voi lukea ja muokata koodi-tiedostoja suoraan levyllesi, ajaa komentoja, etsiä bugeja, refaktoroida, selittää vierasta koodia.",
-          "2": "Asennus tehdään yhdellä terminaalikomennolla. Tarvitaan Node.js, ilmainen ohjelma komentojen ajamiseen. Tämä on omassa oppitunnissa pidemmälle selitetty.",
-          "3": "Code ei korvaa Chat:ia tai Cowork:ia. Se on lisätyökalu kehittäjille."
-        },
-        "validate": "Ymmärrät: Code on työkalu terminaaliin, niille jotka tekevät koodia.",
-        "tip": "Jos et ole ohjelmoija, voit ohittaa Code:n täysin ja käyttää vain Chat:ia. Se on ihan ok.",
-        "actions": {
-          "0": {
+          },
+          {
             "type": "open-tutorial",
             "id": "first-project",
             "label": "Asenna Claude Code askel askeleelta"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "claude-code",
             "label": "Lisää Claude Codesta"
           }
-        }
+        ]
       },
-      "w-6": {
-        "title": "Viritys. Tee Claudesta omasi Custom Instructions:eilla",
-        "time": "2 minuuttia",
-        "why": "Oletuksena Claude vastaa yleisellä tasolla. Jotta se ymmärtäisi sinun kontekstisi, tarvitset [[node:instructions|Custom Instructions]]:eja. Lyhyt muistiinpano sinusta.",
-        "instructions": {
-          "0": "Custom Instructions on lyhyt viesti, jonka Claude näkee jokaisessa keskustelussasi. Sinne kirjoitetaan roolisi, toimialasi, puhetyylisi, mitä EI saa tehdä.",
-          "1": "Mistä löytyy sivustolla: claude.ai:ssa avaa profiilisi (oikea yläkulma), sitten Settings → Custom Instructions. Työpöytäsovelluksessa on samankaltainen asetus.",
-          "2": "Esimerkkimuistiinpano: olen pienen yrityksen kirjanpitäjä, vastaa lyhyesti, ilman vesitystä, yksinkertaisin sanoin, älä anna juridisia neuvoja.",
-          "3": "Tämä muuttaa vastausten laatua merkittävästi. Aseta kerran, toimii aina. Päivitä sitä mukaa, kun jokin alkaa ärsyttää vastauksissa."
-        },
-        "validate": "Ymmärrät, että Custom Instructions on sinun profiilikorttisi Claudelle.",
-        "tip": "Älä kirjoita pitkästi. Viidestä kymmeneen riviä itsestäsi ja siitä, miten haluat keskustella, on enemmän kuin tarpeeksi.",
-        "actions": {
-          "0": {
+      "s5": {
+        "title": "Viritys. Tee Claudesta omasi",
+        "time": "",
+        "why": "Oletuksena Claude vastaa yleisellä tasolla. [[node:instructions|Custom Instructions]] auttavat sitä ymmärtämään kontekstisi, ja Projects on kätevä, kun sinulla on sarja samankaltaisia tehtäviä.",
+        "instructions": [
+          "Custom Instructions on lyhyt viesti, jonka Claude näkee jokaisessa keskustelussasi. Sinne kirjoitetaan roolisi, toimialasi, puhetyylisi, mitä EI saa tehdä. Esimerkki: olen pienen yrityksen kirjanpitäjä, vastaa lyhyesti, ilman vesitystä, yksinkertaisin sanoin, älä anna juridisia neuvoja.",
+          "Mistä löytyy sivustolla: claude.ai:ssa avaa profiilisi (oikea yläkulma), sitten Settings → Custom Instructions. Työpöytäsovelluksessa on samankaltainen asetus. Aseta kerran, toimii aina. Päivitä sitä mukaa, kun jokin alkaa ärsyttää vastauksissa.",
+          "Project on kansio, johon laitat useita keskusteluja yhdestä aiheesta. Kaikilla Project:n sisällä olevilla keskusteluilla on yhteinen tietopohja ja yhteiset ohjeet. Esimerkki: Project Yrityksen markkinointi, sisällä 20 keskustelua, joilla on yhteinen pääsy ladattuihin tiedostoihin: brändiohjeeseen, vanhoihin raportteihin, vuosisuunnitelmaan.",
+          "Mistä löytyy Projects: claude.ai:n vasemmasta valikosta etsi Projects, sitten New Project. Vakavassa käytössä tarvitaan Pro-tilaus. Älä luo Project:ia yhtä tehtävää varten, vain toistuvia varten."
+        ],
+        "validate": "Ymmärrät: Custom Instructions on sinun profiilikorttisi Claudelle, ja Project on työtila toistuvien tehtävien sarjalle.",
+        "tip": "Älä kirjoita pitkästi Custom Instructions:eihin. Viidestä kymmeneen riviä itsestäsi ja siitä, miten haluat keskustella, on enemmän kuin tarpeeksi.",
+        "actions": [
+          {
             "type": "open-tutorial",
             "id": "instructions",
             "label": "Custom Instructions -oppitunti"
           },
-          "1": {
+          {
             "type": "external",
             "url": "https://claude.ai/settings/profile",
             "label": "Avaa asetukset claude.ai:ssä"
-          }
-        }
-      },
-      "w-7": {
-        "title": "Viritys. Projects toistuviin tehtäväsarjoihin",
-        "time": "1 minuutti",
-        "why": "Kun sinulla on sarja samankaltaisia tehtäviä, kannattaa luoda Project. Se on työtila yhteisellä kontekstilla.",
-        "instructions": {
-          "0": "Project on kansio, johon laitat useita keskusteluja yhdestä aiheesta. Kaikilla Project:n sisällä olevilla keskusteluilla on yhteinen tietopohja ja yhteiset ohjeet.",
-          "1": "Esimerkki: Project Yrityksen markkinointi. Sisällä 20 keskustelua eri markkinointikysymyksistä. Kaikilla on yhteinen pääsy ladattuihin tiedostoihin: brändiohjeeseen, vanhoihin raportteihin, vuosisuunnitelmaan.",
-          "2": "Mistä: claude.ai:n vasemmasta valikosta etsi Projects, sitten New Project. Vakavassa käytössä tarvitaan Pro-tilaus.",
-          "3": "Jos työskentelet yhden aiheen parissa viikkoja, Project säästää tunteja toistuvan kontekstin antamisessa."
-        },
-        "validate": "Ymmärrät, että Project on työtila toistuvien tehtävien sarjalle.",
-        "tip": "Älä luo Project:ia yhtä tehtävää varten. Vain toistuvia varten.",
-        "actions": {
-          "0": {
+          },
+          {
             "type": "open-tutorial",
             "id": "projects",
             "label": "Projects-oppitunti"
           },
-          "1": {
+          {
             "type": "open-node",
             "id": "projects",
             "label": "Lisää Projects:ista"
           }
-        }
+        ]
       },
-      "w-8": {
+      "s6": {
         "title": "Mitä tehdä juuri nyt",
-        "time": "1 minuutti",
+        "time": "",
         "why": "Tieto unohtuu nopeasti ilman tekoa. Tee vähintään yksi siirto.",
-        "instructions": {
-          "0": "Jos olet vasta tutustumassa Claudeen, avaa claude.ai ja kysy ensimmäinen kysymyksesi Chat:issa.",
-          "1": "Jos Claude on jo sinulle mieleinen ja haluat käyttää sitä säännöllisesti, aseta Custom Instructions. Laatuhyppy on iso.",
-          "2": "Jos tarvitset pitkää työtä tiedostojen ja dokumenttien parissa, lataa Claude-sovellus Cowork-tuella.",
-          "3": "Jos olet ohjelmoija ja haluat edistyneen tilan, käy läpi Claude Code:n asennusoppitunti."
-        },
+        "instructions": [
+          "Jos olet vasta tutustumassa Claudeen, avaa claude.ai ja kysy ensimmäinen kysymyksesi Chat:issa.",
+          "Jos Claude on jo sinulle mieleinen ja haluat käyttää sitä säännöllisesti, aseta Custom Instructions. Laatuhyppy on iso.",
+          "Jos tarvitset pitkää työtä tiedostojen ja dokumenttien parissa, lataa Claude-sovellus Cowork-tuella.",
+          "Jos olet ohjelmoija ja haluat edistyneen tilan, käy läpi Claude Code:n asennusoppitunti."
+        ],
         "validate": "Olet valinnut, mitä kokeilla seuraavaksi, ja tehnyt vähintään yhden klikkauksen siihen suuntaan.",
         "tip": "Älä yritä hallita kaikkea yhdessä päivässä. Palaa karttaan, kun arjen työssä Clauden kanssa nousee uusia kysymyksiä.",
-        "actions": {
-          "0": {
+        "actions": [
+          {
             "type": "external",
             "url": "https://claude.ai",
             "label": "Avaa Chat (claude.ai)"
           },
-          "1": {
+          {
             "type": "open-tutorial",
             "id": "instructions",
             "label": "Aseta Custom Instructions"
           },
-          "2": {
+          {
             "type": "open-tutorial",
             "id": "first-project",
             "label": "Asenna Claude Code"
           },
-          "3": {
+          {
             "type": "open-courses",
             "label": "Kaikki opiskelupolut"
           }
-        }
+        ]
       }
     },
     "trigger": "Ensikosketus Claudeen — tarvitset 5 min kartan «mitä täällä on ja miten sitä käytetään».",
@@ -2649,216 +2538,99 @@
       }
     ],
     "steps": {
-      "ws-1": {
-        "title": "Asennus ja ensimmäinen kirjautuminen",
+      "s1": {
+        "title": "Asennus ja kolme tilaa: Chat, Cowork, Code",
         "time": "",
-        "why": "Desktop tarjoaa sen, mitä selaimessa ei ole: rinnakkaiset istunnot, paikalliset tiedostot, terminaalin ja laajennukset. Mutta sillä on vaatimuksensa.",
+        "why": "Tämä on sisäänkäynti: asennus asettaa vaatimukset, ja kolme tilaa ovat sovelluksen tärkein risteys. Jos valitset väärän tilan, et löydä tarvitsemiasi toimintoja.",
         "instructions": [
-          "Lataa sovellus: claude.com/download (macOS — universal, Windows — x64 tai ARM64). Linuxia ei tueta — siellä käytetään CLI:tä.",
-          "Käynnistä ja kirjaudu tilille. Code-välilehti Windowsissa vaatii Git for Windowsin — asenna se ja käynnistä sovellus uudelleen.",
+          "Asennus: lataa sovellus osoitteesta claude.com/download (macOS — universal, Windows — x64/ARM64; Linuxia ei tueta — siellä käytetään CLI:tä), käynnistä ja kirjaudu tilille. Code-välilehti Windowsissa vaatii Git for Windowsin — asenna ja käynnistä uudelleen. Versio — macOS: Claude → About Claude, Windows: Help → About.",
           "Web-versio ([[node:pl-web-setup|claude.ai]]) toimii selaimessa ilman asennusta, mutta ilman paikallisia tiedostoja, terminaalia ja Desktop app -osiota.",
-          "Sovelluksen version näet valikosta: macOS — Claude → About Claude; Windows — Help → About."
-        ],
-        "validate": "Sovellus aukesi, kirjauduit sisään, ja ylhäällä näkyy kolme välilehteä: Chat, Cowork, Code.",
-        "tip": "Desktopia ja CLI:tä voi pitää yhdessä samalla koneella ja jopa samassa projektissa — niiden asetukset (CLAUDE.md, MCP) ovat yhteiset."
-      },
-      "ws-2": {
-        "title": "Kolme tilaa: Chat / Cowork / Code",
-        "time": "",
-        "why": "Tämä on sovelluksen tärkein risteys. Jos valitset väärän tilan, et löydä tarvitsemiasi toimintoja.",
-        "instructions": [
-          "Chat — tavallinen keskustelu: kysymykset, tekstit, tiedostojen läpikäynti. Vasen valikko on keskustelulista.",
+          "Chat — tavallinen keskustelu (kysymykset, tekstit, tiedostojen läpikäynti); vasen valikko on keskustelulista. Täällä tapahtuu 80 % arkityöstä.",
           "Cowork — agenttimaiset ja pitkäkestoiset tehtävät: New task, Projects, Scheduled (aikataulut), Live artifacts, Dispatch (puhelimesta), Customize.",
           "Code — kehitys: jokainen keskustelu on \"istunto\", jolla on oma historiansa, projektikansionsa ja koodimuutoksensa; valikossa New session, Routines, Customize.",
-          "Sääntö: kysy/kirjoita/käy läpi → Chat; anna pitkäksi aikaa tai aikataulutettuna → Cowork; koodi repositoryssa → Code."
+          "Sääntö: kysy/kirjoita/käy läpi → Chat; anna pitkäksi aikaa tai aikataulutettuna → Cowork; koodi repositoryssa → Code. Tiloja vaihdetaan ylhäältä milloin tahansa.",
+          "Chat-composer: syöttökenttä + Enter, vieressä mallin valinta (esim. Opus/Sonnet) ja ääni-painike (mikrofoni); mallia ja panostusta (effort) voi vaihtaa suoraan keskustelussa. \"+\"-painike vasemmalla: liitä tiedostoja, kytke [[node:skills|Skills]], [[node:mcp|Connectors]] ja liitännäiset. Raahaa tiedostot suoraan kenttään — kuvat ja PDF:t Claude käy läpi ([[node:cap-input-modalities|tiedostojen ja kuvien tuki]])."
         ],
-        "validate": "Osaat selittää yhdellä lauseella, mihin kukin kolmesta välilehdestä on tarkoitettu.",
-        "tip": "Tiloja vaihdetaan ylhäältä milloin tahansa — data ei katoa, ja jokaisella on oma listansa vasemmalla."
+        "validate": "Sovellus aukesi, kirjauduit sisään, näet kolme välilehteä ylhäällä ja osaat selittää, mihin kukin (Chat, Cowork, Code) on tarkoitettu ja missä composerin “+” on.",
+        "tip": "Desktopia ja CLI:tä voi pitää yhdessä samalla koneella ja jopa samassa projektissa — asetukset (CLAUDE.md, MCP) ovat yhteiset. Tiloja vaihdetaan ylhäältä milloin tahansa ilman datan menetystä."
       },
-      "ws-3": {
-        "title": "Chat-tila: composer ja \"+\"",
+      "s2": {
+        "title": "Code-tila: istunnon käynnistys ja oikeustilat",
         "time": "",
-        "why": "Täällä tapahtuu 80 % arkityöstä. Composer kätkee enemmän kuin miltä näyttää.",
-        "instructions": [
-          "Syöttökenttä: teksti + Enter. Vieressä mallin valinta (esim. Opus/Sonnet) ja ääni-painike (mikrofoni).",
-          "\"+\"-painike kentän vasemmalla puolella: liitä tiedostoja, kytke [[node:skills|Skills]], [[node:mcp|Connectors]] ja liitännäiset.",
-          "Mallia ja \"panostusta\" (effort) voi vaihtaa suoraan keskustelussa — se vaikuttaa päättelyn syvyyteen ja kulutukseen.",
-          "Raahaa tiedostot suoraan kenttään — kuvat ja PDF:t Claude käy läpi ([[node:cap-input-modalities|tiedostojen ja kuvien tuki]])."
-        ],
-        "validate": "Löysit mallin valitsimen, \"+\"-painikkeen ja ymmärrät, mitä kunkin kohdan takaa löytyy.",
-        "tip": "Ääni ja vastaustyyli säädetään tarkemmin kohdassa Settings → General (Voice) — tästä lisää alempana."
-      },
-      "ws-4": {
-        "title": "Cowork-tila: tehtävät, aikataulut, Dispatch",
-        "time": "",
-        "why": "Cowork on Claude, joka työskentelee itsenäisesti ja pitkään — myös silloin kun et ole koneella.",
-        "instructions": [
-          "New task — anna tehtävä; \"Work in a project\" sitoo sen [[node:projects|projektiin]], jolla on oma tietonsa ja ohjeensa.",
-          "Scheduled — toistuvat tehtävät aikataulun mukaan (esim. päivittäinen kooste).",
-          "Live artifacts — tulosartefaktit, jotka päivittyvät; Dispatch (Beta) — tehtävien lähetys Claudelle puhelimesta.",
-          "Customize — connectoreiden, skillien ja liitännäisten hallinta yhdessä paikassa.",
-          "Coworkin yksityiskohtainen läpikäynti on omassa tutoriaalissaan [[tutorial:claude-cowork|Claude Cowork]]."
-        ],
-        "validate": "Ymmärrät, miten New task eroaa Scheduledista ja mikä Dispatch on.",
-        "tip": "Dispatch ja aikataulut vaativat Pro- tai Max-tilauksen eivätkä toimi Team/Enterprise-tileillä."
-      },
-      "ws-5": {
-        "title": "Code-tila: istunnon käynnistys",
-        "time": "",
-        "why": "Ennen ensimmäistä viestiä Codessa pitää säätää neljä asiaa — muuten Claude käynnistyy väärässä paikassa ja väärällä tavalla.",
+        "why": "Ennen ensimmäistä viestiä Codessa pitää säätää ympäristö ja valita oikeustila — tärkein varoke, joka ratkaisee, kysyykö Claude ennen muokkauksia ja komentoja.",
         "instructions": [
           "Environment — missä suoritetaan: Local (oma koneesi), Remote (Anthropicin pilvi, jatkuu vaikka sovellus suljetaan), SSH (oma palvelimesi).",
-          "Project folder — kansio tai repository, jonka kanssa Claude työskentelee. Remoteen voi lisätä useita repositoryja.",
-          "Model — mallin valinta lähetyspainikkeen vieressä, vaihtuu työn aikana.",
-          "Permission mode — kuinka paljon vapautta Claudella on (seuraava askel). Kirjoita tehtävä ja Enter."
-        ],
-        "validate": "Ennen lähetystä näet Environment-, kansio-, malli- ja oikeustilan valinnat.",
-        "tip": "Pitkille refaktoroinneille ja testeille valitse Remote — tehtävä ei keskeydy, vaikka suljet sovelluksen."
-      },
-      "ws-6": {
-        "title": "Oikeustilat (permission modes)",
-        "time": "",
-        "why": "Tämä on tärkein varoke: se ratkaisee, kysyykö Claude ennen tiedostojen muuttamista ja komentojen suorittamista.",
-        "instructions": [
-          "Ask permissions (default) — kysyy ennen jokaista muokkausta/komentoa ja näyttää diffin. Suositellaan aloittelijoille.",
+          "Project folder — kansio tai repository, jonka kanssa Claude työskentelee; Remoteen voi lisätä useita repositoryja. Model — valinta lähetyspainikkeen vieressä, vaihtuu työn aikana. Kirjoita tehtävä ja Enter.",
+          "Ask permissions (default) — kysyy ennen jokaista muokkausta/komentoa ja näyttää diffin; suositellaan aloittelijoille.",
           "Auto accept edits — hyväksyy itse tiedostomuokkaukset ja turvalliset komennot (mkdir, mv), mutta kysyy muista komennoista.",
-          "Plan mode — tutkii ja ehdottaa suunnitelman muuttamatta lähdekoodia. Hyvä monimutkaisiin tehtäviin, joissa kannattaa \"ensin pohtia\".",
+          "Plan mode — tutkii ja ehdottaa suunnitelman muuttamatta lähdekoodia; hyvä monimutkaisiin \"ensin pohdi\" -tehtäviin.",
           "Auto — suorittaa kaiken taustalla tehtävin turvatarkistuksin (research preview, vaatii tuoreen Opus/Sonnet).",
-          "Bypass permissions — ilman vahvistuksia lainkaan. Vain hiekkalaatikossa/VM:ssä; otetaan käyttöön kohdassa Settings → Claude Code."
+          "Bypass permissions — ilman vahvistuksia lainkaan; vain hiekkalaatikossa/VM:ssä, otetaan käyttöön kohdassa Settings → Claude Code."
         ],
-        "validate": "Osaat valita tilan tehtävän mukaan ja tiedät, mikä on vaarallinen hiekkalaatikon ulkopuolella.",
-        "tip": "Työnkulku: aloita Plan-tilassa → hyväksy suunnitelma → vaihda Auto accept edits -tilaan toteutusta varten."
+        "validate": "Ennen lähetystä näet Environment-, kansio- ja mallivalinnat ja osaat valita oikeustilan tehtävän mukaan tietäen, mikä on vaarallinen hiekkalaatikon ulkopuolella.",
+        "tip": "Työnkulku: aloita Plan-tilassa → hyväksy suunnitelma → vaihda Auto accept edits -tilaan toteutusta varten. Pitkille refaktoroinneille ja testeille valitse Remote — tehtävä ei keskeydy, vaikka suljet sovelluksen."
       },
-      "ws-7": {
-        "title": "Koodityö: konteksti ja hallinta",
+      "s3": {
+        "title": "Koodityö: konteksti, preview, diff ja katselmointi",
         "time": "",
-        "why": "Mitä tarkempi konteksti ja mitä paremmin ohjaat Claudea, sitä vähemmän uudelleentekoa.",
+        "why": "Mitä tarkempi konteksti ja mitä paremmin ohjaat Claudea, sitä vähemmän uudelleentekoa; ja visuaalinen preview ja diff-katselmointi poistavat “sokeat” muokkaukset.",
         "instructions": [
           "Tiedoston @-maininta: kirjoita @ ja nimi — tiedosto tulee kontekstiin (Remotessa ei käytettävissä).",
-          "Liitteet: kuvat, PDF:t, kuvakaappaukset bugeista — painikkeella tai raahaamalla.",
+          "Liitteet: kuvat, PDF:t, kuvakaappaukset bugeista — painikkeella tai raahaamalla. Claude lukee projektin tiedostot, tekee muutokset ja suorittaa komennot valitun oikeustilan mukaan.",
           "Keskeytys: stop-painike pysäyttää heti; tai kirjoita vain korjaus ja Enter — Claude huomioi sen nykyisen vaiheen jälkeen.",
-          "Claude lukee projektin tiedostot, tekee muutokset ja suorittaa komennot valitun oikeustilan mukaan."
-        ],
-        "validate": "Lisäsit tiedoston @-maininnalla ja ohjasit Claudea korjauksella keskeyttämättä työtä.",
-        "tip": "Lyhyt tarkentava korjaus työn aikana on halvempi kuin tehtävän täysi uudelleenkäynnistys."
-      },
-      "ws-8": {
-        "title": "Preview, diff ja koodin katselmointi",
-        "time": "",
-        "why": "Desktop näyttää muutokset visuaalisesti ja tarkistaa ne itse — tämä poistaa \"sokeat\" muokkaukset.",
-        "instructions": [
           "Preview — Claude käynnistää dev-palvelimen ja avaa sisäänrakennetun selaimen; automaattinen verifiointi ottaa kuvakaappauksia ja klikkaa elementtejä muokkausten jälkeen.",
-          "Diff: \"+12 −1\" -tyyppinen merkki avaa muutosten katselun tiedostoittain; klikkaa riviä jättääksesi kommentin.",
-          "Kommenttien lähetys: macOS — Cmd+Enter, Windows — Ctrl+Enter; Claude tekee muutokset ja näyttää uuden diffin.",
-          "\"Review code\" diff-katselussa — Claude etsii itse bugeja sekä logiikka- ja security-ongelmia (ei tyyliä).",
-          "PR:n jälkeen ilmestyy CI-paneeli: Auto-fix- ja Auto-merge-kytkimet."
+          "Diff: \"+12 −1\" -tyyppinen merkki avaa muutosten katselun tiedostoittain; klikkaa riviä jättääksesi kommentin. Kommenttien lähetys: macOS — Cmd+Enter, Windows — Ctrl+Enter; Claude tekee muutokset ja näyttää uuden diffin.",
+          "\"Review code\" diff-katselussa — Claude etsii itse bugeja sekä logiikka- ja security-ongelmia (ei tyyliä). PR:n jälkeen ilmestyy CI-paneeli: Auto-fix- ja Auto-merge-kytkimet."
         ],
-        "validate": "Avasit diffin, jätit kommentin ja pyysit \"Review code\".",
-        "tip": "Preview-palvelimen asetukset ovat tiedostossa .claude/launch.json — sinne kirjataan oma käynnistyskomento ja portti."
+        "validate": "Lisäsit tiedoston @-maininnalla, ohjasit Claudea korjauksella työtä keskeyttämättä, avasit diffin, jätit kommentin ja pyysit “Review code”.",
+        "tip": "Lyhyt tarkentava korjaus työn aikana on halvempi kuin tehtävän täysi uudelleenkäynnistys. Preview-palvelimen asetukset ovat tiedostossa .claude/launch.json — sinne kirjataan oma käynnistyskomento ja portti."
       },
-      "ws-9": {
-        "title": "Työtila: paneelit ja pikanäppäimet",
+      "s4": {
+        "title": "Työtila: paneelit, pikanäppäimet, rinnakkaiset istunnot, Computer use",
         "time": "",
-        "why": "Code koostuu paneeleista, jotka asettelet itsellesi sopiviksi — tämä nopeuttaa työtä moninkertaisesti.",
+        "why": "Code koostuu paneeleista, jotka asettelet itsellesi sopiviksi; rinnakkaiset istunnot ja Computer use tuovat tehoa, mutta vaativat eristyksen ja pääsyn rajojen ymmärtämistä.",
         "instructions": [
-          "Paneelit: chat, diff, preview, terminal, file, plan, tasks, subagent. Avataan Views-valikosta, raahataan otsikosta.",
-          "Terminaali: Ctrl+` — avautuu istunnon kansiossa, samassa ympäristössä kuin Claudella (npm test, git status).",
-          "Tiedostot: polun klikkaus avaa tiedoston; täsmämuokkaukset + Save.",
-          "Transkriptin tilat (Normal/Verbose/Summary) — Ctrl+O. Kaikki pikanäppäimet — Cmd+/ (macOS) tai Ctrl+/ (Windows)."
+          "Paneelit: chat, diff, preview, terminal, file, plan, tasks, subagent — avataan Views-valikosta, raahataan otsikosta.",
+          "Terminaali: Ctrl+` — avautuu istunnon kansiossa, samassa ympäristössä kuin Claudella (npm test, git status). Tiedostot: polun klikkaus avaa tiedoston, täsmämuokkaukset + Save.",
+          "Transkriptin tilat (Normal/Verbose/Summary) — Ctrl+O. Kaikki pikanäppäimet — Cmd+/ (macOS) tai Ctrl+/ (Windows).",
+          "Rinnakkaiset istunnot: + New session (Cmd+N), Ctrl+Tab vaihtaa niiden välillä; Git-repositoryille jokainen istunto saa oman eristetyn kopionsa worktreen kautta — muutokset eivät risteä ennen commitia.",
+          "Side-chat (Cmd+; tai /btw) — kysymys \"sivuun\" istunnon kontekstilla sotkematta pääkeskustelua. Tasks-paneeli näyttää taustatyön: aliagentit ja taustakomennot.",
+          "Computer use — näytöllä olevien sovellusten ohjaus: otetaan käyttöön kohdassa Settings → General (Desktop app -osio) Computer use -kytkimellä; macOS:ssä tarvitaan Accessibility- ja Screen Recording -oikeudet; vaatii Pro/Max-tilauksen (ei Team/Enterprise) ja käynnissä olevan Desktop-sovelluksen.",
+          "Computer usen pääsytasot ovat kiinteät: selaimet — vain katselu, terminaalit/IDE — vain klikkaukset, muut — täysi hallinta. Lisää turvallisesta eristetystä ajosta — [[node:sys-agent-sandbox|eristetty ympäristö agentille]] ja [[node:cap-computer|Computer use]]."
         ],
-        "validate": "Avasit toisen paneelin Views-valikosta ja vaihdoit transkriptin tilan.",
-        "tip": "Verbose näyttää Clauden jokaisen vaiheen — kätevää, kun pitää ymmärtää, miksi se teki juuri niin."
+        "validate": "Avasit toisen paneelin Views-valikosta, vaihdoit transkriptin tilan, avasit toisen istunnon ja ymmärrät, mitä oikeuksia Computer use tarvitsee.",
+        "tip": "Verbose näyttää Clauden jokaisen vaiheen — kätevää ymmärtää, miksi se teki juuri niin. Auto-archive PR:n mergen/sulkemisen jälkeen (Settings → Claude Code) siivoaa valmistuneet istunnot itse."
       },
-      "ws-10": {
-        "title": "Rinnakkaiset istunnot ja eristys",
+      "s5": {
+        "title": "Settings, osa 1: General, Account, Privacy, Billing, Usage, Capabilities",
         "time": "",
-        "why": "Voit viedä useita tehtäviä eteenpäin yhtä aikaa pelkäämättä, että ne sekoittuvat.",
-        "instructions": [
-          "+ New session (Cmd+N) — uusi rinnakkainen istunto; Ctrl+Tab vaihtaa niiden välillä.",
-          "Git-repositoryille jokainen istunto saa oman eristetyn kopionsa worktreen kautta — muutokset eivät risteä ennen commitia.",
-          "Side-chat (Cmd+; tai /btw) — kysymys \"sivuun\" istunnon kontekstilla sotkematta pääkeskustelua.",
-          "Tasks-paneeli näyttää taustatyön: aliagentit ja taustakomennot."
-        ],
-        "validate": "Avasit kaksi istuntoa ja ymmärrät, miksi niiden muutokset eivät törmää.",
-        "tip": "Auto-archive PR:n mergen/sulkemisen jälkeen (Settings → Claude Code) siivoaa valmistuneet istunnot itse."
-      },
-      "ws-11": {
-        "title": "Computer use: näytön hallinta",
-        "time": "",
-        "why": "Claude voi ohjata näytöllä olevia sovelluksia — tehokasta, mutta vaatii tietoiset rajat.",
-        "instructions": [
-          "Otetaan käyttöön kohdassa Settings → General (Desktop app -osio) Computer use -kytkimellä. macOS:ssä tarvitaan Accessibility- ja Screen Recording -oikeudet.",
-          "Vaatii Pro- tai Max-tilauksen (ei Team/Enterprise) ja käynnissä olevan Desktop-sovelluksen.",
-          "Pääsytasot ovat kiinteät: selaimet — vain katselu, terminaalit/IDE — vain klikkaukset, muut — täysi hallinta.",
-          "Lisää turvallisesta eristetystä ajosta — [[node:sys-agent-sandbox|eristetty ympäristö agentille]] ja [[node:cap-computer|Computer use]]."
-        ],
-        "validate": "Ymmärrät, mitä oikeuksia tarvitaan ja miksi selaimella on vain \"katselu\".",
-        "tip": "Claude merkitsee näytöllä olevan epäilyttävän tekstin mahdolliseksi prompt-injectioniksi, mutta luottamuksen raja on tässä toinen — älä aja sitä arkaluonteisen datan parissa."
-      },
-      "ws-12": {
-        "title": "Settings — osa 1: General ja Account",
-        "time": "",
-        "why": "General määrää, miten Claude puhuttelee sinua ja käyttäytyy kaikkialla; Account koskee laitteita ja kirjautumisen turvallisuutta.",
+        "why": "Nämä Settings-osiot määräävät, miten Claude käyttäytyy kaikkialla, kirjautumisen turvallisuuden, datan yksityisyyden, rahan ja käytettävissä olevat työkalut.",
         "instructions": [
           "General → Profile: nimi, \"miten puhutella\", ammatti ja Instructions for Claude — yleisohjeet kaikkiin chatteihin ja Coworkiin ([[node:i-global|globaalit ohjeet]]).",
-          "General → Preferences: Appearance (järjestelmän mukaan / vaalea / tumma), Chat font.",
-          "General → Voice (äänen tyyli ja nopeus) ja Notifications (vastauksen valmistuminen, Code-ilmoitukset, oikeuspyynnöt, Dispatch-viestit).",
-          "Account: \"Log out of all devices\", Organization ID, aktiivisten istuntojen lista (laite, kaupunki, päivämäärät), tilin poisto."
-        ],
-        "validate": "Täytit Instructions for Claude -kentän ja löysit aktiivisten istuntojen listan Account-osiosta.",
-        "tip": "Instructions for Claude on aliarvostetuin kohta: yksi asetus parantaa sävyä ja muotoilua kaikissa tulevissa keskusteluissa."
-      },
-      "ws-13": {
-        "title": "Settings — osa 2: Privacy, Billing, Usage, Capabilities",
-        "time": "",
-        "why": "Täällä on datan yksityisyys, raha ja se, mitkä työkalut Claudella ylipäätään ovat käytössä.",
-        "instructions": [
+          "General → Preferences: Appearance (järjestelmän mukaan / vaalea / tumma), Chat font. General → Voice (äänen tyyli ja nopeus) ja Notifications (vastauksen valmistuminen, Code-ilmoitukset, oikeuspyynnöt, Dispatch-viestit).",
+          "Account: \"Log out of all devices\", Organization ID, aktiivisten istuntojen lista (laite, kaupunki, päivämäärät), tilin poisto.",
           "Privacy — miten dataasi käytetään ja miten malli oppii; käy tämä osio läpi tietoisesti ([[node:pl-privacy|yksityisyys]]).",
           "Billing — tilaus ja maksut; Usage — kulutus jaksoittain ja malleittain (tilaus on yhteinen kaikille Clauden pinnoille).",
-          "Capabilities — Clauden ominaisuuksien kytkimet (esim. verkkohaku, analyysi yms.).",
-          "Käyttörengas Code-tilan mallinvalinnan vieressä näyttää istunnon kontekstin ja tilauksen kokonaiskulutuksen."
+          "Capabilities — Clauden ominaisuuksien kytkimet (esim. verkkohaku, analyysi). Käyttörengas Code-tilan mallinvalinnan vieressä näyttää istunnon kontekstin ja tilauksen kokonaiskulutuksen."
         ],
-        "validate": "Tiedät, mistä katsot kulutusta ja mistä ominaisuudet otetaan käyttöön tai pois.",
-        "tip": "Jos törmäät rajoituksiin — katso ensin Usage ja vertaile malleja ennen kuin nostat tilaustasi."
+        "validate": "Täytit Instructions for Claude -kentän, löysit aktiiviset istunnot Account-osiosta ja tiedät, mistä katsot kulutusta (Usage) ja otat ominaisuuksia käyttöön (Capabilities).",
+        "tip": "Instructions for Claude on aliarvostetuin kohta: yksi asetus parantaa sävyä ja muotoilua kaikissa keskusteluissa. Jos törmäät rajoituksiin, katso ensin Usage ja vertaile malleja ennen tilauksen nostoa."
       },
-      "ws-14": {
-        "title": "Settings — osa 3: Connectors, Claude Code, Cowork",
+      "s6": {
+        "title": "Settings, osa 2 ja Desktop app -osio: Cowork, Connectors, Claude Code, Extensions, Developer, CLI",
         "time": "",
-        "why": "Nämä ovat sovelluksen \"pistorasiat\": ulkoiset palvelut, koodi-istuntojen käyttäytyminen ja agenttitilan asetukset.",
+        "why": "Täällä ovat Coworkin agenttitila, sovelluksen “pistorasiat” (Connectors/MCP), koodi-istuntojen käyttäytyminen, paikalliset Desktop-laajennukset ja yhteys CLI:hin — kaikki selaimen ulkopuolelta.",
         "instructions": [
-          "Connectors — integraatiot (Google Calendar, Slack, GitHub, Linear, Notion …). Nämä ovat [[node:mcp|MCP-palvelimia]] graafisella asetuksella; lisätään myös composerin \"+\"-painikkeesta.",
-          "Listan ulkopuolisille palveluille — lisää MCP käsin asetustiedostojen kautta; on myös mukautettuja connectoreita.",
-          "Claude Code — Code-istuntojen käyttäytyminen: salli Bypass permissions, worktreen sijainti, automaattinen arkistointi PR:n jälkeen, Previewin ja Persist sessionsin päälle/pois.",
-          "Cowork — agenttitilan ja Dispatchin asetukset."
+          "Cowork: New task antaa tehtävän, \"Work in a project\" sitoo sen [[node:projects|projektiin]], jolla on oma tietonsa ja ohjeensa; Scheduled — toistuvat tehtävät aikataulun mukaan; Live artifacts — päivittyvät tulosartefaktit; Dispatch (Beta) — tehtävien lähetys puhelimesta (vaatii Pro/Max, ei Team/Enterprise); Customize — connectorit, skillit ja liitännäiset yhdessä paikassa. Yksityiskohtainen läpikäynti on tutoriaalissa [[tutorial:claude-cowork|Claude Cowork]].",
+          "Settings → Connectors — integraatiot (Google Calendar, Slack, GitHub, Linear, Notion …): nämä ovat [[node:mcp|MCP-palvelimia]] graafisella asetuksella, lisätään myös composerin \"+\"-painikkeesta; listan ulkopuolisille palveluille MCP lisätään käsin asetustiedostojen kautta (on myös mukautettuja connectoreita).",
+          "Settings → Claude Code — Code-istuntojen käyttäytyminen: salli Bypass permissions, worktreen sijainti, automaattinen arkistointi PR:n jälkeen, Previewin ja Persist sessionsin päälle/pois. Settings → Cowork — agenttitilan ja Dispatchin asetukset.",
+          "Desktop app → General -osio: Computer use -kytkin, järjestelmäoikeuksien tila, Denied apps (sovellukset, joihin Claude ei koske) ja \"Unhide apps when Claude finishes\".",
+          "Desktop app → Extensions — laajennusten/connectoreiden asennus yhdellä klikkauksella ilman terminaalia. Desktop app → Developer — paikallisten MCP-palvelimien liittäminen ja kehittäjäkonfiguraatio; chat-sovelluksen MCP:t (claude_desktop_config.json) tunnistetaan myös Code-välilehdellä.",
+          "CLI ↔ Desktop: sama moottori yhteisin asetuksin (CLAUDE.md, MCP-palvelimet ~/.claude.json ja .mcp.json, hooks, skills, settings); istunnon siirto terminaalista komennolla /desktop ([[node:claude-code|CLI]]). Mitä Desktopissa ei ole: kolmannen osapuolen tarjoajat (Bedrock/Vertex/Foundry), Linux, inline-ehdotukset, agent teams, terminaalin dialogit (/permissions, /config, /agents).",
+          "Häiriöt: 403 — kirjaudu ulos ja takaisin sisään; tyhjä näyttö — käynnistä uudelleen/päivitä; Windowsissa Code vaatii Gitin; jos MCP-palvelin ei vastaa Windowsissa — tarkista asetus, käynnistä sovellus uudelleen ja katso tehtävienhallinnasta, onko palvelinprosessi elossa."
         ],
-        "validate": "Avasit Connectorsin ja ymmärrät, että se on MCP kätevällä liittämisvelholla.",
-        "tip": "Connectoreiden Disconnect/Manage löytyy samasta paikasta, Settings → Connectors, tai composerin \"Manage connectors\" -kohdasta."
-      },
-      "ws-15": {
-        "title": "Desktop app -osio: General, Extensions, Developer",
-        "time": "",
-        "why": "Tämä on sitä, mitä selaimessa ei ole: paikalliset laajennukset ja omien MCP-palvelimien liittäminen.",
-        "instructions": [
-          "Desktop app → General: Computer use -kytkin, järjestelmäoikeuksien tila, Denied apps (sovellukset, joihin Claude ei koske) ja \"Unhide apps when Claude finishes\".",
-          "Extensions — laajennusten/connectoreiden asennus yhdellä klikkauksella, ilman terminaalia.",
-          "Developer — paikallisten MCP-palvelimien liittäminen ja kehittäjäkonfiguraatio.",
-          "Chat-sovelluksen MCP:t (claude_desktop_config.json) tunnistetaan myös Code-välilehdellä."
-        ],
-        "validate": "Löysit Computer use -kytkimen kohdasta Desktop app → General ja ymmärrät, mihin Developer on.",
-        "tip": "Jos MCP-palvelin ei vastaa Windowsissa — tarkista asetus, käynnistä sovellus uudelleen ja katso tehtävienhallinnasta, onko palvelinprosessi elossa."
-      },
-      "ws-16": {
-        "title": "CLI ↔ Desktop ja vianetsintä",
-        "time": "",
-        "why": "Desktop ja [[node:claude-code|CLI]] ovat sama moottori; kun tunnet yhteyden, et menetä asetuksia ja korjaat häiriöt nopeasti.",
-        "instructions": [
-          "Yhteiset asetukset: CLAUDE.md, MCP-palvelimet (~/.claude.json, .mcp.json), hooks, skills, settings — toimivat sekä siellä että täällä.",
-          "Istunnon siirto terminaalista Desktopiin: komento /desktop (kun kirjautuneena tilauksella).",
-          "Mitä Desktopissa ei ole: kolmannen osapuolen tarjoajat (Bedrock/Vertex/Foundry), Linux, inline-ehdotukset, agent teams, terminaalin dialogit (/permissions, /config, /agents).",
-          "Häiriöt: 403 — kirjaudu ulos ja takaisin sisään; tyhjä näyttö — käynnistä uudelleen/päivitä; Windowsissa Code vaatii Gitin."
-        ],
-        "validate": "Ymmärrät, että asetukset ovat yhteiset, ja tiedät ensimmäisen toimen 403-virheessä.",
-        "tip": "Käytä Desktopia rinnakkaisiin istuntoihin ja visuaaliseen katselmointiin, CLI:tä skripteihin ja automaatioon."
+        "validate": "Avasit Connectorsin (ymmärrät, että se on MCP), löysit Computer use -kytkimen kohdasta Desktop app → General ja tiedät ensimmäisen toimen 403-virheessä.",
+        "tip": "Connectoreiden Disconnect/Manage — kohdassa Settings → Connectors tai composerin “Manage connectors” -kohdasta. 403-virheessä kirjaudu ulos ja takaisin; tyhjä näyttö — käynnistä uudelleen/päivitä; Windowsissa Code vaatii Gitin."
       }
     }
   },
