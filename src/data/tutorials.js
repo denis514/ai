@@ -2579,6 +2579,216 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "m-what": {
+    "nodeId": "m-what",
+    "icon": "puzzle",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "mcp"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "mcp",
+      "m-ready",
+      "m-custom"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "m-ready": {
+    "nodeId": "m-ready",
+    "icon": "plug",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "mcp"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "m-what",
+      "m-security",
+      "mcp"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "m-custom": {
+    "nodeId": "m-custom",
+    "icon": "tools",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [
+      "mcp"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "m-debug",
+      "m-patterns",
+      "m-security"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "m-security": {
+    "nodeId": "m-security",
+    "icon": "shield",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [
+      "mcp"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "m-custom",
+      "sys-agent-sandbox",
+      "mcp"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "m-patterns": {
+    "nodeId": "m-patterns",
+    "icon": "compass",
+    "level": "advanced",
+    "audience": "developers",
+    "prerequisites": [
+      "mcp"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "m-custom",
+      "m-security",
+      "m-debug"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "m-debug": {
+    "nodeId": "m-debug",
+    "icon": "testtube",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [
+      "mcp"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "m-custom",
+      "m-patterns",
+      "claude-code"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 

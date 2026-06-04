@@ -6967,5 +6967,263 @@
         "tip": "Hyvä malli poistaa rutiinia; huono lisää sitä. Jos muokkaukset lisääntyivät — malli on liian jäykkä."
       }
     }
+  },
+  "m-what": {
+    "title": "Mikä MCP on",
+    "subtitle": "Avoin protokolla: palvelin altistaa työkaluja ja resursseja, ja Claude-asiakas käyttää niitä",
+    "totalTime": "6 шагов",
+    "whatItIs": "MCP (Model Context Protocol) on avoin standardi, jossa ulkoinen palvelin altistaa työkaluja (tools), resursseja (resources) ja promptipohjia (prompts), ja Clauden kaltainen asiakas löytää ja kutsuu niitä. Yksi protokolla kymmenien yhteensopimattomien integraatioiden sijaan.",
+    "approach": "Etenemme motivaatiosta käytäntöön: ensin miksi standardia tarvitaan, sitten miten asiakas↔palvelin-pari toimii, miten MCP eroaa tavallisesta API:sta ja pluginista, missä se oikeasti toimii, miten otat ensikontaktin valmiiseen palvelimeen ja missä teknologian rajat kulkevat. Käsitteellistä, ilman koodia.",
+    "outcomes": [
+      "Selität omin sanoin, mikä MCP on ja minkä ongelman se ratkaisee",
+      "Erotat protokollan kolme olennaisuutta: tools, resources, prompts",
+      "Ymmärrät asiakkaan ja palvelimen roolit sekä kutsun suunnan",
+      "Näet eron MCP:n ja tavallisen REST API:n tai pluginin välillä",
+      "Tiedät, missä MCP jo toimii ja miten valmiin palvelimen kytkee"
+    ],
+    "applyIn": [
+      {
+        "title": "Työkalujen arviointi",
+        "description": "Kun valitset, miten uusi järjestelmä kytketään Claudeen, tiedät, antaako MCP-palvelin oikean edun verrattuna itse tehtyyn integraatioon."
+      },
+      {
+        "title": "Keskustelu tiimin kanssa",
+        "description": "Osaat selittää kollegoille, miksi MCP on standardi eikä vain yksi API lisää, ja poistaa sekaannuksen."
+      },
+      {
+        "title": "Ensimmäinen kytkentä",
+        "description": "Kytket valmiin MCP-palvelimen Claudeen ja kokeilet heti sen työkaluja käytännössä."
+      }
+    ],
+    "pitfalls": [
+      "Sekoittaa MCP REST API:n kanssa — tämä on eri taso: mallin työkalujen orkestrointi, ei yksittäisiä pyyntöjä",
+      "Luulla, että MCP-palvelin on pakosti pilvessä — useammin se on paikallinen prosessi omalla koneellasi",
+      "Olettaa, että palvelin 'tekee työn itse' — se vain altistaa kyvyt; malli päättää kutsumisesta",
+      "Odottaa, että yksi palvelin kattaa kaiken — kukin palvelin koskee yleensä yhtä järjestelmää (tiedostot, DB, repo)",
+      "Sekoittaa tools ja resources: tools ovat toimintoja, resources luettavaa dataa"
+    ],
+    "exercises": [
+      {
+        "question": "Selitä kolmella lauseella, miten MCP eroaa tavallisesta API-integraattorista ja miksi se on tärkeää.",
+        "hint": "Ajattele tasoa: API on 'miten haetaan dataa'; MCP on 'miten työkalut altistetaan standardisti, jotta mikä tahansa asiakas löytää ne'."
+      },
+      {
+        "question": "Lajittele: mikä on tool, mikä resource, mikä prompt? 'Lue tiedosto', 'luo tehtävä', 'myyntiraportin pohja'.",
+        "hint": "Toiminto, joka muuttaa tai käynnistää jotain, on tool. Luettava data on resource. Valmis dialogipohja on prompt."
+      },
+      {
+        "question": "Nimeä kaksi paikkaa, joissa MCP jo toimii, ja yksi tilanne, jossa sitä ei tarvita.",
+        "hint": "Muista Claude-asiakkaat ympäristö-askeleesta; ei tarvita, kun integraatiota ei ole lainkaan tai pelkkä mallin vastaus riittää."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi MCP:tä tarvitaan",
+        "time": "",
+        "why": "Ilman yhteistä standardia jokainen tuote keksi oman tapansa kytkeä työkalut malliin — se ei skaalautunut. MCP ratkaisee tämän kertaheitolla.",
+        "instructions": [
+          "Kuvittele kymmenen palvelua, joista kullakin oma integraatioformaatti Clauden kanssa — kymmenen yhteensopimatonta 'sovitinta'",
+          "MCP tuo yhden protokollan: yksi tapa altistaa työkalut, jonka mikä tahansa yhteensopiva asiakas ymmärtää",
+          "Muista kaava: yksi protokolla kymmenien integraatioiden sijaan — ja ekosysteemi kasvaa nopeasti",
+          "Kytke tämä yleiseen käsitteeseen [[node:mcp|MCP]] kytkentästandardina"
+        ],
+        "validate": "Osaat sanoa yhdellä lauseella, minkä ongelman MCP poistaa.",
+        "tip": "Vertaus: MCP mallin työkaluille on kuin USB laitteille. Yksi liitäntä liittimien viidakon sijaan."
+      },
+      "s2": {
+        "title": "Miten se toimii: asiakas ja palvelin",
+        "time": "",
+        "why": "MCP:n käyttämiseksi tulee ymmärtää asiakas↔palvelin-pari ja kolme olennaisuutta, jotka palvelin altistaa.",
+        "instructions": [
+          "Palvelin on osapuoli, joka altistaa kyvyt; asiakas (Claude) on osapuoli, joka löytää ja kutsuu niitä",
+          "Palvelin altistaa kolmenlaisia olennaisuuksia: tools (toiminnot), resources (luettava data), prompts (valmiit pohjat)",
+          "Kutsun suunta: malli päättää, mitä toolia se tarvitsee, ja pyytää asiakasta kutsumaan sitä palvelimelta",
+          "Tulos palaa mallille, joka jatkaa päättelyä vastaus huomioiden"
+        ],
+        "validate": "Osaat nimetä, kuka on asiakas, kuka palvelin, ja luetella tools/resources/prompts.",
+        "tip": "Palvelin ei päätä mitään itse — se vain tarjoaa valikon kykyjä. Malli tekee valinnan."
+      },
+      "s3": {
+        "title": "Miten se eroaa API:sta ja pluginista",
+        "time": "",
+        "why": "Aloittelijoiden suurin sekaannus on pitää MCP:tä 'yhtenä API:na lisää'. Se on eri taso, ja väärinymmärrys johtaa suunnitteluvirheisiin.",
+        "instructions": [
+          "Tavallinen REST API on 'miten haetaan dataa' tietyllä pyynnöllä tiettyyn osoitteeseen",
+          "MCP on standardi tapa altistaa työkalut niin, että asiakas itse löytää ja orkestroi ne",
+          "Vanha plugin-lähestyminen oli sidottu yhteen tuotteeseen; MCP-palvelin toimii minkä tahansa yhteensopivan asiakkaan kanssa",
+          "Muista ydinkohta: MCP on mallin työkalujen orkestrointi, ei yksittäisiä pyyntöjä"
+        ],
+        "validate": "Osaat selittää eron 'MCP vs REST API' ilman sanoja 'myös API'.",
+        "tip": "Jos huomaat ajattelevasi 'tämähän on vain API', kysy: kuka löytää työkalut ja päättää, mitä kutsutaan? MCP:ssä sen tekee malli asiakkaan kautta."
+      },
+      "s4": {
+        "title": "Missä MCP toimii",
+        "time": "",
+        "why": "MCP:n kokeilemiseksi tulee tuntea ympäristöt, joissa asiakas on jo sisäänrakennettu ja valmis kytkemään palvelimia.",
+        "instructions": [
+          "Claude Desktop — työpöytäsovellus, jossa MCP-palvelimet kytketään asetusten kautta",
+          "[[node:claude-code|Claude Code]] — terminaalissa ja editorissa MCP-palvelimet laajentavat agentin kykyjä",
+          "Connectors — hallitut kytkennät ulkoisiin järjestelmiin MCP:n päällä",
+          "Huomaa: useammin palvelin on paikallinen prosessi koneellasi, ei välttämättä pilvi"
+        ],
+        "validate": "Osaat nimetä vähintään kaksi paikkaa, joissa Claude toimii MCP-asiakkaana.",
+        "tip": "Helpoin aloittaa on Claude Desktop: palvelimen kytkentä siellä on yhden asetustiedoston muokkaus."
+      },
+      "s5": {
+        "title": "Ensimmäinen käytännön kontakti",
+        "time": "",
+        "why": "Teoria juurtuu käytännössä: valmiin palvelimen kytkentä näyttää koko työkalujen löytämis- ja kutsumissyklin elävänä.",
+        "instructions": [
+          "Ota yksi [[node:m-ready|valmiista palvelimista]] — älä kirjoita omaa, aloita testatusta",
+          "Kytke se asiakkaaseen (esimerkiksi Claude Desktopiin asetusten kautta)",
+          "Käynnistä asiakas uudelleen ja varmista, että sen tools ilmestyvät saatavilla olevien listalle",
+          "Anna Claudelle tehtävä, joka tarvitsee tätä työkalua, ja katso, miten malli kutsuu sitä"
+        ],
+        "validate": "Valmis palvelin on kytketty ja Claude on kutsunut sen toolia vähintään kerran.",
+        "tip": "Jos haluat enemmän — voit myöhemmin rakentaa [[node:m-custom|oman palvelimen]], mutta tunne ensin sykli valmiilla."
+      },
+      "s6": {
+        "title": "Rajat ja yleiset väärinkäsitykset",
+        "time": "",
+        "why": "Teknologian rajojen ymmärtäminen suojaa liioitelluilta odotuksilta ja tyypillisiltä suunnitteluvirheiltä.",
+        "instructions": [
+          "MCP ei 'tee työtä itse': palvelin vain altistaa kyvyt; malli käynnistää kutsun",
+          "Yksi palvelin koskee yleensä yhtä järjestelmää — älä odota yhden kattavan kaikkea kerralla",
+          "Älä sekoita tools (toiminnot) ja resources (luettava data) — ne ovat eri olennaisuuksia",
+          "Testaa itsesi: selitä naapurille, mikä [[node:mcp|MCP]] on ilman sanaa 'API'"
+        ],
+        "validate": "Osaat luetella vähintään kolme rajaa/väärinkäsitystä ja läpäistä lopullisen itsetarkistuksen.",
+        "tip": "Hyvä merkki ymmärryksestä — osaat selittää MCP:n ilman ammattikieltä ja osoittaa heti, mitä se EI tee."
+      }
+    }
+  },
+  "m-ready": {
+    "title": "Valmiit MCP-palvelimet",
+    "subtitle": "Ekosysteemi tietolähteille ja työkaluille",
+    "totalTime": "6 шагов",
+    "whatItIs": "Valmis MCP-palvelin on jonkun jo kirjoittama konnektori tiettyyn palveluun (Linear, GitHub, Slack, Figma, PostgreSQL ja kymmeniä muita). Kytket sen — ja Claude saa joukon valmiita työkaluja kyseiseen palveluun, ilman ainuttakaan koodiriviä sinun puoleltasi.",
+    "approach": "Ensin ymmärrämme, miksi valmiin palvelimen ottaminen voittaa lähes aina oman kirjoittamisen. Sitten opimme etsimään niitä katalogeista, valitsemaan luotettavan, kytkemään sen Connectorsin tai konfiguraation kautta, varmistamaan että työkalut toimivat, ja lopuksi — arvioimaan mitä palvelin tarkalleen näkee turvallisuuden kannalta. Pohjana on [[node:mcp|MCP]] protokollana ja [[node:m-what|MCP:n idea]].",
+    "outcomes": [
+      "Ymmärrät, milloin ottaa valmis palvelin ja milloin kirjoittaa oma",
+      "Osaat löytää palvelimia virallisesta katalogista ja asiakasohjelmien kaupoista",
+      "Osaat arvioida palvelimen luotettavuuden lähteen, oikeuksien ja tuen perusteella",
+      "Kytket palvelimen Connectors-käyttöliittymän tai konfiguraation kautta",
+      "Varmistat, että työkalut ovat saatavilla, ja tiedostat pääsyn riskit"
+    ],
+    "applyIn": [
+      {
+        "title": "Seuranta + koodi -yhdistelmä",
+        "description": "Claude lukee Linear- tai Jira-tikettejä ja avaa itse PR:ia GitHubissa — kaksi valmista integraatiota viikkojen kehitystyön sijaan."
+      },
+      {
+        "title": "Tietokannan kanssa työskentely",
+        "description": "Kytket valmiin PostgreSQL-palvelimen ja Claude vastaa datakysymyksiin suoraan, ilman manuaalisia vientejä."
+      },
+      {
+        "title": "Tiimiviestintä",
+        "description": "Slack- tai Notion-palvelin antaa Claudelle pääsyn kanaviin ja muistiinpanoihin — se kerää kontekstin keskustelusta itse."
+      }
+    ],
+    "pitfalls": [
+      "Oman Jira/Slack/Figma-konnektorin kirjoittaminen, kun virallinen kattaa 95% tapauksista",
+      "Community-palvelimen kytkentä työympäristöön ilman koodikatselmointia — se on turvallisuusriski",
+      "Olla tarkistamatta, mitkä oikeudet (scope) tokenilla on — annat Claudelle enemmän pääsyä kuin tarvitaan",
+      "Olettaa että 'valmis' tarkoittaa 'turvallinen': palvelin näkee kaiken mihin annat sille pääsyn",
+      "Olla käyttämättä MCP Inspectoria virheiden etsinnässä — menetät tunteja arvailuun"
+    ],
+    "exercises": [
+      {
+        "question": "Tarvitset Clauden työskentelemään Linear-tehtävien kanssa. Katalogissa on virallinen palvelin. Kannattaako kirjoittaa oma konnektori?",
+        "hint": "Vertaa kustannusta: minuutteja valmiin kytkemiseen versus 1-4 viikkoa kehitystä ja jatkuvaa ylläpitoa omalle."
+      },
+      {
+        "question": "Löysit kaksi palvelinta yhdelle palvelulle: virallisen Anthropicilta ja community-version. Kumman valitset työprojektiin ja miksi?",
+        "hint": "Katso lähdettä, tukea ja tarvitaanko koodiauditia. Community-palvelin tuotannossa vaatii koodin katselmoinnin."
+      },
+      {
+        "question": "Palvelimen kytkennän jälkeen Claude ei näe yhtään uutta työkalua. Mitä tarkistat ensimmäisenä?",
+        "hint": "Asiakkaan uudelleenkäynnistys, tokenin ja sen oikeuksien oikeellisuus, ja MCP Inspector todellisen virheen näkemiseen."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi valmis palvelin, ei oma",
+        "time": "",
+        "why": "Keskeinen päätös tehdään ennen kytkentää: ottaa olemassa oleva vai rakentaa. Useimmissa tapauksissa valmis vaihtoehto voittaa murskaavasti.",
+        "instructions": [
+          "Ota peruslähtökohdaksi: jos palvelu on jo katalogissa — otat valmiin palvelimen",
+          "Kirjoita oma konnektori vain kolmessa tapauksessa: palvelua ei ole katalogissa, tarvitset erityisen palvelinlogiikan, tai compliance kieltää kolmannen osapuolen palvelimet",
+          "Vertaa kustannusta: valmis — minuutteja kytkentään; oma — 1-4 viikkoa kehitystä plus jatkuva ylläpito",
+          "Huomaa valmiin bonus: kun toimittaja muuttaa API:aan, päivitykset tulevat automaattisesti — sinun ei tarvitse korjata mitään"
+        ],
+        "validate": "Osaat nimetä kolme (ja vain kolme) tapausta, joissa oman konnektorin kirjoittaminen valmiin sijaan on perusteltua.",
+        "tip": "Vertaa oppituntiin [[node:m-custom|omasta MCP-palvelimesta]] — sitä tarvitaan harvemmin kuin miltä näyttää."
+      },
+      "s2": {
+        "title": "Mistä etsiä palvelimia",
+        "time": "",
+        "why": "Valmiin ottamiseksi pitää tietää, mistä katsoa. Lähteitä on useita, ja ne täydentävät toisiaan.",
+        "instructions": [
+          "Avaa virallinen katalogi: github.com/modelcontextprotocol/servers — se on peruslista",
+          "Katso asiakasohjelmasi katalogia: Claude Desktop, Cursor, Continue — jokaisessa on sisäänrakennettu lista saatavilla olevista palvelimista",
+          "Jos käytät Connectorsia Claudessa — integraatiolista näkyy suoraan käyttöliittymässä, ilman GitHub-hakua",
+          "Muista kolme palvelintyyppiä: viralliset (Anthropicilta), vendor (omistavalta yritykseltä, esim. Linear), community"
+        ],
+        "validate": "Löysit tarvitsemasi palvelun ainakin yhdestä lähteestä ja ymmärrät, mihin kolmesta tyypistä se kuuluu.",
+        "tip": "Katalogi kasvaa joka kuukausi — jos palvelua ei ole tänään, tarkista uudelleen parin viikon päästä."
+      },
+      "s3": {
+        "title": "Miten valita luotettava",
+        "time": "",
+        "why": "Kaikki palvelimet eivät ole yhtä luotettavia. Samalla palvelulla voi olla useita eri laatuisia palvelimia — valinta vaikuttaa sekä vakauteen että turvallisuuteen.",
+        "instructions": [
+          "Tarkista lähde: viralliset ja vendor-palvelimet ovat oletuksena luotettavampia kuin community",
+          "Katso tukea: milloin oli viimeisin päivitys, onko avoimia bugeja, ovatko ylläpitäjät aktiivisia",
+          "Arvioi oikeudet, joita palvelin pyytää: mitä vähemmän pääsyä se vaatii, sitä parempi",
+          "Työympäristöön ota community-palvelin vain koodiauditin jälkeen — muuten se on turvallisuusriski"
+        ],
+        "validate": "Useasta palvelinvaihtoehdosta yhdelle palvelulle osaat perustellusti valita yhden ja selittää, miksi juuri sen.",
+        "tip": "Jos valitset virallisen ja communityn väliltä yhtäläisin ominaisuuksin — ota virallinen, vähemmän yllätyksiä."
+      },
+      "s4": {
+        "title": "Miten kytkeä",
+        "time": "",
+        "why": "Kytkentä on joko pari klikkausta Connectorsin kautta tai muutama rivi konfiguraatiossa. Molemmat tiet ovat yksinkertaisia, kun tietää mitä minne kirjoitetaan.",
+        "instructions": [
+          "Yksinkertainen tie — Connectors Claudessa: valitset integraation käyttöliittymässä ja käyt valtuutuksen läpi ohjeiden mukaan, ilman tiedostoja",
+          "Konfiguraatiotie: `claude_desktop_config.json` -tiedostoon lisäät palvelimen (esim. `@modelcontextprotocol/server-linear`) ja sen tokenin",
+          "Hae token itse palvelusta (Linear, GitHub jne.) ja anna sille vain tarvittavat oikeudet",
+          "Konfiguraation kautta lisäämisen jälkeen — käynnistä asiakas uudelleen, jotta se poimii uuden palvelimen"
+        ],
+        "validate": "Palvelin näkyy kytkettyjen listassa: joko aktiivisena Connectorina tai konfiguraatiomerkintänä uudelleenkäynnistyksen jälkeen.",
+        "tip": "Aloittelijoiden on helpompi aloittaa Connectors-käyttöliittymästä — konfiguraation voi opetella myöhemmin."
+      },
+      "s5": {
+        "title": "Varmista, että työkalut toimivat",
+        "time": "",
+        "why": "Palvelimen kytkeminen ei tarkoita, että se toimii. Pitää varmistaa, että Claude todella näkee työkalut ja osaa käyttää niitä.",
+        "instructions": [
+          "Kysy Claudelta, mitkä työkalut ovat nyt sen saatavilla — se luettelee, mitä palvelin antoi",
+          "Anna yksinkertainen turvallinen lukutehtävä (esim. «näytä viimeisimmät tikettini») yhteyden testaamiseksi",
+          "Jos työkaluja ei ole — tarkista asiakkaan uudelleenkäynnistys, tokenin oikeellisuus ja sen oikeudet",
+          "Virheiden analysointiin avaa MCP Inspector — se näyttää todellisen syyn arvailun sijaan"
+        ],
+        "validate": "Claude luettelee palvelimen työkalut ja suorittaa onnistuneesti ainakin yhden yksinkertaisen lukuoperaation.",
+        "tip": "MCP Inspector säästää tunteja — älä debuggaa sokkona."
+      },
+      "s6": {
+        "title": "Valmiin palvelimen turvallisuus",
+        "time": "",
+        "why": "'Valmis' ei tarkoita 'turvallinen'. Palvelin näkee kaiken mihin annat sille pääsyn ja työskentelee sinun tokeneillasi — tätä pitää hallita.",
+        "instructions": [
+          "Ymmärrä periaate: palvelin saa täsmälleen ne oikeudet, jotka antamallasi tokenilla on — ei enempää, ei vähempää",
+          "Anna tokenille minimaaliset oikeudet (scope): vain luku, jos kirjoitusta ei tarvita",
+          "Community-palvelimille työympäristössä tee koodiaudit ennen kytkentää",
+          "Tarkista kytketyt palvelimet säännöllisesti ja peru niiden tokenit, joita et enää käytä"
+        ],
+        "validate": "Jokaisesta kytketystä palvelimesta osaat sanoa, mihin dataan sillä on pääsy ja miksi sille on annettu juuri nämä oikeudet.",
+        "tip": "Lisää uhkamallista — oppitunnissa [[node:m-security|MCP:n turvallisuus]]."
+      }
+    }
   }
 }

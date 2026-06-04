@@ -6967,5 +6967,263 @@
         "tip": "A good template removes routine; a bad one adds it. If edits increased — the template is too rigid."
       }
     }
+  },
+  "m-what": {
+    "title": "What MCP is",
+    "subtitle": "An open protocol: the server exposes tools and resources, and the Claude client uses them",
+    "totalTime": "6 шагов",
+    "whatItIs": "MCP (Model Context Protocol) is an open standard by which an external server exposes tools, resources, and prompt templates, while a client like Claude discovers and calls them. One protocol instead of dozens of incompatible integrations.",
+    "approach": "We go from motivation to practice: first why a standard is needed, then how the client↔server pair works, how MCP differs from a regular API and a plugin, where it actually runs, how to make first contact with a ready-made server, and where the technology's limits are. Conceptual, no code.",
+    "outcomes": [
+      "You explain in your own words what MCP is and what problem it solves",
+      "You distinguish the protocol's three entities: tools, resources, prompts",
+      "You understand the client and server roles and the direction of the call",
+      "You see the difference between MCP and a regular REST API or plugin",
+      "You know where MCP already runs and how to connect a ready-made server"
+    ],
+    "applyIn": [
+      {
+        "title": "Evaluating tools",
+        "description": "When choosing how to connect a new system to Claude, you can tell whether an MCP server gives a real advantage over a custom integration."
+      },
+      {
+        "title": "Talking to your team",
+        "description": "You can explain to colleagues why MCP is a standard and not just another API, clearing up the confusion."
+      },
+      {
+        "title": "First connection",
+        "description": "You connect a ready-made MCP server to Claude and immediately try its tools in action."
+      }
+    ],
+    "pitfalls": [
+      "Confusing MCP with REST API — it's a different layer: orchestrating model tools, not individual requests",
+      "Thinking an MCP server must be in the cloud — more often it's a local process on your machine",
+      "Assuming the server 'does the work itself' — it only exposes capabilities; the model decides to call them",
+      "Expecting one server to cover everything — each server is usually about one system (files, DB, repo)",
+      "Mixing up tools and resources: tools are actions, resources are data to read"
+    ],
+    "exercises": [
+      {
+        "question": "Explain in three sentences how MCP differs from a regular API integrator and why it matters.",
+        "hint": "Think about the layer: an API is 'how to go fetch data'; MCP is 'how to expose tools in a standard way so any client can discover them'."
+      },
+      {
+        "question": "Sort these out: which is a tool, which a resource, which a prompt? 'Read a file', 'create a task', 'a sales report template'.",
+        "hint": "An action that changes or invokes something is a tool. Data to read is a resource. A ready-made dialog template is a prompt."
+      },
+      {
+        "question": "Name two places where MCP already runs, and one situation where it isn't needed.",
+        "hint": "Recall the Claude clients from the environments step; it isn't needed where there's no integration at all or a plain model answer suffices."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why MCP is needed",
+        "time": "",
+        "why": "Without a common standard, every product invented its own way to connect tools to the model — that didn't scale. MCP solves this once and for all.",
+        "instructions": [
+          "Imagine ten services, each with its own integration format with Claude — ten incompatible 'adapters'",
+          "MCP introduces a single protocol: one way to expose tools that any compatible client understands",
+          "Remember the formula: one protocol instead of dozens of integrations — and the ecosystem grows fast",
+          "Tie this to the general concept of [[node:mcp|MCP]] as a connection standard"
+        ],
+        "validate": "You can state in one sentence what problem MCP removes.",
+        "tip": "Analogy: MCP for model tools is like USB for devices. One port instead of a zoo of connectors."
+      },
+      "s2": {
+        "title": "How it works: client and server",
+        "time": "",
+        "why": "To use MCP you need to understand the client↔server pair and the three entities the server exposes.",
+        "instructions": [
+          "The server is the side that exposes capabilities; the client (Claude) is the side that discovers and calls them",
+          "The server exposes three kinds of entities: tools (actions), resources (data to read), prompts (ready-made templates)",
+          "Direction of the call: the model decides which tool it needs and asks the client to call it on the server",
+          "The result returns to the model, which continues reasoning with the answer in mind"
+        ],
+        "validate": "You can name who's the client, who's the server, and list tools/resources/prompts.",
+        "tip": "The server decides nothing itself — it just offers a menu of capabilities. The model makes the choice."
+      },
+      "s3": {
+        "title": "How it differs from an API and a plugin",
+        "time": "",
+        "why": "The main beginner confusion is treating MCP as 'just another API'. It's a different layer, and misunderstanding it leads to design mistakes.",
+        "instructions": [
+          "A regular REST API is 'how to go fetch data' with a specific request to a specific address",
+          "MCP is a standard way to expose tools so the client itself discovers and orchestrates them",
+          "The old plugin approach was tied to one product; an MCP server works with any compatible client",
+          "Remember the key point: MCP is orchestration of model tools, not individual requests"
+        ],
+        "validate": "You can explain the 'MCP vs REST API' difference without the words 'also an API'.",
+        "tip": "If you catch yourself thinking 'this is just an API', ask: who discovers the tools and decides which to call? In MCP it's the model via the client."
+      },
+      "s4": {
+        "title": "Where MCP runs",
+        "time": "",
+        "why": "To try MCP, you need to know the environments where the client is already built in and ready to connect servers.",
+        "instructions": [
+          "Claude Desktop — the desktop app where MCP servers are connected through settings",
+          "[[node:claude-code|Claude Code]] — in the terminal and editor, MCP servers extend the agent's capabilities",
+          "Connectors — managed connections to external systems built on top of MCP",
+          "Note: more often the server is a local process on your machine, not necessarily the cloud"
+        ],
+        "validate": "You can name at least two places where Claude acts as an MCP client.",
+        "tip": "It's easiest to start with Claude Desktop: connecting a server there is editing a single settings file."
+      },
+      "s5": {
+        "title": "First hands-on contact",
+        "time": "",
+        "why": "Theory sticks through practice: connecting a ready-made server shows the whole cycle of tool discovery and invocation live.",
+        "instructions": [
+          "Take one of the [[node:m-ready|ready-made servers]] — don't write your own, start with a proven one",
+          "Connect it in the client (for example, in Claude Desktop via settings)",
+          "Restart the client and make sure its tools appear in the list of available ones",
+          "Give Claude a task that needs this tool and watch how the model calls it"
+        ],
+        "validate": "A ready-made server is connected and Claude has called its tool at least once.",
+        "tip": "If you want more — you can later build [[node:m-custom|your own server]], but first get a feel for the cycle on a ready-made one."
+      },
+      "s6": {
+        "title": "Limits and common misconceptions",
+        "time": "",
+        "why": "Understanding the technology's limits protects you from inflated expectations and typical design mistakes.",
+        "instructions": [
+          "MCP doesn't 'do the work itself': the server only exposes capabilities; the model initiates the call",
+          "One server is usually about one system — don't expect one to cover everything at once",
+          "Don't confuse tools (actions) with resources (data to read) — they are different entities",
+          "Test yourself: explain to a neighbor what [[node:mcp|MCP]] is without the word 'API'"
+        ],
+        "validate": "You can list at least three limits/misconceptions and pass the final self-check.",
+        "tip": "A good sign of understanding — you can explain MCP without jargon and immediately point out what it does NOT do."
+      }
+    }
+  },
+  "m-ready": {
+    "title": "Ready-made MCP servers",
+    "subtitle": "An ecosystem for data sources and tools",
+    "totalTime": "6 шагов",
+    "whatItIs": "A ready-made MCP server is a connector to a specific service (Linear, GitHub, Slack, Figma, PostgreSQL and dozens more) that someone has already written. You connect it — and Claude gets a set of ready tools for that service, without a single line of code on your side.",
+    "approach": "First we understand why taking a ready-made server almost always beats writing your own. Then we learn to find them in catalogs, pick a reliable one, connect it via Connectors or a config, verify the tools actually work, and finally — assess what exactly the server can see from a security standpoint. We build on [[node:mcp|MCP]] as a protocol and on the [[node:m-what|idea of MCP]].",
+    "outcomes": [
+      "You understand when to take a ready-made server and when to write your own",
+      "You can find servers in the official catalog and in client marketplaces",
+      "You can judge a server's reliability by its source, permissions and support",
+      "You connect a server via the Connectors GUI or via a config",
+      "You verify the tools are available and are aware of the access risks"
+    ],
+    "applyIn": [
+      {
+        "title": "Tracker + code combo",
+        "description": "Claude reads Linear or Jira tickets and opens PRs on GitHub itself — two ready integrations instead of weeks of development."
+      },
+      {
+        "title": "Working with a database",
+        "description": "You connect a ready-made PostgreSQL server and Claude answers data questions directly, without manual exports."
+      },
+      {
+        "title": "Team communication",
+        "description": "A Slack or Notion server gives Claude access to channels and notes — it gathers context from the conversation on its own."
+      }
+    ],
+    "pitfalls": [
+      "Writing your own Jira/Slack/Figma connector when the official one covers 95% of cases",
+      "Hooking up a community server in a work environment without code review — that's a security risk",
+      "Not checking what permissions (scope) the token has — you give Claude more access than needed",
+      "Assuming 'ready-made' means 'safe': the server sees everything you grant it access to",
+      "Not using MCP Inspector when debugging — you lose hours guessing errors"
+    ],
+    "exercises": [
+      {
+        "question": "You need Claude to work with tasks in Linear. The catalog has an official server. Should you write your own connector?",
+        "hint": "Compare the cost: minutes to connect a ready-made one versus 1-4 weeks of development and ongoing maintenance for your own."
+      },
+      {
+        "question": "You found two servers for one service: an official one from Anthropic and a community variant. Which do you pick for a work project and why?",
+        "hint": "Look at the source, support and whether a code audit is needed. A community server in prod requires reviewing its code."
+      },
+      {
+        "question": "After connecting a server, Claude sees no new tools. What do you check first?",
+        "hint": "Restarting the client, the token and its permissions being correct, and MCP Inspector to see the real error."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why a ready-made server, not your own",
+        "time": "",
+        "why": "The key decision is made before connecting: take what exists or build. In most cases the ready-made option wins by a landslide.",
+        "instructions": [
+          "Take it as a baseline rule: if the service is already in the catalog — you take the ready-made server",
+          "Write your own connector only in three cases: the service isn't in the catalog, you need special server-side logic, or compliance forbids third-party servers",
+          "Compare the cost: ready-made — minutes to connect; your own — 1-4 weeks of development plus ongoing maintenance",
+          "Note the bonus of ready-made: when the provider changes their API, updates arrive automatically — you don't have to fix anything"
+        ],
+        "validate": "You can name the three (and only three) cases where writing your own connector instead of a ready-made one is justified.",
+        "tip": "Compare with the lesson on a [[node:m-custom|custom MCP server]] — it's needed less often than it seems."
+      },
+      "s2": {
+        "title": "Where to look for servers",
+        "time": "",
+        "why": "To take something ready-made, you need to know where to look. There are several sources, and they complement each other.",
+        "instructions": [
+          "Open the official catalog: github.com/modelcontextprotocol/servers — that's the baseline list",
+          "Check your client's catalog: Claude Desktop, Cursor, Continue — each has a built-in list of available servers",
+          "If you use Connectors in Claude — the list of integrations is visible right in the interface, no GitHub search needed",
+          "Remember the three server types: official (from Anthropic), vendor (from the owning company, e.g. Linear), community"
+        ],
+        "validate": "You found the service you need in at least one of the sources and understand which of the three types it belongs to.",
+        "tip": "The catalog grows every month — if a service isn't there today, check again in a couple of weeks."
+      },
+      "s3": {
+        "title": "How to pick a reliable one",
+        "time": "",
+        "why": "Not all servers are equally reliable. The same service can have several servers of varying quality — the choice affects both stability and security.",
+        "instructions": [
+          "Check the source: official and vendor ones are more reliable than community by default",
+          "Look at support: when was the last update, are there open bugs, are the maintainers active",
+          "Assess the permissions the server requests: the less access it requires, the better",
+          "For a work environment, take a community server only after a code audit — otherwise it's a security risk"
+        ],
+        "validate": "Out of several server options for one service you can reasonably pick one and explain why exactly that one.",
+        "tip": "If choosing between official and community with equal features — take the official, fewer surprises."
+      },
+      "s4": {
+        "title": "How to connect",
+        "time": "",
+        "why": "Connecting is either a couple of clicks via Connectors or a few lines in a config. Both paths are simple once you know what goes where.",
+        "instructions": [
+          "The simple path — Connectors in Claude: pick the integration in the interface and authorize via the prompts, no files",
+          "The config path: in `claude_desktop_config.json` you add the server (e.g. `@modelcontextprotocol/server-linear`) and its token",
+          "Get the token in the service itself (Linear, GitHub, etc.) and grant it only the needed permissions",
+          "After adding via config — restart the client so it picks up the new server"
+        ],
+        "validate": "The server appears in the connected list: either as an active Connector or as a config entry after restart.",
+        "tip": "Beginners find it easier to start with the Connectors GUI — the config can be learned later."
+      },
+      "s5": {
+        "title": "Verify the tools work",
+        "time": "",
+        "why": "Connecting a server doesn't mean it works. You need to make sure Claude actually sees the tools and can use them.",
+        "instructions": [
+          "Ask Claude which tools are now available to it — it lists what the server provided",
+          "Give a simple safe read task (e.g. 'show my recent tickets') to test the connection",
+          "If there are no tools — check the client restart, the token correctness and its permissions",
+          "To analyze errors, open MCP Inspector — it shows the real cause instead of guessing"
+        ],
+        "validate": "Claude lists the server's tools and successfully performs at least one simple read operation.",
+        "tip": "MCP Inspector saves hours — don't debug blindly."
+      },
+      "s6": {
+        "title": "Security of a ready-made server",
+        "time": "",
+        "why": "'Ready-made' doesn't mean 'safe'. The server sees everything you grant it access to and works with your tokens — this needs to be controlled.",
+        "instructions": [
+          "Understand the principle: the server gets exactly the permissions of the token you gave it — no more, no less",
+          "Grant the token minimal permissions (scope): read-only if writing isn't needed",
+          "For community servers in a work environment, audit the code before connecting",
+          "Periodically review the connected servers and revoke tokens of those you no longer use"
+        ],
+        "validate": "For each connected server you can say which data it has access to and why it was given exactly those permissions.",
+        "tip": "More on the threat model — in the lesson [[node:m-security|MCP security]]."
+      }
+    }
   }
 }
