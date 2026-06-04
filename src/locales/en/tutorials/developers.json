@@ -2,7 +2,7 @@
   "skills": {
     "title": "Create your first Skill",
     "subtitle": "Turn a routine into a reproducible tool",
-    "totalTime": "25 min",
+    "totalTime": "6 steps",
     "whatItIs": "Caught yourself writing the same instructions to Claude every time? 'First check X, then do Y, in format Z...'. A Skill is your ready-made checklist for a recurring task: described once, Claude invokes it on its own when the task matches.\n\nA Skill is a folder with SKILL.md and supporting materials. Turns a one-off prompt into a stable tool — consistent quality from run to run, no rewriting rules.",
     "approach": "The key is the precise `description` in the frontmatter. Whether the Skill activates depends on it. 'Does an audit' — too vague. 'Use when user asks for audit of X with Y' — a working description.",
     "outcomes": [
@@ -158,7 +158,7 @@
   "claude-code": {
     "title": "Install and configure Claude Code",
     "subtitle": "A full AI agent in the terminal",
-    "totalTime": "",
+    "totalTime": "6 steps",
     "whatItIs": "You know VS Code Copilot that completes lines of code? [[node:claude-code|Claude Code]] does the same, but 10× the scope: reads your whole project, edits dozens of files, runs commands, does refactors. And it lives in your terminal, not your editor.\n\nAnthropic's CLI tool for working with Claude directly in the terminal. Uses [[node:cc-cmd-init|/init]], sub-agents, [[node:mcp|MCP servers]] and [[node:cc-md|CLAUDE.md]] as project memory. Turns the terminal into a full AI-powered development environment.",
     "approach": "Don't try to master everything at once. Install → run [[node:cc-cmd-init|/init]] → try one real edit → tune [[node:cc-md|CLAUDE.md]]. Most of Claude Code's power unlocks through the CLAUDE.md you write for your own project.",
     "outcomes": [
@@ -311,7 +311,7 @@
   "mcp": {
     "title": "Connect your first MCP server",
     "subtitle": "Give Claude access to external systems",
-    "totalTime": "20 min",
+    "totalTime": "6 steps",
     "whatItIs": "You know how USB-C is one cable for everything — laptop, monitor, headphones, charger? MCP is 'USB-C for AI'. One standard so Claude can connect to anything: your Linear, Notion, database, files, GitHub — without copy-paste or homemade integrations.\n\n[[node:mcp|MCP (Model Context Protocol)]] is Anthropic's open standard. Through an MCP server, Claude sees your real tools and works directly inside them.",
     "approach": "Start with an existing server (filesystem or github), not your own. First understand the ecosystem and data formats through a working example, then design your own.",
     "outcomes": [
@@ -464,7 +464,7 @@
   "agents": {
     "title": "Create your first agent",
     "subtitle": "Turn a routine into a delegatable function",
-    "totalTime": "20 min",
+    "totalTime": "6 steps",
     "whatItIs": "A sub-agent in [[node:claude-code|Claude Code]] is an isolated 'specialist' that the main Claude delegates to for a specific type of task. The agent has its own role, tools, and checklists. It turns a repeating process into a single command.",
     "approach": "Don't create an agent 'for the future'. Create it for a specific routine you're doing manually 5+ times a week right now. The description is the most important thing: whether the agent activates depends on it. If it's generic ('does X') — it will never fire.",
     "outcomes": {
@@ -618,7 +618,7 @@
   "subagents": {
     "title": "Subagents in Claude Code",
     "subtitle": "Parallel agents — Explore, Plan, your own custom ones",
-    "totalTime": "15 min",
+    "totalTime": "6 steps",
     "whatItIs": "A subagent is an isolated executor inside [[node:claude-code|Claude Code]]: its own context, its own tools, its own output. This is NOT a Skill (Skill = knowledge-of-how-to-do; Subagent = who-does-it). After this workshop the confusion disappears.",
     "approach": "First use the built-in subagents (Explore, Plan) on a real task — to understand what 'context isolation' means. Only then create your own. Without this order your own will be an 'under-Skill'.",
     "outcomes": {
@@ -782,7 +782,7 @@
   "tool-use": {
     "title": "Tool use: give Claude hands",
     "subtitle": "Function calling — the foundation of integrations, agents and MCP",
-    "totalTime": "15 min",
+    "totalTime": "6 steps",
     "whatItIs": "[[node:cap-tools|Tool use]] (function calling) is the mechanism through which Claude calls your functions via a JSON schema. It's the basis of MCP, custom agents, and any integrations. After this workshop you understand the architecture from the inside, not as 'magic'.",
     "approach": "Without good tool descriptions the agent will constantly make mistakes. First learn to write descriptions, then design tool sets. The actual call code is secondary — the SDK writes it.",
     "outcomes": {
@@ -937,7 +937,7 @@
   "hooks": {
     "title": "Hooks: automating discipline",
     "subtitle": "Guaranteed actions on events — no more 'I hope it won't forget'",
-    "totalTime": "12 min",
+    "totalTime": "6 steps",
     "whatItIs": "Hooks are shell commands that [[node:claude-code|Claude Code]] executes on events (PreToolUse, PostToolUse, Stop, etc.). They run AT THE HARNESS LEVEL, not the model level. So they're reliable: the model cannot 'forget' a hook.",
     "approach": "Hooks are code, not text. First understand events and environment variables, then write your first hook on a safe action (file formatting). Only then — on sensitive ones (deny on rm -rf).",
     "outcomes": {
@@ -1092,7 +1092,7 @@
   "first-project": {
     "title": "Create your first project with Claude",
     "subtitle": "From an empty computer to Claude Code running",
-    "totalTime": "30 min",
+    "totalTime": "6 steps",
     "whatItIs": "An end-to-end tutorial for the absolute beginner: install Node.js, open the terminal, create a folder, install [[node:claude-code|Claude Code]], run the first [[node:cc-cmd-init|/init]] and send the first real prompt. No assumption that \"you already know cd\".",
     "approach": "The tutorial branches at step 1: [[node:pl-web-setup|claude.ai]] (no terminal, you finish at step 2) or Claude Code (everything through step 6). Pick by what matters: a quick start without installs, or full control over the project files.",
     "outcomes": [
@@ -1259,7 +1259,7 @@
   "terminal-tour": {
     "title": "Terminal in 5 commands",
     "subtitle": "A live tour of the command line",
-    "totalTime": "10 min",
+    "totalTime": "6 steps",
     "whatItIs": "A hands-on mini-course: you type 5 commands one by one into a real terminal and see how they work. No theory — just keys and results.",
     "approach": "Don't read ahead. First run the command, look at the output, then read the explanation. That way muscle memory kicks in on the first try.",
     "outcomes": [
@@ -1432,7 +1432,7 @@
   "folders-workshop": {
     "title": "Folders workshop: 3 structure examples",
     "subtitle": "Audits, notes, experiment — build structure for three real cases",
-    "totalTime": "10 min",
+    "totalTime": "6 steps",
     "whatItIs": "Want to create folders with clicks in Finder/Explorer, or with a command in the terminal — your choice. This tutorial shows both ways across three live scenarios: work reports, personal notes, a throwaway experiment.",
     "approach": "Don't pick ONE way. Create every folder both ways — via Finder AND via mkdir. After 3 rounds, your preference becomes deliberate.",
     "outcomes": [
@@ -1594,7 +1594,7 @@
   "api-basics": {
     "title": "Claude API for developers",
     "subtitle": "Make your first API call and understand the primitives that power every Claude integration",
-    "totalTime": "18 min",
+    "totalTime": "6 steps",
     "whatItIs": "A hands-on introduction to the Anthropic API. You will get an API key, make your first request, understand the core primitives (messages, roles, system prompts, tokens, streaming), and learn the patterns you will use in every Claude-powered application you build.",
     "approach": "Every concept is shown with a working code example. Read the explanation, run the code, see the result. By the end you will have the mental model to build anything from a simple script to a production-grade AI feature.",
     "outcomes": {
@@ -1764,7 +1764,7 @@
   "mcp-advanced": {
     "title": "Advanced MCP: build your own server",
     "subtitle": "From ready integrations to a production-grade server you own",
-    "totalTime": "45 min",
+    "totalTime": "6 steps",
     "whatItIs": "Off-the-shelf [[node:mcp|MCP]] servers cover 80% of cases. But sooner or later you hit it: an internal service, a legacy DB with a custom schema, a gated API, non-standard auth — no server exists. So you write your own.\n\nYour own MCP is not \"hello world in 50 lines\". It is a backend component living next to production: transport, schemas, errors, retries, observability, security. This workflow is how to build it so it is not embarrassing in a registry and does not page you at 3 AM.",
     "approach": "First take the gateway decision (existing vs your own), then a minimal server on the SDK, then layer in resources/prompts, HTTP transport, Inspector, security, publish. Do not write everything at once — grow in layers, each step validated in Inspector.",
     "outcomes": [
@@ -1938,7 +1938,7 @@
   "claude-code-project": {
     "title": "Production-grade project with Claude Code",
     "subtitle": "CLAUDE.md, hooks, subagents, MCP — a big project that does not turn into chaos",
-    "totalTime": "50 min",
+    "totalTime": "6 steps",
     "whatItIs": "[[node:claude-code|Claude Code]] out of the box is already powerful. But in a big project without setup it quickly becomes the \"smart but unpredictable teammate\": breaks style, goes the wrong direction, burns tokens on the same thing.\n\nA production-grade setup turns Claude Code into a reliable contributor: knows your architecture, does not touch what is off-limits, specializes per task, sees your internal tools, gets verified on every commit.",
     "approach": "In layers. First the CLAUDE.md hierarchy (context and rules), then slash commands (repeatable operations), then guard-rails (hooks + permission policy), subagents (specialization), MCP (integrations), and finally headless mode for CI. Each layer is verified separately.",
     "outcomes": [
@@ -2110,7 +2110,7 @@
   "building-evaluations": {
     "title": "Building evaluations: measuring AI quality",
     "subtitle": "From \"seems to work\" to reproducible metrics and regression detection",
-    "totalTime": "40 min",
+    "totalTime": "6 steps",
     "whatItIs": "Production AI without evals is \"deploy and pray\". You changed a prompt, swapped a model, updated RAG — how do you know it got better? That you did not break old cases?\n\n[[node:sys-evals-benchmarks|Evals]] are your test suite for an LLM system: a fixed set of tasks, a way to score answers, a metric, CI. Not harder than unit tests, but fundamentally changes how you work: numbers instead of guesses, run-vs-run diffs instead of \"seems ok\".",
     "approach": "First the golden dataset (small but quality), then the scorer (rule or LLM judge), then the agg metric, then regression detection, finally CI. Do not start with \"100 cases and a custom framework\" — start with 20 cases and a shell script. Quality grows over time.",
     "outcomes": [
@@ -2284,7 +2284,7 @@
   "remote-computer-for-claude": {
     "title": "Build a remote computer for Claude",
     "subtitle": "An isolated environment where the agent controls a PC — not yours",
-    "totalTime": "~1.5 h",
+    "totalTime": "6 steps",
     "whatItIs": "A step-by-step build of a safe environment where [[node:cap-computer|Claude controls a computer]] inside an isolated “box” instead of on your real machine. We use Anthropic's reference Computer Use container (Docker + a desktop in the browser). After this tutorial you'll be able to set up such a system at home and safely give the agent tasks.",
     "approach": "The core principle: the agent NEVER works where your personal files, passwords and work network are. Isolation first — tasks second. Don't mount home folders, don't type real passwords, keep a kill-switch and a spending cap at hand.",
     "outcomes": [
@@ -2564,7 +2564,7 @@
   "cap-citations": {
     "title": "Citations: answers linked to sources",
     "subtitle": "How to get Claude to back each claim with a specific fragment of your documents",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "Citations is a mode where Claude, via the API, accompanies its claims with references to specific fragments of uploaded documents. You see not only the answer but the exact place in the source it rests on.",
     "approach": "We move from meaning to practice: first why verifiability matters, then how to technically enable and obtain citations, how to read the source linkage, in which scenarios it is critical, where the limits are and how to check, and finally how Citations connects to working with files and [[node:sys-rag-architecture|RAG architecture]].",
     "outcomes": [
@@ -2955,7 +2955,7 @@
   "m-patterns": {
     "title": "MCP Server Design Patterns",
     "subtitle": "Tool design the model calls easily and correctly",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "A set of MCP server design practices aimed at letting Claude pick tools confidently and correctly: a minimal tools surface, meaningful names and schemas, reliable response formats, and a deliberate split between tools and resources. This isn't about pretty code — it's about keeping the model from getting confused.",
     "approach": "We move from motivation to practice: first understand why design drives call quality, then shrink and sharpen the tools surface, bring order to names and schemas, make responses predictable (errors, pagination), separate resources from tools, and finally run the server through an anti-pattern checklist.",
     "outcomes": [
@@ -3089,7 +3089,7 @@
   "m-debug": {
     "title": "MCP debugging",
     "subtitle": "Systematically find why an MCP server won't connect or its tools aren't visible",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "A hands-on course on diagnosing MCP. It teaches you to check connection status via /mcp in [[node:claude-code|Claude Code]], isolate a server with the MCP Inspector, recognize common failures (server won't start, tools not visible, timeouts, Windows specifics) and read server logs. It ends with a working \"server won't connect\" checklist.",
     "approach": "We move from the observable to the cause: first look at what /mcp says, then isolate the server in the Inspector, then read stderr. Each step narrows the search so you never guess blindly.",
     "outcomes": [
@@ -4137,7 +4137,7 @@
   "cc-md": {
     "title": "CLAUDE.md",
     "subtitle": "The project instructions file Claude Code reads in every conversation",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "CLAUDE.md is a text file in the project root that [[node:claude-code|Claude Code]] automatically loads at the start of every conversation. You describe the stack, conventions, important paths, commands, and taboos once — and stop repeating them in each request.",
     "approach": "This course builds a working CLAUDE.md step by step: why it matters, how to create it via /init or by hand, what to put in it, how the hierarchy works (global, project, local), and how to keep the file short and current. No general prompting — only Claude Code specifics.",
     "outcomes": [
@@ -4535,7 +4535,7 @@
   "sys-vector-stores": {
     "title": "Vector stores: how to choose",
     "subtitle": "From selection criteria to a checklist: pgvector, Pinecone, Qdrant, Weaviate, Chroma for your use case",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "A practical course on choosing a vector store for RAG and semantic search. A vector store is a database for embeddings with fast ANN (approximate nearest neighbor) search. The course goes from \"do you even need one\" through comparing solution classes (managed / self-hosted / embedded in Postgres) to a justified choice for your specific scale, latency, and budget. Builds on [[node:sys-rag-architecture|RAG architecture]] and [[node:af-vector-db|Vector DB]].",
     "approach": "The decision is made not by hype but along three axes: operational complexity, latency at scale, and cost. We start from your real numbers (vector count, QPS, whether you have an ops team, whether you already run Postgres), not from \"what's popular.\" Each step gives concrete thresholds and a check that the choice won't break as you grow.",
     "outcomes": [
@@ -5997,7 +5997,7 @@
   "sys-logging-patterns": {
     "title": "What to log for AI",
     "subtitle": "Structured AI-call logs: enough for debugging, safe for compliance",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "Logging AI calls is not regular app logging. It's a structured payload per model call (model, prompt_version, tokens, latency, tool_call statuses, hashed user_id) plus a separate sampled store for full prompt/completion. The goal is to reproduce any incident by request_id without drowning the project in storage cost or breaking GDPR. This complements [[node:sys-monitoring|monitoring]] (metrics and alerts) and [[node:sys-versioning|prompt versioning]] (tying a log to a specific version).",
     "approach": "We move from motivation to implementation: first understand why AI is logged differently, then fix the minimum required payload and sampled layer, handle privacy (redact BEFORE writing), structure logs into hot/warm/cold with retention, draw the boundaries (what must never be logged), and finally assemble a checklist with a verification on a real call. Each step builds on the structure from the [[node:systems|systems layer]] node.",
     "outcomes": [
@@ -6260,7 +6260,7 @@
   "sys-rollback-strategies": {
     "title": "Rollback strategies on regression",
     "subtitle": "How to restore the previous version in minutes when a new prompt or model answers worse",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "A regression in an AI system is quieter than a bug in regular code: no stack trace, just a drop in answer quality. A rollback strategy is pre-built infrastructure (feature flags, canary, kill switch) that lets you return to the previous prompt or model version in seconds-to-minutes instead of hours of debugging and redeploy. It rests on [[node:sys-versioning|versioning]] (what to roll back) and [[node:sys-monitoring|monitoring]] (when to roll back).",
     "approach": "First we pin down why fast rollback matters and what MTTR target to hit. Then we learn to detect regressions via [[node:sys-evals-benchmarks|evals]] and [[node:sys-monitoring|monitoring]]. Next come three levels of response: fast flag-based rollback to the previous version, gradual canary rollout to avoid a mass incident entirely, and understanding the limits (no versioning means nothing to roll back to). We finish with a checklist and a game-day test.",
     "outcomes": [
@@ -6916,7 +6916,7 @@
   "sys-batch-vs-realtime": {
     "title": "Batch vs realtime: making the call",
     "subtitle": "How to decide which AI workloads run realtime and which go to batch — to protect UX and cut cost",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "A practical course on the most cost-impactful architectural decision in an AI system: where you need realtime (sync, < 5s) and where a task can safely wait an hour and go to batch at a 50% discount. We cover the choice axes (latency, volume), the Anthropic Message Batches API, hybrid and streaming patterns, and build a checklist for real use cases.",
     "approach": "We move from the batch-vs-realtime distinction to selection criteria, then to Batches API specifics and savings, to applying it on your own project, to limits and risks, and finish with a checklist and validation. Each step builds on real numbers from the [[node:sys-batch-vs-realtime|Batch vs realtime]] node and ties into [[node:sys-cost-management|cost management]] and [[node:sys-rate-limiting|rate limiting]].",
     "outcomes": [
@@ -7444,7 +7444,7 @@
   "cc-tty-sessions": {
     "title": "Sessions and history in Claude Code",
     "subtitle": "Keep context, resume work in seconds, manage several projects",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "Every claude launch creates a session — a saved record of your conversation with the model. You can save it, continue the last one, or pick any past session. It's memory across breaks: context isn't lost, and you don't need to re-explain the task.",
     "approach": "We go from understanding what a session is to practice: start a new one, continue a prior one with --continue and --resume, read history, trim context with /compact, and keep several parallel sessions per project. We finish with common mistakes and a skill check.",
     "outcomes": [
@@ -7705,7 +7705,7 @@
   "cc-tty-modes": {
     "title": "Claude Code terminal operating modes",
     "subtitle": "Normal, auto-accept edits and plan mode: which to use when and how to switch",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "Claude Code in the terminal runs in one of several permission modes: normal (every action needs confirmation), auto-accept edits (file edits apply without asking) and plan mode (read and plan only, no edits). The mode sets how much freedom the agent has and how much control you keep.",
     "approach": "We walk through the three modes one by one: what each does, what risk it carries and what work rhythm it creates. You learn to switch them mid-session with Shift+Tab and pick the right mode per task — from safely exploring unfamiliar code to fast routine edits.",
     "outcomes": [
@@ -7835,7 +7835,7 @@
   "cc-tty-keys": {
     "title": "Claude Code terminal hotkeys",
     "subtitle": "Keyboard-driven session control: interrupt, modes, input, history and help",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "The set of Claude Code terminal shortcuts that control a session without a mouse: stop generation (Esc), exit (Ctrl+C), switch mode (Shift+Tab), enter multiline text, scroll history (↑/↓, Ctrl+R) and autocomplete paths (Tab).",
     "approach": "We go by meaning, not alphabet: first why hotkeys matter at all, then groups by task — stopping, modes, input, history, help. Each step is practiced by hand in a live session until the combo becomes muscle memory.",
     "outcomes": [
@@ -8867,7 +8867,7 @@
   "cc-grp-ui": {
     "title": "Claude Code interface and appearance",
     "subtitle": "The slash-command group for theme, color, rendering, and session comfort",
-    "totalTime": "6 шагов",
+    "totalTime": "6 steps",
     "whatItIs": "A set of Claude Code slash commands that control the look and ergonomics of the terminal session: /color, /theme, /tui, /terminal-setup, /voice, /focus, /radio, /stickers. They don't change the agent's logic — only how the session looks and feels.",
     "approach": "Go from general to specific: first understand why the group exists, then cover 1-2 commands per step — theme and color, renderer and terminal setup, output modes, and nice-to-haves. Finish by assembling your own look, common mistakes, and verifying via /help.",
     "outcomes": [
