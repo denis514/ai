@@ -129,7 +129,7 @@ export default function WorkflowsModal({
   // Prompts / Agents …), порядок — как в CATEGORIES. Выбранную в дропдауне
   // категорию поднимаем наверх.
   let catGroups = CAT_KEYS
-    .map(c => ({ cat: c, items: byStatus.filter(i => (i.node?.category || '') === c) }))
+    .map(c => ({ cat: c, items: byStatus.filter(i => (i.node?.category || '') === c && (levelSort === 'all' || i.level === levelSort)) }))
     .filter(g => g.items.length > 0);
   if (catSort !== 'all') {
     catGroups = [...catGroups].sort(
@@ -204,8 +204,7 @@ export default function WorkflowsModal({
         {/* Фильтры — два дропдауна в одной строке */}
         <div className="courses-filters-bar">
 
-          {/* Polut: «Уровень» (выбранный уровень поднимается наверх). */}
-          {tab === 'paths' && (
+          {/* Уровень: на Polut — сортировка наверх; на Курсах — фильтр. Показываем на обеих вкладках. */}
           <div className="cfilter" ref={levelRef}>
               <button
                 type="button"
@@ -236,7 +235,6 @@ export default function WorkflowsModal({
                 </div>
               )}
           </div>
-          )}
 
           {/* Курсы: «Категория» (по лейблу-бейджу курса; выбранная — наверх). */}
           {tab === 'courses' && (
