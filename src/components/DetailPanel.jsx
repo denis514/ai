@@ -97,6 +97,17 @@ export default function DetailPanel({
     }
   };
 
+  // «Попробовать в Claude»: открываем claude.ai с примером + инструкцией —
+  // чтобы Claude объяснил пользователю, что это и как применять.
+  const tryInClaude = () => {
+    if (!d.example) return;
+    const clean = stripInlineLinks(d.example);
+    const instruction = t('detail.tryInClaude.prompt')
+      || 'Объясни простыми словами, что делает этот промпт и как им пользоваться. Затем покажи пример хорошего ответа на него:';
+    const q = `${instruction}\n\n${clean}`;
+    window.open(`https://claude.ai/new?q=${encodeURIComponent(q)}`, '_blank', 'noopener,noreferrer');
+  };
+
   // Находим туториал через обратный индекс nodeId→key, а не tutorials[node.id].
   const tutKey = tutorialByNodeId[node.id];
   const tutorial = tutKey ? tutorials[tutKey] : null;
@@ -228,15 +239,25 @@ export default function DetailPanel({
                 text={d.example}
                 onNavigate={inlineNav}
               />
-              <button
-                type="button"
-                className={`copy-btn ${copied ? 'is-copied' : ''}`}
-                onClick={copy}
-              >
-                {copied ? (
-                  <><Icon name="check" size={14} strokeWidth={1.75} /> {t('common.copied')}</>
-                ) : t('common.copy')}
-              </button>
+              <div className="detail__example-actions">
+                <button
+                  type="button"
+                  className={`copy-btn ${copied ? 'is-copied' : ''}`}
+                  onClick={copy}
+                >
+                  {copied ? (
+                    <><Icon name="check" size={14} strokeWidth={1.75} /> {t('common.copied')}</>
+                  ) : t('common.copy')}
+                </button>
+                <button
+                  type="button"
+                  className="detail__try-btn"
+                  onClick={tryInClaude}
+                >
+                  <Icon name="sparkles" size={14} strokeWidth={1.6} />
+                  {t('detail.tryInClaude.label') || 'Попробовать в Claude'}
+                </button>
+              </div>
             </div>
           ) : (
             <div className="detail__example-gate">

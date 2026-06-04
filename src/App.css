@@ -4192,6 +4192,33 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   transition: background .15s, border-color .15s;
 }
 .copy-btn:hover { background: rgba(255,255,255,0.2); }
+
+/* Ряд действий примера: «Копировать» + «Попробовать в Claude» — внизу справа. */
+.detail__example-actions {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.detail__example-actions .copy-btn { position: static; right: auto; bottom: auto; }
+.detail__try-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent, #2563eb);
+  border: 1px solid var(--accent, #2563eb);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s, border-color .15s;
+}
+.detail__try-btn:hover { background: color-mix(in srgb, var(--accent, #2563eb) 88%, #000); }
 .copy-btn.is-copied {
   background: #2c7a4b;
   border-color: #2c7a4b;
