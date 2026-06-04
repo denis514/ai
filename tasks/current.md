@@ -226,8 +226,10 @@
   - [x] **Ветка Capabilities закрыта** ✅: 6-шаговые курсы на 10 листьях (cap-input-modalities,
     cap-vision, cap-files, cap-search, cap-memory, cap-computer, cap-caching, cap-citations,
     cap-code-exec, cap-thinking), ru/en/fi. Всего 67 курсов.
-  - [ ] Раскатка контента дальше. Закрыты: Projects, Prompting, Agents, Capabilities.
-    Кандидаты: Instructions, Configuration (Claude Code/MCP), AI Fundamentals, Use Cases.
+  - [x] **Ветка Instructions закрыта** ✅: 6-шаговые курсы на 4 листьях (i-global, i-project,
+    i-style, i-templates), ru/en/fi. Всего 71 курс.
+  - [ ] Раскатка контента дальше. Закрыты: Projects, Prompting, Agents, Capabilities,
+    Instructions. Кандидаты: Claude Code, MCP, AI Fundamentals, Use Cases, Systems.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
