@@ -4896,6 +4896,1680 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "ops-process-automation": {
+    "nodeId": "ops-process-automation",
+    "icon": "repeat",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-operations"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ops-decision-intelligence": {
+    "nodeId": "ops-decision-intelligence",
+    "icon": "idea",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-operations"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ops-reporting-automation": {
+    "nodeId": "ops-reporting-automation",
+    "icon": "chart",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-operations"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ops-resource-optimization": {
+    "nodeId": "ops-resource-optimization",
+    "icon": "sliders",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-operations"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ops-team-workflow": {
+    "nodeId": "ops-team-workflow",
+    "icon": "users",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-operations"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "mk-content-ops": {
+    "nodeId": "mk-content-ops",
+    "icon": "pencil",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-marketing"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "mk-campaign-intel": {
+    "nodeId": "mk-campaign-intel",
+    "icon": "globe",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-marketing"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "mk-brand-voice": {
+    "nodeId": "mk-brand-voice",
+    "icon": "quote",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-marketing"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "mk-seo-optimization": {
+    "nodeId": "mk-seo-optimization",
+    "icon": "search",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-marketing"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "mk-performance-analytics": {
+    "nodeId": "mk-performance-analytics",
+    "icon": "eye",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-marketing"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "mk-team-workflow": {
+    "nodeId": "mk-team-workflow",
+    "icon": "users",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-marketing"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cs-tier1": {
+    "nodeId": "cs-tier1",
+    "icon": "robot",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-customer-support"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cs-agent-assist": {
+    "nodeId": "cs-agent-assist",
+    "icon": "keyboard",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-customer-support"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cs-knowledge-base": {
+    "nodeId": "cs-knowledge-base",
+    "icon": "books",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-customer-support"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cs-escalation": {
+    "nodeId": "cs-escalation",
+    "icon": "send",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-customer-support"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cs-quality-monitoring": {
+    "nodeId": "cs-quality-monitoring",
+    "icon": "check-circle",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-customer-support"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cs-support-analytics": {
+    "nodeId": "cs-support-analytics",
+    "icon": "chart",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-customer-support"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cs-team-workflow": {
+    "nodeId": "cs-team-workflow",
+    "icon": "users",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-customer-support"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "pd-discovery-research": {
+    "nodeId": "pd-discovery-research",
+    "icon": "microscope",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-product"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "pd-spec-generation": {
+    "nodeId": "pd-spec-generation",
+    "icon": "file",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-product"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "pd-roadmap-intelligence": {
+    "nodeId": "pd-roadmap-intelligence",
+    "icon": "calendar",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-product"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "pd-experimentation": {
+    "nodeId": "pd-experimentation",
+    "icon": "testtube",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-product"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "pd-feedback-synthesis": {
+    "nodeId": "pd-feedback-synthesis",
+    "icon": "quote",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-product"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "pd-product-analytics": {
+    "nodeId": "pd-product-analytics",
+    "icon": "chart",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-product"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "pd-team-workflow": {
+    "nodeId": "pd-team-workflow",
+    "icon": "users",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-product"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "en-transformation-strategy": {
+    "nodeId": "en-transformation-strategy",
+    "icon": "expand",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-enterprise"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "en-change-management": {
+    "nodeId": "en-change-management",
+    "icon": "tools",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-enterprise"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "en-governance": {
+    "nodeId": "en-governance",
+    "icon": "lock",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-enterprise"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "en-coe": {
+    "nodeId": "en-coe",
+    "icon": "star",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-enterprise"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "en-roi-measurement": {
+    "nodeId": "en-roi-measurement",
+    "icon": "trophy",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-enterprise"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "en-risk-management": {
+    "nodeId": "en-risk-management",
+    "icon": "warning",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-enterprise"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "en-talent-strategy": {
+    "nodeId": "en-talent-strategy",
+    "icon": "developer",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-enterprise"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ds-design-research": {
+    "nodeId": "ds-design-research",
+    "icon": "microscope",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-design"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ds-prototype-generation": {
+    "nodeId": "ds-prototype-generation",
+    "icon": "bricks",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-design"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ds-design-ops": {
+    "nodeId": "ds-design-ops",
+    "icon": "tools",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-design"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ds-accessibility": {
+    "nodeId": "ds-accessibility",
+    "icon": "shield",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-design"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ds-design-system": {
+    "nodeId": "ds-design-system",
+    "icon": "puzzle",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-design"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ds-content-design": {
+    "nodeId": "ds-content-design",
+    "icon": "quote",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-design"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ds-team-workflow": {
+    "nodeId": "ds-team-workflow",
+    "icon": "users",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-design"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-pdp-gen": {
+    "nodeId": "ec-pdp-gen",
+    "icon": "tag",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-search-opt": {
+    "nodeId": "ec-search-opt",
+    "icon": "search",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-personalization": {
+    "nodeId": "ec-personalization",
+    "icon": "target",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-merchandising": {
+    "nodeId": "ec-merchandising",
+    "icon": "store",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-cro": {
+    "nodeId": "ec-cro",
+    "icon": "sliders",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-experimentation": {
+    "nodeId": "ec-experimentation",
+    "icon": "testtube",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-checkout-opt": {
+    "nodeId": "ec-checkout-opt",
+    "icon": "check",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-recommendations": {
+    "nodeId": "ec-recommendations",
+    "icon": "sparkles",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-support": {
+    "nodeId": "ec-support",
+    "icon": "robot",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-loyalty": {
+    "nodeId": "ec-loyalty",
+    "icon": "trophy",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-analytics": {
+    "nodeId": "ec-analytics",
+    "icon": "chart",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-pricing": {
+    "nodeId": "ec-pricing",
+    "icon": "mixer",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-inventory": {
+    "nodeId": "ec-inventory",
+    "icon": "cube",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-segmentation": {
+    "nodeId": "ec-segmentation",
+    "icon": "puzzle",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "ec-team-workflow": {
+    "nodeId": "ec-team-workflow",
+    "icon": "users",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "ai-native-ecommerce"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 
