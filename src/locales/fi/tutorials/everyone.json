@@ -8155,5 +8155,1330 @@
         "tip": "Yksikin «ei» tarkistuslistalla tarkoittaa, että fine-tuning on vielä liian aikaista."
       }
     }
+  },
+  "sys-workflows-basics": {
+    "title": "Mikä AI Workflow oikeastaan on — selkokielellä",
+    "subtitle": "Muuta «AI auttaa minua» toistettavaksi prosessiksi, jolla on ennustettava laatu",
+    "totalTime": "6 askelta",
+    "whatItIs": "AI Workflow on vakaa ketju «input → AI käsittelee → tulos tarkistetaan → siirretään eteenpäin», joka toimii joka päivä samalla tavalla. Se ei ole yksittäinen chatprompt eikä pelkkä triggerin laukeaminen: se on prosessi, jossa AI:lla on tietty rooli ja sinä saat vakaan tuloksen ilman että selität kontekstin joka kerta uudelleen.",
+    "approach": "Kurssi etenee ymmärryksestä «mikä se on ja milloin sitä tarvitaan» kykyyn koota toimiva workflow itse. Ensin erotamme workflow:n chatista ja sokeasta automaatiosta, sitten puramme sen rakenteen (input, AI-askeleet, tarkistuspiste, output), sitten kokoamme yksinkertaisen prosessin yhteen tehtävään, testaamme sen aidolla esimerkillä, piirrämme rajat ja riskit ja päätämme valmiustarkistuslistaan.",
+    "outcomes": [
+      "Erotat workflow:n kertaluonteisesta chatista ja triggeriin perustuvasta automaatiosta",
+      "Näet rakennuspalikat, jotka jokaisella workflow:lla on: input, AI-askeleet, tarkistus, output",
+      "Osaat koota yksinkertaisen workflow:n yhteen toistuvaan tehtävään",
+      "Tiedät, mitä askelia AI:lle ei saa antaa ilman ihmisen harkintaa",
+      "Sinulla on tarkistuslista, joka kertoo onko workflow valmis päivittäiseen käyttöön vai ei"
+    ],
+    "applyIn": [
+      {
+        "title": "Saapuvan virran lajittelu",
+        "description": "Sähköpostit, pyynnöt, tiketit saapuvat joka päivä. Workflow lukee, luokittelee ja kirjoittaa luonnoksen vastauksesta — sinä vain tarkistat ja lähetät."
+      },
+      {
+        "title": "Valmistautuminen rutiinitapahtumiin",
+        "description": "Palaverit, raportit, päivittäiset koosteet. AI kerää kontekstin etukäteen ja kirjoittaa lyhyen yhteenvedon, jotta tulet paikalle valmistautuneena."
+      },
+      {
+        "title": "Tiimityön yhtenäistäminen",
+        "description": "Kun 5 ihmistä tekee samaa viidellä eri tavalla. Yksi workflow asettaa yhden prosessin — laatu ei enää riipu siitä kuka sen tekee ja millä mielialalla."
+      }
+    ],
+    "pitfalls": [
+      "Yrittää rakentaa «universaali workflow kaikkeen» — saat hirviön jota kukaan ei ymmärrä. Parempi 5 yksinkertaista, joista jokainen tekee yhden asian hyvin.",
+      "Automatisoida askel joka vaatii ihmisen harkintaa (esim. «lähetänkö tämän asiakkaalle») — ennen pitkää AI lähettää jotain sopimatonta.",
+      "Rakentaa workflow tehtävään joka tapahtuu kerran kuussa — asennus ei maksa itseään takaisin. Kynnys on noin 3+ kertaa viikossa.",
+      "Poistaa ihmisen tarkistuspiste nopeuden vuoksi — menetät laadunvalvonnan juuri siellä missä virhe maksaa eniten.",
+      "Ei määrittele inputia ja outputia selkeästi — silloin on epäselvää mitä workflow syö ja tuottaa, eikä sitä voi toistaa tai korjata."
+    ],
+    "exercises": [
+      {
+        "question": "Nimeä kolme tehtävää, jotka toistat useammin kuin kolme kertaa viikossa. Mikä niistä on paras ehdokas ensimmäiseksi workflow:ksi ja miksi?",
+        "hint": "Etsi merkkejä: «kirjoitan tätä samaa promptia taas», «kopioin dataa edestakaisin taas», tulos ei riipu hienosta harkinnasta."
+      },
+      {
+        "question": "Ota valittu tehtävä ja kuvaa se ketjuna: mitä tulee sisään, mitä askelia AI tekee, missä ihminen tarkistaa, mitä menee ulos.",
+        "hint": "Yksinkertaisin muoto on [[node:sys-linear-chain|Linear Chain]] A → B → C. Korkeintaan 4-5 askelta ensimmäisellä kerralla."
+      },
+      {
+        "question": "Etsi ketjustasi askel, jota ei saa antaa AI:lle ilman ihmisen tarkistusta. Miksi juuri se on riskialtis?",
+        "hint": "Kysy: mitä tapahtuu jos AI erehtyy tässä eikä kukaan katso? Jos virheen hinta on korkea — se on tarkistuspiste."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä workflow on ja milloin sitä tarvitaan",
+        "time": "",
+        "why": "Ilman selkeää käsitystä siitä miten workflow eroaa chatista ja sokeasta automaatiosta on helppo käyttää voimia siellä missä kertaluonteinen prompt riittäisi — tai päinvastoin tehdä vuosia käsin sitä mikä olisi jo aikaa sitten pitänyt koota prosessiksi.",
+        "instructions": [
+          "Opettele ydin: workflow = «input → AI käsittelee → tulos tarkistetaan → siirretään eteenpäin», samalla tavalla joka päivä.",
+          "Erota chatista: chatissa selität kontekstin joka kerta uudelleen — ok kertaluonteiseen, ei 50 toistoon viikossa.",
+          "Erota sokeasta automaatiosta: workflow ei ole vain «triggeri laukesi» — AI tekee siinä merkityksellisen käsittelyaskeleen.",
+          "Tarkista soveltuvuuskynnys: tehtävä toistuu yli 3 kertaa viikossa, huomaat ajattelevasi «tätä samaa promptia taas» tai «kopioin dataa edestakaisin taas»."
+        ],
+        "validate": "Osaat selittää yhdellä lauseella miksi tietty tehtäväsi ansaitsee workflow:n sen sijaan että jäisi chattiin.",
+        "tip": "Jos tehtävä tapahtuu kerran kuussa — älä rakenna workflow:ta, asennus ei maksa itseään takaisin. Workflow elää siellä missä on toistuvuutta."
+      },
+      "s2": {
+        "title": "Miten workflow on rakennettu sisältä",
+        "time": "",
+        "why": "Kootaksesi prosessin itse sinun täytyy nähdä sen osat: jokainen workflow purkautuu samoihin palikoihin. Se joka näkee palikat osaa korjata ja laajentaa sitä, ei vain ajaa jonkun toisen tekemää.",
+        "instructions": [
+          "Tunnista minkä tahansa workflow:n neljä palikkaa: input (mitä tulee sisään), AI-askeleet (mitä käsitellään), tarkistuspiste (missä ihminen katsoo), output (mitä siirretään eteenpäin).",
+          "Aloita yksinkertaisimmasta muodosta — [[node:sys-linear-chain|Linear Chain]]: A → B → C, ilman haaroja tai silmukoita.",
+          "Vastaa jokaisesta askeleesta: mitä se saa inputiksi ja mitä se antaa seuraavalle askeleelle.",
+          "Merkitse missä ihminen on pakollinen: se on tuleva laadunvalvontapisteesi (lisää [[node:sys-quality-gates|Quality Gates]]).",
+          "Yhdistä se isompaan kuvaan: workflow on [[node:ai-workflows|AI Workflows]]:n erikoistapaus ja [[node:systems|Agenttijärjestelmien]] rakennuspalikka."
+        ],
+        "validate": "Osaat piirtää workflow:si palikkaketjuna ja osoittaa sormella missä input, AI, tarkistus ja output ovat.",
+        "tip": "Jos et osaa kuvata askelta muodossa «input → output», askel on muotoiltu epäselvästi. Jaa tai täsmennä se ennen kuin jatkat."
+      },
+      "s3": {
+        "title": "Miten koota workflow askel askeleelta",
+        "time": "",
+        "why": "Ymmärrys ilman kokoamista jää teoriaksi. Tässä muutat valitun tehtävän konkreettiseksi toimivaksi prosessiksi — kurssin tärkein käytännön taito.",
+        "instructions": [
+          "Valitse yksi toistuva tehtävä (askeleesta 1) — älä yritä kattaa kaikkea kerralla.",
+          "Kuvaa input mahdollisimman konkreettisesti: mistä data tulee ja missä muodossa (sähköposti, rivi taulukossa, viesti).",
+          "Kuvaa 3-5 AI-askelta muodossa [[node:sys-linear-chain|Linear Chain]]: jokainen askel tekee täsmälleen yhden asian.",
+          "Lisää ihmisen tarkistuspiste sinne missä virheen hinta on korkea, ei aivan loppuun «näön vuoksi».",
+          "Määritä output: minne ja missä muodossa tulos laskeutuu (luonnos sähköpostiin, kooste Slackiin, merkintä CRM:ään)."
+        ],
+        "validate": "Sinulla on paperilla valmis ketju input + 3-5 askelta + tarkistus + output, ja jokainen askel on selkeä ilman suullista selitystä.",
+        "tip": "Tee ensimmäinen workflow tarkoituksella pieneksi. Kevyt prosessi joka oikeasti toimii voittaa «täydellisen» jota et koskaan käynnistä."
+      },
+      "s4": {
+        "title": "Läpikäynti elävällä esimerkillä",
+        "time": "",
+        "why": "Valmis esimerkki näyttää miten abstraktit palikat muuttuvat päivittäiseksi hyödyksi ja antaa mallin, jonka avulla oman kokoaminen on helpompaa.",
+        "instructions": [
+          "Käy läpi workflow «valmistautuminen asiakaspalaveriin» mallina.",
+          "Input: aamulla AI katsoo kalenterisi ja ottaa päivän palaverit.",
+          "AI-askeleet: jokaiseen palaveriin etsii asiakasprofiilin CRM:stä, vetää viimeisen sähköpostiketjun, kirjoittaa lyhyen yhteenvedon («eilen keskusteltu X, avoimet asiat Y, kipukohdat Z»).",
+          "Output: klo 8:00 Slackissasi on tiivistelmät kaikista päivän palavereista — menet valmistautuneena, et «hetki, anna muistella».",
+          "Vertaa esimerkin palikat omaan ketjuusi askeleesta 3: täsmääkö rakenne input → askeleet → output?"
+        ],
+        "validate": "Osaat selittää mikä esimerkin palikka vastaa mitäkin oman workflow:si palikkaa.",
+        "tip": "Huomaa: tarkistus on tässä minimaalinen koska tiivistelmä on vain sinulle. Mitä korkeammat outputin panokset, sitä tiukempi tarkistuspisteen on oltava."
+      },
+      "s5": {
+        "title": "Rajat ja riskit",
+        "time": "",
+        "why": "Workflow ei hajoa monimutkaisuudesta vaan siitä että sille annetaan jotain mitä ei pitäisi. Rajojen tunteminen erottaa toimivan prosessin aikapommista.",
+        "instructions": [
+          "Älä rakenna «universaalia workflow:ta kaikkeen» — saat hirviön jota kukaan ei ymmärrä. Parempi useita yksinkertaisia, jokainen omaan tehtäväänsä.",
+          "Älä automatisoi askelta joka vaatii ihmisen harkintaa: jätä päätös «lähetänkö asiakkaalle» ihmiselle.",
+          "Muista että kyse on ennustettavuudesta, ei nopeudesta: workflow:n tavoite on vakaa laatu (9/10 kertaa hyvä tulos), ei vain «nopeampaa».",
+          "Pidä tarkistuspiste juuri siellä missä virhe maksaa eniten — sitä ei voi poistaa minuuttien säästämiseksi (ks. [[node:sys-quality-gates|Quality Gates]]).",
+          "Tarkista kannattavuus: jos tehtävä on harvinainen tai muuttuu paljon joka kerta — workflow ei sovi siihen."
+        ],
+        "validate": "Osaat workflow:llesi nimetä vähintään yhden askeleen jota et tarkoituksella automatisoinut, ja selittää miksi.",
+        "tip": "Jos haluat kovasti automatisoida «vaarallisen» askeleen, jätä sinne luonnos + pakollinen ihmisen vahvistus. Se on kompromissi nopeuden ja kontrollin välillä."
+      },
+      "s6": {
+        "title": "Valmiustarkistuslista ja varmistus",
+        "time": "",
+        "why": "Workflow on valmis ei silloin kun se «näyttää toimivan» vaan kun se läpäisee selkeät kriteerit. Tarkistuslista suojaa siltä että puolivalmis prosessi otetaan päivittäiseen käyttöön.",
+        "instructions": [
+          "Tarkista: input ja output on kuvattu konkreettisesti — on selvää mitä prosessi syö ja tuottaa.",
+          "Tarkista: jokainen askel tekee yhden asian ja on muotoiltu muodossa «input → output».",
+          "Tarkista: on ihmisen tarkistuspiste siellä missä virheen hinta on korkea.",
+          "Tarkista: workflow kattaa yhden tehtävän, ei kaikkea kerralla.",
+          "Aja prosessi 2-3 aidolla inputilla peräkkäin ja vertaa tuloksia — onko se vakaa ajosta ajoon?"
+        ],
+        "validate": "Kaikki viisi tarkistuslistan kohtaa täyttyvät, ja kolmella aidolla ajolla workflow tuotti ennustettavan hyvän tuloksen.",
+        "tip": "Kirjaa millä inputilla workflow hajosi tai antoi heikon tuloksen — se on ensimmäinen parannuskohde seuraavassa iteraatiossa."
+      }
+    }
+  },
+  "sys-linear-chain": {
+    "title": "Linear Chain — yksinkertainen askelketju",
+    "subtitle": "Suora linja A → B → C: luotettavin tapa koota AI-tehtävä",
+    "totalTime": "6 askelta",
+    "whatItIs": "Linear chain on workflow ilman haaroja: askeleet seuraavat toisiaan, jokainen saa edellisen tuloksen (A → B → C). Ei «jos-niin», ei rinnakkaisia haaroja. Se on [[node:sys-workflows-basics|workflow:n]] perusmuoto ja [[node:sys-prompt-chaining|prompt chainingin]] erikoistapaus, jossa jokainen askel on erillinen ymmärrettävä logiikan pala. Noin 80% oikeista AI-tehtävistä on juuri tällainen.",
+    "approach": "Kurssi etenee ymmärryksestä «milloin linear chain on oikea valinta» valmiiseen pipelineen. Ensin käymme läpi olemuksen ja soveltamisrajat, sitten rakenteen (yksi askel = yksi merkitys, tuloksen välittäminen eteenpäin), sitten rakennamme ketjun askel askeleelta, käymme läpi elävän esimerkin, hahmotamme riskit ja rajat, ja lopuksi ajamme valmius-checklistin luotettavuustarkistuksella.",
+    "outcomes": [
+      "Ymmärrät, milloin linear chain kattaa tehtävän ja milloin tarvitaan haaroja",
+      "Osaat jakaa tehtävän selkeisiin askeliin periaatteella «yksi askel — yksi merkitys»",
+      "Rakennat ketjun, jossa jokaisen askeleen tulos välittyy oikein eteenpäin",
+      "Tiedät, mihin laittaa tarkistuspiste, ettei virhe kulje ketjua pitkin eteenpäin",
+      "Osaat arvioida ketjun valmiuden checklistin avulla"
+    ],
+    "applyIn": [
+      {
+        "title": "Sisältöputki",
+        "description": "Saa artikkeli → käännä → tarkista termit → julkaise. Jokainen askel debugataan erikseen, ja näet missä hajosi."
+      },
+      {
+        "title": "Saapuvan käsittely",
+        "description": "Transkriboi kokousääni → poimi päätökset → lähetä Notioniin. Suora linja ilman haaroja kattaa koko tehtävän."
+      },
+      {
+        "title": "Seulonta ja arviointi",
+        "description": "Lue CV → poimi taidot → matchaa työhön → arvioi. Peräkkäiset askeleet = läpinäkyvä tulos."
+      }
+    ],
+    "pitfalls": [
+      "Lisätä «jos enterprise / jos SMB» -haaroja heti alusta — workflow muuttuu ylläpitokelvottomaksi. Parempi kaksi erillistä linear chainia.",
+      "Yhdistää useita toimintoja yhteen askeleeseen («lue, tee yhteenveto, käännä») — debug vaikeutuu moninkertaisesti. Yksi askel — yksi toiminto.",
+      "Olla välittämättä edellisen askeleen tulosta eksplisiittisesti — seuraava askel toimii sokeasti ja tuottaa roskaa. Ks. [[node:sys-context-passing|kontekstin välitys]].",
+      "Lähettää tulos käyttäjälle ilman tarkistusta — askeleen 3 virhe menee asiakkaalle. Laita [[node:sys-quality-gates|Quality Gate]] ennen viimeistä askelta.",
+      "Mutkistaa etukäteen «varmuuden vuoksi» — aloita linear chainilla ja lisää [[node:sys-branching-logic|haaroja]] vasta kun törmäät seinään."
+    ],
+    "exercises": [
+      {
+        "question": "Tehtäväsi: saapuva asiakasviesti → tunnista aihe → laadi vastausluonnos → lähetä. Onko tämä hyvä linear chain vai tarvitaanko haaroja?",
+        "hint": "Kysy itseltäsi: seuraako jokainen askel edellistä ilman ehtoja? Jos «tunnista aihe» ei muuta reittiä eteenpäin vaan vain syöttää seuraavan askeleen — linear chain sopii."
+      },
+      {
+        "question": "Ketjusi yksi askel kuuluu: «lue dokumentti, tee yhteenveto ja käännä englanniksi». Mikä siinä on vikana ja miten korjaat?",
+        "hint": "Se on kolme toimintoa yhdessä askeleessa. Jaa kolmeen: lue → yhteenveto → käännös. Kunkin debuggaus erikseen helpottuu moninkertaisesti."
+      },
+      {
+        "question": "Mihin kohtaan ketjua «lomake → welcome-email → checklist → sopimusluonnos → lähetys» laitat tarkistuspisteen?",
+        "hint": "Ennen peruuttamatonta toimintoa — lähetystä. Quality Gate juuri ennen viimeistä askelta nappaa kaikkien edellisten askelten virheet ennen kuin ne menevät asiakkaalle."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä se on ja milloin sitä käytetään",
+        "time": "",
+        "why": "Ennen rakentamista pitää ymmärtää, että linear chain on tietoinen yksinkertaisuuden valinta, ei primitiivisyyttä. Useimmat tehtävät eivät tarvitse haaroja, ja etukäteen mutkistaminen rikkoo ylläpidon.",
+        "instructions": [
+          "Kirjoita tehtävä yhdellä lauseella: mitä tulee sisään, mitä tulee ulos.",
+          "Tarkista lineaarisuustesti: askeleet etenevät tiukasti peräkkäin, eikä reitti muutu datan perusteella.",
+          "Jos nousee «entä jos…, niin toisin» — se on signaali [[node:sys-branching-logic|haaroista]], ei linear chainista.",
+          "Aseta itsellesi sääntö: aloita suoralla linjalla, lisää monimutkaisuutta vasta kun se on aidosti tarpeen."
+        ],
+        "validate": "Pystyt kuvaamaan tehtävän muodossa «A → B → C» ilman ainoatakaan «jos-niin» reitissä.",
+        "tip": "Jos epäröit linear chainin ja haaran välillä — lineaarisesti aloittaminen on lähes aina oikein. Monimutkaisuuden lisääminen myöhemmin on halvempaa kuin ennenaikaisen monimutkaisuuden purkaminen."
+      },
+      "s2": {
+        "title": "Miten ketju on rakennettu",
+        "time": "",
+        "why": "Ketjun luotettavuus nojaa kahteen sääntöön: yksi askel = yksi merkitys, ja askeleen tulos välitetään eksplisiittisesti eteenpäin. Rikot kumman tahansa — debug muuttuu arvailuksi.",
+        "instructions": [
+          "Periaate «yksi askel — yksi merkitys»: jokainen askel tekee tasan yhden toiminnon.",
+          "Välitysperiaate: askeleen A tulos on askeleen B syöte. Tee siitä eksplisiittinen, ks. [[node:sys-context-passing|kontekstin välitys]].",
+          "Nimeä jokainen askel toimintaverbillä: «käännä», «poimi päätökset», «arvioi».",
+          "Varmista, ettei vierekkäisten askelten välillä ole piilo-oletuksia — seuraava askel saa kaiken tarvitsemansa edellisestä."
+        ],
+        "validate": "Jokainen askel on kuvattu yhdellä verbillä, ja on selvää mitä yksi askel välittää seuraavalle.",
+        "tip": "Jos askelta ei voi nimetä yhdellä verbillä — sen sisällä piilee useita toimintoja. Jaa se."
+      },
+      "s3": {
+        "title": "Askel askeleelta soveltaminen",
+        "time": "",
+        "why": "Nyt kokoamme ketjun käytännössä. Rakentaminen syötteestä tulosteeseen takaa, että jokainen askel saa juuri sen, mitä edellinen tuotti.",
+        "instructions": [
+          "Listaa kaikki askeleet sarakkeeseen syötteestä tulosteeseen — se on ketjun runko.",
+          "Kirjaa jokaiselle askeleelle: mitä se ottaa syötteenä, mitä tuottaa tulosteena.",
+          "Tarkista liitokset: askeleen N tuloste vastaa askeleen N+1 syötettä.",
+          "Tunnista viimeinen, peruuttamaton askel (lähetys, julkaisu) — sen eteen tulee myöhemmin tarkistus.",
+          "Aja ketju yksi askel kerrallaan, ei kaikkea kerralla — niin näet täsmälleen missä se hajoaa."
+        ],
+        "validate": "Sinulla on lista askeleista, joista jokaiselle syöte ja tuloste on eksplisiittisesti kuvattu, ja liitokset osuvat yhteen.",
+        "tip": "Aja ja testaa ketjua askel kerrallaan. Jos askel 3 tuottaa roskaa, älä koske askeliin 4–5 ennen kuin korjaat askeleen 3."
+      },
+      "s4": {
+        "title": "Esimerkki täydestä ketjusta",
+        "time": "",
+        "why": "Elävä esimerkki näyttää, miten abstraktit säännöt muuttuvat toimivaksi pipelineksi ja mihin tarkistus tarkalleen lisätään.",
+        "instructions": [
+          "Käy läpi esimerkki «asiakkaan onboarding»: lomake → welcome-email → onboarding-checklist → sopimusluonnos → lähetys.",
+          "Seuraa, miten jokaisen askeleen tulos syöttää seuraavaa: lomakedata → emailin personointi → toimiala checklistiin → hinnat sopimukseen.",
+          "Löydä peruuttamaton askel — lähetys — ja ymmärrä, miksi tarkistus tarvitaan juuri sen eteen.",
+          "Kuvittele virhe askeleella 3 («väärä toimiala checklistissä») ja vahvista, että vain se askel korjataan, ei koko ketju."
+        ],
+        "validate": "Pystyt selittämään esimerkin omin sanoin ja näyttämään, mitä ja mihin välitetään kullakin askeleella.",
+        "tip": "Hyvä merkki linear chainista: kun yksi askel hajoaa, muita ei tarvitse tehdä uudelleen."
+      },
+      "s5": {
+        "title": "Rajat ja riskit",
+        "time": "",
+        "why": "Linear chain ei ole universaali. Pitää tietää, milloin se lakkaa toimimasta ja mitkä virheet useimmin rikkovat jopa yksinkertaisen ketjun.",
+        "instructions": [
+          "Soveltamisraja: jos reitti aidosti riippuu datasta — on aika [[node:sys-branching-logic|haaroihin]], ei venyttää linjaa.",
+          "Ylikuormitetun askeleen riski: useita toimintoja yhdessä askeleessa → jaa erillisiin.",
+          "Hiljaisen virheen riski: askel voi palauttaa huonon tuloksen ilman eksplisiittistä virhettä — tarvitaan [[node:sys-error-handling|virheenkäsittely]] ja tarkistukset.",
+          "Virheen leviämisen riski: ilman tarkistuspistettä askeleen N virhe pääsee käyttäjälle.",
+          "Antipattern: ennenaikainen monimutkaisuus «varmuuden vuoksi» — kaksi yksinkertaista ketjua voittaa yhden sotkuisen."
+        ],
+        "validate": "Pystyt nimeämään vähintään 3 tilannetta, joissa linear chain ei sovi tai hajoaa, ja mitä tehdä kussakin.",
+        "tip": "Kun haluat lisätä haaran — kysy: «kattaako tämä 80% tapauksista vai harvinaisen reunan?». Harvinainen reuna kannattaa usein eriyttää omaksi ketjuksi."
+      },
+      "s6": {
+        "title": "Checklist ja tarkistus",
+        "time": "",
+        "why": "Loppuajo erottaa «näyttää toimivan» tilan «toimii luotettavasti» -tilasta. Checklist nappaa tyypilliset aukot ennen julkaisua.",
+        "instructions": [
+          "Jokainen askel = yksi toimintaverbi (ei yhdistettyjä toimintoja).",
+          "Liitokset osuvat: jokaisen askeleen tuloste = seuraavan syöte, konteksti välitetään eksplisiittisesti.",
+          "Reitti on lineaarinen: ei ainoatakaan «jos-niin» siirtymälogiikassa.",
+          "Peruuttamattoman askeleen eteen on asetettu [[node:sys-quality-gates|Quality Gate]] tai manuaalinen tarkistus.",
+          "Ketjun voi ajaa yksi askel kerrallaan ja näet heti, missä se hajosi."
+        ],
+        "validate": "Kaikki viisi checklist-kohtaa täyttyvät, ja testiajossa pystyt täsmälleen kertomaan, mitä kullakin askeleella tapahtuu.",
+        "tip": "Jos yksikin checklist-kohta on auki — ketju ei ole valmis tuotantoon. Yksinkertaisuus tuottaa luotettavuutta vain kurinalaisuudella."
+      }
+    }
+  },
+  "sys-quality-gates": {
+    "title": "Quality Gates: tarkistus ennen eteenpäin lähettämistä",
+    "subtitle": "Miten napata AI:n virheet aikaisin, kun ne ovat vielä halpoja",
+    "totalTime": "6 askelta",
+    "whatItIs": "Quality gate on piste workflow-askelten välillä, jossa tulos tarkistetaan ennen eteenpäin siirtymistä. Joko AI tarkistaa sen kovien sääntöjen mukaan tai ihminen. Ilman gateä askeleen 1 virhe livahtaa askeleelle 2, joka syöttää roskaa askeleelle 3, ja asiakas saa varmasti hölynpölyä. Gate nappaa virheen aikaisin: korjaus askeleella 2 = minuutti, selitys asiakkaalle myöhemmin = viikko mainetta. Tämä on solmu [[node:sys-quality-gates|Quality Gates]] osiossa [[node:systems|Järjestelmät]].",
+    "approach": "Etenemme ymmärryksestä «miksi gate ja milloin» toimivaan tarkistuslistaan. Ensin näemme askelten välisen tarkistuksen mekaniikan, sitten opimme määrittämään kriteerit (mitä tarkalleen tarkistamme), käymme läpi todellisen sopimusesimerkin, ymmärrämme rajat ja riskit (väärät läpipääsyt, «AI tarkistaa AI:ta») ja lopuksi kokoamme gaten omaan tehtävään ja varmistamme sen. Jokainen askel on lyhyt ja tarkistettava.",
+    "outcomes": [
+      "Ymmärrät, mikä quality gate on ja missä sitä todella tarvitaan ja missä se vain haittaa",
+      "Osaat erottaa AI-tarkistuksen (säännöin) ihmisen tarkistuksesta",
+      "Osaat muotoilla konkreettiset läpäisykriteerit gatelle omassa tehtävässäsi",
+      "Näet pääriskit: väärät läpipääsyt ja «AI tarkistaa AI:ta» -ansa",
+      "Kokoat toimivan gaten ennen seuraussisältöistä toimea ja varmistat sen"
+    ],
+    "applyIn": [
+      {
+        "title": "Dokumenttien lähetys asiakkaalle",
+        "description": "Ennen sopimuksen tai tarjouksen lähetystä gate tarkistaa, että kaikki pakolliset kentät on täytetty ja summat täsmäävät CRM:ää. 95% menee ilman ihmistä; kiistanalaiset tapaukset menevät käsintarkistukseen."
+      },
+      {
+        "title": "Kirjoitus tietokantaan tai CRM:ään",
+        "description": "Ennen datan tallennusta gate tarkistaa muodon, pakolliset kentät ja duplikaattien puuttumisen. Roska ei pääse järjestelmään, jota on myöhemmin vaikea siivota."
+      },
+      {
+        "title": "Talousoperaatiot",
+        "description": "Ennen rahan veloitusta gate täsmäyttää summan, vastaanottajan ja rajat. Peruuttamaton toimi ei käynnisty tarkistamattomalla tuloksella."
+      }
+    ],
+    "pitfalls": [
+      "Gate jokaisella askeleella — workflow muuttuu muotoon «AI 10 s → ihminen 5 min → AI 10 s», kukaan ei kestä",
+      "«AI tarkistaa AI:ta»: jos päämalli erehtyi, tarkistava malli tekee saman virheen — tarvitaan eri periaate (säännöt) tai ihminen",
+      "Liian tiukka gate: hylkää oikeat tulokset, ihmistä kutsutaan jatkuvasti, ja gate aletaan ohittaa",
+      "Liian löysä gate: päästää virheet läpi ja luo väärän turvallisuuden tunteen — pahempi kuin ei gateä",
+      "Ei selkeää paluuta epäonnistuessa: tulos hylätään mutta ilman merkintää mitä korjata — askel 1 toistaa saman virheen"
+    ],
+    "exercises": [
+      {
+        "question": "Workflow'ssa «generoi postaus → tarkista → julkaise somessa», mihin asetat gaten ja mitä tyyppiä?",
+        "hint": "Julkaisu on peruuttamaton. Millä askeleella on seurauksia? Mitä säännöt voivat tarkistaa (pituus, kielletyt sanat) ja mitä ihminen tarvitaan (sävy, sopivuus)?"
+      },
+      {
+        "question": "Esimies asetti AI-gaten, joka ajaa saman mallin uudelleen: «tarkista onko virheitä». Miksi tämä on heikko suoja ja mikä korvaa sen?",
+        "hint": "Mieti, nappaako malli virheen, jonka se itse teki. Vertaa kovien sääntöjen tai toisen ihmisen tarkistukseen."
+      },
+      {
+        "question": "Gate ennen tietokantaan kirjoitusta hylkää 40% oikeista tietueista. Millainen ongelma tämä on ja miten diagnosoit sen?",
+        "hint": "Väärä läpipääsy vai väärä hylkäys? Katso hylätyt tietueet: ovatko ne oikeasti huonoja vai onko kriteeri liian tiukka?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä quality gate on ja milloin sitä tarvitaan",
+        "time": "",
+        "why": "Ilman «miksi»-ymmärrystä gate asetetaan joko kaikkialle (workflow kuolee) tai ei mihinkään (virheet lentävät asiakkaalle). Gateä tarvitaan siellä, missä virhe maksaa eikä sitä voi tehdä uudelleen.",
+        "instructions": [
+          "Muista määritelmä: gate on piste askelten välillä, jossa tulos tarkistetaan ennen eteenpäin siirtämistä",
+          "Listaa prosessisi toimet, joilla on seurauksia: lähetys asiakkaalle, kirjoitus tietokantaan, rahan veloitus, julkaisu",
+          "Merkitse, missä «voi helposti tehdä uudelleen» — siellä gateä ei tarvita",
+          "Hyväksy tosiasia: AI erehtyy 5-15% ajasta, se on normaalia; gaten tehtävä on olla päästämättä virhettä eteenpäin"
+        ],
+        "validate": "Sinulla on 1-3 pisteen lista, joissa virhe on aidosti kallis eikä sitä voi tehdä uudelleen",
+        "tip": "Jos epäröit, tarvitsetko gaten, kysy: «mitä tapahtuu, jos virhe pääsee tästä läpi?». Jos vastaus on «ei mitään vakavaa» — älä aseta gateä."
+      },
+      "s2": {
+        "title": "Miten tarkistus ennen eteenpäin lähettämistä toimii",
+        "time": "",
+        "why": "Gate ei ole vain «ok»-rasti. Se on haarauma: läpäisi → eteenpäin, kaatui → paluu merkinnällä mitä korjata. Ilman selkeää paluuta askel 1 toistaa saman virheen.",
+        "instructions": [
+          "Kuvittele gate haaraumana, jolla on kaksi uloskäyntiä: PASS (eteenpäin) ja FAIL (takaisin)",
+          "Päätä, kuka tarkistaa: AI säännöin (nopea, halpa) vai ihminen (hidas, mutta nappaa merkityksen)",
+          "FAIL-tilanteessa kuvaa, mitä palautetaan edelliselle askeleelle: ei vain «virhe», vaan «kenttä X on tyhjä, korjaa se»",
+          "Sido epäonnistuminen ihmiseen, kun AI ei pärjää — tämä on [[node:sys-escalation-paths|eskalaatio ihmiselle]]"
+        ],
+        "validate": "Osaat piirtää gaten haaraumana: ehto → PASS/FAIL → minne kukin lopputulos menee",
+        "tip": "Paras paluu FAIL-tilanteessa on koneluettava merkintä: mikä sääntö rikkoutui ja mitä tarkalleen korjata. Silloin askel 1 ei toista virhettä sokeasti."
+      },
+      "s3": {
+        "title": "Miten määrittää läpäisykriteerit",
+        "time": "",
+        "why": "Gate ilman selkeitä kriteerejä on hyödytön. «Tarkista onko kaikki ok» ei ole kriteeri. Tarvitaan konkreettiset, tarkistettavat ehdot, muuten tarkistus on subjektiivinen ja epävakaa.",
+        "instructions": [
+          "Jaa kriteerit säännöin tarkistettaviin (kentät täytetty, summat täsmäävät, ei duplikaatteja) ja ihmistä vaativiin (sävy, sopivuus, merkitys)",
+          "Muotoile jokainen kriteeri muotoon kyllä/ei: «kaikki pakolliset kentät täytetty — kyllä/ei»",
+          "Numeerisille tarkistuksille aseta kynnys — tämä menee päällekkäin [[node:sys-confidence-thresholds|varmuuskynnysten]] kanssa",
+          "Päätä, mitkä kriteerit ovat estäviä (FAIL = stop) ja mitkä varoittavia (lippu, mutta ei stop)"
+        ],
+        "validate": "Sinulla on kriteerilista, jossa jokainen on muotoiltu tarkistettavaksi kyllä/ei totuuslähteineen",
+        "tip": "Automatisoi ensin sääntökriteerit (ne voi tarkistaa koodilla) ja jätä ihmiselle vain se, mitä säännöt eivät nappaa. Se pitää workflow'n nopeana."
+      },
+      "s4": {
+        "title": "Esimerkki: gate ennen sopimuksen lähetystä",
+        "time": "",
+        "why": "Konkreettinen esimerkki näyttää, miten kaksi gateä (AI + ihminen) antaa 95% automaatiota menettämättä kontrollia numeroista. Se on malli omaan tehtävääsi.",
+        "instructions": [
+          "Askel 1: AI generoi sopimuksen mallista ja asiakasdatasta",
+          "Gate 1 (AI, säännöin): kaikki pakolliset kentät täytetty, summat täsmäävät CRM:ää, ei tuplakappaleita; FAIL → paluu askeleelle 1 merkinnällä",
+          "Gate 2 (ihminen): lakimies vilkaisee 30 sekuntia → ok / ei",
+          "Jos molemmat gatet menevät → lähetys; kirjaa tulos: 95% sopimuksista ilman lakimiestä, nolla numerovirhettä"
+        ],
+        "validate": "Ymmärrät, miksi tässä on kaksi eri tyyppistä gateä ja mitä kumpikin nappaa: AI — muodolliset virheet, ihminen — merkityksen",
+        "tip": "Vahva keino on kaksitasoinen gate: halpa AI-tarkistus suodattaa 95% muodollisista virheistä, ja ihminen astuu mukaan vain jäljellä oleviin erikoistapauksiin."
+      },
+      "s5": {
+        "title": "Rajat ja riskit: väärät läpipääsyt",
+        "time": "",
+        "why": "Gate luo väärän turvallisuuden tunteen. Jos se on liian löysä, se päästää virheet läpi; jos se on «AI tarkistaa AI:ta», se nappaa väärät asiat. On tiedettävä, missä gate ei pelasta.",
+        "instructions": [
+          "Erota kaksi vikaa: väärä läpipääsy (huono meni läpi ok:na) ja väärä hylkäys (hyvä hylättiin)",
+          "Vältä «AI tarkistaa AI:ta» -ansa: tarkistava malli toistaa saman virheen kuin päämalli",
+          "Kriittisille tarkistuksille käytä eri periaatetta: kovat säännöt AI:n sijaan tai toinen ihminen",
+          "Täsmäytä gate säännöllisesti todellisuuteen — tämä on lähellä [[node:sys-approval-flows|hyväksyntävirtoja]] ja yleistä workflow-monitorointia"
+        ],
+        "validate": "Osaat nimetä, mitä virheitä gatesi ei varmasti nappaa, ja missä se kannattaa varmistaa säännöin tai ihmisellä",
+        "tip": "Ota ajoittain gatesta läpi menneet tulokset ja tarkista otos käsin. Jos siinä on virheitä, gate on liian löysä ja on aika tiukentaa sitä."
+      },
+      "s6": {
+        "title": "Tarkistuslista ja oman gaten varmistus",
+        "time": "",
+        "why": "Loppukokoonpano: käy läpi tarkistuslista ja varmista, että gate oikeasti toimii eikä vain ole olemassa näön vuoksi.",
+        "instructions": [
+          "Tarkistuslista: onko gate asetettu vain ennen seuraussisältöistä toimea? (ei jokaisella askeleella)",
+          "Ovatko kriteerit konkreettisia ja tarkistettavia kyllä/ei? Onko totuuslähde määritelty?",
+          "Onko FAIL-tilanteessa selkeä paluu merkinnällä mitä korjata?",
+          "Menevätkö kriittiset tarkistukset EI «AI tarkistaa AI:ta» -tavalla, vaan säännöin tai ihmisen kautta?",
+          "Aja 5-10 todellista tulosta gaten läpi ja varmista käsin: onko PASS oikeasti ok, onko FAIL oikeasti huono?"
+        ],
+        "validate": "Kaikkiin tarkistuslistan kohtiin on vastattu «kyllä», ja testiotoksessa gate ei tuottanut väärää läpipääsyä eikä massahylkäystä",
+        "tip": "Gate on elävä mekanismi. Palaa kriteereihin, kun tehtävä muuttuu tai uusia virhetyyppejä ilmaantuu. Kerran asetettu ei tarkoita ikuista."
+      }
+    }
+  },
+  "sys-branching-logic": {
+    "title": "Branching logic workfloweissa",
+    "subtitle": "Anna mallin valita reitti itse — decision scheman, ei if-elsen kautta",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Ehdollinen haarautuminen AI-workflowssa: askeleen A jälkeen malli (ei käyttäjä eikä kovakoodattu if/else) päättää, mihin haaraan mennään — B vai C. Jokainen haara on oma, tehtäväänsä optimoitu promptti. Reititin valitsee reitin: erillinen luokittelukutsu (usein Haikulla), structured output / tool use päämallin kutsussa, tai embedding-similarity ilman LLM:ää. Avain on selkeä decision schema: suljettu lista vaihtoehtoja (enum), ei vapaa teksti.",
+    "approach": "Kurssi etenee ymmärryksestä 'miksi haarautua' toimivaan toteutukseen. Ensin näemme, milloin monoliittinen promptti pitää pilkkoa haaroiksi. Sitten suunnittelemme decision scheman ja valitsemme reititystavan. Sovellamme sen koodissa, käymme läpi todellisen helpdesk-esimerkin, kartoitamme rajat ja riskit (haarojen kombinatorinen räjähdys, puuttuva default, sivuutettu confidence) ja päätämme tuotantoa edeltävään tarkistuslistaan.",
+    "outcomes": [
+      "Ymmärrät, milloin workflow tarvitsee haarautumista ja milloin [[node:sys-linear-chain|lineaarinen ketju]] riittää",
+      "Suunnittelet decision scheman: suljettu enum + confidence + reason + default-haara",
+      "Valitset reititystavan (prompt-driven / structured output / embedding) latencyn ja costin mukaan",
+      "Vältät tyypilliset virheet: avoin teksti enumin sijaan, ei defaultia, sivuutettu confidence, 15 haaraa",
+      "Rakennat minimaalisen reitittimen monitoroinnin: haarajakauma, accuracy, confidence-jakauma"
+    ],
+    "applyIn": [
+      {
+        "title": "Customer support ja triage",
+        "description": "Yksi saapuva tiketti → refund / how-to / bug / feature-request → eri prompit, eri tools, eri mallit. Reititin Haikulla, spesialistit Sonnetilla."
+      },
+      {
+        "title": "Email- ja syöte-triage",
+        "description": "spam / sales / urgent → eri toimenpiteet. Vastauksen rakenne ja prioriteetti riippuvat syötteen tyypistä, jota ei tiedetä etukäteen."
+      },
+      {
+        "title": "Monivaiheiset AI-putket",
+        "description": "Isossa [[node:ai-workflows|workflowssa]] haarautuminen ohjaa syötteen oikealle spesialistille (security / style / logic code reviewissä) yhden 'tee kaikki' -promptin sijaan."
+      }
+    ],
+    "pitfalls": [
+      "Avoin text-output enumin sijaan: malli kirjoittaa 'Refund Request' eikä 'refund', ja reititys rikkoutuu. Aina suljettu enum JSON-skeeman tai tool usen kautta.",
+      "Ei default-haaraa: reititin palauttaa jotain odottamatonta, koodi kaatuu. Aina default → fallback tai eskalointi ihmiselle.",
+      "Confidencen sivuuttaminen: reititin confidence=0.3 reitittää itsevarmasti väärin. Minimi: confidence < 0.7 → eskalointi.",
+      "Liian monta haaraa: 15 kategoriaa pudottaa reitittimen tarkkuuden alle 70 %. Raja 5-7; muuten hierarkia router → sub-router.",
+      "Haarautuminen ilman päätöksen logitusta: tiketti menee väärään paikkaan eikä voi selvittää, mitä reititin päätti. Logita (input_hash, category, confidence, reason)."
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on yksi promptti, joka 'tekee 5 eri asiaa huonosti' eri syötetyypeillä. Mitkä kaksi signaalia vahvistavat, että on aika haarautua, ja mistä aloitat?",
+        "hint": "Signaalit: outputin rakenne vaihtelee syötetyypin mukaan; haluat eri mallit eri skenaarioihin. Aloita kirjoittamalla mahdollisten kategorioiden suljettu enum."
+      },
+      {
+        "question": "Reititin palautti category=\"refund\" confidence=0.35. Mitä workflown pitäisi tehdä ja miksi juuri näin?",
+        "hint": "confidence < 0.7 → älä luota päätökseen; eskaloi ihmiselle tai tee fallback ja logita reason. Muuten spesialisti käsittelee refundia väärässä tapauksessa."
+      },
+      {
+        "question": "Liiketoiminta haluaa 18 tikettikategoriaa yhteen reitittimeen. Mikä on riski ja arkkitehtoninen ratkaisu?",
+        "hint": "Kombinatorinen räjähdys: reititin sekoaa, tarkkuus alle 70 %. Ratkaisu: hierarkia — ylin router 5-7 ryhmään → sub-router kunkin ryhmän sisällä."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mitä haarautuminen workflowssa on ja milloin sitä tarvitaan",
+        "time": "",
+        "why": "Ilman haarautumista workflow on joko yksi jättiläispromptti 'tee kaikki' (ennustamaton laatu, kalliit tokenit) tai jäykkä regex-if/else (rikkoutuu uudessa tapauksessa). Haarautuminen antaa jokaiselle haaralle oman optimoidun promptin ja paikallistaa debugauksen.",
+        "instructions": [
+          "Lukitse määritelmä: haarautuminen on sitä, että MALLI (reititin), ei käyttäjä eikä kovakoodattu logiikka, valitsee reitin askeleen A jälkeen.",
+          "Vertaa [[node:sys-linear-chain|lineaariseen ketjuun]]: jos jokainen syöte kulkee saman polun, haarautumista ei tarvita.",
+          "Tarkista soveltuvuuskynnys: haarautuminen on perusteltua, kun samalla syötteellä on 3+ pohjimmiltaan erilaista skenaariota.",
+          "Kirjaa 3 signaalia: yksi promptti 'tekee 5 asiaa huonosti'; outputin rakenne vaihtelee syötetyypin mukaan; haluat eri mallit eri skenaarioihin (cost)."
+        ],
+        "validate": "Osaat nimetä oman todellisen tapauksesi ja kertoa, montako pohjimmiltaan erilaista skenaariota siinä on samalla syötteellä (3+ vai ei).",
+        "tip": "Jos skenaarioita on vain 2 ja ne ovat rakenteeltaan lähes identtisiä, älä lisää reititintä — käytä yhtä promptia parametrilla."
+      },
+      "s2": {
+        "title": "Reitin päättäminen: decision schema",
+        "time": "",
+        "why": "Haarautumisen laadun määrää decision schema, ei koodi. Reitittimen vapaa teksti rikkoo reitityksen noin 5 %:ssa tapauksia; suljettu enum + confidence + reason + default tekevät reitityksestä ennustettavan ja debugattavan.",
+        "instructions": [
+          "Kirjoita suljettu enum haaroista — 3-7 kpl, ei 20 (esim. refund | how-to | bug | feature-request | other).",
+          "Lisää confidence: 0..1 -kenttä — reitittimen oma varmuus kynnyksiä varten.",
+          "Lisää reason: string -kenttä — lyhyt perustelu logeja ja debugausta varten.",
+          "Rakenna default-haara (unknown / other), joka johtaa eskalointiin tai fallback-promptiin.",
+          "Valitse reititystapa: prompt-driven (erillinen Haiku-kutsu, halpa), structured output / tool use (yksi kutsu, kalliimpi, pienempi latency) tai embedding similarity (ei LLM:ää)."
+        ],
+        "validate": "Sinulla on paperilla reitittimen vastauksen JSON-skeema 4 osalla: category (enum), confidence, reason ja default-haara.",
+        "tip": "Latency kriittinen? Käytä structured outputia päämallin kutsussa — yksi LLM-hop kahden sijaan. Budjetti kriittinen? Erillinen reititin Haikulla."
+      },
+      "s3": {
+        "title": "Soveltaminen: reititin + haarat koodissa",
+        "time": "",
+        "why": "Skeema ilman toteutusta on hyödytön. Tässä kokoamme toimivan kaksivaiheisen rakenteen: halpa reititin luokittelee syötteen, sitten koodi valitsee kategorian mukaan erikoistuneen promptin ja oikean mallin/toolsit.",
+        "instructions": [
+          "Vaihe 1 — reititin: Haiku-kutsu, joka palauttaa tiukkaa JSONia decision schemasi mukaisesti.",
+          "Vaihe 2 — confidence-gate: jos confidence < 0.7 → escalate_to_human(reason=...) ennen kuin mitään haaraa valitaan.",
+          "Vaihe 3 — dispatcher: sanakirja {category: specialist_prompt}, jokaisella haaralla oma promptti + toolsit (billing_api, search_kb jne.).",
+          "Vaihe 4 — spesialisti: Sonnet-kutsu valitulla promptilla; välitä metadata {prompt_version, branch} jäljitystä varten.",
+          "Vaihe 5 — cost optimization: reititin halvalla mallilla, spesialistit vahvalla — tyypillisesti 5-10× halvempaa kuin yksi iso 'tee kaikki' -kutsu."
+        ],
+        "validate": "Koodissasi on kaksi kutsua (reititin → spesialisti), confidence-gate on ENNEN haaran valintaa, ja jokaisella haaralla on oma promptti.",
+        "tip": "Tee dispatcherista sanakirja, ei if-elif-kaskadia: haaran lisääminen on yksi rivi, ja koko reittilista näkyy yhdellä silmäyksellä."
+      },
+      "s4": {
+        "title": "Esimerkki: SaaS-helpdesk, 12k tikettiä/päivä",
+        "time": "",
+        "why": "Päästä päähän -esimerkki näyttää, miten palaset sopivat yhteen todellisella volyymilla: Haiku-reititin, viisi Sonnet-haaraa eri toolseilla, confidence-gate ja metadata monitorointia varten.",
+        "instructions": [
+          "Lue router_prompt: 'Categorize this support ticket. Return JSON: {category: refund|how-to|bug|feature-request|other, confidence: 0..1, reason}'.",
+          "Jäljitä gate: routing.confidence < 0.7 → return escalate_to_human(ticket, reason=routing.reason).",
+          "Yhdistä haarat toolseihin: refund→billing_api, how-to→search_kb, bug→linear_create, feature-request→feedback_log, other→general.",
+          "Huomaa metadata {prompt_version: 'router-1.2.0', branch: category} — ilman sitä et voi laskea accuracya versioittain.",
+          "Lue dataan perustuva sääntö: jos 30 % menee other-haaraan, se on signaali uudesta haarasta."
+        ],
+        "validate": "Esimerkin avulla osaat selittää, mitä tapahtuu 'palauta rahani' -tiketille confidence=0.9 vs. confidence=0.4 tapauksessa.",
+        "tip": "Merkitse branch ja prompt_version heti — jälkikäteen ei voi rekonstruoida, mikä reitittimen versio teki päätöksen."
+      },
+      "s5": {
+        "title": "Rajat ja riskit: haarojen kombinatorinen räjähdys",
+        "time": "",
+        "why": "Haarautuminen skaalautuu huonosti ilman kuria. Päärisk on haarojen ja niiden yhdistelmien kasvava määrä: reitittimen tarkkuus laskee ja testattavien polkujen määrä kasvaa epälineaarisesti.",
+        "instructions": [
+          "Pidä raja 5-7 haarassa per reititin: 15+ kategoriassa tarkkuus laskee alle 70 %.",
+          "Jos kategorioita on aidosti enemmän, rakenna hierarkia: ylin router 5-7 ryhmään → sub-router kunkin ryhmän sisällä (ei yhtä litteää 20-haaraista enumia).",
+          "Laske kombinatoriikka: sisäkkäinen haarautuminen (haara → uusi haarautuminen) kertoo polkujen määrän; jokainen polku on testattava ja logitettava.",
+          "Älä sekoita haarautumista [[node:sys-loop-patterns|silmukoihin]]: yhden askeleen toistaminen ehtoon asti on loop, ei uusi haara.",
+          "Jätä aina default → eskalointi: kattamaton syöte ei saa kaataa koodia eikä hiljaa mennä väärään paikkaan."
+        ],
+        "validate": "Tapauksellesi olet nimennyt haarojen määrän (≤7) ja päättänyt, tarvitsetko router → sub-router -hierarkian.",
+        "tip": "Ennen 6. haaran lisäämistä kysy: onko tämä aidosti uusi skenaario vai olemassa olevan alatyyppi? Alatyypit kannattaa hoitaa haaran sisällä, ei uutena reittinä."
+      },
+      "s6": {
+        "title": "Tarkistuslista ja varmennus ennen tuotantoa",
+        "time": "",
+        "why": "Haarautuminen rikkoutuu hiljaa tuotannossa ilman havainnoitavuutta ja suojamekanismeja. Lopullinen tarkistuslista sulkee 5 tyypillistä virhettä ja kiinnittää minimaalisen reitittimen monitoroinnin.",
+        "instructions": [
+          "Schema: reititin palauttaa suljetun enumin (ei vapaata tekstiä), mukana confidence- ja reason-kentät.",
+          "Safety: on default-haara; confidence kynnyksen alle → eskalointi/fallback; koodi ei kaadu odottamattomasta vastauksesta.",
+          "Koko: 3-7 haaraa per taso; enemmän → router → sub-router -hierarkia.",
+          "Logitus: jokainen päätös tallentaa (input_hash, category, confidence, reason) sekä branch ja prompt_version.",
+          "Monitorointi: dashboard näyttää haarajakauman, reitittimen accuracyn (human-review samplingilla) ja confidence-jakauman."
+        ],
+        "validate": "Kaikki 5 tarkistuslistan kohtaa on merkitty; osaat näyttää, mistä tuotannossa näet, että 30 % tiketeistä menee other-haaraan.",
+        "tip": "Aseta hälytys default/other-haaran osuudelle: sen kasvu on aikaisin signaali siitä, että todellisuus on eronnut reitittimen skeemasta."
+      }
+    }
+  },
+  "sys-loop-patterns": {
+    "title": "Loop patterns: refine until quality",
+    "subtitle": "Refinement-silmukat pysäytyskriteerillä ja budjettivartijoilla",
+    "totalTime": "6 askelta",
+    "whatItIs": "Yhden askeleen promptti törmää kattoon: malli ei kirjoita vastaustaan uudelleen \"löydetyn ongelman perusteella\", ellei sitä erikseen pyydetä. Silmukka toistaa askelta (tai ketjua), kunnes laatukriteeri täyttyy tai iteraatiobudjetti loppuu — self-correction ilman ihmistä.\n\nKolme kanonista kaavaa: critique-revise (generaattori → kriitikko → uudelleenkirjoitus feedbackilla → toista), ReAct-tyylinen tool-use loop (ajattele → kutsu tool → näe tulos → jatka) ja convergence loop (kahta varianttia vertaillaan, yhtenevät asiallisesti → valmis). Jokaisella silmukalla on oltava max-iterations -vartija (3-10) ja pysäytyksen detection, muutoin kustannus karkaa.",
+    "approach": "Silmukka ilman kahta vartijaa on pommi budjetin alla. Ensin muotoile mitattava pysäytyskriteeri (compile, test pass, schema-valid, judge-score ≥ 8/10, embedding cosine > 0.92), sitten kovat rajat: max-iterations JA cost-cap. Kriitikko ei saa olla sama malli samalla promptilla kuin generaattori — muuten se ei näe omia virheitään. Logita jokainen iteraatio, jotta tiedät missä malli \"eksyi\".",
+    "outcomes": [
+      "Erotat kolme silmukkakaavaa ja valitset tehtävään sopivan",
+      "Muotoilet mitattavan pysäytyskriteerin, et \"kunnes täydellinen\"",
+      "Asetat kaksinkertaisen suojan: max-iterations + cost-cap, fail fast",
+      "Erotat generator- ja critic-roolit niin että silmukka oikeasti parantaa",
+      "Logitat jokaisen iteraation ja luet iteraatiohistogrammia terveysmittarina"
+    ],
+    "applyIn": [
+      {
+        "title": "AI code generation / code review",
+        "description": "Tavoite on toimiva koodi, ei \"yritys\". Critique-revise loop tuo +15-25 % pass-ratea single-shotiin verrattuna 2.5-3× tokenien hinnalla."
+      },
+      {
+        "title": "Long-form writing kriteereineen",
+        "description": "Research reports ja structured docs: judge pisteyttää rubriikkia vasten, generaattori työstää heikot osiot pisteen kynnykseen asti."
+      },
+      {
+        "title": "Monivaiheiset agentit",
+        "description": "Browsing, research, multi-step laskelmat: tool-use loop ajattelee → kutsuu toolia → näkee tuloksen → valmis, askelrajan suojassa."
+      }
+    ],
+    "pitfalls": [
+      "Ei max-iterations: \"iteroidaan kunnes täydellinen\" — yksi edge-case polttaa $50 ja sitoo workerin 10 minuutiksi.",
+      "Kriitikko on sama malli ja promptti kuin generaattori: malli ei näe omia virheitään (motivoitunut päättely).",
+      "Iteraatioraja on, mutta ei cost-cappia: pitkä konteksti × 5 iteraatiota = $5 / pyyntö.",
+      "Silmukka ilman välivaiheiden logitusta: lopullinen output tallennettu, iteraatiot menetetty — et tiedä missä malli eksyi.",
+      "Convergence text-equalityn kautta (\"kaksi outputia identtisiä, valmis\") toimii 5 %:ssa tapauksista; käytä semantic similarityä tai LLM judgeä."
+    ],
+    "exercises": [
+      {
+        "question": "Ota tehtävä, jossa mallin output on usein \"melkein oikea\". Muotoile sille mitattava pysäytyskriteeri — sellainen, jonka voi tarkistaa koodilla tai judge-kutsulla.",
+        "hint": "Jos kriteeriä ei voi ilmaista numerona tai boolena (passed / score ≥ N), se ei ole vielä valmis silmukkaan."
+      },
+      {
+        "question": "Suunnittele critique-revise loop tälle tehtävälle pseudokoodina: missä critique.score -tarkistus on, missä cost > limit, missä return. Merkitse, mikä malli generoi ja mikä kritisoi.",
+        "hint": "Kriitikon tulisi olla generaattoria halvempi (esim. Haiku kritisoi, Sonnet generoi) ja eri roolissa promptissa."
+      },
+      {
+        "question": "Nimeä valmiille silmukalle kolme metriikkaa logitettavaksi ja alert-kynnys kullekin.",
+        "hint": "Iteraatiohistogrammi (norm: 90 % valmis ≤2), max-iter-hit rate (alert > 5 %), cost-overflow rate (alert > 1 %)."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Ymmärrä \"refine until quality\" ja milloin sitä tarvitaan",
+        "time": "",
+        "why": "Silmukka lisää kustannusta ja monimutkaisuutta. Käytä sitä vain kun syöte vaihtelee eikä laatua voi lukita yhteen promptiin — muuten se on overkill.",
+        "instructions": [
+          "Kirjoita tehtäväsi ja kysy: onko output usein \"melkein oikea\", korjattavissa yhdellä muokkauksella?",
+          "Tarkista, onko olemassa mitattava laatukriteeri (compile, test, schema-valid, judge-score).",
+          "Vertaa: onko virheen hinta korkeampi kuin 2-3× LLM-kutsun hinta?",
+          "Jos kyllä kaikkiin kolmeen, tehtävä on silmukkaehdokas. Valitse kaava: critique-revise, tool-use tai convergence."
+        ],
+        "validate": "Osaat nimetä tehtävän, mitattavan laatusignaalin ja siihen sopivan silmukkakaavan.",
+        "tip": "Code generation on lähes aina silmukka: \"toimiva koodi\" on kriteeri, ei \"yritys\". Ks. [[node:sys-workflows-basics|workflow-perusteet]]."
+      },
+      "s2": {
+        "title": "Aseta pysäytyskriteeri",
+        "time": "",
+        "why": "Ilman selkeää kriteeriä silmukka joko pysähtyy liian aikaisin (matala laatu) tai ei pysähdy lainkaan. Kriteeri on silmukan sydän, ja se määritellään ENNEN koodia.",
+        "instructions": [
+          "Valitse signaalin tyyppi: binäärinen (compile/test pass, schema-valid) tai skalaarinen (judge-score, embedding similarity).",
+          "Judgelle aseta kynnys: score ≥ 8/10. Convergencelle — cosine > 0.92.",
+          "Varmista, että kriitikko on erillinen malli tai voimakkaasti eri promptti, ei sama generaattori.",
+          "Kuvaa, mitä tapahtuu kriteerin täyttyessä: return nykyinen output + metadata (iteraatiot, kustannus)."
+        ],
+        "validate": "Pysäytyskriteeri on ilmaistu tarkistettavana ehtona (boolean tai numero kynnyksellä), ja tiedät kuka sen arvioi.",
+        "tip": "Kalibroi kynnys oikealla datalla [[node:sys-evals-benchmarks|eval suiten]] kautta, ei arvaamalla."
+      },
+      "s3": {
+        "title": "Kokoa silmukka ja kiinnitä vartijat",
+        "time": "",
+        "why": "Pysäytyskriteeri takaa laadun mutta ei suojaa budjettia. Ilman max-iterationsia ja cost-cappia ensimmäinen buginen tapaus valuttaa rahaa ja tukkii workerin.",
+        "instructions": [
+          "Aseta max-iterations: 3 interaktiiviseen (UX), 5-10 asynkroniseen (research, code-gen).",
+          "Lisää cost guard — kova raja per pyyntö (3-5× keskimääräistä), fail fast ylityksessä.",
+          "Lisää time guard: < 30s interaktiiviseen, < 5min asynkroniseen.",
+          "Silmukan rungossa: generate → critic-check → jos kynnys täyttyy return; jos cost/iter ylittyy — return overflow-lipulla.",
+          "Logita jokainen iteraatio: syöte, output, score, kertynyt kustannus."
+        ],
+        "validate": "Silmukka ei voi pyöriä ikuisesti: on max-iterations, cost-cap ja time guard, ja jokainen poistuma logitetaan.",
+        "tip": "Rajat liittyvät [[node:sys-cost-management|kustannusten hallintaan]]: yksi luku ($X per pyyntö) pelastaa $50:n laskulta."
+      },
+      "s4": {
+        "title": "Käy läpi toimiva esimerkki",
+        "time": "",
+        "why": "Abstraktit säännöt heräävät henkiin konkreettisessa koodissa. Code-review-botin esimerkki näyttää, miten kriteeri, rajat ja logit kootaan yhteen silmukkaan.",
+        "instructions": [
+          "Lue kaava: MAX_ITER=5, QUALITY_THRESHOLD=8, COST_LIMIT_USD=0.50.",
+          "Initial pass generoi review'n kalliilla mallilla (Sonnet); critic-call pisteyttää halvalla (Haiku).",
+          "Silmukan sisällä: jos critique.score ≥ kynnys — return; jos cost > raja — log_overflow + return overflow=True.",
+          "Muuten generate_review kirjoitetaan uudelleen prior_review'lla ja feedback=critique.issues.",
+          "MAX_ITERin jälkeen ilman onnistumista — log_max_iter_hit ja return."
+        ],
+        "validate": "Osaat selittää, mikä koodihaara hoitaa laadun, mikä budjetin, mikä havaittavuuden.",
+        "tip": "Eri mallit generate'lle ja criticille ei ole optimointia vaan edellytys sille, että silmukka oikeasti parantaa."
+      },
+      "s5": {
+        "title": "Huomioi rajat ja riskit",
+        "time": "",
+        "why": "Silmukan pääepäonnistumiset eivät ole laatu vaan runaway-kustannus ja parannuksen illuusio. Ennakoi ne suunnitteluvaiheessa, ei tuotannossa laskun kautta.",
+        "instructions": [
+          "Ääretön silmukka: aina kova max-iterations, ei \"vielä kerran\" -poikkeuksia.",
+          "Tokenien kulutus: critique-revise maksaa 2.5-3× single-shotin — sisällytä se unit-ekonomiaan.",
+          "Motivoitunut päättely: generaattori ei kritisoi itseään rehellisesti — käytä eri mallia / roolia.",
+          "Väärä convergence: text equality nappaa 5 % tapauksista, käytä semantic similarityä tai judgeä.",
+          "Havaittavuuden menetys: ilman iteraatiologeja debuggaus on mahdotonta."
+        ],
+        "validate": "Jokaiselle viidestä riskistä sinulla on konkreettinen suojatoimi silmukan suunnittelussa.",
+        "tip": "Silmukka on hallittua ylikulutusta laadun vastineeksi; pidä se kurissa [[node:sys-quality-gates|quality gatejen]] kautta."
+      },
+      "s6": {
+        "title": "Tarkistuslista ja varmistus",
+        "time": "",
+        "why": "Ennen tuotantoon vientiä on varmistettava, että kaikki vartijat ovat paikallaan ja silmukka on havaittavissa. Yksi puuttuva raja = laskutusinsidentti.",
+        "instructions": [
+          "Tarkista: pysäytyskriteeri on mitattava ja varmistettavissa koodilla/judgella.",
+          "Tarkista: max-iterations, cost-cap ja time guard ovat paikallaan.",
+          "Tarkista: critic ≠ generator (eri malli tai rooli).",
+          "Tarkista: jokainen iteraatio logitetaan [[node:sys-logging-patterns|logituksen]] kautta.",
+          "Aja 20-30 oikealla tapauksella ja kerää metriikat [[node:sys-monitoring|monitoroinnin]] kautta."
+        ],
+        "validate": "Oikealla datalla: 90 % pyynnöistä valmis ≤2 iteraatiossa, max-iter-hit < 5 %, cost-overflow < 1 %.",
+        "tip": "Jos max-iter-hit on korkea, kriteeri on liian tiukka tai kriitikko liian heikko; kalibroi datalla, ei arvauksilla."
+      }
+    }
+  },
+  "sys-prompt-chaining": {
+    "title": "Prompt chaining: rakenna ketju, jota voi oikeasti debugata",
+    "subtitle": "6 askelta: pilko monimutkainen tehtävä prompt-ketjuksi ja välitä data askelten välillä luotettavasti",
+    "totalTime": "6 askelta",
+    "whatItIs": "Prompt chaining on tekniikka, jossa yhden mallikutsun output on seuraavan input: `A -> B -> C`. Yhden hirviöpromptin sijaan — \"extract -> classify -> write report\" — rakennat kolme erillistä askelta, joista jokaisen voi debugata, halventaa ja validoida itsenäisesti.\n\nKyse ei ole sekventiaalisen workflowin ideasta (se on [[node:sys-linear-chain|sys-linear-chain]]) vaan **datan välityksen tekniikasta** rajoilla: skeema joka liitoskohdassa, edellisen askeleen virheiden eksplisiittinen käsittely ja toistettava tulos. Kurssi on käytännön läpikäynti siitä, miten tällaisen ketjun rakentaa ilman hiljaa rikkoutuvaa järjestelmää.",
+    "approach": "Suunnittele jokainen askelten välinen raja sopimuksena, ei \"välitän vain tekstin eteenpäin\" -tyyliin. Askeleen output validoidaan JSON-skeemaa vasten ennen kuin se menee seuraavaan askeleeseen — fail-fast hämärän 30 sekunnin päästä tulevan kaatumisen sijaan. Valitse malli askelta kohti (Haiku extractioniin, Sonnet päättelyyn), ei yhtä mallia kaikkeen. Ja välitä `trace_id` kaikkien kutsujen läpi heti ensimmäisestä päivästä — ilman sitä ketjun debuggaus on mahdotonta.",
+    "outcomes": [
+      "Tiedät, milloin dekompositio ketjuksi kannattaa ja milloin se vain lisää latenssia",
+      "Osaat suunnitella askelrajan skeema-sopimuksena validoinnilla",
+      "Tunnet error-propagation -strategiat: skip / retry / fallback / escalate jokaisella askeleella",
+      "Osaat laskea virheiden cascade-vaikutuksen (95 % x 4 askelta = 81 %) ja sijoittaa [[node:sys-quality-gates|quality gatet]] rajoille",
+      "Rakennat toistettavan, halvan ja jäljitettävän ketjun `trace_id`:llä ja askelkohtaisella logituksella"
+    ],
+    "applyIn": [
+      {
+        "title": "AI-research-assistentti",
+        "description": "Hae lähteet -> rakenteinen analyysi -> kirjoita brief -> kritiikki. Eri mallit eri askeleilla, välitulokset välimuistissa."
+      },
+      {
+        "title": "Dokumenttien käsittely",
+        "description": "Parsii sopimus -> tunnista lausekkeet -> merkitse riskit. Validointi joka rajalla nappaa vian ennen kuin se päätyy lopulliseen tulokseen."
+      },
+      {
+        "title": "Tuki ja automaattivastaukset",
+        "description": "Transkriboi -> analysoi sävy -> generoi vastaus, human review analyysin ja lähetyksen välissä."
+      }
+    ],
+    "pitfalls": [
+      "Raakatekstin välittäminen askelten välillä JSON-rakenteen sijaan — seuraava askel parsii regexillä ja rikkoutuu ~10 %:ssa.",
+      "Askeleen N outputin validoinnin sivuuttaminen ennen askelta N+1 — malli palauttaa kerran 100 kutsusta `null` taulukon sijaan, ja kaatuminen tulee viiveellä ja hämärällä virheellä.",
+      "Yhden raskaan mallin käyttö joka askeleella — Sonnet yksinkertaisessa extractionissa on moninkertainen ylimaksu; valitse malli askeleen tehtävän mukaan.",
+      "Virheiden kertymisen sivuuttaminen: 95 %:n askelkohtaisella tarkkuudella 4-askelinen ketju on 81 % end-to-end — ilman quality gateja rajoilla tämä on näkymätöntä rappeutumista.",
+      "`trace_id`:n välittämättä jättäminen — logeissa hajanaisia kutsuja, joita ei voi koota yhdeksi pyynnöksi analyysiä varten."
+    ],
+    "exercises": [
+      {
+        "question": "Ota jokin 2-3 toiminnon tehtäväsi (\"tiivistä ja käännä\", \"hae ja luokittele\") ja piirrä se muodossa `A -> B -> C`. Kirjaa jokaiselle rajalle, mitkä kentät tarkalleen siirtyvät askeleelta toiselle.",
+        "hint": "Jos rajalle tulee \"koko vastauksen teksti\", se on merkki siitä, ettei skeemaa ole vielä suunniteltu. Pelkistä se minimaaliseksi kenttäjoukoksi, jonka seuraava askel tarvitsee."
+      },
+      {
+        "question": "Kirjaa ketjullesi, mitä kukin askel tekee, jos edellinen palautti virheen tai heikon tuloksen: skip, retry, fallback vai escalate ihmiselle?",
+        "hint": "Nojaa [[node:sys-context-passing|sys-context-passing]] -solmuun — käsittelet paitsi onnistuneen outputin myös signaalin sen laadusta."
+      },
+      {
+        "question": "Laske ketjusi end-to-end-tarkkuus, jos jokainen askel toimii 90 %:lla. Montako askelta tekee siitä epäluotettavan?",
+        "hint": "Kerro askelten tarkkuudet keskenään. 0.9 neljänteen potenssiin on noin 0.66 — kaksi kolmasosaa. Quality gatet rajoilla nostavat tätä kattoa."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mitä prompt chaining on ja miksi pilkkoa tehtävä",
+        "time": "",
+        "why": "Yksi hirviöpromptti — \"extract entities, classify, write summary, suggest actions\" — toimii 70 %:ssa ja epäonnistuu 30 %:ssa, eikä voi sanoa mikä osa rikki. Dekompositio muuttaa mustan laatikon debugattavaksi ketjuksi.",
+        "instructions": [
+          "Muotoile: prompt chaining on `A -> B -> C`, jossa yhden kutsun output on seuraavan input (ks. yläsolmu [[node:systems|AI-järjestelmät]] ja [[node:ai-workflows|AI workflowt]]).",
+          "Kirjoita tehtäväsi yhtenä isona promptina ja alleviivaa siitä loogisesti erilaiset toiminnot (hae / luokittele / kirjoita / tarkista).",
+          "Jokainen alleviivattu toiminto on ehdokas erilliseksi askeleeksi ketjussa.",
+          "Kirjaa, mitä pilkkominen tuo: askelten debuggaus erikseen, askelkohtainen malli, välitulosten välimuisti, human review askelten väliin."
+        ],
+        "validate": "Sinulla on lista 2-4 loogisesti erilaisesta askeleesta, ja jokaisesta voit sanoa, mitä se ottaa sisään ja mitä se palauttaa.",
+        "tip": "Jos tehtävä on yksi toiminto (pelkkä luokittelu tai yksinkertainen generointi), ketjua ei tarvita — se vain lisää latenssia. Pilko vain se, mikä aidosti koostuu erilaisista tehtävistä."
+      },
+      "s2": {
+        "title": "Miten välittää askeleen output seuraavan inputiksi",
+        "time": "",
+        "why": "Hiljaisten rikkoutumisten päälähde on askelten välinen raja. Jos askel A palauttaa proosaa ja askel B parsii sen regexillä, ketju rikkoutuu noin 10 %:ssa ilman eksplisiittistä virhettä. Sopimus rajalla muuttaa tämän ennustettavaksi fail-fastiksi.",
+        "instructions": [
+          "Kuvaa jokaiselle rajalle outputin skeema: `{field1, field2, ...}` JSON-skeemana tai Pydanticilla.",
+          "Validoi askeleen N output skeemaa vasten ennen kuin välität sen askeleeseen N+1 — virheellinen tulos pysäyttää ketjun heti, ei 30 sekunnin päästä.",
+          "Välitä seuraavalle askeleelle minimaalinen tarvittava kenttäjoukko, ei koko raakavastausta (lisää [[node:sys-context-passing|sys-context-passing]]).",
+          "Rakenna idempotenssi: uudelleenajo samalla datalla pitää tuottaa sama tulos, muuten debug-tarinaa ei voi rakentaa."
+        ],
+        "validate": "Jokaisella ketjun rajalla on eksplisiittinen skeema ja validointipiste ennen seuraavalle askeleelle välitystä.",
+        "tip": "Skeema rajalla on myös sopimusdokumentaatio. Kun askel B alkaa kuukauden päästä saada odottamattoman kentän, validaattori kaatuu — ei bisneslogiikka kolme askelta myöhemmin."
+      },
+      "s3": {
+        "title": "Miten soveltaa: suunnittele konkreettinen ketju",
+        "time": "",
+        "why": "Aika siirtyä luonnoksesta toimivaan pipelineen: valitse malli askelta kohti, sijoita haarautumisehdot ja välimuistipisteet. Tässä ratkeaa ketjun todellinen kustannus ja nopeus.",
+        "instructions": [
+          "Määritä malli kullekin askeleelle työn tyypin mukaan: extraction/luokittelu -> Haiku, päättely/kirjoitus -> Sonnet, lopullinen kritiikki -> Haiku. Tämä on tyypillisesti 3-5x halvempi kuin \"Sonnet jokaisella askeleella\".",
+          "Deterministisille prompteille lisää välitulosten välimuisti (esim. Redis, TTL 1-24h) — viimeisen askeleen uudelleenajo muuttuu ilmaiseksi.",
+          "Muista latenssi: sekventiaaliset askelet summautuvat (4 x 800ms = 3.2s); missä askelet ovat riippumattomia, harkitse [[node:sys-parallel-fan-out|parallel fan-outia]] tiukan ketjun sijaan.",
+          "Välitä `trace_id` kaikkien askelten läpi ja logita jokainen kutsu erikseen (ks. [[node:sys-logging-patterns|logging patterns]])."
+        ],
+        "validate": "Sinulla on pipeline, jossa jokaiselle askeleelle on määritelty malli, välimuistikäyttäytyminen ja paikka kokonaislatenssissa.",
+        "tip": "Aloita halvimmalla mallilla joka askeleella ja nosta vain siellä, missä laatu aidosti laskee. Useimmiten vain yksi-kaksi askelta tarvitsee \"kalliin\" mallin, ei koko ketju."
+      },
+      "s4": {
+        "title": "Esimerkki: neljän askeleen research-assistentti",
+        "time": "",
+        "why": "Konkreettinen esimerkki näyttää, miten skeema, mallin valinta, fallback ja trace_id yhdistyvät yhdeksi toimivaksi pipelineksi. Siitä näkee tarkalleen, missä kukin edellisten askelten sääntö astuu voimaan.",
+        "instructions": [
+          "Askel 1 - extract sources (Haiku + web_search): hae lähteet ja validoi heti `SourcesSchema` `{urls, snippets}` -mukaisesti.",
+          "Askel 2 - analysis (Sonnet): jos lähteitä alle 3 -> fallback-vastaus \"riittämättömät tiedot\"; muuten rakenteinen analyysi `AnalysisSchema` `{financials, leadership, products, risks}` -mukaisesti.",
+          "Askel 3 - write brief (Sonnet): kokoa executive summary rakenteisesta analyysistä.",
+          "Askel 4 - critique (Haiku): pisteytä brief kriteereitä vasten; jos score < kynnys -> yksi re-pass enintään, sitten palauta tulos yhdessä `trace_id`:n, `step_costs`:n ja `prompt_versions`:n kanssa."
+        ],
+        "validate": "Esimerkin avulla voit osoittaa, millä rajalla on validointi, missä fallback laukeaa ja mikä askel toimii millä mallilla.",
+        "tip": "Askelkohtainen `step_costs`-logi vastaa heti kysymykseen \"missä raha vuotaa\", ja `prompt_versions` vastaa \"millä prompt-versiolla regressio ilmestyi\". Se maksaa itsensä takaisin ensimmäisestä incidentistä."
+      },
+      "s5": {
+        "title": "Rajat ja riskit: virheiden kertyminen",
+        "time": "",
+        "why": "Ketju ei ole ilmainen: askelten virheet kertautuvat, latenssi summautuu, ja ilman virheenkäsittelystrategiaa yksi heikko askel myrkyttää koko tuloksen. Rajojen ymmärtäminen erottaa luotettavan ketjun hauraasta.",
+        "instructions": [
+          "Laske cascade: 95 %:n askelkohtaisella tarkkuudella 4-askelinen ketju on ~81 % end-to-end; mitä pidempi ketju, sitä matalampi luotettavuuden katto.",
+          "Sijoita [[node:sys-quality-gates|quality gatet]] rajoille, joilla virheen hinta on korkea, ettei huono output etene.",
+          "Aseta jokaiselle askeleelle eksplisiittinen error-propagation -strategia edellisen virheen/heikon laadun varalle: skip / retry / fallback / escalate ihmiselle.",
+          "Älä venytä ketjua turhaan: ylimääräiset askelet lisäävät latenssia ja laskevat kokonaistarkkuutta — pilko vain loogisesti erilaisten tehtävien tasolle."
+        ],
+        "validate": "Tiedät ketjusi end-to-end-tarkkuuden ja olet määritellyt jokaiselle askeleelle, mitä se tekee edellisen kaatuessa.",
+        "tip": "Jos 6+ askeleen ketju antaa kelvottoman end-to-end-tarkkuuden, älä kasaa toistoja sokeasti. Joko yhdistä lähekkäiset askelet tai aseta quality gate human review'lla riskialteimpaan kohtaan."
+      },
+      "s6": {
+        "title": "Tarkistuslista ja ketjun validointi",
+        "time": "",
+        "why": "Lopputarkistus nappaa prompt chainingin klassiset sudenkuopat ennen tuotantoa: raakateksti rajoilla, puuttuva validointi, yksi malli kaikkeen, ei trace_id:tä. Tarkistuslista muuttaa kurssin tiedon toistettavaksi rituaaliksi ennen julkaisua.",
+        "instructions": [
+          "Rajat: jokaisella liitoskohdalla on JSON-skeema ja outputin validointi ennen eteenpäin välitystä — missään ei syötetä raakatekstiä regexille.",
+          "Mallit ja kustannus: jokainen askel on kustannus/laatu-mielessä sopivalla mallilla; deterministiset askelet välimuistitetaan.",
+          "Virheet: jokaisella askeleella on strategia edellisen kaatumiselle (skip/retry/fallback/escalate); riskialttiilla rajoilla on [[node:sys-quality-gates|quality gatet]].",
+          "Havainnoitavuus: `trace_id` välitetään kaikkien askelten läpi, jokainen kutsu logitetaan erikseen (ks. [[node:sys-logging-patterns|logging patterns]]); ketju on idempotentti.",
+          "Aja ketju \"huonolla\" syötteellä (tyhjä/osittainen/virheellinen) ja varmista, että se kaatuu eksplisiittisesti ja aikaisin, ei tuota uskottavaa roskaa."
+        ],
+        "validate": "Ketju läpäisee jokaisen tarkistuslistan kohdan, ja rikkinäisellä syötteellä näet tarkan kaatumiskohdan, et hämärää virhettä lopussa.",
+        "tip": "Tee tästä tarkistuslistasta osa ketjujen code review'ta. Yksittäisten askelten promptaustaidot teroita [[node:prompting|prompting]] -solmun kautta — vahva ketju alkaa vahvoista yksittäisistä prompteista."
+      }
+    }
+  },
+  "sys-escalation-paths": {
+    "title": "Eskalaatio ihmiselle: kun AI kutsuu apua",
+    "subtitle": "Miten suunnitella luovutus niin, että AI hoitaa rutiinin itse ja antaa vaikeat tapaukset valmiin kontekstin kera",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Eskalaatio on hetki, jolloin AI sanoo «tässä tarvitaan ihminen» ja luovuttaa tehtävän. Se ei ole tappion myöntämistä vaan osa [[node:ai-human-collaboration|AI + Ihminen]] -järjestelmän suunnittelua: AI hoitaa 70-80 % tehtävistä itse ja luovuttaa vaikeat ihmiselle valmiiksi lämmiteltyinä — kerätyn kontekstin, kokeiltujen ratkaisujen ja suosituksen kera. Tämä kurssi opettaa suunnittelemaan eskalaation laukaisimet, muotoilemaan luovutuksen ja pitämään tasapainon kutsumatta ihmistä joka pikkuasiaan.",
+    "approach": "Etenemme merkityksestä mekaniikkaan. Ensin käsittelemme, miksi eskalaatiota tarvitaan ja miten huono eroaa hyvästä. Sitten suunnittelemme laukaisimet — tehtävätyypin ja avainsanojen mukaan, ei AI:n «varmuuden» mukaan. Opettelemme muotoilemaan luovutuksen yhteenvedon kera, sovellamme sitä oikeaan skenaarioon, tarkastelemme rajat (yli- ja alieskalaatio) ja kokoamme tarkistuslistan tarkistuksineen. Läpileikkaava esimerkki on verkkokaupan tuki.",
+    "outcomes": [
+      "Ymmärrät eron huonon eskalaation («selvittäkää itse») ja hyvän (kontekstin ja suosituksen kera) välillä",
+      "Osaat suunnitella selkeät laukaisimet tehtävätyypin ja avainsanojen mukaan etkä varmuuden mukaan",
+      "Muotoilet luovutuksen valmiin yhteenvedon kera, jotta operaattori käyttää minuutteja eikä tunteja",
+      "Erotat ylieskalaation (kutsut joka pikkuasiaan) aliescalaatiosta (piinaat asiakasta) ja pidät tasapainon",
+      "Sinulla on tarkistuslista eskalaation käyttöönottoon omassa järjestelmässäsi"
+    ],
+    "applyIn": [
+      {
+        "title": "Asiakastuki",
+        "description": "AI vastaa tyypillisiin kysymyksiin ja luovuttaa valitukset, palautukset ja oikeudenkäyntimaininnat operaattorille keskusteluhistorian kera."
+      },
+      {
+        "title": "Hakemusten ja kauppojen käsittely",
+        "description": "AI hoitaa vakiohakemukset mutta eskaloi kynnyksen ylittävät kaupat esimiehelle laskelman ja suosituksen kera."
+      },
+      {
+        "title": "Sisäiset AI-avustajat",
+        "description": "Tiimin AI-avustaja hoitaa rutiinin mutta luovuttaa epästandardit tai riskialttiit pyynnöt vastuuhenkilölle kerätyn kontekstin kera."
+      }
+    ],
+    "pitfalls": [
+      "Eskalointi AI:n «varmuuden» mukaan (confidence < 80 % → kutsu ihminen): AI on lähes aina varma, joten se joko ei eskaloi tai tekee sen satunnaisesti",
+      "«Paljaan» tehtävän luovutus ilman kontekstia: operaattori selvittää uudelleen sen, minkä AI jo tiesi",
+      "Ylieskalaatio: AI kutsuu ihmisen joka pikkuasiaan, ihmiset ylikuormittuvat, AI:n hyöty katoaa",
+      "Aliescalaatio: AI toistaa loputtomasti epäonnistuneita yrityksiä ja ärsyttää asiakasta sen sijaan että kutsuisi ihmisen",
+      "Ei toistokynnystä: AI ei laske epäonnistuneita yrityksiään ja jää jumiin silmukkaan"
+    ],
+    "exercises": [
+      {
+        "question": "Miksi eskalointi AI:n «varmuuden» mukaan (confidence < 80 %) on huono laukaisin, ja mikä korvaa sen?",
+        "hint": "Muista, kuinka usein AI on «varma» silloinkin kun se on väärässä. Mieti, mikä tehtävässä on selitettävissä ja havaittavissa etukäteen."
+      },
+      {
+        "question": "Kuvaa, mitä AI:n tulisi luovuttaa operaattorille valitusta eskaloidessaan, jotta päätös kestää 2 minuuttia eikä 20.",
+        "hint": "Kuka asiakas on, mikä tehtävä, mitä AI jo kokeili, mikä suositus ja linkki historiaan."
+      },
+      {
+        "question": "Miten yksi järjestelmä voi kärsiä yli- ja aliescalaatiosta yhtä aikaa eri tehtäväkategorioissa?",
+        "hint": "Mieti, mitä tapahtuu kun säännöt on asetettu karkeasti: jossain kynnys on liian matala, jossain sitä ei ole lainkaan."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi eskaloida ihmiselle",
+        "time": "",
+        "why": "Ilman eskalaatiota AI hajoaa kahteen ääripäähän: se joko jankkaa epäonnistuneita yrityksiä ja ärsyttää asiakasta, tai luovuttaa heti ensimmäisestä esteestä — miksi sitä silloin olisi. Eskalaatio on osa [[node:ai-human-collaboration|AI + Ihminen]] -suunnittelua, ei hätänappi.",
+        "instructions": [
+          "Aseta tavoite: AI tekee 70-80 % työstä itse ja luovuttaa vaikeat 20-30 % ihmiselle valmiiksi lämmiteltyinä",
+          "Kirjaa ero: huono eskalaatio — «AI ei pystynyt, selvittäkää itse»; hyvä — «en pystynyt juuri tähän, keräsin kontekstin, kokeilin näitä, suosittelen tuonne»",
+          "Huomaa, että hyvä eskalaatio nostaa luottamusta kaikilla: asiakkailla, operaattoreilla, johdolla",
+          "Aseta mittapuu: ihmisen pitää avata tehtävä ja heti tajuta, mistä on kyse"
+        ],
+        "validate": "Osaat selittää yhdellä esimerkillä, miten «AI luovutti» eroaa siitä että «AI luovutti tehtävän valmiiksi lämmiteltynä».",
+        "tip": "Eskalaatio ei ole AI:n epäonnistuminen vaan kypsän järjestelmän merkki. Järjestelmät ilman eskalaatiota ovat vaarallisempia kuin ne, jotka kutsuvat ihmisen ajoissa."
+      },
+      "s2": {
+        "title": "Eskalaation laukaisimet: mikä käynnistää luovutuksen",
+        "time": "",
+        "why": "Päävirhe on eskaloida AI:n «varmuuden» mukaan. AI on lähes aina varma, joten tällainen laukaisin joko ei laukea tai laukeaa satunnaisesti. Selitettävät laukaisimet — tehtävätyypin ja avainsanojen mukaan — toimivat ennustettavasti. Tämä on lähellä [[node:sys-confidence-thresholds|varmuuskynnyksiä]] mutta ei korvaudu niillä.",
+        "instructions": [
+          "Rakenna avainsanalaukaisimien lista: «valitus», «peruutus», «rahat takaisin», «oikeudenkäynti»",
+          "Lisää toistokynnys: AI epäonnistui 2 kertaa peräkkäin → eskalaatio",
+          "Lisää riski- ja summakynnykset: kauppa yli rahakynnyksen → ihminen",
+          "Merkitse tehtäväkategoriat «aina ihminen» (juridiset, lääketieteelliset, riidanalaiset)",
+          "Kunnioita aina asiakkaan suoraa pyyntöä «ihminen» — se on ehdoton laukaisin"
+        ],
+        "validate": "Sinulla on 3-5 selkeää, selitettävää laukaisinta, eikä yksikään niistä kuulosta «jos AI on epävarma».",
+        "tip": "Hyvän laukaisimen voi selittää sanoin johdolle ja asiakkaalle. «Confidence < 80 %» ei voi selittää, «mainitsi rahojen palautuksen» voi."
+      },
+      "s3": {
+        "title": "Miten muotoilla luovutus ihmiselle",
+        "time": "",
+        "why": "Toinen yleinen virhe on luovuttaa ihmiselle «paljas» tehtävä ilman kontekstia. Operaattori käyttää aikaa selvittääkseen sen, minkä AI jo tiesi. Valmis yhteenveto muuttaa «tunnin selvittämisen» «5 minuutin päätökseksi». Tämä leikkaa [[node:sys-approval-flows|hyväksyntävirtoja]], kun ihminen myös hyväksyy toiminnon.",
+        "instructions": [
+          "Rakenna asiakaskortti: kuka hän on, mikä tehtävä, tilauksen/tiketin numero",
+          "Kuvaa, mitä AI jo kokeili ja miksi se ei toiminut",
+          "Lisää status ja signaalit: «3. viive 2 kk:ssa, asiakas vihainen»",
+          "Anna konkreettinen suositus: «palautus + promokoodi»",
+          "Liitä linkki koko keskusteluhistoriaan, jotta ihminen voi syventyä"
+        ],
+        "validate": "Luovutusmallisi sisältää: kuka, mitä, mitä on tehty, suositus ja linkki historiaan — kaikki yhdessä viestissä.",
+        "tip": "Sääntö: ihmisen ei pitäisi kysyä asiakkaalta yhtäkään kysymystä, johon AI jo tiesi vastauksen."
+      },
+      "s4": {
+        "title": "Miten soveltaa: läpileikkaava skenaario",
+        "time": "",
+        "why": "Laukaisimet ja luovutukset heräävät eloon vasta oikeassa virrassa. Seuraamme eskalaatiota ensimmäisestä viestistä operaattorin päätökseen verkkokaupan tuen esimerkillä.",
+        "instructions": [
+          "Asiakas: «tilaus ei tullut» → AI tarkistaa trackingin → jumissa lajittelussa → vastaa «tilaus myöhässä, toimitus tuolloin»",
+          "Asiakas: «tämä on kolmas kerta, haluan rahat kokonaan takaisin» → AI havaitsee «rahat takaisin» + «kolmas kerta» → eskalaatiolaukaisin laukeaa",
+          "AI valmistelee operaattorille: «asiakas Ivanov, tilaus #1234, 3. viive 2 kk:ssa, aiemmin tilannut 50k, status — vihainen. Suositus: palautus + promokoodi. Historia: linkki»",
+          "Operaattori avaa → näkee heti kontekstin → tekee päätöksen 2 minuutissa",
+          "Tarkista molemmat lopputulokset: asiakas sai nopeasti ihmisen, operaattori ei käyttänyt 20 minuuttia «kertokaa uudelleen» -juttuun"
+        ],
+        "validate": "Osaat käydä skenaariosi vaihe vaiheelta läpi ja eskalaatiohetkellä näyttää, mikä laukaisin laukesi ja mikä yhteenveto meni ihmiselle.",
+        "tip": "Aja skenaarioita ääneen kollegan kanssa, joka näyttelee vihaista asiakasta — laukaisimien heikot kohdat paljastuvat heti."
+      },
+      "s5": {
+        "title": "Rajat ja riskit: yli- ja aliescalaatio",
+        "time": "",
+        "why": "Eskalaatio hajoaa molempiin suuntiin. Liikaa — ihmiset ylikuormittuvat, AI on hyödytön. Liian vähän — asiakas kärsii, luottamus laskee. Tasapaino pidetään säännöillä, ei AI:n intuitiolla.",
+        "instructions": [
+          "Ylieskalaatio: AI kutsuu ihmisen joka pikkuasiaan → tiukenna laukaisimia, poista ylimääräiset avainsanat, nosta kynnyksiä",
+          "Aliescalaatio: AI toistaa loputtomasti yrityksiä → lisää tiukka toistokynnys ja pakolliset avainsanalaukaisimet",
+          "Seuraa mittaria: kuinka suuri osa tehtävistä todella tarvitsi ihmisen vs. mitä eskaloitiin",
+          "Muista AI:n raja: se ei saa tehdä peruuttamattomia päätöksiä (iso palautus, datan poisto) itse — se on aina ihminen",
+          "Tarkista laukaisimet säännöllisesti: avainsanat ja kynnykset vanhenevat tuotteen mukana"
+        ],
+        "validate": "Osaat nimetä, mikä merkki viittaa ylieskalaatioon ja mikä aliescalaatioon järjestelmässäsi.",
+        "tip": "Jos olet alussa kahden vaiheilla yli- ja aliescalaation välillä — valitse hieman enemmän eskalaatioita. Ihmisten ylikuorma korjautuu säädöllä, menetetty asiakas ei."
+      },
+      "s6": {
+        "title": "Tarkistuslista ja tarkistus",
+        "time": "",
+        "why": "Ennen eskalaation käyttöönottoa [[node:systems|AI-järjestelmään]] on varmistettava, että laukaisimet ovat selitettävissä, luovutus on täydellinen ja tasapaino on säädetty. Tarkistuslista nappaa aukot ennen kuin asiakas tekee sen.",
+        "instructions": [
+          "Laukaisimet on asetettu tehtävätyypin ja avainsanojen mukaan, ei AI:n «varmuuden» mukaan",
+          "On toistokynnys (esim. 2 epäonnistumista peräkkäin) ja summa-/riskikynnykset",
+          "Asiakkaan suora «ihminen»-pyyntö laukeaa aina",
+          "Luovutusmalli sisältää: kuka, mitä, mitä on tehty, suositus, linkki historiaan",
+          "Suoja yli- ja aliescalaatiota vastaan on asetettu, ja on mittari tasapainon hallintaan"
+        ],
+        "validate": "Kaikki viisi tarkistuslistan kohtaa on merkitty, ja olet ajanut vähintään yhden skenaarion asiakkaan viestistä operaattorin päätökseen.",
+        "tip": "Lue tarkistuslista operaattorin silmin: eskaloidun tehtävän avatessaan hänen pitäisi sanoa «kaikki selvää», ei «mitä täällä edes tapahtui?»."
+      }
+    }
+  },
+  "sys-approval-flows": {
+    "title": "Approval flows: human-in-the-loop",
+    "subtitle": "Ihmisen hyväksynnän upottaminen ennen peruuttamattomia, kalliita ja riskialttiita AI-toimia",
+    "totalTime": "6 steps",
+    "whatItIs": "Approval flow on blokkaava mekanismi: AI ehdottaa toimea, ihminen hyväksyy tai hylkää sen, ja vasta sitten AI suorittaa. Se ei ole konsultointi vaan portti (gate) tuotannon write-operaatioiden edessä. Kurssi opettaa päättämään, mitkä toimet vaativat hyväksynnän, miten gating-piste upotetaan backendiin ja miten approvalista ei tule muodollista rubber-stampia.",
+    "approach": "Etenemme motivaatiosta toteutukseen: ensin miksi approval tarvitaan ja miten se eroaa [[node:sys-escalation-paths|escalationista]], sitten toimien luokittelu tiereihin, sitten tekninen gate dry-runilla ja kill switchillä, soveltaminen oikeaan skenaarioon, rajojen ja anti-patternien (pullonkaula, rubber-stamping) tarkastelu ja lopuksi valmiuden tarkistuslista.",
+    "outcomes": [
+      "Ymmärrät eron approvalin (AI pärjäsi, tarvitaan lupa) ja escalationin (AI ei pärjännyt, välitetään ihmiselle) välillä",
+      "Osaat luokitella toimet 4 tieriin ja päättää, mikä vaatii kovan gaten",
+      "Osaat upottaa blokkaavan approval-pisteen backendiin dry-run-previewillä",
+      "Tiedät miksi kill switch, expiration ja täysi audit trail tarvitaan",
+      "Tunnistat anti-patternit: approval fatigue, rubber-stamping, single-approver kriittisissä toimissa"
+    ],
+    "applyIn": [
+      {
+        "title": "AI customer-ops -botti",
+        "description": "Botti myöntää refundeja ja lähettää asiakkaille sähköposteja. Tier riippuu refundin summasta ja vastaanottajamäärästä: pieni — auto, suuri — 2 approveria."
+      },
+      {
+        "title": "Infrastruktuurin automaatio",
+        "description": "AI-agentti deployaa, restarttaa palveluja, muuttaa konfiguraatioita. Mikä tahansa tuotantomutaatio odottaa eksplisiittistä hyväksyntää ennen suoritusta."
+      },
+      {
+        "title": "AI-vetoinen outreach ja sisältö",
+        "description": "Agentti valmistelee mass-emailin tai julkisen postauksen. Dry-run näyttää yleisön ja tekstin, ihminen hyväksyy ennen lähetystä."
+      }
+    ],
+    "pitfalls": [
+      "Approval vain UI:ssa, ilman blokkaavaa gatea koodissa — nappi on, mutta AI suorittaa silti",
+      "Yksi approver kriittisille toimille — kompromitoitu tili = katastrofi; tarvitaan 4-eyes (2+ approveria)",
+      "Ei dry-run-previewia — approver ei näe summaa/kontekstia ja leimaa sokeasti (rubber-stamping)",
+      "Ei kill switchiä — incidentin aikana ei ole mitään, joka pysäyttäisi kaikki write-toimet välittömästi",
+      "Approval jokaiseen toimeen, mukaan lukien trivial — approval fatigue, ihmiset hyväksyvät kaiken, suoja pettää"
+    ],
+    "exercises": [
+      {
+        "question": "Luokittele tiereihin: (a) labelin lisäys tikettiin, (b) $300 refund, (c) asiakastilin poisto. Perustele.",
+        "hint": "Tier riippuu peruutettavuudesta ja vahingon laajuudesta. Label on peruutettava ja low-stakes; keskikokoinen refund vaatii gatingia; tilin poisto on peruuttamaton ja destructive."
+      },
+      {
+        "question": "Botin approval rate putosi 95 %:sta 60 %:iin viikossa. Mitä tämä kertoo järjestelmästä ja mitä pitäisi tarkistaa?",
+        "hint": "Matala approval rate = AI on huonosti kalibroitu ja ehdottaa paljon toimia, jotka ihmiset hylkäävät. Katso rejection reasons -jakauma ja muutokset promptissa/datassa."
+      },
+      {
+        "question": "Bulk-updaten approval request odotti 5 päivää ja hyväksyttiin sitten. Minkä riskin jätit huomiotta ja miten korjaat sen?",
+        "hint": "Konteksti vanheni (stale context) — data muuttui ehdotuksen jälkeen. Tarvitaan expiration: 1-24h kriittisyyden mukaan."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi human-in-the-loop -hyväksyntä",
+        "time": "",
+        "why": "AI write-accessillä rikkoo tuotannon minuuteissa: poistaa väärät tietueet, lähettää buginalaisen mass-emailin, hyväksyy refundit 1000 asiakkaalle. Yksi bugi compoundsaa katastrofiksi. Approval nappaa virheen ennen toimea.",
+        "instructions": [
+          "Muotoile ero: approval = AI pärjäsi, tarvitaan lupa; [[node:sys-escalation-paths|escalation]] = AI ei pärjännyt, välitetään ihmiselle",
+          "Kiinnitä periaate: approval on BLOKKAAVA mekanismi (gate), ei konsultointi eikä visualization",
+          "Listaa gaten puuttumisen hinta projektillasi: mikä yksittäinen AI-toimi voisi aiheuttaa suurimman peruuttamattoman vahingon",
+          "Yhdistä [[node:ai-human-collaboration|human-AI collaboration]] -konseptiin: ihminen omistaa päätöksen, AI suorituksen"
+        ],
+        "validate": "Osaat selittää yhdellä lauseella miten approval eroaa escalationista, ja nimetä pahimman no-gate-skenaarion projektillasi",
+        "tip": "Jos toimi on peruutettava ja halpa peruuttaa, gatea ei ehkä tarvita — pehmeä notifikaatio riittää. Älä gateta kaikkea."
+      },
+      "s2": {
+        "title": "Mikä vaatii hyväksynnän: peruuttamaton, kallis, riskialtis",
+        "time": "",
+        "why": "Ilman luokittelua joko gateaat kaiken (approval fatigue) tai et mitään (katastrofi). Tier-malli jakaa toimet todellisen riskin mukaan ja asettaa gaten tiukkuuden.",
+        "instructions": [
+          "Jaa toimet 3 akselilla: irreversible (delete, payment, email N>10), high-cost (compute > $X), high-risk (production deploy, customer-facing)",
+          "Mappaa 4 tieriin: Tier 0 — no approval (read-only, label, draft); Tier 1 — soft (suoritetaan + notify + revert); Tier 2 — hard gating; Tier 3 — multi-approval (2+ approveria, 4-eyes)",
+          "Määritä kynnykset parametreilla: refund < $50 → tier 0, < $500 → tier 2, muuten tier 3",
+          "Merkitse missä soft approval riittää: internal actions, low-cost reversible, read-only research"
+        ],
+        "validate": "Sinulla on taulukko toimista, joissa on määrätty tier ja numeeriset kynnykset siellä missä ne sopivat",
+        "tip": "Vertaa [[node:sys-quality-gates|quality gates]] -konseptiin: tierit ovat tiukkuuden gradaatio, eivät binäärinen salli/kiellä."
+      },
+      "s3": {
+        "title": "Miten upottaa approval-piste",
+        "time": "",
+        "why": "Gaten täytyy elää backendissä ja fyysisesti blokata suoritus. Dashboard-nappi ilman koodin tason blokkia on hallinnan illuusio. Dry-run ja kill switch ovat approval-pisteen pakollisia osia.",
+        "instructions": [
+          "Laita kill switch -tarkistus ensimmäiselle riville: `if not GLOBAL_KILL_SWITCH.enabled(): reject` — yksi flag `AI_ACTIONS_ENABLED=false` mykistää kaikki write-toimet",
+          "Tier 0 — suorita heti + lokita; tier 1+ — luo ApprovalRequest ja blokkaa suoritus päätökseen asti (`await request.await_decision`)",
+          "Liitä dry-run-preview: mitä, kenelle (142 customers), cost ($0), reversibility (NONE), napit [Approve][Reject][Edit]",
+          "Aseta expiration (1-24h kriittisyyden mukaan) ja required_approvals (2 tier 3:lle)",
+          "Kirjoita täysi audit trail [[node:sys-logging-patterns|loggingiin]]: action, params, approver_id, decision, ai_proposal_id, timestamp, trace_id"
+        ],
+        "validate": "Koodi blokkaa tier 2+ eksplisiittiseen approveen asti, kill switch on ensimmäinen tarkistus, ja dry-run-preview sekä ai_proposal_id ↔ approval_id -linkki ovat lokeissa",
+        "tip": "Lähetä notifikaatio interaktiiviseen kanavaan (Slack Block Kit / email napeilla), jotta päätös tehdään siellä missä sisältö näkyy."
+      },
+      "s4": {
+        "title": "Miten soveltaa oikeaan skenaarioon",
+        "time": "",
+        "why": "Säännöt heräävät eloon vasta konkreettisessa flowssa. Customer-ops -botti refundeineen näyttää kaikki tierit, dry-runin, multi-approvalin ja metriikat yhdessä paikassa.",
+        "instructions": [
+          "Määritä APPROVAL_RULES domainillesi: refund summan mukaan, send_mass_email count > 10 mukaan, delete_account → tier 3",
+          "Kulje tier 2 -polku: AI ehdottaa $300 refundia → luodaan request previewillä → notify Slack → odota decision → suorita tai reject",
+          "Kulje tier 3: delete_account vaatii 2 approveria, ja varmista että yksi approve ei suorita toimea",
+          "Pystytä metriikat: approval rate (norm > 90 %, muuten AI huonosti kalibroitu), median approval latency, rejection reasons -jakauma"
+        ],
+        "validate": "Skenaariollasi jokainen tier toimii oikein: tier 0 auto, tier 2 odottaa 1 approvea, tier 3 odottaa 2:ta, metriikat kerätään",
+        "tip": "Alle 90 %:n approval rate on signaali AI:sta, ei ihmisistä: se ehdottaa liikaa hylättävää. Korjaa kalibrointi, älä gatea."
+      },
+      "s5": {
+        "title": "Rajat ja riskit: pullonkaula ja rubber-stamping",
+        "time": "",
+        "why": "Approval muuttuu helposti joko pullonkaulaksi (kaikki odottaa ihmistä) tai fiktioksi (ihmiset leimaavat katsomatta). Molemmat ääripäät tappavat sekä nopeuden että suojan.",
+        "instructions": [
+          "Pullonkaula: approval latency 1min–1h ei sovi urgent-poluille — ne menevät joko tier 0 (auto) tai [[node:sys-escalation-paths|escalation]], ei blokkaava gate",
+          "Approval fatigue: trivial-toimien gating → ihmiset rubber-stampaavat kaiken → suoja pettää. Gateta vain todella riskialttiit",
+          "Rubber-stamping ilman previewia: \"Approve refund #1234\" ilman summaa tai kontekstia = muodollisuus. Näytä aina mitä/kenelle/cost/reversibility",
+          "Single-approver-riski: yksi kompromitoitu tili → katastrofi destructive-toimissa. Käytä niihin 4-eyes",
+          "Stale context: request ilman expirationia hyväksytään vanhentuneella datalla → wrong action"
+        ],
+        "validate": "Osaat nimetä mitkä toimet EIVÄT saa kulkea gaten läpi (urgent, trivial) ja mitkä 3 keinoa suojaavat rubber-stampingilta (preview, tier-based, expiration)",
+        "tip": "Jos approver ei osaa selittää mitä tarkalleen hyväksyy, preview ei ole tarpeeksi informatiivinen. Se on dry-runin bugi, ei ihmisen."
+      },
+      "s6": {
+        "title": "Valmiuden tarkistuslista ja verifiointi",
+        "time": "",
+        "why": "Ennen tuotantoa pitää varmistaa että gate todella blokkaa, ei vain piirrä nappia. Tarkistuslista nappaa klassiset aukot ennen incidenttiä.",
+        "instructions": [
+          "Gate blokkaa backendissä (ei vain UI:ssa): testaa että ilman approvea tier 2+ -toimi EI suoriudu",
+          "Kill switch toimii: käännä `AI_ACTIONS_ENABLED=false` ja varmista että kaikki write-toimet pysähtyvät sekunneissa",
+          "Dry-run-preview on täysi: mitä, kenelle, cost, reversibility — jokaiselle gatetulle toimelle",
+          "4-eyes destructiveille: tier 3 vaatii 2+ approveria, yksi approve ei suorita",
+          "Audit trail on täysi ja linkittää ai_proposal_id ↔ approval_id; expiration on asetettu (1-24h)"
+        ],
+        "validate": "Kaikki 5 tarkistuslistan kohtaa on merkitty, ja ajoit negatiivisen testin: yritys suorittaa tier 2 ilman approvalia hylätään",
+        "tip": "Paras verifiointi on harjoitus: käännä kill switch stagingissa ja mittaa montako sekuntia kaikkien toimien pysähtymiseen menee."
+      }
+    }
+  },
+  "sys-feedback-collection": {
+    "title": "Palautteen keräys AI-vastauksista",
+    "subtitle": "Käyttäjäsignaalit parannus-loopiksi ilman fine-tuningia",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Systemaattinen tapa kerätä signaaleja AI-vastausten laadusta — explicit (thumbs up/down, arviot, kommentit, \"report problem\" -nappi) ja implicit (regenerate, edit-before-send, kopiointi, lukuun käytetty aika). Jokainen signaali kiinnitetään vastauksen kontekstiin: `prompt_version`, `model_version`, `response_id`, `user_id`, segmentti. Tämä on improvement-loopin perusta, joka parantaa tuotetta prompteilla ja [[node:sys-evals-benchmarks|eval-suitella]], ei kalliilla fine-tuningilla.",
+    "approach": "Etenemme \"miksi\"-ymmärryksestä sisäänrakennettuun widgetiin, sitten prosessiin \"signaali -> eval case -> prompt fix -> A/B -> roll out\". Aloita minimistä (thumbs), sitten implicit-signaalit, sitten segmentoitu analytiikka ja kalibrointi. Joka vaiheessa pidämme privacyn fokuksessa ja muistamme, että palaute ilman action-prosessia on kuollutta painoa.",
+    "outcomes": [
+      "Ymmärrät eron explicit / implicit / behavioral -signaalien välillä ja milloin kukin on hyödyllinen",
+      "Osaat upottaa palautteen keräyksen kiinnitettynä vastauksen kontekstiin (prompt_version, malli, segmentti)",
+      "Rakennat toimivan loopin: negatiivinen palaute -> eval case -> prompt iteration -> A/B -> roll out",
+      "Näet datan leikkauksina (featurittain, kyselytyypeittäin, segmenteittäin), et vain overall thumbs ratena",
+      "Vältät ansat: negative-only bias, implicit-signaalin kohina, PII-vuoto, ennenaikainen fine-tuning"
+    ],
+    "applyIn": [
+      {
+        "title": "Tuotanto-AI-feature ensimmäisestä päivästä",
+        "description": "Julkaiset chat-assistentin tai AI-generoinnin — lisää thumbs up/down heti, jotta nappaat huonot vastaukset päivissä etkä arvaile, miksi käyttäjät hiljaa poistuvat."
+      },
+      {
+        "title": "Parantaminen ilman fine-tuningia",
+        "description": "Olet kerännyt negatiivista palautetta — muunna top-patternit eval-caseiksi, iteroi promptia ja testaa suitea vastaan. 90 % parannuksista tulee tästä, ei treenauksesta."
+      },
+      {
+        "title": "Arvokkaiden segmenttien suojaaminen",
+        "description": "Overall 90 % thumbs up, mutta enterprise-tier 60 % — segmentointi paljastaa, että menetät arvokkaimmat asiakkaasi keskiarvon näyttäessä hyvältä."
+      }
+    ],
+    "pitfalls": [
+      "Vain thumbs, ei kommenttia tai kontekstia: \"47 % thumbs down\" on hyödytön — et tiedä miksi",
+      "Palaute makaa read-only-storagessa ilman action-prosessia — tiimi menettää motivaation antaa sitä",
+      "Implicit-signaalien sivuuttaminen: 30 % regenerate-rate on katastrofi, mutta \"kukaan ei valita\"",
+      "Ei segmentointia — keskiarvot peittävät kalliiden tierien ongelmat",
+      "PII kommenteissa ilman anonymisointia vuotaa logeihin ja trainingiin; plus hyppy fine-tuningiin ensimmäisen negatiivin jälkeen"
+    ],
+    "exercises": [
+      {
+        "question": "Dashboardisi näyttää 88 % thumbs up, mutta tiimi valittaa laadusta. Mitkä kaksi signaalia tarkistat ensin ja miksi?",
+        "hint": "Mieti implicit-signaaleja (regenerate-rate) ja leikkauksia — overall-luku piilottaa segmenttien ja kyselytyyppien ongelmat."
+      },
+      {
+        "question": "Keräsit 200 negatiivista palautetta viikossa. Kuvaa polku tästä kasasta fixin julkaisuun ilman fine-tuningia.",
+        "hint": "Aggregoi patterneittain -> top issues eval-caseiksi -> prompt iteration -> testaa [[node:sys-evals-benchmarks|eval suitea]] vastaan -> A/B -> roll out jos pass rate parani."
+      },
+      {
+        "question": "Miksi kalibrointi vain negatiivisen palautteen perusteella on vaarallista?",
+        "hint": "Korjaat edge caseja ja rikot main pathin. Tarvitset 1-5 % positiivisen samplen välttääksesi negative biasin."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi kerätä palautetta AI-vastauksista",
+        "time": "",
+        "why": "Ilman palautetta parannat AI:ta sokkona: muutat promptia \"koska tuntuu paremmalta\", julkaiset, toivot. Palaute antaa ground truthin — mitkä vastaukset todella huonoja tai hyviä — ja sitoo sen [[node:sys-monitoring|monitoring-metriikoihin]]. \"Julkaisimme, kukaan ei valita\" ei tarkoita \"toimii\": 70 % käyttäjistä lopettaa käytön hiljaa.",
+        "instructions": [
+          "Muotoile, minkä AI-featurea koskevan päätöksen teet nyt sokkona (ilman laatudataa)",
+          "Hyväksy faktana: käyttäjien hiljaisuus ei ole menestyssignaali vaan yleensä silent churn",
+          "Kiinnitä palautteen tavoite: ei \"kerätä arvioita\" vaan \"napata huonot vastaukset päivissä ja saada perusteet fixille\"",
+          "Yhdistä palaute olemassa olevaan [[node:sys-monitoring|monitoringiin]] — eri kerrokset: metriikat sanovat \"hajosi\", palaute \"laatu heikkeni\""
+        ],
+        "validate": "Osaat nimetä konkreettisen prompt/feature-päätöksen, jonka teet nyt ilman dataa, ja selittää, mikä signaali sen perustelisi.",
+        "tip": "Palaute on osa [[node:ai-human-collaboration|ihmisen ja AI:n yhteistyötä]]: käyttäjä opettaa järjestelmää merkitsemällä huonot vastaukset."
+      },
+      "s2": {
+        "title": "Signaalityypit: explicit ja implicit",
+        "time": "",
+        "why": "Explicit-signaalit (thumbs, arviot, kommentit) ovat tarkkoja mutta sparse — 1-5 % käyttäjistä antaa ne. Implicit-signaalit (regenerate, edit-before-send, kopiointi, lukuaika) ovat kohinaisia mutta dense — jokainen käyttäjä tuottaa niitä. Behavioral (suorittiko tehtävän, jatkoiko keskustelua) on lähimpänä todellista arvoa. Eron ymmärtäminen määrittää, mitä ja miten kerätä.",
+        "instructions": [
+          "Listaa featuresi explicit-signaalit: thumbs up/down, arvio 1-5, kommentti, \"report problem\"",
+          "Listaa implicit-signaalit: response_regenerated, edited_before_send, copied_to_clipboard, time_spent_reading",
+          "Lisää behavioral: suorittiko käyttäjä tehtävän, jatkoiko keskustelua, konvertoiko",
+          "Merkitse jokaiselle signaalille: tarkka vai kohinainen, sparse vai dense — vaikuttaa luottamukseen",
+          "Päätä aloitusminimi: explicit (thumbs) ensimmäisestä päivästä, implicit toisesta viikosta kun on baseline"
+        ],
+        "validate": "Featurellesi on listattu vähintään 2 explicit- ja 2 implicit-signaalia, kullekin tarkkuus/tiheys-merkintä.",
+        "tip": "Implicit-signaalit nappaavat usein silent dissatisfactionin aiemmin kuin explicit: regenerate-rate nousee kauan ennen kuin kukaan painaa thumbs downia."
+      },
+      "s3": {
+        "title": "Miten upottaa palautteen keräys",
+        "time": "",
+        "why": "Signaali on hyödytön ilman kontekstia. Jokainen feedback-event pitää kiinnittää `(response_id, prompt_version, model_version, user_id, user_segment, context)`:iin — muuten et voi leikata featurittain, prompt-versioittain tai segmenteittäin aggregoidessa. Widgetin pitää olla always-on ja minimaalisesti intrusive pitääkseen response raten terveessä 3-10 % -haarukassa.",
+        "instructions": [
+          "Aseta always-on-widget jokaiseen vastaukseen: 👍/👎 + optional textarea \"what went wrong?\"",
+          "Submitissa tallenna full payload: response_id, feedback_type, comment, user_id, user_segment, context (prompt_version, model), timestamp",
+          "Liitä event-tracking implicit-signaaleihin: response_regenerated, response_edited_before_send, response_copied",
+          "Tallenna kaikki (data lake / warehouse) 12-24 kuukauden retentionilla training-signaalia varten",
+          "Pidä response rate 3-10 % -haarukassa: korkeampi tarkoittaa ärsyttävää UI:ta, matalampi liian vähän dataa"
+        ],
+        "validate": "Testi-feedback-event on tallennettu full contextilla (prompt_version, model, segment), ja vähintään yksi implicit-signaali trackataan.",
+        "tip": "Kiinnitys prompt_versioniin on kriittinen seuraavalle vaiheelle ja [[node:sys-versioning|versioinnille]] — ilman sitä et tiedä, mikä prompt-versio tuotti huonon vastauksen."
+      },
+      "s4": {
+        "title": "Miten käyttää: parannus-loop ilman fine-tuningia",
+        "time": "",
+        "why": "Kerätty palaute on arvokasta vain action-loopin sisällä. 90 % parannuksista tulee \"prompt + eval suite\" -parista, ei fine-tuningista. Fine-tuning on perusteltu vain kun prompt engineering on exhausted ja on >10k laadukasta esimerkkiä. Ilman \"signaali -> fix -> verify\" -prosessia palaute muuttuu kuolleeksi painoksi.",
+        "instructions": [
+          "Aggregoi negatiivinen palaute viikoittain top-patterneiksi (prompt_version, response type, segment)",
+          "Muunna top issues eval-caseiksi ja lisää [[node:sys-evals-benchmarks|eval suiteen]] (5-10 uutta viikossa, tavoite 50+ esimerkkiä)",
+          "Iteroi promptia tunnistettua ongelmaa vastaan ja aja eval suitea vastaan",
+          "Aja A/B prodissa, julkaise fix vain jos pass rate >= baseline (esim. +2 %)",
+          "Sulje loop: kirjaa mitä tarkalleen korjattiin — se on weekly review'n outcome"
+        ],
+        "validate": "Koko polku viikoittaisesta negatiivileikkauksesta fixin julkaisuun on kuvattu, eval-suite-tarkistuksella ja roll-out-kriteerillä.",
+        "tip": "Älä hyppää fine-tuningiin ensimmäisen negatiivin jälkeen: se on kallis, hidas ja helppo rikkoa. Käytä ensin loppuun prompt + eval -loop."
+      },
+      "s5": {
+        "title": "Rajat ja riskit: bias, kohina, privacy",
+        "time": "",
+        "why": "Palaute voi helposti johtaa harhaan. Kalibrointi vain negative biasiin korjaa edge caseja ja rikkoo main pathin. Implicit-signaalit ovat kohinaisia — niihin ei voi reagoida sokeasti. PII kommenteissa (asiakasnimet) vuotaa logeihin ja trainingiin. Nämä rajat määrittävät, mihin signaaleihin ja kuinka paljon luottaa.",
+        "instructions": [
+          "Kalibroi myös positiviin: sampleta 1-5 % positiivista palautetta human reviewiin, muuten nappaat vain negative biasin",
+          "Älä reagoi yksittäiseen implicit-signaaliin — se on kohinainen; katso trendejä ja kynnyksiä, ei yksittäisiä eventejä",
+          "Anonymisoi / redaktaa PII ennen storagea; anna käyttäjille opt-out (ks. [[node:pl-privacy|privacy]])",
+          "Älä pidä overall thumbs ratea totuutena — se peittää kalliiden segmenttien ongelmat",
+          "Muista raja: explicit-palautetta antaa 1-5 % käyttäjistä — vinoutunut sample, ei koko yleisö"
+        ],
+        "validate": "Osaat nimetä vähintään 3 riskiä (negative-only kalibrointi, implicit-kohina, PII-vuoto) ja konkreettisen vastatoimen kullekin.",
+        "tip": "Privacy ei ole tässä muodollisuus: palaute asiakasnimillä, joka päätyy trainingiin tai logeihin ilman redaktiointia, on todellinen vuoto."
+      },
+      "s6": {
+        "title": "Tarkistuslista ja verifiointi",
+        "time": "",
+        "why": "Palautteen keräys elää vain suljettuna järjestelmänä: widget + konteksti + storage + viikoittainen action-prosessi + kalibrointi + privacy. Lopputarkistus takaa, ettei yksikään lenkki puutu ja että palaute todella liikuttaa laatua eikä makaa kuolleena painona.",
+        "instructions": [
+          "Widget: thumbs + optional comment jokaisessa vastauksessa, response rate 3-10 % -haarukassa",
+          "Konteksti: jokainen event kiinnitetty prompt_versioniin, malliin, user_segmenttiin; implicit-signaalit trackataan",
+          "Prosessi: viikoittainen aggregointi -> eval-caset -> prompt iteration -> A/B -> roll out kriteerin mukaan",
+          "Leikkaukset: dashboard näyttää ei vain overall raten vaan leikkaukset featurittain / segmenteittäin / prompt-versioittain",
+          "Kalibrointi ja privacy: sampleta positivea reviewiin, PII anonymisoitu, opt-out saatavilla"
+        ],
+        "validate": "Kaikki viisi tarkistuslistan kohtaa ovat toteutettavissa ja verifioitu oikealla featurella; on vähintään yksi \"palaute -> fix -> roll out\" -esimerkki, joka kulki koko polun.",
+        "tip": "Jos jokin lenkki puuttuu, palaute on epätäydellinen: joko keräät sokkona tai keräät etkä käytä. Sido koko loop [[node:systems|tuotantosysteemien]] arkkitehtuuriin."
+      }
+    }
+  },
+  "sys-confidence-thresholds": {
+    "title": "Luottamuskynnykset",
+    "subtitle": "AI vastaa itse vain kun on varma — kynnyksen alle se kysyy, hedgaa tai eskaloi",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Mekanismi, jonka ansiosta AI toimii itsenäisesti vain kun on tarpeeksi varma, ja asetetun kynnyksen alapuolella siirtyy hedge-vastaukseen, fallbackiin tai eskalointiin ihmiselle. Ilman eksplisiittisiä kynnyksiä oikea vastaus ja hallusinaatio näyttävät yhtä varmoilta, eikä käyttäjä erota niitä. Kurssi näyttää, miten saadaan confidence-signaali, arvioidaan sen epäluotettavuus, asetetaan kynnykset konkreettisin toimin ja kalibroidaan kaikki oikeaa dataa vasten.",
+    "approach": "Etenemme motiivista toimivaan mekaniikkaan. Ensin perustelemme, miksi kynnyksiä ylipäätään tarvitaan (ilman niitä AI on \"varmasti väärässä\" yhtä usein kuin \"varmasti oikeassa\"). Sitten opettelemme saamaan confidence-signaalin kolmesta lähteestä ja kohtaamme heti rehellisesti sen heikon calibrationin. Seuraavaksi asetamme kynnykset eksplisiittisin toimin per alue, sovellamme composite-pistettä esimerkissä, hahmotamme rajat ja väärän kalibroinnin riskin ja päätämme tarkistuslistaan ja validointiin. Tämä on infrataito [[node:systems|production-järjestelmien]] sisällä ja osa [[node:ai-human-collaboration|ihmisen ja AI:n yhteistyötä]].",
+    "outcomes": [
+      "Selittää, miksi ilman luottamuskynnyksiä AI valehtelee ja kertoo totuuden yhtä varmasti",
+      "Saada confidence-signaali self-reportista, heuristiikoista/log-probsista ja verification-kutsusta ja ymmärtää sen epäluotettavuus",
+      "Asettaa kynnykset (esim. 0.8 / 0.5) eksplisiittisellä toiminnalla per alue: respond / hedge / escalate",
+      "Laskea composite-piste useasta signaalista ja soveltaa sitä vastauskoodissa",
+      "Kalibroida kynnykset eval-datalla ja tunnistaa väärä calibration ja overconfidence"
+    ],
+    "applyIn": [
+      {
+        "title": "Customer-facing faktavastaukset",
+        "description": "Tukivastaukset ja faktaväitteet: korkea confidence — vastaa, keskitaso — hedgaa ja logaa, matala — eskaloi, jotta et koskaan \"varmasti valehtele\" asiakkaalle."
+      },
+      {
+        "title": "High-stakes päätökset ja suositukset",
+        "description": "Finanssi-, medical-, legal- ja regulatory-kontekstit sekä toimintapäätökset: luottamuskynnys kytkeytyy [[node:sys-approval-flows|approval flowsiin]] ja [[node:sys-escalation-paths|escalation pathsiin]]."
+      },
+      {
+        "title": "RAG-assistentit tietokannan päällä",
+        "description": "Assistentti vastaa kontekstista: jos confidence on kynnyksen alle, se sanoo rehellisen \"en tiedä\" keksimisen sijaan, ja low-confidence -vastaukset syöttävät [[node:sys-feedback-collection|feedback collectioniin]] kalibrointia varten."
+      }
+    ],
+    "pitfalls": [
+      "Luottaa self-reported confidenceen ilman calibrationia — mallit ovat systemaattisesti overconfident (väittävät 0.9, tarkkoja 0.7)",
+      "Yksi kynnys kaikille kysymystyypeille — faktakysymys ja mielipidekysymys vaativat eri calibrationin",
+      "Asettaa kynnys ilman fallback-toimintoa — \"confidence < 0.5\" on määrittelemätön, joten koodi kaatuu tai palauttaa sekavan vastauksen",
+      "Piilottaa epävarmuus käyttäjältä \"paremman UX:n vuoksi\" — se vahingoittaa luottamusta, kun virhe napataan",
+      "Verifioida samalla mallilla (Sonnet arvioi Sonnetia) — motivated reasoning, korkea korrelaatio, matala arvo"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on yksi kynnys 0.8: sen yli vastaa, sen alle eskaloi. Eskalointeja onkin 40%, ja tiimi hukkuu. Mitä muutat ensin ja miksi juuri tämän etkä \"siirrä kynnystä fiiliksellä\"?",
+        "hint": "Tarkista ensin calibration: vastaako väitetty confidence todellista accuracya. Tarvitset todennäköisesti keskimmäisen hedge-alueen, segmentoinnin kysymystyypin mukaan ja A/B-mittauksen — et mielivaltaista kynnyksen siirtoa."
+      },
+      {
+        "question": "Self-reportissa malli antaa itselleen jatkuvasti 0.9, mutta merkityssä otoksessa se on tarkka 65 %:ssa tapauksista. Miksi tätä kutsutaan ja miten korjaat sen?",
+        "hint": "Tämä on overconfidence / väärä calibration. Tarvitset calibration-prosessin: sampleta 200 vastausta buckettien yli, human-label correctness, plottaa confidence vs accuracy ja säädä kynnykset; lisäksi composite riippumattomalla verification-signaalilla."
+      },
+      {
+        "question": "Miksi composite-piste self-reportista + verificationista + log-probsista on luotettavampi kuin yksittäinen signaali?",
+        "hint": "Jokainen signaali pettää omalla tavallaan: self-report voi valehdella, log-probs ei ole aina saatavilla, verification on kallis. Composite on robusti yhden signaalin pettämiselle — mutta verificationin pitää olla eri malli/framing."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi luottamuskynnyksiä tarvitaan",
+        "time": "",
+        "why": "Ilman eksplisiittisiä kynnyksiä AI \"puhuu varmasti pötyä\" yhtä usein kuin on varmasti oikeassa: oikea vastaus ja hallusinaatio näyttävät samalta, eikä käyttäjä erota niitä — suora isku luottamukseen.",
+        "instructions": [
+          "Muotoile ongelma: oikea vastaus ja hallusinaatio ovat erottamattomia sävyltä → käyttäjä ei voi arvioida riskiä.",
+          "Kuvaa, mitä kynnys antaa: AI sanoo eksplisiittisesti \"en ole varma\", eskaloi tai fallbackaa konservatiiviseen vastaukseen.",
+          "Lukitse trade-off: huonompi UX edge caseissa, mutta pidempikestoinen luottamus → enemmän adoptionia.",
+          "Kytke kontekstiin: tämä on [[node:systems|production-järjestelmien]] infraa ja osa [[node:ai-human-collaboration|ihmisen ja AI:n yhteistyötä]]."
+        ],
+        "validate": "Osaat kahdessa lauseessa selittää, miksi \"varmasti väärässä\" on vaarallisempi kuin näkyvä virhe ja mitä kynnys muuttaa.",
+        "tip": "Tavoite ei ole poistaa epävarmuutta vaan tehdä siitä näkyvä ja hallittu — rehellinen \"en tiedä\" voittaa kiillotetun mutta väärän vastauksen."
+      },
+      "s2": {
+        "title": "Confidence-signaalin saaminen ja miksi se on epäluotettava",
+        "time": "",
+        "why": "Kynnyksen asettamiseen tarvitset numeerisen confidence-signaalin. Mutta kaikki kolme lähdettä ovat epätäydellisiä, ja niiden heikkouden sivuuttaminen on klassinen aloittelijan virhe.",
+        "instructions": [
+          "Log-probs: tokenien todennäköisyydet; matalat avaintokeneilla → malli on epävarma. Kaikki API:t eivät palauta (Anthropic — osittain structured outputeissa).",
+          "Structured self-report: pyydä mallia palauttamaan `{answer, confidence: 0..1, reasoning}`. Halpa, mutta calibration heikko.",
+          "Verification call: erillinen LLM-kutsu arvioi confidencen kriteerejä vasten. Kalliimpi mutta paremmin kalibroitu.",
+          "Muista keskeinen rajoite: mallit ovat systemaattisesti overconfident — väitetty confidence ≠ todellinen accuracy."
+        ],
+        "validate": "Osaat nimetä kolme signaalin lähdettä, niiden kustannuksen ja miksi yhtäkään ei voi luottaa sokeasti ilman calibrationia.",
+        "tip": "Self-report voi valehdella; log-probs on structural signal. Missä saatavilla, yhdistä molemmat äläkä valitse yhtä."
+      },
+      "s3": {
+        "title": "Kynnyksen ja matalan confidencen toiminnon asettaminen",
+        "time": "",
+        "why": "Kynnys ilman eksplisiittistä toimintoa on hyödytön: \"confidence < 0.5 — entä sitten?\" saa koodin kaatumaan tai palauttamaan sekavan vastauksen. Jokainen alue tarvitsee määritellyn lopputuloksen.",
+        "instructions": [
+          "Aseta alueet: > 0.8 → vastaa suoraan; 0.5–0.8 → hedge (\"Based on what I know…\") + log review; ≤ 0.5 → eskaloi tai rehellinen \"en tiedä\".",
+          "Määrittele eksplisiittinen fallback-toiminto jokaiselle alueelle — ei määrittelemättömiä haaroja.",
+          "Kytke matala alue [[node:sys-escalation-paths|escalation pathsiin]] ja toimintapäätöksiin [[node:sys-approval-flows|approval flowsin]] kautta.",
+          "Huomioi segmentointi: faktakysymys ja mielipidekysymys voivat vaatia eri kynnykset."
+        ],
+        "validate": "Jokaiselle kolmesta confidence-alueesta on määritelty konkreettinen toiminto, eikä \"matala confidence\" -haaraa jätetä tyhjäksi.",
+        "tip": "Aloita oletuksilla 0.8/0.5, mutta kohtele niitä calibrationin hypoteesina, ei totuutena."
+      },
+      "s4": {
+        "title": "Soveltaminen: composite-piste vastauskoodissa",
+        "time": "",
+        "why": "Yksittäinen signaali on hauras. Composite-piste useasta lähteestä on robusti minkä tahansa yhden pettämiselle ja tuottaa kynnykset, joihin voi luottaa tuotannossa.",
+        "instructions": [
+          "Kerää primary-vastaus self-reportilla `{answer, confidence, confidence_basis, uncertainty_factors, sources}`.",
+          "Tee verification-kutsu eri mallilla (esim. Haiku arvioi Sonnetia) — erillinen verification_score.",
+          "Laske composite painotettuna keskiarvona verificationiin painottaen, esim. `0.4*confidence + 0.6*verification_score`.",
+          "Reititä compositen mukaan: > 0.8 — vastaus; 0.5–0.8 — vastaus uncertainty_factorsin kanssa; ≤ 0.5 — escalate_to_human.",
+          "Seuraa metriikoita: composite-jakauma, escalation rate (target 5–15%), \"confidently wrong\" -määrän väheneminen."
+        ],
+        "validate": "Koodisi palauttaa eri lopputuloksen kolmelle composite-alueelle ja logaa low-confidence -vastaukset myöhempää calibrationia varten.",
+        "tip": "Verificationin on käytettävä eri mallia tai radically eri framingia — muuten malli vain oikeuttaa itsensä."
+      },
+      "s5": {
+        "title": "Rajat ja riskit: väärä calibration",
+        "time": "",
+        "why": "Ilkein pettäminen ei ole kynnyksen puute vaan kynnys, johon luotetaan turhaan: väitetty confidence ei vastaa todellista accuracya, ja koko logiikka hajoaa hiljaa.",
+        "instructions": [
+          "Tunnista väärä calibration: malli väittää 0.9 mutta on tarkka 0.65 — kynnyksistä tulee merkityksettömiä.",
+          "Aja calibration-prosessi kvartaaleittain: sampleta 200 vastausta buckettien yli → human-label correctness → plottaa confidence vs accuracy → säädä.",
+          "Calibration-tavoite: 80 % väitettyä confidencea ≈ 80 % todellista accuracya (±5 %).",
+          "Älä viritä kynnyksiä \"fiiliksellä\": mikä tahansa muutos → A/B-testi → mittaus → roll back jos ei hyötyä.",
+          "Älä piilota epävarmuutta UX:n vuoksi — rehellinen hedge voittaa pitkällä aikavälillä."
+        ],
+        "validate": "Osaat kuvata, miten calibration tarkistetaan datasta ja miksi kynnyksen siirto ilman mittausta on vaarallisempi kuin näyttää.",
+        "tip": "Sampleta low-confidence -vastauksia useammin [[node:sys-feedback-collection|feedback collectioniin]] — ne tuottavat arvokkaimman kalibraatiodatan."
+      },
+      "s6": {
+        "title": "Tarkistuslista ja validointi",
+        "time": "",
+        "why": "Loppukokoonpano: kynnykset toimivat vain systeeminä — signaali, toiminto, composite, calibration ja metriikat yhdessä. Tarkistuslista nappaa aukot ennen tuotantoa.",
+        "instructions": [
+          "Signaali: confidence-lähde(et) valittu, kustannus ja epäluotettavuus ymmärretty.",
+          "Kynnykset ja toiminnot: jokaisella alueella on eksplisiittinen lopputulos, ja matalan confidencen haara johtaa [[node:sys-escalation-paths|escalationiin]].",
+          "Composite: verification erillisellä mallilla/framingilla, ja composite-piste reitittää vastauksen.",
+          "Calibration: on kvartaalinen confidence-vs-accuracy -prosessi ja sääntö muuttaa kynnystä vain mittauksen kautta.",
+          "Metriikat: escalation rate tavoitehaarukassa (5–15 %), \"confidently wrong\" seurataan, kytketty [[node:sys-quality-gates|quality gatesiin]]."
+        ],
+        "validate": "Kaikki viisi tarkistuslistan kohtaa on rastittu, ja testipyynnöissä eri confidence-tasot tuottavat eri, ennalta määritellyt lopputulokset.",
+        "tip": "Jos jokin kohta on \"paperilla\" ilman mittausta, se on yhä hypoteesi, ei kynnys. Kalibroi ensin, luota sitten."
+      }
+    }
   }
 }

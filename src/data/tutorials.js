@@ -3842,6 +3842,1060 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "sys-workflows-basics": {
+    "nodeId": "sys-workflows-basics",
+    "icon": "flash",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-linear-chain": {
+    "nodeId": "sys-linear-chain",
+    "icon": "arrow-right",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-quality-gates": {
+    "nodeId": "sys-quality-gates",
+    "icon": "shield",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-branching-logic": {
+    "nodeId": "sys-branching-logic",
+    "icon": "puzzle",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-loop-patterns": {
+    "nodeId": "sys-loop-patterns",
+    "icon": "repeat",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-prompt-chaining": {
+    "nodeId": "sys-prompt-chaining",
+    "icon": "link",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-rag-architecture": {
+    "nodeId": "sys-rag-architecture",
+    "icon": "testtube",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-context-passing": {
+    "nodeId": "sys-context-passing",
+    "icon": "hook",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-vector-stores": {
+    "nodeId": "sys-vector-stores",
+    "icon": "archive",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-chunking-strategies": {
+    "nodeId": "sys-chunking-strategies",
+    "icon": "cube",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-hybrid-search": {
+    "nodeId": "sys-hybrid-search",
+    "icon": "search",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-document-pipelines": {
+    "nodeId": "sys-document-pipelines",
+    "icon": "file",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-multi-agent-patterns": {
+    "nodeId": "sys-multi-agent-patterns",
+    "icon": "puzzle",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-supervisor-worker": {
+    "nodeId": "sys-supervisor-worker",
+    "icon": "users",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-parallel-fan-out": {
+    "nodeId": "sys-parallel-fan-out",
+    "icon": "sparkles",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-handoff-protocols": {
+    "nodeId": "sys-handoff-protocols",
+    "icon": "link",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-tool-orchestration": {
+    "nodeId": "sys-tool-orchestration",
+    "icon": "tools",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-escalation-paths": {
+    "nodeId": "sys-escalation-paths",
+    "icon": "send",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-approval-flows": {
+    "nodeId": "sys-approval-flows",
+    "icon": "shield",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-feedback-collection": {
+    "nodeId": "sys-feedback-collection",
+    "icon": "inbox",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-confidence-thresholds": {
+    "nodeId": "sys-confidence-thresholds",
+    "icon": "target",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-cost-management": {
+    "nodeId": "sys-cost-management",
+    "icon": "tag",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-monitoring": {
+    "nodeId": "sys-monitoring",
+    "icon": "chart",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-logging-patterns": {
+    "nodeId": "sys-logging-patterns",
+    "icon": "scroll",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-versioning": {
+    "nodeId": "sys-versioning",
+    "icon": "tag",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-rollback-strategies": {
+    "nodeId": "sys-rollback-strategies",
+    "icon": "repeat",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-rate-limiting": {
+    "nodeId": "sys-rate-limiting",
+    "icon": "shield",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-semantic-cache": {
+    "nodeId": "sys-semantic-cache",
+    "icon": "archive",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-api-patterns": {
+    "nodeId": "sys-api-patterns",
+    "icon": "globe",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-event-driven": {
+    "nodeId": "sys-event-driven",
+    "icon": "flash",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-batch-vs-realtime": {
+    "nodeId": "sys-batch-vs-realtime",
+    "icon": "compass",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-data-sync": {
+    "nodeId": "sys-data-sync",
+    "icon": "repeat",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-auth-patterns": {
+    "nodeId": "sys-auth-patterns",
+    "icon": "lock",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "sys-error-handling": {
+    "nodeId": "sys-error-handling",
+    "icon": "question",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [],
+    "relatedPrompts": [],
+    "next": [
+      "systems"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 
