@@ -98,7 +98,7 @@ export default function ProfileFab(props) {
           {hasAvatar ? (
             <span className="profile-fab__initial">{avatarInitial}</span>
           ) : (
-            <Icon name={isLoggedIn ? 'user' : 'login'} size={22} strokeWidth={1.5} />
+            <Icon name="user" size={22} strokeWidth={1.5} />
           )}
           {/* Зелёная точка — индикатор авторизации */}
           {isLoggedIn && <span className="profile-fab__auth-dot" aria-hidden="true" />}
