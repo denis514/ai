@@ -1509,10 +1509,17 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 
 @media (max-width: 720px) {
   .canvas-zoom { display: none; }
-  /* Фильтр категорий — наверху по центру (между левой/правой FAB). На мобиле
-     показываем только сам выбор категории; кнопка обновлений живёт в MobileFab. */
-  .canvas-filters { top: 14px; }
+  /* Фильтр категорий — наверху строго по центру (между левой/правой FAB).
+     Снимаем десктопный max-width (иначе на узком экране ≈10px и текст ломается).
+     Текст — в одну строку. Кнопка обновлений на мобиле живёт в MobileFab. */
+  .canvas-filters {
+    top: 16px;
+    max-width: none;
+    white-space: nowrap;
+  }
   .canvas-filters__updates-wrap { display: none; }
+  .canvas-filters__toggle { white-space: nowrap; }
+  .canvas-filters__toggle strong { white-space: nowrap; }
 }
 
 /* ============================================================
