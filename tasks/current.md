@@ -246,7 +246,10 @@
     slash-команд. Делать по ним 6-шаговые курсы = вода. Зафиксировано как решение.
   - [x] **Ветка Use Cases закрыта** ✅: 6-шаговые курсы-инструкции на всех 16 сценариях
     (uc-ai-reporting-launch … uc-ai-conversion-optimization), ru/en/fi. Всего 108 курсов.
-  - [ ] Раскатка дальше. Осталось из крупного: Systems (sys-*), Transformation (направления
+  - [x] **Ветка Systems закрыта** ✅: 6-шаговые курсы на всех 34 листьях-паттернах
+    (workflows/data/orchestration/human-collab/operations/integrations), ru/en/fi.
+    Сделано двумя волнами по 17 агентов. Всего 142 курса.
+  - [ ] Раскатка дальше. Осталось из крупного: Transformation (направления
     ops/mk/cs/pd/ds/en/ec-*). Контейнеры-обзоры (foundation/systems/transformation/use-cases)
     — по желанию.
 
