@@ -267,9 +267,12 @@
   батч 2 ч. (фильтр уровня на «Курсах», бейджи «workflow»→«курс»); батч 3 (SHA-256 KDF
   для шифрования + константное сравнение секретов, барьер качества PASS).
   ⚠️ Деплой-долг: редеплой builder-execute/scheduler; после деплоя API-ключи вводятся заново.
-  Осталось: батч 4 (контент тех-курсов — расшифровка жаргона + ты/вы, объёмно);
-  ENG-1 (атомарная защита кошелька — через RPC); продуктовые решения (единый термин
-  вместо «workflow», привязка роли онбординга); sync-whats-new splitter-bug; content gaps.
+  ✅ батч 4 (контент): расшифровка жаргона + единое «ты» в 11 тех-курсах (en-governance,
+  sys-error-handling, sys-rag-architecture, uc-ai-rag-launch, ec-personalization, cc-install,
+  m-what, ops-process-automation, ds-accessibility, m-security, cap-thinking). Только RU.
+  Осталось (по желанию): ENG-1 (атомарная защита кошелька — через RPC); продуктовые решения
+  (единый термин вместо «workflow», привязка роли онбординга); sync-whats-new splitter-bug;
+  content gaps (Agent SDK, MCP-примитивы, data retention/ZDR и т.д.).
   - [x] **Вычитка педагогами EN/FI** ✅: выборка по всем веткам. Вердикт — проза близка к
     native, грубых ошибок/калек нет. Исправлен единственный системный дефект: поле totalTime
     нормализовано (ru «6 шагов» / en «6 steps» / fi «6 vaihetta»), EN behaviour→behavior.
