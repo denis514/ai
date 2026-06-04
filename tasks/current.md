@@ -249,9 +249,14 @@
   - [x] **Ветка Systems закрыта** ✅: 6-шаговые курсы на всех 34 листьях-паттернах
     (workflows/data/orchestration/human-collab/operations/integrations), ru/en/fi.
     Сделано двумя волнами по 17 агентов. Всего 142 курса.
-  - [ ] Раскатка дальше. Осталось из крупного: Transformation (направления
-    ops/mk/cs/pd/ds/en/ec-*). Контейнеры-обзоры (foundation/systems/transformation/use-cases)
-    — по желанию.
+  - [x] **Ветка Transformation закрыта** ✅: 6-шаговые курсы на всех 54 листьях 7 направлений
+    (operations/marketing/customer-support/product/enterprise/design/ecommerce), ru/en/fi.
+    Три волны (18+21+15). **Итого 196 курсов** — все строго по 6 шагов.
+  - [x] **Раскатка node-course по всем содержательным веткам ЗАВЕРШЕНА** ✅: Projects,
+    Prompting, Agents, Capabilities, Instructions, MCP, Claude Code (ключевое+cc-md),
+    AI Fundamentals, Use Cases, Systems, Transformation. 196 курсов.
+  - [ ] Остаток (по желанию): обзорные курсы на контейнерах (foundation/systems/
+    transformation/use-cases/ai-native-*), мелкие узлы Claude Code (cc-grp-*/cc-tty-*/cc-cfg-*).
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
