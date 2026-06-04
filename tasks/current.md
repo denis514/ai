@@ -230,8 +230,12 @@
     i-style, i-templates), ru/en/fi. Всего 71 курс.
   - [x] **Ветка MCP закрыта** ✅: 6-шаговые курсы на 6 листьях (m-what, m-ready, m-custom,
     m-security, m-patterns, m-debug), ru/en/fi. Всего 77 курсов.
+  - [x] **Claude Code — ключевые темы** ✅: 6-шаговые курсы на 7 высокоценных листьях
+    (cc-install, cc-terminal, cc-config, cc-cfg-permissions, cc-slash, cc-plan-mode, cc-ide),
+    ru/en/fi. Мелкие микро-настройки (cc-cfg-statusline, cc-grp-*, cc-tty-*) намеренно
+    пропущены, чтобы не плодить воду. Всего 84 курса.
   - [ ] Раскатка контента дальше. Закрыты: Projects, Prompting, Agents, Capabilities,
-    Instructions, MCP. Кандидаты: Claude Code, AI Fundamentals, Use Cases, Systems.
+    Instructions, MCP, Claude Code (ключевое). Кандидаты: AI Fundamentals, Use Cases, Systems.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
