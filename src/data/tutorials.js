@@ -2440,6 +2440,145 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "i-global": {
+    "nodeId": "i-global",
+    "icon": "globe",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "instructions"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "instructions",
+      "i-project",
+      "i-style"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "i-project": {
+    "nodeId": "i-project",
+    "icon": "folder",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "instructions"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "i-global",
+      "projects",
+      "p-instructions"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "i-style": {
+    "nodeId": "i-style",
+    "icon": "paint",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "instructions"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "i-global",
+      "instructions"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "i-templates": {
+    "nodeId": "i-templates",
+    "icon": "clipboard",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "instructions"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-structured",
+      "i-project",
+      "instructions"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 

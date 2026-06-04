@@ -9746,5 +9746,526 @@
         "tip": "Payoff signal: if a manual analysis would take tens of minutes, 15 seconds of reasoning is a good trade."
       }
     }
+  },
+  "i-global": {
+    "title": "Global Custom Instructions",
+    "subtitle": "Set up your profile once — Claude remembers your style across every chat",
+    "totalTime": "6 steps",
+    "whatItIs": "Global Custom Instructions are settings in your personal Claude.ai profile that apply to every chat without exception (unless a Project overrides them). They are Claude's basic \"character\" for you: response language, tone, format, and what matters to know about you. Set it once — it works everywhere.",
+    "approach": "We move from meaning to practice: first why this matters at all, then where to find the settings, what exactly to write there (two fields — About me and How to respond), how to phrase things concretely instead of vaguely, how to verify the result across different tasks, and where to draw the line — what NOT to put into global instructions.",
+    "outcomes": [
+      "You understand how global instructions differ from the Project level and when to use each",
+      "You know where Custom Instructions live in your Claude.ai profile and how to open them",
+      "You can fill in About me and How to respond so Claude answers in your style",
+      "You write concrete instructions instead of vague ones that Claude ignores",
+      "You understand the boundary: what belongs in global vs. in a Project"
+    ],
+    "applyIn": [
+      {
+        "title": "Daily work in chats",
+        "description": "Every new conversation immediately uses the right language, tone, and format — no need to repeat \"answer in English, keep it short\" at the start of each chat."
+      },
+      {
+        "title": "Setting up a new account",
+        "description": "When you first get to know Claude.ai, you define your baseline style once, and from then on every chat inherits it automatically."
+      },
+      {
+        "title": "Personal profile as the foundation",
+        "description": "Global instructions are the base on top of which the Project level adds narrow rules for specific tasks."
+      }
+    ],
+    "pitfalls": [
+      "Putting one project's narrow rules into global — they start interfering across all other chats",
+      "Writing vaguely (\"be helpful\", \"write well\") — Claude can't tell what to change and ignores it",
+      "Forgetting that Project instructions override global ones — your global may not work inside a Project",
+      "Overloading the field with a 30-item list — the important parts get lost and Claude doesn't follow all of it",
+      "Not checking the result after setup and assuming the instructions \"don't work\" when the issue is the wording"
+    ],
+    "exercises": [
+      {
+        "question": "How do global Custom Instructions differ from Project-level instructions, and which one wins in a conflict?",
+        "hint": "Global apply to all chats, Project only inside a specific project. Think about what makes more sense as the priority in a narrow context."
+      },
+      {
+        "question": "Write one vague instruction and rewrite it as a concrete one. For example, how do you turn \"answer normally\" into something verifiable?",
+        "hint": "A concrete instruction describes observable behavior: language, length, format, what to avoid. You can check it by eye in the answer."
+      },
+      {
+        "question": "Name two things you should NOT put into global instructions, and explain where to move them.",
+        "hint": "Anything tied to one narrow topic or project is better kept at the Project level rather than imposed on all chats."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why global instructions matter",
+        "time": "",
+        "why": "Without global instructions every new chat starts from scratch: you re-explain language, tone, and format. Global instructions set this once — Claude acts as if it already knows you.",
+        "instructions": [
+          "Recall how often you typed \"answer in English\" or \"keep it shorter\" at the start of a chat — that's exactly what global instructions remove for good.",
+          "Grasp the idea: global instructions are Claude's basic \"character\" specifically for you, applied to all chats.",
+          "Remember the key difference from a regular message: instructions live in your profile, not in a single conversation, and don't disappear when you close the chat.",
+          "Accept the fact: set once, the effect lands on every future chat."
+        ],
+        "validate": "You can explain in one sentence why repeating \"answer in English\" in every chat is a waste of time.",
+        "tip": "Global instructions aren't about a specific task — they're about how you want to talk with Claude in general."
+      },
+      "s2": {
+        "title": "Where the settings live",
+        "time": "",
+        "why": "Before writing anything, you need to find the field itself. Global Custom Instructions live in your personal profile on [[node:pl-web-setup|Claude.ai]], not inside a chat.",
+        "instructions": [
+          "Open Claude.ai and log into your account.",
+          "Go to your profile settings (account icon/menu).",
+          "Find the Custom Instructions section — these are the global instructions of your personal profile.",
+          "Notice there are two separate fields — about you and how to respond. Don't confuse them with a specific Project's settings."
+        ],
+        "validate": "You've opened the Custom Instructions section in your profile and see two input fields (empty or filled).",
+        "tip": "If you only see settings inside one project, that's not the global level. Look for global ones in the account profile itself."
+      },
+      "s3": {
+        "title": "What to write: About me and How to respond",
+        "time": "",
+        "why": "The two fields solve two different jobs. About me is context about you so Claude doesn't guess. How to respond is exactly how to answer: language, tone, format.",
+        "instructions": [
+          "In About me, describe yourself briefly: what you do, what you use Claude for, your level on the topic.",
+          "In How to respond, set the style: which language to answer in, how detailed, in what format (lists, paragraphs).",
+          "Keep each field to the point: 3-6 short bullets, not an essay.",
+          "Lean on a practical example: \"Always answer in English. Be concise. Use bullet points by default.\"",
+          "If you want to fine-tune tone and format separately, that's the topic of the [[node:i-style|Style and tone]] node."
+        ],
+        "validate": "Both fields are filled: About me gives context about you, How to respond sets the answer's language, length, and format.",
+        "tip": "About me answers \"who's asking\", How to respond answers \"how to reply\". Don't mix them."
+      },
+      "s4": {
+        "title": "Concrete instead of vague",
+        "time": "",
+        "why": "Claude follows instructions you can verify. \"Be helpful\" is empty. \"Answer in English, in bullets, no preamble\" is doable and noticeable.",
+        "instructions": [
+          "Take each of your instructions and ask: can I verify it by eye in the answer?",
+          "Replace generic words with observable behavior: instead of \"write well\" — \"short paragraphs, no fluff, examples at the end\".",
+          "State specifics: language, maximum length, format, what to avoid.",
+          "Remove instructions that change nothing (\"be smart\", \"try hard\") — they only take up space.",
+          "Re-read: if a bullet can't be verified, rephrase or delete it."
+        ],
+        "validate": "Every bullet in your instructions describes behavior that's visible in the answer and can be confirmed or refuted.",
+        "tip": "Good test: imagine two Claude answers. If your instruction can't tell you which one is \"correct\", it's too vague."
+      },
+      "s5": {
+        "title": "Test on three different tasks",
+        "time": "",
+        "why": "One task won't show whether the instructions work. Checking across different request types shows whether the style holds everywhere, not by chance.",
+        "instructions": [
+          "Open a new chat (no Project) and ask a simple question — check language and tone.",
+          "In a second new chat, ask Claude to explain something — check length and format (lists/paragraphs).",
+          "In a third, give a practical task (write text, work through a problem) — check whether the style holds under load.",
+          "Compare the three answers: is the style the same? If Claude slipped somewhere, refine the wording in the instructions.",
+          "Repeat the test after edits until the style is stable across all three cases."
+        ],
+        "validate": "Across all three different chats Claude answers in a single expected style without reminders.",
+        "tip": "Test in new chats without a Project — otherwise Project instructions may override the global ones and spoil the test's purity."
+      },
+      "s6": {
+        "title": "Boundaries: what NOT to put in global",
+        "time": "",
+        "why": "Global instructions apply to all chats. A narrow rule from one project will start interfering everywhere. That belongs at the [[node:i-project|Project level]].",
+        "instructions": [
+          "Keep in global only what's true for all your chats: language, general tone, basic format.",
+          "Move narrow rules (one project's terminology, a specific report format, a role for one task) to the [[node:i-project|Project level]].",
+          "Remember the priority: [[node:instructions|Project instructions]] override global ones — don't duplicate or conflict with them.",
+          "Don't turn the global field into a dump of 30 items — keep 3-7 key ones, distribute the rest across projects.",
+          "Final check: go through each global bullet and ask \"is this really needed in ALL chats?\"."
+        ],
+        "validate": "Only universal rules remain in global; everything narrow is deliberately moved to the Project level, with no conflicts with Project instructions.",
+        "tip": "Simple boundary rule: universal goes global, specific goes to a Project. If you doubt whether a rule applies to all chats, it's probably project-specific."
+      }
+    }
+  },
+  "i-project": {
+    "title": "Project instructions: make a project an expert in one topic",
+    "subtitle": "6 steps: a narrow context that overrides and extends global rules",
+    "totalTime": "6 шагов",
+    "whatItIs": "Project instructions are instructions set inside a specific [[node:projects|Project]]. They describe a narrow working context: who Claude should be in this particular project, what answer format to keep, and what constraints to follow. Inside the project they override and extend the [[node:i-global|global instructions]] that apply across all chats.\n\nThe point is to turn a Project from a plain folder of files into a specialized assistant on one topic — without bloating the global rules with details that belong only here.",
+    "approach": "Think in layers: global rules define you as a user everywhere, project instructions add a narrow context for one task or team on top. Don't repeat the global layer — extend it with what is specific only to this project. One precise sentence about role and format changes answers more than a paragraph of generic wishes.",
+    "outcomes": [
+      "You understand why instructions are needed at the Project level, not only globally",
+      "You know how project instructions override and extend the [[node:i-global|global ones]]",
+      "You can find the instructions field in Project settings and fill it in",
+      "You write a narrow task or team context without duplicating global rules",
+      "You link instructions to [[node:p-files|project files]] and verify the role actually works"
+    ],
+    "applyIn": [
+      {
+        "title": "Project with a stable role",
+        "description": "Set the role of an analyst, editor, or developer once — and every project chat answers in it without reminders."
+      },
+      {
+        "title": "Team project",
+        "description": "The instruction fixes a shared style and format for the whole team on top of each member's personal global rules."
+      },
+      {
+        "title": "Narrow domain",
+        "description": "A project on a specific topic gets a specialized context that doesn't belong in global instructions."
+      }
+    ],
+    "pitfalls": [
+      "Duplicating [[node:i-global|global instructions]] in every project — that is noise; extend, don't repeat.",
+      "Creating project instructions that contradict the global ones, then being surprised by mixed answers.",
+      "Writing a wall of generic wishes (\"be helpful\") instead of the narrow context of a specific task.",
+      "Ignoring [[node:p-files|project files]]: the instruction says \"rely on the materials\", but there are no materials in the project.",
+      "Setting the instruction once and forgetting it — over time the project's role drifts from the real task."
+    ],
+    "exercises": [
+      {
+        "question": "Take one real Project and list what is specific to its topic versus what you already have in your global rules. Which of these should live in the project instructions?",
+        "hint": "Only the narrow part goes into project instructions: the role, format, and constraints of this project. Anything true for all your chats stays in the [[node:i-global|global ones]]."
+      },
+      {
+        "question": "Write one role sentence for your project and one answer-format sentence. Check: do they repeat what is already set globally?",
+        "hint": "A good role is concrete: \"You are an editor of legal texts.\" A good format states the structure: \"problem → impact → recommendation.\""
+      },
+      {
+        "question": "Open a chat in the project and ask a question. Does the answer change as the instruction describes? If not — where is the conflict with the [[node:i-global|global]] rules?",
+        "hint": "If the answer ignores the role, usually a global rule conflicts with the project instruction, or the instruction is too vague."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why instructions at the Project level",
+        "time": "",
+        "why": "Global rules are the same in every chat. But each serious project has its own narrow context that doesn't belong globally — that is what this separate layer is for.",
+        "instructions": [
+          "Open one of your [[node:projects|Projects]] and think about how working in it differs from an ordinary chat.",
+          "List what is specific to this project: role, topic, answer format.",
+          "Mark what you do NOT want to keep in the [[node:i-global|global instructions]] because it is needed only here.",
+          "Write one sentence: \"In this project Claude should be …\"."
+        ],
+        "validate": "You have a list of 2-4 points that matter only for this project and aren't needed in all other chats.",
+        "tip": "If the list has nothing narrow, the project may be fine with the [[node:i-global|global]] rules and needs no separate instruction yet."
+      },
+      "s2": {
+        "title": "How they relate to the global ones",
+        "time": "",
+        "why": "Project instructions don't replace the global ones — they work on top: extending the shared context and overriding it where the project needs different rules.",
+        "instructions": [
+          "Picture two layers: [[node:i-global|global instructions]] apply everywhere, project instructions apply only inside this project.",
+          "Where the project instruction is silent, the global rule applies (extension).",
+          "Where the project instruction says otherwise, it takes priority inside the project (override).",
+          "Decide for your project: what you extend and what you override."
+        ],
+        "validate": "You can name at least one point the project extends from the global rules and at least one it overrides.",
+        "tip": "Override deliberately: if a project rule directly contradicts a global one, answers become unpredictable."
+      },
+      "s3": {
+        "title": "Where to set the instructions",
+        "time": "",
+        "why": "Project instructions live in the project's own settings, not in the account-wide settings — so they're easy to confuse with the global ones.",
+        "instructions": [
+          "Open the needed [[node:projects|Project]] and go to its settings (the project's Custom Instructions).",
+          "Find the project instructions field — it is a separate field, not the account [[node:instructions|Custom Instructions]].",
+          "Make sure you are editing this project, not the global rules.",
+          "Enter a draft of the role and format from step s1."
+        ],
+        "validate": "The text is saved in this specific project's instructions field, and you understand it isn't present in other projects.",
+        "tip": "Global [[node:i-global|instructions]] are set once for all chats; project instructions are set separately in each project."
+      },
+      "s4": {
+        "title": "What to write: narrow context",
+        "time": "",
+        "why": "The value of a project instruction is in the specifics of one task or team. Generic wishes duplicate the global layer and change nothing.",
+        "instructions": [
+          "Describe the role in one precise sentence: \"You are …\" (e.g. an analyst, editor, developer in this topic).",
+          "Set the answer format: structure, tone, length (e.g. \"problem → impact → recommendation\").",
+          "List the constraints of this project: what to avoid, what to rely on.",
+          "Remove anything already in the [[node:i-global|global]] rules — keep only the narrow part."
+        ],
+        "validate": "The instruction fits in a few lines, each sentence is concrete and relates only to this project.",
+        "tip": "Compare with the global rules: if a line could move to the global layer without losing meaning, that is where it belongs."
+      },
+      "s5": {
+        "title": "Linking with project files",
+        "time": "",
+        "why": "The instruction says HOW to answer, and [[node:p-files|project files]] give WHAT to base it on. Together they make answers both stylistically precise and factually correct.",
+        "instructions": [
+          "Add [[node:p-files|files]] with substance to the project: documents, guides, examples on the topic.",
+          "In the instruction, state that answers should rely on project materials, not general knowledge.",
+          "Link the role to the source: \"As an expert on the topic, answer based on the attached files\".",
+          "Check that the materials mentioned in the instruction are actually uploaded to the project."
+        ],
+        "validate": "The project has both the instruction and the files, and Claude's answer relies on the uploaded materials.",
+        "tip": "Without [[node:p-files|files]], the phrase \"rely on project materials\" points to nothing and derails the answer."
+      },
+      "s6": {
+        "title": "Common mistakes and the check",
+        "time": "",
+        "why": "The two main traps are duplicating global rules and writing instructions that contradict them. Both break the predictability of answers.",
+        "instructions": [
+          "Check for duplicates: cross out everything already in the [[node:i-global|global]] rules.",
+          "Check for contradictions: look for lines that argue with the global rules without a clear reason.",
+          "Open a chat in the project and ask a control question — the answer should match the role and format.",
+          "If the answer doesn't change, refine the wording or remove the conflict with the global layer."
+        ],
+        "validate": "The instruction has no repeats of global rules and no contradictions, and the test answer matches the set role.",
+        "tip": "Compare this with the [[node:p-instructions|approach to project instructions]] overall: extend layer by layer, don't repeat."
+      }
+    }
+  },
+  "i-style": {
+    "title": "Set Claude's response style once",
+    "subtitle": "One consistent tone without repeating \"keep it short\" in every chat",
+    "totalTime": "6 steps",
+    "whatItIs": "Response style means length, format (lists or paragraphs), level of formality, emoji, and language. By default Claude answers \"average for everyone\": opener phrases, extra emoji, paragraphs where bullets would fit. Through [[node:instructions|Custom Instructions]] you set the style once and it applies to every chat.\n\nThis tutorial teaches you to state style concretely — not \"be friendlier\" but \"no openers, use bullets, headers up to H3\". The result: answers ready to use without edits.",
+    "approach": "Describe style through measurable parameters, not emotions. \"Short\" → \"no more than 5 bullets\". \"Professional\" → \"no emoji, no opener phrases\". Test the style in one chat first, then lock it into instructions.",
+    "outcomes": [
+      "You understand the 5 style parameters: length, format, formality, emoji, language",
+      "You can turn vague \"be shorter\" into a concrete rule",
+      "You know the difference between global style and style inside a [[node:i-project|Project]]",
+      "You see a before/after example of how the answer changes",
+      "You avoid common mistakes: contradictions and overly rigid limits"
+    ],
+    "applyIn": [
+      {
+        "title": "Daily messaging",
+        "description": "Claude answers in your format right away — no rewriting answers before you use them."
+      },
+      {
+        "title": "Work documents",
+        "description": "One style for reports: bullets, no emoji, business tone — consistent in every chat."
+      },
+      {
+        "title": "Team project",
+        "description": "Style inside a [[node:i-project|Project]] sets one tone for the whole team without verbal agreements."
+      }
+    ],
+    "pitfalls": [
+      "Vague phrasing like \"be friendlier\" — Claude doesn't know what exactly to change.",
+      "Contradictory style: \"keep it short\" and \"with detailed examples\" at the same time.",
+      "Overly rigid limits: \"always exactly 3 bullets\" breaks answers that need more.",
+      "Repeating the style in every chat instead of writing it into instructions once.",
+      "Mixing global style and project style — settings conflict and it's unclear which one worked."
+    ],
+    "exercises": [
+      {
+        "question": "Take the last Claude answer you rewrote before using it. State 3 concrete style rules that would have removed your edits.",
+        "hint": "If a rule sounds like an emotion (\"warmer\") — turn it into something measurable: length, format, emoji presence."
+      },
+      {
+        "question": "Write your style into [[node:instructions|Custom Instructions]] and ask the same question in two new chats. Did the format match?",
+        "hint": "If the format drifts — the rule is too general. Add a number: \"no more than N bullets\"."
+      },
+      {
+        "question": "Create a [[node:i-project|Project]] with a different style (say, more formal) and compare its answer with the global one.",
+        "hint": "Project style should override the global one inside that project, not stack on top of it."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why set the style once",
+        "time": "",
+        "why": "Without setup you repeat \"answer briefly, no emoji\" in every new chat. That wastes time and gives inconsistent results.",
+        "instructions": [
+          "Recall your last 3 chats: how often did you add \"shorter\" or \"no openers\"?",
+          "Write down what annoys you in Claude's default style (opener phrases, emoji, long paragraphs).",
+          "Grasp the idea: style set in [[node:instructions|Custom Instructions]] applies to all chats automatically."
+        ],
+        "validate": "You have a list of 2-3 repeated edits you make in almost every answer.",
+        "tip": "If there are no edits — the default style suits you and no setup is needed. Don't fix what isn't broken."
+      },
+      "s2": {
+        "title": "Break down the 5 style parameters",
+        "time": "",
+        "why": "Style is made of measurable parameters. Naming them lets you stop asking for vague \"be better\" and state it concretely.",
+        "instructions": [
+          "Length: short answers or detailed ones with examples.",
+          "Format: bulleted lists or solid paragraphs.",
+          "Formality: business tone or conversational.",
+          "Emoji and humor: appropriate or banned.",
+          "Language: which language to answer in and whether English terms are needed."
+        ],
+        "validate": "For each of the 5 parameters you can state your preference in one word or number.",
+        "tip": "Don't set all 5 at once if unsure. Start with the 2-3 most important — add the rest later."
+      },
+      "s3": {
+        "title": "State the style concretely",
+        "time": "",
+        "why": "Claude doesn't guess emotions. \"Be friendlier\" gets interpreted randomly; a measurable rule is followed precisely.",
+        "instructions": [
+          "Turn each preference into a measurable rule: \"short\" → \"no more than 5 bullets\".",
+          "Replace emotions with bans or permissions: \"professional\" → \"no emoji, no openers like 'great question'\".",
+          "State the format explicitly: \"answer in bullets\", \"headers up to H3 max\".",
+          "Collect the rules into a short block of 3-5 lines — no wall of text."
+        ],
+        "validate": "Each rule can be checked by glancing at the answer: either met or not, no guessing.",
+        "tip": "A good test of a rule: it can be broken obviously. If a breach isn't obvious — the rule is too vague."
+      },
+      "s4": {
+        "title": "Compare the answer before and after",
+        "time": "",
+        "why": "A before/after example shows the style actually worked, rather than staying on paper.",
+        "instructions": [
+          "Ask a work question in a chat with no style set — save the answer.",
+          "Turn on your style rules and ask the same question again.",
+          "Compare: did the openers disappear, did a list appear, did emoji go away."
+        ],
+        "validate": "The second answer is noticeably closer to what you'd keep without edits.",
+        "tip": "If there's no difference — the rule was phrased as a wish, not an instruction. Go back to step 3."
+      },
+      "s5": {
+        "title": "Choose where to set it: global or Project",
+        "time": "",
+        "why": "One style for everything, or different styles per task — these are different places to configure.",
+        "instructions": [
+          "Global style via [[node:i-global|global instructions]] — one tone for all chats.",
+          "Style for a specific task — inside a [[node:i-project|Project]], it overrides the global one.",
+          "Use a Project when reports need a formal tone but personal notes need a loose one."
+        ],
+        "validate": "You understand which style applies in a regular chat and which inside a specific project.",
+        "tip": "Keep the global style neutral and push specifics into projects. That way settings don't conflict."
+      },
+      "s6": {
+        "title": "Avoid mistakes and verify the result",
+        "time": "",
+        "why": "Contradictory or overly rigid rules break answers more than having no rules at all.",
+        "instructions": [
+          "Check rules for contradictions: \"short\" and \"with detailed examples\" are incompatible.",
+          "Soften rigid limits: instead of \"always exactly 3 bullets\" write \"usually 3-5 bullets\".",
+          "Ask 2-3 different questions and confirm the style holds without the answers getting worse in substance.",
+          "If an answer got thinner — relax the strictest rule."
+        ],
+        "validate": "The style is stable across several chats, and the substance of the answers hasn't suffered.",
+        "tip": "Style is a frame, not a cage. If a rule stops Claude from answering fully — it's too rigid."
+      }
+    }
+  },
+  "i-templates": {
+    "title": "Templates in instructions",
+    "subtitle": "A fixed response format: sections, fields, order",
+    "totalTime": "6 steps",
+    "whatItIs": "A template is a predefined response structure you write into your [[node:instructions|instructions]]: which sections, which fields, in what order. Claude delivers the result in the same shape every time, instead of however it happens to come out.",
+    "approach": "First we figure out why a fixed format helps, then learn to describe a template (sections, fields, order), build a real example (report/review/summary), connect the template to structured output and XML tags, decide where to store it, and close with the common mistakes and a check.",
+    "outcomes": [
+      "You understand when a fixed response template saves time and when it gets in the way",
+      "You can describe a template through sections, fields, and order",
+      "You build a working report, review, or summary template",
+      "You connect templates to [[node:pr-structured|structured output]] and [[node:pr-xml|XML tags]]",
+      "You know where to store a template so it applies automatically"
+    ],
+    "applyIn": [
+      {
+        "title": "Recurring reports",
+        "description": "Weekly status, bug report, retrospective — always in one shape, ready to paste into Notion or a ticket."
+      },
+      {
+        "title": "Code reviews and audits",
+        "description": "Every review follows the same sections (problem, risk, fix), so results are easy to compare with each other."
+      },
+      {
+        "title": "Summaries of incoming material",
+        "description": "Emails, calls, articles collapse into a single card with fixed fields for your knowledge base."
+      }
+    ],
+    "pitfalls": [
+      "An overly rigid template: Claude is forced to pad empty sections with filler just to honor the form",
+      "Template clashing with the task: a report format applied where free text is needed",
+      "Changing the template from chat to chat — you lose the main benefit, unification",
+      "Describing the template vaguely ('make it nice') instead of exact sections and fields",
+      "Not specifying section order — Claude rearranges them differently each time"
+    ],
+    "exercises": [
+      {
+        "question": "Take a task you do regularly (status, review, summary). Describe a template for it: which sections, which fields, in what order.",
+        "hint": "Start with 3-4 sections. For each, one sentence on what goes in it. Fix the order top to bottom."
+      },
+      {
+        "question": "Run the same task with the template and without. Compare how much manual editing each result required.",
+        "hint": "Track exactly what you fix by hand — it reveals which fields the template is missing."
+      },
+      {
+        "question": "Find a section in your template that often stays empty or fills with filler. Decide: remove it or make it optional.",
+        "hint": "Mark an optional section with 'if applicable' — then Claude won't invent content for it."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why a response template in instructions",
+        "time": "",
+        "why": "Without a template Claude decides the layout itself each time — and the structure drifts from request to request. That means manual rework on every result.",
+        "instructions": [
+          "Recall a task you ask Claude for regularly and compare two or three past answers — the structure is probably different each time",
+          "Note how much time you spend forcing each answer into your usual shape before pasting it into a system",
+          "Articulate the structure you actually want to see every time — that is your future template",
+          "Write the template into your [[node:instructions|instructions]] so it applies automatically instead of being repeated by hand"
+        ],
+        "validate": "You can name at least one task where the same response structure would save you time.",
+        "tip": "A template pays off where the task recurs. For one-off questions it only gets in the way."
+      },
+      "s2": {
+        "title": "How to describe a template: sections, fields, order",
+        "time": "",
+        "why": "A template only works when it is precise: a vague 'make it structured' is interpreted Claude's own way. You need concrete sections, fields, and their order.",
+        "instructions": [
+          "List the response sections as explicit headings — for example, ## Problem, ## Impact, ## Solution",
+          "For each section state which fields go in it and what to write there (one sentence of explanation)",
+          "Fix the section order top to bottom — Claude follows it literally",
+          "Mark optional sections with 'if applicable' so they are not padded with filler",
+          "Define the field format where it matters: date, list, single sentence"
+        ],
+        "validate": "Another person could reproduce the template from your description without follow-up questions.",
+        "tip": "The more concrete the section headings, the less Claude improvises."
+      },
+      "s3": {
+        "title": "An example template: report, review, or summary",
+        "time": "",
+        "why": "Abstract rules are hard to apply. A ready example shows how sections, fields, and order look in a real task.",
+        "instructions": [
+          "Take a report template: ## Problem ## Impact ## Solution ## Effect — each section in one or two sentences",
+          "For code review use: ## What was checked ## Issues found ## Risk ## Recommendation",
+          "For a summary of incoming material: fields Source, Gist, Decisions, Next step",
+          "Paste the chosen template into your instructions and run it on a real task",
+          "Check the result against the template: are all sections present and in the right order"
+        ],
+        "validate": "Claude's answer matches the given template in sections and order.",
+        "tip": "Start with one template for your most frequent task, not a whole template library at once."
+      },
+      "s4": {
+        "title": "Connection to structured output and XML tags",
+        "time": "",
+        "why": "A template sets a human-readable shape, while [[node:pr-structured|structured output]] and [[node:pr-xml|XML tags]] make it machine-readable — needed when the result goes into a system automatically.",
+        "instructions": [
+          "If a human reads the answer — a template with section headings is enough",
+          "If a program parses the answer — ask for [[node:pr-structured|structured output]] (for example, JSON with the same fields)",
+          "Use [[node:pr-xml|XML tags]] to cleanly separate sections from each other and from Claude's reasoning",
+          "Keep the same field names in the template and in structured output — then moving between them is seamless"
+        ],
+        "validate": "You understand when a plain template is enough and when you need structured output or XML tags.",
+        "tip": "Field names in the template and in JSON must match — otherwise the integration breaks on small details."
+      },
+      "s5": {
+        "title": "Where to store the template",
+        "time": "",
+        "why": "A template pasted into every chat by hand eventually mutates. It should live in one place and apply automatically.",
+        "instructions": [
+          "For a specific workspace, store the template in [[node:i-project|Project instructions]] — it applies to every chat in the project",
+          "For projects in a repository, keep the template in [[node:i-claudemd|CLAUDE.md]], next to the code",
+          "Give the template a clear name ('bug report format') so you can refer to it",
+          "When changing it, edit the template in one place, not in each chat separately"
+        ],
+        "validate": "The template lives in a single source and is pulled in without manual copying.",
+        "tip": "A single source of the template = you won't end up with two diverging versions of the format."
+      },
+      "s6": {
+        "title": "Mistakes and a check",
+        "time": "",
+        "why": "Two common failures: an overly rigid template that forces filler, and a template clashing with a task that needs free text. Both are easy to catch with a check.",
+        "instructions": [
+          "Find sections that often stay empty and make them optional or remove them",
+          "Check that you are not applying a rigid format where the task calls for free text",
+          "Make sure the template does not force Claude to invent content just to honor the form",
+          "Run the task with the template and without — if manual editing dropped, the template works",
+          "If the template gets in the way — loosen it or disable it for that type of task"
+        ],
+        "validate": "The template speeds up the work rather than forcing Claude to pad empty sections with filler.",
+        "tip": "A good template removes routine; a bad one adds it. If edits increased — the template is too rigid."
+      }
+    }
   }
 }
