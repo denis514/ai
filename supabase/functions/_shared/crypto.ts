@@ -11,13 +11,26 @@ if (!SECRET || SECRET.length < 32) {
   console.warn('[crypto] BUILDER_KEY_ENCRYPTION_SECRET missing or < 32 chars');
 }
 
+let _keyPromise: Promise<CryptoKey> | null = null;
+
 async function getKey(): Promise<CryptoKey> {
-  // Берём первые 32 байта секрета как ключ AES-256.
-  const raw = new TextEncoder().encode(SECRET.slice(0, 32).padEnd(32, '0'));
-  return crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, [
-    'encrypt',
-    'decrypt',
-  ]);
+  // Выводим 256-битный ключ из секрета через SHA-256 (KDF), а не берём сырые
+  // первые 32 символа. Это даёт полноценные 32 байта энтропии независимо от
+  // длины/состава секрета и устраняет слабость padEnd('0').
+  // ВНИМАНИЕ: смена схемы вывода ключа делает СТАРЫЕ шифротексты нечитаемыми —
+  // существующие сохранённые ключи нужно ввести заново (осознанный сброс).
+  if (_keyPromise) return _keyPromise;
+  _keyPromise = (async () => {
+    const digest = await crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(SECRET),
+    );
+    return crypto.subtle.importKey('raw', digest, { name: 'AES-GCM' }, false, [
+      'encrypt',
+      'decrypt',
+    ]);
+  })();
+  return _keyPromise;
 }
 
 function toB64(bytes: Uint8Array): string {

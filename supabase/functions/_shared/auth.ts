@@ -18,6 +18,16 @@ export function json(body: unknown, status = 200): Response {
   });
 }
 
+/** Константно-временное сравнение строк (защита от timing-атак на секреты). */
+export function safeEqual(a: string, b: string): boolean {
+  const ae = new TextEncoder().encode(a || '');
+  const be = new TextEncoder().encode(b || '');
+  if (ae.length !== be.length) return false;
+  let r = 0;
+  for (let i = 0; i < ae.length; i++) r |= ae[i] ^ be[i];
+  return r === 0;
+}
+
 /** Service-role client — обходит RLS, для серверных операций с ключами. */
 export function adminClient(): SupabaseClient {
   return createClient(SUPABASE_URL, SERVICE_ROLE, {

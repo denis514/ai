@@ -17,7 +17,7 @@
 //       url:='https://<project>.functions.supabase.co/builder-scheduler',
 //       headers:='{"x-builder-cron":"<BUILDER_SERVICE_SECRET>"}'::jsonb) $$);
 
-import { adminClient, json } from '../_shared/auth.ts';
+import { adminClient, json, safeEqual } from '../_shared/auth.ts';
 
 const FN_BASE = Deno.env.get('SUPABASE_URL')?.replace('.supabase.co', '.functions.supabase.co') || '';
 const EXECUTE_URL = `${FN_BASE}/builder-execute`;
@@ -62,7 +62,7 @@ function uuid(): string {
 Deno.serve(async (req) => {
   // Защита: дёргать может только cron, знающий секрет.
   const secret = req.headers.get('x-builder-cron') || '';
-  if (!SERVICE_SECRET || secret !== SERVICE_SECRET) {
+  if (!SERVICE_SECRET || !safeEqual(secret, SERVICE_SECRET)) {
     return json({ error: 'forbidden' }, 403);
   }
 

@@ -18,7 +18,7 @@
 //
 // Лимит времени edge function ~150с — для небольших workflow (4-7 узлов) ок.
 
-import { getUser, adminClient, json, cors } from '../_shared/auth.ts';
+import { getUser, adminClient, json, cors, safeEqual } from '../_shared/auth.ts';
 import { decrypt } from '../_shared/crypto.ts';
 import { systemPromptForRole, roleLabel } from '../_shared/rolePrompts.ts';
 
@@ -281,7 +281,7 @@ Deno.serve(async (req) => {
   // БЕЗ JWT пользователя — по секрету BUILDER_SERVICE_SECRET + body.userId.
   // Так схема исполняется на сервере, даже когда браузер закрыт.
   const serviceSecret = Deno.env.get('BUILDER_SERVICE_SECRET') || '';
-  const isService = !!serviceSecret && req.headers.get('x-builder-service') === serviceSecret;
+  const isService = !!serviceSecret && safeEqual(req.headers.get('x-builder-service') || '', serviceSecret);
 
   let userId: string;
   if (isService) {
