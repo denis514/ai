@@ -327,7 +327,7 @@ export default function TutorialModal({
               aria-label={isFullscreen ? 'Свернуть окно' : 'Развернуть на весь экран'}
               title={isFullscreen ? 'Свернуть' : 'На весь экран'}
             >
-              <Icon name="expand" size={18} strokeWidth={1.75} />
+              <Icon name="fullscreen" size={17} strokeWidth={1.75} />
             </button>
             <button
               type="button"

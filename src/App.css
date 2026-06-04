@@ -6604,13 +6604,17 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   margin-bottom: 6px;
 }
 .tut-detail__level {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;       /* не растягиваться по высоте flex-строки */
+  line-height: 1;           /* убирает «пустоту» снизу внутри плашки */
   font-size: 10.5px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 600;
   color: var(--lvl-color);
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill, 999px);
   background: color-mix(in srgb, var(--lvl-color) 12%, transparent);
 }.tut-detail__steps-count{
   display: inline-flex;
