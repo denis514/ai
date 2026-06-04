@@ -223,8 +223,11 @@
   - [x] **Ветка Agents закрыта** ✅: 6-шаговые курсы на 7 листьях (agent-principles,
     agent-code-reviewer, agent-audit, agent-researcher, agent-designer, agent-pm,
     agent-managed), ru/en/fi. Всего 57 курсов.
-  - [ ] Раскатка контента дальше. Закрыты: Projects, Prompting, Agents. Кандидаты:
-    Capabilities (cap-*), Instructions, Configuration, Foundation/AI Fundamentals.
+  - [x] **Ветка Capabilities закрыта** ✅: 6-шаговые курсы на 10 листьях (cap-input-modalities,
+    cap-vision, cap-files, cap-search, cap-memory, cap-computer, cap-caching, cap-citations,
+    cap-code-exec, cap-thinking), ru/en/fi. Всего 67 курсов.
+  - [ ] Раскатка контента дальше. Закрыты: Projects, Prompting, Agents, Capabilities.
+    Кандидаты: Instructions, Configuration (Claude Code/MCP), AI Fundamentals, Use Cases.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
