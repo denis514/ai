@@ -4133,5 +4133,138 @@
         "tip": "If something behaves strangely in the IDE — repeat the same task in the terminal: that tells you whether the problem is in the extension or in the request itself."
       }
     }
+  },
+  "cc-md": {
+    "title": "CLAUDE.md",
+    "subtitle": "The project instructions file Claude Code reads in every conversation",
+    "totalTime": "6 шагов",
+    "whatItIs": "CLAUDE.md is a text file in the project root that [[node:claude-code|Claude Code]] automatically loads at the start of every conversation. You describe the stack, conventions, important paths, commands, and taboos once — and stop repeating them in each request.",
+    "approach": "This course builds a working CLAUDE.md step by step: why it matters, how to create it via /init or by hand, what to put in it, how the hierarchy works (global, project, local), and how to keep the file short and current. No general prompting — only Claude Code specifics.",
+    "outcomes": [
+      "Understand why CLAUDE.md matters and how much context it saves in every conversation",
+      "Can create the file via /init and refine it by hand",
+      "Know what to write (conventions, paths, commands, taboos) and what NOT to write",
+      "Grasp the hierarchy: global ~/.claude/CLAUDE.md, project, CLAUDE.local.md, imports",
+      "Keep the file short and current, avoiding walls of text and stale rules"
+    ],
+    "applyIn": [
+      {
+        "title": "Starting a new project",
+        "description": "Run /init first — Claude inspects the repo and generates a base CLAUDE.md that you then polish."
+      },
+      {
+        "title": "Team work",
+        "description": "A project CLAUDE.md in git holds shared conventions for everyone. Keep personal settings in CLAUDE.local.md outside the commit."
+      },
+      {
+        "title": "Recurring model mistakes",
+        "description": "If Claude keeps breaking one rule, add it to CLAUDE.md as a taboo — it's then respected automatically in future conversations."
+      }
+    ],
+    "pitfalls": [
+      "Wall of text: the longer CLAUDE.md gets, the worse the model holds priorities. Keep it short and on point.",
+      "Obvious over valuable: the repo name and \"it's React\" are useless — write rules, conventions, and taboos.",
+      "Stale rules: the file lives with the project. Changed your linter or a path? Update CLAUDE.md, or the model works off the old one.",
+      "Secrets in the file: CLAUDE.md is often in git. Keys, tokens, passwords never go here — only in CLAUDE.local.md or the environment.",
+      "Duplicating README: CLAUDE.md is instructions for Claude, not docs for humans. Don't copy the whole README."
+    ],
+    "exercises": [
+      {
+        "question": "Run /init in an existing project and open the resulting CLAUDE.md. What's obvious (can be removed) and what's a genuinely useful rule?",
+        "hint": "Obvious: project name, that it's React. Useful: build/test commands, non-standard paths, naming conventions."
+      },
+      {
+        "question": "Formulate 3 taboos for your project (what Claude should NOT do) and add them to CLAUDE.md as a separate block.",
+        "hint": "Examples: \"don't use any in TypeScript\", \"don't touch migrations without asking\", \"don't add dependencies without justification\"."
+      },
+      {
+        "question": "Create ~/.claude/CLAUDE.md with one personal rule (e.g. response language) and check that it applies in any project.",
+        "hint": "The global file applies across all projects; the project CLAUDE.md adds to it rather than replacing it."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why CLAUDE.md matters",
+        "time": "",
+        "why": "Without an instructions file, the model re-figures the stack, structure, and rules in every new conversation — the first lost minutes and a risk of breaking your conventions. CLAUDE.md provides that context once and automatically.",
+        "instructions": [
+          "Remember the key point: [[node:claude-code|Claude Code]] reads CLAUDE.md at the start of EVERY conversation — without reminders.",
+          "It's the project's \"character\": stack, conventions, important paths, commands, and taboos in one place.",
+          "Without the file you repeat the same things in every request — with it you write only the task itself.",
+          "CLAUDE.md speeds up not one answer but every one: it's a permanent part of the context."
+        ],
+        "validate": "You can explain in one sentence why repeating conventions in every request is worse than keeping them in CLAUDE.md.",
+        "tip": "Think of CLAUDE.md as Custom Instructions, but for code and for a specific project."
+      },
+      "s2": {
+        "title": "How to create it and where it lives",
+        "time": "",
+        "why": "Writing the file from scratch by hand is slow and easy to forget things. The /init command inspects the repo and assembles a draft for you — you just polish it.",
+        "instructions": [
+          "Fastest path: run [[node:cc-cmd-init|/init]] in the project root — Claude scans the code and generates a base CLAUDE.md.",
+          "Alternative: create CLAUDE.md manually in the repo root with a plain text editor.",
+          "Check the location: the project CLAUDE.md sits in the root (next to package.json / .git).",
+          "Open the resulting file and read it — /init often writes extra you should remove."
+        ],
+        "validate": "There's a CLAUDE.md file in the project root, and Claude Code picks it up in a new conversation.",
+        "tip": "After /init, always re-read the file by hand — auto-generation gives a base, not a final."
+      },
+      "s3": {
+        "title": "What to write inside",
+        "time": "",
+        "why": "The value of CLAUDE.md isn't in describing the obvious but in what the model can't guess: your commands, non-standard paths, conventions, and explicit prohibitions. That turns the file from a brochure into a working tool.",
+        "instructions": [
+          "Stack and versions — briefly: what's actually used (e.g. React 18 + Vite), if it affects decisions.",
+          "Commands: how to build, run tests, lint — exact lines Claude can execute.",
+          "Important paths: where the code is, where configs are, where NOT to change anything.",
+          "Conventions: naming, style, patterns the team follows.",
+          "Taboos: what's NOT allowed — \"don't use any\", \"don't touch migrations without asking\"."
+        ],
+        "validate": "The file has commands, paths, and at least 2-3 explicit taboos — not just a description of \"what this project is\".",
+        "tip": "Simple rule: if Claude can learn it from the code itself — don't write it; if it can't or often gets it wrong — write it."
+      },
+      "s4": {
+        "title": "Hierarchy and scope",
+        "time": "",
+        "why": "CLAUDE.md comes in several levels, and they stack rather than conflict. Understanding the hierarchy lets you keep personal rules separate from team ones and avoid committing extras.",
+        "instructions": [
+          "Global ~/.claude/CLAUDE.md — your personal rules for ALL projects (e.g. response language).",
+          "Project CLAUDE.md in the repo root — shared team rules, goes into git.",
+          "CLAUDE.local.md — personal settings just for you in this project; add it to .gitignore.",
+          "Levels stack: global + project + local apply together.",
+          "Imports: long blocks can be moved to separate files and linked from CLAUDE.md."
+        ],
+        "validate": "You understand which rule to put in global, which in project, and which in CLAUDE.local.md.",
+        "tip": "Secrets, personal paths, and experiments go in CLAUDE.local.md (outside git), not the shared CLAUDE.md."
+      },
+      "s5": {
+        "title": "Keep it short and current",
+        "time": "",
+        "why": "The longer the file, the worse the model holds priorities, and a stale rule is worse than no rule — it actively harms. A short, fresh CLAUDE.md beats a big, forgotten one.",
+        "instructions": [
+          "Don't put human docs in CLAUDE.md — that's what the README is for.",
+          "Don't duplicate the README, changelog, or feature descriptions — only instructions for the model.",
+          "Don't store secrets, tokens, or keys — those go in the environment or CLAUDE.local.md.",
+          "Clean up regularly: changed a tool or path? Fix the file right away.",
+          "If the file grows large — move topics into separate files and link them via imports."
+        ],
+        "validate": "The file fits a manageable size, with no stale items and no copies of the README.",
+        "tip": "Every couple of weeks, re-read CLAUDE.md as a newcomer: is it all still true?"
+      },
+      "s6": {
+        "title": "Common mistakes and a check",
+        "time": "",
+        "why": "Most CLAUDE.md problems are walls of text and stale rules. A quick check in a live conversation shows whether the file actually works or just sits in the repo.",
+        "instructions": [
+          "Check for a wall of text: if the file scrolls forever — trim it to the essentials.",
+          "Check for staleness: is every rule still true? Delete what stopped being true.",
+          "Check for obviousness: remove what Claude can already see in the code.",
+          "Live test: open a new conversation in [[node:claude-code|Claude Code]] and give a task touching your rule — is it respected?",
+          "If a rule is ignored — rephrase it shorter and clearer, with no fuzzy wording."
+        ],
+        "validate": "In a new conversation Claude respects your conventions and taboos without reminders in the request itself.",
+        "tip": "Keep current Claude Code settings and commands handy in the [[node:cc-config|config]] and [[node:cc-install|install]] — CLAUDE.md works together with them."
+      }
+    }
   }
 }

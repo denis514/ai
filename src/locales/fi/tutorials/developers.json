@@ -4135,5 +4135,138 @@
         "tip": "Jos jokin käyttäytyy oudosti IDE:ssä — toista sama tehtävä terminaalissa: siitä näet, onko ongelma laajennuksessa vai itse pyynnössä."
       }
     }
+  },
+  "cc-md": {
+    "title": "CLAUDE.md",
+    "subtitle": "Projektin ohjetiedosto, jonka Claude Code lukee jokaisessa keskustelussa",
+    "totalTime": "6 шагов",
+    "whatItIs": "CLAUDE.md on projektin juuressa oleva tekstitiedosto, jonka [[node:claude-code|Claude Code]] lataa automaattisesti jokaisen keskustelun alkuun. Kuvaat pinon, konventiot, tärkeät polut, komennot ja tabut kerran — etkä toista niitä joka pyynnössä.",
+    "approach": "Kurssi rakentaa toimivan CLAUDE.md:n vaihe vaiheelta: miksi se on tärkeä, miten se luodaan /init-komennolla tai käsin, mitä siihen laitetaan, miten hierarkia toimii (globaali, projekti, paikallinen) ja miten tiedosto pidetään lyhyenä ja ajantasaisena. Ei yleistä promptausta — vain Claude Coden erityispiirteet.",
+    "outcomes": [
+      "Ymmärrät, miksi CLAUDE.md on tärkeä ja kuinka paljon kontekstia se säästää joka keskustelussa",
+      "Osaat luoda tiedoston /init-komennolla ja hioa sitä käsin",
+      "Tiedät, mitä kirjoittaa (konventiot, polut, komennot, tabut) ja mitä EI kirjoittaa",
+      "Hallitset hierarkian: globaali ~/.claude/CLAUDE.md, projekti, CLAUDE.local.md, tuonnit",
+      "Pidät tiedoston lyhyenä ja ajantasaisena, vältät tekstiseiniä ja vanhentuneita sääntöjä"
+    ],
+    "applyIn": [
+      {
+        "title": "Uuden projektin aloitus",
+        "description": "Aja ensin /init — Claude tarkastaa repon ja luo pohjan CLAUDE.md:lle, jota sitten hiot."
+      },
+      {
+        "title": "Tiimityö",
+        "description": "Projektin CLAUDE.md gitissä pitää yhteiset konventiot kaikille. Pidä henkilökohtaiset asetukset CLAUDE.local.md:ssä commitin ulkopuolella."
+      },
+      {
+        "title": "Toistuvat mallin virheet",
+        "description": "Jos Claude rikkoo yhtä sääntöä kerta toisensa jälkeen, lisää se CLAUDE.md:hen tabuna — sitä noudatetaan automaattisesti seuraavissa keskusteluissa."
+      }
+    ],
+    "pitfalls": [
+      "Tekstiseinä: mitä pidempi CLAUDE.md, sitä huonommin malli pitää prioriteetit hallussa. Pidä lyhyenä ja asiassa.",
+      "Ilmeinen arvokkaan sijaan: repon nimi ja «se on React» ovat hyödyttömiä — kirjoita säännöt, konventiot ja tabut.",
+      "Vanhentuneet säännöt: tiedosto elää projektin mukana. Vaihtuiko linter tai polku? Päivitä CLAUDE.md, tai malli toimii vanhan mukaan.",
+      "Salaisuudet tiedostossa: CLAUDE.md on usein gitissä. Avaimet, tokenit, salasanat eivät koskaan tänne — vain CLAUDE.local.md:hen tai ympäristöön.",
+      "READMEn toisto: CLAUDE.md on ohjeita Claudelle, ei dokumentaatiota ihmisille. Älä kopioi koko READMEa."
+    ],
+    "exercises": [
+      {
+        "question": "Aja /init olemassa olevassa projektissa ja avaa syntynyt CLAUDE.md. Mikä on ilmeistä (voi poistaa) ja mikä aidosti hyödyllinen sääntö?",
+        "hint": "Ilmeistä: projektin nimi, että se on React. Hyödyllistä: käännös-/testikomennot, epästandardit polut, nimeämiskonventiot."
+      },
+      {
+        "question": "Muotoile 3 tabua projektillesi (mitä Claude EI saa tehdä) ja lisää ne CLAUDE.md:hen omaksi lohkokseen.",
+        "hint": "Esimerkkejä: «älä käytä any TypeScriptissä», «älä koske migraatioihin kysymättä», «älä lisää riippuvuuksia ilman perustelua»."
+      },
+      {
+        "question": "Luo ~/.claude/CLAUDE.md yhdellä henkilökohtaisella säännöllä (esim. vastausten kieli) ja tarkista, että se pätee missä tahansa projektissa.",
+        "hint": "Globaali tiedosto pätee kaikkiin projekteihin; projektin CLAUDE.md täydentää sitä, ei korvaa."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi CLAUDE.md on tärkeä",
+        "time": "",
+        "why": "Ilman ohjetiedostoa malli selvittää pinon, rakenteen ja säännöt uudelleen joka keskustelussa — ensimmäiset hukatut minuutit ja riski rikkoa konventioitasi. CLAUDE.md tarjoaa tämän kontekstin kerran ja automaattisesti.",
+        "instructions": [
+          "Muista pääasia: [[node:claude-code|Claude Code]] lukee CLAUDE.md:n JOKAISEN keskustelun alkuun — ilman muistutuksia.",
+          "Se on projektin «luonne»: pino, konventiot, tärkeät polut, komennot ja tabut yhdessä paikassa.",
+          "Ilman tiedostoa toistat samaa joka pyynnössä — tiedoston kanssa kirjoitat vain itse tehtävän.",
+          "CLAUDE.md nopeuttaa ei yhtä vastausta vaan jokaista: se on pysyvä osa kontekstia."
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miksi konventioiden toistaminen joka pyynnössä on huonompaa kuin niiden pitäminen CLAUDE.md:ssä.",
+        "tip": "Ajattele CLAUDE.md:tä kuin Custom Instructions, mutta koodille ja tietylle projektille."
+      },
+      "s2": {
+        "title": "Miten se luodaan ja missä se sijaitsee",
+        "time": "",
+        "why": "Tiedoston kirjoittaminen tyhjästä käsin on hidasta ja tärkeitä asioita unohtuu helposti. /init-komento tarkastaa repon ja kokoaa luonnoksen puolestasi — jää vain hiottavaa.",
+        "instructions": [
+          "Nopein tapa: aja [[node:cc-cmd-init|/init]] projektin juuressa — Claude skannaa koodin ja luo pohjan CLAUDE.md:lle.",
+          "Vaihtoehto: luo CLAUDE.md käsin repon juureen tavallisella tekstieditorilla.",
+          "Tarkista sijainti: projektin CLAUDE.md on juuressa (package.json / .git vieressä).",
+          "Avaa syntynyt tiedosto ja lue se — /init kirjoittaa usein ylimääräistä, joka kannattaa poistaa."
+        ],
+        "validate": "Projektin juuressa on CLAUDE.md-tiedosto, ja Claude Code poimii sen uudessa keskustelussa.",
+        "tip": "/init:n jälkeen lue tiedosto aina käsin läpi — automaattigenerointi antaa pohjan, ei lopputulosta."
+      },
+      "s3": {
+        "title": "Mitä kirjoittaa sisään",
+        "time": "",
+        "why": "CLAUDE.md:n arvo ei ole ilmeisen kuvaamisessa vaan siinä, mitä malli ei voi arvata: komentosi, epästandardit polut, konventiot ja selkeät kiellot. Se tekee tiedostosta esitteen sijaan työkalun.",
+        "instructions": [
+          "Pino ja versiot — lyhyesti: mitä todella käytetään (esim. React 18 + Vite), jos se vaikuttaa päätöksiin.",
+          "Komennot: miten käännetään, ajetaan testit, lintataan — tarkat rivit, jotka Claude voi suorittaa.",
+          "Tärkeät polut: missä koodi on, missä konfiguraatiot, missä EI saa muuttaa mitään.",
+          "Konventiot: nimeäminen, tyyli, kuviot, joita tiimi noudattaa.",
+          "Tabut: mitä EI saa tehdä — «älä käytä any», «älä koske migraatioihin kysymättä»."
+        ],
+        "validate": "Tiedostossa on komennot, polut ja vähintään 2-3 selkeää tabua — ei pelkkä kuvaus «mikä tämä projekti on».",
+        "tip": "Yksinkertainen sääntö: jos Claude voi oppia sen itse koodista — älä kirjoita; jos ei voi tai erehtyy usein — kirjoita."
+      },
+      "s4": {
+        "title": "Hierarkia ja näkyvyysalue",
+        "time": "",
+        "why": "CLAUDE.md on useammalla tasolla, ja ne kasautuvat eivätkä ole ristiriidassa. Hierarkian ymmärtäminen antaa pitää henkilökohtaiset säännöt erillään tiimin säännöistä ja välttää ylimääräisen committaamisen.",
+        "instructions": [
+          "Globaali ~/.claude/CLAUDE.md — henkilökohtaiset sääntösi KAIKKIIN projekteihin (esim. vastausten kieli).",
+          "Projektin CLAUDE.md repon juuressa — tiimin yhteiset säännöt, menee gitiin.",
+          "CLAUDE.local.md — henkilökohtaiset asetukset vain sinulle tässä projektissa; lisää se .gitignoreen.",
+          "Tasot kasautuvat: globaali + projekti + paikallinen pätevät yhdessä.",
+          "Tuonnit: pitkät lohkot voi siirtää erillisiin tiedostoihin ja linkittää CLAUDE.md:stä."
+        ],
+        "validate": "Ymmärrät, mikä sääntö laitetaan globaaliin, mikä projektiin ja mikä CLAUDE.local.md:hen.",
+        "tip": "Salaisuudet, henkilökohtaiset polut ja kokeilut CLAUDE.local.md:hen (gitin ulkopuolelle), ei yhteiseen CLAUDE.md:hen."
+      },
+      "s5": {
+        "title": "Pidä lyhyenä ja ajantasaisena",
+        "time": "",
+        "why": "Mitä pidempi tiedosto, sitä huonommin malli pitää prioriteetit hallussa, ja vanhentunut sääntö on huonompi kuin ei sääntöä — se vahingoittaa aktiivisesti. Lyhyt ja tuore CLAUDE.md voittaa suuren ja unohdetun.",
+        "instructions": [
+          "Älä laita ihmisten dokumentaatiota CLAUDE.md:hen — sitä varten on README.",
+          "Älä toista READMEa, muutoslokia tai ominaisuuskuvauksia — vain ohjeet mallille.",
+          "Älä säilytä salaisuuksia, tokeneita tai avaimia — ne ympäristöön tai CLAUDE.local.md:hen.",
+          "Siivoa säännöllisesti: vaihtuiko työkalu tai polku? Korjaa tiedosto heti.",
+          "Jos tiedosto kasvaa suureksi — siirrä aiheet erillisiin tiedostoihin ja linkitä tuonneilla."
+        ],
+        "validate": "Tiedosto mahtuu hallittavaan kokoon, ilman vanhentuneita kohtia ja ilman READMEn kopioita.",
+        "tip": "Lue CLAUDE.md parin viikon välein uutena tulokkaana: onko kaikki yhä totta?"
+      },
+      "s6": {
+        "title": "Tyypilliset virheet ja tarkistus",
+        "time": "",
+        "why": "Useimmat CLAUDE.md-ongelmat ovat tekstiseiniä ja vanhentuneita sääntöjä. Nopea tarkistus elävässä keskustelussa näyttää, toimiiko tiedosto oikeasti vai vain lojuuko se reposssa.",
+        "instructions": [
+          "Tarkista tekstiseinä: jos tiedostoa joutuu vierittämään loputtomiin — karsi olennaiseen.",
+          "Tarkista vanhentuminen: onko jokainen sääntö yhä totta? Poista se, mikä lakkasi olemasta totta.",
+          "Tarkista ilmeisyys: poista se, minkä Claude jo näkee koodista.",
+          "Elävä testi: avaa uusi keskustelu [[node:claude-code|Claude Codessa]] ja anna sääntöäsi koskeva tehtävä — noudatetaanko sitä?",
+          "Jos sääntö jätetään huomiotta — muotoile se lyhyemmin ja selvemmin, ilman epämääräisiä ilmauksia."
+        ],
+        "validate": "Uudessa keskustelussa Claude noudattaa konventioitasi ja tabujasi ilman muistutuksia itse pyynnössä.",
+        "tip": "Pidä Claude Coden ajantasaiset asetukset ja komennot käsillä [[node:cc-config|konfiguraatiossa]] ja [[node:cc-install|asennuksessa]] — CLAUDE.md toimii niiden kanssa yhdessä."
+      }
+    }
   }
 }

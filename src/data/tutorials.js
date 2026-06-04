@@ -3279,6 +3279,41 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "cc-md": {
+    "nodeId": "cc-md",
+    "icon": "note",
+    "level": "beginner",
+    "audience": "developers",
+    "prerequisites": [
+      "claude-code"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cc-config",
+      "cc-install",
+      "claude-code"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 
