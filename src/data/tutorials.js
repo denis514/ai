@@ -1852,6 +1852,247 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "agent-principles": {
+    "nodeId": "ag-principles",
+    "icon": "compass",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "agents"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agents",
+      "agent-code-reviewer",
+      "agent-researcher"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "agent-code-reviewer": {
+    "nodeId": "ag-code",
+    "icon": "developer",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "agents"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agent-principles",
+      "claude-code",
+      "agents"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "agent-audit": {
+    "nodeId": "ag-ux",
+    "icon": "eye",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "agents"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agent-principles",
+      "agents"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "agent-researcher": {
+    "nodeId": "ag-research",
+    "icon": "microscope",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "agents"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agent-principles",
+      "agents"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "agent-designer": {
+    "nodeId": "ag-designer",
+    "icon": "paint",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "agents"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agent-principles",
+      "agents"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "agent-pm": {
+    "nodeId": "ag-pm",
+    "icon": "clipboard",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "agents"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agent-principles",
+      "agents"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "agent-managed": {
+    "nodeId": "ag-managed",
+    "icon": "robot",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "agents"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "agent-principles",
+      "pl-api",
+      "agents"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 

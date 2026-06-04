@@ -4470,5 +4470,938 @@
         "tip": "Print the 5-point checklist and keep it nearby — it turns iteration from intuition into a reproducible process."
       }
     }
+  },
+  "agent-principles": {
+    "title": "Agent design principles",
+    "subtitle": "Narrow purpose, a clear trigger, least-tools, and a verifiable output",
+    "totalTime": "6 steps",
+    "whatItIs": "A course on the six properties that separate a reliable [[node:agents|agent]] from a long prompt: narrow purpose, a single clear trigger, a limited tool set, a verifiable structured output, and explicit boundaries and safety. It's a checklist before launch, not a post-mortem.",
+    "approach": "We move principle by principle like a filter: at each step you state one property of your future agent and immediately test it against your own example. By the sixth step you have a ready specification you can ship or hand off to a team.",
+    "outcomes": [
+      "State the agent's purpose in one sentence with no \"and\"",
+      "Describe a trigger that makes it clear when the agent fires and when it doesn't",
+      "Assemble a minimal tool set for the task (least-tools)",
+      "Pin down an output format that can be checked automatically",
+      "Describe boundaries: what the agent does NOT do and what needs confirmation"
+    ],
+    "applyIn": [
+      {
+        "title": "Before building a subagent",
+        "description": "Run a [[node:cc-subagents|subagent]] idea through the six principles and cut whatever isn't ready before writing the first line."
+      },
+      {
+        "title": "Reviewing someone else's agent",
+        "description": "Take an existing agent and check it against the checklist: where the weak spot is, there's the cause of the \"weird behavior\"."
+      },
+      {
+        "title": "Handing off to a team",
+        "description": "A principle-based spec is a document another person can use to understand the agent without your verbal explanations."
+      }
+    ],
+    "pitfalls": [
+      "A purpose with \"and\": an agent that \"reviews PRs and writes tests and deploys\" is three agents",
+      "A vague trigger: unclear when the agent should fire and when it should stay silent",
+      "30 tools \"just in case\" — the agent picks the wrong ones and behavior drifts",
+      "Free-text output that can't be checked automatically",
+      "No boundaries: the agent silently performs a dangerous action without confirmation"
+    ],
+    "exercises": [
+      {
+        "question": "State the purpose of a spell-checking agent for articles in one sentence with no \"and\". What stays out of scope?",
+        "hint": "If you're tempted to add \"and also checks facts\" — that's a separate agent. Purpose = one verifiable action."
+      },
+      {
+        "question": "For a reviewer agent, what is the minimal tool set, and why does it NOT need write access to the repo?",
+        "hint": "Review is reading and commenting. Write access widens the risk surface with no benefit to the task."
+      },
+      {
+        "question": "Design an output format for an email-classifier agent that can be verified automatically.",
+        "hint": "Think of a fixed set of labels and a structure like {label, confidence}, not \"an answer in its own words\"."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why design principles matter",
+        "time": "",
+        "why": "Most \"non-working\" agents fail not because of the model but because one of the basic principles was skipped at design time. Principles turn a fuzzy idea into a verifiable specification.",
+        "instructions": [
+          "Write down the agent that \"almost works\" or that you want to build — in one phrase",
+          "Say the six properties out loud: purpose, trigger, tools, output, boundaries, safety",
+          "Mark the points you \"didn't think about\" — that's usually where the agent breaks",
+          "Adopt the rule: 2+ skipped points = the agent isn't ready to launch"
+        ],
+        "validate": "You have a list of six points and an honest mark of where the gaps are.",
+        "tip": "Principles are a filter BEFORE launch. It's cheaper to discard a bad idea on paper than to debug it in prod."
+      },
+      "s2": {
+        "title": "Narrow purpose and one clear trigger",
+        "time": "",
+        "why": "An agent with a broad purpose picks different strategies on similar inputs — behavior becomes unpredictable. A narrow purpose and an explicit trigger make the agent deterministic and understandable.",
+        "instructions": [
+          "State the purpose in one sentence with no \"and\"",
+          "If an \"and\" appears — split into two agents or choose the main one",
+          "Describe the trigger: what event or request fires the agent",
+          "Describe the anti-trigger: when the agent must NOT fire",
+          "Cross-check the trigger against the purpose — they must point to the same thing"
+        ],
+        "validate": "The purpose is one phrase with no \"and\"; for the trigger it's clear both when it fires and when it stays silent.",
+        "tip": "A good trigger can be read to an outsider and they'll guess what the agent does. It's like the narrow scope of a [[node:skills|skill]]."
+      },
+      "s3": {
+        "title": "A limited tool set (least-tools)",
+        "time": "",
+        "why": "Every extra tool is an extra behavior path and an extra risk surface. A minimal set makes the agent more reliable and predictable: less choice means fewer mistakes.",
+        "instructions": [
+          "Write down every tool that comes to mind for the task",
+          "For each, ask: \"can the agent fulfill its purpose without it?\" If yes — drop it",
+          "Split into read and write: keep write only if it's literally in the purpose",
+          "For external data, decide whether an [[node:mcp|MCP]] source is needed or local tools suffice",
+          "Keep the minimal set and record a reason for each tool"
+        ],
+        "validate": "Every tool in the final list has a written \"why\" justification.",
+        "tip": "\"Least-tools\" is like \"least-privilege\" in security: grant exactly what one task needs, no more."
+      },
+      "s4": {
+        "title": "A verifiable structured output",
+        "time": "",
+        "why": "If the agent's output is free text, it can't be checked automatically and can't be reliably passed down the chain. A structured output turns the agent into a dependable building block rather than a paragraph generator.",
+        "instructions": [
+          "Define exactly what the agent should return — data, a label, a list of actions",
+          "Pin down the format: the set of fields, allowed values, required keys",
+          "Describe at least one auto-check: \"the output is valid if field X exists and is from set Y\"",
+          "Add an explicit format for the \"no result\" case, not an empty string",
+          "Confirm the output can feed the next step with no manual editing"
+        ],
+        "validate": "There is a description of the output format and at least one rule by which it can be checked automatically.",
+        "tip": "Fixed labels beat free text: {label, confidence} is script-checkable, a paragraph is not."
+      },
+      "s5": {
+        "title": "Boundaries and safety: what the agent does NOT do",
+        "time": "",
+        "why": "Without explicit boundaries an agent will sooner or later take a dangerous action because \"it seemed logical\". Stated boundaries and confirmation points are insurance against irreversible mistakes.",
+        "instructions": [
+          "Write down the list of forbidden actions: what the agent never does",
+          "Mark irreversible actions (deletion, sending, payment) — they need a confirmation request",
+          "Describe a fallback: what to do when the task is out of scope or data is missing",
+          "Make dangerous actions idempotent or at least visible in the logs",
+          "Check that the boundaries don't contradict the purpose from step 2"
+        ],
+        "validate": "There is a \"the agent does NOT do\" list and a confirmation rule for irreversible actions.",
+        "tip": "The rule is simple: an irreversible action only after an explicit \"yes\" from a human. This is a baseline safety requirement for any [[node:agents|agent]]."
+      },
+      "s6": {
+        "title": "A good-agent checklist and the final check",
+        "time": "",
+        "why": "The collected principles must be run as a single checklist, otherwise it's easy to miss a gap between steps. The final check is the last filter before launch.",
+        "instructions": [
+          "Walk the checklist: purpose, trigger, tools, output, boundaries, safety",
+          "On each point answer \"ready / not ready\" — no \"almost\"",
+          "If anything is \"not ready\" — go back to the matching step and finish stating it",
+          "Run a mental dry run on one real input: what the agent does step by step",
+          "Record the final specification as a document that can be handed off"
+        ],
+        "validate": "All six points are marked \"ready\" and there is one dry run on a real example.",
+        "tip": "A checklist-based spec reads like a short brief — another person can reproduce the agent from it without your explanations."
+      }
+    }
+  },
+  "agent-code-reviewer": {
+    "title": "Code Reviewer Agent",
+    "subtitle": "Auto-review of PRs and commits against a checklist: security, readability, tests, regressions",
+    "totalTime": "6 steps",
+    "whatItIs": "A Code Reviewer agent is a specialized [[node:agents|agent]] that reads code changes (diff, PR files) and produces comments against a clear checklist: security, readability, test coverage and regression risk. It doesn't replace the human expert — it lifts the pre-review routine off them: by the time a human looks, the obvious issues are already found and sorted by severity.",
+    "approach": "The course builds the agent from boundaries to rollout. First we fix what the agent does and does NOT do, then we write the checklist as the source of truth, set the role and instructions, connect the code context (diff/files), standardize the output format by severity (no style bikeshedding) and embed the agent into the PR process. Every step ends with a check on a real PR.",
+    "outcomes": [
+      "You understand the reviewer agent's boundaries: what it catches and where a human is needed",
+      "You have a written review checklist (security, readability, tests, regressions)",
+      "The agent is set up with a role and instructions that give reproducible results",
+      "Findings come out in a single format by severity, without formatting noise",
+      "The agent is embedded in the PR process and genuinely saves expert time"
+    ],
+    "applyIn": [
+      {
+        "title": "Team PR process",
+        "description": "The agent passes every PR before a human and leaves comments by severity — the expert sees already-filtered code."
+      },
+      {
+        "title": "Solo development",
+        "description": "Before committing you run the diff through the agent as a second pair of eyes: it catches leaked secrets, missing tests, risky edits."
+      },
+      {
+        "title": "Onboarding and learning",
+        "description": "A newcomer sees what the agent pays attention to and picks up the team's review standards faster."
+      }
+    ],
+    "pitfalls": [
+      "Trusting only the agent — it doesn't replace architectural thinking or product context",
+      "Keeping the checklist in your head, not on paper — results differ every time and aren't repeatable",
+      "Mixing style and substance — the agent drowns in indentation comments while real bugs get lost",
+      "Feeding the agent the whole repo instead of the diff — it loses focus and misses the point of the change",
+      "Comments without severity — a human can't tell what blocks merge from what's cosmetic"
+    ],
+    "exercises": [
+      {
+        "question": "Write three checklist items from the \"security\" category that the agent must check on every PR.",
+        "hint": "Think about what most often leaks into commits: secrets in code, missing input validation, unsafe dependencies."
+      },
+      {
+        "question": "Why should the agent return findings tagged with severity rather than just a flat list?",
+        "hint": "Picture a PR with 12 comments: what does the human do first? Severity separates blockers from nice-to-haves."
+      },
+      {
+        "question": "Explain where the boundary lies between the reviewer agent and the human expert.",
+        "hint": "The agent is great at checkable rules from the checklist. But who decides the architecture is the right choice?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why a reviewer agent and where its boundaries lie",
+        "time": "",
+        "why": "Without clear boundaries the agent either pretends to be an expert (dangerous) or gets ignored. First fix the area of responsibility: checkable items go to the agent, architectural decisions and product context stay with the human.",
+        "instructions": [
+          "Write one sentence: the agent checks PRs/commits against a checklist (security, readability, tests, regressions).",
+          "List what the agent does NOT do: doesn't settle architecture debates, doesn't judge business logic without context, doesn't block merge on its own.",
+          "Capture the principle from [[node:ag-principles|agent principles]]: a narrow role with a clear boundary is more reliable than a \"universal reviewer\".",
+          "Agree with the team (or yourself) that the agent's output is input for a human, not a final verdict."
+        ],
+        "validate": "You have two short notes: \"agent does\" and \"agent does NOT\", both fitting in a couple of lines.",
+        "tip": "If the area of responsibility can't be described in one paragraph, it's too broad — narrow it."
+      },
+      "s2": {
+        "title": "Define the review checklist",
+        "time": "",
+        "why": "The checklist is the source of truth for the agent. Without it every review is different and unrepeatable. A written list makes results predictable and verifiable.",
+        "instructions": [
+          "Split the checklist into 4 categories: security, readability, tests, regressions.",
+          "Security: secrets in code, input validation, unsafe dependencies, access rights.",
+          "Readability: clear names, no dead code, reasonable function size.",
+          "Tests: are new branches covered, are existing ones broken, are there tests for bug fixes.",
+          "Regressions: does the change break a public contract, migrations, backward compatibility."
+        ],
+        "validate": "The checklist is written as a bulleted list under 4 headings and fits on one screen.",
+        "tip": "Start with 3-4 items per category — expand later from real findings, not preemptively."
+      },
+      "s3": {
+        "title": "Set the agent's role and instructions",
+        "time": "",
+        "why": "Role and instructions turn the checklist into behavior. A clear wording (\"you are a reviewer, check strictly against the checklist\") gives reproducible results instead of the model's free improvisation.",
+        "instructions": [
+          "Describe the role: \"You are a strict but constructive code reviewer. Check only against the checklist below.\"",
+          "Paste the checklist from step 2 directly into the agent's instructions.",
+          "Forbid style/formatting checks — that's the linter's job, not the agent's.",
+          "If you use [[node:claude-code|Claude Code]], set this up as a subagent or [[node:skills|skill]] with a \"review PR\" trigger.",
+          "Add a rule: every finding references the checklist item it violates."
+        ],
+        "validate": "The agent's instruction contains the role, the checklist and an explicit ban on style comments.",
+        "tip": "Ask the agent to briefly justify each finding — this sharply reduces false positives."
+      },
+      "s4": {
+        "title": "Connect the code context (diff/files)",
+        "time": "",
+        "why": "The agent is only as good as its context. The diff focuses attention on the change; the affected files in full give an understanding of the surroundings. The whole repository is just noise.",
+        "instructions": [
+          "Feed the agent the PR diff as the main input — that's what actually changed.",
+          "For each affected file, give enough surrounding code to understand the context of the edit.",
+          "Don't load the whole repository: the agent will lose focus and miss the point.",
+          "If the edit touches a public API or contract, add the consumer file to assess regressions."
+        ],
+        "validate": "On a test PR the agent sees the diff and the needed surroundings, but not the whole project.",
+        "tip": "Big PR? Ask the agent to first list the affected areas, then review them one at a time."
+      },
+      "s5": {
+        "title": "Output format: findings by severity, no style",
+        "time": "",
+        "why": "An unprioritized list is useless: a human can't tell what blocks merge from what's cosmetic. A single format by severity makes the output scannable and actionable.",
+        "instructions": [
+          "Set severity levels: blocker, major, minor (you may add info).",
+          "Each finding = severity + file/line + checklist item + what's wrong + a suggestion.",
+          "Forbid comments about formatting and personal style preferences.",
+          "Ask the agent for a short summary at the end: how many blocker/major/minor were found.",
+          "If there are no findings, the agent must explicitly say \"no checklist comments\" rather than stay silent."
+        ],
+        "validate": "Output on a test PR is a structured list by severity with a summary, no style comments.",
+        "tip": "A blocker should mean \"can't merge\". If there are many blockers on every PR, the threshold is set too high."
+      },
+      "s6": {
+        "title": "Rollout into the PR process + common mistakes",
+        "time": "",
+        "why": "The agent only adds value when embedded in a real process. The goal is that by the time a human reviews, the obvious is already found and sorted, and the expert focuses on architecture.",
+        "instructions": [
+          "Decide the trigger point: manually with a \"review PR\" command or automatically in CI on every PR.",
+          "Agree that the agent's output is a comment in the PR, input for a human, not an auto-block on merge.",
+          "Run the agent on 3-5 real PRs and compare findings against the expert's opinion.",
+          "Calibrate the checklist by results: what the agent missed — add, what's noise — remove.",
+          "Remember the boundary from step 1: the final decision and architecture stay with the human."
+        ],
+        "validate": "The agent runs on new PRs, and the expert confirms the findings save them time without creating noise.",
+        "tip": "Every couple of weeks revisit the checklist based on fresh findings — it's a living document, not a stone."
+      }
+    }
+  },
+  "agent-audit": {
+    "title": "Build an Audit Agent",
+    "subtitle": "An agent that takes material and produces an audit by fixed criteria",
+    "totalTime": "6 steps",
+    "whatItIs": "An Audit Agent is an [[node:agents|agent]] that takes input material (a screen, a text, a process) and returns a structured audit: a list of findings sorted by impact, each with a severity level and a recommendation. Not a \"general opinion\", but a check against a pre-fixed checklist of criteria.\n\nThe core idea is that the criteria are fixed in advance, not invented on the fly. Then two runs on similar material give comparable results, and reports can be compared over time. The agent is especially strong paired with [[node:mcp|MCP]] to the relevant system and topical [[node:skills|Skills]] that hold the criteria and reference standards.",
+    "approach": "Don't ask \"is this good\" — that yields a vague answer. First fix the criteria and the report format, and only then run the audit. An auditor's strength is not the model's cleverness but the clarity of the frame you give it.",
+    "outcomes": [
+      "Understand where an audit agent is genuinely useful and where it gives false confidence",
+      "Can fix a set of criteria so the audit is reproducible",
+      "Write a role-and-input prompt that keeps the agent from drifting",
+      "Get a report in \"finding + severity + recommendation\" format, ready to act on",
+      "Calibrate criteria after the first run and remove noisy findings"
+    ],
+    "applyIn": [
+      {
+        "title": "UX audit of a screen",
+        "description": "Before release, run a mockup or page against a heuristics checklist and get a prioritized list of top problems — without waiting for a full test with people."
+      },
+      {
+        "title": "Content audit",
+        "description": "An article, landing page or email is checked against criteria for clarity, structure and tone of voice. The agent catches weak spots before the editor does."
+      },
+      {
+        "title": "Process or document audit",
+        "description": "A policy, onboarding checklist or spec is run for completeness and contradictions against fixed rules."
+      }
+    ],
+    "pitfalls": [
+      "Using the agent to replace checks with real users — the agent has hypotheses, people have facts",
+      "Criteria on the fly: without a fixed checklist, two runs produce different findings",
+      "Asking it to \"find everything\" — the agent returns noise; limit to top-N by impact",
+      "A report without severity and recommendation — a problem list nobody prioritizes",
+      "Blindly trusting conclusions without calibrating on material where you know the right answer"
+    ],
+    "exercises": [
+      {
+        "question": "Take one real piece of material (a screen, article or policy) and write 5 criteria worth checking it against. Phrase each as a verifiable statement.",
+        "hint": "If a criterion can't be answered yes/no or scored on a scale, it's too vague — rephrase it."
+      },
+      {
+        "question": "Run the Audit Agent on this material with your criteria and require the \"finding + severity + recommendation\" format. Then sort the findings yourself and compare with the agent's order.",
+        "hint": "A mismatch in priorities signals that the severity criterion is described unclearly."
+      },
+      {
+        "question": "Feed the agent material where you already know the weak spot. Check whether it found it and didn't invent extras.",
+        "hint": "A missed known problem or a false finding is a reason to calibrate the criteria, not to trust the run."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Understand why an audit agent and where it applies",
+        "time": "",
+        "why": "Without a clear application area the auditor either duplicates manual work or creates false confidence where live users are needed.",
+        "instructions": [
+          "Write down what material you check regularly: screens, texts, processes, specs.",
+          "Note where there's no time for a full manual audit but you need a quick \"is it okay?\" signal.",
+          "Honestly separate tasks where the agent gives hypotheses (UX, text clarity) from tasks needing facts from people (real behavior).",
+          "Pick ONE material type for your first auditor — don't try to cover everything at once."
+        ],
+        "validate": "You have one concrete material type and one sentence: \"why I need an auditor here\".",
+        "tip": "The best first candidate is something you check often and by the same rules. That's where the payback is highest."
+      },
+      "s2": {
+        "title": "Fix the audit criteria",
+        "time": "",
+        "why": "Fixed criteria are the audit itself. Without them the agent scores differently each time, and runs can't be compared.",
+        "instructions": [
+          "Write 5–8 criteria for the chosen material. Each is a verifiable statement, not a wish.",
+          "Phrase criteria so the answer is \"met / violated / not applicable\", not \"fine\".",
+          "Add to each criterion a short reference or example of a violation — the agent relies on it.",
+          "Group criteria by theme (e.g. clarity, structure, accessibility) so the report reads well.",
+          "Store the criteria separately (in a [[node:skills|Skill]] or file) — this is a reusable frame, not part of a one-off prompt."
+        ],
+        "validate": "The criteria list reads such that another person could check the same material against it and reach a similar conclusion.",
+        "tip": "If a criterion can't be checked by looking at the material alone, it's not an audit criterion but a question for user research."
+      },
+      "s3": {
+        "title": "Set the agent's role and input format",
+        "time": "",
+        "why": "A clear role and predictable input keep the agent from drifting into general reasoning instead of checking against criteria.",
+        "instructions": [
+          "Describe the role: \"You are an auditor of <material type>, check strictly against the given criteria, add none of your own.\"",
+          "Pass the criteria from step 2 into the prompt or connect them via a [[node:skills|Skill]].",
+          "Fix what is given as input: one screen / one article / one document per run, not a batch at once.",
+          "Forbid the agent from evaluating anything not in the criteria — otherwise you get taste-based judgments.",
+          "Follow the [[node:ag-principles|agent principles]]: one clear task, explicit input, explicit output."
+        ],
+        "validate": "The prompt describes the role, lists the criteria and unambiguously states what counts as input.",
+        "tip": "One run — one object. Feed ten screens at once and the agent will mix findings and lose accuracy."
+      },
+      "s4": {
+        "title": "Define the report format: finding + severity + recommendation",
+        "time": "",
+        "why": "A report without structure is a wall of text nobody prioritizes. A strict format makes the audit immediately actionable.",
+        "instructions": [
+          "Require every finding to contain three fields: what's wrong, severity level, what to do.",
+          "Fix the severity scale: e.g. critical / major / minor — and explain to the agent what each level means.",
+          "Ask it to sort findings by impact and limit to top-N (e.g. top-7), not dump everything.",
+          "Add to each finding a reference to its criterion from step 2 — so it's clear which rule is violated.",
+          "End the report with a short summary: \"all okay / there are blockers\" — that's the quick signal."
+        ],
+        "validate": "Any finding can be read and instantly understood: how serious it is and what to do about it.",
+        "tip": "Severity without a defined scale is useless — the agent will assign levels at random. Describe what separates critical from minor."
+      },
+      "s5": {
+        "title": "Run the audit on real material",
+        "time": "",
+        "why": "Only a live run shows whether the criteria and format work, or whether the agent finds noise and misses what matters.",
+        "instructions": [
+          "Take real material, not a textbook example — preferably something you're about to release.",
+          "Run the agent and get a report in the step 4 format.",
+          "Read the findings top to bottom: do you agree with the impact order?",
+          "Mark findings that turned out to be noise, and important things the agent missed.",
+          "If you have [[node:mcp|MCP]] access to the system, let the agent pull the material directly rather than copying by hand."
+        ],
+        "validate": "You hold a report on real material plus notes on where the agent hit and where it missed.",
+        "tip": "The first run is almost always noisy. That's normal — it's there to show which criteria to calibrate."
+      },
+      "s6": {
+        "title": "Calibrate criteria and check for mistakes",
+        "time": "",
+        "why": "The auditor becomes reliable only after calibration: without it you mass-produce noise and false confidence.",
+        "instructions": [
+          "Remove or rephrase criteria that produced noisy findings in step 5.",
+          "Refine the severity definitions if the agent's priorities diverged from yours.",
+          "Run the agent on material where you know the right answer — check for misses and inventions.",
+          "Encode the agent's frequent mistakes into the criteria as explicit bans (\"don't flag X as a problem\").",
+          "Save the final version of the criteria in a [[node:skills|Skill]] — now the audit is reproducible and reusable."
+        ],
+        "validate": "A repeat run on familiar material gives a stable, clear report with no obvious noise and no missed known problems.",
+        "tip": "Remember the boundary: an audit agent gives hypotheses by criteria, but does not replace checks with real users — they have the facts."
+      }
+    }
+  },
+  "agent-researcher": {
+    "title": "Research agent: from question to a report with references",
+    "subtitle": "Build an agent that finds sources, synthesizes them, and delivers a verifiable report",
+    "totalTime": "6 steps",
+    "whatItIs": "A research agent is an [[node:agents|agent]] that, given a question, searches sources online on its own, reads them, compares facts, and returns a structured report with quotes and links. It does not replace an analyst — it removes the routine: reading dozens of pages, note-taking, and formatting references.",
+    "approach": "The course is built around the main risk of such an agent — making up facts and links. So every step serves one goal: any conclusion in the report must be traceable to a real source. First we set boundaries and frame the question, then connect web search, synthesize with citations, separately verify key facts, and only then assemble the report.",
+    "outcomes": [
+      "Understand where a research agent helps and where its conclusions can't be trusted without checking",
+      "Frame a research question and criteria for selecting sources",
+      "Connect web search and tools so the agent works with real data",
+      "Get a synthesis where every claim is tied to a link",
+      "Verify key facts and produce a reproducible report"
+    ],
+    "applyIn": [
+      {
+        "title": "Competitor analysis",
+        "description": "The agent gathers competitors' prices, features, and positioning from public sources and compiles a comparison table with links to the originals."
+      },
+      {
+        "title": "Market overview before launch",
+        "description": "Before a product launch the agent prepares a segment overview: market size, trends, key players — noting where each figure came from."
+      },
+      {
+        "title": "Decision prep",
+        "description": "For an internal memo or pitch the agent finds and organizes facts, saving hours of manual googling and note-taking."
+      }
+    ],
+    "pitfalls": [
+      "Trusting conclusions without checking sources: the model can invent a plausible but non-existent link",
+      "Asking too broad a question — the agent returns a shallow report about everything and nothing",
+      "Not setting source criteria: the agent mixes fresh data with a five-year-old article",
+      "Accepting synthesis without citations: you can't tell a sourced fact from the model's guess",
+      "Skipping verification of key figures — one wrong number ruins the whole report"
+    ],
+    "exercises": [
+      {
+        "question": "The agent delivered a report where the claim \"the market grew 40%\" has a link, but the page doesn't open. What is this and what do you do?",
+        "hint": "Recall the main risk from step 1: the model can generate plausible but non-existent links. Every key figure needs its own check (step 5)."
+      },
+      {
+        "question": "The question is \"tell me about the AI tools market.\" Why will the agent give a weak result and how do you reframe it?",
+        "hint": "Too broad. Narrow it to a concrete slice: segment, region, period, what exactly you're comparing (see step 2 — question + criteria)."
+      },
+      {
+        "question": "How do you make the final report re-checkable a month later?",
+        "hint": "Think reproducibility: record the search date, direct links, verbatim quotes, and the original question wording (step 6)."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why a research agent and where its limits are",
+        "time": "",
+        "why": "Before building the agent it's important to understand its strength and weakness. The strength is speed of gathering and synthesis. The weakness is a tendency to [[node:cap-limitations|hallucinate]]: the model can confidently produce a fact or link that doesn't exist. Ignore this and the report will look convincing yet be wrong.",
+        "instructions": [
+          "Define which routine you want to remove: reading, note-taking, formatting references",
+          "Write down what decisions will be based on the report and the cost of an error",
+          "Adopt the rule: no conclusion goes into the report without a verifiable source",
+          "Define the distrust zone — figures, dates, quotes always require verification"
+        ],
+        "validate": "You can explain in one sentence why the agent can't be trusted without checking links.",
+        "tip": "The higher the cost of a wrong decision, the stricter the verification in step 5 must be."
+      },
+      "s2": {
+        "title": "Frame the question and source criteria",
+        "time": "",
+        "why": "Report quality is set by question quality. A broad question (\"tell me about the market\") yields a shallow answer. A narrow question with source-selection criteria steers the agent to the right data and cuts the noise.",
+        "instructions": [
+          "Narrow the topic to a concrete slice: segment, region, period, object of comparison",
+          "Break the main question into 2–4 sub-questions answerable with a fact",
+          "Set source criteria: recency, type (official/news/research), language",
+          "Describe which sources don't qualify (forums, ads, undated content)"
+        ],
+        "validate": "You have one narrow question, 2–4 sub-questions, and an explicit list of source criteria.",
+        "tip": "A good test of a question: it can be answered with a table or list of facts, not an essay."
+      },
+      "s3": {
+        "title": "Connect web search and tools",
+        "time": "",
+        "why": "Without access to external data the agent relies only on the model's memory, which is stale and incomplete. [[node:cap-search|Web search]] gives the agent real sources in real time — turning guesses into verifiable facts.",
+        "instructions": [
+          "Enable the web search tool for the agent and, if needed, a page-reading tool",
+          "Check that the agent returns not just text but the URL of each source",
+          "Set the rule: find sources first, then draw conclusions, not the other way around",
+          "Limit the number of sources per sub-question to avoid drowning in noise"
+        ],
+        "validate": "A test run returns real links that open, not general reasoning.",
+        "tip": "If the agent answers without links, the tool isn't connected or isn't being used — check the configuration."
+      },
+      "s4": {
+        "title": "Synthesis with citations and links",
+        "time": "",
+        "why": "The agent's main value is not retelling individual pages but synthesis: comparing sources and drawing patterns. But synthesis without links is useless — you can't tell a fact from a guess. The principle of [[node:ag-principles|transparency]] requires every claim to be traceable to a source.",
+        "instructions": [
+          "Ask the agent to group facts by sub-question, not by source",
+          "Every claim must be accompanied by a link to its source",
+          "When sources conflict — show both, don't silently pick one",
+          "Quote exact figures and citations precisely, without paraphrasing"
+        ],
+        "validate": "In the synthesis draft every fact has a link next to it, and conflicts aren't hidden.",
+        "tip": "A footnote like \"claim [source]\" beats a list of links at the end — it's easier to verify."
+      },
+      "s5": {
+        "title": "Verifying key facts",
+        "time": "",
+        "why": "This is the step that separates research from a nice retelling. Even with search connected, the model can attach a wrong link to a fact or distort a figure. Key facts are checked separately — by following the link and comparing.",
+        "instructions": [
+          "Pick 3–5 facts that the report's conclusions rest on",
+          "Check each link: does it open and does it contain the claimed fact",
+          "Compare figures and dates verbatim with the original source",
+          "Mark anything unverified as a hypothesis, not a fact",
+          "If a source isn't confirmed — drop the claim or find another"
+        ],
+        "validate": "All key figures and quotes are confirmed by working links; anything unverified is clearly marked.",
+        "tip": "Start verifying with the loudest, most surprising figures — those are exactly what the model distorts most often."
+      },
+      "s6": {
+        "title": "Report format, common mistakes, and final check",
+        "time": "",
+        "why": "The report must be not only correct but reproducible: a month later it should be clear where each conclusion came from. A good format and a final checklist lock in the discipline built in the previous steps.",
+        "instructions": [
+          "Structure the report: question → brief conclusion → facts with sources → table/comparison → list of links",
+          "Record the search date and the original question wording",
+          "Run the checklist: every fact has a link, key figures are verified, conflicts are shown",
+          "Separate the agent's opinion from source facts in a dedicated block",
+          "Save the report so it can be re-checked later"
+        ],
+        "validate": "The report reads in minutes, every conclusion traces to a source, the checklist is fully passed.",
+        "tip": "Final question to yourself: \"could another person reproduce this research from the report?\" If not — add the missing links and date."
+      }
+    }
+  },
+  "agent-designer": {
+    "title": "Designer Assistant",
+    "subtitle": "A design-critic agent: reviews, UX copy, component variants, and accessibility checks",
+    "totalTime": "6 steps",
+    "whatItIs": "Designer Assistant is an on-demand [[node:agents|agent]] that acts as a designer's partner: it gives structured critique of a layout, writes and edits UX copy, suggests component variants, and checks the design for accessibility. It is not an image generator and not a substitute for taste — it is a second pair of eyes that catches problems by heuristics and offers alternatives.",
+    "approach": "The course builds the agent around a clear role and context (brand, guide, audience), four working modes (critique, UX copy, variants, accessibility), input rules (screenshot or text description), and a strict output format — concrete edits instead of vague words. It ends with embedding the agent into the team's workflow and common pitfalls. Grounded in [[node:ag-principles|agent principles]] and [[node:cap-input-modalities|input modalities]].",
+    "outcomes": [
+      "You understand where a design assistant helps and where its output cannot be trusted",
+      "You can set a role, brand context, and audience so the critique is relevant",
+      "You switch the agent between four modes: critique, UX copy, variants, accessibility",
+      "You get concrete edits with location and reason on output, not generic advice",
+      "You embed the agent into the iteration loop before handing off to development (handoff)"
+    ],
+    "applyIn": [
+      {
+        "title": "Solo layout review",
+        "description": "When a fellow designer is busy, the agent gives a fast structured breakdown of a screen: hierarchy, contrast, spacing, states."
+      },
+      {
+        "title": "Refining interface text",
+        "description": "Buttons, errors, empty states, onboarding — in UX-copy mode the agent rewrites wording to match brand tone and audience."
+      },
+      {
+        "title": "Pre-handoff check",
+        "description": "Before passing to development, the agent runs an accessibility check and notes what to fix while it's still cheap."
+      }
+    ],
+    "pitfalls": [
+      "Expecting artistic taste from the agent — it's strong in heuristics and rules, not aesthetics",
+      "Giving input without context (brand, audience, screen goal) — the critique comes out generic and useless",
+      "Accepting \"looks good\" as an answer — without demanding concrete edits the agent just rambles",
+      "Relying on the accessibility output as a formal audit — it's a hint, not a WCAG certificate",
+      "Mixing the four modes in one request — answers get blurry, separate the tasks"
+    ],
+    "exercises": [
+      {
+        "question": "Why shouldn't a design assistant be trusted with the final aesthetic judgment of a layout?",
+        "hint": "Recall where the agent is strong (heuristics, rules, accessibility) and where its boundary lies."
+      },
+      {
+        "question": "Why is \"weak hierarchy here, raise the heading to 24px and add 16px spacing\" better than \"looks fine\"?",
+        "hint": "Think about the output-format step: specific location + specific edit + reason."
+      },
+      {
+        "question": "Why split the modes (critique / UX copy / variants / accessibility) into separate requests?",
+        "hint": "What happens to focus and answer quality when the agent tries to do everything at once?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why a design assistant and where its limits are",
+        "time": "",
+        "why": "Without a clear goal and boundaries, the agent becomes a generator of pretty but empty advice. First we fix what it can really do — and what not to trust.",
+        "instructions": [
+          "State one sentence: \"This agent helps me with critique, copy, variants, and accessibility during iteration.\"",
+          "Write the boundary explicitly: the agent is strong in heuristics and rules but does not judge artistic taste and does not replace the designer's final call.",
+          "Define the stage it kicks in — research and iteration, before handing off to development (handoff).",
+          "Decide what you do NOT expect from it: final image generation, brand decisions, legal review."
+        ],
+        "validate": "You have one sentence about its value and one explicit list of what not to trust.",
+        "tip": "The boundary matters more than the capabilities: teams break trust in the agent exactly where they overestimate it."
+      },
+      "s2": {
+        "title": "Set the role and context: brand, guide, audience",
+        "time": "",
+        "why": "Critique without context is always generic. Brand, tone, and audience turn abstract advice into a relevant edit for your product.",
+        "instructions": [
+          "Describe the role: \"You are a senior product designer reviewing our product's screens.\"",
+          "Give brand context: tone of voice, key colors, fonts, a link to or summary of the design guide.",
+          "Describe the audience: who the user is, their level, the usage context (mobile/desktop, rushed/thoughtful).",
+          "Fix the screen goal: what the user should accomplish here — this is the yardstick for all critique.",
+          "Reference [[node:ag-principles|agent principles]] so the role and context stay stable across requests."
+        ],
+        "validate": "The agent's system description has a role, brand context, audience, and screen goal.",
+        "tip": "If there's no guide — ask the agent to first output 5 assumed principles and confirm them."
+      },
+      "s3": {
+        "title": "Four modes: critique, UX copy, variants, accessibility",
+        "time": "",
+        "why": "One agent covers four different tasks. Explicit modes keep answers focused and predictable.",
+        "instructions": [
+          "\"Critique\" mode: the agent gives N observations on hierarchy, contrast, spacing, states — with priority.",
+          "\"UX copy\" mode: rewrites interface text to match brand tone — buttons, errors, empty states.",
+          "\"Variants\" mode: offers 2-3 alternatives of a component or layout with pros and cons of each.",
+          "\"Accessibility\" mode: checks contrast, touch-target sizes, alt text, focus order.",
+          "Agree to invoke modes one per request, not all at once — this keeps focus."
+        ],
+        "validate": "Each of the four modes has its own invocation phrasing and a clear expected result.",
+        "tip": "Name the mode in words at the start of the request (\"Mode: critique\") — the agent holds the frame better."
+      },
+      "s4": {
+        "title": "Input: screenshot or description",
+        "time": "",
+        "why": "The quality of the review depends directly on what and how you feed the agent. Image and text work differently.",
+        "instructions": [
+          "A screenshot is the best input for critique and accessibility: real hierarchy, contrast, and spacing are visible.",
+          "If there's no image — give a structural description: which blocks, in what order, the texts, the states.",
+          "Always attach the screen goal and the key scenario — without them the critique hangs in the air.",
+          "Check against [[node:cap-input-modalities|input modalities]]: make sure the agent can accept an image.",
+          "For UX copy, give the current wording verbatim — the agent edits the concrete, not the imagined."
+        ],
+        "validate": "You know which input format to give for each mode and you always attach the screen goal.",
+        "tip": "One screen, one input. Don't dump five screenshots into one request for a \"general overview.\""
+      },
+      "s5": {
+        "title": "Output format: concrete edits, not vague words",
+        "time": "",
+        "why": "\"Looks fine\" is useless. The agent's value is in edits you can apply immediately: location, change, reason.",
+        "instructions": [
+          "Demand a template: each edit = [location] + [concrete change] + [why].",
+          "Forbid judgment phrases without action (\"nice\", \"clean\", \"modern\").",
+          "Ask for priority: critical / nice-to-have / later — so you know what to tackle first.",
+          "For variants, require pros and cons of each, not a single \"correct\" answer.",
+          "Cap the volume: 5 observations + 3 ideas beat 30 unprioritized points."
+        ],
+        "validate": "Any agent answer can be taken and applied to the layout without guessing what it meant.",
+        "tip": "Add a \"how to verify it improved\" field to the format — this turns critique into something measurable."
+      },
+      "s6": {
+        "title": "Embedding into the workflow, pitfalls, and verification",
+        "time": "",
+        "why": "The agent is only useful if it's embedded into a real iteration loop and the team understands its weak spots.",
+        "instructions": [
+          "Define call points: after the first sketch, before the team review, before handoff.",
+          "Tie the accessibility mode to the final check — it's cheaper to fix before development.",
+          "Fix the pitfalls: don't expect taste, don't give input without context, don't mix modes.",
+          "Lean on the [[node:ai-native-design|AI-native approach]] — the agent is part of the process, not a one-off trick.",
+          "Once per sprint, verify the agent's output actually helps rather than creating noise."
+        ],
+        "validate": "The team has clear points where the agent is invoked and a shared list of its limitations.",
+        "tip": "Save successful prompts as templates — this turns a one-off win into a repeatable process."
+      }
+    }
+  },
+  "agent-pm": {
+    "title": "PM Assistant",
+    "subtitle": "User stories, acceptance criteria, task breakdown, and release prep",
+    "totalTime": "6 steps",
+    "whatItIs": "A PM Assistant is an [[node:agents|agent]] that takes formulation routine off the product manager: it turns a raw idea into a user story, writes acceptance criteria, breaks a large task into clear subtasks, and assembles a changelog for the release.\n\nIt's important to understand the boundary: the agent speeds up documenting what you've already decided. It doesn't run stakeholder interviews, doesn't prioritize the backlog for you, and doesn't make product decisions. The final \"yes\" always belongs to a human — the agent prepares a draft, the human reviews it and takes responsibility.",
+    "approach": "Don't try to automate product thinking. Give the agent clear product context and a role, feed it concrete statements, and read every result critically. The best mode is \"the agent writes a draft in a minute, you refine it in five,\" not \"the agent decides and you agree.\"",
+    "outcomes": [
+      "Turn an idea into a correct user story in minutes instead of half an hour",
+      "Write verifiable acceptance criteria so the team and QA know what \"done\" means",
+      "Break a large task into right-sized subtasks without losing meaning",
+      "Prepare a clean changelog and release notes from a list of changes",
+      "Keep a single backlog format across the whole team"
+    ],
+    "applyIn": [
+      {
+        "title": "Backlog grooming",
+        "description": "Before a sprint, run raw tickets through the agent — you get uniform user stories with AC, ready for the team to estimate."
+      },
+      {
+        "title": "Epic decomposition",
+        "description": "The agent breaks a large feature into subtasks with dependencies and risks; you adjust the order and hand it to engineering."
+      },
+      {
+        "title": "Release prep",
+        "description": "From the list of merged changes, the agent assembles a changelog and release notes for both users and the team."
+      }
+    ],
+    "pitfalls": [
+      "Replacing stakeholder interviews with generation: the agent's hypotheses ≠ real user needs.",
+      "Accepting acceptance criteria you can't verify (\"should be convenient\") — that's not an AC.",
+      "Splitting tasks endlessly: 15 micro-tickets for a simple feature is noise, not clarity.",
+      "Trusting the agent to prioritize the backlog — that's a human product decision.",
+      "Copying the changelog to production without proofreading: the agent may invent an item that wasn't in the commits."
+    ],
+    "exercises": [
+      {
+        "question": "Take a real one-line feature idea and ask the agent to return a user story in the format \"As a <role>, I want <action>, so that <value>.\" Check that the role and value aren't made up.",
+        "hint": "If the value is a generic \"so it's better,\" send it back: the value should be measurable or concrete."
+      },
+      {
+        "question": "Ask the agent to turn one user story into acceptance criteria in Given/When/Then format. Try to \"fail\" at least one criterion yourself — find the gap.",
+        "hint": "A good AC can be unambiguously marked as passed or not. If a criterion can be argued over, it's poorly worded."
+      },
+      {
+        "question": "Give the agent 5–7 lines of \"what changed in the release\" and ask it to group them into a changelog by section (New / Fixed / Changed).",
+        "hint": "Check each item against the source list — there should be no extra items."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why a PM Assistant and where its boundary is",
+        "time": "",
+        "why": "Before configuring the agent, it's important to nail down what it does and doesn't do. Otherwise it's easy to slide into the agent \"deciding\" for the product while the human just agrees. The PM Assistant speeds up documentation, but the decision and the responsibility stay with the human.",
+        "instructions": [
+          "Write out 3–4 routine operations that take your time: drafting user stories, AC, breakdown, changelog.",
+          "Next to them, note what the agent must not do: user interviews, prioritization, product decisions.",
+          "Set a rule for yourself: every agent result is a draft you review, not a final answer.",
+          "Look into the [[node:ag-principles|agent principles]] to understand how responsibility is split between human and agent."
+        ],
+        "validate": "You have two short lists — \"the agent does\" and \"the agent doesn't\" — and you understand why the final decision belongs to a human.",
+        "tip": "If a task requires understanding a real user need, that's a signal you need an interview, not generation."
+      },
+      "s2": {
+        "title": "Set the role and product context",
+        "time": "",
+        "why": "Without product context the agent writes generic, faceless wording. The more precisely it knows the product, who the users are, and the team's conventions, the less you'll have to rewrite after it.",
+        "instructions": [
+          "Set the role: \"You are an experienced PM Assistant who helps document the backlog.\"",
+          "Describe the product in 3–5 sentences: what it is, who it's for, key scenarios.",
+          "List the user types (roles) — you'll need them for user stories.",
+          "Fix the team conventions: user story format, AC format (e.g., Given/When/Then), subtask size.",
+          "Connect the context to how an [[node:ai-native-product|AI-native product]] is built, if that applies to your case."
+        ],
+        "validate": "In response, the agent can restate in its own words what the product is, who the users are, and in what format it will deliver results.",
+        "tip": "Save this context block separately and reuse it in every session — don't re-explain the product each time."
+      },
+      "s3": {
+        "title": "User stories from an idea",
+        "time": "",
+        "why": "A user story translates a raw idea into the language of the user and their value. This protects the team from building a feature \"just because we felt like it,\" without understanding who needs it and why.",
+        "instructions": [
+          "Give the agent the idea statement in 1–2 lines.",
+          "Ask it to return a user story in the format \"As a <role>, I want <action>, so that <value>.\"",
+          "Require that the role comes from your user list, not an invented one.",
+          "Ask for 1–2 clarifying questions if the agent lacks data — instead of guessing.",
+          "Check the value: it should explain \"why,\" not repeat \"what.\""
+        ],
+        "validate": "The user story reads from the perspective of a specific user, the value answers \"why,\" and it contains no invented details.",
+        "tip": "If the agent produces a value like \"to make it more convenient,\" ask it to be specific: what exactly becomes faster, cheaper, or clearer."
+      },
+      "s4": {
+        "title": "Acceptance criteria and breaking into tasks",
+        "time": "",
+        "why": "Acceptance criteria turn a story into a verifiable \"done\": both the developer and QA understand the same way when the task is closed. Breakdown, in turn, makes the work estimable and keeps it from dragging on for weeks.",
+        "instructions": [
+          "Ask the agent to write acceptance criteria for the user story in Given/When/Then format.",
+          "Require that each criterion be verifiable: unambiguously \"passed\" or \"not.\"",
+          "Ask it to separately list edge and negative cases (errors, empty data, access rights).",
+          "Then ask it to break the story into subtasks sized so each closes within 1–2 days.",
+          "Clarify dependencies between subtasks and risks — what could go wrong."
+        ],
+        "validate": "Each AC can be objectively marked as passed, and the subtasks fully cover the story and have a clear size.",
+        "tip": "Reword any criterion that allows an argument over \"does this count as done or not?\" until the argument disappears."
+      },
+      "s5": {
+        "title": "Release prep and changelog",
+        "time": "",
+        "why": "The release is where the product meets the user. A clean changelog saves support and team time and tells the user what changed for them. The agent quickly assembles a draft from the list of changes.",
+        "instructions": [
+          "Collect the list of changes that went into the release (from closed tasks or commits).",
+          "Ask the agent to group them into sections: New / Fixed / Changed / Known issues.",
+          "Ask for two versions: a technical one for the team and a clear one for users.",
+          "Require each changelog item to rely on the source list — no invented lines.",
+          "Add a brief 1–2 sentence release summary for the announcement."
+        ],
+        "validate": "The changelog is split into sections, each item is backed by the source list, and there's a separate clear version for users.",
+        "tip": "Before publishing, compare the changelog against the change list line by line — that's the main source of \"phantom\" items."
+      },
+      "s6": {
+        "title": "Output format, common mistakes, and verification",
+        "time": "",
+        "why": "For the agent's results to drop straight into your tool (Jira, Linear, Notion), you need a stable output format. And for the agent to bring value rather than risk, you need a short habit of checking every result.",
+        "instructions": [
+          "Fix the output format: e.g., title, user story, AC block, subtask list, risks.",
+          "Ask the agent to always deliver in this format so it can be copied without rework.",
+          "Add a list of common mistakes to the instruction: unverifiable AC, invented roles, phantom changelog items.",
+          "Introduce a final check: you read the result and confirm the roles are real, the AC verifiable, nothing extra.",
+          "Check against the [[node:ag-principles|agent principles]] — the human confirms the result before it goes into work."
+        ],
+        "validate": "The agent reliably delivers results in one format, and you have a short verification checklist that you actually apply to every answer.",
+        "tip": "Save the format and the mistake list right in the agent's system instruction — then they apply automatically in every session."
+      }
+    }
+  },
+  "agent-managed": {
+    "title": "Claude Managed Agents: Anthropic's managed agent harness",
+    "subtitle": "Ready-made infrastructure for long-running async agents — without your own DevOps",
+    "totalTime": "6 steps",
+    "whatItIs": "Managed Agents is an official Anthropic product: a ready-made, configurable agent harness running in managed cloud infrastructure. Instead of building an agent loop from scratch (retries, timeouts, state, observability), you submit a task, the agent runs asynchronously, and you poll for the result.\n\nIt's a layer on top of [[node:agents|agents]]: the same [[node:ag-principles|agent loop principles]], but execution, state, and tools are handled by the platform. This course shows when to pick the ready-made option and when to build your own via the [[node:pl-api|API]].",
+    "approach": "Don't reach for Managed Agents on every task. It's a tool for long, asynchronous, production workloads that need reliability. For a simple one-shot request the Messages API directly is enough. First honestly assess task duration and reliability requirements — then choose the layer.",
+    "outcomes": [
+      "Understand what Managed Agents are and how they differ from a self-built agent harness",
+      "Know exactly what the platform handles: execution, state, tools, observability",
+      "Can submit a first task and poll for the result",
+      "Can configure an agent for a specific task via tools and parameters",
+      "Understand limits, the cost model, and where your control remains"
+    ],
+    "applyIn": [
+      {
+        "title": "Long-running research tasks",
+        "description": "\"Research this topic and write a report\" — the agent runs for minutes or hours, uses web search and file tools, returns a structured result."
+      },
+      {
+        "title": "Production agent deployments",
+        "description": "When an agent must run reliably under load and you have no time to build retries and observability yourself."
+      },
+      {
+        "title": "Asynchronous pipelines",
+        "description": "Submit a task, do other work, collect the result later. Fits background processing where instant responses aren't needed."
+      }
+    ],
+    "pitfalls": [
+      "Using Managed Agents for simple single-turn tasks — it's overkill; calling the Messages API directly is cheaper and simpler.",
+      "Expecting a synchronous reply: the model is async — submit the task and poll for the result, don't wait inside one call.",
+      "Launching long tasks without understanding cost — a long agent loop burns more tokens than it seems.",
+      "Assuming the platform removes all responsibility: you still define the task, the tools, and verify the result.",
+      "Choosing the ready-made harness where full loop customization is needed — building your own via the API would be more precise."
+    ],
+    "exercises": [
+      {
+        "question": "Frame one task that genuinely benefits from Managed Agents (long + async + needs reliability) and one for which it would be overkill. Explain the difference.",
+        "hint": "A long research task with web search versus a one-shot \"rephrase this paragraph\". Lean on the criterion: task duration and reliability requirement."
+      },
+      {
+        "question": "Describe what you'd have to build yourself if Managed Agents didn't exist: list at least four harness elements.",
+        "hint": "Recall what the platform handles out of the box: retries, timeouts, state storage, observability."
+      },
+      {
+        "question": "For your own task decide: Managed Agents, a self-built agent on the [[node:pl-api|API]], or a simple Messages API call? Justify it.",
+        "hint": "One-shot and simple → Messages API. Long and standard → Managed Agents. Long with a non-standard loop → your own agent."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What Managed Agents are and when to pick them over your own harness",
+        "time": "",
+        "why": "Before adopting the product you need to understand the exact problem it solves. Managed Agents close out weeks of work building a reliable agent loop — but only for a specific class of tasks.",
+        "instructions": [
+          "Memorize the definition: a ready-made, configurable agent harness in Anthropic's managed cloud infrastructure.",
+          "Fix the selection criterion: long tasks (minutes to hours), asynchronous work, production reliability.",
+          "Compare with the alternative: building the loop yourself via the [[node:pl-api|API]] — retries, timeouts, state, observability — which takes weeks.",
+          "Note the boundary: for a simple one-shot request use the Messages API directly, not Managed Agents."
+        ],
+        "validate": "You can name three signs of a task where Managed Agents are the right choice, and one sign where they're overkill.",
+        "tip": "If you're unsure whether a task runs longer than a minute, that alone hints toward managed asynchronous execution."
+      },
+      "s2": {
+        "title": "What the platform handles: execution, state, tools",
+        "time": "",
+        "why": "The value of Managed Agents is exactly what gets taken off your plate. Knowing this list answers why weeks of work turn into hours.",
+        "instructions": [
+          "Execution: the platform runs the agent loop itself — running steps, handling retries and timeouts.",
+          "State: progress of a long task is stored on the platform side, you don't keep it yourself.",
+          "Tools: the agent has built-in tools — web search and file operations — without separate integration.",
+          "Observability: you can track task progress by polling its status and result.",
+          "Map each item to what you'd otherwise have to write yourself via the [[node:pl-api|API]]."
+        ],
+        "validate": "You can list at least four things Managed Agents do for you, and for each name what it saves.",
+        "tip": "The built-in web search and file tools are the same ones [[node:agents|agents]] use, just without your setup."
+      },
+      "s3": {
+        "title": "How to start: submit a task and poll for the result",
+        "time": "",
+        "why": "The model of work is asynchronous, and that's the key difference from a regular request. You need to grasp the \"submit — agent runs — poll\" cycle before any configuration.",
+        "instructions": [
+          "Frame the task as a clear goal, e.g. \"research this topic and write a report\".",
+          "Submit the task to the agent — the call returns a job identifier, not a finished answer.",
+          "Give the agent time to work: it uses the available tools and goes through the loop steps itself.",
+          "Poll for the result by identifier — when the task is done you get structured output.",
+          "Don't expect an instant reply in one call — this is an asynchronous model."
+        ],
+        "validate": "You understand the three phases — submit task, agent runs, poll result — and why the answer doesn't come back synchronously.",
+        "tip": "Frame the task as carefully as a regular prompt: the clearer the goal and result format, the more precisely the agent works."
+      },
+      "s4": {
+        "title": "Configuring for the task: tools and parameters",
+        "time": "",
+        "why": "The harness is ready-made but configurable. For a specific task it pays to narrow or steer the agent — that improves the result and cuts unnecessary steps.",
+        "instructions": [
+          "Decide which tools the task needs: web search only, files only, or both.",
+          "Frame the task with an explicit result format so the output is structured.",
+          "Give the agent instructions the same way you describe a regular [[node:agents|agent]]'s behavior.",
+          "Test on a small task before launching a long one — that's a cheaper way to catch wording flaws."
+        ],
+        "validate": "You've configured an agent for your task: picked the needed tools and described the expected result format.",
+        "tip": "The narrower the tool and goal wording, the fewer extra steps the agent takes — and the cheaper the run."
+      },
+      "s5": {
+        "title": "Limits, cost, and where your control remains",
+        "time": "",
+        "why": "A long agent loop burns more tokens than a one-off call. Without understanding cost it's easy to get an unexpected bill, and without understanding control it's easy to lose grip on the task.",
+        "instructions": [
+          "Remember: a long task = many steps = more tokens than a single Messages API request.",
+          "Start with short tasks to estimate real cost before launching multi-hour ones.",
+          "Control stays with you: you set the goal, pick the tools, and verify the final result.",
+          "Poll the status to follow progress and catch early if the task drifts off course.",
+          "Don't launch expensive long tasks blindly — first run a simplified version."
+        ],
+        "validate": "You understand why a long agent costs more than a one-off call, and can name what in the task stays under your control.",
+        "tip": "Treat the first run of a long task as a cost measurement, not as the final result."
+      },
+      "s6": {
+        "title": "When Managed Agents are NOT a fit + final check",
+        "time": "",
+        "why": "The most common mistake is applying a powerful tool to the wrong place. Clear understanding of the boundaries matters as much as understanding the capabilities.",
+        "instructions": [
+          "Simple one-shot task → the Messages API directly; Managed Agents are overkill.",
+          "Need an instant synchronous reply → the asynchronous model doesn't fit.",
+          "Need full customization of the agent loop → build your own agent on the [[node:pl-api|API]] following the [[node:ag-principles|agent loop principles]].",
+          "Need non-standard tools beyond the built-ins → check whether web search and files are enough, otherwise look toward [[node:mcp|MCP]] and your own harness.",
+          "Check your task against all the signs and make a deliberate decision."
+        ],
+        "validate": "You can make a reasoned choice for a specific task between Managed Agents, a self-built API agent, and a simple Messages API call.",
+        "tip": "If none of the criteria \"long + async + reliability\" hold, you almost certainly need a plain API call, not Managed Agents."
+      }
+    }
   }
 }

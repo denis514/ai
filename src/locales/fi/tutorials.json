@@ -7514,5 +7514,938 @@
         "tip": "Tulosta 5 kohdan tarkistuslista ja pidä se lähellä — se muuttaa iteroinnin intuitiosta toistettavaksi prosessiksi."
       }
     }
+  },
+  "agent-principles": {
+    "title": "Agentin suunnitteluperiaatteet",
+    "subtitle": "Kapea tarkoitus, selkeä trigger, least-tools ja todennettava tuotos",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Kurssi kuudesta ominaisuudesta, jotka erottavat luotettavan [[node:agents|agentin]] pitkästä promptista: kapea tarkoitus, yksi selkeä trigger, rajoitettu työkalujen joukko, todennettava jäsennelty tuotos sekä selkeät rajat ja turvallisuus. Tämä on tarkistuslista ennen käynnistystä, ei jälkikäteinen ruumiinavaus.",
+    "approach": "Etenemme periaate kerrallaan kuin suodattimen läpi: jokaisessa vaiheessa muotoilet yhden tulevan agentin ominaisuuden ja testaat sen heti omalla esimerkilläsi. Kuudenteen vaiheeseen mennessä sinulla on valmis spesifikaatio, jonka voi toimittaa tuotantoon tai tiimille.",
+    "outcomes": [
+      "Muotoilet agentin tarkoituksen yhdellä lauseella ilman «ja»-sanaa",
+      "Kuvaat triggerin, josta käy ilmi, milloin agentti laukeaa ja milloin ei",
+      "Kokoat tehtävään minimaalisen työkalujen joukon (least-tools)",
+      "Lukitset tuotoksen muodon, jonka voi tarkistaa automaattisesti",
+      "Kuvaat rajat: mitä agentti EI tee ja mikä vaatii vahvistuksen"
+    ],
+    "applyIn": [
+      {
+        "title": "Ennen subagentin rakentamista",
+        "description": "Aja [[node:cc-subagents|subagentin]] idea kuuden periaatteen läpi ja karsi se, mikä ei ole valmista, ennen ensimmäistä riviä."
+      },
+      {
+        "title": "Toisen agentin arviointi",
+        "description": "Ota olemassa oleva agentti ja tarkista se tarkistuslistalla: missä on heikko kohta, siellä on «oudon käyttäytymisen» syy."
+      },
+      {
+        "title": "Luovutus tiimille",
+        "description": "Periaatteisiin perustuva spesifikaatio on dokumentti, jolla toinen ihminen ymmärtää agentin ilman suullisia selityksiäsi."
+      }
+    ],
+    "pitfalls": [
+      "Tarkoitus jossa on «ja»: agentti joka «arvioi PR:t ja kirjoittaa testit ja deployaa» on kolme agenttia",
+      "Epämääräinen trigger: ei ole selvää, milloin agentin pitäisi laueta ja milloin pysyä hiljaa",
+      "30 työkalua «varmuuden vuoksi» — agentti valitsee vääriä ja käyttäytyminen ajelehtii",
+      "Vapaamuotoinen tekstituotos, jota ei voi tarkistaa automaattisesti",
+      "Ei rajoja: agentti suorittaa vaarallisen toiminnon hiljaa ilman vahvistusta"
+    ],
+    "exercises": [
+      {
+        "question": "Muotoile artikkelien oikolukuun tarkoitetun agentin tarkoitus yhdellä lauseella ilman «ja»-sanaa. Mikä jää rajauksen ulkopuolelle?",
+        "hint": "Jos tekee mieli lisätä «ja tarkistaa myös faktat» — se on erillinen agentti. Tarkoitus = yksi todennettava toiminto."
+      },
+      {
+        "question": "Mikä on arviointiagentin minimaalinen työkalujen joukko ja miksi se EI tarvitse kirjoitusoikeutta repoon?",
+        "hint": "Arviointi on lukemista ja kommentointia. Kirjoitusoikeus laajentaa riskipintaa ilman hyötyä tehtävälle."
+      },
+      {
+        "question": "Suunnittele sähköpostin luokitteluagentin tuotoksen muoto, jonka voi todentaa automaattisesti.",
+        "hint": "Mieti kiinteää etikettijoukkoa ja rakennetta kuten {label, confidence}, ei «vastausta omin sanoin»."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi suunnitteluperiaatteet ovat tärkeitä",
+        "time": "",
+        "why": "Useimmat «ei-toimivat» agentit epäonnistuvat eivät mallin takia, vaan koska jokin perusperiaate ohitettiin suunnitteluvaiheessa. Periaatteet muuttavat epämääräisen idean todennettavaksi spesifikaatioksi.",
+        "instructions": [
+          "Kirjoita agentti, joka «melkein toimii» tai jonka haluat rakentaa — yhdellä lauseella",
+          "Sano ääneen kuusi ominaisuutta: tarkoitus, trigger, työkalut, tuotos, rajat, turvallisuus",
+          "Merkitse kohdat, joita «et ajatellut» — siellä agentti yleensä hajoaa",
+          "Ota käyttöön sääntö: 2+ ohitettua kohtaa = agentti ei ole valmis käynnistettäväksi"
+        ],
+        "validate": "Sinulla on lista kuudesta kohdasta ja rehellinen merkintä siitä, missä aukot ovat.",
+        "tip": "Periaatteet ovat suodatin ENNEN käynnistystä. Huonon idean hylkääminen paperilla on halvempaa kuin sen debuggaaminen prodaktiossa."
+      },
+      "s2": {
+        "title": "Kapea tarkoitus ja yksi selkeä trigger",
+        "time": "",
+        "why": "Laajalla tarkoituksella varustettu agentti valitsee eri strategioita samankaltaisilla syötteillä — käyttäytymisestä tulee arvaamatonta. Kapea tarkoitus ja selkeä trigger tekevät agentista deterministisen ja ymmärrettävän.",
+        "instructions": [
+          "Muotoile tarkoitus yhdellä lauseella ilman «ja»-sanaa",
+          "Jos «ja» ilmestyy — jaa kahdeksi agentiksi tai valitse pääasia",
+          "Kuvaa trigger: mikä tapahtuma tai pyyntö laukaisee agentin",
+          "Kuvaa anti-trigger: milloin agentti EI saa laueta",
+          "Vertaa triggeriä tarkoitukseen — niiden on osoitettava samaan asiaan"
+        ],
+        "validate": "Tarkoitus on yksi lause ilman «ja»-sanaa; triggeristä on selvää sekä milloin se laukeaa että milloin pysyy hiljaa.",
+        "tip": "Hyvän triggerin voi lukea ulkopuoliselle, ja hän arvaa mitä agentti tekee. Se on kuin [[node:skills|taidon]] kapea vastuualue."
+      },
+      "s3": {
+        "title": "Rajoitettu työkalujen joukko (least-tools)",
+        "time": "",
+        "why": "Jokainen ylimääräinen työkalu on ylimääräinen käyttäytymispolku ja ylimääräinen riskipinta. Minimaalinen joukko tekee agentista luotettavamman ja ennustettavamman: vähemmän valintaa tarkoittaa vähemmän virheitä.",
+        "instructions": [
+          "Kirjoita kaikki työkalut, jotka tulevat mieleen tehtävään",
+          "Kysy jokaisesta: «pystyykö agentti täyttämään tarkoituksensa ilman sitä?» Jos pystyy — poista",
+          "Jaa lukemiseen ja kirjoittamiseen: säilytä kirjoitus vain jos se on kirjaimellisesti tarkoituksessa",
+          "Ulkoiselle datalle päätä, tarvitaanko [[node:mcp|MCP]]-lähde vai riittävätkö paikalliset työkalut",
+          "Säilytä minimaalinen joukko ja kirjaa syy jokaiselle työkalulle"
+        ],
+        "validate": "Jokaisella lopullisen listan työkalulla on kirjallinen «miksi»-perustelu.",
+        "tip": "«Least-tools» on kuin «least-privilege» turvallisuudessa: anna täsmälleen sen verran kuin yksi tehtävä tarvitsee."
+      },
+      "s4": {
+        "title": "Todennettava jäsennelty tuotos",
+        "time": "",
+        "why": "Jos agentin tuotos on vapaata tekstiä, sitä ei voi tarkistaa automaattisesti eikä luotettavasti välittää eteenpäin ketjussa. Jäsennelty tuotos tekee agentista luotettavan rakennuspalikan eikä kappaleiden generaattorin.",
+        "instructions": [
+          "Määritä tarkalleen, mitä agentin pitäisi palauttaa — dataa, etiketti, toimintojen lista",
+          "Lukitse muoto: kenttien joukko, sallitut arvot, pakolliset avaimet",
+          "Kuvaa vähintään yksi automaattitarkistus: «tuotos on validi, jos kenttä X on olemassa ja kuuluu joukkoon Y»",
+          "Lisää selkeä muoto «ei tulosta» -tapaukselle, ei tyhjää merkkijonoa",
+          "Varmista, että tuotoksen voi syöttää seuraavaan vaiheeseen ilman käsin muokkausta"
+        ],
+        "validate": "On kuvaus tuotoksen muodosta ja vähintään yksi sääntö, jolla sen voi tarkistaa automaattisesti.",
+        "tip": "Kiinteät etiketit voittavat vapaan tekstin: {label, confidence} on skriptillä tarkistettavissa, kappale ei."
+      },
+      "s5": {
+        "title": "Rajat ja turvallisuus: mitä agentti EI tee",
+        "time": "",
+        "why": "Ilman selkeitä rajoja agentti tekee ennemmin tai myöhemmin vaarallisen toiminnon, koska «se vaikutti loogiselta». Kuvatut rajat ja vahvistuskohdat ovat vakuutus peruuttamattomia virheitä vastaan.",
+        "instructions": [
+          "Kirjoita kiellettyjen toimintojen lista: mitä agentti ei koskaan tee",
+          "Merkitse peruuttamattomat toiminnot (poisto, lähetys, maksu) — ne vaativat vahvistuspyynnön",
+          "Kuvaa fallback: mitä tehdä, kun tehtävä on rajauksen ulkopuolella tai dataa ei riitä",
+          "Tee vaarallisista toiminnoista idempotentteja tai vähintään lokeissa näkyviä",
+          "Tarkista, etteivät rajat ole ristiriidassa vaiheen 2 tarkoituksen kanssa"
+        ],
+        "validate": "On «agentti EI tee» -lista ja vahvistussääntö peruuttamattomille toiminnoille.",
+        "tip": "Sääntö on yksinkertainen: peruuttamaton toiminto vasta ihmisen selkeän «kyllä»-vastauksen jälkeen. Tämä on perustason turvallisuusvaatimus jokaiselle [[node:agents|agentille]]."
+      },
+      "s6": {
+        "title": "Hyvän agentin tarkistuslista ja loppukontrolli",
+        "time": "",
+        "why": "Kerätyt periaatteet on ajettava yhtenä tarkistuslistana, muuten aukon vaiheiden välissä jää helposti huomaamatta. Loppukontrolli on viimeinen suodatin ennen käynnistystä.",
+        "instructions": [
+          "Käy tarkistuslista läpi: tarkoitus, trigger, työkalut, tuotos, rajat, turvallisuus",
+          "Vastaa jokaisessa kohdassa «valmis / ei valmis» — ei «melkein»",
+          "Jos jokin on «ei valmis» — palaa vastaavaan vaiheeseen ja muotoile loppuun",
+          "Tee mielessä kuivaharjoitus yhdellä todellisella syötteellä: mitä agentti tekee vaihe vaiheelta",
+          "Kirjaa lopullinen spesifikaatio dokumentiksi, jonka voi luovuttaa"
+        ],
+        "validate": "Kaikki kuusi kohtaa on merkitty «valmis» ja on yksi kuivaharjoitus todellisella esimerkillä.",
+        "tip": "Tarkistuslistaan perustuva spesifikaatio lukeutuu kuin lyhyt toimeksianto — toinen ihminen voi toistaa agentin sen perusteella ilman selityksiäsi."
+      }
+    }
+  },
+  "agent-code-reviewer": {
+    "title": "Code Reviewer -agentti",
+    "subtitle": "PR:ien ja committien automaattinen review tarkistuslistan mukaan: turvallisuus, luettavuus, testit, regressit",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Code Reviewer -agentti on erikoistunut [[node:agents|agentti]], joka lukee koodimuutokset (diff, PR-tiedostot) ja tuottaa huomioita selkeän tarkistuslistan mukaan: turvallisuus, luettavuus, testikattavuus ja regressioriski. Se ei korvaa ihmisasiantuntijaa, vaan poistaa häneltä pre-review-rutiinin: kun ihminen katsoo, ilmeiset ongelmat on jo löydetty ja lajiteltu vakavuusasteen mukaan.",
+    "approach": "Kurssi rakentaa agentin rajoista käyttöönottoon. Ensin kiinnitämme, mitä agentti tekee ja mitä se EI tee, sitten kirjoitamme tarkistuslistan totuuden lähteeksi, asetamme roolin ja ohjeet, liitämme koodikontekstin (diff/tiedostot), standardoimme ulostulon vakavuusasteen mukaan (ei tyylikiistoja) ja upotamme agentin PR-prosessiin. Jokainen vaihe päättyy tarkistukseen oikealla PR:llä.",
+    "outcomes": [
+      "Ymmärrät reviewer-agentin rajat: mitä se nappaa ja missä tarvitaan ihmistä",
+      "Sinulla on kirjoitettu review-tarkistuslista (turvallisuus, luettavuus, testit, regressit)",
+      "Agentti on asetettu roolilla ja ohjeilla, jotka antavat toistettavan tuloksen",
+      "Huomiot tulevat ulos yhdellä formaatilla vakavuusasteen mukaan, ilman muotoiluhälyä",
+      "Agentti on upotettu PR-prosessiin ja säästää asiantuntijan aikaa aidosti"
+    ],
+    "applyIn": [
+      {
+        "title": "Tiimin PR-prosessi",
+        "description": "Agentti käy jokaisen PR:n läpi ennen ihmistä ja jättää huomioita vakavuusasteen mukaan — asiantuntija näkee jo suodatetun koodin."
+      },
+      {
+        "title": "Yksin kehittäminen",
+        "description": "Ennen committia ajat diffin agentin läpi toisena silmäparina: se nappaa vuotaneet salaisuudet, puuttuvat testit, riskialttiit muutokset."
+      },
+      {
+        "title": "Perehdytys ja oppiminen",
+        "description": "Uusi tulokas näkee, mihin agentti kiinnittää huomiota, ja omaksuu tiimin review-standardit nopeammin."
+      }
+    ],
+    "pitfalls": [
+      "Luottaa vain agenttiin — se ei korvaa arkkitehtonista ajattelua eikä tuotekontekstia",
+      "Pitää tarkistuslistan päässä eikä paperilla — tulos on joka kerta eri eikä toistettavissa",
+      "Sekoittaa tyyli ja sisältö — agentti hukkuu sisennyshuomioihin samalla kun oikeat bugit katoavat",
+      "Syöttää agentille koko repon diffin sijaan — se menettää fokuksen ja ohittaa muutoksen ytimen",
+      "Huomiot ilman vakavuusastetta — ihminen ei erota mikä estää mergen ja mikä on kosmeettista"
+    ],
+    "exercises": [
+      {
+        "question": "Muotoile kolme tarkistuslistan kohtaa \"turvallisuus\"-kategoriasta, jotka agentin on tarkistettava jokaisessa PR:ssä.",
+        "hint": "Mieti, mitä useimmin vuotaa committeihin: salaisuudet koodissa, puuttuva syötteen validointi, turvattomat riippuvuudet."
+      },
+      {
+        "question": "Miksi agentin pitäisi palauttaa huomiot vakavuusasteella merkittyinä eikä pelkkänä listana?",
+        "hint": "Kuvittele PR, jossa on 12 huomiota: mitä ihminen tekee ensin? Vakavuusaste erottaa estäjät toiveista."
+      },
+      {
+        "question": "Selitä, missä kulkee raja reviewer-agentin ja ihmisasiantuntijan välillä.",
+        "hint": "Agentti on hyvä tarkistettavissa säännöissä tarkistuslistalta. Mutta kuka päättää, että arkkitehtuuri on oikea valinta?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi reviewer-agentti ja missä sen rajat ovat",
+        "time": "",
+        "why": "Ilman selkeitä rajoja agentti joko esittää asiantuntijaa (vaarallista) tai sitä jätetään huomiotta. Kiinnitä ensin vastuualue: tarkistettavat asiat agentille, arkkitehtoniset päätökset ja tuotekonteksti ihmiselle.",
+        "instructions": [
+          "Kirjoita yksi lause: agentti tarkistaa PR:t/commitit tarkistuslistan mukaan (turvallisuus, luettavuus, testit, regressit).",
+          "Listaa mitä agentti EI tee: ei ratkaise arkkitehtuurikiistoja, ei arvioi liiketoimintalogiikkaa ilman kontekstia, ei estä mergeä itse.",
+          "Tallenna periaate [[node:ag-principles|agenttien periaatteista]]: kapea rooli selkeällä rajalla on luotettavampi kuin \"universaali reviewer\".",
+          "Sovi tiimin (tai itsesi) kanssa, että agentin ulostulo on ihmiselle syöte, ei lopullinen tuomio."
+        ],
+        "validate": "Sinulla on kaksi lyhyttä muistiinpanoa: \"agentti tekee\" ja \"agentti EI tee\", molemmat mahtuvat parille riville.",
+        "tip": "Jos vastuualuetta ei voi kuvata yhdessä kappaleessa, se on liian laaja — kavenna sitä."
+      },
+      "s2": {
+        "title": "Määritä review-tarkistuslista",
+        "time": "",
+        "why": "Tarkistuslista on agentin totuuden lähde. Ilman sitä jokainen review on erilainen eikä toistettavissa. Kirjoitettu lista tekee tuloksesta ennustettavan ja todennettavan.",
+        "instructions": [
+          "Jaa tarkistuslista 4 kategoriaan: turvallisuus, luettavuus, testit, regressit.",
+          "Turvallisuus: salaisuudet koodissa, syötteen validointi, turvattomat riippuvuudet, käyttöoikeudet.",
+          "Luettavuus: selkeät nimet, ei kuollutta koodia, järkevä funktioiden koko.",
+          "Testit: onko uudet haarat katettu, ovatko olemassa olevat rikki, onko testejä bugikorjauksille.",
+          "Regressit: rikkooko muutos julkisen sopimuksen, migraatiot, taaksepäin yhteensopivuuden."
+        ],
+        "validate": "Tarkistuslista on kirjoitettu luettelona 4 otsikon alle ja mahtuu yhdelle ruudulle.",
+        "tip": "Aloita 3-4 kohdalla per kategoria — laajenna myöhemmin oikeiden löydösten perusteella, ei etukäteen."
+      },
+      "s3": {
+        "title": "Aseta agentin rooli ja ohjeet",
+        "time": "",
+        "why": "Rooli ja ohjeet muuttavat tarkistuslistan käyttäytymiseksi. Selkeä muotoilu (\"olet reviewer, tarkista tiukasti tarkistuslistan mukaan\") antaa toistettavan tuloksen mallin vapaan improvisoinnin sijaan.",
+        "instructions": [
+          "Kuvaa rooli: \"Olet tiukka mutta rakentava code reviewer. Tarkista vain alla olevan tarkistuslistan mukaan.\"",
+          "Liitä vaiheen 2 tarkistuslista suoraan agentin ohjeisiin.",
+          "Kiellä tyyli-/muotoilutarkistukset — se on linterin työtä, ei agentin.",
+          "Jos käytät [[node:claude-code|Claude Codea]], aseta tämä subagentiksi tai [[node:skills|taidoksi]], jonka laukaisee \"review PR\".",
+          "Lisää sääntö: jokainen löydös viittaa tarkistuslistan kohtaan, jota se rikkoo."
+        ],
+        "validate": "Agentin ohje sisältää roolin, tarkistuslistan ja nimenomaisen kiellon tyylihuomioille.",
+        "tip": "Pyydä agenttia perustelemaan lyhyesti jokainen löydös — tämä vähentää jyrkästi vääriä hälytyksiä."
+      },
+      "s4": {
+        "title": "Liitä koodikonteksti (diff/tiedostot)",
+        "time": "",
+        "why": "Agentti on juuri niin hyvä kuin sen konteksti. Diff kohdistaa huomion muutokseen; vaikuttuneet tiedostot kokonaan antavat ymmärryksen ympäristöstä. Koko repo on pelkkää hälyä.",
+        "instructions": [
+          "Syötä agentille PR:n diff pääsyötteenä — se on se mikä oikeasti muuttui.",
+          "Anna jokaiselle vaikuttuneelle tiedostolle riittävästi ympäröivää koodia, jotta muutoksen konteksti ymmärretään.",
+          "Älä lataa koko repoa: agentti menettää fokuksen ja ohittaa ytimen.",
+          "Jos muutos koskee julkista APIa tai sopimusta, lisää kuluttajatiedosto regressioiden arvioimiseksi."
+        ],
+        "validate": "Testi-PR:llä agentti näkee diffin ja tarvittavan ympäristön, mutta ei koko projektia.",
+        "tip": "Iso PR? Pyydä agenttia ensin listaamaan vaikuttuneet alueet, sitten arvioimaan ne yksi kerrallaan."
+      },
+      "s5": {
+        "title": "Ulostulon formaatti: löydökset vakavuusasteen mukaan, ilman tyyliä",
+        "time": "",
+        "why": "Priorisoimaton lista on hyödytön: ihminen ei erota mikä estää mergen ja mikä on kosmeettista. Yhtenäinen formaatti vakavuusasteen mukaan tekee ulostulosta selattavan ja toimintakelpoisen.",
+        "instructions": [
+          "Aseta vakavuustasot: blocker, major, minor (voit lisätä info).",
+          "Jokainen löydös = vakavuusaste + tiedosto/rivi + tarkistuslistan kohta + mikä on vialla + ehdotus.",
+          "Kiellä huomiot muotoilusta ja henkilökohtaisista tyylimieltymyksistä.",
+          "Pyydä agentilta lyhyt yhteenveto lopuksi: montako blocker/major/minor löytyi.",
+          "Jos löydöksiä ei ole, agentin on sanottava selvästi \"ei tarkistuslistan huomioita\" eikä vaieta."
+        ],
+        "validate": "Ulostulo testi-PR:llä on jäsennelty lista vakavuusasteen mukaan yhteenvedolla, ilman tyylihuomioita.",
+        "tip": "Blocker tarkoittakoon \"ei voi mergetä\". Jos blockereita on paljon jokaisessa PR:ssä, kynnys on liian korkealla."
+      },
+      "s6": {
+        "title": "Käyttöönotto PR-prosessiin + yleiset virheet",
+        "time": "",
+        "why": "Agentti tuo arvoa vain upotettuna oikeaan prosessiin. Tavoite on, että kun ihminen arvioi, ilmeinen on jo löydetty ja lajiteltu, ja asiantuntija keskittyy arkkitehtuuriin.",
+        "instructions": [
+          "Päätä laukaisupiste: manuaalisesti komennolla \"review PR\" tai automaattisesti CI:ssä jokaisella PR:llä.",
+          "Sovi, että agentin ulostulo on kommentti PR:ssä, syöte ihmiselle, ei auto-esto mergelle.",
+          "Aja agentti 3-5 oikealla PR:llä ja vertaa löydöksiä asiantuntijan mielipiteeseen.",
+          "Kalibroi tarkistuslista tulosten perusteella: mitä agentti ohitti — lisää, mikä on hälyä — poista.",
+          "Muista vaiheen 1 raja: lopullinen päätös ja arkkitehtuuri jäävät ihmiselle."
+        ],
+        "validate": "Agentti ajetaan uusilla PR:illä, ja asiantuntija vahvistaa, että löydökset säästävät hänen aikaansa ilman hälyä.",
+        "tip": "Parin viikon välein tarkista tarkistuslista tuoreiden löydösten perusteella — se on elävä dokumentti, ei kivi."
+      }
+    }
+  },
+  "agent-audit": {
+    "title": "Rakenna Audit Agent",
+    "subtitle": "Agentti, joka ottaa materiaalin ja antaa auditoinnin kiinteillä kriteereillä",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Audit Agent on [[node:agents|agentti]], joka ottaa syötemateriaalin (näytön, tekstin, prosessin) ja palauttaa jäsennellyn auditoinnin: vaikutuksen mukaan järjestetyn löydösluettelon, jossa jokaisella on vakavuustaso ja suositus. Ei \"yleistä mielipidettä\", vaan tarkistus ennalta kiinnitettyä kriteerien tarkistuslistaa vasten.\n\nYdinajatus on, että kriteerit kiinnitetään etukäteen, ei keksitä lennossa. Silloin kaksi ajoa samankaltaisella materiaalilla antaa vertailukelpoiset tulokset, ja raportteja voi verrata ajan myötä. Agentti on erityisen vahva yhdistettynä [[node:mcp|MCP]]:hen tarvittavaan järjestelmään ja temaattisiin [[node:skills|Skills]]-toimintoihin, jotka pitävät kriteerit ja vertailustandardit.",
+    "approach": "Älä kysy \"onko tämä hyvä\" — se antaa epämääräisen vastauksen. Kiinnitä ensin kriteerit ja raporttimuoto, ja vasta sitten aja auditointi. Auditoijan vahvuus ei ole mallin älykkyys vaan sen kehyksen selkeys, jonka sille annat.",
+    "outcomes": [
+      "Ymmärrät, missä auditointiagentti on aidosti hyödyllinen ja missä se antaa väärää varmuutta",
+      "Osaat kiinnittää kriteerit niin, että auditointi on toistettavissa",
+      "Kirjoitat rooli- ja syöteohjeen, joka estää agenttia ajautumasta sivuun",
+      "Saat raportin muodossa \"löydös + vakavuus + suositus\", valmiina toimintaan",
+      "Kalibroit kriteerit ensimmäisen ajon jälkeen ja poistat meluisat löydökset"
+    ],
+    "applyIn": [
+      {
+        "title": "Näytön UX-auditointi",
+        "description": "Ennen julkaisua ajat mallin tai sivun heuristiikkalistaa vasten ja saat priorisoidun listan tärkeimmistä ongelmista — odottamatta täyttä testiä ihmisten kanssa."
+      },
+      {
+        "title": "Sisällön auditointi",
+        "description": "Artikkeli, laskeutumissivu tai sähköposti tarkistetaan selkeyden, rakenteen ja äänensävyn kriteereillä. Agentti löytää heikot kohdat ennen toimittajaa."
+      },
+      {
+        "title": "Prosessin tai dokumentin auditointi",
+        "description": "Ohjeistus, perehdytyslista tai spesifikaatio ajetaan täydellisyyden ja ristiriitojen varalta kiinteitä sääntöjä vasten."
+      }
+    ],
+    "pitfalls": [
+      "Korvata agentilla testaus oikeilla käyttäjillä — agentilla on hypoteeseja, ihmisillä faktoja",
+      "Kriteerit lennossa: ilman kiinteää tarkistuslistaa kaksi ajoa tuottaa eri löydökset",
+      "Pyytää \"löydä kaikki\" — agentti palauttaa melua; rajaa top-N vaikutuksen mukaan",
+      "Raportti ilman vakavuutta ja suositusta — ongelmalista, jota kukaan ei priorisoi",
+      "Luottaa sokeasti johtopäätöksiin kalibroimatta materiaalilla, jossa tiedät oikean vastauksen"
+    ],
+    "exercises": [
+      {
+        "question": "Ota yksi todellinen materiaali (näyttö, artikkeli tai ohjeistus) ja kirjoita 5 kriteeriä, joita vasten se kannattaa tarkistaa. Muotoile jokainen todennettavaksi väitteeksi.",
+        "hint": "Jos kriteeriin ei voi vastata kyllä/ei tai pisteyttää asteikolla, se on liian epämääräinen — muotoile uudelleen."
+      },
+      {
+        "question": "Aja Audit Agent tällä materiaalilla kriteereilläsi ja vaadi muoto \"löydös + vakavuus + suositus\". Järjestä sitten löydökset itse ja vertaa agentin järjestykseen.",
+        "hint": "Ero prioriteeteissa kertoo, että vakavuuskriteeri on kuvattu epäselvästi."
+      },
+      {
+        "question": "Syötä agentille materiaali, jossa tiedät heikon kohdan etukäteen. Tarkista, löysikö se sen eikä keksinyt ylimääräistä.",
+        "hint": "Ohitettu tunnettu ongelma tai väärä löydös on syy kalibroida kriteerejä, ei luottaa ajoon."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Ymmärrä, miksi auditointiagentti ja missä se soveltuu",
+        "time": "",
+        "why": "Ilman selkeää sovellusaluetta auditoija joko toistaa manuaalista työtä tai luo väärää varmuutta siellä, missä tarvitaan eläviä käyttäjiä.",
+        "instructions": [
+          "Kirjaa, mitä materiaalia tarkistat säännöllisesti: näyttöjä, tekstejä, prosesseja, spesifikaatioita.",
+          "Merkitse, missä ei ole aikaa täyteen manuaaliseen auditointiin, mutta tarvitset nopean \"onko kaikki ok?\" -signaalin.",
+          "Erota rehellisesti tehtävät, joissa agentti antaa hypoteeseja (UX, tekstin selkeys), tehtävistä, jotka vaativat faktoja ihmisiltä (todellinen käytös).",
+          "Valitse YKSI materiaalityyppi ensimmäiselle auditoijallesi — älä yritä kattaa kaikkea kerralla."
+        ],
+        "validate": "Sinulla on yksi konkreettinen materiaalityyppi ja yksi lause: \"miksi tarvitsen auditoijaa tässä\".",
+        "tip": "Paras ensimmäinen ehdokas on jokin, jonka tarkistat usein ja samoilla säännöillä. Siellä takaisinmaksu on suurin."
+      },
+      "s2": {
+        "title": "Kiinnitä auditoinnin kriteerit",
+        "time": "",
+        "why": "Kiinteät kriteerit ovat itse auditointi. Ilman niitä agentti pisteyttää joka kerta eri tavalla, eikä ajoja voi verrata.",
+        "instructions": [
+          "Kirjoita 5–8 kriteeriä valitulle materiaalille. Jokainen on todennettava väite, ei toive.",
+          "Muotoile kriteerit niin, että vastaus on \"täytetty / rikottu / ei sovellu\", ei \"ihan ok\".",
+          "Lisää jokaiseen kriteeriin lyhyt vertailukohta tai esimerkki rikkomuksesta — agentti nojaa siihen.",
+          "Ryhmittele kriteerit teemoittain (esim. selkeys, rakenne, saavutettavuus), jotta raportti on luettava.",
+          "Tallenna kriteerit erikseen ([[node:skills|Skill]]-toimintoon tai tiedostoon) — tämä on uudelleenkäytettävä kehys, ei osa kertaluonteista ohjetta."
+        ],
+        "validate": "Kriteeriluettelo lukee niin, että toinen henkilö tarkistaisi saman materiaalin sitä vasten ja päätyisi samankaltaiseen johtopäätökseen.",
+        "tip": "Jos kriteeriä ei voi tarkistaa pelkkää materiaalia katsomalla, se ei ole auditointikriteeri vaan kysymys käyttäjätutkimukseen."
+      },
+      "s3": {
+        "title": "Aseta agentin rooli ja syötemuoto",
+        "time": "",
+        "why": "Selkeä rooli ja ennustettava syöte estävät agenttia ajautumasta yleiseen pohdintaan kriteereihin perustuvan tarkistuksen sijaan.",
+        "instructions": [
+          "Kuvaa rooli: \"Olet <materiaalityypin> auditoija, tarkistat tiukasti annettuja kriteerejä vasten, et lisää omiasi.\"",
+          "Välitä vaiheen 2 kriteerit ohjeeseen tai liitä ne [[node:skills|Skill]]-toiminnon kautta.",
+          "Kiinnitä, mitä annetaan syötteeksi: yksi näyttö / yksi artikkeli / yksi dokumentti per ajo, ei erä kerralla.",
+          "Kiellä agenttia arvioimasta mitään, mitä ei ole kriteereissä — muuten saat makuun perustuvia arvioita.",
+          "Noudata [[node:ag-principles|agenttien periaatteita]]: yksi selkeä tehtävä, eksplisiittinen syöte, eksplisiittinen tuotos."
+        ],
+        "validate": "Ohje kuvaa roolin, luettelee kriteerit ja kertoo yksiselitteisesti, mikä lasketaan syötteeksi.",
+        "tip": "Yksi ajo — yksi kohde. Syötä kymmenen näyttöä kerralla, ja agentti sekoittaa löydökset ja menettää tarkkuuden."
+      },
+      "s4": {
+        "title": "Määritä raporttimuoto: löydös + vakavuus + suositus",
+        "time": "",
+        "why": "Raportti ilman rakennetta on tekstiseinä, jota kukaan ei priorisoi. Tiukka muoto tekee auditoinnista heti toimintakelpoisen.",
+        "instructions": [
+          "Vaadi, että jokainen löydös sisältää kolme kenttää: mikä on vikana, vakavuustaso, mitä tehdä.",
+          "Kiinnitä vakavuusasteikko: esim. critical / major / minor — ja selitä agentille, mitä kukin taso tarkoittaa.",
+          "Pyydä järjestämään löydökset vaikutuksen mukaan ja rajaamaan top-N (esim. top-7), ei kaatamaan kaikkea.",
+          "Lisää jokaiseen löydökseen viittaus sen vaiheen 2 kriteeriin — jotta näkyy, mikä sääntö on rikottu.",
+          "Päätä raportti lyhyeen yhteenvetoon: \"kaikki ok / on esteitä\" — se on nopea signaali."
+        ],
+        "validate": "Minkä tahansa löydöksen voi lukea ja ymmärtää heti: kuinka vakava se on ja mitä sille tehdä.",
+        "tip": "Vakavuus ilman määriteltyä asteikkoa on hyödytön — agentti asettaa tasot sattumanvaraisesti. Kuvaa, mikä erottaa criticalin minorista."
+      },
+      "s5": {
+        "title": "Aja auditointi todellisella materiaalilla",
+        "time": "",
+        "why": "Vain elävä ajo näyttää, toimivatko kriteerit ja muoto, vai löytääkö agentti melua ja ohittaa tärkeän.",
+        "instructions": [
+          "Ota todellinen materiaali, ei oppikirjaesimerkki — mieluiten jotain, jonka olet pian julkaisemassa.",
+          "Aja agentti ja saa raportti vaiheen 4 muodossa.",
+          "Lue löydökset ylhäältä alas: oletko samaa mieltä vaikutuksen järjestyksestä?",
+          "Merkitse löydökset, jotka osoittautuivat meluksi, ja tärkeät asiat, jotka agentti ohitti.",
+          "Jos sinulla on [[node:mcp|MCP]]-yhteys järjestelmään, anna agentin hakea materiaali suoraan käsin kopioimisen sijaan."
+        ],
+        "validate": "Sinulla on raportti todellisesta materiaalista sekä merkinnät siitä, missä agentti osui ja missä ohitti.",
+        "tip": "Ensimmäinen ajo on lähes aina meluisa. Se on normaalia — se on tarkoitettu näyttämään, mitkä kriteerit kalibroida."
+      },
+      "s6": {
+        "title": "Kalibroi kriteerit ja tarkista virheet",
+        "time": "",
+        "why": "Auditoija muuttuu luotettavaksi vasta kalibroinnin jälkeen: ilman sitä monistat melua ja väärää varmuutta.",
+        "instructions": [
+          "Poista tai muotoile uudelleen kriteerit, jotka tuottivat meluisia löydöksiä vaiheessa 5.",
+          "Tarkenna vakavuuden määritelmiä, jos agentin prioriteetit erosivat omistasi.",
+          "Aja agentti materiaalilla, jossa tiedät oikean vastauksen — tarkista ohitukset ja keksinnät.",
+          "Koodaa agentin yleiset virheet kriteereihin eksplisiittisinä kieltoina (\"älä merkitse X:ää ongelmaksi\").",
+          "Tallenna kriteerien lopullinen versio [[node:skills|Skill]]-toimintoon — nyt auditointi on toistettavissa ja uudelleenkäytettävissä."
+        ],
+        "validate": "Toistoajo tutulla materiaalilla antaa vakaan, selkeän raportin ilman ilmeistä melua ja ohittamatta tunnettuja ongelmia.",
+        "tip": "Muista raja: auditointiagentti antaa hypoteeseja kriteerien mukaan, mutta ei korvaa testausta oikeilla käyttäjillä — heillä on faktat."
+      }
+    }
+  },
+  "agent-researcher": {
+    "title": "Tutkimusagentti: kysymyksestä raporttiin lähteineen",
+    "subtitle": "Rakenna agentti, joka etsii lähteet, syntetisoi ne ja antaa tarkistettavan raportin",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Tutkimusagentti on [[node:agents|agentti]], joka annetun kysymyksen pohjalta etsii itse lähteitä verkosta, lukee ne, vertailee faktoja ja palauttaa jäsennellyn raportin sitaatteineen ja linkkeineen. Se ei korvaa analyytikkoa vaan poistaa rutiinin: kymmenien sivujen lukemisen, muistiinpanot ja lähteiden muotoilun.",
+    "approach": "Kurssi rakentuu tällaisen agentin pääriskin ympärille — faktojen ja linkkien keksimisen. Siksi jokainen vaihe palvelee yhtä tavoitetta: jokainen raportin johtopäätös on jäljitettävissä todelliseen lähteeseen. Ensin asetamme rajat ja muotoilemme kysymyksen, sitten kytkemme verkkohaun, syntetisoimme sitaatteineen, varmistamme keskeiset faktat erikseen ja vasta sitten kokoamme raportin.",
+    "outcomes": [
+      "Ymmärtää, missä tutkimusagentti auttaa ja missä sen johtopäätöksiin ei voi luottaa ilman tarkistusta",
+      "Muotoilla tutkimuskysymys ja lähteiden valintakriteerit",
+      "Kytkeä verkkohaku ja työkalut niin, että agentti toimii todellisilla tiedoilla",
+      "Saada synteesi, jossa jokainen väite on sidottu linkkiin",
+      "Varmistaa keskeiset faktat ja tuottaa toistettava raportti"
+    ],
+    "applyIn": [
+      {
+        "title": "Kilpailija-analyysi",
+        "description": "Agentti kerää kilpailijoiden hinnat, ominaisuudet ja positioinnin julkisista lähteistä ja kokoaa vertailutaulukon linkkeineen alkulähteisiin."
+      },
+      {
+        "title": "Markkinakatsaus ennen julkaisua",
+        "description": "Ennen tuotteen julkaisua agentti laatii segmenttikatsauksen: markkinan koko, trendit, keskeiset toimijat — merkiten, mistä kukin luku on peräisin."
+      },
+      {
+        "title": "Päätöksen valmistelu",
+        "description": "Sisäistä muistiota tai pitchiä varten agentti etsii ja jäsentää faktat, säästäen tunteja manuaalista googlausta ja muistiinpanoja."
+      }
+    ],
+    "pitfalls": [
+      "Luottaa johtopäätöksiin ilman lähteiden tarkistusta: malli voi keksiä uskottavan mutta olemattoman linkin",
+      "Esittää liian laaja kysymys — agentti palauttaa pinnallisen raportin kaikesta ja ei mistään",
+      "Jättää lähdekriteerit asettamatta: agentti sekoittaa tuoreen datan viisi vuotta vanhaan artikkeliin",
+      "Hyväksyä synteesi ilman sitaatteja: lähdefaktaa ei erota mallin arvauksesta",
+      "Ohittaa keskeisten lukujen varmistus — yksi väärä luku pilaa koko raportin"
+    ],
+    "exercises": [
+      {
+        "question": "Agentti antoi raportin, jossa väitteellä «markkina kasvoi 40%» on linkki, mutta sivu ei avaudu. Mikä tämä on ja mitä teet?",
+        "hint": "Muista vaiheen 1 pääriski: malli osaa tuottaa uskottavia mutta olemattomia linkkejä. Jokainen keskeinen luku tarvitsee oman tarkistuksensa (vaihe 5)."
+      },
+      {
+        "question": "Kysymys kuuluu «kerro AI-työkalujen markkinasta». Miksi agentti antaa heikon tuloksen ja miten muotoilet sen uudelleen?",
+        "hint": "Liian laaja. Kapenna konkreettiseen leikkaukseen: segmentti, alue, ajanjakso, mitä tarkalleen vertaillaan (ks. vaihe 2 — kysymys + kriteerit)."
+      },
+      {
+        "question": "Miten teet lopullisesta raportista uudelleentarkistettavan kuukauden kuluttua?",
+        "hint": "Ajattele toistettavuutta: kirjaa hakupäivä, suorat linkit, sitaatit sanatarkasti ja alkuperäisen kysymyksen muotoilu (vaihe 6)."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi tutkimusagentti ja missä sen rajat ovat",
+        "time": "",
+        "why": "Ennen agentin rakentamista on tärkeää ymmärtää sen vahvuus ja heikkous. Vahvuus on keräämisen ja synteesin nopeus. Heikkous on taipumus [[node:cap-limitations|hallusinoida]]: malli voi varmasti tuottaa faktan tai linkin, jota ei ole olemassa. Jos tätä ei huomioi, raportti näyttää vakuuttavalta mutta on virheellinen.",
+        "instructions": [
+          "Määritä, minkä rutiinin haluat poistaa: lukemisen, muistiinpanot, lähteiden muotoilun",
+          "Kirjaa, mitä päätöksiä raportin pohjalta tehdään ja mikä virheen hinta on",
+          "Omaksu sääntö: yksikään johtopäätös ei mene raporttiin ilman tarkistettavaa lähdettä",
+          "Määritä epäilyn vyöhyke — luvut, päivämäärät, sitaatit vaativat aina varmistuksen"
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miksi agenttiin ei voi luottaa ilman linkkien tarkistusta.",
+        "tip": "Mitä korkeampi virheellisen päätöksen hinta, sitä tiukempi varmistuksen on oltava vaiheessa 5."
+      },
+      "s2": {
+        "title": "Muotoile kysymys ja lähdekriteerit",
+        "time": "",
+        "why": "Raportin laatu määräytyy kysymyksen laadusta. Laaja kysymys («kerro markkinasta») tuottaa pinnallisen vastauksen. Kapea kysymys lähteiden valintakriteereineen ohjaa agentin oikeaan dataan ja karsii kohinan.",
+        "instructions": [
+          "Kapenna aihe konkreettiseen leikkaukseen: segmentti, alue, ajanjakso, vertailun kohde",
+          "Pilko pääkysymys 2–4 alikysymykseen, joihin voi vastata faktalla",
+          "Aseta lähdekriteerit: tuoreus, tyyppi (virallinen/uutinen/tutkimus), kieli",
+          "Kuvaa, mitkä lähteet eivät kelpaa (foorumit, mainokset, päiväämätön sisältö)"
+        ],
+        "validate": "Sinulla on yksi kapea kysymys, 2–4 alikysymystä ja selkeä lista lähdekriteereitä.",
+        "tip": "Hyvä kysymyksen testi: siihen voi vastata taulukolla tai faktalistalla, ei esseellä."
+      },
+      "s3": {
+        "title": "Kytke verkkohaku ja työkalut",
+        "time": "",
+        "why": "Ilman pääsyä ulkoiseen dataan agentti nojaa vain mallin muistiin, joka vanhenee ja on epätäydellinen. [[node:cap-search|Verkkohaku]] antaa agentille todellisia lähteitä reaaliajassa — se muuttaa arvaukset tarkistettaviksi faktoiksi.",
+        "instructions": [
+          "Ota agentille käyttöön verkkohakutyökalu ja tarvittaessa sivunlukutyökalu",
+          "Tarkista, että agentti palauttaa tekstin lisäksi kunkin lähteen URL-osoitteen",
+          "Aseta sääntö: ensin etsi lähteet, sitten tee johtopäätökset, ei toisinpäin",
+          "Rajoita lähteiden määrää alikysymystä kohden, jotta et huku kohinaan"
+        ],
+        "validate": "Testiajo palauttaa todellisia linkkejä, jotka avautuvat, ei yleisiä pohdintoja.",
+        "tip": "Jos agentti vastaa ilman linkkejä, työkalua ei ole kytketty tai sitä ei käytetä — tarkista asetukset."
+      },
+      "s4": {
+        "title": "Synteesi sitaatteineen ja linkkeineen",
+        "time": "",
+        "why": "Agentin pääarvo ei ole yksittäisten sivujen uudelleenkerronta vaan synteesi: lähteiden vertailu ja säännönmukaisuuksien johtaminen. Mutta synteesi ilman linkkejä on hyödytön — faktaa ei erota arvauksesta. [[node:ag-principles|Läpinäkyvyyden]] periaate vaatii, että jokainen väite on jäljitettävissä lähteeseen.",
+        "instructions": [
+          "Pyydä agenttia ryhmittelemään faktat alikysymyksittäin, ei lähteittäin",
+          "Jokaisella väitteellä on oltava linkki lähteeseensä",
+          "Lähteiden ristiriidassa — näytä molemmat, älä valitse hiljaa yhtä",
+          "Esitä tarkat luvut ja sitaatit täsmälleen, ilman parafraasia"
+        ],
+        "validate": "Synteesiluonnoksessa jokaisen faktan vieressä on linkki, eikä ristiriitoja ole piilotettu.",
+        "tip": "Alaviite tyyliin «väite [lähde]» on parempi kuin linkkilista lopussa — se on helpompi tarkistaa."
+      },
+      "s5": {
+        "title": "Keskeisten faktojen varmistus",
+        "time": "",
+        "why": "Tämä on vaihe, joka erottaa tutkimuksen kauniista uudelleenkerronnasta. Vaikka haku on kytketty, malli voi liittää faktaan väärän linkin tai vääristää luvun. Keskeiset faktat tarkistetaan erikseen — seuraamalla linkkiä ja vertaamalla.",
+        "instructions": [
+          "Valitse 3–5 faktaa, joiden varassa raportin johtopäätökset ovat",
+          "Tarkista jokainen linkki: avautuuko se ja onko siinä väitetty fakta",
+          "Vertaa luvut ja päivämäärät sanatarkasti alkulähteeseen",
+          "Merkitse varmistamaton hypoteesiksi, ei faktaksi",
+          "Jos lähde ei vahvistu — poista väite tai etsi toinen"
+        ],
+        "validate": "Kaikki keskeiset luvut ja sitaatit on vahvistettu toimivilla linkeillä; varmistamaton on selvästi merkitty.",
+        "tip": "Aloita varmistus äänekkäimmistä, yllättävimmistä luvuista — juuri niitä malli vääristää useimmin."
+      },
+      "s6": {
+        "title": "Raportin muoto, yleiset virheet ja lopputarkistus",
+        "time": "",
+        "why": "Raportin on oltava paitsi oikea myös toistettava: kuukauden kuluttua on oltava selvää, mistä kukin johtopäätös tuli. Hyvä muoto ja loppulista lukitsevat edellisissä vaiheissa rakennetun kurinalaisuuden.",
+        "instructions": [
+          "Jäsennä raportti: kysymys → lyhyt johtopäätös → faktat lähteineen → taulukko/vertailu → linkkilista",
+          "Kirjaa hakupäivä ja alkuperäisen kysymyksen muotoilu",
+          "Käy läpi tarkistuslista: jokaisella faktalla on linkki, keskeiset luvut varmistettu, ristiriidat näytetty",
+          "Erota agentin mielipide lähdefaktoista omaan lohkoonsa",
+          "Tallenna raportti niin, että se voidaan tarkistaa myöhemmin uudelleen"
+        ],
+        "validate": "Raportti luetaan minuuteissa, jokainen johtopäätös jäljittyy lähteeseen, tarkistuslista on käyty täysin läpi.",
+        "tip": "Loppukysymys itsellesi: «voisiko toinen ihminen toistaa tämän tutkimuksen raportin pohjalta?» Jos ei — lisää puuttuvat linkit ja päivämäärä."
+      }
+    }
+  },
+  "agent-designer": {
+    "title": "Designer Assistant",
+    "subtitle": "Design-kriitikkoagentti: arviot, UX-tekstit, komponenttivaihtoehdot ja saavutettavuustarkistukset",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Designer Assistant on pyynnöstä toimiva [[node:agents|agentti]], joka toimii suunnittelijan kumppanina: se antaa jäsenneltyä kritiikkiä layoutista, kirjoittaa ja muokkaa UX-tekstejä, ehdottaa komponenttivaihtoehtoja ja tarkistaa designin saavutettavuuden. Se ei ole kuvageneraattori eikä korvaa makua — se on toinen silmäpari, joka nappaa ongelmat heuristiikkojen avulla ja tarjoaa vaihtoehtoja.",
+    "approach": "Kurssi rakentaa agentin selkeän roolin ja kontekstin (brändi, ohjeisto, yleisö), neljän työtilan (kritiikki, UX-tekstit, vaihtoehdot, saavutettavuus), syötesääntöjen (kuvakaappaus tai tekstikuvaus) ja tiukan tulostusmuodon ympärille — konkreettisia muutoksia ympäripyöreiden sanojen sijaan. Lopuksi agentti upotetaan tiimin työnkulkuun ja käsitellään yleiset virheet. Pohjana [[node:ag-principles|agenttien periaatteet]] ja [[node:cap-input-modalities|syötemodaliteetit]].",
+    "outcomes": [
+      "Ymmärrät, missä design-assistentti auttaa ja missä sen tuotokseen ei voi luottaa",
+      "Osaat asettaa roolin, brändikontekstin ja yleisön niin, että kritiikki on relevanttia",
+      "Vaihdat agentin neljän tilan välillä: kritiikki, UX-tekstit, vaihtoehdot, saavutettavuus",
+      "Saat tulokseksi konkreettisia muutoksia sijainnin ja syyn kera, et yleisiä neuvoja",
+      "Upotat agentin iterointisilmukkaan ennen luovutusta kehitykseen (handoff)"
+    ],
+    "applyIn": [
+      {
+        "title": "Layoutin arviointi yksin",
+        "description": "Kun suunnittelijakollega on kiireinen, agentti antaa nopean jäsennellyn erittelyn näytöstä: hierarkia, kontrasti, välistykset, tilat."
+      },
+      {
+        "title": "Käyttöliittymätekstien hiominen",
+        "description": "Painikkeet, virheet, tyhjät tilat, perehdytys — UX-tekstitilassa agentti kirjoittaa sanamuodot uudelleen brändin sävyyn ja yleisölle."
+      },
+      {
+        "title": "Tarkistus ennen handoffia",
+        "description": "Ennen kehitykseen luovutusta agentti ajaa saavutettavuustarkistuksen ja merkitsee, mitä korjata kun se on vielä halpaa."
+      }
+    ],
+    "pitfalls": [
+      "Odottaa agentilta taiteellista makua — se on vahva heuristiikoissa ja säännöissä, ei estetiikassa",
+      "Antaa syöte ilman kontekstia (brändi, yleisö, näytön tavoite) — kritiikki jää yleiseksi ja hyödyttömäksi",
+      "Hyväksyä «näyttää hyvältä» vastaukseksi — ilman konkreettisten muutosten vaatimista agentti jaarittelee",
+      "Luottaa saavutettavuustuotokseen muodollisena auditointina — se on vihje, ei WCAG-sertifikaatti",
+      "Sekoittaa neljä tilaa yhteen pyyntöön — vastaukset hämärtyvät, erottele tehtävät"
+    ],
+    "exercises": [
+      {
+        "question": "Miksi design-assistenttiin ei pidä luottaa layoutin lopullisessa esteettisessä arviossa?",
+        "hint": "Muistele, missä agentti on vahva (heuristiikat, säännöt, saavutettavuus) ja missä sen raja kulkee."
+      },
+      {
+        "question": "Miksi «heikko hierarkia tässä, nosta otsikko 24px:ään ja lisää 16px välistys» on parempi kuin «näyttää ihan hyvältä»?",
+        "hint": "Mieti tulostusmuotovaihetta: tarkka sijainti + tarkka muutos + syy."
+      },
+      {
+        "question": "Miksi jakaa tilat (kritiikki / UX-tekstit / vaihtoehdot / saavutettavuus) erillisiin pyyntöihin?",
+        "hint": "Mitä tapahtuu fokukselle ja vastauksen laadulle, kun agentti yrittää tehdä kaiken kerralla?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi design-assistentti ja missä sen rajat ovat",
+        "time": "",
+        "why": "Ilman selkeää tavoitetta ja rajoja agentti muuttuu kauniiden mutta tyhjien neuvojen generaattoriksi. Ensin määritämme, mitä se todella osaa — ja mihin ei pidä luottaa.",
+        "instructions": [
+          "Muotoile yksi lause: «Tämä agentti auttaa minua kritiikissä, teksteissä, vaihtoehdoissa ja saavutettavuudessa iterointivaiheessa».",
+          "Kirjaa raja eksplisiittisesti: agentti on vahva heuristiikoissa ja säännöissä, mutta ei arvioi taiteellista makua eikä korvaa suunnittelijan lopullista päätöstä.",
+          "Määritä vaihe, jossa se astuu mukaan — tutkimus ja iterointi, ennen luovutusta kehitykseen (handoff).",
+          "Päätä, mitä et odota siltä: lopullisten kuvien generointia, brändipäätöksiä, juridista tarkistusta."
+        ],
+        "validate": "Sinulla on yksi lause hyödystä ja yksi eksplisiittinen lista siitä, mihin ei pidä luottaa.",
+        "tip": "Raja on tärkeämpi kuin kyvyt: tiimi rikkoo luottamuksen agenttiin juuri siellä, missä yliarvioi sen."
+      },
+      "s2": {
+        "title": "Aseta rooli ja konteksti: brändi, ohjeisto, yleisö",
+        "time": "",
+        "why": "Kritiikki ilman kontekstia on aina yleistä. Brändi, sävy ja yleisö muuttavat abstraktin neuvon relevantiksi muutokseksi tuotteellesi.",
+        "instructions": [
+          "Kuvaa rooli: «Olet vanhempi tuotesuunnittelija, joka arvioi tuotteemme näyttöjä».",
+          "Anna brändikonteksti: äänensävy, avainvärit, fontit, linkki tai tiivistelmä design-ohjeistosta.",
+          "Kuvaa yleisö: kuka käyttäjä on, hänen tasonsa, käyttökonteksti (mobiili/työpöytä, kiire/harkinta).",
+          "Kiinnitä näytön tavoite: mitä käyttäjän pitäisi tässä saada aikaan — tämä on mittari kaikelle kritiikille.",
+          "Viittaa [[node:ag-principles|agenttien periaatteisiin]], jotta rooli ja konteksti pysyvät vakaina pyyntöjen välillä."
+        ],
+        "validate": "Agentin järjestelmäkuvauksessa on rooli, brändikonteksti, yleisö ja näytön tavoite.",
+        "tip": "Jos ohjeistoa ei ole — pyydä agenttia ensin tuottamaan 5 oletettua periaatetta ja vahvista ne."
+      },
+      "s3": {
+        "title": "Neljä tilaa: kritiikki, UX-tekstit, vaihtoehdot, saavutettavuus",
+        "time": "",
+        "why": "Yksi agentti kattaa neljä eri tehtävää. Eksplisiittiset tilat pitävät vastaukset fokusoituina ja ennustettavina.",
+        "instructions": [
+          "«Kritiikki»-tila: agentti antaa N havaintoa hierarkiasta, kontrastista, välistyksistä, tiloista — prioriteetilla.",
+          "«UX-tekstit»-tila: kirjoittaa käyttöliittymätekstit uudelleen brändin sävyyn — painikkeet, virheet, tyhjät tilat.",
+          "«Vaihtoehdot»-tila: tarjoaa 2–3 vaihtoehtoa komponentista tai layoutista kunkin plussien ja miinusten kera.",
+          "«Saavutettavuus»-tila: tarkistaa kontrastin, kosketuskohteiden koot, alt-tekstit, fokusjärjestyksen.",
+          "Sopikaa kutsuvanne tiloja yksi per pyyntö, ette kaikkia kerralla — tämä säilyttää fokuksen."
+        ],
+        "validate": "Jokaisella neljästä tilasta on oma kutsumuotoilunsa ja selkeä odotettu tulos.",
+        "tip": "Nimeä tila sanoin pyynnön alussa («Tila: kritiikki») — agentti pitää kehyksen paremmin."
+      },
+      "s4": {
+        "title": "Syöte: kuvakaappaus tai kuvaus",
+        "time": "",
+        "why": "Erittelyn laatu riippuu suoraan siitä, mitä ja miten syötät agentille. Kuva ja teksti toimivat eri tavoin.",
+        "instructions": [
+          "Kuvakaappaus on paras syöte kritiikkiin ja saavutettavuuteen: todellinen hierarkia, kontrasti ja välistys näkyvät.",
+          "Jos kuvaa ei ole — anna rakenteellinen kuvaus: mitkä lohkot, missä järjestyksessä, tekstit, tilat.",
+          "Liitä aina näytön tavoite ja keskeinen skenaario — ilman niitä kritiikki jää ilmaan.",
+          "Tarkista [[node:cap-input-modalities|syötemodaliteetteja]] vasten: varmista, että agentti osaa ottaa vastaan kuvan.",
+          "UX-tekstejä varten anna nykyiset sanamuodot sanatarkasti — agentti muokkaa konkreettista, ei kuviteltua."
+        ],
+        "validate": "Tiedät, minkä syötemuodon annat kuhunkin tilaan, ja liität aina näytön tavoitteen.",
+        "tip": "Yksi näyttö, yksi syöte. Älä kasaa viittä kuvakaappausta yhteen pyyntöön «yleiskatsauksen» vuoksi."
+      },
+      "s5": {
+        "title": "Tulostusmuoto: konkreettiset muutokset, ei ympäripyöreät sanat",
+        "time": "",
+        "why": "«Näyttää ihan hyvältä» on hyödytön. Agentin arvo on muutoksissa, jotka voi toteuttaa heti: sijainti, muutos, syy.",
+        "instructions": [
+          "Vaadi malli: jokainen muutos = [sijainti] + [konkreettinen muutos] + [miksi].",
+          "Kiellä arvottavat ilmaukset ilman toimintaa («kaunis», «siisti», «moderni»).",
+          "Pyydä prioriteetti: kriittinen / toivottava / myöhemmin — jotta tiedät, mihin tarttua ensin.",
+          "Vaihtoehdoille vaadi kunkin plussat ja miinukset, ei yhtä «oikeaa» vastausta.",
+          "Rajaa määrä: 5 havaintoa + 3 ideaa voittaa 30 priorisoimatonta kohtaa."
+        ],
+        "validate": "Minkä tahansa agentin vastauksen voi ottaa ja toteuttaa layoutiin arvailematta, mitä se tarkoitti.",
+        "tip": "Lisää muotoon kenttä «miten tarkistaa, että parani» — tämä muuttaa kritiikin mitattavaksi."
+      },
+      "s6": {
+        "title": "Upottaminen työnkulkuun, virheet ja tarkistus",
+        "time": "",
+        "why": "Agentti on hyödyllinen vain, jos se on upotettu todelliseen iterointisilmukkaan ja tiimi ymmärtää sen heikot kohdat.",
+        "instructions": [
+          "Määritä kutsukohdat: ensimmäisen luonnoksen jälkeen, ennen tiimin arviointia, ennen handoffia.",
+          "Kytke saavutettavuustila lopputarkistukseen — se on halvempi korjata ennen kehitystä.",
+          "Kirjaa virheet: älä odota makua, älä anna syötettä ilman kontekstia, älä sekoita tiloja.",
+          "Nojaa [[node:ai-native-design|AI-native-lähestymistapaan]] — agentti on osa prosessia, ei kertatemppu.",
+          "Kerran sprintissä tarkista, että agentin tuotos todella auttaa eikä luo melua."
+        ],
+        "validate": "Tiimillä on selkeät kohdat, joissa agenttia kutsutaan, ja yhteinen lista sen rajoituksista.",
+        "tip": "Tallenna onnistuneet pyynnöt malleiksi — tämä muuttaa kertaonnistumisen toistettavaksi prosessiksi."
+      }
+    }
+  },
+  "agent-pm": {
+    "title": "PM Assistant",
+    "subtitle": "User storyt, acceptance criteria, tehtävien pilkkominen ja julkaisun valmistelu",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "PM Assistant on [[node:agents|agentti]], joka ottaa tuotepäälliköltä pois muotoilurutiinin: muuttaa raa'an idean user storyksi, kirjoittaa acceptance criteriat, pilkkoo ison tehtävän selkeiksi alitehtäviksi ja kokoaa julkaisun muutoslokin.\n\nOn tärkeää ymmärtää raja: agentti nopeuttaa sen dokumentointia, minkä olet jo päättänyt. Se ei tee sidosryhmähaastatteluja, ei priorisoi backlogia puolestasi eikä tee tuotepäätöksiä. Lopullinen \"kyllä\" kuuluu aina ihmiselle — agentti tekee luonnoksen, ihminen tarkistaa sen ja ottaa vastuun.",
+    "approach": "Älä yritä automatisoida tuoteajattelua. Anna agentille selkeä tuotekonteksti ja rooli, syötä sille konkreettisia väittämiä ja lue jokainen tulos kriittisesti. Paras tapa on \"agentti kirjoittaa luonnoksen minuutissa, sinä viimeistelet viidessä\", ei \"agentti päättää ja sinä suostut.\"",
+    "outcomes": [
+      "Muutat idean oikeaksi user storyksi minuuteissa, et puolessa tunnissa",
+      "Kirjoitat todennettavia acceptance criteriaa, joista tiimi ja QA tietävät mitä \"valmis\" tarkoittaa",
+      "Pilkot ison tehtävän oikeankokoisiksi alitehtäviksi merkitystä menettämättä",
+      "Valmistelet siistin muutoslokin ja release notesit muutoslistasta",
+      "Pidät yhtenäisen backlog-formaatin koko tiimissä"
+    ],
+    "applyIn": [
+      {
+        "title": "Backlogin groomaus",
+        "description": "Ennen sprinttiä ajat raa'at tiketit agentin läpi — saat yhtenäisiä user storyja AC:eineen, valmiina tiimin arvioitaviksi."
+      },
+      {
+        "title": "Epicin pilkkominen",
+        "description": "Agentti pilkkoo ison ominaisuuden alitehtäviksi riippuvuuksineen ja riskeineen; sinä korjaat järjestyksen ja annat kehitykseen."
+      },
+      {
+        "title": "Julkaisun valmistelu",
+        "description": "Mergedyistä muutoksista agentti kokoaa muutoslokin ja release notesit sekä käyttäjille että tiimille."
+      }
+    ],
+    "pitfalls": [
+      "Korvata sidosryhmähaastattelut generoinnilla: agentin hypoteesit ≠ käyttäjien todelliset tarpeet.",
+      "Hyväksyä acceptance criteriaa, joita ei voi todentaa (\"pitäisi olla kätevä\") — se ei ole AC.",
+      "Pilkkoa tehtäviä loputtomiin: 15 mikrotikettiä yksinkertaiselle ominaisuudelle on kohinaa, ei selkeyttä.",
+      "Luottaa agenttiin backlogin priorisoinnissa — se on ihmisen tuotepäätös.",
+      "Kopioida muutosloki tuotantoon oikolukematta: agentti voi keksiä kohdan, jota ei ollut commiteissa."
+    ],
+    "exercises": [
+      {
+        "question": "Ota oikea yhden rivin ominaisuusidea ja pyydä agenttia palauttamaan user story muodossa \"Roolina <rooli> haluan <toiminnon>, jotta <arvo>.\" Tarkista, ettei rooli ja arvo ole keksittyjä.",
+        "hint": "Jos arvona on yleinen \"jotta olisi parempi\", palauta korjattavaksi: arvon pitää olla mitattava tai konkreettinen."
+      },
+      {
+        "question": "Pyydä agenttia muuttamaan yksi user story acceptance criteriaksi muodossa Given/When/Then. Yritä itse \"kaataa\" ainakin yksi kriteeri — löydä aukko.",
+        "hint": "Hyvä AC voidaan yksiselitteisesti merkitä läpäistyksi tai ei. Jos kriteeristä voi kiistellä, se on huonosti muotoiltu."
+      },
+      {
+        "question": "Anna agentille 5–7 riviä \"mitä julkaisussa muuttui\" ja pyydä ryhmittelemään ne muutoslokiksi osioittain (Uutta / Korjattu / Muutettu).",
+        "hint": "Vertaa jokainen kohta lähdelistaan — ylimääräisiä kohtia ei saa olla."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi PM Assistant ja missä on sen raja",
+        "time": "",
+        "why": "Ennen agentin konfigurointia on tärkeää lyödä lukkoon, mitä se tekee ja mitä ei. Muuten on helppo liukua siihen, että agentti \"päättää\" tuotteen puolesta ja ihminen vain suostuu. PM Assistant nopeuttaa dokumentointia, mutta päätös ja vastuu jäävät ihmiselle.",
+        "instructions": [
+          "Kirjoita ylös 3–4 rutiinitoimea, jotka vievät aikaasi: user storyjen, AC:n, pilkkomisen ja muutoslokin laadinta.",
+          "Merkitse viereen, mitä agentti ei saa tehdä: käyttäjähaastattelut, priorisointi, tuotepäätökset.",
+          "Aseta itsellesi sääntö: jokainen agentin tulos on luonnos, jonka tarkistat, ei lopullinen vastaus.",
+          "Tutustu [[node:ag-principles|agenttien periaatteisiin]] ymmärtääksesi, miten vastuu jakautuu ihmisen ja agentin välillä."
+        ],
+        "validate": "Sinulla on kaksi lyhyttä listaa — \"agentti tekee\" ja \"agentti ei tee\" — ja ymmärrät, miksi lopullinen päätös kuuluu ihmiselle.",
+        "tip": "Jos tehtävä vaatii todellisen käyttäjätarpeen ymmärtämistä, se on merkki haastattelun tarpeesta, ei generoinnin."
+      },
+      "s2": {
+        "title": "Aseta rooli ja tuotekonteksti",
+        "time": "",
+        "why": "Ilman tuotekontekstia agentti kirjoittaa yleisiä, kasvottomia muotoiluja. Mitä tarkemmin se tietää tuotteen, käyttäjät ja tiimin sopimukset, sitä vähemmän joudut kirjoittamaan uudelleen sen perässä.",
+        "instructions": [
+          "Aseta rooli: \"Olet kokenut PM Assistant, joka auttaa dokumentoimaan backlogia.\"",
+          "Kuvaa tuote 3–5 lauseessa: mikä se on, kenelle, keskeiset skenaariot.",
+          "Listaa käyttäjätyypit (roolit) — niitä tarvitaan user storyja varten.",
+          "Lyö lukkoon tiimin sopimukset: user storyn formaatti, AC:n formaatti (esim. Given/When/Then), alitehtävän koko.",
+          "Yhdistä konteksti siihen, miten [[node:ai-native-product|AI-native-tuote]] rakennetaan, jos se sopii tapaukseesi."
+        ],
+        "validate": "Vastauksena agentti osaa kertoa omin sanoin, mikä tuote on, ketkä ovat käyttäjät ja missä muodossa se toimittaa tulokset.",
+        "tip": "Tallenna tämä konteksti erikseen ja käytä uudelleen jokaisessa istunnossa — älä selitä tuotetta joka kerta uudestaan."
+      },
+      "s3": {
+        "title": "User storyt ideasta",
+        "time": "",
+        "why": "User story kääntää raa'an idean käyttäjän ja hänen arvonsa kielelle. Tämä suojaa tiimiä tekemästä ominaisuutta \"koska huvitti\" ymmärtämättä, kuka sitä tarvitsee ja miksi.",
+        "instructions": [
+          "Anna agentille idean väittämä 1–2 rivissä.",
+          "Pyydä palauttamaan user story muodossa \"Roolina <rooli> haluan <toiminnon>, jotta <arvo>.\"",
+          "Vaadi, että rooli tulee käyttäjälistastasi, ei keksittynä.",
+          "Pyydä 1–2 tarkentavaa kysymystä, jos agentilta puuttuu tietoa — sen sijaan että se arvaisi.",
+          "Tarkista arvo: sen pitää selittää \"miksi\", ei toistaa \"mitä.\""
+        ],
+        "validate": "User story luetaan tietyn käyttäjän näkökulmasta, arvo vastaa kysymykseen \"miksi\", eikä siinä ole keksittyjä yksityiskohtia.",
+        "tip": "Jos agentti tuottaa arvon kuten \"jotta olisi kätevämpää\", pyydä konkretiaa: mikä tarkalleen nopeutuu, halpenee tai selkeytyy."
+      },
+      "s4": {
+        "title": "Acceptance criteria ja tehtäviin pilkkominen",
+        "time": "",
+        "why": "Acceptance criteria muuttaa storyn todennettavaksi \"valmiiksi\": sekä kehittäjä että QA ymmärtävät samalla tavalla, milloin tehtävä on suljettu. Pilkkominen puolestaan tekee työstä arvioitavaa eikä päästä sitä venymään viikkoja.",
+        "instructions": [
+          "Pyydä agenttia kirjoittamaan acceptance criteriat user storylle muodossa Given/When/Then.",
+          "Vaadi, että jokainen kriteeri on todennettava: yksiselitteisesti \"läpäisty\" tai \"ei.\"",
+          "Pyydä erikseen listaamaan reuna- ja negatiivitapaukset (virheet, tyhjä data, käyttöoikeudet).",
+          "Pyydä sitten pilkkomaan story alitehtäviksi sellaisen kokoisiksi, että kukin sulkeutuu 1–2 päivässä.",
+          "Tarkenna alitehtävien väliset riippuvuudet ja riskit — mikä voi mennä pieleen."
+        ],
+        "validate": "Jokainen AC voidaan objektiivisesti merkitä läpäistyksi, ja alitehtävät kattavat storyn kokonaan ja ovat selkeän kokoisia.",
+        "tip": "Muotoile uudelleen jokainen kriteeri, josta voi kiistellä \"lasketaanko tämä valmiiksi vai ei\", kunnes kiista häviää."
+      },
+      "s5": {
+        "title": "Julkaisun valmistelu ja muutosloki",
+        "time": "",
+        "why": "Julkaisu on hetki, jossa tuote kohtaa käyttäjän. Siisti muutosloki säästää tuen ja tiimin aikaa ja kertoo käyttäjälle, mikä muuttui hänen kannaltaan. Agentti kokoaa luonnoksen nopeasti muutoslistasta.",
+        "instructions": [
+          "Kokoa lista julkaisuun tulleista muutoksista (suljetuista tehtävistä tai commiteista).",
+          "Pyydä agenttia ryhmittelemään ne osioiksi: Uutta / Korjattu / Muutettu / Tunnetut ongelmat.",
+          "Pyydä kaksi versiota: tekninen tiimille ja selkeä käyttäjille.",
+          "Vaadi, että jokainen muutoslokin kohta nojaa lähdelistaan — ilman keksittyjä rivejä.",
+          "Lisää lyhyt 1–2 lauseen julkaisun yhteenveto ilmoitusta varten."
+        ],
+        "validate": "Muutosloki on jaettu osioihin, jokainen kohta nojaa lähdelistaan, ja käyttäjille on erillinen selkeä versio.",
+        "tip": "Ennen julkaisua vertaa muutosloki muutoslistaan rivi riviltä — se on \"haamukohtien\" pääasiallinen lähde."
+      },
+      "s6": {
+        "title": "Tulostusmuoto, yleiset virheet ja tarkistus",
+        "time": "",
+        "why": "Jotta agentin tulokset menevät suoraan työkaluusi (Jira, Linear, Notion), tarvitset vakaan tulostusmuodon. Ja jotta agentti tuo arvoa eikä riskiä, tarvitset lyhyen tavan tarkistaa jokainen tulos.",
+        "instructions": [
+          "Lyö lukkoon tulostusmuoto: esim. otsikko, user story, AC-lohko, alitehtävälista, riskit.",
+          "Pyydä agenttia toimittamaan tulos aina tässä muodossa, jotta sen voi kopioida ilman uudelleentyöstöä.",
+          "Lisää ohjeeseen lista yleisistä virheistä: ei-todennettavat AC:t, keksityt roolit, haamukohdat muutoslokissa.",
+          "Ota käyttöön lopputarkistus: luet tuloksen ja vahvistat, että roolit ovat todellisia, AC:t todennettavia, mitään ylimääräistä ei ole.",
+          "Tarkista [[node:ag-principles|agenttien periaatteita]] vasten — ihminen vahvistaa tuloksen ennen kuin se menee työhön."
+        ],
+        "validate": "Agentti toimittaa tulokset luotettavasti yhdessä muodossa, ja sinulla on lyhyt tarkistuslista, jota todella sovellat jokaiseen vastaukseen.",
+        "tip": "Tallenna muoto ja virhelista suoraan agentin järjestelmäohjeeseen — silloin ne pätevät automaattisesti jokaisessa istunnossa."
+      }
+    }
+  },
+  "agent-managed": {
+    "title": "Claude Managed Agents: Anthropicin hallittu agenttikehys",
+    "subtitle": "Valmis infrastruktuuri pitkäkestoisille asynkronisille agenteille — ilman omaa DevOpsia",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Managed Agents on Anthropicin virallinen tuote: valmis, konfiguroitava agenttikehys, joka toimii hallitussa pilvi-infrastruktuurissa. Sen sijaan että rakentaisit agenttikierron alusta (uudelleenyritykset, aikakatkaisut, tila, havaittavuus), lähetät tehtävän, agentti työskentelee asynkronisesti ja kyselyt tulosta.\n\nSe on kerros [[node:agents|agenttien]] päällä: samat [[node:ag-principles|agenttikierron periaatteet]], mutta suoritus, tila ja työkalut hoitaa alusta. Tämä kurssi näyttää, milloin valita valmis ratkaisu ja milloin rakentaa oma [[node:pl-api|API:n]] kautta.",
+    "approach": "Älä turvaudu Managed Agentsiin joka tehtävässä. Se on työkalu pitkille, asynkronisille, tuotantokuormille, jotka vaativat luotettavuutta. Yksinkertaiseen kertaluonteiseen pyyntöön riittää Messages API suoraan. Arvioi ensin rehellisesti tehtävän kesto ja luotettavuusvaatimukset — valitse sitten kerros.",
+    "outcomes": [
+      "Ymmärrät, mitä Managed Agents on ja miten se eroaa itse rakennetusta agenttikehyksestä",
+      "Tiedät tarkalleen, mitä alusta hoitaa: suoritus, tila, työkalut, havaittavuus",
+      "Osaat lähettää ensimmäisen tehtävän ja kysellä tuloksen",
+      "Osaat konfiguroida agentin tiettyä tehtävää varten työkalujen ja parametrien kautta",
+      "Ymmärrät rajat, kustannusmallin ja sen, mihin oma hallintasi jää"
+    ],
+    "applyIn": [
+      {
+        "title": "Pitkäkestoiset tutkimustehtävät",
+        "description": "\"Tutki aihe ja kirjoita raportti\" — agentti työskentelee minuutteja tai tunteja, käyttää web-hakua ja tiedostotyökaluja, palauttaa jäsennellyn tuloksen."
+      },
+      {
+        "title": "Agenttien tuotantokäyttöönotot",
+        "description": "Kun agentin täytyy toimia luotettavasti kuorman alla eikä sinulla ole aikaa rakentaa uudelleenyrityksiä ja havaittavuutta itse."
+      },
+      {
+        "title": "Asynkroniset putket",
+        "description": "Lähetät tehtävän, teet muuta, haet tuloksen myöhemmin. Sopii taustakäsittelyyn, jossa välitöntä vastausta ei tarvita."
+      }
+    ],
+    "pitfalls": [
+      "Managed Agentsin käyttö yksinkertaisiin kertaluonteisiin tehtäviin — se on ylimitoitettu; Messages API:n kutsuminen suoraan on halvempaa ja yksinkertaisempaa.",
+      "Synkronisen vastauksen odottaminen: malli on asynkroninen — lähetä tehtävä ja kysele tulos, älä odota yhden kutsun sisällä.",
+      "Pitkien tehtävien käynnistäminen ymmärtämättä kustannuksia — pitkä agenttikierto kuluttaa enemmän tokeneita kuin miltä näyttää.",
+      "Oletus, että alusta poistaa kaiken vastuun: määrität silti tehtävän, työkalut ja tarkistat tuloksen.",
+      "Valmiin kehyksen valitseminen siellä, missä tarvitaan kierron täysi mukautus — oman rakentaminen API:n kautta olisi tarkempaa."
+    ],
+    "exercises": [
+      {
+        "question": "Muotoile yksi tehtävä, joka aidosti hyötyy Managed Agentsista (pitkä + asynkroninen + vaatii luotettavuutta), ja yksi, jolle se olisi ylimitoitettu. Selitä ero.",
+        "hint": "Pitkä tutkimustehtävä web-haulla vastaan kertaluonteinen \"muotoile tämä kappale uudelleen\". Nojaa kriteeriin: tehtävän kesto ja luotettavuusvaatimus."
+      },
+      {
+        "question": "Kuvaa, mitä joutuisit rakentamaan itse, jos Managed Agentsia ei olisi: luettele vähintään neljä kehyksen osaa.",
+        "hint": "Muista, mitä alusta hoitaa valmiina: uudelleenyritykset, aikakatkaisut, tilan tallennus, havaittavuus."
+      },
+      {
+        "question": "Päätä omalle tehtävällesi: Managed Agents, itse rakennettu agentti [[node:pl-api|API:lla]] vai yksinkertainen Messages API -kutsu? Perustele.",
+        "hint": "Kertaluonteinen ja yksinkertainen → Messages API. Pitkä ja standardi → Managed Agents. Pitkä epästandardilla kierrolla → oma agentti."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mitä Managed Agents on ja milloin valita se oman kehyksen sijaan",
+        "time": "",
+        "why": "Ennen tuotteen käyttöönottoa pitää ymmärtää, minkä ongelman se tarkalleen ratkaisee. Managed Agents poistaa viikkojen työn luotettavan agenttikierron rakentamisessa — mutta vain tietylle tehtäväluokalle.",
+        "instructions": [
+          "Opettele määritelmä: valmis, konfiguroitava agenttikehys Anthropicin hallitussa pilvi-infrastruktuurissa.",
+          "Kiinnitä valintakriteeri: pitkät tehtävät (minuuteista tunteihin), asynkroninen työ, tuotantoluotettavuus.",
+          "Vertaa vaihtoehtoon: kierron rakentaminen itse [[node:pl-api|API:n]] kautta — uudelleenyritykset, aikakatkaisut, tila, havaittavuus — vie viikkoja.",
+          "Huomaa raja: yksinkertaiseen kertaluonteiseen pyyntöön käytä Messages API:a suoraan, älä Managed Agentsia."
+        ],
+        "validate": "Osaat nimetä kolme merkkiä tehtävästä, jolle Managed Agents on oikea valinta, ja yhden merkin, jolloin se on ylimitoitettu.",
+        "tip": "Jos olet epävarma, kestääkö tehtävä yli minuutin, jo se vihjaa hallitun asynkronisen suorituksen puolesta."
+      },
+      "s2": {
+        "title": "Mitä alusta hoitaa: suoritus, tila, työkalut",
+        "time": "",
+        "why": "Managed Agentsin arvo on juuri siinä, mikä otetaan harteiltasi pois. Tämän listan tunteminen vastaa kysymykseen, miksi viikkojen työ muuttuu tunneiksi.",
+        "instructions": [
+          "Suoritus: alusta ajaa agenttikierron itse — suorittaa vaiheet, käsittelee uudelleenyritykset ja aikakatkaisut.",
+          "Tila: pitkän tehtävän eteneminen tallennetaan alustan puolella, sinun ei tarvitse pitää sitä itse.",
+          "Työkalut: agentilla on sisäänrakennetut työkalut — web-haku ja tiedosto-operaatiot — ilman erillistä integraatiota.",
+          "Havaittavuus: voit seurata tehtävän etenemistä kyselemällä sen tilaa ja tulosta.",
+          "Yhdistä jokainen kohta siihen, mitä muuten joutuisit kirjoittamaan itse [[node:pl-api|API:n]] kautta."
+        ],
+        "validate": "Osaat luetella vähintään neljä asiaa, jotka Managed Agents tekee puolestasi, ja nimetä kullekin, mitä se säästää.",
+        "tip": "Sisäänrakennettu web-haku ja tiedostotyökalut ovat samat, joita [[node:agents|agentit]] käyttävät, vain ilman sinun määrittelyäsi."
+      },
+      "s3": {
+        "title": "Miten aloittaa: lähetä tehtävä ja kysele tulos",
+        "time": "",
+        "why": "Työn malli on asynkroninen, ja se on keskeinen ero tavalliseen pyyntöön. Kierto \"lähetä — agentti työskentelee — kysele\" pitää sisäistää ennen mitään konfigurointia.",
+        "instructions": [
+          "Muotoile tehtävä selkeäksi tavoitteeksi, esim. \"tutki aihe ja kirjoita raportti\".",
+          "Lähetä tehtävä agentille — kutsu palauttaa työn tunnisteen, ei valmista vastausta.",
+          "Anna agentille aikaa työskennellä: se käyttää saatavilla olevia työkaluja ja käy kierron vaiheet läpi itse.",
+          "Kysele tulos tunnisteella — kun tehtävä on valmis, saat jäsennellyn tuloksen.",
+          "Älä odota välitöntä vastausta yhdessä kutsussa — tämä on asynkroninen malli."
+        ],
+        "validate": "Ymmärrät kolme vaihetta — tehtävän lähetys, agentin työ, tuloksen kysely — ja miksi vastaus ei tule synkronisesti.",
+        "tip": "Muotoile tehtävä yhtä huolellisesti kuin tavallinen kehote: mitä selkeämpi tavoite ja tulosmuoto, sitä tarkemmin agentti toimii."
+      },
+      "s4": {
+        "title": "Konfigurointi tehtävää varten: työkalut ja parametrit",
+        "time": "",
+        "why": "Kehys on valmis mutta konfiguroitava. Tiettyä tehtävää varten agenttia kannattaa kaventaa tai ohjata — se parantaa tulosta ja vähentää turhia vaiheita.",
+        "instructions": [
+          "Päätä, mitä työkaluja tehtävä tarvitsee: vain web-haku, vain tiedostot vai molemmat.",
+          "Muotoile tehtävä eksplisiittisellä tulosmuodolla, jotta tuloste on jäsennelty.",
+          "Anna agentille ohjeet samalla tavalla kuin kuvaat tavallisen [[node:agents|agentin]] käyttäytymistä.",
+          "Testaa pienellä tehtävällä ennen pitkän käynnistämistä — se on halvempi tapa löytää muotoiluvirheet."
+        ],
+        "validate": "Olet konfiguroinut agentin tehtävääsi varten: valinnut tarvittavat työkalut ja kuvannut odotetun tulosmuodon.",
+        "tip": "Mitä kapeampi työkalun ja tavoitteen muotoilu, sitä vähemmän ylimääräisiä vaiheita agentti ottaa — ja sitä halvempi ajo."
+      },
+      "s5": {
+        "title": "Rajat, kustannus ja mihin oma hallintasi jää",
+        "time": "",
+        "why": "Pitkä agenttikierto kuluttaa enemmän tokeneita kuin kertakutsu. Ilman kustannusten ymmärtämistä on helppo saada yllättävä lasku, ja ilman hallinnan ymmärtämistä menettää otteen tehtävästä.",
+        "instructions": [
+          "Muista: pitkä tehtävä = monta vaihetta = enemmän tokeneita kuin yksi Messages API -pyyntö.",
+          "Aloita lyhyistä tehtävistä arvioidaksesi todellisen kustannuksen ennen monituntisia.",
+          "Hallinta säilyy sinulla: asetat tavoitteen, valitset työkalut ja tarkistat lopputuloksen.",
+          "Kysele tilaa seurataksesi etenemistä ja huomataksesi ajoissa, jos tehtävä ajautuu väärään suuntaan.",
+          "Älä käynnistä kalliita pitkiä tehtäviä sokkona — aja ensin yksinkertaistettu versio."
+        ],
+        "validate": "Ymmärrät, miksi pitkä agentti maksaa enemmän kuin kertakutsu, ja osaat nimetä, mikä tehtävässä jää sinun hallintaasi.",
+        "tip": "Kohtele pitkän tehtävän ensimmäistä ajoa kustannusmittauksena, ei lopullisena tuloksena."
+      },
+      "s6": {
+        "title": "Milloin Managed Agents EI sovi + lopputarkistus",
+        "time": "",
+        "why": "Yleisin virhe on soveltaa tehokasta työkalua väärään paikkaan. Rajojen selkeä ymmärtäminen on yhtä tärkeää kuin kykyjen ymmärtäminen.",
+        "instructions": [
+          "Yksinkertainen kertaluonteinen tehtävä → Messages API suoraan; Managed Agents on ylimitoitettu.",
+          "Tarvitset välittömän synkronisen vastauksen → asynkroninen malli ei sovi.",
+          "Tarvitset agenttikierron täyden mukautuksen → rakenna oma agentti [[node:pl-api|API:lla]] [[node:ag-principles|agenttikierron periaatteiden]] mukaan.",
+          "Tarvitset epästandardeja työkaluja sisäänrakennettujen ulkopuolelta → tarkista, riittävätkö web-haku ja tiedostot, muuten katso [[node:mcp|MCP:n]] ja oman kehyksen suuntaan.",
+          "Vertaa tehtävääsi kaikkiin merkkeihin ja tee harkittu päätös."
+        ],
+        "validate": "Osaat tehdä tietylle tehtävälle perustellun valinnan Managed Agentsin, itse rakennetun API-agentin ja yksinkertaisen Messages API -kutsun välillä.",
+        "tip": "Jos mikään kriteereistä \"pitkä + asynkroninen + luotettavuus\" ei täyty, tarvitset lähes varmasti tavallisen API-kutsun, et Managed Agentsia."
+      }
+    }
   }
 }
