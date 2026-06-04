@@ -125,34 +125,8 @@ export default function MobileFab({
             </div>
           </div>
 
-          <div className="fab-menu__section">
-            <label className="fab-menu__label">{t('category.label')}</label>
-            <div className="fab-menu__chips">
-              {FILTER_CATEGORIES.map((c) => {
-                const colorEntry = CATEGORIES[c.id];
-                const dotStyle = colorEntry
-                  ? { background: colorEntry.color }
-                  : null;
-                return (
-                  <button
-                    key={c.id}
-                    type="button"
-                    className={`chip ${category === c.id ? 'is-active' : ''}`}
-                    onClick={() => onCategory(c.id)}
-                  >
-                    {dotStyle && (
-                      <span
-                        className="chip__dot"
-                        style={dotStyle}
-                        aria-hidden="true"
-                      />
-                    )}
-                    {t(`category.${c.id}`)}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          {/* Фильтр категорий вынесен наверх по центру (CanvasFilters) —
+              в меню FAB больше не дублируется. */}
 
           <div className="fab-menu__section">
             <label className="fab-menu__label">{t('mobile.section.map')}</label>

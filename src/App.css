@@ -1090,6 +1090,38 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   font-weight: 600;
   letter-spacing: -0.005em;
 }
+/* Чип категории: тоггл + ×-сброс. Когда выбрана категория — слитная пилюля. */
+.canvas-filters__chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.canvas-filters__chip.is-selected .canvas-filters__toggle {
+  padding-right: 8px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+.canvas-filters__reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  align-self: stretch;
+  padding: 0 9px 0 6px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  border-top-right-radius: var(--radius-pill);
+  border-bottom-right-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.canvas-filters__reset:hover { background: var(--surface); color: var(--text); }
 .canvas-filters__menu {
   position: absolute;
   top: calc(100% + 6px);
@@ -1476,10 +1508,11 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 
 @media (max-width: 720px) {
-  .canvas-filters,
-  .canvas-zoom {
-    display: none;
-  }
+  .canvas-zoom { display: none; }
+  /* Фильтр категорий — наверху по центру (между левой/правой FAB). На мобиле
+     показываем только сам выбор категории; кнопка обновлений живёт в MobileFab. */
+  .canvas-filters { top: 14px; }
+  .canvas-filters__updates-wrap { display: none; }
 }
 
 /* ============================================================

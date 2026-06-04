@@ -78,29 +78,35 @@ export default function CanvasFilters({ category, onCategory, onSelectNode, onOp
         )}
       </div>
 
-      <button
-        type="button"
-        className={`canvas-filters__toggle ${open ? 'is-open' : ''}`}
-        onClick={() => setOpen((o) => !o)}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        title={t('category.filterTitle')}
-      >
-        <span className="canvas-filters__toggle-label">{t('category.label')}:</span>
-        {activeColor && (
-          <span
-            className="chip__dot"
-            style={{ background: activeColor }}
-            aria-hidden="true"
-          />
+      <div className={`canvas-filters__chip ${activeEntry.id !== 'all' ? 'is-selected' : ''}`}>
+        <button
+          type="button"
+          className={`canvas-filters__toggle ${open ? 'is-open' : ''}`}
+          onClick={() => setOpen((o) => !o)}
+          aria-haspopup="menu"
+          aria-expanded={open}
+          title={t('category.filterTitle')}
+        >
+          {activeColor && activeEntry.id !== 'all' && (
+            <span className="chip__dot" style={{ background: activeColor }} aria-hidden="true" />
+          )}
+          <strong>{activeEntry.id === 'all' ? t('category.allCategories') : categoryLabel(t, activeEntry.id)}</strong>
+          {activeEntry.id === 'all' && (
+            <Icon name={open ? 'arrow-up' : 'arrow-down'} size={11} strokeWidth={1.75} />
+          )}
+        </button>
+        {activeEntry.id !== 'all' && (
+          <button
+            type="button"
+            className="canvas-filters__reset"
+            onClick={() => { onCategory('all'); setOpen(false); }}
+            aria-label={t('common.clear') || 'Сбросить'}
+            title={t('common.clear') || 'Сбросить'}
+          >
+            <Icon name="close" size={12} strokeWidth={2} />
+          </button>
         )}
-        <strong>{categoryLabel(t, activeEntry.id)}</strong>
-        <Icon
-          name={open ? 'arrow-up' : 'arrow-down'}
-          size={11}
-          strokeWidth={1.75}
-        />
-      </button>
+      </div>
 
       {open && (
         <div className="canvas-filters__menu" role="menu">
