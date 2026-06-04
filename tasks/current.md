@@ -228,8 +228,10 @@
     cap-code-exec, cap-thinking), ru/en/fi. Всего 67 курсов.
   - [x] **Ветка Instructions закрыта** ✅: 6-шаговые курсы на 4 листьях (i-global, i-project,
     i-style, i-templates), ru/en/fi. Всего 71 курс.
+  - [x] **Ветка MCP закрыта** ✅: 6-шаговые курсы на 6 листьях (m-what, m-ready, m-custom,
+    m-security, m-patterns, m-debug), ru/en/fi. Всего 77 курсов.
   - [ ] Раскатка контента дальше. Закрыты: Projects, Prompting, Agents, Capabilities,
-    Instructions. Кандидаты: Claude Code, MCP, AI Fundamentals, Use Cases, Systems.
+    Instructions, MCP. Кандидаты: Claude Code, AI Fundamentals, Use Cases, Systems.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
