@@ -217,8 +217,11 @@
   - [x] **Ветка Projects закрыта** ✅: 6-шаговые курсы на всех листьях —
     `project-files` (p-files), `project-instructions` (p-instructions),
     `project-team` (p-team), `project-when` (p-when). ru/en/fi. Всего 41 курс.
+  - [x] **Ветка Prompting закрыта** ✅: 6-шаговые курсы-погружения на всех 9 листьях-техниках
+    (prompt-4d/principles/xml/fewshot/cot/role/prefill/structured/iterate), ru/en/fi.
+    Всего 50 курсов.
   - [ ] Раскатка контента дальше: следующие ветки (кнопка «Узнать больше» появляется
-    там, где курс готов). Выбрать следующую ветку для наполнения.
+    там, где курс готов). Кандидаты: Capabilities (cap-*), Instructions, Agents.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
