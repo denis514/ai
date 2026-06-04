@@ -154,115 +154,126 @@
     "totalTime": "15 min",
     "whatItIs": "Minkä Claude-mallin valita? Opus = pääasiantuntijasi vaikeaan (strategia, raskaiden PDF:ien jäsennys). Sonnet = arkityöjuhta (90% tehtävistä, tasapaino hinnan ja laadun välillä). Haiku = salamannopea yksinkertaiseen (luokittelu, lyhyet vastaukset).\n\nPlus keskeiset käsitteet: mikä on [[node:b-context|konteksti-ikkuna]] ja miksi AI «unohtaa» pitkän keskustelun alun, mikä on [[node:b-system|järjestelmäprompti]] ja miten se muuttaa Clauden käytöstä. Ilman tätä perustaa muut oppitunnit ovat vain ohjeita ilman ymmärrystä.",
     "approach": "Älä yritä opetella teoriaa — käy vaiheet läpi Claudessa ja vertaile vastauksia omin silmin. Käytännöstä saatu tieto pysyy 10× pidempään kuin artikkelista luettu.",
-    "outcomes": {
-      "0": "Valitset mallin tehtävään tietoisesti",
-      "1": "Kirjoitat rakenteellisen kehotteen 30 sekunnissa",
-      "2": "Ymmärrät milloin konteksti on \"vanhentunut\" ja tarvitaan uusi keskustelu",
-      "3": "Tiedät tyypilliset tilanteet, joissa Claude tekee virheen"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Valitset mallin tehtävään tietoisesti",
+      "Kirjoitat rakenteellisen kehotteen 30 sekunnissa",
+      "Ymmärrät milloin konteksti on \"vanhentunut\" ja tarvitaan uusi keskustelu",
+      "Tiedät tyypilliset tilanteet, joissa Claude tekee virheen"
+    ],
+    "applyIn": [
+      {
         "title": "Päivittäinen työ",
         "description": "Jokainen työasia Claudelle menee nyt rakenteellisen kehotteen kautta — se on +30 % laatua ilmaiseksi."
       },
-      "1": {
+      {
         "title": "Mallin valinta",
         "description": "Ennen isoa tehtävää kysy itseltäsi: Opus, Sonnet vai Haiku? Oikea valinta säästää tokeneita ja aikaa."
       },
-      "2": {
+      {
         "title": "Pitkä keskustelu",
         "description": "Huomaat että malli sekoilee — avaa uusi keskustelu ja siirrä vain keskeiset päätelmät."
       }
-    },
-    "pitfalls": {
-      "0": "Opetella teoriaa artikkeleista ilman käytäntöä — ei jää mieleen.",
-      "1": "Käyttää yhtä mallia \"kaikkeen\" — joko hidasta/kallista tai pinnallista.",
-      "2": "Heittää 50 tiedostoa \"varmuuden vuoksi\" — malli hämärtyy."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Opetella teoriaa artikkeleista ilman käytäntöä — ei jää mieleen.",
+      "Käyttää yhtä mallia \"kaikkeen\" — joko hidasta/kallista tai pinnallista.",
+      "Heittää 50 tiedostoa \"varmuuden vuoksi\" — malli hämärtyy."
+    ],
+    "exercises": [
+      {
         "question": "Ota oma työtehtäväsi ja kirjoita kehote kaavalla \"Rooli → Tehtävä → Muoto → Rajoitukset\". Lähetä Sonnetiin.",
         "hint": "Jos saat yleisluontoisen vastauksen — tarkista, että rajoitukset ja muoto on todella mainittu."
       },
-      "1": {
+      {
         "question": "Kirjoita tyypillinen \"yksirivinen\" pyyntösi uudelleen rakenteellisena. Vertaile vastauksia.",
         "hint": "Eron pitää näkyä — rakenteellinen on yleensä 2× yksityiskohtaisempi."
       }
-    },
+    ],
     "steps": {
-      "b-1": {
+      "s1": {
         "title": "Kirjaudu Claude.ai:hin ja valmistele työpiste",
-        "time": "2 min",
+        "time": "",
         "why": "Tämä on lähtöpiste — ilman tiliä et voi vertailla malleja etkä tunne eroa.",
-        "instructions": {
-          "0": "Avaa claude.ai Chromessa tai Safarissa (Firefox toimii myös).",
-          "1": "Kirjaudu sisään tai rekisteröidy. Free-plan riittää ensimmäisiin askeliin; Pro tarvitaan Opusta ja Projects-toimintoa varten.",
-          "2": "Sulje aloituspopupit — opettelemme rakenteellisesti, ei vinkkien kautta."
-        },
+        "instructions": [
+          "Avaa [[node:pl-web-setup|claude.ai]] Chromessa tai Safarissa (Firefox toimii myös).",
+          "Kirjaudu sisään tai rekisteröidy. Free-plan riittää ensimmäisiin askeliin; Pro tarvitaan Opusta ja Projects-toimintoa varten.",
+          "Sulje aloituspopupit — opettelemme rakenteellisesti, ei vinkkien kautta."
+        ],
         "validate": "Näet \"Reply to Claude…\" -kentän ja vasemmalla sivupalkin keskusteluhistorialla.",
         "troubleshoot": {
           "Pyytävät vahvistamaan puhelinnumeron": "Tämä on normaalia — Anthropic estää botteja. Anna oikea numero.",
-          "Pyydetään puhelinnumeron vahvistus": "Pyydetään puhelimen vahvistusta",
-          "En näe mallin valintaa": "Mallin valintanappi on syöttökentän yläpuolella tai keskustelun oikeassa yläkulmassa.",
-          "En näe mallinvalitsijaa": "Mallin valintapainike ei näy"
+          "En näe mallin valintaa": "Mallin valintanappi on syöttökentän yläpuolella tai keskustelun oikeassa yläkulmassa."
         }
       },
-      "b-2": {
+      "s2": {
         "title": "Vertaa Haikua, Sonnetia ja Opusta samalla tehtävällä",
-        "time": "5 min",
+        "time": "",
         "why": "Ilman vertailua et osaa valita mallia tehtävään — joko maksat liikaa tai menetät syvyyttä.",
-        "instructions": {
-          "0": "Luo 3 keskustelua (yksi per malli: Haiku → Sonnet → Opus).",
-          "1": "Lähetä jokaiseen alla oleva kehote — ILMAN muutoksia.",
-          "2": "Vertaa vastauksia: pituus, konkreettisuus, vivahteet, vastauksen nopeus.",
-          "3": "Kirjaa ylös: mikä malli \"osui\" tehtävään parhaiten."
-        },
+        "instructions": [
+          "Luo 3 keskustelua (yksi per malli: Haiku → Sonnet → Opus).",
+          "Lähetä jokaiseen alla oleva kehote — ILMAN muutoksia.",
+          "Vertaa vastauksia: pituus, konkreettisuus, vivahteet, vastauksen nopeus.",
+          "Kirjaa ylös: mikä malli \"osui\" tehtävään parhaiten."
+        ],
         "prompt": "Selitä, miksi kaksi yhtä lahjakasta junior-kehittäjää voivat saada radikaalisti erilaisia tuloksia samassa tiimissä.\n\nAnna 5 syytä, järjestä vaikutuksen mukaan, ja jokaisesta selitä mekanismi. Ilman vesitystä ja ilman itsestäänselvyyksiä tyyliin \"viestintä on tärkeää\".",
         "validate": "Sinulla on 3 keskustelua samalla kehotteella ja kolme erisyvyistä vastausta.",
         "tip": "Haiku sopii luonnoksiin ja yksinkertaisiin tehtäviin, Sonnet on jokapäiväiseen työhön, Opus monimutkaiseen päättelyyn ja auditointeihin.",
         "troubleshoot": {
-          "Opus ei ole käytettävissä": "Vain Pro/Team:issä. Jos olet Free:ssä — käytä Sonnetia, se ei juuri häviä useimmissa tehtävissä.",
-          "Opus ei ole saatavilla": "Opus ei ole saatavilla"
+          "Opus ei ole käytettävissä": "Vain Pro/Team:issä. Jos olet Free:ssä — käytä Sonnetia, se ei juuri häviä useimmissa tehtävissä."
         }
       },
-      "b-3": {
+      "s3": {
         "title": "Tunne järjestelmäkehotteen voima",
-        "time": "4 min",
+        "time": "",
         "why": "Ilman roolia malli vastaa kuin Wikipedia. Roolin kanssa — kuin asiantuntija omassa tehtävässäsi. Laatuero on 30–50 %.",
-        "instructions": {
-          "0": "Avaa uusi keskustelu Sonnetissa.",
-          "1": "Lähetä \"naiivi\" kehote (katso alla oleva lohko).",
-          "2": "Avaa toinen keskustelu, lähetä \"kehote roolin kanssa\".",
-          "3": "Vertaa: kuinka paljon toinen vastaus on konkreettisempi, sidottu rajoituksiin, ilman vesitystä."
-        },
+        "instructions": [
+          "Avaa uusi keskustelu Sonnetissa.",
+          "Lähetä \"naiivi\" kehote (katso alla oleva lohko).",
+          "Avaa toinen keskustelu, lähetä \"kehote roolin kanssa\".",
+          "Vertaa: kuinka paljon toinen vastaus on konkreettisempi, sidottu rajoituksiin, ilman vesitystä."
+        ],
         "prompt": "[NAIIVI KEHOTE — lähetä sellaisenaan]\nMiten voin parantaa projektiani?\n\n[KEHOTE ROOLIN KANSSA — lähetä toiseen keskusteluun]\nOlet asiantuntija aihealueellani, painotat käytännön tulosta.\nKonteksti: kuvaa tehtäväsi, yleisösi, ympäristösi (1–2 lausetta).\nTehtävä: anna 5 suositusta <kohteesi — sivu / raportti / prosessi> parantamiseksi.\nMuoto: ongelma → miksi haittaa tulosta → mitä tehdä.\nRajoitus: vain sellaista, minkä voi toteuttaa viikossa omin voimin.",
         "validate": "Toinen vastaus on konkreettinen, sidottu rajoituksiin, ilman yleispäteviä lauseita.",
         "tip": "Muista rakenne: konteksti → rooli → tehtävä → muoto → rajoitukset. Tämä on 80 % hyvästä kehotteesta."
       },
-      "b-4": {
+      "s4": {
         "title": "Tarkista, miten konteksti-ikkuna toimii",
-        "time": "3 min",
+        "time": "",
         "why": "Kontekstirajan ymmärtäminen pelastaa \"hallusinaatioilta\" ja laadun menetykseltä pitkissä keskusteluissa.",
-        "instructions": {
-          "0": "Pyydä yhdessä keskustelussa Claudea esittäytymään lyhyesti (katso alla).",
-          "1": "Esitä samassa keskustelussa 5–7 eriaiheista kysymystä peräkkäin.",
-          "2": "Pyydä sitten: \"Mitä kysyin sinulta ensimmäisenä esittäytymisen jälkeen?\" — Clauden pitäisi muistaa.",
-          "3": "Tämä osoittaa, että koko keskustelu on yksi yhteinen konteksti, ei sarja erillisiä pyyntöjä."
-        },
+        "instructions": [
+          "Pyydä yhdessä keskustelussa Claudea esittäytymään lyhyesti (katso alla).",
+          "Esitä samassa keskustelussa 5–7 eriaiheista kysymystä peräkkäin.",
+          "Pyydä sitten: \"Mitä kysyin sinulta ensimmäisenä esittäytymisen jälkeen?\" — Clauden pitäisi muistaa.",
+          "Tämä osoittaa, että koko keskustelu on yksi yhteinen konteksti, ei sarja erillisiä pyyntöjä."
+        ],
         "prompt": "Esittele itsesi yhdellä rivillä. Seuraavaksi esitän useita erilaisia kysymyksiä.",
         "validate": "Viimeiseen kysymykseen Claude lainaa täsmälleen ensimmäisen.",
         "tip": "Kun keskustelu \"vanhenee\" (malli sekoilee) — avaa uusi ja siirrä vain tärkein. Älä raahaa roskaa kontekstiin."
       },
-      "b-5": {
+      "s5": {
+        "title": "Tarkenna vastausta vaiheittain sen sijaan että kirjoittaisit alusta",
+        "time": "",
+        "why": "Aloittelijat hylkäävät ensimmäisen vastauksen ja kirjoittavat täysin uuden kehotteen. Mutta Claude muistaa koko keskustelun — täsmällinen tarkennus (\"lyhyemmäksi\", \"lisää esimerkki\", \"poista kohta 3\") on nopeampi ja tarkempi kuin uusi alusta aloitettu pyyntö.",
+        "instructions": [
+          "Ota mikä tahansa edellisten vaiheiden vastaus, joka oli \"melkein, mutta ei aivan\" osuva.",
+          "Älä aloita uutta keskustelua — kirjoita yksi lyhyt jatkokysymys samaan keskusteluun (esim. \"liian yleistä, anna konkreettiset askeleet\" tai \"puolita ja jätä vain kohdat 1 ja 4\").",
+          "Kun saat uuden version, tarkenna sitä taas yhdellä lauseella, mitä korjataan.",
+          "Huomaa: jokaisella kierroksella vastaus lähestyy tavoitetta, koska Claude pitää koko muokkaushistorian kontekstissa."
+        ],
+        "prompt": "Liian yleistä. Kirjoita uudelleen tilanteeseeni: <1 lause kontekstistasi>. Jätä vain konkreettiset toimet, ilman alustusta.",
+        "validate": "Sait vastauksen haluamaksesi 2–3 lyhyellä tarkennuksella, kirjoittamatta alkuperäistä kehotetta uudelleen.",
+        "tip": "Yksi tarkennus = yksi muutos. Jos pyydät viittä korjausta kerralla, malli pudottaa osan. Tarkenna askel kerrallaan."
+      },
+      "s6": {
         "title": "Vahvista: valitse malli omaan oikeaan tehtävääsi",
-        "time": "1 min",
+        "time": "",
         "why": "Ilman omaan tehtävään siirtämistä oppi jää teoriaksi.",
-        "instructions": {
-          "0": "Ota OMA oikea tehtäväsi tälle viikolle.",
-          "1": "Vastaa itsellesi: mikä malli on optimaalinen (Haiku / Sonnet / Opus)?",
-          "2": "Mikä rooli ja muoto järjestelmäkehotteeseen tarvitaan?",
-          "3": "Käynnistä tehtävä juuri nyt — kun olet vauhdissa."
-        },
+        "instructions": [
+          "Ota OMA oikea tehtäväsi tälle viikolle.",
+          "Vastaa itsellesi: mikä malli on optimaalinen (Haiku / Sonnet / Opus)?",
+          "Mikä rooli ja muoto järjestelmäkehotteeseen tarvitaan?",
+          "Käynnistä tehtävä juuri nyt — kun olet vauhdissa."
+        ],
         "validate": "Sinulla on käynnissä keskustelu OMALLA tehtävälläsi sekä tietoinen mallivalinta + rooli.",
         "tip": "Jatka tästä Prompt engineering -oppitunteihin — siellä menemme tekniikoihin syvemmin."
       }
@@ -421,106 +432,119 @@
     "totalTime": "15 min",
     "whatItIs": "Pyysit Claudelta HTML-laskeutumissivun prototyypin — se aukeaa erillisessä ikkunassa chatin vieressä, näet miltä se näyttää ja voit heti sanoa «tee napista vihreämpi». Ei kopiointia editoriin ja takaisin. Tämä on Artifact.\n\nErillinen «kanvas» [[node:pl-web-setup|claude.ai]]:ssa koodille, HTML:lle, SVG:lle, dokumenteille. Ajettava preview suoraan selaimessa, iteraatiot versiohistorialla, ei tekstiseiniä keskustelussa.",
     "approach": "Älä yritä \"piirtää\" Artifact:iin täydellistä lopputulosta heti. Tämä on iteraation työkalu — 3–5 sykliä \"saa → kokeile → kirjoita uudelleen\" tuottaa paremman tuloksen kuin \"10 sivua vaatimuksia kerralla\".",
-    "outcomes": {
-      "0": "Laukaiset Artifact:n tarkoituksellisesti — etkä vahingossa",
-      "1": "Teet interaktiivisia HTML-prototyyppejä minuuteissa",
-      "2": "Käytät versioita turvallisiin iteraatioihin",
-      "3": "Jaat Artifact:n julkisella linkillä kollegoille"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Laukaiset Artifact:n tarkoituksellisesti — etkä vahingossa",
+      "Teet interaktiivisia HTML-prototyyppejä minuuteissa",
+      "Käytät versioita turvallisiin iteraatioihin",
+      "Jaat Artifact:n julkisella linkillä kollegoille"
+    ],
+    "applyIn": [
+      {
         "title": "Idean prototyyppi",
         "description": "Sivun / näkymän konsepti koottu 10 minuutissa HTML+Tailwind:lla, lähetit tiimille elävän linkin — keskustellaan oikeasta jutusta, ei kuvauksesta."
       },
-      "1": {
+      {
         "title": "Jaettava dokumentti",
         "description": "Raportti / opas / keskustelun yhteenveto muotoillaan Artifact:iksi — sen voi avata ja lukea itsenäisenä dokumenttina."
       },
-      "2": {
+      {
         "title": "Mikroapuväline",
         "description": "Laskuri / muunnin / visualisointi — koottu 15 minuutissa, toimii selaimessa ilman backendia."
       }
-    },
-    "pitfalls": {
-      "0": "Ei mainita muotoa — Claude laittaa koodin keskusteluun Artifact:n sijaan.",
-      "1": "Pyytää \"kaikki kerralla\" — iteraatiot ovat hyödyllisempiä.",
-      "2": "Sivuuttaa versiot — menetät onnistuneet välivaiheet."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Ei mainita muotoa — Claude laittaa koodin keskusteluun Artifact:n sijaan.",
+      "Pyytää \"kaikki kerralla\" — iteraatiot ovat hyödyllisempiä.",
+      "Sivuuttaa versiot — menetät onnistuneet välivaiheet."
+    ],
+    "exercises": [
+      {
         "question": "Kuvaa Claudelle yhden sivun prototyyppi omaan projektiisi. Saa Artifact. Korjaa sitä 2–3 kertaa.",
         "hint": "Muuta joka kerta YKSI asia — se näyttää iteraatioiden voiman."
       },
-      "1": {
+      {
         "question": "Kirjoita viimeisin Word/Notion-dokumenttisi uudelleen Markdown-Artifact:iksi sisällysluettelolla.",
         "hint": "Saat itsenäisen dokumentin, jota on miellyttävämpi lukea kuin keskustelussa."
       }
-    },
+    ],
     "steps": {
-      "a-1": {
+      "s1": {
         "title": "Ymmärrä, milloin Artifact laukeaa",
-        "time": "2 min",
+        "time": "",
         "why": "Artifact on työn \"tuote\" (koodi / HTML / SVG / Markdown). Jos et tiedä, miten se kutsutaan — saat \"tekstiseinän\" keskusteluun.",
-        "instructions": {
-          "0": "Artifact laukeaa automaattisesti: yli ~20 rivin koodi, HTML/React, SVG, Mermaid, pitkät dokumentit.",
-          "1": "Voi pyytää suoraan: \"muotoile Artifact:iksi\".",
-          "2": "Avautuu oikea preview-paneeli — siellä on koodi JA visuaalinen tulos."
-        },
+        "instructions": [
+          "Artifact laukeaa automaattisesti: yli ~20 rivin koodi, HTML/React, SVG, Mermaid, pitkät dokumentit.",
+          "Voi pyytää suoraan: \"muotoile Artifact:iksi\".",
+          "Avautuu oikea preview-paneeli — siellä on koodi JA visuaalinen tulos."
+        ],
         "validate": "Ymmärrät, että Artifact on erillinen paneeli, ei teksti keskustelussa.",
         "tip": "Jos Claude laittoi ison koodin keskusteluun — pyydä: \"siirrä tämä Artifact:iin\". Tekee."
       },
-      "a-2": {
+      "s2": {
         "title": "Pyydä ensimmäinen HTML-prototyyppi",
-        "time": "4 min",
+        "time": "",
         "why": "Prototyyppi Artifact:ssa on nopein tapa nähdä idea \"elävänä\" sanallisen kuvauksen sijaan.",
-        "instructions": {
-          "0": "Avaa uusi keskustelu (voi olla Project:ssa).",
-          "1": "Kopioi alla oleva kehote, korvaa aihe omallasi.",
-          "2": "Odota generointi — oikealle aukeaa preview.",
-          "3": "Klikkaa \"Preview\" / \"Code\" — vaihtele visuaalin ja koodin välillä."
-        },
+        "instructions": [
+          "Avaa uusi keskustelu (voi olla Project:ssa).",
+          "Kopioi alla oleva kehote, korvaa aihe omallasi.",
+          "Odota generointi — oikealle aukeaa preview.",
+          "Klikkaa \"Preview\" / \"Code\" — vaihtele visuaalin ja koodin välillä."
+        ],
         "prompt": "Tee interaktiivinen HTML-prototyyppi yhdessä tiedostossa Artifact:ina.\n\nMitä rakennetaan: tilauksen maksusivu, jossa on kolme hintaluokkaa ja kuukausi/vuosi-vaihtaja.\nYleisö: SaaS B2B.\nStack: pelkkä HTML + Tailwind CDN:n kautta. Ei Reactia. Ei kolmannen osapuolen riippuvuuksia.\n\nVaatimukset:\n- mobile-first, oikein 320px asti\n- saavutettava semantiikka (label, aria-*)\n- 3 tilaa: idle, loading, success\n- mielekäs teksti lorem ipsumin sijaan\n\nNäytä preview heti.",
         "validate": "Näet preview:n kolmella hintaluokalla ja vaihtajalla; kaikki toimii esikatseluikkunassa.",
         "tip": "Jos preview rikkoutuu — pyydä \"korjaa preview, minulla on valkoinen ruutu\". Claude löytää virheen itse."
       },
-      "a-3": {
+      "s3": {
         "title": "Tee täsmäkorjaus",
-        "time": "3 min",
+        "time": "",
         "why": "Täsmäkorjaus säästää tokeneita eikä riko toimivia osia. Tämä on pääasiallinen iterointitapa.",
-        "instructions": {
-          "0": "Artifact-keskustelussa pyydä muuttamaan YKSI konkreettinen asia.",
-          "1": "Älä käytä \"paranna kaikkea\" — Claude kirjoittaa puolet uudelleen satunnaisesti.",
-          "2": "Odota uutta versiota — Artifact:n yläosaan ilmestyy \"Version 2\"."
-        },
+        "instructions": [
+          "Artifact-keskustelussa pyydä muuttamaan YKSI konkreettinen asia.",
+          "Älä käytä \"paranna kaikkea\" — Claude kirjoittaa puolet uudelleen satunnaisesti.",
+          "Odota uutta versiota — Artifact:n yläosaan ilmestyy \"Version 2\"."
+        ],
         "prompt": "Vaihda tässä Artifact:ssa päävärin arvoksi #0F172A. Muiden osioiden fonttia älä koske. Tee napeista hieman isompia (py-3 → py-4).",
         "validate": "Versio 2 sisältää tarkalleen nämä kolme muutosta, muu on identtinen.",
         "tip": "Mitä tarkemmin muotoilet korjauksen, sitä vähemmän turhia muutoksia tulee. Vertaa: \"tee kauniimmaksi\" ❌ vs \"vaihda kulmasäde 8:sta 12:een, muuta älä koske\" ✅"
       },
-      "a-4": {
+      "s4": {
         "title": "Käytä versioita turvallisiin kokeiluihin",
-        "time": "3 min",
+        "time": "",
         "why": "Versiointi poistaa iteraatiopelon. Ei toimi — palaat takaisin.",
-        "instructions": {
-          "0": "Pyydä Claudea muotoilemaan osio täysin uusiksi (katso kehote).",
-          "1": "Saa versio 3.",
-          "2": "Artifact:n yläosassa klikkaa versioiden dropdownia — vaihda versioon 2.",
-          "3": "Varmista, että edellinen työ ei kadonnut."
-        },
+        "instructions": [
+          "Pyydä Claudea muotoilemaan osio täysin uusiksi (katso kehote).",
+          "Saa versio 3.",
+          "Artifact:n yläosassa klikkaa versioiden dropdownia — vaihda versioon 2.",
+          "Varmista, että edellinen työ ei kadonnut."
+        ],
         "prompt": "Tee nyt kokeellinen vaihtoehto: hero-osio, jossa on iso emotionaalinen otsikko ja video-tausta gradientin sijaan. Piirrä sivun yläosa kokonaan uudelleen.",
         "validate": "Sinulla on vähintään 3 versiota Artifact:sta, vaihtaminen niiden välillä toimii.",
         "tip": "Ennen kokeiluja tallenna pidetty versio Notioniin / GitHubiin — varmuuden vuoksi."
       },
-      "a-5": {
+      "s5": {
         "title": "Viimeistele ja vie koodi",
-        "time": "3 min",
+        "time": "",
         "why": "Ilman repoon siirtoa Artifact jää demoksi. Tämä on askel oikeaan tuotantoon.",
-        "instructions": {
-          "0": "Kun versio kelpaa — klikkaa \"Copy\" Artifact:n oikeasta yläkulmasta.",
-          "1": "Liitä omaan projektiisi (erilliseen tiedostoon tai komponenttiin).",
-          "2": "Jos koodi on Reactia — pyydä Claudea jakamaan se erillisiin tiedostoihin: \"anna nämä komponentit tiedostorakenteen muodossa\"."
-        },
+        "instructions": [
+          "Kun versio kelpaa — klikkaa \"Copy\" Artifact:n oikeasta yläkulmasta.",
+          "Liitä omaan projektiisi (erilliseen tiedostoon tai komponenttiin).",
+          "Jos koodi on Reactia — pyydä Claudea jakamaan se erillisiin tiedostoihin: \"anna nämä komponentit tiedostorakenteen muodossa\"."
+        ],
         "validate": "Koodi on liitetty projektiisi ja kääntyy ilman virheitä.",
         "tip": "Älä kopioi kaikkea kerralla. Ennen kopiointia pyydä Claudelta: \"käy koodi läpi ja poista turhat kommentit ja kommentoitu roska\"."
+      },
+      "s6": {
+        "title": "Julkaise Artifact ja jaa linkki",
+        "time": "",
+        "why": "Artifact pysyy yksityisenä, kunnes julkaiset sen. Julkaisu muuttaa sen eläväksi sivuksi, jonka kollega avaa selaimessa ilman pääsyä chattiisi — parempi kuin kuvakaappaus ja nopeampi kuin projektin pystyttäminen.",
+        "instructions": [
+          "Saata oikea versio esittelykuntoon (oikea teksti paikkamerkkien sijaan, ei rikkinäistä previewiä).",
+          "Klikkaa \"Publish\" / \"Share\" Artifact:n oikeasta yläkulmasta ja vahvista julkaisu.",
+          "Kopioi julkinen linkki ja lähetä se kollegalle — hän avaa interaktiivisen tuloksen liittymättä keskusteluusi.",
+          "Kun luonnosta ei enää tarvita — poista julkaisu (Unpublish), jotta linkki lakkaa toimimasta."
+        ],
+        "validate": "Avasit julkisen linkin incognito-ikkunassa (ilman omaa tiliä) — Artifact näkyy ja on interaktiivinen.",
+        "tip": "Julkinen linkki paljastaa vain itse artefaktin, ei chatin historiaa. Tarkista silti: koodiin ei ole upotettu yksityistä avainta, tokenia tai sisäistä URL:ää — julkaistuksi tulee juuri se mitä sisällä on."
       }
     },
     "trigger": "Pitää näyttää elävä prototyyppi, laskeutumissivu tai kaavio — ei staattista tekstiä.",
@@ -1053,9 +1077,9 @@
       }
     },
     "steps": {
-      "i-1": {
+      "s1": {
         "title": "Avaa profiiliasetukset",
-        "time": "1 min",
+        "time": "",
         "why": "Profiilitason Custom Instructions soveltuvat KAIKKIIN keskusteluihin — tämä on perussijoitus.",
         "instructions": {
           "0": "claude.ai:ssa → klikkaa avataria (oikea ylä) → Settings.",
@@ -1064,13 +1088,12 @@
         },
         "validate": "Näet lomakkeen kahdella tekstikentällä.",
         "troubleshoot": {
-          "En näe Settings:iä": "Joskus osio on nimellä Preferences. Tai piilotettu \"···\":n taakse. Etsi tarkasti.",
-          "En löydä asetuksia": "En näe Settings-valikkoa"
+          "En näe Settings:iä": "Joskus osio on nimellä Preferences. Tai piilotettu \"···\":n taakse. Etsi tarkasti."
         }
       },
-      "i-2": {
+      "s2": {
         "title": "Täytä \"About me\"",
-        "time": "4 min",
+        "time": "",
         "why": "Tämä on konteksti sinusta. Ilman sitä Claude vastaa \"yleisellä tasolla\"; sen kanssa — juuri sinun roolillesi.",
         "instructions": {
           "0": "Kuvaa: rooli, kokemus, aihealue, pääasialliset tehtävät, työn yleisö.",
@@ -1081,9 +1104,9 @@
         "validate": "\"About me\" on täytetty ja kuvaa sitä, mikä muuttaa vastauksia (rooli, domain, stack, työn muoto).",
         "tip": "Hyödyllisin lisätä — konkreettinen stack/työkalut. Ilman niitä Claude suosittelee yleisesti."
       },
-      "i-3": {
+      "s3": {
         "title": "Täytä \"How to respond\"",
-        "time": "4 min",
+        "time": "",
         "why": "Tämä kenttä ohjaa tyyliä ja muotoa. Siitä riippuu, ovatko vastaukset käyttökelpoisia ilman muokkausta.",
         "instructions": {
           "0": "Kuvaa: kieli, pituus, muoto, sävy, mitä EI tehdä.",
@@ -1094,9 +1117,23 @@
         "validate": "Kenttä on tallennettu, uusissa keskusteluissa vastaukset vastaavat muotoa.",
         "tip": "Jos jokin yhä ärsyttää vastauksissa — se on signaali lisätä uusi sääntö."
       },
-      "i-4": {
+      "s4": {
+        "title": "Poista epämääräiset muotoilut",
+        "time": "",
+        "why": "Epämääräisen säännön kuten \"kirjoita hyvin\" malli ohittaa — se ei tiedä, mitä \"hyvä\" sinulle tarkoittaa. Konkreettinen, havaittava sääntö muuttaa vastauksen; epämääräinen ei.",
+        "instructions": {
+          "0": "Lue ohjeesi uudelleen ja alleviivaa abstraktit sanat: \"laadukas\", \"ammattimainen\", \"selkeä\", \"ystävällinen\".",
+          "1": "Korvaa jokainen havaittavalla käytöksellä: \"selkeä\" → \"ei ammattikieltä; selitä termi suluissa ensimmäisellä maininnalla\".",
+          "2": "Poista säännöt, joita Claude noudattaa jo oletuksena — ne vain lisäävät kohinaa ohjeeseen.",
+          "3": "Tarkistussääntö: jos et voi yksiselitteisesti sanoa, noudatettiinko riviä vai ei, kirjoita se uudelleen."
+        },
+        "example": "Ennen (epämääräinen):\n- Kirjoita laadukkaasti ja ammattimaisesti.\n- Ole ystävällinen.\n- Selitä selkeästi.\n\nJälkeen (havaittava):\n- Tue jokainen väite esimerkillä tai luvulla.\n- Asiallinen sävy; ei \"hei!\", ei \"toivottavasti auttoi\".\n- Selitä termi suluissa (yhdellä sanalla) ensimmäisellä maininnalla.",
+        "validate": "Ohjeissa ei ole enää abstrakteja arvioita — vain sääntöjä, joista näkee, noudatettiinko niitä.",
+        "tip": "Epämääräisyystesti: anna kaksi muotoilua kollegalle ja kysy \"miten tämän tarkistaisi?\". Jos hän ei pysty, ei Claudekaan."
+      },
+      "s5": {
         "title": "Testaa 3 erilaisella tehtävällä",
-        "time": "2 min",
+        "time": "",
         "why": "Ilman tarkistusta instructions:it voivat \"olla toimimatta\". Testi on peilisi.",
         "instructions": {
           "0": "Avaa 3 uutta keskustelua ja anna 3 erilaista tehtävää (arki, ammatti, luova).",
@@ -1107,9 +1144,9 @@
         "validate": "Kaikki kolme vastausta — oikealla kielellä, muodossa, sävyssä.",
         "tip": "Sääntöjen tarkistuslista oikeista ongelmista = paras ohjeiden muoto. Älä kirjoita \"ole ystävällinen\" — kirjoita \"älä käytä sanaa \"disclaimer\"\"."
       },
-      "i-5": {
+      "s6": {
         "title": "Mukauta Project-tasolla (jos on)",
-        "time": "1 min",
+        "time": "",
         "why": "Project-ohjeet ohittavat globaalit. Jokaiselle nichelle — oma kapeasti erikoistunut setti.",
         "instructions": {
           "0": "Avaa oma Project → Custom Instructions.",
@@ -1340,9 +1377,9 @@
       }
     },
     "steps": {
-      "sc-1": {
+      "s1": {
         "title": "Listaa 5 säännöllistä tehtävääsi",
-        "time": "3 min",
+        "time": "",
         "why": "Ilman tehtävälistaa skenaariota ei voi valita mielekkäästi. Tämä on pohja.",
         "instructions": {
           "0": "Avaa kalenterisi / tikettisi / aikataulusi viimeisen kuukauden ajalta.",
@@ -1353,9 +1390,9 @@
         "validate": "Lista 5 tehtävästä tyyppeineen. On selvää, mikä tyyppi on yleisin.",
         "tip": "Yleisin tyyppi on pääskenaariosi. Siihen fokus."
       },
-      "sc-2": {
+      "s2": {
         "title": "Valitse pääskenaario ja työkalustack",
-        "time": "3 min",
+        "time": "",
         "why": "Sirottelemalla Claudea kaikkeen — missään et yllä asiantuntijatasolle. Fokus tuo ROI:n.",
         "instructions": {
           "0": "Ota yleisin tehtävätyyppi listasta.",
@@ -1366,21 +1403,22 @@
         "validate": "Pääskenaario + sen työkalustack on selvästi muotoiltu.",
         "tip": "Älä yritä kattaa kaikkia tyyppejä. Parempi \"huippu\" yhdessä skenaariossa per vuosineljännes kuin \"ok\" kaikissa viidessä."
       },
-      "sc-3": {
+      "s3": {
         "title": "Käynnistä pilotti yhdellä oikealla tehtävällä",
-        "time": "4 min",
+        "time": "",
         "why": "Skenaario \"paperilla\" on hyödytön. Vain pilotti näyttää, toimiiko vai ei.",
         "instructions": {
           "0": "Ota YKSI tehtävä backlog:ista — tyypillisin valitussa skenaariossa.",
           "1": "Käy se TÄYDELLISESTI läpi Clauden kautta (valitulla stack:lla).",
           "2": "Mittaa aika ja laatu. Vertaa siihen, miten tekisit käsin."
         },
+        "example": "",
         "validate": "Tehtävä on valmis, on konkreettinen mittaus: aika ennen/jälkeen, laatu ennen/jälkeen.",
         "tip": "Jos pilotti on epäonnistuminen, älä luovu työkalusta. Kysy: \"kehote?\", \"stack?\", \"konteksti?\". 9 ongelmaa 10:stä on siellä."
       },
-      "sc-4": {
+      "s4": {
         "title": "Kiinnitä workflow tarkistuslistaksi",
-        "time": "1 min",
+        "time": "",
         "why": "Ilman tarkistuslistaa skenaario hajoaa 2 viikossa. Tarkistuslista on vakuutus rappeutumista vastaan.",
         "instructions": {
           "0": "Kirjoita 5–7 askelta hiotusta workflow:stasi.",
@@ -1391,17 +1429,31 @@
         "validate": "Tarkistuslista on tallennettu, käytät sitä joka kerta tällaisessa tehtävässä.",
         "tip": "5–10 ajon jälkeen — käy tarkistuslista uudelleen läpi. Jotain on aina viilattava."
       },
-      "sc-5": {
+      "s5": {
         "title": "Skaalaa tiimiin",
-        "time": "1 min",
+        "time": "",
         "why": "Yksi ihminen skenaariolla — ok. Tiimi — vipuvarsi. Tässä Claude todella muuttaa työtä.",
         "instructions": {
           "0": "Jaa workflow standupissa tai työchatissa.",
           "1": "Etsi yksi kollega, joka on valmis kokeilemaan.",
           "2": "2 viikon kuluttua — vertaa muistiinpanoja. Täydennä workflow:ta."
         },
+        "example": "",
         "validate": "Vähintään yksi kollega työskentelee skenaariosi mukaan.",
         "tip": "Jos skenaario toimii SINULLA — se on hypoteesi. Kahdella ihmisellä — kaava. Viidellä — tiimin standardi."
+      },
+      "s6": {
+        "title": "Tee neljännesvuosittainen katsaus ja päätä laajennuksesta",
+        "time": "",
+        "why": "Skenaario ei ole päätepiste vaan sykli. Kerran vuosineljänneksessä on laskettava todellinen tuotto ja päätettävä tietoisesti: syvennätkö nykyistä skenaariota vai otatko toisen. Ilman tätä rituaalia fokus liukuu huomaamatta takaisin \"käytän vähän kaikkialla\".",
+        "instructions": {
+          "0": "Kerää vuosineljänneksen mittaukset: säästetty aika yhteensä, laatu, kuinka usein skenaariota käytetään.",
+          "1": "Vastaa yhteen kysymykseen: onko pääskenaario hiottu mestariksi (maksaa itsensä johdonmukaisesti) — vai ei vielä?",
+          "2": "Jos KYLLÄ — valitse TOINEN skenaario ja toista sykli kohdasta \"Listaa 5 säännöllistä tehtävääsi\". Jos EI — viilaa nykyistä stack:ia ja tarkistuslistaa vielä yksi vuosineljännes."
+        },
+        "example": "ANALYSIS-skenaarion neljännesvuosikatsaus:\n- Ajoja: 18\n- Säästetty: ~4 t/viikko → ~50 t vuosineljänneksessä\n- Laatu: raportit johdonmukaisempia, vähemmän ohitettuja ongelmia\nPäätös: skenaario maksaa itsensä ja on vakaa → otan toisen skenaarion — CONTENT (raporttien / esitysten valmistelu) ja käyn syklin uudelleen.",
+        "validate": "On tuottoluku vuosineljännekseltä ja kirjattu päätös: syventääkö nykyistä skenaariota vai käynnistääkö toinen.",
+        "tip": "Laajenna vasta vakauden jälkeen. Toinen skenaario hiomattoman ensimmäisen päälle = juuri se hajauttaminen, josta lähdimme pois."
       }
     },
     "trigger": "Yleiset AI-postaukset eivät auta — tarvitset stäkin juuri omaan rooliisi (PM / markkinointi / design).",
@@ -1587,96 +1639,131 @@
   "ready-prompts": {
     "title": "Käytä valmiita kehotteita",
     "subtitle": "Nopein tapa saada laatua",
-    "totalTime": "8 min",
-    "whatItIs": "Valmiit kehotteet ovat parametrisoituja pohjia tyyppi-tehtäville. Avasit, sijoitit omat tiedot, lähetit — sait rakenteellisen vastauksen. Nopein tapa saada laatua ilman prompt engineering -opiskelua.",
-    "approach": "Älä yritä kirjoittaa omia kehotteita tyhjästä ennen kuin hallitset valmiit. Joka kerta kun näet tyyppi-tehtävän — etsi ensin pohja, ajattele sen jälkeen. 80 % työstä ratkeaa valmiilla.",
-    "outcomes": {
-      "0": "Avaat valmiiden kehotteiden kirjaston yhdellä klikkauksella",
-      "1": "Löydät tarvitsemasi pohjan haulla tai kategoriasuodattimella",
-      "2": "Mukautat parametrisoidun pohjan omaan kaseihin minuutissa",
-      "3": "Tallennat suosikkipohjasi kirjanmerkkeihin"
-    },
-    "applyIn": {
-      "0": {
+    "totalTime": "12 min",
+    "whatItIs": "Valmiit kehotteet ovat parametrisoituja pohjia tyyppi-tehtäville. Avasit, sijoitit omat tiedot, lähetit — sait rakenteellisen vastauksen. Nopein tapa saada laatua ilman prompt engineering -opiskelua. Ja sen jälkeen hienosäädät pohjan itsellesi ja teet siitä henkilökohtaisen, uudelleenkäytettävän pääoman.",
+    "approach": "Älä yritä kirjoittaa omia kehotteita tyhjästä ennen kuin hallitset valmiit. Joka kerta kun näet tyyppi-tehtävän — etsi ensin pohja, ajattele sen jälkeen. 80 % työstä ratkeaa valmiilla. Loput 20 % on sinun mukautuksesi, joka kannattaa tallentaa ja käyttää uudelleen.",
+    "outcomes": [
+      "Avaat valmiiden kehotteiden kirjaston yhdellä klikkauksella",
+      "Löydät tarvitsemasi pohjan haulla tai kategoriasuodattimella",
+      "Mukautat parametrisoidun pohjan omaan kaseihin minuutissa",
+      "Hienosäädät kehotteen omaan tyyliisi ja vastauksen vaatimuksiin",
+      "Tallennat ja käytät uudelleen suosikkipohjasi"
+    ],
+    "applyIn": [
+      {
         "title": "Mikä tahansa tyyppi-tehtävä",
         "description": "Auditointi, review, nimeäminen, tiivistelmä, suunnitelma — kaikkeen on pohja."
       },
-      "1": {
+      {
         "title": "Tiimi",
         "description": "Jaa suosikkipohjat kollegoille — yhtenäinen laatu ilman keskusteluja."
       },
-      "2": {
+      {
         "title": "Mukauttaminen",
         "description": "Ota pohja → mukauta omalle alueellesi → tallenna omaksi → käytä joka kerta."
       }
-    },
-    "pitfalls": {
-      "0": "Käyttää pohjaa ilman parametrien sijoittamista — Claude vastaa kirjaimelliseen paikkamerkkiin.",
-      "1": "Ei tallenna mukautettuja versioita kirjanmerkkeihin — aloitat joka kerta tyhjästä.",
-      "2": "Sivuuttaa kategoriat — menetät aikaa kaikkien 42:n selailuun."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Käyttää pohjaa ilman parametrien sijoittamista — Claude vastaa kirjaimelliseen paikkamerkkiin.",
+      "Ei tallenna mukautettuja versioita kirjanmerkkeihin — aloitat joka kerta tyhjästä.",
+      "Sivuuttaa kategoriat — menetät aikaa kaikkien 42:n selailuun.",
+      "Hylätä kehote ensimmäisen vastauksen jälkeen hienosäätämättä sen muotoa ja sävyä itsellesi."
+    ],
+    "exercises": [
+      {
         "question": "Avaa kirjasto, etsi pohja säännölliselle tehtävällesi. Täytä paikkamerkit. Aja.",
         "hint": "Jos pohja on kategoriassa \"Aloitus\" — aloita siitä. Perusmuodot toimivat kaikkialla."
       },
-      "1": {
+      {
+        "question": "Hienosäädä yksi pohja itsellesi: lisää muodon ja sävyn vaatimukset, aja kahdesti, lukitse lopullinen versio.",
+        "hint": "Muuta yhtä parametria per iteraatio — niin näet, mikä tarkalleen paransi vastausta."
+      },
+      {
         "question": "Avaa oma kirjastosi ja lisää 3–5 hyödyllisintä pohjaa kirjanmerkkeihin.",
         "hint": "Cmd+K:ssa suosikit ovat nyt ylhäällä — välitön pääsy."
       }
-    },
+    ],
     "steps": {
-      "rp-1": {
+      "s1": {
         "title": "Avaa valmiiden kehotteiden kirjasto",
-        "time": "1 min",
+        "time": "",
         "why": "Valmiit kehotteet ratkaisevat 80 % tyyppi-tehtävistä. Tieto niistä = tuntien säästö.",
-        "instructions": {
-          "0": "Kartan alaosiossa — \"Valmiit kehotteet\".",
-          "1": "Jos se on koottu — paina ▲ avataksesi.",
-          "2": "Tutustu 10 pohjan listaan."
-        },
+        "instructions": [
+          "Kartan alaosiossa — \"Valmiit kehotteet\".",
+          "Jos se on koottu — paina ▲ avataksesi.",
+          "Tutustu 10 pohjan listaan."
+        ],
         "validate": "Näet 10 korttia: Luo Project, Luo Artifact, Asiantuntija-auditointi, jne.",
         "tip": "Nämä 10 kehotetta kattavat yleisimmät tehtävät. Älä kirjoita niitä tyhjästä joka kerta."
       },
-      "rp-2": {
+      "s2": {
         "title": "Valitse kehote OMALLE tehtävällesi",
-        "time": "2 min",
+        "time": "",
         "why": "Sokea kopiointi tuottaa vähän. Valinta tehtävälle on jo puoli onnistumisesta.",
-        "instructions": {
-          "0": "Lue nykyinen tehtäväsi.",
-          "1": "Vertaa kehotteiden listaan: mikä on lähinnä merkitykseltään.",
-          "2": "Klikkaa \"Näytä\" sopivassa kortissa — lue koko pohja."
-        },
+        "instructions": [
+          "Lue nykyinen tehtäväsi.",
+          "Vertaa kehotteiden listaan: mikä on lähinnä merkitykseltään.",
+          "Klikkaa \"Näytä\" sopivassa kortissa — lue koko pohja."
+        ],
         "example": "Tehtäväni: \"Valmistele Linear-tiketti tuotekatalogin suodattimen lisäämiseksi\".\nSopiva kehote: \"Valmistele tehtävä kehittäjälle\".",
         "validate": "Valittu yksi kehote, joka sopii tarkasti tehtävään.",
         "tip": "Jos mikään ei sovi — se on signaali luoda OMA kehotepohja kirjastoon."
       },
-      "rp-3": {
-        "title": "Kopioi ja mukauta kontekstiin",
-        "time": "3 min",
+      "s3": {
+        "title": "Kopioi ja sijoita oma kontekstisi",
+        "time": "",
         "why": "Kopioida \"sellaisenaan\" tuottaa generic-tuloksen. Konkretian sijoittaminen on juuri se taito.",
-        "instructions": {
-          "0": "Paina \"Kopioi\" — teksti menee leikepöydälle.",
-          "1": "Liitä Claudeen.",
-          "2": "Sijoita omat arvosi paikkamerkkien [...] tilalle.",
-          "3": "Lähetä."
-        },
+        "instructions": [
+          "Paina \"Kopioi\" — teksti menee leikepöydälle.",
+          "Liitä Claudeen.",
+          "Sijoita omat arvosi paikkamerkkien [...] tilalle.",
+          "Lähetä."
+        ],
         "example": "OLI (paikkamerkit):\nIdea: [lyhyt kuvaus]\nLiiketoiminnan konteksti: [miksi tätä tarvitaan]\n\nNYT (sinun tehtäväsi):\nIdea: lisää brändisuodatin tuotekatalogiin\nLiiketoiminnan konteksti: käyttäjät eksyvät 500 tuotteen sivulla; konversio ostoskoriin tippui 8 % kuukaudessa",
         "validate": "Kehote lähetetty, Clauden vastaus on konkreettinen, sidottu sinun kaseihin.",
         "tip": "Älä jätä paikkamerkkejä [...] lopulliseen kehotteeseen. Tämä on yleisin virhe — ja Claude vastaa silloin yleisesti."
       },
-      "rp-4": {
+      "s4": {
+        "title": "Hienosäädä kehote itsellesi",
+        "time": "",
+        "why": "Valmis pohja antaa keskimääräisen vastauksen kaikille. Sen säätäminen omaan muotoosi, sävyysi ja vaatimuksiisi tekee siitä vastauksen juuri sinulle.",
+        "instructions": [
+          "Arvioi ensimmäinen vastaus: mikä on pielessä — muoto, pituus, sävy, syvyys?",
+          "Lisää kehotteeseen selkeät vaatimukset: \"vastaa taulukkona\", \"lyhyesti, 5 kohtaa\", \"asiallinen sävy, ei täytettä\".",
+          "Muuta yhtä parametria kerrallaan ja aja uudelleen — niin näet, mikä todella toimi.",
+          "Lopeta iterointi, kun vastaus tyydyttää sinua luotettavasti."
+        ],
+        "example": "Lisättiin auditointipohjaan:\n\"Vastauksen muoto: 3-sarakkeinen taulukko — Ongelma | Vaikutus | Mitä tehdä. Enintään 7 riviä. Sävy — asiallinen, ei johdantoja.\"\n→ Vastauksesta tuli ennustettava ja heti tikettiin liitettävä.",
+        "validate": "Sinulla on versio kehotteesta, joka tuottaa luotettavasti vastauksen tarvitsemassasi muodossa ja sävyssä.",
+        "tip": "Arvokkaimmat lisäykset koskevat tulosteen muotoa ja pituusrajoja. Ne säästävät eniten aikaa vastauksen muokkaamisesta."
+      },
+      "s5": {
         "title": "Tallenna parannettu versio omaan kirjastoosi",
-        "time": "2 min",
+        "time": "",
         "why": "Mukauttamasi kehotteet ovat pääpääomasi. Älä menetä niitä.",
-        "instructions": {
-          "0": "Avaa oma kirjastosi (Notion / Obsidian / tekstitiedosto).",
-          "1": "Tallenna mukautettu kehote tagilla \"mukautus: <oma kontekstisi>\".",
-          "2": "Viikon kuluttua — käy läpi: mikä toimii, mikä ei."
-        },
+        "instructions": [
+          "Avaa oma kirjastosi (Notion / Obsidian / tekstitiedosto).",
+          "Tallenna mukautettu kehote tagilla \"mukautus: <oma kontekstisi>\".",
+          "Lisää pohja kirjanmerkkeihin Cmd+K:ssa, jotta se on käden ulottuvilla.",
+          "Viikon kuluttua — käy läpi: mikä toimii, mikä ei."
+        ],
         "example": "# Prompt library\n\n## /dev-task — omaan projektiin\n[mukautettu kehote]\n\nMuistiinpanot:\n- Toimii hyvin feature-tiketeille\n- Bug-tiketeille pitää lisätä repro steps -askel",
-        "validate": "Sinulla on henkilökohtainen kehotekirjasto vähintään yhdellä mukautetulla pohjalla.",
-        "tip": "6 kuukauden kuluttua kirjastosi on tärkein tuottavuuspääomasi. Älä aliarvioi. Jaa tiimille."
+        "validate": "Sinulla on henkilökohtainen kehotekirjasto vähintään yhdellä mukautetulla pohjalla, ja se on kirjanmerkeissä.",
+        "tip": "6 kuukauden kuluttua kirjastosi on tärkein tuottavuuspääomasi. Älä aliarvioi."
+      },
+      "s6": {
+        "title": "Käytä uudelleen ja jaa tiimille",
+        "time": "",
+        "why": "Yksi tallennettu kehote säästää minuutteja. Kehote, jota koko tiimi käyttää, säästää tunteja ja yhtenäistää laadun ilman keskusteluja.",
+        "instructions": [
+          "Seuraavassa samankaltaisessa tehtävässä — avaa kehote kirjanmerkeistä uudelleen etsimisen sijaan.",
+          "Vaihda vain konteksti uuteen kaseihin — rakenne on jo testattu.",
+          "Jaa toimivat pohjat kollegoille (yhteinen kanta / kanava).",
+          "Kerran kuussa siivoa kirjasto: poista vanhentunut, nosta paras ylös."
+        ],
+        "example": "Tiimi pitää yhteistä \"Osaston kehotteet\" -tiedostoa:\n- /dev-task — tehtävien muotoilu kehittäjille\n- /audit — asiantuntija-auditointi ominaisuudelle\nUusi työntekijä ottaa valmiin pohjan ja tuottaa heti samanlaatuisia vastauksia kuin seniorit.",
+        "validate": "Käytit tallennettua kehotetta uudelleen vähintään kerran ja jaoit vähintään yhden pohjan kollegalle tai tiimille.",
+        "tip": "10 kertaa uudelleenkäytetty kehote maksaa itsensä moninkertaisesti takaisin. Jaa — ja tiimin laatu nousee itsestään."
       }
     },
     "trigger": "Tulos tarvitaan heti — ei aikaa opiskella prompt engineeringiä alusta.",
@@ -1688,7 +1775,8 @@
     "outputs": [
       "Valmis prompt täytetyillä paikoilla",
       "Strukturoitu Clauden vastaus pohjan mukaan",
-      "Aloituskirjasto «top 10 promptia»"
+      "Itsellesi hienosäädetty versio kehotteesta",
+      "Henkilökohtainen uudelleenkäytettävä kirjasto «top 10 promptia»"
     ],
     "tools": [
       {
@@ -1712,101 +1800,114 @@
     "totalTime": "8 min",
     "whatItIs": "Aivan ensimmäinen oppitunti — ennen malleja, kontekstia ja kehotteita. Mikä Claude on, miten se eroaa muista AI-työkaluista, mitä odottaa ja millaisia virheellisiä odotuksia välttää. Sopii henkilölle, joka kuulee Claudesta ensimmäistä kertaa.",
     "approach": "Älä yritä heti kirjoittaa monimutkaista kehotetta. Tee 3 erilaista pyyntöä (kysymys, tehtävä, luova) ja katso, miten Claude reagoi. Tutustuminen on odotusten kalibrointia, ei tuloksen saavuttamista.",
-    "outcomes": {
-      "0": "Ymmärrät että Claude on keskusteleva AI-malli, ei hakukone",
-      "1": "Tiedät kuka Anthropic on ja miksi heille Constitutional AI",
-      "2": "Erotat Clauden vahvuudet ja sen tyypilliset epäonnistumiset",
-      "3": "Sinulla on realistiset odotukset ensimmäisestä keskustelusta"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Ymmärrät että Claude on keskusteleva AI-malli, ei hakukone",
+      "Tiedät kuka Anthropic on ja miksi heille Constitutional AI",
+      "Erotat Clauden vahvuudet ja sen tyypilliset epäonnistumiset",
+      "Sinulla on realistiset odotukset ensimmäisestä keskustelusta"
+    ],
+    "applyIn": [
+      {
         "title": "Ensikohtaaminen",
-        "description": "Avasit claude.ai:n, kirjoitit \"hei\" — nyt tiedät mitä tehdä seuraavaksi ja mitä EI odottaa."
+        "description": "Avasit [[node:pl-web-setup|claude.ai]]:n, kirjoitit \"hei\" — nyt tiedät mitä tehdä seuraavaksi ja mitä EI odottaa."
       },
-      "1": {
+      {
         "title": "Päätöksenteko",
         "description": "Kannattaako Claudea ylipäätään kokeilla työssäsi — tämän oppitunnin jälkeen sinulla on kriteerit."
       },
-      "2": {
+      {
         "title": "Selittäminen kollegoille",
         "description": "Osaat 5 minuutissa kertoa jollekulle, mikä Claude on, ilman vesitystä."
       }
-    },
-    "pitfalls": {
-      "0": "Odottaa että Claude tietää \"kaiken\" — sillä on knowledge cutoff.",
-      "1": "Pitää vastausta faktana — mallit erehtyvät joskus varmoin äänin.",
-      "2": "Verrata Google-hakuun — nämä ovat eri työkaluja eri vahvuuksilla."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Odottaa että Claude tietää \"kaiken\" — sillä on knowledge cutoff.",
+      "Pitää vastausta faktana — mallit erehtyvät joskus varmoin äänin.",
+      "Verrata Google-hakuun — nämä ovat eri työkaluja eri vahvuuksilla."
+    ],
+    "exercises": [
+      {
         "question": "Kysy Claudelta yhdellä lauseella: \"Mitä osaat ja missä on rajoituksesi?\". Vertaa vastausta omiin odotuksiisi.",
         "hint": "Hyvä vastaus on lyhyt ja rehellinen, ilman markkinointia. Jos saat \"voin tehdä kaiken\" — pyydä konkretiaa."
       },
-      "1": {
+      {
         "question": "Esitä 3 pyyntöä: faktakysymys, luova tehtävä, yksinkertaisen dokumentin erittely. Vertaile laatua.",
-        "hint": "Huomaat — Claude on vahva analyysissä ja muotoiluissa, heikompi tuoreissa faktoissa (ilman Web search:ia)."
+        "hint": "Huomaat — Claude on vahva analyysissä ja muotoiluissa, heikompi tuoreissa faktoissa (ilman [[node:cap-search|web search]]:ia)."
       }
-    },
+    ],
     "steps": {
-      "in-1": {
+      "s1": {
         "title": "Avaa claude.ai selaimessa",
-        "time": "1 min",
+        "time": "",
         "why": "Aivan ensimmäinen sisäänkäynti. Ilman tiliä mitään ei voi kokeilla.",
-        "instructions": {
-          "0": "Mene osoitteeseen claude.ai.",
-          "1": "Rekisteröidy sähköpostilla tai OAuth:lla.",
-          "2": "Sulje aloituspopupit — käymme oppitunnin läpi rakenteellisesti."
-        },
+        "instructions": [
+          "Mene osoitteeseen claude.ai.",
+          "Rekisteröidy sähköpostilla tai OAuth:lla.",
+          "Sulje aloituspopupit — käymme oppitunnin läpi rakenteellisesti."
+        ],
         "validate": "Näet tyhjän viestikentän ja tervehdyksen Claudelta."
       },
-      "in-2": {
+      "s2": {
         "title": "Esitä ensimmäinen \"faktakysymys\"",
-        "time": "2 min",
+        "time": "",
         "why": "Näin näet Clauden vahvuuden — rakenteelliset selitykset.",
-        "instructions": {
-          "0": "Kirjoita: \"Selitä yhdessä kappaleessa, mikä HTTP-protokolla on ja mihin sitä käytetään\".",
-          "1": "Lue vastaus.",
-          "2": "Huomaa: Claude vastaa rakenteellisesti, ilman \"lyriikkaa\"."
-        },
+        "instructions": [
+          "Kirjoita: \"Selitä yhdessä kappaleessa, mikä HTTP-protokolla on ja mihin sitä käytetään\".",
+          "Lue vastaus.",
+          "Huomaa: Claude vastaa rakenteellisesti, ilman \"lyriikkaa\"."
+        ],
         "prompt": "Selitä yhdessä kappaleessa, mikä HTTP-protokolla on ja mihin sitä käytetään. Ilman turhia yksityiskohtia.",
         "validate": "Sait lyhyen, konkreettisen vastauksen — ilman pitkää johdantoa.",
         "tip": "Claude on hyvä selittämään. Käytä sitä \"opettajana pyynnöstä\" mistä tahansa aiheesta."
       },
-      "in-3": {
+      "s3": {
         "title": "Kysy \"tänään\"-kysymys",
-        "time": "1 min",
+        "time": "",
         "why": "Nyt näet rajoituksen — knowledge cutoff:in.",
-        "instructions": {
-          "0": "Kirjoita: \"Mitä uutisia teknologiamaailmassa on viimeisen viikon aikana?\".",
-          "1": "Huomaa: Claude sanoo \"en tiedä\" tai \"knowledge cutoff:ini on päivämäärä X\".",
-          "2": "Tämä on OK — ei bugi, vaan mallin tunnettu ominaisuus."
-        },
+        "instructions": [
+          "Kirjoita: \"Mitä uutisia teknologiamaailmassa on viimeisen viikon aikana?\".",
+          "Huomaa: Claude sanoo \"en tiedä\" tai \"knowledge cutoff:ini on päivämäärä X\".",
+          "Tämä on OK — ei bugi, vaan mallin tunnettu ominaisuus."
+        ],
         "prompt": "Mitä uutisia teknologiamaailmassa on viimeisen viikon aikana?",
         "validate": "Claude mainitsee selvästi cutoff:in tai varoittaa vanhentumisesta.",
-        "tip": "Tuoreelle tiedolle tarvitaan Web search (osio \"Ominaisuudet\")."
+        "tip": "Tuoreelle tiedolle tarvitaan [[node:cap-search|web search]] (osio \"Ominaisuudet\")."
       },
-      "in-4": {
+      "s4": {
         "title": "Lataa tiedosto ja keskustele siitä",
-        "time": "2 min",
+        "time": "",
         "why": "Nyt näet kontekstin voiman — Claude työskentelee sinun datasi kanssa, ei vain koulutusdatan.",
-        "instructions": {
-          "0": "Vedä keskusteluun mikä tahansa PDF tai Word-dokumentti (brändiohje, artikkeli, raportti).",
-          "1": "Kirjoita: \"Tee yhteenveto 5 kohdassa\".",
-          "2": "Lue vastaus. Huomaa — Claude lainaa konkreettisia osia dokumentista."
-        },
+        "instructions": [
+          "Vedä keskusteluun mikä tahansa PDF tai Word-dokumentti (brändiohje, artikkeli, raportti).",
+          "Kirjoita: \"Tee yhteenveto 5 kohdassa\".",
+          "Lue vastaus. Huomaa — Claude lainaa konkreettisia osia dokumentista."
+        ],
         "prompt": "Tee yhteenveto tästä dokumentista 5 kohdassa prioriteetin mukaan.",
         "validate": "Vastaus on sidottu konkreettiseen sisältöön, ei yleinen."
       },
-      "in-5": {
+      "s5": {
         "title": "Vertaa hakuun",
-        "time": "2 min",
+        "time": "",
         "why": "Odotusten kalibrointiin: missä Claude on vahvempi, missä haku.",
-        "instructions": {
-          "0": "Kirjaa kaksi tapausta omasta työstäsi.",
-          "1": "Mieti: kumpi ratkeaa paremmin Googlella, kumpi Claudella.",
-          "2": "Sääntö: Google — faktoille ja linkeille. Claude — erittelyyn, synteesiin, muotoiluihin."
-        },
+        "instructions": [
+          "Kirjaa kaksi tapausta omasta työstäsi.",
+          "Mieti: kumpi ratkeaa paremmin Googlella, kumpi Claudella.",
+          "Sääntö: Google — faktoille ja linkeille. Claude — erittelyyn, synteesiin, muotoiluihin."
+        ],
         "validate": "Sinulla on päässäsi selvä jako: milloin menet Googleen, milloin Claudeen."
+      },
+      "s6": {
+        "title": "Valitse seuraava askeleesi oppimisessa",
+        "time": "",
+        "why": "Tutustuminen on ohi — tärkeää ei ole pysähtyä, vaan heti hahmottaa, mihin suuntaan kasvaa seuraavaksi.",
+        "instructions": [
+          "Valitse yksi todellinen tehtävä viikostasi, jossa Claude voisi auttaa.",
+          "Päätä mistä jatkat: tutustu [[node:cap-search|web search]]:iin, jos tarvitset tuoretta tietoa, tai ota mikä tahansa seuraava Atlas-oppitunti.",
+          "Kirjaa 1 konkreettinen ensiaskel ja tee se tänään — kun kiinnostus on vielä lämmin."
+        ],
+        "prompt": "Tässä todellinen tehtävä työstäni: {{tehtävä}}. Kerro mistä aloittaa ja mitkä 3 ensimmäistä askelta ottaa, jotta ratkaisen sen avullasi.",
+        "validate": "Sinulla on yksi valittu tehtävä ja selkeä seuraava askel — mitä juuri nyt opit tai teet seuraavaksi.",
+        "tip": "Paras oppiminen tapahtuu omalla todellisella tehtävällä, ei abstrakteilla esimerkeillä."
       }
     },
     "trigger": "Kuulet Claudesta ensimmäistä kertaa etkä näe eroa ChatGPT:hen/Geminiin.",
@@ -1838,97 +1939,115 @@
     "totalTime": "10 min",
     "whatItIs": "Käytännön opas Clauden tariffeihin. Mitä kuhunkin sisältyy, mitkä rajat, kenelle mikäkin sopii. Ilman markkinointia — todellisten käyttötapausten perusteella.",
     "approach": "Aloita Free:llä ja käytä viikko \"diagnostiikkana\": törmäsit rajaan — Pro. Et törmännyt — Free riittää. Älä yritä \"arvata\" oikeaa planeja — käytä viikko ilmaisella, sitten päätä.",
-    "outcomes": {
-      "0": "Tiedät mitä Free / Pro / Team / Enterprise sisältää",
-      "1": "Ymmärrät miten 5 tunnin ja viikon rajat toimivat",
-      "2": "Osaat ennustaa, kuluttaako tehtäväsi Free:n loppuun",
-      "3": "Valitsit itsellesi planeja seuraaviksi 1–3 kuukaudeksi"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Tiedät mitä Free / Pro / Team / Enterprise sisältää",
+      "Ymmärrät miten 5 tunnin ja viikon rajat toimivat",
+      "Osaat ennustaa, kuluttaako tehtäväsi Free:n loppuun",
+      "Valitsit itsellesi planeja seuraaviksi 1–3 kuukaudeksi"
+    ],
+    "applyIn": [
+      {
         "title": "Tilaus itselle",
         "description": "Ymmärrät, kannattaako Pro 20 $/kk omalle todelliselle kuormallesi."
       },
-      "1": {
+      {
         "title": "Tiimi",
         "description": "Tiedät, milloin siirtyä yksilöllisistä Pro:ista Team:iin (shared Projects)."
       },
-      "2": {
+      {
         "title": "Budjetti",
         "description": "Osaat perustella budjetin esihenkilölle: \"käytän X kertaa päivässä, Pro on tarpeen\"."
       }
-    },
-    "pitfalls": {
-      "0": "Ottaa heti Team kahdelle — ylimaksua ilman hyötyä.",
-      "1": "Sivuuttaa viikkoraja — törmäät lauantaina ja olet ilman Claudea maanantaihin asti.",
-      "2": "Maksaa Pro:sta, jos käytät Claudea kerran viikossa — Free riittää."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Ottaa heti Team kahdelle — ylimaksua ilman hyötyä.",
+      "Sivuuttaa viikkoraja — törmäät lauantaina ja olet ilman Claudea maanantaihin asti.",
+      "Maksaa Pro:sta, jos käytät Claudea kerran viikossa — Free riittää."
+    ],
+    "exercises": [
+      {
         "question": "Mittaa Clauden \"kuormasi\" viikolta: montako keskustelua päivässä, onko pitkiä sessioita?",
         "hint": "< 5 keskustelua / päivä ja lyhyitä — Free. > 20 / päivä ja pitkiä — varmasti Pro."
       },
-      "1": {
+      {
         "question": "Kun törmäät Free:n rajaan ensimmäisen kerran — kirjaa hetki. Tämä on baseline päätökselle Pro:sta.",
         "hint": "Jos törmäsit 2–3 päivässä — Pro on tarpeen. Jos kuukaudessakaan et törmännyt — Free riittää."
       }
-    },
+    ],
     "steps": {
-      "pl-1": {
+      "s1": {
+        "id": "s1",
         "title": "Avaa plans-sivu",
-        "time": "1 min",
+        "time": "",
         "why": "Jotta näet ajantasaiset hinnat ja rajat — ne voivat muuttua.",
-        "instructions": {
-          "0": "Mene osoitteeseen claude.ai/upgrade tai klikkaa profiilia → Plans.",
-          "1": "Lue Free:n, Pro:n, Team:in sisältö.",
-          "2": "Älä osta vielä — käy oppitunti ensin."
-        },
+        "instructions": [
+          "Mene osoitteeseen [[node:pl-web-setup|claude.ai]]/upgrade tai klikkaa profiilia → Plans.",
+          "Lue Free:n, Pro:n, Team:in sisältö.",
+          "Älä osta vielä — käy oppitunti ensin."
+        ],
         "validate": "Näet nykyiset hinnat ja kunkin planeja ominaisuuksien listan."
       },
-      "pl-2": {
+      "s2": {
+        "id": "s2",
         "title": "Ymmärrä ero Free vs Pro",
-        "time": "2 min",
+        "time": "",
         "why": "Yleisin päätös on näiden kahden välillä.",
-        "instructions": {
-          "0": "Free: rajoitettu mallivalikoima (yleensä ilman Opusta), matalat viestirajat päivässä.",
-          "1": "Pro: kaikki mallit Opus mukaan lukien, 5 tunnin rajat päivittäisten sijaan, Projects.",
-          "2": "Useimmille tärkeintä: pääsy Opukseen + Projects."
-        },
+        "instructions": [
+          "Free: rajoitettu mallivalikoima (yleensä ilman Opusta), matalat viestirajat päivässä.",
+          "Pro: kaikki mallit Opus mukaan lukien, 5 tunnin rajat päivittäisten sijaan, Projects.",
+          "Useimmille tärkeintä: pääsy Opukseen + Projects."
+        ],
         "validate": "Osaat sanoa ilman vihjeitä: \"Pro antaa minulle X, Y, Z\".",
         "tip": "Jos olet opiskelija — Anthropic:lla on joskus opiskelija-alennus. Tarkista."
       },
-      "pl-3": {
+      "s3": {
+        "id": "s3",
         "title": "Mittaa viikkokuormasi",
-        "time": "3 min",
+        "time": "",
         "why": "Objektiivinen mittaus näyttää, mikä planeja oikeasti tarvitaan.",
-        "instructions": {
-          "0": "Viimeisten 7 päivän aikana — montako kertaa olet kysynyt AI:lta (Claude, ChatGPT, mikä tahansa)?",
-          "1": "Näistä — kuinka monet olivat \"vakavia\" tehtäviä (>5 viestiä keskustelussa)?",
-          "2": "Kirjaa luku. Tämä on baseline."
-        },
+        "instructions": [
+          "Viimeisten 7 päivän aikana — montako kertaa olet kysynyt AI:lta (Claude, ChatGPT, mikä tahansa)?",
+          "Näistä — kuinka monet olivat \"vakavia\" tehtäviä (>5 viestiä keskustelussa)?",
+          "Kirjaa luku. Tämä on baseline."
+        ],
         "validate": "Sinulla on luku \"N keskustelua / viikko\" ja \"M vakavaa keskustelua / viikko\".",
         "tip": "Jos N > 15 ja M > 5 — varmasti Pro. Jos N < 5 — Free riittää."
       },
-      "pl-4": {
+      "s4": {
+        "id": "s4",
+        "title": "Valitse pinta tehtävälle",
+        "time": "",
+        "why": "Sama tariffi toimii useassa paikassa — web, Desktop, Code, API. Oikea pinta säästää aikaa eikä vaadi lisämaksua.",
+        "instructions": [
+          "Nopea kysymys, teksti tai kuva puhelimesta tai läppäristä → claude.ai (web) tai mobiilisovellus.",
+          "Pidät Clauden jatkuvasti lähellä, raahaat tiedostoja, haluat nopean pikanäppäinkäynnistyksen → Desktop-sovellus.",
+          "Työskentelet koodin ja projektin tiedostojen kanssa suoraan terminaalissa → Claude Code.",
+          "Upotat Clauden omaan tuotteeseesi tai skriptiin, tarvitset automaatiota → API Anthropic Console:n kautta."
+        ],
+        "validate": "Osaat nimetä, millä pinnalla hoidat 2-3 tyypillistä tehtävääsi."
+      },
+      "s5": {
+        "id": "s5",
         "title": "Päätä Team:istä",
-        "time": "2 min",
+        "time": "",
         "why": "Team on mielekäs, kun jaat Projects:eja.",
-        "instructions": {
-          "0": "Jos työskentelet tiimissä ≥ 3 hengen kanssa ja olette usein samojen aiheiden parissa — harkitse Team:iä.",
-          "1": "Team antaa shared Projects:eja: yksi Custom Instructions, yksi Knowledge.",
-          "2": "Laske: 3+ ihmistä × 20 $ (Pro) = 60 $+. Team maksaa suunnilleen saman, mutta jaettuna."
-        },
+        "instructions": [
+          "Jos työskentelet tiimissä ≥ 3 hengen kanssa ja olette usein samojen aiheiden parissa — harkitse Team:iä.",
+          "Team antaa shared Projects:eja: yksi [[node:instructions|Custom Instructions]], yksi Knowledge.",
+          "Laske: 3+ ihmistä × 20 $ (Pro) = 60 $+. Team maksaa suunnilleen saman, mutta jaettuna."
+        ],
         "validate": "Ymmärrät, milloin Team maksaa vaivan ja milloin yksilölliset Pro:t ovat paremmat."
       },
-      "pl-5": {
+      "s6": {
+        "id": "s6",
         "title": "Tee päätös ja kokeile",
-        "time": "2 min",
+        "time": "",
         "why": "Ilman tekoa tieto jää teoriaksi.",
-        "instructions": {
-          "0": "Jos N < 5 viikossa → pysy Free:ssä, mittaa vielä viikko.",
-          "1": "Jos N > 15 → päivitä Pro:hon nyt.",
-          "2": "Jos olet tiimissä → keskustele Team:istä kollegoiden kanssa."
-        },
+        "instructions": [
+          "Jos N < 5 viikossa → pysy Free:ssä, mittaa vielä viikko.",
+          "Jos N > 15 → päivitä Pro:hon nyt.",
+          "Jos olet tiimissä → keskustele Team:istä kollegoiden kanssa."
+        ],
         "validate": "Päätös tehty: \"pysyn Free:ssä N viikkoa\" / \"otan Pro:n nyt\" / \"keskustelen Team:istä\"."
       }
     },
@@ -2894,111 +3013,116 @@
     "totalTime": "10 min",
     "whatItIs": "Käytännön minikurssi: kirjoitat 5 komentoa peräkkäin elävässä terminaalissa ja näet, miten ne toimivat. Ei teoriaa — vain näppäimet ja tulokset.",
     "approach": "Älä lue eteenpäin. Suorita ensin komento, katso tuloste, lue sitten selitys. Näin lihasmuisti aktivoituu ensimmäisellä kerralla.",
-    "outcomes": {
-      "0": "Tiedät, missä olet tiedostojärjestelmässä (pwd)",
-      "1": "Näet minkä tahansa kansion sisällön (ls / dir)",
-      "2": "Luot kansioita komennolla (mkdir)",
-      "3": "Liikut kansiopuussa (cd / cd .. / cd ~)",
-      "4": "Et pelkää kokeilla omassa home:ssasi"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Tiedät, missä olet tiedostojärjestelmässä (pwd)",
+      "Näet minkä tahansa kansion sisällön (ls / dir)",
+      "Luot kansioita komennolla (mkdir)",
+      "Liikut kansiopuussa (cd / cd .. / cd ~)",
+      "Et pelkää kokeilla omassa home:ssasi"
+    ],
+    "applyIn": [
+      {
         "title": "Ennen Claude Code:n käynnistystä",
         "description": "Jokainen istunto alkaa cd:llä haluttuun kansioon. Ilman terminaalisanastoa — ei mitenkään."
       },
-      "1": {
+      {
         "title": "Mikä tahansa ohje internetissä",
         "description": "\"Avaa terminaali ja kirjoita...\" — ei enää aiheuta paniikkia."
       },
-      "2": {
+      {
         "title": "Minkä tahansa työkalun asennus",
         "description": "npm, brew, pip — kaikki terminaalin kautta. Yksi sanasto — kymmeniä työkaluja."
       }
-    },
-    "pitfalls": {
-      "0": "Hypätä eteenpäin vaiheissa suorittamatta — teoria ilman käytäntöä ei jää mieleen.",
-      "1": "Yrittää työskennellä /Applications- tai /System-kansiossa — siellä tarvitaan oikeudet. Käytä home:a (~/).",
-      "2": "Sivuuttaa virheet — terminaali aina kertoo, mikä meni pieleen. Lue ja korjaa."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Hypätä eteenpäin vaiheissa suorittamatta — teoria ilman käytäntöä ei jää mieleen.",
+      "Yrittää työskennellä /Applications- tai /System-kansiossa — siellä tarvitaan oikeudet. Käytä home:a (~/).",
+      "Sivuuttaa virheet — terminaali aina kertoo, mikä meni pieleen. Lue ja korjaa."
+    ],
+    "exercises": [
+      {
         "question": "Suorituksen jälkeen — avaa terminaali uudelleen, siirry ~/projects/ ja tee pwd + ls. Vain muistista.",
         "hint": "Jos unohdit komennon — katso takaisin vaiheisiin. Muistaminen on normaalia."
       },
-      "1": {
+      {
         "question": "Luo sisäkkäinen rakenne: ~/projects/test/2026/january/. Käytä yhtä mkdir -p:tä.",
         "hint": "Lippu -p luo kaikki vanhemmat kansiot kerralla."
       }
-    },
+    ],
     "steps": {
-      "tt-1": {
+      "s1": {
+        "id": "s1",
         "title": "pwd — selvitä, missä olet nyt",
-        "time": "2 min",
+        "time": "",
         "why": "Terminaali on aina \"jossakin\" kansiossa. Selvittää, missä, on päivän ensimmäinen komento.",
-        "instructions": {
-          "0": "Avaa terminaali (jos ei vielä auki): macOS Cmd+Space → \"Terminal\"; Windows — PowerShell.",
-          "1": "Kirjoita: `pwd` (mac/linux/PowerShell) → paina Enter.",
-          "2": "Katso tuloste. Tämä on polku kansioon, jossa olet nyt."
-        },
+        "instructions": [
+          "Avaa terminaali (jos ei vielä auki): macOS Cmd+Space → \"Terminal\"; Windows — PowerShell.",
+          "Kirjoita: `pwd` (mac/linux/PowerShell) → paina Enter.",
+          "Katso tuloste. Tämä on polku kansioon, jossa olet nyt."
+        ],
         "prompt": "pwd",
         "example": "Mac: /Users/denisa\nWindows: C:\\Users\\denisa\nYleensä terminaalin käynnistyessä olet omassa home:ssasi — tämä on normaalia.",
         "validate": "Näet rivin muotoa /Users/<nimi> (mac) tai C:\\Users\\<nimi> (Windows).",
         "tip": "pwd = \"print working directory\". Mitä yksinkertaisempi komento — sitä useammin käytät. Tätä — kirjaimellisesti joka kerta."
       },
-      "tt-2": {
+      "s2": {
+        "id": "s2",
         "title": "ls / dir — katso, mitä ympärillä on",
-        "time": "2 min",
+        "time": "",
         "why": "Ilman ls:ää olet sokkona. ls näyttää, mitä kansioita ja tiedostoja on nykyisessä.",
-        "instructions": {
-          "0": "macOS / Linux: kirjoita `ls` → Enter.",
-          "1": "Windows (PowerShell): `ls` toimii myös. Vanha cmd.exe — `dir`.",
-          "2": "Katso listaa. Tämä on home-kansiosi sisältö: Documents, Downloads, Desktop, jne."
-        },
+        "instructions": [
+          "macOS / Linux: kirjoita `ls` → Enter.",
+          "Windows (PowerShell): `ls` toimii myös. Vanha cmd.exe — `dir`.",
+          "Katso listaa. Tämä on home-kansiosi sisältö: Documents, Downloads, Desktop, jne."
+        ],
         "prompt": "ls",
         "example": "Mac/Linux-tuloste:\nApplications  Desktop  Documents  Downloads  Movies  Music  Pictures  projects  Public\n\nWindows-tuloste (dir):\n  <DIR>  Documents\n  <DIR>  Downloads\n  ...",
         "validate": "Näet listan kansioista: vähintään Desktop, Documents, Downloads.",
         "tip": "`ls -la` (mac) näyttää piilotiedostot (alkavat .:llä) ja yksityiskohdat. Hyödyllistä myöhemmin, kun etsit .claude/-kansiota."
       },
-      "tt-3": {
+      "s3": {
+        "id": "s3",
         "title": "mkdir + cd — luo kansio ja astu sisään",
-        "time": "2 min",
+        "time": "",
         "why": "Tämä on koko setti \"aloittaa uusi projekti\": luo kansio → astu sisään.",
-        "instructions": {
-          "0": "Luo testikansio: `mkdir tutorial-sandbox` → Enter.",
-          "1": "Tarkista, että ilmestyi: `ls` → pitää olla listalla.",
-          "2": "Astu sisään: `cd tutorial-sandbox` → Enter.",
-          "3": "Tarkista, että olet sisällä: `pwd` → pitää päättyä /tutorial-sandbox:iin."
-        },
+        "instructions": [
+          "Luo testikansio: `mkdir tutorial-sandbox` → Enter.",
+          "Tarkista, että ilmestyi: `ls` → pitää olla listalla.",
+          "Astu sisään: `cd tutorial-sandbox` → Enter.",
+          "Tarkista, että olet sisällä: `pwd` → pitää päättyä /tutorial-sandbox:iin."
+        ],
         "prompt": "mkdir tutorial-sandbox\ncd tutorial-sandbox\npwd",
         "example": "Kolmen komennon jälkeen:\n$ pwd\n/Users/denisa/tutorial-sandbox",
         "validate": "pwd näyttää polun, joka päättyy /tutorial-sandbox:iin. Kansio on luotu ja olet siinä.",
         "tip": "Tab — paras ystäväsi. Aloita kirjoittaa `cd tut` → paina Tab → terminaali täydentää muotoon `cd tutorial-sandbox/`. Säästää 90 % kirjoittamisesta."
       },
-      "tt-4": {
+      "s4": {
+        "id": "s4",
         "title": "cd .. ja cd ~ — navigointi takaisin",
-        "time": "2 min",
+        "time": "",
         "why": "Osata palata on yhtä tärkeää kuin astua sisään. Tämä on vakuutus \"minne minä jouduin\" -tilannetta vastaan.",
-        "instructions": {
-          "0": "Olet nyt tutorial-sandbox:issa. Kirjoita `cd ..` → Enter. (Kaksi pistettä = \"kansio ylempänä\".)",
-          "1": "Tarkista: `pwd` → olet taas home:ssa.",
-          "2": "Mene takaisin: `cd tutorial-sandbox` → tarkista pwd.",
-          "3": "Mistä tahansa kohdasta voi palata kotiin yhdellä komennolla: `cd ~` (tai vain `cd`)."
-        },
+        "instructions": [
+          "Olet nyt tutorial-sandbox:issa. Kirjoita `cd ..` → Enter. (Kaksi pistettä = \"kansio ylempänä\".)",
+          "Tarkista: `pwd` → olet taas home:ssa.",
+          "Mene takaisin: `cd tutorial-sandbox` → tarkista pwd.",
+          "Mistä tahansa kohdasta voi palata kotiin yhdellä komennolla: `cd ~` (tai vain `cd`)."
+        ],
         "prompt": "cd ..\npwd\ncd ~\npwd",
         "example": "$ cd ..\n$ pwd\n/Users/denisa\n$ cd ~\n$ pwd\n/Users/denisa",
         "validate": "Ymmärrät: `..` = ylöspäin tasolla, `~` = kotiin, mikä tahansa polku = konkreettinen paikka.",
         "tip": "Windows:issa tilde (~) toimii myös PowerShell:issä. `cd` ilman argumentteja palauttaa aina home:en."
       },
-      "tt-5": {
+      "s5": {
+        "id": "s5",
         "title": "Vahvistus — sisäkkäinen rakenne yhdellä komennolla",
-        "time": "2 min",
+        "time": "",
         "why": "Todellinen tehtävä: luoda ~/projects/<nimi>/notes/ kerralla. `mkdir -p` osaa tämän.",
-        "instructions": {
-          "0": "Mistä tahansa kirjoita: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
-          "1": "Astu sisään: `cd ~/projects/my-first-project` → tarkista `ls` (pitää olla notes-kansio).",
-          "2": "Voit poistaa testin: `cd ~` → sitten `rm -r tutorial-sandbox` (Mac/Linux) tai `Remove-Item -Recurse tutorial-sandbox` (PowerShell). Tämä poistaa kansion peruuttamattomasti.",
-          "3": "Älä poista ~/projects/my-first-project — sitä tarvitaan first-project-oppitunnissa."
-        },
+        "instructions": [
+          "Mistä tahansa kirjoita: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
+          "Astu sisään: `cd ~/projects/my-first-project` → tarkista `ls` (pitää olla notes-kansio).",
+          "Voit poistaa testin: `cd ~` → sitten `rm -r tutorial-sandbox` (Mac/Linux) tai `Remove-Item -Recurse tutorial-sandbox` (PowerShell). Tämä poistaa kansion peruuttamattomasti.",
+          "Älä poista ~/projects/my-first-project — sitä tarvitaan first-project-oppitunnissa."
+        ],
         "prompt": "mkdir -p ~/projects/my-first-project/notes\ncd ~/projects/my-first-project\nls",
         "example": "$ ls\nnotes",
         "validate": "Näet notes-kansion ~/projects/my-first-project:n sisällä. Rakenne on luotu yhdellä komennolla.",
@@ -3008,6 +3132,26 @@
           "rm doesn't work on Windows": "rm ei toimi Windowsissa",
           "Tab-täydennys ei toimi": "Normaalia cmd.exe:lle. Siirry PowerShell:iin tai Windows Terminal:iin — siellä automaattitäydennys toimii.",
           "Tab completion doesn't work": "Tab-täydennys ei toimi"
+        }
+      },
+      "s6": {
+        "id": "s6",
+        "title": "Ctrl+C ja clear — peru turvallisesti ja siisti näkymä",
+        "time": "",
+        "why": "Ennemmin tai myöhemmin komento \"jumittuu\" tai muutat mielesi kesken kaiken. Sen pysäyttämisen osaaminen tuo mielenrauhaa: voit aina painaa \"peru\" rikkomatta mitään.",
+        "instructions": [
+          "Käynnistä \"loputon\" komento, jotta on jotain keskeytettävää: `ping example.com` (Mac/Linux) — rivit vierivät loputtomiin.",
+          "Paina `Ctrl+C` — komento pysähtyy ja saat kehotteen takaisin. Tämä on turvallista: Ctrl+C vain keskeyttää nykyisen komennon, se ei kosketa tiedostojasi.",
+          "Jos olet kirjoittanut rivin puoliksi ja muutat mielesi — paina `Ctrl+C` uudelleen: terminaali tyhjentää rivin, jotta voit aloittaa alusta.",
+          "Kun näyttö on täynnä tulostetta — kirjoita `clear` (Mac/Linux/PowerShell) → Enter. Näyttö tyhjenee, mutta komentohistoria säilyy (ylänuoli tuo takaisin aiemmat komennot)."
+        ],
+        "prompt": "ping example.com\nclear",
+        "example": "$ ping example.com\nPING example.com ...\n64 bytes from ...\n^C        ← tässä painoit Ctrl+C\n$         ← kehote takaisin, kaikki hallinnassa",
+        "validate": "Ctrl+C:n jälkeen komento pysähtyi ja kehote ($ tai >) palasi. `clear`:n jälkeen näyttö on puhdas, ja ylänuoli näyttää yhä aiemmat komennot.",
+        "tip": "`Ctrl+C` tarkoittaa \"keskeytä\", ei \"kopioi\" (tapa muista ohjelmista). Varmistaaksesi, että komento valmistui eikä jumittunut — katso kehotetta: `$` / `>` on takaisin = komento on valmis.",
+        "troubleshoot": {
+          "Ctrl+C ei tee mitään": "Joskus se pitää painaa kahdesti. Jos on todella jumissa — sulje terminaalin välilehti ja avaa uusi: yksikään tiedosto ei vahingoitu tästä.",
+          "clear poisti komentohistorian": "Ei poistanut. `clear` pyyhkii vain näkyvän näytön. Paina ylänuolta — aiemmat komennot ovat yhä tallessa."
         }
       }
     },
@@ -3044,110 +3188,110 @@
     "totalTime": "10 min",
     "whatItIs": "Voit luoda kansioita joko klikkaamalla Finder:issä/Explorer:issa tai komennolla terminaalissa. Tämä oppitunti näyttää molemmat tavat kolmelle elävälle skenaariolle: työraportit, henkilökohtaiset muistiinpanot, väliaikainen kokeilu.",
     "approach": "Älä valitse YHTÄ tapaa. Luo jokainen kansio molemmilla: sekä Finder:in että mkdir:in kautta. Kolmen kierroksen jälkeen valinta tulee tietoiseksi — mikä on sinulle henkilökohtaisesti mukavampi.",
-    "outcomes": {
-      "0": "Luot kansioita sekä UI:n että terminaalin kautta",
-      "1": "Tiedät, mitkä nimet eivät aiheuta ongelmia",
-      "2": "Ymmärrät, miten organisoida projektipuu mielekkäästi",
-      "3": "Osaat poistaa väliaikaiset kokeilut puhtaasti"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Luot kansioita sekä UI:n että terminaalin kautta",
+      "Tiedät, mitkä nimet eivät aiheuta ongelmia",
+      "Ymmärrät, miten organisoida projektipuu mielekkäästi",
+      "Osaat poistaa väliaikaiset kokeilut puhtaasti"
+    ],
+    "applyIn": [
+      {
         "title": "Jokainen uusi projekti",
         "description": "Ensimmäinen askel — kansio mielekkäällä nimellä ~/projects/-kansiossa. Muuten kuukaudessa on kaaos."
       },
-      "1": {
+      {
         "title": "Henkilökohtainen tietopohja",
         "description": "Erillinen hierarkia muistiinpanoille, opiskelulle, resepteille — erillään työkansioista."
       },
-      "2": {
+      {
         "title": "Kokeilu / hiekkalaatikko",
         "description": "\"Roska\"-kansio, jota ei ole pelottavaa poistaa. Kaikilla ammattilaisilla on sellainen."
       }
-    },
-    "pitfalls": {
-      "0": "Välilyönnit ja kyrillinen kirjaimisto nimissä — terminaali ja git eivät pidä niistä. \"my project\" ❌ → \"my-project\" ✅.",
-      "1": "Kansiot työpöydällä — viikon kuluttua siellä on 30 kappaletta, mitään ei löydä. Käytä ~/projects/.",
-      "2": "Kansion poistaminen `rm -rf`:llä ilman tarkistusta — kansio katoaa peruuttamattomasti. Ensin ls, sitten rm."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Välilyönnit ja kyrillinen kirjaimisto nimissä — terminaali ja git eivät pidä niistä. \"my project\" ❌ → \"my-project\" ✅.",
+      "Kansiot työpöydällä — viikon kuluttua siellä on 30 kappaletta, mitään ei löydä. Käytä ~/projects/.",
+      "Kansion poistaminen `rm -rf`:llä ilman tarkistusta — kansio katoaa peruuttamattomasti. Ensin ls, sitten rm."
+    ],
+    "exercises": [
+      {
         "question": "Luo oma henkilökohtainen ~/projects/-rakenne: vähintään 3 projektia, nimet mielekkäitä. Yksi Finder:in kautta, kaksi mkdir:n kautta.",
         "hint": "Nimien pitää vastata kysymykseen \"mikä tämä on?\" 6 kuukauden kuluttua. \"test\" on huono. \"monthly-reports-2026\" on hyvä."
       },
-      "1": {
+      {
         "question": "Poista väliaikainen kansio molemmilla tavoilla: kerran Roskakorin kautta (drag-to-trash), kerran rm -r:n kautta. Huomaa ero.",
         "hint": "Roskakori → voi palauttaa. rm -r → ei, peruuttamattomasti. Epäilyksessä — Roskakori."
       }
-    },
+    ],
     "steps": {
-      "fw-1": {
+      "s1": {
         "title": "Päätä nimi ja rakenne (nimeämisen säännöt)",
-        "time": "2 min",
+        "time": "",
         "why": "Kansion nimi on tuleva komento `cd <tämä nimi>`. Pitkä / välilyönneillä / kyrillinen — kärsit joka kerta.",
-        "instructions": {
-          "0": "Sääntö 1: vain latinalainen. Ei mitään venäläisiä kirjaimia.",
-          "1": "Sääntö 2: välilyöntien sijaan — yhdysmerkki (tai alaviiva). work-reports, ei work reports.",
-          "2": "Sääntö 3: nimi vastaa kysymykseen \"mitä sisällä?\" (≤ 30 merkkiä). monthly-audits on parempi kuin stuff.",
-          "3": "Sääntö 4: yksi kansio — yksi aihe. Älä kasaa erilaista yhteen."
-        },
+        "instructions": [
+          "Sääntö 1: vain latinalainen. Ei mitään venäläisiä kirjaimia.",
+          "Sääntö 2: välilyöntien sijaan — yhdysmerkki (tai alaviiva). work-reports, ei work reports.",
+          "Sääntö 3: nimi vastaa kysymykseen \"mitä sisällä?\" (≤ 30 merkkiä). monthly-audits on parempi kuin stuff.",
+          "Sääntö 4: yksi kansio — yksi aihe. Älä kasaa erilaista yhteen."
+        ],
         "example": "Hyviä: monthly-audits, claude-notes, sandbox-2026, website-redesign\nHuonoja: \"Minun projektit\", stuff, test, untitled folder, uusi kansio (1)",
         "validate": "Osaat selittää itsellesi: \"Tämä kansio on X:stä, nimi lyhyt ja selkeä\".",
         "tip": "Jos aiot tehdä git-repositorion kansiosta — valitse nimi heti. Uudelleennimeäminen myöhemmin on mahdollista, mutta meluisaa."
       },
-      "fw-2": {
+      "s2": {
         "title": "Esimerkki 1 — Työauditoinnit (terminaalin kautta)",
-        "time": "2 min",
+        "time": "",
         "why": "Skenaario: aiot tehdä säännöllisiä auditointeja kerran kuussa. Tarvitaan yhteinen kansio niille.",
-        "instructions": {
-          "0": "Avaa terminaali.",
-          "1": "Kirjoita: `mkdir -p ~/projects/monthly-audits/2026-may`. Tämä luo sekä monthly-audits:n että toukokuun alikansion.",
-          "2": "Astu sisään: `cd ~/projects/monthly-audits/2026-may`.",
-          "3": "Tarkista: `pwd` — päättyy /monthly-audits/2026-may:hin. Rakenne on valmis työhön."
-        },
+        "instructions": [
+          "Avaa terminaali.",
+          "Kirjoita: `mkdir -p ~/projects/monthly-audits/2026-may`. Tämä luo sekä monthly-audits:n että toukokuun alikansion.",
+          "Astu sisään: `cd ~/projects/monthly-audits/2026-may`.",
+          "Tarkista: `pwd` — päättyy /monthly-audits/2026-may:hin. Rakenne on valmis työhön."
+        ],
         "prompt": "mkdir -p ~/projects/monthly-audits/2026-may\ncd ~/projects/monthly-audits/2026-may\npwd",
         "example": "$ pwd\n/Users/denisa/projects/monthly-audits/2026-may",
         "validate": "Näet täyden polun 2026-may:hin asti. Kansio on luotu ja olet siinä.",
         "tip": "Alikansiot päivämäärien mukaan (2026-may) — kaava \"uusi kuukausi = uusi kansio\". Erittäin vakaasti skaalautuva."
       },
-      "fw-3": {
+      "s3": {
         "title": "Esimerkki 2 — Muistiinpanot ja oppiminen (Finder:in/Explorer:in kautta)",
-        "time": "2 min",
+        "time": "",
         "why": "Skenaario: opit jotain uutta, haluat säilyttää muistiinpanoja. Visuaalisesti mukavampi — se on normaalia.",
-        "instructions": {
-          "0": "macOS: avaa Finder → Cmd+Shift+H (palaa home:en) → löydä projects-kansio (tai luo se Cmd+Shift+N:llä).",
-          "1": "projects:in sisällä: oikea klikkaus → New Folder → kirjoita `learning-notes` → Enter.",
-          "2": "learning-notes:in sisälle — luo vielä kaksi: `claude` ja `terminal-basics`.",
-          "3": "Windows: avaa Explorer → mene C:\\Users\\<nimi>\\projects → oikea klikkaus → New Folder. Toista alikansioille."
-        },
+        "instructions": [
+          "macOS: avaa Finder → Cmd+Shift+H (palaa home:en) → löydä projects-kansio (tai luo se Cmd+Shift+N:llä).",
+          "projects:in sisällä: oikea klikkaus → New Folder → kirjoita `learning-notes` → Enter.",
+          "learning-notes:in sisälle — luo vielä kaksi: `claude` ja `terminal-basics`.",
+          "Windows: avaa Explorer → mene C:\\Users\\<nimi>\\projects → oikea klikkaus → New Folder. Toista alikansioille."
+        ],
         "example": "Finder:in kautta rakenne:\nprojects/\n  learning-notes/\n    claude/\n    terminal-basics/",
         "validate": "Finder:issä/Explorer:issa näet puun: projects → learning-notes → claude / terminal-basics.",
         "tip": "Terminaali ja Finder toimivat samalla tiedostojärjestelmällä. Yhdessä luotu kansio näkyy toisessa. Niitä voi sekoittaa."
       },
-      "fw-4": {
+      "s4": {
         "title": "Esimerkki 3 — Väliaikainen kokeilu (millä tahansa tavalla)",
-        "time": "2 min",
+        "time": "",
         "why": "Skenaario: haluat kokeilla jotain — tarvitaan kertakäyttökansio, jota ei ole sääli poistaa.",
-        "instructions": {
-          "0": "Luo miten haluat: `mkdir -p ~/projects/sandbox` (terminaali) TAI Finder:in kautta.",
-          "1": "Luo sisälle joitakin kansioita ja tiedostoja — ei väliä mitä. Esim: `cd ~/projects/sandbox && touch test.txt && mkdir notes`.",
-          "2": "Tarkista sisältö: `ls` — pitää olla test.txt ja notes.",
-          "3": "Muista: tämä kansio on ehdokas poistettavaksi vaiheessa 5."
-        },
+        "instructions": [
+          "Luo miten haluat: `mkdir -p ~/projects/sandbox` (terminaali) TAI Finder:in kautta.",
+          "Luo sisälle joitakin kansioita ja tiedostoja — ei väliä mitä. Esim: `cd ~/projects/sandbox && touch test.txt && mkdir notes`.",
+          "Tarkista sisältö: `ls` — pitää olla test.txt ja notes.",
+          "Muista: tämä kansio on ehdokas poistettavaksi vaiheessa 5."
+        ],
         "prompt": "mkdir -p ~/projects/sandbox\ncd ~/projects/sandbox\ntouch test.txt\nmkdir notes\nls",
         "example": "$ ls\nnotes  test.txt",
         "validate": "sandbox:issa näet test.txt:n ja notes/:n. Kansio on täytetty ja valmis poistettavaksi.",
         "tip": "touch luo tyhjän tiedoston sekunnissa. Hyödyllinen nopeisiin testeihin. Windows:issa vastaava: `New-Item test.txt` tai `echo. > test.txt`."
       },
-      "fw-5": {
+      "s5": {
         "title": "Puhdas poistaminen — kaksi tapaa",
-        "time": "2 min",
+        "time": "",
         "why": "Opetella poistamaan on yhtä tärkeää kuin opetella luomaan. Muuten kansiot kasaantuvat loputtomasti.",
-        "instructions": {
-          "0": "Tapa 1 (turvallinen) — Finder:in/Explorer:in kautta: avaa ~/projects/, vedä sandbox Roskakoriin. Voi palauttaa, jos muutat mieltäsi.",
-          "1": "Tapa 2 (nopea, peruuttamaton) — `rm -rf ~/projects/sandbox` (mac/linux) tai `Remove-Item -Recurse -Force ~/projects/sandbox` (PowerShell).",
-          "2": "TÄRKEÄÄ: rm -rf poistaa HETI, ilman Roskakoria. Tarkista polku kahdesti ennen Enter:iä.",
-          "3": "Tarkista, että poistui: `ls ~/projects/` — sandbox ei ole listalla."
-        },
+        "instructions": [
+          "Tapa 1 (turvallinen) — Finder:in/Explorer:in kautta: avaa ~/projects/, vedä sandbox Roskakoriin. Voi palauttaa, jos muutat mieltäsi.",
+          "Tapa 2 (nopea, peruuttamaton) — `rm -rf ~/projects/sandbox` (mac/linux) tai `Remove-Item -Recurse -Force ~/projects/sandbox` (PowerShell).",
+          "TÄRKEÄÄ: rm -rf poistaa HETI, ilman Roskakoria. Tarkista polku kahdesti ennen Enter:iä.",
+          "Tarkista, että poistui: `ls ~/projects/` — sandbox ei ole listalla."
+        ],
         "prompt": "rm -rf ~/projects/sandbox\nls ~/projects/",
         "example": "Ennen: $ ls ~/projects/\nmonthly-audits  learning-notes  sandbox  my-first-project\n\nJälkeen:\nmonthly-audits  learning-notes  my-first-project",
         "validate": "~/projects/-kansiossa ei ole enää sandbox:ia. Kokeilu on suljettu, työkansiot ehjät.",
@@ -3158,6 +3302,21 @@
           "Roskakori ei palauta macilla": "Cmd+Shift+Delete tyhjentää roskakorin. Jos jo tyhjensit — tiedostot menetetty (palauttaa voi vain Time Machine:n kautta, jos päällä).",
           "Trash doesn't restore on mac": "Roskakori ei palauta Macilla"
         }
+      },
+      "s6": {
+        "title": "Suojaa tärkeä kansio: ensimmäinen varmuuskopio git:llä",
+        "time": "",
+        "why": "Työkansioita (kuten monthly-audits) on ikävä menettää. Kun asetat git:n kerran, saat versiohistorian ja turvaverkon: vaikka poistaisit tiedoston vahingossa, voit palauttaa sen.",
+        "instructions": [
+          "Mene kansioon, jonka haluat suojata: `cd ~/projects/monthly-audits`.",
+          "Luo repositorio: `git init`. Tämä kytkee päälle muutosten seurannan kansion sisällä.",
+          "Tallenna ensimmäinen tilannekuva: `git add .` ja sitten `git commit -m \"initial backup\"`.",
+          "Varmista, että tilannekuva on tallennettu: `git log --oneline` — näet \"initial backup\" -commit:isi."
+        ],
+        "prompt": "cd ~/projects/monthly-audits\ngit init\ngit add .\ngit commit -m \"initial backup\"\ngit log --oneline",
+        "example": "$ git log --oneline\na1b2c3d initial backup",
+        "validate": "git log näyttää \"initial backup\" -commit:in. Kansiollasi on nyt palautuspiste.",
+        "tip": "Tee uusi `git commit` jokaisen mielekkään muutoksen jälkeen — se on kuin \"pelin tallentaminen\": voit aina palata toimivaan versioon. Jos git:iä ei ole asennettu — macilla suorita `xcode-select --install`."
       }
     },
     "trigger": "Tarvitset siistin kansiorakenteen Claude-projektille — mutta et tiedä mistä aloittaa.",
@@ -3434,7 +3593,8 @@
       "1": "Yhdistänyt tietyn kansion (ei koko asemaa)",
       "2": "Lähettänyt lopputulokseen perustuvan tehtäväkuvauksen",
       "3": "Tarkistanut Clauden suunnitelman ennen hyväksymistä",
-      "4": "Tarkistanut valmiin tuloksen ja tiedät miten iteroida"
+      "4": "Tarkistanut valmiin tuloksen ja tiedät miten iteroida",
+      "5": "Asettanut toimivaksi todetun tehtävän Scheduled-aikatauluun"
     },
     "applyIn": {
       "0": {
@@ -3456,16 +3616,20 @@
       "2": "Koko aseman yhdistäminen — yhdistä vain tarvitsemasi kansio.",
       "3": "Coworkin käyttäminen yksinkertaisiin kysymyksiin — kuluttaa huomattavasti enemmän kiintiötä kuin tavallinen chat."
     },
-    "exercises": {
-      "0": {
+    "exercises": [
+      {
         "question": "Aja toinen Cowork-tehtävä: pyydä Claudea luomaan yhteenvetoraportti kaikista testikansion .txt-tiedostoista. Tarkista tulos ja kokeile yhtä korjausta luonnollisella kielellä.",
         "hint": "Kerro mikä tuloksessa on väärin, älä miten se korjataan. Claude keksii korjauksen itse."
+      },
+      {
+        "question": "Aseta tiedostojen järjestämistehtäväsi Scheduled-aikatauluun (esimerkiksi joka maanantaiaamu) ja varmista seuraavalla ajolla, että tulos saapui ilman että teit mitään.",
+        "hint": "Tehtävän on ensin ajettava manuaalisesti vähintään kerran — Scheduled toistaa jo todennetun tuloksen, se ei vianetsi uutta."
       }
-    },
+    ],
     "steps": {
-      "cw-1": {
+      "s1": {
         "title": "Avaa Cowork Claude Desktopissa",
-        "time": "2 min",
+        "time": "",
         "why": "Cowork on vain Desktop-sovelluksessa (Mac/Windows). Verkkoversio ei sisällä sitä. Tarvitset Pro-, Max-, Team- tai Enterprise-tilauksen.",
         "instructions": {
           "0": "Lataa ja asenna Claude Desktop osoitteesta claude.ai/download jos et ole vielä tehnyt niin.",
@@ -3476,9 +3640,9 @@
         "validate": "Näet Cowork-tehtäväkäyttöliittymän — erilainen kuin tavallinen chat.",
         "tip": "Pidä Desktop-sovellus auki koko opetusohjelman ajan. Cowork-tehtävät pysähtyvät heti kun suljet sovelluksen."
       },
-      "cw-2": {
+      "s2": {
         "title": "Yhdistä kansio",
-        "time": "2 min",
+        "time": "",
         "why": "Claude tarvitsee nimenomaiset luvat tiedostojen lukemiseen ja kirjoittamiseen. Valitset tarkalleen minkä kansion avaat — Claude ei pääse käsiksi mihinkään sen ulkopuolella.",
         "instructions": {
           "0": "Etsi Cowork-käyttöliittymässä 'Connect folder' tai 'Add folder' -vaihtoehto.",
@@ -3493,9 +3657,9 @@
           "Käyttöjärjestelmä hylkää luvan": "macOS:ssä: Järjestelmäasetukset → Yksityisyys ja turvallisuus → Tiedostot ja kansiot — myönnä Claude Desktopille pääsy."
         }
       },
-      "cw-3": {
+      "s3": {
         "title": "Kuvaile tehtävä lopputuloksena",
-        "time": "3 min",
+        "time": "",
         "why": "Tärkein ero tavalliseen chattiin: kuvaile MITÄ haluat valmiina tuloksena, ei vaiheita sinne pääsemiseksi. Claude suunnittelee vaiheet itse.",
         "instructions": {
           "0": "Kirjoita Cowork-tehtäväkenttään tehtäväsi lopputuloksena.",
@@ -3507,9 +3671,9 @@
         "validate": "Claude esittää suunnitelman mitä aikoo tehdä. Lue se ennen hyväksymistä.",
         "tip": "Jos suunnitelma näyttää väärältä, kirjoita korjaus ennen hyväksymistä. Suunnitelman korjaaminen on nopeampaa kuin tuloksen korjaaminen."
       },
-      "cw-4": {
+      "s4": {
         "title": "Hyväksy ja seuraa",
-        "time": "5 min",
+        "time": "",
         "why": "Cowork toimii itsenäisesti hyväksymisen jälkeen. Voit seurata edistymistä tai astua pois — molemmat ovat sallittuja. Tärkeintä on pitää Desktop-sovellus auki.",
         "instructions": {
           "0": "Tarkista Clauden suunnitelma huolellisesti — varmista että se kuvaa mitä todella haluat.",
@@ -3524,9 +3688,9 @@
           "Claude pyytää lupaa tehtävän keskellä": "Jotkut toiminnot (kuten poistaminen) vaativat nimenomaisen hyväksyntäsi. Lue pyyntö ja hyväksy tai hylkää."
         }
       },
-      "cw-5": {
+      "s5": {
         "title": "Tarkista tulos ja iteroi",
-        "time": "3 min",
+        "time": "",
         "why": "Diligence: ensimmäinen tulos on vahva luonnos, mutta ei välttämättä lopullinen. Avaa kansio, tarkista tiedostot ja korjaa mikä ei osunut kohteeseen — luonnollisella kielellä.",
         "instructions": {
           "0": "Avaa yhdistetty kansio tiedostojenhallinnassa ja tarkista tulos.",
@@ -3536,6 +3700,20 @@
         },
         "validate": "Tulos vastaa tarkoitustasi. Tiedät miten kuvata korjauksia.",
         "tip": "Sano mikä on väärin ('images-kansiosta puuttuvat PDF-tiedostot joissa on upotettuja kuvia'), älä miten korjata. Claude keksii korjauksen."
+      },
+      "s6": {
+        "title": "Aseta tehtävä Scheduled-aikatauluun",
+        "time": "",
+        "why": "Kun tehtävä on todettu toimivaksi ja tulos miellyttää sinua, ei ole järkeä ajaa sitä käsin joka kerta. Scheduled-aikataulu toistaa jo todennetun tehtävän automaattisesti — esimerkiksi joka maanantaiaamu — ilman että teet mitään.",
+        "instructions": {
+          "0": "Varmista että tehtävä on jo ajettu manuaalisesti vähintään kerran ja tulos on oikea.",
+          "1": "Kirjoita Cowork-tehtäväkenttään /schedule (tai avaa Scheduled-valikko).",
+          "2": "Aseta toistuvuus selkokielellä: 'joka maanantai klo 9' tai 'kerran päivässä'.",
+          "3": "Tallenna aikataulu ja varmista että tehtävä näkyy Scheduled-listassa seuraavan ajon ajankohdan kanssa.",
+          "4": "Muista: Desktop-sovelluksen on oltava auki ajoitetun ajon hetkellä — muuten tehtävä ei käynnisty."
+        },
+        "validate": "Tehtävä näkyy Scheduled-listassa seuraavan ajon ajankohdan kanssa ja toistuu ilman osallistumistasi.",
+        "tip": "Aseta aikatauluun vain todetut, vähäriskiset tehtävät. Automaattinen ajo toistaa tuloksen kirjaimellisesti — se ei pysähdy kysymään, jos jokin kansiossa on muuttunut."
       }
     },
     "trigger": "Tehtävä koskee kansiollista tiedostoja, eikä selaimeen kopioiminen ole järkevää.",
@@ -3569,118 +3747,131 @@
     "title": "Clauden kyvyt ja rajoitukset",
     "subtitle": "Mitä Claude tietää, mitä ei, ja miten toimia molemmissa tapauksissa",
     "totalTime": "12 min",
-    "whatItIs": "Käytännöllinen opas Clauden todellisiin rajoihin. Opit miksi Claude joskus sanoo vääriä asioita varmasti, mitä se kirjaimellisesti ei voi tehdä, miten [[node:b-context|konteksti-ikkuna]] vaikuttaa pitkiin sessioihin, ja — tärkeimpänä — viisi strategiaa jotka muuttavat rajoitukset merkityksettömiksi.",
+    "whatItIs": "Käytännöllinen opas Clauden todellisiin rajoihin. Opit miksi Claude joskus sanoo vääriä asioita varmasti, mitä se kirjaimellisesti ei voi tehdä, miten [[node:b-context|konteksti-ikkuna]] vaikuttaa pitkiin sessioihin, ja — tärkeimpänä — strategiat jotka muuttavat rajoitukset merkityksettömiksi.",
     "approach": "Älä ohita tätä opetusohjelmaa ajatellen että rajoitukset ovat jonkun muun ongelma. Jokainen käyttäjä törmää niihin ennemmin tai myöhemmin. Tavoite ei ole välttää Claudea vaan käyttää sitä tavoin jotka tekevät rajoituksista merkityksettömiä.",
-    "outcomes": {
-      "0": "Ymmärrät mitä tiedon katkaisuajankohta tarkoittaa ja milloin sillä on merkitystä",
-      "1": "Tunnistat hallusinaatiot ennen kuin ne aiheuttavat ongelmia",
-      "2": "Tiedät mitä Claude rakenteellisesti ei voi tehdä (ja mitä voi työkaluilla)",
-      "3": "Ymmärrät miksi pitkät chatit heikkenevät laadultaan",
-      "4": "Sinulla on 5 konkreettista strategiaa rajoitusten kanssa työskentelyyn"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Ymmärrät mitä tiedon katkaisuajankohta tarkoittaa ja milloin sillä on merkitystä",
+      "Tunnistat hallusinaatiot ennen kuin ne aiheuttavat ongelmia",
+      "Tiedät mitä Claude rakenteellisesti ei voi tehdä (ja mitä voi työkaluilla)",
+      "Ymmärrät miksi pitkät chatit heikkenevät laadultaan",
+      "Sinulla on 5 konkreettista strategiaa rajoitusten kanssa työskentelyyn",
+      "Osaat tarkistaa Clauden faktat ja lähdeviitteet nopeasti ensisijaisista lähteistä"
+    ],
+    "applyIn": [
+      {
         "title": "Faktoihin perustuva työ",
         "description": "Oikeudellinen, lääketieteellinen, taloudellinen, tieteellinen — tarkista aina Clauden faktoihin perustuvat väitteet ensisijaisista lähteistä."
       },
-      "1": {
+      {
         "title": "Tutkimus ja kirjoittaminen",
         "description": "Käytä Claudea rakenteeseen, päättelyyn ja luonnosteluun. Käytä web-hakua tai alkuperäislähteitä nykyisten faktojen tarkistamiseen."
       },
-      "2": {
+      {
         "title": "Pitkät projektit",
         "description": "Jaa monipäiväinen työ erillisiin sessioihin tai käytä Projects-toimintoa yhtenäisen kontekstin ylläpitämiseksi."
       }
-    },
-    "pitfalls": {
-      "0": "Clauden varman sävyn pitäminen todisteena tarkkuudesta — varmuus ja oikeellisuus ovat riippumattomia.",
-      "1": "Katkaisuajankohdan jälkeisten tapahtumien kysyminen ilman web-hakua.",
-      "2": "50 viestin keskustelun käyminen ja ihmetteleminen miksi laatu laskee — konteksti-ikkuna on rajallinen."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Clauden varman sävyn pitäminen todisteena tarkkuudesta — varmuus ja oikeellisuus ovat riippumattomia.",
+      "Katkaisuajankohdan jälkeisten tapahtumien kysyminen ilman web-hakua.",
+      "50 viestin keskustelun käyminen ja ihmetteleminen miksi laatu laskee — konteksti-ikkuna on rajallinen."
+    ],
+    "exercises": [
+      {
         "question": "Kysy Claudelta: 'Mitä tapahtui uutisissa tällä viikolla?' Kysy sitten: 'Mikä on koulutustietosi katkaisuajankohta?' Vertaa vastauksia. Mitä tämä kertoo siitä milloin käyttää web-hakua?",
         "hint": "Huomaa yrittääkö Claude vastata ensimmäiseen kysymykseen vai kieltäytyykö. Kumpikin vastaus kertoo jotain oikeasta kehottamisesta."
       },
-      "1": {
+      {
         "question": "Kysy Claudelta kapeasta aiheesta jonka itse tunnet hyvin. Etsi tarkoituksella yksi uskottavan kuuloinen yksityiskohta joka saattaa olla väärä. Löydätkö sen?",
         "hint": "Tavoite ei ole napata Claude — vaan harjoitella 4D-viitekehyksen Discernment-tapaa."
       }
-    },
+    ],
     "steps": {
-      "al-1": {
+      "s1": {
         "title": "Tiedon katkaisuajankohta",
-        "time": "2 min",
+        "time": "",
         "why": "Claude on koulutettu tietoon kiinteään päivämäärään asti (~alkuvuosi 2026 nykyisille malleille). Sillä ei ole tietoisuutta mistään sen jälkeen. Tämä ei ole vika — näin kielimallit toimivat.",
-        "instructions": {
-          "0": "Ymmärrä: Clauden tieto on tilannekuva, ei reaaliaikainen yhteys internetiin.",
-          "1": "Claude Opus 4.7:n koulutustiedon katkaisuajankohta on noin tammikuu 2026.",
-          "2": "Katkaisuajankohdan jälkeisten tapahtumien kysyminen: Claude joko kieltäytyy, sanoo ettei tiedä, tai — pahimmassa tapauksessa — tuottaa uskottavan kuuloisen hallusinaation.",
-          "3": "Ratkaisu: ota web-haku käyttöön claude.ai:ssa (maapallon kuvake syöttöpalkissa) kaikille kysymyksille jotka koskevat viimeaikaisia tapahtumia, nykyisiä hintoja, reaaliaikaista dataa tai tuoreita uutisia."
-        },
+        "instructions": [
+          "Ymmärrä: Clauden tieto on tilannekuva, ei reaaliaikainen yhteys internetiin.",
+          "Claude Opus 4.7:n koulutustiedon katkaisuajankohta on noin tammikuu 2026.",
+          "Katkaisuajankohdan jälkeisten tapahtumien kysyminen: Claude joko kieltäytyy, sanoo ettei tiedä, tai — pahimmassa tapauksessa — tuottaa uskottavan kuuloisen hallusinaation.",
+          "Ratkaisu: ota web-haku käyttöön claude.ai:ssa (maapallon kuvake syöttöpalkissa) kaikille kysymyksille jotka koskevat viimeaikaisia tapahtumia, nykyisiä hintoja, reaaliaikaista dataa tai tuoreita uutisia."
+        ],
         "validate": "Tiedät milloin ottaa web-haku käyttöön ja miksi.",
         "tip": "Jos et ole varma onko jokin Clauden koulutustiedon piirissä, kysy: 'Onko tämä koulutustietosi piirissä, vai pitäisikö minun ottaa web-haku käyttöön?' Claude kertoo rehellisesti."
       },
-      "al-2": {
+      "s2": {
         "title": "Hallusinaatiot — mitä ne ovat ja miksi niitä tapahtuu",
-        "time": "3 min",
+        "time": "",
         "why": "Claude voi väittää virheellisiä faktoja täydellä varmuudella. Tätä kutsutaan hallusinaatioksi. Se on vaarallisin rajoitus käyttäjille jotka eivät tiedä siitä.",
-        "instructions": {
-          "0": "Hallusinaatio tapahtuu kun Claude 'täyttää aukon' tiedossaan uskottavan kuuloisella mutta väärällä vastauksella. Koulutus optimoi hyödyllisyyttä — ja joskus se tarkoittaa varmaa vastausta epävarmuuden myöntämisen sijaan.",
-          "1": "Hallusinaatiot ovat yleisempiä: kapeissa aiheissa, tietyissä tilastoissa ja numeroissa, lähdeviitteissä, viimeaikaisissa tapahtumissa ja pitkissä päättelyketjuissa.",
-          "2": "Harvinaisempia: hyvin dokumentoiduissa valtavirta-aiheissa, yleisessä päättelyssä, koodauksessa ja matematiikassa (vaikka virheitä tapahtuu).",
-          "3": "Tärkeä huomio: EI Clauden sävy. Hallusinoitu vastaus kuulostaa yhtä varmalta kuin oikea.",
-          "4": "Strategia: tarkista kaikki faktoihin perustuvat väitteet jotka ovat tärkeitä ensisijaisesta lähteestä."
-        },
+        "instructions": [
+          "Hallusinaatio tapahtuu kun Claude 'täyttää aukon' tiedossaan uskottavan kuuloisella mutta väärällä vastauksella. Koulutus optimoi hyödyllisyyttä — ja joskus se tarkoittaa varmaa vastausta epävarmuuden myöntämisen sijaan.",
+          "Hallusinaatiot ovat yleisempiä: kapeissa aiheissa, tietyissä tilastoissa ja numeroissa, lähdeviitteissä, viimeaikaisissa tapahtumissa ja pitkissä päättelyketjuissa.",
+          "Harvinaisempia: hyvin dokumentoiduissa valtavirta-aiheissa, yleisessä päättelyssä, koodauksessa ja matematiikassa (vaikka virheitä tapahtuu).",
+          "Tärkeä huomio: EI Clauden sävy. Hallusinoitu vastaus kuulostaa yhtä varmalta kuin oikea.",
+          "Strategia: tarkista kaikki faktoihin perustuvat väitteet jotka ovat tärkeitä ensisijaisesta lähteestä."
+        ],
         "validate": "Ymmärrät että varma sävy ei tarkoita tarkkaa sisältöä.",
-        "tip": "Pyydä Claudea merkitsemään epävarmuus: lisää 'Jos et ole varma jostakin faktasta, sano se eksplisiittisesti' kehotteisiin jotka vaativat faktuaalista tarkkuutta.",
-        "troubleshoot": {
-          "Miten tiedän hallusinoiko Claude?": "Et usein pysty päättelemään pelkästä vastauksesta. Ainoa luotettava tarkistus on ulkoinen vahvistus. Suhtaudu Clauden faktoihin kuten 'todennäköisesti oikein, tarvitsee pistotarkistuksen tärkeissä asioissa'.",
-          "Claude sanoi olevansa varma — tarkoittaako se että se on oikeassa?": "Ei. Varmuus ja tarkkuus ovat riippumattomia. Claude voi olla varma ja väärässä, tai epävarma ja oikeassa. Tarkista aina faktat joilla on todellisia seurauksia."
-        }
+        "tip": "Pyydä Claudea merkitsemään epävarmuus: lisää 'Jos et ole varma jostakin faktasta, sano se eksplisiittisesti' kehotteisiin jotka vaativat faktuaalista tarkkuutta."
       },
-      "al-3": {
+      "s3": {
         "title": "Konteksti-ikkuna — miksi pitkät chatit heikkenevät",
-        "time": "2 min",
+        "time": "",
         "why": "Claude voi 'nähdä' vain kiinteän määrän tekstiä kerrallaan. Kun keskustelu ylittää tämän rajan, vanhemmat viestit putoavat pois — Claude alkaa menettää aiemman kontekstin, ohjeet ja päätökset.",
-        "instructions": {
-          "0": "Konteksti-ikkuna on kokonaismäärä tekstiä jonka Claude voi käsitellä kerrallaan — viestisi plus sen vastaukset.",
-          "1": "Keskustelun kasvaessa aiempi sisältö muuttuu vähitellen näkymättömäksi Claudelle.",
-          "2": "Kontekstin heikkenemisen merkit: Claude toistaa jo käsiteltyjä asioita, ristiriidassa aiempien päätösten kanssa, pyytää tietoja jotka olet jo toimittanut, tai antaa pinnallisempia vastauksia.",
-          "3": "Ratkaisut: käytä /compact Claude Codessa kontekstin tiivistämiseen historian säilyttäen. claude.ai:ssa aloita uusi chat jokaiselle erilliselle aiheelle. Käytä Projects — ne ylläpitävät pysyviä ohjeita jopa erillisten chattien välillä."
-        },
+        "instructions": [
+          "Konteksti-ikkuna on kokonaismäärä tekstiä jonka Claude voi käsitellä kerrallaan — viestisi plus sen vastaukset.",
+          "Keskustelun kasvaessa aiempi sisältö muuttuu vähitellen näkymättömäksi Claudelle.",
+          "Kontekstin heikkenemisen merkit: Claude toistaa jo käsiteltyjä asioita, ristiriidassa aiempien päätösten kanssa, pyytää tietoja jotka olet jo toimittanut, tai antaa pinnallisempia vastauksia.",
+          "Ratkaisut: käytä /compact Claude Codessa kontekstin tiivistämiseen historian säilyttäen. claude.ai:ssa aloita uusi chat jokaiselle erilliselle aiheelle. Käytä Projects — ne ylläpitävät pysyviä ohjeita jopa erillisten chattien välillä."
+        ],
         "validate": "Tiedät miksi monen tunnin keskustelut yhdessä chatissa tuottavat huonompia tuloksia kuin lyhyemmät fokusoidut sessiot.",
         "tip": "Pitkissä projekteissa käytä Projectia selkeillä ohjeilla loputtoman chatin sijaan. Project-ohjeet ovat aina kontekstissa — kertynyt chat-historia ei."
       },
-      "al-4": {
+      "s4": {
         "title": "Mitä Claude rakenteellisesti ei voi tehdä",
-        "time": "2 min",
+        "time": "",
         "why": "Jotkut rajoitukset ovat arkkitehtuurisia — kiertotietä ei ole, tai tarvitaan tietty työkalu. Niiden tunteminen estää turhautumisen.",
-        "instructions": {
-          "0": "Ei voi luoda kuvia — Claude tuottaa vain tekstiä. Kuviin käytä erillistä kuvangenerointityökalua (DALL-E, Midjourney jne.).",
-          "1": "Ei voi selata internetiä oletuksena — web-haku on otettava nimenomaisesti käyttöön.",
-          "2": "Ei voi suorittaa toimintoja muissa sovelluksissa — ilman Computer Use (Desktop, API) tai MCP-integraatiota.",
-          "3": "Ei muista chattien välillä oletuksena — käytä Memory (asetuksissa) tai Projects pysyvyyteen.",
-          "4": "Ei pääse reaaliaikaiseen dataan (osakehinnat, sää, urheilutulokset) — ota web-haku käyttöön tai käytä integraatiota.",
-          "5": "Ei 'opi' korjauksistasi pysyvästi — korjaukset koskevat vain nykyistä sessiota ellei tallennettu Custom Instructions tai Memory -toimintoon."
-        },
+        "instructions": [
+          "Ei voi luoda kuvia — Claude tuottaa vain tekstiä. Kuviin käytä erillistä kuvangenerointityökalua (DALL-E, Midjourney jne.).",
+          "Ei voi selata internetiä oletuksena — web-haku on otettava nimenomaisesti käyttöön.",
+          "Ei voi suorittaa toimintoja muissa sovelluksissa — ilman Computer Use (Desktop, API) tai MCP-integraatiota.",
+          "Ei muista chattien välillä oletuksena — käytä Memory (asetuksissa) tai Projects pysyvyyteen.",
+          "Ei pääse reaaliaikaiseen dataan (osakehinnat, sää, urheilutulokset) — ota web-haku käyttöön tai käytä integraatiota.",
+          "Ei 'opi' korjauksistasi pysyvästi — korjaukset koskevat vain nykyistä sessiota ellei tallennettu Custom Instructions tai Memory -toimintoon."
+        ],
         "validate": "Tiedät mitkä rajoitukset vaativat työkalun (web-haku, MCP, [[node:cap-computer|Computer Use]]) ja mitkä ovat rakenteellisia.",
         "tip": "Useimmilla 'ei voi' -kohdilla on kiertotie työkalujen kautta. Ennen kuin oletan Clauden olevan kykenemätön johonkin, tarkista ratkaisisiko web-haun, MCP:n tai Coworkin käyttöönotto ongelman."
       },
-      "al-5": {
+      "s5": {
         "title": "Viisi strategiaa rajoitusten kanssa toimimiseen",
-        "time": "3 min",
+        "time": "",
         "why": "Rajoitusten tunteminen ilman strategioita on vain ahdistusta. Nämä viisi lähestymistapaa käsittelevät valtaosan rajoituksiin liittyvistä ongelmista.",
-        "instructions": {
-          "0": "1. Ota web-haku käyttöön kaikelle aikaherkälle tai faktoihin perustuvalle — maapallon kuvake claude.ai:n syöttökentässä.",
-          "1": "2. Pyydä Claudea merkitsemään epävarmuus — lisää 'merkitse kaikki missä et ole varma' kehotteisiin jotka vaativat faktuaalista tarkkuutta.",
-          "2": "3. Tarkista tärkeät asiat — suhtaudu Clauden tulosteeseen vahvana luonnoksena, ei lopullisena lähteenä. Pistotarkista keskeiset faktat.",
-          "3": "4. Käytä Projects pitkien chattien sijaan — pysyvät ohjeet, tuore konteksti joka sessiossa, ei konteksti-ikkunan heikkenemistä.",
-          "4": "5. Jaa suuret tehtävät — kolmen 45 minuutin session sijaan yksi 3 tunnin sessio tuottaa huonomman tuloksen."
-        },
+        "instructions": [
+          "1. Ota web-haku käyttöön kaikelle aikaherkälle tai faktoihin perustuvalle — maapallon kuvake claude.ai:n syöttökentässä.",
+          "2. Pyydä Claudea merkitsemään epävarmuus — lisää 'merkitse kaikki missä et ole varma' kehotteisiin jotka vaativat faktuaalista tarkkuutta.",
+          "3. Tarkista tärkeät asiat — suhtaudu Clauden tulosteeseen vahvana luonnoksena, ei lopullisena lähteenä. Pistotarkista keskeiset faktat.",
+          "4. Käytä Projects pitkien chattien sijaan — pysyvät ohjeet, tuore konteksti joka sessiossa, ei konteksti-ikkunan heikkenemistä.",
+          "5. Jaa suuret tehtävät — kolmen 45 minuutin session sijaan yksi 3 tunnin sessio tuottaa huonomman tuloksen."
+        ],
         "example": "Tutkimustehtävä ilman strategioita: yksi pitkä chat, ei web-hakua, ei tarkistusta → mahdolliset hallusinaatiot, kontekstin heikkeneminen.\n\nStrategioiden kanssa: Project tutkimuskontekstilla, web-haku käytössä, Claude merkitsee epävarmuuden, tarkistat keskeiset tilastot, jokaisella sessiolla selkeä laajuus → luotettava, laadukas tulos.",
         "validate": "Sinulla on mielessä tarkistuslista: web-haku päällä/pois? Epävarmuuden merkintä kehotteessa? Tarkistussuunnitelma? Project vai pitkä chat?",
         "tip": "4D-viitekehyksen Discernment-vaihe ON tämä tarkistuslista. Rajoitukset eivät ole Clauden ongelma ratkaistavaksi — ne ovat sinun suunniteltavaksi."
+      },
+      "s6": {
+        "title": "Vastausten verifiointi: miten tarkistaa fakta tai lähdeviite minuutissa",
+        "time": "",
+        "why": "Hallusinaatioista tietäminen ei riitä — tarvitset toistettavan tarkistusrutiinin. Ilman konkreettista prosessia joko tarkistat kaiken (hidasta) tai et mitään (vaarallista). Tämä vaihe antaa nopean työnkulun jota sovellat vain siellä missä virheen hinta on todellinen.",
+        "instructions": [
+          "Lajittele ensin: millä väitteillä vastauksessa on seurauksia (numerot, päivämäärät, nimet, sitaatit, viittaukset tutkimuksiin, oikeudelliset/lääketieteelliset faktat) ja mitkä ovat vain päättelyä. Tarkista vain ensin mainitut.",
+          "Tarkistettavalle faktalle pyydä Claudelta lähde suoraan: 'Mihin tämä väite perustuu? Anna linkki ensisijaiseen lähteeseen.' Jos Claude ei osaa nimetä tiettyä lähdettä, se on vahva merkki tarkistaa se itse.",
+          "Ota web-haku käyttöön ja kysy sama fakta uudelleen — vertaa vastausta web-haun kanssa ja ilman. Ristiriita on punainen lippu.",
+          "Kiinnitä erityistä huomiota sitaatteihin ja linkkeihin: Claude voi keksiä uskottavan artikkelin nimen, kirjoittajan tai URL-osoitteen. Avaa linkki ja varmista että lähde todella on olemassa ja sanoo juuri niin.",
+          "Tee lopullinen tarkistus ensisijaisesta lähteestä (virallinen dokumentaatio, itse artikkeli, primääridata), ei Clauden parafraasista tai Clauden toisesta vastauksesta.",
+          "Rakenna tapa: yksi tärkeä väite — yksi ulkoinen tarkistus. Se on halvempaa kuin virheen seurausten korjaaminen."
+        ],
+        "example": "Claude esittää tilaston: 'raportin X mukaan markkina kasvoi 23 % vuonna 2025'. Tarkistus: pyydät tarkan linkin → otat web-haun käyttöön → avaat itse raportin X → löydät luvun. Käy ilmi että kasvu oli 13 %, ei 23 % — hallusinaatio yhdessä luvussa joka olisi mennyt ohi varman sävyn takia.",
+        "validate": "Sinulla on konkreettinen rutiini: lajittele tärkeä → pyydä lähde → kysy uudelleen web-haulla → avaa ensisijainen lähde.",
+        "tip": "Älä pyydä Claudea 'tarkistamaan itseään' toisessa viestissä ainoana verifiointina — se voi varmasti vahvistaa oman hallusinaationsa. Vain ulkoinen tarkistus on luotettava."
       }
     },
     "trigger": "Claude tuotti varmasti virheellisen faktan tai alkoi unohtaa kontekstia pitkässä keskustelussa.",

@@ -56,19 +56,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "al-1"
+        "id": "s1"
       },
       {
-        "id": "al-2"
+        "id": "s2"
       },
       {
-        "id": "al-3"
+        "id": "s3"
       },
       {
-        "id": "al-4"
+        "id": "s4"
       },
       {
-        "id": "al-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -88,19 +91,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "cw-1"
+        "id": "s1"
       },
       {
-        "id": "cw-2"
+        "id": "s2"
       },
       {
-        "id": "cw-3"
+        "id": "s3"
       },
       {
-        "id": "cw-4"
+        "id": "s4"
       },
       {
-        "id": "cw-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -229,19 +235,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "b-1"
+        "id": "s1"
       },
       {
-        "id": "b-2"
+        "id": "s2"
       },
       {
-        "id": "b-3"
+        "id": "s3"
       },
       {
-        "id": "b-4"
+        "id": "s4"
       },
       {
-        "id": "b-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -305,19 +314,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "a-1"
+        "id": "s1"
       },
       {
-        "id": "a-2"
+        "id": "s2"
       },
       {
-        "id": "a-3"
+        "id": "s3"
       },
       {
-        "id": "a-4"
+        "id": "s4"
       },
       {
-        "id": "a-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -462,19 +474,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "i-1"
+        "id": "s1"
       },
       {
-        "id": "i-2"
+        "id": "s2"
       },
       {
-        "id": "i-3"
+        "id": "s3"
       },
       {
-        "id": "i-4"
+        "id": "s4"
       },
       {
-        "id": "i-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -539,19 +554,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "sc-1"
+        "id": "s1"
       },
       {
-        "id": "sc-2"
+        "id": "s2"
       },
       {
-        "id": "sc-3"
+        "id": "s3"
       },
       {
-        "id": "sc-4"
+        "id": "s4"
       },
       {
-        "id": "sc-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -615,16 +633,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "rp-1"
+        "id": "s1"
       },
       {
-        "id": "rp-2"
+        "id": "s2"
       },
       {
-        "id": "rp-3"
+        "id": "s3"
       },
       {
-        "id": "rp-4"
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -645,19 +669,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "in-1"
+        "id": "s1"
       },
       {
-        "id": "in-2"
+        "id": "s2"
       },
       {
-        "id": "in-3"
+        "id": "s3"
       },
       {
-        "id": "in-4"
+        "id": "s4"
       },
       {
-        "id": "in-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -680,19 +707,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "pl-1"
+        "id": "s1"
       },
       {
-        "id": "pl-2"
+        "id": "s2"
       },
       {
-        "id": "pl-3"
+        "id": "s3"
       },
       {
-        "id": "pl-4"
+        "id": "s4"
       },
       {
-        "id": "pl-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -938,19 +968,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "tt-1"
+        "id": "s1"
       },
       {
-        "id": "tt-2"
+        "id": "s2"
       },
       {
-        "id": "tt-3"
+        "id": "s3"
       },
       {
-        "id": "tt-4"
+        "id": "s4"
       },
       {
-        "id": "tt-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },
@@ -968,19 +1001,22 @@ export const tutorials = {
     ],
     "steps": [
       {
-        "id": "fw-1"
+        "id": "s1"
       },
       {
-        "id": "fw-2"
+        "id": "s2"
       },
       {
-        "id": "fw-3"
+        "id": "s3"
       },
       {
-        "id": "fw-4"
+        "id": "s4"
       },
       {
-        "id": "fw-5"
+        "id": "s5"
+      },
+      {
+        "id": "s6"
       }
     ]
   },

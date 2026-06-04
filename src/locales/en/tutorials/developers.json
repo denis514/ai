@@ -1262,111 +1262,116 @@
     "totalTime": "10 min",
     "whatItIs": "A hands-on mini-course: you type 5 commands one by one into a real terminal and see how they work. No theory — just keys and results.",
     "approach": "Don't read ahead. First run the command, look at the output, then read the explanation. That way muscle memory kicks in on the first try.",
-    "outcomes": {
-      "0": "Know where you are in the filesystem (pwd)",
-      "1": "See the contents of any folder (ls / dir)",
-      "2": "Create folders with a command (mkdir)",
-      "3": "Move through the folder tree (cd / cd .. / cd ~)",
-      "4": "Not afraid to experiment in your home folder"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Know where you are in the filesystem (pwd)",
+      "See the contents of any folder (ls / dir)",
+      "Create folders with a command (mkdir)",
+      "Move through the folder tree (cd / cd .. / cd ~)",
+      "Not afraid to experiment in your home folder"
+    ],
+    "applyIn": [
+      {
         "title": "Before launching Claude Code",
         "description": "Every session starts with `cd` into the right folder. Without terminal vocabulary — no way."
       },
-      "1": {
+      {
         "title": "Any instruction on the internet",
         "description": "\"Open the terminal and run...\" — no longer triggers panic."
       },
-      "2": {
+      {
         "title": "Installing any tool",
         "description": "npm, brew, pip — all via the terminal. One vocabulary — dozens of tools."
       }
-    },
-    "pitfalls": {
-      "0": "Skipping ahead without running the steps — theory without practice doesn't stick.",
-      "1": "Trying to work in /Applications or /System — those need permissions. Use home (~/).",
-      "2": "Ignoring errors — the terminal always tells you what went wrong. Read and fix."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Skipping ahead without running the steps — theory without practice doesn't stick.",
+      "Trying to work in /Applications or /System — those need permissions. Use home (~/).",
+      "Ignoring errors — the terminal always tells you what went wrong. Read and fix."
+    ],
+    "exercises": [
+      {
         "question": "After finishing — open the terminal again, navigate to ~/projects/ and run pwd + ls. From memory only.",
         "hint": "If you forgot a command — look back at the steps. Remembering is fine."
       },
-      "1": {
+      {
         "question": "Create a nested structure: ~/projects/test/2026/january/. Use a single mkdir -p.",
         "hint": "The -p flag creates all parent folders at once."
       }
-    },
+    ],
     "steps": {
-      "tt-1": {
+      "s1": {
+        "id": "s1",
         "title": "pwd — find out where you are now",
-        "time": "2 min",
+        "time": "",
         "why": "The terminal is always \"inside\" some folder. Finding out which is the first command of the day.",
-        "instructions": {
-          "0": "Open the terminal (if it isn't already): macOS Cmd+Space → \"Terminal\"; Windows — PowerShell.",
-          "1": "Type: `pwd` (mac/linux/PowerShell) → press Enter.",
-          "2": "Look at the output. That's the path to the folder you're in right now."
-        },
+        "instructions": [
+          "Open the terminal (if it isn't already): macOS Cmd+Space → \"Terminal\"; Windows — PowerShell.",
+          "Type: `pwd` (mac/linux/PowerShell) → press Enter.",
+          "Look at the output. That's the path to the folder you're in right now."
+        ],
         "prompt": "pwd",
         "example": "Mac: /Users/denisa\nWindows: C:\\Users\\denisa\nUsually when the terminal starts you're in your home — that's normal.",
         "validate": "You see a line like /Users/<name> (mac) or C:\\Users\\<name> (Windows).",
         "tip": "pwd = \"print working directory\". The simpler the command, the more often you use it. This one — literally every time."
       },
-      "tt-2": {
+      "s2": {
+        "id": "s2",
         "title": "ls / dir — look at what's around",
-        "time": "2 min",
+        "time": "",
         "why": "Without ls you're flying blind. ls shows what folders and files are in the current one.",
-        "instructions": {
-          "0": "macOS / Linux: type `ls` → Enter.",
-          "1": "Windows (PowerShell): `ls` works too. Old cmd.exe — `dir`.",
-          "2": "Look at the list. That's the contents of your home folder: Documents, Downloads, Desktop, etc."
-        },
+        "instructions": [
+          "macOS / Linux: type `ls` → Enter.",
+          "Windows (PowerShell): `ls` works too. Old cmd.exe — `dir`.",
+          "Look at the list. That's the contents of your home folder: Documents, Downloads, Desktop, etc."
+        ],
         "prompt": "ls",
         "example": "Mac/Linux output:\nApplications  Desktop  Documents  Downloads  Movies  Music  Pictures  projects  Public\n\nWindows output (dir):\n  <DIR>  Documents\n  <DIR>  Downloads\n  ...",
         "validate": "You see a list of folders: at least Desktop, Documents, Downloads.",
         "tip": "`ls -la` (mac) shows hidden files (starting with .) and details. Useful later when you're looking for the .claude/ folder."
       },
-      "tt-3": {
+      "s3": {
+        "id": "s3",
         "title": "mkdir + cd — create a folder and enter it",
-        "time": "2 min",
+        "time": "",
         "why": "That's the entire \"start a new project\" toolkit: create a folder → enter it.",
-        "instructions": {
-          "0": "Create a test folder: `mkdir tutorial-sandbox` → Enter.",
-          "1": "Check it appeared: `ls` → it should be in the list.",
-          "2": "Enter it: `cd tutorial-sandbox` → Enter.",
-          "3": "Verify you're inside: `pwd` → should end with /tutorial-sandbox."
-        },
+        "instructions": [
+          "Create a test folder: `mkdir tutorial-sandbox` → Enter.",
+          "Check it appeared: `ls` → it should be in the list.",
+          "Enter it: `cd tutorial-sandbox` → Enter.",
+          "Verify you're inside: `pwd` → should end with /tutorial-sandbox."
+        ],
         "prompt": "mkdir tutorial-sandbox\ncd tutorial-sandbox\npwd",
         "example": "After three commands:\n$ pwd\n/Users/denisa/tutorial-sandbox",
         "validate": "pwd prints a path ending with /tutorial-sandbox. Folder created, you're in it.",
         "tip": "Tab is your best friend. Start typing `cd tut` → press Tab → the terminal completes to `cd tutorial-sandbox/`. Saves 90% of typing."
       },
-      "tt-4": {
+      "s4": {
+        "id": "s4",
         "title": "cd .. and cd ~ — navigate back",
-        "time": "2 min",
+        "time": "",
         "why": "Knowing how to go back is as important as going in. Insurance against \"where did I end up?\".",
-        "instructions": {
-          "0": "You're now in tutorial-sandbox. Type `cd ..` → Enter. (Two dots = \"folder above\".)",
-          "1": "Check: `pwd` → you're back in home.",
-          "2": "Now go back in: `cd tutorial-sandbox` → verify pwd.",
-          "3": "From anywhere you can return home with one command: `cd ~` (or just `cd`)."
-        },
+        "instructions": [
+          "You're now in tutorial-sandbox. Type `cd ..` → Enter. (Two dots = \"folder above\".)",
+          "Check: `pwd` → you're back in home.",
+          "Now go back in: `cd tutorial-sandbox` → verify pwd.",
+          "From anywhere you can return home with one command: `cd ~` (or just `cd`)."
+        ],
         "prompt": "cd ..\npwd\ncd ~\npwd",
         "example": "$ cd ..\n$ pwd\n/Users/denisa\n$ cd ~\n$ pwd\n/Users/denisa",
         "validate": "You understand: `..` = up one level, `~` = home, any path = a specific place.",
         "tip": "On Windows the tilde (~) also works in PowerShell. `cd` with no arguments always returns home."
       },
-      "tt-5": {
+      "s5": {
+        "id": "s5",
         "title": "Lock it in — a nested structure in one command",
-        "time": "2 min",
+        "time": "",
         "why": "Real task: create ~/projects/<name>/notes/ in one go. `mkdir -p` can do it.",
-        "instructions": {
-          "0": "From anywhere type: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
-          "1": "Enter it: `cd ~/projects/my-first-project` → check `ls` (you should see the notes folder).",
-          "2": "You can delete the test: `cd ~` → then `rm -r tutorial-sandbox` (Mac/Linux) or `Remove-Item -Recurse tutorial-sandbox` (PowerShell). This removes the folder permanently.",
-          "3": "Don't delete ~/projects/my-first-project — it'll come in handy in the first-project tutorial."
-        },
+        "instructions": [
+          "From anywhere type: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
+          "Enter it: `cd ~/projects/my-first-project` → check `ls` (you should see the notes folder).",
+          "You can delete the test: `cd ~` → then `rm -r tutorial-sandbox` (Mac/Linux) or `Remove-Item -Recurse tutorial-sandbox` (PowerShell). This removes the folder permanently.",
+          "Don't delete ~/projects/my-first-project — it'll come in handy in the first-project tutorial."
+        ],
         "prompt": "mkdir -p ~/projects/my-first-project/notes\ncd ~/projects/my-first-project\nls",
         "example": "$ ls\nnotes",
         "validate": "You see the notes folder inside ~/projects/my-first-project. Structure created in one command.",
@@ -1374,6 +1379,26 @@
         "troubleshoot": {
           "rm doesn't work on Windows": "Windows uses `del` or `rmdir /s`. PowerShell handles `Remove-Item -Recurse`. When in doubt — delete via Explorer.",
           "Tab completion doesn't work": "Normal for cmd.exe. Switch to PowerShell or Windows Terminal — autocomplete works there."
+        }
+      },
+      "s6": {
+        "id": "s6",
+        "title": "Ctrl+C and clear — safely cancel and tidy up",
+        "time": "",
+        "why": "Sooner or later a command will \"hang\" or you'll change your mind halfway. Knowing how to stop it is peace of mind: you can always hit \"cancel\" without breaking anything.",
+        "instructions": [
+          "Run an \"endless\" command so there's something to interrupt: `ping example.com` (Mac/Linux) — lines will scroll forever.",
+          "Press `Ctrl+C` — the command stops and you get the prompt back. It's safe: Ctrl+C just interrupts the current command, it doesn't touch your files.",
+          "If you've half-typed a line and changed your mind — press `Ctrl+C` again: the terminal clears the line so you can start over.",
+          "When the screen is cluttered with output — type `clear` (Mac/Linux/PowerShell) → Enter. The screen clears, but your command history stays (the up arrow brings back past commands)."
+        ],
+        "prompt": "ping example.com\nclear",
+        "example": "$ ping example.com\nPING example.com ...\n64 bytes from ...\n^C        ← here you pressed Ctrl+C\n$         ← prompt is back, everything under control",
+        "validate": "After Ctrl+C the command stopped and the prompt ($ or >) returned. After `clear` the screen is clean, and the up arrow still shows past commands.",
+        "tip": "`Ctrl+C` means \"interrupt\", not \"copy\" (a habit from other apps). To confirm a command finished rather than hung — watch the prompt: `$` / `>` is back = the command is done.",
+        "troubleshoot": {
+          "Ctrl+C does nothing": "Sometimes you need to press it twice. If it's really stuck — close the terminal tab and open a new one: no files are harmed by this.",
+          "clear made my command history disappear": "It didn't. `clear` only wipes the visible screen. Press the up arrow — your past commands are still there."
         }
       }
     },
@@ -1410,110 +1435,110 @@
     "totalTime": "10 min",
     "whatItIs": "Want to create folders with clicks in Finder/Explorer, or with a command in the terminal — your choice. This tutorial shows both ways across three live scenarios: work reports, personal notes, a throwaway experiment.",
     "approach": "Don't pick ONE way. Create every folder both ways — via Finder AND via mkdir. After 3 rounds, your preference becomes deliberate.",
-    "outcomes": {
-      "0": "Create folders via both UI and terminal",
-      "1": "Know which names won't cause problems",
-      "2": "Understand how to organize the project tree meaningfully",
-      "3": "Can cleanly delete temporary experiments"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Create folders via both UI and terminal",
+      "Know which names won't cause problems",
+      "Understand how to organize the project tree meaningfully",
+      "Can cleanly delete temporary experiments"
+    ],
+    "applyIn": [
+      {
         "title": "Every new project",
         "description": "First step — a folder with a meaningful name in ~/projects/. Otherwise — chaos in a month."
       },
-      "1": {
+      {
         "title": "Personal knowledge base",
         "description": "A separate hierarchy for notes, learning, recipes — kept apart from work folders."
       },
-      "2": {
+      {
         "title": "Experiment / sandbox",
         "description": "A \"trash\" folder you're not afraid to delete. Every professional has one."
       }
-    },
-    "pitfalls": {
-      "0": "Spaces and non-ASCII in names — the terminal and git don't like them. \"my project\" ❌ → \"my-project\" ✅.",
-      "1": "Folders on the Desktop — a week later there are 30 of them and you can't find anything. Use ~/projects/.",
-      "2": "Deleting a folder with rm -rf without checking — it's gone forever. ls first, then rm."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Spaces and non-ASCII in names — the terminal and git don't like them. \"my project\" ❌ → \"my-project\" ✅.",
+      "Folders on the Desktop — a week later there are 30 of them and you can't find anything. Use ~/projects/.",
+      "Deleting a folder with rm -rf without checking — it's gone forever. ls first, then rm."
+    ],
+    "exercises": [
+      {
         "question": "Create your own ~/projects/ structure: at least 3 projects with meaningful names. One via Finder, two via mkdir.",
         "hint": "Names should answer \"what is this?\" 6 months later. \"test\" — bad. \"monthly-reports-2026\" — good."
       },
-      "1": {
+      {
         "question": "Delete a temp folder both ways: once via the Trash (drag-to-trash), once via rm -r. Notice the difference.",
         "hint": "Trash → recoverable. rm -r → no, gone forever. When in doubt — Trash."
       }
-    },
+    ],
     "steps": {
-      "fw-1": {
+      "s1": {
         "title": "Decide on a name and structure (naming rules)",
-        "time": "2 min",
+        "time": "",
         "why": "A folder name is a future `cd <this name>` command. Long / spaces / non-ASCII — you'll suffer every time.",
-        "instructions": {
-          "0": "Rule 1: ASCII only. No non-Latin letters.",
-          "1": "Rule 2: instead of spaces — hyphens (or underscores). work-reports, not work reports.",
-          "2": "Rule 3: the name answers \"what's inside?\" (≤ 30 chars). monthly-audits is better than stuff.",
-          "3": "Rule 4: one folder — one topic. Don't dump different things into one."
-        },
+        "instructions": [
+          "Rule 1: ASCII only. No non-Latin letters.",
+          "Rule 2: instead of spaces — hyphens (or underscores). work-reports, not work reports.",
+          "Rule 3: the name answers \"what's inside?\" (≤ 30 chars). monthly-audits is better than stuff.",
+          "Rule 4: one folder — one topic. Don't dump different things into one."
+        ],
         "example": "Good: monthly-audits, claude-notes, sandbox-2026, website-redesign\nBad: \"My projects\", stuff, test, untitled folder, new folder (1)",
         "validate": "You can explain to yourself: \"This folder is about X, the name is short and clear.\"",
         "tip": "If you plan to make a git repo from the folder — pick the name now. Renaming later is possible but noisy."
       },
-      "fw-2": {
+      "s2": {
         "title": "Example 1 — Work audits (via the terminal)",
-        "time": "2 min",
+        "time": "",
         "why": "Scenario: you plan to do regular audits once a month. You need a shared folder for them.",
-        "instructions": {
-          "0": "Open the terminal.",
-          "1": "Type: `mkdir -p ~/projects/monthly-audits/2026-may`. This creates both monthly-audits and the May subfolder.",
-          "2": "Enter it: `cd ~/projects/monthly-audits/2026-may`.",
-          "3": "Verify: `pwd` — ends with /monthly-audits/2026-may. Structure is ready to use."
-        },
+        "instructions": [
+          "Open the terminal.",
+          "Type: `mkdir -p ~/projects/monthly-audits/2026-may`. This creates both monthly-audits and the May subfolder.",
+          "Enter it: `cd ~/projects/monthly-audits/2026-may`.",
+          "Verify: `pwd` — ends with /monthly-audits/2026-may. Structure is ready to use."
+        ],
         "prompt": "mkdir -p ~/projects/monthly-audits/2026-may\ncd ~/projects/monthly-audits/2026-may\npwd",
         "example": "$ pwd\n/Users/denisa/projects/monthly-audits/2026-may",
         "validate": "You see the full path to 2026-may. Folder created, you're in it.",
         "tip": "Subfolders by date (2026-may) follow the \"new month = new folder\" pattern. Scales very robustly."
       },
-      "fw-3": {
+      "s3": {
         "title": "Example 2 — Notes and learning (via Finder/Explorer)",
-        "time": "2 min",
+        "time": "",
         "why": "Scenario: you're learning something new and want to keep notes. Visual is more convenient — that's fine.",
-        "instructions": {
-          "0": "macOS: open Finder → Cmd+Shift+H (return to home) → find the projects folder (or create it with Cmd+Shift+N).",
-          "1": "Inside projects: right click → New Folder → type `learning-notes` → Enter.",
-          "2": "Inside learning-notes — create two more: `claude` and `terminal-basics`.",
-          "3": "Windows: open Explorer → navigate to C:\\Users\\<name>\\projects → right click → New Folder. Repeat for subfolders."
-        },
+        "instructions": [
+          "macOS: open Finder → Cmd+Shift+H (return to home) → find the projects folder (or create it with Cmd+Shift+N).",
+          "Inside projects: right click → New Folder → type `learning-notes` → Enter.",
+          "Inside learning-notes — create two more: `claude` and `terminal-basics`.",
+          "Windows: open Explorer → navigate to C:\\Users\\<name>\\projects → right click → New Folder. Repeat for subfolders."
+        ],
         "example": "The Finder structure:\nprojects/\n  learning-notes/\n    claude/\n    terminal-basics/",
         "validate": "In Finder/Explorer you see the tree: projects → learning-notes → claude / terminal-basics.",
         "tip": "Terminal and Finder work on the same filesystem. A folder created in one is visible in the other. You can mix them."
       },
-      "fw-4": {
+      "s4": {
         "title": "Example 3 — Temporary experiment (any method)",
-        "time": "2 min",
+        "time": "",
         "why": "Scenario: you want to experiment with something — you need a single-use folder you won't regret deleting.",
-        "instructions": {
-          "0": "Create it however you like: `mkdir -p ~/projects/sandbox` (terminal) OR via Finder.",
-          "1": "Create some folders and files inside — anything. For example: `cd ~/projects/sandbox && touch test.txt && mkdir notes`.",
-          "2": "Check the contents: `ls` — should show test.txt and notes.",
-          "3": "Remember: this folder is a deletion candidate in step 5."
-        },
+        "instructions": [
+          "Create it however you like: `mkdir -p ~/projects/sandbox` (terminal) OR via Finder.",
+          "Create some folders and files inside — anything. For example: `cd ~/projects/sandbox && touch test.txt && mkdir notes`.",
+          "Check the contents: `ls` — should show test.txt and notes.",
+          "Remember: this folder is a deletion candidate in step 5."
+        ],
         "prompt": "mkdir -p ~/projects/sandbox\ncd ~/projects/sandbox\ntouch test.txt\nmkdir notes\nls",
         "example": "$ ls\nnotes  test.txt",
         "validate": "In sandbox you see test.txt and notes/. Folder filled and ready for deletion.",
         "tip": "touch creates an empty file in a second. Handy for quick tests. Windows equivalent: `New-Item test.txt` or `echo. > test.txt`."
       },
-      "fw-5": {
+      "s5": {
         "title": "Clean deletion — two ways",
-        "time": "2 min",
+        "time": "",
         "why": "Learning to delete is as important as learning to create. Otherwise folders pile up endlessly.",
-        "instructions": {
-          "0": "Way 1 (safe) — via Finder/Explorer: open ~/projects/, drag sandbox to the Trash. Can be undone if you change your mind.",
-          "1": "Way 2 (fast, irreversible) — `rm -rf ~/projects/sandbox` (mac/linux) or `Remove-Item -Recurse -Force ~/projects/sandbox` (PowerShell).",
-          "2": "IMPORTANT: rm -rf deletes INSTANTLY, no Trash. Double-check the path before Enter.",
-          "3": "Verify it's gone: `ls ~/projects/` — sandbox is no longer in the list."
-        },
+        "instructions": [
+          "Way 1 (safe) — via Finder/Explorer: open ~/projects/, drag sandbox to the Trash. Can be undone if you change your mind.",
+          "Way 2 (fast, irreversible) — `rm -rf ~/projects/sandbox` (mac/linux) or `Remove-Item -Recurse -Force ~/projects/sandbox` (PowerShell).",
+          "IMPORTANT: rm -rf deletes INSTANTLY, no Trash. Double-check the path before Enter.",
+          "Verify it's gone: `ls ~/projects/` — sandbox is no longer in the list."
+        ],
         "prompt": "rm -rf ~/projects/sandbox\nls ~/projects/",
         "example": "Before: $ ls ~/projects/\nmonthly-audits  learning-notes  sandbox  my-first-project\n\nAfter:\nmonthly-audits  learning-notes  my-first-project",
         "validate": "~/projects/ no longer contains sandbox. Experiment closed, working folders intact.",
@@ -1522,6 +1547,21 @@
           "rm: command not found on Windows": "Use PowerShell with `Remove-Item -Recurse` or just Explorer + Delete.",
           "Trash doesn't restore on mac": "Cmd+Shift+Delete empties the Trash. If you already emptied — files are lost (only Time Machine can recover, if enabled)."
         }
+      },
+      "s6": {
+        "title": "Protect an important folder: your first backup with git",
+        "time": "",
+        "why": "Work folders (like monthly-audits) hurt to lose. Set up git once and you get version history and a safety net: even if you delete a file by accident, you can bring it back.",
+        "instructions": [
+          "Go into the folder you want to protect: `cd ~/projects/monthly-audits`.",
+          "Create a repository: `git init`. This turns on change tracking inside the folder.",
+          "Save the first snapshot: `git add .` then `git commit -m \"initial backup\"`.",
+          "Confirm the snapshot is saved: `git log --oneline` — you'll see your \"initial backup\" commit."
+        ],
+        "prompt": "cd ~/projects/monthly-audits\ngit init\ngit add .\ngit commit -m \"initial backup\"\ngit log --oneline",
+        "example": "$ git log --oneline\na1b2c3d initial backup",
+        "validate": "git log shows the \"initial backup\" commit. Your folder now has a restore point.",
+        "tip": "Run a new `git commit` after every meaningful change — it's like \"saving the game\": you can always return to a working version. If git isn't installed — on mac run `xcode-select --install`."
       }
     },
     "trigger": "You need a tidy folder structure for a Claude project — but no idea where to start.",

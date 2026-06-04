@@ -154,115 +154,126 @@
     "totalTime": "15 min",
     "whatItIs": "Which Claude model to pick? Opus = your top expert for hard work (strategy, parsing dense PDFs). Sonnet = everyday workhorse (90% of tasks, balance of price and quality). Haiku = lightning-fast for the simple stuff (classification, short answers).\n\nPlus the key concepts: what the [[node:b-context|context window]] is and why AI \"forgets\" the start of a long conversation, what a [[node:b-system|system prompt]] is and how it changes Claude's behavior. Without this foundation, the other tutorials are just a list of instructions without understanding.",
     "approach": "Don't try to memorize theory — go through the steps in Claude and compare answers with your own eyes. Knowledge from practice sticks 10× longer than from an article.",
-    "outcomes": {
-      "0": "You consciously choose a model for the task",
-      "1": "You write a structured prompt in 30 seconds",
-      "2": "You know when the context has gone stale and a new chat is needed",
-      "3": "You know the typical scenarios where Claude makes mistakes"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "You consciously choose a model for the task",
+      "You write a structured prompt in 30 seconds",
+      "You know when the context has gone stale and a new chat is needed",
+      "You know the typical scenarios where Claude makes mistakes"
+    ],
+    "applyIn": [
+      {
         "title": "Daily work",
         "description": "Any work request to Claude now goes through a structured prompt — that's a free +30% quality boost."
       },
-      "1": {
+      {
         "title": "Model selection",
         "description": "Before a big task — ask yourself: Opus, Sonnet, or Haiku? The right choice saves tokens and time."
       },
-      "2": {
+      {
         "title": "Long conversations",
         "description": "You notice the model getting confused — open a new chat and bring over only the key conclusions."
       }
-    },
-    "pitfalls": {
-      "0": "Studying theory from articles without practice — it won't stick.",
-      "1": "Using one model for everything — either slow/expensive, or shallow.",
-      "2": "Dumping 50 files 'just in case' — the model loses focus."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Studying theory from articles without practice — it won't stick.",
+      "Using one model for everything — either slow/expensive, or shallow.",
+      "Dumping 50 files 'just in case' — the model loses focus."
+    ],
+    "exercises": [
+      {
         "question": "Take a real work task and write a prompt using the schema 'Role → Task → Format → Constraints'. Send it to Sonnet.",
         "hint": "If you get a generic answer — check whether you explicitly stated the constraints and format."
       },
-      "1": {
+      {
         "question": "Rewrite your typical one-liner request as a structured prompt. Compare the answers.",
         "hint": "The contrast should be noticeable — the structured version is usually 2× more detailed."
       }
-    },
+    ],
     "steps": {
-      "b-1": {
+      "s1": {
         "title": "Sign in to Claude.ai and set up your workspace",
-        "time": "2 min",
+        "time": "",
         "why": "This is the entry point — without an account you can't compare models or feel the difference.",
-        "instructions": {
-          "0": "Open claude.ai in Chrome or Safari (Firefox works too).",
-          "1": "Sign in or register. The Free plan is enough for first steps; Pro is needed for Opus and Projects.",
-          "2": "Close the onboarding pop-ups — we'll learn structurally, not through tips."
-        },
+        "instructions": [
+          "Open [[node:pl-web-setup|claude.ai]] in Chrome or Safari (Firefox works too).",
+          "Sign in or register. The Free plan is enough for first steps; Pro is needed for Opus and Projects.",
+          "Close the onboarding pop-ups — we'll learn structurally, not through tips."
+        ],
         "validate": "You see the 'Reply to Claude…' field and a sidebar with chat history on the left.",
         "troubleshoot": {
-          "Asked to verify phone number": "Pyydetään puhelimen vahvistusta",
           "Phone verification requested": "This is normal — Anthropic blocks bots. Enter a real number.",
-          "I don't see a model selector": "Mallin valintapainike ei näy",
           "Can't find the model selector": "The model button is above the input field or in the top-right corner of the chat."
         }
       },
-      "b-2": {
+      "s2": {
         "title": "Compare Haiku, Sonnet and Opus on the same task",
-        "time": "5 min",
+        "time": "",
         "why": "Without comparison you won't pick the right model for a task — you'll either overpay or lose depth.",
-        "instructions": {
-          "0": "Create 3 chats (one per model: Haiku → Sonnet → Opus).",
-          "1": "Send the same prompt below to each — WITHOUT changes.",
-          "2": "Compare the answers by: length, specificity, nuance, generation speed.",
-          "3": "Note down: which model 'hit' the task best."
-        },
+        "instructions": [
+          "Create 3 chats (one per model: Haiku → Sonnet → Opus).",
+          "Send the same prompt below to each — WITHOUT changes.",
+          "Compare the answers by: length, specificity, nuance, generation speed.",
+          "Note down: which model 'hit' the task best."
+        ],
         "prompt": "Explain why two equally talented junior developers can produce radically different results in the same team.\n\nGive 5 reasons, rank by impact, and for each explain the mechanism. No fluff and no obvious 'communication is important'.",
         "validate": "You have 3 chats with the same prompt and three answers of different depth.",
         "tip": "Haiku is good for drafts and simple tasks, Sonnet is for everyday work, Opus is for complex reasoning and audits.",
         "troubleshoot": {
-          "Opus is not available": "Opus ei ole saatavilla",
           "Opus not available": "Pro/Team only. If on Free — use Sonnet, it's close to Opus for most tasks."
         }
       },
-      "b-3": {
+      "s3": {
         "title": "Feel the power of a system prompt",
-        "time": "4 min",
+        "time": "",
         "why": "Without a role the model answers like Wikipedia. With a role — like an expert on your task. Quality difference is 30–50%.",
-        "instructions": {
-          "0": "Open a new Sonnet chat.",
-          "1": "Send the 'naive' prompt (see the block below).",
-          "2": "Open a second chat, send the 'prompt with role'.",
-          "3": "Compare: how much more concrete the second answer is, tied to constraints, without fluff."
-        },
+        "instructions": [
+          "Open a new Sonnet chat.",
+          "Send the 'naive' prompt (see the block below).",
+          "Open a second chat, send the 'prompt with role'.",
+          "Compare: how much more concrete the second answer is, tied to constraints, without fluff."
+        ],
         "prompt": "[NAIVE PROMPT — send as-is]\nHow can I improve my project?\n\n[PROMPT WITH ROLE — send in the second chat]\nYou are an expert in my domain with a focus on practical results.\nContext: describe your task, audience, environment (1–2 sentences).\nTask: give 5 recommendations for improving <your object — page / report / process>.\nFormat: problem → why it hurts the result → what to do.\nConstraint: only things that can be implemented in a week without outside help.",
         "validate": "The second answer is specific, tied to constraints, without generic phrases.",
         "tip": "Memorize the structure: context → role → task → format → constraints. That's 80% of a good prompt."
       },
-      "b-4": {
+      "s4": {
         "title": "See how the context window works",
-        "time": "3 min",
+        "time": "",
         "why": "Understanding the context limit saves you from 'hallucinations' and quality loss on long conversations.",
-        "instructions": {
-          "0": "In one chat, ask Claude to briefly introduce itself (see below).",
-          "1": "In the same chat, ask 5–7 unrelated questions in a row.",
-          "2": "Then ask: 'What was the very first question I asked after your introduction?' — Claude should remember.",
-          "3": "This shows that the whole chat is one shared context, not a series of independent requests."
-        },
+        "instructions": [
+          "In one chat, ask Claude to briefly introduce itself (see below).",
+          "In the same chat, ask 5–7 unrelated questions in a row.",
+          "Then ask: 'What was the very first question I asked after your introduction?' — Claude should remember.",
+          "This shows that the whole chat is one shared context, not a series of independent requests."
+        ],
         "prompt": "Introduce yourself in one line. After that I'll ask several different questions.",
         "validate": "For the last question Claude correctly quotes the first.",
         "tip": "When a chat goes stale (the model gets confused) — open a new one and bring over only the essentials. Don't drag garbage into the context."
       },
-      "b-5": {
+      "s5": {
+        "title": "Refine the answer iteratively instead of rewriting from scratch",
+        "time": "",
+        "why": "Beginners ditch the first answer and write a brand-new prompt. But Claude remembers the whole chat — a targeted tweak ('make it shorter', 'add an example', 'drop point 3') is faster and more precise than starting over.",
+        "instructions": [
+          "Take any answer from the previous steps that was 'almost, but not quite' right.",
+          "Don't start a new chat — write one short follow-up right in the same conversation (e.g. 'too generic, give concrete steps' or 'cut it in half and keep only points 1 and 4').",
+          "Once you get the new version, refine it again with a single phrase about what to fix.",
+          "Notice: with each iteration the answer gets closer, because Claude keeps the full edit history in context."
+        ],
+        "prompt": "Too generic. Rewrite it for my situation: <1 sentence about your context>. Keep only concrete actions, no intro.",
+        "validate": "You got the answer to where you needed it in 2–3 short follow-ups, without rewriting the original prompt.",
+        "tip": "One follow-up = one change. If you ask for five edits at once, the model drops some. Refine step by step."
+      },
+      "s6": {
         "title": "Lock it in: pick a model for your real task",
-        "time": "1 min",
+        "time": "",
         "why": "Without applying it to your own task, the learning stays theory.",
-        "instructions": {
-          "0": "Take YOUR actual task for this week.",
-          "1": "Ask yourself: which model is optimal (Haiku / Sonnet / Opus)?",
-          "2": "What role and format are needed in the system prompt?",
-          "3": "Launch the task right now — while it's fresh."
-        },
+        "instructions": [
+          "Take YOUR actual task for this week.",
+          "Ask yourself: which model is optimal (Haiku / Sonnet / Opus)?",
+          "What role and format are needed in the system prompt?",
+          "Launch the task right now — while it's fresh."
+        ],
         "validate": "You have a running chat with YOUR task and a conscious choice of model + role.",
         "tip": "Continue developing this in 'Prompt Engineering' — we'll go deeper into techniques there."
       }
@@ -421,106 +432,119 @@
     "totalTime": "15 min",
     "whatItIs": "You asked Claude for an HTML landing page prototype — it opens in a separate window next to the chat, you can see how it looks and immediately say 'make the button greener'. No copy-pasting to an editor and back. That's an Artifact.\n\nA separate 'canvas' in [[node:pl-web-setup|claude.ai]] for code, HTML, SVG, documents. Runnable preview right in the browser, iterations with version history, no walls of text in chat.",
     "approach": "Don't try to 'draw' a perfect final version in the Artifact right away. It's an iteration tool — 3–5 cycles of 'get → poke → rewrite' produce a better result than '10 pages of requirements upfront'.",
-    "outcomes": {
-      "0": "You trigger an Artifact intentionally — not by accident",
-      "1": "You build interactive HTML prototypes in minutes",
-      "2": "You use versions for safe iteration",
-      "3": "You share an Artifact with a public link to colleagues"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "You trigger an Artifact intentionally — not by accident",
+      "You build interactive HTML prototypes in minutes",
+      "You use versions for safe iteration",
+      "You share an Artifact with a public link to colleagues"
+    ],
+    "applyIn": [
+      {
         "title": "Idea prototype",
         "description": "A page / screen concept assembled in 10 minutes in HTML+Tailwind, a live link sent to the team — we discuss the real thing, not a description."
       },
-      "1": {
+      {
         "title": "A shareable document",
         "description": "A report / guide / meeting summary formatted as an Artifact — it can be opened and read as a standalone document."
       },
-      "2": {
+      {
         "title": "Micro-utility",
         "description": "A calculator / converter / visualization — assembled in 15 minutes, runs in the browser without a backend."
       }
-    },
-    "pitfalls": {
-      "0": "Not specifying the format — Claude will put the code in the chat instead of an Artifact.",
-      "1": "Asking for 'everything at once' — iterations are more effective.",
-      "2": "Ignoring versions — you lose good intermediate results."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Not specifying the format — Claude will put the code in the chat instead of an Artifact.",
+      "Asking for 'everything at once' — iterations are more effective.",
+      "Ignoring versions — you lose good intermediate results."
+    ],
+    "exercises": [
+      {
         "question": "Describe to Claude a prototype of one page for your project. Get the Artifact. Revise it 2–3 times.",
         "hint": "Change ONE thing each time — this shows the power of iteration."
       },
-      "1": {
+      {
         "question": "Rewrite your last Word/Notion documentation as a Markdown Artifact with a table of contents.",
         "hint": "You'll get a standalone document that's more pleasant to read than in the chat."
       }
-    },
+    ],
     "steps": {
-      "a-1": {
+      "s1": {
         "title": "Understand when an Artifact is triggered",
-        "time": "2 min",
+        "time": "",
         "why": "An Artifact is the 'product' of the work (code / HTML / SVG / Markdown). Not knowing how to trigger it means you keep getting walls of text in the chat.",
-        "instructions": {
-          "0": "An artifact is triggered automatically for: code longer than ~20 lines, HTML/React, SVG, Mermaid, long documents.",
-          "1": "You can explicitly ask: 'put this in an Artifact'.",
-          "2": "The right preview panel opens — it shows the code AND the visual result."
-        },
+        "instructions": [
+          "An artifact is triggered automatically for: code longer than ~20 lines, HTML/React, SVG, Mermaid, long documents.",
+          "You can explicitly ask: 'put this in an Artifact'.",
+          "The right preview panel opens — it shows the code AND the visual result."
+        ],
         "validate": "You understand that an Artifact is a separate panel, not text in the chat.",
         "tip": "If Claude put a large block of code in the chat — ask: 'move this into an Artifact'. It will."
       },
-      "a-2": {
+      "s2": {
         "title": "Request the first HTML prototype",
-        "time": "4 min",
+        "time": "",
         "why": "A prototype in an Artifact is the fastest way to see an idea 'live' instead of a verbal description.",
-        "instructions": {
-          "0": "Open a new chat (can be inside a Project).",
-          "1": "Copy the prompt below, substitute your topic.",
-          "2": "Wait for generation — a preview opens on the right.",
-          "3": "Click 'Preview' / 'Code' — switch between the visual and the code."
-        },
+        "instructions": [
+          "Open a new chat (can be inside a Project).",
+          "Copy the prompt below, substitute your topic.",
+          "Wait for generation — a preview opens on the right.",
+          "Click 'Preview' / 'Code' — switch between the visual and the code."
+        ],
         "prompt": "Build an interactive single-file HTML prototype as an Artifact.\n\nWhat we're building: a subscription pricing page with three tiers and a month/year toggle.\nAudience: SaaS B2B.\nStack: plain HTML + Tailwind via CDN. No React. No third-party dependencies.\n\nRequirements:\n- mobile-first, correct down to 320px\n- accessible semantics (label, aria-*)\n- 3 states: idle, loading, success\n- meaningful copy instead of lorem ipsum\n\nShow the preview immediately.",
         "validate": "You see a preview with three tiers and a toggle; everything works in the preview window.",
         "tip": "If the preview breaks — ask 'fix the preview, I'm getting a blank screen'. Claude will find the bug."
       },
-      "a-3": {
+      "s3": {
         "title": "Make a targeted edit",
-        "time": "3 min",
+        "time": "",
         "why": "A targeted edit saves tokens and doesn't break the working parts. This is the main way to iterate.",
-        "instructions": {
-          "0": "In the chat with the Artifact, ask to change ONE specific thing.",
-          "1": "Don't use 'improve everything' — Claude will rewrite half randomly.",
-          "2": "Wait for the new version — 'Version 2' will appear at the top of the Artifact."
-        },
+        "instructions": [
+          "In the chat with the Artifact, ask to change ONE specific thing.",
+          "Don't use 'improve everything' — Claude will rewrite half randomly.",
+          "Wait for the new version — 'Version 2' will appear at the top of the Artifact."
+        ],
         "prompt": "In this Artifact change the primary color to #0F172A. Don't touch the font in the other sections. Make the buttons slightly larger (py-3 → py-4).",
         "validate": "Version 2 contains exactly those three changes; everything else is identical.",
         "tip": "The more precisely you state the edit, the fewer unwanted changes. Compare: 'make it prettier' ❌ vs 'change the radius from 8 to 12, leave everything else' ✅"
       },
-      "a-4": {
+      "s4": {
         "title": "Use versions for safe experiments",
-        "time": "3 min",
+        "time": "",
         "why": "Versioning removes the fear of iteration. Doesn't work — roll back.",
-        "instructions": {
-          "0": "Ask Claude to radically rework a section (see prompt).",
-          "1": "Get version 3.",
-          "2": "At the top of the Artifact click the versions dropdown — switch back to version 2.",
-          "3": "Confirm that the previous work is not lost."
-        },
+        "instructions": [
+          "Ask Claude to radically rework a section (see prompt).",
+          "Get version 3.",
+          "At the top of the Artifact click the versions dropdown — switch back to version 2.",
+          "Confirm that the previous work is not lost."
+        ],
         "prompt": "Now make an experimental alternative: a hero section with a large emotional headline and a video background instead of the gradient. Completely redraw the top of the page.",
         "validate": "You have at least 3 Artifact versions and switching between them works.",
         "tip": "Before experiments, save the version you liked to Notion / GitHub — just in case."
       },
-      "a-5": {
+      "s5": {
         "title": "Finalize and take the code",
-        "time": "3 min",
+        "time": "",
         "why": "Without moving to a repository, the Artifact stays a demo. This step takes it to real production.",
-        "instructions": {
-          "0": "When you're happy with the version — click 'Copy' in the top-right corner of the Artifact.",
-          "1": "Paste into your project (a separate file or component).",
-          "2": "If the code is React — ask Claude to split it into separate files: 'give me these components as a file structure'."
-        },
+        "instructions": [
+          "When you're happy with the version — click 'Copy' in the top-right corner of the Artifact.",
+          "Paste into your project (a separate file or component).",
+          "If the code is React — ask Claude to split it into separate files: 'give me these components as a file structure'."
+        ],
         "validate": "Code is pasted into your project and builds without errors.",
         "tip": "Don't copy everything at once. Before copying, ask Claude: 'go through the code and remove unnecessary comments and commented-out junk'."
+      },
+      "s6": {
+        "title": "Publish the Artifact and share the link",
+        "time": "",
+        "why": "An Artifact stays private until you publish it. Publishing turns it into a live page a colleague opens in their browser without access to your chat — better than a screenshot and faster than deploying a project.",
+        "instructions": [
+          "Get the right version to a presentable state (real copy instead of placeholders, no broken preview).",
+          "Click 'Publish' / 'Share' in the top-right corner of the Artifact and confirm publication.",
+          "Copy the public link and send it to a colleague — they open the interactive result without joining your conversation.",
+          "When the draft is no longer needed — Unpublish it so the link stops working."
+        ],
+        "validate": "Open the public link in an incognito window (no account) — the Artifact is visible and interactive.",
+        "tip": "The public link exposes only the artifact itself, not the chat history. Still check: no private key, token, or internal URL is baked into the code — exactly what's inside gets published."
       }
     },
     "trigger": "You need to show a live prototype, landing or diagram — not static text.",
@@ -592,9 +616,9 @@
       }
     },
     "steps": {
-      "i-1": {
+      "s1": {
         "title": "Open profile settings",
-        "time": "1 min",
+        "time": "",
         "why": "Custom Instructions at the profile level apply to ALL chats — this is the baseline investment.",
         "instructions": {
           "0": "In claude.ai → click the avatar (top right) → Settings.",
@@ -603,13 +627,12 @@
         },
         "validate": "You see a form with two text fields.",
         "troubleshoot": {
-          "I can't find Settings": "En näe Settings-valikkoa",
           "Can't see Settings": "Sometimes the section is called Preferences. Or it's hidden behind '···'. Look carefully."
         }
       },
-      "i-2": {
+      "s2": {
         "title": "Fill in 'About me'",
-        "time": "4 min",
+        "time": "",
         "why": "This is context about you. Without it Claude answers 'for everyone'; with it — for exactly your role.",
         "instructions": {
           "0": "Describe: role, experience, domain, main tasks, audience for your work.",
@@ -620,9 +643,9 @@
         "validate": "'About me' is filled in, describing things that change the answers (role, domain, stack, work format).",
         "tip": "The most useful thing to add is a specific stack/tools. Without them, Claude recommends generically."
       },
-      "i-3": {
+      "s3": {
         "title": "Fill in 'How to respond'",
-        "time": "4 min",
+        "time": "",
         "why": "This field controls style and format. It determines how much you can use answers without editing.",
         "instructions": {
           "0": "Describe: language, length, format, tone, what NOT to do.",
@@ -633,9 +656,23 @@
         "validate": "The field is saved; new chats follow your format and tone.",
         "tip": "If something still annoys you in the answers — that's a signal to add a new rule."
       },
-      "i-4": {
+      "s4": {
+        "title": "Remove vague wording",
+        "time": "",
+        "why": "A vague rule like 'write well' gets ignored — the model doesn't know what 'well' means to you. A concrete, observable rule changes the answer; a fuzzy one doesn't.",
+        "instructions": {
+          "0": "Reread your instructions and underline abstract words: 'quality', 'professional', 'clear', 'friendly'.",
+          "1": "Replace each one with observable behavior: 'clear' → 'no jargon; explain a term in parentheses on first use'.",
+          "2": "Delete rules Claude already follows by default — they only add noise to the instruction.",
+          "3": "Check rule: if you can't tell unambiguously whether a line was followed or not, rewrite it."
+        },
+        "example": "Before (vague):\n- Write with quality and professionalism.\n- Be friendly.\n- Explain clearly.\n\nAfter (observable):\n- Back every claim with an example or a number.\n- Business tone; no 'hi!', no 'hope this helps'.\n- Explain a term in parentheses (one word) on first use.",
+        "validate": "No abstract judgments remain in the instructions — only rules where it's visible whether they were followed.",
+        "tip": "Vagueness test: give two wordings to a colleague and ask 'how would you check this?'. If they can't, Claude can't either."
+      },
+      "s5": {
         "title": "Test run on 3 different tasks",
-        "time": "2 min",
+        "time": "",
         "why": "Without testing, instructions may 'not kick in'. The test is your mirror.",
         "instructions": {
           "0": "Open 3 new chats and set 3 different tasks (everyday, professional, creative).",
@@ -646,9 +683,9 @@
         "validate": "All three answers are in the right language, format, tone.",
         "tip": "A checklist of rules born from real problems = the best kind of instructions. Don't write 'be friendly' — write 'don't use the word disclaimer'."
       },
-      "i-5": {
+      "s6": {
         "title": "Adapt at the Project level (if you have one)",
-        "time": "1 min",
+        "time": "",
         "why": "[[node:p-instructions|Project instructions]] override global ones. Each niche gets its own specialized set.",
         "instructions": {
           "0": "Open your Project → Custom Instructions.",
@@ -836,96 +873,131 @@
   "ready-prompts": {
     "title": "Use ready-made prompts",
     "subtitle": "The fastest way to get quality",
-    "totalTime": "8 min",
-    "whatItIs": "Ready-made prompts are parameterized templates for typical tasks. Open, fill in your data, send — get a structured answer. The fastest way to get quality without learning prompt engineering.",
-    "approach": "Don't try to write your own prompts from scratch until you've mastered the ready-made ones. Every time you see a typical task — look for a template first, then think. 80% of work is solved by the ready-made.",
-    "outcomes": {
-      "0": "Open the ready-made prompt library with one click",
-      "1": "Find the right template via search or category filter",
-      "2": "Adapt a parameterized template to your case in a minute",
-      "3": "Save your favorite templates as bookmarks"
-    },
-    "applyIn": {
-      "0": {
+    "totalTime": "12 min",
+    "whatItIs": "Ready-made prompts are parameterized templates for typical tasks. Open, fill in your data, send — get a structured answer. The fastest way to get quality without learning prompt engineering. And then you fine-tune the template for yourself and turn it into a personal, reusable asset.",
+    "approach": "Don't try to write your own prompts from scratch until you've mastered the ready-made ones. Every time you see a typical task — look for a template first, then think. 80% of work is solved by the ready-made. The remaining 20% is your adaptation, worth saving and reusing.",
+    "outcomes": [
+      "Open the ready-made prompt library with one click",
+      "Find the right template via search or category filter",
+      "Adapt a parameterized template to your case in a minute",
+      "Fine-tune the prompt to your style and response requirements",
+      "Save and reuse your favorite templates"
+    ],
+    "applyIn": [
+      {
         "title": "Any typical task",
         "description": "Audit, review, naming, summary, plan — there's a template for everything."
       },
-      "1": {
+      {
         "title": "Team",
         "description": "Share favorite templates with colleagues — consistent quality without discussion."
       },
-      "2": {
+      {
         "title": "Adaptation",
         "description": "Take a template → tune it to your domain → save as your own → use every time."
       }
-    },
-    "pitfalls": {
-      "0": "Using a template without filling in the parameters — Claude answers the literal placeholder.",
-      "1": "Not saving adapted versions as bookmarks — you start from scratch every time.",
-      "2": "Ignoring categories — you waste time scrolling through all 42."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Using a template without filling in the parameters — Claude answers the literal placeholder.",
+      "Not saving adapted versions as bookmarks — you start from scratch every time.",
+      "Ignoring categories — you waste time scrolling through all 42.",
+      "Dropping a prompt after the first answer without tuning its format and tone for yourself."
+    ],
+    "exercises": [
+      {
         "question": "Open the library, find a template for your recurring task. Fill in the placeholders. Run it.",
         "hint": "If a template is in the 'Getting started' category — start there. Basic forms work everywhere."
       },
-      "1": {
+      {
+        "question": "Fine-tune one template for yourself: add format and tone requirements, run it twice, lock the final version.",
+        "hint": "Change one parameter per iteration — that way you can see exactly what improved the answer."
+      },
+      {
         "question": "Open your library and bookmark 3–5 of the most useful templates.",
         "hint": "In Cmd+K favorites are now at the top — instant access."
       }
-    },
+    ],
     "steps": {
-      "rp-1": {
+      "s1": {
         "title": "Open the ready-made prompt library",
-        "time": "1 min",
+        "time": "",
         "why": "Ready-made prompts solve 80% of typical tasks. Knowing about them = saving hours.",
-        "instructions": {
-          "0": "In the bottom section of the map — the 'Ready prompts' section.",
-          "1": "If it's collapsed — click ▲ to expand.",
-          "2": "Browse the list of 10 templates."
-        },
+        "instructions": [
+          "In the bottom section of the map — the 'Ready prompts' section.",
+          "If it's collapsed — click ▲ to expand.",
+          "Browse the list of 10 templates."
+        ],
         "validate": "You see 10 cards: Create Project, Create Artifact, Expert Audit, etc.",
         "tip": "These 10 prompts cover the most frequent tasks. Don't write them from scratch every time."
       },
-      "rp-2": {
+      "s2": {
         "title": "Choose a prompt for YOUR task",
-        "time": "2 min",
+        "time": "",
         "why": "Blindly copying — little use. Choosing for the task is already half the success.",
-        "instructions": {
-          "0": "Read your current task.",
-          "1": "Match it against the prompt list: which is closest in meaning.",
-          "2": "Click 'Show' on the right card — read the full template."
-        },
+        "instructions": [
+          "Read your current task.",
+          "Match it against the prompt list: which is closest in meaning.",
+          "Click 'Show' on the right card — read the full template."
+        ],
         "example": "My task: 'Prepare a ticket in Linear for adding a filter to the catalog'.\nMatching prompt: 'Prepare a task for the developer'.",
         "validate": "One prompt chosen that clearly fits the task.",
         "tip": "If none fits — that's a signal to create YOUR OWN prompt template in the library."
       },
-      "rp-3": {
-        "title": "Copy and adapt to context",
-        "time": "3 min",
+      "s3": {
+        "title": "Copy and plug in your context",
+        "time": "",
         "why": "Copying 'as-is' — generic result. Filling in specifics — that's the skill.",
-        "instructions": {
-          "0": "Click 'Copy' — the text goes to the clipboard.",
-          "1": "Paste into Claude.",
-          "2": "Substitute your values for the placeholders [...].",
-          "3": "Send."
-        },
+        "instructions": [
+          "Click 'Copy' — the text goes to the clipboard.",
+          "Paste into Claude.",
+          "Substitute your values for the placeholders [...].",
+          "Send."
+        ],
         "example": "BEFORE (placeholders):\nIdea: [short description]\nBusiness context: [why this is needed]\n\nAFTER (your task):\nIdea: add a brand filter to the product catalog\nBusiness context: users get lost on a page with 500 products; add-to-cart conversion dropped 8% last month",
         "validate": "Prompt sent; Claude's answer is specific and tied to your case.",
         "tip": "Don't leave placeholders [...] in the final prompt. That's the most common mistake — and Claude answers generically."
       },
-      "rp-4": {
+      "s4": {
+        "title": "Fine-tune the prompt for yourself",
+        "time": "",
+        "why": "A ready template gives an average answer for everyone. Tuning it to your format, tone and requirements turns it into an answer made just for you.",
+        "instructions": [
+          "Assess the first answer: what's off — format, length, tone, depth?",
+          "Add explicit requirements to the prompt: 'answer as a table', 'keep it short, 5 bullets', 'business tone, no fluff'.",
+          "Change one parameter at a time and re-run — that way you see what actually worked.",
+          "Stop iterating once the answer reliably satisfies you."
+        ],
+        "example": "Added to the audit template:\n'Response format: a 3-column table — Problem | Impact | What to do. No more than 7 rows. Tone — business, no intros.'\n→ The answer became predictable and immediately usable for pasting into a ticket.",
+        "validate": "You have a version of the prompt that reliably produces an answer in the format and tone you need.",
+        "tip": "The most valuable additions are about output format and length limits. They save the most time on editing the answer."
+      },
+      "s5": {
         "title": "Save the improved version to your library",
-        "time": "2 min",
+        "time": "",
         "why": "The prompts you adapted are your main asset. Don't lose them.",
-        "instructions": {
-          "0": "Open your library (Notion / Obsidian / text file).",
-          "1": "Save the adapted prompt with the tag 'adapted: <your context>'.",
-          "2": "After a week — review: what works, what doesn't."
-        },
+        "instructions": [
+          "Open your library (Notion / Obsidian / text file).",
+          "Save the adapted prompt with the tag 'adapted: <your context>'.",
+          "Bookmark the template in Cmd+K so it's at hand.",
+          "After a week — review: what works, what doesn't."
+        ],
         "example": "# Prompt library\n\n## /dev-task — for my project\n[adapted prompt]\n\nNotes:\n- Works well for feature tickets\n- For bug tickets need to add a repro steps section",
-        "validate": "You have a personal prompt library with at least one adapted template.",
-        "tip": "In 6 months your library = your main productivity asset. Don't underestimate it. Share with the team."
+        "validate": "You have a personal prompt library with at least one adapted template, and it's bookmarked.",
+        "tip": "In 6 months your library = your main productivity asset. Don't underestimate it."
+      },
+      "s6": {
+        "title": "Reuse and share with the team",
+        "time": "",
+        "why": "One saved prompt saves minutes. A prompt the whole team uses saves hours and aligns quality without discussion.",
+        "instructions": [
+          "On the next similar task — open the prompt from bookmarks instead of searching again.",
+          "Replace only the context for the new case — the structure is already proven.",
+          "Share working templates with colleagues (a shared base / channel).",
+          "Once a month clean up the library: delete the outdated, promote the best to the top."
+        ],
+        "example": "The team keeps a shared 'Department prompts' file:\n- /dev-task — framing tasks for developers\n- /audit — expert feature audit\nA new hire takes the ready template and immediately delivers answers of the same quality as the seniors.",
+        "validate": "You reused a saved prompt at least once and shared at least one template with a colleague or the team.",
+        "tip": "A prompt reused 10 times pays off many times over. Share it — and team quality will rise on its own."
       }
     },
     "trigger": "You need a result right now — no time to learn prompt engineering from scratch.",
@@ -937,7 +1009,8 @@
     "outputs": [
       "Ready prompt with filled placeholders",
       "Structured Claude response on the template",
-      "Starter library of \"top-10 prompts\""
+      "A version of the prompt fine-tuned for you",
+      "A personal reusable library of \"top-10 prompts\""
     ],
     "tools": [
       {
@@ -961,101 +1034,114 @@
     "totalTime": "8 min",
     "whatItIs": "The very first tutorial — before models, context, and prompts. What Claude is, how it differs from other AI tools, what to expect and what mistaken expectations to avoid. Suited for someone who has never heard of Claude before.",
     "approach": "Don't try to write a complex prompt right away. Make 3 different requests (a question, a task, something creative) and see how Claude responds. Getting acquainted is about calibrating expectations, not achieving a result.",
-    "outcomes": {
-      "0": "Understand that Claude is a conversational AI model, not a search engine",
-      "1": "Know who Anthropic is and why they built Constitutional AI",
-      "2": "Distinguish Claude's strengths from its typical failures",
-      "3": "Have realistic expectations from the first conversation"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Understand that Claude is a conversational AI model, not a search engine",
+      "Know who Anthropic is and why they built Constitutional AI",
+      "Distinguish Claude's strengths from its typical failures",
+      "Have realistic expectations from the first conversation"
+    ],
+    "applyIn": [
+      {
         "title": "First encounter",
-        "description": "Opened claude.ai, typed 'hi' — now you know what to do next and what NOT to expect."
+        "description": "Opened [[node:pl-web-setup|claude.ai]], typed 'hi' — now you know what to do next and what NOT to expect."
       },
-      "1": {
+      {
         "title": "Making a decision",
         "description": "Whether to try Claude for your work at all — after this tutorial you have criteria."
       },
-      "2": {
+      {
         "title": "Explaining to colleagues",
         "description": "You can tell someone what Claude is in 5 minutes, without fluff."
       }
-    },
-    "pitfalls": {
-      "0": "Expecting Claude to know 'everything' — it has a knowledge cutoff.",
-      "1": "Treating the answer as fact — models sometimes confidently get things wrong.",
-      "2": "Comparing to Google Search — these are different tools with different strengths."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Expecting Claude to know 'everything' — it has a knowledge cutoff.",
+      "Treating the answer as fact — models sometimes confidently get things wrong.",
+      "Comparing to Google Search — these are different tools with different strengths."
+    ],
+    "exercises": [
+      {
         "question": "Ask Claude in one sentence: 'What can you do and where are your limitations?'. Compare the answer to your expectations.",
         "hint": "A good answer — short and honest, no marketing. If you get 'I can do everything' — ask for specifics."
       },
-      "1": {
+      {
         "question": "Ask 3 requests: a factual question, a creative task, a breakdown of a simple document. Compare the quality.",
-        "hint": "You'll notice — Claude is strong at analysis and phrasing, weaker on fresh facts (without web search)."
+        "hint": "You'll notice — Claude is strong at analysis and phrasing, weaker on fresh facts (without [[node:cap-search|web search]])."
       }
-    },
+    ],
     "steps": {
-      "in-1": {
+      "s1": {
         "title": "Open claude.ai in the browser",
-        "time": "1 min",
+        "time": "",
         "why": "The very first entry point. Without an account you can't try anything.",
-        "instructions": {
-          "0": "Go to claude.ai.",
-          "1": "Register via email or OAuth.",
-          "2": "Close the onboarding pop-ups — we'll learn structurally."
-        },
+        "instructions": [
+          "Go to claude.ai.",
+          "Register via email or OAuth.",
+          "Close the onboarding pop-ups — we'll learn structurally."
+        ],
         "validate": "You see an empty message field and a greeting from Claude."
       },
-      "in-2": {
+      "s2": {
         "title": "Ask the first 'factual' question",
-        "time": "2 min",
+        "time": "",
         "why": "This shows Claude's strong side — structured explanations.",
-        "instructions": {
-          "0": "Write: 'Explain in one paragraph what the HTTP protocol is and what it's for'.",
-          "1": "Read the answer.",
-          "2": "Notice: Claude answers structurally, without 'lyrical' preambles."
-        },
+        "instructions": [
+          "Write: 'Explain in one paragraph what the HTTP protocol is and what it's for'.",
+          "Read the answer.",
+          "Notice: Claude answers structurally, without 'lyrical' preambles."
+        ],
         "prompt": "Explain in one paragraph what the HTTP protocol is and what it's for. No unnecessary details.",
         "validate": "You got a short, concrete answer — without a long opener.",
         "tip": "Claude is great at explanations. Use it as an 'on-demand teacher' on any topic."
       },
-      "in-3": {
+      "s3": {
         "title": "Ask about 'today'",
-        "time": "1 min",
+        "time": "",
         "why": "Now you'll see the limitation — the knowledge cutoff.",
-        "instructions": {
-          "0": "Write: 'What are the tech news from the past week?'.",
-          "1": "Notice: Claude will say 'I don't know' or 'My knowledge cutoff is date X'.",
-          "2": "This is fine — it's not a bug, it's a known property of the model."
-        },
+        "instructions": [
+          "Write: 'What are the tech news from the past week?'.",
+          "Notice: Claude will say 'I don't know' or 'My knowledge cutoff is date X'.",
+          "This is fine — it's not a bug, it's a known property of the model."
+        ],
         "prompt": "What are the tech news from the past week?",
         "validate": "Claude explicitly mentions the cutoff or warns about outdated information.",
         "tip": "For 'fresh' info you need [[node:cap-search|web search]] (see the 'Capabilities' section)."
       },
-      "in-4": {
+      "s4": {
         "title": "Upload a file and discuss it",
-        "time": "2 min",
+        "time": "",
         "why": "Now you'll see the power of context — Claude works with your data, not just training data.",
-        "instructions": {
-          "0": "Drag a PDF or Word document into the chat (brand guide, article, report).",
-          "1": "Write: 'Make a summary in 5 points'.",
-          "2": "Read the answer. Notice — Claude cites specific parts of the document."
-        },
+        "instructions": [
+          "Drag a PDF or Word document into the chat (brand guide, article, report).",
+          "Write: 'Make a summary in 5 points'.",
+          "Read the answer. Notice — Claude cites specific parts of the document."
+        ],
         "prompt": "Make a summary of this document in 5 points by priority.",
         "validate": "The answer is tied to the specific content, not generic."
       },
-      "in-5": {
+      "s5": {
         "title": "Compare with search",
-        "time": "2 min",
+        "time": "",
         "why": "To calibrate expectations: where is Claude stronger, where is search.",
-        "instructions": {
-          "0": "Write down two cases from your work.",
-          "1": "Think: which is better solved with Google, which with Claude.",
-          "2": "Rule: Google — for facts and links. Claude — for analysis, synthesis, phrasing."
-        },
+        "instructions": [
+          "Write down two cases from your work.",
+          "Think: which is better solved with Google, which with Claude.",
+          "Rule: Google — for facts and links. Claude — for analysis, synthesis, phrasing."
+        ],
         "validate": "You have a clear mental split: when you'll go to Google, when to Claude."
+      },
+      "s6": {
+        "title": "Pick your next learning step",
+        "time": "",
+        "why": "The intro is over — what matters is not stopping, but immediately mapping out where to grow next.",
+        "instructions": [
+          "Pick one real task from your week where Claude could help.",
+          "Decide where to continue: get to grips with [[node:cap-search|web search]] if you need fresh information, or take any next Atlas tutorial.",
+          "Write down 1 concrete first step and do it today — while the interest is still warm."
+        ],
+        "prompt": "Here's a real task from my work: {{task}}. Tell me where to start and which 3 first steps to take to solve it with your help.",
+        "validate": "You have one chosen task and a clear next step — exactly what to learn or do next.",
+        "tip": "The best learning happens on your own real task, not on abstract examples."
       }
     },
     "trigger": "You're hearing about Claude for the first time and don't see how it differs from ChatGPT/Gemini.",
@@ -1087,97 +1173,115 @@
     "totalTime": "10 min",
     "whatItIs": "A practical guide to Claude's pricing plans. What each includes, what the limits are, who each suits. No marketing — based on real usage scenarios.",
     "approach": "Start with Free and use it for a week as a 'diagnostic': hit a limit — go Pro. Didn't hit it — Free is enough. Don't try to 'guess' the right plan — use Free for a week, then decide.",
-    "outcomes": {
-      "0": "Know what's included in Free / Pro / Team / Enterprise",
-      "1": "Understand how 5-hour and weekly limits work",
-      "2": "Can predict whether you'll exhaust Free for your task",
-      "3": "Chose a plan for the next 1–3 months"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Know what's included in Free / Pro / Team / Enterprise",
+      "Understand how 5-hour and weekly limits work",
+      "Can predict whether you'll exhaust Free for your task",
+      "Chose a plan for the next 1–3 months"
+    ],
+    "applyIn": [
+      {
         "title": "Personal subscription",
         "description": "You understand whether $20/month for Pro pays off for your real usage."
       },
-      "1": {
+      {
         "title": "Team",
         "description": "You know when to move from individual Pro plans to Team (shared Projects)."
       },
-      "2": {
+      {
         "title": "Budget",
         "description": "You can justify the budget to a manager: 'I use it X times a day, I need Pro'."
       }
-    },
-    "pitfalls": {
-      "0": "Getting Team for two people right away — overpaying without benefit.",
-      "1": "Ignoring the weekly limit — you'll hit it on Saturday and be without Claude until Monday.",
-      "2": "Paying for Pro if you use Claude once a week — Free is enough."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Getting Team for two people right away — overpaying without benefit.",
+      "Ignoring the weekly limit — you'll hit it on Saturday and be without Claude until Monday.",
+      "Paying for Pro if you use Claude once a week — Free is enough."
+    ],
+    "exercises": [
+      {
         "question": "Measure your Claude 'load' for a week: how many conversations a day, any long sessions?",
         "hint": "< 5 conversations / day and short — Free. > 20 / day and long — definitely Pro."
       },
-      "1": {
+      {
         "question": "When you hit the Free limit for the first time — write down the moment. That's your baseline for the Pro decision.",
         "hint": "Hit it in 2–3 days — you need Pro. Didn't hit it in a month — Free is enough."
       }
-    },
+    ],
     "steps": {
-      "pl-1": {
+      "s1": {
+        "id": "s1",
         "title": "Open the plans page",
-        "time": "1 min",
+        "time": "",
         "why": "To see current prices and limits — they can change.",
-        "instructions": {
-          "0": "Go to claude.ai/upgrade or click on profile → Plans.",
-          "1": "Read what Free, Pro, Team include.",
-          "2": "Don't buy now — go through the tutorial first."
-        },
+        "instructions": [
+          "Go to [[node:pl-web-setup|claude.ai]]/upgrade or click on profile → Plans.",
+          "Read what Free, Pro, Team include.",
+          "Don't buy now — go through the tutorial first."
+        ],
         "validate": "You see current prices and the feature list for each plan."
       },
-      "pl-2": {
+      "s2": {
+        "id": "s2",
         "title": "Understand the Free vs Pro difference",
-        "time": "2 min",
+        "time": "",
         "why": "The most common decision — between these two.",
-        "instructions": {
-          "0": "Free: limited models (usually without Opus), low daily message limits.",
-          "1": "Pro: all models including Opus, 5-hour limits instead of daily, Projects.",
-          "2": "The key for most people: Opus access + Projects."
-        },
+        "instructions": [
+          "Free: limited models (usually without Opus), low daily message limits.",
+          "Pro: all models including Opus, 5-hour limits instead of daily, Projects.",
+          "The key for most people: Opus access + Projects."
+        ],
         "validate": "You can say without prompting: 'Pro gives me X, Y, Z'.",
         "tip": "If you're a student — Anthropic sometimes has an education discount. Check."
       },
-      "pl-3": {
+      "s3": {
+        "id": "s3",
         "title": "Measure your weekly usage",
-        "time": "3 min",
+        "time": "",
         "why": "An objective measurement shows which plan you actually need.",
-        "instructions": {
-          "0": "Over the last 7 days — how many times did you use AI (Claude, ChatGPT, any)?",
-          "1": "Of those — how many were 'serious' tasks (>5 messages in the conversation)?",
-          "2": "Write down the number. That's your baseline."
-        },
+        "instructions": [
+          "Over the last 7 days — how many times did you use AI (Claude, ChatGPT, any)?",
+          "Of those — how many were 'serious' tasks (>5 messages in the conversation)?",
+          "Write down the number. That's your baseline."
+        ],
         "validate": "You have a number 'N conversations / week' and 'M serious conversations / week'.",
         "tip": "If N > 15 and M > 5 — definitely Pro. If N < 5 — Free is enough."
       },
-      "pl-4": {
+      "s4": {
+        "id": "s4",
+        "title": "Pick the surface for the task",
+        "time": "",
+        "why": "The same plan works in several places — web, Desktop, Code, API. The right surface saves time and needs no extra payment.",
+        "instructions": [
+          "A quick question, text, or image from your phone or laptop → claude.ai (web) or the mobile app.",
+          "Keeping Claude close all the time, dragging in files, wanting a quick hotkey launch → the Desktop app.",
+          "Working with code and project files right in the terminal → Claude Code.",
+          "Embedding Claude into your product or script, needing automation → the API via Anthropic Console."
+        ],
+        "validate": "You can name which surface you'll use for your 2-3 typical tasks."
+      },
+      "s5": {
+        "id": "s5",
         "title": "Decide on Team",
-        "time": "2 min",
+        "time": "",
         "why": "Team makes sense when you share Projects.",
-        "instructions": {
-          "0": "If you work in a team of ≥ 3 people and frequently overlap on topics — consider Team.",
-          "1": "Team gives shared Projects: one Custom Instructions, one Knowledge base.",
-          "2": "Calculate: 3+ people × $20 (Pro) = $60+. Team costs about the same, but shared."
-        },
+        "instructions": [
+          "If you work in a team of ≥ 3 people and frequently overlap on topics — consider Team.",
+          "Team gives shared Projects: one [[node:instructions|Custom Instructions]], one Knowledge base.",
+          "Calculate: 3+ people × $20 (Pro) = $60+. Team costs about the same, but shared."
+        ],
         "validate": "You understand when Team pays off, when individual Pro plans are better."
       },
-      "pl-5": {
+      "s6": {
+        "id": "s6",
         "title": "Make a decision and try it",
-        "time": "2 min",
+        "time": "",
         "why": "Without action, knowledge stays theory.",
-        "instructions": {
-          "0": "If N < 5 per week → stay on Free, measure for one more week.",
-          "1": "If N > 15 → upgrade to Pro now.",
-          "2": "If in a team → discuss Team with colleagues."
-        },
+        "instructions": [
+          "If N < 5 per week → stay on Free, measure for one more week.",
+          "If N > 15 → upgrade to Pro now.",
+          "If in a team → discuss Team with colleagues."
+        ],
         "validate": "Decision made: 'staying on Free for N weeks' / 'getting Pro now' / 'discussing Team'."
       }
     },
@@ -1742,7 +1846,8 @@
       "1": "Connected a specific folder (not your whole drive)",
       "2": "Submitted an outcome-based task description",
       "3": "Reviewed Claude's plan before approving it",
-      "4": "Checked the finished output and know how to iterate"
+      "4": "Checked the finished output and know how to iterate",
+      "5": "Put a proven task on a Scheduled cadence"
     },
     "applyIn": {
       "0": {
@@ -1764,16 +1869,20 @@
       "2": "Connecting your entire drive — connect only the specific folder you need.",
       "3": "Using Cowork for simple questions — it consumes significantly more usage quota than regular chat."
     },
-    "exercises": {
-      "0": {
+    "exercises": [
+      {
         "question": "Run a second Cowork task: ask Claude to create a summary report of all .txt files in your test folder. Review the output and try one correction via natural language.",
         "hint": "Say what is wrong with the result, not how to fix it. Claude will figure out the correction."
+      },
+      {
+        "question": "Put your file-organization task on a Scheduled cadence (for example, every Monday morning) and on the next run confirm the result arrived without you doing anything.",
+        "hint": "The task must run manually at least once first — Scheduled repeats a proven result, it does not debug a new one."
       }
-    },
+    ],
     "steps": {
-      "cw-1": {
+      "s1": {
         "title": "Open Cowork in Claude Desktop",
-        "time": "2 min",
+        "time": "",
         "why": "Cowork only exists in the Desktop app (Mac/Windows). The web version does not have it. You need a Pro, Max, Team, or Enterprise plan.",
         "instructions": {
           "0": "Download and install Claude Desktop from claude.ai/download if you haven't already.",
@@ -1784,9 +1893,9 @@
         "validate": "You see the Cowork task interface — different from the regular chat.",
         "tip": "Keep the Desktop app open during the entire tutorial. Cowork tasks stop the moment you close the app."
       },
-      "cw-2": {
+      "s2": {
         "title": "Connect a folder",
-        "time": "2 min",
+        "time": "",
         "why": "Claude needs explicit permission to read and write files. You choose exactly which folder to expose — Claude cannot access anything outside it.",
         "instructions": {
           "0": "In the Cowork interface, find the 'Connect folder' or 'Add folder' option.",
@@ -1801,9 +1910,9 @@
           "Permission denied by OS": "On macOS, go to System Settings → Privacy & Security → Files & Folders and grant Claude Desktop access."
         }
       },
-      "cw-3": {
+      "s3": {
         "title": "Describe your task as an outcome",
-        "time": "3 min",
+        "time": "",
         "why": "The key difference from regular chat: describe WHAT you want as a finished result, not the steps to get there. Claude plans the steps itself.",
         "instructions": {
           "0": "In the Cowork task field, type your task as an outcome.",
@@ -1815,9 +1924,9 @@
         "validate": "Claude presents a plan showing what it will do. Read it before approving.",
         "tip": "If the plan looks wrong, type a correction before approving. It is faster to fix the plan than fix the output."
       },
-      "cw-4": {
+      "s4": {
         "title": "Approve and monitor",
-        "time": "5 min",
+        "time": "",
         "why": "Cowork runs autonomously once approved. You can watch its progress or step away — both are valid. The key is keeping the Desktop app open.",
         "instructions": {
           "0": "Review Claude's plan carefully — check that it describes what you actually want.",
@@ -1832,9 +1941,9 @@
           "Claude asks for permission mid-task": "Some actions (like deletion) require your explicit approval. Read the request and approve or deny."
         }
       },
-      "cw-5": {
+      "s5": {
         "title": "Review the output and iterate",
-        "time": "3 min",
+        "time": "",
         "why": "Diligence: the first result is a strong draft, not necessarily final. Open the folder, check the files, and correct anything that missed the mark — in natural language.",
         "instructions": {
           "0": "Open the connected folder in your file manager and check the output.",
@@ -1844,6 +1953,20 @@
         },
         "validate": "Output matches your intent. You know how to describe corrections.",
         "tip": "Say what is wrong ('the images folder is missing PDF files that have images embedded'), not how to fix it. Claude will figure out the correction."
+      },
+      "s6": {
+        "title": "Put the task on a Scheduled cadence",
+        "time": "",
+        "why": "Once a task is proven and the result satisfies you, there is no point running it by hand every time. A Scheduled cadence repeats the already-verified task automatically — for example, every Monday morning — without you lifting a finger.",
+        "instructions": {
+          "0": "Make sure the task has already run manually at least once and the result is correct.",
+          "1": "In the Cowork task field, type /schedule (or open the Scheduled menu).",
+          "2": "Set the cadence in plain words: 'every Monday at 9 AM' or 'once a day'.",
+          "3": "Save the schedule and confirm the task appears in the Scheduled list with its next run time.",
+          "4": "Remember: the Desktop app must be open at the scheduled run time — otherwise the task will not start."
+        },
+        "validate": "The task appears in the Scheduled list with a next run time and repeats without your involvement.",
+        "tip": "Only schedule proven, low-risk tasks. An automatic run repeats the result literally — it will not stop to ask if something in the folder has changed."
       }
     },
     "trigger": "A task involves a folder of files and copy-pasting into the browser is painful.",
@@ -1877,118 +2000,131 @@
     "title": "Claude's capabilities and limits",
     "subtitle": "What Claude knows, what it doesn't, and how to work with both",
     "totalTime": "12 min",
-    "whatItIs": "A practical guide to Claude's real boundaries. You will learn why Claude sometimes says wrong things confidently, what it literally cannot do, how the [[node:b-context|context window]] affects long sessions, and — most importantly — five strategies that turn limitations into non-issues.",
+    "whatItIs": "A practical guide to Claude's real boundaries. You will learn why Claude sometimes says wrong things confidently, what it literally cannot do, how the [[node:b-context|context window]] affects long sessions, and — most importantly — strategies that turn limitations into non-issues.",
     "approach": "Do not skip this tutorial thinking limitations are someone else's problem. Every user eventually hits them. The goal is not to avoid Claude but to use it in ways that make its limits irrelevant.",
-    "outcomes": {
-      "0": "Understand what a knowledge cutoff means and when it matters",
-      "1": "Recognize hallucinations before they cause problems",
-      "2": "Know what Claude structurally cannot do (and what it can with tools)",
-      "3": "Understand why long chats degrade in quality",
-      "4": "Have 5 concrete strategies to work around limitations"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Understand what a knowledge cutoff means and when it matters",
+      "Recognize hallucinations before they cause problems",
+      "Know what Claude structurally cannot do (and what it can with tools)",
+      "Understand why long chats degrade in quality",
+      "Have 5 concrete strategies to work around limitations",
+      "Can quickly verify Claude's facts and citations against primary sources"
+    ],
+    "applyIn": [
+      {
         "title": "Fact-sensitive work",
         "description": "Legal, medical, financial, scientific — always verify Claude's factual claims against primary sources."
       },
-      "1": {
+      {
         "title": "Research and writing",
         "description": "Use Claude for structure, reasoning, and drafting. Use web search or original sources for current facts."
       },
-      "2": {
+      {
         "title": "Long projects",
         "description": "Break multi-day work into separate sessions or use Projects to maintain consistent context."
       }
-    },
-    "pitfalls": {
-      "0": "Trusting Claude's confident tone as evidence of accuracy — confidence and correctness are independent.",
-      "1": "Asking about events after the training cutoff without enabling web search.",
-      "2": "Running a 50-message conversation and wondering why quality drops — the context window is finite."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Trusting Claude's confident tone as evidence of accuracy — confidence and correctness are independent.",
+      "Asking about events after the training cutoff without enabling web search.",
+      "Running a 50-message conversation and wondering why quality drops — the context window is finite."
+    ],
+    "exercises": [
+      {
         "question": "Ask Claude: 'What happened in the news this week?' Then ask: 'What is your training knowledge cutoff?' Compare the two answers. What does this tell you about when to use web search?",
         "hint": "Notice if Claude attempts an answer to the first question or declines. Either response tells you something about how to prompt it correctly."
       },
-      "1": {
+      {
         "question": "Ask Claude a question on a niche topic you know well. Deliberately look for one plausible-sounding detail that might be wrong. Can you spot it?",
         "hint": "The goal is not to catch Claude — it is to practice the habit of Discernment from the 4D Framework."
       }
-    },
+    ],
     "steps": {
-      "al-1": {
+      "s1": {
         "title": "The knowledge cutoff",
-        "time": "2 min",
+        "time": "",
         "why": "Claude was trained on data up to a fixed date (~early 2026 for current models). It has no awareness of anything after that. This is not a bug — it is how language models work.",
-        "instructions": {
-          "0": "Understand: Claude's knowledge is a snapshot, not a live connection to the internet.",
-          "1": "Claude Opus 4.7 has a training cutoff of approximately January 2026.",
-          "2": "Asking about events after the cutoff: Claude will either refuse, say it doesn't know, or — in the worst case — hallucinate a plausible-sounding answer.",
-          "3": "Solution: enable web search in claude.ai (the globe icon in the input bar) for any question involving recent events, current prices, live data, or recent news."
-        },
+        "instructions": [
+          "Understand: Claude's knowledge is a snapshot, not a live connection to the internet.",
+          "Claude Opus 4.7 has a training cutoff of approximately January 2026.",
+          "Asking about events after the cutoff: Claude will either refuse, say it doesn't know, or — in the worst case — hallucinate a plausible-sounding answer.",
+          "Solution: enable web search in claude.ai (the globe icon in the input bar) for any question involving recent events, current prices, live data, or recent news."
+        ],
         "validate": "You know when to turn on [[node:cap-search|web search]] and why.",
         "tip": "When in doubt about whether something is within Claude's cutoff, ask: 'Is this within your training data, or should I enable web search?' Claude will tell you honestly."
       },
-      "al-2": {
+      "s2": {
         "title": "Hallucinations — what they are and why they happen",
-        "time": "3 min",
+        "time": "",
         "why": "Claude can state incorrect facts with complete confidence. This is called a hallucination. It is the most dangerous limitation for users who do not know about it.",
-        "instructions": {
-          "0": "A hallucination happens when Claude 'fills a gap' in its knowledge with a plausible-sounding but false answer. The training process optimizes for helpfulness — and sometimes that means generating a confident answer instead of admitting uncertainty.",
-          "1": "Hallucinations are more common on: niche topics, specific statistics and numbers, citations and paper references, recent events, and long chains of reasoning.",
-          "2": "They are less common on: well-documented mainstream topics, general reasoning, coding, and math (though math errors do happen).",
-          "3": "The key signal is NOT Claude's tone — a hallucinated answer sounds exactly as confident as a correct one.",
-          "4": "Strategy: for any factual claim that matters, verify it in a primary source (official docs, papers, news)."
-        },
+        "instructions": [
+          "A hallucination happens when Claude 'fills a gap' in its knowledge with a plausible-sounding but false answer. The training process optimizes for helpfulness — and sometimes that means generating a confident answer instead of admitting uncertainty.",
+          "Hallucinations are more common on: niche topics, specific statistics and numbers, citations and paper references, recent events, and long chains of reasoning.",
+          "They are less common on: well-documented mainstream topics, general reasoning, coding, and math (though math errors do happen).",
+          "The key signal is NOT Claude's tone — a hallucinated answer sounds exactly as confident as a correct one.",
+          "Strategy: for any factual claim that matters, verify it in a primary source (official docs, papers, news)."
+        ],
         "validate": "You understand that confident tone does not equal accurate content.",
-        "tip": "Ask Claude to flag its uncertainty: add 'If you are not sure about any fact, say so explicitly' to your prompt. This helps — though it does not eliminate hallucinations entirely.",
-        "troubleshoot": {
-          "How do I know if Claude is hallucinating?": "You often cannot tell from the response alone. The only reliable check is external verification. Treat Claude's factual claims as 'probably correct, needs spot-checking on anything that matters.'",
-          "Claude said it is confident — does that mean it's right?": "No. Confidence and accuracy are independent. Claude can be confident and wrong, or uncertain and right. Always verify facts that have real consequences."
-        }
+        "tip": "Ask Claude to flag its uncertainty: add 'If you are not sure about any fact, say so explicitly' to your prompt. This helps — though it does not eliminate hallucinations entirely."
       },
-      "al-3": {
+      "s3": {
         "title": "The context window — why long chats degrade",
-        "time": "2 min",
+        "time": "",
         "why": "Claude can only 'see' a fixed amount of text at once. When a conversation exceeds this limit, older messages fall out — Claude starts to lose track of earlier context, instructions, and decisions.",
-        "instructions": {
-          "0": "The context window is the total amount of text Claude can process at one time — your messages plus its responses.",
-          "1": "As a conversation grows, earlier content gradually becomes invisible to Claude.",
-          "2": "Signs of context degradation: Claude repeats things you already discussed, contradicts earlier decisions, asks for information you already provided, or gives shallower answers.",
-          "3": "Solutions: use /compact in Claude Code to summarize context without losing history. In claude.ai, start a new chat for each distinct topic. Use Projects — they maintain persistent instructions even across separate chats."
-        },
+        "instructions": [
+          "The context window is the total amount of text Claude can process at one time — your messages plus its responses.",
+          "As a conversation grows, earlier content gradually becomes invisible to Claude.",
+          "Signs of context degradation: Claude repeats things you already discussed, contradicts earlier decisions, asks for information you already provided, or gives shallower answers.",
+          "Solutions: use /compact in Claude Code to summarize context without losing history. In claude.ai, start a new chat for each distinct topic. Use Projects — they maintain persistent instructions even across separate chats."
+        ],
         "validate": "You know why multi-hour conversations in one chat produce worse results than shorter focused sessions.",
         "tip": "For long projects, use a Project with clear instructions rather than one endless chat. The [[node:p-instructions|Project instructions]] are always in context — your accumulated chat history is not."
       },
-      "al-4": {
+      "s4": {
         "title": "What Claude structurally cannot do",
-        "time": "2 min",
+        "time": "",
         "why": "Some limitations are architectural — no workaround exists, or a specific tool is required. Knowing these prevents frustration.",
-        "instructions": {
-          "0": "Cannot generate images — Claude produces text only. For images, use a dedicated image generation tool (DALL-E, Midjourney, etc.).",
-          "1": "Cannot browse the internet by default — web search must be explicitly enabled.",
-          "2": "Cannot take actions in other apps — unless Computer Use (Desktop, API) or an MCP integration is active.",
-          "3": "Cannot remember across chats by default — use Memory (in settings) or Projects for persistence.",
-          "4": "Cannot access real-time data (stock prices, weather, live scores) — enable web search or use an integration.",
-          "5": "Cannot 'learn' from your correction permanently — corrections apply only to the current session unless saved to Custom Instructions or Memory."
-        },
+        "instructions": [
+          "Cannot generate images — Claude produces text only. For images, use a dedicated image generation tool (DALL-E, Midjourney, etc.).",
+          "Cannot browse the internet by default — web search must be explicitly enabled.",
+          "Cannot take actions in other apps — unless Computer Use (Desktop, API) or an MCP integration is active.",
+          "Cannot remember across chats by default — use Memory (in settings) or Projects for persistence.",
+          "Cannot access real-time data (stock prices, weather, live scores) — enable web search or use an integration.",
+          "Cannot 'learn' from your correction permanently — corrections apply only to the current session unless saved to Custom Instructions or Memory."
+        ],
         "validate": "You know which limitations require a tool (web search, MCP, [[node:cap-computer|Computer Use]]) vs which are structural.",
         "tip": "Most 'cannot' items have a workaround via tools. Before assuming Claude can't do something, check if enabling web search, MCP, or Cowork would solve it."
       },
-      "al-5": {
+      "s5": {
         "title": "Five strategies to work with limitations",
-        "time": "3 min",
+        "time": "",
         "why": "Knowing limitations without strategies is just anxiety. These five approaches handle the vast majority of limitation-related problems.",
-        "instructions": {
-          "0": "1. Enable web search for anything time-sensitive or fact-specific — the globe icon in claude.ai chat input.",
-          "1": "2. Ask Claude to flag uncertainty — add 'flag anything you are not confident about' to prompts that require factual accuracy.",
-          "2": "3. Verify what matters — treat Claude's output as a strong first draft, not a final source. Spot-check key facts.",
-          "3": "4. Use Projects instead of long chats — persistent instructions, fresh context each session, no context window degradation.",
-          "4": "5. Break large tasks — instead of one 3-hour session, run three 45-minute sessions with clear handoffs between them."
-        },
+        "instructions": [
+          "1. Enable web search for anything time-sensitive or fact-specific — the globe icon in claude.ai chat input.",
+          "2. Ask Claude to flag uncertainty — add 'flag anything you are not confident about' to prompts that require factual accuracy.",
+          "3. Verify what matters — treat Claude's output as a strong first draft, not a final source. Spot-check key facts.",
+          "4. Use Projects instead of long chats — persistent instructions, fresh context each session, no context window degradation.",
+          "5. Break large tasks — instead of one 3-hour session, run three 45-minute sessions with clear handoffs between them."
+        ],
         "example": "Research task without strategies: one long chat, no web search, no verification → potential hallucinations, context degradation.\n\nWith strategies: Project with your research context, web search enabled, Claude flags uncertainty, you verify key statistics, each session has a clear scope → reliable, high-quality output.",
         "validate": "You have a mental checklist: web search on/off? Uncertainty flagging in prompt? Verification plan? Project or long chat?",
         "tip": "The 4D Framework's Discernment step IS this checklist. Limitations are not Claude's problem to solve — they are yours to design around."
+      },
+      "s6": {
+        "title": "Verifying answers: how to check a fact or citation in a minute",
+        "time": "",
+        "why": "Knowing about hallucinations is not enough — you need a repeatable verification ritual. Without a concrete process you either check everything (slow) or nothing (dangerous). This step gives you a fast workflow that you apply only where the cost of an error is real.",
+        "instructions": [
+          "First, triage: which claims in the answer have consequences (numbers, dates, names, quotes, references to studies, legal/medical facts) versus which are just reasoning. Verify only the former.",
+          "For a checkable fact, ask Claude for its source directly: 'What is this claim based on? Give me a link to the primary source.' If Claude can't name a specific source, that's a strong signal to verify it yourself.",
+          "Enable web search and re-ask the same fact — compare the answer with and without web search. A discrepancy is a red flag.",
+          "Pay special attention to citations and links: Claude can invent a plausible paper title, author, or URL. Open the link and confirm the source actually exists and says exactly that.",
+          "Do the final check against the primary source (official documentation, the paper itself, primary data), not against Claude's paraphrase or a second answer from Claude.",
+          "Build the habit: one important claim — one external check. That is cheaper than fixing the consequences of an error."
+        ],
+        "example": "Claude cites a statistic: 'according to report X, the market grew 23% in 2025.' Verification: you ask for the exact link → enable web search → open report X itself → find the figure. It turns out growth was 13%, not 23% — a hallucination in a single number that would have slipped by because of the confident tone.",
+        "validate": "You have a concrete ritual: triage what matters → request the source → re-ask with web search → open the primary source.",
+        "tip": "Don't ask Claude to 'check itself' in a second message as your only verification — it can confidently confirm its own hallucination. Only external checking is reliable."
       }
     },
     "trigger": "Claude confidently produced a wrong fact or started losing context in a long session.",

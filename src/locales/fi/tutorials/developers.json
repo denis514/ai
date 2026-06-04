@@ -1261,111 +1261,116 @@
     "totalTime": "10 min",
     "whatItIs": "Käytännön minikurssi: kirjoitat 5 komentoa peräkkäin elävässä terminaalissa ja näet, miten ne toimivat. Ei teoriaa — vain näppäimet ja tulokset.",
     "approach": "Älä lue eteenpäin. Suorita ensin komento, katso tuloste, lue sitten selitys. Näin lihasmuisti aktivoituu ensimmäisellä kerralla.",
-    "outcomes": {
-      "0": "Tiedät, missä olet tiedostojärjestelmässä (pwd)",
-      "1": "Näet minkä tahansa kansion sisällön (ls / dir)",
-      "2": "Luot kansioita komennolla (mkdir)",
-      "3": "Liikut kansiopuussa (cd / cd .. / cd ~)",
-      "4": "Et pelkää kokeilla omassa home:ssasi"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Tiedät, missä olet tiedostojärjestelmässä (pwd)",
+      "Näet minkä tahansa kansion sisällön (ls / dir)",
+      "Luot kansioita komennolla (mkdir)",
+      "Liikut kansiopuussa (cd / cd .. / cd ~)",
+      "Et pelkää kokeilla omassa home:ssasi"
+    ],
+    "applyIn": [
+      {
         "title": "Ennen Claude Code:n käynnistystä",
         "description": "Jokainen istunto alkaa cd:llä haluttuun kansioon. Ilman terminaalisanastoa — ei mitenkään."
       },
-      "1": {
+      {
         "title": "Mikä tahansa ohje internetissä",
         "description": "\"Avaa terminaali ja kirjoita...\" — ei enää aiheuta paniikkia."
       },
-      "2": {
+      {
         "title": "Minkä tahansa työkalun asennus",
         "description": "npm, brew, pip — kaikki terminaalin kautta. Yksi sanasto — kymmeniä työkaluja."
       }
-    },
-    "pitfalls": {
-      "0": "Hypätä eteenpäin vaiheissa suorittamatta — teoria ilman käytäntöä ei jää mieleen.",
-      "1": "Yrittää työskennellä /Applications- tai /System-kansiossa — siellä tarvitaan oikeudet. Käytä home:a (~/).",
-      "2": "Sivuuttaa virheet — terminaali aina kertoo, mikä meni pieleen. Lue ja korjaa."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Hypätä eteenpäin vaiheissa suorittamatta — teoria ilman käytäntöä ei jää mieleen.",
+      "Yrittää työskennellä /Applications- tai /System-kansiossa — siellä tarvitaan oikeudet. Käytä home:a (~/).",
+      "Sivuuttaa virheet — terminaali aina kertoo, mikä meni pieleen. Lue ja korjaa."
+    ],
+    "exercises": [
+      {
         "question": "Suorituksen jälkeen — avaa terminaali uudelleen, siirry ~/projects/ ja tee pwd + ls. Vain muistista.",
         "hint": "Jos unohdit komennon — katso takaisin vaiheisiin. Muistaminen on normaalia."
       },
-      "1": {
+      {
         "question": "Luo sisäkkäinen rakenne: ~/projects/test/2026/january/. Käytä yhtä mkdir -p:tä.",
         "hint": "Lippu -p luo kaikki vanhemmat kansiot kerralla."
       }
-    },
+    ],
     "steps": {
-      "tt-1": {
+      "s1": {
+        "id": "s1",
         "title": "pwd — selvitä, missä olet nyt",
-        "time": "2 min",
+        "time": "",
         "why": "Terminaali on aina \"jossakin\" kansiossa. Selvittää, missä, on päivän ensimmäinen komento.",
-        "instructions": {
-          "0": "Avaa terminaali (jos ei vielä auki): macOS Cmd+Space → \"Terminal\"; Windows — PowerShell.",
-          "1": "Kirjoita: `pwd` (mac/linux/PowerShell) → paina Enter.",
-          "2": "Katso tuloste. Tämä on polku kansioon, jossa olet nyt."
-        },
+        "instructions": [
+          "Avaa terminaali (jos ei vielä auki): macOS Cmd+Space → \"Terminal\"; Windows — PowerShell.",
+          "Kirjoita: `pwd` (mac/linux/PowerShell) → paina Enter.",
+          "Katso tuloste. Tämä on polku kansioon, jossa olet nyt."
+        ],
         "prompt": "pwd",
         "example": "Mac: /Users/denisa\nWindows: C:\\Users\\denisa\nYleensä terminaalin käynnistyessä olet omassa home:ssasi — tämä on normaalia.",
         "validate": "Näet rivin muotoa /Users/<nimi> (mac) tai C:\\Users\\<nimi> (Windows).",
         "tip": "pwd = \"print working directory\". Mitä yksinkertaisempi komento — sitä useammin käytät. Tätä — kirjaimellisesti joka kerta."
       },
-      "tt-2": {
+      "s2": {
+        "id": "s2",
         "title": "ls / dir — katso, mitä ympärillä on",
-        "time": "2 min",
+        "time": "",
         "why": "Ilman ls:ää olet sokkona. ls näyttää, mitä kansioita ja tiedostoja on nykyisessä.",
-        "instructions": {
-          "0": "macOS / Linux: kirjoita `ls` → Enter.",
-          "1": "Windows (PowerShell): `ls` toimii myös. Vanha cmd.exe — `dir`.",
-          "2": "Katso listaa. Tämä on home-kansiosi sisältö: Documents, Downloads, Desktop, jne."
-        },
+        "instructions": [
+          "macOS / Linux: kirjoita `ls` → Enter.",
+          "Windows (PowerShell): `ls` toimii myös. Vanha cmd.exe — `dir`.",
+          "Katso listaa. Tämä on home-kansiosi sisältö: Documents, Downloads, Desktop, jne."
+        ],
         "prompt": "ls",
         "example": "Mac/Linux-tuloste:\nApplications  Desktop  Documents  Downloads  Movies  Music  Pictures  projects  Public\n\nWindows-tuloste (dir):\n  <DIR>  Documents\n  <DIR>  Downloads\n  ...",
         "validate": "Näet listan kansioista: vähintään Desktop, Documents, Downloads.",
         "tip": "`ls -la` (mac) näyttää piilotiedostot (alkavat .:llä) ja yksityiskohdat. Hyödyllistä myöhemmin, kun etsit .claude/-kansiota."
       },
-      "tt-3": {
+      "s3": {
+        "id": "s3",
         "title": "mkdir + cd — luo kansio ja astu sisään",
-        "time": "2 min",
+        "time": "",
         "why": "Tämä on koko setti \"aloittaa uusi projekti\": luo kansio → astu sisään.",
-        "instructions": {
-          "0": "Luo testikansio: `mkdir tutorial-sandbox` → Enter.",
-          "1": "Tarkista, että ilmestyi: `ls` → pitää olla listalla.",
-          "2": "Astu sisään: `cd tutorial-sandbox` → Enter.",
-          "3": "Tarkista, että olet sisällä: `pwd` → pitää päättyä /tutorial-sandbox:iin."
-        },
+        "instructions": [
+          "Luo testikansio: `mkdir tutorial-sandbox` → Enter.",
+          "Tarkista, että ilmestyi: `ls` → pitää olla listalla.",
+          "Astu sisään: `cd tutorial-sandbox` → Enter.",
+          "Tarkista, että olet sisällä: `pwd` → pitää päättyä /tutorial-sandbox:iin."
+        ],
         "prompt": "mkdir tutorial-sandbox\ncd tutorial-sandbox\npwd",
         "example": "Kolmen komennon jälkeen:\n$ pwd\n/Users/denisa/tutorial-sandbox",
         "validate": "pwd näyttää polun, joka päättyy /tutorial-sandbox:iin. Kansio on luotu ja olet siinä.",
         "tip": "Tab — paras ystäväsi. Aloita kirjoittaa `cd tut` → paina Tab → terminaali täydentää muotoon `cd tutorial-sandbox/`. Säästää 90 % kirjoittamisesta."
       },
-      "tt-4": {
+      "s4": {
+        "id": "s4",
         "title": "cd .. ja cd ~ — navigointi takaisin",
-        "time": "2 min",
+        "time": "",
         "why": "Osata palata on yhtä tärkeää kuin astua sisään. Tämä on vakuutus \"minne minä jouduin\" -tilannetta vastaan.",
-        "instructions": {
-          "0": "Olet nyt tutorial-sandbox:issa. Kirjoita `cd ..` → Enter. (Kaksi pistettä = \"kansio ylempänä\".)",
-          "1": "Tarkista: `pwd` → olet taas home:ssa.",
-          "2": "Mene takaisin: `cd tutorial-sandbox` → tarkista pwd.",
-          "3": "Mistä tahansa kohdasta voi palata kotiin yhdellä komennolla: `cd ~` (tai vain `cd`)."
-        },
+        "instructions": [
+          "Olet nyt tutorial-sandbox:issa. Kirjoita `cd ..` → Enter. (Kaksi pistettä = \"kansio ylempänä\".)",
+          "Tarkista: `pwd` → olet taas home:ssa.",
+          "Mene takaisin: `cd tutorial-sandbox` → tarkista pwd.",
+          "Mistä tahansa kohdasta voi palata kotiin yhdellä komennolla: `cd ~` (tai vain `cd`)."
+        ],
         "prompt": "cd ..\npwd\ncd ~\npwd",
         "example": "$ cd ..\n$ pwd\n/Users/denisa\n$ cd ~\n$ pwd\n/Users/denisa",
         "validate": "Ymmärrät: `..` = ylöspäin tasolla, `~` = kotiin, mikä tahansa polku = konkreettinen paikka.",
         "tip": "Windows:issa tilde (~) toimii myös PowerShell:issä. `cd` ilman argumentteja palauttaa aina home:en."
       },
-      "tt-5": {
+      "s5": {
+        "id": "s5",
         "title": "Vahvistus — sisäkkäinen rakenne yhdellä komennolla",
-        "time": "2 min",
+        "time": "",
         "why": "Todellinen tehtävä: luoda ~/projects/<nimi>/notes/ kerralla. `mkdir -p` osaa tämän.",
-        "instructions": {
-          "0": "Mistä tahansa kirjoita: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
-          "1": "Astu sisään: `cd ~/projects/my-first-project` → tarkista `ls` (pitää olla notes-kansio).",
-          "2": "Voit poistaa testin: `cd ~` → sitten `rm -r tutorial-sandbox` (Mac/Linux) tai `Remove-Item -Recurse tutorial-sandbox` (PowerShell). Tämä poistaa kansion peruuttamattomasti.",
-          "3": "Älä poista ~/projects/my-first-project — sitä tarvitaan first-project-oppitunnissa."
-        },
+        "instructions": [
+          "Mistä tahansa kirjoita: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
+          "Astu sisään: `cd ~/projects/my-first-project` → tarkista `ls` (pitää olla notes-kansio).",
+          "Voit poistaa testin: `cd ~` → sitten `rm -r tutorial-sandbox` (Mac/Linux) tai `Remove-Item -Recurse tutorial-sandbox` (PowerShell). Tämä poistaa kansion peruuttamattomasti.",
+          "Älä poista ~/projects/my-first-project — sitä tarvitaan first-project-oppitunnissa."
+        ],
         "prompt": "mkdir -p ~/projects/my-first-project/notes\ncd ~/projects/my-first-project\nls",
         "example": "$ ls\nnotes",
         "validate": "Näet notes-kansion ~/projects/my-first-project:n sisällä. Rakenne on luotu yhdellä komennolla.",
@@ -1375,6 +1380,26 @@
           "rm doesn't work on Windows": "rm ei toimi Windowsissa",
           "Tab-täydennys ei toimi": "Normaalia cmd.exe:lle. Siirry PowerShell:iin tai Windows Terminal:iin — siellä automaattitäydennys toimii.",
           "Tab completion doesn't work": "Tab-täydennys ei toimi"
+        }
+      },
+      "s6": {
+        "id": "s6",
+        "title": "Ctrl+C ja clear — peru turvallisesti ja siisti näkymä",
+        "time": "",
+        "why": "Ennemmin tai myöhemmin komento \"jumittuu\" tai muutat mielesi kesken kaiken. Sen pysäyttämisen osaaminen tuo mielenrauhaa: voit aina painaa \"peru\" rikkomatta mitään.",
+        "instructions": [
+          "Käynnistä \"loputon\" komento, jotta on jotain keskeytettävää: `ping example.com` (Mac/Linux) — rivit vierivät loputtomiin.",
+          "Paina `Ctrl+C` — komento pysähtyy ja saat kehotteen takaisin. Tämä on turvallista: Ctrl+C vain keskeyttää nykyisen komennon, se ei kosketa tiedostojasi.",
+          "Jos olet kirjoittanut rivin puoliksi ja muutat mielesi — paina `Ctrl+C` uudelleen: terminaali tyhjentää rivin, jotta voit aloittaa alusta.",
+          "Kun näyttö on täynnä tulostetta — kirjoita `clear` (Mac/Linux/PowerShell) → Enter. Näyttö tyhjenee, mutta komentohistoria säilyy (ylänuoli tuo takaisin aiemmat komennot)."
+        ],
+        "prompt": "ping example.com\nclear",
+        "example": "$ ping example.com\nPING example.com ...\n64 bytes from ...\n^C        ← tässä painoit Ctrl+C\n$         ← kehote takaisin, kaikki hallinnassa",
+        "validate": "Ctrl+C:n jälkeen komento pysähtyi ja kehote ($ tai >) palasi. `clear`:n jälkeen näyttö on puhdas, ja ylänuoli näyttää yhä aiemmat komennot.",
+        "tip": "`Ctrl+C` tarkoittaa \"keskeytä\", ei \"kopioi\" (tapa muista ohjelmista). Varmistaaksesi, että komento valmistui eikä jumittunut — katso kehotetta: `$` / `>` on takaisin = komento on valmis.",
+        "troubleshoot": {
+          "Ctrl+C ei tee mitään": "Joskus se pitää painaa kahdesti. Jos on todella jumissa — sulje terminaalin välilehti ja avaa uusi: yksikään tiedosto ei vahingoitu tästä.",
+          "clear poisti komentohistorian": "Ei poistanut. `clear` pyyhkii vain näkyvän näytön. Paina ylänuolta — aiemmat komennot ovat yhä tallessa."
         }
       }
     },
@@ -1411,110 +1436,110 @@
     "totalTime": "10 min",
     "whatItIs": "Voit luoda kansioita joko klikkaamalla Finder:issä/Explorer:issa tai komennolla terminaalissa. Tämä oppitunti näyttää molemmat tavat kolmelle elävälle skenaariolle: työraportit, henkilökohtaiset muistiinpanot, väliaikainen kokeilu.",
     "approach": "Älä valitse YHTÄ tapaa. Luo jokainen kansio molemmilla: sekä Finder:in että mkdir:in kautta. Kolmen kierroksen jälkeen valinta tulee tietoiseksi — mikä on sinulle henkilökohtaisesti mukavampi.",
-    "outcomes": {
-      "0": "Luot kansioita sekä UI:n että terminaalin kautta",
-      "1": "Tiedät, mitkä nimet eivät aiheuta ongelmia",
-      "2": "Ymmärrät, miten organisoida projektipuu mielekkäästi",
-      "3": "Osaat poistaa väliaikaiset kokeilut puhtaasti"
-    },
-    "applyIn": {
-      "0": {
+    "outcomes": [
+      "Luot kansioita sekä UI:n että terminaalin kautta",
+      "Tiedät, mitkä nimet eivät aiheuta ongelmia",
+      "Ymmärrät, miten organisoida projektipuu mielekkäästi",
+      "Osaat poistaa väliaikaiset kokeilut puhtaasti"
+    ],
+    "applyIn": [
+      {
         "title": "Jokainen uusi projekti",
         "description": "Ensimmäinen askel — kansio mielekkäällä nimellä ~/projects/-kansiossa. Muuten kuukaudessa on kaaos."
       },
-      "1": {
+      {
         "title": "Henkilökohtainen tietopohja",
         "description": "Erillinen hierarkia muistiinpanoille, opiskelulle, resepteille — erillään työkansioista."
       },
-      "2": {
+      {
         "title": "Kokeilu / hiekkalaatikko",
         "description": "\"Roska\"-kansio, jota ei ole pelottavaa poistaa. Kaikilla ammattilaisilla on sellainen."
       }
-    },
-    "pitfalls": {
-      "0": "Välilyönnit ja kyrillinen kirjaimisto nimissä — terminaali ja git eivät pidä niistä. \"my project\" ❌ → \"my-project\" ✅.",
-      "1": "Kansiot työpöydällä — viikon kuluttua siellä on 30 kappaletta, mitään ei löydä. Käytä ~/projects/.",
-      "2": "Kansion poistaminen `rm -rf`:llä ilman tarkistusta — kansio katoaa peruuttamattomasti. Ensin ls, sitten rm."
-    },
-    "exercises": {
-      "0": {
+    ],
+    "pitfalls": [
+      "Välilyönnit ja kyrillinen kirjaimisto nimissä — terminaali ja git eivät pidä niistä. \"my project\" ❌ → \"my-project\" ✅.",
+      "Kansiot työpöydällä — viikon kuluttua siellä on 30 kappaletta, mitään ei löydä. Käytä ~/projects/.",
+      "Kansion poistaminen `rm -rf`:llä ilman tarkistusta — kansio katoaa peruuttamattomasti. Ensin ls, sitten rm."
+    ],
+    "exercises": [
+      {
         "question": "Luo oma henkilökohtainen ~/projects/-rakenne: vähintään 3 projektia, nimet mielekkäitä. Yksi Finder:in kautta, kaksi mkdir:n kautta.",
         "hint": "Nimien pitää vastata kysymykseen \"mikä tämä on?\" 6 kuukauden kuluttua. \"test\" on huono. \"monthly-reports-2026\" on hyvä."
       },
-      "1": {
+      {
         "question": "Poista väliaikainen kansio molemmilla tavoilla: kerran Roskakorin kautta (drag-to-trash), kerran rm -r:n kautta. Huomaa ero.",
         "hint": "Roskakori → voi palauttaa. rm -r → ei, peruuttamattomasti. Epäilyksessä — Roskakori."
       }
-    },
+    ],
     "steps": {
-      "fw-1": {
+      "s1": {
         "title": "Päätä nimi ja rakenne (nimeämisen säännöt)",
-        "time": "2 min",
+        "time": "",
         "why": "Kansion nimi on tuleva komento `cd <tämä nimi>`. Pitkä / välilyönneillä / kyrillinen — kärsit joka kerta.",
-        "instructions": {
-          "0": "Sääntö 1: vain latinalainen. Ei mitään venäläisiä kirjaimia.",
-          "1": "Sääntö 2: välilyöntien sijaan — yhdysmerkki (tai alaviiva). work-reports, ei work reports.",
-          "2": "Sääntö 3: nimi vastaa kysymykseen \"mitä sisällä?\" (≤ 30 merkkiä). monthly-audits on parempi kuin stuff.",
-          "3": "Sääntö 4: yksi kansio — yksi aihe. Älä kasaa erilaista yhteen."
-        },
+        "instructions": [
+          "Sääntö 1: vain latinalainen. Ei mitään venäläisiä kirjaimia.",
+          "Sääntö 2: välilyöntien sijaan — yhdysmerkki (tai alaviiva). work-reports, ei work reports.",
+          "Sääntö 3: nimi vastaa kysymykseen \"mitä sisällä?\" (≤ 30 merkkiä). monthly-audits on parempi kuin stuff.",
+          "Sääntö 4: yksi kansio — yksi aihe. Älä kasaa erilaista yhteen."
+        ],
         "example": "Hyviä: monthly-audits, claude-notes, sandbox-2026, website-redesign\nHuonoja: \"Minun projektit\", stuff, test, untitled folder, uusi kansio (1)",
         "validate": "Osaat selittää itsellesi: \"Tämä kansio on X:stä, nimi lyhyt ja selkeä\".",
         "tip": "Jos aiot tehdä git-repositorion kansiosta — valitse nimi heti. Uudelleennimeäminen myöhemmin on mahdollista, mutta meluisaa."
       },
-      "fw-2": {
+      "s2": {
         "title": "Esimerkki 1 — Työauditoinnit (terminaalin kautta)",
-        "time": "2 min",
+        "time": "",
         "why": "Skenaario: aiot tehdä säännöllisiä auditointeja kerran kuussa. Tarvitaan yhteinen kansio niille.",
-        "instructions": {
-          "0": "Avaa terminaali.",
-          "1": "Kirjoita: `mkdir -p ~/projects/monthly-audits/2026-may`. Tämä luo sekä monthly-audits:n että toukokuun alikansion.",
-          "2": "Astu sisään: `cd ~/projects/monthly-audits/2026-may`.",
-          "3": "Tarkista: `pwd` — päättyy /monthly-audits/2026-may:hin. Rakenne on valmis työhön."
-        },
+        "instructions": [
+          "Avaa terminaali.",
+          "Kirjoita: `mkdir -p ~/projects/monthly-audits/2026-may`. Tämä luo sekä monthly-audits:n että toukokuun alikansion.",
+          "Astu sisään: `cd ~/projects/monthly-audits/2026-may`.",
+          "Tarkista: `pwd` — päättyy /monthly-audits/2026-may:hin. Rakenne on valmis työhön."
+        ],
         "prompt": "mkdir -p ~/projects/monthly-audits/2026-may\ncd ~/projects/monthly-audits/2026-may\npwd",
         "example": "$ pwd\n/Users/denisa/projects/monthly-audits/2026-may",
         "validate": "Näet täyden polun 2026-may:hin asti. Kansio on luotu ja olet siinä.",
         "tip": "Alikansiot päivämäärien mukaan (2026-may) — kaava \"uusi kuukausi = uusi kansio\". Erittäin vakaasti skaalautuva."
       },
-      "fw-3": {
+      "s3": {
         "title": "Esimerkki 2 — Muistiinpanot ja oppiminen (Finder:in/Explorer:in kautta)",
-        "time": "2 min",
+        "time": "",
         "why": "Skenaario: opit jotain uutta, haluat säilyttää muistiinpanoja. Visuaalisesti mukavampi — se on normaalia.",
-        "instructions": {
-          "0": "macOS: avaa Finder → Cmd+Shift+H (palaa home:en) → löydä projects-kansio (tai luo se Cmd+Shift+N:llä).",
-          "1": "projects:in sisällä: oikea klikkaus → New Folder → kirjoita `learning-notes` → Enter.",
-          "2": "learning-notes:in sisälle — luo vielä kaksi: `claude` ja `terminal-basics`.",
-          "3": "Windows: avaa Explorer → mene C:\\Users\\<nimi>\\projects → oikea klikkaus → New Folder. Toista alikansioille."
-        },
+        "instructions": [
+          "macOS: avaa Finder → Cmd+Shift+H (palaa home:en) → löydä projects-kansio (tai luo se Cmd+Shift+N:llä).",
+          "projects:in sisällä: oikea klikkaus → New Folder → kirjoita `learning-notes` → Enter.",
+          "learning-notes:in sisälle — luo vielä kaksi: `claude` ja `terminal-basics`.",
+          "Windows: avaa Explorer → mene C:\\Users\\<nimi>\\projects → oikea klikkaus → New Folder. Toista alikansioille."
+        ],
         "example": "Finder:in kautta rakenne:\nprojects/\n  learning-notes/\n    claude/\n    terminal-basics/",
         "validate": "Finder:issä/Explorer:issa näet puun: projects → learning-notes → claude / terminal-basics.",
         "tip": "Terminaali ja Finder toimivat samalla tiedostojärjestelmällä. Yhdessä luotu kansio näkyy toisessa. Niitä voi sekoittaa."
       },
-      "fw-4": {
+      "s4": {
         "title": "Esimerkki 3 — Väliaikainen kokeilu (millä tahansa tavalla)",
-        "time": "2 min",
+        "time": "",
         "why": "Skenaario: haluat kokeilla jotain — tarvitaan kertakäyttökansio, jota ei ole sääli poistaa.",
-        "instructions": {
-          "0": "Luo miten haluat: `mkdir -p ~/projects/sandbox` (terminaali) TAI Finder:in kautta.",
-          "1": "Luo sisälle joitakin kansioita ja tiedostoja — ei väliä mitä. Esim: `cd ~/projects/sandbox && touch test.txt && mkdir notes`.",
-          "2": "Tarkista sisältö: `ls` — pitää olla test.txt ja notes.",
-          "3": "Muista: tämä kansio on ehdokas poistettavaksi vaiheessa 5."
-        },
+        "instructions": [
+          "Luo miten haluat: `mkdir -p ~/projects/sandbox` (terminaali) TAI Finder:in kautta.",
+          "Luo sisälle joitakin kansioita ja tiedostoja — ei väliä mitä. Esim: `cd ~/projects/sandbox && touch test.txt && mkdir notes`.",
+          "Tarkista sisältö: `ls` — pitää olla test.txt ja notes.",
+          "Muista: tämä kansio on ehdokas poistettavaksi vaiheessa 5."
+        ],
         "prompt": "mkdir -p ~/projects/sandbox\ncd ~/projects/sandbox\ntouch test.txt\nmkdir notes\nls",
         "example": "$ ls\nnotes  test.txt",
         "validate": "sandbox:issa näet test.txt:n ja notes/:n. Kansio on täytetty ja valmis poistettavaksi.",
         "tip": "touch luo tyhjän tiedoston sekunnissa. Hyödyllinen nopeisiin testeihin. Windows:issa vastaava: `New-Item test.txt` tai `echo. > test.txt`."
       },
-      "fw-5": {
+      "s5": {
         "title": "Puhdas poistaminen — kaksi tapaa",
-        "time": "2 min",
+        "time": "",
         "why": "Opetella poistamaan on yhtä tärkeää kuin opetella luomaan. Muuten kansiot kasaantuvat loputtomasti.",
-        "instructions": {
-          "0": "Tapa 1 (turvallinen) — Finder:in/Explorer:in kautta: avaa ~/projects/, vedä sandbox Roskakoriin. Voi palauttaa, jos muutat mieltäsi.",
-          "1": "Tapa 2 (nopea, peruuttamaton) — `rm -rf ~/projects/sandbox` (mac/linux) tai `Remove-Item -Recurse -Force ~/projects/sandbox` (PowerShell).",
-          "2": "TÄRKEÄÄ: rm -rf poistaa HETI, ilman Roskakoria. Tarkista polku kahdesti ennen Enter:iä.",
-          "3": "Tarkista, että poistui: `ls ~/projects/` — sandbox ei ole listalla."
-        },
+        "instructions": [
+          "Tapa 1 (turvallinen) — Finder:in/Explorer:in kautta: avaa ~/projects/, vedä sandbox Roskakoriin. Voi palauttaa, jos muutat mieltäsi.",
+          "Tapa 2 (nopea, peruuttamaton) — `rm -rf ~/projects/sandbox` (mac/linux) tai `Remove-Item -Recurse -Force ~/projects/sandbox` (PowerShell).",
+          "TÄRKEÄÄ: rm -rf poistaa HETI, ilman Roskakoria. Tarkista polku kahdesti ennen Enter:iä.",
+          "Tarkista, että poistui: `ls ~/projects/` — sandbox ei ole listalla."
+        ],
         "prompt": "rm -rf ~/projects/sandbox\nls ~/projects/",
         "example": "Ennen: $ ls ~/projects/\nmonthly-audits  learning-notes  sandbox  my-first-project\n\nJälkeen:\nmonthly-audits  learning-notes  my-first-project",
         "validate": "~/projects/-kansiossa ei ole enää sandbox:ia. Kokeilu on suljettu, työkansiot ehjät.",
@@ -1525,6 +1550,21 @@
           "Roskakori ei palauta macilla": "Cmd+Shift+Delete tyhjentää roskakorin. Jos jo tyhjensit — tiedostot menetetty (palauttaa voi vain Time Machine:n kautta, jos päällä).",
           "Trash doesn't restore on mac": "Roskakori ei palauta Macilla"
         }
+      },
+      "s6": {
+        "title": "Suojaa tärkeä kansio: ensimmäinen varmuuskopio git:llä",
+        "time": "",
+        "why": "Työkansioita (kuten monthly-audits) on ikävä menettää. Kun asetat git:n kerran, saat versiohistorian ja turvaverkon: vaikka poistaisit tiedoston vahingossa, voit palauttaa sen.",
+        "instructions": [
+          "Mene kansioon, jonka haluat suojata: `cd ~/projects/monthly-audits`.",
+          "Luo repositorio: `git init`. Tämä kytkee päälle muutosten seurannan kansion sisällä.",
+          "Tallenna ensimmäinen tilannekuva: `git add .` ja sitten `git commit -m \"initial backup\"`.",
+          "Varmista, että tilannekuva on tallennettu: `git log --oneline` — näet \"initial backup\" -commit:isi."
+        ],
+        "prompt": "cd ~/projects/monthly-audits\ngit init\ngit add .\ngit commit -m \"initial backup\"\ngit log --oneline",
+        "example": "$ git log --oneline\na1b2c3d initial backup",
+        "validate": "git log näyttää \"initial backup\" -commit:in. Kansiollasi on nyt palautuspiste.",
+        "tip": "Tee uusi `git commit` jokaisen mielekkään muutoksen jälkeen — se on kuin \"pelin tallentaminen\": voit aina palata toimivaan versioon. Jos git:iä ei ole asennettu — macilla suorita `xcode-select --install`."
       }
     },
     "trigger": "Tarvitset siistin kansiorakenteen Claude-projektille — mutta et tiedä mistä aloittaa.",
