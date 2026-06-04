@@ -244,6 +244,11 @@
     (cc-tty-*, cc-cfg-*, cc-grp-*) НЕ покрываются курсами намеренно — это под-пункты,
     покрытые обзорными курсами (cc-terminal/cc-config/cc-slash), или навигационные группы
     slash-команд. Делать по ним 6-шаговые курсы = вода. Зафиксировано как решение.
+  - [x] **Ветка Use Cases закрыта** ✅: 6-шаговые курсы-инструкции на всех 16 сценариях
+    (uc-ai-reporting-launch … uc-ai-conversion-optimization), ru/en/fi. Всего 108 курсов.
+  - [ ] Раскатка дальше. Осталось из крупного: Systems (sys-*), Transformation (направления
+    ops/mk/cs/pd/ds/en/ec-*). Контейнеры-обзоры (foundation/systems/transformation/use-cases)
+    — по желанию.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
