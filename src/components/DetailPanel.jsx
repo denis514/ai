@@ -369,6 +369,7 @@ export default function DetailPanel({
         accent={cat.color}
         icon={node.icon || 'sparkles'}
         footer={footer}
+        expandable
         className="bsheet--detail"
       >
         {metaBlock}

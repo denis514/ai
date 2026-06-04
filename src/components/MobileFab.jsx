@@ -204,6 +204,7 @@ export default function MobileFab({
         onClose={() => setUpdatesOpen(false)}
         title={t('category.updatesTitle')}
         icon="flash"
+        expandable
         className="bsheet--updates"
       >
         <WhatsNewPanel
@@ -218,6 +219,7 @@ export default function MobileFab({
         onClose={() => setPromptsOpen(false)}
         title={t('mobile.promptsTitle')}
         icon="flash"
+        expandable
         className="bsheet--prompts"
       >
         <p className="fab-prompts__hint">{t('mobile.promptsHint')}</p>

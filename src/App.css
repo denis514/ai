@@ -3450,9 +3450,20 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   letter-spacing: -0.01em;
   overflow-wrap: anywhere;
 }
+/* Полноэкранный режим bottom sheet (по кнопке expand): лист на весь экран,
+   без скруглений сверху. !important перекрывает динамический --bsheet-max. */
+.bsheet.bsheet--full {
+  max-height: 100dvh !important;
+  height: 100dvh;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 /* ── Единый стандарт закрывающей кнопки модалок (bottom sheet и др.) ──
-   34×34 круг, иконка строго по центру (flex), нейтральная, общий ховер. */
+   34×34 круг, иконка строго по центру (flex), нейтральная, общий ховер.
+   .bsheet__expand — кнопка раскрытия/сворачивания того же стандарта. */
 .bsheet__close,
+.bsheet__expand,
 .courses-close,
 .detail__close {
   flex: 0 0 auto;
@@ -3470,6 +3481,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   transition: background .15s ease, color .15s ease, border-color .15s ease;
 }
 .bsheet__close:hover,
+.bsheet__expand:hover,
 .courses-close:hover,
 .detail__close:hover {
   background: var(--surface-2);
@@ -8652,6 +8664,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   .canvas-filters__reset { min-width: 40px; min-height: 40px; }
   .archive-modal__page-btn { width: 40px; height: 40px; }
   .bsheet__close,
+  .bsheet__expand,
   .courses-close,
   .detail__close { width: 40px; height: 40px; }
   .copy-btn,
