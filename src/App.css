@@ -1561,6 +1561,12 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   margin: 0;
   line-height: 1.4;
 }
+/* Окно входа всегда поверх всего (выше листа узла bsheet z150, панелей, тоста).
+   Иначе у неавторизованного юзера форма входа из узла открывается ЗА листом. */
+.courses-overlay.auth-overlay {
+  z-index: 1200;
+}
+
 .auth-modal__body {
   padding: 20px 22px 24px;
   display: flex;
