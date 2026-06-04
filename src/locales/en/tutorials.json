@@ -5853,5 +5853,267 @@
         "validate": "You have a working safe environment and a plan for the first real tasks."
       }
     }
+  },
+  "claude-workspace": {
+    "title": "Claude's Workspace: Desktop and web from scratch",
+    "subtitle": "Three modes, every menu, and Settings — a walkthrough of each item",
+    "totalTime": "by section",
+    "whatItIs": "A complete walkthrough of the Claude app (Desktop for macOS/Windows and web at [[node:pl-web-setup|claude.ai]]): three tabs — Chat, [[node:pl-cowork|Cowork]], and Code — plus the entire Settings screen. After this tutorial you understand what every menu does and can set up your workspace for projects and code deliberately instead of by guesswork.",
+    "approach": "We go top to bottom: install → the three modes → working in each → panels and shortcuts → Computer use → a full walkthrough of Settings (General, Account, Privacy, Billing, Usage, Capabilities, Connectors, Claude Code, Cowork) and the Desktop app section (General, Extensions, Developer) → the link with the CLI and troubleshooting.",
+    "outcomes": [
+      "You understand the difference between the three modes — Chat / Cowork / Code — and when to use each",
+      "You know the purpose of every Settings item, not just General",
+      "You can pick the right permission mode (Ask / Auto accept / Plan / Auto / Bypass) for the task",
+      "You connect Connectors (MCP) and Desktop extensions safely",
+      "You set up Computer use with a clear understanding of its access boundaries and risks"
+    ],
+    "applyIn": [
+      {
+        "title": "Starting work on code",
+        "description": "The Code tab: a session with Git isolation, project folder selection, permission mode, preview, and diff review."
+      },
+      {
+        "title": "Long-running and background tasks",
+        "description": "Cowork and remote sessions: launch tasks that keep running even when the app is closed."
+      },
+      {
+        "title": "Team onboarding",
+        "description": "A single walkthrough of Settings so colleagues don't get lost in the menus or run into limits."
+      }
+    ],
+    "pitfalls": [
+      "Thinking Desktop is \"just a chat\": in reality it's three distinct modes with different capabilities.",
+      "Turning on Bypass permissions outside a sandbox — Claude runs commands without confirmation.",
+      "Ignoring Settings → Privacy and Capabilities — that's where both your data privacy and the available tools live.",
+      "Confusing local and remote sessions: a remote session has no @-files and no access to your local disk.",
+      "Enabling Computer use without understanding the app access tiers and the risk of prompt injection from the screen."
+    ],
+    "exercises": [
+      {
+        "question": "Open Chat, Cowork, and Code in turn. Note how the left menu differs in each mode.",
+        "hint": "Chat — list of conversations; Cowork — tasks/schedules; Code — sessions."
+      },
+      {
+        "question": "Go through every Settings section and answer in one sentence: “why do I need it”.",
+        "hint": "If you can’t answer, open it and read the caption."
+      },
+      {
+        "question": "Start your first local Code session in a test folder using Plan mode and review the plan without edits.",
+        "hint": "Plan mode explores and proposes a plan without changing source files."
+      }
+    ],
+    "steps": {
+      "ws-1": {
+        "title": "Install and first sign-in",
+        "time": "",
+        "why": "Desktop gives you what the browser can't: parallel sessions, local files, a terminal, and extensions. But it has requirements.",
+        "instructions": [
+          "Download the app: claude.com/download (macOS — universal, Windows — x64 or ARM64). Linux isn't supported — use the CLI there.",
+          "Launch it and sign in. For the Code tab on Windows you need Git for Windows — install it and restart the app.",
+          "The web version ([[node:pl-web-setup|claude.ai]]) runs in the browser with no install, but without local files, a terminal, or the Desktop app section.",
+          "You can see the app version in the menu: macOS — Claude → About Claude; Windows — Help → About."
+        ],
+        "validate": "The app opened, you're signed in, and three tabs are visible at the top: Chat, Cowork, Code.",
+        "tip": "Desktop and the CLI can live side by side on one machine and even on the same project — they share the same config (CLAUDE.md, MCP)."
+      },
+      "ws-2": {
+        "title": "Three modes: Chat / Cowork / Code",
+        "time": "",
+        "why": "This is the app's main fork. Pick the wrong mode and you won't find the features you need.",
+        "instructions": [
+          "Chat — a regular conversation: questions, text, working through files. The left menu is the list of conversations.",
+          "Cowork — agentic and long-running tasks: New task, Projects, Scheduled, Live artifacts, Dispatch (from your phone), Customize.",
+          "Code — development: each conversation is a \"session\" with its own history, project folder, and code changes; the menu has New session, Routines, Customize.",
+          "Rule of thumb: ask / write / work through something → Chat; hand off something long-running or scheduled → Cowork; code in a repository → Code."
+        ],
+        "validate": "You can explain in one sentence what each of the three tabs is for.",
+        "tip": "You can switch modes at the top at any time — no data is lost, and each mode keeps its own list on the left."
+      },
+      "ws-3": {
+        "title": "Chat mode: the composer and the \"+\"",
+        "time": "",
+        "why": "This is where 80% of everyday work happens. The composer hides more than it looks.",
+        "instructions": [
+          "Input field: type text + Enter. Next to it — the model picker (e.g. Opus/Sonnet) and the voice button (microphone).",
+          "The \"+\" button to the left of the field: attach files, connect [[node:skills|Skills]], [[node:mcp|Connectors]], and plugins.",
+          "You can change the model and the effort right inside a conversation — this affects reasoning depth and usage.",
+          "Drag files straight into the field — Claude will work through images and PDFs ([[node:cap-input-modalities|file and image support]])."
+        ],
+        "validate": "You found the model switcher and the \"+\" button and understand what each item behind them does.",
+        "tip": "Voice and response style are configured more deeply in Settings → General (Voice) — more on that below."
+      },
+      "ws-4": {
+        "title": "Cowork mode: tasks, schedules, Dispatch",
+        "time": "",
+        "why": "Cowork is Claude working on its own and over long stretches — including while you're away from the computer.",
+        "instructions": [
+          "New task — set up a task; \"Work in a project\" ties it to a [[node:projects|project]] with its knowledge and instructions.",
+          "Scheduled — recurring tasks on a schedule (for example, a daily digest).",
+          "Live artifacts — result artifacts that keep updating; Dispatch (Beta) — sending tasks to Claude from your phone.",
+          "Customize — manage connectors, skills, and plugins in one place.",
+          "A detailed walkthrough of Cowork is in a separate tutorial: [[tutorial:claude-cowork|Claude Cowork]]."
+        ],
+        "validate": "You understand how New task differs from Scheduled and what Dispatch is.",
+        "tip": "Dispatch and schedules require a Pro or Max plan and don't work on Team/Enterprise."
+      },
+      "ws-5": {
+        "title": "Code mode: starting a session",
+        "time": "",
+        "why": "Before your first message in Code you need to set four things — otherwise Claude will start in the wrong place and the wrong way.",
+        "instructions": [
+          "Environment — where it runs: Local (your machine), Remote (Anthropic's cloud, keeps going when the app is closed), SSH (your own server).",
+          "Project folder — the folder or repository Claude works with. For Remote you can add several repositories.",
+          "Model — the model picker next to the send button; change it as you go.",
+          "Permission mode — how much freedom Claude has (the next step). Enter your task and hit Enter."
+        ],
+        "validate": "Before sending, you can see the Environment, folder, model, and permission mode pickers.",
+        "tip": "For long refactors and test runs, choose Remote — the task won't be interrupted even if you close the app."
+      },
+      "ws-6": {
+        "title": "Permission modes",
+        "time": "",
+        "why": "This is the main safeguard: it decides whether Claude asks before changing files and running commands.",
+        "instructions": [
+          "Ask permissions (default) — asks before every edit/command and shows a diff. Recommended for beginners.",
+          "Auto accept edits — accepts file edits and safe commands (mkdir, mv) on its own, but asks about other commands.",
+          "Plan mode — explores and proposes a plan without touching the source. Great for complex \"think first\" tasks.",
+          "Auto — does everything with background safety checks (research preview, requires a recent Opus/Sonnet).",
+          "Bypass permissions — no confirmations at all. Sandbox/VM only; enabled in Settings → Claude Code."
+        ],
+        "validate": "You can pick the right mode for a task and know which one is dangerous outside a sandbox.",
+        "tip": "A solid workflow: start in Plan → approve the plan → switch to Auto accept edits to carry it out."
+      },
+      "ws-7": {
+        "title": "Working with code: context and control",
+        "time": "",
+        "why": "The sharper the context and the better you steer Claude, the less rework you get.",
+        "instructions": [
+          "@-mention a file: type @ and the name — the file goes into context (not available in Remote).",
+          "Attachments: images, PDFs, screenshots of bugs — via the button or by dragging them in.",
+          "Interrupting: the stop button halts immediately; or just type a correction and hit Enter — Claude will factor it in after the current step.",
+          "Claude reads the project files, makes edits, and runs commands according to the permission mode you chose."
+        ],
+        "validate": "You added a file via @ and steered Claude with a correction without stopping its work.",
+        "tip": "A short clarifying correction mid-run is cheaper than fully restarting the task."
+      },
+      "ws-8": {
+        "title": "Preview, diff, and code review",
+        "time": "",
+        "why": "Desktop shows changes visually and checks them itself — this removes \"blind\" edits.",
+        "instructions": [
+          "Preview — Claude spins up a dev server and opens a built-in browser; auto-verification takes screenshots and clicks elements after edits.",
+          "Diff: an indicator like \"+12 −1\" opens the per-file change view; click a line to leave a comment.",
+          "Submit comments: macOS — Cmd+Enter, Windows — Ctrl+Enter; Claude makes the edits and shows a new diff.",
+          "\"Review code\" in the diff view — Claude looks for bugs, logic issues, and security problems on its own (not style).",
+          "After a PR, a CI panel appears: Auto-fix and Auto-merge toggles."
+        ],
+        "validate": "You opened a diff, left a comment, and requested \"Review code\".",
+        "tip": "The preview server config lives in .claude/launch.json — that's where you put your own launch command and port."
+      },
+      "ws-9": {
+        "title": "The workspace: panels and shortcuts",
+        "time": "",
+        "why": "Code is built from panels you arrange to suit yourself — this speeds up your work enormously.",
+        "instructions": [
+          "Panels: chat, diff, preview, terminal, file, plan, tasks, subagent. Open them from the Views menu and drag them by the title.",
+          "Terminal: Ctrl+` — opens in the session folder, the same environment Claude uses (npm test, git status).",
+          "Files: click a path to open the file; make targeted edits + Save.",
+          "Transcript modes (Normal/Verbose/Summary) — Ctrl+O. All shortcuts — Cmd+/ (macOS) or Ctrl+/ (Windows)."
+        ],
+        "validate": "You opened a second panel from Views and switched the transcript mode.",
+        "tip": "Verbose shows every step Claude takes — handy when you need to understand why it did something a certain way."
+      },
+      "ws-10": {
+        "title": "Parallel sessions and isolation",
+        "time": "",
+        "why": "You can run several tasks at once without worrying they'll get mixed up.",
+        "instructions": [
+          "+ New session (Cmd+N) — a new parallel session; Ctrl+Tab switches between them.",
+          "For Git repositories, each session gets its own isolated copy via a worktree — edits don't overlap until a commit.",
+          "Side-chat (Cmd+; or /btw) — an aside question with the session's context, without cluttering the main conversation.",
+          "The Tasks panel shows background work: subagents and background commands."
+        ],
+        "validate": "You opened two sessions and understand why their edits don't conflict.",
+        "tip": "Auto-archive after a merge/closed PR (Settings → Claude Code) clears out finished sessions for you."
+      },
+      "ws-11": {
+        "title": "Computer use: screen control",
+        "time": "",
+        "why": "Claude can control apps on your screen — powerful, but it requires deliberate boundaries.",
+        "instructions": [
+          "Enabled in Settings → General (Desktop app section) with the Computer use toggle. On macOS it needs Accessibility and Screen Recording permissions.",
+          "Requires a Pro or Max plan (not Team/Enterprise) and a running Desktop app.",
+          "Access tiers are fixed: browsers — view only, terminals/IDEs — clicks only, everything else — full control.",
+          "More on safe, isolated execution — [[node:sys-agent-sandbox|an isolated environment for the agent]] and [[node:cap-computer|Computer use]]."
+        ],
+        "validate": "You understand which permissions are needed and why a browser is \"view only\".",
+        "tip": "Claude flags suspicious on-screen text as possible prompt injection, but the trust boundary here is different — don't run it on sensitive data."
+      },
+      "ws-12": {
+        "title": "Settings — part 1: General and Account",
+        "time": "",
+        "why": "General sets how Claude addresses you and behaves everywhere; Account is about devices and sign-in security.",
+        "instructions": [
+          "General → Profile: name, \"what to call you\", occupation, and Instructions for Claude — general guidance for all chats and Cowork ([[node:i-global|global instructions]]).",
+          "General → Preferences: Appearance (system/light/dark), Chat font.",
+          "General → Voice (voice style and speed) and Notifications (response completion, Code notifications, permission requests, Dispatch messages).",
+          "Account: \"Log out of all devices\", Organization ID, the list of active sessions (device, city, dates), account deletion."
+        ],
+        "validate": "You filled in Instructions for Claude and found the list of active sessions in Account.",
+        "tip": "Instructions for Claude is the most underrated item: one setting improves the tone and format across all your future conversations."
+      },
+      "ws-13": {
+        "title": "Settings — part 2: Privacy, Billing, Usage, Capabilities",
+        "time": "",
+        "why": "This is where data privacy, money, and which tools Claude can use at all live.",
+        "instructions": [
+          "Privacy — how your data is used and model training; go through this section deliberately ([[node:pl-privacy|privacy]]).",
+          "Billing — plan and payment; Usage — usage by period and by model (the plan is shared across all Claude surfaces).",
+          "Capabilities — toggles for Claude's capabilities (web search, analysis, and so on).",
+          "The usage ring next to the model picker in Code shows the session context and the plan's overall usage."
+        ],
+        "validate": "You know where to check usage and where to turn capabilities on and off.",
+        "tip": "If you're hitting limits — check Usage first and compare models before upgrading your plan."
+      },
+      "ws-14": {
+        "title": "Settings — part 3: Connectors, Claude Code, Cowork",
+        "time": "",
+        "why": "These are the app's \"sockets\": external services, the behavior of code sessions, and agentic-mode settings.",
+        "instructions": [
+          "Connectors — integrations (Google Calendar, Slack, GitHub, Linear, Notion …). These are [[node:mcp|MCP servers]] with a graphical setup; they can also be added from the \"+\" in the composer.",
+          "For services not on the list — add MCP manually via the config files; custom connectors exist too.",
+          "Claude Code — the behavior of Code sessions: allow Bypass permissions, worktree location, auto-archive after a PR, turning Preview and Persist sessions on/off.",
+          "Cowork — agentic-mode and Dispatch settings."
+        ],
+        "validate": "You opened Connectors and understand that these are MCP with a convenient connection wizard.",
+        "tip": "Disconnect/Manage connectors — right there in Settings → Connectors, or via \"Manage connectors\" in the composer."
+      },
+      "ws-15": {
+        "title": "The Desktop app section: General, Extensions, Developer",
+        "time": "",
+        "why": "This is what the browser doesn't have: local extensions and connecting your own MCP servers.",
+        "instructions": [
+          "Desktop app → General: the Computer use toggle, the status of system permissions, Denied apps (apps Claude won't touch), and \"Unhide apps when Claude finishes\".",
+          "Extensions — install extensions/connectors in one click, no terminal needed.",
+          "Developer — connect local MCP servers and developer configuration.",
+          "MCP from the chat app (claude_desktop_config.json) is picked up in the Code tab too."
+        ],
+        "validate": "You found the Computer use toggle in Desktop app → General and understand what Developer is for.",
+        "tip": "If an MCP server isn't responding on Windows — check the config, restart the app, and see whether the server process is still alive in Task Manager."
+      },
+      "ws-16": {
+        "title": "CLI ↔ Desktop and troubleshooting",
+        "time": "",
+        "why": "Desktop and the [[node:claude-code|CLI]] are one engine; knowing the link, you don't lose settings and you fix issues fast.",
+        "instructions": [
+          "Shared config: CLAUDE.md, MCP servers (~/.claude.json, .mcp.json), hooks, skills, settings — all work in both.",
+          "Move a session from the terminal to Desktop: the /desktop command (when signed in with a subscription).",
+          "What Desktop lacks: third-party providers (Bedrock/Vertex/Foundry), Linux, inline suggestions, agent teams, terminal dialogs (/permissions, /config, /agents).",
+          "Troubleshooting: 403 — sign out and back in; blank screen — restart/update; on Windows, Code needs Git."
+        ],
+        "validate": "You understand that the config is shared and know the first thing to do on a 403 error.",
+        "tip": "Use Desktop for parallel sessions and visual review, and the CLI for scripts and automation."
+      }
+    }
   }
 }

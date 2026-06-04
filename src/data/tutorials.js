@@ -140,6 +140,40 @@ export const tutorials = {
       }
     ]
   },
+  "claude-workspace": {
+    "nodeId": "pl-desktop",
+    "icon": "laptop",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "claude-cowork",
+      "projects",
+      "mcp",
+      "claude-code"
+    ],
+    "steps": [
+      { "id": "ws-1" },
+      { "id": "ws-2" },
+      { "id": "ws-3" },
+      { "id": "ws-4" },
+      { "id": "ws-5" },
+      { "id": "ws-6" },
+      { "id": "ws-7" },
+      { "id": "ws-8" },
+      { "id": "ws-9" },
+      { "id": "ws-10" },
+      { "id": "ws-11" },
+      { "id": "ws-12" },
+      { "id": "ws-13" },
+      { "id": "ws-14" },
+      { "id": "ws-15" },
+      { "id": "ws-16" }
+    ]
+  },
   "basics": {
     "nodeId": "basics",
     "icon": "brain",

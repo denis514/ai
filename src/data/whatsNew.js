@@ -13,6 +13,7 @@
  */
 export const WHATS_NEW = {
   // ─── Туториалы ─────────────────────────────────────────────────────────────
+  'claude-workspace': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
   'remote-computer-for-claude': { date: '2026-06-03', type: 'new', kind: 'tutorial' },
   'mcp-advanced': { date: '2026-05-27', type: 'new', kind: 'tutorial' },
   'claude-code-project': { date: '2026-05-27', type: 'new', kind: 'tutorial' },
@@ -50,6 +51,7 @@ export const WHATS_NEW = {
   'folders-workshop': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
+  'pl-desktop': { date: '2026-06-04', type: 'updated' },
   'sys-agent-sandbox': { date: '2026-06-03', type: 'new' },
   'sas-why-isolation': { date: '2026-06-03', type: 'updated' },
   'sas-docker-computer-use': { date: '2026-06-03', type: 'new' },
@@ -250,7 +252,6 @@ export const WHATS_NEW = {
   'sc-coding': { date: '2026-05-22', type: 'updated' },
   'ag-research': { date: '2026-05-22', type: 'updated' },
   'pl-cowork': { date: '2026-05-22', type: 'updated' },
-  'pl-desktop': { date: '2026-05-22', type: 'updated' },
   'pl-models': { date: '2026-05-22', type: 'updated' },
   'cap-code-exec': { date: '2026-05-22', type: 'updated' },
   's-ready': { date: '2026-05-22', type: 'updated' },

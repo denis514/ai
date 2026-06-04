@@ -5859,5 +5859,267 @@
         "validate": "Sinulla on toimiva turvallinen ympäristö ja suunnitelma ensimmäisille oikeille tehtäville."
       }
     }
+  },
+  "claude-workspace": {
+    "title": "Clauden työpöytä: Desktop ja web alusta alkaen",
+    "subtitle": "Kolme tilaa, kaikki valikot ja Settings — jokainen kohta läpikäytynä",
+    "totalTime": "osioittain",
+    "whatItIs": "Täydellinen läpikäynti Claude-sovelluksesta (Desktop macOS:lle/Windowsille sekä web osoitteessa [[node:pl-web-setup|claude.ai]]): kolme välilehteä — Chat, [[node:pl-cowork|Cowork]] ja Code — ja koko Settings-näkymä. Tutoriaalin jälkeen ymmärrät, mitä jokainen valikko tekee, ja säädät työpöytäsi projekteille ja koodille tietoisesti etkä arvaamalla.",
+    "approach": "Etenemme ylhäältä alas: asennus → kolme tilaa → työskentely kussakin → paneelit ja pikanäppäimet → Computer use → Settings kokonaan (General, Account, Privacy, Billing, Usage, Capabilities, Connectors, Claude Code, Cowork) ja Desktop app -osio (General, Extensions, Developer) → yhteys CLI:hin ja vianetsintä.",
+    "outcomes": [
+      "Ymmärrät kolmen tilan eron: Chat / Cowork / Code — ja milloin mitäkin käytät",
+      "Tiedät jokaisen Settings-kohdan tarkoituksen, et vain General-osion",
+      "Osaat valita oikeuksien tilan (Ask / Auto accept / Plan / Auto / Bypass) tehtävän mukaan",
+      "Liität Connectors-yhteydet (MCP) ja Desktop-laajennukset turvallisesti",
+      "Olet ottanut Computer usen käyttöön ymmärtäen pääsyn rajat ja riskit"
+    ],
+    "applyIn": [
+      {
+        "title": "Koodityön aloitus",
+        "description": "Code-välilehti: istunto Git-eristyksellä, projektikansion valinta, oikeuksien tila, preview ja diff-katselmointi."
+      },
+      {
+        "title": "Pitkät ja taustalla pyörivät tehtävät",
+        "description": "Cowork ja etäistunnot: tehtävien käynnistys niin, että ne jatkuvat vaikka sovellus olisi suljettu."
+      },
+      {
+        "title": "Tiimin perehdytys",
+        "description": "Yhtenäinen Settings-läpikäynti, jotta kollegat eivät eksy valikoissa eivätkä törmää rajoituksiin."
+      }
+    ],
+    "pitfalls": [
+      "Luulla, että Desktop on \"pelkkä chatti\": todellisuudessa se on kolme eri tilaa erilaisine mahdollisuuksineen.",
+      "Ottaa Bypass permissions käyttöön hiekkalaatikon ulkopuolella — Claude suorittaa komennot ilman vahvistusta.",
+      "Sivuuttaa Settings → Privacy ja Capabilities — siellä on sekä datan yksityisyys että käytettävissä olevat työkalut.",
+      "Sekoittaa paikallinen ja etäistunto: etäistunnossa ei ole @-tiedostoja eikä pääsyä paikalliselle levylle.",
+      "Ottaa Computer use käyttöön ymmärtämättä sovellusten pääsytasoja ja näytöltä tulevan prompt-injectionin riskiä."
+    ],
+    "exercises": [
+      {
+        "question": "Avaa vuorotellen Chat, Cowork ja Code. Kirjaa, miten vasen valikko eroaa kussakin tilassa.",
+        "hint": "Chat — keskustelulista; Cowork — tehtävät/ajastukset; Code — sessiot."
+      },
+      {
+        "question": "Käy läpi jokainen Settings-osio ja vastaa yhdellä lauseella: “miksi tarvitsen sen”.",
+        "hint": "Jos et osaa vastata, avaa osio ja lue kuvaus."
+      },
+      {
+        "question": "Käynnistä ensimmäinen paikallinen Code-sessio testikansiossa Plan-tilassa ja katso suunnitelma ilman muokkauksia.",
+        "hint": "Plan mode tutkii ja ehdottaa suunnitelman muuttamatta lähdetiedostoja."
+      }
+    ],
+    "steps": {
+      "ws-1": {
+        "title": "Asennus ja ensimmäinen kirjautuminen",
+        "time": "",
+        "why": "Desktop tarjoaa sen, mitä selaimessa ei ole: rinnakkaiset istunnot, paikalliset tiedostot, terminaalin ja laajennukset. Mutta sillä on vaatimuksensa.",
+        "instructions": [
+          "Lataa sovellus: claude.com/download (macOS — universal, Windows — x64 tai ARM64). Linuxia ei tueta — siellä käytetään CLI:tä.",
+          "Käynnistä ja kirjaudu tilille. Code-välilehti Windowsissa vaatii Git for Windowsin — asenna se ja käynnistä sovellus uudelleen.",
+          "Web-versio ([[node:pl-web-setup|claude.ai]]) toimii selaimessa ilman asennusta, mutta ilman paikallisia tiedostoja, terminaalia ja Desktop app -osiota.",
+          "Sovelluksen version näet valikosta: macOS — Claude → About Claude; Windows — Help → About."
+        ],
+        "validate": "Sovellus aukesi, kirjauduit sisään, ja ylhäällä näkyy kolme välilehteä: Chat, Cowork, Code.",
+        "tip": "Desktopia ja CLI:tä voi pitää yhdessä samalla koneella ja jopa samassa projektissa — niiden asetukset (CLAUDE.md, MCP) ovat yhteiset."
+      },
+      "ws-2": {
+        "title": "Kolme tilaa: Chat / Cowork / Code",
+        "time": "",
+        "why": "Tämä on sovelluksen tärkein risteys. Jos valitset väärän tilan, et löydä tarvitsemiasi toimintoja.",
+        "instructions": [
+          "Chat — tavallinen keskustelu: kysymykset, tekstit, tiedostojen läpikäynti. Vasen valikko on keskustelulista.",
+          "Cowork — agenttimaiset ja pitkäkestoiset tehtävät: New task, Projects, Scheduled (aikataulut), Live artifacts, Dispatch (puhelimesta), Customize.",
+          "Code — kehitys: jokainen keskustelu on \"istunto\", jolla on oma historiansa, projektikansionsa ja koodimuutoksensa; valikossa New session, Routines, Customize.",
+          "Sääntö: kysy/kirjoita/käy läpi → Chat; anna pitkäksi aikaa tai aikataulutettuna → Cowork; koodi repositoryssa → Code."
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, mihin kukin kolmesta välilehdestä on tarkoitettu.",
+        "tip": "Tiloja vaihdetaan ylhäältä milloin tahansa — data ei katoa, ja jokaisella on oma listansa vasemmalla."
+      },
+      "ws-3": {
+        "title": "Chat-tila: composer ja \"+\"",
+        "time": "",
+        "why": "Täällä tapahtuu 80 % arkityöstä. Composer kätkee enemmän kuin miltä näyttää.",
+        "instructions": [
+          "Syöttökenttä: teksti + Enter. Vieressä mallin valinta (esim. Opus/Sonnet) ja ääni-painike (mikrofoni).",
+          "\"+\"-painike kentän vasemmalla puolella: liitä tiedostoja, kytke [[node:skills|Skills]], [[node:mcp|Connectors]] ja liitännäiset.",
+          "Mallia ja \"panostusta\" (effort) voi vaihtaa suoraan keskustelussa — se vaikuttaa päättelyn syvyyteen ja kulutukseen.",
+          "Raahaa tiedostot suoraan kenttään — kuvat ja PDF:t Claude käy läpi ([[node:cap-input-modalities|tiedostojen ja kuvien tuki]])."
+        ],
+        "validate": "Löysit mallin valitsimen, \"+\"-painikkeen ja ymmärrät, mitä kunkin kohdan takaa löytyy.",
+        "tip": "Ääni ja vastaustyyli säädetään tarkemmin kohdassa Settings → General (Voice) — tästä lisää alempana."
+      },
+      "ws-4": {
+        "title": "Cowork-tila: tehtävät, aikataulut, Dispatch",
+        "time": "",
+        "why": "Cowork on Claude, joka työskentelee itsenäisesti ja pitkään — myös silloin kun et ole koneella.",
+        "instructions": [
+          "New task — anna tehtävä; \"Work in a project\" sitoo sen [[node:projects|projektiin]], jolla on oma tietonsa ja ohjeensa.",
+          "Scheduled — toistuvat tehtävät aikataulun mukaan (esim. päivittäinen kooste).",
+          "Live artifacts — tulosartefaktit, jotka päivittyvät; Dispatch (Beta) — tehtävien lähetys Claudelle puhelimesta.",
+          "Customize — connectoreiden, skillien ja liitännäisten hallinta yhdessä paikassa.",
+          "Coworkin yksityiskohtainen läpikäynti on omassa tutoriaalissaan [[tutorial:claude-cowork|Claude Cowork]]."
+        ],
+        "validate": "Ymmärrät, miten New task eroaa Scheduledista ja mikä Dispatch on.",
+        "tip": "Dispatch ja aikataulut vaativat Pro- tai Max-tilauksen eivätkä toimi Team/Enterprise-tileillä."
+      },
+      "ws-5": {
+        "title": "Code-tila: istunnon käynnistys",
+        "time": "",
+        "why": "Ennen ensimmäistä viestiä Codessa pitää säätää neljä asiaa — muuten Claude käynnistyy väärässä paikassa ja väärällä tavalla.",
+        "instructions": [
+          "Environment — missä suoritetaan: Local (oma koneesi), Remote (Anthropicin pilvi, jatkuu vaikka sovellus suljetaan), SSH (oma palvelimesi).",
+          "Project folder — kansio tai repository, jonka kanssa Claude työskentelee. Remoteen voi lisätä useita repositoryja.",
+          "Model — mallin valinta lähetyspainikkeen vieressä, vaihtuu työn aikana.",
+          "Permission mode — kuinka paljon vapautta Claudella on (seuraava askel). Kirjoita tehtävä ja Enter."
+        ],
+        "validate": "Ennen lähetystä näet Environment-, kansio-, malli- ja oikeustilan valinnat.",
+        "tip": "Pitkille refaktoroinneille ja testeille valitse Remote — tehtävä ei keskeydy, vaikka suljet sovelluksen."
+      },
+      "ws-6": {
+        "title": "Oikeustilat (permission modes)",
+        "time": "",
+        "why": "Tämä on tärkein varoke: se ratkaisee, kysyykö Claude ennen tiedostojen muuttamista ja komentojen suorittamista.",
+        "instructions": [
+          "Ask permissions (default) — kysyy ennen jokaista muokkausta/komentoa ja näyttää diffin. Suositellaan aloittelijoille.",
+          "Auto accept edits — hyväksyy itse tiedostomuokkaukset ja turvalliset komennot (mkdir, mv), mutta kysyy muista komennoista.",
+          "Plan mode — tutkii ja ehdottaa suunnitelman muuttamatta lähdekoodia. Hyvä monimutkaisiin tehtäviin, joissa kannattaa \"ensin pohtia\".",
+          "Auto — suorittaa kaiken taustalla tehtävin turvatarkistuksin (research preview, vaatii tuoreen Opus/Sonnet).",
+          "Bypass permissions — ilman vahvistuksia lainkaan. Vain hiekkalaatikossa/VM:ssä; otetaan käyttöön kohdassa Settings → Claude Code."
+        ],
+        "validate": "Osaat valita tilan tehtävän mukaan ja tiedät, mikä on vaarallinen hiekkalaatikon ulkopuolella.",
+        "tip": "Työnkulku: aloita Plan-tilassa → hyväksy suunnitelma → vaihda Auto accept edits -tilaan toteutusta varten."
+      },
+      "ws-7": {
+        "title": "Koodityö: konteksti ja hallinta",
+        "time": "",
+        "why": "Mitä tarkempi konteksti ja mitä paremmin ohjaat Claudea, sitä vähemmän uudelleentekoa.",
+        "instructions": [
+          "Tiedoston @-maininta: kirjoita @ ja nimi — tiedosto tulee kontekstiin (Remotessa ei käytettävissä).",
+          "Liitteet: kuvat, PDF:t, kuvakaappaukset bugeista — painikkeella tai raahaamalla.",
+          "Keskeytys: stop-painike pysäyttää heti; tai kirjoita vain korjaus ja Enter — Claude huomioi sen nykyisen vaiheen jälkeen.",
+          "Claude lukee projektin tiedostot, tekee muutokset ja suorittaa komennot valitun oikeustilan mukaan."
+        ],
+        "validate": "Lisäsit tiedoston @-maininnalla ja ohjasit Claudea korjauksella keskeyttämättä työtä.",
+        "tip": "Lyhyt tarkentava korjaus työn aikana on halvempi kuin tehtävän täysi uudelleenkäynnistys."
+      },
+      "ws-8": {
+        "title": "Preview, diff ja koodin katselmointi",
+        "time": "",
+        "why": "Desktop näyttää muutokset visuaalisesti ja tarkistaa ne itse — tämä poistaa \"sokeat\" muokkaukset.",
+        "instructions": [
+          "Preview — Claude käynnistää dev-palvelimen ja avaa sisäänrakennetun selaimen; automaattinen verifiointi ottaa kuvakaappauksia ja klikkaa elementtejä muokkausten jälkeen.",
+          "Diff: \"+12 −1\" -tyyppinen merkki avaa muutosten katselun tiedostoittain; klikkaa riviä jättääksesi kommentin.",
+          "Kommenttien lähetys: macOS — Cmd+Enter, Windows — Ctrl+Enter; Claude tekee muutokset ja näyttää uuden diffin.",
+          "\"Review code\" diff-katselussa — Claude etsii itse bugeja sekä logiikka- ja security-ongelmia (ei tyyliä).",
+          "PR:n jälkeen ilmestyy CI-paneeli: Auto-fix- ja Auto-merge-kytkimet."
+        ],
+        "validate": "Avasit diffin, jätit kommentin ja pyysit \"Review code\".",
+        "tip": "Preview-palvelimen asetukset ovat tiedostossa .claude/launch.json — sinne kirjataan oma käynnistyskomento ja portti."
+      },
+      "ws-9": {
+        "title": "Työtila: paneelit ja pikanäppäimet",
+        "time": "",
+        "why": "Code koostuu paneeleista, jotka asettelet itsellesi sopiviksi — tämä nopeuttaa työtä moninkertaisesti.",
+        "instructions": [
+          "Paneelit: chat, diff, preview, terminal, file, plan, tasks, subagent. Avataan Views-valikosta, raahataan otsikosta.",
+          "Terminaali: Ctrl+` — avautuu istunnon kansiossa, samassa ympäristössä kuin Claudella (npm test, git status).",
+          "Tiedostot: polun klikkaus avaa tiedoston; täsmämuokkaukset + Save.",
+          "Transkriptin tilat (Normal/Verbose/Summary) — Ctrl+O. Kaikki pikanäppäimet — Cmd+/ (macOS) tai Ctrl+/ (Windows)."
+        ],
+        "validate": "Avasit toisen paneelin Views-valikosta ja vaihdoit transkriptin tilan.",
+        "tip": "Verbose näyttää Clauden jokaisen vaiheen — kätevää, kun pitää ymmärtää, miksi se teki juuri niin."
+      },
+      "ws-10": {
+        "title": "Rinnakkaiset istunnot ja eristys",
+        "time": "",
+        "why": "Voit viedä useita tehtäviä eteenpäin yhtä aikaa pelkäämättä, että ne sekoittuvat.",
+        "instructions": [
+          "+ New session (Cmd+N) — uusi rinnakkainen istunto; Ctrl+Tab vaihtaa niiden välillä.",
+          "Git-repositoryille jokainen istunto saa oman eristetyn kopionsa worktreen kautta — muutokset eivät risteä ennen commitia.",
+          "Side-chat (Cmd+; tai /btw) — kysymys \"sivuun\" istunnon kontekstilla sotkematta pääkeskustelua.",
+          "Tasks-paneeli näyttää taustatyön: aliagentit ja taustakomennot."
+        ],
+        "validate": "Avasit kaksi istuntoa ja ymmärrät, miksi niiden muutokset eivät törmää.",
+        "tip": "Auto-archive PR:n mergen/sulkemisen jälkeen (Settings → Claude Code) siivoaa valmistuneet istunnot itse."
+      },
+      "ws-11": {
+        "title": "Computer use: näytön hallinta",
+        "time": "",
+        "why": "Claude voi ohjata näytöllä olevia sovelluksia — tehokasta, mutta vaatii tietoiset rajat.",
+        "instructions": [
+          "Otetaan käyttöön kohdassa Settings → General (Desktop app -osio) Computer use -kytkimellä. macOS:ssä tarvitaan Accessibility- ja Screen Recording -oikeudet.",
+          "Vaatii Pro- tai Max-tilauksen (ei Team/Enterprise) ja käynnissä olevan Desktop-sovelluksen.",
+          "Pääsytasot ovat kiinteät: selaimet — vain katselu, terminaalit/IDE — vain klikkaukset, muut — täysi hallinta.",
+          "Lisää turvallisesta eristetystä ajosta — [[node:sys-agent-sandbox|eristetty ympäristö agentille]] ja [[node:cap-computer|Computer use]]."
+        ],
+        "validate": "Ymmärrät, mitä oikeuksia tarvitaan ja miksi selaimella on vain \"katselu\".",
+        "tip": "Claude merkitsee näytöllä olevan epäilyttävän tekstin mahdolliseksi prompt-injectioniksi, mutta luottamuksen raja on tässä toinen — älä aja sitä arkaluonteisen datan parissa."
+      },
+      "ws-12": {
+        "title": "Settings — osa 1: General ja Account",
+        "time": "",
+        "why": "General määrää, miten Claude puhuttelee sinua ja käyttäytyy kaikkialla; Account koskee laitteita ja kirjautumisen turvallisuutta.",
+        "instructions": [
+          "General → Profile: nimi, \"miten puhutella\", ammatti ja Instructions for Claude — yleisohjeet kaikkiin chatteihin ja Coworkiin ([[node:i-global|globaalit ohjeet]]).",
+          "General → Preferences: Appearance (järjestelmän mukaan / vaalea / tumma), Chat font.",
+          "General → Voice (äänen tyyli ja nopeus) ja Notifications (vastauksen valmistuminen, Code-ilmoitukset, oikeuspyynnöt, Dispatch-viestit).",
+          "Account: \"Log out of all devices\", Organization ID, aktiivisten istuntojen lista (laite, kaupunki, päivämäärät), tilin poisto."
+        ],
+        "validate": "Täytit Instructions for Claude -kentän ja löysit aktiivisten istuntojen listan Account-osiosta.",
+        "tip": "Instructions for Claude on aliarvostetuin kohta: yksi asetus parantaa sävyä ja muotoilua kaikissa tulevissa keskusteluissa."
+      },
+      "ws-13": {
+        "title": "Settings — osa 2: Privacy, Billing, Usage, Capabilities",
+        "time": "",
+        "why": "Täällä on datan yksityisyys, raha ja se, mitkä työkalut Claudella ylipäätään ovat käytössä.",
+        "instructions": [
+          "Privacy — miten dataasi käytetään ja miten malli oppii; käy tämä osio läpi tietoisesti ([[node:pl-privacy|yksityisyys]]).",
+          "Billing — tilaus ja maksut; Usage — kulutus jaksoittain ja malleittain (tilaus on yhteinen kaikille Clauden pinnoille).",
+          "Capabilities — Clauden ominaisuuksien kytkimet (esim. verkkohaku, analyysi yms.).",
+          "Käyttörengas Code-tilan mallinvalinnan vieressä näyttää istunnon kontekstin ja tilauksen kokonaiskulutuksen."
+        ],
+        "validate": "Tiedät, mistä katsot kulutusta ja mistä ominaisuudet otetaan käyttöön tai pois.",
+        "tip": "Jos törmäät rajoituksiin — katso ensin Usage ja vertaile malleja ennen kuin nostat tilaustasi."
+      },
+      "ws-14": {
+        "title": "Settings — osa 3: Connectors, Claude Code, Cowork",
+        "time": "",
+        "why": "Nämä ovat sovelluksen \"pistorasiat\": ulkoiset palvelut, koodi-istuntojen käyttäytyminen ja agenttitilan asetukset.",
+        "instructions": [
+          "Connectors — integraatiot (Google Calendar, Slack, GitHub, Linear, Notion …). Nämä ovat [[node:mcp|MCP-palvelimia]] graafisella asetuksella; lisätään myös composerin \"+\"-painikkeesta.",
+          "Listan ulkopuolisille palveluille — lisää MCP käsin asetustiedostojen kautta; on myös mukautettuja connectoreita.",
+          "Claude Code — Code-istuntojen käyttäytyminen: salli Bypass permissions, worktreen sijainti, automaattinen arkistointi PR:n jälkeen, Previewin ja Persist sessionsin päälle/pois.",
+          "Cowork — agenttitilan ja Dispatchin asetukset."
+        ],
+        "validate": "Avasit Connectorsin ja ymmärrät, että se on MCP kätevällä liittämisvelholla.",
+        "tip": "Connectoreiden Disconnect/Manage löytyy samasta paikasta, Settings → Connectors, tai composerin \"Manage connectors\" -kohdasta."
+      },
+      "ws-15": {
+        "title": "Desktop app -osio: General, Extensions, Developer",
+        "time": "",
+        "why": "Tämä on sitä, mitä selaimessa ei ole: paikalliset laajennukset ja omien MCP-palvelimien liittäminen.",
+        "instructions": [
+          "Desktop app → General: Computer use -kytkin, järjestelmäoikeuksien tila, Denied apps (sovellukset, joihin Claude ei koske) ja \"Unhide apps when Claude finishes\".",
+          "Extensions — laajennusten/connectoreiden asennus yhdellä klikkauksella, ilman terminaalia.",
+          "Developer — paikallisten MCP-palvelimien liittäminen ja kehittäjäkonfiguraatio.",
+          "Chat-sovelluksen MCP:t (claude_desktop_config.json) tunnistetaan myös Code-välilehdellä."
+        ],
+        "validate": "Löysit Computer use -kytkimen kohdasta Desktop app → General ja ymmärrät, mihin Developer on.",
+        "tip": "Jos MCP-palvelin ei vastaa Windowsissa — tarkista asetus, käynnistä sovellus uudelleen ja katso tehtävienhallinnasta, onko palvelinprosessi elossa."
+      },
+      "ws-16": {
+        "title": "CLI ↔ Desktop ja vianetsintä",
+        "time": "",
+        "why": "Desktop ja [[node:claude-code|CLI]] ovat sama moottori; kun tunnet yhteyden, et menetä asetuksia ja korjaat häiriöt nopeasti.",
+        "instructions": [
+          "Yhteiset asetukset: CLAUDE.md, MCP-palvelimet (~/.claude.json, .mcp.json), hooks, skills, settings — toimivat sekä siellä että täällä.",
+          "Istunnon siirto terminaalista Desktopiin: komento /desktop (kun kirjautuneena tilauksella).",
+          "Mitä Desktopissa ei ole: kolmannen osapuolen tarjoajat (Bedrock/Vertex/Foundry), Linux, inline-ehdotukset, agent teams, terminaalin dialogit (/permissions, /config, /agents).",
+          "Häiriöt: 403 — kirjaudu ulos ja takaisin sisään; tyhjä näyttö — käynnistä uudelleen/päivitä; Windowsissa Code vaatii Gitin."
+        ],
+        "validate": "Ymmärrät, että asetukset ovat yhteiset, ja tiedät ensimmäisen toimen 403-virheessä.",
+        "tip": "Käytä Desktopia rinnakkaisiin istuntoihin ja visuaaliseen katselmointiin, CLI:tä skripteihin ja automaatioon."
+      }
+    }
   }
 }
