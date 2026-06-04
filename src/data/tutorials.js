@@ -1434,6 +1434,110 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "project-instructions": {
+    "nodeId": "p-instructions",
+    "icon": "settings",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "projects"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "project-files",
+      "instructions",
+      "projects"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "project-team": {
+    "nodeId": "p-team",
+    "icon": "users",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "projects"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "project-instructions",
+      "projects"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "project-when": {
+    "nodeId": "p-when",
+    "icon": "idea",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "projects"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "projects",
+      "project-files",
+      "project-instructions"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 

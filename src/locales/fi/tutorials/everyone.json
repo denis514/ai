@@ -2892,5 +2892,396 @@
         "tip": "Liitä tämä säännölliseen siivoukseen: vanhentunut brändiopas on huonompi kuin sen puuttuminen."
       }
     }
+  },
+  "project-instructions": {
+    "title": "Project Instructions: aseta Clauden rooli kerralla",
+    "subtitle": "6 askelta, joiden jälkeen Claude on juuri sinun tehtäväsi asiantuntija",
+    "totalTime": "6 askelta",
+    "whatItIs": "Project Instructions on [[node:projects|Projectin]] asetuksissa oleva tekstikenttä, jonka Claude lukee ennen jokaista vastausta projektin sisällä. Kirjoitat kerran, kuka Clauden tulee olla, millä tyylillä ja muodolla vastata ja mitä rajoituksia noudattaa. Sen jälkeen kaikki projektin keskustelut etenevät jo «roolissa» — ohjeita ei tarvitse toistaa jokaisessa chatissa.\n\nTämä ei ole tuotteen järjestelmäkehote (jonka Anthropic asettaa) eikä [[node:instructions|Custom Instructions]] (jotka koskevat sinua henkilökohtaisesti ja toimivat kaikissa chateissa). Project Instructions ovat kapeat ja paikalliset: ne kuvaavat yhden tietyn projektin työkontekstin.",
+    "approach": "Kirjoita ohje kuin perehdytys uudelle työntekijälle: rooli, tyyli, muoto, rajoitukset. Täsmällisyys voittaa pituuden. Yksi tarkka lause («rakenne: Konteksti → Ongelma → Suositus») muuttaa vastauksia enemmän kuin kappaleellinen ympäripyöreitä toiveita kuten «ole hyödyllinen».",
+    "outcomes": [
+      "Ymmärrät eron Project Instructionsin, järjestelmäkehotteen ja Custom Instructionsin välillä",
+      "Tiedät, missä kenttä on ja mitkä neljä lohkoa siihen kirjoitetaan (rooli / tyyli / muoto / rajoitukset)",
+      "Osaat poistaa ympäripyöreyden ja muotoilla ohjeet täsmällisesti",
+      "Sinulla on valmis ohjepohja, jota voi käyttää uudelleen missä tahansa projektissa",
+      "Voit varmistaa, että ohje todella muuttaa vastauksia, ja pitää sen ajan tasalla"
+    ],
+    "applyIn": [
+      {
+        "title": "Työprojekti, jolla on vakaa rooli",
+        "description": "Aseta analyytikon, toimittajan tai kehittäjän rooli kerran — ja jokainen projektin chat vastaa siinä ilman muistutuksia."
+      },
+      {
+        "title": "Tiimiprojekti",
+        "description": "Ohje lukitsee yhteisen tyylin ja muodon, joten vastaukset pysyvät yhtenäisinä riippumatta siitä, kuka tiimistä kirjoittaa."
+      },
+      {
+        "title": "Toistuva tehtävätyyppi",
+        "description": "Säännölliset raportit, arvioinnit tai viestit saavat yhden vastausrungon, joka on määritelty kerralla ohjeessa."
+      }
+    ],
+    "pitfalls": [
+      "Ympäripyöreät fraasit kuten «ole hyödyllinen» tai «vastaa ammattimaisesti» — tämä on melua, joka ei muuta mitään.",
+      "Sekoittaa samaan kenttään henkilökohtaiset mieltymykset (jotka kuuluvat Custom Instructionsiin) ja projektin konteksti.",
+      "Kirjoittaa puolen sivun tekstimuuri — Claude menettää prioriteetit ja keskeiset säännöt hukkuvat.",
+      "Asettaa ohje kerran ja unohtaa se — projektin rooli muuttuu ajan myötä, mutta ohje vanhenee.",
+      "Toistaa ohjeessa sitä, mikä on jo [[node:p-files|projektin tiedostoissa]], sen sijaan että viittaisi niihin."
+    ],
+    "exercises": [
+      {
+        "question": "Ota nykyinen projektisi ja kirjoita yhdelle riville: kuka Clauden tulee olla, missä muodossa vastata ja mitä ei saa tehdä. Mahtuiko se kolmeen selkeään lauseeseen?",
+        "hint": "Jos jokaisesta kohdasta tulee yleinen lause ilman täsmällisyyttä — lisää esimerkki muodosta tai roolista oikeasta tehtävästä."
+      },
+      {
+        "question": "Aja sama kysymys projektissa ilman ohjetta ja ohjeen kanssa. Mikä vastauksessa muuttui täsmälleen?",
+        "hint": "Vertaa rakennetta, sävyä ja kieltä — se on ohjeen näkyvä vaikutus."
+      },
+      {
+        "question": "Etsi ohjeestasi ympäripyörein lause ja kirjoita se uudelleen täsmälliseksi säännöksi esimerkin kanssa.",
+        "hint": "«Kirjoita ytimekkäästi» → «Vastaus enintään 5 kohtaa, kukin ≤ 2 lausetta»."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi Project Instructions on tärkeä",
+        "time": "",
+        "why": "Ilman ohjetta projekti vastaa kuin yleinen avustaja: jokainen chat alkaa alusta ja rooli on selitettävä uudelleen joka kerta. Ohje tekee projektista tehtäväsi asiantuntijan.",
+        "instructions": [
+          "Ymmärrä ydinasia: Project Instructions luetaan ennen jokaista vastausta projektin sisällä — pysyvä konteksti, ei kertaviesti.",
+          "Ero järjestelmäkehotteeseen: järjestelmäkehotteen asettaa Anthropic, se koskee turvallisuutta ja perustoimintaa, etkä muuta sitä.",
+          "Ero [[node:instructions|Custom Instructions]] -ohjeisiin: ne kuvaavat sinua henkilökohtaisesti ja toimivat kaikissa chateissa; Project Instructions ovat kapeat ja toimivat vain tässä projektissa.",
+          "Muista hierarkia: järjestelmäkehote → Custom Instructions → Project Instructions. Täsmällisin taso on projekti."
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miten Project Instructions eroaa Custom Instructionsista.",
+        "tip": "Jos sääntö tarvitaan kaikissa projekteissa — se on Custom Instructions. Jos vain yhdessä — Project Instructions."
+      },
+      "s2": {
+        "title": "Missä kenttä on ja mitä siihen kirjoitetaan",
+        "time": "",
+        "why": "Useimmat heittävät ohjeeseen satunnaisia toiveita. Neljän lohkon rakenne tekee siitä heti täydellisen ja tarkistettavan.",
+        "instructions": [
+          "Avaa [[node:projects|Project]] → projektin asetukset → Instructions-lohko (Project knowledge -kohdan vieressä).",
+          "Lohko 1 — rooli: kenenä Claude toimii («olet talousanalyytikko», «olet tekninen toimittaja»).",
+          "Lohko 2 — tyyli: vastauksen sävy ja kieli (muodollinen / keskusteleva, vain suomi).",
+          "Lohko 3 — muoto: vastauksen runko (rakenne, pituus, pakolliset osiot).",
+          "Lohko 4 — rajoitukset: mitä ei saa tehdä (ei täytettä, älä keksi lukuja, älä vastaa aiheen ulkopuolelta)."
+        ],
+        "validate": "Ohjeessasi on kaikki neljä lohkoa: rooli, tyyli, muoto, rajoitukset.",
+        "tip": "Älä toista henkilökohtaisia tietojasi tässä — siihen on Custom Instructions."
+      },
+      "s3": {
+        "title": "Ympäripyöreyden poistaminen",
+        "time": "",
+        "why": "Claude ei voi soveltaa yleisiä sanoja: «ole hyödyllinen» ei aseta roolia eikä muotoa. Täsmällisyys on ainoa asia, joka todella muuttaa vastauksia.",
+        "instructions": [
+          "Käy läpi jokainen lause ja kysy: voinko tarkistaa tämän vastauksesta? Jos et — lause on liian yleinen.",
+          "Korvaa arviosanat mitattavilla säännöillä: «kirjoita ytimekkäästi» → «enintään 5 kohtaa».",
+          "Lisää rooliin aihealueen konteksti, ei pelkkää työnimikettä.",
+          "Poista kaikki, mikä ei vaikuta vastaukseen: kohteliaat toiveet ja motivoinnin Claude ohittaa."
+        ],
+        "validate": "Ohjeeseen ei jää lauseita, joita ei voi tarkistaa vastaustekstistä.",
+        "tip": "Ympäripyöreystesti: jos lauseen voi liittää kenen tahansa muun projektiin muuttamatta sitä — se on liian yleinen."
+      },
+      "s4": {
+        "title": "Esimerkki ja pohja",
+        "time": "",
+        "why": "Valmis runko säästää aikaa eikä anna unohtaa yhtäkään neljästä lohkosta. Sitä voi käyttää uudelleen uusissa projekteissa.",
+        "instructions": [
+          "Tutki esimerkki: «Olet asiantuntija aihealueellani. Vastauksen rakenne: Konteksti → Ongelma → Vaikutus → Suositus. Vain suomi. Ei yleisiä fraaseja, nojaa projektin tiedostoihin».",
+          "Ota pohja: «Rooli: … / Tyyli: … / Muoto: … / Älä tee: …».",
+          "Täytä jokainen rivi tehtäväsi mukaan ja pidä muotoilut täsmällisinä.",
+          "Tallenna pohja erikseen — se auttaa seuraavaa projektia luotaessa."
+        ],
+        "validate": "Sinulla on täytetty neljän rivin pohja tiettyä projektia varten.",
+        "tip": "Aloita lyhyellä ohjeella ja laajenna sitä, kun huomaat toistuvia korjauksia."
+      },
+      "s5": {
+        "title": "Testi: toimiiko ohje?",
+        "time": "",
+        "why": "Ohje on hyödytön, jos vastaukset eivät muuttuneet. Nopea testi näyttää, luetaanko sitä todella.",
+        "instructions": [
+          "Esitä sama kysymys projektissa ohjeen kanssa ja tavallisessa chatissa ilman sitä.",
+          "Vertaa vastausten roolia, muotoa ja kieltä — ero on ohjeen vaikutus.",
+          "Kysy suoraan: «Minkä ohjeiden mukaan vastaat juuri nyt?» ja vertaa kirjoittamaasi.",
+          "Jos vastaus ohittaa säännön — muotoilu on liian pehmeä; kirjoita se tiukemmin ja täsmällisemmin."
+        ],
+        "validate": "Vastaus projektissa eroaa selvästi puhtaan chatin vastauksesta ja vastaa ohjettasi.",
+        "tip": "Testaa jokaisen suuren ohjemuutoksen jälkeen — näin näet heti, mikä toimi."
+      },
+      "s6": {
+        "title": "Ylläpito ja yhteys tiedostoihin",
+        "time": "",
+        "why": "Projekti elää ja muuttuu, ja vanhentunut ohje pilaa vastauksia hiljaa. Yhteys tiedostoihin vapauttaa ohjeen ylimääräisistä yksityiskohdista.",
+        "instructions": [
+          "Lue ohje ajoittain uudelleen: projektin rooli on voinut muuttua.",
+          "Pidä faktat (termit, data, esimerkit) ei ohjeessa vaan [[node:p-files|projektin tiedostoissa]] — ohje asettaa vain käyttäytymisen.",
+          "Viittaa tiedostoihin ohjeessa: «nojaa projektin materiaaleihin» sisällön kopioimisen sijaan.",
+          "Katso [[node:i-project|projektin ohjeet]], jotta saat roolin, tiedostot ja muodon yhdeksi järjestelmäksi."
+        ],
+        "validate": "Ohje kuvaa käyttäytymistä, kun taas faktat on siirretty projektin tiedostoihin; osat eivät toista toisiaan.",
+        "tip": "Jos ohje paisuu liikaa — siirrä viiteosa tiedostoihin ja jätä kenttään vain käyttäytymissäännöt."
+      }
+    }
+  },
+  "project-team": {
+    "title": "Tiimityö Projects-projekteissa",
+    "subtitle": "Yhteinen konteksti hajanaisten chattien sijaan — Team ja Enterprise",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Team- ja Enterprise-tariffeissa [[node:projects|Project]]-projektin voi jakaa koko tiimille: ihmiset eivät työskentele kukin oman Claudensa kanssa, vaan yhdellä yhteisellä kontekstilla — yhteisillä [[node:p-instructions|ohjeilla]], [[node:p-files|tiedostoilla]] ja sopimuksilla.\n\nTuloksena on yhtenäinen laatustandardi ja yksi totuuden lähde. Uusi tulokas avaa jaetun Projectin ja näkee heti työn kontekstin sen sijaan, että kokoaisi sitä kollegoiden chateista. Tämä kurssi näyttää, miten tällainen jaettu Project pystytetään ja pidetään kunnossa.",
+    "approach": "Pääperiaate: yksi Project = yksi yhteinen totuuden lähde tiimille. Älä luo projektia per henkilö. Päättäkää etukäteen, kuka vastaa ohjeista ja tiedostoista ja kuka vain käyttää niitä. Käyttöoikeudet ja kutsut hoidat itse käyttöliittymässä — Claude ei tee sitä puolestasi.",
+    "outcomes": [
+      "Ymmärrät, miksi tiimi tarvitsee jaetun Projectin henkilökohtaisten chattien sijaan",
+      "Tunnet vaatimukset: Team/Enterprise-tariffi ja jäsenten roolit",
+      "Osaat jakaa Projectin ja kutsua tiimin käyttöliittymän kautta",
+      "Tiedät, mitä yhteiseen kontekstiin laitetaan: ohjeet, tiedostot, sopimukset",
+      "Ylläpidät hygieniaa: yksi totuuden lähde ja selkeä vastuu"
+    ],
+    "applyIn": [
+      {
+        "title": "Tulokkaan perehdytys",
+        "description": "Henkilö avaa jaetun Projectin ja saa heti työn kontekstin — ei tarvitse välittää kymmentä chattia."
+      },
+      {
+        "title": "Tiimin laatustandardi",
+        "description": "Design-järjestelmä, brändin sävy ja koodisäännöt elävät yhdessä Projectissa — kaikki vastaavat yhtä johdonmukaisesti."
+      },
+      {
+        "title": "Vastuun siirto loman tai lähdön aikana",
+        "description": "Tieto elää jaetussa Projectissa, ei yhden ihmisen päässä — työ ei pysähdy."
+      }
+    ],
+    "pitfalls": [
+      "Erillisen Projectin luominen per henkilö — yhteisen kontekstin idea menetetään.",
+      "Sallia kaikkien muuttaa ohjeita ilman reviewia — projekti ajautuu odottamattomaan suuntaan.",
+      "Vanhentuneiden tiedostojen jättäminen yhteiseen kontekstiin — tiimi työskentelee vanhentuneella tiedolla.",
+      "Epäselvä vastuu: ei tiedetä, kuka päivittää tiedon, joten kukaan ei tee sitä.",
+      "Duplikaatit: kaksi samanlaista Projectia samasta aiheesta — ihmiset hämmentyvät, missä totuus on."
+    ],
+    "exercises": [
+      {
+        "question": "Nimeä yksi prosessi tiimissäsi, jossa ihmiset työskentelevät nyt kukin omassa chatissaan. Kuvaa, mitä menisi jaettuun Projectiin: ohjeet, tiedostot, sopimukset.",
+        "hint": "Hyvä ehdokas on siellä, missä kaikki tekevät samankaltaista työtä ja tuloksen yhdenmukaisuus on tärkeää."
+      },
+      {
+        "question": "Päätä, kuka tiimissä on jaetun Projectin «tiedon omistaja» — kuka päivittää ohjeet ja tiedostot. Muotoile yksinkertainen sääntö, miten muutokset tehdään.",
+        "hint": "Yksi vastuuhenkilö ja sääntö «muutetaan lyhyen reviewin kautta» riittää kaaoksen välttämiseen."
+      },
+      {
+        "question": "Tarkista tariffisi tilin asetuksista. Onko Projectin jakaminen sinulle käytettävissä? Jos ei — mikä tariffi tarvitaan?",
+        "hint": "Projectin jakaminen on käytettävissä Team- ja Enterprise-tariffeissa, ei henkilökohtaisissa Free/Pro."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi tiimi tarvitsee jaetun Projectin",
+        "time": "",
+        "why": "Kun jokaisella on oma Claude ja omat chatit, tieto hajoaa palasiksi: yksi asetti sävyn, toinen latasi tarvittavat tiedostot, kolmas pitää säännöt päässään. Jaettu [[node:projects|Project]] kokoaa tämän yhteen kontekstiin — ja tiimi vastaa yhtenäisen standardin mukaan.",
+        "instructions": [
+          "Muistele prosessi, jossa useat ihmiset tekevät samankaltaista työtä: tuoteosasto, design-tiimi, tuki.",
+          "Merkitse, missä tieto on nyt hajallaan — henkilökohtaiset chatit, viestiketjut, tiedostot eri levyillä.",
+          "Muotoile jaetun Projectin arvo yhdellä lauseella: yhteinen konteksti hajanaisten chattien sijaan.",
+          "Arvioi vaikutus: tulokas pääsee vauhtiin paljon nopeammin, kun konteksti on jo projektissa."
+        ],
+        "validate": "Osaat nimetä konkreettisen tiimiprosessin, joka hyötyisi yhteisestä kontekstista.",
+        "tip": "Aloita yhdestä prosessista, älä koko tiimistä kerralla. Yksi onnistunut jaettu Project vakuuttaa paremmin kuin mikään selitys."
+      },
+      "s2": {
+        "title": "Vaatimukset: tariffi ja roolit",
+        "time": "",
+        "why": "Projectin jakaminen on Team- ja Enterprise-ominaisuus. Henkilökohtaisissa Free- ja Pro-tariffeissa jaettua Projectia ei ole. Ennen pystytystä kannattaa ymmärtää myös roolit: kuka hallinnoi, kuka muokkaa tietoa, kuka vain käyttää.",
+        "instructions": [
+          "Avaa tilin asetukset ja tarkista nykyinen tariffi: henkilökohtainen (Free/Pro) vai tiimi (Team/Enterprise).",
+          "Jos Team/Enterprise-tariffia ei ole — keskustele siirtymisestä sen kanssa, joka hallinnoi tiimin tilausta.",
+          "Kartoita roolit: kuka omistaa/hallinnoi työtilaa, kuka vastaa Projectin sisällöstä, kuka on jäsen.",
+          "Sopikaa, että [[node:p-instructions|ohjeiden]] ja [[node:p-files|tiedostojen]] muuttaminen on vastuuhenkilöiden, ei kaikkien, asia."
+        ],
+        "validate": "Tiedät tariffisi ja ymmärrät, mitkä roolit ihmisillä on jaetussa Projectissa.",
+        "tip": "Roolit eivät ole vain tekniikkaa. Vaikka käyttöliittymä sallisi kaikille kaiken, sopimus «kuka muuttaa mitä» on tärkeämpi kuin asetukset."
+      },
+      "s3": {
+        "title": "Jaa Project ja kutsu tiimi",
+        "time": "",
+        "why": "Jotta kontekstista tulisi yhteinen, Project on avattava tiimille ja jäsenet kutsuttava. Tämän teet itse käyttöliittymässä — Share-painikkeen kautta. Claude ei hallinnoi käyttöoikeuksia puolestasi.",
+        "instructions": [
+          "Avaa kyseinen [[node:projects|Project]] ja etsi Share-painike.",
+          "Valitse itse, kuka saa pääsyn: koko tiimin työtila vai tietyt henkilöt.",
+          "Kutsu jäsenet itse ja aseta heidän käyttöoikeustasonsa vaiheen 2 roolien mukaan.",
+          "Tarkista tulos: avaa Project toisena jäsenenä (tai pyydä kollegaa) ja varmista, että pääsy toimii kuten on tarkoitettu."
+        ],
+        "validate": "Tiimi näkee jaetun Projectin, ja käyttöoikeustasot vastaavat rooleja.",
+        "tip": "Muuta käyttöoikeuksia harkiten. Jos olet epävarma, annatko jollekulle muokkausoikeuden — aloita katseluoikeudesta ja laajenna myöhemmin."
+      },
+      "s4": {
+        "title": "Mitä yhteiseen kontekstiin laitetaan",
+        "time": "",
+        "why": "Jaetun Projectin arvo on siinä, mitä sen sisällä on. Hyödyllinen konteksti on [[node:p-instructions|ohjeet]] (miten vastataan, sävy, muoto), [[node:p-files|tiedostot]] (dokumentit, ohjeistukset, esimerkit) ja kirjatut tiimin sopimukset.",
+        "instructions": [
+          "Kirjoita Projectin ohjeisiin yhteinen standardi: rooli, sävy, vastausten muoto, tärkeät rajoitukset.",
+          "Lataa tiedostoihin se, mihin tiimi turvautuu jatkuvasti: ohjeistukset, mallit, hakuteokset.",
+          "Kirjaa sopimukset tekstinä: mikä lasketaan «valmiiksi», mitä termejä käytetään ja miten.",
+          "Poista turha: yhteiseen kontekstiin kuuluu vain ajankohtainen ja kaikille tarpeellinen aineisto, ei henkilökohtaiset luonnokset."
+        ],
+        "validate": "Jaetussa Projectissa on ohjeet, tarvittavat tiedostot ja selkeät sopimukset — ei roskaa.",
+        "tip": "Kirjoita ohjeet kuin selittäisit uudelle kollegalle ensimmäisenä päivänä. Jos hän ymmärtäisi sen, niin myös Claude."
+      },
+      "s5": {
+        "title": "Yhteistyön hygienia",
+        "time": "",
+        "why": "Yhteinen konteksti on arvokas niin kauan kuin se on ajantasainen ja sillä on yksi omistaja. Ilman sääntöjä se muuttuu nopeasti kaatopaikaksi: vanhentuneita tiedostoja, ristiriitaisia ohjeita, kukaan ei tiedä, missä totuus on.",
+        "instructions": [
+          "Nimeä Projectin tiedon omistaja — kuka päivittää ohjeet ja tiedostot.",
+          "Ottakaa käyttöön muutossääntö: muutokset yhteiseen kontekstiin tehdään lyhyen reviewin kautta, ei hiljaisesti.",
+          "Pitäkää yksi totuuden lähde: yksi aihe — yksi Project, ei rinnakkaisia kopioita.",
+          "Tarkastelkaa tiedostot ajoittain: merkitkää tai poistakaa vanhentunut, lisätkää uusi.",
+          "Kirjatkaa tärkeät muutokset tekstinä, jotta tiimi ymmärtää, mikä muuttui ja miksi."
+        ],
+        "validate": "Jaetulla Projectilla on tiedon omistaja, muutossääntö ja yksi totuuden lähde.",
+        "tip": "Yksinkertainen sääntö «yksi omistaa, muut ehdottavat» estää kaaoksen paremmin kuin mikään monimutkainen menettely."
+      },
+      "s6": {
+        "title": "Yleiset ongelmat ja miten ne vältetään",
+        "time": "",
+        "why": "Tiimin Projectit hajoavat ennustettavasti: duplikaatit, vanhentunut tieto, epäselvä vastuu ja hallitsemattomat muutokset ohjeisiin. Kun tuntee ansat etukäteen, ne on helppo kiertää.",
+        "instructions": [
+          "Duplikaatit: ennen uuden Projectin luomista tarkista, ettei samanlaista jo ole — muuten tiimi jakautuu.",
+          "Vanhentunut tieto: rakenna tapa tarkastella tiedostot ja ohjeet ajoittain ajantasaisuuden vuoksi.",
+          "Epäselvä vastuu: on aina yksi tiedon omistaja — muuten kukaan ei päivitä sitä.",
+          "Hallitsemattomat muutokset: vastuuhenkilöt muuttavat [[node:p-instructions|ohjeita]]; muut ehdottavat reviewin kautta.",
+          "Liian laaja pääsy: anna muokkausoikeus harkiten, roolien mukaan, ei kaikille."
+        ],
+        "validate": "Tunnet jaettujen Projectien neljä tyypillistä ansaa ja sääntösi kutakin vastaan.",
+        "tip": "Useimmat ongelmat eivät ole teknisiä, vaan sopimuksia. Sopikaa ensin «kuka vastaa mistä», sitten määrittäkää käyttöoikeudet."
+      }
+    }
+  },
+  "project-when": {
+    "title": "Milloin luoda Project ja milloin tavallinen Chat riittää",
+    "subtitle": "«Project on aika» -signaali, antimallit ja ensimmäinen askel",
+    "totalTime": "6 askelta",
+    "whatItIs": "Lyhyt päätöskurssi: miten tunnistaa, että tehtävä on kasvanut [[node:projects|Project]]-tasolle eikä riitä enää uusi Chat. Pääsignaali — tehtävä toistuu ≥ 3 kertaa samankaltaisella kontekstilla. Opit erottamaan kertaluonteisen toistuvasta, tekemään mini-inventaarion skenaarioistasi etkä luo turhia projekteja.",
+    "approach": "Etenemme signaalista päätökseen: ensin tunnistamme toiston, sitten vertaamme Chatia ja Projectia tietyssä tehtävässä, teemme mini-inventaarion toistuvista skenaarioista, erotamme vakaan kontekstin kertaluonteisesta, tunnistamme antimallit ja lopuksi päätämme ja laitamme Projectiin ensimmäiset asiat — [[node:p-instructions|ohjeet]] ja [[node:p-files|tiedostot]].",
+    "outcomes": [
+      "Opit «Project on aika» -signaalin: tehtävä toistuu ≥ 3 kertaa samankaltaisella kontekstilla",
+      "Valitset tavallisen Chatin ja Projectin välillä tietoisesti, tehtäväkohtaisesti",
+      "Teet mini-inventaarion toistuvista skenaarioistasi",
+      "Erotat vakaan kontekstin (Projectiin) kertaluonteisesta (Chatiin)",
+      "Tunnistat antimallit: Project yhtä tehtävää varten, parvi pikkuprojekteja"
+    ],
+    "applyIn": [
+      {
+        "title": "Toistuva työaihe",
+        "description": "Yksi asiakas, tuote tai työsuunta, johon palaat viikkojen ajan — ehdokas Projectiksi vakaalla kontekstilla."
+      },
+      {
+        "title": "Kertaluonteinen kysymys",
+        "description": "Kysyä jotain nopeasti, käydä läpi yksi dokumentti, hahmotella idea — pysyt tavallisessa Chatissa ilman lisäkuormaa."
+      },
+      {
+        "title": "Järjestyksen luominen",
+        "description": "Samaan aiheeseen on kertynyt monta chatia — kokoa ne yhteen Projectiin äläkä toista kontekstia joka kerta."
+      }
+    ],
+    "pitfalls": [
+      "Luoda Project kertaluonteiseen tehtävään — overkill, tavallinen chat riittää.",
+      "Perustaa tusina pikkuprojekteja «varmuuden vuoksi» — myöhemmin et itsekään muista, mikä on missä.",
+      "Lykätä Projectia, vaikka kerrot saman kontekstin käsin jo viidettä kertaa.",
+      "Kasata yhteen Projectiin toisiinsa liittymättömiä aiheita — konteksti hämärtyy ja vastaukset menettävät tarkkuuden.",
+      "Luoda Project ja jättää se tyhjäksi — ilman ohjeita ja tiedostoja se on vain chat ylimääräisellä nimellä."
+    ],
+    "exercises": [
+      {
+        "question": "Muistele kulunutta viikkoa: minkä tehtävän annoit Claudelle ≥ 3 kertaa samankaltaisella alustuksella? Kirjoita se yhdelle riville.",
+        "hint": "Tunnusmerkki — joka kerta selität uudelleen kuka olet, minkä parissa työskentelet ja missä muodossa haluat vastauksen."
+      },
+      {
+        "question": "Ota tämä tehtävä ja päätä: Project vai Chat? Nimeä yksi peruste päätöksellesi.",
+        "hint": "Toisto + samankaltainen konteksti → Project. Kertaluonteisuus → Chat. Jos epäröit — se on vielä Chat."
+      },
+      {
+        "question": "Kirjoita valitsemastasi tehtävästä, mikä siinä on vakaata (toistuu joka kerta) ja mikä muuttuu pyynnöstä toiseen.",
+        "hint": "Vakaa menee Projectin [[node:p-instructions|ohjeisiin]] ja [[node:p-files|tiedostoihin]], muuttuva taas yksittäisen pyynnön tekstiin."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Nappaa «Project on aika» -signaali",
+        "time": "",
+        "why": "Jos tehtävä toistuu ≥ 3 kertaa samankaltaisella kontekstilla — se on signaali luoda Project. Aiemmin on liian aikaista, myöhemmin olet jo maksanut «briiffausveron».",
+        "instructions": [
+          "Katso kuluneen viikon keskustelusi Clauden kanssa.",
+          "Merkitse tehtävät, jotka toistuivat: sama aihe, sama pyyntötyyppi.",
+          "Tarkista konteksti: selitätkö joka kerta saman alustuksen uudelleen (kuka olet, minkä parissa työskentelet, missä muodossa haluat vastauksen)?",
+          "Jos sekä toisto että samankaltainen konteksti osuvat yhteen ja se tapahtui ≥ 3 kertaa — signaali laukesi."
+        ],
+        "validate": "Voit nimetä vähintään yhden tehtävän, joka ylitti kynnyksen «≥ 3 kertaa + samankaltainen konteksti».",
+        "tip": "Älä odota kymmenettä kertaa. Kolme toistoa on jo Projectin takaisinmaksupiste."
+      },
+      "s2": {
+        "title": "Chat vai Project: mitä valita tehtävään",
+        "time": "",
+        "why": "Molemmat ovat päteviä tiloja. Project poistaa «briiffausveron» ja säilyttää kontekstin; tavallinen Chat on nopeampi kertaluonteiseen. Oikea valinta säästää sekä aikaa että tokeneita.",
+        "instructions": [
+          "Chat: kertaluonteinen kysymys, kokeilu, yhden dokumentin nopea läpikäynti. Kontekstia ei tarvitse säilyttää pitkään.",
+          "Project: pitkä työsuunta (tuote, asiakas, tutkimusaihe), jossa konteksti on vakaa ja palaat siihen säännöllisesti.",
+          "Sääntö: jos konteksti pitää toistaa vielä kerran — se on Project. Jos tehtävä sulkeutuu yhdessä keskustelussa — se on Chat.",
+          "Vertaa askeleen 1 tehtäväsi näihin kahteen kuvaukseen ja valitse tila."
+        ],
+        "validate": "Olet valinnut tehtävällesi Chatin tai Projectin ja osaat selittää valinnan yhdellä lauseella.",
+        "tip": "Projectin ROI näkyy jo 2-3 keskustelun jälkeen. Jos toisto on ilmeinen, älä viivyttele päätöstä."
+      },
+      "s3": {
+        "title": "Toistuvien skenaarioiden inventaario",
+        "time": "",
+        "why": "Askeleen 1 signaali on harvoin ainoa. Mini-inventaario näyttää todellisen kuvan: missä on toistoa ja missä sattumaa — jotta et luo Projectia sokkona.",
+        "instructions": [
+          "Kirjoita 5-7 tyypillistä tehtävää, joiden kanssa tulet Clauden luo.",
+          "Merkitse kunkin viereen tiheys: kertaluonteinen / joskus / säännöllinen.",
+          "Tarkista säännöllisistä kontekstin samankaltaisuus — onko alustus todella sama joka kerta.",
+          "Merkitse ne, jotka läpäisivät molemmat suodattimet: tiheys «säännöllinen» + samankaltainen konteksti."
+        ],
+        "validate": "Sinulla on lyhyt lista tehtävistä, ja kunkin kohdalla on merkitty, onko se Project-ehdokas vai ei.",
+        "tip": "Tee lista rehellisesti, viime viikkojen faktojen pohjalta — älä sen mukaan, mitä «yleensä tapahtuu»."
+      },
+      "s4": {
+        "title": "Mitä siirtää Projectiin ja mitä jättää Chatiin",
+        "time": "",
+        "why": "Project on arvokas vakaan kontekstin vuoksi, joka ei muutu pyynnöstä toiseen. Jos sekoittaa vakaan kertaluonteiseen, konteksti hämärtyy ja vastaukset menettävät tarkkuuden.",
+        "instructions": [
+          "Jaa ehdokastehtävässä kaikki kahteen sarakkeeseen: «toistuu joka kerta» ja «muuttuu pyynnöstä toiseen».",
+          "Vakaa (kuka olet, säännöt, muoto, pysyvät materiaalit) on Projectin sisältö: [[node:p-instructions|ohjeet]] ja [[node:p-files|tiedostot]].",
+          "Muuttuva (tietty kysymys, uusi tarkistettava tekstinpätkä) jää yksittäisen pyynnön tekstiin Projectin sisällä.",
+          "Kertaluonteiset tehtävät, jotka eivät liity tähän työsuuntaan, pidä tavallisessa Chatissa — älä raahaa niitä Projectiin."
+        ],
+        "validate": "Voit näyttää, mikä menee Projectiin (vakaa) ja mikä jää kertaluonteiseksi Chatiin.",
+        "tip": "Hyvä testi: jos jokin muuttuu joka kerta — se ei ole Projectin kontekstia vaan osa tiettyä pyyntöä."
+      },
+      "s5": {
+        "title": "Antimallit: milloin Project on turha",
+        "time": "",
+        "why": "Project ei ole ilmainen huomion suhteen: jokainen pitää pitää mielessä ja ylläpitää. Ylimääräiset projektit luovat kaaosta järjestyksen sijaan.",
+        "instructions": [
+          "Antimalli 1: Project yhtä kertaluonteista tehtävää varten — overkill, tavallinen chat olisi riittänyt.",
+          "Antimalli 2: parvi pikkuprojekteja «varmuuden vuoksi» — myöhemmin et muista, mikä on missä.",
+          "Antimalli 3: yksi Project toisiinsa liittymättömille aiheille — konteksti hämärtyy ja vastaukset menettävät tarkkuuden.",
+          "Tarkista askeleen 3 listasi: onko ehdokkaita, jotka oikeasti osuvat näihin ansoihin?"
+        ],
+        "validate": "Olet käynyt ehdokkaat läpi ja poistanut ne, jotka sopivat antimalleihin.",
+        "tip": "Nyrkkisääntö: parempi yksi elävä Project kuin viisi hylättyä."
+      },
+      "s6": {
+        "title": "Päätös ja ensimmäinen askel",
+        "time": "",
+        "why": "Kurssi on hyödytön ilman toimintaa. Viimeinen askel muuttaa analyysin konkreettiseksi päätökseksi: luoda Project vai ei — ja millä se täytetään heti, jottei se jää tyhjäksi.",
+        "instructions": [
+          "Tee päätös päätehtävästäsi: Project vai Chat.",
+          "Jos Chat — suljet kurssin; tunnet jo signaalin ja palaat siihen, kun toisto kasvaa.",
+          "Jos Project — luo [[node:projects|Project]] ja laita siihen heti askeleen 4 vakaa konteksti.",
+          "Täytä ensin [[node:p-instructions|ohjeet]] (kuka olet, säännöt, muoto) ja lataa pysyvät [[node:p-files|tiedostot]].",
+          "Siitä eteenpäin lisää tähän Projectiin uusia materiaaleja työn edetessä — se kasvaa tehtävän mukana."
+        ],
+        "validate": "Sinulla on joko tietoinen «pysyn Chatissa» tai luotu Project, jossa on täytetyt ohjeet ja vähintään yksi tiedosto.",
+        "tip": "Luon Projectin säännölliselle tehtävälleni — lataan sinne uusia tarkistettavia materiaaleja. Se on työsykli."
+      }
+    }
   }
 }

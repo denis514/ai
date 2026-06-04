@@ -2892,5 +2892,396 @@
         "tip": "Tie this to a regular cleanup: an outdated brand guide is worse than no brand guide at all."
       }
     }
+  },
+  "project-instructions": {
+    "title": "Project Instructions: set Claude's role once",
+    "subtitle": "6 steps to make Claude an expert in exactly your task",
+    "totalTime": "6 steps",
+    "whatItIs": "Project Instructions is a text field in [[node:projects|Project]] settings that Claude reads before every reply inside the project. You write once who Claude should be, in what style and format it should answer, and what constraints to keep. After that, every conversation in the project already runs \"in role\" — no need to repeat instructions in each chat.\n\nThis is not the product's system prompt (set by Anthropic) and not [[node:instructions|Custom Instructions]] (those are about you personally and apply across all chats). Project Instructions are narrow and local: they describe the working context of one specific project.",
+    "approach": "Write the instruction like a brief for a new hire: role, style, format, constraints. Specificity beats length. One precise line (\"structure: Context → Problem → Recommendation\") changes answers more than a paragraph of vague wishes like \"be helpful\".",
+    "outcomes": [
+      "Understand the difference between Project Instructions, the system prompt, and Custom Instructions",
+      "Know where the field is and which four blocks to write into it (role / style / format / constraints)",
+      "Can remove vagueness and phrase instructions concretely",
+      "Have a ready instruction template reusable in any project",
+      "Can verify the instruction actually changes answers and keep it up to date"
+    ],
+    "applyIn": [
+      {
+        "title": "Work project with a stable role",
+        "description": "Set the analyst, editor, or developer role once — and every chat in the project answers in it without reminders."
+      },
+      {
+        "title": "Team project",
+        "description": "The instruction locks in a shared style and format, so answers stay consistent no matter who on the team is writing."
+      },
+      {
+        "title": "Recurring type of task",
+        "description": "Regular reports, reviews, or emails get one answer skeleton, defined once in the instruction."
+      }
+    ],
+    "pitfalls": [
+      "Vague phrases like \"be helpful\" or \"answer professionally\" — that's noise that changes nothing.",
+      "Mixing personal preferences (which belong in Custom Instructions) with project context in one field.",
+      "Writing a half-page wall of text — Claude loses priorities and key rules get buried.",
+      "Setting the instruction once and forgetting it — the project's role drifts while the instruction goes stale.",
+      "Duplicating in the instruction what already lives in [[node:p-files|project files]] instead of referencing them."
+    ],
+    "exercises": [
+      {
+        "question": "Take your current project and write in one line: who Claude should be, in what format to answer, and what not to do. Did you fit it into three clear phrases?",
+        "hint": "If each item turns into a generic phrase with no specifics — add an example of the format or role from a real task."
+      },
+      {
+        "question": "Run the same question in the project without an instruction and with one. What exactly changed in the answer?",
+        "hint": "Compare structure, tone, and language — that's the visible effect of the instruction."
+      },
+      {
+        "question": "Find the vaguest phrase in your instruction and rewrite it into a concrete rule with an example.",
+        "hint": "\"Write concisely\" → \"Answer in up to 5 points, each ≤ 2 sentences\"."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why Project Instructions matter",
+        "time": "",
+        "why": "Without an instruction a project answers like a generic assistant: every chat starts from scratch and you re-explain the role each time. The instruction turns the project into a specialist in your task.",
+        "instructions": [
+          "Grasp the key point: Project Instructions are read before every reply inside the project — persistent context, not a one-off message.",
+          "Difference from the system prompt: the system prompt is set by Anthropic, covers safety and base behavior, and you don't change it.",
+          "Difference from [[node:instructions|Custom Instructions]]: those describe you personally and apply across all chats; Project Instructions are narrow and act only in this project.",
+          "Remember the hierarchy: system prompt → Custom Instructions → Project Instructions. The most specific layer is the project."
+        ],
+        "validate": "You can explain in one sentence how Project Instructions differ from Custom Instructions.",
+        "tip": "If a rule is needed in all projects — that's Custom Instructions. If only in one — Project Instructions."
+      },
+      "s2": {
+        "title": "Where the field is and what to write",
+        "time": "",
+        "why": "Most people drop random wishes into the instruction. A four-block structure makes it complete and checkable from the start.",
+        "instructions": [
+          "Open the [[node:projects|Project]] → project settings → the Instructions block (next to Project knowledge).",
+          "Block 1 — role: who Claude acts as (\"you're a financial analyst\", \"you're a technical editor\").",
+          "Block 2 — style: tone and language of the answer (formal / conversational, English only).",
+          "Block 3 — format: the answer's skeleton (structure, length, required sections).",
+          "Block 4 — constraints: what not to do (no fluff, don't invent numbers, don't answer off-topic)."
+        ],
+        "validate": "Your instruction contains all four blocks: role, style, format, constraints.",
+        "tip": "Don't duplicate personal facts about yourself here — that's what Custom Instructions are for."
+      },
+      "s3": {
+        "title": "Removing vagueness",
+        "time": "",
+        "why": "Claude can't act on generic words: \"be helpful\" sets neither a role nor a format. Specificity is the only thing that actually changes answers.",
+        "instructions": [
+          "Go through each phrase and ask: can I verify this in the answer? If not — the phrase is too generic.",
+          "Replace judgment words with measurable rules: \"write concisely\" → \"no more than 5 points\".",
+          "Add domain context to the role, not just a job title.",
+          "Delete anything that doesn't affect the answer: polite wishes and motivation are ignored by Claude."
+        ],
+        "validate": "No phrases remain in the instruction that can't be checked against the answer text.",
+        "tip": "Vagueness test: if a phrase could be pasted into anyone else's project unchanged — it's too generic."
+      },
+      "s4": {
+        "title": "Example and template",
+        "time": "",
+        "why": "A ready skeleton saves time and keeps you from forgetting any of the four blocks. It's reusable in new projects.",
+        "instructions": [
+          "Study the example: \"You're an expert in my domain. Answer structure: Context → Problem → Impact → Recommendation. English only. No generic phrases, rely on project files\".",
+          "Take the template: \"Role: … / Style: … / Format: … / Don't: …\".",
+          "Fill each line for your task, keeping the wording concrete.",
+          "Save the template separately — it'll help when creating your next project."
+        ],
+        "validate": "You have a filled four-line template for a specific project.",
+        "tip": "Start with a short instruction and expand it as you notice recurring edits."
+      },
+      "s5": {
+        "title": "Test: does the instruction work?",
+        "time": "",
+        "why": "An instruction is useless if answers didn't change. A quick test shows whether it's actually being read.",
+        "instructions": [
+          "Ask the same question in the project with the instruction and in a plain chat without it.",
+          "Compare the role, format, and language of the answers — the difference is the instruction's effect.",
+          "Ask directly: \"What instructions are you answering by right now?\" and check against what you wrote.",
+          "If the answer ignores a rule — the wording is too soft; rewrite it harder and more concretely."
+        ],
+        "validate": "The answer in the project clearly differs from the answer in a clean chat and matches your instruction.",
+        "tip": "Test after every major change to the instruction — that's how you instantly see what worked."
+      },
+      "s6": {
+        "title": "Maintenance and the link to files",
+        "time": "",
+        "why": "A project lives and changes, and a stale instruction quietly spoils answers. Linking to files frees the instruction from extra detail.",
+        "instructions": [
+          "Reread the instruction periodically: the project's role may have shifted.",
+          "Keep factual material (terms, data, examples) not in the instruction but in [[node:p-files|project files]] — the instruction only sets behavior.",
+          "Reference the files in the instruction: \"rely on the project materials\", instead of copying their content.",
+          "Look into [[node:i-project|project instructions]] to bring role, files, and format into one system."
+        ],
+        "validate": "The instruction describes behavior, while facts are moved to project files; the two parts don't duplicate each other.",
+        "tip": "If the instruction grows too large — move the reference part into files and leave only behavior rules in the field."
+      }
+    }
+  },
+  "project-team": {
+    "title": "Team work in Projects",
+    "subtitle": "Shared context instead of scattered chats — for Team and Enterprise",
+    "totalTime": "6 steps",
+    "whatItIs": "On Team and Enterprise plans a [[node:projects|Project]] can be shared with the whole team: people don't each work with their own Claude, but with one shared context — shared [[node:p-instructions|instructions]], [[node:p-files|files]] and agreements.\n\nThe result is a single quality standard and one source of truth. A newcomer opens the shared Project and immediately sees the working context instead of piecing it together from colleagues' chats. This course shows how to set up such a shared Project and keep it in good shape.",
+    "approach": "Core principle: one Project = one shared source of truth for the team. Don't spin up a project per person. Decide in advance who is responsible for instructions and files and who just uses them. You change access and invite people yourself in the interface — Claude doesn't do it for you.",
+    "outcomes": [
+      "You understand why a team needs a shared Project instead of personal chats",
+      "You know the requirements: a Team/Enterprise plan and member roles",
+      "You can share a Project and invite the team through the interface",
+      "You know what to put in shared context: instructions, files, agreements",
+      "You keep hygiene: a single source of truth and clear ownership"
+    ],
+    "applyIn": [
+      {
+        "title": "Newcomer onboarding",
+        "description": "A person opens the shared Project and immediately gets the working context — no need to forward a dozen chats."
+      },
+      {
+        "title": "Team quality standard",
+        "description": "The design system, brand tone, and code rules live in one Project — everyone answers equally consistently."
+      },
+      {
+        "title": "Handover during leave or departure",
+        "description": "Knowledge lives in the shared Project, not in one person's head — work doesn't stall."
+      }
+    ],
+    "pitfalls": [
+      "Creating a separate Project per person — the point of shared context is lost.",
+      "Letting everyone change instructions without review — the project drifts in an unexpected direction.",
+      "Leaving stale files in shared context — the team works from outdated knowledge.",
+      "Blurry ownership: it's unclear who updates the knowledge, so nobody does.",
+      "Duplicates: two similar Projects on one topic — people get confused about where the truth is."
+    ],
+    "exercises": [
+      {
+        "question": "Name one process in your team where people currently work each in their own chat. Describe what would go into a shared Project: instructions, files, agreements.",
+        "hint": "A good candidate is where everyone does similar work and consistency of the result matters."
+      },
+      {
+        "question": "Decide who on the team will be the \"knowledge owner\" of the shared Project — who updates instructions and files. State a simple rule for how changes are made.",
+        "hint": "One owner plus a \"change via a short review\" rule is enough to avoid chaos."
+      },
+      {
+        "question": "Check your plan in account settings. Is Project sharing available to you? If not, which plan do you need?",
+        "hint": "Project sharing is available on Team and Enterprise plans, not on personal Free/Pro."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why a team needs a shared Project",
+        "time": "",
+        "why": "When everyone has their own Claude and their own chats, knowledge breaks into pieces: one set the tone, another uploaded the needed files, a third keeps the rules in their head. A shared [[node:projects|Project]] gathers this into one context — and the team answers to a single standard.",
+        "instructions": [
+          "Recall a process where several people do similar work: product department, design team, support.",
+          "Note where knowledge is currently scattered — personal chats, threads, files on different drives.",
+          "State the value of a shared Project in one phrase: shared context instead of scattered chats.",
+          "Estimate the effect: a newcomer gets up to speed far faster when the context already lives in the project."
+        ],
+        "validate": "You can name a specific team process that would benefit from shared context.",
+        "tip": "Start with one process, not the whole team at once. One successful shared Project convinces better than any explanation."
+      },
+      "s2": {
+        "title": "Requirements: plan and roles",
+        "time": "",
+        "why": "Project sharing is a Team and Enterprise feature. On personal Free and Pro there is no shared Project. Before setup it's worth understanding roles too: who administers, who edits the knowledge, who just uses it.",
+        "instructions": [
+          "Open account settings and check your current plan: personal (Free/Pro) or team (Team/Enterprise).",
+          "If there's no Team/Enterprise plan — discuss the move with whoever manages the team's subscription.",
+          "Map the roles: who owns/admins the workspace, who is responsible for the Project content, who is a member.",
+          "Agree that changing [[node:p-instructions|instructions]] and [[node:p-files|files]] is for the responsible people, not everyone."
+        ],
+        "validate": "You know your plan and understand which roles people will have in the shared Project.",
+        "tip": "Roles aren't just technical. Even if the interface lets everyone do everything, the agreement on \"who changes what\" matters more than settings."
+      },
+      "s3": {
+        "title": "Share the Project and invite the team",
+        "time": "",
+        "why": "For the context to become shared, the Project must be opened to the team and members invited. You do this yourself in the interface — via the Share button. Claude does not manage access for you.",
+        "instructions": [
+          "Open the relevant [[node:projects|Project]] and find the Share button.",
+          "Choose yourself who gets access: the whole team workspace or specific people.",
+          "Invite the members yourself and set their access level according to the roles from step 2.",
+          "Verify the result: open the Project as another member (or ask a colleague) and confirm access works as intended."
+        ],
+        "validate": "The team can see the shared Project, and access levels match the roles.",
+        "tip": "Change access deliberately. If you're unsure whether to give someone edit access — start with view and expand later."
+      },
+      "s4": {
+        "title": "What to put in shared context",
+        "time": "",
+        "why": "A shared Project's value is in what's inside it. Useful context is [[node:p-instructions|instructions]] (how to answer, tone, format), [[node:p-files|files]] (documents, guidelines, examples) and recorded team agreements.",
+        "instructions": [
+          "In the Project instructions write the shared standard: role, tone, answer format, important constraints.",
+          "Upload to files what the team turns to constantly: guidelines, templates, references.",
+          "Record agreements in text: what counts as \"done\", which terms to use and how.",
+          "Remove clutter: only current, team-wide material belongs in shared context, not personal drafts."
+        ],
+        "validate": "The shared Project holds instructions, the needed files, and clear agreements — no junk.",
+        "tip": "Write instructions as if explaining to a new colleague on day one. If they'd understand it, Claude will too."
+      },
+      "s5": {
+        "title": "Hygiene of collaboration",
+        "time": "",
+        "why": "Shared context is valuable as long as it's current and has one owner. Without rules it quickly turns into a dump: stale files, contradictory instructions, nobody knowing where the truth is.",
+        "instructions": [
+          "Assign an owner of the Project knowledge — who updates instructions and files.",
+          "Introduce a change rule: edits to shared context go through a short review, not silently.",
+          "Keep a single source of truth: one topic — one Project, no parallel copies.",
+          "Periodically review the files: flag or remove the outdated, add the new.",
+          "Record important changes in text so the team understands what changed and why."
+        ],
+        "validate": "The shared Project has a knowledge owner, a change rule, and a single source of truth.",
+        "tip": "A simple \"one owns it, others propose\" rule prevents chaos better than any elaborate procedure."
+      },
+      "s6": {
+        "title": "Common problems and how to avoid them",
+        "time": "",
+        "why": "Team Projects break in predictable ways: duplicates, stale knowledge, blurry ownership, and uncontrolled edits to instructions. Knowing the traps in advance makes them easy to avoid.",
+        "instructions": [
+          "Duplicates: before creating a new Project, check there isn't a similar one already — otherwise the team splits.",
+          "Stale knowledge: build the habit of periodically reviewing files and instructions for relevance.",
+          "Blurry ownership: there is always one knowledge owner — otherwise nobody updates it.",
+          "Uncontrolled edits: the responsible people change [[node:p-instructions|instructions]]; others propose via review.",
+          "Too-broad access: grant edit access deliberately, by role, not to everyone."
+        ],
+        "validate": "You know four typical traps of shared Projects and your rule against each.",
+        "tip": "Most problems aren't technical, they're about agreements. First agree on \"who's responsible for what\", then configure access."
+      }
+    }
+  },
+  "project-when": {
+    "title": "When to create a Project vs. just use Chat",
+    "subtitle": "The \"time for a Project\" signal, anti-patterns, and the first step",
+    "totalTime": "6 steps",
+    "whatItIs": "A short decision course: how to tell that a task has outgrown another Chat and deserves a [[node:projects|Project]]. The main signal — a task recurs ≥ 3 times with similar context. You learn to separate one-off from recurring, run a mini-inventory of your scenarios, and avoid spawning needless projects.",
+    "approach": "We move from signal to decision: first spot the repetition, then compare Chat and Project for a specific task, run a mini-inventory of your recurring scenarios, separate stable context from one-off, catch the anti-patterns, and finally decide and put the first things into the Project — [[node:p-instructions|instructions]] and [[node:p-files|files]].",
+    "outcomes": [
+      "Learn the \"time for a Project\" signal: a task recurs ≥ 3 times with similar context",
+      "Choose between a regular Chat and a Project deliberately, per task",
+      "Run a mini-inventory of your recurring scenarios",
+      "Separate stable context (into a Project) from one-off (into Chat)",
+      "Recognize anti-patterns: a Project for a single task, a swarm of tiny projects"
+    ],
+    "applyIn": [
+      {
+        "title": "A recurring work theme",
+        "description": "One client, product, or line of work you return to for weeks — a candidate for a Project with stable context."
+      },
+      {
+        "title": "A one-off question",
+        "description": "Ask something quickly, parse a single document, sketch an idea — stay in a regular Chat, no overhead."
+      },
+      {
+        "title": "Cleaning up",
+        "description": "Too many chats piled up on one topic — gather them into a single Project and stop repeating context every time."
+      }
+    ],
+    "pitfalls": [
+      "Creating a Project for a one-off task — overkill, a regular chat is enough.",
+      "Spinning up a dozen tiny projects \"just in case\" — later you can't remember what's where.",
+      "Putting off a Project even though you're retelling the same context by hand for the fifth time.",
+      "Dumping unrelated topics into one Project — context blurs and answers lose precision.",
+      "Creating a Project and leaving it empty — without instructions and files it's just a chat with an extra name."
+    ],
+    "exercises": [
+      {
+        "question": "Recall the past week: which task did you give Claude ≥ 3 times with a similar intro? Write it down in one line.",
+        "hint": "The tell-tale sign — each time you re-explain who you are, what you're working on, and the format you need."
+      },
+      {
+        "question": "Take that task and decide: Project or Chat? Name one argument for your decision.",
+        "hint": "Repetition + similar context → Project. One-off → Chat. In doubt — it's still a Chat."
+      },
+      {
+        "question": "For the chosen task, list what is stable in it (repeats every time) versus what changes from request to request.",
+        "hint": "The stable parts go into the Project's [[node:p-instructions|instructions]] and [[node:p-files|files]]; the changing parts go into the text of a specific request."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Catch the \"time for a Project\" signal",
+        "time": "",
+        "why": "If a task recurs ≥ 3 times with similar context — that's a signal to create a Project. Earlier is premature; later means you've already overpaid the \"briefing tax\".",
+        "instructions": [
+          "Look at your last week of conversations with Claude.",
+          "Mark the tasks that repeated: same topic, same type of request.",
+          "Check the context: are you re-explaining the same intro every time (who you are, what you work on, the format you need)?",
+          "If both repetition and similar context line up, and it happened ≥ 3 times — the signal has fired."
+        ],
+        "validate": "You can name at least one task that crossed the \"≥ 3 times + similar context\" threshold.",
+        "tip": "Don't wait for the tenth time. Three repetitions is already the break-even point for a Project."
+      },
+      "s2": {
+        "title": "Chat or Project: what to choose per task",
+        "time": "",
+        "why": "Both are valid modes. A Project removes the \"briefing tax\" and holds context; a regular Chat is faster for one-offs. The right choice saves both time and tokens.",
+        "instructions": [
+          "Chat: a one-off question, an experiment, a quick parse of a single document. Context need not be kept for long.",
+          "Project: a long line of work (product, client, research topic) where context is stable and you return to it regularly.",
+          "Rule: if you'll have to repeat the context again — it's a Project. If the task closes in one conversation — it's a Chat.",
+          "Match your task from step 1 against these two descriptions and pick a mode."
+        ],
+        "validate": "For your task you've chosen Chat or Project and can explain the choice in one sentence.",
+        "tip": "Project ROI is visible after just 2-3 conversations. If the repetition is obvious, don't delay the decision."
+      },
+      "s3": {
+        "title": "Inventory your recurring scenarios",
+        "time": "",
+        "why": "The signal from step 1 is rarely the only one. A mini-inventory shows the real picture: where there's repetition and where it's just chance — so you don't create a Project blindly.",
+        "instructions": [
+          "List 5-7 typical tasks you come to Claude with.",
+          "Next to each, mark the frequency: one-off / sometimes / regular.",
+          "For the regular ones, check context similarity — is the intro really the same each time.",
+          "Mark those that passed both filters: frequency \"regular\" + similar context."
+        ],
+        "validate": "You have a short list of tasks, and each is marked as a Project candidate or not.",
+        "tip": "Build the list honestly, from the facts of recent weeks — not from what \"sometimes happens\"."
+      },
+      "s4": {
+        "title": "What to move into a Project vs. keep in Chat",
+        "time": "",
+        "why": "A Project is valuable for stable context that doesn't change from request to request. Mixing stable with one-off blurs the context and answers lose precision.",
+        "instructions": [
+          "For the candidate task, split everything into two columns: \"repeats every time\" and \"changes from request to request\".",
+          "The stable parts (who you are, rules, format, permanent materials) are the Project's contents: [[node:p-instructions|instructions]] and [[node:p-files|files]].",
+          "The changing parts (the specific question, a new chunk of text to review) stay in the text of an individual request inside the Project.",
+          "One-off tasks unrelated to this line of work belong in a regular Chat — don't drag them into the Project."
+        ],
+        "validate": "You can show exactly what goes into the Project (stable) and what stays one-off in Chat.",
+        "tip": "A good test: if something changes every time — it's not Project context, it's part of a specific request."
+      },
+      "s5": {
+        "title": "Anti-patterns: when a Project is unnecessary",
+        "time": "",
+        "why": "A Project isn't free in attention: each one has to be kept in mind and maintained. Surplus projects create chaos instead of order.",
+        "instructions": [
+          "Anti-pattern 1: a Project for a single one-off task — overkill, a regular chat would have done.",
+          "Anti-pattern 2: a swarm of tiny projects \"just in case\" — later you can't remember what's where.",
+          "Anti-pattern 3: one Project for unrelated topics — context blurs and answers lose precision.",
+          "Review your list from step 3: are there candidates that actually fall into these traps?"
+        ],
+        "validate": "You've reviewed the candidates and removed those that fit the anti-patterns.",
+        "tip": "Rule of thumb: better one living Project than five abandoned ones."
+      },
+      "s6": {
+        "title": "Decision and first step",
+        "time": "",
+        "why": "A course is useless without action. The final step turns analysis into a concrete decision: create a Project or not — and what to fill it with right away so it doesn't stay empty.",
+        "instructions": [
+          "Make the call on your main task: Project or Chat.",
+          "If Chat — you close the course; you already know the signal and will return when the repetition grows.",
+          "If Project — create a [[node:projects|Project]] and put the stable context from step 4 into it straight away.",
+          "First, fill in the [[node:p-instructions|instructions]] (who you are, rules, format) and upload the permanent [[node:p-files|files]].",
+          "From there, add new materials to this Project as you work — it will grow along with the task."
+        ],
+        "validate": "You either have a deliberate \"staying in Chat\" or a created Project with filled-in instructions and at least one file.",
+        "tip": "Creating a Project for my regular task — I'll upload new materials there for review. That's the working cycle."
+      }
+    }
   }
 }
