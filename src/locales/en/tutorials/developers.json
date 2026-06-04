@@ -2431,5 +2431,263 @@
         "tip": "Stop first, investigate second — it's cheaper than the other way around."
       }
     }
+  },
+  "cap-caching": {
+    "title": "Prompt caching — the lever for lower cost and latency",
+    "subtitle": "Cache the stable prefix — pay 0.1× on repeats and respond faster",
+    "totalTime": "6 steps",
+    "whatItIs": "Prompt caching isn't a \"Claude feature\" — it's the main lever for optimizing cost and latency in production AI workflows on the [[node:pl-api|API]]. Anthropic caches the stable prefix of your prompt (system, instructions, large context, tool definitions) for 5 minutes (or 1 hour with extended TTL). Repeat requests with the same prefix are billed at a discounted rate (cache read = 0.1× input) and processed faster.\n\nMechanics: set `cache_control: { type: \"ephemeral\" }` on a block → that block and everything before it is cached. Minimum: 1024 tokens (Sonnet/Opus) or 2048 (Haiku).",
+    "approach": "Cache only what stably repeats ≥10 times per TTL — system, instructions, large context. Keep the dynamic part (user query) at the very end, after the cache boundary. Measure savings on real traffic first, then scale — don't guess.",
+    "outcomes": [
+      "You understand prompt caching as a lever for cost and latency, not magic",
+      "You can separate the stable prefix from the variable part of a request",
+      "You know the mechanics: cache breakpoints, TTL (5 min / 1 hour), the tokens threshold",
+      "You can decide when caching is worth it and when it isn't (by repeatability)",
+      "You measure real savings via cache write / cache read in the [[node:pl-api|API]] response"
+    ],
+    "applyIn": [
+      {
+        "title": "Customer support agent",
+        "description": "A large knowledge base in every request — cache it once, repeats go at 0.1×."
+      },
+      {
+        "title": "Production workflow with tool definitions",
+        "description": "A stable set of [[node:cap-tools|tools]] and the system prompt are cached; only the user query stays variable."
+      },
+      {
+        "title": "Cost control at scale",
+        "description": "At 1000+ requests/day, caching is the [[node:sys-cost-management|#1 cost management lever]]."
+      }
+    ],
+    "pitfalls": [
+      "Changing the prefix between requests — you write cache (1.25×) every time without reading = overpayment",
+      "Putting cache on a variable block — the cache won't hit because the prefix never stabilizes",
+      "Ignoring TTL — with rare requests (once per 10 min at 5-min TTL) you always pay the write rate",
+      "Enabling caching at low volume — at 5 requests/day savings are smaller than the added complexity",
+      "Treating caching as a substitute for optimization — shrink a bloated prompt first, then cache the rest"
+    ],
+    "exercises": [
+      {
+        "question": "Take a real prompt and split it into a stable prefix (system, instructions, context) and a variable part (user query). Where should the cache breakpoint go?",
+        "hint": "cache_control applies to the block and everything BEFORE it. The breakpoint goes after the last stable block, before the dynamic part."
+      },
+      {
+        "question": "Compute the savings: system prompt 8000 tokens, 1000 requests/day, input $3/1M. Compare without cache vs with cache (write 1.25×, read 0.1×).",
+        "hint": "Without cache: 8M × $3/1M per day. With cache: one write + 999 reads at 0.1× the rate."
+      },
+      {
+        "question": "Run two identical requests back to back and check cache_creation_input_tokens and cache_read_input_tokens in the [[node:pl-api|API]] response. What changed on the second?",
+        "hint": "First request is write (creation); the second within TTL is read. If read = 0, check prefix stability and the tokens threshold."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Understand what prompt caching is and why it matters",
+        "time": "",
+        "why": "Without grasping that it's a lever for cost and latency (not a \"speed booster\"), it's easy to enable caching in the wrong place and overpay.",
+        "instructions": [
+          "Remember the core: the recurring prefix of a prompt is cached, repeats are billed at a discounted rate and respond faster.",
+          "Open a typical [[node:pl-api|API]] request and count how many constant tokens it has (system, instructions, context).",
+          "Estimate volume: how many times per day the same prefix is sent.",
+          "Lock in the goal: lower input cost and latency on recurring context."
+        ],
+        "validate": "You can explain in one sentence why you want caching and name the constant part of your request.",
+        "tip": "Caching saves on input, not output. If your output is the expensive part, that's a different problem."
+      },
+      "s2": {
+        "title": "Decide what to cache (the stable prefix)",
+        "time": "",
+        "why": "You should cache only what truly repeats. A variable block in the cache just wastes the write rate.",
+        "instructions": [
+          "Split the request into stable (system prompt, instructions, large context, [[node:cap-tools|tool definitions]], few-shot) and variable (user query, dynamic data).",
+          "Move the stable part to the front, the variable part to the end.",
+          "Check that the stable block is ≥ 1024 tokens (Sonnet/Opus) or 2048 (Haiku) — otherwise caching won't activate.",
+          "Mark the point where stable ends and dynamic begins — that's your future cache breakpoint."
+        ],
+        "validate": "You have a clear boundary: everything before it is stable and recurring, everything after changes.",
+        "tip": "Tool definitions are almost always stable — they're the best caching candidate."
+      },
+      "s3": {
+        "title": "Understand how it works technically (breakpoints, TTL)",
+        "time": "",
+        "why": "cache_control affects the block AND everything before it. Without grasping this, people put the breakpoint in the wrong place and the cache doesn't work.",
+        "instructions": [
+          "Put `cache_control: { type: \"ephemeral\" }` on the LAST stable block — it and everything before it is cached.",
+          "Remember the TTL: 5 minutes by default from last use; extended TTL is 1 hour (an API option).",
+          "Mind the economics: cache write = 1.25× input (once), cache read = 0.1× input (each repeat).",
+          "Don't place a breakpoint after a dynamic block — the prefix won't stabilize and the cache won't hit."
+        ],
+        "validate": "The cache breakpoint sits after the stable part and before the dynamic part; you know your TTL and rates.",
+        "tip": "You can set multiple breakpoints — Anthropic will find the longest matching prefix."
+      },
+      "s4": {
+        "title": "Decide when caching is worth it and when it isn't",
+        "time": "",
+        "why": "Caching pays off only with repeatability. On rare or unique requests it's a net loss, not a gain.",
+        "instructions": [
+          "Enable it if: the prefix is stable and ≥ the tokens threshold, and it's sent ≥10 times per TTL.",
+          "Don't enable it if: context changes every request, requests are few, or gaps exceed the TTL.",
+          "For rare but regular requests, consider extended TTL (1 hour) instead of dropping the cache.",
+          "Weigh the added setup complexity against the expected savings — at low volume it isn't worth it."
+        ],
+        "validate": "For your scenario you can confidently say \"cache\" or \"don't cache\" and explain why.",
+        "tip": "Rule of thumb: a steady 100+ requests/day against one prefix almost always justifies caching."
+      },
+      "s5": {
+        "title": "Measure the real savings",
+        "time": "",
+        "why": "Without measurement caching is faith. The numbers in the API response show whether the cache actually works.",
+        "instructions": [
+          "Send a request twice in a row within the TTL.",
+          "In the [[node:pl-api|API]] response check `cache_creation_input_tokens` (write) and `cache_read_input_tokens` (read).",
+          "The first request should give creation > 0; the second — read > 0 and creation ≈ 0.",
+          "Compute savings: read-tokens × (1 − 0.1) of the input rate = how much you saved on the repeat."
+        ],
+        "validate": "On the second request cache_read_input_tokens > 0, and you see a concrete savings amount.",
+        "tip": "Tie measurement to [[node:sys-cost-management|cost management]] — the cache should show up in the bill, not just in metrics."
+      },
+      "s6": {
+        "title": "Avoid the mistakes and verify the setup",
+        "time": "",
+        "why": "Typical mistakes (changing the prefix, caching variable content) silently kill savings — the cache \"exists\" but cache read = 0.",
+        "instructions": [
+          "Check that the prefix does NOT change between requests — even a stray space or timestamp breaks the match.",
+          "Make sure the cached block has no variable data (user name, date, query).",
+          "If cache read = 0 — check the tokens threshold, prefix stability, and whether the TTL expired.",
+          "If the prompt is bloated — shrink it first, then cache the rest; caching doesn't fix a bad prompt."
+        ],
+        "validate": "Repeat requests reliably yield cache_read > 0, and savings are visible on real traffic.",
+        "tip": "Log cache_read_input_tokens in production — a drop to zero signals the prefix has drifted somewhere."
+      }
+    }
+  },
+  "cap-citations": {
+    "title": "Citations: answers linked to sources",
+    "subtitle": "How to get Claude to back each claim with a specific fragment of your documents",
+    "totalTime": "6 шагов",
+    "whatItIs": "Citations is a mode where Claude, via the API, accompanies its claims with references to specific fragments of uploaded documents. You see not only the answer but the exact place in the source it rests on.",
+    "approach": "We move from meaning to practice: first why verifiability matters, then how to technically enable and obtain citations, how to read the source linkage, in which scenarios it is critical, where the limits are and how to check, and finally how Citations connects to working with files and [[node:sys-rag-architecture|RAG architecture]].",
+    "outcomes": [
+      "You understand that Citations provide verifiability and trust, not just text",
+      "You can enable citation mode and supply documents via the [[node:pl-api|API]]",
+      "You read an answer with source linkage and find the cited fragment",
+      "You distinguish scenarios where citations are mandatory (legal/research/support) from where they are redundant",
+      "You know the limit: no source means no citation, and you verify interpretation by hand"
+    ],
+    "applyIn": [
+      {
+        "title": "Legal analysis",
+        "description": "Comparing contracts and surfacing risks with a specific source clause cited for each conclusion."
+      },
+      {
+        "title": "Research and reviews",
+        "description": "Synthesis over a set of papers or reports where every claim traces back to a paragraph in the original."
+      },
+      {
+        "title": "Knowledge-base support",
+        "description": "Customer answers linked to a specific documentation section so the agent can verify."
+      }
+    ],
+    "pitfalls": [
+      "Blindly trusting citations: the link points to a source, but Claude's interpretation can be inaccurate",
+      "Expecting citations where no source was uploaded — without a document there is nothing to cite",
+      "Confusing citations with ordinary paraphrase: a citation is tied to a fragment, a paraphrase is not",
+      "Ignoring that Citations are available via the API with explicit enabling, not by default in chat",
+      "Relying on citations as legally precise without a human expert in the loop"
+    ],
+    "exercises": [
+      {
+        "question": "Why are Citations more important for legal contract comparison than for brainstorming ideas?",
+        "hint": "Consider where the cost of error demands checking every claim against the source, versus where speed and breadth matter more."
+      },
+      {
+        "question": "Claude made a claim without a citation over an uploaded document. What are the two most likely reasons?",
+        "hint": "Either the claim is a generalization/conclusion not tied to one fragment, or the source contains no support."
+      },
+      {
+        "question": "How do Citations relate to working with files and RAG?",
+        "hint": "Citations answer 'where is this from', while files and RAG answer 'which documents are available to the model at all'."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What Citations are and why",
+        "time": "",
+        "why": "Without grasping the goal it is easy to confuse citations with a plain answer and miss them where they truly matter — for verifiability and trust.",
+        "instructions": [
+          "Remember the essence: Citations are answers where each claim carries a reference to a specific fragment of an uploaded document",
+          "Separate two levels of value: verifiability (you can reach the original source) and trust (the user does not take it on faith)",
+          "Compare with an ordinary answer: the conclusion is there, but there is no way to check it against the source",
+          "Tie the topic to Claude's general [[node:capabilities|capabilities]]: Citations are one of them, focused on document work"
+        ],
+        "validate": "You can explain in one sentence why an answer with a citation is more useful than a plain one for an audit.",
+        "tip": "Think of Citations as footnotes in a scientific paper: they do not change the conclusion but let you verify it."
+      },
+      "s2": {
+        "title": "How to enable and obtain citations over documents",
+        "time": "",
+        "why": "Citations do not appear on their own: you must explicitly enable them and supply documents, otherwise the model answers in plain text.",
+        "instructions": [
+          "Remember: the mode is available via the [[node:pl-api|API]] with citations explicitly enabled, not by default in ordinary chat",
+          "Upload documents as sources — this is the material Claude can cite from (see [[node:cap-files|working with files]])",
+          "Phrase the request so the answer relies on document content rather than the model's general knowledge",
+          "Receive an answer in which claims are marked with references to source fragments"
+        ],
+        "validate": "You have a request with citations enabled and at least one uploaded document, and the answer contains linkages.",
+        "tip": "If there are no citations, first check whether the mode is enabled and documents are uploaded before blaming the wording."
+      },
+      "s3": {
+        "title": "The format of an answer linked to a source",
+        "time": "",
+        "why": "A citation is useless if you cannot get from the claim to the specific place in the document.",
+        "instructions": [
+          "Understand the structure: the answer is split into parts, and the part with a fact carries a reference to a source fragment",
+          "Follow the reference to the specific fragment in the original document and re-read it",
+          "Distinguish cited claims (with linkage) from conclusions and generalizations (without it)",
+          "Verify the fragment actually supports the claim and is not merely nearby on the topic"
+        ],
+        "validate": "For any marked claim you find the exact fragment in the source and see that it supports it.",
+        "tip": "Linkage points to a place in the source — it is an address, not a guarantee of correct interpretation."
+      },
+      "s4": {
+        "title": "Scenarios: legal, research, support",
+        "time": "",
+        "why": "Citations pay off where the cost of error is high and every claim must be checked against the original source.",
+        "instructions": [
+          "Legal: compare two contracts and for each conclusion show the specific source clause",
+          "Research: synthesize a review over a set of papers so every claim traces to a paragraph",
+          "Knowledge-base support: answer with a link to a documentation section so the agent can verify quickly",
+          "Separate these scenarios from tasks where speed and breadth matter more than line-by-line verifiability"
+        ],
+        "validate": "For each of the three scenarios you can name which source fragment closes the risk of error.",
+        "tip": "The higher the cost of error and the more formal the evidence requirements, the stronger the gain from Citations."
+      },
+      "s5": {
+        "title": "Limits and errors: no source, no citation",
+        "time": "",
+        "why": "Citations do not turn Claude into an infallible expert: the key limit is that you can only cite what was uploaded.",
+        "instructions": [
+          "Remember the rule: no uploaded source means no citation; the model will not reference what it does not have",
+          "Do not trust citations blindly: the link is correct by address, but interpretation of the fragment can be inaccurate",
+          "Check summarizing conclusions separately — they often have no single source fragment",
+          "Build in a human expert wherever the cost of error is legal or medical"
+        ],
+        "validate": "You can explain why a missing citation on a claim is a signal to verify, not a cause for panic.",
+        "tip": "Treat a citation as the start of verification, not its completion."
+      },
+      "s6": {
+        "title": "Connection with RAG and files",
+        "time": "",
+        "why": "Citations do not work in a vacuum: they sit on the layer of document access — files and RAG architecture.",
+        "instructions": [
+          "Understand the division of roles: files and [[node:sys-rag-architecture|RAG]] decide which documents are available, while Citations show where exactly an answer came from",
+          "Connect with the document-upload practice from the step on [[node:cap-files|files]] — this is the material to cite",
+          "In a RAG scenario, citations show which retrieved fragment underpins the claim",
+          "Assemble the full chain: documents → retrieval/access (RAG) → answer with linkage (Citations) → manual check"
+        ],
+        "validate": "You can describe the full path from an uploaded document to a verifiable claim with a citation.",
+        "tip": "Citations answer 'where is this from', RAG answers 'what is available at all'; together they give traceability."
+      }
+    }
   }
 }

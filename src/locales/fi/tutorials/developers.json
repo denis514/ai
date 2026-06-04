@@ -2433,5 +2433,263 @@
         "tip": "Ensin pysäytys, sitten selvitys — se on halvempaa kuin toisinpäin."
       }
     }
+  },
+  "cap-caching": {
+    "title": "Prompt caching — vipu kustannusten ja viiveen pienentämiseen",
+    "subtitle": "Välimuistita stabiili prefix — maksa toistoista 0.1× ja vastaa nopeammin",
+    "totalTime": "6 steps",
+    "whatItIs": "Prompt caching ei ole «Clauden ominaisuus» — se on pääasiallinen vipu kustannusten ja viiveen optimointiin production AI-workfloweissa [[node:pl-api|API]]:lla. Anthropic välimuistittaa promptisi stabiilin prefiksin (system, instructions, suuri konteksti, tool definitions) 5 minuutiksi (tai 1 tunniksi extended TTL:llä). Toistuvat pyynnöt samalla prefiksillä laskutetaan alennetulla hinnalla (cache read = 0.1× input) ja käsitellään nopeammin.\n\nMechanics: aseta `cache_control: { type: \"ephemeral\" }` blokkiin → tämä blokki ja kaikki sitä ennen tallentuu välimuistiin. Minimi: 1024 tokenia (Sonnet/Opus) tai 2048 (Haiku).",
+    "approach": "Välimuistita vain se, mikä toistuu stabiilisti ≥10 kertaa per TTL — system, instructions, suuri konteksti. Pidä dynaaminen osa (user query) aivan lopussa, cache boundaryn jälkeen. Mittaa säästöt oikealla liikenteellä ensin, skaalaa sitten — älä arvaa.",
+    "outcomes": [
+      "Ymmärrät prompt cachingin vipuna kustannukselle ja viiveelle, et taikana",
+      "Osaat erottaa stabiilin prefiksin pyynnön muuttuvasta osasta",
+      "Tiedät mekaniikan: cache breakpoints, TTL (5 min / 1 hour), tokens-kynnys",
+      "Osaat päättää, milloin caching kannattaa ja milloin ei (toistettavuuden mukaan)",
+      "Mittaat oikeat säästöt cache write / cache read -kentistä [[node:pl-api|API]]-vastauksessa"
+    ],
+    "applyIn": [
+      {
+        "title": "Customer support -agentti",
+        "description": "Suuri knowledge base jokaisessa pyynnössä — välimuistita se kerran, toistot menevät 0.1×:llä."
+      },
+      {
+        "title": "Production workflow tool definitions:eilla",
+        "description": "Stabiili [[node:cap-tools|tools]]-setti ja system prompt välimuistitetaan; vain user query jää muuttuvaksi."
+      },
+      {
+        "title": "Kustannusten hallinta skaalassa",
+        "description": "1000+ pyynnöllä/päivä caching on [[node:sys-cost-management|kustannusten hallinnan vipu #1]]."
+      }
+    ],
+    "pitfalls": [
+      "Prefiksin muuttaminen pyyntöjen välillä — kirjoitat cachea (1.25×) joka kerta lukematta = ylihintaa",
+      "Cachen asettaminen muuttuvaan blokkiin — cache ei osu, koska prefix ei stabiloidu",
+      "TTL:n ignorointi — harvoilla pyynnöillä (kerran 10 min, 5-min TTL) maksat aina write rate:n",
+      "Cachingin käyttöönotto pienellä volyymilla — 5 pyynnöllä/päivä säästöt ovat pienemmät kuin lisäkompleksisuus",
+      "Cachen pitäminen optimoinnin korvikkeena — pienennä paisunut prompt ensin, välimuistita sitten loput"
+    ],
+    "exercises": [
+      {
+        "question": "Ota oikea prompt ja jaa se stabiiliin prefiksiin (system, instructions, konteksti) ja muuttuvaan osaan (user query). Mihin cache breakpoint kuuluu?",
+        "hint": "cache_control vaikuttaa blokkiin ja kaikkeen sitä ENNEN. Breakpoint tulee viimeisen stabiilin blokin jälkeen, ennen dynaamista osaa."
+      },
+      {
+        "question": "Laske säästöt: system prompt 8000 tokenia, 1000 pyyntöä/päivä, input $3/1M. Vertaa ilman cachea ja cachen kanssa (write 1.25×, read 0.1×).",
+        "hint": "Ilman cachea: 8M × $3/1M päivässä. Cachen kanssa: yksi write + 999 readsiä 0.1×-hinnalla."
+      },
+      {
+        "question": "Aja kaksi identtistä pyyntöä peräkkäin ja katso [[node:pl-api|API]]-vastauksesta cache_creation_input_tokens ja cache_read_input_tokens. Mikä muuttui toisessa?",
+        "hint": "Ensimmäinen pyyntö on write (creation); toinen TTL:n sisällä on read. Jos read = 0, tarkista prefiksin stabiilius ja tokens-kynnys."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Ymmärrä, mitä prompt caching on ja miksi se on tärkeä",
+        "time": "",
+        "why": "Ilman ymmärrystä, että kyse on vivusta kustannukselle ja viiveelle (ei «nopeuttimesta»), caching on helppo ottaa käyttöön väärässä paikassa ja maksaa liikaa.",
+        "instructions": [
+          "Muista ydin: promptin toistuva prefix välimuistitetaan, toistot laskutetaan alennetulla hinnalla ja vastaavat nopeammin.",
+          "Avaa tyypillinen [[node:pl-api|API]]-pyyntö ja laske, montako vakiotokenia siinä on (system, instructions, konteksti).",
+          "Arvioi volyymi: montako kertaa päivässä sama prefix lähetetään.",
+          "Lukitse tavoite: pienennä input-kustannusta ja viivettä toistuvalla kontekstilla."
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miksi haluat cachingia, ja nimetä pyyntösi vakio-osan.",
+        "tip": "Caching säästää inputissa, ei outputissa. Jos juuri output on kallis, se on eri ongelma."
+      },
+      "s2": {
+        "title": "Päätä, mitä välimuistittaa (stabiili prefix)",
+        "time": "",
+        "why": "Välimuistittaa pitää vain se, mikä varmasti toistuu. Muuttuva blokki cachessa vain tuhlaa write rate:n.",
+        "instructions": [
+          "Jaa pyyntö stabiiliin (system prompt, instructions, suuri konteksti, [[node:cap-tools|tool definitions]], few-shot) ja muuttuvaan (user query, dynaaminen data).",
+          "Siirrä stabiili osa alkuun, muuttuva osa loppuun.",
+          "Tarkista, että stabiili blokki on ≥ 1024 tokenia (Sonnet/Opus) tai 2048 (Haiku) — muuten caching ei aktivoidu.",
+          "Merkitse kohta, jossa stabiili loppuu ja dynaaminen alkaa — se on tuleva cache breakpoint."
+        ],
+        "validate": "Sinulla on selkeä raja: kaikki sitä ennen on stabiilia ja toistuvaa, kaikki sen jälkeen muuttuu.",
+        "tip": "Tool definitions ovat lähes aina stabiileja — paras caching-kandidaatti."
+      },
+      "s3": {
+        "title": "Ymmärrä, miten se toimii teknisesti (breakpoints, TTL)",
+        "time": "",
+        "why": "cache_control vaikuttaa blokkiin JA kaikkeen sitä ennen. Ilman tämän ymmärtämistä breakpoint asetetaan väärään paikkaan, eikä cache toimi.",
+        "instructions": [
+          "Aseta `cache_control: { type: \"ephemeral\" }` VIIMEISEEN stabiiliin blokkiin — se ja kaikki sitä ennen välimuistitetaan.",
+          "Muista TTL: oletuksena 5 minuuttia viimeisestä käytöstä; extended TTL on 1 tunti (API option).",
+          "Huomioi economics: cache write = 1.25× input (kerran), cache read = 0.1× input (jokainen toisto).",
+          "Älä aseta breakpointtia dynaamisen blokin jälkeen — prefix ei stabiloidu eikä cache osu."
+        ],
+        "validate": "Cache breakpoint on stabiilin osan jälkeen ja dynaamisen osan edessä; tiedät TTL:si ja hintasi.",
+        "tip": "Voit asettaa useita breakpointteja — Anthropic löytää pisimmän osuvan prefiksin."
+      },
+      "s4": {
+        "title": "Päätä, milloin caching kannattaa ja milloin ei",
+        "time": "",
+        "why": "Caching maksaa itsensä takaisin vain toistettavuudella. Harvoilla tai uniikeilla pyynnöillä se on miinus, ei plus.",
+        "instructions": [
+          "Ota käyttöön, jos: prefix on stabiili ja ≥ tokens-kynnys, ja se lähetetään ≥10 kertaa per TTL.",
+          "Älä ota käyttöön, jos: konteksti muuttuu joka pyynnössä, pyyntöjä on vähän tai tauot ylittävät TTL:n.",
+          "Harvoille mutta säännöllisille pyynnöille harkitse extended TTL:ää (1 tunti) cachen hylkäämisen sijaan.",
+          "Punnitse setupin lisäkompleksisuus odotettuja säästöjä vasten — pienellä volyymilla se ei kannata."
+        ],
+        "validate": "Skenaariollesi osaat perustellusti sanoa «cache» tai «ei cache» ja miksi.",
+        "tip": "Nyrkkisääntö: vakaa 100+ pyyntöä/päivä yhdelle prefiksille oikeuttaa cachingin lähes aina."
+      },
+      "s5": {
+        "title": "Mittaa oikeat säästöt",
+        "time": "",
+        "why": "Ilman mittausta caching on uskoa. API-vastauksen luvut näyttävät, toimiiko cache oikeasti.",
+        "instructions": [
+          "Lähetä pyyntö kahdesti peräkkäin TTL:n sisällä.",
+          "Katso [[node:pl-api|API]]-vastauksesta `cache_creation_input_tokens` (write) ja `cache_read_input_tokens` (read).",
+          "Ensimmäisen pyynnön pitäisi antaa creation > 0; toisen — read > 0 ja creation ≈ 0.",
+          "Laske säästöt: read-tokenit × (1 − 0.1) input-hinnasta = paljonko säästit toistossa."
+        ],
+        "validate": "Toisessa pyynnössä cache_read_input_tokens > 0, ja näet konkreettisen säästösumman.",
+        "tip": "Sido mittaus [[node:sys-cost-management|kustannusten hallintaan]] — cachen pitää näkyä laskussa, ei vain metriikoissa."
+      },
+      "s6": {
+        "title": "Vältä virheet ja tarkista setup",
+        "time": "",
+        "why": "Tyypilliset virheet (prefiksin muuttaminen, muuttuvan cachettaminen) tappavat säästöt hiljaa — cache «on», mutta cache read = 0.",
+        "instructions": [
+          "Tarkista, ettei prefix muutu pyyntöjen välillä — yksikin ylimääräinen välilyönti tai timestamp rikkoo osuman.",
+          "Varmista, ettei cachetetussa blokissa ole muuttuvaa dataa (käyttäjän nimi, päivämäärä, query).",
+          "Jos cache read = 0 — tarkista tokens-kynnys, prefiksin stabiilius ja onko TTL vanhentunut.",
+          "Jos prompt on paisunut — pienennä se ensin, välimuistita sitten loput; caching ei korjaa huonoa promptia."
+        ],
+        "validate": "Toistuvat pyynnöt antavat luotettavasti cache_read > 0, ja säästöt näkyvät oikealla liikenteellä.",
+        "tip": "Logaa cache_read_input_tokens productionissa — pudotus nollaan signaloi, että prefix on jossain ajautunut."
+      }
+    }
+  },
+  "cap-citations": {
+    "title": "Citations: vastaukset lähteisiin linkitettyinä",
+    "subtitle": "Miten saat Clauden tukemaan jokaisen väitteen dokumenttiesi konkreettisella osalla",
+    "totalTime": "6 шагов",
+    "whatItIs": "Citations on tila, jossa Claude API:n kautta liittää väitteisiinsä viittaukset ladattujen dokumenttien konkreettisiin osiin. Näet vastauksen lisäksi tarkan kohdan lähteessä, johon se nojaa.",
+    "approach": "Etenemme merkityksestä käytäntöön: ensin miksi verifioitavuus on tärkeää, sitten miten lainaukset teknisesti otetaan käyttöön ja saadaan, miten lähdeviittaus luetaan, missä skenaarioissa se on kriittistä, missä rajat ovat ja miten tarkistetaan, ja lopuksi miten Citations liittyy tiedostojen ja [[node:sys-rag-architecture|RAG-arkkitehtuurin]] kanssa työskentelyyn.",
+    "outcomes": [
+      "Ymmärrät, että Citations tuo verifioitavuutta ja luottamusta, ei vain tekstiä",
+      "Osaat ottaa lainaustilan käyttöön ja syöttää dokumentit [[node:pl-api|API]]:n kautta",
+      "Luet vastauksen lähdeviittauksineen ja löydät lainatun osan",
+      "Erotat skenaariot, joissa lainaukset ovat pakollisia (juridiikka/tutkimus/tuki), niistä joissa ne ovat tarpeettomia",
+      "Tiedät rajan: ei lähdettä, ei lainausta, ja tarkistat tulkinnan käsin"
+    ],
+    "applyIn": [
+      {
+        "title": "Juridinen analyysi",
+        "description": "Sopimusten vertailu ja riskien tunnistaminen niin, että jokaiselle johtopäätökselle näytetään konkreettinen lähde-kohta."
+      },
+      {
+        "title": "Tutkimus ja katsaukset",
+        "description": "Synteesi artikkeli- tai raporttijoukosta, jossa jokainen väite jäljittyy alkuperäisen kappaleeseen."
+      },
+      {
+        "title": "Tietopankkituki",
+        "description": "Asiakasvastaukset linkitettyinä tiettyyn dokumentaation osaan, jotta agentti voi tarkistaa."
+      }
+    ],
+    "pitfalls": [
+      "Lainausten sokea luottamus: linkki osoittaa lähteeseen, mutta Clauden tulkinta voi olla epätarkka",
+      "Lainausten odottaminen siellä, missä lähdettä ei ole ladattu — ilman dokumenttia ei ole mitään lainattavaa",
+      "Lainausten sekoittaminen tavalliseen parafraasiin: lainaus on sidottu osaan, parafraasi ei",
+      "Sen sivuuttaminen, että Citations on saatavilla API:n kautta erikseen käyttöön otettuna, ei oletuksena chatissa",
+      "Lainauksiin nojaaminen juridisesti tarkkoina ilman ihmisasiantuntijaa"
+    ],
+    "exercises": [
+      {
+        "question": "Miksi Citations on tärkeämpi juridiselle sopimusvertailulle kuin ideoiden aivoriihelle?",
+        "hint": "Mieti, missä virheen hinta vaatii jokaisen väitteen tarkistamista lähteestä, ja missä nopeus ja laajuus ovat tärkeämpiä."
+      },
+      {
+        "question": "Claude antoi väitteen ilman lainausta ladatusta dokumentista. Mitkä ovat kaksi todennäköisintä syytä?",
+        "hint": "Joko väite on yleistys/johtopäätös, jota ei ole sidottu yhteen osaan, tai lähteessä ei ole tukea."
+      },
+      {
+        "question": "Miten Citations liittyy tiedostoihin ja RAG:iin?",
+        "hint": "Citations vastaa kysymykseen 'mistä tämä on', kun taas tiedostot ja RAG vastaavat 'mitkä dokumentit ovat ylipäätään mallin saatavilla'."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mitä Citations on ja miksi",
+        "time": "",
+        "why": "Ilman tavoitteen ymmärtämistä lainaukset on helppo sekoittaa tavalliseen vastaukseen ja jättää käyttämättä siellä, missä ne todella ovat tärkeitä — verifioitavuudelle ja luottamukselle.",
+        "instructions": [
+          "Muista ydin: Citations on vastauksia, joissa jokaiseen väitteeseen liittyy viittaus ladatun dokumentin konkreettiseen osaan",
+          "Erota kaksi arvon tasoa: verifioitavuus (pääset alkuperäiseen lähteeseen) ja luottamus (käyttäjän ei tarvitse uskoa sanaan)",
+          "Vertaa tavalliseen vastaukseen: johtopäätös on, mutta keinoa tarkistaa se lähteestä ei ole",
+          "Liitä aihe Clauden yleisiin [[node:capabilities|kykyihin]]: Citations on yksi niistä, keskittyen dokumenttityöhön"
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miksi lainauksen sisältävä vastaus on auditoinnille hyödyllisempi kuin tavallinen.",
+        "tip": "Ajattele Citationsia tieteellisen artikkelin alaviitteinä: ne eivät muuta johtopäätöstä, mutta antavat tarkistaa sen."
+      },
+      "s2": {
+        "title": "Miten lainaukset otetaan käyttöön ja saadaan dokumenteista",
+        "time": "",
+        "why": "Citations ei ilmesty itsestään: se on otettava nimenomaisesti käyttöön ja dokumentit on syötettävä, muuten malli vastaa tavallisella tekstillä.",
+        "instructions": [
+          "Muista: tila on saatavilla [[node:pl-api|API]]:n kautta lainaukset nimenomaisesti käyttöön otettuna, ei oletuksena tavallisessa chatissa",
+          "Lataa dokumentit lähteiksi — tämä on materiaali, josta Claude voi lainata (ks. [[node:cap-files|tiedostojen kanssa työskentely]])",
+          "Muotoile pyyntö niin, että vastaus nojaa dokumenttien sisältöön eikä mallin yleistietoon",
+          "Saa vastaus, jossa väitteet on merkitty viittauksilla lähteen osiin"
+        ],
+        "validate": "Sinulla on pyyntö lainaukset käytössä ja vähintään yksi ladattu dokumentti, ja vastaus sisältää viittaukset.",
+        "tip": "Jos lainauksia ei ole, tarkista ensin onko tila käytössä ja dokumentit ladattu ennen kuin syytät muotoilua."
+      },
+      "s3": {
+        "title": "Lähteeseen linkitetyn vastauksen muoto",
+        "time": "",
+        "why": "Lainaus on hyödytön, jos et osaa päästä väitteestä dokumentin konkreettiseen kohtaan.",
+        "instructions": [
+          "Ymmärrä rakenne: vastaus on jaettu osiin, ja faktan sisältävä osa kantaa viittauksen lähdeosaan",
+          "Seuraa viittausta alkuperäisen dokumentin konkreettiseen osaan ja lue se uudelleen",
+          "Erota lainatut väitteet (viittauksella) johtopäätöksistä ja yleistyksistä (ilman sitä)",
+          "Tarkista, että osa todella tukee väitettä eikä ole vain lähellä aihetta"
+        ],
+        "validate": "Minkä tahansa merkityn väitteen kohdalla löydät tarkan osan lähteestä ja näet, että se tukee sitä.",
+        "tip": "Viittaus osoittaa kohtaan lähteessä — se on osoite, ei tae oikeasta tulkinnasta."
+      },
+      "s4": {
+        "title": "Skenaariot: juridiikka, tutkimus, tuki",
+        "time": "",
+        "why": "Citations maksaa itsensä takaisin siellä, missä virheen hinta on korkea ja jokainen väite on tarkistettava alkuperäisestä lähteestä.",
+        "instructions": [
+          "Juridiikka: vertaa kahta sopimusta ja näytä jokaiselle johtopäätökselle konkreettinen lähde-kohta",
+          "Tutkimus: tee synteesikatsaus artikkelijoukosta niin, että jokainen väite jäljittyy kappaleeseen",
+          "Tietopankkituki: vastaa linkillä dokumentaation osaan, jotta agentti voi tarkistaa nopeasti",
+          "Erota nämä skenaariot tehtävistä, joissa nopeus ja laajuus ovat tärkeämpiä kuin rivikohtainen verifioitavuus"
+        ],
+        "validate": "Osaat nimetä jokaiselle kolmesta skenaariosta, mikä lähteen osa sulkee virheen riskin.",
+        "tip": "Mitä korkeampi virheen hinta ja muodollisemmat todistusvaatimukset, sitä suurempi hyöty Citationsista."
+      },
+      "s5": {
+        "title": "Rajat ja virheet: ei lähdettä, ei lainausta",
+        "time": "",
+        "why": "Citations ei muuta Claudea erehtymättömäksi asiantuntijaksi: keskeinen raja on, että voi lainata vain sitä, mikä on ladattu.",
+        "instructions": [
+          "Muista sääntö: ei ladattua lähdettä, ei lainausta; malli ei viittaa siihen, mitä sillä ei ole",
+          "Älä luota lainauksiin sokeasti: linkki on oikea osoitteeltaan, mutta osan tulkinta voi olla epätarkka",
+          "Tarkista yhteenvetävät johtopäätökset erikseen — niillä ei usein ole yhtä lähdeosaa",
+          "Rakenna mukaan ihmisasiantuntija aina, kun virheen hinta on juridinen tai lääketieteellinen"
+        ],
+        "validate": "Osaat selittää, miksi puuttuva lainaus väitteellä on signaali tarkistaa, ei syy paniikkiin.",
+        "tip": "Kohtele lainausta tarkistuksen alkuna, ei sen päätepisteenä."
+      },
+      "s6": {
+        "title": "Yhteys RAG:iin ja tiedostoihin",
+        "time": "",
+        "why": "Citations ei toimi tyhjiössä: se nojaa dokumenttien saatavuuden kerrokseen — tiedostoihin ja RAG-arkkitehtuuriin.",
+        "instructions": [
+          "Ymmärrä roolijako: tiedostot ja [[node:sys-rag-architecture|RAG]] päättävät, mitkä dokumentit ovat saatavilla, kun taas Citations näyttää, mistä vastaus tarkalleen tuli",
+          "Yhdistä dokumenttien latauskäytäntöön [[node:cap-files|tiedostot]]-vaiheesta — tämä on lainattava materiaali",
+          "RAG-skenaariossa lainaukset näyttävät, mikä haettu osa on väitteen perustana",
+          "Kokoa koko ketju: dokumentit → haku/pääsy (RAG) → vastaus viittauksineen (Citations) → manuaalinen tarkistus"
+        ],
+        "validate": "Osaat kuvata koko polun ladatusta dokumentista verifioitavaan väitteeseen lainauksineen.",
+        "tip": "Citations vastaa 'mistä tämä on', RAG vastaa 'mitä ylipäätään on saatavilla'; yhdessä ne antavat jäljitettävyyden."
+      }
+    }
   }
 }

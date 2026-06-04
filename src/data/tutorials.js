@@ -2093,6 +2093,353 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "cap-input-modalities": {
+    "nodeId": "cap-input-modalities",
+    "icon": "inbox",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cap-vision",
+      "cap-files",
+      "capabilities"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cap-vision": {
+    "nodeId": "cap-vision",
+    "icon": "eye",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cap-input-modalities",
+      "cap-files",
+      "capabilities"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cap-files": {
+    "nodeId": "cap-files",
+    "icon": "file",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "p-files",
+      "cap-input-modalities",
+      "capabilities"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cap-search": {
+    "nodeId": "cap-search",
+    "icon": "search",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "capabilities",
+      "agent-researcher"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cap-memory": {
+    "nodeId": "cap-memory",
+    "icon": "book",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "capabilities",
+      "projects",
+      "instructions"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cap-computer": {
+    "nodeId": "cap-computer",
+    "icon": "laptop",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "pl-desktop",
+      "sys-agent-sandbox",
+      "capabilities"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cap-caching": {
+    "nodeId": "cap-caching",
+    "icon": "tag",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "pl-api",
+      "sys-cost-management",
+      "capabilities"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cap-citations": {
+    "nodeId": "cap-citations",
+    "icon": "quote",
+    "level": "intermediate",
+    "audience": "developers",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cap-files",
+      "sys-rag-architecture",
+      "capabilities"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cap-code-exec": {
+    "nodeId": "cap-code-exec",
+    "icon": "terminal",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cap-files",
+      "capabilities"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "cap-thinking": {
+    "nodeId": "cap-thinking",
+    "icon": "brain",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "capabilities"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-cot",
+      "capabilities"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 

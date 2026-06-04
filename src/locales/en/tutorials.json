@@ -8445,5 +8445,1306 @@
         "tip": "If none of the criteria \"long + async + reliability\" hold, you almost certainly need a plain API call, not Managed Agents."
       }
     }
+  },
+  "cap-input-modalities": {
+    "title": "Input modalities: what Claude accepts as input",
+    "subtitle": "An overview course on input channels — text, documents, images, files — and how to combine them in a single request",
+    "totalTime": "6 steps",
+    "whatItIs": "Claude isn't just a \"text chatter\" — it's a multi-modal system. It accepts more than text on input: images, PDFs, spreadsheets, CSV, JSON and other files. This course maps every input channel and teaches you to pick the right one for the task. Deep dives into individual modalities live in the [[node:cap-vision|Vision]] and [[node:cap-files|Files]] courses; the overall capability map is in [[node:capabilities|Capabilities]].",
+    "approach": "We move from the big-picture map to the details and then to combining. First we cover which inputs are supported and why; then, one by one — text and large documents, images, files/PDF; then we learn to stitch several modalities into one request; finally — the limits of what's possible and the common mistakes, with a check. Each step gives a concrete selection rule, not theory.",
+    "outcomes": [
+      "You know all of Claude's input channels and which one fits which task",
+      "You can decide when text is enough and when you need a file or image",
+      "You understand the Vision-vs-Files difference and don't overpay for image tokens",
+      "You can assemble a request from several modalities (e.g., screenshot + PDF + text)",
+      "You know the limits: what Claude won't accept and what needs preprocessing"
+    ],
+    "applyIn": [
+      {
+        "title": "Document processing",
+        "description": "Invoices, contracts, reports arrive as PDFs and scans. Knowing modalities lets you extract data without retyping by hand."
+      },
+      {
+        "title": "Interface and design analysis",
+        "description": "UX screenshots, mockups, charts — Claude reads layout and composition directly via Vision, no word-by-word description needed."
+      },
+      {
+        "title": "Designing AI workflows",
+        "description": "Real tasks are almost always multi-modal. The input map helps you design a flow that doesn't lose data."
+      }
+    ],
+    "pitfalls": [
+      "Converting everything to text before the request — you lose PDF layout and image composition",
+      "Using Vision where Files would do: a screenshot of a PDF page is more expensive and worse than parsing its text layer",
+      "Assuming Claude only works in chat — ignoring files and images means losing 60-70% of its capabilities",
+      "Loading an entire huge document when you only need a fragment — it bloats context and cost",
+      "Not checking that the input actually arrived and was recognized — Claude silently works with whatever it got"
+    ],
+    "exercises": [
+      {
+        "question": "Your inputs are: a scanned invoice (PDF), a phone photo of a receipt, and a question about the current tax rate. Which modalities do you use and why?",
+        "hint": "A scanned PDF and a photo are different channels. Think about what reads an image best vs. what reads document structure. The tax rate is knowledge outside your files."
+      },
+      {
+        "question": "You're sent a PDF report with a real text layer. Upload it as a file or as page screenshots? Justify your choice.",
+        "hint": "Compare accuracy and cost. The text layer is already machine-readable — do you need to turn it into a picture?"
+      },
+      {
+        "question": "Name an input Claude will NOT accept directly, and suggest how to prepare it.",
+        "hint": "Think about audio and video. What do you need to do to a call recording before Claude can work with it?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Which inputs are supported and why",
+        "time": "",
+        "why": "Without an overall map of inputs, you default to text only and lose most of the capability. This step sets the frame for the whole course.",
+        "instructions": [
+          "Write down the four input channels: text, images, files, web search",
+          "Open [[node:capabilities|Capabilities]] and match each channel to a real task from your work",
+          "Remember the rule: if you send only text and get only text, that's 30-40% of the capability",
+          "Note that some inputs require special processing modes (citations from documents, running code)"
+        ],
+        "validate": "You can name at least three tasks from your work where the input is a file or image, not text.",
+        "tip": "Don't memorize processing modes at this step — lock in the input channels themselves first."
+      },
+      "s2": {
+        "title": "Text and large documents",
+        "time": "",
+        "why": "Text is the base channel, but it has a limit: you can't blindly paste a very large document whole. You need to know when text is enough and when sending a file is cheaper.",
+        "instructions": [
+          "For short requests and instructions, use plain text in the chat",
+          "For a medium document, paste the text directly and clearly separate it from the question",
+          "For a very large document, don't paste it all — send it as a file and ask for the relevant fragment",
+          "State the task on the text explicitly: what to extract, in what format to return it"
+        ],
+        "validate": "You understand the point at which pasting text becomes worse than uploading a file.",
+        "tip": "The more precisely you specify what you need from the document, the less context is wasted."
+      },
+      "s3": {
+        "title": "Images",
+        "time": "",
+        "why": "Screenshots, photos, charts and mockups carry information text can't convey: layout, color, composition. Claude reads them directly via Vision.",
+        "instructions": [
+          "Use images for interface screenshots, photos, diagrams and design mockups",
+          "Static formats are supported: PNG, JPG, WebP, GIF",
+          "Pose a concrete question about the picture: what to find, compare, or extract",
+          "For a deep dive into capabilities and limits, open the [[node:cap-vision|Vision]] course"
+        ],
+        "validate": "You can explain why a chart screenshot is better sent as an image than described in words.",
+        "tip": "Images cost more than text (image tokens) — don't send a picture where text or a file would do."
+      },
+      "s4": {
+        "title": "Files and PDF",
+        "time": "",
+        "why": "Most real data arrives as files: PDF, DOCX, XLSX, CSV, JSON. Sending a file preserves structure and is often more accurate and cheaper than a screenshot.",
+        "instructions": [
+          "Send structured documents as files: PDF, spreadsheets, CSV, JSON",
+          "If a PDF has a text layer, send it as a file, not as page screenshots",
+          "For tabular data and calculations, a file is more accurate than a picture of the table",
+          "For a deep dive into formats and scenarios, see the [[node:cap-files|Files]] course and the [[node:p-files|working with files]] node"
+        ],
+        "validate": "You choose between a file and an image deliberately, based on the presence of a text layer and structure.",
+        "tip": "A PDF with a text layer is almost always better as a file than a screenshot: cheaper and free of recognition errors."
+      },
+      "s5": {
+        "title": "How to combine modalities in one request",
+        "time": "",
+        "why": "Real tasks are rarely single-modal. Claude's strength is taking a screenshot, a PDF and a text instruction in one request and processing them together.",
+        "instructions": [
+          "Break the task into parts and pick a modality for each (what's better as a file, what as an image)",
+          "Assemble all inputs into one request and explicitly describe what to do with what",
+          "Example: a landing-page audit = page screenshot (Vision) + brand guide (Files) + text criteria",
+          "Ask for a single structured result, not separate answers per input"
+        ],
+        "validate": "You can design a request where at least two modalities work toward one goal.",
+        "tip": "Name each input in the request text (\"in the screenshot…\", \"in the attached PDF…\") so Claude doesn't mix up sources."
+      },
+      "s6": {
+        "title": "Limits, mistakes and verification",
+        "time": "",
+        "why": "To avoid building a broken workflow, you need to know what Claude will NOT accept directly and which modality-choice mistakes are most common.",
+        "instructions": [
+          "Remember the limits: audio and video aren't accepted directly — they need preprocessing (e.g., into text)",
+          "Watch for common mistakes: converting everything to text, Vision instead of Files, context overload",
+          "Confirm the input was actually recognized — ask Claude to briefly describe what it received",
+          "Match the channel to the task: structure and text layer → file, visuals → image, fresh data → web search"
+        ],
+        "validate": "You can name at least one unsupported input and two common modality-choice mistakes.",
+        "tip": "Before a long multi-modal request, do a quick check: \"what do you see in the attachments?\" — it catches problems early."
+      }
+    }
+  },
+  "cap-vision": {
+    "title": "Vision: working with images",
+    "subtitle": "Screenshots, diagrams, photos and documents — how Claude reads them and where it really helps",
+    "totalTime": "6 steps",
+    "whatItIs": "Claude can look at images — PNG, JPG, WebP, static GIF — and analyze their content: text, structure, interface elements, charts, diagrams. This turns a picture into material for a dialogue: you can ask, discuss, break it down.",
+    "approach": "The course goes from understanding capabilities to practice: what Claude sees, how to upload an image, how to phrase a request, which scenarios are strong, where the limits are, and how to combine images with text. Each step is a concrete action, no theory for theory's sake.",
+    "outcomes": [
+      "Understand what Claude can do with images and which formats it supports",
+      "Confidently upload images via attachment and drag-and-drop",
+      "Phrase a specific request about an image instead of a vague \"what's this?\"",
+      "Know the strong scenarios: parsing a bug screenshot, a diagram, a table in a photo",
+      "Understand Vision's limits and verify answers where they are unreliable"
+    ],
+    "applyIn": [
+      {
+        "title": "Design and UX",
+        "description": "Upload a mockup or interface screenshot and get a breakdown of readability, hierarchy and contrast issues."
+      },
+      {
+        "title": "Debugging and support",
+        "description": "Show a screenshot of an error or odd behavior — Claude reads the error text and suggests where to look."
+      },
+      {
+        "title": "Documents and data",
+        "description": "Photograph a table, receipt or chart and ask to transcribe the content into text or structure."
+      }
+    ],
+    "pitfalls": [
+      "Expecting pixel-perfect measurements: Claude sees structure, not exact coordinates and sizes",
+      "Uploading photos of small or blurry text and being surprised by recognition errors",
+      "Asking \"what's this?\" without a specific question — the answer will be generic and useless",
+      "Trusting transcribed numbers from a table photo without verification — important data needs a check",
+      "Asking to \"measure by pixels\" distances and margins — that is not a Vision task"
+    ],
+    "exercises": [
+      {
+        "question": "Screenshot any app and ask Claude to find 3 readability issues. Why is a precise request better than \"rate the design\"?",
+        "hint": "Compare two answers: to the general question and the specific one. Notice how the specific request directs attention."
+      },
+      {
+        "question": "Photograph a table or receipt and ask to transcribe the data into text. What did Claude get right, and what would need verifying?",
+        "hint": "Pay attention to small digits and poorly lit areas — that is where errors happen most."
+      },
+      {
+        "question": "Upload a chart or graph and ask about a trend. Where does Claude confidently describe structure, and where does it start guessing exact numbers?",
+        "hint": "It reads structure and trends well; exact values from the axes are a reason to double-check."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What Claude can do with images and where it helps",
+        "time": "",
+        "why": "Before uploading pictures, you need to understand the limits of the capability: what exactly Claude sees and which tasks it delivers results for.",
+        "instructions": [
+          "Remember the formats: PNG, JPG, WebP, static GIF — that is everything Claude accepts as an image",
+          "Understand that Claude analyzes visual content: text in the image, interface elements, structure of charts and diagrams",
+          "List your tasks that involve visual material: screenshots, document photos, design mockups, diagrams",
+          "Connect this to the bigger picture — Vision is one input method ([[node:cap-input-modalities|Input methods]])"
+        ],
+        "validate": "You can name 3 of your real tasks where an image replaces a long text description.",
+        "tip": "Vision is strongest where words take long: \"this is what my screen looks like\" is easier to show than to retell."
+      },
+      "s2": {
+        "title": "How to upload an image",
+        "time": "",
+        "why": "Without a proper upload the picture won't reach Claude. There are several ways, and it's worth mastering the one most convenient for you.",
+        "instructions": [
+          "Click the attachment icon (paperclip or plus) in the input field and select an image file",
+          "Or simply drag the picture straight into the chat window with your mouse",
+          "On a phone use the attach button and pick a photo from the gallery or take a snapshot",
+          "Check that the image preview appears before sending — that means the file uploaded"
+        ],
+        "validate": "The image is visible as a preview in the input field before you send the message.",
+        "tip": "You can upload several images at once — for example \"before\" and \"after\" — and ask to compare them."
+      },
+      "s3": {
+        "title": "How to phrase a request about an image",
+        "time": "",
+        "why": "A picture without a specific question gives a vague answer. A precise request directs Claude's attention to where you need a result.",
+        "instructions": [
+          "Don't just write \"what's this?\" — ask a specific question with a clear goal",
+          "Say exactly what to look for: \"find readability issues\", \"transcribe the table into text\", \"describe the chart trend\"",
+          "Specify the answer format: a list, a table, a brief summary",
+          "If the picture has a lot going on — narrow the area: \"look only at the top bar\""
+        ],
+        "validate": "Your request contains a specific task and a desired answer format, not a general question.",
+        "tip": "A good request answers \"what should I do with this\", not \"what is this\". Compare: \"rate the design\" versus \"find 5 contrast issues\"."
+      },
+      "s4": {
+        "title": "Strong scenarios",
+        "time": "",
+        "why": "Vision delivers the best results on specific task types. Knowing them, you'll apply the capability where it truly wins.",
+        "instructions": [
+          "Bug screenshot: show the screen with an error — Claude reads the error text and suggests a direction",
+          "Diagram or schema: upload a flowchart or architecture — Claude describes the logic and connections",
+          "Table in a photo: photograph data and ask to transcribe it into text or structure",
+          "Design mockup: give an interface and ask for a UX review of readability and hierarchy"
+        ],
+        "validate": "You applied at least one scenario on your own material and got a useful breakdown.",
+        "tip": "For documents and tables with large amounts of text, consider uploading the whole file ([[node:cap-files|Working with files]]) — it's more reliable than a photo."
+      },
+      "s5": {
+        "title": "Limits and verification",
+        "time": "",
+        "why": "Vision is not all-powerful. Knowing its weak spots saves you from errors — especially with numbers and precise measurements.",
+        "instructions": [
+          "Don't expect accurate reading of small or blurry text — recognition can be wrong",
+          "Don't ask for exact coordinates, pixel sizes and margins — Claude sees structure, not pixels",
+          "For important numbers (receipts, tables, readings) always check the answer against the original",
+          "If an answer sounds confident but the data is critical — manually re-verify key values"
+        ],
+        "validate": "You can name 3 task types where Vision is unreliable and manual verification is needed.",
+        "tip": "Simple rule: Claude reads structure and meaning well; exact numbers from an image are a reason to double-check."
+      },
+      "s6": {
+        "title": "Combining with text",
+        "time": "",
+        "why": "An image rarely works alone. Context in the text next to the picture turns the breakdown into something precise and useful.",
+        "instructions": [
+          "Add text with context to the picture: what it is, why, what to pay attention to",
+          "State the goal in words and use the image as material: \"here's a mockup, I need a review for a landing page\"",
+          "Combine several images with one text question — for example, comparing options",
+          "Use Claude's answer as a start of a dialogue: clarify, go deeper, ask to redo specific parts"
+        ],
+        "validate": "Your request with an image contains text context and a goal, not just a picture.",
+        "tip": "The pairing of \"image + a clear goal in text\" works better than an image alone. Vision is part of Claude's broader capabilities ([[node:capabilities|Claude capabilities]])."
+      }
+    }
+  },
+  "cap-files": {
+    "title": "Files: files and PDF as context",
+    "subtitle": "How to give Claude documents and get verifiable answers from their content",
+    "totalTime": "6 steps",
+    "whatItIs": "Files is Claude's ability to read the content of uploaded files: PDF (text and tables), .docx, .xlsx, .csv, .md, .txt, .json and others. You can attach a file directly to a chat message or place it in project knowledge so Claude can reference it across all conversations.",
+    "approach": "First we figure out which formats are supported and when a file beats a paraphrase. Then we learn to choose the upload method — a one-off chat attachment versus persistent project knowledge. Next: how to phrase questions so the answer is verifiable (quotes, page references), how to work with large multi-page documents, and where the limits are (context size, scans without a text layer). We finish with keeping uploaded materials up to date.",
+    "outcomes": [
+      "You understand which formats Claude reads and when to upload a file instead of paraphrasing",
+      "You choose the upload method deliberately: chat attachment or project knowledge",
+      "You ask questions about a file with verifiability — via quotes and references to sections",
+      "You work with large multi-page documents without losing accuracy",
+      "You know the limits: context size, scans without a text layer, common mistakes"
+    ],
+    "applyIn": [
+      {
+        "title": "Document analysis",
+        "description": "Contracts, reports, specs: upload a PDF and ask about specific sections instead of reading manually."
+      },
+      {
+        "title": "Working with data",
+        "description": ".xlsx and .csv tables: Claude reads values, aggregates and converts them without copy-pasting numbers by hand."
+      },
+      {
+        "title": "Persistent project context",
+        "description": "Put guidelines, policies and a knowledge base into project knowledge — Claude remembers them across all conversations."
+      }
+    ],
+    "pitfalls": [
+      "Uploading a huge file whole when you need a single section — wasted context",
+      "Uploading a scan or photo of a document with no text layer and expecting an accurate text analysis",
+      "Asking \"what is this document about\" without verifiability — you get a paraphrase you can't check",
+      "Keeping an outdated file version in project knowledge and forgetting to refresh it — answers from stale data",
+      "Mixing dozens of unrelated files in one chat — Claude gets confused about which source matters"
+    ],
+    "exercises": [
+      {
+        "question": "You have a 40-page contract but only care about the liability section. How do you upload it?",
+        "hint": "Think about context cost: upload the whole file or cut out the relevant part?"
+      },
+      {
+        "question": "You want Claude to use the company guideline in all future conversations, not just one. Where do you put the file?",
+        "hint": "Compare a one-off chat attachment with persistent project knowledge."
+      },
+      {
+        "question": "Claude gave a PDF summary but you're unsure about one figure. How do you re-ask to verify it?",
+        "hint": "Request a source anchor — a quote and a page or section number."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Which formats and why upload files",
+        "time": "",
+        "why": "Without knowing what Claude actually reads, it's easy to upload the wrong file or needlessly paraphrase content by hand.",
+        "instructions": [
+          "Memorize the supported formats: PDF (text and tables), .docx, .xlsx, .csv, .md, .txt, .json and other text formats.",
+          "Decide whether you need a file at all: if the answer fits in one paragraph, paste the text; if the document is large or structured, upload the file.",
+          "Compare with other input methods — text, images — see [[node:cap-input-modalities|input modalities]].",
+          "State your goal before uploading: analysis, conversion, summary or fact-checking — it shapes the next steps."
+        ],
+        "validate": "You can name 3-4 formats Claude reads and explain why a file rather than a paraphrase.",
+        "tip": "If your data is already short text, don't turn it into a file for its own sake. A file is for bulky or structured content."
+      },
+      "s2": {
+        "title": "How to upload: chat attachment or project knowledge",
+        "time": "",
+        "why": "The same file can be attached once or made persistent context — the choice changes how long Claude \"remembers\" it.",
+        "instructions": [
+          "For a one-off task, attach the file directly to a chat message — it applies within that conversation.",
+          "For persistent context, place the file in project knowledge — see [[node:p-files|Uploading files to a Project]] and [[node:projects|Projects]].",
+          "Remember the rule: a chat attachment lives in one conversation; project knowledge is available across all chats in that project.",
+          "Choose by horizon: a one-off analysis goes to chat; reusable material (guidelines, policies) goes to the project."
+        ],
+        "validate": "For a given task you deliberately choose between a chat attachment and project knowledge and can explain why.",
+        "tip": "Guidelines, templates and reference docs almost always belong in project knowledge — no need to re-attach them in every new chat."
+      },
+      "s3": {
+        "title": "How to ask about a file with verifiability",
+        "time": "",
+        "why": "An answer about a document is valuable only if you can verify it — otherwise it's a paraphrase you have to take on faith.",
+        "instructions": [
+          "Phrase a specific question about a section, not \"tell me what the file is about\".",
+          "Request a source anchor: a verbatim quote and a reference to the page or section.",
+          "If an answer looks doubtful, ask to show the text fragment it is based on.",
+          "For numbers and facts, request a direct quote so you can check it against the original."
+        ],
+        "validate": "Claude's answer includes quotes and references to sections/pages, and you can verify them against the source file.",
+        "tip": "Request template: \"Answer and provide a verbatim quote with the page number.\" That gives you a verifiable answer right away."
+      },
+      "s4": {
+        "title": "Large and multi-page documents",
+        "time": "",
+        "why": "In long PDFs it's easy to lose structure and get a vague answer — you need section navigation and reliance on quotes.",
+        "instructions": [
+          "First ask for the table of contents or a structure map — which sections exist and where.",
+          "Ask questions about specific sections rather than the whole file at once.",
+          "For long answers, request a per-section summary with quote anchors at key points.",
+          "If you only need one section of a large file, cut it out and upload it separately to save context."
+        ],
+        "validate": "You can first obtain the structure of a long document and then ask targeted questions per section with quotes.",
+        "tip": "Two-step trick: first \"give me the structure\", then \"analyze section N\". This sharply improves accuracy on thick PDFs."
+      },
+      "s5": {
+        "title": "Limits and common mistakes",
+        "time": "",
+        "why": "Files have limits: context size is finite, and scans without a text layer read worse — you need to know where the method breaks.",
+        "instructions": [
+          "Mind context size: a giant file as a whole crowds out everything else and lowers quality — upload only what's needed.",
+          "Distinguish a text PDF from a scan/photo with no text layer: analyzing text from a scan is less reliable.",
+          "Don't dump dozens of unrelated files into one chat — point to which source belongs to which question.",
+          "If you need maximum accuracy over a large volume, split the document and verify answers by quotes; for capabilities overall see [[node:capabilities|Claude's capabilities]]."
+        ],
+        "validate": "You can name at least three situations where uploading a file gives weak results and know how to work around them.",
+        "tip": "A scan without text is a candidate for text recognition before uploading. Then Claude gets a readable text layer, not an image."
+      },
+      "s6": {
+        "title": "Keeping files up to date",
+        "time": "",
+        "why": "An uploaded file goes stale: if project knowledge holds an old version, Claude confidently answers from outdated data.",
+        "instructions": [
+          "When a document changes, replace the file in project knowledge with the fresh version — see [[node:p-files|Uploading files to a Project]].",
+          "Delete from project knowledge anything no longer needed so it doesn't interfere or waste context.",
+          "Keep clear file names and versions so it's obvious which one is current.",
+          "Before an important request, make sure Claude relies on the latest version — re-ask for the source's date or version."
+        ],
+        "validate": "Your project holds only current files, and outdated ones are deleted or replaced.",
+        "tip": "Build a habit: when you update a document on your side, update it in project knowledge right away, or answers will diverge from reality."
+      }
+    }
+  },
+  "cap-search": {
+    "title": "Web search",
+    "subtitle": "When Claude searches the web and how to use it",
+    "totalTime": "6 steps",
+    "whatItIs": "Web search is the mode where Claude reaches the current web instead of relying only on memory accumulated up to its training cutoff. This is how it gets fresh facts: news, releases, prices, documents, events after the knowledge cutoff. It is the simplest case of working from external data — a special instance of what the [[node:capabilities|Claude capabilities]] call access to external sources.",
+    "approach": "First we cover why web search matters and which problem it removes. Then — when it kicks in and how to explicitly ask Claude to search. Next we learn to phrase a request so Claude reads sources instead of passing memory off as fact. After that — checking links and citations, the limits of the method, and common mistakes. Finally we connect web search to a larger pattern — the [[tutorial:agent-researcher|research agent]].",
+    "outcomes": [
+      "You understand which LLM problem web search solves and where it is indispensable",
+      "You know when search triggers automatically and how to request it explicitly",
+      "You can phrase a request so the answer rests on sources, not on memory",
+      "You verify links and citations and tell a real source from a paraphrase",
+      "You see the limits of the method and move to the research agent when search isn't enough"
+    ],
+    "applyIn": [
+      {
+        "title": "Fresh news and releases",
+        "description": "Ask about events, product updates, and prices that appeared after the training cutoff."
+      },
+      {
+        "title": "Fact-checking",
+        "description": "Confirm a date, number, or wording against the primary source rather than the model's memory."
+      },
+      {
+        "title": "Gathering across sources",
+        "description": "Assemble a picture from several publications and compare where they disagree."
+      }
+    ],
+    "pitfalls": [
+      "Trusting a single source without checking — always look at the primary source yourself",
+      "Missing that Claude answered from memory instead of searching — the lack of links gives it away",
+      "Taking a paraphrase as fact: a citation with no working link is a reason to doubt",
+      "Expecting access to paid or gated material that search won't open",
+      "Ignoring conflicts between sources instead of laying them out"
+    ],
+    "exercises": [
+      {
+        "question": "Phrase a request that forces Claude to search the web rather than answer from memory.",
+        "hint": "Tie the question to \"now\" or \"over the past month\" and explicitly ask it to find sources."
+      },
+      {
+        "question": "Claude gave an answer with three citations. How do you tell in a minute whether to trust them?",
+        "hint": "Check whether there are working links and whether they lead to the primary source, not a paraphrase."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why web search matters",
+        "time": "",
+        "why": "The main limit of any language model is the knowledge cutoff: past a certain date it knows nothing. Web search removes exactly that.",
+        "instructions": [
+          "Remember: without search Claude answers from memory cut off at the training date",
+          "Web search gives access to fresh things: news, releases, prices, events after the cutoff",
+          "This is a special case of a broader capability — working from external data (see [[node:capabilities|Claude capabilities]])",
+          "Use it where currency matters, not general knowledge"
+        ],
+        "validate": "You can explain in one sentence which LLM problem web search solves.",
+        "tip": "If the answer could be checked in today's newspaper, it's a candidate for web search."
+      },
+      "s2": {
+        "title": "When it triggers and how to ask",
+        "time": "",
+        "why": "Sometimes Claude searches on its own, but you can't rely on that. An explicit request is more reliable and predictable.",
+        "instructions": [
+          "Search fires more often on questions about \"now\", \"recently\", \"current prices\", \"fresh documents\"",
+          "To avoid guessing — write \"search the web\" or \"find current sources\" directly",
+          "Make sure web search is available in your plan and interface (Pro on claude.ai, or the API)",
+          "If the answer came with no links, search likely didn't run"
+        ],
+        "validate": "You can make Claude search deliberately rather than hope for auto-trigger.",
+        "tip": "The phrase \"as of today\" is a strong signal to search rather than recall."
+      },
+      "s3": {
+        "title": "Phrase it so it reads sources",
+        "time": "",
+        "why": "The main risk is Claude passing memory off as a fresh fact. The right phrasing switches it to reading sources.",
+        "instructions": [
+          "Ask not just for an answer, but for an answer with links to sources",
+          "Anchor it in time: \"over the past month\", \"in 2026\", \"the latest version\"",
+          "Specify the source type: official site, documentation, news — not a forum",
+          "Ask it to briefly state where each key fact came from"
+        ],
+        "validate": "Your request clearly demands reliance on found sources, not on the model's knowledge.",
+        "tip": "Add \"if you're unsure or didn't find it, say so\" — it cuts down on making things up."
+      },
+      "s4": {
+        "title": "Checking links and citations",
+        "time": "",
+        "why": "Claude cites, but you are responsible for the primary source's reliability. A citation with no working link is a reason to doubt.",
+        "instructions": [
+          "Open at least one or two links and confirm they lead to a real source",
+          "Verify the citation is actually in the source, not loosely paraphrased",
+          "Distinguish the primary source from a paraphrase: news about a release isn't the release itself",
+          "If a link won't open or is off-topic, treat the fact as unverified"
+        ],
+        "validate": "You can tell a confirmed fact from a nicely presented paraphrase in a minute.",
+        "tip": "For important decisions, check the source by hand — trusting the citation doesn't replace it."
+      },
+      "s5": {
+        "title": "Limits of the method and common mistakes",
+        "time": "",
+        "why": "Web search isn't all-powerful: it won't get past paywalls, and sources can contradict each other. Knowing the limits beats believing in magic.",
+        "instructions": [
+          "Remember that gated and paid material usually won't open via search (see [[node:cap-limitations|Claude's limitations]])",
+          "When sources conflict, don't silently pick one — ask to lay out the positions",
+          "Don't take the first result as truth: fresh doesn't mean correct",
+          "Keep in mind search gives a snapshot at query time, not the whole market picture"
+        ],
+        "validate": "You understand what web search fundamentally can't do and don't expect the impossible.",
+        "tip": "If sources disagree, that's not a bug but a sign the topic is live; show the disagreement explicitly."
+      },
+      "s6": {
+        "title": "Connection to the research agent",
+        "time": "",
+        "why": "A single web search answers one specific question. When you need many iterations, comparison, and synthesis — that's the job of a research agent.",
+        "instructions": [
+          "Use plain web search for one or two precise questions",
+          "When the task needs a series of queries and consolidation — move to the [[tutorial:agent-researcher|research agent]]",
+          "The agent plans the searches, reads sources, and assembles the result itself — a layer on top of the same search",
+          "Pick the tool by scale: a single fact — search; deep research — an agent"
+        ],
+        "validate": "You understand where a single search ends and a research agent begins.",
+        "tip": "If you catch yourself doing ten manual follow-ups in a row, it's time to call the research agent."
+      }
+    }
+  },
+  "cap-memory": {
+    "title": "Memory: context between chats",
+    "subtitle": "What Claude remembers about you across conversations — and how to manage it",
+    "totalTime": "6 steps",
+    "whatItIs": "Memory is a Claude feature that lets the model remember stable facts about you across different chats: role, industry, stack, tone preferences. It's available in claude.ai on Pro/Max plans (a Memory toggle in settings), via API as a separate memory tool, and on enterprise it's admin-managed and may be disabled for compliance reasons.",
+    "approach": "The course goes from understanding how Memory differs from the context window to practice: what actually persists between chats, how to manage it, when Memory beats Projects or instructions, and how to keep hygiene and privacy. It relies on the node's facts, with no invented capabilities.",
+    "outcomes": [
+      "Distinguish Memory (long-term memory across chats) from the context window (memory within a single conversation)",
+      "Understand what Claude persists between chats and what it does not",
+      "Enable, disable, and clean Memory deliberately",
+      "Choose between Memory, Projects, and instructions for a given task",
+      "Protect privacy: avoid storing sensitive data and keep memory clean"
+    ],
+    "applyIn": [
+      {
+        "title": "Personal assistant",
+        "description": "Store a stable brief about yourself in Memory (role, industry, stack, tone) — and every new chat starts straight at the task, without re-explaining context."
+      },
+      {
+        "title": "Long-running projects",
+        "description": "Project continuity: project details stay available weeks later, so you don't have to re-onboard Claude in every conversation."
+      },
+      {
+        "title": "Product personalization",
+        "description": "Via the API memory tool, a product remembers a returning user across sessions — a foundation feature for retention (see [[node:ec-personalization|personalization]])."
+      }
+    ],
+    "pitfalls": [
+      "Saving one-off info into Memory (\"remember this email for tomorrow\") — a month later it's garbage; Memory is for stable facts, not a todo list",
+      "Ignoring privacy: Memory persists, and sensitive data (PII, medical, financial) lives in the infrastructure — explicit consent is required",
+      "Memory pollution: too many facts add overhead to every prompt and mix contexts; the sweet spot is 10-30 meaningful facts",
+      "Using Memory instead of CLAUDE.md for technical project context — Memory is user-bound, not team-bound",
+      "Trusting Memory as the single source of truth: it isn't deterministic, so write critical facts into the system prompt every time"
+    ],
+    "exercises": [
+      {
+        "question": "You write the same brief (role, stack, tone) at the top of every chat. What should go into Memory and what shouldn't?",
+        "hint": "Stable facts that apply across most tasks go into Memory. One-off todos and sensitive data do not."
+      },
+      {
+        "question": "How does Memory fundamentally differ from the context window of a single conversation?",
+        "hint": "The context window is memory inside one chat and resets with a new one. Memory carries facts across different chats."
+      },
+      {
+        "question": "You have a team project with shared code rules. Memory or CLAUDE.md — and why?",
+        "hint": "Memory is bound to one user. For shared, version-controlled team context, CLAUDE.md is better."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What Memory is and how it differs from the context window",
+        "time": "",
+        "why": "Without a clear split, it's easy to confuse \"memory within a chat\" with \"memory across chats\" — and to expect Memory to do what it doesn't.",
+        "instructions": [
+          "Remember: the context window is memory within a single conversation; start a new chat and it's empty",
+          "Memory is long-term memory that carries stable facts about you from chat to chat",
+          "Open claude.ai → settings and find the Memory toggle (available on Pro/Max)",
+          "Formulate one fact about your work that applies across most tasks (e.g., role and stack)",
+          "Tie this to the general AI memory model: short-term context vs long-term storage (see [[node:capabilities|Claude capabilities]])"
+        ],
+        "validate": "You can explain the difference between the context window and Memory in one sentence.",
+        "tip": "A simple test: \"do I need this remembered WITHIN this chat or ACROSS all future ones?\" The latter is a Memory candidate."
+      },
+      "s2": {
+        "title": "What persists between chats and what doesn't",
+        "time": "",
+        "why": "Memory stores stable facts, not todos or temporary details — knowing this prevents clutter and false expectations.",
+        "instructions": [
+          "Put in the \"remembers\" bucket: stable facts — role, industry, stack, tone and voice preferences",
+          "Put in the \"don't store\" bucket: one-off tasks, temporary data, todos like \"send the email tomorrow\"",
+          "Note that Memory isn't deterministic — it may not \"recall\" a fact at the needed moment",
+          "Test on one of your own examples: what from the last chat would still be useful a month later",
+          "Write down candidate facts that genuinely apply across most tasks"
+        ],
+        "validate": "You have a short list of stable facts and a clear sense of what NOT to put in Memory.",
+        "tip": "Stability test: if a fact will be stale in a week, it doesn't belong in Memory."
+      },
+      "s3": {
+        "title": "How to manage it: on/off and what to store",
+        "time": "",
+        "why": "Deliberate control over enabling Memory and its contents is what separates useful memory from cluttered memory that slows every prompt.",
+        "instructions": [
+          "Enable Memory when you have stable facts, project continuity, or need personalization",
+          "Disable it for one-shot tasks and when consistency between users matters",
+          "Keep the sweet spot: 10-30 meaningful facts, no more — otherwise you get overhead and mixed contexts",
+          "Periodically review and clean memory: remove what's stale",
+          "After setup, check in a new chat: does Claude use the stored context without a reminder?"
+        ],
+        "validate": "Memory is enabled where it adds value and contains only stable, current facts.",
+        "tip": "Do a monthly memory review — like tidying your desk: drop anything no longer true."
+      },
+      "s4": {
+        "title": "Memory vs Projects / instructions — what's for what",
+        "time": "",
+        "why": "Memory, Projects, and instructions solve different problems; mixing them up leaves team context bound to a single person.",
+        "instructions": [
+          "Memory is personal, user-bound memory of stable facts about you across chats",
+          "For a long-lived space with files and shared context, see [[node:projects|Projects]]",
+          "For technical project context (code rules, naming), CLAUDE.md is better — it's shared and version-controlled",
+          "For repeatable behavior rules within one space, use [[node:instructions|instructions]]",
+          "Pick for your current task: personal context → Memory, team/version-controlled → Projects/CLAUDE.md/instructions"
+        ],
+        "validate": "For a specific task, you can justify the choice between Memory, Projects, and instructions.",
+        "tip": "The key question: \"is this about ME or about the TEAM/PROJECT?\" About me — Memory; about the team — Projects/CLAUDE.md."
+      },
+      "s5": {
+        "title": "Privacy and memory hygiene",
+        "time": "",
+        "why": "Memory persists in the infrastructure, so sensitive data creates a real leak risk and a GDPR exposure.",
+        "instructions": [
+          "Don't store PII, medical, financial, or other sensitive data in Memory",
+          "In compliance-restricted industries (HIPAA, finance), consider disabling Memory",
+          "For production products: either disable Memory or have an explicit privacy policy and user consent",
+          "Regularly clean memory, removing anything redundant or stale",
+          "For more on privacy, see [[node:pl-privacy|privacy and data]]"
+        ],
+        "validate": "Your Memory holds no sensitive data, and your product has a clear privacy policy.",
+        "tip": "Rule of thumb: if you wouldn't want the data in your logs, it doesn't belong in Memory."
+      },
+      "s6": {
+        "title": "Boundaries, mistakes, and validation",
+        "time": "",
+        "why": "Understanding Memory's limits guards against mistakes: clutter, false trust, and binding team context to one person.",
+        "instructions": [
+          "Don't store one-offs and todos — only stable facts",
+          "Don't trust Memory as the single source of truth: write critical facts (legal, compliance, security) into the system prompt every time",
+          "Don't use Memory instead of CLAUDE.md for team technical context",
+          "Watch the volume: confirm there are no more than ~30 facts and that they don't contradict each other",
+          "Do a final check: open a new chat and confirm Claude uses the stored context correctly"
+        ],
+        "validate": "You know Memory's common mistakes and have verified your setup is free of them.",
+        "tip": "If you're unsure Claude will \"recall\" a critical fact, don't rely on Memory — duplicate it in the prompt."
+      }
+    }
+  },
+  "cap-computer": {
+    "title": "Computer use: drive the screen safely",
+    "subtitle": "When software has no API — and how to keep the agent from doing harm",
+    "totalTime": "6 steps",
+    "whatItIs": "Computer use is a mode where Claude sees the screen via screenshots, moves the cursor, clicks, and types like a human. You reach for it when an app has no API, no CLI, and no [[node:capabilities|connector]], yet the task still has to be automated through a graphical interface.\n\nThis course isn't about \"give the agent full access to your computer\" — it's about boundaries: which access tiers are sane, why a screenshot can carry a malicious instruction (prompt injection), and how to run everything inside an [[node:sys-agent-sandbox|isolated environment]] so an agent's mistake never becomes a real system's problem.",
+    "approach": "Don't fire up Computer use on your working machine \"just to try it.\" Isolation first, access second. Move from observing (browser only looks) to acting (clicks), never the other way around. At each step, ask: what can the agent actually do from this screen?",
+    "outcomes": [
+      "Know when Computer use fits and when an API, CLI, or [[node:capabilities|connector]] is better",
+      "Know the requirements: plan, macOS permissions, [[node:pl-desktop|Claude Desktop]]",
+      "Distinguish access tiers for apps — viewing versus acting",
+      "Recognize the risk of prompt injection from the screen and never trust on-screen text blindly",
+      "Run Computer use in [[node:sys-agent-sandbox|isolation]] using a safety checklist"
+    ],
+    "applyIn": [
+      {
+        "title": "Legacy software with no API",
+        "description": "An old internal system where clicking is the only way. Computer use automates the routine inside its interface."
+      },
+      {
+        "title": "Web panels and admin dashboards",
+        "description": "When a service has no public API but the task is visible on screen — the agent finds and performs the needed action."
+      },
+      {
+        "title": "Demos and hypothesis checks",
+        "description": "Quickly show a scenario is automatable before commissioning a real integration."
+      }
+    ],
+    "pitfalls": [
+      "Running Computer use directly on your personal or work machine instead of an isolated environment.",
+      "Granting the agent action access (clicks in a terminal/IDE) where viewing would have been enough.",
+      "Trusting on-screen text: a popup or page may carry a trap instruction aimed at the agent.",
+      "Leaving the agent unattended in long sessions where it may drift into unexpected actions.",
+      "Failing to restrict access to payments, email, and admin rights — one mistake costs more than the whole automation."
+    ],
+    "exercises": [
+      {
+        "question": "Take a real task you want to automate. Does that software have an API, CLI, or connector? If yes — you don't need Computer use. Write down why the interface is genuinely the only path.",
+        "hint": "Computer use is the last option, not the first. Look for something cheaper and more reliable first."
+      },
+      {
+        "question": "Describe the minimal access tier for your task: is it enough for the agent to look at the screen, or does it need clicks? Where's the line?",
+        "hint": "Fewer permissions mean smaller consequences for a mistake. Start with observation."
+      },
+      {
+        "question": "Draft a short isolation checklist for your run: what's cut off from the agent (network, files, payments)? Check it against the [[tutorial:remote-computer-for-claude|remote computer]] tutorial.",
+        "hint": "Isolation isn't \"trust or not\" — it's \"what is physically impossible to break.\""
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What Computer use is and when to use it",
+        "time": "",
+        "why": "Computer use is powerful but costly and risky. Most tasks are solved more simply via an API, the command line, or a ready connector. Realizing this up front means you won't build fragile automation where a reliable one exists.",
+        "instructions": [
+          "Remember the core idea: Claude sees the screen via screenshots, moves the cursor, clicks, and types — like a human at a computer.",
+          "Use it only when the software has no API, no CLI, and no [[node:capabilities|connector]] — meaning the interface is the only way to automate.",
+          "Typical cases: legacy systems, web panels with no API, desktop tools.",
+          "If an API/CLI/connector path exists — choose it: it's faster, cheaper, and more predictable."
+        ],
+        "validate": "You can explain, on your own example, why the interface is the only path and that Computer use here is a necessity, not a convenience.",
+        "tip": "Ask yourself: \"If a human intern did this with a mouse, is it the same task?\" If yes — Computer use fits. If a script could do it — script it."
+      },
+      "s2": {
+        "title": "Requirements and enabling it",
+        "time": "",
+        "why": "Computer use requires a suitable plan and explicit operating-system permissions. Without them the agent simply can't see the screen or move the cursor — and the permissions you grant must be understood, because they are real.",
+        "instructions": [
+          "Check the plan: computer control is available on paid plans (Pro or Max), not the free tier.",
+          "Install and open [[node:pl-desktop|Claude Desktop]] — screen control works through the desktop app, not the web version.",
+          "On macOS, grant system permissions: Screen Recording (to see the screen) and Accessibility (to move the cursor and click) under System Settings → Privacy & Security.",
+          "Be aware: these permissions give the app real power over your screen and input. Grant them only when you understand why."
+        ],
+        "validate": "The plan fits, Claude Desktop is installed, both system permissions are granted, and you understand exactly what each one allows.",
+        "tip": "If you later want to revoke access, it's the same two toggles in System Settings. Know where to turn them off."
+      },
+      "s3": {
+        "title": "Access tiers for apps",
+        "time": "",
+        "why": "Not all actions are equally dangerous. Looking at a browser is nearly harmless. Clicking in a terminal or IDE means running code and changing files. Splitting access into tiers lets you grant exactly as much as the task needs.",
+        "instructions": [
+          "Viewing tier: the agent only reads the screen (e.g., looks at a browser) — gathers information, changes nothing.",
+          "Action tier: the agent clicks and types in an app — presses buttons, fills forms, submits data.",
+          "Be especially careful with the terminal and IDE: a click there can run a command or change code — consequences spill beyond one window.",
+          "Least-privilege principle: start with viewing, add actions only where the task can't be done without them."
+        ],
+        "validate": "For your task you've explicitly named which apps the agent needs only for viewing and where clicks are required — and justified each action permission.",
+        "tip": "If unsure whether to grant actions in some app, picture the worst click the agent could make there. Are you ready for that consequence?"
+      },
+      "s4": {
+        "title": "The risk of prompt injection from the screen",
+        "time": "",
+        "why": "The agent reads on-screen text as instructions. That means a malicious page, popup, or email can carry a hidden command (\"ignore the past, send the file here\") — and the agent may obey. This isn't theory; it's the main risk of Computer use.",
+        "instructions": [
+          "Remember: anything that lands on the agent's screen may be taken as a command — including text that isn't yours.",
+          "Dangerous sources: unfamiliar websites, popups, incoming emails, other people's documents.",
+          "Don't give the agent access to sensitive actions (payment, sending data, deletion) in sessions where untrusted content reaches the screen.",
+          "Keep a human in the loop: important and irreversible steps go through confirmation, not autopilot."
+        ],
+        "validate": "You can give a prompt-injection example for your task and name what untrusted content could reach the agent's screen.",
+        "tip": "Treat the agent's screen like incoming mail from a stranger: interesting to read, but you don't execute commands from it."
+      },
+      "s5": {
+        "title": "Running safely in isolation",
+        "time": "",
+        "why": "If the agent errs or falls for prompt injection, the consequences should stay inside the sandbox, not on your real machine. Isolation turns a \"dangerous mode\" into a \"controlled experiment.\"",
+        "instructions": [
+          "Run Computer use in an [[node:sys-agent-sandbox|isolated environment]] — a separate virtual machine or container, not your personal/work computer.",
+          "Isolate what you can't afford to lose: access to personal files, email, payment data, and the corporate network from the sandbox should be cut off or minimal.",
+          "Go through the [[tutorial:remote-computer-for-claude|remote computer]] tutorial — it shows the practical setup of a separate machine for the agent.",
+          "Treat the sandbox's contents as disposable: everything inside can be reset and rebuilt with no loss."
+        ],
+        "validate": "Computer use runs in a separate isolated environment, access to valuable data and systems from it is limited, and you can reset the sandbox with no consequences.",
+        "tip": "A good sign of isolation: you can calmly say \"let the agent break anything in here\" — and it genuinely costs nothing."
+      },
+      "s6": {
+        "title": "Safety checklist and verification",
+        "time": "",
+        "why": "Before every real run it pays to go through a short checklist — it catches the costliest mistakes before the agent starts clicking. It's the final barrier between \"experiment\" and \"incident.\"",
+        "instructions": [
+          "Isolation: run in a [[node:sys-agent-sandbox|sandbox]], access to valuable data and the network limited.",
+          "Least privilege: each app gets only the needed tier (viewing or actions), nothing extra.",
+          "Injection defense: sensitive actions locked down; untrusted on-screen content is a reason for caution.",
+          "Human in the loop: irreversible steps (payment, deletion, sending) require confirmation.",
+          "Dry run on a safe task: first run the agent on a scenario where a mistake costs nothing, and watch what it does."
+        ],
+        "validate": "Every checklist item is ticked, the dry run on a safe task passed, and you saw the agent's behavior live before it touched real data.",
+        "tip": "Save this checklist and run it every time. The habit of checking before launch is cheaper than any post-incident review."
+      }
+    }
+  },
+  "cap-caching": {
+    "title": "Prompt caching — the lever for lower cost and latency",
+    "subtitle": "Cache the stable prefix — pay 0.1× on repeats and respond faster",
+    "totalTime": "6 steps",
+    "whatItIs": "Prompt caching isn't a \"Claude feature\" — it's the main lever for optimizing cost and latency in production AI workflows on the [[node:pl-api|API]]. Anthropic caches the stable prefix of your prompt (system, instructions, large context, tool definitions) for 5 minutes (or 1 hour with extended TTL). Repeat requests with the same prefix are billed at a discounted rate (cache read = 0.1× input) and processed faster.\n\nMechanics: set `cache_control: { type: \"ephemeral\" }` on a block → that block and everything before it is cached. Minimum: 1024 tokens (Sonnet/Opus) or 2048 (Haiku).",
+    "approach": "Cache only what stably repeats ≥10 times per TTL — system, instructions, large context. Keep the dynamic part (user query) at the very end, after the cache boundary. Measure savings on real traffic first, then scale — don't guess.",
+    "outcomes": [
+      "You understand prompt caching as a lever for cost and latency, not magic",
+      "You can separate the stable prefix from the variable part of a request",
+      "You know the mechanics: cache breakpoints, TTL (5 min / 1 hour), the tokens threshold",
+      "You can decide when caching is worth it and when it isn't (by repeatability)",
+      "You measure real savings via cache write / cache read in the [[node:pl-api|API]] response"
+    ],
+    "applyIn": [
+      {
+        "title": "Customer support agent",
+        "description": "A large knowledge base in every request — cache it once, repeats go at 0.1×."
+      },
+      {
+        "title": "Production workflow with tool definitions",
+        "description": "A stable set of [[node:cap-tools|tools]] and the system prompt are cached; only the user query stays variable."
+      },
+      {
+        "title": "Cost control at scale",
+        "description": "At 1000+ requests/day, caching is the [[node:sys-cost-management|#1 cost management lever]]."
+      }
+    ],
+    "pitfalls": [
+      "Changing the prefix between requests — you write cache (1.25×) every time without reading = overpayment",
+      "Putting cache on a variable block — the cache won't hit because the prefix never stabilizes",
+      "Ignoring TTL — with rare requests (once per 10 min at 5-min TTL) you always pay the write rate",
+      "Enabling caching at low volume — at 5 requests/day savings are smaller than the added complexity",
+      "Treating caching as a substitute for optimization — shrink a bloated prompt first, then cache the rest"
+    ],
+    "exercises": [
+      {
+        "question": "Take a real prompt and split it into a stable prefix (system, instructions, context) and a variable part (user query). Where should the cache breakpoint go?",
+        "hint": "cache_control applies to the block and everything BEFORE it. The breakpoint goes after the last stable block, before the dynamic part."
+      },
+      {
+        "question": "Compute the savings: system prompt 8000 tokens, 1000 requests/day, input $3/1M. Compare without cache vs with cache (write 1.25×, read 0.1×).",
+        "hint": "Without cache: 8M × $3/1M per day. With cache: one write + 999 reads at 0.1× the rate."
+      },
+      {
+        "question": "Run two identical requests back to back and check cache_creation_input_tokens and cache_read_input_tokens in the [[node:pl-api|API]] response. What changed on the second?",
+        "hint": "First request is write (creation); the second within TTL is read. If read = 0, check prefix stability and the tokens threshold."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Understand what prompt caching is and why it matters",
+        "time": "",
+        "why": "Without grasping that it's a lever for cost and latency (not a \"speed booster\"), it's easy to enable caching in the wrong place and overpay.",
+        "instructions": [
+          "Remember the core: the recurring prefix of a prompt is cached, repeats are billed at a discounted rate and respond faster.",
+          "Open a typical [[node:pl-api|API]] request and count how many constant tokens it has (system, instructions, context).",
+          "Estimate volume: how many times per day the same prefix is sent.",
+          "Lock in the goal: lower input cost and latency on recurring context."
+        ],
+        "validate": "You can explain in one sentence why you want caching and name the constant part of your request.",
+        "tip": "Caching saves on input, not output. If your output is the expensive part, that's a different problem."
+      },
+      "s2": {
+        "title": "Decide what to cache (the stable prefix)",
+        "time": "",
+        "why": "You should cache only what truly repeats. A variable block in the cache just wastes the write rate.",
+        "instructions": [
+          "Split the request into stable (system prompt, instructions, large context, [[node:cap-tools|tool definitions]], few-shot) and variable (user query, dynamic data).",
+          "Move the stable part to the front, the variable part to the end.",
+          "Check that the stable block is ≥ 1024 tokens (Sonnet/Opus) or 2048 (Haiku) — otherwise caching won't activate.",
+          "Mark the point where stable ends and dynamic begins — that's your future cache breakpoint."
+        ],
+        "validate": "You have a clear boundary: everything before it is stable and recurring, everything after changes.",
+        "tip": "Tool definitions are almost always stable — they're the best caching candidate."
+      },
+      "s3": {
+        "title": "Understand how it works technically (breakpoints, TTL)",
+        "time": "",
+        "why": "cache_control affects the block AND everything before it. Without grasping this, people put the breakpoint in the wrong place and the cache doesn't work.",
+        "instructions": [
+          "Put `cache_control: { type: \"ephemeral\" }` on the LAST stable block — it and everything before it is cached.",
+          "Remember the TTL: 5 minutes by default from last use; extended TTL is 1 hour (an API option).",
+          "Mind the economics: cache write = 1.25× input (once), cache read = 0.1× input (each repeat).",
+          "Don't place a breakpoint after a dynamic block — the prefix won't stabilize and the cache won't hit."
+        ],
+        "validate": "The cache breakpoint sits after the stable part and before the dynamic part; you know your TTL and rates.",
+        "tip": "You can set multiple breakpoints — Anthropic will find the longest matching prefix."
+      },
+      "s4": {
+        "title": "Decide when caching is worth it and when it isn't",
+        "time": "",
+        "why": "Caching pays off only with repeatability. On rare or unique requests it's a net loss, not a gain.",
+        "instructions": [
+          "Enable it if: the prefix is stable and ≥ the tokens threshold, and it's sent ≥10 times per TTL.",
+          "Don't enable it if: context changes every request, requests are few, or gaps exceed the TTL.",
+          "For rare but regular requests, consider extended TTL (1 hour) instead of dropping the cache.",
+          "Weigh the added setup complexity against the expected savings — at low volume it isn't worth it."
+        ],
+        "validate": "For your scenario you can confidently say \"cache\" or \"don't cache\" and explain why.",
+        "tip": "Rule of thumb: a steady 100+ requests/day against one prefix almost always justifies caching."
+      },
+      "s5": {
+        "title": "Measure the real savings",
+        "time": "",
+        "why": "Without measurement caching is faith. The numbers in the API response show whether the cache actually works.",
+        "instructions": [
+          "Send a request twice in a row within the TTL.",
+          "In the [[node:pl-api|API]] response check `cache_creation_input_tokens` (write) and `cache_read_input_tokens` (read).",
+          "The first request should give creation > 0; the second — read > 0 and creation ≈ 0.",
+          "Compute savings: read-tokens × (1 − 0.1) of the input rate = how much you saved on the repeat."
+        ],
+        "validate": "On the second request cache_read_input_tokens > 0, and you see a concrete savings amount.",
+        "tip": "Tie measurement to [[node:sys-cost-management|cost management]] — the cache should show up in the bill, not just in metrics."
+      },
+      "s6": {
+        "title": "Avoid the mistakes and verify the setup",
+        "time": "",
+        "why": "Typical mistakes (changing the prefix, caching variable content) silently kill savings — the cache \"exists\" but cache read = 0.",
+        "instructions": [
+          "Check that the prefix does NOT change between requests — even a stray space or timestamp breaks the match.",
+          "Make sure the cached block has no variable data (user name, date, query).",
+          "If cache read = 0 — check the tokens threshold, prefix stability, and whether the TTL expired.",
+          "If the prompt is bloated — shrink it first, then cache the rest; caching doesn't fix a bad prompt."
+        ],
+        "validate": "Repeat requests reliably yield cache_read > 0, and savings are visible on real traffic.",
+        "tip": "Log cache_read_input_tokens in production — a drop to zero signals the prefix has drifted somewhere."
+      }
+    }
+  },
+  "cap-citations": {
+    "title": "Citations: answers linked to sources",
+    "subtitle": "How to get Claude to back each claim with a specific fragment of your documents",
+    "totalTime": "6 шагов",
+    "whatItIs": "Citations is a mode where Claude, via the API, accompanies its claims with references to specific fragments of uploaded documents. You see not only the answer but the exact place in the source it rests on.",
+    "approach": "We move from meaning to practice: first why verifiability matters, then how to technically enable and obtain citations, how to read the source linkage, in which scenarios it is critical, where the limits are and how to check, and finally how Citations connects to working with files and [[node:sys-rag-architecture|RAG architecture]].",
+    "outcomes": [
+      "You understand that Citations provide verifiability and trust, not just text",
+      "You can enable citation mode and supply documents via the [[node:pl-api|API]]",
+      "You read an answer with source linkage and find the cited fragment",
+      "You distinguish scenarios where citations are mandatory (legal/research/support) from where they are redundant",
+      "You know the limit: no source means no citation, and you verify interpretation by hand"
+    ],
+    "applyIn": [
+      {
+        "title": "Legal analysis",
+        "description": "Comparing contracts and surfacing risks with a specific source clause cited for each conclusion."
+      },
+      {
+        "title": "Research and reviews",
+        "description": "Synthesis over a set of papers or reports where every claim traces back to a paragraph in the original."
+      },
+      {
+        "title": "Knowledge-base support",
+        "description": "Customer answers linked to a specific documentation section so the agent can verify."
+      }
+    ],
+    "pitfalls": [
+      "Blindly trusting citations: the link points to a source, but Claude's interpretation can be inaccurate",
+      "Expecting citations where no source was uploaded — without a document there is nothing to cite",
+      "Confusing citations with ordinary paraphrase: a citation is tied to a fragment, a paraphrase is not",
+      "Ignoring that Citations are available via the API with explicit enabling, not by default in chat",
+      "Relying on citations as legally precise without a human expert in the loop"
+    ],
+    "exercises": [
+      {
+        "question": "Why are Citations more important for legal contract comparison than for brainstorming ideas?",
+        "hint": "Consider where the cost of error demands checking every claim against the source, versus where speed and breadth matter more."
+      },
+      {
+        "question": "Claude made a claim without a citation over an uploaded document. What are the two most likely reasons?",
+        "hint": "Either the claim is a generalization/conclusion not tied to one fragment, or the source contains no support."
+      },
+      {
+        "question": "How do Citations relate to working with files and RAG?",
+        "hint": "Citations answer 'where is this from', while files and RAG answer 'which documents are available to the model at all'."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What Citations are and why",
+        "time": "",
+        "why": "Without grasping the goal it is easy to confuse citations with a plain answer and miss them where they truly matter — for verifiability and trust.",
+        "instructions": [
+          "Remember the essence: Citations are answers where each claim carries a reference to a specific fragment of an uploaded document",
+          "Separate two levels of value: verifiability (you can reach the original source) and trust (the user does not take it on faith)",
+          "Compare with an ordinary answer: the conclusion is there, but there is no way to check it against the source",
+          "Tie the topic to Claude's general [[node:capabilities|capabilities]]: Citations are one of them, focused on document work"
+        ],
+        "validate": "You can explain in one sentence why an answer with a citation is more useful than a plain one for an audit.",
+        "tip": "Think of Citations as footnotes in a scientific paper: they do not change the conclusion but let you verify it."
+      },
+      "s2": {
+        "title": "How to enable and obtain citations over documents",
+        "time": "",
+        "why": "Citations do not appear on their own: you must explicitly enable them and supply documents, otherwise the model answers in plain text.",
+        "instructions": [
+          "Remember: the mode is available via the [[node:pl-api|API]] with citations explicitly enabled, not by default in ordinary chat",
+          "Upload documents as sources — this is the material Claude can cite from (see [[node:cap-files|working with files]])",
+          "Phrase the request so the answer relies on document content rather than the model's general knowledge",
+          "Receive an answer in which claims are marked with references to source fragments"
+        ],
+        "validate": "You have a request with citations enabled and at least one uploaded document, and the answer contains linkages.",
+        "tip": "If there are no citations, first check whether the mode is enabled and documents are uploaded before blaming the wording."
+      },
+      "s3": {
+        "title": "The format of an answer linked to a source",
+        "time": "",
+        "why": "A citation is useless if you cannot get from the claim to the specific place in the document.",
+        "instructions": [
+          "Understand the structure: the answer is split into parts, and the part with a fact carries a reference to a source fragment",
+          "Follow the reference to the specific fragment in the original document and re-read it",
+          "Distinguish cited claims (with linkage) from conclusions and generalizations (without it)",
+          "Verify the fragment actually supports the claim and is not merely nearby on the topic"
+        ],
+        "validate": "For any marked claim you find the exact fragment in the source and see that it supports it.",
+        "tip": "Linkage points to a place in the source — it is an address, not a guarantee of correct interpretation."
+      },
+      "s4": {
+        "title": "Scenarios: legal, research, support",
+        "time": "",
+        "why": "Citations pay off where the cost of error is high and every claim must be checked against the original source.",
+        "instructions": [
+          "Legal: compare two contracts and for each conclusion show the specific source clause",
+          "Research: synthesize a review over a set of papers so every claim traces to a paragraph",
+          "Knowledge-base support: answer with a link to a documentation section so the agent can verify quickly",
+          "Separate these scenarios from tasks where speed and breadth matter more than line-by-line verifiability"
+        ],
+        "validate": "For each of the three scenarios you can name which source fragment closes the risk of error.",
+        "tip": "The higher the cost of error and the more formal the evidence requirements, the stronger the gain from Citations."
+      },
+      "s5": {
+        "title": "Limits and errors: no source, no citation",
+        "time": "",
+        "why": "Citations do not turn Claude into an infallible expert: the key limit is that you can only cite what was uploaded.",
+        "instructions": [
+          "Remember the rule: no uploaded source means no citation; the model will not reference what it does not have",
+          "Do not trust citations blindly: the link is correct by address, but interpretation of the fragment can be inaccurate",
+          "Check summarizing conclusions separately — they often have no single source fragment",
+          "Build in a human expert wherever the cost of error is legal or medical"
+        ],
+        "validate": "You can explain why a missing citation on a claim is a signal to verify, not a cause for panic.",
+        "tip": "Treat a citation as the start of verification, not its completion."
+      },
+      "s6": {
+        "title": "Connection with RAG and files",
+        "time": "",
+        "why": "Citations do not work in a vacuum: they sit on the layer of document access — files and RAG architecture.",
+        "instructions": [
+          "Understand the division of roles: files and [[node:sys-rag-architecture|RAG]] decide which documents are available, while Citations show where exactly an answer came from",
+          "Connect with the document-upload practice from the step on [[node:cap-files|files]] — this is the material to cite",
+          "In a RAG scenario, citations show which retrieved fragment underpins the claim",
+          "Assemble the full chain: documents → retrieval/access (RAG) → answer with linkage (Citations) → manual check"
+        ],
+        "validate": "You can describe the full path from an uploaded document to a verifiable claim with a citation.",
+        "tip": "Citations answer 'where is this from', RAG answers 'what is available at all'; together they give traceability."
+      }
+    }
+  },
+  "cap-code-exec": {
+    "title": "Code execution: Claude computes with code",
+    "subtitle": "Accurate math, CSV analysis and charts instead of \"made-up\" numbers",
+    "totalTime": "6 steps",
+    "whatItIs": "Code execution is a mode where Claude doesn't \"compute in its head\" but writes and runs real Python code in an isolated sandbox: it computes aggregates, parses CSV/JSON, plots charts, and tests hypotheses on data. Numbers become the result of a computation, not a guess.\n\nIt's part of [[node:capabilities|Claude's capabilities]], closely tied to [[node:cap-files|working with files]]: you upload a table and Claude processes it with code. Available in [[node:pl-web-setup|claude.ai]] (on some plans) and via [[node:pl-api|the API]].",
+    "approach": "Don't take numbers on faith — have Claude show the code and the output of running it. Run tasks on real data in the sandbox instead of asking the model to estimate an answer in text. Practicing on your own CSV cements your grasp of the sandbox's limits faster than any theory.",
+    "outcomes": [
+      "You understand how executed code differs from \"number hallucination\"",
+      "You know where code execution is available and how to enable it",
+      "You can phrase a task so Claude computes rather than guesses",
+      "You know the sandbox limits: no network, a time limit, a limited set of packages",
+      "You verify the result by reading the code, not just the final number"
+    ],
+    "applyIn": [
+      {
+        "title": "Data analysis",
+        "description": "You upload a sales or metrics CSV — Claude computes growth, medians, anomalies with code and plots a chart, instead of eyeballing it."
+      },
+      {
+        "title": "Precise math",
+        "description": "Complex formulas, unit conversions, percentages and statistics run as code — arithmetic is correct, not approximate."
+      },
+      {
+        "title": "Data transformation",
+        "description": "Cleaning a table, reformatting JSON, merging files — Claude writes the transformation and immediately shows the result on your data."
+      }
+    ],
+    "pitfalls": [
+      "Asking it to compute complex aggregates \"in its head\" without code execution — the model may err in arithmetic.",
+      "Trusting a number without looking at the code: the code may use the wrong columns or filters.",
+      "Expecting the sandbox to download something from the internet — there's usually no network; provide the data with the task.",
+      "Running very heavy computations — there's a time limit, and long processing can be cut off.",
+      "Relying on an exotic package — only a limited set of libraries is available, not any PyPI module."
+    ],
+    "exercises": [
+      {
+        "question": "Take a small CSV (or ask Claude to generate a test one) and ask it to compute the sum, mean and top-3 values via code execution. Compare with a manual count.",
+        "hint": "If the numbers disagree — check whether Claude picked the right column in the code, and whether there are empty cells."
+      },
+      {
+        "question": "Phrase a task deliberately vaguely (\"analyze the data\"), then precisely (\"compute month-over-month growth on the revenue column, output a table\"). Compare how useful the result is.",
+        "hint": "A precise task that names columns and the desired output format almost always yields reproducible code."
+      },
+      {
+        "question": "Ask Claude to plot a trend chart from the data and explain what it shows.",
+        "hint": "If no chart appears — check whether image output is available on your plan; otherwise ask for a numeric summary."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What code execution is and why it matters",
+        "time": "",
+        "why": "Without grasping the difference between \"the model computed\" and \"the model guessed\", it's easy to trust wrong numbers in an important decision.",
+        "instructions": [
+          "Remember the core idea: with code execution Claude writes Python code and actually runs it, rather than estimating the answer in text.",
+          "Compare the two modes: \"sum these 200 rows in your head\" (error-prone) versus \"compute it with code\" (exact result).",
+          "Note the three gains: accurate math, data analysis, and charts instead of \"number hallucination\".",
+          "Connect it to [[node:capabilities|Claude's capabilities]] — this is an analyst's tool, not just a conversationalist."
+        ],
+        "validate": "You can explain in one sentence why executed code is more reliable than a verbal count.",
+        "tip": "Rule of thumb: if a number something depends on appears in the answer, it should come from code, not from text."
+      },
+      "s2": {
+        "title": "Where it's available and how to enable it",
+        "time": "",
+        "why": "Code execution isn't everywhere or on every plan — you need to know where to look so you don't wait for a feature that isn't there.",
+        "instructions": [
+          "Open [[node:pl-web-setup|claude.ai]] and check your account settings/features: code execution is available on some plans.",
+          "If you work via [[node:pl-api|the API]] — code execution is added as a tool in the request.",
+          "Upload or attach data to the chat — this overlaps with [[node:cap-files|working with files]].",
+          "If the feature isn't there — check your plan and regional availability rather than trying to \"talk\" the model into it."
+        ],
+        "validate": "You can see the code-running option in your interface or API and know how to attach data to it.",
+        "tip": "If the option is missing — ask Claude to show the code anyway: you can run it yourself and check the logic."
+      },
+      "s3": {
+        "title": "Typical scenarios: CSV, math, data transformation",
+        "time": "",
+        "why": "Understanding real cases helps you see where code execution saves time and removes the risk of errors.",
+        "instructions": [
+          "CSV analysis: upload a table and ask it to compute sums, means, growth, and find anomalies.",
+          "Math: complex formulas, percentages, unit conversions, statistics — all via code.",
+          "Data transformation: cleaning a table, reformatting JSON, merging several files.",
+          "Visualization: ask it to plot a trend or distribution chart from the data."
+        ],
+        "validate": "You can name at least three tasks from your own work where code computes more accurately than text.",
+        "tip": "Start with a small file — it's easier to verify Claude picked the right columns."
+      },
+      "s4": {
+        "title": "How to phrase the task",
+        "time": "",
+        "why": "A vague request yields vague code; a precise phrasing yields a reproducible, verifiable result.",
+        "instructions": [
+          "Name the data source: which file/columns and what's in them.",
+          "Describe exactly what to compute (e.g., month-over-month growth on the revenue column).",
+          "Specify the output format: a table, a number, a chart, or all at once.",
+          "Ask it to show the code along with the result so you can check the logic.",
+          "Add edge conditions: what to do with empty cells, duplicates, outliers."
+        ],
+        "validate": "Your phrasing contains a data source, a specific metric and the desired output format.",
+        "tip": "Template: \"On column X from file Y compute Z, show the code and output the result as a table.\""
+      },
+      "s5": {
+        "title": "Sandbox limits and common errors",
+        "time": "",
+        "why": "The sandbox is isolated and limited — knowing its limits spares you false expectations and confusing failures.",
+        "instructions": [
+          "Network: usually no internet access — pass the data with the task, don't \"download it from a link\".",
+          "Time: there's an execution limit — very heavy computations can be cut off, so split the task into parts.",
+          "Packages: a limited set of libraries is available, not any PyPI module.",
+          "State: the sandbox is isolated and temporary — don't count on files persisting between sessions.",
+          "On an error, read the message: most often it's a missing package, the wrong column, or too much data."
+        ],
+        "validate": "You can list three sandbox limits: network, time, and the set of packages.",
+        "tip": "If a computation fails on time — ask Claude to optimize the code or process the data in parts."
+      },
+      "s6": {
+        "title": "Verifying the result",
+        "time": "",
+        "why": "Even executed code can be technically correct yet solve the wrong task — the final check is still on you.",
+        "instructions": [
+          "Look at the code, not just the number: are the right columns, filters and formula used.",
+          "Sanity-check the result and, where possible, spot-check it manually.",
+          "Check edge handling: empty values, duplicates, outliers.",
+          "When in doubt, ask Claude to recompute another way and compare the two results."
+        ],
+        "validate": "You confirmed the number two ways: by reading the code and by a sanity check on the result.",
+        "tip": "Quick test: ask for the same metric via an alternative method — if the values match, it's reliable."
+      }
+    }
+  },
+  "cap-thinking": {
+    "title": "Extended thinking: when to enable \"deep reasoning\"",
+    "subtitle": "The mode where Claude reasons step by step before answering — and what it costs in time and tokens",
+    "totalTime": "6 steps",
+    "whatItIs": "Extended thinking is a mode where, before the final answer, Claude reasons step by step in a separate hidden thinking block: it explores approaches, checks itself, discards bad hypotheses — and only then responds. It is not \"a button that makes the model smarter\" but a tool for a specific class of tasks.\n\nThe mode is available on Opus and Sonnet models. In claude.ai it's turned on with the \"Extended thinking\" toggle in the input bar; via the API it's set with a thinking parameter and a token budget for reasoning.\n\nThe core idea of this course: thinking pays off when a task requires explicit multi-step reasoning and an error in one step cascades and breaks the result. On simple tasks it only adds latency and token cost with no accuracy gain.",
+    "approach": "Don't enable thinking \"just in case.\" Take 2-3 of your own real tasks of different complexity — a simple one (summarize, translate) and a complex one (debugging, comparing options, calculation) — and run every step of the course on them. By the end you'll decide, based on task signals, whether to enable the mode, how to set the budget, and how to verify it actually paid off.",
+    "outcomes": [
+      "Explain how extended thinking differs from a regular answer",
+      "Recognize tasks where step-by-step reasoning genuinely improves accuracy",
+      "Understand when thinking is wasted cost and latency, and don't enable it",
+      "Know how to enable the mode and tune the effort level (the reasoning budget)",
+      "See the link between thinking and the Chain of Thought technique and verify payoff by cost"
+    ],
+    "applyIn": [
+      {
+        "title": "Complex analysis and comparisons",
+        "description": "Weigh options with multiple criteria and trade-offs, choose an architecture, assess trade-offs. Thinking stops the model from \"cutting corners\" and producing a shallow conclusion."
+      },
+      {
+        "title": "Multi-step tasks and debugging",
+        "description": "A chain of 3+ dependent decisions, finding the root cause of a complex bug, multi-stage calculations. The model tests hypotheses and discards incompatible ones before the final answer."
+      },
+      {
+        "title": "High-stakes decisions",
+        "description": "Rare but critical actions — a DB migration plan, a deployment scheme. Here 15 seconds of reasoning is cheaper than the consequences of a wrong answer."
+      }
+    ],
+    "pitfalls": [
+      "Enabling thinking everywhere by default — the most expensive anti-pattern: on simple tasks it adds 200-300% to cost with no accuracy gain.",
+      "Never enabling it — you lose accuracy in critical scenarios where a manual analysis would take tens of minutes.",
+      "Ignoring the reasoning budget — too small and the model can't reach the answer, too large and it burns tokens; tune it per task.",
+      "Showing the thinking block's contents to the user as-is — it's internal draft reasoning, not the final answer for an interface.",
+      "Picking Opus where Sonnet + thinking would suffice — often the same accuracy at half the cost."
+    ],
+    "exercises": [
+      {
+        "question": "Take a complex task where Claude usually answers shallowly (comparing three options, finding the cause of an error) and solve it twice: without thinking and with it. Compare depth, accuracy and response time.",
+        "hint": "The effect is more visible where the answer must be DERIVED from the conditions, not recalled as a fact."
+      },
+      {
+        "question": "Take a simple request (summarize an email into 3 bullets, translate a phrase) and enable thinking on it. Note how much cost and latency grew — and confirm accuracy didn't change.",
+        "hint": "This clearly shows why thinking on simple tasks is an anti-pattern."
+      },
+      {
+        "question": "For one complex task, run it with a small and a large reasoning budget. Find the threshold where the answer stops improving — that's your payoff point.",
+        "hint": "Compare not only correctness but also the cost of each run."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Understand what extended thinking is and how it differs from a regular answer",
+        "time": "",
+        "why": "Without a clear grasp of the mode it's easy to slip into an extreme: enable it everywhere or never. Start with the mechanics.",
+        "instructions": [
+          "Remember the essence: in thinking mode Claude first reasons step by step in a hidden block, and only then forms the final answer.",
+          "Compare with a regular answer: there the model responds immediately, with no separate reasoning phase.",
+          "Note that the thinking block is internal draft reasoning, not part of the answer for the user.",
+          "This is one of the models' key capabilities — see [[node:capabilities|Claude's capabilities]] for context.",
+          "Pick 2-3 of your own real tasks of different complexity — you'll run the whole course on them."
+        ],
+        "validate": "You can explain in your own words how an answer with extended thinking differs from a regular one, and where the reasoning lives.",
+        "tip": "Analogy: a regular answer is replying right away; thinking is \"give me a minute to think out loud, then I'll answer.\""
+      },
+      "s2": {
+        "title": "Understand when thinking is worth enabling",
+        "time": "",
+        "why": "The mode pays off on a narrow class of tasks. Learn to recognize them by their signals rather than enabling at random.",
+        "instructions": [
+          "Remember the markers of a \"thinking task\": a chain of 3+ dependent decisions, math and logic, an ambiguous request with risk of misinterpretation.",
+          "Add debugging a complex bug and analyzing architectural trade-offs — there reasoning catches the error before the finish.",
+          "Separately note high-stakes decisions: a DB migration, a deployment plan — where 15 seconds of reasoning is cheaper than the consequences.",
+          "Review your 2-3 tasks and mark which ones fit these signals.",
+          "Formulate your rule: thinking pays off when the cost of an error is higher than 5× the time and 2-3× the tokens."
+        ],
+        "validate": "From your tasks you've singled out the ones where an error in one step cascades and breaks the result — those are thinking candidates.",
+        "tip": "If you'd solve the task yourself \"on paper\" or with a draft, that's a signal in favor of thinking."
+      },
+      "s3": {
+        "title": "Understand when thinking is NOT needed",
+        "time": "",
+        "why": "The main mistake is enabling the mode everywhere. On simple tasks it only adds latency and cost with no accuracy gain.",
+        "instructions": [
+          "Remember the anti-markers: simple questions (summarize, translate, format) — the answer is a fact, not a derivation.",
+          "Add scenarios where speed matters: a streaming interface with low latency, a fast tool choice.",
+          "Note bulk operations (thousands of similar tasks) — there thinking multiplies cost with no gain.",
+          "Run a simple task from your list and observe: reasoning only lengthens the answer here.",
+          "Tie this to cost economics — see [[node:sys-cost-management|cost management]]."
+        ],
+        "validate": "You can name at least 3 types of tasks where thinking is wasted cost, and justify why.",
+        "tip": "Rule of thumb: if the answer is a fact rather than a derivation from conditions, thinking just burns tokens."
+      },
+      "s4": {
+        "title": "Enable the mode and tune the effort level",
+        "time": "",
+        "why": "Deciding to \"enable\" isn't enough — you need to set how much reasoning to allow. Too little, no answer; too much, wasted cost.",
+        "instructions": [
+          "In claude.ai turn on the \"Extended thinking\" toggle in the input bar and run your complex task on it.",
+          "If you work via the API — set the thinking parameter with a token budget for reasoning (the effort level).",
+          "Match the budget to complexity: math and debugging need more headroom than moderate analysis.",
+          "Run one task with a small and a large budget and compare where the answer stops improving.",
+          "Lock in a working budget for this task type so you don't tune it from scratch each time."
+        ],
+        "validate": "You've enabled thinking and chosen a budget where the answer is complete but tokens aren't wasted.",
+        "tip": "Start with a moderate budget and raise it only if you see the reasoning getting cut off."
+      },
+      "s5": {
+        "title": "See the link with the Chain of Thought technique",
+        "time": "",
+        "why": "Thinking and Chain of Thought solve the same problem — making the model reason before answering — but in different ways. Understanding the link helps you pick the tool.",
+        "instructions": [
+          "Recall Chain of Thought: it's a request in the prompt itself to reason step by step — see [[tutorial:prompt-cot|Chain of Thought]].",
+          "Compare: CoT is built into the request text and its reasoning shows in the answer; thinking is a separate hidden phase at the model level.",
+          "Note the shared principle: both boost accuracy on tasks where the answer must be DERIVED, not recalled.",
+          "Run one task two ways — a regular prompt with \"think step by step\" and the same prompt with thinking enabled.",
+          "Conclude when CoT in the prompt is enough, and when it's worth enabling the separate thinking mode."
+        ],
+        "validate": "You can explain the difference between CoT in the prompt and extended thinking mode, and pick the right one per task.",
+        "tip": "CoT is \"asking in words\"; thinking is \"giving the model a separate place to think.\" Often the first is enough."
+      },
+      "s6": {
+        "title": "Check the cost, tokens and real benefit",
+        "time": "",
+        "why": "Thinking costs time and tokens. Without verifying payoff it's easy to pay for a mode that adds nothing.",
+        "instructions": [
+          "Remember the cost: thinking takes noticeably more time than a regular answer, and the reasoning block also consumes tokens.",
+          "For each task compare the answer with and without thinking: did the result actually improve, or only the cost.",
+          "If accuracy didn't change — turn the mode off for this task type.",
+          "Before choosing a more expensive model, first try a smaller model with thinking — often the same accuracy for less.",
+          "Tie the decision to the project budget — see [[node:sys-cost-management|cost management]] — and record where the mode pays off."
+        ],
+        "validate": "For each of your tasks you've decided whether thinking pays off, and kept it only where it genuinely improves the result.",
+        "tip": "Payoff signal: if a manual analysis would take tens of minutes, 15 seconds of reasoning is a good trade."
+      }
+    }
   }
 }
