@@ -3925,7 +3925,7 @@
         "description": "20-rivinen Python-skripti voi tiivistää sähköposteja, luokitella tukiticketeitä tai poimia strukturoitua dataa dokumenteista."
       },
       "2": {
-        "title": "AI-agentit ja pipelineet",
+        "title": "AI-agentit ja putket",
         "description": "Messages API on jokaisen Claude-agentin perusta. Tool use, monivuoromuisti ja orkestrointi rakentuvat samojen primitiivien päälle."
       }
     },
@@ -7256,7 +7256,7 @@
     "subtitle": "JSON, XML, taulukko ja CSV tiukan skeeman mukaan — jotta vastauksen lukee kone, ei vain ihminen",
     "totalTime": "6 vaihetta",
     "whatItIs": "Joukko tekniikoita, jotka saavat Clauden palauttamaan vastauksen tiukassa rakenteessa: JSON annetun skeeman mukaan, XML, markdown-taulukko tai CSV. Saavutetaan kuvaamalla skeema suoraan promptissa, antamalla selkeä ulostulo-esimerkki ja käyttämällä prefilliä, joka poistaa ylimääräiset kääreet ja johdannon.",
-    "approach": "Etenemme motivaatiosta luotettavuuteen: ensin selvitämme, miksi tiukkaa rakennetta tarvitaan ja mihin se sopii pipelinessa, sitten opimme määrittelemään skeeman selkeästi (kentät, tyypit, esimerkki), valitsemme tehtävään sopivan formaatin (JSON vs taulukko vs CSV), kokoamme täyden toimivan esimerkin skeeman kuvauksella, saavutamme luotettavan parsinnan prefillin ja validoinnin avulla ja päätämme käymällä läpi tyypilliset virheet ja tarkistuksen.",
+    "approach": "Etenemme motivaatiosta luotettavuuteen: ensin selvitämme, miksi tiukkaa rakennetta tarvitaan ja mihin se sopii putkessa, sitten opimme määrittelemään skeeman selkeästi (kentät, tyypit, esimerkki), valitsemme tehtävään sopivan formaatin (JSON vs taulukko vs CSV), kokoamme täyden toimivan esimerkin skeeman kuvauksella, saavutamme luotettavan parsinnan prefillin ja validoinnin avulla ja päätämme käymällä läpi tyypilliset virheet ja tarkistuksen.",
     "outcomes": [
       "Ymmärrät, milloin tiukka rakenne on pakollinen ja milloin se on liikaa",
       "Osaat kuvata skeeman selkeästi: kentät, tyypit, rajoitukset, ulostulo-esimerkki",
@@ -7266,7 +7266,7 @@
     ],
     "applyIn": [
       {
-        "title": "Integrointi pipelineen",
+        "title": "Integrointi putkeen",
         "description": "Kun Clauden jälkeen tulee koodi-parseri: vastauksen on oltava kelvollista JSONia tai CSV:tä, jotta sen voi viedä eteenpäin ilman käsin korjaamista."
       },
       {
@@ -7303,7 +7303,7 @@
       "s1": {
         "title": "Miksi tiukkaa rakennetta tarvitaan",
         "time": "",
-        "why": "Vapaa teksti on kätevä ihmiselle mutta epäluotettava koneelle: parseri hajoaa ylimääräiseen fraasiin tai eri kenttäjärjestykseen. Tiukka rakenne muuttaa tekstimallin ennustettavaksi pipelinen komponentiksi.",
+        "why": "Vapaa teksti on kätevä ihmiselle mutta epäluotettava koneelle: parseri hajoaa ylimääräiseen fraasiin tai eri kenttäjärjestykseen. Tiukka rakenne muuttaa tekstimallin ennustettavaksi putken komponentiksi.",
         "instructions": [
           "Määritä, kuka lukee vastauksen: ihminen (silloin rakenne on valinnainen) vai koodi-parseri / toinen järjestelmä",
           "Jos Clauden jälkeen tulee automaattinen käsittely — rakenne on pakollinen",
@@ -9285,7 +9285,7 @@
           "Lukitse tavoite: pienennä input-kustannusta ja viivettä toistuvalla kontekstilla."
         ],
         "validate": "Osaat selittää yhdellä lauseella, miksi haluat cachingia, ja nimetä pyyntösi vakio-osan.",
-        "tip": "Caching säästää inputissa, ei outputissa. Jos juuri output on kallis, se on eri ongelma."
+        "tip": "Caching säästää syötteessä, ei tuloksessa. Jos juuri output on kallis, se on eri ongelma."
       },
       "s2": {
         "title": "Päätä, mitä välimuistittaa (stabiili prefix)",
@@ -13175,7 +13175,7 @@
     "subtitle": "Operations-prosessista, jonka tiimi tekee käsin joka viikko, tuotanto-workflow:ksi Skills- ja Hooks-ratkaisulla laaduntarkistuksineen",
     "totalTime": "6 vaihetta",
     "whatItIs": "Strukturoitu polku yhden tietyn toistuvan prosessin automatisointiin AI:n kautta: hyvän ehdokkaan valinnasta tuotantovalmiiseen workflow:iin [[node:skills|Skills]]-ratkaisulla ja automaattisilla laukaisimilla. Ei «kokeilimme Claudea ja tykkäsimme», vaan systemaattinen lähestymistapa metriikoineen ja laatuportteineen.",
-    "approach": "Ensin valitse ja vakauta prosessi, joka pyörii vähintään 5 kertaa viikossa selkeillä inputeilla/outputeilla. Sitten dokumentoi se as-is ja tunnista askeleet, jotka AI voi realistisesti ottaa hoitaakseen. Rakenna automaation ydin — uudelleenkäytettävä Skill ja tarvittaessa ulkoiset integraatiot — ja lisää laukaisimet. Upota aina laatuportit ihmisen reviewn kanssa, testaa historiallisella datalla ja vasta sitten vie tuotantoon monitoroinnin ja skaalaussuunnitelman kanssa.",
+    "approach": "Ensin valitse ja vakauta prosessi, joka pyörii vähintään 5 kertaa viikossa selkeillä syötteillä/tuloksilla. Sitten dokumentoi se as-is ja tunnista askeleet, jotka AI voi realistisesti ottaa hoitaakseen. Rakenna automaation ydin — uudelleenkäytettävä Skill ja tarvittaessa ulkoiset integraatiot — ja lisää laukaisimet. Upota aina laatuportit ihmisen reviewn kanssa, testaa historiallisella datalla ja vasta sitten vie tuotantoon monitoroinnin ja skaalaussuunnitelman kanssa.",
     "outcomes": [
       "Automatisoitu workflow tietylle prosessille, valmis päivittäiseen käyttöön 2-3 viikossa",
       "70-90 % aikasäästö prosessin rutiiniaskelissa",
@@ -13206,7 +13206,7 @@
     ],
     "exercises": [
       {
-        "question": "Etsi tiimistäsi yksi prosessi, joka pyörii ≥5 kertaa viikossa selkeillä inputeilla ja outputeilla. Kuvaa sen askeleet ja merkitse, mitkä AI voisi ottaa hoitaakseen.",
+        "question": "Etsi tiimistäsi yksi prosessi, joka pyörii ≥5 kertaa viikossa selkeillä syötteillä ja tuloksilla. Kuvaa sen askeleet ja merkitse, mitkä AI voisi ottaa hoitaakseen.",
         "hint": "Hyvä ehdokas: vakaa muoto, selkeä tulos, mitattava aika. Jos prosessi vielä muuttuu joka viikko, vakauta se ensin."
       },
       {
@@ -13224,7 +13224,7 @@
         "time": "",
         "why": "Ilman oikeaa ehdokasta automaatio joko ei kannata tai rikkoutuu jatkuvasti. Tämä askel ratkaisee, kannattaako edes aloittaa.",
         "instructions": [
-          "Tarkista ehdokaskriteerit: prosessi pyörii ≥5 kertaa viikossa selkeillä inputeilla ja outputeilla",
+          "Tarkista ehdokaskriteerit: prosessi pyörii ≥5 kertaa viikossa selkeillä syötteillä ja tuloksilla",
           "Varmista, että tulosten vaihtelu manuaalisessa suorituksessa on tiimille todellinen ongelma",
           "Tarkista tekninen toteutettavuus: onko pääsy tarvittaviin laukaisimiin ja integraatioihin",
           "Muotoile odotettu tulos metriikoina: aikasäästö 70-90 %, virhetaso <5 %",
@@ -13337,7 +13337,7 @@
       "Jättää dokumentaatio huomiotta. Tulosten seuranta on tärkeämpää kuin itse AI-output: ilman lokia ei ole oppimissilmukkaa.",
       "Ylikuormittaa prosessin byrokratialla. Raskas malli tappaa käyttöönoton — pidä se kevyenä.",
       "Lisätä kaikki päätökset prosessiin kerralla. Aloita major-päätöksistä, jotka vaativat trade-offia; pieni rutiini jää ennalleen.",
-      "Luottaa AI-outputiin tarkistamatta dataa. Heikko syöte johtaa varmalta kuulostavaan mutta virheelliseen analyysiin."
+      "Luottaa AI-tulokseen tarkistamatta dataa. Heikko syöte johtaa varmalta kuulostavaan mutta virheelliseen analyysiin."
     ],
     "exercises": [
       {
@@ -13695,10 +13695,10 @@
   },
   "uc-ai-discovery-launch": {
     "title": "AI Discoveryn käynnistys tuotteessa",
-    "subtitle": "Manuaalisesta research:ista AI-powered discovery pipelineen 2 viikossa",
+    "subtitle": "Manuaalisesta research:ista AI-powered discovery putkeen 2 viikossa",
     "totalTime": "6 vaihetta",
-    "whatItIs": "Vaiheittainen skenaario, joka muuttaa hajanaiset haastattelut ja palautteen toimivaksi AI-discovery pipelineksi. Järjestät research-repositorion, rakennat RAG-pohjaisen synteesin ja upotat sen tuoteprosessiin validoinnin kanssa. Tämä on sovellettu reitti [[node:use-cases|Use Cases]] -setistä, joka nojaa [[node:pd-discovery-research|Discovery Research]] -käytäntöön.",
-    "approach": "Etenemme periaatteella «ensin input, sitten synteesi, sitten prosessi». Ensin siivoamme datan (ilman strukturoitua inputia AI on hyödytön), sitten rakennamme kaksi keskeistä synteesivaihetta — teemojen uuttaminen ja päätelmien muotoilu — sitten tarkistamme päätelmät tutuilla haastatteluilla ja vasta sitten upotamme pipelinen tiimin säännölliseen työhön. Jokainen askel tuottaa todennettavan tuloksen, ei «asetusta asetuksen vuoksi».",
+    "whatItIs": "Vaiheittainen skenaario, joka muuttaa hajanaiset haastattelut ja palautteen toimivaksi AI-discovery putkeksi. Järjestät research-repositorion, rakennat RAG-pohjaisen synteesin ja upotat sen tuoteprosessiin validoinnin kanssa. Tämä on sovellettu reitti [[node:use-cases|Use Cases]] -setistä, joka nojaa [[node:pd-discovery-research|Discovery Research]] -käytäntöön.",
+    "approach": "Etenemme periaatteella «ensin input, sitten synteesi, sitten prosessi». Ensin siivoamme datan (ilman strukturoitua inputia AI on hyödytön), sitten rakennamme kaksi keskeistä synteesivaihetta — teemojen uuttaminen ja päätelmien muotoilu — sitten tarkistamme päätelmät tutuilla haastatteluilla ja vasta sitten upotamme putken tiimin säännölliseen työhön. Jokainen askel tuottaa todennettavan tuloksen, ei «asetusta asetuksen vuoksi».",
     "outcomes": [
       "Research-repository on järjestetty: kaikki haastattelut ja palaute yhdessä paikassa, AI:n saatavilla",
       "Toimiva synteesi: datasta strukturoituihin teemoihin ≤2 tunnissa per aihe päivien manuaalisen työn sijaan",
@@ -13724,8 +13724,8 @@
       "Synteesin ajaminen ilman strukturoitua inputia: jos haastattelut ovat hajallaan Notionissa, Google Docsissa ja Slackissä, AI ei löydä niitä",
       "Datan valmistelun aliarvioiminen — repositorion järjestäminen vie ~30% koko skenaariosta, eikä sitä voi ohittaa",
       "Päätelmiin luottaminen ilman todennusta: synteesi ilman lähteiden tarkistusta tuottaa uskottavia mutta vääriä teemoja",
-      "Pysähtyminen haastatteluihin eikä pipelinen laajentaminen jatkuvaan palautteeseen — silloin järjestelmä vanhenee kuukaudessa",
-      "Pipelinen rakentaminen yksin eikä muiden PM:ien kouluttaminen — tieto jää yhdelle henkilölle eikä juurru"
+      "Pysähtyminen haastatteluihin eikä putken laajentaminen jatkuvaan palautteeseen — silloin järjestelmä vanhenee kuukaudessa",
+      "Putken rakentaminen yksin eikä muiden PM:ien kouluttaminen — tieto jää yhdelle henkilölle eikä juurru"
     ],
     "exercises": [
       {
@@ -13737,7 +13737,7 @@
         "hint": "Mieti lähdelinkkejä: jokaisen teeman pitäisi osoittaa tiettyihin haastattelusitaatteihin."
       },
       {
-        "question": "Mitä pipelinelle tapahtuu kuukaudessa, jos rakennat sen vain vanhoille haastatteluille?",
+        "question": "Mitä putkelle tapahtuu kuukaudessa, jos rakennat sen vain vanhoille haastatteluille?",
         "hint": "Mieti uuden palautteen virtaa — tarvitaanko erillinen askel jatkuvalle datalle."
       }
     ],
@@ -13953,10 +13953,10 @@
   },
   "uc-ai-rag-launch": {
     "title": "RAG-järjestelmän käynnistys",
-    "subtitle": "Tilasta «AI ei tunne dokumenttejamme» toimivaan pipelineen sitaateilla 6 askeleessa",
+    "subtitle": "Tilasta «AI ei tunne dokumenttejamme» toimivaan putkeen sitaateilla 6 askeleessa",
     "totalTime": "6 vaihetta",
-    "whatItIs": "RAG (Retrieval-Augmented Generation) on malli, jossa LLM hakee tietopohjastasi relevantit fragmentit ennen vastaamista ja vastaa tiukasti niiden pohjalta [[node:cap-citations|citations]]-sitaateilla. Kurssi etenee päätöksestä «tarvitaanko RAG» tuotanto-pipelineen: korpuksen valmistelu, indeksointi, vastauksen kokoaminen, laadun arviointi ja tuotantoon vienti. Tämä on useimpien [[node:use-cases|use-cases]]-AI-projektien tekninen perusta.",
-    "approach": "Etenemme yksinkertaisesta luotettavaan, mutta EMME pysähdy Naive RAG:iin. Ensin kiinnitämme miksi RAG tarvitaan ja mitä mittaamme. Sitten rakennamme pipelinen kerroksittain: korpus → embeddings + vektoritietokanta → vastauksen kokoaminen sitaateilla → arviointi → tuotanto. Joka askeleella tarkistamme laadun oikeilla kysymyksillä, emme «silmämääräisesti». Tuotannon minimi on chunking overlapilla, hybridi-haku ja re-ranking — muuten käyttäjät näkevät «AI puhuu väärin».",
+    "whatItIs": "RAG (Retrieval-Augmented Generation) on malli, jossa LLM hakee tietopohjastasi relevantit fragmentit ennen vastaamista ja vastaa tiukasti niiden pohjalta [[node:cap-citations|citations]]-sitaateilla. Kurssi etenee päätöksestä «tarvitaanko RAG» tuotanto-putkeen: korpuksen valmistelu, indeksointi, vastauksen kokoaminen, laadun arviointi ja tuotantoon vienti. Tämä on useimpien [[node:use-cases|use-cases]]-AI-projektien tekninen perusta.",
+    "approach": "Etenemme yksinkertaisesta luotettavaan, mutta EMME pysähdy Naive RAG:iin. Ensin kiinnitämme miksi RAG tarvitaan ja mitä mittaamme. Sitten rakennamme putken kerroksittain: korpus → embeddings + vektoritietokanta → vastauksen kokoaminen sitaateilla → arviointi → tuotanto. Joka askeleella tarkistamme laadun oikeilla kysymyksillä, emme «silmämääräisesti». Tuotannon minimi on chunking overlapilla, hybridi-haku ja re-ranking — muuten käyttäjät näkevät «AI puhuu väärin».",
     "outcomes": [
       "Tiedät milloin RAG tarvitaan ja milloin pelkkä prompt tai fine-tuning riittää",
       "Pipeline rakennettu: korpus → embeddings → vektoritietokanta → retrieval → vastaus sitaateilla",
@@ -14003,7 +14003,7 @@
       "s1": {
         "title": "Päätä: tarvitaanko RAG ja mitä mittaat",
         "time": "",
-        "why": "RAG on yleisin tuotantomalli, mutta ei universaali. Ilman selkeää «miksi» ja mittaria rakennat pipelinen, jota et voi arvioida etkä parantaa.",
+        "why": "RAG on yleisin tuotantomalli, mutta ei universaali. Ilman selkeää «miksi» ja mittaria rakennat putken, jota et voi arvioida etkä parantaa.",
         "instructions": [
           "Muotoile ongelma: missä LLM tarkalleen «ei tunne faktojamme» (dokumentit, KB, historia)",
           "Tarkista vaihtoehdot: riittääkö prompt kontekstilla vai tarvitaanko fine-tuning — katso [[node:af-rag-basics|RAG:n perusteet]]",
@@ -14031,7 +14031,7 @@
       "s3": {
         "title": "Indeksointi: embeddings + vektoritietokanta",
         "time": "",
-        "why": "Embeddings muuntavat chunkit vektoreiksi semanttista samankaltaisuushakua varten. Vektoritietokanta tallentaa ne ja mahdollistaa nopean retrievalin — pipelinen sydän.",
+        "why": "Embeddings muuntavat chunkit vektoreiksi semanttista samankaltaisuushakua varten. Vektoritietokanta tallentaa ne ja mahdollistaa nopean retrievalin — putken sydän.",
         "instructions": [
           "Valitse embedding-malli dokumenttiesi kielelle ja domainille sopivaksi",
           "Valitse vektoritietokanta: pgvector / Pinecone / Weaviate mittakaavasi ja pinosi mukaan",
@@ -14061,7 +14061,7 @@
         "time": "",
         "why": "«Silmämääräinen» julkaisu tarkoittaa, että järjestelmä hajoaa hiljaa. Tarvitaan numeroita: kuinka hyvin retrieval hakee oikean ja kuinka hyvin vastaukset pysyvät faktoissa.",
         "instructions": [
-          "Aja harjoituksen gold-kysymys-vastaus-setti pipelinen läpi",
+          "Aja harjoituksen gold-kysymys-vastaus-setti putken läpi",
           "Mittaa retrieval-relevanssi: päätyykö oikea chunk top-K:hon",
           "Mittaa hallusinaatioiden taso: onko vastauksissa faktoja ilman lähdetukea",
           "Tarkista citation rate: linkittääkö jokainen vastaus oikeaan fragmenttiin",
@@ -14155,7 +14155,7 @@
         "instructions": [
           "Luettele vikakohdat: mallin timeout/saavuttamattomuus, virheellinen tai epätäydellinen output, rajojen ylitykset",
           "Määritä kullekin käyttäytyminen: retry backoffilla, fallback-vastaus, alentuminen manuaaliseen prosessiin",
-          "Lisää mallin outputin validointi ennen kuin se päätyy käyttäjälle tai seuraavaan askeleeseen",
+          "Lisää mallin tuloksen validointi ennen kuin se päätyy käyttäjälle tai seuraavaan askeleeseen",
           "Jäädytä ja versioi kaikki promptit — jokaisen muutoksen tulee olla jäljitettävissä",
           "Pystytä muodolliset laatuportit workflow:hin"
         ],
@@ -14168,7 +14168,7 @@
         "why": "Ilman objektiivista arviointia laadun heikkeneminen huomataan vasta valituksista. Evals muuttaa «meistä tuntuu paremmalta» toistettavaksi numeroksi ennen julkaisua.",
         "instructions": [
           "Kokoa referenssijoukko (golden set) odotetuilla tuloksilla — tutustu [[node:sys-evals-benchmarks|evals- ja benchmark-lähestymistapaan]]",
-          "Määritä tehtävääsi sopivat laatumittarit (oikeellisuus, relevanssi, outputin turvallisuus)",
+          "Määritä tehtävääsi sopivat laatumittarit (oikeellisuus, relevanssi, tuloksen turvallisuus)",
           "Aseta läpipääsykynnys: sen alle ei julkaista",
           "Aja evals jokaisella promptin tai mallin muutoksella — se on osa laatuporttia"
         ],
@@ -14183,7 +14183,7 @@
           "Pystytä avainmittarien monitorointi: laatu, virheaste, vastausaika, pyyntöjen määrä",
           "Kytke kustannusseuranta per pyyntö ja per päivä, piikkihälytyksellä — katso [[node:ai-operations|AI-operoinnin]] käytännöt",
           "Luo dashboard ja kynnyshälytykset, jotka on sidottu askeleen 1 valmiuskriteereihin",
-          "Lokita syötteet/outputit (privacy-tietoisesti) tapausanalyysiä ja evalsien rikastamista varten"
+          "Lokita syötteet/tulokset (privacy-tietoisesti) tapausanalyysiä ja evalsien rikastamista varten"
         ],
         "validate": "Dashboard näyttää laadun, virheet, latenssin ja kustannuksen reaaliajassa; hälytykset on konfiguroitu kynnysrikkomuksille.",
         "tip": "Sido laatuhälytys suoraan askeleen 6 rollback-laukaisimeen — monitorointi on hyödytöntä, jos kukaan ei toimi sen pohjalta."
@@ -14195,7 +14195,7 @@
         "instructions": [
           "Luokittele järjestelmän läpi kulkeva data (julkinen / sisäinen / henkilökohtainen / luottamuksellinen)",
           "Tarkista DPA mallin vendorin kanssa ja herkän datan käsittelyn ehdot",
-          "Rajoita pääsyt least-privilege-periaatteella: kuka näkee lokit, promptit, outputit",
+          "Rajoita pääsyt least-privilege-periaatteella: kuka näkee lokit, promptit, tulokset",
           "Tunnista AI-spesifiset riskit (datavuoto, prompt injection, haitallinen output) ja kirjaa lievennykset",
           "Hanki governance-hyväksyntä ennen julkaisua"
         ],
@@ -14612,7 +14612,7 @@
   },
   "uc-ai-design-research-launch": {
     "title": "AI Design Researchin käynnistys",
-    "subtitle": "Vuoresta lukematonta research-materiaalia toimivaan AI-synteesipipelineen kuudessa askeleessa",
+    "subtitle": "Vuoresta lukematonta research-materiaalia toimivaan AI-synteesiputkeen kuudessa askeleessa",
     "totalTime": "6 vaihetta",
     "whatItIs": "Vaiheittainen skenaario, jolla kertyneet haastattelut, sessiotallenteet ja käyttäjäpalaute muutetaan strukturoiduiksi insighteiksi AI:n avulla — ja upotetaan tiimin jatkuvaan design-prosessiin. Se on osa [[node:use-cases|läpileikkaavien skenaarioiden]] kokoelmaa ja konkretisoi [[node:ai-native-design|AI-native designin]] idean tiettyyn research-sykliin.",
     "approach": "Etenemme datasta päätöksiin: ensin varmistamme, että skenaario on ylipäätään tarpeen, sitten kokoamme materiaalin yhteen, ajamme AI-synteesin, tarkistamme päätelmät huolellisesti hallusinaation varalta, muutamme mallit design-päätöksiksi ja vakiinnutamme toistettavaksi prosessiksi. AI nopeuttaa synteesiä, mutta lopullisesta insightista vastaa ihminen.",
@@ -14621,7 +14621,7 @@
       "Osaat koota hajallaan olevan research-materiaalin yhdeksi AI-valmiiksi pohjaksi",
       "Saat toistettavan synteesi-prompttisyklin: transkripteistä malleihin tunneissa, ei viikoissa",
       "Erotat vahvistetun insightin mallin hallusinaatiosta ja osaat tarkistaa sen",
-      "Upotat research-pipelinen design-prosessiin niin, että koko tiimi käyttää sitä"
+      "Upotat research-putken design-prosessiin niin, että koko tiimi käyttää sitä"
     ],
     "applyIn": [
       {
@@ -14630,7 +14630,7 @@
       },
       {
         "title": "Epätasapainoinen design ops",
-        "description": "Paljon research-inputtia, vähän synthesis-outputtia: suunnittelijat hukkuvat dataan designaamisen sijaan. Pipeline palauttaa tasapainon."
+        "description": "Paljon research-syötettä, vähän synthesis-tulosta: suunnittelijat hukkuvat dataan designaamisen sijaan. Pipeline palauttaa tasapainon."
       },
       {
         "title": "Säännölliset discovery-syklit",
@@ -14662,15 +14662,15 @@
       "s1": {
         "title": "Ymmärrä, milloin skenaario tarvitaan, ja kiinnitä lopputulos",
         "time": "",
-        "why": "Pipelinen käynnistäminen ilman täytettyjä ehtoja on kallein virhe: tiimi käyttää kaksi viikkoa ja huomaa, ettei ole mitään synteesoitavaa tai kenelläkään ei ole käyttöä sille.",
+        "why": "Putken käynnistäminen ilman täytettyjä ehtoja on kallein virhe: tiimi käyttää kaksi viikkoa ja huomaa, ettei ole mitään synteesoitavaa tai kenelläkään ei ole käyttöä sille.",
         "instructions": [
           "Tarkista sisäänpääsykynnys: onko ≥10 sessiotallennetta tai haastattelutranskriptiä käsiteltäväksi",
-          "Arvioi design ops -tasapaino: paljon research-inputtia, vähän synthesis-outputtia on signaali käynnistää",
+          "Arvioi design ops -tasapaino: paljon research-syötettä, vähän synthesis-tulosta on signaali käynnistää",
           "Hanki buy-in Head of Designilta ja sovi PM-tiimin kanssa linjauksesta etukäteen",
           "Kiinnitä tavoiteltu lopputulos mitattavasti: time-to-insight, research-kattavuus, teema-kirjasto"
         ],
         "validate": "Sinulla on kolme «kyllä»: riittävästi materiaalia, johdon tuki, sopimus PM:ien kanssa — ja tavoitemittarit on kirjattu ylös.",
-        "tip": "Jos edes yksi ehto ei täyty, älä käynnistä koko pipelinea — korjaa puute ensin. Se on halvempaa kuin epäonnistuneen käynnistyksen peruminen."
+        "tip": "Jos edes yksi ehto ei täyty, älä käynnistä koko putkea — korjaa puute ensin. Se on halvempaa kuin epäonnistuneen käynnistyksen peruminen."
       },
       "s2": {
         "title": "Kokoa research-materiaali yhdeksi pohjaksi",
@@ -14727,9 +14727,9 @@
       "s6": {
         "title": "Upota design-prosessiin ja vakiinnuta tarkistuslistalla",
         "time": "",
-        "why": "Kertaluontoinen synteesi ei muuta tiimiä. Arvo tulee toistettavasta pipelinesta, joka on rakennettu jokaiseen research-kierrokseen ja jota kaikki käyttävät.",
+        "why": "Kertaluontoinen synteesi ei muuta tiimiä. Arvo tulee toistettavasta putkesta, joka on rakennettu jokaiseen research-kierrokseen ja jota kaikki käyttävät.",
         "instructions": [
-          "Pidä tiimin koulutus ja ensimmäinen oikea research-kierros uudella pipelinella yhdessä",
+          "Pidä tiimin koulutus ja ensimmäinen oikea research-kierros uudella putkella yhdessä",
           "Synkronoi prosessi PM-tiimin kanssa, jotta design ja product research tuottavat jaettuja insighteja päällekkäisyyden sijaan",
           "Vakiinnuta kierroksen tarkistuslista: materiaali koottu → synteesi ajettu → päätelmät tarkistettu → insightit muutettu päätöksiksi",
           "Nimeä vastuuhenkilö teema-pohjan ylläpidolle ja kierrosten säännöllisyydelle"
@@ -15212,7 +15212,7 @@
         "instructions": [
           "Tunnista minkä tahansa workflow:n neljä palikkaa: input (mitä tulee sisään), AI-askeleet (mitä käsitellään), tarkistuspiste (missä ihminen katsoo), output (mitä siirretään eteenpäin).",
           "Aloita yksinkertaisimmasta muodosta — [[node:sys-linear-chain|Linear Chain]]: A → B → C, ilman haaroja tai silmukoita.",
-          "Vastaa jokaisesta askeleesta: mitä se saa inputiksi ja mitä se antaa seuraavalle askeleelle.",
+          "Vastaa jokaisesta askeleesta: mitä se saa syötteeksi ja mitä se antaa seuraavalle askeleelle.",
           "Merkitse missä ihminen on pakollinen: se on tuleva laadunvalvontapisteesi (lisää [[node:sys-quality-gates|Quality Gates]]).",
           "Yhdistä se isompaan kuvaan: workflow on [[node:ai-workflows|AI Workflows]]:n erikoistapaus ja [[node:systems|Agenttijärjestelmien]] rakennuspalikka."
         ],
@@ -15245,7 +15245,7 @@
           "Vertaa esimerkin palikat omaan ketjuusi askeleesta 3: täsmääkö rakenne input → askeleet → output?"
         ],
         "validate": "Osaat selittää mikä esimerkin palikka vastaa mitäkin oman workflow:si palikkaa.",
-        "tip": "Huomaa: tarkistus on tässä minimaalinen koska tiivistelmä on vain sinulle. Mitä korkeammat outputin panokset, sitä tiukempi tarkistuspisteen on oltava."
+        "tip": "Huomaa: tarkistus on tässä minimaalinen koska tiivistelmä on vain sinulle. Mitä korkeammat tuloksen panokset, sitä tiukempi tarkistuspisteen on oltava."
       },
       "s5": {
         "title": "Rajat ja riskit",
@@ -15270,10 +15270,10 @@
           "Tarkista: jokainen askel tekee yhden asian ja on muotoiltu muodossa «input → output».",
           "Tarkista: on ihmisen tarkistuspiste siellä missä virheen hinta on korkea.",
           "Tarkista: workflow kattaa yhden tehtävän, ei kaikkea kerralla.",
-          "Aja prosessi 2-3 aidolla inputilla peräkkäin ja vertaa tuloksia — onko se vakaa ajosta ajoon?"
+          "Aja prosessi 2-3 aidolla syötteellä peräkkäin ja vertaa tuloksia — onko se vakaa ajosta ajoon?"
         ],
         "validate": "Kaikki viisi tarkistuslistan kohtaa täyttyvät, ja kolmella aidolla ajolla workflow tuotti ennustettavan hyvän tuloksen.",
-        "tip": "Kirjaa millä inputilla workflow hajosi tai antoi heikon tuloksen — se on ensimmäinen parannuskohde seuraavassa iteraatiossa."
+        "tip": "Kirjaa millä syötteellä workflow hajosi tai antoi heikon tuloksen — se on ensimmäinen parannuskohde seuraavassa iteraatiossa."
       }
     }
   },
@@ -15282,7 +15282,7 @@
     "subtitle": "Suora linja A → B → C: luotettavin tapa koota AI-tehtävä",
     "totalTime": "6 vaihetta",
     "whatItIs": "Linear chain on workflow ilman haaroja: askeleet seuraavat toisiaan, jokainen saa edellisen tuloksen (A → B → C). Ei «jos-niin», ei rinnakkaisia haaroja. Se on [[node:sys-workflows-basics|workflow:n]] perusmuoto ja [[node:sys-prompt-chaining|prompt chainingin]] erikoistapaus, jossa jokainen askel on erillinen ymmärrettävä logiikan pala. Noin 80% oikeista AI-tehtävistä on juuri tällainen.",
-    "approach": "Kurssi etenee ymmärryksestä «milloin linear chain on oikea valinta» valmiiseen pipelineen. Ensin käymme läpi olemuksen ja soveltamisrajat, sitten rakenteen (yksi askel = yksi merkitys, tuloksen välittäminen eteenpäin), sitten rakennamme ketjun askel askeleelta, käymme läpi elävän esimerkin, hahmotamme riskit ja rajat, ja lopuksi ajamme valmius-checklistin luotettavuustarkistuksella.",
+    "approach": "Kurssi etenee ymmärryksestä «milloin linear chain on oikea valinta» valmiiseen putkeen. Ensin käymme läpi olemuksen ja soveltamisrajat, sitten rakenteen (yksi askel = yksi merkitys, tuloksen välittäminen eteenpäin), sitten rakennamme ketjun askel askeleelta, käymme läpi elävän esimerkin, hahmotamme riskit ja rajat, ja lopuksi ajamme valmius-checklistin luotettavuustarkistuksella.",
     "outcomes": [
       "Ymmärrät, milloin linear chain kattaa tehtävän ja milloin tarvitaan haaroja",
       "Osaat jakaa tehtävän selkeisiin askeliin periaatteella «yksi askel — yksi merkitys»",
@@ -15369,7 +15369,7 @@
       "s4": {
         "title": "Esimerkki täydestä ketjusta",
         "time": "",
-        "why": "Elävä esimerkki näyttää, miten abstraktit säännöt muuttuvat toimivaksi pipelineksi ja mihin tarkistus tarkalleen lisätään.",
+        "why": "Elävä esimerkki näyttää, miten abstraktit säännöt muuttuvat toimivaksi putkeksi ja mihin tarkistus tarkalleen lisätään.",
         "instructions": [
           "Käy läpi esimerkki «asiakkaan onboarding»: lomake → welcome-email → onboarding-checklist → sopimusluonnos → lähetys.",
           "Seuraa, miten jokaisen askeleen tulos syöttää seuraavaa: lomakedata → emailin personointi → toimiala checklistiin → hinnat sopimukseen.",
@@ -15576,7 +15576,7 @@
     "exercises": [
       {
         "question": "Sinulla on yksi promptti, joka 'tekee 5 eri asiaa huonosti' eri syötetyypeillä. Mitkä kaksi signaalia vahvistavat, että on aika haarautua, ja mistä aloitat?",
-        "hint": "Signaalit: outputin rakenne vaihtelee syötetyypin mukaan; haluat eri mallit eri skenaarioihin. Aloita kirjoittamalla mahdollisten kategorioiden suljettu enum."
+        "hint": "Signaalit: tuloksen rakenne vaihtelee syötetyypin mukaan; haluat eri mallit eri skenaarioihin. Aloita kirjoittamalla mahdollisten kategorioiden suljettu enum."
       },
       {
         "question": "Reititin palautti category=\"refund\" confidence=0.35. Mitä workflown pitäisi tehdä ja miksi juuri näin?",
@@ -15596,7 +15596,7 @@
           "Lukitse määritelmä: haarautuminen on sitä, että MALLI (reititin), ei käyttäjä eikä kovakoodattu logiikka, valitsee reitin askeleen A jälkeen.",
           "Vertaa [[node:sys-linear-chain|lineaariseen ketjuun]]: jos jokainen syöte kulkee saman polun, haarautumista ei tarvita.",
           "Tarkista soveltuvuuskynnys: haarautuminen on perusteltua, kun samalla syötteellä on 3+ pohjimmiltaan erilaista skenaariota.",
-          "Kirjaa 3 signaalia: yksi promptti 'tekee 5 asiaa huonosti'; outputin rakenne vaihtelee syötetyypin mukaan; haluat eri mallit eri skenaarioihin (cost)."
+          "Kirjaa 3 signaalia: yksi promptti 'tekee 5 asiaa huonosti'; tuloksen rakenne vaihtelee syötetyypin mukaan; haluat eri mallit eri skenaarioihin (cost)."
         ],
         "validate": "Osaat nimetä oman todellisen tapauksesi ja kertoa, montako pohjimmiltaan erilaista skenaariota siinä on samalla syötteellä (3+ vai ei).",
         "tip": "Jos skenaarioita on vain 2 ja ne ovat rakenteeltaan lähes identtisiä, älä lisää reititintä — käytä yhtä promptia parametrilla."
@@ -15835,7 +15835,7 @@
     ],
     "pitfalls": [
       "Raakatekstin välittäminen askelten välillä JSON-rakenteen sijaan — seuraava askel parsii regexillä ja rikkoutuu ~10 %:ssa.",
-      "Askeleen N outputin validoinnin sivuuttaminen ennen askelta N+1 — malli palauttaa kerran 100 kutsusta `null` taulukon sijaan, ja kaatuminen tulee viiveellä ja hämärällä virheellä.",
+      "Askeleen N tuloksen validoinnin sivuuttaminen ennen askelta N+1 — malli palauttaa kerran 100 kutsusta `null` taulukon sijaan, ja kaatuminen tulee viiveellä ja hämärällä virheellä.",
       "Yhden raskaan mallin käyttö joka askeleella — Sonnet yksinkertaisessa extractionissa on moninkertainen ylimaksu; valitse malli askeleen tehtävän mukaan.",
       "Virheiden kertymisen sivuuttaminen: 95 %:n askelkohtaisella tarkkuudella 4-askelinen ketju on 81 % end-to-end — ilman quality gateja rajoilla tämä on näkymätöntä rappeutumista.",
       "`trace_id`:n välittämättä jättäminen — logeissa hajanaisia kutsuja, joita ei voi koota yhdeksi pyynnöksi analyysiä varten."
@@ -15847,7 +15847,7 @@
       },
       {
         "question": "Kirjaa ketjullesi, mitä kukin askel tekee, jos edellinen palautti virheen tai heikon tuloksen: skip, retry, fallback vai escalate ihmiselle?",
-        "hint": "Nojaa [[node:sys-context-passing|sys-context-passing]] -solmuun — käsittelet paitsi onnistuneen outputin myös signaalin sen laadusta."
+        "hint": "Nojaa [[node:sys-context-passing|sys-context-passing]] -solmuun — käsittelet paitsi onnistuneen tuloksen myös signaalin sen laadusta."
       },
       {
         "question": "Laske ketjusi end-to-end-tarkkuus, jos jokainen askel toimii 90 %:lla. Montako askelta tekee siitä epäluotettavan?",
@@ -15869,11 +15869,11 @@
         "tip": "Jos tehtävä on yksi toiminto (pelkkä luokittelu tai yksinkertainen generointi), ketjua ei tarvita — se vain lisää latenssia. Pilko vain se, mikä aidosti koostuu erilaisista tehtävistä."
       },
       "s2": {
-        "title": "Miten välittää askeleen output seuraavan inputiksi",
+        "title": "Miten välittää askeleen output seuraavan syötteeksi",
         "time": "",
         "why": "Hiljaisten rikkoutumisten päälähde on askelten välinen raja. Jos askel A palauttaa proosaa ja askel B parsii sen regexillä, ketju rikkoutuu noin 10 %:ssa ilman eksplisiittistä virhettä. Sopimus rajalla muuttaa tämän ennustettavaksi fail-fastiksi.",
         "instructions": [
-          "Kuvaa jokaiselle rajalle outputin skeema: `{field1, field2, ...}` JSON-skeemana tai Pydanticilla.",
+          "Kuvaa jokaiselle rajalle tuloksen skeema: `{field1, field2, ...}` JSON-skeemana tai Pydanticilla.",
           "Validoi askeleen N output skeemaa vasten ennen kuin välität sen askeleeseen N+1 — virheellinen tulos pysäyttää ketjun heti, ei 30 sekunnin päästä.",
           "Välitä seuraavalle askeleelle minimaalinen tarvittava kenttäjoukko, ei koko raakavastausta (lisää [[node:sys-context-passing|sys-context-passing]]).",
           "Rakenna idempotenssi: uudelleenajo samalla datalla pitää tuottaa sama tulos, muuten debug-tarinaa ei voi rakentaa."
@@ -15884,7 +15884,7 @@
       "s3": {
         "title": "Miten soveltaa: suunnittele konkreettinen ketju",
         "time": "",
-        "why": "Aika siirtyä luonnoksesta toimivaan pipelineen: valitse malli askelta kohti, sijoita haarautumisehdot ja välimuistipisteet. Tässä ratkeaa ketjun todellinen kustannus ja nopeus.",
+        "why": "Aika siirtyä luonnoksesta toimivaan putkeen: valitse malli askelta kohti, sijoita haarautumisehdot ja välimuistipisteet. Tässä ratkeaa ketjun todellinen kustannus ja nopeus.",
         "instructions": [
           "Määritä malli kullekin askeleelle työn tyypin mukaan: extraction/luokittelu -> Haiku, päättely/kirjoitus -> Sonnet, lopullinen kritiikki -> Haiku. Tämä on tyypillisesti 3-5x halvempi kuin \"Sonnet jokaisella askeleella\".",
           "Deterministisille prompteille lisää välitulosten välimuisti (esim. Redis, TTL 1-24h) — viimeisen askeleen uudelleenajo muuttuu ilmaiseksi.",
@@ -15897,7 +15897,7 @@
       "s4": {
         "title": "Esimerkki: neljän askeleen research-assistentti",
         "time": "",
-        "why": "Konkreettinen esimerkki näyttää, miten skeema, mallin valinta, fallback ja trace_id yhdistyvät yhdeksi toimivaksi pipelineksi. Siitä näkee tarkalleen, missä kukin edellisten askelten sääntö astuu voimaan.",
+        "why": "Konkreettinen esimerkki näyttää, miten skeema, mallin valinta, fallback ja trace_id yhdistyvät yhdeksi toimivaksi putkeksi. Siitä näkee tarkalleen, missä kukin edellisten askelten sääntö astuu voimaan.",
         "instructions": [
           "Askel 1 - extract sources (Haiku + web_search): hae lähteet ja validoi heti `SourcesSchema` `{urls, snippets}` -mukaisesti.",
           "Askel 2 - analysis (Sonnet): jos lähteitä alle 3 -> fallback-vastaus \"riittämättömät tiedot\"; muuten rakenteinen analyysi `AnalysisSchema` `{financials, leadership, products, risks}` -mukaisesti.",
@@ -15925,7 +15925,7 @@
         "time": "",
         "why": "Lopputarkistus nappaa prompt chainingin klassiset sudenkuopat ennen tuotantoa: raakateksti rajoilla, puuttuva validointi, yksi malli kaikkeen, ei trace_id:tä. Tarkistuslista muuttaa kurssin tiedon toistettavaksi rituaaliksi ennen julkaisua.",
         "instructions": [
-          "Rajat: jokaisella liitoskohdalla on JSON-skeema ja outputin validointi ennen eteenpäin välitystä — missään ei syötetä raakatekstiä regexille.",
+          "Rajat: jokaisella liitoskohdalla on JSON-skeema ja tuloksen validointi ennen eteenpäin välitystä — missään ei syötetä raakatekstiä regexille.",
           "Mallit ja kustannus: jokainen askel on kustannus/laatu-mielessä sopivalla mallilla; deterministiset askelet välimuistitetaan.",
           "Virheet: jokaisella askeleella on strategia edellisen kaatumiselle (skip/retry/fallback/escalate); riskialttiilla rajoilla on [[node:sys-quality-gates|quality gatet]].",
           "Havainnoitavuus: `trace_id` välitetään kaikkien askelten läpi, jokainen kutsu logitetaan erikseen (ks. [[node:sys-logging-patterns|logging patterns]]); ketju on idempotentti.",
@@ -16108,10 +16108,10 @@
     "exercises": [
       {
         "question": "Ota 4-5 askeleen workflow:si. Listaa jokaisesta siirtymästä, mitä seuraava askel oikeasti tarvitsee ja mitä välitetään tottumuksesta. Minkä voi poistaa?",
-        "hint": "Jos askel ei käytä jotain inputin osaa vastauksessaan, se ei tarvitse sitä osaa."
+        "hint": "Jos askel ei käytä jotain syötteen osaa vastauksessaan, se ei tarvitse sitä osaa."
       },
       {
-        "question": "Vertaa kahta versiota askeleesta 5: koko historia inputissa vs. tiivistelmä + viimeiset 3 viestiä. Vertaa nopeutta, inputin pituutta ja vastauksen laatua.",
+        "question": "Vertaa kahta versiota askeleesta 5: koko historia syötteessä vs. tiivistelmä + viimeiset 3 viestiä. Vertaa nopeutta, syötteen pituutta ja vastauksen laatua.",
         "hint": "Laatu usein paranee tiivistämällä — AI lakkaa hukkumasta meluun."
       },
       {
@@ -16123,10 +16123,10 @@
       "s1": {
         "title": "Miksi välittää konteksti huolellisesti",
         "time": "",
-        "why": "Ilman tietoista välityspäätöstä konteksti kasvaa lumipallona: askeleeseen 5 mennessä inputissa on koko aiempien askelten historia. Se on hidasta, kallista ja törmää mallin rajaan. Liian vähäinen välitys on yhtä paha — askel kadottaa langan.",
+        "why": "Ilman tietoista välityspäätöstä konteksti kasvaa lumipallona: askeleeseen 5 mennessä syötteessä on koko aiempien askelten historia. Se on hidasta, kallista ja törmää mallin rajaan. Liian vähäinen välitys on yhtä paha — askel kadottaa langan.",
         "instructions": [
           "Avaa mikä tahansa monivaiheinen AI-workflow:si (katso [[node:sys-prompt-chaining|Prompt Chaining]]).",
-          "Katso, mitä päätyy viimeisen askeleen inputiin. Onko se koko historia vai vain tarvittava?",
+          "Katso, mitä päätyy viimeisen askeleen syötteeseen. Onko se koko historia vai vain tarvittava?",
           "Arvioi kustannus: pitkä input tarkoittaa enemmän tokeneita, eli enemmän rahaa ja aikaa joka ajolla.",
           "Lukitse ajatus: kontekstin välitys on päätös, ei \"liitetään kaikki varmuuden vuoksi\"."
         ],
@@ -16144,7 +16144,7 @@
           "Viitteellinen: välitä linkki/ID sisällön sijaan; askel hakee tarvitsemansa (osuva järjestelmiin kuten [[node:ai-data-systems|AI Data Systems]])."
         ],
         "validate": "Osaat kuvata kaikki 4 strategiaa omin sanoin ja antaa esimerkin, jossa kukin sopii.",
-        "tip": "Strategiat yhdistyvät: strukturoitu profiili + historian tiivistelmä + dokumentin viite yhdessä inputissa."
+        "tip": "Strategiat yhdistyvät: strukturoitu profiili + historian tiivistelmä + dokumentin viite yhdessä syötteessä."
       },
       "s3": {
         "title": "Kuinka valita strategia tehtävälle",
@@ -16340,7 +16340,7 @@
     "title": "Chunking-strategiat RAG:lle",
     "subtitle": "Miten dokumenttien pilkkominen ratkaisee retrieval-laadun",
     "totalTime": "6 vaihetta",
-    "whatItIs": "Chunking on dokumenttien jakamista paloiksi (chunkeiksi) ennen embedingiä. Se on [[node:sys-rag-architecture|RAG-pipelinen]] perustavaa laatua oleva askel: se, mitä malli löytää ja lainaa, riippuu chunkingista enemmän kuin vector storen tai embedding-mallin valinnasta.\n\nNeljä perusstrategiaa: fixed-size (N tokenia overlapilla), recursive splitter (kappale→lause→sana), semantic chunking (raja siellä missä aihe vaihtuu) ja document-aware (rakenteen mukaan: headings, code blocks, taulukot). Tämä kurssi opettaa valitsemaan strategian sisältötyypin mukaan eikä rikkomaan retrievalia chunkin rajoilla.",
+    "whatItIs": "Chunking on dokumenttien jakamista paloiksi (chunkeiksi) ennen embedingiä. Se on [[node:sys-rag-architecture|RAG-putken]] perustavaa laatua oleva askel: se, mitä malli löytää ja lainaa, riippuu chunkingista enemmän kuin vector storen tai embedding-mallin valinnasta.\n\nNeljä perusstrategiaa: fixed-size (N tokenia overlapilla), recursive splitter (kappale→lause→sana), semantic chunking (raja siellä missä aihe vaihtuu) ja document-aware (rakenteen mukaan: headings, code blocks, taulukot). Tämä kurssi opettaa valitsemaan strategian sisältötyypin mukaan eikä rikkomaan retrievalia chunkin rajoilla.",
     "approach": "Älä opettele numeroita ulkoa — testaa omalla datalla. Ota oikea korpus, aja 2-3 chunk_size- ja overlap-varianttia, mittaa recall eval-setissä. Intuitio oikeasta koosta syntyy vain omalla sisällöllä tehdystä A/B:stä.",
     "outcomes": [
       "Ymmärrät, miksi chunking on huonon RAG:n pääsyy (60-70 % diagnooseista)",
@@ -16360,7 +16360,7 @@
       },
       {
         "title": "Sekakorpus (docs + koodi + PDF)",
-        "description": "Sovellat eri strategioita eri lohkotyyppeihin yhdessä pipelinessa pilkkomatta taulukoita ja code-blockeja."
+        "description": "Sovellat eri strategioita eri lohkotyyppeihin yhdessä putkessa pilkkomatta taulukoita ja code-blockeja."
       }
     ],
     "pitfalls": [
@@ -16388,7 +16388,7 @@
       "s1": {
         "title": "Miksi chunking ratkaisee RAG-laadun",
         "time": "",
-        "why": "Huono chunking rikkoo kaiken muun pipelinessa, mutta se korjataan viimeisenä — malli vaihdetaan ensin, vaikka chunkin koko on syyllinen 60-70 % tapauksista.",
+        "why": "Huono chunking rikkoo kaiken muun putkessa, mutta se korjataan viimeisenä — malli vaihdetaan ensin, vaikka chunkin koko on syyllinen 60-70 % tapauksista.",
         "instructions": [
           "Opi mekaniikka: liian iso chunk → embedding hämärtyy \"keskiarvomerkityksen\" vektoriksi, top-N vetää mukaan roskaa.",
           "Liian pieni chunk → konteksti menetetään, eikä malli tiedä mistä fragmentti kertoo.",
@@ -16448,7 +16448,7 @@
           "Under-chunkingin merkit (liian pieni): yksi dokumentti vie 8/10 top-N:stä, konteksti on rikkonainen, vastaus lainaa tekstiä kesken lausetta.",
           "Over-/ison chunkingin merkit: retrieved chunkit vastaavat \"melkein\" kysymykseesi, embedding on hämärtynyt, tuloksiin tulee epärelevanttia kohinaa.",
           "Kustannusriski: semantic chunking on 2-5× kalliimpi ingestoida boundary detectionin ekstra embedding-kutsujen vuoksi.",
-          "Vanhentumisriski: dokumentti poistetaan lähteestä mutta sen chunkit jäävät indeksiin — liittyy [[node:af-rag-basics|RAG:n perusteisiin]] ja pipelinen päivitykseen.",
+          "Vanhentumisriski: dokumentti poistetaan lähteestä mutta sen chunkit jäävät indeksiin — liittyy [[node:af-rag-basics|RAG:n perusteisiin]] ja putken päivitykseen.",
           "Jos recall <70 % eval-setissä — A/B chunk_size (256/512/1024) ja overlap (10 %/20 %) tuo yleensä +10-15 % ilman mallin vaihtoa."
         ],
         "validate": "Retrieval-oireen perusteella osaat sanoa, kumpaan suuntaan chunk_sizea kääntää, ja arvioida semantic-variantin kustannuksen.",
@@ -16610,11 +16610,11 @@
     "whatItIs": "Document ingestion -pipeline on jatkuvasti toimiva konveijeri, joka vetää dokumentteja lähteistä (Notion, Confluence, Drive, GitHub, Zendesk), parsii, normalisoi, deduplikoi, chunkkaa, laskee embeddingsit ja kirjoittaa ne [[node:sys-rag-architecture|vector storeen]]. Ei kertaluonteinen skripti vaan palvelu jossa on incremental sync, deletion handling, retryt ja monitorointi.",
     "approach": "Seuraamme dokumentin todellista elinkaarta: ensin ymmärrämme miksi jatkuva pipeline tarvitaan (eikä one-shot skripti), sitten käymme läpi koko ketjun extraction → siivous → chunking → embeddings → indeksi, lisäämme inkrementaalisen päivityksen ja deletion handlingin, rakennamme minimaalisen event-driven arkkitehtuurin, tarkastelemme rajat ja riskit (roska sisään, duplikaatit, drift) ja päätämme metriikkojen tarkistuslistaan.",
     "outcomes": [
-      "Ymmärrät miksi RAG degradoituu viikoissa ilman pipelineä ja miten incremental sync eroaa yöllisestä full re-syncistä",
+      "Ymmärrät miksi RAG degradoituu viikoissa ilman putkea ja miten incremental sync eroaa yöllisestä full re-syncistä",
       "Tunnet ketjun jokaisen vaiheen: extraction, normalization, dedup, chunking, embedding, upsert — ja mitä kukin tekee",
       "Osaat suunnitella inkrementaalisen päivityksen webhookien + polling fallbackin kautta ja käsitellä poistot oikein",
       "Näet tyypilliset riskit — roska sisään, duplikaatit, embeddingsien version-trackingin puute — ja tiedät miten ne suljetaan",
-      "Sinulla on metriikkojen tarkistuslista (ingestion lag, parse-failure rate, dedup rate, deletion latency) pipelinen terveyden tarkistamiseen"
+      "Sinulla on metriikkojen tarkistuslista (ingestion lag, parse-failure rate, dedup rate, deletion latency) putken terveyden tarkistamiseen"
     ],
     "applyIn": [
       {
@@ -16643,7 +16643,7 @@
         "hint": "Vertaa kustannusta ja tuoreutta: kuinka monta compute-tuntia 200k dokumenttia vie ja kuinka kauan vuorokaudessa indeksi on vanhentunut. Mieti webhook-driven incremental + harvinainen full re-sync catch-upina."
       },
       {
-        "question": "Dokumentti poistettiin lähteestä. Kuvaa mitä pipelinessä on tapahduttava jotta sitä ei enää siteerata, ja soft vs hard delete -ero.",
+        "question": "Dokumentti poistettiin lähteestä. Kuvaa mitä putkessa on tapahduttava jotta sitä ei enää siteerata, ja soft vs hard delete -ero.",
         "hint": "Poistosignaali (webhook tai periodic diff) → toiminto [[node:sys-rag-architecture|vector storessa]]. Soft delete = tombstone + filter, hard delete = DELETE + audit compliancelle."
       },
       {
@@ -16657,9 +16657,9 @@
         "time": "",
         "why": "Ilman ymmärrystä siitä miksi one-shot skripti rikkoutuu tuotannossa, on helppo rakentaa demo joka degradoituu viikoissa. Tämä vaihe asettaa koko kurssin motivaation.",
         "instructions": [
-          "Tutki kolme tapaa joilla RAG degradoituu ilman pipelineä: uudet docit eivät pääse indeksiin, poistetut vastaavat haamuista, päivitetyt palauttavat vanhentunutta",
+          "Tutki kolme tapaa joilla RAG degradoituu ilman putkea: uudet docit eivät pääse indeksiin, poistetut vastaavat haamuista, päivitetyt palauttavat vanhentunutta",
           "Muotoile ero: one-shot ingestion toimii demossa, tuotanto vaatii incremental syncin, deletion propagationin, retryn flaky-lähteille ja monitoroinnin",
-          "Listaa 4 merkkiä rikkoutuneesta pipelinestä: outdated info, poistetun dokumentin siteeraus, duplikaatit tuloksissa, recallin lasku ilman syytä (drift)",
+          "Listaa 4 merkkiä rikkoutuneesta putkesta: outdated info, poistetun dokumentin siteeraus, duplikaatit tuloksissa, recallin lasku ilman syytä (drift)",
           "Sijoita pipeline järjestelmään: se on ingestion-kerros [[node:ai-data-systems|data-järjestelmien]] sisällä [[node:sys-rag-architecture|RAG-arkkitehtuurin]] alla"
         ],
         "validate": "Osaat selittää yhdellä esimerkillä tarkalleen miten RAG-vastaus muuttuu virheelliseksi jos pipeline pysähtyy viikoksi.",
@@ -16682,7 +16682,7 @@
       "s3": {
         "title": "Inkrementaalinen päivitys ja poistojen käsittely",
         "time": "",
-        "why": "Tämä on production-pipelinen sydän: incremental sync pitää indeksin tuoreena ilman täyttä uudelleenindeksointia, ja poistojen käsittely sulkee privacy/compliance-aukot.",
+        "why": "Tämä on production-putken sydän: incremental sync pitää indeksin tuoreena ilman täyttä uudelleenindeksointia, ja poistojen käsittely sulkee privacy/compliance-aukot.",
         "instructions": [
           "Webhook-driven (suositeltu): Notion, Linear, GitHub lähettävät eventit → enqueue → process, latenssi lähteestä indeksiin 1-10 min",
           "Polling fallback lähteille ilman webhookeja: cursor `updated_at`:llä + diff, intervalli 5 min — 1 h volyymin mukaan",
@@ -16710,7 +16710,7 @@
       "s5": {
         "title": "Rajat ja riskit: roska sisään, duplikaatit, drift",
         "time": "",
-        "why": "Pipelinet rikkoutuvat hiljaa: connector kaatuu, embeddings hajoaa versioihin, duplikaatit kasaantuvat. Rajat on tunnettava ja riskit suljettava etukäteen.",
+        "why": "Putket rikkoutuvat hiljaa: connector kaatuu, embeddings hajoaa versioihin, duplikaatit kasaantuvat. Rajat on tunnettava ja riskit suljettava etukäteen.",
         "instructions": [
           "Roska sisään: yksi corrupted PDF ei saa tappaa batchia — try/except per dokumentti + dead-letter queue, alert yli 1% failureilla",
           "Duplikaatit: exact hash match → drop; MinHash similarity > 0.95 → pidä uudempi, merkitse duplikaatiksi (normaali dedup rate 5-15%)",
@@ -16722,7 +16722,7 @@
         "tip": "Salakavalin riski on embeddingsien version-trackingin puute: ongelma ei näy heti vaan ilmenee haun degradaationa viikkojen päästä."
       },
       "s6": {
-        "title": "Tarkistuslista ja pipelinen terveystarkistus",
+        "title": "Tarkistuslista ja putken terveystarkistus",
         "time": "",
         "why": "Pipeline ilman metriikoita on musta laatikko. Viimeinen vaihe muuttaa kaiken edellisen havainnoitavaksi järjestelmäksi jonka voi oikeasti tarkistaa.",
         "instructions": [
@@ -17026,7 +17026,7 @@
       },
       {
         "title": "Multi-judge evaluation",
-        "description": "Useat kriitikot pisteyttävät yhtä outputtia rinnakkain, tulokset keskiarvoistetaan. Näkökulmien monipuolisuutta ilman latenssin kasvua."
+        "description": "Useat kriitikot pisteyttävät yhtä tulosta rinnakkain, tulokset keskiarvoistetaan. Näkökulmien monipuolisuutta ilman latenssin kasvua."
       }
     ],
     "pitfalls": [
@@ -17061,7 +17061,7 @@
           "Tarkista mittakaava: yksi pieni pyyntö ei oikeuta orchestration overheadia — fan-out kannattaa ~10 elementistä",
           "Jos on sequential-ketjuja (B A:n jälkeen), vedä ne fan-outin ulkopuolelle; rinnakkaista vain riippumaton kerros"
         ],
-        "validate": "Voit nimetä konkreettiset alitehtävät, joista yksikään ei lue toisen outputtia, ja niitä on yli ~10.",
+        "validate": "Voit nimetä konkreettiset alitehtävät, joista yksikään ei lue toisen tulosta, ja niitä on yli ~10.",
         "tip": "Riippumattomuustesti: jos sekoitat alitehtävien suoritusjärjestyksen, muuttuuko tulos? Ei -> voit rinnakkaistaa."
       },
       "s2": {
@@ -17084,7 +17084,7 @@
         "why": "Reduce muuttaa hajanaiset osatulokset yhdeksi mielekkääksi vastaukseksi. Väärä strategia (vain liimaa ne) tuottaa \"sekoituksen\" insightin sijaan. Strategia valitaan tehtävätyypin mukaan.",
         "instructions": [
           "Synthesis call — erillinen vahvan mallin kutsu (Sonnet), joka syntetisoi kaikki map-tulokset yhtenäiseksi vastaukseksi: paras laatu, +1 LLM-kutsu",
-          "Programmatic merge — dedup, sort, top-N koodilla ilman mallia: halpa, structured outputeille",
+          "Programmatic merge — dedup, sort, top-N koodilla ilman mallia: halpa, structured tuloksille",
           "Voting / averaging — evaluointiin ja luokitteluun: keskiarvoista useiden kriitikkojen pisteet",
           "Ennen reducea lajittele tulokset id:n/indeksin mukaan — muuten satunnainen järjestys rikkoo reproducibilityn"
         ],
@@ -17103,7 +17103,7 @@
           "1000+ elementille kirjoita map uudelleen Message Batches API:lle — submit, hae 1-2h"
         ],
         "validate": "Putki palauttaa syntetisoidun raportin ja coverage-metriikan; muutaman workerin virhe ei kaada koko ajoa.",
-        "tip": "Coverage outputissa on halpa luottamusvakuutus: lukija näkee heti, kuinka monelle datalle johtopäätös nojaa."
+        "tip": "Coverage tuloksessa on halpa luottamusvakuutus: lukija näkee heti, kuinka monelle datalle johtopäätös nojaa."
       },
       "s5": {
         "title": "Rajat ja riskit: cost, duplikaatit, kokoaminen",
@@ -17124,7 +17124,7 @@
         "time": "",
         "why": "Loppukatselmus nappaa klassiset sudenkuopat (ei limiteriä, paljas concat, all-or-nothing) ennen kuin ne käyvät kalliiksi tuotannossa.",
         "instructions": [
-          "Riippumattomuus: map-alitehtävät eivät lue toistensa outputteja — vahvistettu",
+          "Riippumattomuus: map-alitehtävät eivät lue toistensa tuloksia — vahvistettu",
           "Limiter: semaphore ja exponential-backoff-retry 429:lle ovat paikallaan",
           "Reduce: strategia on valittu (synthesis / merge / voting), ei paljas concat",
           "Virheet: success threshold on asetettu, aukot logitetaan, järjestys palautetaan id:n mukaan",
@@ -17355,7 +17355,7 @@
           "Arvioi hyöty: 3 riippumatonta toolia á 2s on 2s parallelina vs 6s sequentialina"
         ],
         "validate": "Riippumattomilla tooleilla agentti tekee yhden parallel-turnin useiden sequential-turnien sijaan.",
-        "tip": "Dependency on se, kun yhden toolin input tulee toisen outputista. Kaikki muu on parallel-kandidaatti."
+        "tip": "Dependency on se, kun yhden toolin input tulee toisen tuloksesta. Kaikki muu on parallel-kandidaatti."
       },
       "s4": {
         "title": "Tulosten ja virheiden käsittely",
@@ -17865,7 +17865,7 @@
         "time": "",
         "why": "Kynnyksen asettamiseen tarvitset numeerisen confidence-signaalin. Mutta kaikki kolme lähdettä ovat epätäydellisiä, ja niiden heikkouden sivuuttaminen on klassinen aloittelijan virhe.",
         "instructions": [
-          "Log-probs: tokenien todennäköisyydet; matalat avaintokeneilla → malli on epävarma. Kaikki API:t eivät palauta (Anthropic — osittain structured outputeissa).",
+          "Log-probs: tokenien todennäköisyydet; matalat avaintokeneilla → malli on epävarma. Kaikki API:t eivät palauta (Anthropic — osittain structured tuloksissa).",
           "Structured self-report: pyydä mallia palauttamaan `{answer, confidence: 0..1, reasoning}`. Halpa, mutta calibration heikko.",
           "Verification call: erillinen LLM-kutsu arvioi confidencen kriteerejä vasten. Kalliimpi mutta paremmin kalibroitu.",
           "Muista keskeinen rajoite: mallit ovat systemaattisesti overconfident — väitetty confidence ≠ todellinen accuracy."
@@ -18280,7 +18280,7 @@
           "tool_call argumenteille käytä kenttien WHITELISTiä (logaa vain eksplisiittisesti sallitut), älä blacklistiä — muuten uusi secret vuotaa",
           "Varmista että redaction laukeaa MOLEMPIIN suuntiin: promptiin (käyttäjän input) ja completioniin (generoitu teksti)"
         ],
-        "validate": "Ajoit testikutsun jossa email ja db_password inputissa — molemmat korvattu [REDACTED:...]:lla lokissa, plaintextiä ei jäänyt mihinkään.",
+        "validate": "Ajoit testikutsun jossa email ja db_password syötteessä — molemmat korvattu [REDACTED:...]:lla lokissa, plaintextiä ei jäänyt mihinkään.",
         "tip": "Redact ENNEN kirjoitusta, ei jälkikäteen: \"siivotaan lokit myöhemmin\" = ikkuna jossa PII jo vuoti storageen ja backuppeihin."
       },
       "s4": {
@@ -18319,7 +18319,7 @@
           "Simuloi incident replay: request_id:llä nosta sampled payload + metadata + model version ja toista vastaus lokaalisti",
           "Varmista ettei logeissa ole yhtäkään plaintext-secretiä tai PII:tä, ja full prompts poistuvat lifecyclellä"
         ],
-        "validate": "Otit satunnaisen request_id:n, rekonstruoit prompt/model-version ja täyden input-outputin (sampledista) minuuteissa, etkä löytänyt yhtään redaktoimatonta PII:tä.",
+        "validate": "Otit satunnaisen request_id:n, rekonstruoit prompt/model-version ja täyden input-tuloksen (sampledista) minuuteissa, etkä löytänyt yhtään redaktoimatonta PII:tä.",
         "tip": "Tee incident replaysta osa insinöörien onboardingia: se joka osaa toistaa incidentin request_id:llä ymmärtää miksi jokainen lokikenttä on olemassa."
       }
     }
@@ -18985,7 +18985,7 @@
     "subtitle": "Miten rakentaa AI-integraatiot eventeille synkronisten requestien sijaan",
     "totalTime": "6 vaihetta",
     "whatItIs": "Event-driven AI-arkkitehtuuri on lähestymistapa, jossa AI-prosessoinnin triggeröivät eventit (webhook CRM:stä, message queuessa, ladattu tiedosto) eikä synkroninen käyttäjän request. Eventin vastaanotto on nopea ja luotettava, kun taas AI-prosessointi on decoupled: se voi skaalata, tehdä retryä ja soveltaa backpressurea kuormituksen alla menettämättä eventejä. Tämä on perusta skaalattaville AI-integraatioille, jotka on kuvattu solmussa [[node:sys-event-driven|event-driven AI-arkkitehtuuri]].",
-    "approach": "Etenemme ideasta käytäntöön: ensin miksi vastaanoton ja prosessoinnin decoupling on tärkeää, sitten polku event → queue → käsittelijä-agentti, sen jälkeen miten välttää saman eventin prosessointi kahdesti (idempotency) ja miten käsitellä järjestystä. Seuraavaksi rakennamme minimaalisen pipelinen omalle casellesi, merkitsemme rajat ja riskit (debuggaus, duplikaatit, DLQ) ja päätämme ennen tuotantoa -tarkistuslistaan.",
+    "approach": "Etenemme ideasta käytäntöön: ensin miksi vastaanoton ja prosessoinnin decoupling on tärkeää, sitten polku event → queue → käsittelijä-agentti, sen jälkeen miten välttää saman eventin prosessointi kahdesti (idempotency) ja miten käsitellä järjestystä. Seuraavaksi rakennamme minimaalisen putken omalle casellesi, merkitsemme rajat ja riskit (debuggaus, duplikaatit, DLQ) ja päätämme ennen tuotantoa -tarkistuslistaan.",
     "outcomes": [
       "Selität, miksi synkroninen webhook → LLM call → 200 rikkoutuu hitailla ja pitkillä AI-taskeilla",
       "Piirrät eventin polun: source → ingestion (nopea 200) → queue → worker-agentti",
@@ -19081,7 +19081,7 @@
           "Lisää retryt exponential backoffilla (1s, 4s, 16s, 64s, max 5) ja lähetä DLQ:hen kun yritykset on käytetty",
           "Jaa queuet prioriteetin mukaan: critical (interactive) > standard > batch, jottei batch syö kapasiteettia"
         ],
-        "validate": "Pipelinesi prosessoi eventin tasan kerran, ei duplikoi AI-callia keinotekoisella tuplatoimituksella, ja laittaa eventin DLQ:hen N epäonnistumisen jälkeen.",
+        "validate": "Putkesi prosessoi eventin tasan kerran, ei duplikoi AI-callia keinotekoisella tuplatoimituksella, ja laittaa eventin DLQ:hen N epäonnistumisen jälkeen.",
         "tip": "Aloita yhdellä queuella ja yhdellä workerilla, lisää sitten priority-queuet kun batch-kuorma ilmaantuu — älä yli-suunnittele liian aikaisin."
       },
       "s5": {
@@ -19647,7 +19647,7 @@
     "subtitle": "Muuta toistuva rutiini luotettavaksi «laukaisin → AI → tulos» -putkeksi",
     "totalTime": "6 vaihetta",
     "whatItIs": "Käytännön kurssi siitä, miten otat tiimin toistuvan prosessin (onboarding, status-päivitykset, rutiiniviestintä) ja rakennat siitä automaation kaavan input (laukaisin) → AI-käsittely → output (tulos + seuraava toiminto) mukaan. Ydinpino on Skills, Hooks ja RAG. Tämä on osa [[node:ai-native-operations|AI-native-operaatioita]].",
-    "approach": "Lähde liikkeelle prosessista, ei teknologiasta. Valitse ensin ehdokas kolmen kriteerin mukaan (taajuus ≥5×/viikko, selkeät inputit/outputit, validoitava tulos), kuvaa se as-is, jaa sitten laukaisin- ja AI-käsittelyvaiheisiin, upota laatuportti ja vasta sitten skaalaa. Kultainen sääntö: vain vakiintunut prosessi voidaan automatisoida.",
+    "approach": "Lähde liikkeelle prosessista, ei teknologiasta. Valitse ensin ehdokas kolmen kriteerin mukaan (taajuus ≥5×/viikko, selkeät syötteet/tulokset, validoitava tulos), kuvaa se as-is, jaa sitten laukaisin- ja AI-käsittelyvaiheisiin, upota laatuportti ja vasta sitten skaalaa. Kultainen sääntö: vain vakiintunut prosessi voidaan automatisoida.",
     "outcomes": [
       "Osaat valita ehdokasprosessit taajuuden, selkeyden ja validoitavuuden perusteella",
       "Kuvaat prosessin as-is: laukaisin, syötedata, vaiheet, output, vastuuhenkilö",
@@ -19666,19 +19666,19 @@
       },
       {
         "title": "Rutiiniraportit ja tiivistelmät",
-        "description": "Säännöllinen kooste useasta lähteestä: AI kerää datan, normalisoi sen ja muotoilee yhdeksi yhtenäiseksi muodoksi. Ihanteellinen toistuviin tehtäviin, joilla on selkeät inputit/outputit."
+        "description": "Säännöllinen kooste useasta lähteestä: AI kerää datan, normalisoi sen ja muotoilee yhdeksi yhtenäiseksi muodoksi. Ihanteellinen toistuviin tehtäviin, joilla on selkeät syötteet/tulokset."
       }
     ],
     "pitfalls": [
       "Automatisoida prosessi, joka ei ole vielä vakiintunut: jos se muuttuu viikoittain, automaatio rikkoutuu jatkuvasti. Vakauta ensin käsin",
-      "Valita tehtävä ilman selkeitä inputteja/outputteja: AI ei pysty tuottamaan ennustettavaa tulosta, ja tarkistus vie enemmän aikaa kuin käsityö",
+      "Valita tehtävä ilman selkeitä syötteitä/tuloksia: AI ei pysty tuottamaan ennustettavaa tulosta, ja tarkistus vie enemmän aikaa kuin käsityö",
       "Poistaa ihminen silmukasta kokonaan: ilman laatuporttia virheet menevät tuotantoon ja murentavat luottamusta automaatioon",
       "Automatisoida harvinaisia tehtäviä (<5×/viikko): tuotto ei kata käyttöönoton ja ylläpidon kustannuksia",
       "Sivuuttaa prosessin ajautuminen: ajan myötä datalähteet ja muoto muuttuvat — ilman seurantaa putki rapautuu hiljaa"
     ],
     "exercises": [
       {
-        "question": "Ota tiimisi ja listaa 3 tehtävää, jotka tehdään useammin kuin 5 kertaa viikossa. Tarkista jokaisesta: onko selkeät inputit/outputit ja voidaanko tulos validoida?",
+        "question": "Ota tiimisi ja listaa 3 tehtävää, jotka tehdään useammin kuin 5 kertaa viikossa. Tarkista jokaisesta: onko selkeät syötteet/tulokset ja voidaanko tulos validoida?",
         "hint": "Ihanteellisia ehdokkaita ovat viikkoraportit, tervetuliais-sähköpostit, sisäiset tiivistelmät. Jos tehtävällä ei ole vakaata output-muotoa, se ei ole vielä valmis automatisoitavaksi."
       },
       {
@@ -19709,12 +19709,12 @@
         "time": "",
         "why": "Vain vakiintunut prosessi voidaan automatisoida. Jos se muuttuu viikoittain, AI-putki rikkoutuu jatkuvasti. Ensin on nähtävä todellisuus sellaisena kuin se on.",
         "instructions": [
-          "Valitse ehdokas kolmen kriteerin mukaan: tehdään ≥5×/viikko, selkeät inputit/outputit, tulos voidaan validoida",
+          "Valitse ehdokas kolmen kriteerin mukaan: tehdään ≥5×/viikko, selkeät syötteet/tulokset, tulos voidaan validoida",
           "Kuvaa prosessi as-is: laukaisin, syötedata ja sen lähteet, vaiheiden järjestys, output, vastuuhenkilö",
           "Tarkista vakaus: onko output-muoto muuttunut viimeisen kuukauden aikana",
           "Jos prosessi ei ole vielä vakiintunut — vakauta se ensin käsin ja lykkää automatisointia"
         ],
-        "validate": "Sinulla on kirjallinen as-is-kuvaus prosessista, jossa on selkeät inputit, outputit ja vahvistus muodon vakaudesta.",
+        "validate": "Sinulla on kirjallinen as-is-kuvaus prosessista, jossa on selkeät syötteet, tulokset ja vahvistus muodon vakaudesta.",
         "tip": "Ihanteelliset ensimmäiset ehdokkaat: viikkoraportit, asiakkaiden tervetuliais-sähköpostit, sisäiset status-tiivistelmät."
       },
       "s3": {
@@ -19748,7 +19748,7 @@
         "time": "",
         "why": "Ilman tarkistusta virheet menevät tuotantoon ja murentavat luottamusta automaatioon. Laatuportti säilyttää aikasäästön laadusta tinkimättä.",
         "instructions": [
-          "Upota laatuportti: ihminen tekee tuloksen lopullisen tarkistuksen ennen outputtia",
+          "Upota laatuportti: ihminen tekee tuloksen lopullisen tarkistuksen ennen tulosta",
           "Mittaa tarkistusaika ja vertaa sitä käsityöhön — tavoite 70-90% säästö",
           "Listaa riskit: prosessin ajautuminen, muuttuvat datalähteet, vaihtuva output-muoto",
           "Aseta seuranta ja eskalointipiste tilanteisiin, joissa AI on epävarma tai data on puutteellista"
@@ -19762,7 +19762,7 @@
         "why": "Yksi toimiva putki on pilotti. Arvo avautuu, kun viet lähestymistavan samankaltaisiin prosesseihin järjestelmää rikkomatta. Tämä on tie [[node:ai-native-operations|AI-native-operaatioihin]].",
         "instructions": [
           "Käynnistä automaatio tuotantotilassa ja seuraa useita sykliä",
-          "Kokoa valmiuslista: vakiintunut prosessi, selkeät inputit/outputit, toimiva laukaisin, tarkka output-muoto, laatuportti, seuranta",
+          "Kokoa valmiuslista: vakiintunut prosessi, selkeät syötteet/tulokset, toimiva laukaisin, tarkka output-muoto, laatuportti, seuranta",
           "Etsi 2-3 samankaltaista prosessia ja sovella samaa mallia, uudelleenkäyttäen Skillsejä",
           "Dokumentoi jokainen putki, jotta tiimi voi ylläpitää ja kehittää sitä ilman sinua"
         ],
@@ -20306,7 +20306,7 @@
       "Brand voice -dokumentti ja joukko uudelleenkäytettäviä prompt-malleja",
       "Time-to-publishin lasku päivistä tunteihin tyypillisellä materiaalilla",
       "Laatuportti faktantarkistuksineen, sävyineen ja paikallisine konteksteineen ennen jokaista julkaisua",
-      "Output- ja konsistenssimittarit, joista pipelinen vaikutus näkyy"
+      "Output- ja konsistenssimittarit, joista putken vaikutus näkyy"
     ],
     "applyIn": [
       {
@@ -20324,10 +20324,10 @@
     ],
     "pitfalls": [
       "Malli «AI generoi → julkaise» ilman ihmisen porttia — lukija tunnistaa generic-tekstin sekunneissa",
-      "Pipelinen käynnistäminen ilman dokumentoitua brand voicea — output on keskiarvoistettu sävy ilman tunnistettavuutta",
+      "Putken käynnistäminen ilman dokumentoitua brand voicea — output on keskiarvoistettu sävy ilman tunnistettavuutta",
       "Briefit ilman yleisöä ja outlinea — AI täyttää aukot, luonnos menee ohi maalin ja review maksaa enemmän",
       "Ei faktantarkistusta — AI tuottaa itsevarmasti vääriä lukuja ja faktoja, maineriski",
-      "Ei mittareita (time-to-publish, output) — vaikutusta ei voi todistaa eikä pipelinea parantaa"
+      "Ei mittareita (time-to-publish, output) — vaikutusta ei voi todistaa eikä putkea parantaa"
     ],
     "exercises": [
       {
@@ -20347,7 +20347,7 @@
       "s1": {
         "title": "Miksi pipeline ja mikä tulos",
         "time": "",
-        "why": "Ilman selkeää tavoitetta ja mittaria pipelinesta tulee «AI:ta AI:n vuoksi». Vaikutus (time-to-publish 2 päivää → 4 tuntia, output +200-300%) pitää kiinnittää baselineksi, muuten arvoa ei voi todistaa.",
+        "why": "Ilman selkeää tavoitetta ja mittaria putkesta tulee «AI:ta AI:n vuoksi». Vaikutus (time-to-publish 2 päivää → 4 tuntia, output +200-300%) pitää kiinnittää baselineksi, muuten arvoa ei voi todistaa.",
         "instructions": [
           "Laske nykyinen määrä: montako kappaletta kuukaudessa ja paljonko aikaa menee luonnoksiin",
           "Kiinnitä baseline-mittarit: time-to-publish, sisältötuotanto, arvio sävyn konsistenssista",
@@ -20360,7 +20360,7 @@
       "s2": {
         "title": "Brand voice ja prompt-mallit",
         "time": "",
-        "why": "Brand voice on pipelinen perusta: ilman sitä AI tuottaa keskiarvoistetun sävyn, jota ei erota kilpailijoista. Prompt-mallit tekevät tuloksesta toistettavan eikä satunnaisen ajosta toiseen.",
+        "why": "Brand voice on putken perusta: ilman sitä AI tuottaa keskiarvoistetun sävyn, jota ei erota kilpailijoista. Prompt-mallit tekevät tuloksesta toistettavan eikä satunnaisen ajosta toiseen.",
         "instructions": [
           "Kokoa brand voice -dokumentti: sävy, sanasto, kiellot, 2-3 esimerkkitekstiä",
           "Aseta brand voice järjestelmäpromptiksi Project «Blog»:n (tai vastaavan) sisälle",
@@ -20412,14 +20412,14 @@
       "s6": {
         "title": "Käyttöönotto ja tarkistuslista",
         "time": "",
-        "why": "Pipeline elää vain, jos siitä tulee tiimin prosessi eikä yhden ihmisen kertaluontoinen kokeilu. Tarkistuslista ja roolit muuttavat pipelinen toistettavaksi operaatioksi.",
+        "why": "Pipeline elää vain, jos siitä tulee tiimin prosessi eikä yhden ihmisen kertaluontoinen kokeilu. Tarkistuslista ja roolit muuttavat putken toistettavaksi operaatioksi.",
         "instructions": [
           "Kuvaa pipeline prosessina: brief → AI-luonnos → review → SEO → julkaisu, vastuuhenkilö jokaisessa vaiheessa",
           "Kokoa lopullinen julkaisun tarkistuslista (brief täysi / sävy / faktat / konteksti / SEO)",
-          "Aja 2-3 oikeaa materiaalia pipelinen läpi ja vertaa mittareita vaiheen 1 baselineen",
+          "Aja 2-3 oikeaa materiaalia putken läpi ja vertaa mittareita vaiheen 1 baselineen",
           "Lukitse rytmi: päivitä brand voice ja mallit säännöllisesti reviewn palautteesta"
         ],
-        "validate": "Tiimi julkaisi materiaaleja pipelinen läpi, mittarit paranivat baselineen nähden ja prosessi on dokumentoitu.",
+        "validate": "Tiimi julkaisi materiaaleja putken läpi, mittarit paranivat baselineen nähden ja prosessi on dokumentoitu.",
         "tip": "Aloita yhdestä formaatista (esim. blogi), viritä se, ja vasta sitten lisää sähköposti ja social."
       }
     }
@@ -20737,7 +20737,7 @@
       "s1": {
         "title": "Miksi SEO mittakaavassa ja tavoitetulos",
         "time": "",
-        "why": "Ilman selkeää tavoitetta tiimi ottaa AI:n käyttöön AI:n vuoksi. SEO mittakaavassa on perusteltua vain tietyllä outputilla ja orgaanisen roolilla.",
+        "why": "Ilman selkeää tavoitetta tiimi ottaa AI:n käyttöön AI:n vuoksi. SEO mittakaavassa on perusteltua vain tietyllä tuloksella ja orgaanisen roolilla.",
         "instructions": [
           "Kiinnitä baseline: orgaaninen liikenne, SEO-kattavuus (% sivuista, jotka kohdistuvat avainsanaan), kuukausittainen sisältövolyymi",
           "Tarkista kynnys: output >20 kappaletta/kuukausi ja SEO on liiketoiminnalle kriittinen",
@@ -21090,13 +21090,13 @@
     "subtitle": "Pipeline, joka sulkee yksinkertaiset tiketit itse ja eskaloi vaikeat siististi",
     "totalTime": "6 vaihetta",
     "whatItIs": "Ensimmäisen linjan tuen automatisointi: AI lukee tulevan tiketin, luokittelee intentin, etsii vastauksen knowledge basesta RAG:n avulla ja joko kirjoittaa personoidun vastauksen tai eskaloi ihmiselle. Kaikki tämä on pipeline selkeillä quality-gateilla ja confidence-kynnyksellä — ei botti, joka vastaa kaikkeen.",
-    "approach": "Etenemme liiketoimintapäätöksestä toimivaan pipelineen. Ensin lukitsemme miksi ja mittarin, jota mittaamme, sitten valmistelemme knowledge basen ja kattavuuden rajat. Seuraavaksi rakennamme virran kaksi avainvaihetta — tikettivastauksen tuottamisen ja eskaloinnin ihmiselle valmiilla kontekstilla. Lopetamme laadunvalvontaan ja mittareihin perustuvaan käyttöönottoon. Läpileikkaava periaate: AI vastaa vain korkealla confidencella, kaikki muu eskaloidaan.",
+    "approach": "Etenemme liiketoimintapäätöksestä toimivaan putkeen. Ensin lukitsemme miksi ja mittarin, jota mittaamme, sitten valmistelemme knowledge basen ja kattavuuden rajat. Seuraavaksi rakennamme virran kaksi avainvaihetta — tikettivastauksen tuottamisen ja eskaloinnin ihmiselle valmiilla kontekstilla. Lopetamme laadunvalvontaan ja mittareihin perustuvaan käyttöönottoon. Läpileikkaava periaate: AI vastaa vain korkealla confidencella, kaikki muu eskaloidaan.",
     "outcomes": [
       "Tiedät, mitkä ~20 tikettimallia kattavat 40%+ volyymistä ja miksi juuri ne kannattaa automatisoida",
       "Osaat valmistella knowledge basen ja määrittää rajat: missä AI vastaa ja missä sen on luovutettava ihmiselle",
       "Rakensit vastauksen tuottamisvaiheen confidence-kynnyksellä ja jokaisen päätöksen lokituksella",
       "Asetit eskaloinnin, joka antaa ihmiselle valmiin AI-yhteenvedon, ei raakaa tikettiä",
-      "Otat pipelinen käyttöön deflection- ja CSAT-mittareilla ja tiedät, miten pitää laatu tuotannossa"
+      "Otat putken käyttöön deflection- ja CSAT-mittareilla ja tiedät, miten pitää laatu tuotannossa"
     ],
     "applyIn": [
       {
@@ -21164,7 +21164,7 @@
       "s3": {
         "title": "Avainvaihe 1 — vastaus tikettiin",
         "time": "",
-        "why": "Tämä on pipelinen sydän: intentin luokittelu, basen haku, personoidun vastauksen tuottaminen ja vastaa-vai-ei-päätös confidence-kynnyksellä. Tässä syntyy deflection.",
+        "why": "Tämä on putken sydän: intentin luokittelu, basen haku, personoidun vastauksen tuottaminen ja vastaa-vai-ei-päätös confidence-kynnyksellä. Tässä syntyy deflection.",
         "instructions": [
           "Lisää intent-luokittelija: FAQ vai monimutkainen tapaus (monimutkainen suoraan human-jonoon)",
           "FAQ:lle aja RAG-haku ja tuota personoitu vastaus asiakkaan kielellä",
@@ -22082,7 +22082,7 @@
         "time": "",
         "why": "AI syntetisoi vain sen mitä näkee. Hajanaiset tiedostot antavat hajanaisia päätelmiä. Keräämällä transkriptit, tiketit ja kilpailija-arvostelut yhteen Project:iin RAG-indeksillä annat AI:lle yhtenäisen korpuksen — perustan taajuus- ja sentimenttianalyysille kaikesta datasta kerralla.",
         "instructions": [
-          "Kerää inputit: haastattelutranskriptit, support-tiketit ajanjaksolta, kilpailija-arvostelut G2:lta/Trustpilotista",
+          "Kerää syötteet: haastattelutranskriptit, support-tiketit ajanjaksolta, kilpailija-arvostelut G2:lta/Trustpilotista",
           "Luo Project 'Research' ja lataa kaikki lähteet sen RAG-indeksiin",
           "Normalisoi transkriptit yhteen muotoon (puhuja, päivä, aihe), jotta AI erottaa puheenvuorot",
           "Säilytä raakadata erikseen — sen on pysyttävä käytettävissä lainausten tarkistusta varten"
@@ -22134,7 +22134,7 @@
         "time": "",
         "why": "Kertaluonteinen synteesi on sprintti, mutta arvo tulee toistettavuudesta. Upottamalla workflow:n kvartaaliseen customer research:iin saat systemaattisen näkyvyyden siirtymiin teemoissa, sentimentissä ja kilpailija-landscapessa — AI-native tuotetransformaation perustan.",
         "instructions": [
-          "Formalisoi putki toistettavaksi: inputit → Project RAG:lla → AI extraction → PM validointi → raportti",
+          "Formalisoi putki toistettavaksi: syötteet → Project RAG:lla → AI extraction → PM validointi → raportti",
           "Aseta kadenssi: kvartaalinen customer research ja säännöllinen kilpailijaseuranta",
           "Vertaa raportteja kvartaalista kvartaaliin — seuraa siirtymiä teemoissa ja sentimentissä",
           "Käy läpi lopullinen tarkistuslista ennen päätelmien tekemistä"
@@ -22148,8 +22148,8 @@
     "title": "AI Spec Generation",
     "subtitle": "Rough ideasta ship-ready PRD:hen tunneissa, ei päivissä",
     "totalTime": "6 vaihetta",
-    "whatItIs": "AI kirjoittaa PRD:t, user storyt ja tekniset specit rough ideasta ja research-inputista. PM lakkaa käyttämästä päiviä päässään jo tietämänsä formatointiin ja keskittyy sisältölaatuun. Time-to-PRD putoaa 2 päivästä 4 tuntiin iteraatiot mukaan lukien.",
-    "approach": "Kurssi käy läpi spec-generoinnin käyttöönoton toistettavana workflowna: ensin miksi ja mikä on tavoiteltu tulos, sitten laadukkaan inputin keruu (malline + esimerkit + research), sitten draftin generointi ja iterointi PM:n kanssa, sitten laatu- ja riskikontrolli, ja lopuksi sen istuttaminen tiimin prosessiin tarkistuslistalla. Ydinperiaate: laadukas output vaatii laadukkaan inputin.",
+    "whatItIs": "AI kirjoittaa PRD:t, user storyt ja tekniset specit rough ideasta ja research-syötteestä. PM lakkaa käyttämästä päiviä päässään jo tietämänsä formatointiin ja keskittyy sisältölaatuun. Time-to-PRD putoaa 2 päivästä 4 tuntiin iteraatiot mukaan lukien.",
+    "approach": "Kurssi käy läpi spec-generoinnin käyttöönoton toistettavana workflowna: ensin miksi ja mikä on tavoiteltu tulos, sitten laadukkaan syötteen keruu (malline + esimerkit + research), sitten draftin generointi ja iterointi PM:n kanssa, sitten laatu- ja riskikontrolli, ja lopuksi sen istuttaminen tiimin prosessiin tarkistuslistalla. Ydinperiaate: laadukas output vaatii laadukkaan syötteen.",
     "outcomes": [
       "Toistettava workflow, joka muuttaa rough idean ja researchin PRD:ksi 4 tunnissa 2 päivän sijaan",
       "Yksi spec-formaatti koko tiimille kiinnitetyn mallineen pohjalta",
@@ -22184,7 +22184,7 @@
         "hint": "Muista garbage in = garbage out: AI:lta puuttuu tuotekonteksti, research ja rajoitteet, joten se tuottaa genericiä."
       },
       {
-        "question": "Mitä AI-inputin pitää sisältää, jotta PRD-draft on laadukas?",
+        "question": "Mitä AI-syötteen pitää sisältää, jotta PRD-draft on laadukas?",
         "hint": "Kolme komponenttia: PM:n rough idea, research-output, ja olemassa oleva malline plus 2-3 referenssiesimerkkiä."
       },
       {
@@ -22199,7 +22199,7 @@
         "why": "PRD:n kirjoittaminen on shipping-pullonkaula. PM käyttää päiviä jo tietämänsä formatointiin, ja tiimi menettää momentumin idean ja kirjoitetun specin välillä. Tavoitteen ymmärtäminen asettaa oikean menestysmittarin — time-to-spec, ei «kaunis dokumentti».",
         "instructions": [
           "Kirjaa tiimin nykyinen time-to-PRD päivissä — tämä on vertailun baseline",
-          "Määritä tavoite: draft tunneissa, iteraatiot PM:n kanssa, ship-ready PRD outputtina",
+          "Määritä tavoite: draft tunneissa, iteraatiot PM:n kanssa, ship-ready PRD tuloksena",
           "Sovi, että AI kattaa kirjoitusosan ja PM omistaa sisältölaadun",
           "Valitse mitattavat mittarit: time-to-spec ja dev-tiimin palaute PRD-laadusta"
         ],
@@ -22209,7 +22209,7 @@
       "s2": {
         "title": "Mistä aloittaa: kerää input",
         "time": "",
-        "why": "Laadukas output vaatii laadukkaan inputin. Yleisin virhe on generointi ilman researchia, mikä tuottaa generic-kuoren. Inputin valmistelu on 80 % tuloksesta.",
+        "why": "Laadukas output vaatii laadukkaan syötteen. Yleisin virhe on generointi ilman researchia, mikä tuottaa generic-kuoren. Syötteen valmistelu on 80 % tuloksesta.",
         "instructions": [
           "Kokoa dokumentoitu PRD-malline — ilman sitä AI tuottaa eri rakenteen joka kerta",
           "Valitse 2-3 korkealaatuista valmista PRD:tä referenssiksi formaatille ja syvyydelle",
@@ -22231,7 +22231,7 @@
           "Varmista, että draft noudattaa tiukasti mallineesi rakennetta"
         ],
         "validate": "Saatu strukturoitu draft kaikilla mallineen osioilla, ei vapaata tekstiä",
-        "tip": "Mitä tarkemmin rajoitteet ja konteksti asetetaan inputiin, sitä vähemmän AI ajautuu tuotteen ohi."
+        "tip": "Mitä tarkemmin rajoitteet ja konteksti asetetaan syötteeseen, sitä vähemmän AI ajautuu tuotteen ohi."
       },
       "s4": {
         "title": "Avainvaihe 2: iteroi PM:n kanssa",
@@ -22255,7 +22255,7 @@
           "Vertaa PRD:tä referenssiesimerkkeihin osioiden syvyyden ja täydellisyyden osalta",
           "Varmista, että success metrics, edge cases ja avoimet kysymykset ovat läsnä ja mielekkäitä",
           "Kerää dev-tiimin palaute PRD-laadusta kontrollimittarina",
-          "Tarkkaile garbage in = garbage out: heikot kohdat juontuvat yleensä heikosta inputista"
+          "Tarkkaile garbage in = garbage out: heikot kohdat juontuvat yleensä heikosta syötteestä"
         ],
         "validate": "PRD on verrattu esimerkkeihin ja saanut dev-tiimin palautteen",
         "tip": "Jos laatu on jatkuvasti matala, korjaa input (research, esimerkit, rajoitteet), älä muokkauksia."
@@ -22311,7 +22311,7 @@
     ],
     "exercises": [
       {
-        "question": "Ota 8–10 todellista mahdollisuutta backlogistasi. Mitkä 5 inputtia tarvitset, jotta AI voi pisteyttää ne mielekkäästi, ja mitä siitä datasta sinulla on tällä hetkellä oikeasti olemassa?",
+        "question": "Ota 8–10 todellista mahdollisuutta backlogistasi. Mitkä 5 syötettä tarvitset, jotta AI voi pisteyttää ne mielekkäästi, ja mitä siitä datasta sinulla on tällä hetkellä oikeasti olemassa?",
         "hint": "Nojaa workflow-listaan: mahdollisuudet, palaute-teemat, kilpailija-analyysi, sisäiset metriikat, strategiset tavoitteet. Merkitse aukot — se on työsi datankeruuvaiheessa."
       },
       {
@@ -22340,7 +22340,7 @@
       "s2": {
         "title": "Data priorisointia varten",
         "time": "",
-        "why": "AI-pisteytys on vain niin hyvä kuin inputit. Puutteellisen datan syöttäminen tarkoittaa, että järjestys nojaa arvauksiin. Täysi data-setti on koko workflow'n perusta.",
+        "why": "AI-pisteytys on vain niin hyvä kuin syötteet. Puutteellisen datan syöttäminen tarkoittaa, että järjestys nojaa arvauksiin. Täysi data-setti on koko workflow'n perusta.",
         "instructions": [
           "Kerää kaikki tuotemahdollisuudet: nykyinen backlog + uudet ideat yhteen paikkaan",
           "Lisää asiakaspalaute-teemat (esim. feedback-synthesisistä) — mitä käyttäjät oikeasti pyytävät",
@@ -22383,7 +22383,7 @@
         "why": "Strukturoitu viitekehys toimii vain, jos pisteytys on toistettava ja perustelu säilytetty. Tämä vaihe nappaa tyypilliset riskit: puutteellinen data, piilotetut painotukset, kadonnut rationaali, sidosryhmien edessä taipuminen.",
         "instructions": [
           "Tarkista, että perustelu on säilytetty jokaiselle prioriteetille — kvartaalin päästä tarvitset sitä selittämiseen",
-          "Tarkista uudelleen inputtien täydellisyys: nojaako jokin pisteytys yhä arvauksiin data-aukkojen takia",
+          "Tarkista uudelleen syötteiden täydellisyys: nojaako jokin pisteytys yhä arvauksiin data-aukkojen takia",
           "Varmista, että kriteerien painotukset on kiinnitetty ja päätös on toistettava, ei auktoriteettiin perustuva",
           "Testaa paineensietoa: muuttuvatko prioriteetit vain kun data/kriteerit muuttuvat, ei sidosryhmien työnnön alla"
         ],
@@ -22396,7 +22396,7 @@
         "why": "Kertaluontoinen ajo ei muuta päätöskulttuuria. Kestävän vaikutuksen saamiseksi (vähemmän reaktiivista priorisointia, nopeampi linjaus) prosessi upotetaan kvartaalirytmiin kiinteällä tarkistuslistalla.",
         "instructions": [
           "Sido prosessi kvartaalisuunnitteluun ja roadmap reviewn valmisteluun execstaivien kanssa",
-          "Lukitse aloitustarkistuslista: inputit kerätty → painotukset asetettu → AI-pisteytys perusteluineen → human override kirjattu → perustelu säilytetty",
+          "Lukitse aloitustarkistuslista: syötteet kerätty → painotukset asetettu → AI-pisteytys perusteluineen → human override kirjattu → perustelu säilytetty",
           "Nimeä omistaja datan päivitykselle (palaute-teemat, metriikat) ennen jokaista sykliä",
           "Syklin jälkeen vertaa ennusteita todellisuuteen — minkä AI aliarvioi, mitkä kriteerit kannattaa uudelleenpainottaa",
           "Säilytä dokumentoitu perustelu seuraavan kvartaalin totuuden lähteenä"
@@ -22561,11 +22561,11 @@
       },
       {
         "title": "Roadmapin priorisointi",
-        "description": "Mitattavalla painolla ja trendillä varustetut teemat syötetään suoraan tuote-reviewiin päätösinputtina, ei read-only-viitteenä."
+        "description": "Mitattavalla painolla ja trendillä varustetut teemat syötetään suoraan tuote-reviewiin päätössyötteenä, ei read-only-viitteenä."
       }
     ],
     "pitfalls": [
-      "Tehdä synteesi tyhjiössä: raportti ei mene mihinkään. Outputin täytyy syöttää roadmap-suunnittelua, muuten se on kohteliasta teatteria",
+      "Tehdä synteesi tyhjiössä: raportti ei mene mihinkään. Tuloksen täytyy syöttää roadmap-suunnittelua, muuten se on kohteliasta teatteria",
       "Edustavuuden sivuuttaminen: äänekkäät some-kanavat painavat enemmän kuin hiljainen enemmistö, ja trendistä tulee yhden lähteen artefakti",
       "Magnitude ilman deltaa: merkitystä ei ole vain teeman koolla vaan sen viikko-viikko-muutoksella",
       "AI:n luokitteluun luottaminen ilman pistotarkistuksia — kategoriadrift ja teemahallusinaatiot vääristävät prioriteetteja",
@@ -22706,7 +22706,7 @@
         "hint": "Se on korrelaatio. Validoi cohort-analyysillä (käyttäjät ennen ja jälkeen releasen), sulje pois muut muutokset ja kausivaihtelu, arvioi merkittävyys."
       },
       {
-        "question": "DAU kasvoi 12% tällä viikolla. Mitä inputteja AI:lle pitää antaa, jotta se tuottaa mielekkäitä hypoteeseja eikä arvauksia?",
+        "question": "DAU kasvoi 12% tällä viikolla. Mitä syötteitä AI:lle pitää antaa, jotta se tuottaa mielekkäitä hypoteeseja eikä arvauksia?",
         "hint": "Top-line-metriikat deltoineen, segmenttijaottelu, feature-käyttö ja lista viimeaikaisista releaseista ja ulkoisista tapahtumista (markkinointi, pyhät)."
       },
       {
@@ -23197,7 +23197,7 @@
       "Ymmärrät miksi governance on tärkeä ja osaat mitata sen tuloksen (incidentejä kvartaalissa, tavoite 0 high-severity)",
       "On AI-käyttöpolitiikka datan luokittelulla: mitä voi/ei voi laittaa AI-flow:hin",
       "Data, privacy ja turvallisuus on katettu: consent, data residency, PII:n salaus, vendor-DPA:t",
-      "Roolit ja vastuu on jaettu: kuka päättää, kuka validoi outputit, kuka reagoi incidentteihin",
+      "Roolit ja vastuu on jaettu: kuka päättää, kuka validoi tulokset, kuka reagoi incidentteihin",
       "Auditointi ja compliance on asetettu: audit logit, säännölliset reviewit, incident response -playbook"
     ],
     "applyIn": [
@@ -23241,7 +23241,7 @@
         "time": "",
         "why": "Ilman selkeästi muotoiltua tavoitetta governance muuttuu byrokratiaksi. Tavoite ei ole \"kontrolli kontrollin vuoksi\" vaan estetyt incidentit, asiakkaiden luottamus ja päätösnopeus (ei \"voiko vai ei\" -keskusteluja).",
         "instructions": [
-          "Muotoile ongelma riskitermein: tietovuodot AI-inputtien kautta, asiakasdata third-party-malleissa, puuttuva audit trail",
+          "Muotoile ongelma riskitermein: tietovuodot AI-syötteiden kautta, asiakasdata third-party-malleissa, puuttuva audit trail",
           "Kiinnitä tulos mitattavaksi mittariksi: incidentejä kvartaalissa, tavoite 0 high-severity",
           "Kuvaa governance enablerina: \"näin teet tämän vastuullisesti\", ei \"tässä mikä on kielletty\"",
           "Määritä käyttöönoton triggerit: customer/financial data, PII flow:issa, useat osastot eri työkaluilla"
@@ -23278,15 +23278,15 @@
       "s4": {
         "title": "Roolit ja vastuu",
         "time": "",
-        "why": "Säännöt ilman omistajia eivät toteudu. Sinun on eksplisiittisesti määrättävä kuka päättää, kuka validoi AI-outputit ja kuka reagoi incidentteihin — muuten vastuu hajoaa.",
+        "why": "Säännöt ilman omistajia eivät toteudu. Sinun on eksplisiittisesti määrättävä kuka päättää, kuka validoi AI-tulokset ja kuka reagoi incidentteihin — muuten vastuu hajoaa.",
         "instructions": [
           "Määrää governance-viitekehyksen omistaja (vastaa politiikoista ja revieweistä)",
-          "Määritä kuka validoi customer-facing AI-outputit (human review)",
+          "Määritä kuka validoi customer-facing AI-tulokset (human review)",
           "Määrää omistajat quality monitoringille ja bias-testaukselle",
           "Kuvaa incident response -roolit: kuka saa raportin, kuka eskaloi, kuka päättää"
         ],
         "validate": "Jokaisella governance-prosessilla (politiikat, validointi, monitorointi, incidentit) on nimetty omistaja, ei \"tiimi yleisesti\".",
-        "tip": "Output-validointi customer-facing-outputeille on pakollinen human-in-the-loop; tilastollinen quality monitoring täydentää muttei korvaa sitä."
+        "tip": "Output-validointi customer-facing-tuloksille on pakollinen human-in-the-loop; tilastollinen quality monitoring täydentää muttei korvaa sitä."
       },
       "s5": {
         "title": "Auditointi ja compliance",
@@ -23294,7 +23294,7 @@
         "why": "Audit trail erottaa governancen julistuksista. Ilman logeja et voi todistaa compliancea auditoijalle etkä tutkia incidentiä. Regulaattorit (GDPR, EU AI Act) vaativat todistettavuutta.",
         "instructions": [
           "Ota audit logit käyttöön kaikilla vendoreilla ja työkaluilla missä mahdollista",
-          "Aseta quality monitoring (tilastollinen) ja säännöllinen bias-testaus outputeille",
+          "Aseta quality monitoring (tilastollinen) ja säännöllinen bias-testaus tuloksille",
           "Luo AI-spesifinen incident response -playbook raportointikanavilla",
           "Aseta reviewin kadenssi: kvartaaleittain + jokaisen incidentin jälkeen"
         ],
@@ -23927,7 +23927,7 @@
       "s4": {
         "title": "Keskeinen tarkistus: päätelmien validointi",
         "time": "",
-        "why": "AI ohittaa emotionaalisen nyanssin, turhautumismallit ja edge case:t. Suunnittelijan eye-on-data on pakollinen vaihe, joka muuttaa raa'an outputin luotettavaksi insightiksi.",
+        "why": "AI ohittaa emotionaalisen nyanssin, turhautumismallit ja edge case:t. Suunnittelijan eye-on-data on pakollinen vaihe, joka muuttaa raa'an tuloksen luotettavaksi insightiksi.",
         "instructions": [
           "Reviewaa ~20% löydöksistä alkuperäisiä tallenteita vasten",
           "Arvioi kunkin pain pointin vakavuus design-linssin läpi, ei pelkän taajuuden mukaan",
@@ -23957,7 +23957,7 @@
         "instructions": [
           "Viimeistele output: strukturoitu research-raportti + priorisoitu backlog (quick wins / rakenteelliset)",
           "Rankkaa ratkaisut toteutettavuuden mukaan ja kytke ne parannushypoteeseihin",
-          "Tallenna workflow mallina: inputit → AI-vaiheet → suunnittelijan validointi → output",
+          "Tallenna workflow mallina: syötteet → AI-vaiheet → suunnittelijan validointi → output",
           "Mittaa lopputulos: time-to-insight ja lähetettyjen design-parannusten määrä"
         ],
         "validate": "Toistettava synteesi-workflow-malli ja priorisoitu backlog ovat valmiina; time-to-insight on mitattu vaiheeseen 1 verrattuna.",
@@ -23993,7 +23993,7 @@
       }
     ],
     "pitfalls": [
-      "Odottaa AI:lta pixel-perfect-outputtia — se antaa 70%, suunnittelija tekee viimeiset 30% käsin",
+      "Odottaa AI:lta pixel-perfect-tulosta — se antaa 70%, suunnittelija tekee viimeiset 30% käsin",
       "Käsitellä AI-koodia lopullisena — se tuottaa keskinkertaisen tuloksen; lopullinen = lähtökohta + 30-50% viimeistely",
       "Epämääräinen brief ilman brand coloria, fonttia, moodia ja rakennetta → epämääräiset variantit",
       "Generoida yksi variantti useamman sijaan — menetät pääedun eli kattavuusnopeuden",
@@ -24070,7 +24070,7 @@
       "s5": {
         "title": "Laatu ja riskit",
         "time": "",
-        "why": "Päävirhe on käsitellä AI:n outputtia lopullisena. Viimeiset 30% (maku, brand fit, accessibility) AI tuskin kattaa, ja ilman tarkistusta prototyyppi jää keskinkertaiseksi.",
+        "why": "Päävirhe on käsitellä AI:n tulosta lopullisena. Viimeiset 30% (maku, brand fit, accessibility) AI tuskin kattaa, ja ilman tarkistusta prototyyppi jää keskinkertaiseksi.",
         "instructions": [
           "Tarkista brand fit: ovatko määritelty väri, fontti ja mood todella käytössä",
           "Tarkista accessibility: kontrasti, tap-kohteiden koko, fokustilat — AI ohittaa nämä usein",
@@ -24344,7 +24344,7 @@
       "s6": {
         "title": "Käyttöönotto ja checklist",
         "time": "",
-        "why": "Kertaluontoinen audit ei muuta tuotetta. Kestävä tulos syntyy sisäänrakennetusta pipelinesta, joka toistuu joka julkaisussa eikä riipu yhden ihmisen innostuksesta.",
+        "why": "Kertaluontoinen audit ei muuta tuotetta. Kestävä tulos syntyy sisäänrakennetusta putkesta, joka toistuu joka julkaisussa eikä riipu yhden ihmisen innostuksesta.",
         "instructions": [
           "Upota kolme pistettä prosessiin: design phase, pre-handoff, post-launch",
           "Tee AI-auditista pakollinen portti ennen featuren handoffia",
@@ -24389,7 +24389,7 @@
       "Generoida variantteja katselmoimatta tokeneita: AI monistaa virheen kaikkiin koihin/tiloihin/teemoihin",
       "Ajaa breaking-change-migraatio ilman täyttä code + Figma -skannausta — osa käytöstä jää vanhoihin tokeneihin",
       "Komponenteista irrallinen dokumentaatio: docs vanhenevat, jos niitä ei sidota muutoksen lähteeseen",
-      "Hyväksyä 100 % AI:n token-outputista ilman manuaalista säätöä — yleensä tarvitaan ~30 % käsisäätöä brändille"
+      "Hyväksyä 100 % AI:n token-tuloksesta ilman manuaalista säätöä — yleensä tarvitaan ~30 % käsisäätöä brändille"
     ],
     "exercises": [
       {
@@ -24466,7 +24466,7 @@
         "why": "AI skaalaa hyvän lisäksi myös virheet. Konsistenssin hallinta generoinnin ja migraation jälkeen suojaa järjestelmää monistetuilta defekteiltä ja säilyttää brand/UX-integriteetin.",
         "instructions": [
           "Varmista, että kaikki variantit käyttävät hyväksyttyjä tokeneita, eivät kovakoodattuja arvoja",
-          "Tarkista brand-strategia ja UX-periaatteet AI-outputtia vasten — tämä on ihmiskatselmoinnin alue",
+          "Tarkista brand-strategia ja UX-periaatteet AI-tulosta vasten — tämä on ihmiskatselmoinnin alue",
           "Aja varianttimatriisin visuaalinen/rakenteellinen tarkistus poikkeamien varalta",
           "Kirjaa löydetyt riskit (monistetut token-virheet, sulkematon käyttö) ja peruuta tarvittaessa"
         ],
@@ -24921,7 +24921,7 @@
         "hint": "Vektoriläheisyys ≠ relevanssi tietylle kyselylle. Mieti, mitä neljäs vaihe tekee ja mikä signaali (lämpötila-alue attribuuteissa) on oltava product contextissa."
       },
       {
-        "question": "Kun katalogiin lisättiin uusia malleja, haku lakkasi löytämästä niitä, vaikka ne ovat tietokannassa. Mitä pipelinesta puuttuu?",
+        "question": "Kun katalogiin lisättiin uusia malleja, haku lakkasi löytämästä niitä, vaikka ne ovat tietokannassa. Mitä putkesta puuttuu?",
         "hint": "Embeddings ja vector DB eivät päivity itsestään. Muista sääntö vanhentuneesta datasta ja uudelleenindeksoinnista katalogin muuttuessa."
       },
       {
@@ -25339,7 +25339,7 @@
       "s2": {
         "title": "Funnelin pullonkaulat",
         "time": "",
-        "why": "Funnel-datasta irralliset hypoteesit ovat arvailua. Jotta Claude tuottaa perusteltuja ideoita, se tarvitsee oikean inputin: missä käyttäjät tarkalleen putoavat, mitä arvostelut sanovat, mitä kilpailijat tekevät.",
+        "why": "Funnel-datasta irralliset hypoteesit ovat arvailua. Jotta Claude tuottaa perusteltuja ideoita, se tarvitsee oikean syötteen: missä käyttäjät tarkalleen putoavat, mitä arvostelut sanovat, mitä kilpailijat tekevät.",
         "instructions": [
           "Kerää funnel-data: konversio vaiheittain (katselu → kori → kassa → maksu) ja putoamiskohdat",
           "Lisää laadullinen konteksti: asiakasarvostelut ja 2-3 kilpailijan sivut",
