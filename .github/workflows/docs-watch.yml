@@ -1,0 +1,46 @@
+name: Docs Watch
+
+# Сторож официальной документации Claude.
+# Понедельник 08:00 UTC (10:00 EET). Скачивает ключевые страницы docs,
+# сравнивает со слепком, при изменении пишет дифф в tasks/backlog.md,
+# сигналит в Telegram и коммитит обновлённые снапшоты.
+# Можно запустить вручную через workflow_dispatch.
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Monday 08:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  watch-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run docs-watcher
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: node scripts/docs-watcher.mjs
+
+      - name: Commit + push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/docs-watch/ tasks/backlog.md
+          if git diff --cached --quiet; then
+            echo "No documentation changes detected (nothing to commit)"
+            exit 0
+          fi
+          DATE=$(date -u +%Y-%m-%d)
+          git commit -m "chore(docs-watch): documentation changes detected ${DATE} (auto)"
+          git push
