@@ -61,3 +61,11 @@ build, lint:data (44 warning — легаси, не блок), lint:links (282 �
 (1 warning — намеренный singleton Старт), lint:css; engine — блокеров нет, защита кошелька и «как на
 холсте» корректны; builder-health — целостность узлов/шаблонов/i18n/atlasAnchor в порядке; перф —
 0 critical, 1 warning (чанки курсов).
+
+---
+## Доп. находка (в ходе фиксов): sync-whats-new не доводит сплиттер
+`node scripts/sync-whats-new.mjs` печатает «synced» (splitter не бросает), но split-чанки
+`locales/*/tutorials/*.json` НЕ обновляются — фикс доходит только после явного
+`node scripts/split-tutorials.mjs`. Это корневая причина периодического стейла нарезки.
+TODO: починить splitter-шаг в sync-whats-new (или сделать его обязательным в pre-commit/CI).
+Временное правило: после правки контента запускать `node scripts/split-tutorials.mjs` явно.

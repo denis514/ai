@@ -826,12 +826,12 @@
 
   --text: #1a1a1a;
   --text-muted: #6b6b6b;
-  --text-dim: #9a9a9a;
+  --text-dim: #767676;
 
   --border: #e5e5e1;
   --border-strong: #d4d4d0;
 
-  --accent: #d97757;
+  --accent: #c2603f;
   --accent-soft: #fae8df;
 
   --shadow-sm: 0 1px 2px rgba(20, 20, 20, 0.04);
@@ -864,7 +864,7 @@
 
   --text: #f0f0ef;
   --text-muted: #a8a8a5;
-  --text-dim: #707070;
+  --text-dim: #8a8a8a;
 
   --border: #2e2e32;
   --border-strong: #404045;
@@ -8660,4 +8660,22 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   .copy-btn,
   .detail__try-btn,
   .tut-code__try { min-height: 40px; }
+  .tut-header__close { width: 40px; height: 40px; }
+  .tut-footer .btn { min-height: 40px; }
+}
+
+/* A11y (system-audit 2026-06-04): видимый фокус на узлах карты (клавиатура). */
+.mm-node:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* A11y: уважать prefers-reduced-motion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

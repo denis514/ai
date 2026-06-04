@@ -62,6 +62,7 @@ export default function MindmapNode({
         '--cat-color': cat.color
       }}
       onClick={onNodeClick}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNodeClick(e); } }}
       role="button"
       tabIndex={0}
       aria-label={t(`nodes.${node.id}.title`)}

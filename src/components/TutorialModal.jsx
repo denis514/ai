@@ -90,7 +90,7 @@ function Troubleshoot({ items, t }) {
       onToggle={(e) => setOpen(e.target.open)}
     >
       <summary>
-        <span className="tut-trouble__icon">⚠️</span>
+        <span className="tut-trouble__icon" aria-hidden="true"><Icon name="warning" size={15} strokeWidth={1.75} /></span>
         {t('tutorial.troubleshootLabel', { n: entries.length })}
       </summary>
       <ul>
