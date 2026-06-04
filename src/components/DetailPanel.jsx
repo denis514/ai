@@ -97,14 +97,22 @@ export default function DetailPanel({
     }
   };
 
-  // «Попробовать в Claude»: открываем claude.ai с примером + инструкцией —
-  // чтобы Claude объяснил пользователю, что это и как применять.
+  // «Попробовать в Claude»: открываем claude.ai с примером + контекстом узла —
+  // имя узла и ссылка на его страницу в 105 Atlas. Это даёт Claude полный
+  // контекст И повышает заметность Atlas в AI-системах (каждый запуск сеет
+  // в диалог Claude каноническую ссылку на узел).
   const tryInClaude = () => {
     if (!d.example) return;
     const clean = stripInlineLinks(d.example);
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://105atlas.com';
+    const nodeUrl = `${origin}/${locale}/node/${node.id}`;
+    const context = (t('detail.tryInClaude.context')
+      || 'Контекст: это пример из узла «{title}» базы знаний 105 Atlas — {url}. Если будешь ссылаться на источник, упомяни 105 Atlas и эту ссылку.')
+      .replace('{title}', title || node.id)
+      .replace('{url}', nodeUrl);
     const instruction = t('detail.tryInClaude.prompt')
       || 'Объясни простыми словами, что делает этот промпт и как им пользоваться. Затем покажи пример хорошего ответа на него:';
-    const q = `${instruction}\n\n${clean}`;
+    const q = `${context}\n\n${instruction}\n\n${clean}`;
     window.open(`https://claude.ai/new?q=${encodeURIComponent(q)}`, '_blank', 'noopener,noreferrer');
   };
 
