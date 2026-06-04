@@ -197,12 +197,15 @@
   дифф + черновик правок узлов в `tasks/backlog.md` и сигналит в Telegram. Реакция =
   «сигнал + черновик правок» (не авто-правка). Базовая линия снята (5 страниц), no-op
   прогон проверен. `npm run docs:watch`. Выгружено в прод.
-- [ ] **Узлы/курс «Рабочее место Claude» (Desktop/web)** — в работе. Реальная структура
-  с живых скриншотов: 3 режима (Chat/Cowork/Code) + Settings (General/Account/Privacy/
-  Billing/Usage/Capabilities/Connectors/Claude Code/Cowork/Claude-in-Chrome + Desktop app:
-  General/Extensions/Developer). План: контейнер `apps-setup` в configuration + листья
-  (`pl-app-modes`, `pl-code-mode`, `pl-settings-map`, `pl-connectors`, `pl-extensions`,
-  `p-knowledge`) + детальный туториал. Источник правды — `docs/docs-watch/snapshots/desktop.md`.
+- ✅ **«Рабочее место Claude» (Desktop/web)** — доставлено как **детальный туториал**
+  `claude-workspace` (16 шагов, привязан к `pl-desktop`, ru/en/fi): 3 режима
+  (Chat/Cowork/Code), запуск Code-сессии, режимы прав, preview+diff, панели+хоткеи,
+  параллельные сессии, Computer use, полный разбор Settings (General/Account/Privacy/
+  Billing/Usage/Capabilities/Connectors/Claude Code/Cowork + Desktop app:
+  General/Extensions/Developer), CLI↔Desktop, troubleshooting. Узел `pl-desktop`
+  обновлён под реальность 3 вкладок. Выгружено. NB: сделано туториалом, а НЕ новыми
+  узлами — группа `platform` уже на пределе ширины (12), `pl-desktop` на пределе
+  глубины (4 уровня). Источник правды — `docs/docs-watch/snapshots/desktop.md`.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
