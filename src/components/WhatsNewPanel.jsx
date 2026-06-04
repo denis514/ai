@@ -99,8 +99,11 @@ export default function WhatsNewPanel({ onSelectNode, onOpenTutorial, onClose, o
                     className={`wn-panel__item ${unseen ? 'is-unseen' : ''}`}
                     onClick={() => handleSelect(id, entry)}
                   >
-                    <span className={`wn-panel__badge wn-panel__badge--${entry.type}`}>
-                      {entry.type === 'new' ? t('category.updatesNew') : t('category.updatesUpdated')}
+                    <span className="wn-panel__item-top">
+                      <span className={`wn-panel__badge wn-panel__badge--${entry.type}`}>
+                        {entry.type === 'new' ? t('category.updatesNew') : t('category.updatesUpdated')}
+                      </span>
+                      <span className="wn-panel__item-date">{formatDate(entry.date)}</span>
                     </span>
                     <span className="wn-panel__item-title">
                       {entry.kind === 'tutorial' && (
@@ -108,7 +111,6 @@ export default function WhatsNewPanel({ onSelectNode, onOpenTutorial, onClose, o
                       )}
                       {titles[id] || id}
                     </span>
-                    <span className="wn-panel__item-date">{formatDate(entry.date)}</span>
                   </button>
                 </li>
               );

@@ -160,14 +160,14 @@
   gap: 6px;
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
   border-radius: var(--radius);
   background: var(--surface);
   cursor: pointer;
   text-align: left;
   transition: background 0.12s, border-color 0.12s;
 }
-.archive-modal__item:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.archive-modal__item:hover { background: var(--surface-2); border-color: var(--border); }
 .archive-modal__item.is-unseen { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
 .archive-modal__item.is-unseen .archive-modal__item-title { font-weight: 600; }
 .archive-modal__item-top {
@@ -235,29 +235,46 @@
 .wn-panel__list {
   list-style: none;
   margin: 0;
-  padding: 6px;
-  max-height: 320px;
+  padding: 8px;
+  max-height: 340px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
+/* Карточка обновления (как в окне «Päivitykset»): ряд 1 — лейбл + дата,
+   ряд 2 — название. Бордер мягкий, малозаметный. */
 .wn-panel__item {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
   width: 100%;
-  padding: 8px 10px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
+  padding: 9px 11px;
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--radius-md);
+  background: var(--surface);
   cursor: pointer;
   text-align: left;
-  transition: background 0.12s;
+  transition: background 0.12s, border-color 0.12s;
 }
 
 .wn-panel__item:hover {
   background: var(--surface-2);
+  border-color: var(--border);
 }
 
+.wn-panel__item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.wn-panel__item.is-unseen {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+}
 .wn-panel__item.is-unseen .wn-panel__item-title {
   font-weight: 600;
   color: var(--text);
