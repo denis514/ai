@@ -3314,6 +3314,534 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "uc-ai-reporting-launch": {
+    "nodeId": "uc-ai-reporting-launch",
+    "icon": "clipboard",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-process-automation": {
+    "nodeId": "uc-ai-process-automation",
+    "icon": "puzzle",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-decision-support": {
+    "nodeId": "uc-ai-decision-support",
+    "icon": "compass",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-content-ops-launch": {
+    "nodeId": "uc-ai-content-ops-launch",
+    "icon": "note",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-support-tier1": {
+    "nodeId": "uc-ai-support-tier1",
+    "icon": "command",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-discovery-launch": {
+    "nodeId": "uc-ai-discovery-launch",
+    "icon": "search",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-transformation-roadmap": {
+    "nodeId": "uc-ai-transformation-roadmap",
+    "icon": "folder-plus",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-rag-launch": {
+    "nodeId": "uc-ai-rag-launch",
+    "icon": "attachment",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-pilot-to-production": {
+    "nodeId": "uc-ai-pilot-to-production",
+    "icon": "download",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-roi-estimation": {
+    "nodeId": "uc-ai-roi-estimation",
+    "icon": "tag",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-vendor-selection": {
+    "nodeId": "uc-ai-vendor-selection",
+    "icon": "store",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-multi-agent-system": {
+    "nodeId": "uc-ai-multi-agent-system",
+    "icon": "plug",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-design-research-launch": {
+    "nodeId": "uc-ai-design-research-launch",
+    "icon": "eye",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-personalization-launch": {
+    "nodeId": "uc-ai-personalization-launch",
+    "icon": "target",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-product-search": {
+    "nodeId": "uc-ai-product-search",
+    "icon": "search",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "uc-ai-conversion-optimization": {
+    "nodeId": "uc-ai-conversion-optimization",
+    "icon": "flash",
+    "level": "intermediate",
+    "audience": "business",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "use-cases"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 

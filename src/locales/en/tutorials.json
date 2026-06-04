@@ -13032,5 +13032,2113 @@
         "tip": "Keep current Claude Code settings and commands handy in the [[node:cc-config|config]] and [[node:cc-install|install]] — CLAUDE.md works together with them."
       }
     }
+  },
+  "uc-ai-reporting-launch": {
+    "title": "Launch AI Reporting",
+    "subtitle": "A ready scenario: from manual reports to a working weekly report workflow in 2 weeks",
+    "totalTime": "6 шагов",
+    "whatItIs": "A step-by-step route to move a regular report (weekly/monthly) onto Claude: from a manual draft to a repeatable workflow used by the team. Built on a chain of 105 Atlas nodes — [[node:prompting|Prompting]], [[node:projects|Projects]], [[node:i-claudemd|CLAUDE.md]], [[node:ops-reporting-automation|Reporting Automation]], [[node:sc-data|working with data]].",
+    "approach": "Quality first, automation later. AI writes a draft → a human edits → measure quality on 5-10 real reports. Only after stable results do you add triggers and scheduling. A two-week cycle: Day 1-3 setup, Day 4-7 iterations, Day 8-14 roll-out.",
+    "outcomes": [
+      "A working weekly report workflow in 2 weeks",
+      "Time-to-report cut from 4 hours to 30 minutes",
+      "Report consistency up ~90% (single format)",
+      "The team can use the workflow and trusts it (NPS survey)",
+      "The report format is fixed and reused instead of rebuilt every time"
+    ],
+    "applyIn": [
+      {
+        "title": "Operations / business analytics",
+        "description": "Weekly summaries of sales, funnel, and metrics from CRM and analytics with CSV export."
+      },
+      {
+        "title": "Management reporting",
+        "description": "Regular reports for leadership: project status, KPIs, concise digests from many sources."
+      },
+      {
+        "title": "Team / department updates",
+        "description": "Recurring team summaries where the format is stable and data refreshes each period."
+      }
+    ],
+    "pitfalls": [
+      "Wanting full automation in the first week — get draft quality right first, then add triggers",
+      "Starting without available data: if there is no CRM/analytics export, the workflow stalls",
+      "Rewriting the format from scratch each time instead of fixing it in [[node:i-claudemd|CLAUDE.md]]",
+      "Rolling out to the team before 5-10 successful manual iterations — no trust, no feedback",
+      "Not measuring results: without time-to-report and NPS metrics you cannot prove value"
+    ],
+    "exercises": [
+      {
+        "question": "Which of your reports fits the first launch and why exactly that one?",
+        "hint": "Look for a regular report taking ≥3 hours per week, with available data and a stable format."
+      },
+      {
+        "question": "What fields and structure should the final report have so they can be described in CLAUDE.md?",
+        "hint": "Take 1-2 past reports and list the sections, metrics, and tone — that is your future format."
+      },
+      {
+        "question": "How will you know the workflow is ready to roll out to the team?",
+        "hint": "Use the criterion: 5-10 real reports in a row with acceptable draft quality."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "When the scenario is needed and what you get",
+        "time": "",
+        "why": "Without a clear trigger and expected result, the team drowns in \"start reading everything\". This step confirms the scenario applies at all and locks in a measurable outcome.",
+        "instructions": [
+          "Check the trigger: there is a regular report (weekly/monthly) taking ≥3 hours per week",
+          "Check data: it is available via CRM/analytics export (CSV, etc.)",
+          "Check buy-in: the team agrees to try a new workflow",
+          "Lock target metrics: time-to-report 4h→30min, consistency +90%, NPS survey",
+          "State the outcome in one phrase: \"a working weekly report workflow in 2 weeks\""
+        ],
+        "validate": "You have one concrete candidate report, access to its data, and recorded target metrics.",
+        "tip": "If the trigger or the data is missing, do not launch yet — it saves you two weeks."
+      },
+      "s2": {
+        "title": "Preparation: data, access, context",
+        "time": "",
+        "why": "Report quality is capped by input quality. This step prepares the data and a shared workspace so iterations run without stopping to ask \"where do the numbers come from\".",
+        "instructions": [
+          "Gather data sources and confirm export works (see [[node:sc-data|working with CSV data]])",
+          "Create a shared \"Weekly Reports\" workspace for the team via [[node:projects|Projects]]",
+          "If the report needs CRM context, learn how to feed it to Claude ([[node:af-rag-basics|RAG basics]])",
+          "Take 1-2 past reports as a reference for format and tone",
+          "Agree on who owns the workflow and who edits drafts"
+        ],
+        "validate": "Data exports cleanly, the workspace exists, reference reports are at hand.",
+        "tip": "Start with a single data source — do not try to connect everything at once."
+      },
+      "s3": {
+        "title": "First draft: prompt and format",
+        "time": "",
+        "why": "This is the heart of the scenario: teach Claude to write the report in the right format. Manually at first, to see real quality and find what to improve.",
+        "instructions": [
+          "Write a system prompt for the report (see [[node:prompting|Prompting]] and [[node:b-system|system prompt]])",
+          "Describe the report format — sections, metrics, tone — in the workspace [[node:i-claudemd|CLAUDE.md]]",
+          "Feed real data for one period and get a first draft",
+          "Compare the draft against the reference report and note the gaps",
+          "Record what the AI does well and what you have to fix by hand"
+        ],
+        "validate": "You have a first coherent draft, and the format lives in CLAUDE.md and is reused.",
+        "tip": "Do not chase perfection on the first try — the goal is a working starting point."
+      },
+      "s4": {
+        "title": "Iterate on real reports",
+        "time": "",
+        "why": "One draft proves nothing. Stable quality only shows on a series of real reports — this is where the workflow matures into something repeatable.",
+        "instructions": [
+          "Run 5-10 real reports as: AI draft → human edits → log the edits",
+          "After each iteration refine the prompt and format in [[node:i-claudemd|CLAUDE.md]]",
+          "Shape the stages into a repeatable process following [[node:ops-reporting-automation|Reporting Automation]]",
+          "Measure editing time — it should drop from iteration to iteration",
+          "Collect frequent edits into a checklist so the prompt covers them upfront"
+        ],
+        "validate": "5-10 reports in a row produce an acceptable draft, and manual editing steadily decreases.",
+        "tip": "If editing is still heavy after 10 iterations, the issue is the data or the format, not Claude."
+      },
+      "s5": {
+        "title": "Quality check and risks",
+        "time": "",
+        "why": "Before going to the team you must confirm the report is accurate and reproducible — one wrong number would undermine trust in the whole workflow.",
+        "instructions": [
+          "Reconcile the draft's numbers against the source data — check for factual errors",
+          "Test stability: the same data yields a comparable result",
+          "Record the measured time-to-report and compare with the 30-minute target",
+          "Define which parts require mandatory human review",
+          "Describe the risk zones (sources with dirty data, sensitive metrics)"
+        ],
+        "validate": "Quality is confirmed by the check, metrics are met, mandatory-review spots are known.",
+        "tip": "Add full automation only after this step — never before."
+      },
+      "s6": {
+        "title": "Roll-out and scaling",
+        "time": "",
+        "why": "Value appears when the whole team uses the workflow, not just one author. The final step is the roll-out, gathering feedback, and cementing the practice.",
+        "instructions": [
+          "Run the team roll-out: show the workflow and the shared workspace [[node:projects|Projects]]",
+          "Collect feedback and run an NPS survey (likelihood to recommend, 0-10)",
+          "Add automation — triggers and scheduling — following [[node:ops-reporting-automation|Reporting Automation]]",
+          "Assign an owner who maintains the prompt and format in [[node:i-claudemd|CLAUDE.md]]",
+          "Readiness checklist: format in CLAUDE.md, 5-10 successful iterations, metrics met, team trained, owner assigned"
+        ],
+        "validate": "The team uses the workflow, NPS is collected, automation is added, the checklist is closed.",
+        "tip": "Once one report is dialed in, the same path repeats easily for the next — the format already exists."
+      }
+    }
+  },
+  "uc-ai-process-automation": {
+    "title": "Automate a Recurring Process",
+    "subtitle": "From an operations process your team does by hand every week to a production workflow on Skills and Hooks with quality checks",
+    "totalTime": "6 steps",
+    "whatItIs": "A structured path to automating one specific recurring process via AI: from choosing a good candidate to a production-ready workflow with [[node:skills|Skills]] and automatic triggers. Not \"we tried Claude and liked it\", but a systematic approach with metrics and quality gates.",
+    "approach": "First pick and stabilize a process that runs at least 5 times a week with clear inputs/outputs. Then document it as-is and identify the steps AI can realistically take over. Build the automation core — a reusable Skill plus external integrations if needed — and add triggers. Always embed quality gates with human review, test on historical data, and only then roll out to production with monitoring and a scaling plan.",
+    "outcomes": [
+      "An automated workflow for a specific process, ready for daily use in 2-3 weeks",
+      "70-90% time savings on the routine steps of the process",
+      "Error rate below 5% thanks to quality gates and human review",
+      "A reusable Skill you can apply to similar processes",
+      "Clear before/after metrics to prove the value to your team and leadership"
+    ],
+    "applyIn": [
+      {
+        "title": "Incoming request handling",
+        "description": "Classifying, enriching, and routing tickets or requests that arrive by the dozen each day in a single template."
+      },
+      {
+        "title": "Producing regular documents",
+        "description": "Weekly reports, summaries, client emails — where the format is stable and manual variability gets in the way."
+      },
+      {
+        "title": "Routine data operations",
+        "description": "Moving, reconciling, normalizing data between systems via [[node:mcp|MCP]] integrations when the steps repeat and are well described."
+      }
+    ],
+    "pitfalls": [
+      "Automating a process that isn't stabilized yet — the workflow will break with every change",
+      "Skipping quality gates: without human review, automation produces trash at scale",
+      "Picking a process that is too complex or too rare — no savings, and maintenance eats your time",
+      "Testing only on \"convenient\" examples and ignoring edge cases from historical data",
+      "Rolling out to production without monitoring — errors pile up unnoticed and team trust drops"
+    ],
+    "exercises": [
+      {
+        "question": "Find one process in your team that runs ≥5 times a week with clear inputs and outputs. Describe its steps and mark which ones AI could take over.",
+        "hint": "A good candidate: stable format, clear result, measurable time. If the process still changes every week, stabilize it first."
+      },
+      {
+        "question": "For the chosen process, design 3 quality gates — points where the result is checked before moving on. Where is a human strictly required?",
+        "hint": "Think about irreversible actions: sending to a client, changing data, financial operations. Cover those with human review first."
+      },
+      {
+        "question": "Define a before/after success metric for your automation: how much time is spent now and what target error rate is acceptable.",
+        "hint": "A practical benchmark: 70-90% time savings and an error rate below 5%. Capture the baseline BEFORE launch, or you have nothing to prove value with."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "When you need it and the target outcome",
+        "time": "",
+        "why": "Without the right candidate, automation either won't pay off or will keep breaking. This step decides whether to start at all.",
+        "instructions": [
+          "Check candidate criteria: the process runs ≥5 times a week with clear inputs and outputs",
+          "Confirm that result variability in manual execution is a real problem for the team",
+          "Verify technical feasibility: do you have access to the needed triggers and integrations",
+          "State the expected outcome in metrics: 70-90% time savings, error rate <5%",
+          "Look at [[node:ops-process-automation|Process Automation]] as the target structure with quality gates"
+        ],
+        "validate": "You have one specific process and a written goal in measurable before/after metrics.",
+        "tip": "If torn between two processes, take the one that repeats more often and changes less. Frequency × stability = payoff."
+      },
+      "s2": {
+        "title": "Preparation: document the process as-is",
+        "time": "",
+        "why": "You can't automate what isn't described. The as-is document shows which steps AI can take over and which must stay with a human.",
+        "instructions": [
+          "Write out the process step by step as it runs today (Week 1)",
+          "For each step note: inputs, action, result, who/what is responsible",
+          "Mark the AI-replaceable steps — where Claude can produce a stable result from clear rules",
+          "Collect a set of historical examples for future tests (real cases, including edge cases)",
+          "Make sure the process is stable — if it still changes, lock it down first"
+        ],
+        "validate": "You have a step-by-step map of the process, marked AI steps, and a set of historical examples for tests.",
+        "tip": "Edge and \"awkward\" cases from history are worth more than a dozen typical ones — that's exactly where the workflow breaks in production."
+      },
+      "s3": {
+        "title": "Execution: the automation core — a Skill",
+        "time": "",
+        "why": "A reusable Skill is the instruction Claude applies the same way every time. It turns a one-off prompt into a systematic process.",
+        "instructions": [
+          "Build the workflow core as a Skill via [[node:s-create|Creating a Skill]] — describe the goal, steps, and output format",
+          "Lean on [[node:skills|Skills]] so the Skill is self-contained and reusable",
+          "Work out the core workflow prompt following [[node:prompting|Prompting]] rules",
+          "Run the Skill on the historical examples from step 2 and compare with the real results (Week 2)",
+          "Tune the prompt to a stable output on both typical and edge cases"
+        ],
+        "validate": "The Skill produces the expected result on historical examples, including some of the edge cases.",
+        "tip": "Don't try to cover everything with one giant prompt. A clear Skill with a defined output format is more reliable than a wall of instructions."
+      },
+      "s4": {
+        "title": "Execution: integrations and triggers",
+        "time": "",
+        "why": "The Skill handles \"what to do\", while integrations and triggers handle \"where the data comes from\" and \"when to run\". Without them, automation stays a manual button.",
+        "instructions": [
+          "If external systems are needed, connect them via [[node:mcp|MCP]] (data sources, team tools)",
+          "Set up automatic triggers via [[node:cc-hooks|Claude Code Hooks]] — by event, schedule, or incoming request",
+          "Wire the chain: trigger → data via MCP → Skill → result",
+          "Run the full path end-to-end on test data, not just the Skill itself",
+          "Record which steps stay manual and why (part of the quality gates)"
+        ],
+        "validate": "The full path from trigger to result runs on test data with no manual intervention on the automatic steps.",
+        "tip": "Start with one trigger and minimal integrations. Extra connections complicate debugging and widen the surface for errors."
+      },
+      "s5": {
+        "title": "Quality checks and risks",
+        "time": "",
+        "why": "Quality gates are the main defense against \"automated trash\". Without checks, errors pile up at scale and destroy team trust.",
+        "instructions": [
+          "Embed quality gates: points where the result is checked before moving on",
+          "For irreversible actions (sending to a client, changing data, money) keep a mandatory human review",
+          "Measure the actual error rate on historical data and compare with the <5% target",
+          "Test edge cases separately — they reveal the weak spots of the workflow",
+          "Describe a rollback plan: what to do if automation produces a wrong result"
+        ],
+        "validate": "The error rate is within target, risky steps have human review, and there is a rollback plan.",
+        "tip": "A quality gate isn't a slowdown — it's insurance: better to route 100% of results through review the first week than fix your reputation later."
+      },
+      "s6": {
+        "title": "Rollout, scaling, and checklist",
+        "time": "",
+        "why": "A production launch without monitoring and a scaling plan turns a working prototype into an unmanaged risk. This step locks in the value.",
+        "instructions": [
+          "Roll the workflow out to production with monitoring of results and error rate (Week 3)",
+          "Capture the after metrics and compare with the baseline from step 1 — prove the savings to the team",
+          "Decide whether to expand the approach: stage transition 1→2 (first automation) or 2→3 (scaling)",
+          "Find similar processes that reuse the same Skill and add them to the queue",
+          "Run the checklist: candidate fits / process documented / Skill stable / triggers and MCP work / quality gates in place / monitoring on"
+        ],
+        "validate": "The workflow runs in production, the after metrics confirm the value, and the checklist is fully passed.",
+        "tip": "Write up the case: process, metrics, gotchas. It's both proof of value and a template for the next automation from the [[node:use-cases|Use Cases]]."
+      }
+    }
+  },
+  "uc-ai-decision-support": {
+    "title": "AI Support for Operational Decisions",
+    "subtitle": "From \"let us discuss in Slack\" to a structured decision process with AI analysis in 3-4 weeks",
+    "totalTime": "6 steps",
+    "whatItIs": "This course shows how to bring AI into your team's operational decisions — not as \"the decider\", but as a tool for structuring and pattern matching. You will build a working decision process where AI prepares trade-off analysis and surfaces past cases, while the human makes the call and owns accountability.",
+    "approach": "Operations teams make 5-10 decisions a week under load: lots of reactive, little learning. This approach adds discipline without bureaucracy — a lightweight template, AI analysis via [[node:prompting|structured prompting]], and a decision log in [[node:projects|Projects]]. Start with a pilot of 3-5 decisions, then refine and roll out with a retrospective.",
+    "outcomes": [
+      "A working decision process with AI support in 3-4 weeks",
+      "Reactive decisions drop by 50-70%",
+      "A learning loop is established: retrospective with AI pattern matching over decision history",
+      "A \"Decision Log\" with outcome tracking for future retrospectives",
+      "The team clearly understands AI's boundaries: where it adds value, and where accountability stays with the human"
+    ],
+    "applyIn": [
+      {
+        "title": "Hiring and recruiting",
+        "description": "Hire vs no-hire decisions with trade-off analysis: AI structures the arguments for and against, the human weighs context and decides."
+      },
+      {
+        "title": "Vendor and tool selection",
+        "description": "Vendor selection by matching criteria and pricing: AI assembles data into one structure and surfaces similar past choices from the log."
+      },
+      {
+        "title": "Process changes",
+        "description": "Process change decisions: AI pattern-matches against past changes (\"we decided this a year ago\"), reducing repeat mistakes."
+      }
+    ],
+    "pitfalls": [
+      "Using AI as \"the decider\". AI is good at structuring and pattern matching, but context and accountability belong to the human.",
+      "Ignoring documentation. Tracking outcomes matters more than the AI output itself: no log means no learning loop.",
+      "Overloading the process with bureaucracy. A heavy template kills adoption — keep it light.",
+      "Putting every decision into the process at once. Start with major decisions that need trade-off; leave the small stuff as is.",
+      "Trusting AI output without checking the data. Weak inputs lead to confident-sounding but wrong analysis."
+    ],
+    "exercises": [
+      {
+        "question": "List 5 decisions your team made last month. Which required trade-off analysis and would fit AI support, and which would not?",
+        "hint": "Candidates: hires, vendors, process changes. Non-candidates: obvious operational actions with no alternatives."
+      },
+      {
+        "question": "Take one past decision the team later regretted. What data and arguments would AI have helped structure beforehand?",
+        "hint": "Think about what was known at the time but never pulled into one picture."
+      },
+      {
+        "question": "State a boundary: which decision would you NOT trust AI to even structure? Why?",
+        "hint": "Look for decisions tied to hidden context, people, or ethics — that is where AI is blind."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Define when the scenario is needed and the target outcome",
+        "time": "",
+        "why": "Without a clear scope, AI support turns into bureaucracy for every decision. First decide which decisions to include at all.",
+        "instructions": [
+          "Collect the types of decisions your team made over a month (hires, vendors, processes).",
+          "Mark those that require trade-off analysis — these are candidates for AI support.",
+          "Define the expected outcome: a working process in 3-4 weeks, reactive decisions down 50-70%.",
+          "Fix the goal: structuring and a learning loop, not handing decisions to AI."
+        ],
+        "validate": "You have a short list (3-5 types) of decisions where AI support adds value.",
+        "tip": "If a decision is obvious and has no alternatives, it does not belong in this process."
+      },
+      "s2": {
+        "title": "Prepare the data and context for analysis",
+        "time": "",
+        "why": "AI analysis quality equals input data quality. Weak input leads to a confident-sounding but wrong conclusion.",
+        "instructions": [
+          "For each decision type, define what data is needed (numbers, criteria, constraints).",
+          "Learn to feed data to AI via [[node:prompting|structured prompting]] — facts separate from the question.",
+          "Set up a \"Decision Log\" workspace in [[node:projects|Projects]] for history and context.",
+          "Collect 2-3 past decisions as a reference for future pattern matching."
+        ],
+        "validate": "For the pilot decision, you can quickly assemble a clean set of data and context.",
+        "tip": "Separate \"facts\" from \"the question for AI\" — it sharply improves structuring quality."
+      },
+      "s3": {
+        "title": "Step 1: structure trade-off analysis with chain-of-thought",
+        "time": "",
+        "why": "The key to value is making AI reason step by step and lay out arguments for and against, rather than spitting out a ready answer.",
+        "instructions": [
+          "Build a prompt template on [[node:prompting|prompting principles]]: context → data → task → output format.",
+          "Ask AI to expand its chain-of-thought: criteria, options, pros/cons of each.",
+          "Fix the output format: a trade-off table plus AI's explicit assumptions.",
+          "Run it on 1 simple pilot decision and assess how useful the structure is."
+        ],
+        "validate": "AI produces a readable trade-off breakdown with explicit assumptions, not a single \"answer\".",
+        "tip": "Always ask AI to name its assumptions — that reveals where it might be wrong."
+      },
+      "s4": {
+        "title": "Step 2: add pattern matching over decision history",
+        "time": "",
+        "why": "The core operations pain is \"we decided this a year ago and forgot\". History in the log turns past decisions into a learning loop.",
+        "instructions": [
+          "Give AI access to the \"Decision Log\" in [[node:projects|Projects]] as context.",
+          "Ask AI to find similar past decisions and their outcomes before a new conclusion.",
+          "For each new decision, record: context, options, choice, expected outcome.",
+          "After 1-2 cycles, verify AI actually surfaces relevant past cases."
+        ],
+        "validate": "On a new decision, AI references similar past cases from the log.",
+        "tip": "Record not just the choice but the expected outcome — otherwise the retrospective has no teeth."
+      },
+      "s5": {
+        "title": "Quality and risk check: the human decides, not AI",
+        "time": "",
+        "why": "AI is good at structuring and pattern matching, but context and accountability belong to the human. Without this barrier the process is dangerous.",
+        "instructions": [
+          "Set the rule: AI output is an input for discussion, not a decision.",
+          "Check AI's assumptions and the data its analysis was built on.",
+          "Flag decisions where hidden context/ethics/people make AI blind — there it only structures.",
+          "Pin down who is accountable for each decision (a human, not the model)."
+        ],
+        "validate": "The team understands: the final decision and accountability always rest with the human.",
+        "tip": "If AI sounds too confident, treat it as a signal to re-check the input data."
+      },
+      "s6": {
+        "title": "Rollout and the rollout checklist",
+        "time": "",
+        "why": "The pilot proves value; rollout with a retrospective turns it into a durable team process.",
+        "instructions": [
+          "Week 1: pilot on 3-5 simple decisions.",
+          "Week 2-3: refine the template and verify quality on real cases.",
+          "Week 4: roll out to all major decisions + the first retrospective with AI pattern matching.",
+          "Checklist: lightweight template, log in [[node:projects|Projects]], the \"human decides\" rule, outcome tracking."
+        ],
+        "validate": "The process works across all major decisions, reactive decisions have dropped, the first retrospective is done.",
+        "tip": "Keep the template light: heavy bureaucracy kills adoption faster than poor AI output."
+      }
+    }
+  },
+  "uc-ai-content-ops-launch": {
+    "title": "Launch AI Content Operations",
+    "subtitle": "From generic AI texts to a content machine with brand voice in 2 weeks",
+    "totalTime": "6 шагов",
+    "whatItIs": "A step-by-step scenario that turns scattered AI use across a team into a working content pipeline with a recognizable brand voice. Not \"AI writes faster\" but \"AI writes the way we write\" — systematically, with quality checks and rollout to the team.",
+    "approach": "The core of the scenario is brand voice. First you capture the brand voice and templates (preparation), then you build the two key pipeline steps (brief→draft and review→edit), and only then scale to the team. Without voice work the pipeline just produces generic texts faster — so voice setup is ~30% of the effort and must not be skipped.",
+    "outcomes": [
+      "You understand when the scenario fits and the concrete result it delivers (time-to-publish, consistency, volume)",
+      "A documented brand voice as a reusable doc and system prompt",
+      "A working pipeline: brief → draft → review → publish with clear roles at each step",
+      "A quality and tone check that separates \"sounds like us\" from \"sounds like AI\"",
+      "A rollout checklist the team uses to scale the process without losing quality"
+    ],
+    "applyIn": [
+      {
+        "title": "Marketing team with inconsistent AI",
+        "description": "The team already uses AI ad-hoc but texts sound different. The scenario brings everyone to one voice and predictable quality."
+      },
+      {
+        "title": "Blog and regular content >10 pieces/month",
+        "description": "Once volume grows, hand-editing every draft does not scale. A pipeline with voice cuts time-to-publish dramatically."
+      },
+      {
+        "title": "Launching a new content stream",
+        "description": "A new product or section needs a voice from scratch. The scenario gives the frame: voice, templates, review — before chaos accumulates."
+      }
+    ],
+    "pitfalls": [
+      "Building the pipeline without voice work — you get generic texts faster, but still generic",
+      "Treating brand voice as \"a couple of adjectives\" instead of concrete attributes with \"do / don't\" examples",
+      "Skipping the tone review — speed goes up but AI style leaks into published pieces",
+      "Rolling out to the whole team at once without test pieces and voice-prompt iteration",
+      "Not measuring results — without time-to-publish and consistency you cannot tell if it improved"
+    ],
+    "exercises": [
+      {
+        "question": "Assemble a brand voice doc: 5 voice attributes, each with a \"do / don't\" pair using real phrases from your brand.",
+        "hint": "Pull wording from your best published pieces, not from your head. Voice is what already works."
+      },
+      {
+        "question": "Run one piece through the full pipeline (brief→draft→review→publish) and time each step.",
+        "hint": "The before measurement is your baseline. Without it you cannot prove time-to-publish dropped."
+      },
+      {
+        "question": "Give a colleague 3 texts: 2 of your published ones and 1 AI draft without voice. Can they tell which is which?",
+        "hint": "If the AI text is easy to spot, the voice is still weak — add specifics to the system prompt."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Decide when the scenario is needed and lock the target result",
+        "time": "",
+        "why": "The scenario pays off only under certain conditions. Launching a pipeline \"just in case\" without volume and without editor buy-in wastes time and yields no measurable effect.",
+        "instructions": [
+          "Check the triggers: team already uses AI ad-hoc, quality is inconsistent, volume >10 pieces/month, editor/content lead buy-in exists.",
+          "Record baseline metrics: current time from draft to publish, share of pieces \"on brand voice\", monthly volume.",
+          "State the target result: e.g. time-to-publish 2 days→4h, brand consistency 60%→90%, volume +200%.",
+          "If even one trigger is missing (no volume or no buy-in) — postpone the scenario, otherwise the pipeline will not stick."
+        ],
+        "validate": "You have 3 baseline numbers and 3 target numbers — something to compare against in 2 weeks.",
+        "tip": "This scenario is the path from Foundation to Transformation. If basic prompting still wobbles, start with [[node:prompting|writing briefs]]."
+      },
+      "s2": {
+        "title": "Preparation: brand voice and templates",
+        "time": "",
+        "why": "Brand voice is the core of the whole scenario (about 30% of the effort). Without an explicitly described voice any pipeline produces generic texts, just faster.",
+        "instructions": [
+          "Audit existing content: pick 5-10 best pieces and write down voice attributes (tone, vocabulary, sentence length, what the brand never says).",
+          "Capture the brand voice as a [[node:b-system|system prompt]] and mirror it with profile-level [[node:instructions|custom instructions]] for everyday chats.",
+          "Create a [[node:projects|\"Blog\" Project]] and put voice files, \"do / don't\" examples and brief templates into it.",
+          "For the team workspace add a [[node:cc-md|CLAUDE.md]] with voice rules if you work in Claude Code."
+        ],
+        "validate": "You have a voice doc + a Project with voice files; on a test phrase Claude answers in the right tone without long briefing.",
+        "tip": "A voice attribute without a \"do / don't\" example is useless. Claude learns from contrast, not from adjectives."
+      },
+      "s3": {
+        "title": "Key step 1: brief → draft",
+        "time": "",
+        "why": "This is the pipeline input. Draft quality is 80% determined by brief quality — no editing will rescue a weak input.",
+        "instructions": [
+          "Lock a brief template: topic, goal, audience, key points, format, length, what NOT to write.",
+          "Generate the draft inside the \"Blog\" Project so voice files are pulled in automatically.",
+          "Run 3-5 test pieces and iteratively fix the voice prompt where Claude drifts off tone.",
+          "Lock the final draft prompt as part of the Project — it is a reusable asset."
+        ],
+        "validate": "On a new brief the draft comes out on brand voice with minimal edits and no manual re-briefing.",
+        "tip": "If drafts vary in quality, the problem is in the brief, not in Claude. Standardize the input first."
+      },
+      "s4": {
+        "title": "Key step 2: review → edit",
+        "time": "",
+        "why": "This is the pipeline output control. Without an explicit review step AI style leaks into published pieces and the whole speed gain is wasted.",
+        "instructions": [
+          "Describe the review step as part of a sequential pipeline — see the [[node:sys-linear-chain|linear chain]] (brief → draft → review → publish).",
+          "Give Claude an editor role: check brand voice fit, facts, structure and return a list of edits, not a silent rewrite.",
+          "Introduce a tone checklist: \"sounds like us?\", no clichés or AI markers, banned phrasings respected.",
+          "Run 2-3 pieces through the draft→review pair and compare the result against the voice doc."
+        ],
+        "validate": "After the review step a piece passes the tone checklist and edits from a human editor are minimal.",
+        "tip": "Review ≠ re-generation. Ask for a list of edits with reasons — that shows you where the voice breaks systematically."
+      },
+      "s5": {
+        "title": "Quality and tone check at scale",
+        "time": "",
+        "why": "One good article is luck. Before handing the pipeline to the team you must confirm quality and tone are stable across a series of pieces.",
+        "instructions": [
+          "Build a set of 5 varied pieces (different topics/formats) and run the whole pipeline end to end.",
+          "Rate each against the tone checklist and compare with the baseline metrics from step 1.",
+          "Blind test: give a colleague a mix of published and AI pieces — if the AI ones are spotted, strengthen the voice prompt.",
+          "Record typical tone failures and add counterexamples to the Project and voice doc."
+        ],
+        "validate": "Across 5 different pieces consistency stays at the target level; the blind test does not reveal the AI texts.",
+        "tip": "Measure, do not \"feel\". Consistency 90% is a concrete share of pieces passing the checklist, not an impression."
+      },
+      "s6": {
+        "title": "Rollout, scale and a team handoff checklist",
+        "time": "",
+        "why": "The scenario delivers value only when the team uses it, not a single person. The final step turns the work into a repeatable process.",
+        "instructions": [
+          "Describe the finished process as [[node:mk-content-ops|content operations]] with roles and metrics; for separate deep voice tuning use [[node:mk-brand-voice|brand voice tuning]].",
+          "Share the Project, brief templates and voice doc with the whole team; assign a voice owner who keeps it updated.",
+          "Run the rollout: a short walkthrough + 1-2 joint runs so the team can repeat it without you.",
+          "Turn on measurement: track time-to-publish, consistency and volume weekly for the first 2 weeks.",
+          "Go through the handoff checklist: voice doc current, Project shared, pipeline steps documented, metrics tracked, owner assigned."
+        ],
+        "validate": "At least one colleague runs a piece through the whole pipeline on their own, and weekly metrics confirm the gains.",
+        "tip": "Assign a voice owner. Without one the voice doc goes stale within a month and the pipeline quietly slides back to generic."
+      }
+    }
+  },
+  "uc-ai-support-tier1": {
+    "title": "Launch AI Tier-1 Support",
+    "subtitle": "From \"all by hand\" to \"AI closes 40% of tickets\" in 4 weeks",
+    "totalTime": "6 steps",
+    "whatItIs": "A how-to course on rolling out AI first-line support (Tier-1 — simple, repetitive questions) step by step in a real team. This is not \"buy a bot\" but a structured path: knowledge base first, then AI, then quality control and human escalation. One of the highest-ROI AI projects in support.",
+    "approach": "The order of steps is strict and deliberate: the knowledge base (KB) comes first, because AI answers only as well as the KB it retrieves from (RAG). First we prepare the ground, then assemble the AI scenario, then embed quality control and safe escalation, and only then roll out to live traffic via a pilot and metrics. See the pattern in [[node:ai-native-customer-support|AI-native customer support]] and [[node:af-rag-basics|RAG basics]].",
+    "outcomes": [
+      "A working AI Tier-1 with deflection (share of tickets closed by AI without a human) around 40%",
+      "Median response time on AI tickets drops from 4 hours to 2 minutes",
+      "CSAT (customer satisfaction score, 1-5) does not drop relative to baseline",
+      "Clear boundaries: what AI answers itself versus what it escalates to a human",
+      "A repeatable process for expanding from 1 ticket category to 3-5"
+    ],
+    "applyIn": [
+      {
+        "title": "High volume of typical questions",
+        "description": "Tier-1 generates >100 tickets per week, and most are repeating questions with known answers in the knowledge base."
+      },
+      {
+        "title": "Something to compare against",
+        "description": "A baseline CSAT and response time \"before AI\" exists, otherwise you cannot prove the rollout actually helped rather than hurt."
+      },
+      {
+        "title": "Willing to invest 3-4 weeks",
+        "description": "There is buy-in from the CS lead and product team, and 3-4 weeks can be allocated to KB prep, setup and a pilot."
+      }
+    ],
+    "pitfalls": [
+      "Launching AI Tier-1 without KB prep — KB ops are 50% of the work, and without them AI answers generic or wrong",
+      "Using an outdated or poorly structured KB — AI retrieves garbage and confidently returns a wrong answer",
+      "Skipping escalation setup — AI starts \"choking\" complex tickets instead of handing them to a human, and CSAT collapses",
+      "Rolling out to all categories at once instead of a single-category pilot — you cannot see where quality breaks",
+      "Not setting up quality control (random sample review) — answer degradation goes unnoticed until a wave of complaints"
+    ],
+    "exercises": [
+      {
+        "question": "You have 250 Tier-1 tickets per week, but the knowledge base is two years old and articles were written by different people with no consistent structure. Where do you start — bot setup or the KB?",
+        "hint": "Recall the order rule: AI answers only as well as the KB. What happens to retrieval if article structure is poor?"
+      },
+      {
+        "question": "The pilot shows 40% deflection, but CSAT on AI tickets is 0.4 below baseline. What do you check first?",
+        "hint": "Think about AI boundaries and escalation: maybe AI is taking on tickets it should have handed to a human."
+      },
+      {
+        "question": "Which single metric do you show the CS lead to prove the pilot's value in week one?",
+        "hint": "The metric must reflect savings (deflection) yet not mask a quality drop — which is why it is always read alongside CSAT."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Understand when the scenario fits and what success looks like",
+        "time": "",
+        "why": "Without a clear launch criterion and a measurable goal, the project becomes \"let's try a bot\" and quietly dies. First confirm you truly have a Tier-1 task and define what counts as success.",
+        "instructions": [
+          "Check the volume threshold: Tier-1 generates more than 100 tickets per week — otherwise manual work is cheaper than automation",
+          "Record the baseline: current CSAT and median response time \"before AI\" — this is your reference point",
+          "State the goal in numbers: 40% deflection, response time 4h→2min, CSAT no lower than baseline",
+          "Get buy-in from the CS lead and the product team (product is needed for KB access)"
+        ],
+        "validate": "You have a one-pager: ticket volume, baseline metrics, target numbers, and agreement from both teams.",
+        "tip": "If baseline metrics are missing — collect them for a week before starting. Without a reference point you cannot prove impact."
+      },
+      "s2": {
+        "title": "Prepare the knowledge base and set AI boundaries",
+        "time": "",
+        "why": "This is 50% of all the work. AI retrieves answers from the KB (the RAG mechanism), so a bad KB means confidently wrong answers. Here we also decide which questions AI answers itself and which go to a human.",
+        "instructions": [
+          "Audit existing KB articles: drop outdated ones, merge duplicates, bring them to a consistent structure",
+          "Re-chunk long articles into atomic pieces — so retrieval fetches the exact answer, not \"a whole article about everything\"",
+          "Using [[node:af-rag-basics|RAG basics]], verify the KB is retrieval-ready: clear headings, facts not marketing",
+          "Define boundaries: a list of categories where AI answers itself, and stop-topics (billing, legal, complaints) that always go to a human"
+        ],
+        "validate": "The KB is cleaned and structured, and there is an explicit \"AI answers\" / \"human only\" list.",
+        "tip": "Take 20 real recent tickets and check by hand whether the KB yields a correct answer. If it doesn't, AI won't either."
+      },
+      "s3": {
+        "title": "Assemble the AI ticket-answering scenario",
+        "time": "",
+        "why": "The key step: the answering AI is born here. The system prompt sets tone, format and rules, and the connected KB provides the facts. Without a careful prompt, AI answers generic and off-brand.",
+        "instructions": [
+          "Write the support bot system prompt: role, tone of voice, answer format, the rule \"if you don't know — escalate, don't invent\"",
+          "Create a dedicated workspace (Project) and connect the cleaned KB from step 2",
+          "Require a source citation from the KB in the prompt — so the answer is verifiable and does not hallucinate",
+          "Run 15-20 typical questions and refine the prompt until answers are accurate and on-brand"
+        ],
+        "validate": "On typical questions AI answers correctly, in the right tone, with a KB citation, and on stop-topics it proposes escalation itself.",
+        "tip": "The rule \"better to honestly say I don't know and escalate than to invent\" matters more than a nice tone — it protects CSAT."
+      },
+      "s4": {
+        "title": "Embed quality control and human escalation",
+        "time": "",
+        "why": "AI without safe human handoff is dangerous: it will \"choke\" complex tickets and drag satisfaction down. And without sampled review, answer degradation stays invisible until a wave of complaints.",
+        "instructions": [
+          "Set up escalation routing: on which signals a ticket goes to a human (stop-topic, low confidence, explicit customer request)",
+          "Make handoff seamless: the human gets the ticket with full conversation context, not from scratch",
+          "Launch random sample review: a random selection of AI answers is checked by a human for correctness",
+          "Create a simple answer-scoring checklist: accuracy, tone, source citation, appropriateness of escalation"
+        ],
+        "validate": "Any doubtful ticket goes to a human with context, and a portion of AI answers is regularly reviewed against the checklist.",
+        "tip": "At launch, set the escalation threshold aggressively: better to hand a human too much than to break trust with a wrong answer."
+      },
+      "s5": {
+        "title": "Pilot on one category and measure metrics",
+        "time": "",
+        "why": "Rolling out to everything at once hides where quality breaks. A single-category pilot gives a clean signal: does the KB + AI + escalation chain work on real traffic?",
+        "instructions": [
+          "Pick one high-volume, low-risk ticket category (for example, \"how to reset a password\")",
+          "Launch AI on that category and measure deflection and CSAT every day",
+          "Compare AI-ticket CSAT to baseline — a drop is a signal to fix the prompt or boundaries, not to scale",
+          "Collect failing cases from review and return to steps 2-3 to refine the KB and prompt"
+        ],
+        "validate": "On the pilot category deflection climbs toward 40% while CSAT holds at baseline.",
+        "tip": "Don't scale until CSAT has stabilized: rising deflection alongside falling CSAT is a loss, not a success."
+      },
+      "s6": {
+        "title": "Rollout, metrics and readiness checklist",
+        "time": "",
+        "why": "After a successful pilot you need to expand coverage without losing quality and lock in the process, so the rollout is repeatable rather than a one-time feat.",
+        "instructions": [
+          "Expand AI to 3-5 categories one at a time, repeating the deflection and CSAT measurement each time",
+          "Lock in a dashboard with three metrics: deflection rate, median response time, CSAT vs baseline",
+          "Make quality review a regular ritual (for example, a weekly sample), not a one-off",
+          "Run the readiness checklist: KB current, boundaries set, escalation works, metrics on the dashboard, review on the calendar"
+        ],
+        "validate": "AI steadily closes ~40% of Tier-1 across several categories, metrics are visible on a dashboard, and the process is documented and repeatable.",
+        "tip": "Assign a KB owner: an aging knowledge base is the main cause of slow AI-support degradation months later."
+      }
+    }
+  },
+  "uc-ai-discovery-launch": {
+    "title": "Launch AI Discovery in Your Product",
+    "subtitle": "From manual research to an AI-powered discovery pipeline in 2 weeks",
+    "totalTime": "6 шагов",
+    "whatItIs": "A step-by-step scenario that turns scattered interviews and feedback into a working AI-discovery pipeline. You organize the research repository, set up RAG-based synthesis, and embed it into your product process with validation. This is an applied route from the [[node:use-cases|Use Cases]] set, built on the [[node:pd-discovery-research|Discovery Research]] practice.",
+    "approach": "We move by the principle \"input first, then synthesis, then process\". First we clean up the data (without structured input AI is useless), then we set up two key synthesis steps — theme extraction and conclusion framing — then we verify the conclusions on familiar interviews, and only then embed the pipeline into the team's regular work. Each step produces a verifiable result, not \"setup for the sake of setup\".",
+    "outcomes": [
+      "The research repository is organized: all interviews and feedback in one place, accessible to AI",
+      "Working synthesis: from data to structured themes in ≤2 hours per topic instead of days of manual work",
+      "100% research coverage — AI reads the whole corpus, not just the 30% you reach manually",
+      "Conclusions are verified and backed by source links, trustworthy for decision-making",
+      "The pipeline is embedded in the product process and scales to new feedback flow without manual synthesis"
+    ],
+    "applyIn": [
+      {
+        "title": "Product team with accumulated research",
+        "description": "≥30 interviews or ≥100 feedback items left unprocessed — the scenario turns the archive into a source of insight."
+      },
+      {
+        "title": "Slow discovery → ship cycle",
+        "description": "When data synthesis is the bottleneck and decisions stall, the pipeline cuts time-to-insight down to hours."
+      },
+      {
+        "title": "Building an [[node:ai-native-product|AI-native product]]",
+        "description": "When the team makes AI part of the work itself rather than a one-off experiment, discovery becomes the first reproducible loop."
+      }
+    ],
+    "pitfalls": [
+      "Running synthesis without structured input: if interviews are scattered across Notion, Google Docs and Slack, AI won't find them",
+      "Underestimating data prep — organizing the repository takes ~30% of the whole scenario and cannot be skipped",
+      "Trusting conclusions without verification: synthesis without source-checking produces plausible but wrong themes",
+      "Stopping at interviews and not extending the pipeline to ongoing feedback — then the system goes stale within a month",
+      "Setting up the pipeline solo and not training other PMs — the knowledge stays with one person and doesn't stick"
+    ],
+    "exercises": [
+      {
+        "question": "Where do your interviews and feedback live right now, and why won't AI find them in their current state?",
+        "hint": "List every storage location. If there's more than one and no single repository — that's your Day 1 work."
+      },
+      {
+        "question": "How will you know an AI conclusion is correct rather than a plausible fabrication?",
+        "hint": "Think about source links: every theme should point to specific interview quotes."
+      },
+      {
+        "question": "What happens to the pipeline in a month if you set it up only on old interviews?",
+        "hint": "Think about the flow of new feedback — whether a separate step for ongoing data is needed."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Understand when the scenario is needed and lock in the outcome",
+        "time": "",
+        "why": "The scenario pays off only with real data volume and leadership support. Without that, you automate emptiness.",
+        "instructions": [
+          "Check the entry threshold: ≥30 interviews or ≥100 feedback items without structured processing",
+          "Confirm the discovery → ship cycle is truly slow because of synthesis, not other causes",
+          "Get buy-in from the Head of Product — without it the pipeline won't stick in the process",
+          "Lock in target metrics: time-to-insight ≤2 hours per topic, 100% research coverage"
+        ],
+        "validate": "You have a written scenario goal and the product leader's agreement.",
+        "tip": "If you have less data than the threshold, the scenario is premature — accumulate research first or the setup won't pay off."
+      },
+      "s2": {
+        "title": "Prepare the input: gather research into a single repository",
+        "time": "",
+        "why": "Without structured input AI won't find the data — the main reason the scenario fails. Prep takes ~30% of the total time.",
+        "instructions": [
+          "Gather all interviews and feedback from Notion, Google Docs, Slack into one place",
+          "Create a [[node:projects|Project]] \"Discovery Workspace\" and upload the research files there",
+          "Normalize the files: clear names, date, source",
+          "Set up the RAG foundation ([[node:af-rag-basics|RAG basics]]) so AI can search the whole corpus"
+        ],
+        "validate": "All research materials sit in one repository and are searchable via AI.",
+        "tip": "Don't try to process the whole backlog at once — 5-10 interviews are enough for debugging."
+      },
+      "s3": {
+        "title": "Key synthesis step #1: theme extraction",
+        "time": "",
+        "why": "Theme extraction is the foundation of discovery. The quality of themes determines how useful all later conclusions will be.",
+        "instructions": [
+          "Frame a synthesis prompt for extracting recurring themes (based on [[node:prompting|Prompting]])",
+          "Run it on 5-10 test interviews from the repository",
+          "Require each theme to reference specific quotes from sources",
+          "Compare the result against what you know about those interviews manually"
+        ],
+        "validate": "AI produces a structured list of themes with source links, and the themes are recognizable.",
+        "tip": "Ask for themes with frequency and examples, not \"general conclusions\" — they're easier to verify."
+      },
+      "s4": {
+        "title": "Key synthesis step #2: connect context and frame conclusions",
+        "time": "",
+        "why": "Themes alone aren't conclusions. Context must be passed correctly between steps so synthesis doesn't lose the thread.",
+        "instructions": [
+          "Set up context passing between synthesis steps ([[node:sys-context-passing|Context Passing]])",
+          "Turn themes into product conclusions: problem, frequency, who is affected",
+          "Embed PM validation gates — points where a human checks the conclusion before use",
+          "Assemble the whole process into a reproducible [[node:pd-discovery-research|Discovery Research]] workflow"
+        ],
+        "validate": "Themes yield clear conclusions stating the problem and its scale, passing through PM review.",
+        "tip": "Context is easily lost on large corpora — pass only the condensed essence between steps, not raw text."
+      },
+      "s5": {
+        "title": "Verify the reliability of conclusions",
+        "time": "",
+        "why": "AI produces plausible but sometimes false themes. Without verification the team will decide based on a fabrication.",
+        "instructions": [
+          "Take 5-10 interviews you know well and check AI conclusions against reality",
+          "Confirm each theme is backed by references to specific quotes",
+          "Note discrepancies and refine the synthesis prompts based on validation feedback",
+          "Document the working prompt patterns that produce reliable results"
+        ],
+        "validate": "Conclusions match your manual understanding of familiar interviews, discrepancies resolved.",
+        "tip": "If AI \"invented\" a theme with no quotes — that's a signal to refine the prompt, not to ignore the error."
+      },
+      "s6": {
+        "title": "Embed into the process and extend to ongoing feedback",
+        "time": "",
+        "why": "One-off synthesis goes stale. The scenario's value is a regular pipeline embedded in the team's work.",
+        "instructions": [
+          "Scale synthesis to the full research backlog",
+          "Extend the pipeline to ongoing feedback ([[node:pd-feedback-synthesis|Feedback Synthesis]]), not just interviews",
+          "Train other PMs to run the pipeline themselves",
+          "Lock in a checklist: repository updated → synthesis run → conclusions pass validation → decision"
+        ],
+        "validate": "The pipeline runs on a regular data flow, several PMs use it, and a process checklist exists.",
+        "tip": "Assign an owner for maintaining the repository — without fresh data the pipeline quickly loses value."
+      }
+    }
+  },
+  "uc-ai-transformation-roadmap": {
+    "title": "Enterprise AI Transformation Roadmap",
+    "subtitle": "How to build a roadmap that moves a company from ad-hoc pilots to AI-native operations in 12 months",
+    "totalTime": "6 шагов",
+    "whatItIs": "This is the highest-level scenario in the [[node:use-cases|Use Cases catalog]] — for CEOs, CIOs, and Heads of AI. The roadmap describes a company's full path from \"doing AI pilots ad-hoc\" to \"AI-native company-wide operations\": enterprise strategy → tactical department roll-outs → org-wide change with governance and ROI measurement. Horizon: 6-12 months of work.",
+    "approach": "A roadmap is built not as a feature list but as a sequence of phases. First you decide whether transformation is even needed and what the target outcome is, then you honestly assess organizational readiness. Next comes prioritization of initiatives (which directions and in what order), launching pilots with quick wins, establishing governance and risk management, and only then scaling across the whole company. Key principle: directions are launched sequentially (one per quarter), not all at once.",
+    "outcomes": [
+      "A 12-month roadmap document broken down by quarters with clear gates between phases",
+      "A prioritized list of tactical directions with rationale for the launch order",
+      "A governance framework and risk register in place before scaling begins, not after an incident",
+      "A set of metrics and a target ROI agreed with the executive team before the first pilot",
+      "A scaling-readiness checklist: what must be complete before expanding to a new direction"
+    ],
+    "applyIn": [
+      {
+        "title": "Board and executive team",
+        "description": "The roadmap becomes the single document where the board sees where money goes, the expected ROI, and which risks are under control."
+      },
+      {
+        "title": "Center of Excellence (CoE)",
+        "description": "A team of 3-5 people uses the roadmap as an operational plan: what to launch this quarter, what to measure, what to carry into the next."
+      },
+      {
+        "title": "Department heads",
+        "description": "Each direction owner sees when their department enters the transformation and which quick wins are expected from the first pilot."
+      }
+    ],
+    "pitfalls": [
+      "Launching all 4 tactical directions in parallel in Q1 — a recipe for chaos and team burnout",
+      "Starting pilots without an enterprise strategy and governance — incidents will later halt the whole program",
+      "Choosing the first direction because it is \"trendy\" rather than by ROI and data readiness",
+      "Failing to fix metrics before launch — six months in, there is nothing to prove the effect to the board",
+      "Assuming Stage 4 (full AI-native maturity) is reachable in 12 months — realistically it is Stage 1→3, with Stage 4 another 12-18 months"
+    ],
+    "exercises": [
+      {
+        "question": "Your company is launching an AI transformation. You have executive buy-in and an 18-month budget. Where do you start in Q1 — with strategy and the CoE, or straight into two pilots?",
+        "hint": "Recall the phase logic: pilots without strategy and governance are vulnerable to the first incident. Q1 is the foundation (strategy, CoE, governance) plus selecting the first directions — not launching them all."
+      },
+      {
+        "question": "You need to pick the first tactical direction for a pilot. Tier-1 support gives fast ROI, while marketing gives strategic impact. How do you decide?",
+        "hint": "In a roadmap you usually take the direction with the highest and fastest ROI first (often Support tier-1) to get a quick win that funds the next phases. Strategic directions go second."
+      },
+      {
+        "question": "Six months in, the board asks what the transformation delivered. What should you have prepared at the very start to answer with numbers?",
+        "hint": "Metrics and target ROI are fixed BEFORE the first pilot. Without baseline measurements you cannot show the uplift — this is built into the governance/measurement phase, not added retroactively."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Define when a roadmap is needed and what the target outcome is",
+        "time": "",
+        "why": "A roadmap makes sense only when the company commits to transformation strategically, not by running isolated pilots. Without a clear goal and executive buy-in, any plan falls apart midway.",
+        "instructions": [
+          "Check the preconditions: is there executive buy-in and a resource commitment ($M+ budget) for 12-24 months",
+          "State the target outcome: e.g., \"company at Stage 3 AI-native operations in 12 months\"",
+          "Define top-level target metrics: number of tactical directions, documented ROI, share of AI-proficient team",
+          "Make it explicit that this is a Stage 1→3 path in 12 months, with Stage 4 in the next 12-18 months (managing board expectations)"
+        ],
+        "validate": "You have a one-page description of the roadmap goal with a measurable target state and confirmed executive buy-in.",
+        "tip": "If there is no executive buy-in or a 12+ month budget, this is not a roadmap but a single pilot. Do not launch a transformation without a commitment from the top."
+      },
+      "s2": {
+        "title": "Run an organizational readiness audit",
+        "time": "",
+        "why": "You cannot prioritize initiatives without knowing the starting point. The audit shows which stage the company is at and where the bottlenecks are — data, skills, infrastructure.",
+        "instructions": [
+          "Assess the current maturity stage: ad-hoc pilots, isolated teams, or some existing systematization",
+          "Check data and infrastructure readiness for each potential direction",
+          "Assess the team's AI proficiency and where upskilling is needed (talent strategy)",
+          "Record the presence or absence of a CoE, governance, and change-management processes"
+        ],
+        "validate": "You have a readiness map: current stage, strong and weak zones across data, skills, and processes.",
+        "tip": "Honesty beats optimism. An inflated readiness estimate leads to choosing directions that fail due to poor data."
+      },
+      "s3": {
+        "title": "Prioritize tactical initiatives and set the launch order",
+        "time": "",
+        "why": "The main transformation mistake is launching everything at once. Prioritization by ROI and readiness sets a sequence where each previous direction teaches the organization the next.",
+        "instructions": [
+          "Build a list of candidate directions from the [[node:ai-native-enterprise|AI-native enterprise]] (support, operations, product, marketing)",
+          "Score each on two axes: size and speed of ROI, data/team readiness",
+          "Assign the order: 1 direction in Q1, the 2nd in Q2, the 3rd in Q3, the 4th in Q4",
+          "Take the fastest-ROI direction first (often Support tier-1), and the most strategic one second (Product or Marketing)"
+        ],
+        "validate": "You have an ordered list of 4 directions with a rationale for the order based on ROI and readiness.",
+        "tip": "Each previous direction is a lesson for the organization. Sequential rollout is not about caution but about accumulating competence."
+      },
+      "s4": {
+        "title": "Launch pilots and lock in quick wins",
+        "time": "",
+        "why": "A quick win in the first pilot proves value, funds the next phases, and creates momentum for company-wide change management.",
+        "instructions": [
+          "Alongside the foundation from the [[node:en-transformation-strategy|enterprise transformation strategy]], form the CoE team (3-5 people)",
+          "Launch tactical pilot #1 on the highest-ROI direction, limiting scope to a narrow scenario",
+          "Launch pilot #2 on a strategic direction, start the change program and the AI upskilling roll-out",
+          "Document quick wins in money/time and use them as the argument for the next phase"
+        ],
+        "validate": "Two pilots are launched, and there is at least one documented quick win with numbers.",
+        "tip": "Narrow the pilot scope aggressively. A tight scenario with a clear metric delivers a win faster than \"AI for the whole department\"."
+      },
+      "s5": {
+        "title": "Establish management, risks, and governance",
+        "time": "",
+        "why": "Without governance and a risk register, the first incident (leak, hallucination, reputation) will halt the whole program. Management must run ahead of scaling, not chase it.",
+        "instructions": [
+          "Implement a governance framework: who makes decisions, which AI usage policies are mandatory",
+          "Set up a formal risk register: privacy, security, output quality, regulation",
+          "Set up ROI measurement: a baseline before the pilot and regular measurement over the first 6 months",
+          "Task the CoE with spreading best practices org-wide so directions do not repeat each other's mistakes"
+        ],
+        "validate": "A governance framework, risk register, and ROI measurement system with a recorded baseline are in operation.",
+        "tip": "Governance is not bureaucracy but insurance. One uncontrolled public incident can freeze the entire transformation budget."
+      },
+      "s6": {
+        "title": "Plan scaling and pass the checklist",
+        "time": "",
+        "why": "Scaling means adding new directions and moving toward maturity. A readiness checklist ensures you expand on a healthy foundation rather than replicating chaos.",
+        "instructions": [
+          "Add directions #3 and #4 sequentially, building on the learnings from previous quarters",
+          "Run a strategy refresh: rebuild the roadmap based on actual results",
+          "Prepare an annual board report: ROI, new capabilities, risk status",
+          "Pass the expansion-readiness checklist: is ROI documented, does governance work, is the team 80%+ trained, are there no open critical risks"
+        ],
+        "validate": "All 4 directions are launched, there is an annual board report, and the readiness checklist for the next maturity phase is passed.",
+        "tip": "Do not expand to a new direction until the previous one has passed the checklist. Skipping the readiness gate is the main reason transformations stall at Stage 2."
+      }
+    }
+  },
+  "uc-ai-rag-launch": {
+    "title": "Launch a RAG System",
+    "subtitle": "From \"AI doesn't know our documents\" to a working pipeline with citations in 6 steps",
+    "totalTime": "6 steps",
+    "whatItIs": "RAG (Retrieval-Augmented Generation) is a pattern where the LLM retrieves relevant fragments from your knowledge base before answering, and responds strictly from them with [[node:cap-citations|citations]]. This course goes from deciding \"do we need RAG\" to a production pipeline: corpus prep, indexing, answer assembly, quality evaluation, and shipping to prod. It's the technical foundation of most AI projects in [[node:use-cases|use-cases]].",
+    "approach": "We move from simple to reliable, but do NOT stop at Naive RAG. First we fix why RAG is needed and what we measure. Then we build the pipeline in layers: corpus → embeddings + vector DB → answer assembly with citations → evaluation → prod. At each step we check quality on real questions, not \"by eye\". The production minimum is chunking with overlap, hybrid search, and re-ranking — otherwise users will see \"the AI says wrong things\".",
+    "outcomes": [
+      "You know when RAG is needed and when a plain prompt or fine-tuning is enough",
+      "A pipeline is built: corpus → embeddings → vector DB → retrieval → answer with citations",
+      "Every answer is backed by source links (citation rate 100%)",
+      "There is a measurable quality metric: retrieval relevance and hallucination level",
+      "The system ships to production via a checklist: latency, monitoring, corpus updates"
+    ],
+    "applyIn": [
+      {
+        "title": "Support and internal knowledge base",
+        "description": "AI answers staff and customers from your policies and ticket history, not from the model's general knowledge — with a link to the exact document."
+      },
+      {
+        "title": "Document work and compliance",
+        "description": "Finding answers across contracts, policies, regulations. Citations are critical: a reviewer must see where a fact comes from."
+      },
+      {
+        "title": "Product docs and onboarding",
+        "description": "A user asks in natural language, RAG retrieves the exact docs fragment and answers from it instead of making them read the whole page."
+      }
+    ],
+    "pitfalls": [
+      "Naive RAG in production: query → vector → top-K → LLM yields 50-60% accuracy. You need re-ranking, hybrid search, chunk overlap, metadata filtering",
+      "Bad chunking: chunks too large blur relevance, too small lose context. Ignoring overlap loses meaning at boundaries",
+      "No quality evaluation: shipping \"by eye\" without measuring retrieval relevance and hallucinations — the system breaks silently",
+      "Answers without citations: users can't verify a fact and don't trust the system; you lose RAG's key edge over a bare LLM",
+      "Forgetting corpus updates: the index goes stale, RAG answers from old documents and presents outdated facts as truth"
+    ],
+    "exercises": [
+      {
+        "question": "For your scenario: RAG, fine-tuning, or just a prompt with context? Justify the choice.",
+        "hint": "RAG — when knowledge changes often and citations are needed. Fine-tuning — when style/format changes, not facts. Prompt with context — when there are few documents and they fit the window."
+      },
+      {
+        "question": "Take 10 real user questions and for each define which corpus fragment MUST land in the answer. This is your retrieval evaluation gold set.",
+        "hint": "Without a gold question-answer set you can't measure relevance. Start with 10-20 pairs — enough for a first quality check."
+      },
+      {
+        "question": "Design chunking for one type of your documents: chunk size, overlap, which metadata to attach.",
+        "hint": "Base it on document structure (paragraphs/sections), not a blind fixed character count. Metadata (source, date, section) is needed for filtering and citations."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Decide: do you need RAG and what do you measure",
+        "time": "",
+        "why": "RAG is the most common production pattern, but not universal. Without a clear \"why\" and a metric, you'll build a pipeline you can't evaluate or improve.",
+        "instructions": [
+          "State the problem: where exactly the LLM \"doesn't know our facts\" (documents, KB, history)",
+          "Check alternatives: is a prompt with context enough, or is fine-tuning needed — see [[node:af-rag-basics|RAG basics]]",
+          "Fix target metrics: answer accuracy, citation rate, latency per query",
+          "Describe the baseline: current accuracy without RAG (usually ~30%)",
+          "Define the application direction (Operations/Marketing/Support/Product/Enterprise)"
+        ],
+        "validate": "You have a one-sentence \"why RAG\" and 3 measurable metrics with target values.",
+        "tip": "If knowledge barely changes and fits the context, you may not need RAG — a prompt is enough."
+      },
+      "s2": {
+        "title": "Prepare the corpus: document chunking",
+        "time": "",
+        "why": "Retrieval quality is capped by chunk quality. Bad chunking is a ceiling on the whole system's accuracy that no re-ranking can fix.",
+        "instructions": [
+          "Collect a pilot set of documents of one type (not the whole corpus at once)",
+          "Pick a chunking strategy: by semantic blocks (paragraphs/sections), not blindly by characters",
+          "Set chunk overlap so meaning isn't lost at fragment boundaries",
+          "Attach metadata to each chunk: source, date, section — for filtering and citations",
+          "Clean noise: navigation, footers, duplicates"
+        ],
+        "validate": "Pilot documents are split into chunks with overlap and metadata; manually checking 5-10 chunks shows coherent meaning.",
+        "tip": "Start with pilot data, not the whole corpus — you'll spot chunking issues faster and redo them cheaper."
+      },
+      "s3": {
+        "title": "Indexing: embeddings + vector DB",
+        "time": "",
+        "why": "Embeddings turn chunks into vectors for semantic similarity search. The vector DB stores them and enables fast retrieval — the heart of the pipeline.",
+        "instructions": [
+          "Choose an embedding model fit for your documents' language and domain",
+          "Choose a vector DB: pgvector / Pinecone / Weaviate for your scale and stack",
+          "Run pilot chunks through embeddings and load vectors with metadata into the DB",
+          "Set up hybrid search (keyword + semantic), not vector search alone",
+          "Check retrieval on the gold questions from the exercise: do the right chunks land in top-K"
+        ],
+        "validate": "For gold questions, the right chunk consistently lands in the top-K retrieval results.",
+        "tip": "Hybrid search covers pure vectors' weakness on exact terms, codes, and names — it almost always lifts relevance."
+      },
+      "s4": {
+        "title": "Assemble the answer with citations",
+        "time": "",
+        "why": "Retrieval found fragments — but the answer must rely strictly on them and link to the source. Without [[node:cap-citations|citations]], users can't verify facts and don't trust the system.",
+        "instructions": [
+          "Assemble the pipeline per [[node:sys-rag-architecture|RAG architecture]]: at least Advanced RAG, not Naive",
+          "Add re-ranking: re-sort top-K by relevance before passing to the LLM",
+          "Pass the retrieved context to the LLM with instruction to answer ONLY from it",
+          "Enable [[node:cap-citations|citations]]: every fact linked to a source from metadata",
+          "Add \"I don't know\" behavior when retrieval has no answer — instead of inventing one"
+        ],
+        "validate": "On test questions the answer relies on retrieved fragments, includes citations, and honestly says \"no data\" when there is none.",
+        "tip": "Re-ranking is the cheapest quality lever: even a simple re-ranker noticeably lifts the relevance of top results."
+      },
+      "s5": {
+        "title": "Evaluate quality: relevance and hallucinations",
+        "time": "",
+        "why": "Shipping \"by eye\" means the system breaks silently. You need numbers: how well retrieval fetches the right thing and how well answers stick to facts.",
+        "instructions": [
+          "Run the gold question-answer set from the exercise through the pipeline",
+          "Measure retrieval relevance: does the right chunk land in top-K",
+          "Measure hallucination level: are there facts in answers without source backing",
+          "Check citation rate: does every answer link to a real fragment",
+          "Find weak spots and return to chunking (s2) or retrieval (s3) surgically"
+        ],
+        "validate": "There is a metrics table over gold questions; accuracy approaches target (85%+), hallucinations are rare.",
+        "tip": "Low quality is more often fixed at chunking and retrieval than by swapping the LLM — first check the right chunk is even found."
+      },
+      "s6": {
+        "title": "Production: ship to prod and checklist",
+        "time": "",
+        "why": "A pipeline in a notebook and one in prod are different. Production needs latency, monitoring, and regular corpus updates, or the system degrades.",
+        "instructions": [
+          "Check latency per query (<500ms target) and optimize bottlenecks",
+          "Set up corpus updates: how new documents enter the index",
+          "Enable monitoring: query logs, retrieval quality, share of \"no data\"",
+          "Add user feedback on irrelevant answers",
+          "Run the checklist: s1 metrics met, citations work, corpus is updatable"
+        ],
+        "validate": "The system in prod answers within the latency target, the corpus updates, and s1 metrics are confirmed on live traffic.",
+        "tip": "Build corpus updates in from the start — a stale index quietly serves old facts as current."
+      }
+    }
+  },
+  "uc-ai-pilot-to-production": {
+    "title": "Moving an AI Pilot to Production",
+    "subtitle": "From \"the pilot works\" to reliable AI in prod: readiness criteria, reliability, evals, monitoring, security, and rollout with a rollback plan",
+    "totalTime": "6 steps",
+    "whatItIs": "A structured transition from a successful AI pilot to a production system with quality gates, monitoring, and governance. A cross-layer scenario: systems quality + enterprise risk management + foundational safety. It closes the most common stall point where AI projects die: \"the pilot worked, but scale-up got stuck.\"",
+    "approach": "We don't rebuild the pilot from scratch — we add the missing production layers: formalize readiness criteria, add error handling and reliability, set up objective quality evaluation (evals), turn on monitoring and cost control, pass governance/access review, and roll out gradually with a rollback plan. Each step produces a verifiable artifact — without it, the step isn't done.",
+    "outcomes": [
+      "A production-ready AI system in 4-6 weeks instead of endless pilot \"polishing\"",
+      "0 high-severity incidents in the first 90 days thanks to reliability and a rollback plan",
+      "Objective quality evaluation (evals) instead of \"we think it works\"",
+      "Transparent monitoring and cost: you see degradation and spend before they become a problem",
+      "Documented governance compliance: data classification, access, and risks captured and approved"
+    ],
+    "applyIn": [
+      {
+        "title": "Customer-facing AI service",
+        "description": "A chatbot or assistant piloted with a subset of users is rolled out to the full audience with an SLA, response-quality monitoring, and a rollback plan."
+      },
+      {
+        "title": "Internal process automation",
+        "description": "AI document or request processing that proved out on one team scales across the company with governance data review and cost control."
+      },
+      {
+        "title": "AI in a product touching real money/brand",
+        "description": "Content generation, recommendations, or decisions affecting revenue or reputation move to prod with evals, access audit, and a gradual rollout."
+      }
+    ],
+    "pitfalls": [
+      "Skipping the governance review under \"but the pilot worked\" — production adds accountability, audit, and compliance the pilot never had; without review it's an incident waiting to happen",
+      "Treating \"works in a demo\" as a readiness criterion — without objective evals and quality thresholds, degradation is only noticed via user complaints",
+      "Rolling out to 100% at once with no rollback plan — the first failure hits everyone, with nowhere to fall back",
+      "Ignoring cost until the end-of-month invoice — token and API spend grows nonlinearly at scale",
+      "Leaving prompts \"floating\" without versioning — you can't tell which change broke quality in prod"
+    ],
+    "exercises": [
+      {
+        "question": "Write 3-5 measurable readiness criteria for your pilot going to prod (not \"it works\", but with numbers). What do you measure and what threshold counts as passing?",
+        "hint": "Think about share of correct answers on a reference set, p95 response time, error rate, and cost per request. Each criterion needs a concrete threshold number."
+      },
+      {
+        "question": "Describe the rollback plan for your release: on what signal do you roll back, how fast, and to where exactly (to the pilot, a manual process, the previous version)?",
+        "hint": "Tie the rollback trigger to monitoring metrics (error spike, quality drop, cost surge) and make sure the previous state is preserved and reachable within minutes."
+      },
+      {
+        "question": "List the data types flowing through your AI system and classify them by sensitivity. Where do you need access restrictions or governance sign-off?",
+        "hint": "Split data into public / internal / personal / confidential. For personal and confidential, check the DPA with the model vendor and who has access to logs."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Pilot readiness criteria",
+        "time": "",
+        "why": "\"The pilot works\" is not a criterion. Without measurable thresholds you can't tell a finished system from a lucky demo, and the rollout decision rests on gut feel.",
+        "instructions": [
+          "Audit the pilot: what exactly it does, on what data, and its boundaries (what it must NOT do)",
+          "Define 3-5 measurable readiness criteria with threshold numbers (accuracy, response time, error rate, cost per request)",
+          "Fix the scope of the first rollout: which share of users/processes goes to prod first",
+          "Describe the target workflow architecture and where prompts live — relates to the [[node:use-cases|use case]] scenario"
+        ],
+        "validate": "There is a document with 3-5 readiness criteria, each with a concrete threshold and measurement method.",
+        "tip": "Derive criteria from the pilot's real risks, not from a template: what breaks first under more load or new data."
+      },
+      "s2": {
+        "title": "Reliability and error handling",
+        "time": "",
+        "why": "A pilot forgives failures — production doesn't. Model timeouts, garbage output, and peak load must be handled predictably instead of failing onto the user.",
+        "instructions": [
+          "List failure points: model timeout/unavailability, invalid or incomplete output, limit overruns",
+          "For each, define behavior: retry with backoff, fallback response, degrade to a manual process",
+          "Add validation of model output before it reaches the user or the next step",
+          "Freeze and version all prompts — every change must be traceable",
+          "Establish formal quality gates in the workflow"
+        ],
+        "validate": "Every failure point has defined behavior, prompts are versioned, and model output is validated before use.",
+        "tip": "The most common production failure isn't \"the model went down\" but \"the model returned plausible garbage.\" Format and sanity validation matter more than retries."
+      },
+      "s3": {
+        "title": "Quality evaluation and evals",
+        "time": "",
+        "why": "Without objective evaluation, quality degradation is only noticed via complaints. Evals turn \"we think it's better\" into a reproducible number before rollout.",
+        "instructions": [
+          "Build a reference set (golden set) with expected results — study the [[node:sys-evals-benchmarks|approach to evals and benchmarks]]",
+          "Define quality metrics for your task (correctness, relevance, output safety)",
+          "Set a passing threshold: below it, no rollout proceeds",
+          "Run evals on every prompt or model change — it's part of the quality gate"
+        ],
+        "validate": "There is a golden set and a metric set; an eval run produces a number comparable to the readiness threshold from step 1.",
+        "tip": "Start with 20-50 representative examples, including edge and \"harmful\" cases. A small honest set beats a large formal one."
+      },
+      "s4": {
+        "title": "Monitoring and cost",
+        "time": "",
+        "why": "In prod you can't fly blind: quality drifts, load grows, and token/API spend scales nonlinearly. Without observability you're the last to see the problem.",
+        "instructions": [
+          "Set up monitoring of key metrics: quality, error rate, response time, request volume",
+          "Enable cost tracking per request and per day, with a spike alert — see [[node:ai-operations|AI operations]] practices",
+          "Create a dashboard and threshold alerts tied to the readiness criteria from step 1",
+          "Log inputs/outputs (privacy-aware) for incident analysis and enriching evals"
+        ],
+        "validate": "The dashboard shows quality, errors, latency, and cost in real time; alerts are configured for threshold breaches.",
+        "tip": "Wire the quality alert directly to the rollback trigger from step 6 — monitoring is useless if no one acts on it."
+      },
+      "s5": {
+        "title": "Security and access",
+        "time": "",
+        "why": "Production adds accountability, audit, and compliance the pilot never had. The governance review takes 1-2 weeks but saves months and prevents incidents.",
+        "instructions": [
+          "Classify the data flowing through the system (public / internal / personal / confidential)",
+          "Check the DPA with the model vendor and terms for processing sensitive data",
+          "Restrict access on a least-privilege basis: who sees logs, prompts, outputs",
+          "Identify AI-specific risks (data leakage, prompt injection, harmful output) and capture mitigations",
+          "Obtain governance approval before rollout"
+        ],
+        "validate": "Data is classified, access is restricted, risks with mitigations are documented, and governance sign-off exists.",
+        "tip": "Don't treat governance as bureaucracy: one documented risk with a mitigation is cheaper than one incident review with a regulator."
+      },
+      "s6": {
+        "title": "Rollout, rollback plan, and checklist",
+        "time": "",
+        "why": "Releasing to 100% at once with no rollback is all-in. A gradual rollout with a ready rollback turns a failure from a catastrophe into a manageable episode.",
+        "instructions": [
+          "Roll out gradually (canary / by traffic share), watching the step-4 metrics at each stage",
+          "Describe the rollback plan: trigger signal, speed, target state (pilot / manual process / previous version)",
+          "Ensure the previous state is preserved and rollback takes minutes",
+          "Run the final readiness checklist: criteria (s1), reliability (s2), evals above threshold (s3), monitoring and alerts (s4), governance approval (s5)",
+          "After reaching 100%, observe for 90 days and iterate on monitoring data"
+        ],
+        "validate": "The system reached full traffic via a gradual rollout; the rollback plan is tested; the 5-item checklist is closed.",
+        "tip": "Rehearse the rollback before the release. A rollback plan you've never run usually fails at the moment of an incident."
+      }
+    }
+  },
+  "uc-ai-roi-estimation": {
+    "title": "Estimate AI Project ROI Before Launch",
+    "subtitle": "6 steps from \"AI will help\" to \"AI will deliver $X over Y months\"",
+    "totalTime": "6 steps",
+    "whatItIs": "AI projects often fail to get budget because of \"unclear ROI\". This scenario turns the vague \"AI will help\" into a concrete \"AI will deliver $X over Y months\". You define value and metrics, count real costs (tokens, time, infrastructure), record a \"before\" baseline, build a benefit and payback model, document risks and assumptions — and make a go/no-go decision.\n\nIt builds on the structured approach from [[node:en-roi-measurement|ROI Measurement]]: baseline → projection → measurement → iteration. Part of the [[node:use-cases|use-case]] collection.",
+    "approach": "Don't count only direct cost savings. AI brings 5 value categories: time savings + quality improvement + new capabilities + risk reduction + future optionality. Without all five, ROI looks low and the project gets cancelled prematurely. Be honest about assumptions — separately mark what is proven and what is a guess.",
+    "outcomes": [
+      "Value categories and measurable project metrics defined",
+      "All costs counted: tokens, working time, infrastructure",
+      "\"Before AI\" baseline recorded on historical data",
+      "Benefit and payback model built (best/expected/worst)",
+      "Justified go/no-go decision made with a checklist"
+    ],
+    "applyIn": [
+      {
+        "title": "Before a budget request",
+        "description": "You come to leadership not with \"AI will help\" but with numbers, a range, and a payback period."
+      },
+      {
+        "title": "Quarterly review of AI projects",
+        "description": "Compare real ROI against the projection — refine the model and decide whether to continue or wind down."
+      },
+      {
+        "title": "Investment prioritization",
+        "description": "Compare an AI initiative against other investments in the same language — money and timelines."
+      }
+    ],
+    "pitfalls": [
+      "Counting only direct cost savings — without quality, speed, and risk reduction, ROI is understated.",
+      "Forgetting token and infrastructure costs — expenses look smaller than reality and the projection breaks.",
+      "Not recording a \"before\" baseline — later there is no way to prove the benefit is real.",
+      "Presenting a single optimistic scenario — without a worst case, leadership won't trust the numbers.",
+      "Hiding assumptions inside the calculations — under scrutiny the model collapses and trust is lost."
+    ],
+    "exercises": [
+      {
+        "question": "Take a specific AI initiative and list its value across all 5 categories (time, quality, capabilities, risk, optionality). How many categories did you miss at first?",
+        "hint": "If your list contains only \"cost savings\", you are underestimating the project at least twofold."
+      },
+      {
+        "question": "Calculate the monthly token cost for your scenario: average request size × number of requests × price. Compare it with the salaried time the project saves.",
+        "hint": "Token cost is almost always lower than the working time saved — that is the core of the ROI."
+      },
+      {
+        "question": "Build a 5-point go/no-go checklist for your initiative. Which point can't be marked \"yes\" right now?",
+        "hint": "The point you can't check is your main risk — close it before launch."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Define value and metrics",
+        "time": "",
+        "why": "Without a clear answer to \"what value does the project create and how is it measured\", any ROI is fantasy. Value first, money second.",
+        "instructions": [
+          "Describe the problem the AI initiative solves in a single sentence.",
+          "List value across 5 categories: time savings, quality, new capabilities, risk reduction, future optionality.",
+          "For each category pick 1-2 measurable metrics (e.g. hours per month, % errors, response speed).",
+          "Mark which metrics can be pulled from existing data and which you need to start measuring."
+        ],
+        "validate": "You have a list of value categories, each with a concrete metric you can actually measure.",
+        "tip": "If a metric has no data source, it's not a metric — it's a wish. Replace it with something you can count."
+      },
+      "s2": {
+        "title": "Count costs: tokens, time, infrastructure",
+        "time": "",
+        "why": "ROI is benefit minus cost. Understated costs produce a pretty projection that falls apart in practice.",
+        "instructions": [
+          "Estimate token cost: average request size × requests per month × model price. Lean on [[node:sys-cost-management|cost management]].",
+          "Add working time: development, integration, support, training people.",
+          "Account for infrastructure: hosting, storage, third-party services, monitoring.",
+          "Split costs into one-off (launch) and recurring (monthly)."
+        ],
+        "validate": "You have a full cost total split into one-off and recurring, with no forgotten line items.",
+        "tip": "Add a 20-30% buffer on tokens: real consumption is almost always higher than the first estimate due to retries and context."
+      },
+      "s3": {
+        "title": "Record the \"before\" baseline",
+        "time": "",
+        "why": "Without a \"how it was before AI\" reference point, you cannot prove the benefit is real rather than coincidence.",
+        "instructions": [
+          "Gather historical data on the chosen metrics for 60-90 days (if possible).",
+          "Record current values: how much time, money, and errors it takes today without AI.",
+          "If there is no history, measure manually for at least 1-2 weeks before launch.",
+          "Save the baseline separately: it's the reference you'll compare the real result against."
+        ],
+        "validate": "You have recorded \"before AI\" numbers for each key metric.",
+        "tip": "Take dated screenshots and exports of the baseline. In a quarter, no one will remember how it was without recorded figures."
+      },
+      "s4": {
+        "title": "Build the benefit and payback model",
+        "time": "",
+        "why": "Leadership needs not promises but a range and a timeline: when the project pays back and how much it brings.",
+        "instructions": [
+          "Build three benefit scenarios: pessimistic, expected, optimistic.",
+          "For each, compute ROI = (benefit − cost) / cost and the payback period (when cumulative benefit covers the investment).",
+          "Use Claude to check the calculations and formulas — based on [[node:en-roi-measurement|ROI Measurement]].",
+          "Bring it all into one table: costs, benefit by category, ROI, payback period — across the three scenarios."
+        ],
+        "validate": "You have a table with three scenarios, an ROI figure, and a payback period in each.",
+        "tip": "Show the expected scenario as the main one, but always keep the worst case next to it. That earns more trust than a single optimistic projection."
+      },
+      "s5": {
+        "title": "Document risks and assumptions",
+        "time": "",
+        "why": "Any ROI model stands on assumptions. If you don't surface them, the model collapses at the first review and trust evaporates.",
+        "instructions": [
+          "Write out all model assumptions: expected usage volume, token price, adoption speed, people's behavior.",
+          "For each assumption, mark whether it's proven by data or a guess.",
+          "List risks: rising token cost, low adoption by people, model changes, technical failures.",
+          "For each risk, note the impact on ROI and a mitigation plan."
+        ],
+        "validate": "You have a list of assumptions marked \"proven/guess\" and a risk table with mitigation plans.",
+        "tip": "The most dangerous assumption is usage volume. If people don't adopt the tool, the benefit zeroes out while the costs remain."
+      },
+      "s6": {
+        "title": "Make the go/no-go decision and build a checklist",
+        "time": "",
+        "why": "All this work serves one purpose: a justified decision to launch or not, and a clear measurement plan for afterward.",
+        "instructions": [
+          "Build a 5-7 point go/no-go checklist: positive ROI in the expected scenario, acceptable payback period, key risks closed, baseline recorded, measurement system ready.",
+          "Run through the checklist: if even one critical point is \"no\", it's a no-go or needs rework.",
+          "Describe the measurement plan: which metrics, how often to reconcile real ROI against the projection.",
+          "Schedule a quarterly review: real vs projected, model refinement.",
+          "Record the decision and rationale in a single document for leadership."
+        ],
+        "validate": "You have a completed checklist, an explicit go/no-go decision, and a post-launch measurement plan.",
+        "tip": "A no-go decision is also a valuable result: you saved the budget by not spending it on a project with negative ROI."
+      }
+    }
+  },
+  "uc-ai-vendor-selection": {
+    "title": "AI Vendor and Stack Selection",
+    "subtitle": "How to choose an LLM provider and stack by explicit criteria, not hype",
+    "totalTime": "6 steps",
+    "whatItIs": "A structured course for choosing AI tools: LLM provider, vector DB, monitoring, integrations. Instead of asking \"which Claude/GPT/Open Source?\", you get a repeatable process with explicit criteria, a pilot on your own tasks, and a documented decision.",
+    "approach": "First fix requirements and weighted criteria. Then build a long list of options, narrow to 3-5, and score on capability, cost, privacy, and lock-in. Next run a blind pilot on 10 representative tasks, do a security/compliance check, and make the final decision with a rollout plan. Built on [[node:pl-compare|platform comparison]], [[node:pl-api|API economics]], and [[node:use-cases|use cases]].",
+    "outcomes": [
+      "A documented vendor decision with reasoning in 2-3 weeks",
+      "A weighted criteria matrix tied to your task, not to marketing",
+      "Blind pilot results on 10 representative tasks",
+      "A security and compliance checklist (DPA, encryption, audit logs)",
+      "A rollout plan with a fallback strategy and lock-in risk assessment"
+    ],
+    "applyIn": [
+      {
+        "title": "Before a major AI initiative",
+        "description": "An investment above $50k demands explicit criteria and a pilot, not a single-benchmark decision."
+      },
+      {
+        "title": "Annual technology review",
+        "description": "Reassess the stack: is the current vendor still best on cost, quality, and stability."
+      },
+      {
+        "title": "Replacing an unreliable vendor",
+        "description": "When the current provider degrades or lock-in risk rises, you need a structured reassessment and fallback."
+      }
+    ],
+    "pitfalls": [
+      "Deciding on a single public benchmark — it is biased and measures generic capabilities, not your task",
+      "Ignoring lock-in: no data portability or API abstraction makes future migration impossible",
+      "Comparing only on price per token without weighing quality, latency, and support",
+      "Skipping the privacy and compliance check before signing the contract",
+      "Piloting on toy examples instead of 10 real representative tasks"
+    ],
+    "exercises": [
+      {
+        "question": "Build a matrix of 7 criteria (quality, cost, latency, security, vendor stability, lock-in, support) and assign weights summing to 100%. Which criterion got the highest weight and why is it the one for your task?",
+        "hint": "Weights should reflect real pain: if data is sensitive, security weighs more; if load is high, latency and cost matter most."
+      },
+      {
+        "question": "Collect 10 representative tasks from your real workflow and describe how you would run a blind test of 3-5 vendors to remove bias.",
+        "hint": "Hide vendor names during scoring, fix success criteria in advance, and score everyone identically."
+      },
+      {
+        "question": "For your top 2 vendors, describe a fallback strategy: what happens if one shuts down or doubles its price?",
+        "hint": "Think about data portability, API abstraction, and migration time in days/weeks."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Define criteria and requirements",
+        "time": "",
+        "why": "Without explicit weighted criteria, the decision slides toward hype and personal preference. Criteria are the foundation of the whole process.",
+        "instructions": [
+          "State the concrete use case and constraints (budget, load, data type)",
+          "List 7 criteria: quality, cost, latency, security, vendor stability, lock-in, support",
+          "Assign weights summing to 100% based on your actual pain",
+          "Separate threshold must-have requirements from nice-to-have ones"
+        ],
+        "validate": "You have a table of 7 weighted criteria summing to 100% and a list of must-have requirements.",
+        "tip": "Set the weights BEFORE looking at options — otherwise you will tune them to fit a vendor you already like."
+      },
+      "s2": {
+        "title": "Build a long list of options",
+        "time": "",
+        "why": "A broad list up front protects against tunnel vision: the best option may sit outside the \"obvious three\".",
+        "instructions": [
+          "Gather 8-12 candidates: proprietary LLMs, open source, specialized providers",
+          "Study platform differences via [[node:pl-compare|platform comparison]]: web, Code, API, and others",
+          "Note for each: API availability, pricing model, data residency region",
+          "Filter by must-have requirements from step 1 down to a short list of 3-5"
+        ],
+        "validate": "A long list of 8-12 options is narrowed to a justified short list of 3-5 candidates.",
+        "tip": "Do not drop open source too early — for private data it is often the optimal choice."
+      },
+      "s3": {
+        "title": "Score capability, cost, privacy, and lock-in",
+        "time": "",
+        "why": "This is where criteria turn into numbers. Price per token without weighing quality and lock-in is a trap that surfaces in six months.",
+        "instructions": [
+          "Compute economics via [[node:pl-api|API economics]]: price per million tokens, rate limits, projected monthly cost",
+          "Score each model's capability on your task type, not on generic benchmarks",
+          "Check privacy: where data is stored and whether your data is used for training",
+          "Assess lock-in: data portability and the ability to abstract the API",
+          "Fill the step 1 matrix with preliminary scores for each candidate"
+        ],
+        "validate": "The criteria matrix is filled with numbers for all 3-5 candidates, including projected monthly cost.",
+        "tip": "Count total cost of ownership, not just price per token: integration, monitoring, and migration also cost money."
+      },
+      "s4": {
+        "title": "Run a pilot on your own task",
+        "time": "",
+        "why": "This is the key real-world signal. Benchmarks are biased — only a blind test on your tasks shows the truth.",
+        "instructions": [
+          "Take 10 representative tasks from your real workflow",
+          "Run them through each short-list candidate under identical conditions",
+          "Run blind scoring: hide vendor names when assigning scores",
+          "Record quality, latency (p50/p99), and run cost for each",
+          "Update the criteria matrix with real pilot data"
+        ],
+        "validate": "You have blind scores for 3-5 vendors on 10 real tasks with measured quality, latency, and cost.",
+        "tip": "Fix success criteria before launching the pilot — otherwise scoring becomes subjective."
+      },
+      "s5": {
+        "title": "Check security and compliance",
+        "time": "",
+        "why": "The technically best vendor is useless if it fails DPA, data residency, or audit requirements. This is a blocking filter.",
+        "instructions": [
+          "Request the DPA and verify personal data processing terms",
+          "Check data residency region and alignment with your requirements",
+          "Confirm encryption and audit logs are available",
+          "For integrations, assess the access and connection model via [[node:mcp|MCP]]",
+          "Build a security review checklist and run it against each finalist"
+        ],
+        "validate": "Each finalist passed the security checklist: DPA, data residency, encryption, audit logs are checked off.",
+        "tip": "Compliance is a go/no-go filter: a vendor failing a must-have on security drops out regardless of quality."
+      },
+      "s6": {
+        "title": "Decide and build the rollout plan",
+        "time": "",
+        "why": "A documented decision with reasoning lets you assess in six months whether it was the right call and reduces vendor churn.",
+        "instructions": [
+          "Aggregate the weighted scores from the matrix and pick the winner",
+          "Run final negotiations on price and SLA",
+          "Describe the fallback strategy: what to do on shutdown or a price hike",
+          "Build a rollout plan with phases and owners",
+          "Document the decision with reasoning and save it for the next review"
+        ],
+        "validate": "A document is ready with the chosen vendor, reasoning, fallback strategy, and a rollout plan checklist.",
+        "tip": "Record a review date — in six months honestly assess whether it was the right choice."
+      }
+    }
+  },
+  "uc-ai-multi-agent-system": {
+    "title": "Multi-Agent System: Orchestration",
+    "subtitle": "How to build a system of several agents without drowning in complexity",
+    "totalTime": "6 steps",
+    "whatItIs": "This is the path to a working multi-agent system: several specialized agents, coordination between them, context passing, and error recovery. A scenario for technical teams that hit the limit of a single agent and want to split the task into roles. See the [[node:use-cases|use cases]] section and the [[node:agents|agents]] foundation.",
+    "approach": "The principle is simple: multi-agent is not «more agents = better», but an answer to a concrete limit. First you prove a single agent is exhausted (prompts, tools, RAG no longer help), then you decompose the task into roles, design the handoff protocol and orchestrator, give each agent its tools and boundaries, add observability, and only then roll out. Complexity grows quadratically, so every step is a deliberate decision, not an automatic upgrade.",
+    "outcomes": [
+      "You understand when multi-agent is justified and when one agent is enough",
+      "You can decompose a task into clear roles without overlapping responsibilities",
+      "You designed the handoff protocol and the orchestrator role",
+      "Each agent has explicit tools, boundaries, and clear input/output",
+      "Observability is set up: structured logs and the ability to replay a failure"
+    ],
+    "applyIn": [
+      {
+        "title": "Complex research pipeline",
+        "description": "One agent gathers sources, another fact-checks, a third synthesizes the report — the orchestrator links the stages and catches failures."
+      },
+      {
+        "title": "Development with review",
+        "description": "An agent writes code, a critic agent reviews, another runs tests — each with its own expertise and boundaries."
+      },
+      {
+        "title": "Parallel task processing",
+        "description": "A task with independent subtasks of different expertise is parallelized across agents, and the orchestrator assembles the result."
+      }
+    ],
+    "pitfalls": [
+      "Jumping into multi-agent from nothing: if a single agent feels limited, first improve prompts, tools, and RAG",
+      "Blurry roles: two agents own the same thing and it is unclear who makes the decision",
+      "No handoff protocol: agents exchange data «however», and context is lost between steps",
+      "No observability: a failure cannot be reproduced and debugging turns into guesswork",
+      "Ignoring rising cost and latency: every extra agent adds calls, money, and delay"
+    ],
+    "exercises": [
+      {
+        "question": "Take a task currently handled by one agent. Prove in 3 points that it is truly exhausted — or admit multi-agent is not needed.",
+        "hint": "Check in turn: prompt improvement, adding tools, RAG. If any one of them yields a gain, the limit is not reached yet."
+      },
+      {
+        "question": "Decompose your task into 2-3 roles and describe for each: input, output, tools, boundaries.",
+        "hint": "Roles must not overlap. If two roles fight over one decision, you need an orchestrator — or it is a single role."
+      },
+      {
+        "question": "Describe the handoff protocol between two agents: what exactly is passed, in what format, what to do on error.",
+        "hint": "Rely on patterns from [[node:sys-handoff-protocols|handoff protocols]] — a structured format beats free text."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Decide: do you even need multi-agent",
+        "time": "",
+        "why": "Multi-agent adds complexity quadratically — debugging, monitoring, cost, latency. Launching it without a proven single-agent limit means paying a high price for nothing.",
+        "instructions": [
+          "State the current task and where the single agent «hits the wall»",
+          "Check the three single-agent levers: better prompts, more tools, RAG",
+          "Record whether the task has clear subtasks with different expertise or needs parallelism",
+          "Make the decision explicit: move to multi-agent or stay on one agent"
+        ],
+        "validate": "You have a written justification of 3+ points why one agent is not enough — or a decision to stay on one.",
+        "tip": "Heuristic: multi-agent is usually justified after 6+ months of single-agent experience. If you are unsure, you are not at the limit yet."
+      },
+      "s2": {
+        "title": "Decompose into roles and agents",
+        "time": "",
+        "why": "The strength of multi-agent is specialization. Clear, non-overlapping roles turn one large task into a set of manageable, testable units.",
+        "instructions": [
+          "Break the task into subtasks and group them by expertise",
+          "Assign each group an agent role with a single area of responsibility",
+          "Choose an architectural pattern: coordinator-worker, debate, reflection, or tool-using agent",
+          "Verify roles do not overlap and that each has a clear input and output"
+        ],
+        "validate": "You have a list of 2-3 roles, each with one area of responsibility and no overlap; an architectural pattern is chosen.",
+        "tip": "Rely on [[node:sys-multi-agent-patterns|multi-agent system patterns]]: coordinator-worker is the most common and predictable starting point."
+      },
+      "s3": {
+        "title": "Handoff protocol and orchestrator",
+        "time": "",
+        "why": "Context is lost between agents if the exchange is «however it goes». An explicit handoff protocol and an orchestrator role keep the system from chaos as the number of steps grows.",
+        "instructions": [
+          "Define the orchestrator: who delegates, collects results, and makes the final decision",
+          "Describe the handoff format between agents — what exactly is passed and in what structure",
+          "Set recovery rules: what to do if an agent returns an error or garbage",
+          "Describe how context flows along the chain so nothing critical is lost"
+        ],
+        "validate": "For every handoff between agents, the format is fixed and the on-error behavior is described.",
+        "tip": "A structured handoff format (see [[node:sys-handoff-protocols|handoff protocols]]) is more reliable than free text — it is easier to validate and replay."
+      },
+      "s4": {
+        "title": "Tools and boundaries of each agent",
+        "time": "",
+        "why": "An agent without clear boundaries starts doing someone else's job or oversteps. An explicit set of tools and limits makes behavior predictable and safe.",
+        "instructions": [
+          "For each agent, list the tools it actually needs",
+          "Set boundaries: what the agent does NOT do and where it hands work onward",
+          "Build and test each agent in isolation, before composition",
+          "If you work in Claude Code, implement roles via [[node:cc-subagents|subagents]]"
+        ],
+        "validate": "Each agent is built and verified alone: on typical inputs it gives the expected output without overstepping its boundaries.",
+        "tip": "Minimize tools per agent: an extra tool is an extra way to fail and an extra call cost."
+      },
+      "s5": {
+        "title": "Verification and observability",
+        "time": "",
+        "why": "Failures in multi-agent arise at the seams — in coordination, not inside a single agent. Without logs and replay, debugging turns into guesswork.",
+        "instructions": [
+          "Add structured logging on every step: input, output, which agent, which decision",
+          "Ensure you can replay a failed run from the logs",
+          "Compose the agents into the full scenario and run end-to-end tests",
+          "Iterate specifically on coordination failures, not on individual agent quality"
+        ],
+        "validate": "Any failure can be replayed from the logs and pinned to the agent seam where it occurred.",
+        "tip": "Compare metrics against the single-agent baseline: completion rate, latency, cost per completed scenario — otherwise you can't see whether the complexity paid off."
+      },
+      "s6": {
+        "title": "Rollout and checklist",
+        "time": "",
+        "why": "The system is ready for production only when roles, protocol, boundaries, and observability are closed together. The checklist prevents shipping a half-assembled system.",
+        "instructions": [
+          "Run the checklist: single-agent limit proven, roles non-overlapping, protocol described, boundaries set, logs and replay working",
+          "Fix baseline metrics and the thresholds at which the system is rolled back",
+          "Roll out on limited traffic and watch the agent seams",
+          "Build in an iteration loop: catch coordination failures and tune the protocol"
+        ],
+        "validate": "All checklist items are closed, metrics are collected, and there is a clear rollback path on degradation.",
+        "tip": "Don't expand the number of agents «just in case». Add a role only when a concrete subtask proves it needs separate expertise."
+      }
+    }
+  },
+  "uc-ai-design-research-launch": {
+    "title": "Launch AI Design Research",
+    "subtitle": "From a mountain of unread research material to a working AI synthesis pipeline in 6 steps",
+    "totalTime": "6 steps",
+    "whatItIs": "A step-by-step scenario for turning accumulated interviews, session recordings, and user feedback into structured insights with AI — and embedding it into the team's ongoing design process. It is part of the [[node:use-cases|cross-layer scenarios]] collection and grounds the idea of [[node:ai-native-design|AI-native design]] in a concrete research cycle.",
+    "approach": "We move from data to decisions: first confirm the scenario is even warranted, then gather material into one place, run AI synthesis, rigorously check the findings for hallucination, turn patterns into design decisions, and lock it in as a repeatable process. AI accelerates synthesis, but a human remains accountable for the final insight.",
+    "outcomes": [
+      "Know when AI Design Research delivers real value and when it is premature",
+      "Can consolidate scattered research material into a single AI-ready base",
+      "Get a repeatable synthesis prompt cycle: from transcripts to patterns in hours, not weeks",
+      "Tell a confirmed insight from a model hallucination and know how to verify it",
+      "Embed the research pipeline into the design process so the whole team uses it"
+    ],
+    "applyIn": [
+      {
+        "title": "Accumulated research backlog",
+        "description": "The team has ≥10 session recordings or interview transcripts that no one has time to process — the scenario clears this backlog."
+      },
+      {
+        "title": "Unbalanced design ops",
+        "description": "Lots of research input, little synthesis output: designers drown in data instead of designing. The pipeline restores the balance."
+      },
+      {
+        "title": "Regular discovery cycles",
+        "description": "The team runs research every sprint and wants synthesis to stop being the bottleneck on every round."
+      }
+    ],
+    "pitfalls": [
+      "Launching without PM alignment: design research and product research live separately, and a designers-only pipeline leads to duplicated work by PMs",
+      "Blindly trusting AI synthesis: the model elegantly states a pattern that is not in the data — without citation checks the insight is a hallucination",
+      "Starting without Head of Design buy-in: without leadership support the pipeline does not take root and stays a personal experiment",
+      "Trying to process the whole archive at once: better to tune synthesis on 5 sessions than get garbage on 50",
+      "Insights stay in a separate document and never reach design decisions — research for research's sake"
+    ],
+    "exercises": [
+      {
+        "question": "Your team has 8 interview transcripts and no agreement with PMs. Should you launch the full AI Design Research pipeline right now?",
+        "hint": "Check the entry conditions: the ≥10 materials threshold and mandatory PM alignment. What is missing and what should you fix before launch?"
+      },
+      {
+        "question": "AI surfaced a pattern \"users want dark mode\", but only one person mentioned it in the sources. How do you catch this?",
+        "hint": "Think about the verification step: every pattern must rest on citations from multiple sources, otherwise it is noise."
+      },
+      {
+        "question": "Synthesis is done, insights are structured — but the team's design does not change. Which step of the scenario was skipped or done only formally?",
+        "hint": "Recall the difference between \"turn insights into decisions\" and \"embed into the process\". Where does the chain from data to product break?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Understand when the scenario is needed and fix the outcome",
+        "time": "",
+        "why": "Launching the pipeline without the conditions met is the most expensive mistake: the team spends two weeks only to find there is nothing to synthesize or no one to use it.",
+        "instructions": [
+          "Check the entry threshold: are there ≥10 session recordings or interview transcripts to process",
+          "Assess the design ops balance: lots of research input, little synthesis output is the signal to launch",
+          "Get buy-in from the Head of Design and agree on alignment with the PM team upfront",
+          "Fix the target outcome in measurable terms: time-to-insight, research coverage, a theme library"
+        ],
+        "validate": "You hold three \"yeses\": enough material, leadership support, agreement with PMs — and the target metrics are written down.",
+        "tip": "If even one condition is unmet, do not launch the full pipeline — close the gap first. That is cheaper than rolling back a failed launch."
+      },
+      "s2": {
+        "title": "Consolidate research material into a single base",
+        "time": "",
+        "why": "AI cannot synthesize what is scattered across drives, chats, and notes. A single indexed base is the foundation without which synthesis is impossible.",
+        "instructions": [
+          "Gather all session recordings, interview transcripts, and user feedback into one place",
+          "Normalize the material to a single format: text with a source and date for each fragment",
+          "Create a dedicated \"Design Research\" workspace and load the full corpus into it",
+          "Index the material so it can be searched and specific fragments can be referenced"
+        ],
+        "validate": "Any piece of research material is found on request within seconds, and the source is known for every fragment.",
+        "tip": "Keep the link from fragment to source from the start — you will need it at the verification step to prove an insight was not made up."
+      },
+      "s3": {
+        "title": "Synthesize patterns with AI",
+        "time": "",
+        "why": "This is the core of the scenario: here hours of manual review turn into minutes, and a mountain of data into a set of recurring themes.",
+        "instructions": [
+          "Formulate the synthesis prompt: ask to extract recurring themes, pains, and needs with their frequency",
+          "Run synthesis on 5 sessions first, not the whole archive — to tune the wording cheaply",
+          "Require the model to provide supporting citations for every extracted pattern",
+          "Group the result into a structured theme library, building on the [[node:ds-design-research|design research synthesis]] workflow"
+        ],
+        "validate": "On the trial 5 sessions you have a draft list of patterns, each tied to specific fragments of the material.",
+        "tip": "A single prompt is rarely perfect on the first try: expect 2-3 iterations before the wording reliably yields useful output."
+      },
+      "s4": {
+        "title": "Verify the findings — is it made up",
+        "time": "",
+        "why": "The model can convincingly state a pattern that is not in the data. Without an explicit check the team will decide based on a hallucination.",
+        "instructions": [
+          "For each pattern open the supporting citations and compare them to the source fragment",
+          "Discard patterns resting on a single mention — that is noise, not a trend",
+          "Have a designer manually validate the draft synthesis on the same 5 sessions",
+          "Flag themes where AI overstated frequency or assigned meaning that was not there"
+        ],
+        "validate": "Only patterns confirmed by several independent sources remain in the theme library; doubtful ones are flagged or removed.",
+        "tip": "Adopt a simple rule: a pattern without at least two sources is not an insight, it stays a hypothesis."
+      },
+      "s5": {
+        "title": "Turn insights into design decisions",
+        "time": "",
+        "why": "A verified pattern is not yet a result. Value appears only when an insight turns into a concrete action for the product.",
+        "instructions": [
+          "For each confirmed pattern, state which design decision it dictates",
+          "Link the insight to the specific screen, flow, or feature it changes",
+          "Prioritize: what changes now, what goes to backlog, what needs further checking",
+          "Capture the \"insight → decision\" statement so a designer outside the research context understands it"
+        ],
+        "validate": "Each key insight is turned into a concrete, prioritized design action tied to the product.",
+        "tip": "Phrase the decision as \"because [insight], we do [action]\" — this keeps insights from settling as dead weight in a document."
+      },
+      "s6": {
+        "title": "Embed into the design process and lock in with a checklist",
+        "time": "",
+        "why": "A one-off synthesis does not change a team. Value comes from a repeatable pipeline built into every research round and used by everyone.",
+        "instructions": [
+          "Run team training and the first real research round on the new pipeline together",
+          "Sync the process with the PM team so design and product research yield shared insights instead of duplicating each other",
+          "Lock in the round checklist: material gathered → synthesis run → findings verified → insights turned into decisions",
+          "Assign an owner for maintaining the theme base and the cadence of rounds"
+        ],
+        "validate": "The team runs the full cycle by the checklist on its own, insights reach decisions, and the PM team is connected to the shared theme library.",
+        "tip": "If you later want to automate collection and the first pass — look toward the [[tutorial:agent-researcher|researcher agent]], which removes the routine of the first round."
+      }
+    }
+  },
+  "uc-ai-personalization-launch": {
+    "title": "Launch AI Personalization in the Store",
+    "subtitle": "From generic UX for everyone to working personalization for returning customers — in 6 steps, no ML team required",
+    "totalTime": "6 steps",
+    "whatItIs": "A practical path to launching AI personalization in e-commerce: you turn a one-size-fits-all storefront into personal recommendations for returning customers. It builds on [[node:ai-native-ecommerce|AI-native e-commerce]] and embeddings ([[node:af-embeddings|af-embeddings]]) — without a data science team and without heavy ML infrastructure. Real scope: 6-8 weeks, 1-2 people.",
+    "approach": "First validate that personalization is even needed and where it delivers impact, then prepare user data with respect for privacy, build segments and recommendation logic, embed it into the storefront, measure the effect via A/B, and only then scale. The principle: start where returning traffic is highest (home page), not where it \"seems cheaper\" (email).",
+    "outcomes": [
+      "Understand when personalization is justified (catalog >1k SKUs, >5k active returning customers) and what result is realistic",
+      "Collect user behavior data legally and transparently, with explicit consent and a fallback for new customers",
+      "Build segments and recommendation logic on embeddings without training your own ML models",
+      "Embed personalization into real storefront surfaces (home page, product page) with cold-start protection",
+      "Prove uplift via A/B vs control: returning conversion +30-50%, AOV +10-25%, retention +15-30%"
+    ],
+    "applyIn": [
+      {
+        "title": "Store home page",
+        "description": "A personal selection for the returning customer instead of the same banner — the main impact point, because most loyal traffic lands there."
+      },
+      {
+        "title": "Product page and catalog",
+        "description": "A \"similar / fits you\" block based on product embeddings and view history instead of manual \"frequently bought with\" rules."
+      },
+      {
+        "title": "Email and retention campaigns",
+        "description": "Personal triggered emails as a second wave — after the home page proves uplift, reuse the same recommendation logic."
+      }
+    ],
+    "pitfalls": [
+      "Starting with email personalization: looks cheaper, but returning users more often come directly to the site — start with home page recommendations",
+      "No cold-start handling: a new user has no data, so the fallback must be generic but not \"we don't know you\"",
+      "Launching without measurement: without A/B vs control you can't prove AI personalization beats generic UX or tell uplift from seasonality",
+      "Collecting data without consent and transparency: personalization on \"dark\" data creates legal and reputational risk",
+      "Assuming you need an ML team: embeddings and retrieval cover 80% of cases without training your own models — don't delay over an imaginary entry barrier"
+    ],
+    "exercises": [
+      {
+        "question": "You have 800 SKUs and 2k returning customers per month. Should you launch AI personalization right now?",
+        "hint": "Check the entry thresholds: catalog >1k SKUs and >5k active returning customers. Consider whether there's enough data for segments to be meaningful rather than noise."
+      },
+      {
+        "question": "The team wants to build personal emails first because \"the integration is simpler.\" What do you say?",
+        "hint": "Where does most returning traffic live and where will you see impact faster? Recall the classic email vs home page mistake."
+      },
+      {
+        "question": "After the A/B test the persona group showed +12% conversion, but control also grew +9%. What is the real uplift and what does it mean?",
+        "hint": "Uplift is the difference between the variant and control, not the absolute increase. Think about seasonality and why a control group is essential."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Decide whether you need personalization and what result you'll get",
+        "time": "",
+        "why": "Personalization is the highest-ROI e-commerce case, but it isn't always justified. Without checking entry thresholds you'll spend 6-8 weeks on infrastructure that lacks the data to work.",
+        "instructions": [
+          "Check the thresholds: catalog >1k SKUs and >5k active returning customers — otherwise there's too little data for meaningful segments",
+          "State the business goal in numbers: returning conversion +30-50%, AOV +10-25%, or retention +15-30%",
+          "Pick one starting surface with the highest returning traffic — usually the home page, not email",
+          "Assemble a minimal team: senior engineer + product manager + analyst, and confirm readiness for 6-8 weeks",
+          "Study the AI-native context in [[node:ai-native-ecommerce|AI-native e-commerce]] so you don't build ML infra where embeddings suffice"
+        ],
+        "validate": "You have a written goal in metrics, a chosen starting surface, and a confirmed team for 6-8 weeks.",
+        "tip": "If the returning-customer threshold isn't met, don't launch — grow your loyal audience first. Personalization on noise is worse than honest generic UX."
+      },
+      "s2": {
+        "title": "Collect user data — legally and transparently",
+        "time": "",
+        "why": "Personalization only works on behavior data. But data collected without consent is a legal and reputational risk that cancels out any uplift.",
+        "instructions": [
+          "Define a minimal signal set: views, add-to-cart, purchases, session history — without over-collecting",
+          "Set up explicit user consent and a clear policy: what you collect and why",
+          "Tie data to a stable returning-customer identifier and ensure it persists across sessions",
+          "Build a fallback for a new user with no history: a generic selection, but without phrasing it as \"we don't know you\"",
+          "Turn products into embeddings via [[node:af-embeddings|af-embeddings]] — the basis for comparison and recommendations without ML training"
+        ],
+        "validate": "User signals are collected with consent, persisted across sessions, and products are represented as vectors; a working generic fallback exists for new customers.",
+        "tip": "Collect less but better: three strong signals (view, cart, purchase) deliver more than a dozen noisy ones."
+      },
+      "s3": {
+        "title": "Build segments and recommendation logic",
+        "time": "",
+        "why": "Raw data doesn't personalize by itself — you need logic that links user behavior to fitting products. On embeddings this works without training your own models.",
+        "instructions": [
+          "Define 3-5 behavioral segments (e.g., new, one-time, loyal, dormant) — don't fragment too finely",
+          "Describe the recommendation logic: embedding proximity of products to user history plus simple business rules (in stock, margin)",
+          "Study the retrieval pattern in [[node:sys-rag-architecture|sys-rag-architecture]] — the same one underpins finding similar products",
+          "Describe the concrete personalization workflow per [[node:ec-personalization|ec-personalization]] and the recommendation engine per [[node:ec-recommendations|ec-recommendations]]",
+          "Define fallback rules in advance: what to show on empty history and when no relevant matches exist"
+        ],
+        "validate": "For any segment and user the system deterministically returns an ordered list of recommendations, and on empty history a correct generic fallback.",
+        "tip": "Don't chase dozens of segments. Four clear segments with sharp logic work better than twenty fuzzy ones."
+      },
+      "s4": {
+        "title": "Embed personalization into the storefront",
+        "time": "",
+        "why": "Recommendation logic delivers value only when the user sees it. Integration into a real storefront surface is where the idea becomes a product.",
+        "instructions": [
+          "Embed a personal block into the surface chosen in step 1 — start with the home page",
+          "Ensure a fast response: recommendations must render without a noticeable page delay",
+          "Wire the generic fallback into the UI so a new user sees a meaningful storefront, not emptiness",
+          "Instrument impressions and clicks on the personal block right away — without this there's nothing to measure in step 5",
+          "Verify edge cases: no history, item out of stock, recommendations empty"
+        ],
+        "validate": "The personal block is visible in the real storefront, works correctly for returning and new users, and its impressions and clicks are tracked.",
+        "tip": "Don't roll out to 100% of traffic at once — keep a control group on generic UX; you'll need it at the measurement step."
+      },
+      "s5": {
+        "title": "Measure the effect via A/B and metrics",
+        "time": "",
+        "why": "Without A/B vs control you can't tell real personalization uplift from seasonal growth, nor prove to the business that the investment paid off.",
+        "instructions": [
+          "Run an A/B: persona group versus control on generic UX with the same audience",
+          "Compute uplift as the difference between groups, not the absolute increase — control filters out seasonality",
+          "Track key metrics: returning conversion, AOV, retention, plus the personal block's CTR",
+          "Let the test reach statistical significance; don't stop it after the first days",
+          "Record the result and decision: expand, refine the logic, or roll back"
+        ],
+        "validate": "You have an A/B result with clear uplift relative to control and a decision based on it, backed by significant data rather than first impressions.",
+        "tip": "If control grew almost as much as the persona group, there's no real uplift — look for the cause in your recommendation logic instead of celebrating absolute growth."
+      },
+      "s6": {
+        "title": "Scale and run the readiness checklist",
+        "time": "",
+        "why": "Proven uplift on one surface is the basis for expansion. Scaling without checking the foundation replicates mistakes onto new storefront surfaces.",
+        "instructions": [
+          "Expand personalization to the next surfaces: product page, catalog, then email campaigns",
+          "Reuse the same recommendation logic and embeddings — don't build a new system per surface",
+          "Run the checklist: data consent in place, cold-start fallback works, A/B set up, metrics rising",
+          "Establish an iteration loop: refine segments and rules using data from new surfaces",
+          "Benchmark against [[node:use-cases|use-cases]] to keep the chain \"goal → data → logic → measurement\" intact"
+        ],
+        "validate": "Personalization runs on at least two surfaces with proven uplift, the readiness checklist passes, and iterations are driven by data, not intuition.",
+        "tip": "Scale only what has already proven uplift. Porting unproven logic to new surfaces multiplies risk, not results."
+      }
+    }
+  },
+  "uc-ai-product-search": {
+    "title": "Launch Semantic Catalog Search",
+    "subtitle": "From \"no results\" to hybrid semantic search with reranking — in 6 steps",
+    "totalTime": "6 steps",
+    "whatItIs": "A scenario for launching semantic search on top of an existing keyword search in an e-commerce catalog. You don't throw away the old search — you add a vector layer built on [[node:af-embeddings|embeddings]] that understands the meaning of a query, not just exact words. The result is hybrid search: keyword handles exact SKU matches, semantic handles meaning and synonyms.",
+    "approach": "Move from problem to production: first confirm that you genuinely need semantics (rather than a keyword fix), then prepare the catalog data, build embeddings and an index, add ranking and filters, measure quality on real queries, and only then roll out to the storefront under an A/B test. Every step produces a verifiable result so you don't build blind.",
+    "outcomes": [
+      "You understand when semantics are truly needed versus just cleaning up keyword search",
+      "The catalog is prepared and turned into vectors, the index is built and re-indexes itself",
+      "Hybrid ranking works: keyword + semantic + availability and category filters",
+      "Search quality is measured with numbers (no-results rate, conversion, top clicks), not by feel",
+      "Search is rolled out to the storefront via an A/B test with a rollback path"
+    ],
+    "applyIn": [
+      {
+        "title": "Large e-commerce catalog",
+        "description": "Catalog >5k SKUs where >15% of search sessions end in \"no results\" due to synonyms and phrasing."
+      },
+      {
+        "title": "Multilingual storefront",
+        "description": "A site in several languages where keyword search fails to bridge queries and product descriptions across languages."
+      },
+      {
+        "title": "Catalog with rich descriptions",
+        "description": "Products with detailed attributes and use cases that people search for \"by meaning\" rather than by exact name."
+      }
+    ],
+    "pitfalls": [
+      "Replacing keyword search entirely: keyword wins on SKUs and exact codes — hybrid is mandatory",
+      "Not re-indexing the catalog: products change and sell out, and without index updates search shows out-of-stock items",
+      "Launching with no feedback loop: without click and purchase data, ranking never improves",
+      "Ignoring query analytics: AI searches well but doesn't explain why people search for \"X\" — that's a separate task",
+      "Rolling out with no A/B test: you can't prove the conversion lift and can't justify the embeddings cost"
+    ],
+    "exercises": [
+      {
+        "question": "How do you use data to decide whether you need semantics or your keyword search quality is the problem?",
+        "hint": "Look at the share of \"no results\" sessions and their queries: synonyms and phrasing mean you need semantics; typos and missing facets mean fix keyword."
+      },
+      {
+        "question": "Why is hybrid (keyword + semantic) better than pure semantics for a catalog?",
+        "hint": "Semantics blurs exact matches on SKUs, codes and brands where keyword is more precise. Hybrid takes the best of both."
+      },
+      {
+        "question": "Which 3 metrics will you watch in the A/B test to call the launch a success?",
+        "hint": "No-results rate, search conversion and time-to-first-click — all three should move the right way without a rise in complaints."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Understand when semantics are needed and the target outcome",
+        "time": "",
+        "why": "Semantic search costs money on embeddings and infrastructure. Before building, you must prove the problem is genuinely about query meaning and not a broken keyword search. Otherwise you're solving the wrong problem.",
+        "instructions": [
+          "Export search queries for 1-3 months and compute the share of sessions with \"no results\"",
+          "Label the failed queries: typos, missing facets are keyword; synonyms, meaning-based descriptions, other languages are semantic",
+          "Compare the scenario against neighboring cases in [[node:use-cases|use-cases]] so you don't rebuild a ready pattern",
+          "Fix the target outcome in numbers: no-results rate, search conversion, time-to-first-click",
+          "Decide the boundary: what stays with keyword (SKUs, codes) and what goes to semantics"
+        ],
+        "validate": "You have a table of failed queries tagged \"keyword/semantic\" and the share of semantic failures is above the threshold that justifies the project.",
+        "tip": "If almost all failures are typos and missing filters, fix keyword first: it's cheaper and faster than semantics."
+      },
+      "s2": {
+        "title": "Prepare the catalog and data",
+        "time": "",
+        "why": "Semantic search quality is never higher than the quality of the data you vectorize. Dirty, incomplete or inconsistent product records produce noisy embeddings and poor relevance.",
+        "instructions": [
+          "Assemble a single text per SKU: name, key attributes, category, use cases",
+          "Clean the data: remove duplicates, empty descriptions, HTML junk, normalize units and categories",
+          "Add fields for filters: availability (in/out of stock), price, brand, record language",
+          "Fix the product document schema so re-indexing is reproducible",
+          "Set aside a small set of real queries with their \"correct\" products for later evaluation"
+        ],
+        "validate": "You have a clean, consistent set of product records with fields for embedding and for filtering, plus a held-out query set for evaluation.",
+        "tip": "Build the embedding text deliberately: what's in it can be found, what's not in it will never be found."
+      },
+      "s3": {
+        "title": "Build embeddings and a vector index",
+        "time": "",
+        "why": "This is the technical core: product records become vectors, and a vector index lets you find the products closest in meaning to a user's query in milliseconds.",
+        "instructions": [
+          "Pick an embedding model per [[node:af-embeddings|af-embeddings]] (multilingual for a multilingual catalog)",
+          "Run the whole catalog through embeddings in batches and store vectors alongside product metadata",
+          "Stand up a vector store per [[node:af-vector-db|af-vector-db]] and load the index into it",
+          "Set up the re-indexing pipeline: new and changed products update their vectors automatically",
+          "Run sanity-check queries and confirm the nearest neighbors look meaningful"
+        ],
+        "validate": "A test query returns a meaningful product list from the index in acceptable time, and a changed product is found correctly after re-indexing.",
+        "tip": "The same embedding model must be used for both the catalog and the queries — otherwise the vectors aren't comparable."
+      },
+      "s4": {
+        "title": "Set up ranking and filters",
+        "time": "",
+        "why": "Raw vector proximity is not the final result list. You need to blend keyword and semantic into a hybrid, add reranking and mandatory filters (availability, category), otherwise users see irrelevant or sold-out products.",
+        "instructions": [
+          "Assemble a hybrid result: keyword for exact matches + semantic for meaning, with weights",
+          "Add reranking of the top candidates by relevance to the query",
+          "Apply hard filters: don't show out-of-stock, respect the chosen category/price/language",
+          "Account for business rules: boost by margin, new arrivals or promos where appropriate",
+          "Test edge queries: exact SKU, broad meaning-based query, query in another language"
+        ],
+        "validate": "On control queries keyword finds exact SKUs, semantic finds meaning-based ones, sold-out items don't appear, and the top results look relevant.",
+        "tip": "Start with simple hybrid weights and tune them based on evaluation results, not by guessing upfront."
+      },
+      "s5": {
+        "title": "Evaluate search quality",
+        "time": "",
+        "why": "Without measurable evaluation you won't know whether it got better, and you can't justify the cost. Search quality is evaluated on real queries with numbers, not by feel.",
+        "instructions": [
+          "Run the held-out query set and measure whether the \"correct\" product lands in the top results",
+          "Compare the new hybrid search against the old keyword search on the same queries",
+          "Measure no-results rate, the position of the relevant product, and the share of meaningful top results",
+          "Collect a blind rating from several people across a sample of queries to remove bias",
+          "Set up query analytics: which queries are frequent, which fail, what to search for next"
+        ],
+        "validate": "You have a before/after table of key metrics, and hybrid search measurably beats the old keyword search on failed queries.",
+        "tip": "Analyze frequent failed queries separately — they directly tell you which products or synonyms to add to the catalog."
+      },
+      "s6": {
+        "title": "Roll out to the storefront and launch checklist",
+        "time": "",
+        "why": "Search only drives revenue in production. Roll it out under an A/B test to prove the conversion lift on real money and keep a rollback path, then anchor it in the broader e-commerce loop.",
+        "instructions": [
+          "Integrate hybrid search into the storefront per the [[node:ai-native-ecommerce|ai-native-ecommerce]] pattern",
+          "Launch an A/B test: part of traffic on the new search, part on the old one, for a meaningful period",
+          "Wire up the feedback loop: clicks and purchases flow back into ranking",
+          "Set up monitoring and alerts: latency, no-results rate, share of out-of-stock in results",
+          "Run the launch checklist: re-indexing works, filters are strict, rollback plan exists, metrics are up"
+        ],
+        "validate": "The A/B test shows a statistically significant rise in search conversion and a drop in no-results rate, monitoring is green, and a rollback plan is ready.",
+        "tip": "Don't kill the A/B test the next day: let it accumulate enough sessions, or the lift turns out to be random noise."
+      }
+    }
+  },
+  "uc-ai-conversion-optimization": {
+    "title": "Launch an AI-Augmented CRO Program",
+    "subtitle": "From scattered tests to a structured, AI-augmented conversion-optimization program",
+    "totalTime": "6 steps",
+    "whatItIs": "A step-by-step scenario for launching a conversion-rate-optimization (CRO) program where Claude accelerates the team 5-10×: it generates hypotheses, helps read the data, and collapses post-mortems from days into hours. This isn't \"AI does CRO\" — it's \"AI removes the bottlenecks at the front (ideas) and the back (synthesis)\", while the A/B testing tool in between stays the same. Fits as one of the [[node:use-cases|use cases]] for [[node:ai-native-ecommerce|AI-native e-commerce]].",
+    "approach": "We move from diagnosis to a loop. First we confirm CRO is even warranted (traffic, plateau, an existing function), then map the funnel and its bottlenecks. Claude then generates a stream of hypotheses, we disciplinedly select them into experiments, read the results correctly, and close the improvement loop with a checklist. AI expands throughput; the human keeps prioritization discipline and the final call.",
+    "outcomes": [
+      "Hypothesis throughput grows from 2-3 to 10-15 per week — not via chaos, but via a structured backlog",
+      "An experiment post-mortem takes 2 hours instead of 2 days",
+      "Every hypothesis is prioritized by a clear framework (impact / confidence / effort), not by gut feel",
+      "Cumulative conversion uplift per quarter: +15-25% with the discipline of one variable per test",
+      "The team has a repeatable loop and launch checklist instead of one-off bursts of activity"
+    ],
+    "applyIn": [
+      {
+        "title": "E-commerce funnel",
+        "description": "Product page, cart, checkout: Claude generates headline variants, benefit copy, and CTA microcopy while you test one variable at a time."
+      },
+      {
+        "title": "SaaS onboarding and subscription",
+        "description": "Trial-to-paid, activation, pricing page: hypotheses about value framing and objection handling, validated on segments with enough traffic."
+      },
+      {
+        "title": "Lead forms and landing pages",
+        "description": "Fewer fields, reworked value proposition, social proof: a fast ideation loop where conversion has plateaued and ideas have run dry."
+      }
+    ],
+    "pitfalls": [
+      "Trusting AI variants without human review — Claude doesn't know your product and makes factual errors about features and prices",
+      "Testing everything: AI generates plenty, but a valid test = one variable over 2+ weeks. Discipline beats speed",
+      "Running tests on traffic where statistical significance is unreachable (<10k visitors/month per segment) — the findings are noise",
+      "Treating AI as a replacement for the CRO specialist: prioritization and the \"ship to prod\" decision stay with the human",
+      "Stopping a test the moment it \"looks like a win\" — peeking destroys the reliability of the result"
+    ],
+    "exercises": [
+      {
+        "question": "Your site gets 4,000 visitors a month and conversion has been flat for 4 months. Should you launch a full AI CRO program right now?",
+        "hint": "Look at the significance threshold in step 1: at that traffic an A/B test per segment accrues significance over months. Maybe start with qualitative methods (surveys, session replay) and growing traffic."
+      },
+      {
+        "question": "Claude proposed 12 hypotheses for the product page. What do you do next, before launching a single test?",
+        "hint": "Recall steps 3 and 4: hypotheses go through human review for factual errors, then prioritization by impact/confidence/effort, and one variable goes into the experiment — not all 12 at once."
+      },
+      {
+        "question": "A test has run 5 days, variant B is already 8% ahead. The manager wants to \"ship B\". Your answer?",
+        "hint": "Step 5: 5 days and no stated statistical significance is peeking. Wait for the pre-committed sample size and confidence interval, or you risk locking in randomness."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Confirm you need a CRO program and lock in the target outcome",
+        "time": "",
+        "why": "An AI CRO program only makes sense with enough traffic and a real plateau. Launching \"on 2,000 visits\" yields noise instead of insight and erodes trust in the program from month one.",
+        "instructions": [
+          "Check the entry conditions: traffic >10k visitors/month on the key segment, conversion plateaued for 3+ months, at least 1 person on the CRO function",
+          "Define one measurable program goal (e.g. +15% to checkout conversion this quarter)",
+          "Record the current baseline of the key metric — without it you can't prove growth",
+          "Decide what AI accelerates (ideation + synthesis) and what stays with the human (prioritization, the ship decision)"
+        ],
+        "validate": "You have a written yes/no on launching and one measurable goal with a recorded baseline.",
+        "tip": "If you lack traffic, don't force A/B tests. Start with qualitative methods (surveys, session recordings) and traffic growth, then structured CRO."
+      },
+      "s2": {
+        "title": "Gather funnel data and find the bottlenecks",
+        "time": "",
+        "why": "Hypotheses must come from data, not taste. Without a funnel map and drop-off points, AI will generate plausible but irrelevant ideas.",
+        "instructions": [
+          "Build the funnel step by step (visit → product → cart → checkout → payment) and compute each transition's conversion",
+          "Find the 1-2 steps with the biggest drop-off — these are the priority zones for tests",
+          "Collect qualitative context: session recordings, surveys, frequent support complaints",
+          "Load anonymized data and a funnel description into Claude as context for analysis",
+          "Ask Claude to surface patterns and articulate exactly where users are lost"
+        ],
+        "validate": "1-2 funnel bottlenecks are identified with drop-off numbers and qualitative confirmation.",
+        "tip": "Don't hand AI a raw table without explaining the metrics — the model will guess column meanings wrong. Describe what each one is."
+      },
+      "s3": {
+        "title": "Generate hypotheses with Claude",
+        "time": "",
+        "why": "Ideation is the main CRO bottleneck. This is where AI gives the biggest lift: 10-15 structured hypotheses a week instead of 2-3 improvised ones.",
+        "instructions": [
+          "Give Claude context: the bottleneck from step 2, a product description, the audience, the baseline",
+          "Request hypotheses in one format: \"If we change X, metric Y will rise, because Z\"",
+          "Run human review on each hypothesis for factual errors about the product, prices and features",
+          "Filter out anything that can't be tested with a single variable or measured",
+          "Put the surviving hypotheses into one structured backlog"
+        ],
+        "validate": "There is a backlog of 8-15 hypotheses in one format that have passed a factual-correctness check.",
+        "tip": "Make Claude state the reason (Z) in every hypothesis — it filters out \"because it looks nicer\" ideas and eases prioritization."
+      },
+      "s4": {
+        "title": "Design A/B experiments and prioritize the backlog",
+        "time": "",
+        "why": "Without design discipline the program turns into test chaos. One test = one variable at a time; otherwise you can't tell what actually worked.",
+        "instructions": [
+          "Prioritize the backlog by an impact / confidence / effort framework and take the top 2-3 hypotheses",
+          "For each, define one variable under test, plus control and treatment variants",
+          "Pre-commit the success metric, required sample size and test duration",
+          "Ask Claude to help compute duration from traffic and draft variant B",
+          "Schedule tests so they don't overlap on the same funnel zone"
+        ],
+        "validate": "The top hypotheses have experiment cards: one variable, metric, sample size and duration locked before start.",
+        "tip": "Lock duration and sample size BEFORE launch. It's the only defense against the urge to stop a test on a random peak. Details in the [[node:ec-cro|CRO node]]."
+      },
+      "s5": {
+        "title": "Analyze results and collapse the post-mortem",
+        "time": "",
+        "why": "A post-mortem usually takes days and often never gets done. Claude collapses synthesis into hours — the second frontier where AI gives a breakthrough.",
+        "instructions": [
+          "Wait for the pre-committed sample and duration — don't stop the test early",
+          "Check statistical significance and the confidence interval, not just the difference in means",
+          "Pass Claude the results and ask for a post-mortem draft: what was tested, what happened, why",
+          "Separate a reliable result from noise and inconclusive effects",
+          "Record the conclusion and decision: ship to prod, roll back, or retest"
+        ],
+        "validate": "Each completed test has a post-mortem with a conclusion, a significance assessment and a decision.",
+        "tip": "AI drafts, the human rules. Never ship a variant to prod just because \"the number is higher\" — without significance it's a coincidence."
+      },
+      "s6": {
+        "title": "Close the improvement loop and lock in a launch checklist",
+        "time": "",
+        "why": "CRO isn't a series of one-off tests but a repeatable loop. Without a checklist and a regular cadence the program fades after the first burst of enthusiasm.",
+        "instructions": [
+          "Feed past-test insights back into ideation — wins spawn new hypotheses",
+          "Set a rhythm: e.g. 2-3 active tests in flight and a weekly review",
+          "Assemble a launch checklist: conditions → data → hypotheses → design → analysis → decision",
+          "Document which steps Claude does and where human review is mandatory",
+          "Track cumulative uplift against the step 1 baseline, not individual wins"
+        ],
+        "validate": "There is a written repeatable loop with a checklist and a set cadence; the first 2-3 pilot tests ran through it.",
+        "tip": "Discipline beats speed: 3 clean tests a quarter beat 30 dirty ones. Grow the program toward a broader [[node:ec-cro|experimentation system]]."
+      }
+    }
   }
 }

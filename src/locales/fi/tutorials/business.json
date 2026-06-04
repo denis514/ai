@@ -607,5 +607,2113 @@
       }
     ],
     "savings": "~6-10 tuntia viikossa roolikohtaisissa tyypillisissä tehtävissä"
+  },
+  "uc-ai-reporting-launch": {
+    "title": "AI-raportoinnin käynnistys",
+    "subtitle": "Valmis skenaario: manuaalisista raporteista toimivaan viikkoraportti-workflowiin 2 viikossa",
+    "totalTime": "6 шагов",
+    "whatItIs": "Vaiheittainen reitti säännöllisen raportin (viikoittain/kuukausittain) siirtämiseksi Clauden hoidettavaksi: manuaalisesta luonnoksesta toistettavaan, tiimin käyttämään workflowiin. Perustuu 105 Atlas -solmuketjuun — [[node:prompting|Prompting]], [[node:projects|Projects]], [[node:i-claudemd|CLAUDE.md]], [[node:ops-reporting-automation|Reporting Automation]], [[node:sc-data|datan käsittely]].",
+    "approach": "Ensin laatu, sitten automaatio. AI kirjoittaa luonnoksen → ihminen muokkaa → mitataan laatu 5-10 oikealla raportilla. Vasta vakaan tuloksen jälkeen lisätään laukaisimet ja ajoitus. Kahden viikon sykli: Day 1-3 setup, Day 4-7 iteraatiot, Day 8-14 roll-out.",
+    "outcomes": [
+      "Toimiva viikkoraportti-workflow 2 viikossa",
+      "Time-to-report laski 4 tunnista 30 minuuttiin",
+      "Raporttien konsistenssi nousi ~90 % (yhtenäinen formaatti)",
+      "Tiimi osaa käyttää workflowia ja luottaa siihen (NPS-kysely)",
+      "Raportin formaatti on kiinnitetty ja uudelleenkäytettävä, ei rakenneta joka kerta uudelleen"
+    ],
+    "applyIn": [
+      {
+        "title": "Operations / liiketoiminta-analytiikka",
+        "description": "Viikoittaiset koosteet myynnistä, funnelista ja CRM:n sekä analytiikan metriikoista CSV-exportilla."
+      },
+      {
+        "title": "Johdon raportointi",
+        "description": "Säännölliset raportit johdolle: projektien tila, KPI:t, tiiviit koosteet monesta lähteestä."
+      },
+      {
+        "title": "Tiimin / osaston päivitykset",
+        "description": "Toistuvat tiimin koosteet, joissa formaatti on vakaa ja data päivittyy joka jaksolla."
+      }
+    ],
+    "pitfalls": [
+      "Halu täyteen automaatioon ensimmäisellä viikolla — hio ensin luonnoksen laatu, sitten lisää laukaisimet",
+      "Aloittaminen ilman saatavilla olevaa dataa: jos CRM/analytics-exportia ei ole, workflow takkuaa",
+      "Formaatin uudelleenkirjoittaminen joka kerta sen sijaan, että se kiinnitetään [[node:i-claudemd|CLAUDE.md]]:hen",
+      "Roll-out tiimille ennen 5-10 onnistunutta manuaalista iteraatiota — ei luottamusta eikä palautetta",
+      "Tulosten mittaamatta jättäminen: ilman time-to-report- ja NPS-mittareita arvoa ei voi todistaa"
+    ],
+    "exercises": [
+      {
+        "question": "Mikä raporteistasi sopii ensimmäiseen käynnistykseen ja miksi juuri se?",
+        "hint": "Etsi säännöllinen raportti, joka vie ≥3 tuntia viikossa, jolla on saatavilla dataa ja vakaa formaatti."
+      },
+      {
+        "question": "Mitkä kentät ja rakenne lopullisessa raportissa pitää olla, jotta ne voi kuvata CLAUDE.md:ssä?",
+        "hint": "Ota 1-2 aiempaa raporttia ja listaa osiot, metriikat ja sävy — se on tuleva formaattisi."
+      },
+      {
+        "question": "Mistä tiedät, että workflow on valmis tiimin roll-outiin?",
+        "hint": "Käytä kriteeriä: 5-10 oikeaa raporttia peräkkäin hyväksyttävällä luonnoksen laadulla."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Milloin skenaariota tarvitaan ja mitä saat",
+        "time": "",
+        "why": "Ilman selkeää laukaisinta ja odotettua tulosta tiimi hukkuu «lue kaikkea» -tilaan. Tämä askel varmistaa, että skenaario ylipäätään sopii, ja kiinnittää mitattavan tuloksen.",
+        "instructions": [
+          "Tarkista laukaisin: on säännöllinen raportti (viikoittain/kuukausittain), joka vie ≥3 tuntia viikossa",
+          "Tarkista data: se on saatavilla CRM/analytics-exportilla (CSV jne.)",
+          "Tarkista buy-in: tiimi suostuu kokeilemaan uutta workflowia",
+          "Kiinnitä tavoitemittarit: time-to-report 4h→30min, konsistenssi +90 %, NPS-kysely",
+          "Muotoile tulos yhdellä lauseella: «toimiva viikkoraportti-workflow 2 viikossa»"
+        ],
+        "validate": "Sinulla on yksi konkreettinen ehdokasraportti, pääsy sen dataan ja kirjatut tavoitemittarit.",
+        "tip": "Jos laukaisin tai data ei toteudu — älä käynnistä vielä, se säästää kaksi viikkoa."
+      },
+      "s2": {
+        "title": "Valmistelu: data, pääsyt, konteksti",
+        "time": "",
+        "why": "Raportin laatu rajoittuu syötteen laatuun. Tämä askel valmistelee datan ja yhteisen työtilan, jotta iteraatiot etenevät pysähtymättä kysymykseen «mistä luvut otetaan».",
+        "instructions": [
+          "Kokoa datalähteet ja varmista, että export toimii (ks. [[node:sc-data|CSV-datan käsittely]])",
+          "Luo tiimille yhteinen «Weekly Reports» -workspace [[node:projects|Projects]]-toiminnolla",
+          "Jos raportti tarvitsee CRM-kontekstia, opettele syöttämään se Cluden ([[node:af-rag-basics|RAG basics]])",
+          "Ota 1-2 aiempaa raporttia formaatin ja sävyn vertailukohdaksi",
+          "Sopikaa, kuka omistaa workflowin ja kuka muokkaa luonnoksia"
+        ],
+        "validate": "Data exportoituu, työtila on luotu, vertailuraportit ovat käsillä.",
+        "tip": "Aloita yhdellä datalähteellä — älä yritä yhdistää kaikkea kerralla."
+      },
+      "s3": {
+        "title": "Ensimmäinen luonnos: prompt ja formaatti",
+        "time": "",
+        "why": "Tämä on skenaarion ydin: opeta Clude kirjoittamaan raportti oikeassa formaatissa. Ensin käsin, jotta näet todellisen laadun ja löydät parannettavan.",
+        "instructions": [
+          "Kirjoita system prompt raportille (ks. [[node:prompting|Prompting]] ja [[node:b-system|system prompt]])",
+          "Kuvaile raportin formaatti — osiot, metriikat, sävy — työtilan [[node:i-claudemd|CLAUDE.md]]:ssä",
+          "Syötä yhden jakson oikea data ja saa ensimmäinen luonnos",
+          "Vertaa luonnosta vertailuraporttiin ja merkitse erot",
+          "Kirjaa, mitä AI tekee hyvin ja mitä joudut korjaamaan käsin"
+        ],
+        "validate": "Sinulla on ensimmäinen ehjä luonnos, ja formaatti elää CLAUDE.md:ssä ja on uudelleenkäytettävä.",
+        "tip": "Älä tavoittele täydellisyyttä ensiyrityksellä — tavoite on toimiva lähtökohta."
+      },
+      "s4": {
+        "title": "Iteraatiot oikeilla raporteilla",
+        "time": "",
+        "why": "Yksi luonnos ei todista mitään. Vakaa laatu näkyy vasta sarjalla oikeita raportteja — tässä workflow kypsyy toistettavaksi.",
+        "instructions": [
+          "Aja 5-10 oikeaa raporttia kaavalla: AI-luonnos → ihminen muokkaa → kirjataan muokkaukset",
+          "Hio jokaisen iteraation jälkeen promptia ja formaattia [[node:i-claudemd|CLAUDE.md]]:ssä",
+          "Muotoile vaiheet toistettavaksi prosessiksi mallin [[node:ops-reporting-automation|Reporting Automation]] mukaan",
+          "Mittaa muokkausaikaa — sen pitäisi laskea iteraatiosta toiseen",
+          "Kokoa toistuvat muokkaukset tarkistuslistaksi, jotta prompt kattaa ne etukäteen"
+        ],
+        "validate": "5-10 raporttia peräkkäin antaa hyväksyttävän luonnoksen, käsin tehty muokkaus vähenee tasaisesti.",
+        "tip": "Jos muokkausta on paljon vielä 10 iteraation jälkeen, vika on datassa tai formaatissa, ei Cludessa."
+      },
+      "s5": {
+        "title": "Laaduntarkistus ja riskit",
+        "time": "",
+        "why": "Ennen tiimille menoa on varmistettava, että raportti on tarkka ja toistettava — yksi väärä luku murentaisi luottamuksen koko workflowiin.",
+        "instructions": [
+          "Täsmäytä luonnoksen luvut lähdedataan — tarkista asiavirheet",
+          "Testaa vakaus: sama data tuottaa vertailukelpoisen tuloksen",
+          "Kirjaa mitattu time-to-report ja vertaa 30 minuutin tavoitteeseen",
+          "Määritä, mitkä osat vaativat pakollisen ihmistarkistuksen",
+          "Kuvaile riskialueet (lähteet, joissa likaista dataa, herkät metriikat)"
+        ],
+        "validate": "Laatu on vahvistettu tarkistuksessa, mittarit saavutettu, pakollisen tarkistuksen kohdat tunnetaan.",
+        "tip": "Lisää täysi automaatio vasta tämän askeleen jälkeen — ei aiemmin."
+      },
+      "s6": {
+        "title": "Käyttöönotto ja skaalaus",
+        "time": "",
+        "why": "Arvo syntyy, kun koko tiimi käyttää workflowia, ei vain yksi kirjoittaja. Viimeinen askel on roll-out, palautteen keruu ja käytännön vakiinnuttaminen.",
+        "instructions": [
+          "Tee tiimin roll-out: näytä workflow ja yhteinen työtila [[node:projects|Projects]]",
+          "Kerää palaute ja tee NPS-kysely (suositteluvalmius, 0-10)",
+          "Lisää automaatio — laukaisimet ja ajoitus — mallin [[node:ops-reporting-automation|Reporting Automation]] mukaan",
+          "Nimeä omistaja, joka ylläpitää promptia ja formaattia [[node:i-claudemd|CLAUDE.md]]:ssä",
+          "Valmiustarkistuslista: formaatti CLAUDE.md:ssä, 5-10 onnistunutta iteraatiota, mittarit saavutettu, tiimi koulutettu, omistaja nimetty"
+        ],
+        "validate": "Tiimi käyttää workflowia, NPS on kerätty, automaatio lisätty, tarkistuslista suljettu.",
+        "tip": "Kun yksi raportti on hiottu, sama polku toistuu helposti seuraavalle — formaatti on jo olemassa."
+      }
+    }
+  },
+  "uc-ai-process-automation": {
+    "title": "Toistuvan prosessin automatisointi",
+    "subtitle": "Operations-prosessista, jonka tiimi tekee käsin joka viikko, tuotanto-workflow:ksi Skills- ja Hooks-ratkaisulla laaduntarkistuksineen",
+    "totalTime": "6 askelta",
+    "whatItIs": "Strukturoitu polku yhden tietyn toistuvan prosessin automatisointiin AI:n kautta: hyvän ehdokkaan valinnasta tuotantovalmiiseen workflow:iin [[node:skills|Skills]]-ratkaisulla ja automaattisilla laukaisimilla. Ei «kokeilimme Claudea ja tykkäsimme», vaan systemaattinen lähestymistapa metriikoineen ja laatuportteineen.",
+    "approach": "Ensin valitse ja vakauta prosessi, joka pyörii vähintään 5 kertaa viikossa selkeillä inputeilla/outputeilla. Sitten dokumentoi se as-is ja tunnista askeleet, jotka AI voi realistisesti ottaa hoitaakseen. Rakenna automaation ydin — uudelleenkäytettävä Skill ja tarvittaessa ulkoiset integraatiot — ja lisää laukaisimet. Upota aina laatuportit ihmisen reviewn kanssa, testaa historiallisella datalla ja vasta sitten vie tuotantoon monitoroinnin ja skaalaussuunnitelman kanssa.",
+    "outcomes": [
+      "Automatisoitu workflow tietylle prosessille, valmis päivittäiseen käyttöön 2-3 viikossa",
+      "70-90 % aikasäästö prosessin rutiiniaskelissa",
+      "Virhetaso alle 5 % laatuporttien ja ihmisen reviewn ansiosta",
+      "Uudelleenkäytettävä Skill, jonka voi soveltaa samankaltaisiin prosesseihin",
+      "Selkeät ennen/jälkeen-metriikat, joilla todistat arvon tiimille ja johdolle"
+    ],
+    "applyIn": [
+      {
+        "title": "Saapuvien pyyntöjen käsittely",
+        "description": "Tikettien tai pyyntöjen luokittelu, rikastus ja reititys, kun niitä tulee kymmenittäin päivässä yhdellä mallipohjalla."
+      },
+      {
+        "title": "Säännöllisten dokumenttien tuotanto",
+        "description": "Viikkoraportit, koosteet, asiakaskirjeet — kun muoto on vakaa ja manuaalinen vaihtelu haittaa."
+      },
+      {
+        "title": "Rutiininomaiset dataoperaatiot",
+        "description": "Datan siirto, täsmäytys ja normalisointi järjestelmien välillä [[node:mcp|MCP]]-integraatioiden kautta, kun askeleet toistuvat ja ovat hyvin kuvattuja."
+      }
+    ],
+    "pitfalls": [
+      "Automatisoida prosessia, jota ei ole vielä vakautettu — workflow rikkoutuu joka muutoksella",
+      "Jättää laatuportit pois: ilman ihmisen reviewta automaatio tuottaa roskaa mittakaavassa",
+      "Valita liian monimutkainen tai liian harvinainen prosessi — ei säästöä, ja ylläpito syö ajan",
+      "Testata vain «mukavilla» esimerkeillä ja sivuuttaa rajatapaukset historiallisesta datasta",
+      "Viedä tuotantoon ilman monitorointia — virheet kasaantuvat huomaamatta ja tiimin luottamus laskee"
+    ],
+    "exercises": [
+      {
+        "question": "Etsi tiimistäsi yksi prosessi, joka pyörii ≥5 kertaa viikossa selkeillä inputeilla ja outputeilla. Kuvaa sen askeleet ja merkitse, mitkä AI voisi ottaa hoitaakseen.",
+        "hint": "Hyvä ehdokas: vakaa muoto, selkeä tulos, mitattava aika. Jos prosessi vielä muuttuu joka viikko, vakauta se ensin."
+      },
+      {
+        "question": "Suunnittele valitulle prosessille 3 laatuporttia — kohtaa, joissa tulos tarkistetaan ennen eteenpäin menoa. Missä ihminen on ehdottomasti pakollinen?",
+        "hint": "Mieti peruuttamattomia toimia: lähetys asiakkaalle, datan muutos, rahaoperaatiot. Kata nämä ihmisen reviewlla ensin."
+      },
+      {
+        "question": "Määritä automaatiollesi ennen/jälkeen-onnistumismetriikka: kuinka paljon aikaa kuluu nyt ja mikä tavoitevirhetaso on hyväksyttävä.",
+        "hint": "Käytännön viitearvo: 70-90 % aikasäästö ja virhetaso alle 5 %. Kirjaa lähtötaso ENNEN lanseerausta, muuten arvoa ei voi todistaa millään."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Milloin tätä tarvitaan ja tavoiteltu tulos",
+        "time": "",
+        "why": "Ilman oikeaa ehdokasta automaatio joko ei kannata tai rikkoutuu jatkuvasti. Tämä askel ratkaisee, kannattaako edes aloittaa.",
+        "instructions": [
+          "Tarkista ehdokaskriteerit: prosessi pyörii ≥5 kertaa viikossa selkeillä inputeilla ja outputeilla",
+          "Varmista, että tulosten vaihtelu manuaalisessa suorituksessa on tiimille todellinen ongelma",
+          "Tarkista tekninen toteutettavuus: onko pääsy tarvittaviin laukaisimiin ja integraatioihin",
+          "Muotoile odotettu tulos metriikoina: aikasäästö 70-90 %, virhetaso <5 %",
+          "Katso [[node:ops-process-automation|Prosessien automatisointi]] tavoiterakenteena laatuportteineen"
+        ],
+        "validate": "Sinulla on yksi tietty prosessi ja kirjattu tavoite mitattavina ennen/jälkeen-metriikoina.",
+        "tip": "Jos epäröit kahden prosessin välillä, ota se, joka toistuu useammin ja muuttuu vähemmän. Taajuus × vakaus = kannattavuus."
+      },
+      "s2": {
+        "title": "Valmistelu: dokumentoi prosessi as-is",
+        "time": "",
+        "why": "Et voi automatisoida sitä, mitä ei ole kuvattu. As-is-dokumentti näyttää, mitkä askeleet AI voi ottaa ja mitkä on jätettävä ihmiselle.",
+        "instructions": [
+          "Kirjoita prosessi askel askeleelta sellaisena kuin se pyörii tänään (Week 1)",
+          "Merkitse jokaiselle askeleelle: input, toiminta, tulos, kuka/mikä vastaa",
+          "Merkitse AI-korvattavissa olevat askeleet — missä Claude voi tuottaa vakaan tuloksen selkeillä säännöillä",
+          "Kerää joukko historiallisia esimerkkejä tulevia testejä varten (oikeat tapaukset, mukaan lukien rajatapaukset)",
+          "Varmista, että prosessi on vakaa — jos se vielä muuttuu, lukitse se ensin"
+        ],
+        "validate": "Sinulla on askel askeleelta -kartta prosessista, merkityt AI-askeleet ja joukko historiallisia esimerkkejä testejä varten.",
+        "tip": "Rajatapaukset ja «hankalat» tapaukset historiasta ovat arvokkaampia kuin tusina tyypillistä — juuri niissä workflow rikkoutuu tuotannossa."
+      },
+      "s3": {
+        "title": "Suoritus: automaation ydin — Skill",
+        "time": "",
+        "why": "Uudelleenkäytettävä Skill on ohje, jota Claude soveltaa samalla tavalla joka kerta. Se muuttaa kertaluontoisen promptin systemaattiseksi prosessiksi.",
+        "instructions": [
+          "Rakenna workflow:n ydin Skill:iksi [[node:s-create|Skillin luonti]] -kautta — kuvaa tavoite, askeleet ja tulostusmuoto",
+          "Nojaa [[node:skills|Skills]]-materiaaliin, jotta Skill on itsenäinen ja uudelleenkäytettävä",
+          "Työstä ydin-workflow-prompti [[node:prompting|Promptaus]]-sääntöjen mukaan",
+          "Aja Skill askeleen 2 historiallisilla esimerkeillä ja vertaa oikeisiin tuloksiin (Week 2)",
+          "Viritä prompti vakaaseen tulokseen sekä tyypillisissä että rajatapauksissa"
+        ],
+        "validate": "Skill tuottaa odotetun tuloksen historiallisilla esimerkeillä, mukaan lukien osa rajatapauksista.",
+        "tip": "Älä yritä kattaa kaikkea yhdellä jättipromptilla. Selkeä Skill määritellyllä tulostusmuodolla on luotettavampi kuin ohjeiden seinä."
+      },
+      "s4": {
+        "title": "Suoritus: integraatiot ja laukaisimet",
+        "time": "",
+        "why": "Skill hoitaa «mitä tehdä», kun taas integraatiot ja laukaisimet hoitavat «mistä data tulee» ja «milloin ajetaan». Ilman niitä automaatio jää manuaaliseksi napiksi.",
+        "instructions": [
+          "Jos ulkoisia järjestelmiä tarvitaan, yhdistä ne [[node:mcp|MCP]]:n kautta (datalähteet, tiimin työkalut)",
+          "Aseta automaattiset laukaisimet [[node:cc-hooks|Claude Code -hookit]] -kautta — tapahtuman, aikataulun tai saapuvan pyynnön mukaan",
+          "Kytke ketju: laukaisin → data MCP:n kautta → Skill → tulos",
+          "Aja koko polku end-to-end testidatalla, ei vain itse Skilliä",
+          "Kirjaa, mitkä askeleet jäävät manuaalisiksi ja miksi (osa laatuportteja)"
+        ],
+        "validate": "Koko polku laukaisimesta tulokseen pyörii testidatalla ilman manuaalista puuttumista automaattisilla askelilla.",
+        "tip": "Aloita yhdellä laukaisimella ja vähimmäisintegraatioilla. Ylimääräiset yhteydet vaikeuttavat virheenkorjausta ja laajentavat virhepintaa."
+      },
+      "s5": {
+        "title": "Laaduntarkistus ja riskit",
+        "time": "",
+        "why": "Laatuportit ovat pääpuolustus «automatisoitua roskaa» vastaan. Ilman tarkistuksia virheet kasaantuvat mittakaavassa ja tuhoavat tiimin luottamuksen.",
+        "instructions": [
+          "Upota laatuportit: kohdat, joissa tulos tarkistetaan ennen eteenpäin menoa",
+          "Peruuttamattomille toimille (lähetys asiakkaalle, datan muutos, raha) säilytä pakollinen ihmisen review",
+          "Mittaa todellinen virhetaso historiallisella datalla ja vertaa tavoitteeseen <5 %",
+          "Testaa rajatapaukset erikseen — ne paljastavat workflow:n heikot kohdat",
+          "Kuvaa palautussuunnitelma: mitä tehdä, jos automaatio tuottaa väärän tuloksen"
+        ],
+        "validate": "Virhetaso on tavoitteen rajoissa, riskialttiilla askelilla on ihmisen review ja palautussuunnitelma on olemassa.",
+        "tip": "Laatuportti ≠ hidaste. Se on vakuutus: parempi reitittää 100 % tuloksista tarkistuksen läpi ensimmäisellä viikolla kuin korjata maine myöhemmin."
+      },
+      "s6": {
+        "title": "Käyttöönotto, skaalaus ja tarkistuslista",
+        "time": "",
+        "why": "Tuotantolanseeraus ilman monitorointia ja skaalaussuunnitelmaa muuttaa toimivan prototyypin hallitsemattomaksi riskiksi. Tämä askel lukitsee arvon.",
+        "instructions": [
+          "Vie workflow tuotantoon tulosten ja virhetason monitoroinnilla (Week 3)",
+          "Kirjaa jälkeen-metriikat ja vertaa askeleen 1 lähtötasoon — todista säästö tiimille",
+          "Päätä, laajennetaanko lähestymistapaa: stage transition 1→2 (ensimmäinen automaatio) tai 2→3 (skaalaus)",
+          "Etsi samankaltaisia prosesseja, jotka käyttävät samaa Skilliä uudelleen, ja lisää ne jonoon",
+          "Käy läpi tarkistuslista: ehdokas sopii / prosessi dokumentoitu / Skill vakaa / laukaisimet ja MCP toimivat / laatuportit paikallaan / monitorointi päällä"
+        ],
+        "validate": "Workflow pyörii tuotannossa, jälkeen-metriikat vahvistavat arvon ja tarkistuslista on käyty kokonaan läpi.",
+        "tip": "Kirjoita tapaus muistiin: prosessi, metriikat, sudenkuopat. Se on sekä todiste arvosta että malli seuraavalle automaatiolle [[node:use-cases|Käyttötapauksista]]."
+      }
+    }
+  },
+  "uc-ai-decision-support": {
+    "title": "AI-tuki operatiivisille päätöksille",
+    "subtitle": "Ad-hoc «keskustellaan Slackissä» -tilasta strukturoituun päätösprosessiin AI-analyysillä 3-4 viikossa",
+    "totalTime": "6 askelta",
+    "whatItIs": "Kurssi näyttää, kuinka tuoda AI tiimin operatiivisiin päätöksiin — ei «päätöksentekijänä», vaan strukturoinnin ja pattern-matchingin työkaluna. Rakennat toimivan päätösprosessin, jossa AI valmistelee trade-off-analyysin ja nostaa esiin aiempia tapauksia, kun taas ihminen tekee päätöksen ja kantaa vastuun.",
+    "approach": "Operations-tiimit tekevät 5-10 päätöstä viikossa kuormituksen alla: paljon reaktiivista, vähän oppimista. Tämä lähestymistapa lisää kurinalaisuutta ilman byrokratiaa — kevyt malli, AI-analyysi [[node:prompting|strukturoidulla promptingilla]] ja päätösloki [[node:projects|Projects]]-ympäristössä. Aloita 3-5 päätöksen pilotilla, hio ja tee roll-out retrospektiivin kanssa.",
+    "outcomes": [
+      "Toimiva päätösprosessi AI-tuella 3-4 viikossa",
+      "Reaktiiviset päätökset vähenevät 50-70%",
+      "Oppimissilmukka luotu: retrospektiivi AI-pattern-matchingilla päätöshistoriasta",
+      "«Decision Log» -loki tulosten seurannalla tulevia retrospektiivejä varten",
+      "Tiimi ymmärtää selkeästi AI:n rajat: missä se antaa arvoa ja missä vastuu pysyy ihmisellä"
+    ],
+    "applyIn": [
+      {
+        "title": "Rekrytointi ja palkkaus",
+        "description": "Hire vs no-hire -päätökset trade-off-analyysillä: AI strukturoi puolesta- ja vastaan-argumentit, ihminen punnitsee kontekstin ja päättää."
+      },
+      {
+        "title": "Toimittajien ja työkalujen valinta",
+        "description": "Toimittajan valinta vertailemalla kriteerejä ja hintoja: AI kokoaa datan yhteen rakenteeseen ja nostaa esiin samankaltaiset aiemmat valinnat lokista."
+      },
+      {
+        "title": "Prosessimuutokset",
+        "description": "Prosessimuutospäätökset: AI tekee pattern-matchingiä aiempiin muutoksiin («päätimme tämän vuosi sitten») vähentäen toistuvia virheitä."
+      }
+    ],
+    "pitfalls": [
+      "Käyttää AI:tä «päätöksentekijänä». AI on hyvä strukturoinnissa ja pattern-matchingissa, mutta konteksti ja vastuu kuuluvat ihmiselle.",
+      "Jättää dokumentaatio huomiotta. Tulosten seuranta on tärkeämpää kuin itse AI-output: ilman lokia ei ole oppimissilmukkaa.",
+      "Ylikuormittaa prosessin byrokratialla. Raskas malli tappaa käyttöönoton — pidä se kevyenä.",
+      "Lisätä kaikki päätökset prosessiin kerralla. Aloita major-päätöksistä, jotka vaativat trade-offia; pieni rutiini jää ennalleen.",
+      "Luottaa AI-outputiin tarkistamatta dataa. Heikko syöte johtaa varmalta kuulostavaan mutta virheelliseen analyysiin."
+    ],
+    "exercises": [
+      {
+        "question": "Listaa 5 tiimisi viime kuussa tekemää päätöstä. Mitkä vaativat trade-off-analyysiä ja sopisivat AI-tukeen, mitkä eivät?",
+        "hint": "Ehdokkaat: palkkaukset, toimittajat, prosessimuutokset. Ei-ehdokkaat: ilmeiset operatiiviset toimet ilman vaihtoehtoja."
+      },
+      {
+        "question": "Ota yksi aiempi päätös, jota tiimi myöhemmin katui. Minkä datan ja argumentit AI olisi auttanut strukturoimaan etukäteen?",
+        "hint": "Mieti, mitä tiedettiin päätöshetkellä mutta mitä ei koottu yhdeksi kuvaksi."
+      },
+      {
+        "question": "Muotoile raja: minkä päätöksen kohdalla et luottaisi AI:hin edes strukturoinnissa? Miksi?",
+        "hint": "Etsi päätöksiä, jotka liittyvät piilevään kontekstiin, ihmisiin tai etiikkaan — siinä AI on sokea."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Määritä, milloin skenaariota tarvitaan ja mikä on tavoitetulos",
+        "time": "",
+        "why": "Ilman selkeää scopea AI-tuki muuttuu byrokratiaksi kaikille päätöksille. Päätä ensin, mitkä päätökset ylipäätään sisällytetään.",
+        "instructions": [
+          "Kerää tiimin kuukauden aikana tekemien päätösten tyypit (palkkaukset, toimittajat, prosessit).",
+          "Merkitse ne, jotka vaativat trade-off-analyysiä — nämä ovat AI-tuen ehdokkaita.",
+          "Määritä odotettu tulos: toimiva prosessi 3-4 viikossa, reaktiiviset päätökset ↓50-70%.",
+          "Kiinnitä tavoite: strukturointi ja oppimissilmukka, ei päätösten luovuttaminen AI:lle."
+        ],
+        "validate": "Sinulla on lyhyt lista (3-5 tyyppiä) päätöksiä, joissa AI-tuki antaa arvoa.",
+        "tip": "Jos päätös on ilmeinen eikä siinä ole vaihtoehtoja, se ei kuulu tähän prosessiin."
+      },
+      "s2": {
+        "title": "Valmistele data ja konteksti analyysiä varten",
+        "time": "",
+        "why": "AI-analyysin laatu on yhtä kuin syötedatan laatu. Heikko syöte johtaa varmalta kuulostavaan mutta virheelliseen johtopäätökseen.",
+        "instructions": [
+          "Määritä jokaiselle päätöstyypille tarvittava data (luvut, kriteerit, rajoitteet).",
+          "Opettele syöttämään data AI:lle [[node:prompting|strukturoidulla promptingilla]] — faktat erillään kysymyksestä.",
+          "Perusta «Decision Log» -työtila [[node:projects|Projects]]-ympäristöön historiaa ja kontekstia varten.",
+          "Kerää 2-3 aiempaa päätöstä referenssiksi tulevaa pattern-matchingiä varten."
+        ],
+        "validate": "Pilottipäätökselle pystyt nopeasti kokoamaan puhtaan datan ja kontekstin.",
+        "tip": "Erota «faktat» ja «kysymys AI:lle» — se parantaa strukturoinnin laatua merkittävästi."
+      },
+      "s3": {
+        "title": "Askel 1: strukturoi trade-off-analyysi chain-of-thoughtilla",
+        "time": "",
+        "why": "Arvon avain on saada AI päättelemään askel askeleelta ja erittelemään puolesta- ja vastaan-argumentit, ei syöttämään valmista vastausta.",
+        "instructions": [
+          "Rakenna prompt-malli [[node:prompting|promptingin periaatteilla]]: konteksti → data → tehtävä → tulostusmuoto.",
+          "Pyydä AI:tä avaamaan chain-of-thought: kriteerit, vaihtoehdot, kunkin plussat/miinukset.",
+          "Kiinnitä tulostusmuoto: trade-off-taulukko + AI:n eksplisiittiset oletukset.",
+          "Aja se 1 yksinkertaisella pilottipäätöksellä ja arvioi rakenteen hyödyllisyyttä."
+        ],
+        "validate": "AI tuottaa luettavan trade-off-erittelyn eksplisiittisillä oletuksilla, ei yhtä «vastausta».",
+        "tip": "Pyydä AI:tä aina nimeämään oletuksensa — niin näkee, missä se voi erehtyä."
+      },
+      "s4": {
+        "title": "Askel 2: kytke pattern-matching päätöshistoriaan",
+        "time": "",
+        "why": "Operationsin ydinkipu on «päätimme tämän vuosi sitten ja unohdimme». Lokin historia muuttaa aiemmat päätökset oppimissilmukaksi.",
+        "instructions": [
+          "Anna AI:lle pääsy «Decision Log» -lokiin [[node:projects|Projects]]-ympäristössä kontekstina.",
+          "Pyydä AI:tä löytämään samankaltaiset aiemmat päätökset ja niiden tulokset ennen uutta johtopäätöstä.",
+          "Kirjaa jokaisesta uudesta päätöksestä: konteksti, vaihtoehdot, valinta, odotettu tulos.",
+          "1-2 syklin jälkeen varmista, että AI todella nostaa esiin relevantit aiemmat tapaukset."
+        ],
+        "validate": "Uudessa päätöksessä AI viittaa samankaltaisiin aiempiin tapauksiin lokista.",
+        "tip": "Kirjaa valinnan lisäksi odotettu tulos — muuten retrospektiivi on hampaaton."
+      },
+      "s5": {
+        "title": "Laadun ja riskien tarkistus: ihminen päättää, ei AI",
+        "time": "",
+        "why": "AI on hyvä strukturoinnissa ja pattern-matchingissa, mutta konteksti ja vastuu kuuluvat ihmiselle. Ilman tätä estettä prosessi on vaarallinen.",
+        "instructions": [
+          "Aseta sääntö: AI-output on syöte keskustelulle, ei päätös.",
+          "Tarkista AI:n oletukset ja data, jolle sen analyysi rakentui.",
+          "Merkitse päätökset, joissa piilevä konteksti/etiikka/ihmiset tekevät AI:stä sokean — siellä se vain strukturoi.",
+          "Kiinnitä, kuka vastaa kustakin päätöksestä (ihminen, ei malli)."
+        ],
+        "validate": "Tiimi ymmärtää: lopullinen päätös ja vastuu ovat aina ihmisellä.",
+        "tip": "Jos AI kuulostaa liian varmalta, ota se signaalina tarkistaa syötedata uudelleen."
+      },
+      "s6": {
+        "title": "Käyttöönotto ja roll-out-tarkistuslista",
+        "time": "",
+        "why": "Pilotti todistaa arvon; roll-out retrospektiivin kanssa muuttaa sen kestäväksi tiimiprosessiksi.",
+        "instructions": [
+          "Week 1: pilotti 3-5 yksinkertaisella päätöksellä.",
+          "Week 2-3: hio mallia ja varmista laatu oikeilla tapauksilla.",
+          "Week 4: roll-out kaikille major-päätöksille + ensimmäinen retrospektiivi AI-pattern-matchingilla.",
+          "Tarkistuslista: kevyt malli, loki [[node:projects|Projects]]-ympäristössä, «ihminen päättää» -sääntö, tulosten seuranta."
+        ],
+        "validate": "Prosessi toimii kaikille major-päätöksille, reaktiiviset päätökset ovat vähentyneet, ensimmäinen retrospektiivi on tehty.",
+        "tip": "Pidä malli kevyenä: raskas byrokratia tappaa käyttöönoton nopeammin kuin huono AI-output."
+      }
+    }
+  },
+  "uc-ai-content-ops-launch": {
+    "title": "AI-sisältöoperaatioiden käynnistys",
+    "subtitle": "Geneerisistä AI-teksteistä sisältökoneeksi brand voicella 2 viikossa",
+    "totalTime": "6 шагов",
+    "whatItIs": "Vaiheittainen skenaario, joka muuttaa tiimin hajanaisen AI:n käytön toimivaksi sisältöputkeksi tunnistettavalla brand voicella. Ei \"AI kirjoittaa nopeammin\" vaan \"AI kirjoittaa kuten me\" — systemaattisesti, laatutarkistuksin ja tiimille levityksin.",
+    "approach": "Skenaarion ydin on brand voice. Ensin vangitset brändin äänen ja mallipohjat (valmistelu), sitten rakennat kaksi keskeistä putken vaihetta (brief→luonnos ja review→muokkaus), ja vasta sitten skaalaat tiimille. Ilman voice-työtä putki tuottaa vain geneerisiä tekstejä nopeammin — siksi voice-setup on ~30% työstä, eikä sitä saa ohittaa.",
+    "outcomes": [
+      "Ymmärrät, milloin skenaario sopii ja minkä konkreettisen tuloksen se tuottaa (time-to-publish, konsistenssi, volyymi)",
+      "Dokumentoitu brand voice uudelleenkäytettävänä dokumenttina ja system promptina",
+      "Toimiva putki: brief → luonnos → review → julkaisu selkein roolein joka vaiheessa",
+      "Laatu- ja sävytarkistus, joka erottaa \"kuulostaa meiltä\" -tekstin \"kuulostaa AI:lta\" -tekstistä",
+      "Käyttöönoton tarkistuslista, jolla tiimi skaalaa prosessin laatua menettämättä"
+    ],
+    "applyIn": [
+      {
+        "title": "Markkinointitiimi epäjohdonmukaisella AI:lla",
+        "description": "Tiimi käyttää jo AI:ta ad-hoc, mutta tekstit kuulostavat erilaisilta. Skenaario tuo kaikki yhteen ääneen ja ennustettavaan laatuun."
+      },
+      {
+        "title": "Blogi ja säännöllinen sisältö >10 kpl/kuukausi",
+        "description": "Kun volyymi kasvaa, jokaisen luonnoksen käsin editointi ei skaalaudu. Voicella varustettu putki leikkaa time-to-publishia rajusti."
+      },
+      {
+        "title": "Uuden sisältösuunnan käynnistys",
+        "description": "Uusi tuote tai osio tarvitsee äänen nollasta. Skenaario antaa rungon: ääni, mallipohjat, review — ennen kuin kaaos kertyy."
+      }
+    ],
+    "pitfalls": [
+      "Putken rakentaminen ilman voice-työtä — saat geneerisiä tekstejä nopeammin, mutta silti geneerisiä",
+      "Brand voicen kohtelu \"parina adjektiivina\" konkreettisten attribuuttien ja \"näin / ei näin\" -esimerkkien sijaan",
+      "Sävytarkistuksen ohittaminen — nopeus kasvaa, mutta AI-tyyli vuotaa julkaisuihin",
+      "Levitys koko tiimille kerralla ilman testikappaleita ja voice-promptin iteraatiota",
+      "Tulosten mittaamatta jättäminen — ilman time-to-publishia ja konsistenssia et tiedä parantuiko mikään"
+    ],
+    "exercises": [
+      {
+        "question": "Kokoa brand voice -dokumentti: 5 ääniattribuuttia, kullekin \"näin / ei näin\" -pari brändisi oikeilla fraaseilla.",
+        "hint": "Poimi sanamuodot parhaista julkaistuista teksteistä, älä päästäsi. Ääni on se, mikä jo toimii."
+      },
+      {
+        "question": "Aja yksi kappale koko putken läpi (brief→luonnos→review→julkaisu) ja mittaa jokaisen vaiheen aika.",
+        "hint": "Ennen-mittaus on lähtötasosi. Ilman sitä et voi todistaa, että time-to-publish laski."
+      },
+      {
+        "question": "Anna kollegalle 3 tekstiä: 2 julkaistuasi ja 1 AI-luonnos ilman voicea. Erottaako hän kumpi on kumpi?",
+        "hint": "Jos AI-teksti on helppo tunnistaa, ääni on yhä heikko — lisää konkretiaa system promptiin."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Päätä, milloin skenaario tarvitaan, ja lukitse tavoitetulos",
+        "time": "",
+        "why": "Skenaario kannattaa vain tietyissä olosuhteissa. Putken käynnistäminen \"varmuuden vuoksi\" ilman volyymia ja editorin buy-inia tuhlaa aikaa eikä tuota mitattavaa hyötyä.",
+        "instructions": [
+          "Tarkista triggerit: tiimi käyttää jo AI:ta ad-hoc, laatu epäjohdonmukainen, volyymi >10 kpl/kuukausi, editorin/content leadin buy-in olemassa.",
+          "Kirjaa lähtötason mittarit: nykyinen aika luonnoksesta julkaisuun, brand voicen mukaisten kappaleiden osuus, kuukausivolyymi.",
+          "Muotoile tavoitetulos: esim. time-to-publish 2 päivää→4h, brand-konsistenssi 60%→90%, volyymi +200%.",
+          "Jos edes yksi triggeri puuttuu (ei volyymia tai ei buy-inia) — lykkää skenaariota, muuten putki ei jää käyttöön."
+        ],
+        "validate": "Sinulla on 3 lähtötason lukua ja 3 tavoitelukua — jotain mihin verrata 2 viikon kuluttua.",
+        "tip": "Tämä skenaario on polku Foundationista Transformationiin. Jos perus-prompting vielä horjuu, aloita [[node:prompting|briefien muotoilusta]]."
+      },
+      "s2": {
+        "title": "Valmistelu: brand voice ja mallipohjat",
+        "time": "",
+        "why": "Brand voice on koko skenaarion ydin (noin 30% työstä). Ilman eksplisiittisesti kuvattua voicea mikä tahansa putki tuottaa geneerisiä tekstejä, vain nopeammin.",
+        "instructions": [
+          "Auditoi olemassa oleva sisältö: valitse 5-10 parasta kappaletta ja kirjaa ääniattribuutit (sävy, sanasto, lauseiden pituus, mitä brändi ei koskaan sano).",
+          "Vangitse brand voice [[node:b-system|system promptina]] ja peilaa se profiilitason [[node:instructions|custom instructions]] -asetuksiin arkichatteja varten.",
+          "Luo [[node:projects|\"Blog\"-Project]] ja laita siihen voice-tiedostot, \"näin / ei näin\" -esimerkit ja brief-mallipohjat.",
+          "Lisää tiimin workspaceen [[node:cc-md|CLAUDE.md]] voice-säännöillä, jos työskentelet Claude Codessa."
+        ],
+        "validate": "Sinulla on voice-dokumentti + Project voice-tiedostoilla; testifraasilla Claude vastaa oikealla sävyllä ilman pitkää briiffausta.",
+        "tip": "Ääniattribuutti ilman \"näin / ei näin\" -esimerkkiä on hyödytön. Claude oppii kontrastista, ei adjektiiveista."
+      },
+      "s3": {
+        "title": "Keskeinen vaihe 1: brief → luonnos",
+        "time": "",
+        "why": "Tämä on putken sisääntulo. Luonnoksen laadun määrää 80-prosenttisesti briefin laatu — heikkoa sisääntuloa ei pelasta mikään editointi.",
+        "instructions": [
+          "Lukitse brief-mallipohja: aihe, tavoite, yleisö, ydinkohdat, formaatti, pituus, mitä EI kirjoiteta.",
+          "Generoi luonnos \"Blog\"-Projectin sisällä, jotta voice-tiedostot vedetään mukaan automaattisesti.",
+          "Aja 3-5 testikappaletta ja korjaa voice-promptia iteratiivisesti siellä, missä Claude lipsuu sävystä.",
+          "Lukitse lopullinen luonnos-prompt osaksi Projectia — se on uudelleenkäytettävä omaisuus."
+        ],
+        "validate": "Uudella briefillä luonnos tulee brand voicella minimaalisin muokkauksin ilman käsin tehtyä uudelleenbriiffausta.",
+        "tip": "Jos luonnokset vaihtelevat laadultaan, ongelma on briefissä, ei Claudessa. Standardoi sisääntulo ensin."
+      },
+      "s4": {
+        "title": "Keskeinen vaihe 2: review → muokkaus",
+        "time": "",
+        "why": "Tämä on putken ulostulon kontrolli. Ilman eksplisiittistä review-vaihetta AI-tyyli vuotaa julkaisuihin ja koko nopeushyöty menee hukkaan.",
+        "instructions": [
+          "Kuvaa review-vaihe osana sekventiaalista putkea — katso [[node:sys-linear-chain|lineaarinen ketju]] (brief → luonnos → review → julkaisu).",
+          "Anna Claudelle editorin rooli: tarkista brand voicen sopivuus, faktat, rakenne ja palauta lista muokkauksista, ei hiljaista uudelleenkirjoitusta.",
+          "Ota käyttöön sävyn tarkistuslista: \"kuulostaako meiltä?\", ei kliseitä tai AI-merkkejä, kielletyt sanamuodot kunnioitettu.",
+          "Aja 2-3 kappaletta luonnos→review-parin läpi ja vertaa tulosta voice-dokumenttiin."
+        ],
+        "validate": "Review-vaiheen jälkeen kappale läpäisee sävyn tarkistuslistan ja ihmiseditorin muokkaukset ovat minimaalisia.",
+        "tip": "Review ≠ uudelleengenerointi. Pyydä lista muokkauksista perusteluineen — niin näet, missä ääni rikkoutuu systemaattisesti."
+      },
+      "s5": {
+        "title": "Laadun ja sävyn tarkistus mittakaavassa",
+        "time": "",
+        "why": "Yksi hyvä artikkeli on tuuria. Ennen putken luovuttamista tiimille on varmistettava, että laatu ja sävy ovat vakaat kappalesarjassa.",
+        "instructions": [
+          "Rakenna 5 vaihtelevan kappaleen setti (eri aiheet/formaatit) ja aja koko putki päästä päähän.",
+          "Arvioi jokainen sävyn tarkistuslistaa vasten ja vertaa lähtötason mittareihin vaiheesta 1.",
+          "Sokkotesti: anna kollegalle sekoitus julkaistuja ja AI-kappaleita — jos AI-kappaleet tunnistetaan, vahvista voice-promptia.",
+          "Kirjaa tyypilliset sävyvirheet ja lisää vastaesimerkkejä Projectiin ja voice-dokumenttiin."
+        ],
+        "validate": "5 eri kappaleessa konsistenssi pysyy tavoitetasolla; sokkotesti ei paljasta AI-tekstejä.",
+        "tip": "Mittaa, älä \"aisti\". Konsistenssi 90% on konkreettinen osuus tarkistuslistan läpäisseistä kappaleista, ei vaikutelma."
+      },
+      "s6": {
+        "title": "Käyttöönotto, skaalaus ja tiimin luovutuksen tarkistuslista",
+        "time": "",
+        "why": "Skenaario tuottaa arvoa vain, kun tiimi käyttää sitä, ei yksittäinen henkilö. Viimeinen vaihe muuttaa työn toistettavaksi prosessiksi.",
+        "instructions": [
+          "Kuvaa valmis prosessi [[node:mk-content-ops|sisältöoperaatioina]] roolein ja mittarein; erilliseen syvään voice-viritykseen käytä [[node:mk-brand-voice|brand voice tuningia]].",
+          "Jaa Project, brief-mallipohjat ja voice-dokumentti koko tiimille; nimeä voice-omistaja, joka pitää sen ajan tasalla.",
+          "Tee käyttöönotto: lyhyt läpikäynti + 1-2 yhteistä ajoa, jotta tiimi voi toistaa sen ilman sinua.",
+          "Kytke mittaus päälle: seuraa time-to-publishia, konsistenssia ja volyymia viikoittain ensimmäiset 2 viikkoa.",
+          "Käy läpi luovutuksen tarkistuslista: voice-dokumentti ajan tasalla, Project jaettu, putken vaiheet dokumentoitu, mittarit seurannassa, omistaja nimetty."
+        ],
+        "validate": "Vähintään yksi kollega ajaa kappaleen koko putken läpi itsenäisesti, ja viikkomittarit vahvistavat hyödyt.",
+        "tip": "Nimeä voice-omistaja. Ilman häntä voice-dokumentti vanhenee kuukaudessa ja putki valuu hiljaa takaisin geneeriseksi."
+      }
+    }
+  },
+  "uc-ai-support-tier1": {
+    "title": "AI Tier-1 -tuen käynnistys",
+    "subtitle": "Tilasta «kaikki käsin» tilaan «AI sulkee 40% ticketeistä» 4 viikossa",
+    "totalTime": "6 askelta",
+    "whatItIs": "Ohjekurssi siitä, miten AI-ensilinjatuki (Tier-1 — yksinkertaiset, toistuvat kysymykset) otetaan käyttöön askel askeleelta oikeassa tiimissä. Tämä ei ole «osta botti» vaan strukturoitu polku: tietokanta ensin, sitten AI, sitten laadunvalvonta ja eskalointi ihmiselle. Yksi supportin korkeimman ROI:n AI-projekteista.",
+    "approach": "Askelten järjestys on tiukka ja tarkoituksellinen: tietokanta (KB) tulee ensin, koska AI vastaa vain niin hyvin kuin KB, josta se hakee (RAG). Ensin valmistellaan maaperä, sitten kootaan AI-skenaario, sitten upotetaan laadunvalvonta ja turvallinen eskalointi, ja vasta sitten otetaan käyttöön livetrafikkiin pilotin ja mittareiden kautta. Katso malli kohdista [[node:ai-native-customer-support|AI-native asiakastuki]] ja [[node:af-rag-basics|RAGin perusteet]].",
+    "outcomes": [
+      "Toimiva AI Tier-1, jonka deflection (AI:n ilman ihmistä sulkemien tikettien osuus) on noin 40%",
+      "AI-tikettien mediaani vastausaika putoaa 4 tunnista 2 minuuttiin",
+      "CSAT (asiakastyytyväisyysmittari, 1-5) ei laske baselineen verrattuna",
+      "Selkeät rajat: mihin AI vastaa itse ja minkä se eskaloi ihmiselle",
+      "Toistettava prosessi laajentaa 1 ticket-kategoriasta 3-5 kategoriaan"
+    ],
+    "applyIn": [
+      {
+        "title": "Suuri määrä tyyppikysymyksiä",
+        "description": "Tier-1 tuottaa yli 100 tikettiä viikossa, ja suurin osa on toistuvia kysymyksiä, joiden vastaukset löytyvät tietokannasta."
+      },
+      {
+        "title": "Jotain mihin verrata",
+        "description": "Baseline CSAT ja vastausaika «ennen AI:ta» on olemassa, muuten et voi todistaa, että käyttöönotto auttoi eikä haitannut."
+      },
+      {
+        "title": "Valmius investoida 3-4 viikkoa",
+        "description": "Buy-in CS-leadiltä ja product-tiimiltä on olemassa, ja 3-4 viikkoa voidaan varata KB:n valmisteluun, setuppiin ja pilottiin."
+      }
+    ],
+    "pitfalls": [
+      "Käynnistää AI Tier-1 ilman KB:n valmistelua — KB-työ on 50% työstä, ja ilman sitä AI vastaa generic tai väärin",
+      "Käyttää vanhentunutta tai huonosti strukturoitua KB:tä — AI hakee roskaa ja palauttaa itsevarmasti väärän vastauksen",
+      "Ohittaa eskaloinnin setupin — AI alkaa «kuristaa» monimutkaisia tikettejä sen sijaan että antaisi ne ihmiselle, ja CSAT romahtaa",
+      "Ottaa käyttöön kaikki kategoriat kerralla yhden kategorian pilotin sijaan — et näe, missä laatu pettää",
+      "Jättää laadunvalvonta (satunnaisotoksen review) pois — vastausten heikkeneminen jää huomaamatta valitusaaltoon asti"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on 250 Tier-1-tikettiä viikossa, mutta tietokanta on kaksi vuotta vanha ja artikkelit kirjoittivat eri ihmiset ilman yhtenäistä rakennetta. Mistä aloitat — botin setupista vai KB:stä?",
+        "hint": "Muista järjestyssääntö: AI vastaa vain niin hyvin kuin KB. Mitä tapahtuu retrievalille, jos artikkelien rakenne on huono?"
+      },
+      {
+        "question": "Pilotti näyttää 40% deflectionin, mutta AI-tikettien CSAT on 0,4 alle baselinen. Mitä tarkistat ensin?",
+        "hint": "Mieti AI:n rajoja ja eskalointia: ehkä AI ottaa hoitaakseen tikettejä, jotka sen olisi pitänyt antaa ihmiselle."
+      },
+      {
+        "question": "Minkä yhden mittarin näytät CS-leadille todistaaksesi pilotin arvon ensimmäisellä viikolla?",
+        "hint": "Mittarin pitää heijastaa säästöä (deflection) muttei peittää laadun laskua — siksi sitä luetaan aina CSATin rinnalla."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Ymmärrä, milloin skenaario sopii ja miltä onnistuminen näyttää",
+        "time": "",
+        "why": "Ilman selkeää käynnistyskriteeriä ja mitattavaa tavoitetta projektista tulee «kokeillaan bottia» ja se kuolee hiljaa. Vahvista ensin, että sinulla on todella Tier-1-tehtävä, ja määritä mikä lasketaan onnistumiseksi.",
+        "instructions": [
+          "Tarkista volyymikynnys: Tier-1 tuottaa yli 100 tikettiä viikossa — muuten käsityö on halvempaa kuin automatisointi",
+          "Kirjaa baseline: nykyinen CSAT ja mediaani vastausaika «ennen AI:ta» — tämä on viitepiste",
+          "Muotoile tavoite numeroina: 40% deflection, vastausaika 4h→2min, CSAT ei baselinea alempana",
+          "Hanki buy-in CS-leadiltä ja product-tiimiltä (product tarvitaan KB-pääsyä varten)"
+        ],
+        "validate": "Sinulla on yksi sivu: tikettivolyymi, baseline-mittarit, tavoiteluvut ja molempien tiimien suostumus.",
+        "tip": "Jos baseline-mittareita ei ole — kerää ne viikon ajan ennen aloitusta. Ilman viitepistettä et voi todistaa vaikutusta."
+      },
+      "s2": {
+        "title": "Valmistele tietokanta ja aseta AI:n rajat",
+        "time": "",
+        "why": "Tämä on 50% kaikesta työstä. AI hakee vastaukset KB:stä (RAG-mekanismi), joten huono KB tarkoittaa itsevarmasti vääriä vastauksia. Tässä myös päätetään, mihin kysymyksiin AI vastaa itse ja mitkä menevät ihmiselle.",
+        "instructions": [
+          "Auditoi olemassa olevat KB-artikkelit: poista vanhentuneet, yhdistä duplikaatit, tuo ne yhtenäiseen rakenteeseen",
+          "Pilko pitkät artikkelit atomisiin paloihin — niin retrieval hakee tarkan vastauksen, ei «koko artikkelia kaikesta»",
+          "Hyödyntäen [[node:af-rag-basics|RAGin perusteet]], varmista että KB on retrieval-valmis: selkeät otsikot, faktoja ei markkinointia",
+          "Määritä rajat: lista kategorioista, joihin AI vastaa itse, ja stop-aiheet (laskutus, juridiikka, valitukset), jotka menevät aina ihmiselle"
+        ],
+        "validate": "KB on siivottu ja strukturoitu, ja on selkeä lista «AI vastaa» / «vain ihminen».",
+        "tip": "Ota 20 oikeaa tuoretta tikettiä ja tarkista käsin, antaako KB oikean vastauksen. Jos ei, AI ei myöskään anna."
+      },
+      "s3": {
+        "title": "Kokoa AI:n tikettiin vastaamisen skenaario",
+        "time": "",
+        "why": "Avainvaihe: vastaava AI syntyy tässä. System prompt asettaa sävyn, formaatin ja säännöt, ja kytketty KB tarjoaa faktat. Ilman huolellista promptia AI vastaa generic ja off-brand.",
+        "instructions": [
+          "Kirjoita support-botin system prompt: rooli, äänensävy, vastausformaatti, sääntö «jos et tiedä — eskaloi, älä keksi»",
+          "Luo erillinen työtila (Project) ja kytke siihen vaiheen 2 siivottu KB",
+          "Vaadi promptissa lähdeviittaus KB:stä — niin vastaus on todennettavissa eikä hallusinoi",
+          "Aja 15-20 tyyppikysymystä ja hio promptia, kunnes vastaukset ovat tarkkoja ja brändin mukaisia"
+        ],
+        "validate": "Tyyppikysymyksissä AI vastaa oikein, oikealla sävyllä, KB-viittauksella, ja stop-aiheissa se ehdottaa eskalointia itse.",
+        "tip": "Sääntö «parempi rehellisesti sanoa en tiedä ja eskaloida kuin keksiä» on tärkeämpi kuin kaunis sävy — se suojaa CSATia."
+      },
+      "s4": {
+        "title": "Upota laadunvalvonta ja eskalointi ihmiselle",
+        "time": "",
+        "why": "AI ilman turvallista luovutusta ihmiselle on vaarallinen: se «kuristaa» monimutkaisia tikettejä ja vetää tyytyväisyyttä alas. Ja ilman otosreviewia vastausten heikkeneminen pysyy näkymättömänä valitusaaltoon asti.",
+        "instructions": [
+          "Aseta eskaloinnin routing: millä signaaleilla tiketti menee ihmiselle (stop-aihe, matala varmuus, asiakkaan suora pyyntö)",
+          "Tee luovutus saumattomaksi: ihminen saa tiketin koko keskustelukontekstilla, ei alusta",
+          "Käynnistä satunnaisotoksen review: satunnainen valikoima AI-vastauksia tarkistetaan ihmisen toimesta",
+          "Luo yksinkertainen vastauksen arviointi-checklist: tarkkuus, sävy, lähdeviittaus, eskaloinnin osuvuus"
+        ],
+        "validate": "Jokainen epävarma tiketti menee ihmiselle kontekstin kanssa, ja osa AI-vastauksista tarkistetaan säännöllisesti checklistiä vasten.",
+        "tip": "Käynnistyksessä aseta eskalointikynnys aggressiivisesti: parempi antaa ihmiselle liikaa kuin rikkoa luottamus väärällä vastauksella."
+      },
+      "s5": {
+        "title": "Pilotoi yhdellä kategorialla ja mittaa mittarit",
+        "time": "",
+        "why": "Kaiken käyttöönotto kerralla peittää sen, missä laatu pettää. Yhden kategorian pilotti antaa puhtaan signaalin: toimiiko KB + AI + eskalointi -ketju oikeassa trafiikissa?",
+        "instructions": [
+          "Valitse yksi suurivolyyminen, matalariskinen ticket-kategoria (esimerkiksi «miten nollata salasana»)",
+          "Käynnistä AI tällä kategorialla ja mittaa deflection ja CSAT joka päivä",
+          "Vertaa AI-tikettien CSATia baselineen — lasku on signaali korjata promptia tai rajoja, ei skaalata",
+          "Kerää epäonnistuneet caset reviewista ja palaa vaiheisiin 2-3 hiomaan KB:tä ja promptia"
+        ],
+        "validate": "Pilottikategoriassa deflection nousee kohti 40% samalla kun CSAT pysyy baselinessa.",
+        "tip": "Älä skaalaa ennen kuin CSAT on vakautunut: nouseva deflection laskevan CSATin rinnalla on tappio, ei onnistuminen."
+      },
+      "s6": {
+        "title": "Käyttöönotto, mittarit ja valmius-checklist",
+        "time": "",
+        "why": "Onnistuneen pilotin jälkeen pitää laajentaa kattavuutta laatua menettämättä ja lukita prosessi, jotta käyttöönotto on toistettava eikä kertaluonteinen urotyö.",
+        "instructions": [
+          "Laajenna AI 3-5 kategoriaan yksi kerrallaan, toistaen deflection- ja CSAT-mittauksen joka kerta",
+          "Lukitse dashboard kolmella mittarilla: deflection rate, mediaani vastausaika, CSAT vs baseline",
+          "Tee laaturewieusta säännöllinen rituaali (esimerkiksi viikoittainen otos), ei kertaluonteinen",
+          "Käy läpi valmius-checklist: KB ajantasalla, rajat asetettu, eskalointi toimii, mittarit dashboardilla, review kalenterissa"
+        ],
+        "validate": "AI sulkee tasaisesti ~40% Tier-1:stä useissa kategorioissa, mittarit näkyvät dashboardilla, ja prosessi on dokumentoitu ja toistettava.",
+        "tip": "Nimeä KB:n omistaja: ikääntyvä tietokanta on pääsyy AI-tuen hitaalle heikkenemiselle kuukausien päästä."
+      }
+    }
+  },
+  "uc-ai-discovery-launch": {
+    "title": "AI Discoveryn käynnistys tuotteessa",
+    "subtitle": "Manuaalisesta research:ista AI-powered discovery pipelineen 2 viikossa",
+    "totalTime": "6 шагов",
+    "whatItIs": "Vaiheittainen skenaario, joka muuttaa hajanaiset haastattelut ja palautteen toimivaksi AI-discovery pipelineksi. Järjestät research-repositorion, rakennat RAG-pohjaisen synteesin ja upotat sen tuoteprosessiin validoinnin kanssa. Tämä on sovellettu reitti [[node:use-cases|Use Cases]] -setistä, joka nojaa [[node:pd-discovery-research|Discovery Research]] -käytäntöön.",
+    "approach": "Etenemme periaatteella «ensin input, sitten synteesi, sitten prosessi». Ensin siivoamme datan (ilman strukturoitua inputia AI on hyödytön), sitten rakennamme kaksi keskeistä synteesivaihetta — teemojen uuttaminen ja päätelmien muotoilu — sitten tarkistamme päätelmät tutuilla haastatteluilla ja vasta sitten upotamme pipelinen tiimin säännölliseen työhön. Jokainen askel tuottaa todennettavan tuloksen, ei «asetusta asetuksen vuoksi».",
+    "outcomes": [
+      "Research-repository on järjestetty: kaikki haastattelut ja palaute yhdessä paikassa, AI:n saatavilla",
+      "Toimiva synteesi: datasta strukturoituihin teemoihin ≤2 tunnissa per aihe päivien manuaalisen työn sijaan",
+      "Research-kattavuus 100% — AI lukee koko aineiston, ei vain sitä 30%:a, jonka ehdit käsin",
+      "Päätelmät on todennettu ja varustettu lähdelinkeillä, niihin voi luottaa päätöksenteossa",
+      "Pipeline on upotettu tuoteprosessiin ja skaalautuu uuteen palautevirtaan ilman manuaalista synteesiä"
+    ],
+    "applyIn": [
+      {
+        "title": "Tuotetiimi, jolla on kertynyttä research:ia",
+        "description": "≥30 haastattelua tai ≥100 palaute-itemiä käsittelemättä — skenaario muuttaa arkiston päätelmien lähteeksi."
+      },
+      {
+        "title": "Hidas discovery → ship -sykli",
+        "description": "Kun datan synteesi on pullonkaula ja päätökset viivästyvät, pipeline lyhentää time-to-insightin tunteihin."
+      },
+      {
+        "title": "[[node:ai-native-product|AI-native-tuotteen]] rakentaminen",
+        "description": "Kun tiimi tekee AI:sta osan itse työtä eikä kertaluonteista kokeilua, discoverysta tulee ensimmäinen toistettava silmukka."
+      }
+    ],
+    "pitfalls": [
+      "Synteesin ajaminen ilman strukturoitua inputia: jos haastattelut ovat hajallaan Notionissa, Google Docsissa ja Slackissä, AI ei löydä niitä",
+      "Datan valmistelun aliarvioiminen — repositorion järjestäminen vie ~30% koko skenaariosta, eikä sitä voi ohittaa",
+      "Päätelmiin luottaminen ilman todennusta: synteesi ilman lähteiden tarkistusta tuottaa uskottavia mutta vääriä teemoja",
+      "Pysähtyminen haastatteluihin eikä pipelinen laajentaminen jatkuvaan palautteeseen — silloin järjestelmä vanhenee kuukaudessa",
+      "Pipelinen rakentaminen yksin eikä muiden PM:ien kouluttaminen — tieto jää yhdelle henkilölle eikä juurru"
+    ],
+    "exercises": [
+      {
+        "question": "Missä haastattelusi ja palautteesi ovat nyt, ja miksi AI ei löydä niitä nykyisessä muodossaan?",
+        "hint": "Listaa kaikki tallennuspaikat. Jos niitä on enemmän kuin yksi eikä yhtenäistä repositoriota ole — se on Day 1 -työtäsi."
+      },
+      {
+        "question": "Mistä tiedät, että AI:n päätelmä on oikea eikä uskottava keksintö?",
+        "hint": "Mieti lähdelinkkejä: jokaisen teeman pitäisi osoittaa tiettyihin haastattelusitaatteihin."
+      },
+      {
+        "question": "Mitä pipelinelle tapahtuu kuukaudessa, jos rakennat sen vain vanhoille haastatteluille?",
+        "hint": "Mieti uuden palautteen virtaa — tarvitaanko erillinen askel jatkuvalle datalle."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Ymmärrä milloin skenaariota tarvitaan ja lukitse tulos",
+        "time": "",
+        "why": "Skenaario maksaa itsensä takaisin vain todellisen datamäärän ja johdon tuen kanssa. Ilman sitä automatisoit tyhjyyttä.",
+        "instructions": [
+          "Tarkista sisäänpääsykynnys: ≥30 haastattelua tai ≥100 palaute-itemiä ilman strukturoitua käsittelyä",
+          "Varmista, että discovery → ship -sykli on todella hidas synteesin takia, ei muista syistä",
+          "Hanki buy-in Head of Productilta — ilman sitä pipeline ei juurru prosessiin",
+          "Lukitse tavoitemittarit: time-to-insight ≤2 tuntia per aihe, research-kattavuus 100%"
+        ],
+        "validate": "Sinulla on kirjallisesti muotoiltu skenaarion tavoite ja tuotejohtajan suostumus.",
+        "tip": "Jos dataa on kynnystä vähemmän, skenaario on ennenaikainen — kerää ensin research, muuten asetus ei maksa itseään takaisin."
+      },
+      "s2": {
+        "title": "Valmistele input: kokoa research yhteen repositorioon",
+        "time": "",
+        "why": "Ilman strukturoitua inputia AI ei löydä dataa — tärkein syy skenaarion epäonnistumiseen. Valmistelu vie ~30% kokonaisajasta.",
+        "instructions": [
+          "Kokoa kaikki haastattelut ja palaute Notionista, Google Docsista, Slackistä yhteen paikkaan",
+          "Luo [[node:projects|Project]] «Discovery Workspace» ja lataa research-tiedostot sinne",
+          "Yhtenäistä tiedostot: selkeät nimet, päivämäärä, lähde",
+          "Rakenna RAG-perusta ([[node:af-rag-basics|RAG basics]]), jotta AI voi hakea koko aineistosta"
+        ],
+        "validate": "Kaikki research-materiaalit ovat yhdessä repositoriossa ja haettavissa AI:n kautta.",
+        "tip": "Älä yritä käsitellä koko backlogia kerralla — 5-10 haastattelua riittää virheenkorjaukseen."
+      },
+      "s3": {
+        "title": "Keskeinen synteesivaihe #1: teemojen uuttaminen",
+        "time": "",
+        "why": "Teemojen uuttaminen on discoveryn perusta. Teemojen laatu määrää, kuinka hyödyllisiä kaikki myöhemmät päätelmät ovat.",
+        "instructions": [
+          "Muotoile synthesis-prompt toistuvien teemojen uuttamiseen (perusta: [[node:prompting|Prompting]])",
+          "Aja se 5-10 testihaastattelulla repositoriosta",
+          "Vaadi, että jokainen teema viittaa tiettyihin lähteiden sitaatteihin",
+          "Vertaa tulosta siihen, mitä tiedät näistä haastatteluista käsin"
+        ],
+        "validate": "AI tuottaa strukturoidun teemalistan lähdelinkkeineen, ja teemat ovat tunnistettavia.",
+        "tip": "Pyydä teemoja taajuudella ja esimerkeillä, älä «yleisiä päätelmiä» — niitä on helpompi todentaa."
+      },
+      "s4": {
+        "title": "Keskeinen synteesivaihe #2: yhdistä konteksti ja muotoile päätelmät",
+        "time": "",
+        "why": "Teemat eivät yksin ole päätelmiä. Konteksti pitää välittää oikein askelten välillä, jotta synteesi ei kadota lankaa.",
+        "instructions": [
+          "Rakenna kontekstin välitys synteesivaiheiden välille ([[node:sys-context-passing|Context Passing]])",
+          "Muunna teemat tuotepäätelmiksi: ongelma, taajuus, ketä koskee",
+          "Upota PM-validointiportit — kohdat, joissa ihminen tarkistaa päätelmän ennen käyttöä",
+          "Kokoa koko prosessi toistettavaksi [[node:pd-discovery-research|Discovery Research]] -workflowksi"
+        ],
+        "validate": "Teemoista syntyy selkeitä päätelmiä, joissa kerrotaan ongelma ja mittakaava, ja jotka läpäisevät PM-tarkistuksen.",
+        "tip": "Konteksti katoaa helposti suurissa aineistoissa — välitä askelten välillä vain tiivistetty ydin, ei raakatekstiä."
+      },
+      "s5": {
+        "title": "Todenna päätelmien luotettavuus",
+        "time": "",
+        "why": "AI tuottaa uskottavia mutta joskus vääriä teemoja. Ilman todennusta tiimi päättää keksinnön perusteella.",
+        "instructions": [
+          "Ota 5-10 hyvin tuntemaasi haastattelua ja vertaa AI:n päätelmiä todellisuuteen",
+          "Varmista, että jokaista teemaa tukevat viittaukset tiettyihin sitaatteihin",
+          "Merkitse poikkeamat ja hio synthesis-prompteja validointi-palautteen perusteella",
+          "Dokumentoi toimivat prompt-mallit, jotka tuottavat luotettavan tuloksen"
+        ],
+        "validate": "Päätelmät vastaavat manuaalista ymmärrystäsi tutuista haastatteluista, poikkeamat ratkaistu.",
+        "tip": "Jos AI «keksi» teeman ilman sitaatteja — se on signaali hioa promptia, ei sivuuttaa virhettä."
+      },
+      "s6": {
+        "title": "Upota prosessiin ja laajenna jatkuvaan palautteeseen",
+        "time": "",
+        "why": "Kertaluonteinen synteesi vanhenee. Skenaarion arvo on säännöllinen pipeline, joka on upotettu tiimin työhön.",
+        "instructions": [
+          "Skaalaa synteesi täydelle research-backlogille",
+          "Laajenna pipeline jatkuvaan palautteeseen ([[node:pd-feedback-synthesis|Feedback Synthesis]]), ei vain haastatteluihin",
+          "Kouluta muut PM:t ajamaan pipeline itse",
+          "Lukitse tarkistuslista: repository päivitetty → synteesi ajettu → päätelmät läpäisevät validoinnin → päätös"
+        ],
+        "validate": "Pipeline toimii säännöllisellä datavirralla, useat PM:t käyttävät sitä, ja prosessin tarkistuslista on olemassa.",
+        "tip": "Nimeä vastuuhenkilö repositorion ylläpidolle — ilman tuoretta dataa pipeline menettää arvonsa nopeasti."
+      }
+    }
+  },
+  "uc-ai-transformation-roadmap": {
+    "title": "Enterprise AI Transformation Roadmap",
+    "subtitle": "Miten rakentaa roadmap, joka vie yhtiön ad-hoc-piloteista AI-native-operaatioihin 12 kuukaudessa",
+    "totalTime": "6 шагов",
+    "whatItIs": "Tämä on korkeimman tason skenaario [[node:use-cases|Use Cases -katalogissa]] — CEO:lle, CIO:lle ja Head of AI:lle. Roadmap kuvaa yhtiön täyden polun «teemme AI-pilotteja ad-hoc» -tilasta «AI-native company-wide operations» -tilaan: enterprise-strategia → taktiset osastokohtaiset roll-outit → org-wide change governancella ja ROI-mittauksella. Aikajänne: 6-12 kuukauden työ.",
+    "approach": "Roadmapia ei rakenneta ominaisuuslistana vaan vaiheiden sarjana. Ensin päätät, tarvitaanko transformaatiota lainkaan ja mikä on tavoitetila, sitten arvioit rehellisesti organisaation valmiuden. Seuraavaksi tulee aloitteiden priorisointi (mitkä suunnat ja missä järjestyksessä), pilottien käynnistäminen nopeilla voitoilla, governancen ja riskienhallinnan rakentaminen, ja vasta sitten skaalaus koko yhtiöön. Keskeinen periaate: suunnat käynnistetään peräkkäin (yksi per neljännes), ei kaikki kerralla.",
+    "outcomes": [
+      "12 kuukauden roadmap-asiakirja neljänneksittäin jaoteltuna ja selkeillä porteilla vaiheiden välillä",
+      "Priorisoitu lista taktisista suunnista perusteluineen käynnistysjärjestykselle",
+      "Governance-viitekehys ja riskirekisteri paikallaan ennen skaalauksen alkua, ei vasta incidentin jälkeen",
+      "Mittaristo ja tavoite-ROI sovittuna executive-tiimin kanssa ennen ensimmäistä pilottia",
+      "Skaalausvalmiuden tarkistuslista: mitä pitää olla valmiina ennen laajentumista uuteen suuntaan"
+    ],
+    "applyIn": [
+      {
+        "title": "Hallitus ja executive-tiimi",
+        "description": "Roadmapista tulee yksi asiakirja, jossa hallitus näkee minne raha menee, odotetun ROI:n ja mitkä riskit ovat hallinnassa."
+      },
+      {
+        "title": "Center of Excellence (CoE)",
+        "description": "3-5 hengen tiimi käyttää roadmapia operatiivisena suunnitelmana: mitä käynnistetään tällä neljänneksellä, mitä mitataan, mitä siirretään seuraavaan."
+      },
+      {
+        "title": "Osastopäälliköt",
+        "description": "Jokainen suunnan omistaja näkee, milloin hänen osastonsa astuu transformaatioon ja mitä nopeita voittoja ensimmäiseltä pilotilta odotetaan."
+      }
+    ],
+    "pitfalls": [
+      "Käynnistää kaikki 4 taktista suuntaa rinnakkain Q1:ssä — recept kaaokselle ja tiimin burnoutille",
+      "Aloittaa pilotit ilman enterprise-strategiaa ja governancea — incidentit pysäyttävät myöhemmin koko ohjelman",
+      "Valita ensimmäinen suunta koska se on «trendikäs» eikä ROI:n ja datan valmiuden perusteella",
+      "Jättää mittarit kiinnittämättä ennen käynnistystä — puolen vuoden päästä ei ole mitään, millä todistaa vaikutus hallitukselle",
+      "Olettaa että Stage 4 (täysi AI-native-kypsyys) on saavutettavissa 12 kuukaudessa — realistisesti se on Stage 1→3, ja Stage 4 vielä 12-18 kuukautta"
+    ],
+    "exercises": [
+      {
+        "question": "Yhtiösi käynnistää AI-transformaation. Sinulla on executive buy-in ja 18 kuukauden budjetti. Mistä aloitat Q1:ssä — strategiasta ja CoE:sta vai suoraan kahdesta pilotista?",
+        "hint": "Muista vaihelogiikka: pilotit ilman strategiaa ja governancea ovat alttiita ensimmäiselle incidentille. Q1 on fundamentti (strategia, CoE, governance) plus ensimmäisten suuntien valinta — ei niiden kaikkien käynnistäminen."
+      },
+      {
+        "question": "Sinun pitää valita ensimmäinen taktinen suunta pilotille. Tier-1-tuki antaa nopean ROI:n, kun taas markkinointi antaa strategisen vaikutuksen. Miten päätät?",
+        "hint": "Roadmapissa otetaan yleensä ensin suunta, jolla on korkein ja nopein ROI (usein Support tier-1), jotta saadaan nopea voitto joka rahoittaa seuraavat vaiheet. Strategiset suunnat tulevat toisina."
+      },
+      {
+        "question": "Puolen vuoden päästä hallitus kysyy, mitä transformaatio tuotti. Mitä sinun olisi pitänyt valmistella jo alussa, jotta voit vastata numeroilla?",
+        "hint": "Mittarit ja tavoite-ROI kiinnitetään ENNEN ensimmäistä pilottia. Ilman baseline-mittauksia et voi näyttää kasvua — tämä rakennetaan governance/mittaus-vaiheeseen, ei jälkikäteen."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Kiinnitä, milloin roadmap tarvitaan ja mikä on tavoitetila",
+        "time": "",
+        "why": "Roadmap on järkevä vain kun yhtiö sitoutuu transformaatioon strategisesti, ei ajamalla yksittäisiä pilotteja. Ilman selkeää tavoitetta ja executive buy-inia mikä tahansa suunnitelma hajoaa puolimatkassa.",
+        "instructions": [
+          "Tarkista esiehdot: onko executive buy-in ja resurssisitoumus ($M+ budjetti) 12-24 kuukaudeksi",
+          "Muotoile tavoitetila: esim. «yhtiö Stage 3 AI-native operations:ssa 12 kuukaudessa»",
+          "Määritä ylätason tavoitemittarit: taktisten suuntien määrä, dokumentoitu ROI, AI-osaavan tiimin osuus",
+          "Tee selväksi että tämä on Stage 1→3 -polku 12 kuukaudessa, ja Stage 4 seuraavat 12-18 kuukautta (hallituksen odotusten hallinta)"
+        ],
+        "validate": "Sinulla on yhden sivun kuvaus roadmapin tavoitteesta mitattavalla tavoitetilalla ja vahvistetulla executive buy-inilla.",
+        "tip": "Jos executive buy-inia tai 12+ kuukauden budjettia ei ole — tämä ei ole roadmap vaan yksittäinen pilotti. Älä käynnistä transformaatiota ilman sitoumusta ylhäältä."
+      },
+      "s2": {
+        "title": "Tee organisaation valmiusauditointi",
+        "time": "",
+        "why": "Aloitteita ei voi priorisoida tietämättä lähtöpistettä. Auditointi näyttää millä stagella yhtiö on ja missä pullonkaulat ovat — data, taidot, infrastruktuuri.",
+        "instructions": [
+          "Arvioi nykyinen kypsyysstage: ad-hoc-pilotit, yksittäiset tiimit vai jo olemassa oleva systematiikka",
+          "Tarkista datan ja infrastruktuurin valmius jokaiselle mahdolliselle suunnalle",
+          "Arvioi tiimin AI-osaaminen ja missä upskilling tarvitaan (talent strategy)",
+          "Kirjaa CoE:n, governancen ja change-management-prosessien olemassaolo tai puute"
+        ],
+        "validate": "Sinulla on valmiuskartta: nykyinen stage, vahvat ja heikot vyöhykkeet datan, taitojen ja prosessien osalta.",
+        "tip": "Rehellisyys voittaa optimismin. Liioiteltu valmiusarvio johtaa suuntiin, jotka epäonnistuvat huonon datan takia."
+      },
+      "s3": {
+        "title": "Priorisoi taktiset aloitteet ja aseta käynnistysjärjestys",
+        "time": "",
+        "why": "Transformaation päävirhe on käynnistää kaikki kerralla. Priorisointi ROI:n ja valmiuden mukaan asettaa järjestyksen, jossa jokainen edellinen suunta opettaa organisaatiota seuraavaan.",
+        "instructions": [
+          "Rakenna kandidaattisuuntien lista [[node:ai-native-enterprise|AI-native-yrityksestä]] (tuki, operaatiot, tuote, markkinointi)",
+          "Pisteytä jokainen kahdella akselilla: ROI:n koko ja nopeus, datan/tiimin valmius",
+          "Määrää järjestys: 1 suunta Q1:ssä, 2. Q2:ssa, 3. Q3:ssa, 4. Q4:ssä",
+          "Ota ensin nopeimman ROI:n suunta (usein Support tier-1) ja toisena strategisin (Product tai Marketing)"
+        ],
+        "validate": "Sinulla on järjestetty lista 4 suunnasta perusteluineen järjestykselle ROI:n ja valmiuden mukaan.",
+        "tip": "Jokainen edellinen suunta on oppitunti organisaatiolle. Peräkkäinen rollout ei ole varovaisuutta vaan kompetenssin kerryttämistä."
+      },
+      "s4": {
+        "title": "Käynnistä pilotit ja lukitse nopeat voitot",
+        "time": "",
+        "why": "Nopea voitto ensimmäisessä pilotissa todistaa arvon, rahoittaa seuraavat vaiheet ja luo momentumia koko yhtiön change-managementille.",
+        "instructions": [
+          "Rinnan [[node:en-transformation-strategy|enterprise-transformaatiostrategian]] fundamentin kanssa muodosta CoE-tiimi (3-5 henkilöä)",
+          "Käynnistä taktinen pilotti #1 korkeimman ROI:n suunnalla rajaten scopen kapeaan skenaarioon",
+          "Käynnistä pilotti #2 strategisella suunnalla, aloita change-ohjelma ja AI-upskilling-roll-out",
+          "Dokumentoi nopeat voitot rahassa/ajassa ja käytä niitä argumenttina seuraavalle vaiheelle"
+        ],
+        "validate": "Kaksi pilottia on käynnistetty ja on vähintään yksi dokumentoitu nopea voitto numeroineen.",
+        "tip": "Kavenna pilotin scopea aggressiivisesti. Tiukka skenaario selkeällä mittarilla tuottaa voiton nopeammin kuin «AI koko osastolle»."
+      },
+      "s5": {
+        "title": "Rakenna hallinta, riskit ja governance",
+        "time": "",
+        "why": "Ilman governancea ja riskirekisteriä ensimmäinen incident (vuoto, hallusinaatio, maine) pysäyttää koko ohjelman. Hallinnan pitää kulkea skaalauksen edellä, ei perässä.",
+        "instructions": [
+          "Toteuta governance-viitekehys: kuka tekee päätökset, mitkä AI-käyttöpolitiikat ovat pakollisia",
+          "Perusta muodollinen riskirekisteri: yksityisyys, turvallisuus, tulosten laatu, regulaatio",
+          "Aseta ROI-mittaus: baseline ennen pilottia ja säännöllinen mittaus ensimmäisten 6 kuukauden ajan",
+          "Anna CoE:n tehtäväksi levittää best practices org-laajuisesti, jotta suunnat eivät toista toistensa virheitä"
+        ],
+        "validate": "Governance-viitekehys, riskirekisteri ja ROI-mittausjärjestelmä kirjatulla baselinellä ovat toiminnassa.",
+        "tip": "Governance ei ole byrokratiaa vaan vakuutus. Yksi hallitsematon julkinen incident voi jäädyttää koko transformaatiobudjetin."
+      },
+      "s6": {
+        "title": "Suunnittele skaalaus ja läpäise tarkistuslista",
+        "time": "",
+        "why": "Skaalaus tarkoittaa uusien suuntien lisäämistä ja siirtymistä kypsyyteen. Valmiustarkistuslista varmistaa, että laajenet terveellä fundamentilla etkä monista kaaosta.",
+        "instructions": [
+          "Lisää suunnat #3 ja #4 peräkkäin nojaten edellisten neljännesten oppimisiin",
+          "Tee strategian päivitys: rakenna roadmap uudelleen todellisten tulosten perusteella",
+          "Valmistele vuosittainen hallitusraportti: ROI, uudet capabilityt, riskien status",
+          "Läpäise laajentumisen valmiustarkistuslista: onko ROI dokumentoitu, toimiiko governance, onko tiimi 80%+ koulutettu, onko avoimia kriittisiä riskejä"
+        ],
+        "validate": "Kaikki 4 suuntaa on käynnistetty, on vuosittainen hallitusraportti ja seuraavan kypsyysvaiheen valmiustarkistuslista on läpäisty.",
+        "tip": "Älä laajenna uuteen suuntaan ennen kuin edellinen on läpäissyt tarkistuslistan. Valmiusportin ohittaminen on pääsyy siihen, että transformaatiot junnaavat Stage 2:ssa."
+      }
+    }
+  },
+  "uc-ai-rag-launch": {
+    "title": "RAG-järjestelmän käynnistys",
+    "subtitle": "Tilasta «AI ei tunne dokumenttejamme» toimivaan pipelineen sitaateilla 6 askeleessa",
+    "totalTime": "6 askelta",
+    "whatItIs": "RAG (Retrieval-Augmented Generation) on malli, jossa LLM hakee tietopohjastasi relevantit fragmentit ennen vastaamista ja vastaa tiukasti niiden pohjalta [[node:cap-citations|citations]]-sitaateilla. Kurssi etenee päätöksestä «tarvitaanko RAG» tuotanto-pipelineen: korpuksen valmistelu, indeksointi, vastauksen kokoaminen, laadun arviointi ja tuotantoon vienti. Tämä on useimpien [[node:use-cases|use-cases]]-AI-projektien tekninen perusta.",
+    "approach": "Etenemme yksinkertaisesta luotettavaan, mutta EMME pysähdy Naive RAG:iin. Ensin kiinnitämme miksi RAG tarvitaan ja mitä mittaamme. Sitten rakennamme pipelinen kerroksittain: korpus → embeddings + vektoritietokanta → vastauksen kokoaminen sitaateilla → arviointi → tuotanto. Joka askeleella tarkistamme laadun oikeilla kysymyksillä, emme «silmämääräisesti». Tuotannon minimi on chunking overlapilla, hybridi-haku ja re-ranking — muuten käyttäjät näkevät «AI puhuu väärin».",
+    "outcomes": [
+      "Tiedät milloin RAG tarvitaan ja milloin pelkkä prompt tai fine-tuning riittää",
+      "Pipeline rakennettu: korpus → embeddings → vektoritietokanta → retrieval → vastaus sitaateilla",
+      "Jokainen vastaus on tuettu lähdelinkeillä (citation rate 100%)",
+      "On mitattava laatumittari: retrieval-relevanssi ja hallusinaatioiden taso",
+      "Järjestelmä viedään tuotantoon tarkistuslistan kautta: latenssi, monitorointi, korpuksen päivitys"
+    ],
+    "applyIn": [
+      {
+        "title": "Tuki ja sisäinen tietopohja",
+        "description": "AI vastaa henkilöstölle ja asiakkaille sääntöjenne ja tikettihistorian pohjalta, ei mallin yleistiedolla — linkillä tarkkaan dokumenttiin."
+      },
+      {
+        "title": "Dokumenttityö ja compliance",
+        "description": "Vastausten haku sopimuksista, politiikoista, säännöksistä. Sitaatit ovat kriittisiä: tarkastajan on nähtävä mistä fakta tulee."
+      },
+      {
+        "title": "Tuotedokumentaatio ja onboarding",
+        "description": "Käyttäjä kysyy luonnollisella kielellä, RAG hakee tarkan docs-fragmentin ja vastaa sen pohjalta sen sijaan että lukisi koko sivun."
+      }
+    ],
+    "pitfalls": [
+      "Naive RAG tuotannossa: query → vector → top-K → LLM antaa 50-60% tarkkuuden. Tarvitaan re-ranking, hybridi-haku, chunk overlap, metadata-suodatus",
+      "Huono chunking: liian suuret chunkit hämärtävät relevanssin, liian pienet menettävät kontekstin. Overlapin sivuuttaminen menettää merkityksen rajoilla",
+      "Ei laadun arviointia: «silmämääräinen» julkaisu ilman retrieval-relevanssin ja hallusinaatioiden mittaamista — järjestelmä hajoaa hiljaa",
+      "Vastaukset ilman sitaatteja: käyttäjä ei voi tarkistaa faktaa eikä luota järjestelmään; menetät RAG:n keskeisen edun paljaaseen LLM:ään nähden",
+      "Korpuksen päivityksen unohtaminen: indeksi vanhenee, RAG vastaa vanhojen dokumenttien pohjalta ja esittää vanhentuneet faktat totuutena"
+    ],
+    "exercises": [
+      {
+        "question": "Skenaariotasi varten: RAG, fine-tuning vai pelkkä prompt kontekstilla? Perustele valinta.",
+        "hint": "RAG — kun tieto muuttuu usein ja sitaatteja tarvitaan. Fine-tuning — kun tyyli/formaatti muuttuu, ei faktat. Prompt kontekstilla — kun dokumentteja on vähän ja ne mahtuvat ikkunaan."
+      },
+      {
+        "question": "Ota 10 oikeaa käyttäjäkysymystä ja määritä jokaiselle, mikä korpuksen fragmentti TÄYTYY päätyä vastaukseen. Tämä on retrieval-arvioinnin gold-setisi.",
+        "hint": "Ilman gold-kysymys-vastaus-settiä relevanssia ei voi mitata. Aloita 10-20 parilla — riittää ensimmäiseen laaduntarkistukseen."
+      },
+      {
+        "question": "Suunnittele chunking yhdelle dokumenttityypillesi: chunkin koko, overlap, mitkä metadata liittää.",
+        "hint": "Perusta se dokumentin rakenteeseen (kappaleet/osiot), ei sokeaan kiinteään merkkimäärään. Metadata (lähde, päivä, osio) tarvitaan suodatukseen ja sitaatteihin."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Päätä: tarvitaanko RAG ja mitä mittaat",
+        "time": "",
+        "why": "RAG on yleisin tuotantomalli, mutta ei universaali. Ilman selkeää «miksi» ja mittaria rakennat pipelinen, jota et voi arvioida etkä parantaa.",
+        "instructions": [
+          "Muotoile ongelma: missä LLM tarkalleen «ei tunne faktojamme» (dokumentit, KB, historia)",
+          "Tarkista vaihtoehdot: riittääkö prompt kontekstilla vai tarvitaanko fine-tuning — katso [[node:af-rag-basics|RAG:n perusteet]]",
+          "Kiinnitä tavoitemittarit: answer accuracy, citation rate, latenssi per kysely",
+          "Kuvaa baseline: nykyinen tarkkuus ilman RAG:ia (yleensä ~30%)",
+          "Määritä soveltamissuunta (Operations/Marketing/Support/Product/Enterprise)"
+        ],
+        "validate": "On yhden lauseen «miksi RAG» ja 3 mitattavaa mittaria tavoitearvoineen.",
+        "tip": "Jos tieto tuskin muuttuu ja mahtuu kontekstiin, RAG:ia ei ehkä tarvita — prompt riittää."
+      },
+      "s2": {
+        "title": "Valmistele korpus: dokumenttien chunking",
+        "time": "",
+        "why": "Retrieval-laatu rajoittuu chunkien laatuun. Huono chunking on koko järjestelmän tarkkuuden katto, jota mikään re-ranking ei korjaa.",
+        "instructions": [
+          "Kerää pilot-setti yhden tyypin dokumentteja (ei koko korpusta kerralla)",
+          "Valitse chunking-strategia: merkityslohkojen mukaan (kappaleet/osiot), ei sokeasti merkkien mukaan",
+          "Aseta chunk overlap, jottei merkitys katoa fragmenttien rajoilla",
+          "Liitä metadata jokaiseen chunkiin: lähde, päivä, osio — suodatusta ja sitaatteja varten",
+          "Puhdista melu: navigointi, alatunnisteet, duplikaatit"
+        ],
+        "validate": "Pilot-dokumentit on jaettu chunkeihin overlapilla ja metadatalla; 5-10 chunkin manuaalinen tarkistus näyttää eheän merkityksen.",
+        "tip": "Aloita pilot-datalla, ei koko korpuksella — huomaat chunking-ongelmat nopeammin ja korjaat halvemmalla."
+      },
+      "s3": {
+        "title": "Indeksointi: embeddings + vektoritietokanta",
+        "time": "",
+        "why": "Embeddings muuntavat chunkit vektoreiksi semanttista samankaltaisuushakua varten. Vektoritietokanta tallentaa ne ja mahdollistaa nopean retrievalin — pipelinen sydän.",
+        "instructions": [
+          "Valitse embedding-malli dokumenttiesi kielelle ja domainille sopivaksi",
+          "Valitse vektoritietokanta: pgvector / Pinecone / Weaviate mittakaavasi ja pinosi mukaan",
+          "Aja pilot-chunkit embeddingsin läpi ja lataa vektorit metadatoineen tietokantaan",
+          "Aseta hybridi-haku (keyword + semantic), ei pelkkää vektorihakua",
+          "Tarkista retrieval harjoituksen gold-kysymyksillä: päätyvätkö oikeat chunkit top-K:hon"
+        ],
+        "validate": "Gold-kysymyksillä oikea chunk päätyy johdonmukaisesti retrievalin top-K-tuloksiin.",
+        "tip": "Hybridi-haku kattaa puhtaan vektorin heikkouden tarkoissa termeissä, koodeissa ja nimissä — nostaa lähes aina relevanssia."
+      },
+      "s4": {
+        "title": "Kokoa vastaus sitaateilla",
+        "time": "",
+        "why": "Retrieval löysi fragmentit — mutta vastauksen on nojattava tiukasti niihin ja linkitettävä lähteeseen. Ilman [[node:cap-citations|citations]]-sitaatteja käyttäjä ei voi tarkistaa faktaa eikä luota järjestelmään.",
+        "instructions": [
+          "Kokoa pipeline [[node:sys-rag-architecture|RAG-arkkitehtuurin]] mukaan: vähintään Advanced RAG, ei Naive",
+          "Lisää re-ranking: järjestä top-K relevanssin mukaan ennen LLM:lle välittämistä",
+          "Välitä retrieved-konteksti LLM:lle ohjeella vastata VAIN sen pohjalta",
+          "Ota käyttöön [[node:cap-citations|citations]]: jokainen fakta linkitettynä metadatan lähteeseen",
+          "Lisää «en tiedä» -käyttäytyminen kun retrievalissa ei ole vastausta — keksimisen sijaan"
+        ],
+        "validate": "Testikysymyksillä vastaus nojaa retrieved-fragmentteihin, sisältää sitaatit ja sanoo rehellisesti «ei dataa» kun sitä ei ole.",
+        "tip": "Re-ranking on halvin laatuvipu: yksinkertainenkin re-ranker nostaa huomattavasti top-tulosten relevanssia."
+      },
+      "s5": {
+        "title": "Arvioi laatu: relevanssi ja hallusinaatiot",
+        "time": "",
+        "why": "«Silmämääräinen» julkaisu tarkoittaa, että järjestelmä hajoaa hiljaa. Tarvitaan numeroita: kuinka hyvin retrieval hakee oikean ja kuinka hyvin vastaukset pysyvät faktoissa.",
+        "instructions": [
+          "Aja harjoituksen gold-kysymys-vastaus-setti pipelinen läpi",
+          "Mittaa retrieval-relevanssi: päätyykö oikea chunk top-K:hon",
+          "Mittaa hallusinaatioiden taso: onko vastauksissa faktoja ilman lähdetukea",
+          "Tarkista citation rate: linkittääkö jokainen vastaus oikeaan fragmenttiin",
+          "Löydä heikot kohdat ja palaa kohdennetusti chunkingiin (s2) tai retrievaliin (s3)"
+        ],
+        "validate": "On mittaritaulukko gold-kysymyksistä; tarkkuus lähestyy tavoitetta (85%+), hallusinaatiot ovat harvinaisia.",
+        "tip": "Heikko laatu korjautuu useammin chunkingin ja retrievalin tasolla kuin LLM:ää vaihtamalla — tarkista ensin, löytyykö oikea chunk ylipäätään."
+      },
+      "s6": {
+        "title": "Tuotanto: vie tuotantoon ja tarkistuslista",
+        "time": "",
+        "why": "Pipeline muistikirjassa ja pipeline tuotannossa ovat eri asioita. Tuotanto vaatii latenssia, monitorointia ja säännöllistä korpuksen päivitystä, tai järjestelmä rappeutuu.",
+        "instructions": [
+          "Tarkista latenssi per kysely (<500ms tavoite) ja optimoi pullonkaulat",
+          "Aseta korpuksen päivitys: miten uudet dokumentit pääsevät indeksiin",
+          "Ota käyttöön monitorointi: kyselylokit, retrieval-laatu, «ei dataa» -osuus",
+          "Lisää käyttäjäpalaute epärelevanteista vastauksista",
+          "Käy läpi tarkistuslista: s1-mittarit saavutettu, sitaatit toimivat, korpus päivitettävissä"
+        ],
+        "validate": "Järjestelmä tuotannossa vastaa latenssitavoitteen rajoissa, korpus päivittyy, ja s1-mittarit on vahvistettu live-liikenteellä.",
+        "tip": "Rakenna korpuksen päivitys mukaan alusta asti — vanhentunut indeksi tarjoilee hiljaa vanhat faktat ajankohtaisina."
+      }
+    }
+  },
+  "uc-ai-pilot-to-production": {
+    "title": "AI-pilotin siirtäminen tuotantoon",
+    "subtitle": "«Pilotti toimii» -tilasta luotettavaan AI:hin tuotannossa: valmiuskriteerit, luotettavuus, evals, monitorointi, turvallisuus ja julkaisu rollback-suunnitelmalla",
+    "totalTime": "6 askelta",
+    "whatItIs": "Strukturoitu siirtymä onnistuneesta AI-pilotista tuotantojärjestelmäksi, jossa on laatuportit, monitorointi ja governance. Cross-layer-skenaario: järjestelmien laatu + enterprise-riskienhallinta + perustason turvallisuus. Se sulkee yleisimmän jumiutumiskohdan, jossa AI-projektit kuolevat: «pilotti toimi, mutta scale-up jumittui».",
+    "approach": "Emme rakenna pilottia uudelleen tyhjästä, vaan lisäämme puuttuvat tuotantokerrokset: muodollistamme valmiuskriteerit, lisäämme virheenkäsittelyn ja luotettavuuden, pystytämme objektiivisen laadunarvioinnin (evals), kytkemme monitoroinnin ja kustannushallinnan, käymme governance/pääsy-katselmuksen ja julkaisemme asteittain rollback-suunnitelman kanssa. Jokainen askel tuottaa todennettavan artefaktin — ilman sitä askel ei ole valmis.",
+    "outcomes": [
+      "Tuotantovalmis AI-järjestelmä 4-6 viikossa loputtoman pilotin «hiomisen» sijaan",
+      "0 high-severity-tapausta ensimmäisten 90 päivän aikana luotettavuuden ja rollback-suunnitelman ansiosta",
+      "Objektiivinen laadunarviointi (evals) sen sijaan että «meistä tuntuu että toimii»",
+      "Läpinäkyvä monitorointi ja kustannus: näet heikkenemisen ja kulut ennen kuin niistä tulee ongelma",
+      "Dokumentoitu governance-compliance: datan luokittelu, pääsyt ja riskit kirjattu ja hyväksytty"
+    ],
+    "applyIn": [
+      {
+        "title": "Asiakaspintainen AI-palvelu",
+        "description": "Osalle käyttäjistä pilotoitu chatbot tai assistentti julkaistaan koko yleisölle SLA:n, vastausten laadun monitoroinnin ja rollback-suunnitelman kanssa."
+      },
+      {
+        "title": "Sisäisten prosessien automaatio",
+        "description": "Yhdellä tiimillä toimivaksi todistettu AI-dokumenttien tai -pyyntöjen käsittely skaalataan koko yritykseen governance-datakatselmuksen ja kustannushallinnan kanssa."
+      },
+      {
+        "title": "AI tuotteessa, joka koskee oikeaa rahaa/brändiä",
+        "description": "Liikevaihtoon tai maineeseen vaikuttava sisällöntuotanto, suositukset tai päätökset siirretään tuotantoon evalsien, pääsyauditoinnin ja asteittaisen julkaisun kanssa."
+      }
+    ],
+    "pitfalls": [
+      "Governance-review:n ohittaminen «pilottihan toimi» -perusteella — tuotanto tuo accountabilityn, auditin ja compliancen, joita pilotilla ei ollut; ilman katselmusta se on tapaus odottamassa tapahtumista",
+      "«Toimii demossa» -tilan pitäminen valmiuskriteerinä — ilman objektiivisia evalseja ja laatukynnyksiä heikkeneminen huomataan vasta käyttäjien valituksista",
+      "Julkaisu suoraan 100 %:lle ilman rollback-suunnitelmaa — ensimmäinen vika osuu kaikkiin, eikä ole minne perääntyä",
+      "Kustannuksen sivuuttaminen kuukauden lopun laskuun asti — token- ja API-kulut kasvavat epälineaarisesti skaalassa",
+      "Promptien jättäminen «kelluviksi» ilman versiointia — et saa selville, mikä muutos rikkoi laadun tuotannossa"
+    ],
+    "exercises": [
+      {
+        "question": "Kirjoita 3-5 mitattavaa valmiuskriteeriä pilotillesi tuotantoon (ei «toimii», vaan numeroilla). Mitä mittaat ja mikä kynnys lasketaan läpipääsyksi?",
+        "hint": "Mieti oikeiden vastausten osuutta referenssijoukolla, p95-vastausaikaa, virheastetta ja kustannusta per pyyntö. Jokaisella kriteerillä tulee olla konkreettinen kynnysnumero."
+      },
+      {
+        "question": "Kuvaa julkaisusi rollback-suunnitelma: millä signaalilla perääntyt, kuinka nopeasti ja minne tarkalleen (pilottiin, manuaaliseen prosessiin, edelliseen versioon)?",
+        "hint": "Sido rollback-laukaisin monitorointimittareihin (virhepiikki, laadun pudotus, kustannusryöppy) ja varmista, että edellinen tila on säilytetty ja saavutettavissa minuuteissa."
+      },
+      {
+        "question": "Luettele AI-järjestelmäsi läpi kulkevat datatyypit ja luokittele ne herkkyyden mukaan. Missä tarvitaan pääsyrajoituksia tai governance-hyväksyntää?",
+        "hint": "Jaa data luokkiin julkinen / sisäinen / henkilökohtainen / luottamuksellinen. Henkilökohtaiselle ja luottamukselliselle tarkista DPA mallin vendorin kanssa ja kuka pääsee lokeihin."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Pilotin valmiuskriteerit",
+        "time": "",
+        "why": "«Pilotti toimii» ei ole kriteeri. Ilman mitattavia kynnyksiä et erota valmista järjestelmää onnekkaasta demosta, ja julkaisupäätös lepää tuntumalla.",
+        "instructions": [
+          "Auditoi pilotti: mitä se tarkalleen tekee, millä datalla ja mitkä ovat sen rajat (mitä se EI saa tehdä)",
+          "Määritä 3-5 mitattavaa valmiuskriteeriä kynnysnumeroilla (tarkkuus, vastausaika, virheaste, kustannus per pyyntö)",
+          "Kiinnitä ensimmäisen julkaisun scope: mikä osa käyttäjistä/prosesseista menee tuotantoon ensin",
+          "Kuvaa tavoiteltu workflow-arkkitehtuuri ja missä promptit elävät — liittyy [[node:use-cases|käyttötapaus]]-skenaarioon"
+        ],
+        "validate": "On dokumentti, jossa 3-5 valmiuskriteeriä, jokaisella konkreettinen kynnys ja mittaustapa.",
+        "tip": "Johda kriteerit pilotin oikeista riskeistä, ei mallipohjasta: mikä rikkoutuu ensimmäisenä kuorman kasvaessa tai uudella datalla."
+      },
+      "s2": {
+        "title": "Luotettavuus ja virheenkäsittely",
+        "time": "",
+        "why": "Pilotti antaa anteeksi viat — tuotanto ei. Mallin timeoutit, roskaoutput ja huippukuorma on käsiteltävä ennustettavasti, ei kaatumalla käyttäjälle.",
+        "instructions": [
+          "Luettele vikakohdat: mallin timeout/saavuttamattomuus, virheellinen tai epätäydellinen output, rajojen ylitykset",
+          "Määritä kullekin käyttäytyminen: retry backoffilla, fallback-vastaus, alentuminen manuaaliseen prosessiin",
+          "Lisää mallin outputin validointi ennen kuin se päätyy käyttäjälle tai seuraavaan askeleeseen",
+          "Jäädytä ja versioi kaikki promptit — jokaisen muutoksen tulee olla jäljitettävissä",
+          "Pystytä muodolliset laatuportit workflow:hin"
+        ],
+        "validate": "Jokaisella vikakohdalla on määritelty käyttäytyminen, promptit versioitu ja mallin output validoidaan ennen käyttöä.",
+        "tip": "Yleisin tuotantovika ei ole «malli kaatui» vaan «malli palautti uskottavaa roskaa». Muodon ja järkevyyden validointi on tärkeämpää kuin retryt."
+      },
+      "s3": {
+        "title": "Laadunarviointi ja evals",
+        "time": "",
+        "why": "Ilman objektiivista arviointia laadun heikkeneminen huomataan vasta valituksista. Evals muuttaa «meistä tuntuu paremmalta» toistettavaksi numeroksi ennen julkaisua.",
+        "instructions": [
+          "Kokoa referenssijoukko (golden set) odotetuilla tuloksilla — tutustu [[node:sys-evals-benchmarks|evals- ja benchmark-lähestymistapaan]]",
+          "Määritä tehtävääsi sopivat laatumittarit (oikeellisuus, relevanssi, outputin turvallisuus)",
+          "Aseta läpipääsykynnys: sen alle ei julkaista",
+          "Aja evals jokaisella promptin tai mallin muutoksella — se on osa laatuporttia"
+        ],
+        "validate": "On golden set ja mittaristo; evals-ajo tuottaa numeron, joka on verrattavissa askeleen 1 valmiuskynnykseen.",
+        "tip": "Aloita 20-50 edustavasta esimerkistä, mukaan lukien reuna- ja «haitalliset» tapaukset. Pieni rehellinen joukko on parempi kuin iso muodollinen."
+      },
+      "s4": {
+        "title": "Monitorointi ja kustannus",
+        "time": "",
+        "why": "Tuotannossa ei voi lentää sokkona: laatu ajautuu, kuorma kasvaa ja token-/API-kulut skaalautuvat epälineaarisesti. Ilman havaittavuutta näet ongelman viimeisenä.",
+        "instructions": [
+          "Pystytä avainmittarien monitorointi: laatu, virheaste, vastausaika, pyyntöjen määrä",
+          "Kytke kustannusseuranta per pyyntö ja per päivä, piikkihälytyksellä — katso [[node:ai-operations|AI-operoinnin]] käytännöt",
+          "Luo dashboard ja kynnyshälytykset, jotka on sidottu askeleen 1 valmiuskriteereihin",
+          "Lokita syötteet/outputit (privacy-tietoisesti) tapausanalyysiä ja evalsien rikastamista varten"
+        ],
+        "validate": "Dashboard näyttää laadun, virheet, latenssin ja kustannuksen reaaliajassa; hälytykset on konfiguroitu kynnysrikkomuksille.",
+        "tip": "Sido laatuhälytys suoraan askeleen 6 rollback-laukaisimeen — monitorointi on hyödytöntä, jos kukaan ei toimi sen pohjalta."
+      },
+      "s5": {
+        "title": "Turvallisuus ja pääsyt",
+        "time": "",
+        "why": "Tuotanto tuo accountabilityn, auditin ja compliancen, joita pilotilla ei ollut. Governance-review kestää 1-2 viikkoa mutta säästää kuukausia ja estää tapauksia.",
+        "instructions": [
+          "Luokittele järjestelmän läpi kulkeva data (julkinen / sisäinen / henkilökohtainen / luottamuksellinen)",
+          "Tarkista DPA mallin vendorin kanssa ja herkän datan käsittelyn ehdot",
+          "Rajoita pääsyt least-privilege-periaatteella: kuka näkee lokit, promptit, outputit",
+          "Tunnista AI-spesifiset riskit (datavuoto, prompt injection, haitallinen output) ja kirjaa lievennykset",
+          "Hanki governance-hyväksyntä ennen julkaisua"
+        ],
+        "validate": "Data on luokiteltu, pääsyt rajattu, riskit lievennyksineen dokumentoitu ja governance-hyväksyntä olemassa.",
+        "tip": "Älä pidä governancea byrokratiana: yksi dokumentoitu riski lievennyksineen on halvempi kuin yksi tapausselvitys viranomaisen kanssa."
+      },
+      "s6": {
+        "title": "Julkaisu, rollback-suunnitelma ja tarkistuslista",
+        "time": "",
+        "why": "Julkaisu suoraan 100 %:lle ilman rollbackia on all-in. Asteittainen julkaisu valmiilla rollbackilla muuttaa vian katastrofista hallittavaksi episodiksi.",
+        "instructions": [
+          "Julkaise asteittain (canary / liikenneosuuksittain), seuraten askeleen 4 mittareita joka vaiheessa",
+          "Kuvaa rollback-suunnitelma: laukaisusignaali, nopeus, tavoitetila (pilotti / manuaalinen prosessi / edellinen versio)",
+          "Varmista, että edellinen tila on säilytetty ja rollback kestää minuutteja",
+          "Käy lopullinen valmiustarkistuslista: kriteerit (s1), luotettavuus (s2), evals yli kynnyksen (s3), monitorointi ja hälytykset (s4), governance-hyväksyntä (s5)",
+          "100 %:iin pääsyn jälkeen seuraa 90 päivää ja iteroi monitorointidatan pohjalta"
+        ],
+        "validate": "Järjestelmä saavutti täyden liikenteen asteittaisella julkaisulla; rollback-suunnitelma on testattu; 5-kohdan tarkistuslista on suljettu.",
+        "tip": "Harjoittele rollback ennen julkaisua. Rollback-suunnitelma, jota ei ole koskaan ajettu, yleensä pettää tapauksen hetkellä."
+      }
+    }
+  },
+  "uc-ai-roi-estimation": {
+    "title": "Arvioi AI-projektin ROI ennen launchia",
+    "subtitle": "6 askelta lauseesta «AI auttaa» lauseeseen «AI tuottaa $X Y kuukauden aikana»",
+    "totalTime": "6 askelta",
+    "whatItIs": "AI-projektit eivät usein saa budjettia «epäselvän ROI:n» vuoksi. Tämä skenaario muuttaa epämääräisen «AI auttaa» -lauseen konkreettiseksi «AI tuottaa $X Y kuukauden aikana». Määrität arvon ja mittarit, lasket todelliset kustannukset (tokenit, aika, infrastruktuuri), kirjaat «ennen»-lähtötason, rakennat hyöty- ja takaisinmaksumallin, dokumentoit riskit ja oletukset — ja teet go/no-go-päätöksen.\n\nPohjana on strukturoitu lähestymistapa solmusta [[node:en-roi-measurement|ROI Measurement]]: baseline → projection → mittaus → iteraatio. Osa [[node:use-cases|käyttötapausten]] kokoelmaa.",
+    "approach": "Älä laske vain suoria kustannussäästöjä. AI tuo 5 arvokategoriaa: aikasäästöt + laadun parannus + uudet kyvykkyydet + riskin vähennys + future optionality. Ilman kaikkia viittä ROI näyttää matalalta ja projekti perutaan ennenaikaisesti. Ole rehellinen oletusten kanssa — merkitse erikseen, mikä on todistettu ja mikä oletus.",
+    "outcomes": [
+      "Arvokategoriat ja mitattavat projektimittarit määritelty",
+      "Kaikki kustannukset laskettu: tokenit, työaika, infrastruktuuri",
+      "«Ennen AI:ta» -lähtötaso kirjattu historiadatan pohjalta",
+      "Hyöty- ja takaisinmaksumalli rakennettu (best/expected/worst)",
+      "Perusteltu go/no-go-päätös tehty tarkistuslistan kanssa"
+    ],
+    "applyIn": [
+      {
+        "title": "Ennen budjettipyyntöä",
+        "description": "Tulet johdon eteen et lauseella «AI auttaa» vaan luvuilla, vaihteluvälillä ja takaisinmaksuajalla."
+      },
+      {
+        "title": "AI-projektien kvartaali-review",
+        "description": "Vertaat todellista ROI:ta ennusteeseen — tarkennat mallia ja päätät, jatkaako vai ajaa alas."
+      },
+      {
+        "title": "Sijoitusten priorisointi",
+        "description": "Vertaat AI-aloitetta muihin sijoituksiin samalla kielellä — rahalla ja aikatauluilla."
+      }
+    ],
+    "pitfalls": [
+      "Laskea vain suoria kustannussäästöjä — ilman laatua, nopeutta ja riskin vähennystä ROI on aliarvioitu.",
+      "Unohtaa token- ja infrastruktuurikustannukset — kulut näyttävät pienemmiltä kuin todellisuus ja ennuste hajoaa.",
+      "Olla kirjaamatta «ennen»-lähtötasoa — myöhemmin ei ole mitään, millä todistaa hyöty todelliseksi.",
+      "Esittää yksi optimistinen skenaario — ilman worst casea johto ei luota lukuihin.",
+      "Piilottaa oletukset laskelmien sisään — tarkastelussa malli romahtaa ja luottamus menetetään."
+    ],
+    "exercises": [
+      {
+        "question": "Ota konkreettinen AI-aloite ja listaa sen arvo kaikissa 5 kategoriassa (aika, laatu, kyvykkyydet, riski, optionality). Kuinka monta kategoriaa jäi aluksi huomaamatta?",
+        "hint": "Jos listalla on vain «kustannussäästöt», aliarvioit projektin vähintään kaksinkertaisesti."
+      },
+      {
+        "question": "Laske skenaariosi kuukausittainen token-kustannus: keskimääräinen pyynnön koko × pyyntöjen määrä × hinta. Vertaa sitä palkalliseen aikaan, jonka projekti säästää.",
+        "hint": "Token-kustannus on lähes aina pienempi kuin säästetty työaika — siinä on ROI:n ydin."
+      },
+      {
+        "question": "Rakenna aloitteellesi 5 kohdan go/no-go-tarkistuslista. Mitä kohtaa et voi merkitä «kyllä» juuri nyt?",
+        "hint": "Kohta, jota et voi merkitä, on pääriskisi — sulje se ennen launchia."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Määritä arvo ja mittarit",
+        "time": "",
+        "why": "Ilman selkeää vastausta «mitä arvoa projekti luo ja miten sitä mitataan», mikä tahansa ROI on fantasiaa. Arvo ensin, raha sitten.",
+        "instructions": [
+          "Kuvaa yhdellä lauseella ongelma, jonka AI-aloite ratkaisee.",
+          "Listaa arvo 5 kategoriassa: aikasäästöt, laatu, uudet kyvykkyydet, riskin vähennys, future optionality.",
+          "Valitse jokaiselle kategorialle 1-2 mitattavaa mittaria (esim. tunnit kuukaudessa, % virheitä, vasteaika).",
+          "Merkitse, mitkä mittarit voi kerätä olemassa olevasta datasta ja mitkä pitää alkaa mitata."
+        ],
+        "validate": "Sinulla on lista arvokategorioista, joista jokaisella on konkreettinen mittari, jonka voit oikeasti mitata.",
+        "tip": "Jos mittarilla ei ole datalähdettä, se ei ole mittari vaan toive. Korvaa se jollain, jonka voit laskea."
+      },
+      "s2": {
+        "title": "Laske kustannukset: tokenit, aika, infrastruktuuri",
+        "time": "",
+        "why": "ROI on hyöty miinus kustannus. Aliarvioidut kustannukset tuottavat kauniin ennusteen, joka hajoaa käytännössä.",
+        "instructions": [
+          "Arvioi token-kustannus: keskimääräinen pyynnön koko × pyyntöjä kuukaudessa × mallin hinta. Nojaa solmuun [[node:sys-cost-management|kustannusten hallinta]].",
+          "Lisää työaika: kehitys, integraatio, ylläpito, ihmisten koulutus.",
+          "Huomioi infrastruktuuri: hosting, tallennus, kolmannen osapuolen palvelut, monitorointi.",
+          "Jaa kustannukset kertaluonteisiin (launch) ja toistuviin (kuukausittaisiin)."
+        ],
+        "validate": "Sinulla on täysi kustannussumma jaettuna kertaluonteisiin ja toistuviin, ilman unohdettuja eriä.",
+        "tip": "Varaa 20-30 % puskuri tokeneille: todellinen kulutus on lähes aina korkeampi kuin ensimmäinen arvio uudelleenyritysten ja kontekstin vuoksi."
+      },
+      "s3": {
+        "title": "Kirjaa «ennen»-lähtötaso",
+        "time": "",
+        "why": "Ilman «miten oli ennen AI:ta» -vertailupistettä et voi todistaa hyötyä todelliseksi etkä sattumaksi.",
+        "instructions": [
+          "Kerää historiadataa valituista mittareista 60-90 päivältä (jos mahdollista).",
+          "Kirjaa nykyiset arvot: kuinka paljon aikaa, rahaa ja virheitä kuluu nyt ilman AI:ta.",
+          "Jos historiaa ei ole, mittaa käsin vähintään 1-2 viikkoa ennen launchia.",
+          "Tallenna lähtötaso erikseen: se on vertailukohta, johon vertaat todellista tulosta."
+        ],
+        "validate": "Sinulla on kirjatut «ennen AI:ta» -luvut jokaisesta keskeisestä mittarista.",
+        "tip": "Ota päivätyt kuvakaappaukset ja vedokset lähtötasosta. Kvartaalin päästä kukaan ei muista, miten oli, ilman kirjattuja lukuja."
+      },
+      "s4": {
+        "title": "Rakenna hyöty- ja takaisinmaksumalli",
+        "time": "",
+        "why": "Johto ei tarvitse lupauksia vaan vaihteluvälin ja aikataulun: milloin projekti maksaa itsensä takaisin ja kuinka paljon se tuottaa.",
+        "instructions": [
+          "Rakenna kolme hyötyskenaariota: pessimistinen, odotettu, optimistinen.",
+          "Laske jokaiselle ROI = (hyöty − kustannus) / kustannus ja takaisinmaksuaika (milloin kumulatiivinen hyöty kattaa sijoituksen).",
+          "Käytä Claudea laskelmien ja kaavojen tarkistamiseen — solmun [[node:en-roi-measurement|ROI Measurement]] pohjalta.",
+          "Kokoa kaikki yhteen taulukkoon: kustannukset, hyöty kategorioittain, ROI, takaisinmaksuaika — kolmen skenaarion yli."
+        ],
+        "validate": "Sinulla on taulukko kolmella skenaariolla, ROI-luvulla ja takaisinmaksuajalla jokaisessa.",
+        "tip": "Näytä odotettu skenaario pääskenaariona, mutta pidä worst case aina sen vieressä. Se ansaitsee enemmän luottamusta kuin yksi optimistinen ennuste."
+      },
+      "s5": {
+        "title": "Dokumentoi riskit ja oletukset",
+        "time": "",
+        "why": "Jokainen ROI-malli seisoo oletusten varassa. Jos et tuo niitä esiin, malli romahtaa ensimmäisessä reviewssä ja luottamus haihtuu.",
+        "instructions": [
+          "Kirjaa kaikki mallin oletukset: oletettu käyttövolyymi, token-hinta, käyttöönoton nopeus, ihmisten käyttäytyminen.",
+          "Merkitse jokaiselle oletukselle, onko se datalla todistettu vai oletus.",
+          "Listaa riskit: token-kustannuksen nousu, ihmisten matala käyttöönotto, mallin muutos, tekniset häiriöt.",
+          "Merkitse jokaiselle riskille vaikutus ROI:hin ja vähennyssuunnitelma."
+        ],
+        "validate": "Sinulla on lista oletuksista merkinnällä «todistettu/oletus» ja riskitaulukko vähennyssuunnitelmilla.",
+        "tip": "Vaarallisin oletus on käyttövolyymi. Jos ihmiset eivät ota työkalua käyttöön, hyöty nollautuu mutta kustannukset jäävät."
+      },
+      "s6": {
+        "title": "Tee go/no-go-päätös ja kokoa tarkistuslista",
+        "time": "",
+        "why": "Kaikki tämä työ palvelee yhtä tarkoitusta: perusteltua päätöstä launchata vai ei, ja selkeää mittaussuunnitelmaa jälkeen.",
+        "instructions": [
+          "Rakenna 5-7 kohdan go/no-go-tarkistuslista: positiivinen ROI odotetussa skenaariossa, hyväksyttävä takaisinmaksuaika, keskeiset riskit suljettu, lähtötaso kirjattu, mittausjärjestelmä valmis.",
+          "Käy tarkistuslista läpi: jos edes yksi kriittinen kohta on «ei», se on no-go tai vaatii uudelleentyöstöä.",
+          "Kuvaa mittaussuunnitelma: mitkä mittarit, kuinka usein todellinen ROI sovitetaan ennusteeseen.",
+          "Aikatauluta kvartaali-review: todellinen vs ennustettu, mallin tarkennus.",
+          "Kirjaa päätös ja perustelu yhteen dokumenttiin johdolle."
+        ],
+        "validate": "Sinulla on täytetty tarkistuslista, selkeä go/no-go-päätös ja launchin jälkeinen mittaussuunnitelma.",
+        "tip": "No-go-päätös on myös arvokas tulos: säästit budjetin jättämällä sen käyttämättä projektiin, jolla on negatiivinen ROI."
+      }
+    }
+  },
+  "uc-ai-vendor-selection": {
+    "title": "AI-vendorin ja stackin valinta",
+    "subtitle": "Miten valita LLM-tarjoaja ja stack eksplisiittisillä kriteereillä, ei hypellä",
+    "totalTime": "6 askelta",
+    "whatItIs": "Strukturoitu kurssi AI-työkalujen valintaan: LLM-tarjoaja, vektoritietokanta, monitorointi, integraatiot. Kysymyksen \"mikä Claude/GPT/Open Source?\" sijaan saat toistettavan prosessin eksplisiittisillä kriteereillä, pilotin omilla tehtävilläsi ja dokumentoidun päätöksen.",
+    "approach": "Ensin lukitaan vaatimukset ja painotetut kriteerit. Sitten kootaan long list vaihtoehdoista, karsitaan 3-5:een ja pisteytetään kyvykkyyden, kustannuksen, yksityisyyden ja lock-inin mukaan. Seuraavaksi sokkopilotti 10 edustavalla tehtävällä, turvallisuus-/compliance-tarkistus ja lopullinen päätös käyttöönottosuunnitelmineen. Pohjana [[node:pl-compare|alustojen vertailu]], [[node:pl-api|API-talous]] ja [[node:use-cases|käyttötapaukset]].",
+    "outcomes": [
+      "Dokumentoitu vendor-päätös perusteluineen 2-3 viikossa",
+      "Painotettu kriteerimatriisi, joka on sidottu tehtävääsi eikä markkinointiin",
+      "Sokkopilotin tulokset 10 edustavalla tehtävällä",
+      "Turvallisuus- ja compliance-checklist (DPA, salaus, audit-logit)",
+      "Käyttöönottosuunnitelma fallback-strategialla ja lock-in-riskin arvioinnilla"
+    ],
+    "applyIn": [
+      {
+        "title": "Ennen suurta AI-aloitetta",
+        "description": "Yli $50k investointi vaatii eksplisiittiset kriteerit ja pilotin, ei yhden benchmarkin päätöstä."
+      },
+      {
+        "title": "Vuosittainen teknologia-review",
+        "description": "Stackin uudelleenarviointi: onko nykyinen vendor edelleen paras hinnan, laadun ja vakauden suhteen."
+      },
+      {
+        "title": "Epäluotettavan vendorin vaihto",
+        "description": "Kun nykyinen tarjoaja heikkenee tai lock-in-riski kasvaa, tarvitaan strukturoitu uudelleenarviointi ja fallback."
+      }
+    ],
+    "pitfalls": [
+      "Päättäminen yhden julkisen benchmarkin perusteella — se on biased ja mittaa generic-kyvykkyyksiä, ei tehtävääsi",
+      "Lock-inin sivuuttaminen: ilman datan siirrettävyyttä ja API-abstraktiota tuleva migraatio on mahdoton",
+      "Vertailu vain token-hinnalla ilman laadun, latenssin ja tuen painotusta",
+      "Yksityisyys- ja compliance-tarkistuksen ohittaminen ennen sopimuksen allekirjoitusta",
+      "Pilotointi lelu-esimerkeillä 10 oikean edustavan tehtävän sijaan"
+    ],
+    "exercises": [
+      {
+        "question": "Rakenna matriisi 7 kriteeristä (laatu, kustannus, latenssi, turvallisuus, vendor-vakaus, lock-in, tuki) ja anna painot, jotka summautuvat 100 %:iin. Mikä kriteeri sai suurimman painon ja miksi juuri se sinun tehtävällesi?",
+        "hint": "Painojen tulee heijastaa oikeaa kipua: jos data on arkaluonteista, turvallisuus painaa enemmän; jos kuorma on suuri, latenssi ja kustannus ratkaisevat."
+      },
+      {
+        "question": "Kerää 10 edustavaa tehtävää oikeasta työnkulustasi ja kuvaa, miten suorittaisit 3-5 vendorin sokkotestin biasin poistamiseksi.",
+        "hint": "Piilota vendorien nimet pisteytyksessä, lukitse onnistumiskriteerit etukäteen ja pisteytä kaikki samalla tavalla."
+      },
+      {
+        "question": "Kuvaa top 2 -vendorillesi fallback-strategia: mitä tapahtuu, jos toinen sulkeutuu tai tuplaa hintansa?",
+        "hint": "Mieti datan siirrettävyyttä, API-abstraktiota ja migraatioaikaa päivinä/viikkoina."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Määritä kriteerit ja vaatimukset",
+        "time": "",
+        "why": "Ilman eksplisiittisiä painotettuja kriteerejä päätös liukuu hypeen ja henkilökohtaisiin mieltymyksiin. Kriteerit ovat koko prosessin perusta.",
+        "instructions": [
+          "Muotoile konkreettinen use case ja rajoitteet (budjetti, kuorma, datatyyppi)",
+          "Listaa 7 kriteeriä: laatu, kustannus, latenssi, turvallisuus, vendor-vakaus, lock-in, tuki",
+          "Anna painot, jotka summautuvat 100 %:iin oikean kipusi mukaan",
+          "Erottele kynnys-must-have-vaatimukset nice-to-have-vaatimuksista"
+        ],
+        "validate": "Sinulla on taulukko 7 painotetusta kriteeristä, jotka summautuvat 100 %:iin, ja lista must-have-vaatimuksista.",
+        "tip": "Aseta painot ENNEN vaihtoehtojen katsomista — muuten virität ne sopimaan jo suosimaasi vendoriin."
+      },
+      "s2": {
+        "title": "Kokoa long list vaihtoehdoista",
+        "time": "",
+        "why": "Laaja lista alussa suojaa tunnelinäöltä: paras vaihtoehto voi olla \"ilmiselvän kolmikon\" ulkopuolella.",
+        "instructions": [
+          "Kerää 8-12 kandidaattia: proprietary-LLM:t, open source, erikoistuneet tarjoajat",
+          "Tutki alustojen erot [[node:pl-compare|alustojen vertailun]] kautta: web, Code, API ja muut",
+          "Merkitse jokaisesta: API:n saatavuus, hinnoittelumalli, data residency -alue",
+          "Suodata step 1:n must-have-vaatimuksilla short listiin 3-5"
+        ],
+        "validate": "Long list 8-12 vaihtoehdosta on kavennettu perusteltuun short listiin 3-5 kandidaattia.",
+        "tip": "Älä pudota open sourcea liian aikaisin — arkaluonteiselle datalle se on usein optimaalinen."
+      },
+      "s3": {
+        "title": "Arvioi kyvykkyys, kustannus, yksityisyys ja lock-in",
+        "time": "",
+        "why": "Tässä kriteerit muuttuvat numeroiksi. Token-hinta ilman laadun ja lock-inin painotusta on ansa, joka paljastuu puolessa vuodessa.",
+        "instructions": [
+          "Laske talous [[node:pl-api|API-talouden]] kautta: hinta per miljoona tokenia, rate limits, projisoitu kuukausikustannus",
+          "Pisteytä kunkin mallin kyvykkyys tehtävätyypilläsi, ei generic-benchmarkeilla",
+          "Tarkista yksityisyys: missä data säilytetään ja käytetäänkö dataasi koulutukseen",
+          "Arvioi lock-in: datan siirrettävyys ja API:n abstraktoitavuus",
+          "Täytä step 1:n matriisi alustavilla pisteillä jokaiselle kandidaatille"
+        ],
+        "validate": "Kriteerimatriisi on täytetty numeroilla kaikille 3-5 kandidaatille, mukaan lukien projisoitu kuukausikustannus.",
+        "tip": "Laske total cost of ownership, ei vain token-hintaa: integraatio, monitorointi ja migraatio maksavat myös."
+      },
+      "s4": {
+        "title": "Suorita pilotti omalla tehtävälläsi",
+        "time": "",
+        "why": "Tämä on tärkein real-world-signaali. Benchmarkit ovat biased — vain sokkotesti tehtävilläsi näyttää totuuden.",
+        "instructions": [
+          "Ota 10 edustavaa tehtävää oikeasta työnkulustasi",
+          "Aja ne jokaisen short list -kandidaatin läpi identtisissä olosuhteissa",
+          "Suorita sokkopisteytys: piilota vendorien nimet pisteitä antaessasi",
+          "Kirjaa laatu, latenssi (p50/p99) ja ajon kustannus jokaisesta",
+          "Päivitä kriteerimatriisi oikealla pilotti-datalla"
+        ],
+        "validate": "Sinulla on sokkopisteet 3-5 vendorista 10 oikealla tehtävällä mitatulla laadulla, latenssilla ja kustannuksella.",
+        "tip": "Lukitse onnistumiskriteerit ennen pilotin käynnistystä — muuten pisteytyksestä tulee subjektiivinen."
+      },
+      "s5": {
+        "title": "Tarkista turvallisuus ja compliance",
+        "time": "",
+        "why": "Teknisesti paras vendor on hyödytön, jos se ei läpäise DPA:ta, data residencyä tai audit-vaatimuksia. Tämä on estävä suodatin.",
+        "instructions": [
+          "Pyydä DPA ja tarkista henkilötietojen käsittelyehdot",
+          "Tarkista data residency -alue ja yhteensopivuus vaatimustesi kanssa",
+          "Varmista salauksen ja audit-logien saatavuus",
+          "Integraatioille arvioi pääsy- ja yhteysmalli [[node:mcp|MCP:n]] kautta",
+          "Kokoa security review -checklist ja käy se läpi jokaiselle finalistille"
+        ],
+        "validate": "Jokainen finalisti läpäisi turvallisuus-checklistin: DPA, data residency, salaus, audit-logit on merkitty.",
+        "tip": "Compliance on go/no-go-suodatin: must-haven turvallisuudessa kaatava vendor putoaa laadusta riippumatta."
+      },
+      "s6": {
+        "title": "Tee päätös ja laadi käyttöönottosuunnitelma",
+        "time": "",
+        "why": "Dokumentoitu päätös perusteluineen antaa arvioida puolen vuoden kuluttua, oliko se oikea valinta, ja vähentää vendor-churnia.",
+        "instructions": [
+          "Kokoa matriisin painotetut pisteet ja valitse voittaja",
+          "Käy lopulliset neuvottelut hinnasta ja SLA:sta",
+          "Kuvaa fallback-strategia: mitä tehdä sulkeutumisen tai hinnannousun yhteydessä",
+          "Laadi käyttöönottosuunnitelma vaiheilla ja omistajilla",
+          "Dokumentoi päätös perusteluineen ja tallenna seuraavaa reviewiä varten"
+        ],
+        "validate": "Valmis dokumentti valitusta vendorista, perusteluista, fallback-strategiasta ja käyttöönottosuunnitelman checklististä.",
+        "tip": "Kirjaa review-päivä — puolen vuoden kuluttua arvioi rehellisesti, oliko se oikea valinta."
+      }
+    }
+  },
+  "uc-ai-multi-agent-system": {
+    "title": "Multi-agent-järjestelmä: orchestration",
+    "subtitle": "Miten rakentaa useamman agentin järjestelmä hukkumatta monimutkaisuuteen",
+    "totalTime": "6 askelta",
+    "whatItIs": "Tämä on polku toimivaan multi-agent-järjestelmään: useita erikoistuneita agentteja, koordinointi niiden välillä, context passing ja error recovery. Skenaario teknisille tiimeille, jotka ovat saavuttaneet yhden agentin rajan ja haluavat jakaa tehtävän rooleihin. Katso [[node:use-cases|käyttötapaukset]]-osio ja [[node:agents|agentit]]-perusta.",
+    "approach": "Periaate on yksinkertainen: multi-agent ei ole «enemmän agentteja = parempi», vaan vastaus konkreettiseen rajaan. Ensin todistat, että yksi agentti on tapissa (promptit, työkalut, RAG eivät enää auta), sitten jaat tehtävän rooleihin, suunnittelet handoff-protokollan ja orkestraattorin, annat jokaiselle agentille sen työkalut ja rajat, lisäät havaittavuuden ja vasta sitten otat käyttöön. Monimutkaisuus kasvaa neliöllisesti, joten jokainen askel on harkittu päätös, ei automaattinen päivitys.",
+    "outcomes": [
+      "Ymmärrät, milloin multi-agent on perusteltu ja milloin yksi agentti riittää",
+      "Osaat jakaa tehtävän selkeisiin rooleihin ilman päällekkäisiä vastuualueita",
+      "Suunnittelit handoff-protokollan ja orkestraattorin roolin",
+      "Jokaisella agentilla on selkeät työkalut, rajat ja ymmärrettävä syöte/tuotos",
+      "Havaittavuus on pystyssä: strukturoidut lokit ja mahdollisuus toistaa virhe"
+    ],
+    "applyIn": [
+      {
+        "title": "Monimutkainen tutkimusputki",
+        "description": "Yksi agentti kerää lähteet, toinen tarkistaa faktat, kolmas syntetisoi raportin — orkestraattori yhdistää vaiheet ja nappaa virheet."
+      },
+      {
+        "title": "Kehitys tarkistuksen kanssa",
+        "description": "Agentti kirjoittaa koodia, critic-agentti katselmoi, toinen ajaa testit — kukin omalla asiantuntemuksellaan ja rajoillaan."
+      },
+      {
+        "title": "Rinnakkainen tehtävien käsittely",
+        "description": "Tehtävä, jolla on eri asiantuntemuksen itsenäisiä alitehtäviä, rinnakkaistetaan agenttien kesken, ja orkestraattori kokoaa tuloksen."
+      }
+    ],
+    "pitfalls": [
+      "Hypätä multi-agentiin tyhjästä: jos yksi agentti tuntuu rajoitetulta, paranna ensin promptit, työkalut ja RAG",
+      "Sumeat roolit: kaksi agenttia vastaa samasta asiasta eikä ole selvää, kuka tekee päätöksen",
+      "Ei handoff-protokollaa: agentit vaihtavat dataa «miten sattuu», ja konteksti katoaa vaiheiden välillä",
+      "Ei havaittavuutta: virhettä ei voi toistaa ja debug muuttuu arvailuksi",
+      "Kustannuksen ja latenssin kasvun sivuuttaminen: jokainen lisäagentti lisää kutsuja, rahaa ja viivettä"
+    ],
+    "exercises": [
+      {
+        "question": "Ota tehtävä, jonka yksi agentti hoitaa nyt. Todista 3 kohdassa, että se on todella tapissa — tai myönnä, ettei multi-agentia tarvita.",
+        "hint": "Tarkista vuorotellen: promptin parannus, työkalujen lisäys, RAG. Jos yksikin tuo lisäarvoa, rajaa ei ole vielä saavutettu."
+      },
+      {
+        "question": "Jaa tehtäväsi 2-3 rooliin ja kuvaa kullekin: syöte, tuotos, työkalut, rajat.",
+        "hint": "Roolit eivät saa olla päällekkäisiä. Jos kaksi roolia kiistelee samasta päätöksestä, tarvitset orkestraattorin — tai kyseessä on yksi rooli."
+      },
+      {
+        "question": "Kuvaa handoff-protokolla kahden agentin välillä: mitä tarkalleen siirretään, missä muodossa, mitä tehdä virheessä.",
+        "hint": "Nojaa malleihin kohdasta [[node:sys-handoff-protocols|handoff-protokollat]] — strukturoitu muoto voittaa vapaan tekstin."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Päätä: tarvitsetko multi-agentia lainkaan",
+        "time": "",
+        "why": "Multi-agent lisää monimutkaisuutta neliöllisesti — debug, monitorointi, kustannus, latenssi. Sen käynnistäminen ilman todistettua yhden agentin rajaa tarkoittaa korkean hinnan maksamista turhaan.",
+        "instructions": [
+          "Muotoile nykyinen tehtävä ja se, missä yksi agentti «törmää seinään»",
+          "Tarkista yhden agentin kolme vipua: paremmat promptit, lisää työkaluja, RAG",
+          "Kirjaa, onko tehtävällä selkeitä eri asiantuntemuksen alitehtäviä tai tarvitaanko rinnakkaisuutta",
+          "Tee päätös eksplisiittisesti: siirrytäänkö multi-agentiin vai jäädäänkö yhteen agenttiin"
+        ],
+        "validate": "Sinulla on kirjallinen perustelu 3+ kohdalla, miksi yksi agentti ei riitä — tai päätös jäädä yhteen.",
+        "tip": "Heuristiikka: multi-agent on yleensä perusteltu 6+ kuukauden yhden agentin kokemuksen jälkeen. Jos epäröit, et ole vielä rajalla."
+      },
+      "s2": {
+        "title": "Jaa rooleihin ja agentteihin",
+        "time": "",
+        "why": "Multi-agentin vahvuus on erikoistuminen. Selkeät, päällekkäisyydettömät roolit muuttavat yhden ison tehtävän hallittaviksi, testattaviksi yksiköiksi.",
+        "instructions": [
+          "Pilko tehtävä alitehtäviin ja ryhmittele ne asiantuntemuksen mukaan",
+          "Anna jokaiselle ryhmälle agentin rooli yhdellä vastuualueella",
+          "Valitse arkkitehtuurimalli: koordinaattori-työntekijä, debate, reflection tai tool-using agent",
+          "Varmista, etteivät roolit ole päällekkäisiä ja että kullakin on selkeä syöte ja tuotos"
+        ],
+        "validate": "Sinulla on lista 2-3 roolista, kullakin yksi vastuualue eikä päällekkäisyyttä; arkkitehtuurimalli on valittu.",
+        "tip": "Nojaa kohtaan [[node:sys-multi-agent-patterns|multi-agent-järjestelmien mallit]]: koordinaattori-työntekijä on yleisin ja ennustettavin aloituspiste."
+      },
+      "s3": {
+        "title": "Handoff-protokolla ja orkestraattori",
+        "time": "",
+        "why": "Konteksti katoaa agenttien välillä, jos vaihto on «miten sattuu». Eksplisiittinen handoff-protokolla ja orkestraattorin rooli pitävät järjestelmän poissa kaaoksesta, kun vaiheiden määrä kasvaa.",
+        "instructions": [
+          "Määritä orkestraattori: kuka delegoi, kerää tulokset ja tekee lopullisen päätöksen",
+          "Kuvaa siirtomuoto agenttien välillä — mitä tarkalleen siirretään ja missä rakenteessa",
+          "Aseta palautumissäännöt: mitä tehdä, jos agentti palauttaa virheen tai roskaa",
+          "Kuvaa, miten konteksti virtaa ketjussa, jotta mitään kriittistä ei katoa"
+        ],
+        "validate": "Jokaiselle agenttien väliselle siirrolle muoto on kiinnitetty ja virhetilanteen käytös on kuvattu.",
+        "tip": "Strukturoitu siirtomuoto (katso [[node:sys-handoff-protocols|handoff-protokollat]]) on luotettavampi kuin vapaa teksti — se on helpompi validoida ja toistaa."
+      },
+      "s4": {
+        "title": "Kunkin agentin työkalut ja rajat",
+        "time": "",
+        "why": "Agentti ilman selkeitä rajoja alkaa tehdä toisen työtä tai ylittää rajansa. Eksplisiittinen työkalu- ja rajajoukko tekee käytöksestä ennustettavaa ja turvallista.",
+        "instructions": [
+          "Listaa jokaiselle agentille työkalut, joita se todella tarvitsee",
+          "Aseta rajat: mitä agentti EI tee ja missä se luovuttaa työn eteenpäin",
+          "Rakenna ja testaa jokainen agentti eristettynä, ennen yhdistämistä",
+          "Jos työskentelet Claude Codessa, toteuta roolit [[node:cc-subagents|subagenttien]] kautta"
+        ],
+        "validate": "Jokainen agentti on rakennettu ja varmennettu yksin: tyypillisillä syötteillä se antaa odotetun tuotoksen ylittämättä rajojaan.",
+        "tip": "Minimoi työkalut per agentti: ylimääräinen työkalu on ylimääräinen tapa epäonnistua ja ylimääräinen kutsukustannus."
+      },
+      "s5": {
+        "title": "Tarkistus ja havaittavuus",
+        "time": "",
+        "why": "Multi-agentin virheet syntyvät saumoissa — koordinoinnissa, eivät yhden agentin sisällä. Ilman lokeja ja toistoa debug muuttuu arvailuksi.",
+        "instructions": [
+          "Lisää strukturoitu lokitus jokaiseen vaiheeseen: syöte, tuotos, mikä agentti, mikä päätös",
+          "Varmista, että voit toistaa (replay) epäonnistuneen ajon lokeista",
+          "Yhdistä agentit täydeksi skenaarioksi ja aja päästä-päähän-testit",
+          "Iteroi nimenomaan koordinointivirheissä, ei yksittäisten agenttien laadussa"
+        ],
+        "validate": "Mikä tahansa virhe voidaan toistaa lokeista ja paikantaa siihen agenttisaumaan, jossa se tapahtui.",
+        "tip": "Vertaa mittareita yhden agentin perustasoon: suoritusaste, latenssi, kustannus per suoritettu skenaario — muuten et näe, kannattiko monimutkaisuus."
+      },
+      "s6": {
+        "title": "Käyttöönotto ja tarkistuslista",
+        "time": "",
+        "why": "Järjestelmä on valmis tuotantoon vasta, kun roolit, protokolla, rajat ja havaittavuus on suljettu yhdessä. Tarkistuslista estää puolivalmiin järjestelmän julkaisun.",
+        "instructions": [
+          "Käy tarkistuslista: yhden agentin raja todistettu, roolit päällekkäisyydettömät, protokolla kuvattu, rajat asetettu, lokit ja replay toimivat",
+          "Kiinnitä perusmittarit ja kynnykset, joilla järjestelmä perutaan",
+          "Ota käyttöön rajoitetulla liikenteellä ja tarkkaile agenttisaumoja",
+          "Rakenna iteraatiosilmukka: nappaa koordinointivirheet ja viritä protokollaa"
+        ],
+        "validate": "Kaikki tarkistuslistan kohdat on suljettu, mittarit kerätään, ja on selkeä peruutuspolku heikkenemisen varalta.",
+        "tip": "Älä laajenna agenttien määrää «varmuuden vuoksi». Lisää rooli vasta, kun konkreettinen alitehtävä on todistanut tarvitsevansa erillistä asiantuntemusta."
+      }
+    }
+  },
+  "uc-ai-design-research-launch": {
+    "title": "AI Design Researchin käynnistys",
+    "subtitle": "Vuoresta lukematonta research-materiaalia toimivaan AI-synteesipipelineen kuudessa askeleessa",
+    "totalTime": "6 askelta",
+    "whatItIs": "Vaiheittainen skenaario, jolla kertyneet haastattelut, sessiotallenteet ja käyttäjäpalaute muutetaan strukturoiduiksi insighteiksi AI:n avulla — ja upotetaan tiimin jatkuvaan design-prosessiin. Se on osa [[node:use-cases|läpileikkaavien skenaarioiden]] kokoelmaa ja konkretisoi [[node:ai-native-design|AI-native designin]] idean tiettyyn research-sykliin.",
+    "approach": "Etenemme datasta päätöksiin: ensin varmistamme, että skenaario on ylipäätään tarpeen, sitten kokoamme materiaalin yhteen, ajamme AI-synteesin, tarkistamme päätelmät huolellisesti hallusinaation varalta, muutamme mallit design-päätöksiksi ja vakiinnutamme toistettavaksi prosessiksi. AI nopeuttaa synteesiä, mutta lopullisesta insightista vastaa ihminen.",
+    "outcomes": [
+      "Tiedät, milloin AI Design Research tuottaa todellista hyötyä ja milloin se on ennenaikaista",
+      "Osaat koota hajallaan olevan research-materiaalin yhdeksi AI-valmiiksi pohjaksi",
+      "Saat toistettavan synteesi-prompttisyklin: transkripteistä malleihin tunneissa, ei viikoissa",
+      "Erotat vahvistetun insightin mallin hallusinaatiosta ja osaat tarkistaa sen",
+      "Upotat research-pipelinen design-prosessiin niin, että koko tiimi käyttää sitä"
+    ],
+    "applyIn": [
+      {
+        "title": "Kertynyt research-backlog",
+        "description": "Tiimillä on ≥10 sessiotallennetta tai haastattelutranskriptiä, joita kukaan ei ehdi käsitellä — skenaario purkaa tämän ruuhkan."
+      },
+      {
+        "title": "Epätasapainoinen design ops",
+        "description": "Paljon research-inputtia, vähän synthesis-outputtia: suunnittelijat hukkuvat dataan designaamisen sijaan. Pipeline palauttaa tasapainon."
+      },
+      {
+        "title": "Säännölliset discovery-syklit",
+        "description": "Tiimi tekee researchia joka sprintissä ja haluaa, ettei synteesi ole pullonkaula joka kierroksella."
+      }
+    ],
+    "pitfalls": [
+      "Käynnistäminen ilman PM-linjausta: design research ja product research elävät erillään, ja vain suunnittelijoille tarkoitettu pipeline johtaa PM:ien tekemään päällekkäiseen työhön",
+      "AI-synteesin sokea luottamus: malli muotoilee tyylikkäästi mallin, jota ei ole datassa — ilman sitaattitarkistusta insight on hallusinaatio",
+      "Aloittaminen ilman Head of Designin buy-iniä: ilman johdon tukea pipeline ei juurru ja jää henkilökohtaiseksi kokeiluksi",
+      "Yritys käsitellä koko arkisto kerralla: parempi hioa synteesi 5 sessiolla kuin saada roskaa 50:stä",
+      "Insightit jäävät erilliseen dokumenttiin eivätkä koskaan päädy design-päätöksiin — researchia researchin vuoksi"
+    ],
+    "exercises": [
+      {
+        "question": "Tiimilläsi on 8 haastattelutranskriptiä eikä sopimusta PM:ien kanssa. Pitäisikö koko AI Design Research -pipeline käynnistää juuri nyt?",
+        "hint": "Tarkista sisäänpääsyehdot: ≥10 materiaalin kynnys ja pakollinen PM-linjaus. Mikä puuttuu ja mitä pitää korjata ennen käynnistystä?"
+      },
+      {
+        "question": "AI nosti esiin mallin «käyttäjät haluavat tumman teeman», mutta lähteissä sen mainitsi vain yksi henkilö. Miten saat tämän kiinni?",
+        "hint": "Mieti tarkistusvaihetta: jokaisen mallin on nojattava sitaatteihin useista lähteistä, muuten se on kohinaa."
+      },
+      {
+        "question": "Synteesi on valmis, insightit strukturoitu — mutta tiimin design ei muutu. Mikä skenaarion askel jäi väliin tai tehtiin vain muodollisesti?",
+        "hint": "Muista ero «muuta insightit päätöksiksi» ja «upota prosessiin» -välillä. Missä katkeaa ketju datasta tuotteeseen?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Ymmärrä, milloin skenaario tarvitaan, ja kiinnitä lopputulos",
+        "time": "",
+        "why": "Pipelinen käynnistäminen ilman täytettyjä ehtoja on kallein virhe: tiimi käyttää kaksi viikkoa ja huomaa, ettei ole mitään synteesoitavaa tai kenelläkään ei ole käyttöä sille.",
+        "instructions": [
+          "Tarkista sisäänpääsykynnys: onko ≥10 sessiotallennetta tai haastattelutranskriptiä käsiteltäväksi",
+          "Arvioi design ops -tasapaino: paljon research-inputtia, vähän synthesis-outputtia on signaali käynnistää",
+          "Hanki buy-in Head of Designilta ja sovi PM-tiimin kanssa linjauksesta etukäteen",
+          "Kiinnitä tavoiteltu lopputulos mitattavasti: time-to-insight, research-kattavuus, teema-kirjasto"
+        ],
+        "validate": "Sinulla on kolme «kyllä»: riittävästi materiaalia, johdon tuki, sopimus PM:ien kanssa — ja tavoitemittarit on kirjattu ylös.",
+        "tip": "Jos edes yksi ehto ei täyty, älä käynnistä koko pipelinea — korjaa puute ensin. Se on halvempaa kuin epäonnistuneen käynnistyksen peruminen."
+      },
+      "s2": {
+        "title": "Kokoa research-materiaali yhdeksi pohjaksi",
+        "time": "",
+        "why": "AI ei voi synteesoida sitä, mikä on hajallaan levyillä, chateissa ja muistiinpanoissa. Yksi indeksoitu pohja on perusta, jota ilman synteesi on mahdoton.",
+        "instructions": [
+          "Kokoa kaikki sessiotallenteet, haastattelutranskriptit ja käyttäjäpalaute yhteen paikkaan",
+          "Normalisoi materiaali yhteen muotoon: teksti, jossa jokaiselle fragmentille on lähde ja päivämäärä",
+          "Luo oma «Design Research» -työtila ja lataa koko korpus sinne",
+          "Indeksoi materiaali niin, että sitä voi hakea ja tiettyihin fragmentteihin voi viitata"
+        ],
+        "validate": "Mikä tahansa research-materiaalin pala löytyy pyynnöstä sekunneissa, ja jokaisen fragmentin lähde on tiedossa.",
+        "tip": "Säilytä fragmentin ja lähteen linkki alusta asti — tarvitset sitä tarkistusvaiheessa todistaaksesi, ettei insight ole keksitty."
+      },
+      "s3": {
+        "title": "Synteesoi mallit AI:n avulla",
+        "time": "",
+        "why": "Tämä on skenaarion ydin: tässä tunnit manuaalista läpikäyntiä muuttuvat minuuteiksi ja datavuori toistuvien teemojen joukoksi.",
+        "instructions": [
+          "Muotoile synteesi-promptti: pyydä erottelemaan toistuvat teemat, kivut ja tarpeet niiden esiintymistiheyksineen",
+          "Aja synteesi ensin 5 sessiolla, ei koko arkistolla — jotta hiot muotoilun halvalla",
+          "Vaadi mallilta tukevat sitaatit jokaiselle erotellulle mallille",
+          "Ryhmittele tulos strukturoiduksi teema-kirjastoksi nojaten [[node:ds-design-research|design-tutkimuksen synteesin]] workflow:hun"
+        ],
+        "validate": "Kokeellisilla 5 sessiolla on luonnoslista malleista, joista jokainen on sidottu tiettyihin materiaalin fragmentteihin.",
+        "tip": "Yksi promptti on harvoin täydellinen ensi yrittämällä: odota 2-3 iteraatiota ennen kuin muotoilu tuottaa luotettavasti hyödyllistä tulosta."
+      },
+      "s4": {
+        "title": "Tarkista päätelmät — onko keksittyä",
+        "time": "",
+        "why": "Malli osaa vakuuttavasti muotoilla mallin, jota ei ole datassa. Ilman nimenomaista tarkistusta tiimi päättää hallusinaation perusteella.",
+        "instructions": [
+          "Avaa jokaiselle mallille tukevat sitaatit ja vertaa niitä lähdefragmenttiin",
+          "Hylkää mallit, jotka nojaavat yhteen mainintaan — se on kohinaa, ei trendi",
+          "Anna suunnittelijan validoida luonnossynteesi käsin samoilla 5 sessiolla",
+          "Merkitse teemat, joissa AI liioitteli tiheyttä tai antoi merkityksen, jota ei ollut"
+        ],
+        "validate": "Teema-kirjastoon jää vain useiden riippumattomien lähteiden vahvistamat mallit; epävarmat on merkitty tai poistettu.",
+        "tip": "Ota käyttöön yksinkertainen sääntö: malli ilman vähintään kahta lähdettä ei ole insight, se jää hypoteesiksi."
+      },
+      "s5": {
+        "title": "Muotoile insightit design-päätöksiksi",
+        "time": "",
+        "why": "Vahvistettu malli ei vielä ole lopputulos. Arvo syntyy vasta, kun insight muuttuu konkreettiseksi toimeksi tuotteelle.",
+        "instructions": [
+          "Muotoile jokaiselle vahvistetulle mallille, minkä design-päätöksen se sanelee",
+          "Sido insight tiettyyn ruutuun, flow:hun tai ominaisuuteen, jota se muuttaa",
+          "Priorisoi: mitä muutetaan nyt, mitä backlogiin, mikä vaatii lisätarkistusta",
+          "Kirjaa «insight → päätös» -muotoilu niin, että research-kontekstin ulkopuolinen suunnittelija ymmärtää sen"
+        ],
+        "validate": "Jokainen keskeinen insight on muutettu konkreettiseksi, priorisoiduksi design-toimeksi, joka on sidottu tuotteeseen.",
+        "tip": "Muotoile päätös muodossa «koska [insight], teemme [toimen]» — se estää insighteja jäämästä kuolleeksi painoksi dokumenttiin."
+      },
+      "s6": {
+        "title": "Upota design-prosessiin ja vakiinnuta tarkistuslistalla",
+        "time": "",
+        "why": "Kertaluontoinen synteesi ei muuta tiimiä. Arvo tulee toistettavasta pipelinesta, joka on rakennettu jokaiseen research-kierrokseen ja jota kaikki käyttävät.",
+        "instructions": [
+          "Pidä tiimin koulutus ja ensimmäinen oikea research-kierros uudella pipelinella yhdessä",
+          "Synkronoi prosessi PM-tiimin kanssa, jotta design ja product research tuottavat jaettuja insighteja päällekkäisyyden sijaan",
+          "Vakiinnuta kierroksen tarkistuslista: materiaali koottu → synteesi ajettu → päätelmät tarkistettu → insightit muutettu päätöksiksi",
+          "Nimeä vastuuhenkilö teema-pohjan ylläpidolle ja kierrosten säännöllisyydelle"
+        ],
+        "validate": "Tiimi ajaa koko syklin tarkistuslistan mukaan itsenäisesti, insightit päätyvät päätöksiin, ja PM-tiimi on kytketty jaettuun teema-kirjastoon.",
+        "tip": "Jos myöhemmin haluat automatisoida keräyksen ja ensimmäisen läpikäynnin — katso [[node:agent-researcher|tutkija-agentin]] suuntaan, joka poistaa ensimmäisen kierroksen rutiinin."
+      }
+    }
+  },
+  "uc-ai-personalization-launch": {
+    "title": "AI-personalizationin käynnistys kaupassa",
+    "subtitle": "Generic UX:stä kaikille toimivaan personalizationiin returning customereille — 6 vaiheessa, ilman ML-tiimiä",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Käytännön polku AI-personalizationin käynnistämiseen e-commercessa: muutat kaikille saman näköisen kaupan henkilökohtaisiksi suosituksiksi returning customereille. Pohjautuu [[node:ai-native-ecommerce|AI-native e-commerce]]en ja embeddingeihin ([[node:af-embeddings|af-embeddings]]) — ilman data science -tiimiä ja ilman raskasta ML-infraa. Real scope: 6-8 viikkoa, 1-2 henkilöä.",
+    "approach": "Ensin validoidaan, tarvitaanko personalizationia ylipäätään ja missä se tuo impactia, sitten valmistellaan käyttäjädata yksityisyyttä kunnioittaen, rakennetaan segmentit ja suosituslogiikka, upotetaan ne kauppaan, mitataan vaikutus A/B:llä ja vasta sitten skaalataan. Periaate: aloita sieltä, missä returning-liikennettä on eniten (home page), ei sieltä missä \"vaikuttaa halvemmalta\" (email).",
+    "outcomes": [
+      "Ymmärrät, milloin personalization on perusteltua (katalogi >1k SKU, >5k aktiivista returning customeria) ja mikä tulos on realistinen",
+      "Keräät käyttäjien käyttäytymisdataa laillisesti ja läpinäkyvästi, eksplisiittisellä suostumuksella ja fallbackilla uusille asiakkaille",
+      "Rakennat segmentit ja suosituslogiikan embeddingeillä ilman omien ML-mallien koulutusta",
+      "Upotat personalizationin oikeisiin kaupan pintoihin (home page, tuotesivu) cold-start-suojauksella",
+      "Todistat upliftin A/B vs control -testillä: returning conversion +30-50%, AOV +10-25%, retention +15-30%"
+    ],
+    "applyIn": [
+      {
+        "title": "Kaupan home page",
+        "description": "Henkilökohtainen valikoima returning customerille saman bannerin sijaan — pääasiallinen impact-piste, koska suurin osa lojaalista liikenteestä päätyy sinne."
+      },
+      {
+        "title": "Tuotesivu ja katalogi",
+        "description": "\"Samankaltaiset / sinulle sopivat\" -lohko tuotteiden embeddingien ja katseluhistorian pohjalta käsin tehtyjen \"ostetaan yhdessä\" -sääntöjen sijaan."
+      },
+      {
+        "title": "Email- ja retention-kampanjat",
+        "description": "Henkilökohtaiset triggeröidyt sähköpostit toisena aaltona — kun home page on todistanut upliftin, uudelleenkäytä samaa suosituslogiikkaa."
+      }
+    ],
+    "pitfalls": [
+      "Aloittaa email-personalizationista: vaikuttaa halvemmalta, mutta returning users tulevat useammin suoraan sivustolle — aloita home page recommendations'ista",
+      "Cold startia ei käsitellä: uudella käyttäjällä ei ole dataa, joten fallbackin on oltava generic mutta ei \"emme tunne sinua\"",
+      "Käynnistys ilman mittausta: ilman A/B vs control et todista AI-personalizationin voittavan generic UX:n etkä erota upliftiä kausivaihtelusta",
+      "Datan kerääminen ilman suostumusta ja läpinäkyvyyttä: personalization \"pimeällä\" datalla luo juridisen ja maineriskin",
+      "Olettaa että tarvitaan ML-tiimi: embeddingit ja retrieval kattavat 80% keisseistä ilman omien mallien koulutusta — älä lykkää kuvitellun kynnyksen takia"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on 800 SKU ja 2k returning customeria kuukaudessa. Kannattaako AI-personalization käynnistää juuri nyt?",
+        "hint": "Tarkista kynnysarvot: katalogi >1k SKU ja >5k aktiivista returning customeria. Mieti, riittääkö data tekemään segmenteistä mielekkäitä eikä kohinaa."
+      },
+      {
+        "question": "Tiimi haluaa tehdä ensin henkilökohtaiset sähköpostit, koska \"integraatio on yksinkertaisempi\". Mitä vastaat?",
+        "hint": "Missä suurin osa returning-liikenteestä on ja missä näet impactin nopeammin? Muista klassinen email vs home page -virhe."
+      },
+      {
+        "question": "A/B-testin jälkeen persona-ryhmä näytti +12% konversion, mutta myös control kasvoi +9%. Mikä on todellinen uplift ja mitä se tarkoittaa?",
+        "hint": "Uplift on variantin ja controlin erotus, ei absoluuttinen kasvu. Mieti kausivaihtelua ja miksi kontrolliryhmä on välttämätön."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Päätä, tarvitsetko personalizationia ja minkä tuloksen saat",
+        "time": "",
+        "why": "Personalization on ROI-kirkkain e-commerce-keissi, mutta se ei ole aina perusteltua. Ilman kynnysarvojen tarkistusta käytät 6-8 viikkoa infraan, jolla ei ole tarpeeksi dataa toimiakseen.",
+        "instructions": [
+          "Tarkista kynnykset: katalogi >1k SKU ja >5k aktiivista returning customeria — muuten dataa on liian vähän mielekkäisiin segmentteihin",
+          "Muotoile liiketoimintatavoite numeroina: returning conversion +30-50%, AOV +10-25% tai retention +15-30%",
+          "Valitse yksi aloituspinta, jolla on eniten returning-liikennettä — yleensä home page, ei email",
+          "Kokoa minimitiimi: senior engineer + product manager + analyst, ja vahvista valmius 6-8 viikkoon",
+          "Tutustu AI-native-kontekstiin [[node:ai-native-ecommerce|AI-native e-commerce]]ssa, jotta et rakenna ML-infraa sinne missä embeddingit riittävät"
+        ],
+        "validate": "Sinulla on kirjattu tavoite metriikoina, valittu aloituspinta ja vahvistettu tiimi 6-8 viikoksi.",
+        "tip": "Jos returning customer -kynnys ei ylity, älä käynnistä — kasvata ensin lojaalia yleisöä. Personalization kohinalla on huonompi kuin rehellinen generic UX."
+      },
+      "s2": {
+        "title": "Kerää käyttäjädata — laillisesti ja läpinäkyvästi",
+        "time": "",
+        "why": "Personalization toimii vain käyttäytymisdatalla. Mutta ilman suostumusta kerätty data on juridinen ja maineriski, joka kumoaa minkä tahansa upliftin.",
+        "instructions": [
+          "Määritä minimaalinen signaalijoukko: katselut, lisäykset koriin, ostot, sessiohistoria — ilman ylikeräystä",
+          "Aseta eksplisiittinen käyttäjän suostumus ja selkeä politiikka: mitä keräät ja miksi",
+          "Sido data vakaaseen returning customer -tunnisteeseen ja varmista sen säilyminen sessioiden välillä",
+          "Rakenna fallback uudelle käyttäjälle ilman historiaa: generic-valikoima, mutta ei muotoiltuna \"emme tunne sinua\"",
+          "Muunna tuotteet embeddingeiksi [[node:af-embeddings|af-embeddings]]-solmun avulla — perusta vertailulle ja suosituksille ilman ML-koulutusta"
+        ],
+        "validate": "Käyttäjäsignaalit kerätään suostumuksella, säilyvät sessioiden välillä ja tuotteet on esitetty vektoreina; uudelle asiakkaalle on toimiva generic-fallback.",
+        "tip": "Kerää vähemmän mutta laadukkaammin: kolme vahvaa signaalia (katselu, kori, osto) tuottaa enemmän kuin tusina kohinaista."
+      },
+      "s3": {
+        "title": "Rakenna segmentit ja suosituslogiikka",
+        "time": "",
+        "why": "Raakadata ei personalisoi itsestään — tarvitaan logiikka, joka yhdistää käyttäjän käyttäytymisen sopiviin tuotteisiin. Embeddingeillä tämä onnistuu ilman omien mallien koulutusta.",
+        "instructions": [
+          "Erottele 3-5 käyttäytymissegmenttiä (esim. uusi, kertaluonteinen, lojaali, nukkuva) — älä pirsto liian hienoksi",
+          "Kuvaa suosituslogiikka: tuotteen embeddingin läheisyys käyttäjän historiaan plus yksinkertaiset bisnessäännöt (varastossa, kate)",
+          "Tutustu retrieval-patterniin [[node:sys-rag-architecture|sys-rag-architecture]]ssa — sama on samankaltaisten tuotteiden haun pohjana",
+          "Kuvaa konkreettinen personalization-workflow [[node:ec-personalization|ec-personalization]]-solmun ja recommendation engine [[node:ec-recommendations|ec-recommendations]]-solmun mukaan",
+          "Määritä fallback-säännöt etukäteen: mitä näytetään tyhjällä historialla ja kun relevantteja osumia ei ole"
+        ],
+        "validate": "Mille tahansa segmentille ja käyttäjälle järjestelmä tuottaa deterministisesti järjestetyn suosituslistan, ja tyhjällä historialla oikean generic-fallbackin.",
+        "tip": "Älä jahtaa kymmeniä segmenttejä. Neljä selkeää segmenttiä terävällä logiikalla toimii paremmin kuin kaksikymmentä epämääräistä."
+      },
+      "s4": {
+        "title": "Upota personalization kauppaan",
+        "time": "",
+        "why": "Suosituslogiikka tuo arvoa vain kun käyttäjä näkee sen. Integraatio oikeaan kaupan pintaan on hetki, jossa idea muuttuu tuotteeksi.",
+        "instructions": [
+          "Upota henkilökohtainen lohko vaiheessa 1 valittuun pintaan — aloita home pagesta",
+          "Varmista nopea vaste: suositusten on ehdittävä renderöityä ilman havaittavaa sivun viivettä",
+          "Kytke generic-fallback UI:hin niin, että uusi käyttäjä näkee mielekkään kaupan eikä tyhjyyttä",
+          "Merkitse heti henkilökohtaisen lohkon näytöt ja klikkaukset — ilman tätä vaiheessa 5 ei ole mitään mitattavaa",
+          "Tarkista edge-keissit: ei historiaa, tuote loppu, suositukset tyhjät"
+        ],
+        "validate": "Henkilökohtainen lohko näkyy oikeassa kaupassa, toimii oikein returning- ja uudelle käyttäjälle, ja sen näytöt ja klikkaukset kirjautuvat.",
+        "tip": "Älä julkaise heti 100%:lle liikenteestä — jätä kontrolliryhmä generic UX:lle, tarvitset sitä mittausvaiheessa."
+      },
+      "s5": {
+        "title": "Mittaa vaikutus A/B:llä ja metriikoilla",
+        "time": "",
+        "why": "Ilman A/B vs control et erota personalizationin todellista upliftiä kausikasvusta etkä todista bisnekselle, että investointi kannatti.",
+        "instructions": [
+          "Aja A/B: persona-ryhmä vs control generic UX:llä samalla yleisöllä",
+          "Laske uplift ryhmien erotuksena, ei absoluuttisena kasvuna — control suodattaa kausivaihtelun",
+          "Seuraa avainmetriikoita: returning conversion, AOV, retention sekä henkilökohtaisen lohkon CTR",
+          "Anna testin saavuttaa tilastollinen merkitsevyys, älä pysäytä sitä ensimmäisten päivien jälkeen",
+          "Kirjaa tulos ja päätös: laajenna, hio logiikkaa tai peruuta"
+        ],
+        "validate": "Sinulla on A/B-tulos selkeällä upliftillä suhteessa controliin ja siihen perustuva päätös, tuettuna merkitsevällä datalla eikä ensivaikutelmalla.",
+        "tip": "Jos control kasvoi lähes yhtä paljon kuin persona-ryhmä, todellista upliftiä ei ole — etsi syytä suosituslogiikasta äläkä juhli absoluuttista kasvua."
+      },
+      "s6": {
+        "title": "Skaalaa ja käy läpi valmiuden checklist",
+        "time": "",
+        "why": "Todistettu uplift yhdellä pinnalla on laajennuksen perusta. Skaalaus ilman perustan tarkistusta toistaa virheet uusille kaupan pinnoille.",
+        "instructions": [
+          "Laajenna personalization seuraaviin pintoihin: tuotesivu, katalogi, sitten email-kampanjat",
+          "Uudelleenkäytä samaa suosituslogiikkaa ja embeddingejä — älä rakenna uutta järjestelmää per pinta",
+          "Käy läpi checklist: datan suostumus kunnossa, cold-start-fallback toimii, A/B pystyssä, metriikat nousussa",
+          "Perusta iteraatiosykli: hio segmenttejä ja sääntöjä uusien pintojen datalla",
+          "Vertaa benchmarkkiin [[node:use-cases|use-cases]], jotta ketju \"tavoite → data → logiikka → mittaus\" pysyy ehjänä"
+        ],
+        "validate": "Personalization toimii vähintään kahdella pinnalla todistetulla upliftillä, valmiuden checklist on läpäisty ja iteraatiot etenevät datan eikä intuition pohjalta.",
+        "tip": "Skaalaa vain se, mikä on jo todistanut upliftin. Todistamattoman logiikan siirto uusille pinnoille moninkertaistaa riskin, ei tulosta."
+      }
+    }
+  },
+  "uc-ai-product-search": {
+    "title": "Semanttisen tuotehaun käynnistys",
+    "subtitle": "\"Ei tuloksia\" → hybrid semantic search rerankingilla — 6 vaiheessa",
+    "totalTime": "6 шагов",
+    "whatItIs": "Skenaario semanttisen haun käynnistämiseksi olemassa olevan keyword searchin päälle e-commerce-katalogissa. Vanhaa hakua ei heitetä pois — sen päälle lisätään [[node:af-embeddings|embeddings]]-pohjainen vektorikerros, joka ymmärtää kyselyn merkityksen eikä vain tarkkoja sanoja. Tuloksena on hybrid search: keyword hoitaa tarkat SKU-osumat, semantic hoitaa merkityksen ja synonyymit.",
+    "approach": "Edetään ongelmasta tuotantoon: ensin varmistetaan, että semantiikkaa todella tarvitaan (eikä vain keyword-korjausta), sitten valmistellaan katalogidata, rakennetaan embeddings ja indeksi, lisätään ranking ja suodattimet, mitataan laatu oikeilla kyselyillä ja vasta sitten julkaistaan kauppaan A/B-testin alla. Jokainen vaihe tuottaa todennettavan tuloksen, jotta ei rakenneta sokkona.",
+    "outcomes": [
+      "Ymmärrät, milloin semantiikkaa todella tarvitaan ja milloin riittää keyword searchin siivous",
+      "Katalogi on valmisteltu ja muutettu vektoreiksi, indeksi rakennettu ja reindeksoituu itse",
+      "Hybrid-ranking toimii: keyword + semantic + saatavuus- ja kategoriasuodattimet",
+      "Haun laatua mitataan numeroilla (no-results rate, konversio, top-klikkaukset), ei mututuntumalla",
+      "Haku on julkaistu kauppaan A/B-testin kautta ja paluupolku on olemassa"
+    ],
+    "applyIn": [
+      {
+        "title": "Suuri e-commerce-katalogi",
+        "description": "Katalogi >5k SKU, jossa >15% hakusessioista päättyy \"ei tuloksia\" synonyymien ja sanamuotojen takia."
+      },
+      {
+        "title": "Monikielinen kauppa",
+        "description": "Useammalla kielellä toimiva sivusto, jossa keyword search ei yhdistä kyselyjä ja tuotekuvauksia eri kielillä."
+      },
+      {
+        "title": "Katalogi rikkailla kuvauksilla",
+        "description": "Tuotteet, joilla on yksityiskohtaiset ominaisuudet ja käyttötilanteet ja joita haetaan \"merkityksen\" eikä tarkan nimen mukaan."
+      }
+    ],
+    "pitfalls": [
+      "Korvata keyword search kokonaan: keyword voittaa SKU:issa ja tarkoissa koodeissa — hybrid on pakollinen",
+      "Jättää katalogi reindeksoimatta: tuotteet vaihtuvat ja loppuvat, ja ilman indeksipäivityksiä haku näyttää out-of-stock-tuotteita",
+      "Julkaista ilman feedback loopia: ilman klikkaus- ja ostodataa ranking ei parane",
+      "Ignoroida query analytics: AI hakee hyvin mutta ei selitä, miksi ihmiset hakevat \"X\" — se on erillinen tehtävä",
+      "Julkaista ilman A/B-testiä: konversion nousua ei voi todistaa eikä embeddings-kustannusta perustella"
+    ],
+    "exercises": [
+      {
+        "question": "Miten päätät datan avulla, tarvitsetko semantiikkaa vai onko ongelma keyword searchin laadussa?",
+        "hint": "Katso \"ei tuloksia\" -sessioiden osuutta ja niiden kyselyjä: synonyymit ja sanamuodot tarkoittavat semantiikkaa; kirjoitusvirheet ja puuttuvat fasetit tarkoittavat keyword-korjausta."
+      },
+      {
+        "question": "Miksi hybrid (keyword + semantic) on katalogille parempi kuin puhdas semantiikka?",
+        "hint": "Semantiikka sumentaa tarkat osumat SKU:issa, koodeissa ja brändeissä, joissa keyword on tarkempi. Hybrid ottaa molemmista parhaan."
+      },
+      {
+        "question": "Mitä 3 mittaria seuraat A/B-testissä, jotta julkaisua voi pitää onnistuneena?",
+        "hint": "No-results rate, search conversion ja time-to-first-click — kaikkien kolmen pitää liikkua oikeaan suuntaan ilman valitusten kasvua."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Ymmärrä, milloin semantiikkaa tarvitaan ja mikä on tavoitetulos",
+        "time": "",
+        "why": "Semanttinen haku maksaa rahaa embeddings'eissä ja infrassa. Ennen rakentamista on todistettava, että ongelma on aidosti kyselyn merkityksessä eikä rikkinäisessä keyword searchissa. Muuten ratkaiset väärää ongelmaa.",
+        "instructions": [
+          "Vie hakukyselyt 1-3 kuukaudelta ja laske \"ei tuloksia\" -sessioiden osuus",
+          "Merkitse epäonnistuneet kyselyt: kirjoitusvirheet ja puuttuvat fasetit ovat keyword; synonyymit, merkityspohjaiset kuvaukset ja muut kielet ovat semantic",
+          "Vertaa skenaariota viereisiin keisseihin [[node:use-cases|use-cases]], jotta et rakenna valmista mallia uudelleen",
+          "Kiinnitä tavoitetulos numeroina: no-results rate, search conversion, time-to-first-click",
+          "Päätä raja: mikä jää keywordille (SKU:t, koodit) ja mikä menee semantiikalle"
+        ],
+        "validate": "Sinulla on taulukko epäonnistuneista kyselyistä merkinnöillä \"keyword/semantic\", ja semanttisten epäonnistumisten osuus ylittää projektin oikeuttavan kynnyksen.",
+        "tip": "Jos lähes kaikki epäonnistumiset ovat kirjoitusvirheitä ja puuttuvia suodattimia, korjaa keyword ensin: se on halvempaa ja nopeampaa kuin semantiikka."
+      },
+      "s2": {
+        "title": "Valmistele katalogi ja data",
+        "time": "",
+        "why": "Semanttisen haun laatu ei koskaan ylitä vektoroitavan datan laatua. Likainen, puutteellinen tai epäjohdonmukainen tuotedata tuottaa kohinaisia embeddings'eja ja huonon relevanssin.",
+        "instructions": [
+          "Kokoa jokaiselle SKU:lle yksi teksti: nimi, keskeiset ominaisuudet, kategoria, käyttötilanteet",
+          "Siivoa data: poista duplikaatit, tyhjät kuvaukset, HTML-roska, normalisoi yksiköt ja kategoriat",
+          "Lisää kentät suodattimille: saatavuus (in/out of stock), hinta, brändi, datan kieli",
+          "Kiinnitä tuotedokumentin skeema, jotta reindeksointi on toistettavissa",
+          "Erota pieni joukko oikeita kyselyjä \"oikeine\" tuotteineen myöhempää arviointia varten"
+        ],
+        "validate": "Sinulla on siisti, yhtenäinen joukko tuotetietueita kentillä embeddingiä ja suodatusta varten, sekä erotettu kyselyjoukko arviointia varten.",
+        "tip": "Rakenna embedding-teksti tietoisesti: mitä siinä on, se löytyy; mitä siinä ei ole, sitä ei koskaan löydetä."
+      },
+      "s3": {
+        "title": "Rakenna embeddings ja vektori-indeksi",
+        "time": "",
+        "why": "Tämä on tekninen ydin: tuotetietueet muuttuvat vektoreiksi, ja vektori-indeksi löytää merkitykseltään lähimmät tuotteet käyttäjän kyselyyn millisekunneissa.",
+        "instructions": [
+          "Valitse embedding-malli [[node:af-embeddings|af-embeddings]] mukaan (monikieliselle katalogille multilingual)",
+          "Aja koko katalogi embeddings'eihin erissä ja tallenna vektorit tuotemetadatan kanssa",
+          "Pystytä vektorivarasto [[node:af-vector-db|af-vector-db]] mukaan ja lataa indeksi siihen",
+          "Pystytä reindeksointiputki: uudet ja muuttuneet tuotteet päivittävät vektorinsa automaattisesti",
+          "Aja tarkistuskyselyt ja varmista, että lähimmät naapurit näyttävät järkeviltä"
+        ],
+        "validate": "Testikysely palauttaa indeksistä järkevän tuotelistan hyväksyttävässä ajassa, ja muuttunut tuote löytyy oikein reindeksoinnin jälkeen.",
+        "tip": "Saman embedding-mallin on oltava käytössä sekä katalogille että kyselyille — muuten vektorit eivät ole vertailukelpoisia."
+      },
+      "s4": {
+        "title": "Aseta ranking ja suodattimet",
+        "time": "",
+        "why": "Pelkkä vektorien läheisyys ei ole lopullinen tuloslista. Keyword ja semantic on sekoitettava hybridiksi, lisättävä reranking ja pakolliset suodattimet (saatavuus, kategoria), muuten käyttäjä näkee epärelevantteja tai loppuunmyytyjä tuotteita.",
+        "instructions": [
+          "Kokoa hybrid-tulos: keyword tarkkoihin osumiin + semantic merkitykseen, painoineen",
+          "Lisää top-kandidaattien reranking relevanssin mukaan kyselyyn",
+          "Sovella kovia suodattimia: älä näytä out-of-stock, kunnioita valittua kategoriaa/hintaa/kieltä",
+          "Huomioi liiketoimintasäännöt: boostaa katteen, uutuuksien tai promojen mukaan tarvittaessa",
+          "Testaa rajakyselyt: tarkka SKU, laaja merkityspohjainen kysely, kysely toisella kielellä"
+        ],
+        "validate": "Kontrollikyselyillä keyword löytää tarkat SKU:t, semantic merkityspohjaiset, loppuunmyydyt eivät näy ja top-tulokset näyttävät relevanteilta.",
+        "tip": "Aloita yksinkertaisilla hybrid-painoilla ja viritä niitä arvioinnin tulosten mukaan, älä etukäteen arvaamalla."
+      },
+      "s5": {
+        "title": "Arvioi haun laatu",
+        "time": "",
+        "why": "Ilman mitattavaa arviointia et tiedä, paraniko se, etkä voi perustella kustannusta. Haun laatua arvioidaan oikeilla kyselyillä numeroin, ei mututuntumalla.",
+        "instructions": [
+          "Aja erotettu kyselyjoukko ja mittaa, osuuko \"oikea\" tuote top-tuloksiin",
+          "Vertaa uutta hybrid-hakua vanhaan keyword searchiin samoilla kyselyillä",
+          "Mittaa no-results rate, relevantin tuotteen sijainti ja järkevien top-tulosten osuus",
+          "Kerää sokkoarvio useammalta ihmiseltä kyselyotoksesta vinouman poistamiseksi",
+          "Pystytä query analytics: mitkä kyselyt ovat yleisiä, mitkä epäonnistuvat, mitä hakea seuraavaksi"
+        ],
+        "validate": "Sinulla on ennen/jälkeen-taulukko keskeisistä mittareista, ja hybrid-haku voittaa mitattavasti vanhan keyword searchin epäonnistuneilla kyselyillä.",
+        "tip": "Analysoi yleiset epäonnistuneet kyselyt erikseen — ne kertovat suoraan, mitä tuotteita tai synonyymejä katalogiin pitää lisätä."
+      },
+      "s6": {
+        "title": "Julkaise kauppaan ja julkaisun tarkistuslista",
+        "time": "",
+        "why": "Haku tuottaa liikevaihtoa vain tuotannossa. Julkaise se A/B-testin alla, jotta konversion nousu todistetaan oikealla rahalla ja paluupolku säilyy, ja ankkuroi se sitten laajempaan e-commerce-silmukkaan.",
+        "instructions": [
+          "Integroi hybrid-haku kauppaan [[node:ai-native-ecommerce|ai-native-ecommerce]] -mallin mukaan",
+          "Käynnistä A/B-testi: osa liikenteestä uuteen hakuun, osa vanhaan, merkittäväksi ajaksi",
+          "Kytke feedback loop: klikkaukset ja ostot palautuvat rankingiin",
+          "Pystytä monitorointi ja hälytykset: latency, no-results rate, out-of-stockin osuus tuloksissa",
+          "Käy läpi julkaisun tarkistuslista: reindeksointi toimii, suodattimet tiukat, paluusuunnitelma on olemassa, mittarit nousevat"
+        ],
+        "validate": "A/B-testi osoittaa tilastollisesti merkitsevän nousun search conversionissa ja laskun no-results ratessa, monitorointi on vihreä ja paluusuunnitelma on valmis.",
+        "tip": "Älä sammuta A/B-testiä seuraavana päivänä: anna sen kerätä tarpeeksi sessioita, tai nousu osoittautuu satunnaiskohinaksi."
+      }
+    }
+  },
+  "uc-ai-conversion-optimization": {
+    "title": "AI-CRO-ohjelman käynnistys",
+    "subtitle": "Hajanaisista testeistä rakenteelliseen, AI-tehostettuun konversio-optimoinnin ohjelmaan",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Vaiheittainen skenaario konversio-optimoinnin (CRO) ohjelman käynnistämiseen, jossa Claude nopeuttaa tiimiä 5-10×: se tuottaa hypoteeseja, auttaa lukemaan dataa ja kutistaa post-mortemit päivistä tunteihin. Tämä ei ole \"AI tekee CRO:n\" — vaan \"AI poistaa pullonkaulat alusta (ideat) ja lopusta (synteesi)\", kun taas A/B-testaustyökalu niiden välissä pysyy samana. Sopii yhdeksi [[node:use-cases|käyttötapaukseksi]] [[node:ai-native-ecommerce|AI-native-verkkokaupalle]].",
+    "approach": "Etenemme diagnoosista silmukkaan. Ensin varmistamme, että CRO on ylipäätään perusteltua (liikenne, tasanne, olemassa oleva funktio), sitten kartoitamme suppilon ja sen pullonkaulat. Claude tuottaa hypoteesivirran, me valitsemme ne kurinalaisesti kokeisiin, luemme tulokset oikein ja suljemme parannussilmukan tarkistuslistalla. AI laajentaa läpimenoa; ihminen pitää priorisoinnin kurin ja lopullisen päätöksen.",
+    "outcomes": [
+      "Hypoteesien läpimeno kasvaa 2-3:sta 10-15:een viikossa — ei kaaoksen vaan rakenteellisen backlogin kautta",
+      "Kokeen post-mortem vie 2 tuntia 2 päivän sijaan",
+      "Jokainen hypoteesi priorisoidaan selkeällä kehyksellä (impact / confidence / effort), ei mutu-tunteella",
+      "Kumulatiivinen konversion nousu kvartaalissa: +15-25% yhden muuttujan per testi -kurilla",
+      "Tiimillä on toistettava silmukka ja käynnistyksen tarkistuslista, ei kertaluonteisia aktiivisuuspiikkejä"
+    ],
+    "applyIn": [
+      {
+        "title": "Verkkokaupan suppilo",
+        "description": "Tuotesivu, ostoskori, kassa: Claude tuottaa otsikkovariantteja, hyötytekstejä ja CTA-mikrotekstiä, ja sinä testaat yhtä muuttujaa kerrallaan."
+      },
+      {
+        "title": "SaaS-onboarding ja tilaus",
+        "description": "Trial-to-paid, aktivointi, hinnoittelusivu: hypoteeseja arvon viestinnästä ja vastaväitteiden käsittelystä, validoituna segmenteillä joilla on tarpeeksi liikennettä."
+      },
+      {
+        "title": "Liidilomakkeet ja laskeutumissivut",
+        "description": "Vähemmän kenttiä, uudelleenmuotoiltu arvolupaus, social proof: nopea ideation-silmukka siellä missä konversio on tasaantunut ja ideat ehtyneet."
+      }
+    ],
+    "pitfalls": [
+      "Luottaa AI-variantteihin ilman human reviewia — Claude ei tunne tuotettasi ja tekee faktavirheitä ominaisuuksista ja hinnoista",
+      "Testata kaikkea: AI tuottaa paljon, mutta validi testi = yksi muuttuja yli 2 viikkoa. Kuri voittaa nopeuden",
+      "Ajaa testejä liikenteellä jossa tilastollista merkitsevyyttä ei saavuteta (<10k kävijää/kk per segmentti) — tulokset ovat kohinaa",
+      "Pitää AI:ta CRO-asiantuntijan korvaajana: priorisointi ja \"prodiin\"-päätös jäävät ihmiselle",
+      "Pysäyttää testi heti kun se \"näyttää voitolta\" — kurkkiminen tuhoaa tuloksen luotettavuuden"
+    ],
+    "exercises": [
+      {
+        "question": "Sivustosi saa 4 000 kävijää kuussa ja konversio on ollut tasan 4 kuukautta. Kannattaako täysi AI-CRO-ohjelma käynnistää juuri nyt?",
+        "hint": "Katso merkitsevyyskynnystä vaiheessa 1: tällä liikenteellä A/B-testi per segmentti kerää merkitsevyyttä kuukausia. Ehkä aloita laadullisilla menetelmillä (kyselyt, session replay) ja liikenteen kasvattamisella."
+      },
+      {
+        "question": "Claude ehdotti 12 hypoteesia tuotesivulle. Mitä teet seuraavaksi ennen kuin käynnistät yhtäkään testiä?",
+        "hint": "Muista vaiheet 3 ja 4: hypoteesit käyvät human reviewin faktavirheiden varalta, sitten priorisointi impact/confidence/effort-kehyksellä, ja kokeeseen menee yksi muuttuja — ei kaikki 12 kerralla."
+      },
+      {
+        "question": "Testi on käynyt 5 päivää, variantti B on jo 8% edellä. Manageri haluaa \"viedä B:n prodiin\". Vastauksesi?",
+        "hint": "Vaihe 5: 5 päivää ilman ilmoitettua tilastollista merkitsevyyttä on kurkkimista. Odota etukäteen sovittua otoskokoa ja luottamusväliä, tai riskeeraat satunnaisuuden lukitsemisen."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Varmista että tarvitset CRO-ohjelman ja lukitse tavoitetulos",
+        "time": "",
+        "why": "AI-CRO-ohjelmalla on järkeä vain riittävällä liikenteellä ja todellisella tasanteella. Käynnistys \"2 000 vierailulla\" tuottaa kohinaa oivalluksen sijaan ja murentaa luottamuksen heti ensimmäisestä kuukaudesta.",
+        "instructions": [
+          "Tarkista lähtöehdot: liikenne >10k kävijää/kk avainsegmentillä, konversio tasaantunut 3+ kuukautta, vähintään 1 henkilö CRO-funktiossa",
+          "Määritä yksi mitattava ohjelman tavoite (esim. +15% kassan konversioon tällä kvartaalilla)",
+          "Kirjaa avainmittarin nykyinen baseline — ilman sitä et voi todistaa kasvua",
+          "Päätä mitä AI nopeuttaa (ideation + synteesi) ja mikä jää ihmiselle (priorisointi, prodiin-päätös)"
+        ],
+        "validate": "Sinulla on kirjallinen kyllä/ei käynnistyksestä ja yksi mitattava tavoite kirjatulla baselinella.",
+        "tip": "Jos liikennettä ei riitä, älä pakota A/B-testejä. Aloita laadullisilla menetelmillä (kyselyt, sessiotallenteet) ja liikenteen kasvulla, sitten rakenteellinen CRO."
+      },
+      "s2": {
+        "title": "Kerää suppilon data ja löydä pullonkaulat",
+        "time": "",
+        "why": "Hypoteesien on synnyttävä datasta, ei mausta. Ilman suppilokarttaa ja poistumiskohtia AI tuottaa uskottavia mutta epärelevantteja ideoita.",
+        "instructions": [
+          "Rakenna suppilo vaiheittain (vierailu → tuote → kori → kassa → maksu) ja laske jokaisen siirtymän konversio",
+          "Löydä 1-2 vaihetta joissa suurin poistuma — ne ovat testien prioriteettialueet",
+          "Kerää laadullinen konteksti: sessiotallenteet, kyselyt, yleiset tukivalitukset",
+          "Lataa anonymisoitu data ja suppilon kuvaus Claudelle analyysin kontekstiksi",
+          "Pyydä Claudea nostamaan esiin kuviot ja kertomaan tarkalleen missä käyttäjät menetetään"
+        ],
+        "validate": "1-2 suppilon pullonkaulaa on tunnistettu poistumalukujen ja laadullisen vahvistuksen kanssa.",
+        "tip": "Älä anna AI:lle raakaa taulukkoa ilman mittareiden selitystä — malli arvaa sarakkeiden merkitykset väärin. Kuvaa mikä on mitäkin."
+      },
+      "s3": {
+        "title": "Tuota hypoteeseja Clauden kanssa",
+        "time": "",
+        "why": "Ideation on CRO:n päägpullonkaula. Tässä AI antaa suurimman noston: 10-15 rakenteellista hypoteesia viikossa 2-3 improvisoidun sijaan.",
+        "instructions": [
+          "Anna Claudelle konteksti: vaiheen 2 pullonkaula, tuotekuvaus, kohderyhmä, baseline",
+          "Pyydä hypoteesit yhdessä muodossa: \"Jos muutamme X:n, mittari Y nousee, koska Z\"",
+          "Tee human review jokaiselle hypoteesille tuotteen, hintojen ja ominaisuuksien faktavirheiden varalta",
+          "Suodata pois kaikki mitä ei voi testata yhdellä muuttujalla tai mitata",
+          "Kokoa eloon jääneet hypoteesit yhteen rakenteelliseen backlogiin"
+        ],
+        "validate": "On olemassa 8-15 hypoteesin backlog yhdessä muodossa, faktatarkistuksen läpäisseinä.",
+        "tip": "Pakota Claude ilmaisemaan syy (Z) jokaisessa hypoteesissa — se suodattaa \"koska näyttää kivemmalta\" -ideat ja helpottaa priorisointia."
+      },
+      "s4": {
+        "title": "Suunnittele A/B-kokeet ja priorisoi backlog",
+        "time": "",
+        "why": "Ilman suunnittelukuria ohjelma muuttuu testikaaokseksi. Yksi testi = yksi muuttuja kerrallaan; muuten et tiedä mikä todella toimi.",
+        "instructions": [
+          "Priorisoi backlog impact / confidence / effort -kehyksellä ja ota ylimmät 2-3 hypoteesia",
+          "Määritä jokaiselle yksi testattava muuttuja sekä kontrolli- ja testivariantti",
+          "Lukitse etukäteen onnistumismittari, vaadittu otoskoko ja testin kesto",
+          "Pyydä Claudea auttamaan keston laskennassa liikenteen mukaan ja luonnostelemaan variantti B",
+          "Aikatauluta testit niin etteivät ne mene päällekkäin samalla suppilon alueella"
+        ],
+        "validate": "Top-hypoteeseilla on kokekortit: yksi muuttuja, mittari, otoskoko ja kesto lukittuna ennen aloitusta.",
+        "tip": "Lukitse kesto ja otoskoko ENNEN käynnistystä. Se on ainoa suoja kiusaukselle pysäyttää testi satunnaisessa piikissä. Yksityiskohdat [[node:ec-cro|CRO-solmussa]]."
+      },
+      "s5": {
+        "title": "Analysoi tulokset ja kutista post-mortem",
+        "time": "",
+        "why": "Post-mortem vie yleensä päiviä eikä usein tule tehdyksi lainkaan. Claude kutistaa synteesin tunteihin — toinen raja jossa AI antaa läpimurron.",
+        "instructions": [
+          "Odota etukäteen sovittua otosta ja kestoa — älä pysäytä testiä ennenaikaisesti",
+          "Tarkista tilastollinen merkitsevyys ja luottamusväli, ei vain keskiarvojen eroa",
+          "Anna Claudelle tulokset ja pyydä post-mortem-luonnos: mitä testattiin, mitä tapahtui, miksi",
+          "Erota luotettava tulos kohinasta ja epävarmoista vaikutuksista",
+          "Kirjaa johtopäätös ja päätös: prodiin, takaisinkelaus vai uudelleentestaus"
+        ],
+        "validate": "Jokaisella valmistuneella testillä on post-mortem johtopäätöksellä, merkitsevyysarviolla ja päätöksellä.",
+        "tip": "AI luonnostelee, ihminen ratkaisee. Älä koskaan vie varianttia prodiin vain koska \"luku on korkeampi\" — ilman merkitsevyyttä se on sattumaa."
+      },
+      "s6": {
+        "title": "Sulje parannussilmukka ja lukitse käynnistyksen tarkistuslista",
+        "time": "",
+        "why": "CRO ei ole kertaluonteisten testien sarja vaan toistettava silmukka. Ilman tarkistuslistaa ja säännöllistä kadenssia ohjelma hiipuu ensimmäisen innostuspiikin jälkeen.",
+        "instructions": [
+          "Syötä mennyiden testien oivallukset takaisin ideationiin — voitot synnyttävät uusia hypoteeseja",
+          "Aseta rytmi: esim. 2-3 aktiivista testiä käynnissä ja viikoittainen katsaus",
+          "Kokoa käynnistyksen tarkistuslista: ehdot → data → hypoteesit → suunnittelu → analyysi → päätös",
+          "Dokumentoi mitkä vaiheet Claude tekee ja missä human review on pakollinen",
+          "Seuraa kumulatiivista nousua vaiheen 1 baselineen nähden, ei yksittäisiä voittoja"
+        ],
+        "validate": "On olemassa kirjallinen toistettava silmukka tarkistuslistalla ja asetetulla kadenssilla; ensimmäiset 2-3 pilottitestiä ajettiin sen läpi.",
+        "tip": "Kuri voittaa nopeuden: 3 puhdasta testiä kvartaalissa voittaa 30 likaista. Kasvata ohjelmaa kohti laajempaa [[node:ec-cro|kokeilujärjestelmää]]."
+      }
+    }
   }
 }
