@@ -2636,16 +2636,16 @@
     ],
     "exercises": [
       {
-        "title": "Vertaile tiloja",
-        "description": "Avaa vuorotellen Chat, Cowork ja Code. Kirjaa, miten vasen valikko eroaa kussakin."
+        "question": "Avaa vuorotellen Chat, Cowork ja Code. Kirjaa, miten vasen valikko eroaa kussakin tilassa.",
+        "hint": "Chat — keskustelulista; Cowork — tehtävät/ajastukset; Code — sessiot."
       },
       {
-        "title": "Käy Settings läpi",
-        "description": "Avaa jokainen Settings-osio ja vastaa jokaisesta: \"miksi tarvitsen tätä\"."
+        "question": "Käy läpi jokainen Settings-osio ja vastaa yhdellä lauseella: “miksi tarvitsen sen”.",
+        "hint": "Jos et osaa vastata, avaa osio ja lue kuvaus."
       },
       {
-        "title": "Ensimmäinen Code-istunto",
-        "description": "Käynnistä paikallinen istunto testikansiossa Plan-tilassa ja katso suunnitelma ilman muutoksia."
+        "question": "Käynnistä ensimmäinen paikallinen Code-sessio testikansiossa Plan-tilassa ja katso suunnitelma ilman muokkauksia.",
+        "hint": "Plan mode tutkii ja ehdottaa suunnitelman muuttamatta lähdetiedostoja."
       }
     ],
     "steps": {
@@ -2859,6 +2859,129 @@
         ],
         "validate": "Ymmärrät, että asetukset ovat yhteiset, ja tiedät ensimmäisen toimen 403-virheessä.",
         "tip": "Käytä Desktopia rinnakkaisiin istuntoihin ja visuaaliseen katselmointiin, CLI:tä skripteihin ja automaatioon."
+      }
+    }
+  },
+  "project-files": {
+    "title": "Tiedostojen lataaminen Projectiin",
+    "subtitle": "Miten annat Claudelle dokumentit kontekstiin ja kysyt niistä",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Käymme läpi, miten tiedostoja ladataan [[node:projects|Projectiin]], jotta Claude vastaa sinun dokumenttiesi pohjalta — brändioppaiden, spesifikaatioiden, koodin, taulukoiden — eikä yleistiedon perusteella.",
+    "approach": "Etenemme näin: «mitä Claude osaa lukea» → miten ja minne ladata → mitä laitetaan projektin tietoon ja mitä chattiin → miten muotoilla tiedostoihin kohdistuva pyyntö → yleiset virheet → ajantasaisuuden ylläpito.",
+    "outcomes": [
+      "Ymmärrät, mitä formaatteja Claude lukee ja miten se hyödyntää niitä vastauksessa",
+      "Tiedät eron projektin tiedon ja yhteen chattiin liitetyn tiedoston välillä",
+      "Osaat viitata tiedostoon pyynnössä ja saada vastauksen tarkasti sen pohjalta",
+      "Vältät kaksoiskappaleet ja vanhentuneet tiedostot, jotka pilaavat vastaukset"
+    ],
+    "applyIn": [
+      {
+        "title": "Työ brändioppaan mukaan",
+        "description": "Latasit oppaan Projectiin — ja jokainen teksti kirjoitetaan sinun äänensävyssäsi."
+      },
+      {
+        "title": "Dokumenttien analysointi",
+        "description": "PDF-sopimukset, raportit, spesifikaatiot: kysy sisällöstä kopioimatta tekstiä käsin."
+      },
+      {
+        "title": "Konteksti koodille",
+        "description": "Lataa keskeiset tiedostot tai skeema — Claude vastaa sinun projektisi huomioiden."
+      }
+    ],
+    "pitfalls": [
+      "Heität tiedoston yhteen chattiin, vaikka sitä tarvitaan kaikissa projektin keskusteluissa — sen paikka on projektin tiedossa.",
+      "Pidät vanhentuneita tiedostoversioita: Claude uskoo vanhaa dokumenttia.",
+      "Lataat kymmeniä tiedostoja «varmuuden vuoksi» — ylimääräinen konteksti hämärtää vastauksen.",
+      "Pyydät tiedoston pohjalta nimeämättä sitä, kun tiedostoja on monta — täsmennä, mistä on kyse."
+    ],
+    "exercises": [
+      {
+        "question": "Luo Project, lataa sen tietoon yksi dokumentti (esimerkiksi brändiopas) ja esitä kysymys, johon vastaus löytyy vain siitä.",
+        "hint": "Jos Claude vastaa ympäripyöreästi — tarkista, että tiedosto on projektin tiedossa eikä chatin liitteenä."
+      },
+      {
+        "question": "Vertaa: esitä sama kysymys ladatun tiedoston kanssa ja ilman sitä. Mikä muuttui vastauksessa?",
+        "hint": "Juuri tuo ero on tiedostosta saatavan kontekstin arvo."
+      }
+    ],
+    "steps": {
+      "pf-1": {
+        "title": "Mitä Claude osaa lukea",
+        "time": "",
+        "why": "Ennen lataamista ymmärrä, mitkä tiedostot ylipäätään ovat hyödyllisiä ja miten Claude «näkee» ne.",
+        "instructions": [
+          "Tuettuja ovat PDF, DOCX, teksti, koodi, taulukot (CSV/XLSX) ja kuvat ([[node:cap-input-modalities|tiedostojen ja kuvien tuki]]).",
+          "Claude lukee sisällön osana kontekstia: lainaa, tiivistää ja vastaa sen pohjalta.",
+          "Kuvat ja skannaukset se myös analysoi (Vision), mutta laatu riippuu luettavuudesta.",
+          "Suuret tiedostot vievät kontekstia — se vaikuttaa keskustelun pituuteen; älä lataa turhaa."
+        ],
+        "validate": "Ymmärrät, mitä formaatteja ladata ja mitä Claude tekee niillä.",
+        "tip": "Jos dokumentti on numeroita sisältävä taulukko, pyydä Claudea ensin kertaamaan sen rakenne, jotta varmistut, että hän luki sen oikein."
+      },
+      "pf-2": {
+        "title": "Miten ja minne ladata",
+        "time": "",
+        "why": "Tiedostoille on kaksi paikkaa, ja valinta määrää, missä keskusteluissa Claude näkee ne.",
+        "instructions": [
+          "Projectin tieto: avaa [[node:projects|Project]] → tieto-/tiedosto-osio → lisää dokumentti. Se on käytettävissä kaikissa tämän projektin keskusteluissa.",
+          "Liite chattiin: liitepainike tai vetäminen suoraan kenttään — tiedosto elää vain tässä keskustelussa.",
+          "Sääntö: pysyvä ja yhteinen → projektin tietoon; kertaluonteinen → liitteeksi chattiin.",
+          "Tiedostoja voi vetää hiirellä; useita kerralla — myös."
+        ],
+        "validate": "Lisäsit tiedoston Projectin tietoon ja ymmärrät, miten se eroaa chatin liitteestä.",
+        "tip": "Jos samaa tiedostoa tarvitaan kerta toisensa jälkeen — sen paikka on varmasti projektin tiedossa, ei jokaisessa uudessa chatissa."
+      },
+      "pf-3": {
+        "title": "Mitä laittaa tietoon ja mitä chattiin",
+        "time": "",
+        "why": "Projektin tieto on «pysyvä muisti». Sinne menee vakaa aineisto, chattiin muuttuva.",
+        "instructions": [
+          "Projektin tietoon: brändiopas, äänensävy, spesifikaatiot, pohjat, hakuteokset — se mitä tarvitaan aina.",
+          "Chattiin: kertaluonteinen dokumentti tiettyä tehtävää varten (yksi sopimus, yksi raportti analysoitavaksi).",
+          "Yhteys [[node:p-instructions|projektin ohjeisiin]]: tiedostot ovat «mitä tietää», ohjeet ovat «miten käyttäytyä».",
+          "Älä sekoita: kymmenen kertaluonteista tiedostoa tiedossa = roskaa, joka häiritsee."
+        ],
+        "validate": "Osaat päättää jokaisesta tiedostosta: onko se pysyvä (tietoon) vai kertaluonteinen (chattiin).",
+        "tip": "Tee itsellesi sääntö: projektin tieto = vain se, mikä säilyy nykyisen tehtävän yli."
+      },
+      "pf-4": {
+        "title": "Miten kysyä tiedoston pohjalta",
+        "time": "",
+        "why": "Tiedosto on ladattu — nyt siihen täytyy viitata oikein, jotta vastaus on tarkasti dokumentin mukainen.",
+        "instructions": [
+          "Nimeä lähde: «käytä brändiopasta ja kirjoita postaus…», «sopimuksen luvun 3 mukaan, vastaa…».",
+          "Jos tiedostoja on monta — täsmennä, minkä pohjalta vastataan.",
+          "Pyydä todennettavuutta: «lainaa katkelma, johon vastaus perustuu».",
+          "Esimerkki: lataa brändiopas ja pyydä «kirjoita kuulutus meidän äänensävyssämme, 3 kappaletta»."
+        ],
+        "validate": "Sait vastauksen, joka selvästi nojaa ladattuun tiedostoon eikä yleistietoon.",
+        "tip": "Pyyntö «lainaa, mistä otit» paljastaa nopeasti, lukiko Claude tiedoston vai keksikö hän vastauksen."
+      },
+      "pf-5": {
+        "title": "Yleiset virheet",
+        "time": "",
+        "why": "Suurin osa «Claude vastaa väärin» -tilanteista tiedostojen kanssa johtuu neljästä tyyppivirheestä.",
+        "instructions": [
+          "Vanhentunut tiedosto: tallessa on vanha versio — Claude uskoo sitä. Pidä yksi ajantasainen.",
+          "Kaksoiskappaleet: kaksi versiota samasta dokumentista hämmentävät mallia. Poista ylimääräinen.",
+          "Ylikuormitus: kymmenet tiedostot hämärtävät fokusta. Jätä vain tehtävään tarvittava.",
+          "Väärä säilytyspaikka: chatin liitteenä oleva tiedosto ei näy projektin muissa keskusteluissa."
+        ],
+        "validate": "Tunnistat nämä neljä virhettä ja tiedät, miten kunkin korjaat.",
+        "tip": "Jos vastaus on outo — tarkista ensimmäisenä, mikä tiedosto on todella ladattu eikä ole vanhentunut."
+      },
+      "pf-6": {
+        "title": "Ajantasaisuuden ylläpito",
+        "time": "",
+        "why": "Tiedostot vanhenevat. Projektin tieto on hyödyllistä juuri sen verran kuin se on tuoretta.",
+        "instructions": [
+          "Tarkista projektin tieto säännöllisesti: mikä on vanhentunut — korvaa, mikä on turhaa — poista.",
+          "Suurten dokumenttimuutosten yhteydessä lataa uusi versio ja poista vanha.",
+          "Pidä «yksi totuuden lähde»: yksi ajantasainen tiedosto aihetta kohden.",
+          "Seuraavaksi — määritä [[node:p-instructions|projektin ohjeet]], jotta Claude tietää, miten näitä tiedostoja käytetään."
+        ],
+        "validate": "Projektin tiedossa on vain ajantasaiset tiedostot, yksi aihetta kohden.",
+        "tip": "Liitä tämä säännölliseen siivoukseen: vanhentunut brändiopas on huonompi kuin sen puuttuminen."
       }
     }
   }

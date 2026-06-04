@@ -14,6 +14,7 @@
 export const WHATS_NEW = {
   // ─── Туториалы ─────────────────────────────────────────────────────────────
   'claude-workspace': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
+  'project-files': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
   'remote-computer-for-claude': { date: '2026-06-03', type: 'new', kind: 'tutorial' },
   'mcp-advanced': { date: '2026-05-27', type: 'new', kind: 'tutorial' },
   'claude-code-project': { date: '2026-05-27', type: 'new', kind: 'tutorial' },

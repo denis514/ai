@@ -6115,5 +6115,128 @@
         "tip": "Use Desktop for parallel sessions and visual review, and the CLI for scripts and automation."
       }
     }
+  },
+  "project-files": {
+    "title": "Uploading files to a Project",
+    "subtitle": "How to give Claude documents as context and ask questions about them",
+    "totalTime": "6 steps",
+    "whatItIs": "A walkthrough of how to upload files to a [[node:projects|Project]] so Claude answers based on your documents — brand guidelines, specs, code, spreadsheets — instead of relying on general knowledge.",
+    "approach": "We move from \"what Claude can read\" → how and where to upload → what belongs in project knowledge versus a chat → how to phrase a request about the files → common mistakes → keeping everything current.",
+    "outcomes": [
+      "Understand which formats Claude can read and how it uses them in its answers",
+      "Know the difference between project knowledge and an attachment in a single chat",
+      "Can reference a file in your request and get an answer based strictly on it",
+      "Avoid duplicates and outdated files that spoil the answers"
+    ],
+    "applyIn": [
+      {
+        "title": "Working from a brand guide",
+        "description": "Upload the guide to a Project, and every piece of text is written in your tone of voice."
+      },
+      {
+        "title": "Document analysis",
+        "description": "PDF contracts, reports, specs: ask about the contents without copying the text by hand."
+      },
+      {
+        "title": "Context for code",
+        "description": "Upload the key files or the schema, and Claude answers with your project in mind."
+      }
+    ],
+    "pitfalls": [
+      "Dropping a file into a single chat when it's needed across every conversation in the project — it belongs in the Project's knowledge.",
+      "Keeping outdated versions of files: Claude will trust the old document.",
+      "Uploading dozens of files \"just in case\" — the extra context dilutes the answer.",
+      "Asking about a file without naming it when there are many — specify exactly which one."
+    ],
+    "exercises": [
+      {
+        "question": "Create a Project, upload a single document into its knowledge (for example, a brand guide), and ask a question that can only be answered from that file.",
+        "hint": "If Claude answers in general terms, check that the file is in the Project's knowledge, not just attached to a chat."
+      },
+      {
+        "question": "Compare: ask the same question with the file uploaded and without it. What changed in the answer?",
+        "hint": "That difference is exactly the value of context from the file."
+      }
+    ],
+    "steps": {
+      "pf-1": {
+        "title": "What Claude can read",
+        "time": "",
+        "why": "Before you upload anything, understand which files are actually useful and how Claude \"sees\" them.",
+        "instructions": [
+          "Supported formats include PDF, DOCX, text, code, spreadsheets (CSV/XLSX), and images ([[node:cap-input-modalities|file and image support]]).",
+          "Claude reads the contents as part of the context: it quotes, summarizes, and answers based on them.",
+          "It can also parse images and scans (Vision), but the quality depends on how legible they are.",
+          "Large files take up context — this affects how long the conversation can run; don't upload more than you need."
+        ],
+        "validate": "You understand which formats to upload and what Claude does with them.",
+        "tip": "If the document is a table of numbers, first ask Claude to restate its structure so you can confirm it read it correctly."
+      },
+      "pf-2": {
+        "title": "How and where to upload",
+        "time": "",
+        "why": "There are two places for files, and your choice determines which conversations Claude will see them in.",
+        "instructions": [
+          "Project knowledge: open the [[node:projects|Project]] → the knowledge/files section → add the document. It's available across every conversation in that project.",
+          "Chat attachment: use the attach button or drag the file straight into the input field — the file only lives in that one conversation.",
+          "Rule of thumb: permanent and shared → Project knowledge; one-off → chat attachment.",
+          "You can drag files in with the mouse, and several at once too."
+        ],
+        "validate": "You've added a file to the Project's knowledge and understand how that differs from a chat attachment.",
+        "tip": "If you need the same file again and again, it definitely belongs in the Project's knowledge rather than in each new chat."
+      },
+      "pf-3": {
+        "title": "What goes into knowledge versus into a chat",
+        "time": "",
+        "why": "Project knowledge is the \"permanent memory.\" The stable things go there; the variable things go into a chat.",
+        "instructions": [
+          "Into Project knowledge: brand guide, tone of voice, specs, templates, reference materials — whatever you need all the time.",
+          "Into a chat: a one-off document for a specific task (a single contract, one report to review).",
+          "The link to [[node:p-instructions|project instructions]]: files are the \"what to know,\" instructions are the \"how to behave.\"",
+          "Don't mix them: a dozen one-off files in the knowledge becomes clutter that gets in the way."
+        ],
+        "validate": "For any given file, you can decide whether it's permanent (into knowledge) or one-off (into a chat).",
+        "tip": "Set yourself a rule: Project knowledge = only the things that will outlive the current task."
+      },
+      "pf-4": {
+        "title": "How to ask about a file",
+        "time": "",
+        "why": "The file is uploaded — now you need to reference it correctly so the answer stays strictly within the document.",
+        "instructions": [
+          "Name the source: \"using the brand guide, write a post…\", \"based on section 3 of the contract, answer…\".",
+          "If there are many files, specify exactly which one to answer from.",
+          "Ask for verifiability: \"quote the passage your answer is based on.\"",
+          "Example: upload the brand guide and ask, \"write a 3-paragraph announcement in our tone of voice.\""
+        ],
+        "validate": "You got an answer that clearly draws on the uploaded file rather than on general knowledge.",
+        "tip": "Asking \"quote where you got this\" quickly reveals whether Claude actually read the file or just made it up."
+      },
+      "pf-5": {
+        "title": "Common mistakes",
+        "time": "",
+        "why": "Most cases of \"Claude gives the wrong answer\" about files come down to four typical mistakes.",
+        "instructions": [
+          "Outdated file: an old version is sitting there and Claude trusts it. Keep a single current one.",
+          "Duplicates: two versions of the same document confuse the model. Delete the extra one.",
+          "Overload: dozens of files blur the focus. Keep only what the task needs.",
+          "Wrong container: a file attached to a chat isn't visible in the project's other conversations."
+        ],
+        "validate": "You recognize these four mistakes and know how to fix each one.",
+        "tip": "If an answer seems off, first check which file is actually uploaded and whether it's out of date."
+      },
+      "pf-6": {
+        "title": "Keeping things current",
+        "time": "",
+        "why": "Files go stale. Project knowledge is only as useful as it is fresh.",
+        "instructions": [
+          "Periodically review the Project's knowledge: replace what's outdated, remove what's unnecessary.",
+          "When a document changes substantially, upload the new version and delete the old one.",
+          "Keep a \"single source of truth\": one current file per topic.",
+          "Next, set up your [[node:p-instructions|project instructions]] so Claude knows how to use these files."
+        ],
+        "validate": "The Project's knowledge holds only current files, one per topic.",
+        "tip": "Tie this to a regular cleanup: an outdated brand guide is worse than no brand guide at all."
+      }
+    }
   }
 }

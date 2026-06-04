@@ -174,6 +174,29 @@ export const tutorials = {
       { "id": "ws-16" }
     ]
   },
+  "project-files": {
+    "nodeId": "p-files",
+    "icon": "attachment",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "claude-setup"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "projects",
+      "p-instructions",
+      "instructions"
+    ],
+    "steps": [
+      { "id": "pf-1" },
+      { "id": "pf-2" },
+      { "id": "pf-3" },
+      { "id": "pf-4" },
+      { "id": "pf-5" },
+      { "id": "pf-6" }
+    ]
+  },
   "basics": {
     "nodeId": "basics",
     "icon": "brain",
