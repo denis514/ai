@@ -33,6 +33,7 @@ const LEVEL_COLOR = {
 
 const AUDIENCES    = ['all', 'everyone', 'business', 'developers'];
 const STATUSES     = ['all', 'started', 'done'];
+const PATH_LEVELS  = ['all', 'beginner', 'intermediate', 'advanced'];
 const LEVEL_GROUPS = ['beginner', 'intermediate', 'advanced'];
 
 export default function WorkflowsModal({
@@ -46,8 +47,10 @@ export default function WorkflowsModal({
   const [tab, setTab] = useState('paths');
   const [audience, setAudience] = useState('all');
   const [status, setStatus]   = useState('all');
+  const [levelSort, setLevelSort] = useState('all'); // сортировка Polut по уровню
   const [audienceOpen, setAudienceOpen] = useState(false);
   const [statusOpen,   setStatusOpen]   = useState(false);
+  const [levelOpen,    setLevelOpen]    = useState(false);
   const [selectedTutorialId, setSelectedTutorialId] = useState(initialSelectedTutorial || null);
   useFocusReturn();
   useBodyScrollLock();
@@ -55,6 +58,7 @@ export default function WorkflowsModal({
   const isMobile = useIsMobile();
   const audienceRef = useRef(null);
   const statusRef   = useRef(null);
+  const levelRef    = useRef(null);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -82,14 +86,15 @@ export default function WorkflowsModal({
 
   // Закрываем дропдауны по клику вне
   useEffect(() => {
-    if (!audienceOpen && !statusOpen) return;
+    if (!audienceOpen && !statusOpen && !levelOpen) return;
     const onClick = (e) => {
       if (audienceRef.current && !audienceRef.current.contains(e.target)) setAudienceOpen(false);
       if (statusRef.current   && !statusRef.current.contains(e.target))   setStatusOpen(false);
+      if (levelRef.current    && !levelRef.current.contains(e.target))    setLevelOpen(false);
     };
     document.addEventListener('mousedown', onClick);
     return () => document.removeEventListener('mousedown', onClick);
-  }, [audienceOpen, statusOpen]);
+  }, [audienceOpen, statusOpen, levelOpen]);
 
   // Локализованный preview выбранного туториала.
   const selectedTutorialKey = selectedTutorialId;
@@ -195,7 +200,40 @@ export default function WorkflowsModal({
         {/* Фильтры — два дропдауна в одной строке */}
         <div className="courses-filters-bar">
 
-          {/* Левый дропдаун: «Для кого» */}
+          {/* Polut: дропдаун «Уровень» (выбранный уровень поднимается наверх).
+              Курсы: дропдаун «Для кого». */}
+          {tab === 'paths' ? (
+            <div className="cfilter" ref={levelRef}>
+              <button
+                type="button"
+                className={`cfilter__toggle ${levelOpen ? 'is-open' : ''} ${levelSort !== 'all' ? 'is-active' : ''}`}
+                onClick={() => { setLevelOpen(v => !v); setStatusOpen(false); setAudienceOpen(false); }}
+                aria-haspopup="listbox"
+                aria-expanded={levelOpen}
+              >
+                <span className="cfilter__label">{t('courses.filter.level') || 'Уровень'}</span>
+                <span className="cfilter__value">{levelSort === 'all' ? (t('courses.level.all') || 'Все') : t(`level.${levelSort}`)}</span>
+                <Icon name={levelOpen ? 'arrow-up' : 'arrow-down'} size={11} strokeWidth={1.75} />
+              </button>
+              {levelOpen && (
+                <div className="cfilter__menu" role="listbox">
+                  {PATH_LEVELS.map(lvl => (
+                    <button
+                      key={lvl}
+                      type="button"
+                      role="option"
+                      aria-selected={levelSort === lvl}
+                      className={`cfilter__option ${levelSort === lvl ? 'is-selected' : ''}`}
+                      onClick={() => { setLevelSort(lvl); setLevelOpen(false); }}
+                    >
+                      {lvl === 'all' ? (t('courses.level.all') || 'Все') : t(`level.${lvl}`)}
+                      {levelSort === lvl && <Icon name="check" size={13} strokeWidth={1.75} />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
           <div className="cfilter" ref={audienceRef}>
             <button
               type="button"
@@ -226,6 +264,7 @@ export default function WorkflowsModal({
               </div>
             )}
           </div>
+          )}
 
           {/* Правый дропдаун: «Статус» — только на вкладке «Курсы» */}
           {tab === 'courses' && (
@@ -398,7 +437,7 @@ export default function WorkflowsModal({
         ) : (
           <PathsList
             paths={getAllLocalizedPaths(locale)}
-            audience={audience}
+            levelSort={levelSort}
             progressApi={progressApi}
             nodeProgressApi={nodeProgressApi}
             initialPathId={initialPathId}
@@ -459,7 +498,7 @@ function stepIcon(step) {
 
 const LEVEL_ORDER = { beginner: 0, intermediate: 1, advanced: 2, expert: 3 };
 
-function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate, initialPathId }) {
+function PathsList({ paths, levelSort = 'all', progressApi, nodeProgressApi, onNavigate, initialPathId }) {
   const t = useT();
   const { locale } = useLocale();
   const [openId, setOpenId] = useState(initialPathId || null);
@@ -477,18 +516,20 @@ function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate, 
     prompt: t('courses.kind.prompt')
   };
 
-  const filtered = audience === 'all'
-    ? paths
-    : paths.filter(p => p.audience === audience);
-
-  const sorted = [...filtered].sort(
+  // На вкладке Polut фильтруем/сортируем по уровню (не по аудитории).
+  const sorted = [...paths].sort(
     (a, b) => (LEVEL_ORDER[a.level] ?? 99) - (LEVEL_ORDER[b.level] ?? 99)
   );
-  // Группировка по уровню (лейбл на плашке: Aloittelija / Edistynyt / …),
-  // порядок групп — по LEVEL_ORDER.
-  const pathGroups = Object.keys(LEVEL_ORDER)
+  // Группировка по уровню (лейбл на плашке: Aloittelija / Edistynyt / …).
+  let pathGroups = Object.keys(LEVEL_ORDER)
     .map(level => ({ level, items: sorted.filter(p => p.level === level) }))
     .filter(g => g.items.length);
+  // Выбранный в дропдауне уровень поднимаем наверх (остальные — обычным порядком).
+  if (levelSort !== 'all') {
+    pathGroups = [...pathGroups].sort(
+      (a, b) => (b.level === levelSort ? 1 : 0) - (a.level === levelSort ? 1 : 0)
+    );
+  }
 
   return (
     <div className="paths-list">
