@@ -190,6 +190,20 @@
   Commits `60a0690`, `beb7e93`.
 - ✅ Всё выгружено в прод (`git push`, 5 коммитов).
 
+### 🧭 Сессия 2026-06-04 (продолжение) — docs-watcher + узлы Desktop/web
+- ✅ **Сторож документации** (`scripts/docs-watcher.mjs` + `.github/workflows/docs-watch.yml`
+  + `docs/docs-watch/` + `skills/docs-watcher/`): еженедельно (пн 08:00 UTC) скачивает
+  ключевые страницы docs (.md) + `llms.txt`, диффит со слепком, при изменении пишет
+  дифф + черновик правок узлов в `tasks/backlog.md` и сигналит в Telegram. Реакция =
+  «сигнал + черновик правок» (не авто-правка). Базовая линия снята (5 страниц), no-op
+  прогон проверен. `npm run docs:watch`. Выгружено в прод.
+- [ ] **Узлы/курс «Рабочее место Claude» (Desktop/web)** — в работе. Реальная структура
+  с живых скриншотов: 3 режима (Chat/Cowork/Code) + Settings (General/Account/Privacy/
+  Billing/Usage/Capabilities/Connectors/Claude Code/Cowork/Claude-in-Chrome + Desktop app:
+  General/Extensions/Developer). План: контейнер `apps-setup` в configuration + листья
+  (`pl-app-modes`, `pl-code-mode`, `pl-settings-map`, `pl-connectors`, `pl-extensions`,
+  `p-knowledge`) + детальный туториал. Источник правды — `docs/docs-watch/snapshots/desktop.md`.
+
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
   работает в on-demand режиме — мягкий).
