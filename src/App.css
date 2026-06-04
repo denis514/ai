@@ -151,33 +151,39 @@
   font-size: 13px;
   margin: 0;
 }
-.archive-modal__list { list-style: none; margin: 0; padding: 0; }
+.archive-modal__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+/* Карточка обновления: ряд 1 — лейбл + дата, ряд 2 — название (переносится). */
 .archive-modal__item {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
   width: 100%;
-  padding: 11px 12px;
-  border: none;
-  border-radius: 10px;
-  background: transparent;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
   cursor: pointer;
   text-align: left;
-  transition: background 0.12s;
+  transition: background 0.12s, border-color 0.12s;
 }
-.archive-modal__item:hover { background: var(--surface-2); }
+.archive-modal__item:hover { background: var(--surface-2); border-color: var(--border-strong); }
+.archive-modal__item.is-unseen { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
 .archive-modal__item.is-unseen .archive-modal__item-title { font-weight: 600; }
+.archive-modal__item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
 .archive-modal__item-title {
-  flex: 1;
-  font-size: 13.5px;
+  font-size: 14px;
+  line-height: 1.45;
   color: var(--text);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;       /* переносится на следующую строку */
+  overflow-wrap: anywhere;
 }
 .archive-modal__item-date { font-size: 12px; color: var(--text-muted); flex-shrink: 0; white-space: nowrap; }
-.archive-modal__item-arrow { color: var(--text-muted); flex-shrink: 0; opacity: 0; transition: opacity 0.15s; }
-.archive-modal__item:hover .archive-modal__item-arrow { opacity: 1; }
 .archive-modal__pagination {
   display: flex;
   align-items: center;
@@ -200,8 +206,22 @@
 .archive-modal__page-btn:hover:not(:disabled) { background: var(--surface-2); border-color: var(--border-strong); }
 .archive-modal__page-btn:disabled { opacity: 0.3; cursor: default; }
 .archive-modal__page-label { font-size: 13px; color: var(--text-muted); min-width: 110px; text-align: center; }
-@media (max-width: 600px) {
-  .archive-modal { max-height: 92vh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+
+/* Мобайл: окно «Päivitykset» — во весь экран, пагинация прижата к низу. */
+@media (max-width: 720px) {
+  .courses-overlay:has(.archive-modal) { padding: 0; align-items: stretch; }
+  .archive-modal {
+    max-width: 100%;
+    width: 100%;
+    max-height: none;
+    height: 100dvh;
+    border-radius: 0;
+  }
+  .archive-modal__body { padding: 10px 12px; }
+  .archive-modal__pagination {
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: var(--surface);
+  }
 }
 
 .wn-panel__empty {

@@ -76,7 +76,7 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
             <Icon name="archive" size={20} strokeWidth={1.5} />
           </div>
           <div className="help-modal__head-text">
-            <h2>{t('category.updatesArchiveTitle')}</h2>
+            <h2>{t('category.updatesBtn')}</h2>
             <p>{t('category.updatesPeriod')} · {allEntries.length} {t('category.updatesBtn').toLowerCase()}</p>
           </div>
           <button
@@ -105,14 +105,15 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
                       className={`archive-modal__item ${unseen ? 'is-unseen' : ''}`}
                       onClick={() => handleSelect(id)}
                     >
-                      <span className={`wn-panel__badge wn-panel__badge--${entry.type}`}>
-                        {entry.type === 'new' ? t('category.updatesNew') : t('category.updatesUpdated')}
+                      <span className="archive-modal__item-top">
+                        <span className={`wn-panel__badge wn-panel__badge--${entry.type}`}>
+                          {entry.type === 'new' ? t('category.updatesNew') : t('category.updatesUpdated')}
+                        </span>
+                        <span className="archive-modal__item-date">{formatDate(entry.date)}</span>
                       </span>
                       <span className="archive-modal__item-title">
                         {titles[id] || id}
                       </span>
-                      <span className="archive-modal__item-date">{formatDate(entry.date)}</span>
-                      <Icon name="arrow-right" size={13} strokeWidth={1.5} className="archive-modal__item-arrow" />
                     </button>
                   </li>
                 );
