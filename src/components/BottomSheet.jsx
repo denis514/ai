@@ -32,18 +32,15 @@ export default function BottomSheet({
   icon,
   children,
   footer,
-  expandable = false,
   className = ''
 }) {
   const t = useT();
   const sheetRef = useRef(null);
   const [dragY, setDragY] = useState(0);
   const dragStartY = useRef(null);
-  // Полноэкранный режим листа (по кнопке expand). Сбрасывается при закрытии.
-  const [isFull, setIsFull] = useState(false);
 
   useEffect(() => {
-    if (!isOpen) { setIsFull(false); return; }
+    if (!isOpen) return;
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -97,7 +94,7 @@ export default function BottomSheet({
       style={kbInset ? { paddingBottom: `${kbInset}px` } : undefined}
     >
       <div
-        className={`bsheet ${isFull ? 'bsheet--full' : ''}`}
+        className="bsheet"
         ref={sheetRef}
         style={{
           ...(accent ? { '--cat-color': accent } : {}),
@@ -135,19 +132,6 @@ export default function BottomSheet({
               {kicker && <span className="bsheet__kicker">{kicker}</span>}
               <h3 className="bsheet__title">{title}</h3>
             </div>
-            {expandable && (
-              <button
-                type="button"
-                className="bsheet__expand"
-                onClick={() => setIsFull(v => !v)}
-                aria-label={isFull ? t('common.shrink') : t('common.expand')}
-                title={isFull ? t('common.shrink') : t('common.expand')}
-                aria-pressed={isFull}
-                onTouchStart={(e) => e.stopPropagation()}
-              >
-                <Icon name={isFull ? 'restore' : 'fullscreen'} size={17} strokeWidth={1.75} />
-              </button>
-            )}
             <button
               type="button"
               className="bsheet__close"

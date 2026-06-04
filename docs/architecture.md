@@ -172,3 +172,20 @@ DetailPanel ← selectedNode
      ссылки в library и обратно к узлу mindmap.
 
   Стоимость: +12 KB JS, +4 KB CSS, +2 hooks, +1 script, +1 компонент.
+
+- **2026-06-04 — Стандарт expand/shrink и запрет «развернуть» на телефонах.**
+  Правило вёрстки для всех модальных окон:
+  1. **Иконки-стандарт для действия «развернуть/свернуть»**: только
+     `square-arrow-expand-01` (раскрыть) и `square-arrow-shrink-02` (свернуть)
+     из Hugeicons stroke-rounded. В реестре `src/components/Icon.jsx` это
+     семантические имена `fullscreen` → `SquareArrowExpand01Icon` и
+     `restore` → `SquareArrowShrink02Icon`. Кнопка-тогл всегда переключает
+     иконку по состоянию: `name={isFullscreen ? 'restore' : 'fullscreen'}`.
+     Использовать любые другие «expand»-глифы (диагональные стрелки,
+     Maximize и т.п.) для этого действия — запрещено.
+  2. **Функции «развернуть на весь экран» НЕТ на телефонах.** Граница —
+     `useIsMobile` (≤ 720px): на телефонах окна рендерятся как `BottomSheet`,
+     и в его шапке только крестик закрытия, без кнопки развернуть. На
+     **планшетах и десктопе** (> 720px) окна рендерятся как обычные модалки
+     (`.tut-modal` / `.courses-modal` / `.lib-modal`), и там тогл
+     expand/shrink присутствует. Не добавлять expand в `BottomSheet`.
