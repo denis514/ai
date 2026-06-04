@@ -484,10 +484,22 @@ function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate, 
   const sorted = [...filtered].sort(
     (a, b) => (LEVEL_ORDER[a.level] ?? 99) - (LEVEL_ORDER[b.level] ?? 99)
   );
+  // Группировка по уровню (лейбл на плашке: Aloittelija / Edistynyt / …),
+  // порядок групп — по LEVEL_ORDER.
+  const pathGroups = Object.keys(LEVEL_ORDER)
+    .map(level => ({ level, items: sorted.filter(p => p.level === level) }))
+    .filter(g => g.items.length);
 
   return (
     <div className="paths-list">
-      {sorted.map(path => {
+      {pathGroups.map(({ level, items }) => (
+        <div key={level} className="courses-level-group">
+          <div className="courses-level-group__header" style={{ '--lvl-color': LEVEL_COLOR[level] }}>
+            <span className="courses-level-group__dot" />
+            <span className="courses-level-group__label">{t(`level.${level}`)}</span>
+            <span className="courses-level-group__count">{items.length}</span>
+          </div>
+          {items.map(path => {
         const total = path.steps.length;
         const done = path.steps.filter(s => isStepDone(s, { progressApi, nodeProgressApi })).length;
         const percent = Math.round((done / total) * 100);
@@ -570,7 +582,9 @@ function PathsList({ paths, audience, progressApi, nodeProgressApi, onNavigate, 
             )}
           </div>
         );
-      })}
+          })}
+        </div>
+      ))}
     </div>
   );
 }
