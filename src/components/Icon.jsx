@@ -74,8 +74,8 @@ import {
   Minimize01Icon,
   BrowserIcon,
   SidebarBottomIcon,
-  ArrowExpandDiagonal01Icon,
-  ArrowShrink01Icon,
+  SquareArrowExpand01Icon,
+  SquareArrowShrink02Icon,
   FlowCircleIcon,
   PanelLeftIcon,
   PanelRightIcon,
@@ -185,8 +185,8 @@ const REGISTRY = {
   minimize:    Minimize01Icon,
   window:      BrowserIcon,                // ▢ открыть как отдельное окно
   dock:        SidebarBottomIcon,          // ▭ вернуть в док снизу
-  fullscreen:  ArrowExpandDiagonal01Icon,  // ⤢ во весь экран
-  restore:     ArrowShrink01Icon,          // ⤡ свернуть из полноэкрана
+  fullscreen:  SquareArrowExpand01Icon,    // ⤢ раскрыть (стандарт expand-действий)
+  restore:     SquareArrowShrink02Icon,    // ⤡ уменьшить (стандарт shrink-действий)
   branch:      FlowCircleIcon,             // ⌥ ветвление / условие
   loop:        RepeatIcon,                 // 🔁 цикл (повтор)
   'panel-left':  PanelLeftIcon,            // ▥ свернуть/развернуть левую панель

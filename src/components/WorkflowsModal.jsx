@@ -164,7 +164,7 @@ export default function WorkflowsModal({
             aria-label={isFullscreen ? 'Свернуть окно' : 'Развернуть на весь экран'}
             title={isFullscreen ? 'Свернуть' : 'На весь экран'}
           >
-            <Icon name="fullscreen" size={17} strokeWidth={1.75} />
+            <Icon name={isFullscreen ? 'restore' : 'fullscreen'} size={17} strokeWidth={1.75} />
           </button>
           <button
             type="button"
