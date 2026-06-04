@@ -220,8 +220,11 @@
   - [x] **Ветка Prompting закрыта** ✅: 6-шаговые курсы-погружения на всех 9 листьях-техниках
     (prompt-4d/principles/xml/fewshot/cot/role/prefill/structured/iterate), ru/en/fi.
     Всего 50 курсов.
-  - [ ] Раскатка контента дальше: следующие ветки (кнопка «Узнать больше» появляется
-    там, где курс готов). Кандидаты: Capabilities (cap-*), Instructions, Agents.
+  - [x] **Ветка Agents закрыта** ✅: 6-шаговые курсы на 7 листьях (agent-principles,
+    agent-code-reviewer, agent-audit, agent-researcher, agent-designer, agent-pm,
+    agent-managed), ru/en/fi. Всего 57 курсов.
+  - [ ] Раскатка контента дальше. Закрыты: Projects, Prompting, Agents. Кандидаты:
+    Capabilities (cap-*), Instructions, Configuration, Foundation/AI Fundamentals.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
