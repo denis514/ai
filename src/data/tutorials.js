@@ -1538,6 +1538,320 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "prompt-4d": {
+    "nodeId": "pr-4d",
+    "icon": "target",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "prompting"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-principles",
+      "prompt-role",
+      "prompting"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "prompt-principles": {
+    "nodeId": "pr-principles",
+    "icon": "compass",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "prompting"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-role",
+      "prompt-xml",
+      "prompting"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "prompt-xml": {
+    "nodeId": "pr-xml",
+    "icon": "command",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "prompting"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-fewshot",
+      "prompt-structured",
+      "prompting"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "prompt-fewshot": {
+    "nodeId": "pr-fewshot",
+    "icon": "books",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "prompting"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-cot",
+      "prompt-xml",
+      "prompting"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "prompt-cot": {
+    "nodeId": "pr-cot",
+    "icon": "brain",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "prompting"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-xml",
+      "prompting",
+      "cap-thinking"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "prompt-role": {
+    "nodeId": "pr-role",
+    "icon": "mask",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "prompting"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-principles",
+      "instructions",
+      "prompting"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "prompt-prefill": {
+    "nodeId": "pr-prefill",
+    "icon": "pencil",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "prompting"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-structured",
+      "prompting"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "prompt-structured": {
+    "nodeId": "pr-structured",
+    "icon": "clipboard",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "prompting"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-prefill",
+      "prompt-xml",
+      "prompting"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "prompt-iterate": {
+    "nodeId": "pr-iterate",
+    "icon": "repeat",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "prompting"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompt-fewshot",
+      "ready-prompts",
+      "prompting"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 
