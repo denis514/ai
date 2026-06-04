@@ -234,8 +234,12 @@
     (cc-install, cc-terminal, cc-config, cc-cfg-permissions, cc-slash, cc-plan-mode, cc-ide),
     ru/en/fi. Мелкие микро-настройки (cc-cfg-statusline, cc-grp-*, cc-tty-*) намеренно
     пропущены, чтобы не плодить воду. Всего 84 курса.
+  - [x] **Ветка AI Fundamentals закрыта** ✅: 6-шаговые курсы на 7 листьях (af-llm-basics,
+    af-embeddings, af-vector-db, af-rag-basics, af-memory-systems, af-multimodal,
+    af-fine-tuning), простым языком, ru/en/fi. Всего 91 курс.
   - [ ] Раскатка контента дальше. Закрыты: Projects, Prompting, Agents, Capabilities,
-    Instructions, MCP, Claude Code (ключевое). Кандидаты: AI Fundamentals, Use Cases, Systems.
+    Instructions, MCP, Claude Code (ключевое), AI Fundamentals. Кандидаты: Use Cases, Systems,
+    Transformation, остаток Claude Code (мелкие узлы).
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
