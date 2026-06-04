@@ -131,9 +131,15 @@ export default function WorkflowsModal({
       : byAudience;
 
   // Группировка по уровню: начальный → средний → продвинутый
-  const levelGroups = LEVEL_GROUPS
+  let levelGroups = LEVEL_GROUPS
     .map(lvl => ({ level: lvl, items: byStatus.filter(i => i.level === lvl) }))
     .filter(g => g.items.length > 0);
+  // Выбранный в дропдауне «Уровень» поднимаем наверх (как в Polut).
+  if (levelSort !== 'all') {
+    levelGroups = [...levelGroups].sort(
+      (a, b) => (b.level === levelSort ? 1 : 0) - (a.level === levelSort ? 1 : 0)
+    );
+  }
 
   return (
     <div
@@ -200,10 +206,8 @@ export default function WorkflowsModal({
         {/* Фильтры — два дропдауна в одной строке */}
         <div className="courses-filters-bar">
 
-          {/* Polut: дропдаун «Уровень» (выбранный уровень поднимается наверх).
-              Курсы: дропдаун «Для кого». */}
-          {tab === 'paths' ? (
-            <div className="cfilter" ref={levelRef}>
+          {/* «Уровень» — на обеих вкладках: выбранный уровень поднимается наверх. */}
+          <div className="cfilter" ref={levelRef}>
               <button
                 type="button"
                 className={`cfilter__toggle ${levelOpen ? 'is-open' : ''} ${levelSort !== 'all' ? 'is-active' : ''}`}
@@ -232,8 +236,10 @@ export default function WorkflowsModal({
                   ))}
                 </div>
               )}
-            </div>
-          ) : (
+          </div>
+
+          {/* «Для кого» — только на вкладке курсов */}
+          {tab === 'courses' && (
           <div className="cfilter" ref={audienceRef}>
             <button
               type="button"
