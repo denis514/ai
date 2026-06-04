@@ -265,7 +265,11 @@
     native, грубых ошибок/калек нет. Исправлен единственный системный дефект: поле totalTime
     нормализовано (ru «6 шагов» / en «6 steps» / fi «6 vaihetta»), EN behaviour→behavior.
     P2-полировка (финские англицизмы pipeline/output/surface, кавычки «»/"") — отмечена как
-    необязательная, не делалась.
+    необязательная.
+  - [x] **P2 FI-полировка** ✅: 143 безопасные замены падежных форм англицизмов на финские
+    термины (pipelineen→putkeen, outputin→tuloksen, inputin→syötteen и т.д.) по всему
+    fi/tutorials.json. Голые базовые формы не трогали (совпадают с JSON-ключами схемы
+    inputs/outputs, кодом, продукт-терминами). Кавычки не нормализовали (риск JSON).
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
