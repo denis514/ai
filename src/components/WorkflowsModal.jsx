@@ -31,10 +31,10 @@ const LEVEL_COLOR = {
   advanced:     '#7c3aed'
 };
 
-const AUDIENCES    = ['all', 'everyone', 'business', 'developers'];
 const STATUSES     = ['all', 'started', 'done'];
 const PATH_LEVELS  = ['all', 'beginner', 'intermediate', 'advanced'];
 const LEVEL_GROUPS = ['beginner', 'intermediate', 'advanced'];
+const CAT_KEYS     = Object.keys(CATEGORIES); // порядок категорий для группировки курсов
 
 export default function WorkflowsModal({
   onClose, onOpen, onNavigate, progressApi, nodeProgressApi, onOpenPrompt,
@@ -45,20 +45,20 @@ export default function WorkflowsModal({
   const t = useT();
   const { locale } = useLocale();
   const [tab, setTab] = useState('paths');
-  const [audience, setAudience] = useState('all');
   const [status, setStatus]   = useState('all');
   const [levelSort, setLevelSort] = useState('all'); // сортировка Polut по уровню
-  const [audienceOpen, setAudienceOpen] = useState(false);
+  const [catSort,   setCatSort]   = useState('all'); // сортировка курсов по категории
   const [statusOpen,   setStatusOpen]   = useState(false);
   const [levelOpen,    setLevelOpen]    = useState(false);
+  const [catOpen,      setCatOpen]      = useState(false);
   const [selectedTutorialId, setSelectedTutorialId] = useState(initialSelectedTutorial || null);
   useFocusReturn();
   useBodyScrollLock();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isMobile = useIsMobile();
-  const audienceRef = useRef(null);
   const statusRef   = useRef(null);
   const levelRef    = useRef(null);
+  const catRef      = useRef(null);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -86,15 +86,15 @@ export default function WorkflowsModal({
 
   // Закрываем дропдауны по клику вне
   useEffect(() => {
-    if (!audienceOpen && !statusOpen && !levelOpen) return;
+    if (!statusOpen && !levelOpen && !catOpen) return;
     const onClick = (e) => {
-      if (audienceRef.current && !audienceRef.current.contains(e.target)) setAudienceOpen(false);
-      if (statusRef.current   && !statusRef.current.contains(e.target))   setStatusOpen(false);
-      if (levelRef.current    && !levelRef.current.contains(e.target))    setLevelOpen(false);
+      if (statusRef.current && !statusRef.current.contains(e.target)) setStatusOpen(false);
+      if (levelRef.current  && !levelRef.current.contains(e.target))  setLevelOpen(false);
+      if (catRef.current    && !catRef.current.contains(e.target))    setCatOpen(false);
     };
     document.addEventListener('mousedown', onClick);
     return () => document.removeEventListener('mousedown', onClick);
-  }, [audienceOpen, statusOpen, levelOpen]);
+  }, [statusOpen, levelOpen, catOpen]);
 
   // Локализованный preview выбранного туториала.
   const selectedTutorialKey = selectedTutorialId;
@@ -118,28 +118,26 @@ export default function WorkflowsModal({
   const completed = allItems.filter(i => i.isDone).length;
   const started   = allItems.filter(i => !i.isDone && i.isStarted).length;
 
-  // Фильтр по аудитории
-  const byAudience = audience === 'all'
-    ? allItems
-    : allItems.filter(i => i.audience === audience);
-
   // Фильтр по статусу
   const byStatus = status === 'done'
-    ? byAudience.filter(i => i.isDone)
+    ? allItems.filter(i => i.isDone)
     : status === 'started'
-      ? byAudience.filter(i => i.isStarted && !i.isDone)
-      : byAudience;
+      ? allItems.filter(i => i.isStarted && !i.isDone)
+      : allItems;
 
-  // Группировка по уровню: начальный → средний → продвинутый
-  let levelGroups = LEVEL_GROUPS
-    .map(lvl => ({ level: lvl, items: byStatus.filter(i => i.level === lvl) }))
+  // Курсы группируются по КАТЕГОРИИ (лейбл-бейдж на карточке: Foundation /
+  // Prompts / Agents …), порядок — как в CATEGORIES. Выбранную в дропдауне
+  // категорию поднимаем наверх.
+  let catGroups = CAT_KEYS
+    .map(c => ({ cat: c, items: byStatus.filter(i => (i.node?.category || '') === c) }))
     .filter(g => g.items.length > 0);
-  // Выбранный в дропдауне «Уровень» поднимаем наверх (как в Polut).
-  if (levelSort !== 'all') {
-    levelGroups = [...levelGroups].sort(
-      (a, b) => (b.level === levelSort ? 1 : 0) - (a.level === levelSort ? 1 : 0)
+  if (catSort !== 'all') {
+    catGroups = [...catGroups].sort(
+      (a, b) => (b.cat === catSort ? 1 : 0) - (a.cat === catSort ? 1 : 0)
     );
   }
+  // Категории, реально присутствующие в курсах — для опций дропдауна.
+  const presentCats = CAT_KEYS.filter(c => allItems.some(i => (i.node?.category || '') === c));
 
   return (
     <div
@@ -156,7 +154,7 @@ export default function WorkflowsModal({
             <p>
               {tab === 'paths'
                 ? t('courses.paths.desc', { n: learningPaths.length })
-                : t('courses.summary', { done: completed, started, idle: byAudience.length - completed - started })}
+                : t('courses.summary', { done: completed, started, idle: allItems.length - completed - started })}
             </p>
           </div>
           <button
@@ -206,12 +204,13 @@ export default function WorkflowsModal({
         {/* Фильтры — два дропдауна в одной строке */}
         <div className="courses-filters-bar">
 
-          {/* «Уровень» — на обеих вкладках: выбранный уровень поднимается наверх. */}
+          {/* Polut: «Уровень» (выбранный уровень поднимается наверх). */}
+          {tab === 'paths' && (
           <div className="cfilter" ref={levelRef}>
               <button
                 type="button"
                 className={`cfilter__toggle ${levelOpen ? 'is-open' : ''} ${levelSort !== 'all' ? 'is-active' : ''}`}
-                onClick={() => { setLevelOpen(v => !v); setStatusOpen(false); setAudienceOpen(false); }}
+                onClick={() => { setLevelOpen(v => !v); setStatusOpen(false); setCatOpen(false); }}
                 aria-haspopup="listbox"
                 aria-expanded={levelOpen}
               >
@@ -237,34 +236,35 @@ export default function WorkflowsModal({
                 </div>
               )}
           </div>
+          )}
 
-          {/* «Для кого» — только на вкладке курсов */}
+          {/* Курсы: «Категория» (по лейблу-бейджу курса; выбранная — наверх). */}
           {tab === 'courses' && (
-          <div className="cfilter" ref={audienceRef}>
+          <div className="cfilter" ref={catRef}>
             <button
               type="button"
-              className={`cfilter__toggle ${audienceOpen ? 'is-open' : ''} ${audience !== 'all' ? 'is-active' : ''}`}
-              onClick={() => { setAudienceOpen(v => !v); setStatusOpen(false); }}
+              className={`cfilter__toggle ${catOpen ? 'is-open' : ''} ${catSort !== 'all' ? 'is-active' : ''}`}
+              onClick={() => { setCatOpen(v => !v); setStatusOpen(false); setLevelOpen(false); }}
               aria-haspopup="listbox"
-              aria-expanded={audienceOpen}
+              aria-expanded={catOpen}
             >
-              <span className="cfilter__label">{t('courses.filter.audience')}</span>
-              <span className="cfilter__value">{t(`courses.audience.${audience}`)}</span>
-              <Icon name={audienceOpen ? 'arrow-up' : 'arrow-down'} size={11} strokeWidth={1.75} />
+              <span className="cfilter__label">{t('courses.filter.category') || 'Категория'}</span>
+              <span className="cfilter__value">{catSort === 'all' ? (t('courses.level.all') || 'Все') : t(`category.${catSort}`)}</span>
+              <Icon name={catOpen ? 'arrow-up' : 'arrow-down'} size={11} strokeWidth={1.75} />
             </button>
-            {audienceOpen && (
+            {catOpen && (
               <div className="cfilter__menu" role="listbox">
-                {AUDIENCES.map(aud => (
+                {['all', ...presentCats].map(c => (
                   <button
-                    key={aud}
+                    key={c}
                     type="button"
                     role="option"
-                    aria-selected={audience === aud}
-                    className={`cfilter__option ${audience === aud ? 'is-selected' : ''}`}
-                    onClick={() => { setAudience(aud); setAudienceOpen(false); setSelectedTutorialId(null); }}
+                    aria-selected={catSort === c}
+                    className={`cfilter__option ${catSort === c ? 'is-selected' : ''}`}
+                    onClick={() => { setCatSort(c); setCatOpen(false); }}
                   >
-                    {t(`courses.audience.${aud}`)}
-                    {audience === aud && <Icon name="check" size={13} strokeWidth={1.75} />}
+                    {c === 'all' ? (t('courses.level.all') || 'Все') : t(`category.${c}`)}
+                    {catSort === c && <Icon name="check" size={13} strokeWidth={1.75} />}
                   </button>
                 ))}
               </div>
@@ -278,7 +278,7 @@ export default function WorkflowsModal({
               <button
                 type="button"
                 className={`cfilter__toggle ${statusOpen ? 'is-open' : ''} ${status !== 'all' ? 'is-active' : ''}`}
-                onClick={() => { setStatusOpen(v => !v); setAudienceOpen(false); }}
+                onClick={() => { setStatusOpen(v => !v); setLevelOpen(false); setCatOpen(false); }}
                 aria-haspopup="listbox"
                 aria-expanded={statusOpen}
               >
@@ -320,19 +320,19 @@ export default function WorkflowsModal({
           <div className={`courses-pane-wrap ${selectedTutorialKey ? 'has-detail' : ''}`}>
           <div className="courses-list">
             {/* Пустое состояние */}
-            {levelGroups.length === 0 && (
+            {catGroups.length === 0 && (
               <div className="courses-empty">
                 <Icon name="graduation" size={28} strokeWidth={1.25} />
                 <p>{t(`courses.empty.${status}`)}</p>
               </div>
             )}
 
-            {/* Курсы, сгруппированные по уровню */}
-            {levelGroups.map(({ level, items: groupItems }) => (
-              <div key={level} className="courses-level-group">
-                <div className="courses-level-group__header" style={{ '--lvl-color': LEVEL_COLOR[level] }}>
+            {/* Курсы, сгруппированные по КАТЕГОРИИ (лейбл-бейдж курса) */}
+            {catGroups.map(({ cat: catKey, items: groupItems }) => (
+              <div key={catKey} className="courses-level-group">
+                <div className="courses-level-group__header" style={{ '--lvl-color': CATEGORIES[catKey]?.color || 'var(--accent)' }}>
                   <span className="courses-level-group__dot" />
-                  <span className="courses-level-group__label">{t(`level.${level}`)}</span>
+                  <span className="courses-level-group__label">{t(`category.${catKey}`)}</span>
                   <span className="courses-level-group__count">{groupItems.length}</span>
                 </div>
 
