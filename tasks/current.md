@@ -240,6 +240,10 @@
   - [ ] Раскатка контента дальше. Закрыты: Projects, Prompting, Agents, Capabilities,
     Instructions, MCP, Claude Code (ключевое), AI Fundamentals. Кандидаты: Use Cases, Systems,
     Transformation, остаток Claude Code (мелкие узлы).
+  - [x] **Claude Code — cc-md** ✅: курс CLAUDE.md (92 курса). Остальные 17 узлов Claude Code
+    (cc-tty-*, cc-cfg-*, cc-grp-*) НЕ покрываются курсами намеренно — это под-пункты,
+    покрытые обзорными курсами (cc-terminal/cc-config/cc-slash), или навигационные группы
+    slash-команд. Делать по ним 6-шаговые курсы = вода. Зафиксировано как решение.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
