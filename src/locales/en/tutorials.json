@@ -11969,5 +11969,935 @@
         "tip": "If something behaves strangely in the IDE — repeat the same task in the terminal: that tells you whether the problem is in the extension or in the request itself."
       }
     }
+  },
+  "af-llm-basics": {
+    "title": "What an LLM actually is — plain language",
+    "subtitle": "Six steps from \"magic\" to \"smart word-guesser\" — without a single formula",
+    "totalTime": "6 steps",
+    "whatItIs": "An explainer course for anyone who wants to understand what really happens inside Claude, ChatGPT and the like. No math: just clear analogies — your phone's word suggestions, a car versus a horse, guessing. By the end you'll get why AI is brilliant at some things and fails at others.",
+    "approach": "We start from the simplest fact — \"the model predicts the next chunk of text\" — and build understanding step by step: tokens, training and inference, hallucinations, temperature. Each step is one idea plus a check that it landed. Finally we tie it all to working with Claude in practice.",
+    "outcomes": [
+      "Explain to a friend in a minute what an LLM is, without the word \"neural network\"",
+      "Understand why AI fumbles multiplication but writes great emails",
+      "Stop being surprised by hallucinations and learn to catch them",
+      "Grasp what \"a bigger model\" means and why it costs more",
+      "Start phrasing requests based on how the model actually works"
+    ],
+    "applyIn": [
+      {
+        "title": "Realistic expectations at work",
+        "description": "Before handing AI a task, you'll judge whether it'll guess well or miss — and double-check numbers and facts in advance."
+      },
+      {
+        "title": "Team debates and decisions",
+        "description": "When a colleague says \"AI should be able to do this\", you can calmly explain why it can or can't, with no mysticism."
+      },
+      {
+        "title": "Choosing a model and its cost",
+        "description": "Knowing that bigger = smarter, pricier and slower, you'll consciously pick where you need a powerful model and where a light one is enough."
+      }
+    ],
+    "pitfalls": [
+      "Thinking AI \"knows\" facts — it actually memorized word patterns, not a database of truths",
+      "Trusting a confident tone: the model sounds confident even when making things up",
+      "Expecting precise math from something that by nature guesses the next symbol",
+      "Assuming the model remembers yesterday's chat or fresh news — that isn't in its training data",
+      "Confusing \"well written\" with \"true\" — smooth text does not equal a verified fact"
+    ],
+    "exercises": [
+      {
+        "question": "A friend asks: \"Why did Claude confidently name a book that doesn't exist?\" How would you explain it in one sentence using the idea of word prediction?",
+        "hint": "Recall the phone suggesting words: the model picks a plausible continuation, it doesn't check whether the thing actually exists."
+      },
+      {
+        "question": "You need to sum 30 numbers in a report. Would you trust the model to do it \"in its head\" or give it a tool? Why?",
+        "hint": "Think about whether this is guessing or calculating, and revisit the 47×83 multiplication step."
+      },
+      {
+        "question": "You asked the same question twice and got different answers. Is this a malfunction or normal? Which setting is responsible?",
+        "hint": "Look at the variability step — there's a \"knob\" that controls how predictable answers are."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What a language model is: predicting the next word",
+        "time": "",
+        "why": "This is the foundation of the whole course. Grasp one idea — \"the model just guesses the next chunk of text\" — and the rest falls into place, and unrealistic expectations disappear.",
+        "instructions": [
+          "Recall how your phone suggests a word in a text: \"I'll be...\" → \"home / late / there soon\". The model does the same, just at a different scale.",
+          "Replace \"word\" with \"next chunk of text\": the model looks at all the prior text and picks the most plausible continuation.",
+          "Remember: it wasn't trained on your texts, but on a huge slice of the internet — Wikipedia, books, articles, forums.",
+          "Connect the names: Claude, ChatGPT, Gemini are all LLMs (large language models). Different models = different sizes and data.",
+          "Check out [[node:ai-fundamentals|the basics of working with AI]] to see how this idea fits the bigger picture."
+        ],
+        "validate": "You can explain to a neighbor in 20 seconds what an LLM does, without using the words \"neural network\", \"algorithm\" or \"magic\".",
+        "tip": "Keep this image in mind: AI isn't a horse that knows the way on its own — it's a car that you drive."
+      },
+      "s2": {
+        "title": "Tokens: why the model \"doesn't count letters\"",
+        "time": "",
+        "why": "The model sees text not as letters and words, but as \"tokens\" — chunks. This explains the oddities: why it gets confused counting letters in a word, or mangles long numbers.",
+        "instructions": [
+          "Imagine the text is cut into pieces: sometimes a whole word, sometimes part of a word, sometimes a symbol. Such a piece is called a token.",
+          "Understand the consequence: the model works with chunks, not individual letters — so \"how many r's are in the word…\" is unnatural for it.",
+          "Notice that digits are also split into chunks, which is why the model easily distorts long numbers.",
+          "Tie it to money: the cost of using AI is counted exactly in tokens — the longer the text, the more expensive.",
+          "To go deeper into how text turns into meaning-numbers, look at [[node:af-embeddings|embeddings]]."
+        ],
+        "validate": "You can explain why \"count the letters\" is a poor task for the model, drawing on the idea of tokens.",
+        "tip": "If you need exact letters or digits — ask the model to spell out one symbol at a time, or give it a tool."
+      },
+      "s3": {
+        "title": "Training versus inference — in plain words",
+        "time": "",
+        "why": "People mix up two different moments: when the model \"learned\" and when it \"answers you\". Separate them, and you'll see why it doesn't know fresh news and doesn't remember your conversation forever.",
+        "instructions": [
+          "Training is like long study in the past: the model \"read\" a giant text once and memorized patterns. That ended before you started talking to it.",
+          "Inference is the moment you ask a question and it answers right now, applying what it learned. It isn't learning anything new in that moment.",
+          "Conclude: anything that happened after training (yesterday's news, your report) the model doesn't know unless you provide it in the request.",
+          "Understand memory: within a single conversation it remembers context, but between different chats nothing is saved by default.",
+          "Cross-check with [[node:cap-limitations|capabilities and limitations]] to see Claude's concrete boundaries."
+        ],
+        "validate": "You can explain the difference between \"the model learned\" and \"the model answers\", and why this means it doesn't know yesterday's events.",
+        "tip": "Need fresh data or your files — paste them right into the request; the model won't pull them out of thin air."
+      },
+      "s4": {
+        "title": "Why the model confidently makes mistakes (hallucinations)",
+        "time": "",
+        "why": "The most dangerous beginner trap is trusting a confident tone. The model always sounds confident, even when it's making things up. Understanding the mechanics means learning not to fall for it.",
+        "instructions": [
+          "Recall step 1: the model picks a plausible continuation. \"Plausible\" doesn't mean \"true\".",
+          "Name the phenomenon: when the model confidently produces an invented fact, book, quote or number — that's a \"hallucination\".",
+          "Understand why it's confident: the model has no built-in \"I'm not sure\" sensor — smooth text is generated the same way for truth and for fiction.",
+          "Build a habit: facts, numbers, dates, names, links — always double-check against the original source.",
+          "Separate style from truth: beautiful and fluent does not equal correct."
+        ],
+        "validate": "You can give one example where the model might confidently lie, and say how you would verify it.",
+        "tip": "Ask the model to show sources or admit \"not sure\" — but still verify critical facts yourself."
+      },
+      "s5": {
+        "title": "Temperature: where the variability of an answer comes from",
+        "time": "",
+        "why": "Sometimes the same question yields different answers — this isn't a bug. A simple setting controls \"how predictable answers are\". Understanding it, you control the stability of the result.",
+        "instructions": [
+          "Picture a \"creativity knob\" (it's called temperature): low — the model picks the most likely continuation, answers are similar and predictable.",
+          "Turn the knob higher — the model more often takes less obvious options, answers become more varied and unexpected.",
+          "Choose per task: for facts, code and instructions you want low temperature; for ideas, copy and brainstorming — higher.",
+          "Accept it as normal: with high variability two identical requests will give different answers — that's expected, not a malfunction.",
+          "Remember: temperature doesn't make the model \"smarter\" or \"more honest\" — it only changes how boldly the model strays from the most likely option."
+        ],
+        "validate": "You can say which temperature to pick for \"compute by the instruction\" and for \"come up with 10 names\", and why.",
+        "tip": "Getting randomness where you need stability — lower the variability and phrase the request more strictly."
+      },
+      "s6": {
+        "title": "What this changes in working with Claude + comprehension check",
+        "time": "",
+        "why": "Here all five ideas come together into practice. From \"AI should know everything\" you move to \"I understand where it's strong and where to hedge\" — and start using Claude deliberately.",
+        "instructions": [
+          "Connect it all: Claude is a smart text-guesser, trained in the past, seeing tokens, sometimes hallucinating, with adjustable variability.",
+          "Apply the rule: for exact numbers and calculations, give it a tool or check yourself rather than trusting it \"in its head\".",
+          "Give context: paste fresh data, files and facts right into the request — the model doesn't know what isn't in its training or your message.",
+          "Test yourself with a question: why can Claude confidently get a simple fact wrong? (the answer is in steps 1 and 4).",
+          "Lock in the route: return to [[node:ai-fundamentals|the basics of working with AI]] and keep [[node:cap-limitations|capabilities and limitations]] handy."
+        ],
+        "validate": "You can explain three things without prompts: why AI errs at math, why it sounds confident while making things up, and why it sometimes answers differently.",
+        "tip": "Before an important task, ask yourself one question: \"is this guessing or calculation/fact?\" — and decide whether you need a check or a tool."
+      }
+    }
+  },
+  "af-embeddings": {
+    "title": "Embeddings — how AI understands \"by meaning\"",
+    "subtitle": "How text turns into numbers of meaning, and why close numbers mean close meaning",
+    "totalTime": "6 steps",
+    "whatItIs": "An embedding turns a word, phrase, or document into a set of numbers (a vector). Things with similar meaning get similar numbers. That lets AI search \"by meaning\" instead of by exact word match: \"forgot my password\" and \"how to reset my password\" end up close together.",
+    "approach": "We move from feel to practice: first an intuition for what a vector of meaning is, then why closeness of numbers equals closeness of meaning, then why business needs it, how it ties to [[node:af-vector-db|vector DBs]] and [[node:af-rag-basics|RAG]], where it shows up in real life, and where it breaks. No formulas, no math.",
+    "outcomes": [
+      "Explain in plain words what an embedding is and why text is turned into numbers",
+      "Understand why \"closeness of vectors\" means \"closeness of meaning\"",
+      "Name three real tasks embeddings solve: search, recommendations, clustering",
+      "See embeddings, vector DBs, and RAG as one connected chain",
+      "Notice the limits: where embeddings get it wrong and why"
+    ],
+    "applyIn": [
+      {
+        "title": "Knowledge base search",
+        "description": "An employee types \"email not arriving\" while the FAQ says \"email delivery failures\". Embeddings still find the right article despite the different words."
+      },
+      {
+        "title": "Similar-item recommendations",
+        "description": "\"Similar products\", \"similar docs\", \"customers like this one\" — all of it is finding the nearest vectors to a chosen one."
+      },
+      {
+        "title": "Grouping incoming requests",
+        "description": "Thousands of support tickets sort themselves into topics (clusters) by meaning, with no manual labeling."
+      }
+    ],
+    "pitfalls": [
+      "Thinking embeddings \"understand meaning like a human\" — they catch pattern similarity, not understanding",
+      "Using embeddings from an old, cheap model — bad numbers produce bad matches",
+      "Expecting perfection on rare terms and in-house company slang — the model often misses there",
+      "Confusing embeddings with plain keyword search — they are different mechanisms",
+      "Assuming embeddings give the answer by themselves — they only find similar items; RAG builds the answer on top"
+    ],
+    "exercises": [
+      {
+        "question": "Why does exact-word search miss the article \"WiFi problems at home\" for the query \"internet not working\", while embedding search finds it?",
+        "hint": "Think about what plain search compares (letters/words) versus what embeddings compare (closeness of number sets = closeness of meaning)."
+      },
+      {
+        "question": "Name one task each for search, recommendations, and clustering. What do they share at the core?",
+        "hint": "In all three, things are turned into vectors, and then it all comes down to \"how close are these number sets\"."
+      },
+      {
+        "question": "Where are embeddings more likely to fail: on the phrase \"forgot my password\" or on an internal codename like \"Project Phoenix-7\"? Why?",
+        "hint": "The model is strong on common, general phrasing and weak on rare terms and in-house slang it has barely seen."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What an embedding is: text → vector of meaning",
+        "time": "",
+        "why": "Without the intuition \"a word becomes numbers\", everything else sounds like magic. This step removes the magic.",
+        "instructions": [
+          "Picture AI assigning a set of numbers to each word or phrase — that set is the vector (embedding)",
+          "The core rule: things with similar meaning get similar numbers",
+          "Take the pair \"cat\" and \"kitten\" — their number sets are close; \"cat\" and \"accounting\" — far apart",
+          "Say it out loud: \"text becomes coordinates of meaning\", no formulas needed"
+        ],
+        "validate": "You can say in your own words that an embedding is a set of numbers, and that similar things get similar numbers.",
+        "tip": "Don't try to read the numbers themselves — all that matters is that close meanings give close sets."
+      },
+      "s2": {
+        "title": "Closeness of meaning = closeness of vectors",
+        "time": "",
+        "why": "This is the heart of the idea: all the \"meaning magic\" reduces to checking how close two number sets are.",
+        "instructions": [
+          "Picture points on a map: nearby points = phrases close in meaning",
+          "\"Forgot my password, help\" and \"how to reset my password\" — two points sitting next to each other",
+          "\"Forgot my password\" and \"borscht recipe\" — two points far apart",
+          "AI doesn't \"think\" — it measures the distance between points and takes the nearest ones",
+          "Remember: searching by meaning = finding the nearest points"
+        ],
+        "validate": "You can explain why \"close vectors\" and \"close meaning\" are the same thing in practice.",
+        "tip": "A map of cities is a solid analogy: neighboring cities are close, distant ones are not. Phrases work the same way."
+      },
+      "s3": {
+        "title": "Why it matters: search, recommendations, clustering",
+        "time": "",
+        "why": "The idea becomes valuable once you see three real tasks that are hard to solve well without embeddings.",
+        "instructions": [
+          "Search by meaning: a user's query finds the right article even when the words differ",
+          "Recommendations: \"similar products / docs / customers\" is finding the nearest vectors",
+          "Clustering: thousands of requests group themselves into topics by closeness of meaning",
+          "Notice the common thread: all three reduce to closeness of number sets"
+        ],
+        "validate": "You can name three tasks and explain that the same vector comparison sits at the core of all of them.",
+        "tip": "If a task sounds like \"find similar by meaning\", embeddings are almost certainly under the hood."
+      },
+      "s4": {
+        "title": "The link with vector DBs and RAG",
+        "time": "",
+        "why": "Embeddings rarely work alone — they're part of a chain. Without this picture it's easy to get lost in the terms.",
+        "instructions": [
+          "Embeddings produce numbers — those numbers need to be stored and searched for nearest matches",
+          "That's the job of [[node:af-vector-db|vector DBs]]: storage tuned for finding close vectors",
+          "On top of that runs [[node:af-rag-basics|RAG]]: it finds the relevant chunks and feeds them to the AI for the answer",
+          "Assemble the chain: text → embedding → vector DB → RAG finds and answers",
+          "All of this is part of [[node:ai-fundamentals|AI fundamentals]], not separate exotica"
+        ],
+        "validate": "You can sketch the four-link chain and state what each link is responsible for.",
+        "tip": "Embeddings are \"how to compare\", the vector DB is \"where to store and search\", RAG is \"how to use it in the answer\"."
+      },
+      "s5": {
+        "title": "Where it shows up in real life",
+        "time": "",
+        "why": "Once you recognize embeddings in products you already use, the idea stops being abstract.",
+        "instructions": [
+          "Google Photos finds \"all the cats\" with no labels — that's embeddings for photos",
+          "Spotify suggests \"similar songs\" — closeness of track vectors",
+          "Support: the query \"email not arriving\" finds the FAQ \"email delivery failures\"",
+          "Corporate search: a Slack bot answers \"forgot my password\" by finding the \"Password reset\" article",
+          "Note: Anthropic doesn't ship its own embeddings — for hybrid setups people use Voyage AI, OpenAI text-embedding-3, or open-source models"
+        ],
+        "validate": "You can name at least two familiar products and explain that embeddings power them.",
+        "tip": "Any \"similar items\" or \"smart search\" feature in an app is a reason to suspect embeddings."
+      },
+      "s6": {
+        "title": "Limits, misunderstandings, and a check",
+        "time": "",
+        "why": "Without knowing the limits you'll trust embeddings where they fail and blame a \"dumb AI\".",
+        "instructions": [
+          "Embeddings catch pattern similarity — they don't understand meaning like a human",
+          "On rare terms and in-house company slang, matches are often poor",
+          "Quality depends heavily on the model: an old cheap model = bad matches",
+          "Solid options today — OpenAI text-embedding-3, Cohere embed, natively in Claude",
+          "Check yourself: explain why \"found something similar\" isn't the same as \"found the right thing\""
+        ],
+        "validate": "You can name two situations where embeddings get it wrong, and why the choice of model matters.",
+        "tip": "If search keeps missing on your terms, check the embedding model first, not the search itself."
+      }
+    }
+  },
+  "af-vector-db": {
+    "title": "Vector Database — a library for meanings",
+    "subtitle": "Where AI stores knowledge and finds what you need by meaning, not by words",
+    "totalTime": "6 steps",
+    "whatItIs": "A vector database stores not texts but their \"meaning fingerprints\" ([[node:af-embeddings|embeddings]] — number sets). Its superpower: in milliseconds, find among millions of records the ones closest in meaning to a query. Like a library where books are shelved by topic, not alphabetically: grab one on gardening and ten more on gardening sit right beside it.",
+    "approach": "We move from \"why does it even exist\" to how data gets in, how similarity search works, the role it plays in [[node:af-rag-basics|RAG]], which solutions exist, and where the limits are. All conceptual, no math and no formulas — just the understanding you need to decide \"need it / don't need it\".",
+    "outcomes": [
+      "Explain in plain words why a vector database matters and how it differs from a regular one",
+      "Understand how data turns into [[node:af-embeddings|embeddings]] and lands in storage",
+      "Grasp the principle of similarity search (nearest neighbor) without math",
+      "See where the database sits inside a [[node:af-rag-basics|RAG]] system",
+      "Decide whether you need a vector database and which solution to pick"
+    ],
+    "applyIn": [
+      {
+        "title": "Enterprise knowledge search",
+        "description": "Thousands of company documents are searched by meaning: an employee asks in their own words, and the system finds what's relevant even when the exact words aren't in the text."
+      },
+      {
+        "title": "Knowledge-base chatbot (RAG)",
+        "description": "The bot first finds the right fragments in the vector database, then hands them to Claude — the answer rests on your data, not the model's guesses."
+      },
+      {
+        "title": "Similar-item recommendations",
+        "description": "Similar products, articles, or customers are found through closeness in meaning rather than manual tags and categories."
+      }
+    ],
+    "pitfalls": [
+      "Grabbing an expensive managed service when pgvector on your existing Postgres would do",
+      "Putting a vector database on 50 documents — it's overkill, everything fits in app memory",
+      "Thinking the database itself \"understands\" meaning — meaning comes from embeddings, the database just finds nearest matches fast",
+      "Expecting an exact answer from the database — it returns similar items; the final answer is shaped by the model in [[node:af-rag-basics|RAG]]",
+      "Picking a solution \"for fashion\" rather than for real scale and speed requirements"
+    ],
+    "exercises": [
+      {
+        "question": "How does search in a vector database differ from keyword search in a regular one?",
+        "hint": "Think about the query \"how to arrange a trip abroad\" and a document with the words \"business trip to Germany\" — do the words match?"
+      },
+      {
+        "question": "You have 40 documents and rare queries. Do you need a vector database?",
+        "hint": "Recall the step on limits: at what volume does the database actually start to pay off."
+      },
+      {
+        "question": "Where does the vector database sit in the RAG chain: before the model or after?",
+        "hint": "First we find relevant fragments, then we hand them to the model — who calls whom?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why a vector database is needed",
+        "time": "",
+        "why": "Without understanding the purpose it's easy to make a wrong call — putting a heavy tool where it isn't needed, or failing to keep up with growth.",
+        "instructions": [
+          "Picture 50,000 company documents you need to search by meaning, not by exact words.",
+          "A regular database (Postgres / MySQL) scans every record — that's seconds per query.",
+          "A vector database returns \"the 10 closest in meaning\" in tens of milliseconds.",
+          "Remember the key idea: it finds similar, not an exact word match."
+        ],
+        "validate": "You can state in one sentence what problem a vector database solves and why a regular one isn't enough.",
+        "tip": "Keep the library image in mind: books shelved by topic — similar ones always nearby."
+      },
+      "s2": {
+        "title": "How data gets in",
+        "time": "",
+        "why": "The database is useless until meaning fingerprints are loaded into it. Understanding this step removes the magic.",
+        "instructions": [
+          "Each document or fragment is run through a model and turned into an [[node:af-embeddings|embedding]] — a number set that encodes meaning.",
+          "That number set is stored in the vector database along with a link to the source text.",
+          "Large documents are split into chunks beforehand — so search can find the specific relevant fragment.",
+          "Once loaded, the database is ready: meanings sit there waiting for a query."
+        ],
+        "validate": "You can describe the path \"text → number set → record in the database\" in your own words.",
+        "tip": "A separate model creates the embeddings — the database only stores and searches."
+      },
+      "s3": {
+        "title": "How similarity search works",
+        "time": "",
+        "why": "This is the heart of a vector database. Grasp the principle and it stops being a black box.",
+        "instructions": [
+          "The user's query is also turned into a number set — the same kind of [[node:af-embeddings|embedding]].",
+          "The database compares this set against all the stored ones and looks for the closest in meaning.",
+          "This is nearest neighbor — \"closest neighbors\": the closer the number sets, the closer the meaning.",
+          "The response brings back not one but several most-similar fragments (e.g. the top 5)."
+        ],
+        "validate": "You can explain \"nearest neighbors\" without a single formula, using a query-and-documents example.",
+        "tip": "The database doesn't understand text — it only measures how close the meaning fingerprints are."
+      },
+      "s4": {
+        "title": "The role in RAG",
+        "time": "",
+        "why": "A vector database rarely works alone — most often it's part of [[node:af-rag-basics|RAG]]. Without that context its value is incomplete.",
+        "instructions": [
+          "In [[node:af-rag-basics|RAG]], relevant fragments are first found for the question — that's the vector database's job.",
+          "The found fragments are passed to the model as context along with the question.",
+          "The model answers based on your data, not on general knowledge from training.",
+          "So the database handles \"find the right thing\", and the model handles \"phrase the answer\"."
+        ],
+        "validate": "You can order the RAG steps: question → search in the database → pass to model → answer.",
+        "tip": "The database finds, the model phrases — different roles, don't mix them up."
+      },
+      "s5": {
+        "title": "Popular solutions and when it's needed",
+        "time": "",
+        "why": "The choice of tool strongly affects cost and complexity. Better to decide deliberately than by fashion.",
+        "instructions": [
+          "Remember the main names: Pinecone, Qdrant, Weaviate, Chroma, and pgvector (an extension for Postgres).",
+          "If the team already has Postgres — pgvector adds vector search simply and cheaply.",
+          "Expensive managed services are justified at very large volumes or with strict speed requirements.",
+          "It's worth adding a database when you have more than ~1,000 documents or need semantic search over a large base."
+        ],
+        "validate": "You can name 3-4 solutions and say when pgvector is enough and when a managed service is needed.",
+        "tip": "With Claude, Pinecone, Qdrant, and pgvector come up often — but choose by scale and compliance, not by model compatibility."
+      },
+      "s6": {
+        "title": "Limits, mistakes, and a check",
+        "time": "",
+        "why": "Understanding the limits saves you from wasted spend and inflated expectations — it's the final filter before deciding.",
+        "instructions": [
+          "At small volumes (dozens of documents) the database isn't needed — keep everything in app memory.",
+          "Don't expect a ready answer from the database: it returns similar items; the model shapes the answer.",
+          "Don't overpay for a managed solution if pgvector covers your scale.",
+          "Remember: search quality depends on embedding quality — garbage in, garbage out."
+        ],
+        "validate": "You can honestly answer \"do I need a vector database right now, and which one\" with a justification.",
+        "tip": "First measure scale and query frequency — then pick the tool, not the other way around."
+      }
+    }
+  },
+  "af-rag-basics": {
+    "title": "RAG: how AI answers from your documents",
+    "subtitle": "From question to sourced answer — in 6 steps",
+    "totalTime": "6 steps",
+    "whatItIs": "RAG (Retrieval-Augmented Generation) is a way to make AI answer not from its head, but from your documents. The AI first finds relevant chunks in your knowledge base, reads them, and only then forms an answer. Like a cheat-sheet at an exam: open the right section first, then answer. For how it's built — [[node:sys-rag-architecture|RAG architecture]].",
+    "approach": "We go from \"why\" to \"how\": first understand the problem RAG solves, then break the pipeline into parts (chunking → [[node:af-embeddings|embeddings]] → [[node:af-vector-db|vector DB]] → search → answer), then what drives quality, why RAG beats simply uploading a file, common mistakes, and where to start. Conceptual but practical: every step can be touched in [[node:ai-fundamentals|AI fundamentals]].",
+    "outcomes": [
+      "Explain in plain words what RAG is and why it's needed",
+      "Break down the RAG pipeline step by step: chunking, embeddings, vector DB, search, answer",
+      "Understand what drives answer quality — chunking and relevance",
+      "Tell when you need RAG versus when just uploading a file to chat is enough",
+      "Learn the common mistakes and how to check that the system works"
+    ],
+    "applyIn": [
+      {
+        "title": "Customer support",
+        "description": "AI answers questions from your knowledge base with a source citation — the customer sees where the answer came from."
+      },
+      {
+        "title": "Internal company knowledge",
+        "description": "Employees ask about policies, HR rules, product docs — AI finds and answers from up-to-date documents."
+      },
+      {
+        "title": "Personal knowledge archive",
+        "description": "Notes, articles, conversation history — AI searches by meaning and gives an answer instead of making you scroll through everything."
+      }
+    ],
+    "pitfalls": [
+      "\"Just turn on RAG and it works\" — naive RAG answers correctly only about half the time, tuning is required",
+      "Garbage in: old drafts, duplicates, contradicting versions — AI finds garbage and answers garbage",
+      "Bad chunking: chunks too big or cut a thought in half — search finds the wrong pieces",
+      "No relevance check: the system returns the first chunks it finds, even off-topic ones",
+      "Confusing RAG with fine-tuning — RAG changes nothing in the model, it just feeds in the right documents"
+    ],
+    "exercises": [
+      {
+        "question": "Using one example from your work, frame a question that AI without RAG would answer with \"I don't know\" or invent, but with RAG would answer correctly.",
+        "hint": "Pick a question whose answer lives in one of your documents but definitely not in general internet knowledge."
+      },
+      {
+        "question": "Explain in your own words why splitting documents into chunks affects answer quality.",
+        "hint": "Think about what happens if an important thought is cut right in the middle between two chunks."
+      },
+      {
+        "question": "Decide: for \"answer one question about one PDF\", do you need RAG or is uploading the file to chat enough? Justify it.",
+        "hint": "Compare document volume and query frequency — RAG pays off when there are many documents and repeated questions."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why RAG is needed at all",
+        "time": "",
+        "why": "Without understanding \"why\", RAG looks like needless complexity. AI on its own doesn't know your documents: ask about your refund policy and it'll either say \"I don't know\" or invent something plausible (hallucination). RAG gives three things: answers from your data, freshness (the base updates without retraining the model), and fewer hallucinations — with a source citation.",
+        "instructions": [
+          "Ask the AI a question whose answer lives only in your documents (e.g. an internal policy)",
+          "Notice the reaction: \"I don't know\" or a plausible invention — that's the problem RAG solves",
+          "State the three benefits of RAG: answers from your data, freshness, fewer hallucinations",
+          "Write down 2-3 real questions from your work where RAG would help"
+        ],
+        "validate": "You can name a concrete question AI answers badly without RAG and explain why RAG would fix it.",
+        "tip": "RAG is the most common way AI is used in companies. Not \"AI writes creative copy\" but \"AI answers from our knowledge base\"."
+      },
+      "s2": {
+        "title": "How the RAG pipeline works",
+        "time": "",
+        "why": "RAG sounds complex, but it's just five steps in a row. Knowing the pipeline, you see where things can break and you speak the same language as your team.",
+        "instructions": [
+          "Step 1 — chunking: documents are split into right-sized pieces (chunks)",
+          "Step 2 — each chunk is turned into [[node:af-embeddings|embeddings]] (a set of numbers capturing meaning)",
+          "Step 3 — those numbers go into a [[node:af-vector-db|vector DB]] so you can search by meaning",
+          "Step 4 — search: the question is also turned into numbers, the system finds chunks close in meaning",
+          "Step 5 — answer: the found chunks + the question go to the AI, which forms an answer with a citation"
+        ],
+        "validate": "You can list the five pipeline steps from memory and explain what each one does.",
+        "tip": "Key idea: the AI doesn't \"remember\" your documents — it freshly searches for the right chunks and reads them before every answer."
+      },
+      "s3": {
+        "title": "What drives quality",
+        "time": "",
+        "why": "Two RAGs on the same documents can give different answers. Quality comes down to two things: how documents are chunked, and how accurately the system finds relevant pieces.",
+        "instructions": [
+          "Chunking: chunks shouldn't be too big (details drown) or too small (context is lost)",
+          "Make sure splitting doesn't cut a thought in half — split by paragraphs or sections",
+          "Relevance: verify the system finds exactly the chunks that relate to the question",
+          "Add metadata (section, date, source) — it helps filter and rank what's found",
+          "In production add re-ranking: reordering the found chunks by accuracy"
+        ],
+        "validate": "You can explain why chunks that are too big and too small both hurt quality.",
+        "tip": "Naive RAG (grab top 3 chunks → hand to AI) works at 50%. Tuning chunking and relevance raises it to 80-90%."
+      },
+      "s4": {
+        "title": "RAG vs just uploading a file to chat",
+        "time": "",
+        "why": "Often you don't need RAG — uploading a file to chat is enough. Knowing the boundary keeps you from building a complex system where one action would do.",
+        "instructions": [
+          "Uploading a file to chat: fast and simple, but the AI only sees what fits in one window",
+          "RAG: searches a large document base and feeds in only the relevant chunks",
+          "Rule: one or two documents and a one-off question — uploading to chat is enough",
+          "Rule: many documents, repeated questions, source citations needed — you need RAG",
+          "In Claude you can start without a separate service: [[node:cap-files|Files]] for documents, and full RAG for a large base"
+        ],
+        "validate": "For two of your tasks you can say where uploading a file suffices and where RAG is needed, and justify the choice.",
+        "tip": "Don't build RAG for the sake of RAG. If uploading one PDF solves it, do that — it's cheaper and faster."
+      },
+      "s5": {
+        "title": "Common mistakes and how to check",
+        "time": "",
+        "why": "Most RAG failures aren't about the model — they're about garbage in and bad chunking. Knowing the common mistakes saves weeks of debugging.",
+        "instructions": [
+          "Mistake \"garbage in\": old drafts, duplicates, contradictions in the base → AI answers garbage",
+          "Mistake \"bad chunks\": chunks cut a thought or are too large → search finds the wrong pieces",
+          "Check 1: ask 10 real questions and compare answers against what the documents actually say",
+          "Check 2: for each answer, look at which chunks the system found — are they on topic?",
+          "Cleanliness beats quantity: remove duplicates and stale content before adding more"
+        ],
+        "validate": "You've run at least a few test questions and can say where the system errs and why.",
+        "tip": "If an answer is bad, look first at which chunks were found. In 8 of 10 cases the problem is the retrieved chunks, not the model."
+      },
+      "s6": {
+        "title": "Where to start",
+        "time": "",
+        "why": "Understanding without action is quickly forgotten. A small working RAG over 5-10 documents teaches more than reading ten articles.",
+        "instructions": [
+          "Gather 5-10 clean, current documents on one topic — no duplicates or drafts",
+          "Start simple: upload them via [[node:cap-files|Files]] and ask questions — that's already a mini-RAG",
+          "When documents pile up, move to the full pipeline from step 2",
+          "Lock in the basics: go through [[node:ai-fundamentals|AI fundamentals]] to understand how the model uses what it finds",
+          "Keep a list of questions the system answers badly — that's your improvement plan"
+        ],
+        "validate": "You have a working mini-system: you ask a question about your documents and get an answer from them, not from general knowledge.",
+        "tip": "Start with one narrow topic and 5-10 documents. Expand once you see the basic scenario works."
+      }
+    }
+  },
+  "af-memory-systems": {
+    "title": "AI memory — why it \"forgets\"",
+    "subtitle": "Context window, memory types, and tricks against AI \"amnesia\"",
+    "totalTime": "6 steps",
+    "whatItIs": "An AI model has no built-in long-term memory: it only works with what is right now \"in front of it\" — in the context window. As soon as a conversation ends or the window overflows, everything is forgotten. This course explains why it works this way, what memory types AI systems have, and how to make AI \"remember\" what matters.",
+    "approach": "We go from cause to solution. First we unpack why the model \"forgets\" at all and what the context window is in plain words. Then we look at memory types — session, long-term, external. Then how this is implemented in Claude through Memory and projects. And finally — practical tricks and the honest limits of what's possible.",
+    "outcomes": [
+      "Understand why AI has no built-in long-term memory and what \"forgot\" means",
+      "Explain the context window in plain words, no jargon",
+      "Distinguish memory types: session, long-term, external",
+      "Know how Claude remembers context via Memory and projects",
+      "Apply anti-forgetting tricks: summaries, /compact, external documents"
+    ],
+    "applyIn": [
+      {
+        "title": "Long work sessions",
+        "description": "When you work with AI on one task for hours and it starts \"losing the thread\" — you understand the cause and apply summaries and /compact."
+      },
+      {
+        "title": "Projects that accumulate context",
+        "description": "When you need AI to remember agreements and work style across conversations — you use projects and Memory."
+      },
+      {
+        "title": "Working with large documents",
+        "description": "When there are more documents than fit in the window — you connect external memory via RAG instead of pasting everything into the chat."
+      }
+    ],
+    "pitfalls": [
+      "Thinking AI \"remembers\" past conversations on its own — without projects or Memory it starts from scratch every time",
+      "Believing it's enough to \"just expand the context window\" — a bigger window is more expensive, slower, and AI gets lost in the middle",
+      "Pasting all the long context into every request instead of a short summary",
+      "Not checking what AI actually \"remembers\" — and being surprised when it relies on stale information",
+      "Confusing session memory with long-term: what AI knew in one chat doesn't carry into a new one automatically"
+    ],
+    "exercises": [
+      {
+        "question": "You've been discussing a big project with AI for three hours, and it starts forgetting early details. Why does this happen and what do you do?",
+        "hint": "Recall the context window and its limited size. Think about summaries and /compact."
+      },
+      {
+        "question": "You need AI to remember your work-style preferences in every new conversation. Which memory type is needed and how do you do it in Claude?",
+        "hint": "This isn't single-session memory. Check the step about Memory and projects."
+      },
+      {
+        "question": "You have 500 pages of documentation, and it doesn't fit in the window. How do you give AI access to the relevant pieces?",
+        "hint": "External memory. Recall the approach where AI searches for the needed fragment rather than holding everything in view."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Why the model \"forgets\"",
+        "time": "",
+        "why": "The core misunderstanding: people expect AI to remember like a human. In reality the model has no built-in long-term memory — and that's not a breakage, it's how it works.",
+        "instructions": [
+          "Remember a simple truth: an AI model works only with what was handed to it in this very request. It has no \"memory\" of yesterday's conversation on its own.",
+          "Everything AI \"sees\" fits into a limited space — the context window. When it fills up, old content gets pushed out by new.",
+          "When a conversation closes, the model saves it nowhere. A new chat is a blank slate.",
+          "Compare with yourself: you don't hold every word of last week in your head — you remember the gist, the rest is written down somewhere. Without special add-ons AI doesn't even have that.",
+          "Remember the takeaway: \"AI forgot\" almost always means \"the needed info didn't make it into the context window or isn't stored externally\". More on how AI works — [[node:ai-fundamentals|AI fundamentals]]."
+        ],
+        "validate": "You can explain in one sentence why a new AI chat doesn't remember the previous conversation.",
+        "tip": "\"Forgot\" isn't about AI's ill will. It's always about where the information is right now: in the window, outside, or nowhere."
+      },
+      "s2": {
+        "title": "The context window in plain words",
+        "time": "",
+        "why": "The context window is the central concept of the whole memory topic. Without it you can't understand why AI forgets or how to deal with it.",
+        "instructions": [
+          "Picture a desk of limited size. AI can only look at what's lying on that desk right now — that's the context window.",
+          "Everything goes on the desk: your question, past messages of this chat, attached documents, instructions. Together they take up space.",
+          "When the desk overflows, something has to be removed — usually the oldest. That's why early details \"drop out\" in a long conversation.",
+          "The window is big, but not infinite. And the more is in it, the more expensive the request and the easier it is for AI to \"get lost in the middle\" — miss what matters amid the noise.",
+          "Remember: the goal isn't to \"cram the window full\" but to put only what's needed for the current task on the desk."
+        ],
+        "validate": "You can explain the context window via the desk metaphor and say what happens when it overflows.",
+        "tip": "More context ≠ better. A clean, focused \"desk\" works more accurately than a cluttered one."
+      },
+      "s3": {
+        "title": "Types of memory in AI systems",
+        "time": "",
+        "why": "\"AI memory\" isn't one thing. It's several different mechanisms for different jobs. Confusing them is the main cause of problems.",
+        "instructions": [
+          "Session memory: what AI remembers within one conversation, as long as it all fits in the context window. Close the chat — session memory is gone.",
+          "Long-term memory: what is specifically saved and pulled into new conversations — for example your preferences or facts about the project.",
+          "External memory: a large base of documents outside, from which AI fetches the needed piece on request rather than holding it all in view. That's what [[node:af-rag-basics|RAG]] does.",
+          "Selection rule: the current conversation — session memory; durable facts about you — long-term; huge documents — external.",
+          "Remember: each type solves its own job. Trying to stuff everything into one is the path to overpaying and clutter."
+        ],
+        "validate": "You can name the three memory types and give an example for each of when it fits.",
+        "tip": "If you ask yourself \"should AI remember this always or only in this chat?\" — you're already choosing between long-term and session memory."
+      },
+      "s4": {
+        "title": "How Claude remembers context",
+        "time": "",
+        "why": "Theory becomes useful when you see it in a concrete tool. Claude has built-in ways to give AI long-term and project memory.",
+        "instructions": [
+          "Memory: Claude can save durable facts about you and your work and pull them into new conversations — that's long-term memory. More — [[node:cap-memory|Memory]].",
+          "Projects: inside a project Claude keeps shared context and files available across all chats of that project. So conversations stop starting from scratch.",
+          "The difference matters: session memory lives in one chat; Memory and projects carry knowledge between chats.",
+          "What goes where: personal preferences and stable facts — into Memory; documents and materials of specific work — into project files.",
+          "Remember: you decide what Claude should remember long-term. It doesn't happen magically — you set it up."
+        ],
+        "validate": "You can explain the difference between what Claude remembers in one chat and what carries over via Memory and projects.",
+        "tip": "If you catch yourself repeating the same thing to Claude in every chat — that's a signal to move it into Memory or a project."
+      },
+      "s5": {
+        "title": "Tricks against \"forgetting\"",
+        "time": "",
+        "why": "Knowing the cause, you can act. A few simple tricks greatly reduce the \"AI forgot everything\" effect in real work.",
+        "instructions": [
+          "Summary: when a conversation is long, ask AI to briefly summarize the agreements. A short summary takes little space and keeps the essence.",
+          "/compact: in a long session this command compresses the past conversation, freeing space in the window without losing the main points.",
+          "External documents: keep important materials in project files or a knowledge base rather than pasting them as a wall into every chat.",
+          "Explicit context up front: if a task needs facts, give them at the start of the request — don't rely on AI \"remembering\" from last time.",
+          "Remember the combo: short summary + external documents + Memory cover most \"forgetting\" problems."
+        ],
+        "validate": "You can name at least three tricks and say which problem each solves.",
+        "tip": "Before closing an important session, ask for a short summary of decisions — that's your \"episodic memory\" for next time."
+      },
+      "s6": {
+        "title": "Limits and verification",
+        "time": "",
+        "why": "To avoid disappointment, it's important to understand the honest limits of AI memory and to be able to check that it really \"remembers\".",
+        "instructions": [
+          "Remember the limit: even a large context window is finite, and long-term memory holds only what you saved — not everything.",
+          "Don't rely on \"AI surely remembers\". If a fact is critical — give it explicitly or check that it's in Memory or the project.",
+          "Verification: ask AI what it remembers about the task. If the answer is inaccurate — the needed context isn't on the \"desk\" and must be added.",
+          "Stale-data danger: long-term memory can hold old facts. Periodically check that AI relies on what's current.",
+          "Put it together: the cause of \"forgetting\" is the context window; the solution is the right memory type (session, long-term via [[node:cap-memory|Memory]], external via [[node:af-rag-basics|RAG]]) plus tricks."
+        ],
+        "validate": "You can check what exactly AI remembers about a task and understand where the boundary of its memory lies.",
+        "tip": "A simple test: ask \"what do you remember about my project?\". The answer shows what's really in memory versus what you only thought you saved."
+      }
+    }
+  },
+  "af-multimodal": {
+    "title": "Multimodal AI — a model that sees and hears",
+    "subtitle": "How AI works not only with text but with images too, and where its limits are",
+    "totalTime": "6 steps",
+    "whatItIs": "Ordinary AI used to work only with text. Multimodal AI understands several data types at once in a single request: text together with images (as well as audio and video). You can show the model a screenshot, a photo, a diagram — and it describes what it sees and answers your question.",
+    "approach": "We move from concept to practice: first what \"multimodality\" even means, then how the model \"sees\" an image in plain terms. Next, what it does well versus poorly, and how to use it in Claude via [[node:cap-vision|Vision]] and [[node:cap-input-modalities|input modalities]]. Finally, the limits and how to verify the result. Conceptual, no code.",
+    "outcomes": [
+      "You understand what \"multimodality\" means: text and images in one request",
+      "You can explain in plain terms how the model \"sees\" an image",
+      "You know which visual tasks AI handles well and which it handles poorly",
+      "You can apply it in Claude: show a screenshot, photo, or diagram and ask a question",
+      "You see the limits of the technology and verify the answer instead of trusting blindly"
+    ],
+    "applyIn": [
+      {
+        "title": "Parsing screenshots and errors",
+        "description": "Show a screenshot of an error or interface and ask \"what's wrong here?\" instead of retyping the text by hand."
+      },
+      {
+        "title": "Reading documents and receipts",
+        "description": "A photo of an invoice, receipt, or table — AI recognizes amounts and dates and transfers the data, saving manual work."
+      },
+      {
+        "title": "Understanding diagrams and mockups",
+        "description": "Show a chart from a report or a design mockup — AI describes the trend or helps build a page from the picture."
+      }
+    ],
+    "pitfalls": [
+      "Thinking \"AI sees everything like a human\" — in reality there are weak spots",
+      "Asking it to read tiny or handwritten text — specialized OCR does this better",
+      "Expecting pixel precision: counting objects in a photo exactly is something the model does worse",
+      "Loading a busy diagram with a dozen lines and trusting the answer without checking",
+      "Using multimodality where the task is purely textual — that's needless overhead"
+    ],
+    "exercises": [
+      {
+        "question": "How does multimodal AI differ from ordinary text AI — in one sentence?",
+        "hint": "It's about data types: text vs. \"text + images and other types in one request\"."
+      },
+      {
+        "question": "Name two tasks where the model \"sees\" well, and two where it does poorly.",
+        "hint": "Well: objects in photos, printed text. Poorly: handwriting, exact counting, an overloaded chart."
+      },
+      {
+        "question": "Someone sent you an error screenshot. How does multimodality save time versus the \"old way\"?",
+        "hint": "No need to retype the error text by hand — you drop in the image and ask right away."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "What \"multimodality\" means",
+        "time": "",
+        "why": "Without this concept it's easy to confuse multimodal AI with ordinary AI or expect too much. A modality is a data type: text, image, audio, video.",
+        "instructions": [
+          "Remember the simple definition: a \"modality\" = a data type. Text is one modality, an image is another.",
+          "Multimodal AI takes several types at once: for example, the text of your question together with an attached image.",
+          "Compare: with ordinary AI you write \"translate this article\". With multimodal AI you attach a screenshot and write \"what's wrong here?\".",
+          "Recall the related concept in Atlas — [[node:ai-fundamentals|AI fundamentals]] — to see where this topic fits."
+        ],
+        "validate": "You can say in your own words that multimodality is working with text and images (and other types) in a single request.",
+        "tip": "The word \"modality\" sounds complex, but it just means a \"channel of perception\": like a human has sight and hearing."
+      },
+      "s2": {
+        "title": "How the model \"sees\" an image",
+        "time": "",
+        "why": "Understanding the mechanics in plain terms removes the magic and helps you predict where the model will fail.",
+        "instructions": [
+          "Imagine the model doesn't \"look with eyes\" but turns the picture into a set of numbers — features of shape, color, and text in it.",
+          "From these features it looks for patterns it was trained on: \"this looks like a button\", \"this is a line of code\", \"this is a chart\".",
+          "Text and image land in one shared \"understanding\" — that's why you can ask about the image in words.",
+          "Remember the key point: this is pattern recognition, not exact \"reading of pixels\"."
+        ],
+        "validate": "You can explain that the model converts the picture into features and matches them against what it learned, rather than \"seeing\" like a human.",
+        "tip": "Analogy: the model \"recognizes\" the familiar in a picture rather than measuring it with a ruler."
+      },
+      "s3": {
+        "title": "What it does well",
+        "time": "",
+        "why": "Knowing the strengths lets you apply AI right where it genuinely saves time.",
+        "instructions": [
+          "Describing an image: \"what's in this picture?\" — the model confidently lists objects and the scene.",
+          "Parsing a screenshot: an interface, an error message, a long stack trace — it finds where the problem is.",
+          "Diagrams and charts of medium complexity: it describes the trend and explains what an axis shows.",
+          "Printed text in a photo: it recognizes amounts on a receipt, headings, captions.",
+          "Try it yourself: show AI a screenshot of any screen and ask it to describe what's visible."
+        ],
+        "validate": "You can name at least three tasks where the model \"sees\" reliably: description, parsing a screenshot, reading printed text.",
+        "tip": "The clearer and larger the image, the more accurate the answer — send a good-quality screenshot."
+      },
+      "s4": {
+        "title": "What it does poorly",
+        "time": "",
+        "why": "Weak spots are a source of silent errors. If you don't know them, it's easy to trust a wrong answer.",
+        "instructions": [
+          "Tiny text: the model may \"guess\" blurry characters instead of reading them exactly.",
+          "Handwritten text: specialized OCR tools handle it better.",
+          "Exact counting: \"how many people are in the photo?\" is a frequent source of errors.",
+          "Overloaded diagrams with a dozen lines and labels — high risk of mixing things up.",
+          "Pixel precision (coordinates, exact colors) — not a strong point."
+        ],
+        "validate": "You can name at least three cases where the model shouldn't be trusted without checking: tiny/handwritten text, exact counting, complex charts.",
+        "tip": "If the task falls into a weak zone — don't drop AI entirely, but always double-check the answer."
+      },
+      "s5": {
+        "title": "How to use it in Claude",
+        "time": "",
+        "why": "Theory without practice is useless. In Claude, multimodality is available right in the chat.",
+        "instructions": [
+          "Attach an image to your message — a screenshot, photo, diagram — and ask your question in words.",
+          "In Claude this works through the [[node:cap-vision|Vision]] capability — the model \"sees\" the attached picture.",
+          "The input data types themselves are described as [[node:cap-input-modalities|input modalities]]: exactly what the model can accept as input.",
+          "Phrase the question specifically: not \"look at the picture\" but \"find the line with the error\" or \"extract the amount and date\".",
+          "Start simple: drop in an error screenshot and ask it to explain what the problem is."
+        ],
+        "validate": "You attached an image in Claude, asked a specific question, and got a meaningful answer about the picture.",
+        "tip": "One precise question about a picture beats a vague \"what do you think?\" — the model answers to the request."
+      },
+      "s6": {
+        "title": "Limits and verification",
+        "time": "",
+        "why": "Mature use = knowing the limit of the technology and building in a check, rather than trusting the answer blindly.",
+        "instructions": [
+          "Remember the main mistake: \"multimodal AI sees everything like a human\" — that's not true.",
+          "Before trusting it, ask yourself: is the task in a strong zone (description, printed text) or a weak one (tiny font, exact counting)?",
+          "For important data (amounts, numbers) always check the answer against the original with your own eyes.",
+          "Test on your own task types — generic promises that \"AI can do everything\" don't replace verification.",
+          "If the answer is critical — ask the model to show exactly what in the picture it relies on."
+        ],
+        "validate": "You have a habit: before trusting an answer, identify the zone (strong/weak) and re-check important numbers against the original.",
+        "tip": "The rule is simple: AI speeds you up, but keep the final check of important data for yourself."
+      }
+    }
+  },
+  "af-fine-tuning": {
+    "title": "Fine-tuning vs Prompting — train or explain",
+    "subtitle": "When to train the model and when a good prompt is enough",
+    "totalTime": "6 steps",
+    "whatItIs": "A course on two ways to make AI do what you need: **prompting** (explain the task in text) and **fine-tuning** (train the model on your own data). We'll cover the difference, when fine-tuning is truly justified, and why 90% of tasks are solved without it — via [[node:prompting|prompt engineering]] and [[node:af-rag-basics|RAG]].",
+    "approach": "We move from concepts to decision. First a clear line between \"train\" and \"explain\", then what fine-tuning is and what it costs, then the ladder for choosing a tool. We finish with common mistakes and a quick \"do I even need fine-tuning\" check. Conceptual, no code or math.",
+    "outcomes": [
+      "Explain the difference between fine-tuning and prompting in your own words",
+      "Understand when fine-tuning is genuinely needed versus wasted spend",
+      "Know the choice ladder: prompt → few-shot → RAG → fine-tune",
+      "Estimate the real cost and complexity of fine-tuning before you start",
+      "Stop confusing \"trendy\" with \"needed\" when picking an approach"
+    ],
+    "applyIn": [
+      {
+        "title": "Style and tone of replies",
+        "description": "You need AI to answer in your brand voice. Examples in the prompt first; fine-tune only if the style won't transfer via few-shot."
+      },
+      {
+        "title": "Narrow domain with data",
+        "description": "Medicine, law, support with thousands of question-answer pairs. Here fine-tuning may pay off — but check RAG first."
+      },
+      {
+        "title": "Cutting production cost",
+        "description": "Fine-tune a small model so it replaces a big one on a narrow task and lowers per-request cost."
+      }
+    ],
+    "pitfalls": [
+      "Fine-tuning \"just in case\" from day one — like tuning a car you haven't driven yet",
+      "Thinking fine-tuning = \"AI gets smarter\". It's specialization, not an upgrade",
+      "Ignoring tech debt: a new model version makes your old fine-tune obsolete",
+      "Fine-tuning where a prompt + RAG would do — a wasted quarter and budget",
+      "Skipping prompting and few-shot before reaching for fine-tuning"
+    ],
+    "exercises": [
+      {
+        "question": "Your task: AI sorts incoming emails into 5 categories. Do you try fine-tuning or prompting first, and why?",
+        "hint": "Think about how many examples it takes to explain 5 categories and whether they fit right inside the prompt."
+      },
+      {
+        "question": "A team spent a quarter fine-tuning, and a month later a better model shipped. What was the planning mistake?",
+        "hint": "Recall what happens to a fine-tuned model when a newer base version is released."
+      },
+      {
+        "question": "Name the three rungs worth climbing before fine-tuning, in the right order.",
+        "hint": "The ladder starts with the cheapest, fastest tool and ends with the most expensive one."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "The difference: train or explain",
+        "time": "",
+        "why": "Without a clear line between prompting and fine-tuning, any tool choice is guesswork.",
+        "instructions": [
+          "Picture a new hire: prompting = give instructions each time, fine-tuning = train for months so they just know.",
+          "Write in one line what prompting changes (the instruction text) and what fine-tuning changes (the model itself).",
+          "Note: prompting is flexible and instant; fine-tuning is slow and locks behavior into the model's weights.",
+          "Tie it to basics: review [[node:ai-fundamentals|how AI works]] to see what changes inside."
+        ],
+        "validate": "You can explain the difference in 30 seconds without the word \"neural network\".",
+        "tip": "Simple test: if a decision changes by editing text — that's prompting."
+      },
+      "s2": {
+        "title": "What fine-tuning is and when it's truly needed",
+        "time": "",
+        "why": "Fine-tuning sounds like magic, but it's a narrow tool with three honest scenarios.",
+        "instructions": [
+          "Define fine-tuning: the model is further trained on thousands of your input-output pairs, changing its behavior.",
+          "List the three justified cases: distinct style, narrow domain with thousands of examples, cost cuts via a small model.",
+          "Note: in all other cases — prompting + RAG + tools.",
+          "Form the rule: if you don't have thousands of quality examples, fine-tuning is premature."
+        ],
+        "validate": "You can name the three scenarios where fine-tuning is justified and why.",
+        "tip": "No labeled data in the thousands means it's too early for fine-tuning."
+      },
+      "s3": {
+        "title": "Why 90% of tasks are solved by prompting and context",
+        "time": "",
+        "why": "Most teams underestimate how far a good prompt with examples and pulled-in context gets you.",
+        "instructions": [
+          "Take the task \"AI replies in the CEO's voice\" and solve it with examples in the prompt — few-shot.",
+          "Study [[node:prompting|prompt engineering]]: a clear role, style, and 3-5 examples of the desired answer.",
+          "Where knowledge is missing, pull it in via [[node:af-rag-basics|RAG]] rather than baking it into the model.",
+          "Compare timelines: prompt + RAG = result in a week versus a quarter for fine-tuning."
+        ],
+        "validate": "You understand why prompt + RAG is usually faster and cheaper than fine-tuning.",
+        "tip": "Run 50 prompt iterations first — then think about fine-tuning."
+      },
+      "s4": {
+        "title": "Cost and complexity of fine-tuning",
+        "time": "",
+        "why": "The cost of fine-tuning isn't just training money — it's ongoing tech debt.",
+        "instructions": [
+          "Count the direct costs: gathering and labeling thousands of examples, the training itself, infrastructure.",
+          "Add the hidden price: a new base model ships, your fine-tune is outdated, retrain from scratch.",
+          "Note the quality risk: the model \"specializes\" and may answer worse outside the training data.",
+          "Compare with prompting: switching models takes seconds, retraining a fine-tune takes weeks and money."
+        ],
+        "validate": "You can name at least three cost items of fine-tuning beyond the training itself.",
+        "tip": "Budget for repeating fine-tuning every time a new model ships."
+      },
+      "s5": {
+        "title": "The tool-choice ladder",
+        "time": "",
+        "why": "The right order of tools saves months: start with the cheap and fast one.",
+        "instructions": [
+          "Rung 1 — plain prompt: a clear instruction, a role, an output format.",
+          "Rung 2 — few-shot: add 3-5 input-output examples right in the prompt ([[node:pr-fewshot|few-shot prompting]]).",
+          "Rung 3 — RAG: pull fresh knowledge from your own documents ([[node:af-rag-basics|RAG]]).",
+          "Rung 4 — fine-tuning: only if the previous three are exhausted and you have thousands of examples.",
+          "Climb up only when the current rung has provably failed."
+        ],
+        "validate": "You can recite the four rungs in the correct order from memory.",
+        "tip": "Never jump to fine-tuning skipping RAG."
+      },
+      "s6": {
+        "title": "Common mistakes and the check",
+        "time": "",
+        "why": "The main trap is fine-tuning where a prompt would do; a quick checklist removes it.",
+        "instructions": [
+          "Mistake 1: fine-tuning \"just in case\" from day one — climb the ladder first.",
+          "Mistake 2: expecting fine-tuning to make AI smarter — it only fits it to your data.",
+          "Check yourself with three questions: tried prompt and few-shot? tried RAG? have thousands of examples?",
+          "If any answer is \"no\" — fine-tuning is premature, go back to the ladder.",
+          "Record the verdict for your task: which tool is sufficient right now."
+        ],
+        "validate": "You ran your real task through the checklist and chose a tool deliberately.",
+        "tip": "Even one \"no\" on the checklist means fine-tuning is still too early."
+      }
+    }
   }
 }

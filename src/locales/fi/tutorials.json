@@ -11971,5 +11971,935 @@
         "tip": "Jos jokin käyttäytyy oudosti IDE:ssä — toista sama tehtävä terminaalissa: siitä näet, onko ongelma laajennuksessa vai itse pyynnössä."
       }
     }
+  },
+  "af-llm-basics": {
+    "title": "Mikä LLM oikeasti on — selkokielellä",
+    "subtitle": "Kuusi askelta «taikuudesta» «älykkääseen sanan-arvaajaan» — ilman ainuttakaan kaavaa",
+    "totalTime": "6 askelta",
+    "whatItIs": "Selittävä kurssi kaikille, jotka haluavat ymmärtää, mitä oikeasti tapahtuu Clauden, ChatGPT:n ja vastaavien sisällä. Ei matematiikkaa: vain selkeitä vertauksia — puhelimen sanaehdotukset, auto vastaan hevonen, arvaaminen. Lopuksi ymmärrät, miksi AI on loistava joissakin asioissa ja mokaa toisissa.",
+    "approach": "Lähdemme yksinkertaisimmasta faktasta — «malli ennustaa seuraavan tekstinpätkän» — ja rakennamme ymmärrystä askel askeleelta: tokenit, opetus ja inferenssi, hallusinaatiot, lämpötila. Jokainen askel on yksi idea plus tarkistus, että se meni perille. Lopuksi sidomme kaiken Clauden kanssa työskentelyyn käytännössä.",
+    "outcomes": [
+      "Selität ystävälle minuutissa, mikä LLM on, ilman sanaa «neuroverkko»",
+      "Ymmärrät, miksi AI mokaa kertolaskun mutta kirjoittaa loistavia sähköposteja",
+      "Lakkaat hämmästelemästä hallusinaatioita ja opit nappaamaan ne",
+      "Tajuat, mitä «isompi malli» tarkoittaa ja miksi se maksaa enemmän",
+      "Alat muotoilla pyyntöjä sen mukaan, miten malli todella toimii"
+    ],
+    "applyIn": [
+      {
+        "title": "Realistiset odotukset töissä",
+        "description": "Ennen kuin annat AI:lle tehtävän, arvioit arvaako se sen hyvin vai mokaako — ja varmistat luvut ja faktat etukäteen."
+      },
+      {
+        "title": "Tiimin väittelyt ja päätökset",
+        "description": "Kun kollega sanoo «AI:n pitäisi osata tämä», osaat rauhallisesti selittää, miksi se osaa tai ei osaa, ilman mystiikkaa."
+      },
+      {
+        "title": "Mallin valinta ja kustannus",
+        "description": "Kun tiedät että isompi = älykkäämpi, kalliimpi ja hitaampi, valitset tietoisesti missä tarvitset tehokkaan mallin ja missä kevyt riittää."
+      }
+    ],
+    "pitfalls": [
+      "Ajatella että AI «tietää» faktoja — se itse asiassa muisti sanapatternit, ei totuuksien tietokantaa",
+      "Luottaa varmaan sävyyn: malli kuulostaa varmalta myös kun keksii",
+      "Odottaa tarkkaa matematiikkaa joltakin, joka luonteeltaan arvaa seuraavan merkin",
+      "Olettaa että malli muistaa eilisen keskustelun tai tuoreet uutiset — sitä ei ole sen opetusdatassa",
+      "Sekoittaa «hyvin kirjoitettu» ja «totta» — sujuva teksti ei ole sama kuin tarkistettu fakta"
+    ],
+    "exercises": [
+      {
+        "question": "Ystävä kysyy: «Miksi Claude nimesi varmasti kirjan jota ei ole olemassa?» Miten selität sen yhdellä lauseella sanan ennustamisen idean kautta?",
+        "hint": "Muista puhelin joka ehdottaa sanoja: malli valitsee uskottavan jatkon, se ei tarkista onko asia oikeasti olemassa."
+      },
+      {
+        "question": "Sinun pitää laskea 30 luvun summa raportissa. Luotatko mallin tekevän sen «päässä» vai annatko sille työkalun? Miksi?",
+        "hint": "Mieti onko tämä arvaamista vai laskemista, ja palaa 47×83-kertolaskuaskeleeseen."
+      },
+      {
+        "question": "Kysyit saman kysymyksen kahdesti ja sait eri vastaukset. Onko tämä vika vai normaalia? Mikä asetus tästä vastaa?",
+        "hint": "Katso vaihtelevuus-askelta — on «nuppi» joka säätää kuinka ennustettavia vastaukset ovat."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä kielimalli on: seuraavan sanan ennustaminen",
+        "time": "",
+        "why": "Tämä on koko kurssin perusta. Tajua yksi idea — «malli vain arvaa seuraavan tekstinpätkän» — niin muu loksahtaa paikalleen ja epärealistiset odotukset katoavat.",
+        "instructions": [
+          "Muista miten puhelin ehdottaa sanaa tekstiviestissä: «Tulen...» → «kotiin / myöhässä / pian». Malli tekee saman, vain eri mittakaavassa.",
+          "Korvaa «sana» sanalla «seuraava tekstinpätkä»: malli katsoo kaikkea edellistä tekstiä ja valitsee uskottavimman jatkon.",
+          "Muista: sitä ei opetettu sinun viesteilläsi, vaan valtavalla siivulla internetiä — Wikipedia, kirjat, artikkelit, foorumit.",
+          "Yhdistä nimet: Claude, ChatGPT, Gemini ovat kaikki LLM:iä (large language model, «iso kielimalli»). Eri mallit = eri koot ja data.",
+          "Katso [[node:ai-fundamentals|AI:n kanssa työskentelyn perusteet]] nähdäksesi, miten tämä idea sopii isoon kuvaan."
+        ],
+        "validate": "Osaat selittää naapurille 20 sekunnissa mitä LLM tekee, käyttämättä sanoja «neuroverkko», «algoritmi» tai «taikuus».",
+        "tip": "Pidä mielessä tämä kuva: AI ei ole hevonen joka tietää tien itse — se on auto jota sinä ajat."
+      },
+      "s2": {
+        "title": "Tokenit: miksi malli «ei laske kirjaimia»",
+        "time": "",
+        "why": "Malli näkee tekstin ei kirjaimina ja sanoina, vaan «tokeneina» — palasina. Tämä selittää oudot jutut: miksi se sekoaa laskiessaan kirjaimia sanassa tai vääristää pitkät luvut.",
+        "instructions": [
+          "Kuvittele että teksti leikataan paloiksi: joskus koko sana, joskus osa sanaa, joskus merkki. Tällaista palaa kutsutaan tokeniksi.",
+          "Ymmärrä seuraus: malli toimii palasilla, ei yksittäisillä kirjaimilla — siksi «montako r-kirjainta sanassa…» on sille luonnotonta.",
+          "Huomaa että numerot myös pilkotaan paloiksi, siksi malli vääristää helposti pitkiä lukuja.",
+          "Sido rahaan: AI:n käytön kustannus lasketaan juuri tokeneissa — mitä pidempi teksti, sitä kalliimpi.",
+          "Syventyäksesi siihen miten teksti muuttuu merkitys-luvuiksi, katso [[node:af-embeddings|embeddingit]]."
+        ],
+        "validate": "Osaat selittää, miksi «laske kirjaimet» on huono tehtävä mallille, nojaten tokenien ideaan.",
+        "tip": "Jos tarvitset tarkkoja kirjaimia tai numeroita — pyydä mallia luettelemaan yksi merkki kerrallaan, tai anna sille työkalu."
+      },
+      "s3": {
+        "title": "Opetus vastaan inferenssi — selkokielellä",
+        "time": "",
+        "why": "Ihmiset sekoittavat kaksi eri hetkeä: kun malli «oppi» ja kun se «vastaa sinulle». Erota ne, niin näet miksi se ei tiedä tuoreita uutisia eikä muista keskusteluasi ikuisesti.",
+        "instructions": [
+          "Opetus on kuin pitkä opiskelu menneisyydessä: malli «luki» jättimäisen tekstin kerran ja muisti patternit. Se päättyi ennen kuin aloit puhua sille.",
+          "Inferenssi on hetki, kun esität kysymyksen ja se vastaa juuri nyt, soveltaen oppimaansa. Se ei opi mitään uutta sillä hetkellä.",
+          "Päättele: kaiken minkä tapahtui opetuksen jälkeen (eilisen uutiset, raporttisi) malli ei tiedä, ellet anna sitä pyynnössä.",
+          "Ymmärrä muisti: yhden keskustelun sisällä se muistaa kontekstin, mutta eri chattien välillä mitään ei tallenneta oletuksena.",
+          "Tarkista [[node:cap-limitations|kyvyt ja rajoitukset]] nähdäksesi Clauden konkreettiset rajat."
+        ],
+        "validate": "Osaat selittää eron «malli oppi» ja «malli vastaa» välillä, ja miksi tämä tarkoittaa ettei se tiedä eilisiä tapahtumia.",
+        "tip": "Tarvitset tuoretta dataa tai tiedostojasi — liitä ne suoraan pyyntöön; malli ei vedä niitä tyhjästä."
+      },
+      "s4": {
+        "title": "Miksi malli mokaa varmasti (hallusinaatiot)",
+        "time": "",
+        "why": "Vaarallisin aloittelijan ansa on luottaa varmaan sävyyn. Malli kuulostaa aina varmalta, myös kun se keksii. Mekaniikan ymmärtäminen tarkoittaa oppimista olla lankeamatta.",
+        "instructions": [
+          "Muista askel 1: malli valitsee uskottavan jatkon. «Uskottava» ei tarkoita «totta».",
+          "Nimeä ilmiö: kun malli tuottaa varmasti keksityn faktan, kirjan, sitaatin tai luvun — se on «hallusinaatio».",
+          "Ymmärrä miksi varmasti: mallilla ei ole sisäänrakennettua «en ole varma» -anturia — sujuva teksti syntyy samalla tavalla totuudelle ja keksitylle.",
+          "Rakenna tapa: faktat, luvut, päivämäärät, nimet, linkit — tarkista aina alkuperäisestä lähteestä.",
+          "Erota tyyli totuudesta: kaunis ja sujuva ei ole sama kuin oikein."
+        ],
+        "validate": "Osaat antaa yhden esimerkin jossa malli voisi varmasti valehdella, ja kertoa miten tarkistaisit sen.",
+        "tip": "Pyydä mallia näyttämään lähteet tai myöntämään «en ole varma» — mutta tarkista silti kriittiset faktat itse."
+      },
+      "s5": {
+        "title": "Lämpötila: mistä vastauksen vaihtelevuus tulee",
+        "time": "",
+        "why": "Joskus sama kysymys tuottaa eri vastaukset — tämä ei ole bugi. Yksinkertainen asetus säätää «kuinka ennustettavia vastaukset ovat». Sen ymmärtäen hallitset tuloksen vakautta.",
+        "instructions": [
+          "Kuvittele «luovuusnuppi» (sitä kutsutaan lämpötilaksi): matala — malli valitsee todennäköisimmän jatkon, vastaukset ovat samanlaisia ja ennustettavia.",
+          "Käännä nuppia ylemmäs — malli ottaa useammin vähemmän ilmeisiä vaihtoehtoja, vastaukset muuttuvat monipuolisemmiksi ja yllättävämmiksi.",
+          "Valitse tehtävän mukaan: faktoille, koodille ja ohjeille haluat matalan lämpötilan; ideoille, teksteille ja aivoriihelle — korkeamman.",
+          "Hyväksy normaalina: korkealla vaihtelevuudella kaksi samanlaista pyyntöä antaa eri vastaukset — se on odotettua, ei vika.",
+          "Muista: lämpötila ei tee mallista «älykkäämpää» tai «rehellisempää» — se vain muuttaa kuinka rohkeasti malli poikkeaa todennäköisimmästä."
+        ],
+        "validate": "Osaat sanoa, minkä lämpötilan valita «laske ohjeen mukaan» ja «keksi 10 nimeä» varten, ja miksi.",
+        "tip": "Saat satunnaisuutta siellä missä tarvitset vakautta — laske vaihtelevuutta ja muotoile pyyntö tiukemmin."
+      },
+      "s6": {
+        "title": "Mitä tämä muuttaa Clauden kanssa työskentelyssä + ymmärryksen tarkistus",
+        "time": "",
+        "why": "Tässä kaikki viisi ideaa kokoontuvat käytännöksi. «AI:n pitäisi tietää kaikki» -ajattelusta siirryt «ymmärrän missä se on vahva ja missä varmistaa» -ajatteluun — ja alat käyttää Claudea tietoisesti.",
+        "instructions": [
+          "Yhdistä kaikki: Claude on älykäs tekstin-arvaaja, opetettu menneisyydessä, näkee tokeneita, joskus hallusinoi, säädettävällä vaihtelevuudella.",
+          "Sovella sääntöä: tarkoille luvuille ja laskuille anna työkalu tai tarkista itse, äläkä luota «päässä».",
+          "Anna konteksti: liitä tuore data, tiedostot ja faktat suoraan pyyntöön — malli ei tiedä mitä ei ole opetuksessa eikä viestissäsi.",
+          "Testaa itsesi kysymyksellä: miksi Claude voi varmasti mokata yksinkertaisen faktan? (vastaus on askelissa 1 ja 4).",
+          "Lukitse reitti: palaa [[node:ai-fundamentals|AI:n kanssa työskentelyn perusteisiin]] ja pidä [[node:cap-limitations|kyvyt ja rajoitukset]] lähellä."
+        ],
+        "validate": "Osaat selittää ilman vihjeitä kolme asiaa: miksi AI mokaa matematiikassa, miksi se kuulostaa varmalta keksiessään, ja miksi se joskus vastaa eri tavalla.",
+        "tip": "Ennen tärkeää tehtävää kysy itseltäsi yksi kysymys: «onko tämä arvaamista vai laskentaa/fakta?» — ja päätä tarvitsetko tarkistuksen tai työkalun."
+      }
+    }
+  },
+  "af-embeddings": {
+    "title": "Embeddings — kuinka AI ymmärtää «merkityksen»",
+    "subtitle": "Kuinka teksti muuttuu merkityksen numeroiksi ja miksi lähekkäiset numerot tarkoittavat lähekkäistä merkitystä",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Embedding muuttaa sanan, lauseen tai dokumentin numerojoukoksi (vektoriksi). Merkitykseltään samankaltaiset asiat saavat samankaltaiset numerot. Näin AI voi hakea «merkityksen mukaan» eikä tarkan sanaosuman mukaan: «unohdin salasanan» ja «miten resetoin salasanan» päätyvät lähekkäin.",
+    "approach": "Etenemme tuntumasta käytäntöön: ensin intuitio siitä mikä on merkityksen vektori, sitten miksi numeroiden läheisyys vastaa merkityksen läheisyyttä, sitten miksi liiketoiminta tarvitsee tätä, miten se liittyy [[node:af-vector-db|vektoritietokantoihin]] ja [[node:af-rag-basics|RAG]]:iin, missä se näkyy arjessa ja missä se hajoaa. Ei kaavoja, ei matematiikkaa.",
+    "outcomes": [
+      "Selität yksinkertaisin sanoin mikä embedding on ja miksi teksti muutetaan numeroiksi",
+      "Ymmärrät miksi «vektorien läheisyys» tarkoittaa «merkityksen läheisyyttä»",
+      "Nimeät kolme oikeaa tehtävää joita embeddings ratkaisee: haku, suositukset, klusterointi",
+      "Näet embeddingsin, vektoritietokannat ja RAG:in yhtenä ketjuna",
+      "Huomaat rajat: missä embeddings menee pieleen ja miksi"
+    ],
+    "applyIn": [
+      {
+        "title": "Tietämyskannan haku",
+        "description": "Työntekijä kirjoittaa «posti ei tule», kun FAQ:ssa lukee «sähköpostin toimitusongelmat». Embeddings löytää silti oikean artikkelin eri sanoista huolimatta."
+      },
+      {
+        "title": "Samankaltaisten suositukset",
+        "description": "«Samankaltaiset tuotteet», «samankaltaiset dokumentit», «tämän kaltaiset asiakkaat» — kaikki on lähimpien vektorien etsimistä valitun ympäriltä."
+      },
+      {
+        "title": "Saapuvien pyyntöjen ryhmittely",
+        "description": "Tuhannet tukipyynnöt lajittuvat itse aiheiksi (klustereiksi) merkityksen mukaan ilman käsin tehtyä merkitsemistä."
+      }
+    ],
+    "pitfalls": [
+      "Luulla että embeddings «ymmärtää merkityksen kuin ihminen» — se tunnistaa pattern-yhtäläisyyttä, ei ymmärrystä",
+      "Käyttää embeddingsiä vanhalta halvalta mallilta — huonot numerot tuottavat huonot osumat",
+      "Odottaa täydellisyyttä harvinaisilla termeillä ja talon sisäisellä slangilla — siellä malli usein mokaa",
+      "Sekoittaa embeddings tavalliseen avainsanahakuun — ne ovat eri mekanismeja",
+      "Olettaa että embeddings antaa vastauksen itse — se vain löytää samankaltaista; RAG rakentaa vastauksen sen päälle"
+    ],
+    "exercises": [
+      {
+        "question": "Miksi tarkka sanahaku ei löydä artikkelia «WiFi-ongelmat kotona» kyselyllä «netti ei toimi», mutta embedding-haku löytää?",
+        "hint": "Mieti mitä tavallinen haku vertaa (kirjaimet/sanat) ja mitä embeddings vertaa (numerojoukkojen läheisyys = merkityksen läheisyys)."
+      },
+      {
+        "question": "Nimeä yksi tehtävä kullekin: haku, suositukset, klusterointi. Mikä niillä on yhteistä pohjalla?",
+        "hint": "Kaikissa kolmessa asiat on muutettu vektoreiksi, ja sitten kaikki tiivistyy siihen «kuinka lähekkäin nämä numerojoukot ovat»."
+      },
+      {
+        "question": "Missä embeddings menee todennäköisemmin pieleen: lauseessa «unohdin salasanan» vai sisäisessä koodinimessä «Projekti Feeniks-7»? Miksi?",
+        "hint": "Malli on vahva yleisillä, tavallisilla muotoiluilla ja heikko harvinaisilla termeillä ja talon slangilla, jota se on tuskin nähnyt."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä embedding on: teksti → merkityksen vektori",
+        "time": "",
+        "why": "Ilman intuitiota «sana muuttuu numeroiksi» kaikki muu kuulostaa taialta. Tämä vaihe poistaa taian.",
+        "instructions": [
+          "Kuvittele että AI antaa jokaiselle sanalle tai lauseelle numerojoukon — se joukko on vektori (embedding)",
+          "Pääsääntö: merkitykseltään samankaltaiset asiat saavat samankaltaiset numerot",
+          "Ota pari «kissa» ja «kissanpentu» — niiden numerojoukot ovat lähekkäin; «kissa» ja «kirjanpito» — kaukana",
+          "Sano ääneen: «teksti muuttuu merkityksen koordinaateiksi», ilman kaavoja"
+        ],
+        "validate": "Osaat sanoa omin sanoin että embedding on numerojoukko ja että samankaltaiset asiat saavat samankaltaiset numerot.",
+        "tip": "Älä yritä lukea itse numeroita — tärkeää on vain se, että lähekkäiset merkitykset antavat lähekkäiset joukot."
+      },
+      "s2": {
+        "title": "Merkityksen läheisyys = vektorien läheisyys",
+        "time": "",
+        "why": "Tämä on idean sydän: kaikki «merkityksen taika» tiivistyy yksinkertaiseen vertailuun siitä, kuinka lähekkäin kaksi numerojoukkoa ovat.",
+        "instructions": [
+          "Kuvittele pisteitä kartalla: lähekkäiset pisteet = merkitykseltään lähekkäiset lauseet",
+          "«Unohdin salasanan, apua» ja «miten resetoin salasanan» — kaksi pistettä vierekkäin",
+          "«Unohdin salasanan» ja «borssin resepti» — kaksi pistettä kaukana toisistaan",
+          "AI ei «ajattele» — se mittaa pisteiden välisen etäisyyden ja ottaa lähimmät",
+          "Muista: merkityksen mukaan haku = lähimpien pisteiden etsiminen"
+        ],
+        "validate": "Osaat selittää miksi «lähekkäiset vektorit» ja «lähekkäinen merkitys» ovat käytännössä sama asia.",
+        "tip": "Kaupunkien kartta on toimiva analogia: naapurikaupungit ovat lähekkäin, kaukaiset eivät. Lauseiden kanssa sama juttu."
+      },
+      "s3": {
+        "title": "Miksi tätä tarvitaan: haku, suositukset, klusterointi",
+        "time": "",
+        "why": "Idea muuttuu arvokkaaksi kun näet kolme oikeaa tehtävää, jotka ilman embeddingsiä ratkeavat huonosti.",
+        "instructions": [
+          "Merkityksen mukaan haku: käyttäjän kysely löytää oikean artikkelin, vaikka sanat olisivat eri",
+          "Suositukset: «samankaltaiset tuotteet / dokumentit / asiakkaat» on lähimpien vektorien etsimistä",
+          "Klusterointi: tuhannet pyynnöt ryhmittyvät itse aiheiksi merkityksen läheisyyden mukaan",
+          "Huomaa yhteinen lanka: kaikki kolme tiivistyy numerojoukkojen läheisyyteen"
+        ],
+        "validate": "Nimeät kolme tehtävää ja selität että niiden pohjalla on sama vektorien vertailu.",
+        "tip": "Jos tehtävä kuulostaa «etsi samankaltaista merkityksen mukaan», embeddings on melkein varmasti konepellin alla."
+      },
+      "s4": {
+        "title": "Yhteys vektoritietokantoihin ja RAG:iin",
+        "time": "",
+        "why": "Embeddings toimii harvoin yksin — se on osa ketjua. Ilman tätä kuvaa termeissä eksyy helposti.",
+        "instructions": [
+          "Embeddings tuottaa numeroita — ne pitää tallentaa jonnekin ja hakea nopeasti lähimmät",
+          "Sen tekevät [[node:af-vector-db|vektoritietokannat]]: lähekkäisten vektorien hakuun viritetty tallennus",
+          "Sen päällä toimii [[node:af-rag-basics|RAG]]: se löytää olennaiset palaset ja syöttää ne AI:lle vastaukseen",
+          "Kokoa ketju: teksti → embedding → vektoritietokanta → RAG löytää ja vastaa",
+          "Kaikki tämä on osa [[node:ai-fundamentals|AI:n perusteita]], ei erillistä eksotiikkaa"
+        ],
+        "validate": "Osaat piirtää neljän lenkin ketjun ja kertoa mistä kukin lenkki vastaa.",
+        "tip": "Embeddings on «miten verrataan», vektoritietokanta on «missä tallennetaan ja haetaan», RAG on «miten käytetään vastauksessa»."
+      },
+      "s5": {
+        "title": "Missä se näkyy arjessa",
+        "time": "",
+        "why": "Kun tunnistat embeddingsin jo käyttämissäsi tuotteissa, idea lakkaa olemasta abstrakti.",
+        "instructions": [
+          "Google Photos löytää «kaikki kissat» ilman merkintöjä — se on embeddings kuville",
+          "Spotify ehdottaa «samankaltaisia kappaleita» — kappalevektorien läheisyys",
+          "Tuki: kysely «posti ei tule» löytää FAQ:n «sähköpostin toimitusongelmat»",
+          "Yrityshaku: Slack-botti vastaa «unohdin salasanan» löytämällä artikkelin «Salasanan reset»",
+          "Huomaa: Anthropicilla ei ole omia embeddingsejä — hybridiratkaisuissa käytetään Voyage AI:ta, OpenAI text-embedding-3:a tai open-source-malleja"
+        ],
+        "validate": "Nimeät vähintään kaksi tuttua tuotetta ja selität että embeddings pyörittää niitä.",
+        "tip": "Mikä tahansa «samankaltaiset» tai «älykäs haku» -ominaisuus sovelluksessa on syy epäillä embeddingsiä."
+      },
+      "s6": {
+        "title": "Rajat, väärinymmärrykset ja tarkistus",
+        "time": "",
+        "why": "Ilman rajojen tuntemista luotat embeddingsiin siellä missä se pettää ja syytät «tyhmää AI:ta».",
+        "instructions": [
+          "Embeddings tunnistaa pattern-yhtäläisyyttä — se ei ymmärrä merkitystä kuin ihminen",
+          "Harvinaisilla termeillä ja talon sisäisellä slangilla osumat ovat usein huonoja",
+          "Laatu riippuu vahvasti mallista: vanha halpa malli = huonot osumat",
+          "Solidit valinnat tänään — OpenAI text-embedding-3, Cohere embed, natiivisti Claude:ssa",
+          "Tarkista itsesi: selitä miksi «löytyi jotain samankaltaista» ei ole sama kuin «löytyi oikea»"
+        ],
+        "validate": "Nimeät kaksi tilannetta joissa embeddings menee pieleen, ja miksi mallin valinta on tärkeä.",
+        "tip": "Jos haku osuu jatkuvasti ohi sinun termeilläsi, tarkista ensin embedding-malli, ei itse hakua."
+      }
+    }
+  },
+  "af-vector-db": {
+    "title": "Vector Database — kirjasto merkityksille",
+    "subtitle": "Missä AI säilyttää tietoa ja löytää tarvitsemansa merkityksen, ei sanojen mukaan",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Vector database ei säilytä tekstejä vaan niiden «merkitysten sormenjälkiä» ([[node:af-embeddings|embeddings]] — numerojoukkoja). Sen supervoima: löytää millisekunneissa miljoonien tietueiden joukosta ne, jotka ovat merkitykseltään lähimpänä kyselyä. Kuin kirjasto, jossa kirjat ovat aiheen mukaan, ei aakkosjärjestyksessä: otat puutarhakirjan ja kymmenen muuta puutarhakirjaa on heti vieressä.",
+    "approach": "Etenemme kysymyksestä «miksi tätä ylipäätään tarvitaan» siihen, miten data päätyy sinne, miten samankaltaisuushaku toimii, mikä rooli sillä on [[node:af-rag-basics|RAG]]:issa, mitä ratkaisuja on olemassa ja missä rajat kulkevat. Kaikki käsitteellisesti, ilman matematiikkaa ja kaavoja — vain ymmärrys, jolla teet päätöksen «tarvitsenko / en tarvitse».",
+    "outcomes": [
+      "Selität yksinkertaisin sanoin, miksi vector-tietokantaa tarvitaan ja miten se eroaa tavallisesta",
+      "Ymmärrät, miten data muuttuu [[node:af-embeddings|embeddingeiksi]] ja päätyy varastoon",
+      "Tajuat samankaltaisuushaun periaatteen (nearest neighbor) ilman matematiikkaa",
+      "Näet, missä tietokanta sijaitsee [[node:af-rag-basics|RAG]]-järjestelmässä",
+      "Päätät, tarvitsetko vector-tietokannan ja minkä ratkaisun valitset"
+    ],
+    "applyIn": [
+      {
+        "title": "Yrityksen tietohaku",
+        "description": "Tuhansia yrityksen dokumentteja haetaan merkityksen mukaan: työntekijä kysyy omin sanoin, ja järjestelmä löytää olennaisen, vaikka tarkkoja sanoja ei tekstissä olisi."
+      },
+      {
+        "title": "Tietopohjan chatbotti (RAG)",
+        "description": "Botti etsii ensin oikeat palaset vector-tietokannasta ja antaa ne sitten Claudelle — vastaus nojaa sinun dataasi, ei mallin arvauksiin."
+      },
+      {
+        "title": "Samankaltaisten suositukset",
+        "description": "Samankaltaiset tuotteet, artikkelit tai asiakkaat löytyvät merkityksen läheisyyden kautta, ei käsin tehtyjen tagien ja kategorioiden."
+      }
+    ],
+    "pitfalls": [
+      "Ottaa kallis managed-palvelu, kun pgvector jo olemassa olevan Postgresin päällä riittäisi",
+      "Laittaa vector-tietokanta 50 dokumentille — se on liikaa, kaikki mahtuu sovelluksen muistiin",
+      "Luulla, että tietokanta itse «ymmärtää» merkityksen — merkitys tulee embeddingeistä, tietokanta vain löytää lähimmät nopeasti",
+      "Odottaa tietokannalta tarkkaa vastausta — se palauttaa samankaltaista; lopullisen vastauksen muotoilee malli [[node:af-rag-basics|RAG]]:issa",
+      "Valita ratkaisu «trendin» mukaan eikä todellisen mittakaavan ja nopeusvaatimusten mukaan"
+    ],
+    "exercises": [
+      {
+        "question": "Miten haku vector-tietokannassa eroaa avainsanahausta tavallisessa tietokannassa?",
+        "hint": "Mieti kyselyä «miten järjestän matkan ulkomaille» ja dokumenttia sanoilla «työmatka Saksaan» — täsmäävätkö sanat?"
+      },
+      {
+        "question": "Sinulla on 40 dokumenttia ja harvoja kyselyitä. Tarvitsetko vector-tietokannan?",
+        "hint": "Muista vaihe rajoista: millä määrällä tietokanta alkaa oikeasti maksaa itsensä takaisin."
+      },
+      {
+        "question": "Missä vector-tietokanta sijaitsee RAG-ketjussa: ennen mallia vai sen jälkeen?",
+        "hint": "Ensin löydämme olennaiset palaset, sitten annamme ne mallille — kuka kutsuu ketä?"
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi vector-tietokantaa tarvitaan",
+        "time": "",
+        "why": "Ilman tarkoituksen ymmärtämistä on helppo tehdä väärä päätös — laittaa raskas työkalu sinne, missä sitä ei tarvita, tai jäädä kasvun jalkoihin.",
+        "instructions": [
+          "Kuvittele 50 000 yrityksen dokumenttia, joista pitää hakea merkityksen, ei tarkkojen sanojen mukaan.",
+          "Tavallinen tietokanta (Postgres / MySQL) skannaa jokaisen tietueen — se on sekunteja per kysely.",
+          "Vector-tietokanta palauttaa «10 lähintä merkitykseltä» kymmenissä millisekunneissa.",
+          "Muista ydinajatus: se etsii samankaltaista, ei tarkkaa sanaosumaa."
+        ],
+        "validate": "Osaat sanoa yhdellä lauseella, minkä ongelman vector-tietokanta ratkaisee ja miksi tavallinen ei riitä.",
+        "tip": "Pidä mielessä kirjastokuva: kirjat aiheen mukaan — samankaltaiset aina lähellä."
+      },
+      "s2": {
+        "title": "Miten data päätyy sinne",
+        "time": "",
+        "why": "Tietokanta on hyödytön, kunnes merkitysten sormenjäljet on ladattu siihen. Tämän vaiheen ymmärtäminen poistaa taian.",
+        "instructions": [
+          "Jokainen dokumentti tai palanen ajetaan mallin läpi ja muutetaan [[node:af-embeddings|embeddingiksi]] — numerojoukoksi, joka koodaa merkityksen.",
+          "Tämä numerojoukko tallennetaan vector-tietokantaan yhdessä alkuperäisen tekstin linkin kanssa.",
+          "Suuret dokumentit pilkotaan etukäteen paloihin — niin haku löytää tietyn olennaisen palasen.",
+          "Latauksen jälkeen tietokanta on valmis: merkitykset odottavat kyselyä."
+        ],
+        "validate": "Osaat kuvata reitin «teksti → numerojoukko → tietue tietokannassa» omin sanoin.",
+        "tip": "Erillinen malli luo embeddingit — tietokanta vain tallentaa ja hakee."
+      },
+      "s3": {
+        "title": "Miten samankaltaisuushaku toimii",
+        "time": "",
+        "why": "Tämä on vector-tietokannan sydän. Kun tajuat periaatteen, se lakkaa olemasta musta laatikko.",
+        "instructions": [
+          "Käyttäjän kysely muutetaan myös numerojoukoksi — samanlaiseksi [[node:af-embeddings|embeddingiksi]].",
+          "Tietokanta vertaa tätä joukkoa kaikkiin tallennettuihin ja etsii merkitykseltä lähimmät.",
+          "Tämä on nearest neighbor — «lähimmät naapurit»: mitä lähempänä numerojoukot, sitä lähempänä merkitys.",
+          "Vastaukseen tulee ei yksi vaan useita samankaltaisimpia palasia (esim. top 5)."
+        ],
+        "validate": "Osaat selittää «lähimmät naapurit» ilman ainoatakaan kaavaa, kyselyn ja dokumenttien esimerkillä.",
+        "tip": "Tietokanta ei ymmärrä tekstiä — se vain mittaa, kuinka lähellä merkitysten sormenjäljet ovat."
+      },
+      "s4": {
+        "title": "Rooli RAG:issa",
+        "time": "",
+        "why": "Vector-tietokanta toimii harvoin yksin — useimmiten se on osa [[node:af-rag-basics|RAG]]:ia. Ilman tätä kontekstia sen hyöty jää vajaaksi.",
+        "instructions": [
+          "[[node:af-rag-basics|RAG]]:issa kysymykselle löydetään ensin olennaiset palaset — sen tekee vector-tietokanta.",
+          "Löydetyt palaset annetaan mallille kontekstina yhdessä kysymyksen kanssa.",
+          "Malli vastaa sinun datasi pohjalta, ei koulutuksen yleistiedon.",
+          "Näin tietokanta hoitaa «löydä oikea» ja malli «muotoile vastaus»."
+        ],
+        "validate": "Osaat järjestää RAG:in vaiheet: kysymys → haku tietokannasta → mallille → vastaus.",
+        "tip": "Tietokanta löytää, malli muotoilee — eri roolit, älä sekoita niitä."
+      },
+      "s5": {
+        "title": "Suositut ratkaisut ja milloin tarvitaan",
+        "time": "",
+        "why": "Työkalun valinta vaikuttaa voimakkaasti kustannuksiin ja monimutkaisuuteen. Parempi päättää harkiten kuin trendin mukaan.",
+        "instructions": [
+          "Muista pääniminä: Pinecone, Qdrant, Weaviate, Chroma ja pgvector (Postgresin laajennus).",
+          "Jos tiimillä on jo Postgres — pgvector lisää vector-haun yksinkertaisesti ja halvalla.",
+          "Kalliit managed-palvelut ovat perusteltuja hyvin suurilla määrillä tai tiukoilla nopeusvaatimuksilla.",
+          "Tietokanta kannattaa ottaa, kun dokumentteja on yli ~1000 tai tarvitset semanttista hakua isossa pohjassa."
+        ],
+        "validate": "Osaat nimetä 3-4 ratkaisua ja sanoa, milloin pgvector riittää ja milloin tarvitaan managed-palvelu.",
+        "tip": "Clauden kanssa Pinecone, Qdrant ja pgvector tulevat usein esiin — mutta valitse mittakaavan ja compliancen, ei mallin yhteensopivuuden mukaan."
+      },
+      "s6": {
+        "title": "Rajat, virheet ja tarkistus",
+        "time": "",
+        "why": "Rajojen ymmärtäminen säästää turhilta kuluilta ja liioitelluilta odotuksilta — se on viimeinen suodatin ennen päätöstä.",
+        "instructions": [
+          "Pienillä määrillä (kymmeniä dokumentteja) tietokantaa ei tarvita — pidä kaikki sovelluksen muistissa.",
+          "Älä odota tietokannalta valmista vastausta: se palauttaa samankaltaista; mallin muotoilee vastauksen.",
+          "Älä maksa liikaa managed-ratkaisusta, jos pgvector kattaa mittakaavasi.",
+          "Muista: haun laatu riippuu embeddingien laadusta — roskaa sisään, roskaa ulos."
+        ],
+        "validate": "Osaat rehellisesti vastata kysymykseen «tarvitsenko nyt vector-tietokannan ja minkä» perusteluineen.",
+        "tip": "Mittaa ensin mittakaava ja kyselytiheys — valitse vasta sitten työkalu, älä toisin päin."
+      }
+    }
+  },
+  "af-rag-basics": {
+    "title": "RAG: kuinka AI vastaa dokumenttiesi pohjalta",
+    "subtitle": "Kysymyksestä lähteistettyyn vastaukseen — 6 askelta",
+    "totalTime": "6 askelta",
+    "whatItIs": "RAG (Retrieval-Augmented Generation) on tapa saada AI vastaamaan ei päästään, vaan dokumenttiesi pohjalta. AI etsii ensin olennaiset palat tietopohjastasi, lukee ne ja vasta sitten muodostaa vastauksen. Kuin lunttilappu kokeessa: avaa ensin oikea osio, sitten vastaa. Rakenteesta lisää — [[node:sys-rag-architecture|RAG-arkkitehtuuri]].",
+    "approach": "Etenemme «miksi»-kysymyksestä «miten»-kysymykseen: ensin ymmärrät minkä ongelman RAG ratkaisee, sitten pilkot putken osiin (pilkkominen → [[node:af-embeddings|embeddings]] → [[node:af-vector-db|vektoritietokanta]] → haku → vastaus), sitten mikä ratkaisee laadun, miksi RAG voittaa pelkän tiedoston latauksen, tyypilliset virheet ja mistä aloittaa. Käsitteellistä mutta käytännöllistä: jokaista askelta voi kokeilla [[node:ai-fundamentals|AI:n perusteissa]].",
+    "outcomes": [
+      "Selität arkikielellä mitä RAG on ja miksi sitä tarvitaan",
+      "Pilkot RAG-putken askel askeleelta: pilkkominen, embeddings, vektoritietokanta, haku, vastaus",
+      "Ymmärrät mikä ratkaisee vastausten laadun — pilkkominen ja relevanssi",
+      "Erotat milloin tarvitset RAG:ia ja milloin riittää tiedoston lataaminen chattiin",
+      "Opit tyypilliset virheet ja miten tarkistat että järjestelmä toimii"
+    ],
+    "applyIn": [
+      {
+        "title": "Asiakastuki",
+        "description": "AI vastaa kysymyksiin tietopohjastasi lähdeviittauksen kanssa — asiakas näkee mistä vastaus tuli."
+      },
+      {
+        "title": "Yrityksen sisäinen tieto",
+        "description": "Työntekijät kysyvät säännöistä, HR-ohjeista, tuotedokumenteista — AI löytää ja vastaa ajantasaisten dokumenttien pohjalta."
+      },
+      {
+        "title": "Henkilökohtainen tietoarkisto",
+        "description": "Muistiinpanot, artikkelit, keskusteluhistoria — AI hakee merkityksen perusteella ja antaa vastauksen sen sijaan että selailisit kaikkea käsin."
+      }
+    ],
+    "pitfalls": [
+      "«Otetaan RAG käyttöön ja sillä sipuli» — naive RAG vastaa oikein vain noin puolessa tapauksista, hienosäätö tarvitaan",
+      "Roskaa sisään: vanhat luonnokset, dublikaatit, ristiriitaiset versiot — AI löytää roskaa ja vastaa roskaa",
+      "Huono pilkkominen: palat liian isoja tai katkaisevat ajatuksen kesken — haku löytää väärät palat",
+      "Ei relevanssitarkistusta: järjestelmä palauttaa ensimmäiset löytämänsä palat, vaikka aiheen vierestä",
+      "RAG:in sekoittaminen mallin hienosäätöön — RAG ei muuta mallissa mitään, se vain syöttää oikeat dokumentit"
+    ],
+    "exercises": [
+      {
+        "question": "Muotoile yhdellä esimerkillä työstäsi kysymys, johon AI ilman RAG:ia vastaisi «en tiedä» tai keksisi, mutta RAG:in kanssa vastaisi oikein.",
+        "hint": "Valitse kysymys jonka vastaus on jossakin dokumentissasi mutta ei varmasti internetin yleistiedossa."
+      },
+      {
+        "question": "Selitä omin sanoin miksi dokumenttien pilkkominen paloiksi vaikuttaa vastausten laatuun.",
+        "hint": "Mieti mitä tapahtuu jos tärkeä ajatus katkaistaan tasan kahden palan väliltä."
+      },
+      {
+        "question": "Päätä: tehtävään «vastaa yhteen kysymykseen yhdestä PDF:stä» tarvitaanko RAG vai riittääkö tiedoston lataus chattiin? Perustele.",
+        "hint": "Vertaa dokumenttien määrää ja kyselytaajuutta — RAG kannattaa kun dokumentteja on paljon ja kysymykset toistuvat."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi RAG:ia ylipäätään tarvitaan",
+        "time": "",
+        "why": "Ilman «miksi»-ymmärrystä RAG näyttää turhalta monimutkaisuudelta. AI itsessään ei tunne dokumenttejasi: kysy palautuskäytännöstä, ja se joko sanoo «en tiedä» tai keksii uskottavasti (hallusinaatio). RAG antaa kolme asiaa: vastaukset omasta datastasi, tuoreuden (pohja päivittyy ilman mallin uudelleenkoulutusta) ja vähemmän hallusinaatioita — lähdeviittauksen kanssa.",
+        "instructions": [
+          "Kysy AI:lta kysymys jonka vastaus on vain dokumenteissasi (esim. sisäinen sääntö)",
+          "Huomaa reaktio: «en tiedä» tai uskottava keksintö — tämä on ongelma jonka RAG ratkaisee",
+          "Muotoile RAG:in kolme hyötyä: vastaukset omasta datasta, tuoreus, vähemmän hallusinaatioita",
+          "Kirjaa 2-3 todellista työsi kysymystä joissa RAG auttaisi"
+        ],
+        "validate": "Osaat nimetä konkreettisen kysymyksen johon AI vastaa huonosti ilman RAG:ia ja selittää miksi RAG korjaisi sen.",
+        "tip": "RAG on yleisin tapa jolla AI:ta käytetään yrityksissä. Ei «AI kirjoittaa luovaa kopiota» vaan «AI vastaa tietopohjamme perusteella»."
+      },
+      "s2": {
+        "title": "Kuinka RAG-putki toimii",
+        "time": "",
+        "why": "RAG kuulostaa monimutkaiselta, mutta se on vain viisi askelta peräkkäin. Putken tuntien näet missä asiat voivat mennä rikki ja puhut tiimisi kanssa samaa kieltä.",
+        "instructions": [
+          "Askel 1 — pilkkominen: dokumentit pilkotaan sopivan kokoisiin paloihin (chunks)",
+          "Askel 2 — jokainen pala muutetaan [[node:af-embeddings|embeddingeiksi]] (numerojoukoksi joka kuvaa merkitystä)",
+          "Askel 3 — nuo numerot menevät [[node:af-vector-db|vektoritietokantaan]] jotta voi hakea merkityksen mukaan",
+          "Askel 4 — haku: kysymys muutetaan myös numeroiksi, järjestelmä löytää merkitykseltään läheiset palat",
+          "Askel 5 — vastaus: löydetyt palat + kysymys annetaan AI:lle, joka muodostaa vastauksen lähteineen"
+        ],
+        "validate": "Osaat luetella putken viisi askelta ulkomuistista ja selittää mitä kukin tekee.",
+        "tip": "Pääidea: AI ei «muista» dokumenttejasi — se hakee oikeat palat uudelleen ja lukee ne ennen jokaista vastausta."
+      },
+      "s3": {
+        "title": "Mikä ratkaisee laadun",
+        "time": "",
+        "why": "Kaksi RAG:ia samoilla dokumenteilla voivat antaa eri vastaukset. Laatu ratkeaa kahdesta asiasta: miten dokumentit on pilkottu ja kuinka tarkasti järjestelmä löytää olennaiset palat.",
+        "instructions": [
+          "Pilkkominen: palat eivät saa olla liian isoja (yksityiskohdat hukkuvat) tai liian pieniä (konteksti katoaa)",
+          "Varmista ettei pilkkominen katkaise ajatusta kesken — pilko kappaleittain tai osioittain",
+          "Relevanssi: tarkista että järjestelmä löytää juuri ne palat jotka liittyvät kysymykseen",
+          "Lisää metadataa (osio, päivämäärä, lähde) — se auttaa suodattamaan ja järjestämään löydettyä",
+          "Tuotannossa lisätään re-ranking: löydettyjen palojen uudelleenjärjestäminen tarkkuuden mukaan"
+        ],
+        "validate": "Osaat selittää miksi liian isot ja liian pienet palat molemmat heikentävät laatua.",
+        "tip": "Naive RAG (ota top-3 palaa → anna AI:lle) toimii 50%:ssa. Pilkkomisen ja relevanssin hienosäätö nostaa sen 80-90%:iin."
+      },
+      "s4": {
+        "title": "RAG vs pelkkä tiedoston lataus chattiin",
+        "time": "",
+        "why": "Usein RAG:ia ei tarvita — tiedoston lataus chattiin riittää. Rajan tunteminen estää rakentamasta monimutkaista järjestelmää sinne missä yksi toiminto riittäisi.",
+        "instructions": [
+          "Tiedoston lataus chattiin: nopea ja yksinkertainen, mutta AI näkee vain sen mikä mahtuu yhteen ikkunaan",
+          "RAG: hakee suuresta dokumenttipohjasta ja syöttää vain olennaiset palat",
+          "Sääntö: yksi tai kaksi dokumenttia ja kertaluonteinen kysymys — lataus chattiin riittää",
+          "Sääntö: paljon dokumentteja, toistuvat kysymykset, tarvitaan lähdeviittaukset — tarvitset RAG:in",
+          "Claudessa voit aloittaa ilman erillistä palvelua: [[node:cap-files|Files]] dokumenteille, ja täysi RAG suurelle pohjalle"
+        ],
+        "validate": "Kahdelle tehtävällesi osaat sanoa missä tiedoston lataus riittää ja missä tarvitaan RAG, ja perustella valinnan.",
+        "tip": "Älä rakenna RAG:ia RAG:in vuoksi. Jos yhden PDF:n lataus ratkaisee asian, tee niin — se on halvempaa ja nopeampaa."
+      },
+      "s5": {
+        "title": "Tyypilliset virheet ja tarkistus",
+        "time": "",
+        "why": "Useimmat RAG-epäonnistumiset eivät johdu mallista vaan roskasta sisään ja huonosta pilkkomisesta. Tyypilliset virheet tunten säästät viikkoja virheenjäljitystä.",
+        "instructions": [
+          "Virhe «roskaa sisään»: vanhat luonnokset, dublikaatit, ristiriidat pohjassa → AI vastaa roskaa",
+          "Virhe «huonot palat»: palat katkaisevat ajatuksen tai ovat liian isoja → haku löytää väärät palat",
+          "Tarkistus 1: kysy 10 todellista kysymystä ja vertaa vastauksia siihen mitä dokumenteissa oikeasti lukee",
+          "Tarkistus 2: katso jokaisen vastauksen kohdalla mitkä palat järjestelmä löysi — ovatko ne aiheessa?",
+          "Puhtaus voittaa määrän: poista dublikaatit ja vanhentunut ennen kuin lisäät uutta"
+        ],
+        "validate": "Olet ajanut ainakin muutaman testikysymyksen ja osaat sanoa missä järjestelmä erehtyy ja miksi.",
+        "tip": "Jos vastaus on huono, katso ensin mitkä palat löytyivät. 8 tapauksessa 10:stä ongelma on löydetyissä paloissa, ei itse mallissa."
+      },
+      "s6": {
+        "title": "Mistä aloittaa",
+        "time": "",
+        "why": "Ymmärrys ilman tekoa unohtuu nopeasti. Pieni toimiva RAG 5-10 dokumentilla opettaa enemmän kuin kymmenen artikkelin lukeminen.",
+        "instructions": [
+          "Kerää 5-10 puhdasta, ajantasaista dokumenttia yhdestä aiheesta — ei dublikaatteja tai luonnoksia",
+          "Aloita yksinkertaisesti: lataa ne [[node:cap-files|Files]]-toiminnolla ja kysy kysymyksiä — se on jo mini-RAG",
+          "Kun dokumentteja kertyy paljon, siirry askeleen 2 täyteen putkeen",
+          "Lukitse perusteet: käy läpi [[node:ai-fundamentals|AI:n perusteet]] ymmärtääksesi miten malli käyttää löydettyä",
+          "Pidä listaa kysymyksistä joihin järjestelmä vastaa huonosti — se on kehityssuunnitelmasi"
+        ],
+        "validate": "Sinulla on toimiva mini-järjestelmä: kysyt kysymyksen dokumenteistasi ja saat vastauksen niistä, et yleistiedosta.",
+        "tip": "Aloita yhdestä kapeasta aiheesta ja 5-10 dokumentista. Laajenna kun näet että perusskenaario toimii."
+      }
+    }
+  },
+  "af-memory-systems": {
+    "title": "AI:n muisti — miksi se «unohtaa»",
+    "subtitle": "Konteksti-ikkuna, muistityypit ja keinot AI:n «muistinmenetystä» vastaan",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "AI-mallilla ei ole sisäänrakennettua pitkäkestoista muistia: se toimii vain sen kanssa, mikä on juuri nyt «sen edessä» — konteksti-ikkunassa. Heti kun keskustelu päättyy tai ikkuna täyttyy, kaikki unohtuu. Tämä kurssi selittää, miksi näin on, mitä muistityyppejä AI-järjestelmillä on ja miten saada AI «muistamaan» olennainen.",
+    "approach": "Etenemme syystä ratkaisuun. Ensin avaamme, miksi malli ylipäätään «unohtaa» ja mikä konteksti-ikkuna on yksinkertaisesti. Sitten katsomme muistityyppejä — sessio, pitkäkestoinen, ulkoinen. Sitten miten tämä on toteutettu Claudessa Memoryn ja projektien kautta. Ja lopuksi — käytännön keinot ja rehelliset rajat sille, mikä on mahdollista.",
+    "outcomes": [
+      "Ymmärrät, miksi AI:lla ei ole sisäänrakennettua pitkäkestoista muistia ja mitä «unohti» tarkoittaa",
+      "Selität konteksti-ikkunan yksinkertaisesti, ilman ammattisanastoa",
+      "Erotat muistityypit: sessio, pitkäkestoinen, ulkoinen",
+      "Tiedät, miten Claude muistaa kontekstin Memoryn ja projektien kautta",
+      "Sovellat unohtamista vastaan keinoja: tiivistelmät, /compact, ulkoiset dokumentit"
+    ],
+    "applyIn": [
+      {
+        "title": "Pitkät työsessiot",
+        "description": "Kun työskentelet AI:n kanssa yhden tehtävän parissa tunteja ja se alkaa «kadottaa langan» — ymmärrät syyn ja sovellat tiivistelmiä ja /compactia."
+      },
+      {
+        "title": "Kontekstia keräävät projektit",
+        "description": "Kun tarvitset AI:n muistavan sopimukset ja työtyylin keskustelujen välillä — käytät projekteja ja Memorya."
+      },
+      {
+        "title": "Suurten dokumenttien käsittely",
+        "description": "Kun dokumentteja on enemmän kuin ikkunaan mahtuu — kytket ulkoisen muistin RAG:n kautta sen sijaan että liittäisit kaiken chattiin."
+      }
+    ],
+    "pitfalls": [
+      "Luulla, että AI «muistaa» menneet keskustelut itsestään — ilman projekteja tai Memorya se aloittaa joka kerta nollasta",
+      "Uskoa, että riittää «vain laajentaa konteksti-ikkunaa» — isompi ikkuna on kalliimpi, hitaampi ja AI hukkuu keskelle",
+      "Liittää kaikki pitkä konteksti jokaiseen pyyntöön lyhyen tiivistelmän sijaan",
+      "Olla tarkistamatta, mitä AI todella «muistaa» — ja hämmästyä, kun se nojaa vanhentuneeseen tietoon",
+      "Sekoittaa session muisti pitkäkestoiseen: mitä AI tiesi yhdessä chatissa, ei siirry uuteen automaattisesti"
+    ],
+    "exercises": [
+      {
+        "question": "Olet keskustellut AI:n kanssa isosta projektista kolme tuntia, ja se alkaa unohtaa alkuvaiheen yksityiskohtia. Miksi näin käy ja mitä teet?",
+        "hint": "Muista konteksti-ikkuna ja sen rajallinen koko. Mieti tiivistelmiä ja /compactia."
+      },
+      {
+        "question": "Tarvitset AI:n muistavan työtyylimieltymyksesi jokaisessa uudessa keskustelussa. Mikä muistityyppi tähän tarvitaan ja miten teet sen Claudessa?",
+        "hint": "Tämä ei ole yhden session muisti. Katso vaihe Memorysta ja projekteista."
+      },
+      {
+        "question": "Sinulla on 500 sivua dokumentaatiota, eikä se mahdu ikkunaan. Miten annat AI:lle pääsyn tarvittaviin osiin?",
+        "hint": "Ulkoinen muisti. Muista lähestymistapa, jossa AI etsii tarvittavan pätkän eikä pidä kaikkea näkyvissä."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Miksi malli «unohtaa»",
+        "time": "",
+        "why": "Keskeinen väärinkäsitys: ihmiset odottavat AI:n muistavan kuin ihminen. Todellisuudessa mallilla ei ole sisäänrakennettua pitkäkestoista muistia — eikä tämä ole vika vaan rakenne.",
+        "instructions": [
+          "Muista yksinkertainen totuus: AI-malli toimii vain sen kanssa, mitä sille annettiin juuri tässä pyynnössä. Sillä ei ole itsestään «muistia» eilisestä keskustelusta.",
+          "Kaikki minkä AI «näkee» mahtuu rajalliseen tilaan — konteksti-ikkunaan. Kun se täyttyy, vanha työntyy pois uuden tieltä.",
+          "Kun keskustelu sulkeutuu, malli ei tallenna sitä mihinkään. Uusi chat on puhdas pöytä.",
+          "Vertaa itseesi: et pidä päässäsi jokaista sanaa viime viikolta — muistat olennaisen, muu on kirjoitettu jonnekin ylös. Ilman erityisiä lisäosia AI:lla ei ole edes tätä.",
+          "Muista johtopäätös: «AI unohti» tarkoittaa melkein aina «tarvittava tieto ei päätynyt konteksti-ikkunaan tai sitä ei ole tallennettu ulos». Lisää AI:n rakenteesta — [[node:ai-fundamentals|AI:n perusteet]]."
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miksi uusi AI-chat ei muista edellistä keskustelua.",
+        "tip": "«Unohti» ei liity AI:n pahaan tahtoon. Kyse on aina siitä, missä tieto on juuri nyt: ikkunassa, ulkona vai ei missään."
+      },
+      "s2": {
+        "title": "Konteksti-ikkuna yksinkertaisesti",
+        "time": "",
+        "why": "Konteksti-ikkuna on koko muistiteeman keskeisin käsite. Ilman sitä ei ymmärrä, miksi AI unohtaa eikä miten asian kanssa toimia.",
+        "instructions": [
+          "Kuvittele rajallisen kokoinen työpöytä. AI voi katsoa vain sitä, mitä pöydällä on juuri nyt — se on konteksti-ikkuna.",
+          "Pöydälle laitetaan kaikki: kysymyksesi, tämän chatin aiemmat viestit, liitetyt dokumentit, ohjeet. Yhdessä ne vievät tilaa.",
+          "Kun pöytä täyttyy yli, jotain on poistettava — yleensä vanhin. Siksi alkuvaiheen yksityiskohdat «putoavat pois» pitkässä keskustelussa.",
+          "Ikkuna on iso mutta ei ääretön. Ja mitä enemmän siinä on, sitä kalliimpi pyyntö ja sitä helpommin AI «hukkuu keskelle» — ohittaa olennaisen melun joukossa.",
+          "Muista: tavoite ei ole «täyttää ikkuna äärimmilleen» vaan laittaa pöydälle vain se, mitä nykyinen tehtävä vaatii."
+        ],
+        "validate": "Osaat selittää konteksti-ikkunan työpöytä-vertauksen kautta ja kertoa, mitä tapahtuu kun se täyttyy yli.",
+        "tip": "Enemmän kontekstia ≠ parempi. Siisti, keskittynyt «pöytä» toimii tarkemmin kuin sotkuinen."
+      },
+      "s3": {
+        "title": "AI-järjestelmien muistityypit",
+        "time": "",
+        "why": "«AI:n muisti» ei ole yksi asia. Se on useita eri mekanismeja eri tehtäviin. Niiden sekoittaminen on ongelmien pääsyy.",
+        "instructions": [
+          "Session muisti: mitä AI muistaa yhden keskustelun sisällä, niin kauan kuin kaikki mahtuu konteksti-ikkunaan. Sulje chat — session muisti katoaa.",
+          "Pitkäkestoinen muisti: mitä on erityisesti tallennettu ja vedetään uusiin keskusteluihin — esimerkiksi mieltymyksesi tai faktat projektista.",
+          "Ulkoinen muisti: suuri dokumenttipohja ulkona, josta AI hakee tarvittavan palan pyynnöstä sen sijaan että pitäisi kaikkea näkyvissä. Näin tekee [[node:af-rag-basics|RAG]].",
+          "Valintasääntö: nykyinen keskustelu — session muisti; pysyvät faktat sinusta — pitkäkestoinen; valtavat dokumentit — ulkoinen.",
+          "Muista: jokainen tyyppi ratkaisee oman tehtävänsä. Kaiken tunkeminen yhteen on tie ylimaksuun ja roskaan."
+        ],
+        "validate": "Osaat nimetä kolme muistityyppiä ja antaa kullekin esimerkin, milloin se sopii.",
+        "tip": "Jos kysyt itseltäsi «pitääkö AI:n muistaa tämä aina vai vain tässä chatissa?» — valitset jo pitkäkestoisen ja session muistin välillä."
+      },
+      "s4": {
+        "title": "Miten Claude muistaa kontekstin",
+        "time": "",
+        "why": "Teoria muuttuu hyödylliseksi, kun näet sen konkreettisessa työkalussa. Claudessa on sisäänrakennetut tavat antaa AI:lle pitkäkestoinen ja projektimuisti.",
+        "instructions": [
+          "Memory: Claude osaa tallentaa pysyviä faktoja sinusta ja työstäsi ja vetää ne uusiin keskusteluihin — se on pitkäkestoista muistia. Lisää — [[node:cap-memory|Memory]].",
+          "Projektit: projektin sisällä Claude pitää yhteistä kontekstia ja tiedostoja, jotka ovat saatavilla kaikissa projektin chateissa. Näin keskustelut lakkaavat alkamasta nollasta.",
+          "Ero on tärkeä: session muisti elää yhdessä chatissa; Memory ja projektit siirtävät tiedon chattien välillä.",
+          "Mikä minne: henkilökohtaiset mieltymykset ja vakaat faktat — Memoryyn; tietyn työn dokumentit ja materiaalit — projektitiedostoihin.",
+          "Muista: sinä päätät, mitä Clauden pitää muistaa pitkään. Se ei tapahdu taianomaisesti — sinä asetat sen."
+        ],
+        "validate": "Osaat selittää eron sen välillä, mitä Claude muistaa yhdessä chatissa ja mitä siirtyy Memoryn ja projektien kautta.",
+        "tip": "Jos huomaat toistavasi Claudelle samaa joka chatissa — se on merkki siirtää se Memoryyn tai projektiin."
+      },
+      "s5": {
+        "title": "Keinot «unohtamista» vastaan",
+        "time": "",
+        "why": "Kun tiedät syyn, voit toimia. Muutama yksinkertainen keino vähentää voimakkaasti «AI unohti kaiken» -efektiä oikeassa työssä.",
+        "instructions": [
+          "Tiivistelmä: kun keskustelu on pitkä, pyydä AI:ta tiivistämään sopimukset lyhyesti. Lyhyt tiivistelmä vie vähän tilaa ja säilyttää olennaisen.",
+          "/compact: pitkässä sessiossa tämä komento tiivistää menneen keskustelun ja vapauttaa tilaa ikkunassa menettämättä pääkohtia.",
+          "Ulkoiset dokumentit: pidä tärkeät materiaalit projektitiedostoissa tai tietopohjassa sen sijaan että liittäisit ne seinänä jokaiseen chattiin.",
+          "Eksplisiittinen konteksti alkuun: jos tehtävä vaatii faktoja, anna ne pyynnön alussa — älä luota siihen että AI «muistaa» viime kerralta.",
+          "Muista yhdistelmä: lyhyt tiivistelmä + ulkoiset dokumentit + Memory kattavat suurimman osan «unohtamis»-ongelmista."
+        ],
+        "validate": "Osaat nimetä vähintään kolme keinoa ja kertoa, minkä ongelman kukin ratkaisee.",
+        "tip": "Ennen tärkeän session sulkemista pyydä lyhyt tiivistelmä päätöksistä — se on «episodinen muistisi» seuraavaa kertaa varten."
+      },
+      "s6": {
+        "title": "Rajat ja tarkistus",
+        "time": "",
+        "why": "Pettymyksen välttämiseksi on tärkeää ymmärtää AI:n muistin rehelliset rajat ja osata tarkistaa, että se todella «muistaa».",
+        "instructions": [
+          "Muista raja: jopa suuri konteksti-ikkuna on äärellinen, ja pitkäkestoinen muisti säilyttää vain sen, minkä tallensit — ei kaikkea.",
+          "Älä luota siihen että «AI varmasti muistaa». Jos fakta on kriittinen — anna se eksplisiittisesti tai tarkista että se on Memoryssa tai projektissa.",
+          "Tarkistus: kysy AI:lta, mitä se muistaa tehtävästä. Jos vastaus on epätarkka — tarvittava konteksti ei ole «pöydällä» ja se on lisättävä.",
+          "Vanhentuneen vaara: pitkäkestoinen muisti voi säilyttää vanhoja faktoja. Tarkista ajoittain, että AI nojaa ajantasaiseen.",
+          "Kokoa yhteen: «unohtamisen» syy on konteksti-ikkuna; ratkaisu on oikea muistityyppi (sessio, pitkäkestoinen [[node:cap-memory|Memoryn]] kautta, ulkoinen [[node:af-rag-basics|RAG]]:n kautta) plus keinot."
+        ],
+        "validate": "Osaat tarkistaa, mitä AI tarkalleen muistaa tehtävästä, ja ymmärrät, missä sen muistin raja kulkee.",
+        "tip": "Yksinkertainen testi: kysy «mitä muistat projektistani?». Vastaus näyttää, mitä muistissa todella on verrattuna siihen mitä vain luulit tallentaneesi."
+      }
+    }
+  },
+  "af-multimodal": {
+    "title": "Multimodal AI — malli joka näkee ja kuulee",
+    "subtitle": "Miten AI toimii tekstin lisäksi myös kuvien kanssa, ja missä ovat sen rajat",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Tavallinen AI toimi vain tekstillä. Multimodaalinen AI ymmärtää useita datatyyppejä kerralla yhdessä pyynnössä: tekstiä yhdessä kuvien kanssa (sekä ääntä ja videota). Voit näyttää mallille ruutukaappauksen, valokuvan, kaavion — ja se kuvailee mitä näkee ja vastaa kysymykseesi.",
+    "approach": "Etenemme käsitteestä käytäntöön: ensin mitä «multimodaalisuus» ylipäätään tarkoittaa, sitten miten malli «näkee» kuvan yksinkertaisesti. Seuraavaksi mitä se tekee hyvin ja mitä huonosti, ja miten sitä käytetään Claudessa [[node:cap-vision|Visionin]] ja [[node:cap-input-modalities|modaliteettien]] kautta. Lopuksi rajat ja miten tulos tarkistetaan. Käsitteellistä, ilman koodia.",
+    "outcomes": [
+      "Ymmärrät mitä «multimodaalisuus» tarkoittaa: tekstiä ja kuvia yhdessä pyynnössä",
+      "Osaat selittää yksinkertaisesti, miten malli «näkee» kuvan",
+      "Tiedät mitkä visuaaliset tehtävät AI hoitaa hyvin ja mitkä huonosti",
+      "Osaat soveltaa sitä Claudessa: näytä ruutukaappaus, valokuva tai kaavio ja kysy",
+      "Näet teknologian rajat ja tarkistat vastauksen sen sijaan että luottaisit sokeasti"
+    ],
+    "applyIn": [
+      {
+        "title": "Ruutukaappausten ja virheiden purku",
+        "description": "Näytä ruutukaappaus virheestä tai käyttöliittymästä ja kysy «mikä täällä on vialla?» sen sijaan että kirjoittaisit tekstin käsin uudelleen."
+      },
+      {
+        "title": "Dokumenttien ja kuittien lukeminen",
+        "description": "Valokuva laskusta, kuitista tai taulukosta — AI tunnistaa summat ja päivät ja siirtää tiedot, mikä säästää käsityötä."
+      },
+      {
+        "title": "Kaavioiden ja mockupien ymmärtäminen",
+        "description": "Näytä kaavio raportista tai design-mockup — AI kuvailee trendin tai auttaa rakentamaan sivun kuvan perusteella."
+      }
+    ],
+    "pitfalls": [
+      "Ajatella että «AI näkee kaiken kuin ihminen» — todellisuudessa on heikkoja kohtia",
+      "Pyytää lukemaan pientä tai käsinkirjoitettua tekstiä — erikois-OCR tekee tämän paremmin",
+      "Odottaa pikselitarkkuutta: esineiden tarkka laskeminen kuvasta sujuu mallilta huonommin",
+      "Ladata monimutkainen kaavio kymmenellä viivalla ja luottaa vastaukseen tarkistamatta",
+      "Käyttää multimodaalisuutta siellä missä tehtävä on puhtaasti tekstiä — turhaa monimutkaisuutta"
+    ],
+    "exercises": [
+      {
+        "question": "Miten multimodaalinen AI eroaa tavallisesta teksti-AI:sta — yhdellä lauseella?",
+        "hint": "Kyse on datatyypeistä: teksti vs. «teksti + kuvat ja muut tyypit yhdessä pyynnössä»."
+      },
+      {
+        "question": "Nimeä kaksi tehtävää joissa malli «näkee» hyvin ja kaksi joissa huonosti.",
+        "hint": "Hyvin: esineet kuvissa, painettu teksti. Huonosti: käsiala, tarkka laskenta, ylikuormitettu kaavio."
+      },
+      {
+        "question": "Joku lähetti sinulle virheen ruutukaappauksen. Miten multimodaalisuus säästää aikaa «vanhaan tapaan» verrattuna?",
+        "hint": "Ei tarvitse kirjoittaa virheen tekstiä käsin uudelleen — pudotat kuvan ja kysyt heti."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mitä «multimodaalisuus» tarkoittaa",
+        "time": "",
+        "why": "Ilman tätä käsitettä on helppoa sekoittaa multimodaalinen AI tavalliseen tai odottaa liikaa. Modaliteetti on datatyyppi: teksti, kuva, ääni, video.",
+        "instructions": [
+          "Muista yksinkertainen määritelmä: «modaliteetti» = datatyyppi. Teksti on yksi modaliteetti, kuva toinen.",
+          "Multimodaalinen AI ottaa vastaan useita tyyppejä kerralla: esimerkiksi kysymyksesi tekstin yhdessä liitetyn kuvan kanssa.",
+          "Vertaa: tavalliselle AI:lle kirjoitat «käännä artikkeli». Multimodaaliselle liität ruutukaappauksen ja kirjoitat «mikä täällä on vialla?».",
+          "Palauta mieleen liittyvä käsite Atlasissa — [[node:ai-fundamentals|AI:n perusteet]] — nähdäksesi mihin tämä aihe sijoittuu."
+        ],
+        "validate": "Osaat sanoa omin sanoin, että multimodaalisuus on tekstin ja kuvien (ja muiden tyyppien) käsittelyä yhdessä pyynnössä.",
+        "tip": "Sana «modaliteetti» kuulostaa monimutkaiselta, mutta se tarkoittaa vain «havaintokanavaa»: kuten ihmisellä on näkö ja kuulo."
+      },
+      "s2": {
+        "title": "Miten malli «näkee» kuvan",
+        "time": "",
+        "why": "Mekaniikan ymmärtäminen yksinkertaisesti poistaa taikuuden ja auttaa ennustamaan missä malli epäonnistuu.",
+        "instructions": [
+          "Kuvittele että malli ei «katso silmillä» vaan muuntaa kuvan numerosarjaksi — muodon, värin ja sen tekstin piirteiksi.",
+          "Näiden piirteiden perusteella se etsii kaavoja joilla se on koulutettu: «tämä näyttää napilta», «tämä on koodirivi», «tämä on kaavio».",
+          "Teksti ja kuva päätyvät yhteiseen «ymmärrykseen» — siksi voit kysyä kuvasta sanoin.",
+          "Muista pääkohta: tämä on kaavojen tunnistusta, ei tarkkaa «pikselien lukemista»."
+        ],
+        "validate": "Osaat selittää, että malli muuntaa kuvan piirteiksi ja vertaa niitä oppimaansa, ei «näe» kuin ihminen.",
+        "tip": "Vertaus: malli pikemminkin «tunnistaa» tutun kuvasta kuin mittaa sitä viivaimella."
+      },
+      "s3": {
+        "title": "Mitä se tekee hyvin",
+        "time": "",
+        "why": "Vahvuuksien tunteminen antaa soveltaa AI:ta juuri siellä missä se aidosti säästää aikaa.",
+        "instructions": [
+          "Kuvan kuvailu: «mitä tässä kuvassa on?» — malli luettelee varmasti esineet ja kohtauksen.",
+          "Ruutukaappauksen purku: käyttöliittymä, virheilmoitus, pitkä stack trace — se löytää missä ongelma on.",
+          "Keskivaikeat kaaviot ja graafit: se kuvailee trendin ja selittää mitä akseli näyttää.",
+          "Painettu teksti valokuvassa: se tunnistaa kuitin summat, otsikot, kuvatekstit.",
+          "Kokeile itse: näytä AI:lle minkä tahansa näytön ruutukaappaus ja pyydä kuvailemaan mitä näkyy."
+        ],
+        "validate": "Osaat nimetä vähintään kolme tehtävää joissa malli «näkee» luotettavasti: kuvailu, ruutukaappauksen purku, painetun tekstin lukeminen.",
+        "tip": "Mitä selkeämpi ja suurempi kuva, sitä tarkempi vastaus — lähetä hyvälaatuinen ruutukaappaus."
+      },
+      "s4": {
+        "title": "Mitä se tekee huonosti",
+        "time": "",
+        "why": "Heikot kohdat ovat hiljaisten virheiden lähde. Jos et tunne niitä, on helppoa luottaa väärään vastaukseen.",
+        "instructions": [
+          "Pieni teksti: malli voi «arvata» epäselviä merkkejä sen sijaan että lukisi ne tarkasti.",
+          "Käsinkirjoitettu teksti: erikois-OCR-työkalut hoitavat sen paremmin.",
+          "Tarkka laskenta: «kuinka monta ihmistä kuvassa on?» on yleinen virhelähde.",
+          "Ylikuormitetut kaaviot kymmenellä viivalla ja merkinnällä — korkea riski sekoittaa asioita.",
+          "Pikselitarkkuus (koordinaatit, tarkat värit) — ei vahva puoli."
+        ],
+        "validate": "Osaat nimetä vähintään kolme tapausta joissa malliin ei pidä luottaa tarkistamatta: pieni/käsinkirjoitettu teksti, tarkka laskenta, monimutkaiset kaaviot.",
+        "tip": "Jos tehtävä osuu heikkoon alueeseen — älä hylkää AI:ta kokonaan, mutta tarkista vastaus aina."
+      },
+      "s5": {
+        "title": "Miten käyttää sitä Claudessa",
+        "time": "",
+        "why": "Teoria ilman käytäntöä on hyödytöntä. Claudessa multimodaalisuus on saatavilla suoraan chatissa.",
+        "instructions": [
+          "Liitä viestiisi kuva — ruutukaappaus, valokuva, kaavio — ja kysy kysymyksesi sanoin.",
+          "Claudessa tämä toimii [[node:cap-vision|Vision]]-kyvyn kautta — malli «näkee» liitetyn kuvan.",
+          "Syötetietotyypit itsessään on kuvattu [[node:cap-input-modalities|modaliteetteina]]: tarkalleen mitä malli voi ottaa vastaan syötteenä.",
+          "Muotoile kysymys täsmällisesti: ei «katso kuvaa» vaan «löydä virheen rivi» tai «poimi summa ja päivä».",
+          "Aloita yksinkertaisesti: pudota virheen ruutukaappaus ja pyydä selittämään mikä ongelma on."
+        ],
+        "validate": "Liitit kuvan Claudeen, kysyit täsmällisen kysymyksen ja sait mielekkään vastauksen kuvasta.",
+        "tip": "Yksi täsmällinen kysymys kuvasta voittaa epämääräisen «mitä mieltä olet?» — malli vastaa pyyntöön."
+      },
+      "s6": {
+        "title": "Rajat ja tarkistus",
+        "time": "",
+        "why": "Kypsä käyttö = teknologian rajan tunteminen ja tarkistuksen rakentaminen, ei vastaukseen sokeasti luottaminen.",
+        "instructions": [
+          "Muista päävirhe: «multimodaalinen AI näkee kaiken kuin ihminen» — se ei pidä paikkaansa.",
+          "Ennen kuin luotat, kysy itseltäsi: onko tehtävä vahvalla alueella (kuvailu, painettu teksti) vai heikolla (pieni fontti, tarkka laskenta)?",
+          "Tärkeän datan (summat, numerot) osalta tarkista vastaus aina alkuperäistä vasten omin silmin.",
+          "Testaa omilla tehtävätyypeilläsi — yleiset lupaukset että «AI osaa kaiken» eivät korvaa tarkistusta.",
+          "Jos vastaus on kriittinen — pyydä mallia näyttämään tarkalleen mihin kuvassa se nojaa."
+        ],
+        "validate": "Sinulla on tapa: ennen vastaukseen luottamista tunnistat alueen (vahva/heikko) ja tarkistat tärkeät numerot alkuperäistä vasten.",
+        "tip": "Sääntö on yksinkertainen: AI nopeuttaa, mutta tärkeän datan lopullinen tarkistus jää sinulle."
+      }
+    }
+  },
+  "af-fine-tuning": {
+    "title": "Fine-tuning vs Prompting — opeta vai selitä",
+    "subtitle": "Milloin kouluttaa malli ja milloin hyvä prompti riittää",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Kurssi kahdesta tavasta saada AI tekemään mitä tarvitset: **prompting** (selitä tehtävä tekstinä) ja **fine-tuning** (kouluta malli omalla datallasi). Käymme läpi eron, milloin fine-tuning on aidosti perusteltu ja miksi 90 % tehtävistä ratkeaa ilman sitä — [[node:prompting|prompt-engineeringin]] ja [[node:af-rag-basics|RAG]]:in avulla.",
+    "approach": "Etenemme käsitteistä päätökseen. Ensin selkeä raja «opeta» ja «selitä» välille, sitten mikä fine-tuning on ja mitä se maksaa, sitten työkalun valinnan tikapuut. Lopuksi tyypilliset virheet ja nopea «tarvitsenko fine-tuningia ollenkaan» -tarkistus. Käsitteellinen, ilman koodia ja matikkaa.",
+    "outcomes": [
+      "Selität fine-tuningin ja promptingin eron omin sanoin",
+      "Ymmärrät, milloin fine-tuning on aidosti tarpeen ja milloin turhaa kulua",
+      "Tunnet valintatikapuut: prompt → few-shot → RAG → fine-tune",
+      "Arvioit fine-tuningin todellisen hinnan ja vaivan ennen aloitusta",
+      "Et sekoita «trendikästä» «tarpeelliseen» lähestymistapaa valitessasi"
+    ],
+    "applyIn": [
+      {
+        "title": "Vastausten tyyli ja sävy",
+        "description": "AI:n pitää vastata brändin äänellä. Ensin esimerkit promptiin; fine-tune vain jos tyyli ei välity few-shotilla."
+      },
+      {
+        "title": "Kapea domain datalla",
+        "description": "Lääketiede, laki, tuki jolla on tuhansia kysymys-vastaus-pareja. Tässä fine-tuning voi kannattaa — mutta tarkista RAG ensin."
+      },
+      {
+        "title": "Tuotannon hinnan leikkaus",
+        "description": "Fine-tune pieni malli korvaamaan iso kapeassa tehtävässä ja laskemaan per-kysely-kulua."
+      }
+    ],
+    "pitfalls": [
+      "Fine-tuning «varmuuden vuoksi» päivänä yksi — kuin tuunaisit autoa jota et ole ajanut",
+      "Ajatella että fine-tuning = «AI tulee älykkäämmäksi». Se on erikoistuminen, ei päivitys",
+      "Sivuuttaa tekninen velka: uusi malliversio tekee vanhasta fine-tunesta vanhentuneen",
+      "Fine-tunata siellä missä prompti + RAG riittäisi — hukattu kvartaali ja budjetti",
+      "Ohittaa prompting ja few-shot ennen fine-tuningiin tarttumista"
+    ],
+    "exercises": [
+      {
+        "question": "Tehtäväsi: AI lajittelee saapuvat sähköpostit 5 kategoriaan. Kokeiletko ensin fine-tuningia vai promptingia, ja miksi?",
+        "hint": "Mieti, montako esimerkkiä 5 kategorian selittäminen vaatii ja mahtuvatko ne suoraan promptiin."
+      },
+      {
+        "question": "Tiimi käytti kvartaalin fine-tuningiin, ja kuukauden päästä tuli parempi malli. Mikä oli suunnitteluvirhe?",
+        "hint": "Muista, mitä fine-tunatulle mallille tapahtuu, kun uudempi perusmalli julkaistaan."
+      },
+      {
+        "question": "Nimeä kolme askelmaa, jotka kannattaa kiivetä ennen fine-tuningia, oikeassa järjestyksessä.",
+        "hint": "Tikapuut alkavat halvimmasta ja nopeimmasta työkalusta ja päättyvät kalleimpaan."
+      }
+    ],
+    "steps": {
+      "s1": {
+        "title": "Mikä on ero: opeta vai selitä",
+        "time": "",
+        "why": "Ilman selkeää rajaa promptingin ja fine-tuningin välillä mikä tahansa työkaluvalinta on arvausta.",
+        "instructions": [
+          "Kuvittele uusi työntekijä: prompting = anna ohjeet joka kerta, fine-tuning = kouluta kuukausia jotta vain tietää.",
+          "Kirjoita yhdellä lauseella, mitä prompting muuttaa (ohjeteksti) ja mitä fine-tuning muuttaa (itse mallin).",
+          "Huomaa: prompting on joustava ja välitön, fine-tuning hidas ja lukitsee käytöksen mallin painoihin.",
+          "Liitä perusteisiin: katso [[node:ai-fundamentals|miten AI toimii]] nähdäksesi mitä sisällä muuttuu."
+        ],
+        "validate": "Osaat selittää eron 30 sekunnissa ilman sanaa «neuroverkko».",
+        "tip": "Yksinkertainen testi: jos päätös muuttuu tekstiä muokkaamalla — se on prompting."
+      },
+      "s2": {
+        "title": "Mikä fine-tuning on ja milloin se on aidosti tarpeen",
+        "time": "",
+        "why": "Fine-tuning kuulostaa taialta, mutta on kapea työkalu, jolla on kolme rehellistä skenaariota.",
+        "instructions": [
+          "Määrittele fine-tuning: mallia jatkokoulutetaan tuhansilla input-output-pareillasi, mikä muuttaa sen käytöstä.",
+          "Listaa kolme perusteltua tapausta: erityinen tyyli, kapea domain tuhansilla esimerkeillä, halpeneminen pienellä mallilla.",
+          "Huomaa: kaikissa muissa tapauksissa — prompting + RAG + työkalut.",
+          "Muotoile sääntö: jos sinulla ei ole tuhansia laadukkaita esimerkkejä, fine-tuning on ennenaikainen."
+        ],
+        "validate": "Osaat nimetä kolme skenaariota, joissa fine-tuning on perusteltu, ja miksi.",
+        "tip": "Ei tuhansia merkittyjä esimerkkejä — silloin on liian aikaista fine-tuningille."
+      },
+      "s3": {
+        "title": "Miksi 90 % tehtävistä ratkeaa promptingilla ja kontekstilla",
+        "time": "",
+        "why": "Useimmat tiimit aliarvioivat, kuinka pitkälle hyvä prompti esimerkkeineen ja haetulla kontekstilla pääsee.",
+        "instructions": [
+          "Ota tehtävä «AI vastaa toimitusjohtajan äänellä» ja ratkaise se esimerkeillä promptissa — few-shot.",
+          "Opiskele [[node:prompting|prompt-engineering]]: selkeä rooli, tyyli ja 3-5 esimerkkiä halutusta vastauksesta.",
+          "Missä tieto puuttuu, hae se [[node:af-rag-basics|RAG]]:illa äläkä leivo sitä malliin.",
+          "Vertaa aikatauluja: prompti + RAG = tulos viikossa vs. kvartaali fine-tuningille."
+        ],
+        "validate": "Ymmärrät, miksi prompti + RAG on yleensä nopeampi ja halvempi kuin fine-tuning.",
+        "tip": "Ensin 50 promptin iteraatiota — sitten ajattele fine-tuningia."
+      },
+      "s4": {
+        "title": "Fine-tuningin hinta ja vaiva",
+        "time": "",
+        "why": "Fine-tuningin hinta ei ole vain koulutusraha — se on jatkuva tekninen velka.",
+        "instructions": [
+          "Laske suorat kulut: tuhansien esimerkkien keruu ja merkkaus, itse koulutus, infrastruktuuri.",
+          "Lisää piilohinta: uusi perusmalli julkaistaan, fine-tunesi vanhenee, kouluta uudelleen alusta.",
+          "Huomaa laaturiski: malli «erikoistuu» ja voi vastata huonommin koulutusdatan ulkopuolella.",
+          "Vertaa promptingiin: mallin vaihto vie sekunteja, fine-tunen uudelleenkoulutus viikkoja ja rahaa."
+        ],
+        "validate": "Osaat nimetä vähintään kolme fine-tuningin kuluerää itse koulutuksen lisäksi.",
+        "tip": "Budjetoi fine-tuningin toisto joka kerta kun uusi malli julkaistaan."
+      },
+      "s5": {
+        "title": "Työkalun valinnan tikapuut",
+        "time": "",
+        "why": "Oikea työkalujärjestys säästää kuukausia: aloita halvasta ja nopeasta.",
+        "instructions": [
+          "Askelma 1 — pelkkä prompti: selkeä ohje, rooli, vastausmuoto.",
+          "Askelma 2 — few-shot: lisää 3-5 input-output-esimerkkiä suoraan promptiin ([[node:pr-fewshot|few-shot prompting]]).",
+          "Askelma 3 — RAG: hae tuoretta tietoa omista dokumenteistasi ([[node:af-rag-basics|RAG]]).",
+          "Askelma 4 — fine-tuning: vain jos kolme edellistä on käytetty ja sinulla on tuhansia esimerkkejä.",
+          "Kiipeä ylöspäin vain kun nykyinen askelma on todistetusti epäonnistunut."
+        ],
+        "validate": "Osaat luetella neljä askelmaa oikeassa järjestyksessä ulkomuistista.",
+        "tip": "Älä koskaan hyppää fine-tuningiin RAG:in ohi."
+      },
+      "s6": {
+        "title": "Tyypilliset virheet ja tarkistus",
+        "time": "",
+        "why": "Pääansa on fine-tunata siellä missä prompti riittäisi; nopea tarkistuslista poistaa sen.",
+        "instructions": [
+          "Virhe 1: fine-tuning «varmuuden vuoksi» päivänä yksi — kiipeä tikapuut ensin.",
+          "Virhe 2: odottaa fine-tuningin tekevän AI:sta älykkäämmän — se vain sovittaa sen dataasi.",
+          "Tarkista itsesi kolmella kysymyksellä: kokeilitko promptia ja few-shotia? kokeilitko RAG:ia? onko tuhansia esimerkkejä?",
+          "Jos yksikin vastaus on «ei» — fine-tuning on ennenaikainen, palaa tikapuille.",
+          "Kirjaa tehtäväsi verdikti: mikä työkalu riittää juuri nyt."
+        ],
+        "validate": "Ajoit oikean tehtäväsi tarkistuslistan läpi ja valitsit työkalun harkiten.",
+        "tip": "Yksikin «ei» tarkistuslistalla tarkoittaa, että fine-tuning on vielä liian aikaista."
+      }
+    }
   }
 }

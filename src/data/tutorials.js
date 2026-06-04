@@ -3034,6 +3034,251 @@ export const tutorials = {
         "id": "s6"
       }
     ]
+  },
+  "af-llm-basics": {
+    "nodeId": "af-llm-basics",
+    "icon": "cube",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "basics"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "af-embeddings",
+      "cap-limitations",
+      "ai-fundamentals"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "af-embeddings": {
+    "nodeId": "af-embeddings",
+    "icon": "compass",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "basics"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "af-vector-db",
+      "af-rag-basics",
+      "ai-fundamentals"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "af-vector-db": {
+    "nodeId": "af-vector-db",
+    "icon": "bricks",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "basics"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "af-rag-basics",
+      "af-embeddings",
+      "ai-fundamentals"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "af-rag-basics": {
+    "nodeId": "af-rag-basics",
+    "icon": "archive",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "basics"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "af-vector-db",
+      "sys-rag-architecture",
+      "cap-files"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "af-memory-systems": {
+    "nodeId": "af-memory-systems",
+    "icon": "book",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "basics"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cap-memory",
+      "af-rag-basics",
+      "ai-fundamentals"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "af-multimodal": {
+    "nodeId": "af-multimodal",
+    "icon": "paint",
+    "level": "beginner",
+    "audience": "everyone",
+    "prerequisites": [
+      "basics"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "cap-vision",
+      "cap-input-modalities",
+      "ai-fundamentals"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
+  },
+  "af-fine-tuning": {
+    "nodeId": "af-fine-tuning",
+    "icon": "mixer",
+    "level": "intermediate",
+    "audience": "everyone",
+    "prerequisites": [
+      "basics"
+    ],
+    "relatedPrompts": [],
+    "next": [
+      "prompting",
+      "af-rag-basics",
+      "ai-fundamentals"
+    ],
+    "steps": [
+      {
+        "id": "s1"
+      },
+      {
+        "id": "s2"
+      },
+      {
+        "id": "s3"
+      },
+      {
+        "id": "s4"
+      },
+      {
+        "id": "s5"
+      },
+      {
+        "id": "s6"
+      }
+    ]
   }
 };
 
