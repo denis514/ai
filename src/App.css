@@ -5134,7 +5134,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: var(--text);
   border: 1px solid var(--border);
   border-left: 3px solid var(--cat-color);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);   /* карта внутри модалки = --radius (14), не --radius-lg */
   text-align: left;
   font-family: inherit;
   transition: border-color .12s, background .12s, transform .08s;
@@ -7296,10 +7296,12 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .path {
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  /* Стандарт радиусов: модалка/контейнер = --radius-lg (22),
+     вложенная карта = --radius (14), мелкие элементы = --radius-sm (8). */
+  border-radius: var(--radius);
   background: var(--surface);
   overflow: hidden;
-  transition: border-color .15s ease;
+  transition: border-color .15s ease, background .12s ease;
   /* Не даём flex-контейнеру сжимать раскрытый path:
      иначе шаги клипуются и .paths-list не получает дополнительной высоты для скролла. */
   flex-shrink: 0;
@@ -7321,7 +7323,9 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   cursor: pointer;
   border-left: 3px solid var(--lvl-color, var(--border-strong));
 }
-.path__head:hover { background: var(--surface-2); }
+/* Hover на всю строку (head + aside), чтобы подсветка не обрывалась справа,
+   где стоят кнопки «поделиться» и (+). */
+.path__row:hover { background: var(--surface-2); }
 .path__aside {
   flex: 0 0 auto;
   display: flex;
