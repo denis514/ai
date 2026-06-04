@@ -177,6 +177,19 @@
 - ✅ Мобильный барьер `skills/mobile-gate/` (+ 2 ревьюера) — был создан ранее, в силе.
 - ℹ️ Тур Builder (мобайл) — центрированный fallback уже есть; cookie/intro слои в норме.
 
+### 🧭 Сессия 2026-06-04 (mobile-gate + стандарт expand/shrink) — в проде
+- ✅ **mobile-gate по сессии**: 2 ревьюера (адаптив + взаимодействие) → блокеров нет;
+  единый remark — мелкие тач-цели. Введён мобильный пол 40px (чип категории, ×-сброс,
+  пагинация, крестики, кнопки примера). Commit `81d6928`.
+- ✅ **Стандарт иконок expand/shrink**: `fullscreen`→`SquareArrowExpand01Icon`,
+  `restore`→`SquareArrowShrink02Icon` (Hugeicons stroke-rounded); все тоглы модалок
+  переключают иконку по состоянию. Commit `3465b27`.
+- ✅ **На телефонах функции «развернуть» нет** (только планшеты/десктоп >720px):
+  скрыты `.tut-header__expand` + `.courses-expand` + `.lib-header__expand` на ≤720px;
+  `BottomSheet` без expand. Правило зафиксировано в `docs/architecture.md` (2026-06-04).
+  Commits `60a0690`, `beb7e93`.
+- ✅ Всё выгружено в прод (`git push`, 5 коммитов).
+
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
   работает в on-demand режиме — мягкий).
