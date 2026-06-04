@@ -8537,3 +8537,16 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   .tut-stepbar__item.is-done   .tut-stepbar__num { background: var(--success, #16a34a); color: #fff; }
   .tut-stepbar__title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
+
+/* ============================================================
+   iOS auto-zoom fix: Safari увеличивает экран при фокусе на поле,
+   если его font-size < 16px. На мобиле задаём всем полям ровно 16px —
+   зум при поиске/вводе пропадает, pinch-zoom при этом не отключаем.
+   ============================================================ */
+@media (max-width: 720px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
