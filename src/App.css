@@ -8428,3 +8428,70 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 
 /* Share на карточке маршрута обучения — в боковой колонке рядом с «+» */
 .path__share-wrap { display: inline-flex; }
+
+/* ============================================================
+   Tutorial mobile step bar — горизонтальный индикатор шагов внизу
+   ============================================================ */
+.tut-stepbar { display: none; }   /* десктоп: шаги в боковой панели */
+
+@media (max-width: 720px) {
+  /* Верхний тоггл шагов и боковая панель заменяются нижним баром. */
+  .tut-steps-toggle { display: none; }
+  .tut-side { display: none; }
+  /* «Развернуть на весь экран» — только для десктопа. */
+  .tut-header__expand { display: none; }
+
+  .tut-stepbar {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    flex: 0 0 auto;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tut-stepbar::-webkit-scrollbar { display: none; }
+
+  .tut-stepbar__item {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 190px;
+    padding: 6px 12px 6px 6px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 12.5px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color .12s ease, background .12s ease, color .12s ease;
+  }
+  .tut-stepbar__item.is-active {
+    border-color: var(--accent);
+    color: var(--text);
+    background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+    font-weight: 600;
+  }
+  .tut-stepbar__item.is-done { color: var(--text); }
+  .tut-stepbar__item.is-locked { opacity: 0.6; }
+
+  .tut-stepbar__num {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .tut-stepbar__item.is-active .tut-stepbar__num { background: var(--accent); color: #fff; }
+  .tut-stepbar__item.is-done   .tut-stepbar__num { background: var(--success, #16a34a); color: #fff; }
+  .tut-stepbar__title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}

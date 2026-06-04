@@ -706,6 +706,32 @@ export default function TutorialModal({
           </div>
         </footer>
 
+        {/* Мобильный горизонтальный индикатор шагов — внизу, скроллится по горизонтали.
+            На десктопе скрыт (там шаги в боковой панели). Экономит пространство. */}
+        <div className="tut-stepbar" role="tablist" aria-label={t('tutorial.stepsAria')}>
+          {stepsList.map(s => {
+            const isLocked = !isLoggedIn && s.idx > 0;
+            return (
+              <button
+                key={s.id}
+                type="button"
+                className={`tut-stepbar__item ${s.isActive ? 'is-active' : ''} ${s.isDone ? 'is-done' : ''} ${isLocked ? 'is-locked' : ''}`}
+                onClick={() => { if (!isLocked) setActiveIdx(s.idx); }}
+                aria-current={s.isActive ? 'step' : undefined}
+              >
+                <span className="tut-stepbar__num">
+                  {isLocked
+                    ? <Icon name="lock" size={11} strokeWidth={2} />
+                    : s.isDone
+                      ? <Icon name="check" size={12} strokeWidth={2.25} />
+                      : s.idx + 1}
+                </span>
+                <span className="tut-stepbar__title">{s.title}</span>
+              </button>
+            );
+          })}
+        </div>
+
         <div className="tut-hotkeys" aria-hidden="true">
           <span><kbd>←</kbd> <kbd>→</kbd> {t('tutorial.hotkey.switch')}</span>
           <span><kbd>⌘</kbd>+<kbd>↵</kbd> {t('tutorial.hotkey.doneNext')}</span>
