@@ -2275,7 +2275,7 @@ function NodePromptPopover({ node, t, locale, onSetPrompt, onClose }) {
 
   return (
     <div
-      className="builder-prompt-pop nodrag nowheel"
+      className="builder-prompt-pop nodrag nopan nowheel"
       onClick={(e) => e.stopPropagation()}
       onWheelCapture={(e) => e.stopPropagation()}
     >
@@ -2296,7 +2296,7 @@ function NodePromptPopover({ node, t, locale, onSetPrompt, onClose }) {
         {t('builder.prompt.hint') || 'Tell this agent exactly what to do. Empty = built-in role.'}
       </p>
       <textarea
-        className="builder-prompt-pop__area nodrag"
+        className="builder-prompt-pop__area nodrag nopan"
         value={prompt}
         onChange={(e) => onSetPrompt(node.id, e.target.value)}
         placeholder={t('builder.prompt.placeholder') || 'e.g. Study the site example.com and list the top UX problems.'}
@@ -2349,7 +2349,7 @@ function TriggerTaskPopover({ node, t, runMode, task, onTaskChange, tierId, onTi
   const { labelKey } = node.data;
   return (
     <div
-      className="builder-prompt-pop nodrag nowheel"
+      className="builder-prompt-pop nodrag nopan nowheel"
       onClick={(e) => e.stopPropagation()}
       onWheelCapture={(e) => e.stopPropagation()}
     >
@@ -2370,7 +2370,7 @@ function TriggerTaskPopover({ node, t, runMode, task, onTaskChange, tierId, onTi
         {t('builder.runInput.startHint') || 'Это вход всей схемы. Опиши задачу — она пойдёт по стрелкам к узлам.'}
       </p>
       <textarea
-        className="builder-prompt-pop__area nodrag"
+        className="builder-prompt-pop__area nodrag nopan"
         value={task}
         onChange={(e) => onTaskChange(e.target.value)}
         placeholder={t('builder.runInput.placeholder') || 'Опиши задачу, вставь текст, задай вопрос…'}
@@ -2457,7 +2457,7 @@ function TelegramConfigPopover({ node, t, telegramConnected, onSetChatId, onConn
   const { labelKey, chatId = '' } = node.data;
   return (
     <div
-      className="builder-prompt-pop nodrag nowheel"
+      className="builder-prompt-pop nodrag nopan nowheel"
       onClick={(e) => e.stopPropagation()}
       onWheelCapture={(e) => e.stopPropagation()}
     >
@@ -2511,7 +2511,7 @@ function EmailConfigPopover({ node, t, resendConnected, onSet, onConnect, onClos
   const { labelKey, toEmail = '', subject = '' } = node.data;
   return (
     <div
-      className="builder-prompt-pop nodrag nowheel"
+      className="builder-prompt-pop nodrag nopan nowheel"
       onClick={(e) => e.stopPropagation()}
       onWheelCapture={(e) => e.stopPropagation()}
     >
@@ -2568,7 +2568,7 @@ function CalendarConfigPopover({ node, t, gcalConnected, onSet, onConnect, onClo
   const { labelKey, calendarId = '' } = node.data;
   return (
     <div
-      className="builder-prompt-pop nodrag nowheel"
+      className="builder-prompt-pop nodrag nopan nowheel"
       onClick={(e) => e.stopPropagation()}
       onWheelCapture={(e) => e.stopPropagation()}
     >
@@ -2623,7 +2623,7 @@ function McpNodeConfigPopover({ node, t, onSet, onManage, onClose }) {
   };
 
   return (
-    <div className="builder-prompt-pop nodrag nowheel" onClick={(e) => e.stopPropagation()} onWheelCapture={(e) => e.stopPropagation()}>
+    <div className="builder-prompt-pop nodrag nopan nowheel" onClick={(e) => e.stopPropagation()} onWheelCapture={(e) => e.stopPropagation()}>
       <div className="builder-prompt-pop__head">
         <span className="builder-prompt-pop__title">
           {t(node.data?.labelKey) || 'MCP'} · {t('builder.mcpNode.title') || 'Серверы'}
@@ -2712,7 +2712,7 @@ function ToolDataPopover({ node, t, onSet, onClose }) {
   const loadedName = isVision ? imageName : fileName;
 
   return (
-    <div className="builder-prompt-pop nodrag nowheel" onClick={(e) => e.stopPropagation()} onWheelCapture={(e) => e.stopPropagation()}>
+    <div className="builder-prompt-pop nodrag nopan nowheel" onClick={(e) => e.stopPropagation()} onWheelCapture={(e) => e.stopPropagation()}>
       <div className="builder-prompt-pop__head">
         <span className="builder-prompt-pop__title">
           {isVision ? (t('builder.tool.visionTitle') || 'Картинка для анализа') : (t('builder.tool.fileTitle') || 'Файл для агента')}
@@ -2770,7 +2770,7 @@ function ConditionConfigPopover({ node, t, onSet, onClose }) {
   ];
   return (
     <div
-      className="builder-prompt-pop nodrag nowheel"
+      className="builder-prompt-pop nodrag nopan nowheel"
       onClick={(e) => e.stopPropagation()}
       onWheelCapture={(e) => e.stopPropagation()}
     >
@@ -2796,7 +2796,7 @@ function ConditionConfigPopover({ node, t, onSet, onClose }) {
             {t('builder.condition.agentHint') || 'Агент сам ответит «Да» или «Нет» на твой вопрос про результат предыдущего узла и направит поток.'}
           </p>
           <textarea
-            className="builder-prompt-pop__area nodrag"
+            className="builder-prompt-pop__area nodrag nopan"
             value={question}
             onChange={(e) => onSet(node.id, { question: e.target.value })}
             placeholder={t('builder.condition.agentPlaceholder') || 'например: Это срочное обращение? Тон сообщения негативный?'}
@@ -2821,7 +2821,7 @@ function ConditionConfigPopover({ node, t, onSet, onClose }) {
           </div>
           <input
             type="text"
-            className="builder-prompt-pop__area nodrag"
+            className="builder-prompt-pop__area nodrag nopan"
             value={condValue}
             onChange={(e) => onSet(node.id, { condValue: e.target.value })}
             placeholder={t('builder.condition.placeholder') || 'например: ошибка, успех, да…'}
@@ -2844,7 +2844,7 @@ function LoopConfigPopover({ node, nodes, t, onSet, onClose }) {
   const targets = (nodes || []).filter(n => n.id !== node.id && n.data?.kind === 'agent');
   return (
     <div
-      className="builder-prompt-pop nodrag nowheel"
+      className="builder-prompt-pop nodrag nopan nowheel"
       onClick={(e) => e.stopPropagation()}
       onWheelCapture={(e) => e.stopPropagation()}
     >
