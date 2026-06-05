@@ -674,25 +674,52 @@
         "name": "Request triage",
         "desc": "A classifier labels the message; two Conditions route it into three actions.",
         "input": "The request text in the task.",
-        "output": "Urgent → Telegram; complaint/normal → on screen. The taken branch is visible."
+        "output": "Urgent → Telegram; complaint/normal → on screen. The taken branch is visible.",
+        "prompt": "Classify the request from the task. Answer with EXACTLY one uppercase word, no period: URGENT, COMPLAINT or NORMAL. Write nothing else."
       },
       "imageReview": {
         "name": "Image review",
         "desc": "An agent with the Vision tool analyzes an attached image.",
         "input": "An image on the Vision node + what to review in the task.",
-        "output": "A written review: what’s in the image, issues, recommendations."
+        "output": "A written review: what’s in the image, issues, recommendations.",
+        "prompt": "Carefully examine the attached image. Describe what's on it and analyse it for the task: key elements, problems, recommendations. Structure it as bullet points."
       },
       "refineLoop": {
         "name": "Draft with self-check",
         "desc": "An author writes, a reviewer improves, the Loop repeats up to 3×.",
         "input": "A writing brief in the task.",
-        "output": "A proofread, refined text after several passes."
+        "output": "A proofread, refined text after several passes.",
+        "promptDraft": "Write a draft of the text for the task. Be concrete and to the point.",
+        "promptReview": "Check the text for errors, clarity and tone. If anything can be improved — rewrite it better. Return the final version."
       },
       "radar": {
         "name": "Competitor radar",
         "desc": "Opens competitor sites, compares them, and sends a summary to Telegram.",
         "input": "A few site links in the task.",
-        "output": "A comparison summary with takeaways — to a Telegram chat."
+        "output": "A comparison summary with takeaways — to a Telegram chat.",
+        "promptResearch": "Open each site from the task. For each, briefly note: what they do, key products, strengths.",
+        "promptCompare": "Compare the competitors. Give a summary table and 3 takeaways: where they're stronger, where weaker, where our opportunity is."
+      },
+      "webhookLead": {
+        "name": "Website lead → Telegram",
+        "desc": "Triggered by a webhook on a new website lead: scores the lead and sends a Telegram alert.",
+        "input": "Lead data (name, contact, message) — sent by the form via webhook.",
+        "output": "A short lead assessment and a Telegram notification.",
+        "prompt": "This is a new website lead. Briefly assess it: how 'hot' it is (high/medium/low interest), what the client wants and the next step. Be concise, use bullet points."
+      },
+      "webhookPayment": {
+        "name": "Payment → email to client",
+        "desc": "Triggered by a webhook on payment: composes and sends the client a confirmation email.",
+        "input": "Payment data (item, amount, client name and e-mail) — sent by the payment service via webhook.",
+        "output": "A ready confirmation email sent to the client.",
+        "prompt": "This is a successful payment. Write a warm, short confirmation email to the client: thank them, confirm the item and amount, state the next step. Friendly tone, no fluff."
+      },
+      "webhookReview": {
+        "name": "Review → negative alert",
+        "desc": "Triggered by a webhook on a new review: detects tone and pings Telegram if it's negative.",
+        "input": "Review text — sent via webhook (site, marketplace, form).",
+        "output": "Review tone; on negative — an instant Telegram alert.",
+        "prompt": "Detect the sentiment of the review in the task. First answer with EXACTLY one uppercase word: POSITIVE, NEGATIVE or NEUTRAL. Then on a new line — one sentence with the gist of the review."
       }
     },
     "tooltip": {

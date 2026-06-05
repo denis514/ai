@@ -102,30 +102,33 @@ function syncNodeIdCounter(nodes) {
  * Pure (кроме genNodeId counter). Используется и для загрузки в canvas,
  * и для немедленного persist при создании нового workflow из шаблона.
  */
-function buildTemplateGraph(template, edgeStyle) {
+function buildTemplateGraph(template, edgeStyle, t) {
+  const tr = typeof t === 'function' ? t : (k) => k;
   const tempIdMap = {};
   const nodes = template.nodes.map((tn, idx) => {
     const def = getNodeDef(tn.defId);
     if (!def) return null;
     const id = genNodeId();
     tempIdMap[idx] = id;
-    return {
-      id,
-      type: KIND_TO_NODE_TYPE[def.kind] || 'agentNode',
-      position: tn.position,
-      data: {
-        defId: tn.defId,
-        icon: def.icon,
-        color: def.color,
-        labelKey: def.labelKey,
-        descKey: def.descKey,
-        atlasAnchor: def.atlasAnchor,
-        kind: def.kind,
-        role: def.role,
-        status: 'idle',
-        ...(tn.dataOverride || {}),
-      },
+    const data = {
+      defId: tn.defId,
+      icon: def.icon,
+      color: def.color,
+      labelKey: def.labelKey,
+      descKey: def.descKey,
+      atlasAnchor: def.atlasAnchor,
+      kind: def.kind,
+      role: def.role,
+      status: 'idle',
+      ...(tn.dataOverride || {}),
     };
+    // Локализуем промпт шаблона: promptKey → текст на языке пользователя.
+    if (data.promptKey) {
+      data.prompt = tr(data.promptKey);
+      data.hasPrompt = true;
+      delete data.promptKey;
+    }
+    return { id, type: KIND_TO_NODE_TYPE[def.kind] || 'agentNode', position: tn.position, data };
   }).filter(Boolean);
 
   // Резолвим ссылку Цикла на узел по индексу шаблона → реальный client_id.
@@ -576,7 +579,7 @@ function BuilderAppInner() {
   // пользователем (а не из шаблона), сразу создаём запись.
   const pickTemplateForNew = useCallback(async (template) => {
     const name = nameDraft.trim() || (template.nameKey ? t(template.nameKey) : '') || 'Workflow';
-    const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE);
+    const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE, t);
     skipDirtyRef.current = true;
     setNodes(newNodes);
     setEdges(newEdges);
@@ -1047,7 +1050,7 @@ function BuilderAppInner() {
 
   /* ────────── Load template (из галереи) ────────── */
   const loadTemplate = useCallback((template) => {
-    const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE);
+    const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE, t);
     if (nodes.length > 0) pushHistory(); // даём откат, если на холсте уже было
     skipDirtyRef.current = true;
     setNodes(newNodes);

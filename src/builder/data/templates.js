@@ -157,11 +157,10 @@ export const TEMPLATES = [
     nodes: [
       { defId: 'trigger-input', position: { x: 80, y: 40 } },
       { defId: 'agent-main', position: { x: 80, y: 170 }, dataOverride: {
-        prompt: 'Определи тип обращения из задачи. Ответь РОВНО одним словом заглавными, без точки: СРОЧНО, ЖАЛОБА или ОБЫЧНОЕ. Больше ничего не пиши.',
-        hasPrompt: true } },
-      { defId: 'logic-condition', position: { x: 80, y: 300 }, dataOverride: { operator: 'equals', condValue: 'срочно' } },
+        promptKey: 'builder.template.triage.prompt' } },
+      { defId: 'logic-condition', position: { x: 80, y: 300 }, dataOverride: { operator: 'equals', condValue: 'URGENT' } },
       { defId: 'output-telegram', position: { x: 340, y: 300 } },
-      { defId: 'logic-condition', position: { x: 80, y: 440 }, dataOverride: { operator: 'contains', condValue: 'жалоба' } },
+      { defId: 'logic-condition', position: { x: 80, y: 440 }, dataOverride: { operator: 'contains', condValue: 'COMPLAINT' } },
       { defId: 'output-text', position: { x: 340, y: 440 } },
       { defId: 'output-text', position: { x: 80, y: 580 } },
     ],
@@ -192,8 +191,7 @@ export const TEMPLATES = [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'tool-vision', position: { x: -120, y: 200 } },
       { defId: 'agent-main', position: { x: 100, y: 200 }, dataOverride: {
-        prompt: 'Внимательно изучи приложенную картинку. Опиши, что на ней, и дай разбор по сути задачи: ключевые элементы, проблемы, рекомендации. Структурируй по пунктам.',
-        hasPrompt: true } },
+        promptKey: 'builder.template.imageReview.prompt' } },
       { defId: 'output-text', position: { x: 100, y: 350 } },
     ],
     edges: [
@@ -219,9 +217,9 @@ export const TEMPLATES = [
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-content', position: { x: 100, y: 180 }, dataOverride: {
-        prompt: 'Напиши черновик текста по заданию. Будь конкретным и по делу.', hasPrompt: true } },
+        promptKey: 'builder.template.refineLoop.promptDraft' } },
       { defId: 'agent-main', position: { x: 100, y: 320 }, dataOverride: {
-        prompt: 'Проверь текст на ошибки, ясность и тон. Если есть что улучшить — перепиши лучше. Верни итоговую версию.', hasPrompt: true } },
+        promptKey: 'builder.template.refineLoop.promptReview' } },
       // Цикл возвращает поток к проверяющему агенту (индекс 2), до 3 раз.
       { defId: 'logic-loop', position: { x: 100, y: 460 }, dataOverride: { loopBackToIndex: 2, maxLoops: 3 } },
       { defId: 'output-text', position: { x: 340, y: 320 } },
@@ -250,11 +248,11 @@ export const TEMPLATES = [
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-research', position: { x: 100, y: 190 }, dataOverride: {
-        prompt: 'Открой каждый сайт из задачи. Для каждого кратко выпиши: чем занимаются, ключевые продукты, сильные стороны.', hasPrompt: true } },
+        promptKey: 'builder.template.radar.promptResearch' } },
       { defId: 'tool-search', position: { x: -150, y: 330 } },
       { defId: 'tool-memory', position: { x: 0, y: 330 } },
       { defId: 'agent-analytics', position: { x: 200, y: 330 }, dataOverride: {
-        prompt: 'Сравни конкурентов между собой. Дай таблицу-сводку и 3 вывода: где у них преимущество, где слабее, где наша возможность.', hasPrompt: true } },
+        promptKey: 'builder.template.radar.promptCompare' } },
       { defId: 'output-telegram', position: { x: 150, y: 480 } },
     ],
     edges: [
@@ -263,6 +261,88 @@ export const TEMPLATES = [
       { from: 3, to: 4 },  // memory ⇒ attach к analytics
       { from: 1, to: 4 },  // research → analytics
       { from: 4, to: 5 },  // analytics → Telegram
+    ],
+  },
+
+  /* ──────────────────────────────────────────────────────── */
+  /* 9. Вебхук: лид с сайта → квалификация → Telegram         */
+  /* ──────────────────────────────────────────────────────── */
+  {
+    id: 'webhook-lead',
+    nameKey: 'builder.template.webhookLead.name',
+    descKey: 'builder.template.webhookLead.desc',
+    inputKey: 'builder.template.webhookLead.input',
+    outputKey: 'builder.template.webhookLead.output',
+    iconName: 'inbox',
+    difficulty: 'beginner',
+    category: 'logic',
+    trigger: 'webhook',
+    author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: {
+        promptKey: 'builder.template.webhookLead.prompt' } },
+      { defId: 'output-telegram', position: { x: 100, y: 340 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+    ],
+  },
+
+  /* ──────────────────────────────────────────────────────── */
+  /* 10. Вебхук: оплата → письмо-подтверждение клиенту        */
+  /* ──────────────────────────────────────────────────────── */
+  {
+    id: 'webhook-payment',
+    nameKey: 'builder.template.webhookPayment.name',
+    descKey: 'builder.template.webhookPayment.desc',
+    inputKey: 'builder.template.webhookPayment.input',
+    outputKey: 'builder.template.webhookPayment.output',
+    iconName: 'mail',
+    difficulty: 'beginner',
+    category: 'marketing',
+    trigger: 'webhook',
+    author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-content', position: { x: 100, y: 190 }, dataOverride: {
+        promptKey: 'builder.template.webhookPayment.prompt' } },
+      { defId: 'output-email', position: { x: 100, y: 340 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+    ],
+  },
+
+  /* ──────────────────────────────────────────────────────── */
+  /* 11. Вебхук: новый отзыв → тон → сигнал если негатив       */
+  /* ──────────────────────────────────────────────────────── */
+  {
+    id: 'webhook-review',
+    nameKey: 'builder.template.webhookReview.name',
+    descKey: 'builder.template.webhookReview.desc',
+    inputKey: 'builder.template.webhookReview.input',
+    outputKey: 'builder.template.webhookReview.output',
+    iconName: 'star',
+    difficulty: 'intermediate',
+    category: 'logic',
+    trigger: 'webhook',
+    author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 80, y: 50 } },
+      { defId: 'agent-main', position: { x: 80, y: 180 }, dataOverride: {
+        promptKey: 'builder.template.webhookReview.prompt' } },
+      { defId: 'logic-condition', position: { x: 80, y: 320 }, dataOverride: { operator: 'contains', condValue: 'NEGATIVE' } },
+      { defId: 'output-telegram', position: { x: 340, y: 320 } },
+      { defId: 'output-text', position: { x: 80, y: 460 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3, sourceHandle: 'true' },  // негатив → Telegram-сигнал
+      { from: 2, to: 4, sourceHandle: 'false' }, // иначе → просто записать
     ],
   },
 ];
