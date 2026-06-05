@@ -2296,7 +2296,7 @@ function NodePromptPopover({ node, t, locale, onSetPrompt, onClose }) {
         {t('builder.prompt.hint') || 'Tell this agent exactly what to do. Empty = built-in role.'}
       </p>
       <textarea
-        className="builder-prompt-pop__area"
+        className="builder-prompt-pop__area nodrag"
         value={prompt}
         onChange={(e) => onSetPrompt(node.id, e.target.value)}
         placeholder={t('builder.prompt.placeholder') || 'e.g. Study the site example.com and list the top UX problems.'}
@@ -2370,7 +2370,7 @@ function TriggerTaskPopover({ node, t, runMode, task, onTaskChange, tierId, onTi
         {t('builder.runInput.startHint') || 'Это вход всей схемы. Опиши задачу — она пойдёт по стрелкам к узлам.'}
       </p>
       <textarea
-        className="builder-prompt-pop__area"
+        className="builder-prompt-pop__area nodrag"
         value={task}
         onChange={(e) => onTaskChange(e.target.value)}
         placeholder={t('builder.runInput.placeholder') || 'Опиши задачу, вставь текст, задай вопрос…'}
@@ -2796,7 +2796,7 @@ function ConditionConfigPopover({ node, t, onSet, onClose }) {
             {t('builder.condition.agentHint') || 'Агент сам ответит «Да» или «Нет» на твой вопрос про результат предыдущего узла и направит поток.'}
           </p>
           <textarea
-            className="builder-prompt-pop__area"
+            className="builder-prompt-pop__area nodrag"
             value={question}
             onChange={(e) => onSet(node.id, { question: e.target.value })}
             placeholder={t('builder.condition.agentPlaceholder') || 'например: Это срочное обращение? Тон сообщения негативный?'}
@@ -2821,7 +2821,7 @@ function ConditionConfigPopover({ node, t, onSet, onClose }) {
           </div>
           <input
             type="text"
-            className="builder-prompt-pop__area"
+            className="builder-prompt-pop__area nodrag"
             value={condValue}
             onChange={(e) => onSet(node.id, { condValue: e.target.value })}
             placeholder={t('builder.condition.placeholder') || 'например: ошибка, успех, да…'}

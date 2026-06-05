@@ -1819,12 +1819,18 @@
   font-size: 13px;
   font-family: inherit;
   line-height: 1.5;
-  resize: vertical;
+  resize: vertical;          /* растягивание только по высоте */
   min-height: 90px;
-  max-height: 50vh;
+  max-height: 50vh;          /* верхняя граница — не безгранично */
   overflow-y: auto;
   outline: none;
   box-sizing: border-box;
+  /* Узлы React Flow ставят user-select:none — возвращаем выделение/курсор
+     и тач внутри поля, иначе текст не выделить и не растянуть. */
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+  touch-action: auto;
 }
 .builder-prompt-pop__area:focus { border-color: var(--accent, #2563eb); }
 .builder-prompt-pop__actions {
