@@ -8770,3 +8770,70 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   .ls__text { animation: none !important; opacity: 1 !important; transform: none !important; }
   .bsheet { animation: none !important; opacity: 1 !important; }
 }
+
+/* ============================================================
+   Loader — единый бренд-индикатор «дышащая искра» (Loader.jsx).
+   Только transform/opacity → iOS-safe, без backdrop-filter.
+   ============================================================ */
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.loader__spark {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  filter: drop-shadow(0 4px 14px rgba(194, 96, 63, 0.30));
+  animation: loader-breathe 1.7s ease-in-out infinite;
+}
+.loader__ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  opacity: 0;
+  animation: loader-ripple 1.9s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+.loader__ring--2 { animation-delay: 0.95s; }
+
+/* размеры колец под размер искры */
+.loader--md .loader__ring { width: 56px; height: 56px; margin: -28px 0 0 -28px; }
+.loader--lg .loader__ring { width: 76px; height: 76px; margin: -38px 0 0 -38px; }
+.loader--sm .loader__ring { display: none; } /* инлайн: только дышащая искра */
+
+.loader__label {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+@keyframes loader-breathe {
+  0%, 100% { transform: scale(0.86); opacity: 0.7; }
+  50%      { transform: scale(1.08); opacity: 1; }
+}
+@keyframes loader-ripple {
+  0%   { transform: scale(0.5); opacity: 0.5; }
+  70%  { opacity: 0.1; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+
+/* Доступность: без «дыхания» при reduced-motion — статичная видимая искра. */
+@media (prefers-reduced-motion: reduce) {
+  .loader__spark { animation: none; transform: none; opacity: 1; }
+  .loader__ring { display: none; }
+}
+
+/* Заставка: логотип-искра тоже «дышит» (единый язык с Loader). */
+.ls__logo {
+  animation: ls-logo-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both,
+             loader-breathe 1.7s ease-in-out 0.7s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ls__logo { animation: none; opacity: 1; transform: none; }
+}

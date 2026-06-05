@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useRef, useState, useEffect, Suspense, laz
 import { mindmapData, CATEGORIES } from './data/mindmapData.js';
 import { tutorials, tutorialIds, tutorialByNodeId } from './data/tutorials.js';
 import CanvasHeader from './components/CanvasHeader.jsx';
+import Loader from './components/Loader.jsx';
 import Mindmap from './components/Mindmap.jsx';
 import DetailPanel from './components/DetailPanel.jsx';
 // Тяжёлые модалки — lazy-загружаются только при первом открытии (#21+
@@ -940,7 +941,7 @@ function AppInner() {
       {activeTutorial && (
         /* Скрываем туториал пока открыт AuthModal из gate (display:none сохраняет состояние) */
         <div style={tutorialAwaitingAuth ? { display: 'none' } : undefined}>
-          <Suspense fallback={<div className="modal-loading" role="status" aria-label="…"><span className="modal-loading__spin" /></div>}>
+          <Suspense fallback={<div className="modal-loading" role="status"><Loader size="md" /></div>}>
             <TutorialModal
               tutorialId={activeTutorial}
               onClose={onCloseTutorial}
@@ -1140,11 +1141,9 @@ function BuilderSuspenseFallback() {
         alignItems: 'center',
         justifyContent: 'center',
         background: 'var(--bg)',
-        color: 'var(--text-soft)',
-        fontSize: 14,
       }}
     >
-      Loading Agent Builder…
+      <Loader size="md" label="Agent Builder…" />
     </div>
   );
 }
