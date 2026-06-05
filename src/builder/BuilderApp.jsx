@@ -43,7 +43,7 @@ import { getKeyStatus, listMcpServers } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
 import ToastHost, { toast } from './components/Toast.jsx';
-import { saveDraft, loadDraft, clearDraft } from './services/draftBackup.js';
+import { saveDraft, loadDraft, clearDraft, setResumeAfterAuth, hasResumeAfterAuth, clearResumeAfterAuth } from './services/draftBackup.js';
 import { evaluateConnection, validateGraph, denyReasonKey } from './services/connectionRules.js';
 import './BuilderApp.css';
 
@@ -383,7 +383,9 @@ function BuilderAppInner() {
   const unsavedRef = useRef(false);
   useEffect(() => { unsavedRef.current = isDirtyRef.current && nodes.length > 0; });
   useEffect(() => {
-    const h = (e) => { if (unsavedRef.current) { e.preventDefault(); e.returnValue = ''; } };
+    // hasResumeAfterAuth() → намеренный редирект на вход: черновик уже сохранён,
+    // не пугаем браузерным «уйти со страницы?».
+    const h = (e) => { if (unsavedRef.current && !hasResumeAfterAuth()) { e.preventDefault(); e.returnValue = ''; } };
     window.addEventListener('beforeunload', h);
     return () => window.removeEventListener('beforeunload', h);
   }, []);
@@ -393,6 +395,8 @@ function BuilderAppInner() {
   // «восстановить» (бессмысленно: не сохранил при обновлении — теряешь).
   const [draftOffer, setDraftOffer] = useState(null);
   useEffect(() => {
+    // Возврат с входа из билдера обрабатывает авто-восстановление ниже — баннер не нужен.
+    if (hasResumeAfterAuth()) return;
     const d = loadDraft();
     if (d && d.nodes.length > 0 && !d.workflowId) setDraftOffer(d);
     // один раз на маунт
@@ -493,6 +497,29 @@ function BuilderAppInner() {
     }
   }, [nodes, edges, currentWorkflowId, userId]);
 
+  // Возврат с OAuth-входа, начатого ИЗ билдера: авто-восстанавливаем черновик на
+  // холст и сразу сохраняем его как «Без названия» (переименовать можно потом).
+  // Это убирает «сброс»: то, что человек собрал ДО входа, остаётся ПОСЛЕ входа.
+  const resumedRef = useRef(false);
+  useEffect(() => {
+    if (!hasResumeAfterAuth() || resumedRef.current) return;
+    if (!user) return; // ждём, пока сессия после редиректа подтянется
+    const d = loadDraft();
+    if (!d || !Array.isArray(d.nodes) || d.nodes.length === 0 || d.workflowId) {
+      clearResumeAfterAuth(); // восстанавливать нечего — снимаем флаг
+      return;
+    }
+    resumedRef.current = true;
+    clearResumeAfterAuth();
+    skipDirtyRef.current = true;
+    syncNodeIdCounter(d.nodes);
+    setNodes(d.nodes);
+    setEdges(d.edges || []);
+    const name = (d.name && d.name.trim()) || t('builder.workflows.defaultName') || 'Без названия';
+    // persist берёт явные узлы (state ещё не обновился) и чистит черновик при успехе.
+    persist(name, d.nodes, d.edges || [], null);
+  }, [user, persist, setNodes, setEdges, t]);
+
   // Сохранение (manual + auto). Если имени нет — запрашиваем через модалку.
   // Сохраняем даже пустой холст, если имя задано (это валидный черновик).
   const doSave = useCallback(async () => {
@@ -585,11 +612,21 @@ function BuilderAppInner() {
     return () => { if (saveTimerRef.current) clearTimeout(saveTimerRef.current); };
   }, [nodes, edges, workflowName, persist]);
 
+  // Открыть вход ИЗ билдера: перед редиректом на OAuth флэшим черновик и ставим
+  // флаг «возобновить после входа» — чтобы собранная до входа схема не потерялась.
+  const openAuth = useCallback(() => {
+    if (nodes.length > 0) {
+      saveDraft({ workflowId: currentWorkflowId, name: workflowName, nodes, edges });
+      setResumeAfterAuth();
+    }
+    setAuthOpen(true);
+  }, [nodes, edges, currentWorkflowId, workflowName]);
+
   // Если не авторизован — сразу окно входа; иначе окно ключей.
   const openKeysOrAuth = useCallback(() => {
-    if (!user) setAuthOpen(true);
+    if (!user) openAuth();
     else setKeysModalOpen(true);
-  }, [user]);
+  }, [user, openAuth]);
 
   // Нет ключа/входа для запуска — ведём ко входу или подключению ключа.
   const requestRealMode = useCallback(() => {
@@ -2090,7 +2127,7 @@ function BuilderAppInner() {
       {keysModalOpen && (
         <ApiKeysModal
           onClose={() => setKeysModalOpen(false)}
-          onSignIn={() => setAuthOpen(true)}
+          onSignIn={openAuth}
         />
       )}
 
@@ -2110,7 +2147,7 @@ function BuilderAppInner() {
       )}
 
       {/* Auth modal — Builder рендерится вместо Atlas, поэтому свой инстанс */}
-      {authOpen && <AuthModal onClose={() => setAuthOpen(false)} />}
+      {authOpen && <AuthModal onClose={() => { setAuthOpen(false); if (!user) clearResumeAfterAuth(); }} />}
 
       {/* Real-mode confirm — после входа+ключа, раз юзер жал «Реально» */}
       {validation && (
