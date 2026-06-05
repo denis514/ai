@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Icon from './Icon.jsx';
 
+/**
+ * LoadingScreen — полноэкранная заставка (бренд 105 Atlas).
+ *
+ * «Импульс по ветвям»: центральный узел-логотип пульсирует, по трём ветвям
+ * к листьям-узлам бегут светящиеся точки — метафора самого mindmap.
+ * iOS-safe: только transform/opacity + offset-path (без backdrop-filter).
+ */
 export default function LoadingScreen({ onDone }) {
   const [exiting, setExiting] = useState(false);
 
@@ -14,16 +20,26 @@ export default function LoadingScreen({ onDone }) {
   return (
     <div className={`ls${exiting ? ' ls--exiting' : ''}`}>
 
-      {/* Ripple rings */}
-      <div className="ls__rings">
-        <div className="ls__ring ls__ring--1" />
-        <div className="ls__ring ls__ring--2" />
-        <div className="ls__ring ls__ring--3" />
-      </div>
-
-      {/* Center logo */}
-      <div className="ls__logo">
-        <Icon name="sparkles" size={28} strokeWidth={1.5} />
+      {/* Импульс по ветвям */}
+      <div className="ls__branch" aria-hidden="true">
+        <svg viewBox="0 0 160 120" width="160" height="120">
+          {/* ветви */}
+          <path className="ls__twig" d="M28 60 C 70 60, 84 28, 138 28" />
+          <path className="ls__twig" d="M28 60 C 70 60, 84 60, 138 60" />
+          <path className="ls__twig" d="M28 60 C 70 60, 84 92, 138 92" />
+          {/* листья-узлы */}
+          <circle className="ls__leaf" cx="138" cy="28" r="5" />
+          <circle className="ls__leaf" cx="138" cy="60" r="5" />
+          <circle className="ls__leaf" cx="138" cy="92" r="5" />
+          {/* центральный узел */}
+          <g className="ls__core">
+            <rect x="14" y="46" width="28" height="28" rx="8" />
+          </g>
+          {/* бегущие импульсы */}
+          <g className="ls__pulse ls__pulse--1"><circle r="4" /></g>
+          <g className="ls__pulse ls__pulse--2"><circle r="4" /></g>
+          <g className="ls__pulse ls__pulse--3"><circle r="4" /></g>
+        </svg>
       </div>
 
       {/* Text */}

@@ -368,46 +368,33 @@
   100% { opacity: 0; transform: scale(1.04); }
 }
 
-/* Ripple rings */
-.ls__rings {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.ls__ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 1.5px solid rgba(217, 119, 87, 0.35);
-  animation: ls-ripple 2.4s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
-}
-
-.ls__ring--1 { width: 120px; height: 120px; animation-delay: 0s;    }
-.ls__ring--2 { width: 120px; height: 120px; animation-delay: 0.7s;  }
-.ls__ring--3 { width: 120px; height: 120px; animation-delay: 1.4s;  }
-
-@keyframes ls-ripple {
-  0%   { transform: scale(0.6); opacity: 0.9; }
-  70%  { opacity: 0.15; }
-  100% { transform: scale(3.2); opacity: 0; }
-}
-
-/* Center logo */
-.ls__logo {
-  position: relative;
-  width: 72px;
-  height: 72px;
-  border-radius: 22px;
-  background: var(--accent, #d97757);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 32px rgba(217, 119, 87, 0.35);
+/* Импульс по ветвям */
+.ls__branch {
+  color: var(--accent, #c2603f);
   animation: ls-logo-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.ls__branch svg { display: block; overflow: visible; }
+.ls__twig { stroke: currentColor; stroke-width: 2; fill: none; opacity: 0.32; }
+.ls__leaf { fill: currentColor; opacity: 0.9; }
+.ls__core {
+  fill: currentColor;
+  transform-origin: 28px 60px;
+  animation: ls-core 1.6s ease-in-out infinite;
+  filter: drop-shadow(0 4px 14px rgba(194, 96, 63, 0.28));
+}
+@keyframes ls-core {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.16); }
+}
+.ls__pulse circle { fill: currentColor; }
+.ls__pulse--1 { offset-path: path("M28 60 C 70 60, 84 28, 138 28"); animation: ls-travel 1.6s ease-in-out infinite; }
+.ls__pulse--2 { offset-path: path("M28 60 C 70 60, 84 60, 138 60"); animation: ls-travel 1.6s ease-in-out 0.25s infinite; }
+.ls__pulse--3 { offset-path: path("M28 60 C 70 60, 84 92, 138 92"); animation: ls-travel 1.6s ease-in-out 0.5s infinite; }
+@keyframes ls-travel {
+  0%   { offset-distance: 0%;   opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
 }
 
 @keyframes ls-logo-in {
@@ -8782,30 +8769,24 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   justify-content: center;
   gap: 14px;
 }
-.loader__spark {
-  position: relative;
+.loader__wave {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  filter: drop-shadow(0 4px 14px rgba(194, 96, 63, 0.30));
-  animation: loader-breathe 1.7s ease-in-out infinite;
+  align-items: flex-end;
+  gap: 0.45em;
+  font-size: 9px; /* базовый размер точки = 1em, переопределяется размером */
 }
-.loader__ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
+.loader--sm .loader__wave { font-size: 7px; }
+.loader--md .loader__wave { font-size: 9px; }
+.loader--lg .loader__wave { font-size: 12px; }
+.loader__wave i {
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
-  border: 1.5px solid var(--accent);
-  opacity: 0;
-  animation: loader-ripple 1.9s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  background: var(--accent);
+  animation: loader-wave 1.2s ease-in-out infinite;
 }
-.loader__ring--2 { animation-delay: 0.95s; }
-
-/* размеры колец под размер искры */
-.loader--md .loader__ring { width: 56px; height: 56px; margin: -28px 0 0 -28px; }
-.loader--lg .loader__ring { width: 76px; height: 76px; margin: -38px 0 0 -38px; }
-.loader--sm .loader__ring { display: none; } /* инлайн: только дышащая искра */
+.loader__wave i:nth-child(2) { animation-delay: 0.15s; }
+.loader__wave i:nth-child(3) { animation-delay: 0.3s; }
 
 .loader__label {
   font-size: 13px;
@@ -8813,14 +8794,14 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   letter-spacing: 0.01em;
 }
 
-@keyframes loader-breathe {
-  0%, 100% { transform: scale(0.86); opacity: 0.7; }
-  50%      { transform: scale(1.08); opacity: 1; }
+@keyframes loader-wave {
+  0%, 60%, 100% { transform: translateY(0);     opacity: 0.5; }
+  30%           { transform: translateY(-0.9em); opacity: 1; }
 }
-@keyframes loader-ripple {
-  0%   { transform: scale(0.5); opacity: 0.5; }
-  70%  { opacity: 0.1; }
-  100% { transform: scale(2.1); opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .loader__wave i { animation: none; opacity: 0.8; }
+  .ls__core, .ls__pulse--1, .ls__pulse--2, .ls__pulse--3 { animation: none; }
+  .ls__pulse--1, .ls__pulse--2, .ls__pulse--3 { opacity: 0.6; offset-distance: 60%; }
 }
 
 /* Доступность: без «дыхания» при reduced-motion — статичная видимая искра. */
