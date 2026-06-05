@@ -4564,3 +4564,22 @@
 .builder-app .builder-webhook__actions {
   display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
 }
+
+/* ── Мультиключи: список именованных ключей (Этап 1) ───────────────────────── */
+.builder-keys__multi { display: flex; flex-direction: column; gap: 8px; }
+.builder-keys__row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 10px;
+  background: var(--surface, #fff);
+}
+.builder-keys__star {
+  flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border: none; border-radius: 7px;
+  background: transparent; color: var(--text-muted, #9a9a98); cursor: pointer;
+}
+.builder-keys__star.is-default { color: var(--accent, #c2603f); cursor: default; }
+.builder-keys__star:not(.is-default):hover { background: var(--surface-2, #f3f4f6); color: var(--text, #111827); }
+.builder-keys__row-label { flex: 1 1 auto; font-size: 13px; font-weight: 600; color: var(--text, #111827); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.builder-keys__row-hint { flex: 0 0 auto; font-size: 12px; color: var(--text-muted, #9a9a98); font-variant-numeric: tabular-nums; }

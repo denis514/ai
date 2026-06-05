@@ -89,7 +89,7 @@ Deno.serve(async (req) => {
   const user = await getUser(req);
   if (!user) return json({ error: 'unauthorized' }, 401);
 
-  let body: { provider?: string; apiKey?: string };
+  let body: { provider?: string; apiKey?: string; label?: string };
   try {
     body = await req.json();
   } catch {
@@ -106,25 +106,37 @@ Deno.serve(async (req) => {
 
   const encrypted = await encrypt(apiKey);
   const hint = apiKey.slice(-4);
+  // Имя ключа: заданное пользователем, иначе «••••1234» по последним цифрам.
+  const label = (body.label || '').trim() || `••••${hint}`;
 
   const admin = adminClient();
+
+  // Первый ключ провайдера → default. Следующие — нет (выбор default отдельно).
+  const { count } = await admin
+    .from('builder_api_connections')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .eq('provider', provider);
+  const isFirst = (count ?? 0) === 0;
+
   const { error } = await admin
     .from('builder_api_connections')
-    .upsert(
-      {
-        user_id: user.id,
-        provider,
-        encrypted_key: encrypted,
-        key_hint: hint,
-        is_active: true,
-      },
-      { onConflict: 'user_id,provider' },
-    );
+    .insert({
+      user_id: user.id,
+      provider,
+      label,
+      encrypted_key: encrypted,
+      key_hint: hint,
+      is_active: true,
+      is_default: isFirst,
+    });
 
   if (error) {
+    // 23505 — нарушение уникальности (user, provider, label): имя занято.
+    if ((error as { code?: string }).code === '23505') return json({ error: 'label_exists' }, 409);
     console.error('[connect-key] db error', error.message);
     return json({ error: 'storage_failed' }, 500);
   }
 
-  return json({ ok: true, provider, hint });
+  return json({ ok: true, provider, hint, label });
 });

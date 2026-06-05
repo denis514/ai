@@ -329,7 +329,7 @@ Deno.serve(async (req) => {
   // Ключ пользователя.
   const { data: conn } = await admin
     .from('builder_api_connections')
-    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'anthropic').maybeSingle();
+    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'anthropic').order('is_default', { ascending: false }).order('created_at', { ascending: true }).limit(1).maybeSingle();
   if (!conn || !conn.is_active) return json({ error: 'no_api_key' }, 400);
 
   let apiKey: string;
@@ -340,7 +340,7 @@ Deno.serve(async (req) => {
   let telegramToken = '';
   const { data: tgConn } = await admin
     .from('builder_api_connections')
-    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'telegram').maybeSingle();
+    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'telegram').order('is_default', { ascending: false }).order('created_at', { ascending: true }).limit(1).maybeSingle();
   if (tgConn?.is_active) {
     try { telegramToken = await decrypt(tgConn.encrypted_key); } catch { telegramToken = ''; }
   }
@@ -349,7 +349,7 @@ Deno.serve(async (req) => {
   let resendKey = '';
   const { data: rsConn } = await admin
     .from('builder_api_connections')
-    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'resend').maybeSingle();
+    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'resend').order('is_default', { ascending: false }).order('created_at', { ascending: true }).limit(1).maybeSingle();
   if (rsConn?.is_active) {
     try { resendKey = await decrypt(rsConn.encrypted_key); } catch { resendKey = ''; }
   }
@@ -358,7 +358,7 @@ Deno.serve(async (req) => {
   let gcalRefresh = '';
   const { data: gcConn } = await admin
     .from('builder_api_connections')
-    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'gcal').maybeSingle();
+    .select('encrypted_key, is_active').eq('user_id', userId).eq('provider', 'gcal').order('is_default', { ascending: false }).order('created_at', { ascending: true }).limit(1).maybeSingle();
   if (gcConn?.is_active) {
     try { gcalRefresh = await decrypt(gcConn.encrypted_key); } catch { gcalRefresh = ''; }
   }

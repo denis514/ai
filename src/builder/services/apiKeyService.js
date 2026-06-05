@@ -45,13 +45,49 @@ async function callFunction(name, body) {
  * Подключить ключ: валидируется на сервере, шифруется, сохраняется.
  * @returns {{ ok: true, provider, hint }}
  */
-export function connectKey(apiKey, provider = 'anthropic') {
-  return callFunction('builder-connect-key', { provider, apiKey });
+export function connectKey(apiKey, provider = 'anthropic', label = '') {
+  return callFunction('builder-connect-key', { provider, apiKey, label });
 }
 
-/** Отключить (удалить) ключ. */
+/** Отключить (удалить) ВСЕ ключи провайдера (back-compat). */
 export function disconnectKey(provider = 'anthropic') {
   return callFunction('builder-disconnect-key', { provider });
+}
+
+/** Удалить один конкретный ключ по id (мультиключи). */
+export function deleteKeyById(id) {
+  return callFunction('builder-disconnect-key', { id });
+}
+
+/**
+ * Список ключей провайдера (метаданные, без ciphertext) — напрямую из БД (RLS).
+ * @returns {Promise<Array<{id,label,key_hint,is_default}>>}
+ */
+export async function listKeys(provider = 'anthropic') {
+  if (!supabase) return [];
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return [];
+  const { data, error } = await supabase
+    .from('builder_api_connections')
+    .select('id, label, key_hint, is_default, is_active')
+    .eq('provider', provider)
+    .order('created_at', { ascending: true });
+  if (error || !data) return [];
+  return data.filter(k => k.is_active);
+}
+
+/**
+ * Сделать ключ основным (default). Прямая запись через RLS (owner-only) —
+ * секрет не задействован. Снимаем флаг со всех ключей провайдера, ставим выбранному.
+ */
+export async function setDefaultKey(id, provider) {
+  if (!supabase) return;
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return;
+  await supabase.from('builder_api_connections')
+    .update({ is_default: false }).eq('provider', provider).eq('is_default', true);
+  await supabase.from('builder_api_connections')
+    .update({ is_default: true }).eq('id', id);
 }
 
 /**
@@ -98,10 +134,14 @@ export async function getKeyStatus(provider = 'anthropic') {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return { connected: false, hint: null };
 
+  // Несколько ключей на провайдер: берём default (или самый свежий).
   const { data, error } = await supabase
     .from('builder_api_connections')
-    .select('key_hint, is_active')
+    .select('key_hint, is_active, is_default')
     .eq('provider', provider)
+    .order('is_default', { ascending: false })
+    .order('created_at', { ascending: true })
+    .limit(1)
     .maybeSingle();
 
   if (error || !data || !data.is_active) return { connected: false, hint: null };
