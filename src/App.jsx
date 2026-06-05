@@ -3,6 +3,7 @@ import { mindmapData, CATEGORIES } from './data/mindmapData.js';
 import { tutorials, tutorialIds, tutorialByNodeId } from './data/tutorials.js';
 import CanvasHeader from './components/CanvasHeader.jsx';
 import Loader from './components/Loader.jsx';
+import BranchLoader from './components/BranchLoader.jsx';
 import Mindmap from './components/Mindmap.jsx';
 import DetailPanel from './components/DetailPanel.jsx';
 // Тяжёлые модалки — lazy-загружаются только при первом открытии (#21+
@@ -1143,7 +1144,7 @@ function BuilderSuspenseFallback() {
         background: 'var(--bg)',
       }}
     >
-      <Loader size="md" label="Agent Builder…" />
+      <BranchLoader label="Agent Builder…" />
     </div>
   );
 }
