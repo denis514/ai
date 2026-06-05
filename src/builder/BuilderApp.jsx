@@ -505,7 +505,10 @@ function BuilderAppInner() {
     if (!hasResumeAfterAuth() || resumedRef.current) return;
     if (!user) return; // ждём, пока сессия после редиректа подтянется
     const d = loadDraft();
-    if (!d || !Array.isArray(d.nodes) || d.nodes.length === 0 || d.workflowId) {
+    // Восстанавливаем ЛЮБОЙ непустой черновик — и безымянный, и уже названный
+    // шаблон (у анонима workflowId мог быть локальным; после входа всё равно
+    // пересохраняем в облако под пользователем).
+    if (!d || !Array.isArray(d.nodes) || d.nodes.length === 0) {
       clearResumeAfterAuth(); // восстанавливать нечего — снимаем флаг
       return;
     }
@@ -516,7 +519,8 @@ function BuilderAppInner() {
     setNodes(d.nodes);
     setEdges(d.edges || []);
     const name = (d.name && d.name.trim()) || t('builder.workflows.defaultName') || 'Без названия';
-    // persist берёт явные узлы (state ещё не обновился) и чистит черновик при успехе.
+    // persist берёт явные узлы (state ещё не обновился), overrideId=null → свежая
+    // облачная копия под текущим пользователем; при успехе чистит черновик.
     persist(name, d.nodes, d.edges || [], null);
   }, [user, persist, setNodes, setEdges, t]);
 
