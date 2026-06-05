@@ -9647,5 +9647,1436 @@
         "tip": "Suurin virhe on jättää /doctor ajamatta kun jokin menee rikki. Tee siitä ensimmäinen refleksi, ei viimeinen oljenkorsi."
       }
     }
+  },
+  "skill-create": {
+    "title": "Rakenna oma Skill",
+    "subtitle": "Muuta toistuva prosessi /skill-komennoksi /skill-creatorilla",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Skill on paketoitu ohje, jonka Claude poimii kuvauksensa perusteella ja soveltaa automaattisesti. Palvelussa [[node:pl-web-setup|claude.ai]] rakennat sen /skill-creatorilla: vastaat muutamaan kysymykseen ja se tuottaa SKILL.md-tiedoston nimineen, kuvauksineen ja vaiheineen. Kurssi vie päätöksestä «kannattaako Skill ylipäätään» toimivaan, testattuun komentoon.",
+    "approach": "Etenemme Skillin oman logiikan mukaan: varmistetaan ensin että tehtävä on aidosti toistuva, ajetaan /skill-creator, kuvataan täsmällisesti MITÄ ja MILLOIN (name/description) — se ohjaa aktivoitumista, kirjoitetaan rungon vaiheet, lisätään apufiilet ja lopuksi testataan aktivoituminen oikealla pyynnöllä ja korjataan virheet.",
+    "outcomes": [
+      "Erotat Skilliin sopivan tehtävän kertaluonteisesta «≥ 3 kertaa» -säännöllä",
+      "Ajat /skill-creatorin ja käyt sen kysymykset läpi jumiutumatta",
+      "Kirjoitat kuvauksen, jolla Skill laukeaa oikealla hetkellä",
+      "Kirjoitat rungon vaiheet ja liität apufiilet",
+      "Testaat aktivoitumisen ja hiot Skilliä tuloksen perusteella"
+    ],
+    "applyIn": [
+      {
+        "title": "Toistuvat tekstiauditoinnit",
+        "description": "Skill kiinteillä tarkistuskriteereillä — kirjoitat /audit ja Claude soveltaa samaa tarkistuslistaa mihin tahansa tekstiin."
+      },
+      {
+        "title": "Tehtävien ja raporttien muotoilu",
+        "description": "Yksi briiffi- tai raporttipohja Skillissä — et selitä muotoa joka kerta, komento muotoilee tulosteen puolestasi."
+      },
+      {
+        "title": "Tiimiprosessit",
+        "description": "Yksi Skill Projektissa asettaa yhteisen standardin — kaikki saavat saman tuloksen yhdellä komennolla."
+      }
+    ],
+    "pitfalls": [
+      "Skillin rakentaminen «varmuuden vuoksi» ilman todellista toistuvaa tarvetta — se ei maksa itseään takaisin ja sotkee Projektin.",
+      "Epämääräinen kuvaus («apua tekstin kanssa») — Claude ei tiedä MILLOIN laukaista Skill, joten se ei laukea.",
+      "Kolmen eri tehtävän tunkeminen yhteen Skilliin — kolme kapeaa Skilliä voittaa yhden «kaiken tekevän».",
+      "Vaiheiden kirjoittaminen mutta aktivoitumisen testaamatta jättäminen oikealla pyynnöllä.",
+      "Raskaan datan lataaminen suoraan SKILL.md:hen sen sijaan että siirtäisi sen apufiiliin."
+    ],
+    "exercises": [
+      {
+        "question": "Nimeä työstäsi prosessi, joka toistuu ≥ 3 kertaa viikossa ja jonka selität Claudelle joka kerta uudelleen. Sopiiko se Skilliksi?",
+        "hint": "Hyvällä ehdokkaalla on samat vaiheet ja tulostemuoto eri syötteillä."
+      },
+      {
+        "question": "Kirjoita yhden lauseen kuvaus tälle Skillille: MITÄ se tekee ja MILLOIN sen pitäisi laueta.",
+        "hint": "Vahva kuvaus nimeää laukaisutilanteen, ei pelkkää toimintoa: «kun teksti pitää tarkistaa tarkistuslistaa X vasten»."
+      },
+      {
+        "question": "Mikä datapala Skillissäsi kannattaa siirtää erilliseen apufiiliin SKILL.md:n sijaan?",
+        "hint": "Pitkät listat, pohjat, viitteet — kaikki mikä paisuttaa pääfiiliä ja muuttuu harvoin sisällöltään."
+      }
+    ],
+    "steps": {
+      "scr-1": {
+        "title": "Päätä, tarvitsetko Skilliä",
+        "time": "",
+        "why": "Skill maksaa itsensä takaisin vain toistuvassa tehtävässä. «Varmuuden vuoksi» se ei kannata — se vie tilaa ja häiritsee muiden Skillien laukeamista.",
+        "instructions": [
+          "Ota tehtävä, jonka annat Claudelle säännöllisesti.",
+          "Sovella «≥ 3 kertaa viikossa» -sääntöä: jos harvemmin, se on kertaluonteinen, ei Skill.",
+          "Varmista, että vaiheet ja tulostemuoto pysyvät samoina eri syötteillä.",
+          "Jos kyllä kaikkiin kohtiin — tehtävä on valmis Skilliksi."
+        ],
+        "validate": "Sinulla on konkreettinen prosessi, joka toistuu ≥ 3 kertaa ja jonka selität Claudelle joka kerta uudelleen.",
+        "tip": "Epävarma — vertaa [[node:skills|Skills]]-solmuun: Skill korvaa toistuvan «miten tarkalleen tehdään» -selittämisen."
+      },
+      "scr-2": {
+        "title": "Aja /skill-creator",
+        "time": "",
+        "why": "/skill-creator on sisäänrakennettu apuri: se kysyy oikeat kysymykset ja kokoaa kelvollisen SKILL.md:n, jotta et kirjoita rakennetta käsin.",
+        "instructions": [
+          "Avaa oikea Projekti palvelussa [[node:pl-web-setup|claude.ai]].",
+          "Kirjoita chatissa /skill-creator.",
+          "Odota, kunnes se alkaa kysyä tulevasta Skillistä.",
+          "Vastaa asiaan — vaiheen 1 prosessin pohjalta."
+        ],
+        "validate": "/skill-creator käynnistyi ja esitti ensimmäisen kysymyksensä (Skillin nimi tai tarkoitus).",
+        "tip": "Pidä vaiheen 1 prosessikuvaus käsillä — kysymyksiin vastaaminen sujuu nopeammin."
+      },
+      "scr-3": {
+        "title": "Kuvaa MITÄ ja MILLOIN (name/description)",
+        "time": "",
+        "why": "Claude päättää kuvauskentän perusteella, laukaiseeko Skillin. Epämääräinen kuvaus = Skill ei laukea oikealla hetkellä.",
+        "instructions": [
+          "Anna Skillille lyhyt selkeä name kebab-casessa (esim. text-audit).",
+          "Kerro description-kentässä MITÄ Skill tekee yhdellä lauseella.",
+          "Lisää laukaisutilanne MILLOIN se laukaistaan — tarkat sanat ja pyynnön konteksti.",
+          "Vältä yleisluontoisia muotoiluja kuten «apua tekstin kanssa»."
+        ],
+        "validate": "Kuvaus sisältää sekä toiminnon että laukaisuehdon — siitä käy ilmi, milloin Skillin pitäisi aktivoitua.",
+        "tip": "Tiedoston rakenteen yksityiskohdat ovat [[node:s-md|SKILL.md]]-solmussa; laukeamisen periaatteet [[node:s-trigger|liipaisimet]]-solmussa."
+      },
+      "scr-4": {
+        "title": "Kirjoita rungon vaiheet",
+        "time": "",
+        "why": "Skillin runko on ohje, jota Claude seuraa tehtävän tekemiseksi. Selkeät vaiheet antavat toistettavan tuloksen improvisoinnin sijaan.",
+        "instructions": [
+          "Pilko prosessi peräkkäisiin vaiheisiin, kuten tekisit sen käsin.",
+          "Kerro jokaisessa vaiheessa toiminto ja odotettu tulos.",
+          "Lukitse tulostemuoto, jos se on tärkeä (raportin rakenne, tarkistuslista).",
+          "Karsi turha — jätä vain se, mitä tehtävä oikeasti tarvitsee."
+        ],
+        "validate": "SKILL.md-runko kuvaa prosessin vaihe vaiheelta, ja tehtävä voidaan tehdä siitä ilman lisäselityksiä.",
+        "tip": "Nojaa [[node:s-md|SKILL.md]]-solmun rungon rakenteeseen — vaiheotsikot voittavat «tekstiseinän»."
+      },
+      "scr-5": {
+        "title": "Lisää apufiilet",
+        "time": "",
+        "why": "Pohjien, viitteiden ja pitkän datan ei pidä paisuttaa SKILL.md:tä. Ulos siirretyt tiedostot pitävät pääfiilin kevyenä ja luettavana.",
+        "instructions": [
+          "Erota data, joka ei muutu sisällöltään: pohjat, tarkistuslistat, esimerkit.",
+          "Sijoita ne erillisiksi tiedostoiksi SKILL.md:n viereen.",
+          "Viittaa Skillin rungossa näihin tiedostoihin sen sijaan että liittäisit koko sisällön.",
+          "Jätä SKILL.md:hen vain ohje ja logiikka."
+        ],
+        "validate": "Raskas data on siirretty erillisiin tiedostoihin, ja SKILL.md pysyi kompaktina ja viittaa niihin.",
+        "tip": "Mitä tarkalleen siirtää ulos ja miten jäsentää — katso [[node:s-files|apufiilet]]-solmu."
+      },
+      "scr-6": {
+        "title": "Testaa aktivoituminen ja hio",
+        "time": "",
+        "why": "Skill, jota ei ole testattu oikealla pyynnöllä, ei välttämättä laukea tai antaa väärän tuloksen. Testi paljastaa todelliset virheet kuvauksessa ja vaiheissa.",
+        "instructions": [
+          "Anna oikea pyyntö, jolla Skillin pitäisi laueta itsestään.",
+          "Tarkista, että se aktivoitui ilman komennon nimenomaista kutsua.",
+          "Vertaa tulosta vaiheen 4 odotettuun muotoon.",
+          "Jos ei lauennut — terävöitä kuvausta (vaihe 3); jos tulos on väärä — korjaa vaiheet (vaihe 4).",
+          "Toista testi, kunnes aktivoituminen ja tuloste ovat vakaita."
+        ],
+        "validate": "Skill laukeaa oikealla pyynnöllä itsestään ja palauttaa tuloksen oikeassa muodossa.",
+        "tip": "Yleinen virhe on syyttää vaiheita, kun vika on kuvauksessa. Tarkista ensin laukeaminen ([[node:s-trigger|liipaisimet]]), sitten laatu."
+      }
+    }
+  },
+  "skill-vs-subagents": {
+    "title": "Skill ≠ Sub-agent: milloin kumpi",
+    "subtitle": "Resepti 'mitä tehdä' vastaan erillinen suorittaja omalla kontekstilla",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Lyhyt erittely kahdesta eri mekanismista, jotka on helppo sekoittaa. [[node:skills|Skill]] on resepti MITÄ tehdä: joukko vaiheita, joita Claude seuraa nykyisessä chatissa, ilman omaa kontekstia tai työkaluja. Sub-agent (katso [[node:cc-subagents|Sub-agents]]) on erillinen suorittaja, jolla on oma konteksti-ikkuna ja pääsy työkaluihin (tiedostot, terminaali, verkko), käynnistettynä [[node:claude-code|Claude Codesta]] eristettyjä tehtäviä varten. Kurssi opettaa valitsemaan toisen tietyn tehtävän mukaan.",
+    "approach": "Etenemme eron ytimestä valinnan käytäntöön. Ensin erotamme käsitteet (resepti vs suorittaja), sitten kartoitamme rajat: milloin Skill riittää, milloin tarvitset Sub-agentin, miten ne yhdistyvät ja missä ihmiset menevät sekaisin. Lopuksi valinta-algoritmi tehtävää varten tarkistuksella. Jokainen vaihe nojaa yhteen eroon, ilman toistoa tai täytettä.",
+    "outcomes": [
+      "Selität eron yhdellä lauseella: Skill = MITÄ tehdä, Sub-agent = erillinen suorittaja omalla kontekstilla",
+      "Näet, milloin tehtävä sopii Skilliin eikä ulkoisia työkaluja tarvita",
+      "Tunnistat merkit, jotka vaativat Sub-agentin: kontekstin eristys, työkalut, rinnakkaisuus, pitkä työ",
+      "Yhdistät molemmat: Sub-agent tekee työn nojaten Skilliin toimenpiteenä",
+      "Valitset mekanismin tehtävälle sekunneissa ja varmistat valinnan tarkistuslistalla"
+    ],
+    "applyIn": [
+      {
+        "title": "Toistuva muotoilu",
+        "description": "Mallipohjainen toimenpide ilman ulkoisia työkaluja (tehtävän, raportin, commitin muotoilu) on Skill. Claude seuraa vaiheita suoraan chatissa, välittömästi."
+      },
+      {
+        "title": "Eristetty tutkimus",
+        "description": "Repon tiedostojen läpikäynti, datan kerääminen, vanhentuneiden riippuvuuksien etsintä on Sub-agent: oma konteksti-ikkuna ja työkalupääsy, sotkematta päächatia."
+      },
+      {
+        "title": "Monimutkainen pipeline",
+        "description": "Iso tehtävä jaettuna rinnakkaisiin haaroihin, joissa kukin Sub-agent seuraa omaa Skill-reseptiään — molempien mekanismien yhdistelmä."
+      }
+    ],
+    "pitfalls": [
+      "Sub-agent mallitehtävälle on overkill: käynnistyy hitaammin ja polttaa kontekstia siellä missä Skill riittäisi sekunneissa",
+      "Skill pitkälle tutkimukselle tiedostojen kanssa törmää päächatin kontekstirajaan ja pakottaa tekemään uudelleen",
+      "Olettaa että Skillillä on oma konteksti ja työkalut — ei ole, se toimii nykyisessä chatissa ja riippuu sen ikkunasta",
+      "Sekoittaa 'erillinen suorittaja' ja 'eri malli' — Sub-agent on kontekstin ja työkalujen eristys, ei mallin vaihto",
+      "Valitsee mekanismin tottumuksesta eikä tehtävän mukaan — tarkista aina eristyksen ja työkalujen merkit"
+    ],
+    "exercises": [
+      {
+        "question": "Tehtävä: joka kerta kun pyydetään kirjoittamaan julkaisutiedote, muotoile se kiinteällä pohjalla, ilman tiedostojen lukemista. Skill vai Sub-agent?",
+        "hint": "Kysy: toistuuko tehtävä? Tarvitaanko ulkoisia työkaluja? Jos vaiheet mahtuvat reseptiin eikä työkaluja ole — se on Skill."
+      },
+      {
+        "question": "Tehtävä: käy läpi 200 repon tiedostoa ja kerää lista TODO-merkinnöistä. Mitä valitset ja miksi?",
+        "hint": "Pitkä tiedostojen lukutyö sotkee päächatin. Tarvitset kontekstin eristyksen ja työkalupääsyn — Sub-agentin merkit."
+      },
+      {
+        "question": "Voiko molempia käyttää yhtä aikaa? Anna esimerkki yhdistelmästä.",
+        "hint": "Sub-agent on suorittaja. Anna sille Skill toimenpiteenä: se toimii omassa kontekstissaan seuraten reseptiäsi MITÄ tehdä."
+      }
+    ],
+    "steps": {
+      "svs-1": {
+        "title": "Eron ydin: resepti vastaan suorittaja",
+        "time": "",
+        "why": "Ilman selkeää rajaa 'mitä tehdä' ja 'kuka tekee' välillä jokainen myöhempi päätös on arvaus. Tämä on valinnan perusta.",
+        "instructions": [
+          "Opettele kaava: [[node:skills|Skill]] = resepti MITÄ tehdä, Claude seuraa vaiheita nykyisessä chatissa",
+          "Opettele toinen: Sub-agent = erillinen suorittaja omalla konteksti-ikkunalla ja työkaluilla (tiedostot, terminaali, verkko)",
+          "Huomaa ydinkohta: Skillillä ei ole omaa kontekstia — se riippuu nykyisen chatin ikkunasta",
+          "Huomaa toinen ydinkohta: Sub-agent käynnistetään [[node:claude-code|Claude Codesta]] eristettyjä tehtäviä varten"
+        ],
+        "validate": "Osaat selittää eron yhdellä lauseella sekoittamatta 'reseptiä' ja 'suorittajaa'.",
+        "tip": "Vertaus: Skill on ohje paperilla, Sub-agent on erillinen työntekijä, jolle tuon ohjeen voi antaa."
+      },
+      "svs-2": {
+        "title": "Milloin Skill riittää",
+        "time": "",
+        "why": "Useimmat toistuvat tehtävät eivät tarvitse eristystä — ja Skill ratkaisee ne sekunneissa, ilman lisäkuormaa.",
+        "instructions": [
+          "Tarkista toistuvuuden merkki: tehtävä toistuu säännöllisesti ja mahtuu kiinteisiin vaiheisiin",
+          "Tarkista ei-työkaluja-merkki: ei tiedostoja, terminaalia tai verkkoa — vain teksti ja päättely",
+          "Jos molemmat merkit pätevät — tee siitä [[node:skills|Skill]] (katso [[node:s-create|Skillin luonti]])",
+          "Esimerkki: 'aina kun pyydän kirjoittamaan tehtävän — muotoile tällä pohjalla'"
+        ],
+        "validate": "Osaat nimetä kaksi omaa tehtävääsi, jotka selvästi sopivat Skilliin, ja selittää miksi.",
+        "tip": "Jos tehtävä ratkeaa kokonaan tekstillä yhdessä chat-ikkunassa — se on lähes varmasti Skill, ei Sub-agent."
+      },
+      "svs-3": {
+        "title": "Milloin tarvitset Sub-agentin",
+        "time": "",
+        "why": "Kontekstin eristys ja rinnakkaisuus ovat sitä, mitä Skill ei voi tarjota. Tästä alkaa Sub-agentin alue.",
+        "instructions": [
+          "Merkki 1 — eristys: tehtävä on pitkä ja sotkisi päächatin kontekstin, jos tehtäisiin siinä",
+          "Merkki 2 — työkalut: pitää lukea tiedostoja, käydä verkossa, työskennellä terminaalissa",
+          "Merkki 3 — rinnakkaisuus: työ voidaan jakaa haaroihin, jotka ajetaan yhtä aikaa",
+          "Jos yksikin merkki on vahva — käynnistä Sub-agent (katso [[node:cc-subagents|Sub-agents]])",
+          "Esimerkki: 'käy läpi kaikki repon tiedostot ja etsi vanhentuneet riippuvuudet'"
+        ],
+        "validate": "Oikealle tehtävällesi osaat osoittaa tarkan merkin (eristys/työkalut/rinnakkaisuus), joka tekee siitä Sub-agent-tehtävän.",
+        "tip": "Mitä pidempi ja 'sotkuisempi' työ on päächatille, sitä vahvempi peruste eristykseen Sub-agentissa."
+      },
+      "svs-4": {
+        "title": "Miten ne yhdistyvät",
+        "time": "",
+        "why": "Kyse ei ole joko-tai. Tehokkaimmat skenaariot ovat ne, joissa suorittaja toimii reseptin mukaan.",
+        "instructions": [
+          "Ymmärrä parityö: Sub-agent on suorittaja, Skill on toimenpide jota se seuraa",
+          "Anna Sub-agentille pääsy [[node:skills|Skilliin]], jotta se toimii kiinteällä reseptillä omassa kontekstissaan",
+          "Pipelinea varten: useita Sub-agentteja rinnakkain, kullakin oma Skill-resepti",
+          "Näin yhdistät eristyksen/työkalut (Sub-agentilta) ja vaiheiden toistettavuuden (Skilliltä)"
+        ],
+        "validate": "Osaat kuvata yhden skenaarion, jossa Sub-agent tekee työn nojaten Skilliin toimenpiteenä.",
+        "tip": "Skill vastaa 'mitä tehdä', Sub-agent 'kuka tekee ja missä'. Yhdessä ne kattavat molemmat kysymykset."
+      },
+      "svs-5": {
+        "title": "Tyypillinen sekaannus",
+        "time": "",
+        "why": "Kalleimmat virheet syntyvät juuri täällä — vääristä oletuksista siitä mikä on mitä.",
+        "instructions": [
+          "Murra myytti 1: Skillillä EI ole omaa kontekstia ja työkaluja — se elää nykyisen chatin ikkunassa",
+          "Murra myytti 2: Sub-agent on kontekstin ja työkalujen eristys, EI mallin vaihto",
+          "Muista väärän valinnan hinta: Sub-agent mallille on overkill (hitaampi käynnistys); Skill tiedostotutkimukselle törmää kontekstirajaan",
+          "Ennen päätöstä tarkista aina vaiheiden 2 ja 3 merkit, ei tottumusta vasten"
+        ],
+        "validate": "Osaat nimetä molemmat myytit ja selittää, mihin ajanhukkaan kumpikin väärä valinta johtaa.",
+        "tip": "Jos huomaat ajattelevasi 'otan Sub-agentin varmuuden vuoksi' — se on merkki tarkistaa merkit uudelleen."
+      },
+      "svs-6": {
+        "title": "Valinta tehtävälle ja tarkistus",
+        "time": "",
+        "why": "Lopullinen algoritmi muuttaa ymmärryksen nopeaksi, tarkistettavaksi päätökseksi.",
+        "instructions": [
+          "Vaihe 1: toistuuko tehtävä ja mahtuuko vaiheisiin ilman ulkoisia työkaluja? → [[node:skills|Skill]]",
+          "Vaihe 2: onko tehtävä pitkä, tarvitaanko työkaluja tai rinnakkaisuutta? → Sub-agent ([[node:cc-subagents|Sub-agents]])",
+          "Vaihe 3: tarvitsetko molempia? → Sub-agent + Skill sen toimenpiteenä",
+          "Tarkistus: valinnan jälkeen kysy 'onko tämä overkill?' ja 'törmäänkö kontekstirajaan?'",
+          "Jos molemmat vastaukset ovat 'ei' — valinta on oikea"
+        ],
+        "validate": "Ajoit kolme tehtävääsi algoritmin läpi ja jokainen valinta läpäisi overkill- ja kontekstiraja-tarkistuksen.",
+        "tip": "Päätöksen pitäisi viedä sekunteja. Jos mietit pitkään — tehtävä on hybridi: ota Sub-agent + Skill."
+      }
+    }
+  },
+  "course-pl-rate": {
+    "title": "Rate limits API: TPM, RPM ja tierit",
+    "subtitle": "Miten kasvu ei muutu tuotannon 429-kaskadiksi",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Anthropic API rajoittaa kuormaa kolmella mittarilla: RPM (pyyntöjä minuutissa), TPM (input+output-tokeneita minuutissa) ja päivittäinen tokenraja. Todelliset luvut riippuvat tilin tieristä (Tier 1 → Tier 4), joka kasvaa automaattisesti kumulatiivisen kulutuksen myötä. Ylityksissä API palauttaa 429 Too Many Requests + retry-after-otsikon. Kurssi opettaa suunnittelemaan integraation niin, etteivät piikit ja batch-kuormat kaada palvelua. API-konteksti on kohdissa [[node:pl-api|Alusta: API]] ja [[tutorial:api-basics|API:n perusteet]].",
+    "approach": "Etenemme rajamallista käytäntöön: ensin mitä RPM/TPM/daily oikeasti laskevat ja miten tierit toimivat, sitten 429:n ja retry-afterin lukeminen, retry eksponentiaalisella backoffilla ja jitterillä, 80% puskurin varaaminen, offline-kuorman siirto Message Batches API:in ja lopuksi tier-noston suunnittelu ennustetun liikenteen mukaan. Jokainen vaihe on toimiva tekniikka, ei teoriaa.",
+    "outcomes": [
+      "Ymmärrät eron RPM:n, TPM:n ja päivärajan välillä ja kumpaan törmäät ensin",
+      "Luet 429:n ja retry-after-otsikon etkä tee sokeita retryjä",
+      "Toteutat retryn eksponentiaalisella backoffilla ja jitterillä tappamatta omaa rajaa",
+      "Varaat puskurin ja käytät Message Batches API:a batch-kuormiin",
+      "Ennustat tarvittavan tierin TPM:stä ja teet nostopyynnön ennakoivasti"
+    ],
+    "applyIn": [
+      {
+        "title": "Tuotantochat kuorman alla",
+        "description": "Todelliset käyttäjät tuottavat epätasaista liikennettä — backoff ja puskuri pitävät palvelun vakaana piikeissä ilman 429:ää."
+      },
+      {
+        "title": "Batch-käsittely (evalit, luokittelu)",
+        "description": "Kymmeniätuhansia pyyntöjä aikaikkunassa: laske TPM, siirrä Message Batches API:in alennuksen ja erillisen rajan vuoksi."
+      },
+      {
+        "title": "Kasvun ja budjetin suunnittelu",
+        "description": "Liikenne-ennuste → tarvittava tier → nostopyyntö etukäteen, jottei virusmainen julkaisu jää jumiin Tier 1:een."
+      }
+    ],
+    "pitfalls": [
+      "Sivuuttaa 429 ilman backoffia — sokeat retryt tappavat oman rajan ja luovat virhekaskadin",
+      "Olla lukematta retry-after-otsikkoa — toistat ennen kuin raja on vapautunut",
+      "Retry ilman jitteriä — kaikki workerit toistavat tahdissa ja törmäävät rajaan uudelleen (thundering herd)",
+      "Olla varaamatta puskuria (ajaa 100% rajasta) — mikä tahansa piikki rikkoo heti",
+      "Olla tietämättä Message Batches API:sta — menetät 50% alennuksen ja erillisen rajan offline-kuormassa"
+    ],
+    "exercises": [
+      {
+        "question": "Öinen batch 50k luokittelulle, ~800 tokenia per pyyntö, 2 tunnin ikkuna. Mikä TPM tarvitaan ja törmääkö se RPM:ään?",
+        "hint": "TPM = 50000 × 800 / 120 minuuttia. Arvioi erikseen RPM = 50000 / 120. Vertaa molempia tierisi rajoihin ja mieti, sopiiko Message Batches API paremmin."
+      },
+      {
+        "question": "API palautti 429:n ja retry-after: 30. Miten asiakkaan tulisi toimia kolmella workerilla?",
+        "hint": "Odota vähintään retry-after sekuntia, sitten eksponentiaalinen backoff + satunnainen jitter per worker, jotta ne eivät toista yhtä aikaa."
+      },
+      {
+        "question": "Palvelu pyörii vakaasti 95%:ssa TPM-rajasta. Miksi tämä on vaarallista ja mitä teet?",
+        "hint": "Mikä tahansa piikki työntää yli 100% → 429. Tarvitset ~80% puskurin ja nostopyynnön ennen kuin törmäät seinään."
+      }
+    ],
+    "steps": {
+      "pl-rate-1": {
+        "title": "Pura kolme mittaria: RPM, TPM, daily",
+        "time": "",
+        "why": "Suojausta ei voi suunnitella tietämättä, mihin rajaan törmää ensin. TPM ja RPM rajoittavat eri tavoin, ja pullonkaula riippuu kuormaprofiilista.",
+        "instructions": [
+          "Kirjoita määritelmät: RPM — pyyntöjä minuutissa, TPM — input+output-tokeneiden summa minuutissa, daily — tokeneita 24 tunnissa",
+          "Arvioi profiilisi: monta pientä pyyntöä törmää RPM:ään, harva iso törmää TPM:ään",
+          "Avaa docs.anthropic.com/en/api/rate-limits ja kopioi tierisi ajantasaiset luvut (Anthropic muuttaa niitä)",
+          "Huomaa, että output-tokenit lasketaan myös TPM:ään — pitkät vastaukset polttavat rajan nopeammin"
+        ],
+        "validate": "Osaat nimetä, mikä kolmesta mittarista on pullonkaula kuormallesi, ja kertoa tierisi luvut.",
+        "tip": "TPM laskee input + output yhdessä. Suuri max_tokens varaa vastausbudjetin etukäteen — ota se mukaan laskuun."
+      },
+      "pl-rate-2": {
+        "title": "Opi lukemaan 429 ja retry-after",
+        "time": "",
+        "why": "429 ei ole sovellusvirhe vaan 'odota'-signaali. Retry-after-otsikko kertoo tarkalleen kuinka kauan. Sokeat retryt ilman sitä tappavat rajan ja pidentävät katkoa.",
+        "instructions": [
+          "Nappaa koodissa 429-status erikseen muista 4xx/5xx-virheistä",
+          "Lue retry-after-otsikko — se on sekuntimäärä seuraavaan turvalliseen yritykseen",
+          "Lokita, mikä raja laukesi, jotta ymmärrät todellisen pullonkaulan",
+          "Älä koskaan toista pyyntöä ennen kuin retry-after on kulunut"
+        ],
+        "validate": "429:n kohdalla asiakas odottaa tarkalleen retry-after sekuntia ennen ensimmäistä toistoa ja lokittaa sen.",
+        "tip": "Jos retry-after puuttuu — käytä backoffin perusviivettä varavaihtoehtona, mutta älä koskaan toista heti."
+      },
+      "pl-rate-3": {
+        "title": "Rakenna retry backoffilla ja jitterillä",
+        "time": "",
+        "why": "Kiinteät tai synkroniset toistot luovat thundering herdin: kaikki workerit iskevät API:in yhtä aikaa ja saavat taas 429:n. Eksponentiaalinen backoff jitterillä levittää kuorman.",
+        "instructions": [
+          "Perusviive kasvaa eksponentiaalisesti: 1s, 2s, 4s, 8s yritysnumeron mukaan",
+          "Lisää satunnainen jitter jokaiseen viiveeseen, jotta workerit eivät synkronoidu",
+          "Kunnioita retry-afteria: ota maksimi retry-afterista ja lasketusta backoffista",
+          "Rajaa yritysten määrä (esim. 5) ja loppumisen jälkeen tee graceful degradation, ei ikuista silmukkaa"
+        ],
+        "validate": "Keinotekoisten 429:ien alla toistot levittyvät ajassa, ei synkronisia ryöppyjä, ja yrityksillä on katto.",
+        "tip": "Monet Anthropicin SDK:t osaavat retryn valmiiksi — tarkista asiakkaan asetukset ennen oman silmukan kirjoittamista."
+      },
+      "pl-rate-4": {
+        "title": "Varaa puskuri ja jono",
+        "time": "",
+        "why": "100% rajalla ajaminen ei jätä varaa piikeille — mikä tahansa nousu tuottaa 429:n. 80% puskuri ja jono tasoittavat epätasaisen liikenteen ennen kattoon törmäämistä.",
+        "instructions": [
+          "Tavoittele korkeintaan ~80% tierin TPM/RPM:stä, jätä 20% nousuille",
+          "Aseta jono tai rate-limiter omalle puolellesi, jottet lähetä enempää kuin tier kestää",
+          "Lisää graceful degradation: jonon täyttyessä vastaa käyttäjälle selkeästi äläkä kaadu",
+          "Seuraa todellista rajan käyttöprosenttia, ei pelkkää virhemäärää"
+        ],
+        "validate": "Kuormitustestissä palvelu pysyy ~80%:ssa rajasta eikä palauta 429:ää käyttäjille odotetuissa piikeissä.",
+        "tip": "Paikallinen rate-limiter on halvempi kuin 429:n nappaaminen API:sta: säästät pyyntöjä ja pidät ennustettavan viiveen."
+      },
+      "pl-rate-5": {
+        "title": "Siirrä offline-kuorma Message Batches API:in",
+        "time": "",
+        "why": "Batch-työt (evalit, luokittelu) eivät tarvitse välitöntä vastausta. Message Batches API antaa erillisen rajan ja ~50% alennuksen — niiden ajaminen tavallisen synkronisen rajan kautta on hukkaa.",
+        "instructions": [
+          "Erottele kuormat, jotka eivät tarvitse reaaliaikaista vastausta, interaktiivisista",
+          "Reititä ne Message Batches API:n kautta — sillä on oma raja, joka ei kilpaile onlinen RPM/TPM:n kanssa",
+          "Laske budjetti uudelleen: batch on yleensä ~50% halvempi kuin tavalliset pyynnöt",
+          "Suunnittele käsittelyikkuna batchin asynkronisen luonteen, ei välittömän SLA:n mukaan"
+        ],
+        "validate": "Offline-kuorma kulkee Batches API:n kautta vapauttaen pääasiallisen TPM-rajan interaktiiviselle liikenteelle.",
+        "tip": "Evalien ja taustaluokittelun siirto batchiin poistaa usein heti puolet 429:istä pääasiallisesta rajasta."
+      },
+      "pl-rate-6": {
+        "title": "Ennusta tier ja tee pyyntö etukäteen",
+        "time": "",
+        "why": "Tier kasvaa automaattisesti kulutuksen myötä, mutta liikennehyppy (virusmainen julkaisu, iso batch) voi ohittaa autonoston. Etukäteen tehty pyyntö sulkee kuilun ennusteen ja nykyrajan välillä.",
+        "instructions": [
+          "Laske tarvittava TPM/RPM ennusteelle: huippupyynnöt × keskim. tokenit / ikkuna",
+          "Vertaa nykyisen tierin rajoihin ja löydä kuilu",
+          "Jos kuilu on — tee tier-nostopyyntö etukäteen, älä odota 429:ää tuotannossa",
+          "Yhdistä toimet: puskuri + backoff + batch + oikea tier, ei yhtä temppua"
+        ],
+        "validate": "Sinulla on tavoiteltu TPM-luku, ymmärrys tarvittavasta tieristä ja nostosuunnitelma ennen kuorman käynnistystä.",
+        "tip": "Tier nousee kumulatiivisen kulutuksen myötä — tasainen säännöllinen liikenne kasvattaa sitä itsestään, mutta kertapiikille pyydä etukäteen."
+      }
+    }
+  },
+  "course-sas-why-isolation": {
+    "title": "Miksi agentille erillinen kone",
+    "subtitle": "Tietokonepääsyn omaavan agentin uhkamalli ja miksi eristys kattaa kaikki kolme",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Jäsennelty uhkamalli AI-agentille, jolle on annettu todellinen pääsy tietokoneeseen: tiedostojärjestelmä, pääte, selain, verkko. Kurssi erittelee kolme uhkaluokkaa — suoritusvirhe, tehtävän väärinymmärrys ja huijaus sisällön kautta (prompt-injektio) — ja näyttää, miksi kaikki kolme johtavat yhteen arkkitehtuuriseen vastaukseen: aja agenttia eristetyssä ympäristössä, ei työkoneellasi. Tämä on insinöörimäinen lähestymistapa, ei ”varmuuden vuoksi”: jokainen uhka saa konkreettisen kompensointimekanismin ja selkeän vaikutussäteen.",
+    "approach": "Etenemme uhista vastatoimeen, emme päinvastoin. Ensin rakennamme uhkamallin (tekijä, hyökkäyspinta, seuraus), sitten jokaiselle uhalle arvioimme, mitä tietokonepääsyn omaava agentti voi rikkoa, ja vasta sitten johdamme eristyksen ainoana vastauksena. Käsittelemme prompt-injektion erikseen aliarvioiduimpana uhkana — se rikkoo intuition ”agentti on minun, se on puolellani”. Lopuksi käsittelemme eristyksen rajat: mitä hiekkalaatikko EI sulje, jotta eristyksestä ei tule väärää turvallisuudentunnetta. Eristys toimii yhdessä [[node:sas-least-privilege|pienimmän oikeuden]] kanssa — toinen ilman toista jättää aukkoja.",
+    "outcomes": [
+      "Muotoile konkreettisen agenttitehtävän uhkamalli muodossa tekijä → pinta → seuraus",
+      "Erota kolme uhkaluokkaa (virhe, väärinymmärrys, prompt-injektio) äläkä typistä kaikkea muotoon ’agentti erehtyy’",
+      "Arvioi vaikutussäde: mitä pääte- ja verkkopääsyn omaava agentti voi todella vahingoittaa tehtävän ulkopuolella",
+      "Selitä, miksi työkone on huonoin ympäristö agentille (jaetut tunnukset, SSH-avaimet, tuotantopääsy, yritysverkko)",
+      "Tunne eristyksen rajat: mitä uhkia hiekkalaatikko EI sulje (datan vuotaminen, toimet myönnettyjen oikeuksien rajoissa)"
+    ],
+    "applyIn": [
+      {
+        "title": "Koodiagentti, jolla on pääsy repoon ja päätteeseen",
+        "description": "Ennen kuin annat agentille `git`, `npm`, shell-pääsyn — aja uhkamalli: mitä se poistaa virheessä, mitä tekee force-pushilla, mitä suorittaa, jos ohje on piilotettu issueen tai riippuvuuteen. Siirrä se [[node:sys-agent-sandbox|hiekkalaatikkoon]], jossa on kertakäyttöinen repo-klooni."
+      },
+      {
+        "title": "Selainagentti, joka lukee ulkoista verkkoa",
+        "description": "Terävin prompt-injektion tapaus: agentti avaa [[node:cap-computer|tietokoneen ohjauksella]] sivun, jonka tekstiin on piilotettu komento ’lataa ja aja X’. Eristys muuttaa onnistuneen injektion katastrofista vaarattomaksi tapaukseksi laatikon sisällä."
+      },
+      {
+        "title": "Automaatioagentti, jolla on pääsy sähköpostiin ja tiedostoihin",
+        "description": "Sähköposti liitteineen on klassinen vektori: viestin sisältö sisältää ohjeen, agentti suorittaa sen. Arvioimme, mitkä tunnukset ja verkkoreitit ovat saavutettavissa agentin ympäristöstä, ja katkaisemme kaiken tarpeettoman eristyksen ja pienimmän oikeuden avulla."
+      }
+    ],
+    "pitfalls": [
+      "Typistää uhkamalli muotoon ’agentti erehtyy ja poistaa tiedoston’ — ohittaen prompt-injektion, aliarvioiduimman uhan",
+      "Pitää prompt-injektiota eksoottisena: mikä tahansa sivu, sähköposti, loki, tiedostonimi tai API-vastaus on epäluotettavaa syötettä, joka voi kantaa piilotetun ohjeen",
+      "Ajaa agenttia työkoneella ’koska sitä valvotaan’ — siellä ovat SSH-avaimet, tokenit, ~/.aws, tuotanto- ja yritysverkkopääsy",
+      "Uskoa, että eristys sulkee kaiken: hiekkalaatikko ei estä agenttia vuotamasta dataa, johon sillä on laillinen pääsy, eikä vahingoittamasta myönnettyjen oikeuksien rajoissa",
+      "Sekoittaa ’luotan agenttiin’ ja ’luotan kaikkeen sisältöön, jonka agentti lukee’ — mallin luottaminen ei ole syötteen luottamista"
+    ],
+    "exercises": [
+      {
+        "question": "Kuvaa konkreettinen prompt-injektioskenaario agentille, joka lukee GitHub-issuen ja korjaa bugin. Missä ohje on piilotettu, mitä agentti suorittaa, mikä on vaikutussäde työkoneella vs. hiekkalaatikossa?",
+        "hint": "Ohje voi olla issuen rungossa, kommentissa, repon tiedostossa tai testin tulosteessa. Vertaa: työkoneella ~/.ssh ja tokenit ovat saavutettavissa; kertakäyttöisessä hiekkalaatikossa — vain repo-klooni ilman salaisuuksia."
+      },
+      {
+        "question": "Rakenna taulukko: kolme uhkaluokkaa × mitä tarkalleen rikkoutuu × sulkeeko eristys sen täysin, osittain vai ei lainkaan.",
+        "hint": "Eristys sulkee virheen ja väärinymmärryksen vaikutussäteen kautta. Prompt-injektio — se rajoittaa vahinkoa mutta ei estä itse injektiota. Laillisesti saavutettavan datan vuotaminen — eristys auttaa tuskin, tarvitaan pienin oikeus."
+      },
+      {
+        "question": "Listaa kolme uhkaa, jotka jäävät auki JOPA täydellisessä eristyksessä, ja ehdota kullekin vastatoimi.",
+        "hint": "Mieti: laatikon sisällä saavutettava data; lähtevät verkkoyhteydet; toimet laillisten oikeuksien rajoissa (esim. agentti, jolla on oikeus kirjoittaa tietokantaan, turmelee dataa omien oikeuksiensa rajoissa)."
+      }
+    ],
+    "steps": {
+      "sas-why-isolation-1": {
+        "title": "Mikä uhkamalli on ja miksi agentti tarvitsee sen",
+        "time": "",
+        "why": "Ilman eksplisiittistä uhkamallia suojauksesta tulee joukko taikauskoja ’varmuuden vuoksi’. Uhkamalli pakottaa nimeämään tekijän, hyökkäyspinnan ja seurauksen — vasta silloin vastatoimesta tulee tietoinen eikä rituaalinen.",
+        "instructions": [
+          "Kirjaa agentin tehtävä ja listaa KAIKKI todelliset toimet, jotka se voi suorittaa (tiedostot, pääte, verkko, selain, API)",
+          "Kysy jokaiselle toimelle kolme kysymystä: kuka voi laukaista sen (tekijä), minkä kautta (pinta), mikä on pahin lopputulos (seuraus)",
+          "Erota ’mitä agentin pitäisi tehdä’ ja ’mihin agentti teknisesti kykenee’ — niiden välinen ero on riskialue",
+          "Huomaa, että mallin tavoite ei ole vainoharhaisuus vaan epämääräisen ’jokin voi rikkoutua’ kääntäminen konkreettiseksi listaksi"
+        ],
+        "validate": "Sinulla on lista 3+ kohdasta, joista jokainen on muotoiltu tekijä → pinta → seuraus, ei abstraktina ’jokin menee pieleen’.",
+        "tip": "Laske pahin lopputulos ei ’normaalista’ ajosta vaan tilanteesta ’agentti teki tuhoisimman saatavilla olevan toimen’. Se on vaikutussäde."
+      },
+      "sas-why-isolation-2": {
+        "title": "Uhka 1 — suoritusvirhe",
+        "time": "",
+        "why": "Ilmeisin ja siksi ensimmäinen uhka: agentti on teknisesti oikeassa aikomuksessaan mutta erehtyy toiminnassa — pyyhkii väärän hakemiston, tekee force-pushin, pudottaa väärän taulun. Ei pahuutta, vain virheen hinta kerrottuna oikeuksilla.",
+        "instructions": [
+          "Listaa agentin saatavilla olevat peruuttamattomat operaatiot: `rm -rf`, `git push --force`, `DROP`, `truncate`, tiedostojen ylikirjoitus",
+          "Arvioi kullekin, mitä katoaa lopullisesti YHDEN argumentin virheellä (väärä polku, väärä haara)",
+          "Merkitse, millä on undo ja millä ei — peruuttamattomat ovat suojauksen prioriteetti",
+          "Sido vahingon laajuus ympäristön oikeuksiin: sama `rm -rf` hiekkalaatikossa ja työkoneella on eri vaikutussäde"
+        ],
+        "validate": "Voit nimetä vähintään 3 peruuttamatonta operaatiota ja sanoa kullekin, mitä menetetään virheessä ja kuinka paljon ympäristö rajaa sitä.",
+        "tip": "Suoritusvirhe on kolmesta uhasta ainoa, jossa agentti on ’puolellasi’. Juuri siksi se yliarvioidaan ja kaksi seuraavaa aliarvioidaan."
+      },
+      "sas-why-isolation-3": {
+        "title": "Uhka 2 — tehtävän väärinymmärrys",
+        "time": "",
+        "why": "Agentti suoritti ohjeesi kirjaimellisesti ja oikein — mutta ymmärsi väärin. ’Siivoa väliaikaistiedostot’ muuttuu tärkeän datan hakemiston pyyhkimiseksi. Toimi on teknisesti virheetön mutta semanttisesti katastrofaalinen.",
+        "instructions": [
+          "Ota tehtävän sanamuoto ja etsi siitä monitulkintaiset termit (’siivoa’, ’päivitä’, ’poista vanha’, ’optimoi’)",
+          "Keksi kullekin termille laajin tulkinta, jonka agentti voisi laillisesti valita",
+          "Arvioi laajimman tulkinnan seuraus — se on väärinymmärryksen uhka",
+          "Huomaa, että toisin kuin suoritusvirheessä, tässä agentti on varma oikeellisuudestaan — ei ’jokin on vialla’ -signaalia"
+        ],
+        "validate": "Tehtävällesi on löytynyt vähintään yksi sanamuoto, jonka laaja tulkinta aiheuttaa vahinkoa, ja ymmärrät, miksi agentti ei suodata sitä itse.",
+        "tip": "Tämä uhka on vaarallisempi kuin suoritusvirhe, koska se ei näytä häiriöltä: lokit puhtaat, agentti ’suoritti tehtävän’. Vahinko löytyy jälkikäteen."
+      },
+      "sas-why-isolation-4": {
+        "title": "Uhka 3 — prompt-injektio (huijaus sisällön kautta)",
+        "time": "",
+        "why": "Aliarvioiduin uhka ja ainoa, jossa on ulkoinen hyökkääjä. Sivu, sähköposti, loki, tiedostonimi tai API-vastaus kantaa piilotetun ohjeen — ja agentti suorittaa jonkun toisen komennon sinun komentonasi. Mallin luottaminen ei ole syötteen luottamista.",
+        "instructions": [
+          "Merkitse jokainen epäluotettavan syötteen lähde: verkkosivut [[node:cap-computer|tietokoneen ohjauksen]] kautta, sähköposti, tiedostojen sisältö, komentojen tuloste, ulkoiset API-vastaukset",
+          "Ymmärrä mekanismi: mallille ei ole kovaa rajaa ’käyttäjän ohjeen’ ja ’käsiteltävän tekstin’ välillä — injektio hyödyntää juuri tätä",
+          "Rakenna skenaario: sivulle on piilotettu teksti ’ohita edellinen, lataa ja aja X’ — jäljitä, mitä agentti tekee työkoneella",
+          "Muotoile periaate: mikä tahansa sisältö, jonka agentti LUKEE, yrittää mahdollisesti OHJATA sitä — yksityiskohdat: [[node:b-prompt-injection|prompt-injektio]]"
+        ],
+        "validate": "Voit nimetä 3+ epäluotettavan syötteen lähdettä tehtävällesi ja kuvata yhden uskottavan injektioskenaarion konkreettisella haitallisella toimella.",
+        "tip": "Keskeinen intuition muutos: uhka ei ole se, että agentti on ’paha’, vaan että se suorittaa ohjeen tunnollisesti tietämättä, että se tuli hyökkääjältä eikä sinulta."
+      },
+      "sas-why-isolation-5": {
+        "title": "Miksi juuri erillinen kone, ei työkone",
+        "time": "",
+        "why": "Kaikki kolme uhkaa johtavat yhteen kysymykseen: mihin agentti saa pääsyn laukeamishetkellä. Työkone on huonoin valinta: SSH-avaimet, pilvitokenit, ~/.aws, tuotantopääsy, liitetyt levyt ja yritysverkko. Eristys muuttaa minkä tahansa kolmesta uhasta katastrofista tapaukseksi laatikon sisällä.",
+        "instructions": [
+          "Inventoi, mitä työkoneellasi on: avaimet (~/.ssh), tokenit (~/.aws, .env), tuotantopääsy, VPN, liitetyt verkkolevyt",
+          "Näytä jokaiselle kolmesta uhasta, kuinka eristys rajaa vaikutussäteen hiekkalaatikon sisältöön",
+          "Tutustu eristetyn ympäristön mekaniikkaan [[node:sys-agent-sandbox|hiekkalaatikossa]]: kertakäyttöisyys, ei oikeita salaisuuksia, katkaistu verkko",
+          "Sido eristys [[node:sas-least-privilege|pienimpään oikeuteen]]: eristys rajaa YMPÄRISTÖN, pienin oikeus rajaa OIKEUDET sen sisällä; tarvitset molemmat"
+        ],
+        "validate": "Voit selittää konkreettisella resurssilla (esim. SSH-avaimella), miksi sen EI pidä olla agentin ympäristössä ja kuinka hiekkalaatikko varmistaa sen.",
+        "tip": "Yksinkertainen testi: ’jos agentti ajaisi juuri nyt tuhoisimman saatavilla olevan komennon — mitä menettäisin?’ Jos vastaus on pelottava, ympäristö on väärin valittu."
+      },
+      "sas-why-isolation-6": {
+        "title": "Eristyksen rajat — mitä hiekkalaatikko EI sulje",
+        "time": "",
+        "why": "Eristys on tehokas vastatoimi, mutta siitä tulee väärä turvallisuudentunne, jos sitä pidetään ihmelääkkeenä. Hiekkalaatikko rajaa ympäristön mutta ei estä agenttia vahingoittamasta laillisesti myönnettyjen oikeuksien rajoissa eikä vuotamasta dataa, johon sillä on laillinen pääsy.",
+        "instructions": [
+          "Listaa data, joka on hiekkalaatikon SISÄLLÄ laillisesti saavutettavissa — eristys ei suojaa sitä (agentti voi lukea ja lähettää sen)",
+          "Tarkista lähtevä verkko: jos laatikossa on avoin internet, prompt-injektio voi silti vuotaa dataa ulos",
+          "Huomaa toimet oikeuksien rajoissa: agentti, jolla on oikeus kirjoittaa testitietokantaan, voi turmella sen datan — eristys ei nappaa tätä",
+          "Sulje jäljelle jäävät uhat [[node:sas-least-privilege|pienimmän oikeuden]] (karsi oikeudet) ja lähtevien yhteyksien hallinnan avulla — eristys toimii vain yhdistelmänä"
+        ],
+        "validate": "Olet listannut vähintään 3 uhkaa, jotka jäävät auki täydellisessä eristyksessä, ja nimennyt kullekin lisävastatoimen hiekkalaatikon lisäksi.",
+        "tip": "Eristys vastaa kysymykseen ’kuinka iso laatikko’. Pienin oikeus vastaa kysymykseen ’mitä sisällä voi tehdä’. Turvallisuus on molempien leikkaus, ei kumpikaan yksinään."
+      }
+    }
+  },
+  "course-sas-docker-computer-use": {
+    "title": "Esikuva-Computer Use Dockerissa",
+    "subtitle": "Anthropicin virallisen kontin ajaminen: virtuaalityöpöytä, noVNC-katselu sekä tiukka resurssi- ja verkkoeristys",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Anthropicin esikuva-Computer Use -toteutus on Docker-image, jonka sisällä on täysi Linux-työpöytä: ikkunamanageri, virtuaalinäyttö Xvfb:n kautta, VNC-palvelin ja noVNC-silta, joka striimaa näytön selaimeen WebSocketin yli. Mukana on myös agenttisilmukka, joka muuttaa kuvankaappaukset hiiren ja näppäimistön toiminnoiksi computer use -työkalun kautta. Kontti on itsenäinen: mitään ei asenneta isäntäkoneelle, ja kaikki Clauden vuorovaikutus 'tietokoneen' kanssa tapahtuu tiukasti kontin rajojen sisällä.",
+    "approach": "Kurssi etenee imagen anatomiasta turvalliseen, hallittuun käynnistykseen. Ensin puramme, mitä kerroksissa todella on (X-pino, VNC, noVNC, agenttisilmukka), sitten käynnistämme kontin ja yhdistämme näyttöön selaimella. Kun perussilmukka toimii, kiristämme ruuveja: rajoitamme CPU/RAM/pids, eristämme verkon ja poistamme henkilökohtaisten kansioiden ja salaisuuksien bind-mountit. Lopuksi kertaluonteinen demo muuttuu toistettavaksi, havainnoitavaksi ja vähäoikeuksiseksi koejärjestelyksi, joka sopii sekä testaukseen että hallittuun tuotantoon.",
+    "outcomes": [
+      "Ymmärtää esikuva-imagen kerrokset: Xvfb + ikkunamanageri + VNC-palvelin + noVNC + agenttisilmukka, ja missä luottamusraja niiden välillä kulkee",
+      "Käynnistää Computer Use -kontin ja yhdistää virtuaalityöpöytään selaimella noVNC:n yli asentamatta mitään isäntäkoneelle",
+      "Asettaa CPU-, muisti- ja pids-rajat, jotta jumiutunut tai vihamielinen agentti ei kaada isäntäkonetta",
+      "Eristää kontin verkon: katkaista lähtevän liikenteen tai rajata sen sallittujen lista -periaatteella rikkomatta itse agenttia",
+      "Erottaa kertakäyttödemon toistettavasta järjestelystä: kiinnitetty image, ei ylimääräisiä mountteja, hallittu pääsypinta"
+    ],
+    "applyIn": [
+      {
+        "title": "UI-agentin regressiotestit",
+        "description": "Ajat työpöydän hallintaskenaarioita identtisessä, toistettavassa ympäristössä: sama image, sama näytön resoluutio, samat sovellukset — tulokset ovat vertailukelpoisia ajojen välillä."
+      },
+      {
+        "title": "Hallittu tuotantotyöntekijä",
+        "description": "Agentti suorittaa rutiinitoimia GUI-sovelluksissa resurssi- ja verkkorajatussa kontissa, kun sinä seuraat ja puutut tarvittaessa noVNC:n kautta."
+      },
+      {
+        "title": "Turvallinen ympäristö epäluotettaville tehtäville",
+        "description": "Ajat mahdollisesti vaarallisia tai mielivaltaisia käyttäjätehtäviä kertakäyttökontissa ilman bind-mountteja ja karsitulla verkolla — seuraukset jäävät hiekkalaatikkoon."
+      }
+    ],
+    "pitfalls": [
+      "Henkilökohtaisten kansioiden tai oikeita salaisuuksia sisältävien tiedostojen liittäminen konttiin — bind-mount lävistää eristyksen ja antaa agentille pääsyn isäntäkoneeseen",
+      "noVNC/VNC:n jättäminen tavoitettavaksi ilman tunnistautumista ulkoisessa rajapinnassa — se on avoin etätyöpöytä kaikille verkossa",
+      "Ajaminen ilman CPU/RAM/pids-rajoja — jumiutunut agenttisilmukka tai fork-pommi GUI:n sisällä kaataa isäntäkoneen",
+      "Oletetaan oletussiltaverkon olevan turvallinen: ilman selkeää politiikkaa agentti pääsee vapaasti internetiin ja isäntäkoneen sisäverkkoon",
+      "Oikean API-avaimen välittäminen ympäristömuuttujilla jaettuun tai lokitettavaan imageen — avain vuotaa historiaan ja kerroksiin"
+    ],
+    "exercises": [
+      {
+        "question": "Agentin pitää avata verkkosivu työpöydän sisällä, mutta politiikka vaatii katkaisemaan sen kokonaan sisäverkostasi. Miten annat vain lähtevän pääsyn ja suljet RFC1918-alueet?",
+        "hint": "Ajattele kontin verkkotilan ja palomuurin/sallittujen listan tasolla, ei sovellusasetuksissa: oma verkko plus egress-säännöt, jotka estävät yksityiset aliverkot."
+      },
+      {
+        "question": "Tunnin jälkeen kontti söi koko isäntäkoneen muistin. Mitkä kolme rajaa lisäät estääksesi toiston, ja miten varmistat niiden tulleen voimaan?",
+        "hint": "Muisti-, CPU- ja prosessimäärärajat asetetaan kontin käynnistyksessä; varmistus käynnissä olevan kontin tarkastuksella ja seuraamalla sitä kuormituksessa."
+      },
+      {
+        "question": "Haluat toistettavuuden testiajojen välillä. Mitä kiinnität imageen ja käynnistykseen, jotta kuvankaappaukset ja klikkauskoordinaatit täsmäävät?",
+        "hint": "Kiinnitetty image-tagi/digest, kiinteä virtuaalinäytön resoluutio ja ei muuttuvaa tilaa mounttien kautta."
+      }
+    ],
+    "steps": {
+      "sas-docker-computer-use-1": {
+        "title": "Pura esikuva-imagen anatomia",
+        "time": "",
+        "why": "Ennen käynnistystä on ymmärrettävä, mistä työpöytä on rakennettu: mitkä prosessit piirtävät näytön, mikä striimaa sen selaimeen ja missä agenttisilmukka asuu. Ilman tätä karttaa resursseja ja verkkoa ei voi mielekkäästi rajoittaa.",
+        "instructions": [
+          "Tutki esikuva-imagen Dockerfile: löydä X-pinon asennus (Xvfb), ikkunamanageri, VNC-palvelin ja noVNC",
+          "Merkitse agenttisilmukan prosessi — komponentti, joka lähettää kuvankaappaukset mallille ja soveltaa computer use -työkalun toimintoja",
+          "Ymmärrä näyttöketju: Xvfb → VNC-palvelin → noVNC (WebSocket-silta) → selain",
+          "Vahvista, että koko GUI ja koko agentti asuvat kontin sisällä — yhteys isäntäkoneeseen vain nimenomaisesti julkaistujen porttien ja mounttien kautta"
+        ],
+        "validate": "Pystyt sanallisesti kuvaamaan, mikä prosessi piirtää näytön, mikä striimaa sen selaimeen ja mikä suorittaa Clauden toiminnot.",
+        "tip": "Tämä kontti on erikoistapaus yleisestä ideasta [[node:sys-agent-sandbox|eristetty agentin hiekkalaatikko]]; pidä luottamusraja mielessä joka vaiheessa."
+      },
+      "sas-docker-computer-use-2": {
+        "title": "Käynnistä Computer Use -kontti",
+        "time": "",
+        "why": "Ensimmäinen käynnistys antaa toimivan 'kuvankaappaus → toiminto' -silmukan ja perustan, johon rajoitukset kiinnitetään. Ensin agentti henkiin, sitten kiristetään.",
+        "instructions": [
+          "Välitä Claude API key ympäristömuuttujalla käynnistyksessä, ei imageen paahdettuna",
+          "Julkaise noVNC-portti paikalliseen (loopback) rajapintaan, ei kaikkiin isäntäkoneen rajapintoihin",
+          "Käynnistä kontti ja odota, että Xvfb, VNC ja noVNC nousevat",
+          "Tarkista lokit: agenttisilmukka käynnistyi ja on valmis vastaanottamaan tehtävän"
+        ],
+        "validate": "Kontti on käynnissä, lokeissa ei ole X/VNC/noVNC-käynnistysvirheitä, ja agenttiprosessi odottaa syötettä.",
+        "tip": "Portin sitominen loopbackiin (ei 0.0.0.0) on halvin tapa välttää demon muuttuminen avoimeksi etätyöpöydäksi."
+      },
+      "sas-docker-computer-use-3": {
+        "title": "Yhdistä työpöytään noVNC:n kautta",
+        "time": "",
+        "why": "noVNC on havainnointi-ikkunasi ja käsin puuttumisen piste. Ilman visuaalista hallintaa et näe, klikkaako agentti väärään kohtaan tai juuttuuko se dialogiin.",
+        "instructions": [
+          "Avaa julkaistu noVNC-osoite selaimessa ja odota virtuaalityöpöydän ilmestymistä",
+          "Vahvista, että näet kursorin ja käyttöliittymän reaktiot — näyttö striimaa reaaliajassa",
+          "Anna agentille yksinkertainen tehtävä (esim. avaa sovellus) ja seuraa toimintoja ruudulla",
+          "Varmista, että voit ottaa hiiren/näppäimistön hallinnan tarvittaessa"
+        ],
+        "validate": "Näet elävän työpöydän selaimessa, Clauden toiminnot näkyvät, ja voit puuttua käsin.",
+        "tip": "Tämä katseluasetelma on [[node:sas-remote-access|hiekkalaatikon etäkäytön]] perusta; älä altista sitä ulospäin ilman erillistä tunnistautumiskerrosta."
+      },
+      "sas-docker-computer-use-4": {
+        "title": "Aseta resurssirajat",
+        "time": "",
+        "why": "Agenttisilmukka voi pyöriä loputtomasti ja GUI-sovellukset voivat synnyttää prosesseja hallitsemattomasti. Rajat muuttavat 'voi kaataa isäntäkoneen' muotoon 'osuu kattoon kontin sisällä'.",
+        "instructions": [
+          "Aseta muisti- ja CPU-rajat kontin käynnistyksessä todellisen tehtäväprofiilin mukaan",
+          "Rajoita prosessien määrää (pids-limit) sulkeaksesi pois fork-pommin työpöydän sisällä",
+          "Aja tyypillinen kuorma ja seuraa kulutusta rajojen alla",
+          "Vahvista, että katon saavuttaminen kaataa kontin, ei isäntäkonetta"
+        ],
+        "validate": "Kontin tarkastus näyttää sovelletut muisti-, CPU- ja pids-rajat, ja kuormituksessa isäntäkone pysyy reagoivana.",
+        "tip": "Viritä rajat todellisen profiilin mukaan: liian tiukat tappavat lailliset GUI-toiminnot, liian löysät eivät suojaa."
+      },
+      "sas-docker-computer-use-5": {
+        "title": "Eristä kontin verkko",
+        "time": "",
+        "why": "Oletuksena kontti pääsee vapaasti internetiin ja isäntäkoneen sisäverkkoon. Epäluotettaville tehtäville tämä on pääasiallinen vuoto- ja hyökkäyskanava — kavenna se minimiin.",
+        "instructions": [
+          "Päätä politiikka: katkaise verkko kokonaan, pidä vain lähtevä liikenne tai rajaa sallittujen listalla",
+          "Laita kontti omaan verkkoonsa ja estä yksityiset aliverkot (RFC1918) sulkeaksesi sisäisen infrastruktuurin",
+          "Säilytä pääsy Anthropicin API:in, jos agentti sitä tarvitsee, avaamatta muuta",
+          "Varmista politiikka kontin sisältä: sallittu toimii, kielletty ei"
+        ],
+        "validate": "Kontin sisältä vain nimenomaisesti sallitut osoitteet ovat tavoitettavissa; isäntäkoneen sisäverkko ja ylimääräinen egress eivät.",
+        "tip": "Rakenna [[node:sas-network-isolation|hiekkalaatikon verkkoeristyksen]] periaatteille: estä oletuksena, avaa valikoiden."
+      },
+      "sas-docker-computer-use-6": {
+        "title": "Muuta demo toistettavaksi järjestelyksi",
+        "time": "",
+        "why": "Kertaluonteinen käynnistys ei sovi testaukseen ja tuotantoon. Tarvitset determinismiä: sama image, sama näytön resoluutio, ei muuttuvaa tilaa eikä ylimääräisiä oikeuksia.",
+        "instructions": [
+          "Kiinnitä image tagilla tai digestillä, jotta ajot ovat vertailukelpoisia",
+          "Aseta kiinteä virtuaalinäytön resoluutio — klikkauskoordinaatit ja kuvankaappaukset riippuvat siitä",
+          "Poista kaikki henkilökohtaisten kansioiden ja salaisuuksien bind-mountit; välitä vain ehdottoman välttämätön",
+          "Kokoa käynnistys yhdeksi toistettavaksi reseptiksi (compose/skripti), jossa ovat vaiheiden 4–5 rajat ja verkkopolitiikka"
+        ],
+        "validate": "Kaksi riippumatonta ajoa samasta reseptistä tuottavat saman ympäristön ja vertailukelpoiset kuvankaappaukset, ilman pääsyä isäntäkoneen dataan.",
+        "tip": "Kyky ohjata virtuaalityöpöytää on tässä konkreettinen ilmentymä [[node:cap-computer|computer use -kyvystä]]; järjestely vain antaa sille turvalliset rajat."
+      }
+    }
+  },
+  "course-sas-vm-vps": {
+    "title": "Pilvi-VM tai oma erillinen kone agentille",
+    "subtitle": "Pysyvä, eristetty koti autonomiselle agentille: milloin VPS voittaa Dockerin, miten valita tarjoaja ja pitää kustannukset kurissa",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Erillinen pilven virtuaalikone (VPS) tai vanha fyysinen tietokone, joka on omistettu vain agentille. Toisin kuin työkoneellasi oleva kontti, tällainen VM on päällä ympäri vuorokauden, on fyysisesti erotettu ympäristöstäsi eikä sillä ole pääsyä siihen. Tämä antaa agentille täyden työpöydän, pysyvän IP-osoitteen, ajastetun automaattikäynnistyksen ja vahinkosäteen, joka rajoittuu yhteen kertakäyttöiseen koneeseen.",
+    "approach": "Etenemme uhkamallista infrastruktuuriin. Ensin päätämme, milloin VM:ää todella tarvitaan kontin sijaan — se ei ole oletus vaan vastaus tiettyihin vaatimuksiin (24/7, GUI, pysyvä IP, fyysinen eristys). Sitten valitsemme tarjoajan ja koon budjetin mukaan, pystytämme eristetyn tilin/projektin (ei yrityspalvelinta!), sijoitamme agentin sinne, liitämme salaisuudet ja hätäkatkaisimen, ja päälle lisäämme automaattipysäytyksen ja budjettihälytykset, jottei unohtunut kone syö rahaa. Jokainen vaihe päättyy tarkistukseen: kone on kertakäyttöinen, sen purkaminen ja uudelleenluonti on rutiinia, ei katastrofi.",
+    "outcomes": [
+      "Tee perusteltu VM-vs-kontti-päätös vaatimuslistan perusteella, ei tottumuksesta",
+      "Pystytä eristetty tarjoajan tili/projekti omalla maksutavalla ja ilman tuotantopääsyä",
+      "Ota agentti käyttöön virtuaalityöpöydällä toistettavan skriptin (snapshot/cloud-init) avulla, valmiina uudelleenluontiin",
+      "Pidä salaisuudet pois levykuvasta ja varmista toimiva hätäkatkaisin välitöntä pysäytystä varten",
+      "Pidä kustannukset kurissa joutokäynnin automaattipysäytyksellä, budjettihälytyksillä ja snapshot+destroy-mallilla"
+    ],
+    "applyIn": [
+      {
+        "title": "Öinen autonominen 24/7-agentti",
+        "description": "Agentti, joka valvoo, kerää tai ajaa selaintehtäviä ajastetusti, kun läppärisi on sammuksissa. VPS antaa jatkuvan käyntiajan ja IP:n; paikallinen kontti ei."
+      },
+      {
+        "title": "Computer-use graafisella käyttöliittymällä",
+        "description": "Tehtävät, joissa agentti tarvitsee oikean työpöydän ja selaimen (klikkaukset, lomakkeet, botin esto). Täysi työpöytä VM:ssä on yksinkertaisempi ja vakaampi kuin headless-kontti."
+      },
+      {
+        "title": "Riskialttiiden toimien tiukka eristys",
+        "description": "Kun agentti koskee rahaan, ulkoisiin rajapintoihin tai luottamattomaan koodiin — kertakäyttöinen VM erillisellä tilillä antaa vahinkosäteeksi yhden koneen, jota ei harmita tuhota."
+      }
+    ],
+    "pitfalls": [
+      "Yrityksen työpalvelimen tai jaetun tilin käyttö, jolla on pääsy sisäisiin järjestelmiin — eristys menetetään täysin, vahinkosäde = koko infrastruktuuri",
+      "Automaattipysäytyksen unohtaminen: tuntiveloitteinen VM pyörii joutokäynnillä kuukausia ja polttaa budjetin; ilman hälytystä saat tietää laskusta",
+      "Salaisuuksien upottaminen levykuvaan tai snapshotiin — ne vuotavat minkä tahansa kopion mukana, eikä hätäkatkaisin enää pelasta vaarantuneelta avaimelta",
+      "VM:n kohtelu lemmikkinä eikä karjana: manuaalinen virittely ilman skriptiä tekee nopeasta uudelleenluonnista mahdotonta häiriön jälkeen",
+      "SSH/RDP:n avaaminen maailmalle salasanalla ja oletusportilla — julkisessa pilvessä oleva kone skannataan boteilla minuuteissa"
+    ],
+    "exercises": [
+      {
+        "question": "Tehtäväsi: agentti kirjautuu sivustolle selaimen kautta kerran tunnissa ja kerää dataa; läppärisi on yöllä sammuksissa. Mitä valitset — Docker läppärillä, VPS ilman GUI:ta vai VPS työpöydällä? Perustele kolmen akselin mukaan: käyntiaika, GUI, eristys.",
+        "hint": "Läppäri sammuksissa → paikallinen kontti ei pysty 24/7. Selainklikkaukset ja botin esto → tarvitaan oikea työpöytä. Jäljelle jää VPS virtuaalityöpöydällä erillisellä tilillä."
+      },
+      {
+        "question": "Suunnittele automaattipysäytys tuntiveloitteiselle VM:lle, jota tarvitaan vain öisiin ajoihin. Mitkä kaksi mekanismia laitat, jottei unohtunut kone maksa mitään?",
+        "hint": "Ensimmäinen — aikataulu (käynnistys ennen tehtäväikkunaa, stop/destroy jälkeen). Toinen — tarjoajan budjettihälytys plus joutokäynnin automaattipysäytys (ei kuormaa N minuuttiin → shutdown)."
+      },
+      {
+        "question": "VM on vaarantunut: agentti ajoi epäilyttävää koodia. Kuvaa toimintajärjestys, kun sinulla on hätäkatkaisin, erillinen tili ja snapshot-skripti.",
+        "hint": "Hätäkatkaisin tappaa agentin/verkon → snapshot forensiikkaa varten (ei salaisuuksia!) → koneen tuhoaminen → salaisuuksien kierrätys varastossa → uudelleenluonti cloud-initistä. Erillinen tili takaa, ettei tuotantoon kosketa."
+      }
+    ],
+    "steps": {
+      "sas-vm-vps-1": {
+        "title": "Päätä: VM vai kontti",
+        "time": "",
+        "why": "VM ei ole oletus. Se on kontti­a kalliimpi ja raskaampi. Ennen kuin maksat 24/7-koneesta, varmista ettei kontti ([[node:sas-docker-computer-use|Docker computer-usea varten]]) todella kata tehtävää. Muuten maksat liikaa eristyksestä, jonka Docker olisi antanut muutenkin.",
+        "instructions": [
+          "Käy läpi 4 vaatimuksen tarkistuslista: (1) tarvitset 24/7-käyntiajan, kun koneesi on sammuksissa; (2) tarvitset täyden GUI:n/työpöydän, et headless-tilaa; (3) tarvitset pysyvän ulkoisen IP:n; (4) tarvitset fyysisen eristyksen ympäristöstäsi.",
+          "Jos 0–1 vaatimusta täyttyy — käytä konttia, älä pystytä VM:ää.",
+          "Jos 2+ täyttyy (erityisesti 24/7 tai GUI) — VM/VPS on perusteltu.",
+          "Kirjaa päätös ja syy: se selittää myöhemmin, miksi maksat koneesta.",
+          "Yhdistä uhkamalli hiekkalaatikon perusteisiin: [[node:sys-agent-sandbox|agentin hiekkalaatikko]]."
+        ],
+        "validate": "Sinulla on kirjallinen vastaus 4 tarkistuslistan kysymykseen ja selkeä syy \"VM koska ___\" tai \"kontti riittää\".",
+        "tip": "Nyrkkisääntö: \"24/7 TAI oikea työpöytä\" → VM. Kaiken muun kattaa yleensä Docker."
+      },
+      "sas-vm-vps-2": {
+        "title": "Valitse tarjoaja ja koko",
+        "time": "",
+        "why": "Tarjoaja ja hintaluokka määräävät kustannuksen, laskutuksen tarkkuuden (tunti vs kuukausi) ja snapshot/API-saatavuuden. Väärä valinta tarkoittaa joko ylimaksua tai ettei automaattipysäytys onnistu.",
+        "instructions": [
+          "Valitse tarjoaja, jolla on tuntiveloitus ja start/stop/destroy-API — perusta tulevalle automaattipysäytykselle.",
+          "Valitse tehtävään minimaalinen koko: headless-agentille riittää pieni instanssi; työpöytä+selain vaatii enemmän RAM:ia (työpöytä ja Chrome ovat ahnaita).",
+          "Tarkista, että tarjoajalla on snapshot/image-API — sitä tarvitaan toistettavaan uudelleenluontiin.",
+          "Arvioi kahden skenaarion kuukausikustannus: 24/7-kone vs aikataulutettu kone. Ero on usein moninkertainen.",
+          "Vältä alue/hintaluokka ilman tuntiveloitusta — muuten automaattipysäytys ei säästä mitään."
+        ],
+        "validate": "Valittu on tarjoaja, jolla on tuntiveloitus, hallinta-API ja snapshotit; sinulla on kustannusarvio 24/7:lle ja aikataululle.",
+        "tip": "Vanha fyysinen kotikone maksaa nolla vuokraa, mutta maksat sähkönä, meluna ja snapshot-API:n puutteena. Kokeiluihin ok; luotettavaan 24/7:ään VPS on ennustettavampi."
+      },
+      "sas-vm-vps-3": {
+        "title": "Pystytä eristetty tili/projekti",
+        "time": "",
+        "why": "Aiheen päävirhe on agentin sijoittaminen yritys- tai jaetulle palvelimelle. Silloin vahinkosäde = koko infrastruktuuri. Erillinen tili/projekti omalla maksutavalla on juuri se eristys, jonka vuoksi VM otetaan.",
+        "instructions": [
+          "Luo erillinen tarjoajan tili (tai eristetty projekti/alitili), joka ei liity tuotantoon eikä sillä ole pääsyä sisäisiin järjestelmiin.",
+          "Liitä erillinen maksutapa rajalla — jottei häiriö vedä mukaansa päätiliäsi.",
+          "Älä anna tälle VM:lle verkkopääsyä yritysverkkoihin, VPN:ään tai sisäisiin rajapintoihin.",
+          "Luo erilliset avaimet/tunnukset vain tälle koneelle — ei tuotantopääsyjen uudelleenkäyttöä.",
+          "Totea selvästi: tämä kone on kertakäyttöinen eikä siihen ole kytketty mitään kriittistä."
+        ],
+        "validate": "VM elää erillisellä tilillä/projektissa, ilman pääsyä sisäisiin järjestelmiin, eristetyllä maksutavalla ja omilla tunnuksilla.",
+        "tip": "Eristystesti: \"jos tämä kone poistettaisiin tai murrettaisiin juuri nyt — mitä menetän?\". Oikea vastaus on vain kone itse."
+      },
+      "sas-vm-vps-4": {
+        "title": "Ota agentti käyttöön toistettavasti",
+        "time": "",
+        "why": "VM:n tulee olla karjaa, ei lemmikki: minkä tahansa voi purkaa ja luoda uudelleen minuuteissa. Se onnistuu vain, jos käyttöönotto on kuvattu skriptillä (cloud-init / provisiointiskripti / golden snapshot), ei käsin koottu.",
+        "instructions": [
+          "Kuvaa agentin ja sen ympäristön (työpöytä, selain, ajoympäristö) asennus cloud-init- tai provisiointiskriptillä — ilman manuaalisia vaiheita.",
+          "Jos GUI tarvitaan — pystytä virtuaalityöpöytä, jossa agentti ja sen selain elävät eristettyinä.",
+          "Ota golden snapshot valmiista koneesta — mutta ilman salaisuuksia sisällä (salaisuudet vaiheessa 5).",
+          "Tarkista toistettavuus: pystytä toinen VM samasta skriptistä/snapshotista ja varmista, että se on identtinen.",
+          "Tuhoa toinen testikone — uudelleenluonnin pitää olla rutiinia."
+        ],
+        "validate": "Skriptistä/snapshotista nousee toimiva VM agentin kanssa ilman manuaalista virittelyä; toinen kopio on identtinen ensimmäisen kanssa.",
+        "tip": "Jos huomaat tekeväsi \"nopean\" manuaalisen SSH-virityksen — pysähdy ja lisää vaihe skriptiin. Muuten et luo sitä uudelleen häiriön jälkeen."
+      },
+      "sas-vm-vps-5": {
+        "title": "Salaisuudet ja hätäkatkaisin",
+        "time": "",
+        "why": "Levykuvassa olevat salaisuudet vuotavat minkä tahansa snapshot-kopion mukana, eikä agenttia ilman hätänappia voi pysäyttää nopeasti. Nämä kaksi mekanismia muuttavat \"vaarallisen autonomisen koneen\" hallituksi.",
+        "instructions": [
+          "Pidä salaisuudet pois levykuvasta ja snapshoteista — syötä ne ajonaikaisesti sääntöjen mukaan: [[node:sas-secrets|agentin salaisuudet ja pääsyt]].",
+          "Aseta hätäkatkaisin: yksi mekanismi, joka tappaa agentin ja/tai sen verkon välittömästi — ks. [[node:sas-snapshots-killswitch|snapshotit ja hätäpysäytys]].",
+          "Lukitse VM-pääsy: SSH/RDP vain avaimella, ei-oletusportti tai pääsy bastionin kautta, saapuvan liikenteen palomuuri.",
+          "Varmista, että hätäkatkaisimen jälkeen agentti ei todella pääse ulkomaailmaan eikä kuluta resursseja.",
+          "Kirjoita häiriön runbook: hätäkatkaisin → snapshot forensiikkaa varten → tuhoa → kierrätä salaisuudet."
+        ],
+        "validate": "Salaisuudet eivät ole levykuvassa; hätäkatkaisin pysäyttää agentin todella sekunneissa; VM-pääsy on lukittu avaimella/palomuurilla.",
+        "tip": "Testaa hätäkatkaisin ennen kuin tarvitset sitä. Paina sitä testi-VM:ssä ja varmista, että agentti on kuollut, ei \"melkein pysähtynyt\"."
+      },
+      "sas-vm-vps-6": {
+        "title": "Automaattipysäytys ja kustannusten hallinta",
+        "time": "",
+        "why": "Unohtunut tuntiveloitteinen VM pyörii joutokäynnillä kuukausia — yleisin tapa polttaa agenttibudjetti. Automaattipysäytys ja hälytykset varmistavat, että joutokäyvä kone joko sammuu itse tai kuulet siitä heti, et laskusta.",
+        "instructions": [
+          "Aseta aikataulu: käynnistys ennen tehtäväikkunaa, stop tai destroy jälkeen — vaiheen 2 tarjoajan API:n kautta.",
+          "Lisää joutokäynnin automaattipysäytys: ei kuormaa N minuuttiin → shutdown.",
+          "Ota käyttöön tarjoajan budjettihälytys kuukausittaisella kynnyssummalla.",
+          "Harvoihin ajoihin käytä snapshot+destroy-mallia: säilytä halpa snapshot, nosta kone vain tehtävän ajaksi.",
+          "Tarkista viikoittain, ettei ole unohtuneita käynnissä olevia instansseja tai vanhentuneita snapshoteja."
+        ],
+        "validate": "VM ei pyöri 24/7 ilman syytä: on aikataulu tai joutokäynnin automaattipysäytys, budjettihälytys on asetettu, eivätkä ylimääräiset instanssit/snapshotit kasaudu.",
+        "tip": "Vertaa laskua: aikataulutettu kone öisiin tehtäviin on usein moninkertaisesti halvempi kuin 24/7. Snapshot maksaa pennejä; joutokäyvä VM ei."
+      }
+    }
+  },
+  "course-sas-least-privilege": {
+    "title": "Vähimmät oikeudet agentille",
+    "subtitle": "Erillinen tili ilman pääkäyttäjää: myönnä vain tarvittavat oikeudet ja kansiot, sulje kaikki muu",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Vähimpien oikeuksien periaate sovellettuna agentin suoritusympäristöön: agentti toimii erillisenä, oikeuksiltaan rajattuna käyttäjänä ilman sudo-/pääkäyttäjäoikeuksia, ilman pääsyä muiden käyttäjien kotihakemistoihin tai henkilökohtaisiin tietoihin, ja tiedostojärjestelmäoikeudet on rajattu täsmälleen niihin kansioihin, jotka tehtävä vaatii. Kaikki, mitä ei ole nimenomaisesti myönnetty, on oletuksena estetty.",
+    "approach": "Etenemme uhkamallista konkreettiseen kokoonpanoon. Ensin hyväksymme, että agentti on murrettavissa (kehotesyöttöhyökkäys, väärä komento, vuotanut avain), sitten rakennamme ympäristön niin, että vaikutussäde on minimaalinen: luomme erillisen käyttäjän, riisumme ylimääräiset oikeudet, liitämme vain työhakemiston, poistamme sudon ja isäntäkoneen salaisuudet, ja lopuksi todistamme auditoinnilla, että ylimääräinen on todella suljettu. Tämä on osa yleistä [[node:sys-agent-sandbox|hiekkalaatikko]]-strategiaa ja pohjautuu siihen, [[node:sas-why-isolation|miksi eristäminen on tärkeää]].",
+    "outcomes": [
+      "Agentti toimii erillisellä UID:llä ilman jäsenyyttä sudo-/wheel-/docker-ryhmissä ja ilman mahdollisuutta korottaa oikeuksia",
+      "Tiedostojärjestelmäpääsy on rajattu sallittuihin tehtäväkansioihin; muiden kotihakemistot ja järjestelmäpolut ovat tavoittamattomissa",
+      "Isäntäkoneen salaisuudet ja avaimet ovat näkymättömiä agenttiprosessille — vain nimenomaisesti välitetyt [[node:sas-secrets|salaisuuksien hallinnan]] kautta",
+      "On toistettava auditointitarkistuslista, joka todistaa ylimääräisten oikeuksien olevan suljettu (ei vain 'näyttää toimivan')",
+      "Kokoonpano on deklaratiivinen ja kestää ympäristön uudelleenluonnin ilman käsisäätöä"
+    ],
+    "applyIn": [
+      {
+        "title": "CI/CD-ajurit agentilla",
+        "description": "Putkessa toimiva agentti suorittaa koodia ja komentoja. Erillinen oikeudeton ajurikäyttäjä, jolla on pääsy vain työn työtilaan, estää syöttöhyökkäystä yltämästä ajurin salaisuuksiin tai naapuritöihin."
+      },
+      {
+        "title": "Pitkäikäinen palvelinagentti",
+        "description": "Itsenäinen agentti VPS:llä käsittelee tehtäviä ympäri vuorokauden. Vähimmät oikeudet muuttavat mahdollisen murron 'rootista palvelimella' 'pääsyksi yhteen työkansioon'."
+      },
+      {
+        "title": "Paikallinen agentti kehittäjän koneella",
+        "description": "Päätteeseen pääsevä agentti ei saa nähdä ~/.ssh-, ~/.aws-kansioita, selainprofiileja tai henkilökohtaisia repoja. Erillinen tili erottaa työhiekkalaatikon henkilökohtaisesta ympäristöstä."
+      }
+    ],
+    "pitfalls": [
+      "Ajaminen pääkäyttäjänä/rootina 'ettei tarvitse säätää oikeuksia' — mitätöi koko tietoturvamallin yhdellä liikkeellä",
+      "Loit erillisen käyttäjän mutta jätit hänet sudo-/docker-ryhmään — korotus rootiksi on triviaalia, eristys on näennäistä",
+      "Liitit koko $HOME:n tai /:n luku-kirjoitusoikeuksin yhden työkansion sijaan — sallituslistasta tuli tosiasiassa 'kaikki'",
+      "Tarkistit vain että 'komennot toimivat', mutta et että kielletty on todella kielletty (ei negatiivisia testejä)",
+      "Isäntäkoneen salaisuudet periytyivät emoprosessin ympäristömuuttujien kautta — tiedostojärjestelmän vähimmät oikeudet pätevät, mutta avaimet vuotavat"
+    ],
+    "exercises": [
+      {
+        "question": "Loit käyttäjän agent ilman sudoa ja liitit /home/agent/work. Mitkä kolme negatiivista tarkistusta todistavat ylimääräisen olevan suljettu?",
+        "hint": "Mieti yrityksiä: 1) sudo / korottaa oikeuksia; 2) lukea toisen $HOME ja järjestelmäsalaisuuksia; 3) kirjoittaa workin ulkopuolelle. Kunkin on palautettava Permission denied, ei onnistumista."
+      },
+      {
+        "question": "Agentin on luettava /etc/app/config.yaml mutta ei kosketettava muuhun /etc:hen. Miten myönnät juuri sen avaamatta koko hakemistoa?",
+        "hint": "Kohdistettu vain-luku-bind-liitos tai ACL tiettyyn tiedostoon hakemistopääsyn sijaan. Tarkkuus tiedostotasolla, ei kansiotasolla."
+      },
+      {
+        "question": "Oikeuksien asettamisen jälkeen huomaat, että agentti näkee yhä tuotannon API-avaimen. Missä vuoto on, jos tiedostojärjestelmä on suljettu oikein?",
+        "hint": "Tarkista prosessin ympäristö (env), periytyneet muuttujat ja jaetut asetukset pääsyssä olevissa kansioissa. Vähimmät oikeudet eivät koske vain tiedostoja."
+      }
+    ],
+    "steps": {
+      "sas-least-privilege-1": {
+        "title": "Kiinnitä uhkamalli ja vähimmäispääsy",
+        "time": "",
+        "why": "Vähimpiä oikeuksia ei voi määrittää tietämättä, mikä on 'vähimmäistarve'. Määritä ensin, mitä vastaan puolustaudut ja mitkä oikeudet tehtävä todella vaatii — muuten myönnät ylimääräistä 'varmuuden vuoksi'.",
+        "instructions": [
+          "Listaa realistiset uhkat: kehotesyöttöhyökkäys, väärä tuhoava komento, vuotanut avain, murrettu riippuvuus",
+          "Rakenna tarkka lista siitä, mitä agentti tarvitsee: tietyt kansiot (rw/ro), binäärit, verkkokohteet, salaisuudet",
+          "Kaikki, mikä ei ole listalla, on oletuksena estetty (default-deny)",
+          "Sido malli yleiseen eristämiseen: katso [[node:sas-why-isolation|miksi eristäminen on tärkeää]]"
+        ],
+        "validate": "On kirjallinen 'tarpeet'-lista (sallituslista) ja nimenomainen 'kaikki muu on estetty'. Ei kohtia kuten 'levypääsy varmuuden vuoksi'.",
+        "tip": "Jos et osaa perustella, miksi agentti tarvitsee tietyn oikeuden, se on merkki ylimääräisestä. Default-deny tekee oletuspäätöksestä turvallisen."
+      },
+      "sas-least-privilege-2": {
+        "title": "Luo erillinen oikeudeton käyttäjä",
+        "time": "",
+        "why": "Erillinen tili on oikeuksien eristämisen perusta. Jaetun/henkilökohtaisen käyttäjän alla agentti perii kaikki pääsysi; erillisellä UID:llä sen oikeudet alkavat nollasta ja kasvavat harkiten.",
+        "instructions": [
+          "Luo palvelukäyttäjä ilman interaktiivista kirjautumista: useradd -r -s /usr/sbin/nologin -M agent",
+          "Älä lisää häntä mihinkään etuoikeutettuun ryhmään (sudo, wheel, docker, adm)",
+          "Anna hänelle minimaalinen tyhjä $HOME kopioimatta vierasta asetusrunkoa",
+          "Aja agenttiprosessi tiukasti tämän käyttäjän nimissä, ei rootina eikä omalla tililläsi"
+        ],
+        "validate": "id agent näyttää vain oman ryhmänsä, ei sudo/wheel/docker. Kirjautuminen agentina on mahdotonta (nologin).",
+        "tip": "Etuliite -r (järjestelmätili) ja nologin poistavat heti kokonaisen riskiluokan: tällainen käyttäjä ei ole tarkoitettu ihmisille."
+      },
+      "sas-least-privilege-3": {
+        "title": "Poista mahdollisuus korottaa oikeuksia",
+        "time": "",
+        "why": "Oikeudeton käyttäjä on hyödytön, jos hän voi tulla rootiksi sudon, setuid-binäärin tai docker-ryhmäjäsenyyden kautta. Oikeuksien korotus on vähimpien oikeuksien pääohitus ja se on suljettava nimenomaisesti.",
+        "instructions": [
+          "Varmista, ettei agentille ole sääntöjä /etc/sudoers:ssa ja sudoers.d:ssä (sudo -l -U agent kieltäydyttävä)",
+          "Tarkista, ettei agentti ole docker-ryhmässä: jäsenyys siinä vastaa rootia isäntäkoneella",
+          "Aja prosessi no-new-privileges-asetuksella (ydinlippu/palveluasetus) estäen setuid-korotuksen",
+          "Rajoita käytettävissä olevia setuid-binäärejä (ping, sudo, su) — agentti ei tarvitse niitä"
+        ],
+        "validate": "sudo -l -U agent → kieltäytyminen. su-/sudo-yritys agenttina → Permission denied. Agentti ei docker/wheel-ryhmässä.",
+        "tip": "no-new-privileges on halpa ja tehokas suoja: edes setuid-binääri ei nosta oikeuksia. systemd:ssä se on NoNewPrivileges=yes."
+      },
+      "sas-least-privilege-4": {
+        "title": "Liitä vain tehtävän työkansiot",
+        "time": "",
+        "why": "Tiedostojärjestelmän vähimpien oikeuksien ydin: agentin tulee nähdä työhakemisto eikä mitään sen ulkopuolelta. Pääsy muiden $HOME:en, järjestelmän juureen tai jaettuihin asetuksiin muuttaa minkä tahansa virheen vuodoksi.",
+        "instructions": [
+          "Myönnä rw-pääsy vain tehtävän työkansioon (esim. /srv/agent/work); kaikki muu on tavoittamattomissa",
+          "Liitä vain-lukuna kaikki, mitä tarvitaan vain lukemiseen (ro bind-liitos tai ro ACL)",
+          "Ole tarkka tiedostotasolla mahdollisuuksien mukaan: kohdistettu /etc/app/config.yaml -liitos koko /etc:n sijaan",
+          "Käsittele verkko-osa erikseen — katso [[node:sas-network-isolation|verkon eristäminen]]"
+        ],
+        "validate": "Muiden käyttäjien /home:n ls ja järjestelmätiedostojen cat agenttina → Permission denied. Kirjoitus on mahdollista vain workin sisällä.",
+        "tip": "Vain-luku oletuksena, luku-kirjoitus vain siellä, missä agentin on kirjoitettava. Ylimääräinen rw-pääsy on yleisin hiljaisen vaurion lähde."
+      },
+      "sas-least-privilege-5": {
+        "title": "Katkaise isäntäkoneen salaisuudet ja ympäristö",
+        "time": "",
+        "why": "Tiedostojen vähimmät oikeudet eivät maksa mitään, jos avaimet vuotavat ympäristömuuttujien tai jaettujen asetusten kautta. Agenttiprosessi ei saa periä isäntäkoneen salaisuuksia — vain nimenomaisesti välitetyt.",
+        "instructions": [
+          "Käynnistä agentti puhtaalla ympäristöllä (env -i tai ClearEnvironment) perimättä emon ympäristöä",
+          "Välitä vain tarvittavat salaisuudet nimenomaisesti ja täsmällisesti — [[node:sas-secrets|salaisuuksien hallinnan]] kautta",
+          "Poista pääsyssä olevista kansioista vieraat ~/.ssh, ~/.aws, .env, tokenit ja CI-tunnukset",
+          "Toimita salaisuudet suojatun kanavan kautta (ACL-suojattu tiedosto/salaisuusvarasto), ei kovakoodattuna env:iin pysyvästi"
+        ],
+        "validate": "env agenttina sisältää vain odotetut muuttujat. Haku pääsyssä olevista kansioista ei löydä isäntäkoneen avaimia tai tokeneita.",
+        "tip": "Periytynyt env on näkymättömin aukko: tiedostojärjestelmä on suljettu, mutta $AWS_SECRET_ACCESS_KEY on yhä prosessissa. Aloita aina tyhjästä ympäristöstä."
+      },
+      "sas-least-privilege-6": {
+        "title": "Todista auditoinnilla, että ylimääräinen on suljettu",
+        "time": "",
+        "why": "'Komennot toimivat' ei tarkoita 'ylimääräinen on kielletty'. Ilman negatiivisia testejä tarkistit vain onnellisen polun. Auditointi muuttaa luottamuksen todisteeksi ja löytää aukot ennen hyökkääjää.",
+        "instructions": [
+          "Aja negatiiviset tarkistukset: yritykset sudoon, toisen $HOME:n lukemiseen, workin ulkopuolelle kirjoittamiseen, salaisuuksiin pääsyyn — kaikkien on epäonnistuttava Permission denied -virheeseen",
+          "Tallenna tarkistuslista toistettavana skriptinä ajettavaksi uudelleen jokaisen ympäristön uudelleenluonnin jälkeen",
+          "Vertaa todellisia oikeuksia vaiheen 1 sallituslistaan: mitään ylimääräistä ei livahtanut läpi",
+          "Lisää auditointi hiekkalaatikon säännölliseen tarkistukseen — katso [[node:sys-agent-sandbox|agentin hiekkalaatikko]]"
+        ],
+        "validate": "Jokainen kielletty toiminto palauttaa kieltäytymisen (ei onnistumista, ei tyhjää tulosta). Auditointiskripti menee läpi kokonaan ja on toistettava.",
+        "tip": "Säilytä auditointi koodina ympäristön asetusten vieressä: hiekkalaatikko uudelleenluotu — tarkistus ajettu uudelleen. Tietoturva, jota ei tarkisteta, rapistuu hiljaa."
+      }
+    }
+  },
+  "course-sas-network-isolation": {
+    "title": "Verkkoeristys ja sallittujen lista",
+    "subtitle": "Lukitse agentti verkkoon deny-by-default-periaatteella: salli vain se, mitä tehtävä tarvitsee",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Verkkoeristys on hallintaa siitä, mihin agentin kone pääsee verkossa. Perusperiaate on deny-by-default: kaikki lähtevä liikenne on estetty, ja sallittujen lista (allowlist) avaa vain ne verkkotunnukset ja portit, joita tehtävä tarvitsee. Erikseen estetään lähiverkko (RFC1918: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) ja pilven metadata-päätepiste 169.254.169.254, jotta agentti ei voi noutaa instanssin tunnuksia eikä päästä sisäisiin palveluihin.",
+    "approach": "Etene täydestä estosta täsmällisiin sallintoihin. Sulje ensin kaikki lähtevä liikenne, lisää sitten sallittujen listalle vähimmäismäärä verkkotunnuksia agentin tehtävää varten, leikkaa erikseen yksityiset alueet ja metadata, varmista että tehtävä yhä toimii, ja lukitse turvallisuus-vs-toiminnallisuus-tasapaino. Jokainen sallinta on tietoinen päätös, ei 'varmuuden vuoksi'.",
+    "outcomes": [
+      "Ymmärrät, miksi avoin internet agentille on valmis kanava tietojen vuotamiseen ja SSRF-hyökkäyksiin",
+      "Osaat rakentaa deny-by-default + verkkotunnusten allowlist -käytännön palomuuri- tai välityspalvelintasolla",
+      "Estät pääsyn lähiverkkoon (RFC1918) ja pilven metadataan 169.254.169.254",
+      "Varmistat, että allowlist todella toimii: sallittu liikenne läpäisee, muu kaatuu",
+      "Pidät tasapainon — eristys ei riko agentin laillista tehtävää"
+    ],
+    "applyIn": [
+      {
+        "title": "Agentti, jolla on internet-yhteys",
+        "description": "Agentti ottaa yhteyttä ulkoisiin API:hin ja sivustoihin. Ilman allowlistia prompt injectionilla vaarannettu agentti vuotaa tietoa mihin tahansa osoitteeseen. Allowlist jättää sille vain API-verkkotunnukset."
+      },
+      {
+        "title": "Pilviagentti metadatan vieressä",
+        "description": "EC2/GCE:ssä agentti on askeleen päässä osoitteesta 169.254.169.254 — instanssin IAM-tunnukset. Metadata-päätepisteen esto sulkee klassisen eskalointipolun."
+      },
+      {
+        "title": "Agentti sisäverkon vieressä",
+        "description": "Yritys-VPC:ssä oleva agentti voi tavoittaa sisäiset tietokannat ja hallintapaneelit. RFC1918-alueiden esto katkaisee sivuttaisliikkeen vaarantumistilanteessa."
+      }
+    ],
+    "pitfalls": [
+      "Lähtevän liikenteen jättäminen auki 'ettei se haittaa' — juuri se on pääasiallinen tietovuotokanava",
+      "Verkkotunnusten esto mutta yksityisten IP:iden ja metadatan unohtaminen — agentti tavoittaa 169.254.169.254 suoraan",
+      "Jokerimerkkiverkkotunnusten salliminen (*.com, laajat CDN:t) — avaa internetin käytännössä takaisin",
+      "Käytännön testaamatta jättäminen: luulet eston toimivan, mutta DNS-selvitys tai välityspalvelin ohittaa sen",
+      "Liiallinen tiukkuus ja tehtävän tarvitsemien verkkotunnusten estäminen — agentti kaatuu hiljaa ja eristys perutaan kokonaan"
+    ],
+    "exercises": [
+      {
+        "question": "Agentti tarvitsee vain api.example.com. Minkä oletusverkkokäytännön asetat ja mitä lisäät sallittujen listalle?",
+        "hint": "Aloita deny-all-säännöllä koko lähtevälle liikenteelle, sitten yksi sallintasääntö tietylle verkkotunnukselle ja portille 443. Mieti DNS:ää."
+      },
+      {
+        "question": "Miksi 'pahojen' verkkotunnusten estäminen denylistillä ei riitä, ja miksi deny-by-default on periaatteessa parempi?",
+        "hint": "Denylist luettelee tunnetun pahan — mutta hyökkääjä käyttää uutta osoitetta. Mitä tapahtuu tuntemattomalle verkkotunnukselle kummassakin mallissa?"
+      },
+      {
+        "question": "Miten varmistat, että 169.254.169.254:n ja RFC1918:n esto todella toimii agentin hiekkalaatikon sisältä?",
+        "hint": "curl/pyyntö metadata-päätepisteeseen ja mielivaltaiseen 10.x-osoitteeseen pitäisi aikakatkaista tai hylätä, kun taas sallittu verkkotunnus vastaa."
+      }
+    ],
+    "steps": {
+      "sas-network-isolation-1": {
+        "title": "Ymmärrä, miksi verkkoa ylipäätään rajoitetaan",
+        "time": "",
+        "why": "Avoin internet agentille on kaksisuuntainen kanava: tieto voi vuotaa ulos, ja ulkoinen sisältö (prompt injectionin kautta) voi ohjata agenttia. Ilman uhkamallia eristyksestä tulee satunnainen sääntöjoukko.",
+        "instructions": [
+          "Muotoile kaksi uhkaa: tietojen eksfiltraatio (agentti lähettää salaisuuksia vieraaseen osoitteeseen) ja SSRF/pääsy sisäverkkoon",
+          "Yhdistä tämä siihen, että sisällön injektio voi saada agentin tekemään mielivaltaisen verkkopyynnön — katso [[node:b-prompt-injection|prompt injection]]",
+          "Kiinnitä tavoite: eristys kaventaa hyökkäyspintaa, ei riko tehtävää",
+          "Nojaa laajempaan minimointiperiaatteeseen — katso [[node:sas-least-privilege|least privilege]] ja [[node:sas-why-isolation|miksi eristys]]"
+        ],
+        "validate": "Osaat selittää kahdella lauseella, minkä haitan verkon allowlist tarkalleen estää agentiltasi.",
+        "tip": "Verkko on oikeus kuten mikä tahansa muu. Sovella siihen samaa vähimmäispääsyn logiikkaa kuin tiedostoihin ja tokeneihin."
+      },
+      "sas-network-isolation-2": {
+        "title": "Ota käyttöön deny-by-default lähtevälle liikenteelle",
+        "time": "",
+        "why": "Denylist (pahan estäminen) häviää määritelmänsä mukaan: hyökkääjä valitsee uuden osoitteen. Deny-by-default sulkee kaiken tuntemattoman, ja jokainen poikkeus on tietoinen valinta.",
+        "instructions": [
+          "Aseta käytäntö: kaikki agentin hiekkalaatikosta lähtevä liikenne on oletuksena estetty",
+          "Toteuta se kontti-/VM-palomuuritasolla tai pakotetun lähtevän välityspalvelimen kautta, jota agentti ei voi ohittaa",
+          "Varmista, ettei ole reittiä välityspalvelimen ohi (agentilla ei saa olla suoraa raakasokettia ulospäin)",
+          "Älä lisää vielä mitään sallittujen listalle — tässä vaiheessa verkon on oltava täysin suljettu"
+        ],
+        "validate": "Mikä tahansa agentin lähtevä pyyntö kaatuu nyt (aikakatkaisu tai connection refused) — perustaso on asetettu.",
+        "tip": "Lähtevä välityspalvelin voittaa pelkän palomuurin: se lokittaa yritykset ja suodattaa verkkotunnuksen mukaan, ei vain IP:n."
+      },
+      "sas-network-isolation-3": {
+        "title": "Kokoa vähimmäisverkkotunnusten allowlist tehtävää varten",
+        "time": "",
+        "why": "Allowlistin on katettava tarkalleen se, mitä agentin tehtävä tarvitsee, eikä tavuakaan enempää. Ylimääräinen verkkotunnus on mahdollinen vuotokanava; puuttuva on rikkinäinen tehtävä.",
+        "instructions": [
+          "Listaa verkkotunnukset, joita ilman tehtävä ei toimi: kohde-API:t, pakolliset palvelut, tietolähteet",
+          "Lisää täydet FQDN:t portin kanssa (api.example.com:443), vältä jokerimerkkejä kuten *.com ja laajoja CDN:iä",
+          "Huomioi DNS: salli joko vain näiden nimien selvitys tai sido allowlist niiden IP:hin",
+          "Kirjaa jokaiselle verkkotunnukselle, miksi sitä tarvitaan — perustelematon merkintä poistetaan"
+        ],
+        "validate": "Jokaisella allowlist-merkinnällä on konkreettinen syy; ei yhtään jokerimerkkiä eikä 'varmuuden vuoksi' -kohtaa.",
+        "tip": "Jos verkkotunnusta tarvitaan vain skenaarion yhdessä vaiheessa, avaa se dynaamisesti sille vaiheelle, ei koko istunnolle."
+      },
+      "sas-network-isolation-4": {
+        "title": "Estä lähiverkko ja metadata",
+        "time": "",
+        "why": "Vaikka verkkotunnusten allowlist olisi käytössä, agentti voi tavoittaa yksityiset alueet IP:llä tai pilven metadatan — polku instanssin IAM-tunnuksiin ja sisäisiin palveluihin. Leikkaa nämä osoitteet pois nimenomaisesti.",
+        "instructions": [
+          "Estä RFC1918-yksityisalueet: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16",
+          "Estä pilven metadata: 169.254.169.254 (ja koko link-local 169.254.0.0/16)",
+          "Estä loopbackin karkaaminen hiekkalaatikosta ja IPv6-vastineet (fc00::/7, fe80::/10)",
+          "Varmista, että esto pitää myös silloin, kun agentti yhdistää raa'alla IP:llä eikä nimellä"
+        ],
+        "validate": "Pyyntö osoitteeseen 169.254.169.254 ja mihin tahansa 10.x/192.168.x-osoitteeseen hylätään, vaikka sallittu verkkotunnus selviäisi sellaiseksi IP:ksi.",
+        "tip": "Tarkista rebinding: sallitun listan verkkotunnus ei saa osoittaa DNS:n kautta yksityiseen IP:hen — muuten esto ohitetaan."
+      },
+      "sas-network-isolation-5": {
+        "title": "Varmista, että käytäntö todella toimii",
+        "time": "",
+        "why": "Testaamaton käytäntö on vaarallisempi kuin ei käytäntöä lainkaan: luulet olevasi suojattu, mutta DNS-selvitys, välityspalvelimen ohitus tai unohdettu sääntö avaa aukon. Eristys lasketaan vasta varmistuksen jälkeen.",
+        "instructions": [
+          "Tee agentin hiekkalaatikon sisältä pyyntö sallittuun verkkotunnukseen — sen on läpäistävä",
+          "Tee pyyntö mielivaltaiseen ulkoiseen verkkotunnukseen, joka ei ole allowlistilla — sen on kaaduttava",
+          "Varmista metadatan ja yksityisen IP:n esto yhdistämällä osoitteeseen suoraan",
+          "Käy läpi lähtevän välityspalvelimen loki: näkyvätkö hylätyt yritykset ja onko vuotoa välityspalvelimen ohi"
+        ],
+        "validate": "Sallittu liikenne läpäisee, kaikki muu (mukaan lukien metadata ja RFC1918) on luotettavasti estetty — testein vahvistettuna, ei oletuksena.",
+        "tip": "Automatisoi nämä tarkistukset hiekkalaatikon testiksi — katso [[node:sys-agent-sandbox|agent sandbox]] — jotta käytännön regressiot havaitaan heti."
+      },
+      "sas-network-isolation-6": {
+        "title": "Tasapainota eristys agentin tehtävän kanssa",
+        "time": "",
+        "why": "Liian tiukka käytäntö rikkoo tehtävän ja tiimi perii eristyksen kokonaan — pahempi kuin maltillinen mutta elävä käytäntö. Tavoite on vähimmäispääsy, jolla tehtävä yhä toimii.",
+        "instructions": [
+          "Aja todellinen agenttiskenaario käytännön ollessa päällä ja kerää kaikki verkkoeväykset",
+          "Käsittele jokainen eväys: tarvittava verkkotunnus (lisää allowlistille perusteluineen) vai harhautunut yritys (pidä estettynä)",
+          "Älä laajenna allowlistia jokerimerkillä mukavuuden vuoksi — lisää täsmällisesti",
+          "Dokumentoi lopullinen käytäntö ja tarkista se uudelleen agentin tehtävän muuttuessa — katso [[node:sas-least-privilege|least privilege]]"
+        ],
+        "validate": "Agentti suorittaa tehtävänsä täysin, samalla kun allowlist pysyy vähimmäisenä ja jokainen sallinta on perusteltu.",
+        "tip": "Kohtele allowlistia kuin riippuvuutta: tehtävän muuttuessa verkkotunnusten joukko muuttuu sen mukana eikä kasva ikuisesti."
+      }
+    }
+  },
+  "course-sas-secrets": {
+    "title": "Kertakäyttöiset tilit ja salaisuudet agentille",
+    "subtitle": "Anna agentille omat vähimmäisoikeuksiset tilit, peruutettavat avaimet ja puhdas salaisuuksien toimitus — ei koskaan salasanojasi",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Käytäntö, jossa agentille annetaan oikeiden salasanojesi sijaan erilliset kertakäyttöiset tai rajatut tilit ja avaimet vähimmäisoikeuksin. Salaisuudet toimitetaan ympäristömuuttujien tai salaisuuksien hallinnan kautta — ei käsin kirjoittaen eikä ohjeen tekstiin tallentaen. Jokainen avain on eristetty, sillä on elinikä, ja se voidaan perua erikseen koskematta pääkäyttötunnuksiisi.",
+    "approach": "Etenemme uhkamallista käytäntöön: ensin erotamme agentin identiteetin omastasi (oma palvelutili), sitten karsimme sen oikeudet ehdottomaan minimiin, sitten asetamme puhtaan salaisuuksien toimituksen (ympäristö/salaisuuksien hallinta, ei koodi tai historia), lisäämme eliniän ja kierron, ja päätämme valmiiseen peruutus- ja vuotoreagointisuunnitelmaan. Jokainen vaihe on itsenäinen tekninen kontrolli, joka pitää, vaikka muut pettäisivät.",
+    "outcomes": [
+      "Luoda agentille omia palvelutilejä, jotka eivät ole sidottu henkilökohtaisiin tileihisi",
+      "Karsia avaimen oikeudet minimiin (laajuus, vain luku, resurssi- ja IP-rajaukset)",
+      "Toimittaa salaisuudet ympäristön/salaisuuksien hallinnan kautta niin, etteivät ne päädy koodiin, kuvaan tai historiaan",
+      "Asettaa avaimen elinikä ja säännöllinen kierto ilman tehtävien katkoja",
+      "Perua vaarantunut avain minuuteissa ja käydä häiriö läpi tarkistuslistan mukaan"
+    ],
+    "applyIn": [
+      {
+        "title": "Agentti, jolla on pääsy ulkoiseen rajapintaan",
+        "description": "Agentti kutsuu GitHub-/maksu-/CRM-rajapintaa: anna hienojakoinen avain vain tarvittaviin repoihin/päätepisteisiin, vain luku siellä missä kirjoitusta ei tarvita."
+      },
+      {
+        "title": "Palveluun kirjautumisen automatisointi",
+        "description": "Agentin täytyy kirjautua SaaS-palveluun: luo erillinen palvelutili rajatulla roolilla sen sijaan, että jakaisit kirjautumisesi ja 2FA:n."
+      },
+      {
+        "title": "CI/CD ja taustatyöt",
+        "description": "Agentti ajetaan putkessa: salaisuus tulee salaisuuksien hallinnasta ajurin ympäristöön työn ajaksi eikä jää lokeihin tai artefakteihin."
+      }
+    ],
+    "pitfalls": [
+      "Henkilökohtaisen salasanasi tai admin-avaimen antaminen agentille ”varmuuden vuoksi” — agentin vaarantuminen vaarantaa koko tilin",
+      "Salaisuuden upottaminen ohjeen tekstiin, koodiin, Docker-kuvaan tai committiin — se jää ikuisesti git-historiaan ja kuvan kerroksiin",
+      "Liikaoikeutetun avaimen antaminen (kirjoitus/admin luvun sijaan) tai ilman resurssirajausta — räjäyttää vaikutussäteen vuodossa",
+      "Eliniän asettamatta jättäminen ja kierron laiminlyönti — ikuinen avain elää vuosia ja vuotaa huomaamatta",
+      "Valmiin peruutussuunnitelman puute — vuodossa kuluu tunteja sen selvittämiseen, missä avainta ylipäätään käytetään"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on admin-oikeuksinen salaisuus, jolla agentti lukee yhtä taulua. Mitkä kolme muutosta teet ensin?",
+        "hint": "Ajattele akseleittain: oikeustaso (laajuus), resurssisidonta, elinikä. Vähimmäisoikeudet — ks. [[node:sas-least-privilege|vähimmäisoikeudet]]."
+      },
+      {
+        "question": "Agentin avain päätyi vahingossa julkiseen lokiin. Kuvaa toimintasi ensimmäisten 10 minuutin aikana.",
+        "hint": "Ensin peruutus, sitten käytön arviointi, sitten kierto ja läpikäynti. Ympäristön eristys — [[node:sys-agent-sandbox|agentin hiekkalaatikko]], hätäpysäytys — [[node:sas-snapshots-killswitch|tilannekuvat ja hätäkatkaisin]]."
+      },
+      {
+        "question": "Miten toimitat salaisuuden agentin konttiin niin, ettei se päädy kuvaan eikä näy `docker history`-listassa?",
+        "hint": "Käännösaika vastaan ajoaika. Salaisuus vain ympäristöön/salaisuuksien hallintaan ajossa, ei kuvan kerrokseen."
+      }
+    ],
+    "steps": {
+      "sas-secrets-1": {
+        "title": "Erota agentin identiteetti omastasi",
+        "time": "",
+        "why": "Jos agentti toimii henkilökohtaisella tililläsi, sen mikä tahansa virhe tai vaarantuminen osuu pääkäyttöösi. Oma palveluidentiteetti tuo eristyksen ja itsenäisen peruutuksen.",
+        "instructions": [
+          "Luo erillinen palvelutili (palvelutili / konetunnus) agenttia tai tehtävää kohti sen sijaan, että käyttäisit omaa kirjautumistasi",
+          "Älä koskaan anna agentille salasanaasi äläkä pyydä sitä ”kirjautumaan salasanallasi” — se on suora antikuvio",
+          "Sido tili selkeään omistajaan ja tarkoitukseen, jotta se on helppo löytää ja perua",
+          "Eristä suoritus [[node:sys-agent-sandbox|agentin hiekkalaatikossa]], jottei ympäristöllä ole pääsyä henkilökohtaisiin istuntoihisi ja välimuisteihisi"
+        ],
+        "validate": "Palvelussa on erillinen agenttitili; henkilökohtainen tilisi ei esiinny missään agentin asetuksissa.",
+        "tip": "Nimeä palvelutilit muotoon `agent-<tehtävä>-<ympäristö>` — häiriössä näet heti, mikä perutaan."
+      },
+      "sas-secrets-2": {
+        "title": "Karsi oikeudet minimiin",
+        "time": "",
+        "why": "Vuodon vaikutussäde on yhtä suuri kuin avaimen oikeudet. Vain luku ja kapea laajuus muuttavat vakavan vuodon vähäpätöiseksi.",
+        "instructions": [
+          "Anna hienojakoinen avain vain niihin resursseihin ja toimiin, joita tehtävä todella tarvitsee",
+          "Käytä vain lukua kaikkialla missä kirjoitusta ei tarvita; kirjoitus/admin vain tiettyyn toimeen",
+          "Rajaa avain resurssiin (tietty repo/projekti/taulu) ja mahdollisuuksien mukaan IP-/verkkoalueeseen",
+          "Tarkista periaate kohdista [[node:sas-least-privilege|vähimmäisoikeudet]] ja [[node:m-security|tietoturva]] ennen antamista"
+        ],
+        "validate": "Avain ei voi tehdä mitään tehtävän ulkopuolista: kirjoitus- tai toiseen resurssiin pääsy -yritys hylätään.",
+        "tip": "Testaa oikeudet käänteisesti: yritä avaimella sitä, mitä sen ei pidä pystyä — esto vahvistaa oikean laajuuden."
+      },
+      "sas-secrets-3": {
+        "title": "Toimita salaisuus puhtaasti, jälkiä jättämättä",
+        "time": "",
+        "why": "Salaisuus koodissa, kuvassa tai git-historiassa jää sinne ikuisesti ja vuotaa repon mukana. Puhdas toimitus ympäristön kautta katkaisee tämän siteen.",
+        "instructions": [
+          "Välitä salaisuus ympäristömuuttujien tai salaisuuksien hallinnan kautta ajossa, ei käsin kirjoittaen eikä ohjeen tekstissä",
+          "Älä koskaan committaa salaisuuksia: pidä ne repon ulkopuolella, lisää kuviot `.gitignore`-tiedostoon ja ota käyttöön salaisuuksien skannaus",
+          "Älä paista salaisuutta Docker-kuvaan käännösaikana — se jää kerroksiin ja `docker history`-listaan; käytä ajoajan ympäristöä tai liitettyjä salaisuuksia",
+          "Sulje salaisuudet pois agentin lokeista, jäljistä ja virheviesteistä"
+        ],
+        "validate": "`git log -p` ja kuvan `docker history` eivät sisällä salaisuutta; agentti saa sen vain ympäristöstä ajossa.",
+        "tip": "Lisää pre-commit-koukku salaisuuksien tunnistimella — se nappaa avaimen ennen kuin se päätyy historiaan."
+      },
+      "sas-secrets-4": {
+        "title": "Aseta elinikä ja kierto",
+        "time": "",
+        "why": "Ikuinen avain elää vuosia ja vuotaa huomaamatta. Lyhyt TTL ja säännöllinen kierto kaventavat hyökkäysikkunaa jo itsessään.",
+        "instructions": [
+          "Anna jokaiselle avaimelle elinikä (TTL): kertatehtävälle tehtävän ajaksi, jatkuville lyhyt automaattisella uusinnalla",
+          "Käytä mahdollisuuksien mukaan lyhytikäisiä, pyynnöstä annettavia avaimia staattisten pitkäikäisten sijaan",
+          "Aseta säännöllinen kierto niin, että vanha avain poistuu kierrosta ilman katkoa (uuden/vanhan limittäisyys)",
+          "Pidä rekisteriä aktiivisista agenttiavaimista: missä annettu, mitkä oikeudet, milloin vanhenee"
+        ],
+        "validate": "Jokaisella avaimella on vanhenemispäivä; kierto onnistuu tehtäviä kaatamatta, ja vanha avain hylätään kierron jälkeen.",
+        "tip": "Sido avaimen vanheneminen tehtävän kestoon: kerta-agentti saa avaimen, joka kuolee itse tehtävän loppuun mennessä."
+      },
+      "sas-secrets-5": {
+        "title": "Valmistele peruutus ja hätäpysäytys",
+        "time": "",
+        "why": "Häiriössä minuutit ratkaisevat. Etukäteen tiedetty tapa perua avain ja pysäyttää agentti muuttaa paniikin menettelyksi.",
+        "instructions": [
+          "Tarkista etukäteen, missä ja miten kukin avain perutaan — peruutuksen pitää kestää sekunteja, ei dokumentaation etsintää",
+          "Sido kukin avain käyttäjäänsä, jotta peruutuksessa tiedät heti, mikä tehtävä pysähtyy",
+          "Valmistele agentin hätäpysäytys [[node:sas-snapshots-killswitch|tilannekuvien ja hätäkatkaisimen]] kautta aktiivisen vaarantumisen varalle",
+          "Tee peruutusharjoitus: peru testiavain ja varmista, että agentti menettää pääsyn oikein"
+        ],
+        "validate": "Testiperuutus on tehty: sen jälkeen agentti saa pääsyn eston, ja tiedät, mihin tehtävään se vaikutti.",
+        "tip": "Pidä yksi komento/painike kunkin avaimen peruutukseen käden ulottuvilla — häiriössä sitä on liian myöhä etsiä."
+      },
+      "sas-secrets-6": {
+        "title": "Reagoi vuotoon tarkistuslistan mukaan",
+        "time": "",
+        "why": "Ilman harjoiteltua suunnitelmaa vuoto muuttuu tuntien kaaokseksi. Tarkistuslista asettaa järjestyksen: ensin pysäytä, sitten tutki.",
+        "instructions": [
+          "Vaihe 1 — peru vaarantunut avain heti ja pysäytä agentti odottamatta täyttä läpikäyntiä",
+          "Vaihe 2 — arvioi, mitä avain saattoi tehdä vuotoikkunassa: tarkista pääsylokit sen oikeuksia ja resursseja vasten",
+          "Vaihe 3 — anna uusi vähimmäisoikeuksinen avain ja selvitä, miten vanha vuoti (koodi, loki, kuva, historia)",
+          "Vaihe 4 — sulje perussyy ja kirjaa häiriö, jotta sama vuotoreitti ei toistu",
+          "Tarkista menettely yleisiä [[node:m-security|tietoturva]]-sääntöjä vasten"
+        ],
+        "validate": "Harjoitushäiriössä kaikki vaiheet on tehty: avain peruttu, käyttö arvioitu, uusi annettu, perussyy suljettu ja dokumentoitu.",
+        "tip": "Pidä jokaista vuotanutta avainta käytettynä: oleta pahin ja tarkista lokit sen sijaan, että toivoisit ”ei ehditty”."
+      }
+    }
+  },
+  "course-sas-snapshots-killswitch": {
+    "title": "Tilannevedokset, palautus ja hätäkatkaisu",
+    "subtitle": "Peruutettavuus ja hätäpysäytys itsenäiselle agentille: puhtaan tilan vedos, nopea palautus, välitön hätäkatkaisu ja kulutusrajat",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Peruutettavuuden ja hallinnan kerros itsenäisen agentin ylle. Tilannevedos tallentaa ympäristön puhtaan tilan ennen ajoa, palautus tuo sen sinne sekunneissa, hätäkatkaisu lopettaa agentin ja kaikki sen aliprosessit välittömästi, ja kulutus- sekä aikarajat takaavat, ettei silmukka karkaa käsistä tai polta budjettia. Yhdessä ne muuttavat minkä tahansa tapahtuman 'peruuttamattomasta katastrofista' rutiinipalautukseksi tunnettuun pisteeseen.",
+    "approach": "Rakennamme kolme itsenäistä mekanismia ja varmistamme kunkin erikseen. Ensin otetaan puhtaan tilan vedos (tiedostojärjestelmä + asetukset + tietokanta), sitten opitaan palautumaan siihen sekunneissa, sitten lisätään hätäkatkaisu, joka purkaa agentin prosessin jättämättä orpoja aliprosesseja, lisätään kovat rajat tokeneille/rahalle/ajalle automaattisella pysäytyksellä, ja lopuksi harjoitellaan palautumista säännöllisesti — koska testaamatonta varmuuskopiota ei ole olemassa. Jokaisen mekanismin on lauettava ilman ihmistä ja nopeammin kuin agentti ehtii tehdä vahinkoa.",
+    "outcomes": [
+      "Otat toistettavan puhtaan tilan vedoksen ympäristöstä ja tiedät tarkalleen mitä siihen kuuluu (tiedostojärjestelmä, tietokanta, salaisuudet, agentin tila)",
+      "Palautat ympäristön vedokseen sekunneissa ja varmistat palautuksen eheyden automaattisella tarkistuksella",
+      "Toteutat hätäkatkaisun, joka pysäyttää agentin välittömästi koko aliprosessipuun kanssa",
+      "Määrität rajat tokeneille, rahalle ja seinäkellolle automaattisella pysäytyksellä ylityksessä",
+      "Pidät säännöllistä palautusharjoitusta ja todistat, että palautus todella toimii"
+    ],
+    "applyIn": [
+      {
+        "title": "Ajastettu itsenäinen agentti",
+        "description": "Cron-agentti, joka muokkaa koodia, migratoi dataa tai lähettää ilmoituksia valvomatta yöllä. Ajoa edeltävä vedos ja aikarajan hätäkatkaisu muuttavat hiljaisen yövian kivuttomaksi aamupalautukseksi."
+      },
+      {
+        "title": "Tuhoavien operaatioiden kokeilut",
+        "description": "Agentti testaa tietokantamigraatioita, massamuokkauksia tai sivuvaikutuksellisia komentoja. Palautus vedokseen jokaisen iteraation jälkeen antaa puhtaan penkin ja poistaa ajojen välille kertyvän roskan."
+      },
+      {
+        "title": "Budjetin hallinta pitkissä tehtävissä",
+        "description": "Pitkä päättelysilmukka voi jäädä luuppiin ja polttaa tokeneita. Kova kulutusraja automaattipysäytyksellä nappaa ylikulutuksen ennen kuin API-lasku muuttuu ongelmaksi."
+      }
+    ],
+    "pitfalls": [
+      "Vedos sisältää 'likaisen' tilan: committaamattomat muutokset, väliaikaistiedostot, välimuistit — palautus tuo väärään paikkaan. Ota vedos vain todistetusti puhtaasta pisteestä",
+      "Hätäkatkaisu tappaa emoprosessin mutta jättää orvot aliprosessit ja yhteydet — agentti on muodollisesti 'pysäytetty', mutta työ jatkuu. Pysäytä koko prosessipuu",
+      "Kulutusraja tarkistetaan jälkikäteen, ei joka askeleella — laukeamishetkellä budjetti on jo ylitetty. Laske tokenit inkrementaalisesti ja pysäytä kynnyksellä",
+      "Varmuuskopio on, mutta palautusta ei ole koskaan testattu — tapahtumahetkellä vedos osoittautuu vialliseksi tai puutteelliseksi. Testaamatonta palautusta ei ole olemassa",
+      "Vedos ei sisällä ulkoista tilaa (ulkoinen tietokanta, jonot, pilvitiedostot) — tiedostojärjestelmän palautus on, mutta data on epäjohdonmukainen. Kiinnitä selkeästi peruutettavuuden raja"
+    ],
+    "exercises": [
+      {
+        "question": "Hätäkatkaisusi lähettää SIGTERM-signaalin agentin prosessille, mutta laukeamisen jälkeen agentti kirjoittaa tietokantaan vielä minuutin. Miksi ja miten korjaat?",
+        "hint": "Mieti aliprosesseja ja prosessiryhmiä: agentti saattoi synnyttää aliprosesseja tai taustatehtäviä, joihin emolle lähetetty SIGTERM ei vaikuta. Katso prosessiryhmän / koko kontin suuntaan."
+      },
+      {
+        "question": "Vedos on 8 Gt ja sen tekeminen kestää 3 minuuttia. Miten otat tiheitä vedoksia ennen jokaista agentin iteraatiota ilman tätä viivettä?",
+        "hint": "Täysi vedos joka kerta on antipatterni. Mieti copy-on-write, inkrementaaliset/differentiaaliset vedokset ja tiedostojärjestelmä- tai konttitason vedokset kaiken kopioinnin sijaan."
+      },
+      {
+        "question": "10 dollarin raja on asetettu, mutta yhdessä ajossa agentti kulutti 40 dollaria. Missä on kuilu rajan ja todellisuuden välillä?",
+        "hint": "Milloin raja tarkalleen tarkistetaan? Jos vain lopussa tai joka N minuutti, agentti ehtii ylikuluttaa tarkistusten välissä. Tarvitaan inkrementaalinen tarkistus joka mallikutsulla ja kova pysäytys."
+      }
+    ],
+    "steps": {
+      "sas-snapshots-killswitch-1": {
+        "title": "Ympäristön puhtaan tilan vedos",
+        "time": "",
+        "why": "Palautus on järkevä vain luotettavan paluupisteen kanssa. Vedoksen on tallennettava tunnetusti puhdas, toistettava tila, muuten palaudut roskaan. Se on koko peruutettavuuden perusta — [[node:sys-agent-sandbox|agentin hiekkalaatikon]] sisällä.",
+        "instructions": [
+          "Määritä vedoksen raja: työhakemiston tiedostojärjestelmä, asetukset, tietokannan tila, ympäristömuuttujat — ja kiinnitä selkeästi, mitä EI sisälly (ulkoiset palvelut)",
+          "Tuo ympäristö puhtaaseen tilaan: committaa tai hylkää muutokset, tyhjennä väliaikaistiedostot ja välimuistit, pysäytä taustatehtävät",
+          "Ota vedos tiedostojärjestelmä-/kontti-/VM-tasolla (copy-on-write tai tiedostojärjestelmän vedos, ei manuaalista kansioiden kopiointia)",
+          "Merkitse vedos aikaleimalla ja sisällön tiivisteellä versioiden erottamiseksi ja eheyden tarkistamiseksi"
+        ],
+        "validate": "Vedos on luotu, merkitty, ja osaat nimetä täyden listan siitä mitä siihen kuuluu ja mitä jäi ulkopuolelle.",
+        "tip": "Ota vedos heti `git clean`/puhtaan checkoutin jälkeen — näin paluupiste on taatusti vapaa edellisten ajojen jäänteistä."
+      },
+      "sas-snapshots-killswitch-2": {
+        "title": "Nopea palautus vedokseen",
+        "time": "",
+        "why": "Vedos ilman harjoiteltua palautusmenettelyä on kuollutta painolastia. Palautuksen on kestettävä sekunteja ja oltava täysin automaattinen, jottei toipuminen riipu manuaalisesta selvittelystä paineen alla.",
+        "instructions": [
+          "Kirjoita yksi komento/skripti, joka palauttaa ympäristön täysin annettuun vedokseen ilman interaktiivisia kysymyksiä",
+          "Palautuksen on ensin tuhottava nykyinen likainen tila, sitten palautettava vedoksesta — ei sen päälle",
+          "Mittaa palautusaika; tavoite sekunteja, ei minuutteja. Jos hidas, siirry CoW-/inkrementaalisiin vedoksiin",
+          "Tee palautuksesta idempotentti: uusinta-ajo jo palautetussa ympäristössä ei riko sitä"
+        ],
+        "validate": "Pilaa ympäristö tahallaan, aja palautus yhdellä komennolla ja varmista, että se palasi vedokseen sekunneissa.",
+        "tip": "Säilytä vähintään 2-3 viimeisintä vedosta: joskus viimeisin pistekin on saastunut ja on palauduttava askel syvemmälle."
+      },
+      "sas-snapshots-killswitch-3": {
+        "title": "Hätäkatkaisu: agentin välitön pysäytys",
+        "time": "",
+        "why": "Kun agentti riistäytyy käsistä, ei ole aikaa selvittelyyn — tarvitaan yksi nappi, joka purkaa sen ja kaikki sen synnyttämät prosessit välittömästi. Pysäytys, joka ei tapa aliprosesseja, on harha hallinnasta.",
+        "instructions": [
+          "Aja agentti eristetyssä prosessiryhmässä tai kontissa, jotta yksi pysäytys kattaa koko puun",
+          "Toteuta hätäkatkaisu signaalina koko puulle (prosessiryhmä / `docker kill` / [[node:sas-vm-vps|VM:n tai VPS:n]] pysäytys kokonaan)",
+          "Lähetä ensin SIGTERM hallittua lopetusta varten, lyhyen aikakatkaisun jälkeen SIGKILL pakottaen",
+          "Siivoa agentin jälkeen ulkoiset pysäytysvaikutukset: katkaise verkkoyhteydet ja peru väliaikaiset [[node:sas-remote-access|etäkäytön]] oikeudet"
+        ],
+        "validate": "Aja agentti taustalla olevien aliprosessien kanssa, vedä hätäkatkaisusta ja varmista, ettei yhtään elävää agentin prosessia jäänyt.",
+        "tip": "Varmista pysäytys tosiasian kautta (`ps`/prosessilista), ei kill-komennon paluukoodista — se voi palauttaa onnistumisen jättäen orvot aliprosessit."
+      },
+      "sas-snapshots-killswitch-4": {
+        "title": "Kulutus-, token- ja aikarajat",
+        "time": "",
+        "why": "Itsenäinen silmukka osaa jäädä luuppiin ja polttaa budjetin hiljaa. Kovat rajat ovat automaattinen hätäkatkaisu, joka laukeaa ilman ihmistä ennen kuin ylikulutus muuttuu ongelmaksi.",
+        "instructions": [
+          "Aseta kolme itsenäistä kynnystä: maksimi tokeneita/rahaa per ajo, maksimi mallikutsuja, maksimi seinäkelloaika",
+          "Laske kulutus inkrementaalisesti — jokaisen mallikutsun jälkeen, ei ajon lopussa",
+          "Minkä tahansa kynnyksen saavuttaessa vedä automaattisesti hätäkatkaisusta vaiheesta 3, älä vain logita varoitusta",
+          "Logita pysäytyksen syy (mikä raja laukesi ja millä askeleella) myöhempää analyysiä varten"
+        ],
+        "validate": "Aseta tarkoituksella matala raja, aja tehtävä ja varmista, että agentti pysähtyy kovasti ylityksessä ja syy on kirjattu.",
+        "tip": "Pidä aikaraja tiukasti cron-aikataulun välin alapuolella — muuten jumittunut ajo kohtaa seuraavan käynnistyksen ja ne alkavat kasaantua."
+      },
+      "sas-snapshots-killswitch-5": {
+        "title": "Säännöllinen palautusharjoitus",
+        "time": "",
+        "why": "Testaamatonta palautusta ei ole olemassa. Vedos voi osoittautua vialliseksi, puutteelliseksi tai yhteensopimattomaksi — ja saat sen tietää juuri todellisen tapahtuman hetkellä. Palautusharjoitus muuttaa toivon takuuksi.",
+        "instructions": [
+          "Nosta säännöllisesti (aikataulun mukaan) puhdas ympäristö tiukasti vedoksesta ja aja siinä savutesti",
+          "Tarkista ei tiedostojen palautumisen tosiasiaa vaan toimivuutta: ympäristö käynnistyy, agentti startaa, perusskenaario menee läpi",
+          "Mittaa täysi toipumisaika ja seuraa, ettei se huonone vedosten kasvaessa",
+          "Jos harjoitus kaatuu, vedos on kelvoton; korjaa vedoksenottoprosessi äläkä paikkaa palautusta käsin"
+        ],
+        "validate": "Viimeisin palautusharjoitus meni läpi: ympäristö nousi vedoksesta ja savutesti on vihreä; tiedät toipumisen päivän ja ajan.",
+        "tip": "Automatisoi harjoitus erillisenä cron-tehtävänä ilmoituksella — manuaalinen harjoitus jää väistämättä tekemättä juuri ennen sitä tapahtumaa, jossa sitä tarvitaan."
+      },
+      "sas-snapshots-killswitch-6": {
+        "title": "Kokoaminen: yhtenäinen peruutettavuusprotokolla",
+        "time": "",
+        "why": "Vedos, palautus, hätäkatkaisu ja rajat ovat arvokkaita vain yhtenä syklinä jokaisen agentin ajon ympärillä. Hajanaiset mekanismit antavat väärän turvallisuudentunteen; yhdistetty protokolla antaa todellisen peruutettavuuden.",
+        "instructions": [
+          "Kokoa kääre: ennen agentin ajoa — vedos (vaihe 1), sitten käynnistys rajojen alla (vaihe 4) aktiivisella hätäkatkaisulla (vaihe 3)",
+          "Sido automaattinen palautus (vaihe 2) nollasta poikkeavaan paluukoodiin tai minkä tahansa rajan laukeamiseen",
+          "Sisällytä säännöllinen palautusharjoitus (vaihe 5) ympäristön yleiseen ylläpitoaikatauluun",
+          "Kiinnitä peruutettavuuden raja kirjallisesti: mitä palautus tuo takaisin ja mikä on ulkoista ja peruuttamatonta",
+          "Aja koko sykli harjoitustapahtumalla alusta loppuun"
+        ],
+        "validate": "Yhtenäinen kääre hoitaa skenaarion 'vika → automaattipysäytys rajalla → automaattipalautus → puhdas ympäristö' ilman manuaalista väliintuloa.",
+        "tip": "Tee käämistä ainoa tapa ajaa agentti tuotannossa: jos agentin voi käynnistää protokollan ohi, ennemmin tai myöhemmin niin tehdään — ilman vedosta ja ilman rajoja."
+      }
+    }
+  },
+  "course-sas-remote-access": {
+    "title": "Etäkäyttö agentin ympäristöön",
+    "subtitle": "Miten yhdistää turvallisesti agentin koneeseen: SSH, noVNC, tunnelit ja käytön sulkeminen jälkeenpäin",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Etäkäyttö on joukko kanavia, joilla yhdistät agentin ympäristöön ([[node:sys-agent-sandbox|agentin hiekkalaatikko]] tai [[node:sas-docker-computer-use|Docker-kontti computer use -käyttöön]]) tarkkaillaksesi sen toimia, puuttuaksesi niihin ja tarkistaaksesi tuloksen. SSH antaa komentorivin, noVNC näyttää työpöydän suoraan selaimessa. Keskeinen vaatimus: käyttöä ei saa koskaan altistaa julkiselle internetille — vain avaimella, tunnelin kautta tai eristetyssä verkossa.",
+    "approach": "Kurssi noudattaa 'mahdollisimman pieni altistunut pinta' -periaatetta. Ensin nostat kanavan eristyksen sisällä, sidot sen loopbackiin, välität pääsyn SSH-tunnelin kautta julkisen portin sijaan, todennat vain avaimella, tarkkailet agenttia reaaliajassa ja suljet pääsyn aina, kun istunto on ohi. Jokainen vaihe varmistetaan komennolla, ei silmämääräisesti.",
+    "outcomes": [
+      "Nostaa SSH ja noVNC agentin ympäristön sisällä, sidottuina loopbackiin julkisen rajapinnan sijaan",
+      "Välittää pääsy SSH-tunnelin (port forwarding) kautta avaamatta yhtäkään porttia ulospäin",
+      "Määrittää pelkkä avaintodennus salasanat ja root-kirjautuminen poistettuina",
+      "Tarkkailla agentin toimia reaaliajassa noVNC:n ja istuntolokien kautta",
+      "Sulkea kanava luotettavasti, kierrättää avaimet ja varmistaa, ettei portti enää kuuntele"
+    ],
+    "applyIn": [
+      {
+        "title": "Pilviympäristön agentti",
+        "description": "Agentti toimii vuokratulla pilvi-VM:llä. Yhdistät siihen SSH-tunnelin kautta omalta koneeltasi nähdäksesi työpöydän noVNC:ssä ja pysäyttääksesi agentin tarvittaessa."
+      },
+      {
+        "title": "Pitkä autonominen tehtävä",
+        "description": "Agentti suorittaa monituntista tehtävää valvomatta. Yhdistät ajoittain, tarkistat edistymisen näytöltä ja puutut, jos se jää jumiin — jättämättä pääsyä auki istuntojen väliin."
+      },
+      {
+        "title": "Computer usen vianetsintä",
+        "description": "Agentti ohjaa graafista sovellusta [[node:sas-docker-computer-use|Docker-kontissa]]. noVNC näyttää, mihin se klikkaa ja mitä kirjoittaa, auttaen löytämään, missä skenaario hajoaa."
+      }
+    ],
+    "pitfalls": [
+      "VNC:n tai SSH:n altistaminen osoitteessa 0.0.0.0 julkisella IP:llä — skannerit löytävät portin minuuteissa ja brute-forcettavat sen",
+      "VNC:n salasanatodennuksen jättäminen ainoaksi suojaksi — VNC-salasana on heikko ja siirtyy turvattomasti ilman salausta",
+      "Pääsyn sulkemisen unohtaminen istunnon jälkeen: tunneli, avain ja kuunteleva portti jäävät elämään ja muuttuvat pysyväksi aukoksi",
+      "Yksityisen avaimen tai pääsysalasanan sijoittaminen agentin ympäristöön, jossa se voi vuotaa lokin [[node:sas-secrets|salaisuuksiin]] tai mallin kontekstiin",
+      "Luottaminen siihen, että 'kukaan ei tiedä osoitetta' todellisen todennuksen ja verkkoeristyksen sijaan — security by obscurity ei toimi"
+    ],
+    "exercises": [
+      {
+        "question": "Miksi 127.0.0.1:een sidottu ja SSH-tunnelin kautta välitetty noVNC on turvallisempi kuin salasanalla varustettu noVNC julkisessa portissa?",
+        "hint": "Mieti, mitä porttiskanneri näkee kummassakin tapauksessa ja missä liikenne salataan."
+      },
+      {
+        "question": "Agentti on saanut tehtävänsä valmiiksi. Luettele vähintään kolme toimea, jotka sinun on tehtävä, jotta pääsy on todella suljettu eikä vain 'katkaistu'.",
+        "hint": "Tunneli on yksi asia. Entä itse kuunteleva prosessi, avaimet ja sen varmistaminen, ettei portti enää vastaa?"
+      },
+      {
+        "question": "Miksi yksityistä SSH-avainta ei saa säilyttää itse agentin ympäristössä?",
+        "hint": "Agentti lukee tiedostoja ja lokeja. Yhdistä tämä [[node:sas-secrets|salaisuuksien hallintaan]] ja siihen, mitä voi päätyä mallin kontekstiin."
+      }
+    ],
+    "steps": {
+      "sas-remote-access-1": {
+        "title": "Nosta kanava eristyksen sisällä, sidottuna loopbackiin",
+        "time": "",
+        "why": "Jos palvelu kuuntelee julkista rajapintaa, koko internet tavoittaa sen ennen kuin olet asettanut mitään suojaa. Loopbackiin (127.0.0.1) sitominen tekee siitä näkyvän vain isännän sisältä — puolustuksen perustaso.",
+        "instructions": [
+          "Käynnistä SSH-demoni ja noVNC/VNC-palvelin agentin ympäristön sisällä (ks. [[node:sys-agent-sandbox|agentin hiekkalaatikko]])",
+          "Aseta VNC/noVNC-konfiguraatiossa bind-osoitteeksi nimenomaisesti 127.0.0.1, ei 0.0.0.0",
+          "SSH:lle aseta sshd_configiin ListenAddress 127.0.0.1, jos kanavaa tarvitaan vain tunnelin kautta",
+          "Varmista, että ympäristö on jo [[node:sas-network-isolation|verkkoeristyksen]] alla — toinen kerros bind-virheen varalta"
+        ],
+        "validate": "Komento `ss -tlnp` (tai `netstat -tlnp`) näyttää SSH- ja VNC-porttien kuuntelevan vain osoitteessa 127.0.0.1, ei 0.0.0.0:ssa tai ulkoisessa IP:ssä.",
+        "tip": "Dockerissa älä julkaise porttia komennolla `-p 0.0.0.0:5900:5900`. Joko älä julkaise sitä lainkaan (pääsy `docker exec`/tunnelin kautta) tai käytä `-p 127.0.0.1:5900:5900`."
+      },
+      "sas-remote-access-2": {
+        "title": "Määritä pelkkä avaintodennus",
+        "time": "",
+        "why": "Salasanat brute-forcetaan, ja VNC-salasana on lisäksi lyhyt ja heikosti suojattu. Avaintodennus poistaa kokonaisen hyökkäysluokan: ilman yksityistä avainta yhdistäminen on mahdotonta.",
+        "instructions": [
+          "Luo avainpari omalla koneellasi (`ssh-keygen -t ed25519`); yksityinen avain jää vain sinulle",
+          "Laita julkinen avain ympäristön authorized_keys-tiedostoon; yksityinen avain ei koskaan päädy agentin ympäristöön",
+          "Poista sshd_configissa salasanakirjautuminen: PasswordAuthentication no ja PermitRootLogin no",
+          "Älä luota VNC:n salasanaan suojana — anna VNC:n kuunnella vain loopbackia ja todennus tulee SSH-tunnelista"
+        ],
+        "validate": "Yritys yhdistää SSH:lla ilman avainta (tai salasanalla) hylätään. Yksityistä avainta ei ole missään agentin ympäristön tiedostojärjestelmässä.",
+        "tip": "Säilytä yksityinen avain ja kaikki pääsysalaisuudet ympäristön ulkopuolella [[node:sas-secrets|salaisuuksien hallinnan]] sääntöjen mukaisesti. Kaiken sisällä olevan agentti voi mahdollisesti lukea ja vetää kontekstiinsa."
+      },
+      "sas-remote-access-3": {
+        "title": "Välitä pääsy SSH-tunnelin kautta, ei julkisen portin",
+        "time": "",
+        "why": "Tunneli ratkaisee kaksi ongelmaa kerralla: se salaa noVNC-liikenteen (VNC itsessään on turvaton) eikä vaadi yhtään ylimääräistä porttia auki internetiin. Ulkopuolelle näkyy enintään yksi avaimella suojattu SSH.",
+        "instructions": [
+          "Nosta omalta koneeltasi välitys: `ssh -L 6080:127.0.0.1:6080 user@host -i ~/.ssh/key`",
+          "Nyt noVNC on tavoitettavissa vain osoitteessa localhost:6080 — salatun tunnelin kautta",
+          "Älä avaa VNC/noVNC-porttia isännän palomuuriin äläkä välitä sitä ulospäin Dockerissa",
+          "Jos SSH:nkaan ei pidä näkyä ulospäin — käytä bastion/jump-hostia tai VPN:ää ainoana sisääntulopisteenä"
+        ],
+        "validate": "noVNC avautuu selaimessa osoitteessa http://localhost:6080, kun taas ulkopuolelta (toiselta koneelta) isännän portti 6080 on suljettu ja VNC-portti täysin tavoittamaton.",
+        "tip": "`ssh -N -L ...` nostaa vain tunnelin ilman interaktiivista istuntoa — kätevä pitää erillisenä prosessina, joka on helppo tappaa sulkemisvaiheessa."
+      },
+      "sas-remote-access-4": {
+        "title": "Avaa agentin työpöytä noVNC:ssä ja varmista yhteys",
+        "time": "",
+        "why": "noVNC antaa työpöytäkuvan suoraan selaimeen ilman asennettavaa asiakasohjelmaa. Tämä on pääasiallinen tarkkailukanava: näet reaaliajassa, mihin agentti klikkaa ja mitä se kirjoittaa.",
+        "instructions": [
+          "Avaa tunnelin localhost-osoite selaimessa ja odota agentin ympäristön näyttöä",
+          "Varmista, että kuva päivittyy reaaliajassa ja näet agentin nykyisen työpöydän",
+          "[[node:sas-docker-computer-use|Docker-computer usessa]] varmista, että noVNC näyttää juuri sen näytön, jolla agentti työskentelee",
+          "Päätä, onko pääsy read-only vai interaktiivinen — sovi etukäteen, voitko ottaa hallinnan haltuun"
+        ],
+        "validate": "Selain näyttää elävän agentin työpöydän, toimet näkyvät minimaalisella viiveellä, ja kuva kulkee vain tunnelisi kautta.",
+        "tip": "Jos noVNC pätkii, laske VNC-palvelimen värisyvyyttä ja resoluutiota. 16-bittinen väri ja 1280×720 riittää yleensä hyvin tarkkailuun."
+      },
+      "sas-remote-access-5": {
+        "title": "Tarkkaile agenttia ja ole valmis puuttumaan",
+        "time": "",
+        "why": "Etäkäyttö ei ole näyttöä varten — se on sitä varten, että nappaat hetken, jolloin agentti lähtee väärille raiteille, ja pysäytät sen nopeasti ennen peruuttamattomia toimia.",
+        "instructions": [
+          "Pidä noVNC auki ja seuraa rinnalla agentin istuntolokeja SSH:n kautta",
+          "Määritä pysäytyskriteerit etukäteen: mitkä agentin toimet vaativat välitöntä puuttumista",
+          "Valmistele tapa keskeyttää agentti nopeasti (prosessin pysäytys, kill, tehtävän tauko) — älä etsi sitä häiriön hetkellä",
+          "Älä puutu tarpeettomasti: jokainen manuaalinen toimi muuttaa ympäristön tilaa ja heikentää toistettavuutta"
+        ],
+        "validate": "Voit milloin tahansa kuvata, mitä agentti tekee juuri nyt, ja sekunneissa pysäyttää sen, jos se rikkoo pysäytyskriteeriä.",
+        "tip": "SSH-istunnon lokit ja noVNC-kuva täydentävät toisiaan: näyttö kertoo 'mitä näkyy', lokit 'mitä todella suoritetaan'."
+      },
+      "sas-remote-access-6": {
+        "title": "Sulje pääsy istunnon jälkeen ja kierrätä avaimet",
+        "time": "",
+        "why": "Sulkematon tunneli, elävä kuunteleva portti tai unohtunut avain muuttaa kertaluonteisen pääsyn pysyväksi aukoksi. Sulkeminen on pakollinen osa menettelyä, ei 'hoidan myöhemmin'.",
+        "instructions": [
+          "Lopeta SSH-tunneli (tapa `ssh -N -L ...` -prosessi) ja sulje interaktiiviset istunnot",
+          "Pysäytä VNC/noVNC-palvelin ympäristössä, jos sitä ei enää tarvita",
+          "Poista julkinen avain authorized_keys-tiedostosta (tai kierrätä pari), jos pääsy oli väliaikainen",
+          "Varmista komennolla `ss -tlnp`, etteivät SSH/VNC-portit enää kuuntele ulospäin",
+          "Kirjaa sulkemisen tapahtuneen — jotta seuraava istunto alkaa tunnetusti suljetusta tilasta"
+        ],
+        "validate": "`ss -tlnp` ei näytä kuuntelevia VNC/tunneli-portteja, uudelleenyhdistäminen vanhan kanavan kautta epäonnistuu, ja väliaikainen avain on kumottu.",
+        "tip": "Tee sulkemisesta osa istunnon käynnistysskriptiä: yksi skripti nostaa tunnelin ja kanavan, sen pari purkaa kaiken luotettavasti. Manuaalinen sulkeminen unohtuu."
+      }
+    }
   }
 }

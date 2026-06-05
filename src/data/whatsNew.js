@@ -35,7 +35,7 @@ export const WHATS_NEW = {
   'course-pl-limits': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
   'course-pl-models': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
   'course-pl-platforms': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
-  'course-pl-rate': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
+  'course-pl-rate': { date: '2026-06-05', type: 'updated', kind: 'tutorial' },
   'course-pl-compare': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
   'course-pl-web-setup': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
   'course-pl-integrations': { date: '2026-06-05', type: 'new', kind: 'tutorial' },

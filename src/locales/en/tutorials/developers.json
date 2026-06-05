@@ -9645,5 +9645,1436 @@
         "tip": "The main mistake is not running /doctor when things break. Make it your first reflex, not a last resort."
       }
     }
+  },
+  "skill-create": {
+    "title": "Build your own Skill",
+    "subtitle": "Turn a repeating process into a /skill command with /skill-creator",
+    "totalTime": "6 steps",
+    "whatItIs": "A Skill is a packaged instruction that Claude picks up by its description and applies automatically. In [[node:pl-web-setup|claude.ai]] you build one with /skill-creator: you answer a few questions and it produces a SKILL.md file with a name, description, and steps. This course goes from deciding \"is a Skill even worth it\" to a working, tested command.",
+    "approach": "We follow the logic of the Skill itself: first confirm the task is genuinely repeatable, then run /skill-creator, precisely describe WHAT and WHEN (name/description) — that drives activation, write the body steps, add supporting files, and finally test activation on a real request and fix the misses.",
+    "outcomes": [
+      "Tell a Skill-worthy task from a one-off using the \"≥ 3 times\" rule",
+      "Run /skill-creator and walk through its questions without getting stuck",
+      "Write a description that makes the Skill fire at the right moment",
+      "Write the body steps and attach supporting files",
+      "Test activation and refine the Skill based on the result"
+    ],
+    "applyIn": [
+      {
+        "title": "Recurring text audits",
+        "description": "A Skill with fixed review criteria — you type /audit and Claude applies the same checklist to any text."
+      },
+      {
+        "title": "Task and report formatting",
+        "description": "A single brief or report template in a Skill — you don't explain the format each time, the command shapes the output for you."
+      },
+      {
+        "title": "Team processes",
+        "description": "One Skill in a Project sets a shared standard — everyone gets the same result from one command."
+      }
+    ],
+    "pitfalls": [
+      "Building a Skill \"just in case\" with no real repeating need — it never pays off and clutters the Project.",
+      "A vague description (\"help with text\") — Claude can't tell WHEN to fire the Skill, so it doesn't.",
+      "Cramming three different tasks into one Skill — three narrow Skills beat one \"do-everything\" Skill.",
+      "Writing the steps but never testing activation on a live request.",
+      "Loading bulky data straight into SKILL.md instead of moving it to a supporting file."
+    ],
+    "exercises": [
+      {
+        "question": "Name a process from your work that repeats ≥ 3 times a week and that you re-explain to Claude every time. Does it qualify for a Skill?",
+        "hint": "A good candidate has the same steps and output format across different inputs."
+      },
+      {
+        "question": "Write a one-sentence description for that Skill: WHAT it does and WHEN it should fire.",
+        "hint": "A strong description names the trigger situation, not just the function: \"when text needs checking against checklist X.\""
+      },
+      {
+        "question": "Which chunk of data in your Skill should live in a separate supporting file rather than in SKILL.md?",
+        "hint": "Long lists, templates, references — anything that bloats the main file and rarely changes in substance."
+      }
+    ],
+    "steps": {
+      "scr-1": {
+        "title": "Decide whether you need a Skill",
+        "time": "",
+        "why": "A Skill only pays off on a repeatable task. \"Just in case\" it isn't worth it — it takes up space and interferes with other Skills firing.",
+        "instructions": [
+          "Take a task you give Claude regularly.",
+          "Apply the \"≥ 3 times a week\" rule: if rarer, it's a one-off, not a Skill.",
+          "Confirm the steps and output format stay the same across different inputs.",
+          "If yes on all points — the task is ready to become a Skill."
+        ],
+        "validate": "You have a concrete process that repeats ≥ 3 times and that you re-explain to Claude every time.",
+        "tip": "Unsure — compare with the [[node:skills|Skills]] node: a Skill replaces re-explaining \"how exactly to do it\"."
+      },
+      "scr-2": {
+        "title": "Run /skill-creator",
+        "time": "",
+        "why": "/skill-creator is a built-in helper: it asks the right questions and assembles a valid SKILL.md so you don't write the structure by hand.",
+        "instructions": [
+          "Open the right Project in [[node:pl-web-setup|claude.ai]].",
+          "Type /skill-creator in the chat.",
+          "Wait until it starts asking questions about the future Skill.",
+          "Answer to the point — based on the process from step 1."
+        ],
+        "validate": "/skill-creator launched and asked its first question (the Skill's name or purpose).",
+        "tip": "Keep the step-1 process description handy — answering its questions will go faster."
+      },
+      "scr-3": {
+        "title": "Describe WHAT and WHEN (name/description)",
+        "time": "",
+        "why": "Claude decides whether to fire the Skill from its description field. A vague description = the Skill won't fire at the right moment.",
+        "instructions": [
+          "Give the Skill a short, clear name in kebab-case (e.g. text-audit).",
+          "In the description state WHAT the Skill does in one phrase.",
+          "Add the trigger situation WHEN to fire it — specific words and request context.",
+          "Avoid generic wording like \"help with text\"."
+        ],
+        "validate": "The description carries both the function and the firing condition — it's clear when the Skill should activate.",
+        "tip": "File structure details are in the [[node:s-md|SKILL.md]] node; firing principles are in [[node:s-trigger|triggers]]."
+      },
+      "scr-4": {
+        "title": "Write the body steps",
+        "time": "",
+        "why": "The Skill body is the instruction Claude follows to do the task. Clear steps give a repeatable result instead of improvisation.",
+        "instructions": [
+          "Break the process into sequential steps, as you'd do it by hand.",
+          "For each step, state the action and the expected result.",
+          "Pin down the output format if it matters (report structure, checklist).",
+          "Cut the noise — keep only what the task actually needs."
+        ],
+        "validate": "The SKILL.md body describes the process step by step, and the task can be done from it without extra explanation.",
+        "tip": "Lean on the body structure in the [[node:s-md|SKILL.md]] node — step headings beat a \"wall of text\"."
+      },
+      "scr-5": {
+        "title": "Add supporting files",
+        "time": "",
+        "why": "Templates, references, and long data shouldn't bloat SKILL.md. Moved-out files keep the main file light and readable.",
+        "instructions": [
+          "Single out data that doesn't change in substance: templates, checklists, examples.",
+          "Place them as separate files next to SKILL.md.",
+          "In the Skill body, reference these files instead of pasting the full content.",
+          "Keep only the instruction and logic in SKILL.md."
+        ],
+        "validate": "Bulky data is moved into separate files, and SKILL.md stays compact and references them.",
+        "tip": "What exactly to move out and how to structure it — see the [[node:s-files|supporting files]] node."
+      },
+      "scr-6": {
+        "title": "Test activation and refine",
+        "time": "",
+        "why": "A Skill untested on a live request may not fire or may give the wrong result. The test reveals real misses in the description and steps.",
+        "instructions": [
+          "Give a real request that the Skill should fire on by itself.",
+          "Check that it activated without an explicit command call.",
+          "Compare the result with the expected format from step 4.",
+          "If it didn't fire — sharpen the description (step 3); if the result is wrong — fix the steps (step 4).",
+          "Repeat the test until activation and output are stable."
+        ],
+        "validate": "The Skill fires on a real request on its own and returns the result in the right format.",
+        "tip": "A common mistake is blaming the steps when the description is at fault. Check firing first ([[node:s-trigger|triggers]]), then quality."
+      }
+    }
+  },
+  "skill-vs-subagents": {
+    "title": "Skill ≠ Sub-agent: when to use which",
+    "subtitle": "A recipe for 'what to do' versus a separate executor with its own context",
+    "totalTime": "6 steps",
+    "whatItIs": "A short breakdown of two distinct mechanisms that are easy to confuse. A [[node:skills|Skill]] is a recipe for WHAT to do: a set of steps Claude follows inside the current chat, with no context or tools of its own. A Sub-agent (see [[node:cc-subagents|Sub-agents]]) is a separate executor with its own context window and access to tools (files, terminal, network), launched from [[node:claude-code|Claude Code]] for isolated tasks. This course teaches you to pick one for a given task.",
+    "approach": "We move from the core distinction to the practice of choosing. First we separate the concepts (recipe vs executor), then we map the boundaries: when a Skill is enough, when you need a Sub-agent, how they combine, and where people get confused. The finale is a selection algorithm for the task at hand, with a check. Each step rests on one distinction, with no repetition or filler.",
+    "outcomes": [
+      "Explain the distinction in one sentence: Skill = WHAT to do, Sub-agent = a separate executor with its own context",
+      "See when a task fits a Skill and external tools aren't needed",
+      "Recognize the signs that require a Sub-agent: context isolation, tools, parallelism, long-running work",
+      "Combine both: a Sub-agent does the work, relying on a Skill as its procedure",
+      "Pick the mechanism for a task in seconds and verify the choice against a checklist"
+    ],
+    "applyIn": [
+      {
+        "title": "Repeatable formatting",
+        "description": "A template procedure with no external tools (formatting a task, report, commit) is a Skill. Claude follows the steps right in the chat, instantly."
+      },
+      {
+        "title": "Isolated research",
+        "description": "Walking repo files, gathering data, finding outdated dependencies is a Sub-agent: its own context window and tool access, without cluttering the main chat."
+      },
+      {
+        "title": "Complex pipeline",
+        "description": "A large task split into parallel branches, where each Sub-agent follows its own Skill recipe — a combination of both mechanisms."
+      }
+    ],
+    "pitfalls": [
+      "A Sub-agent for a template task is overkill: it takes longer to launch and burns context where a Skill would do in seconds",
+      "A Skill for long research with files will hit the main chat's context limit, forcing a redo",
+      "Assuming a Skill has its own context and tools — it doesn't, it runs inside the current chat and depends on its window",
+      "Confusing 'separate executor' with 'different model' — a Sub-agent is context and tool isolation, not a model swap",
+      "Choosing the mechanism by habit rather than by task — always check against the signs of isolation and tools"
+    ],
+    "exercises": [
+      {
+        "question": "Task: every time you're asked to write a release note, format it using a fixed template, no file reading. Skill or Sub-agent?",
+        "hint": "Ask: does the task repeat? Are external tools needed? If the steps fit a recipe and no tools are involved — it's a Skill."
+      },
+      {
+        "question": "Task: walk through 200 repo files and collect a list of TODOs. What do you pick and why?",
+        "hint": "Long file-reading work clutters the main chat. You need context isolation and tool access — signs of a Sub-agent."
+      },
+      {
+        "question": "Can you use both at once? Give an example of the combination.",
+        "hint": "A Sub-agent is an executor. Give it a Skill as a procedure: it works in its own context, following your recipe for WHAT to do."
+      }
+    ],
+    "steps": {
+      "svs-1": {
+        "title": "The core distinction: recipe vs executor",
+        "time": "",
+        "why": "Without a clear boundary between 'what to do' and 'who does it', every later decision is a guess. This is the foundation of the choice.",
+        "instructions": [
+          "Memorize the formula: a [[node:skills|Skill]] = a recipe for WHAT to do, Claude follows the steps inside the current chat",
+          "Memorize the second: a Sub-agent = a separate executor with its own context window and tools (files, terminal, network)",
+          "Note the key point: a Skill has no context of its own — it depends on the current chat's window",
+          "Note the second key point: a Sub-agent is launched from [[node:claude-code|Claude Code]] for isolated tasks"
+        ],
+        "validate": "You can explain the distinction in one sentence without confusing 'recipe' and 'executor'.",
+        "tip": "Analogy: a Skill is an instruction on paper, a Sub-agent is a separate worker you can hand that instruction to."
+      },
+      "svs-2": {
+        "title": "When a Skill is enough",
+        "time": "",
+        "why": "Most repeatable tasks don't need isolation — and a Skill solves them in seconds, with no overhead.",
+        "instructions": [
+          "Check the repeatability sign: the task recurs regularly and fits into fixed steps",
+          "Check the no-tools sign: no files, terminal, or network needed — only text and reasoning",
+          "If both signs hold — make it a [[node:skills|Skill]] (see [[node:s-create|creating a Skill]])",
+          "Example: 'whenever I ask to write a task — format it using this template'"
+        ],
+        "validate": "You can name two of your own tasks that clearly fit a Skill, and explain why.",
+        "tip": "If the task is fully solved by text in a single chat window — it's almost certainly a Skill, not a Sub-agent."
+      },
+      "svs-3": {
+        "title": "When you need a Sub-agent",
+        "time": "",
+        "why": "Context isolation and parallelism are what a Skill cannot provide. This is where the Sub-agent zone begins.",
+        "instructions": [
+          "Sign 1 — isolation: the task is long and would clutter the main chat's context if done in it",
+          "Sign 2 — tools: you need to read files, hit the network, work in a terminal",
+          "Sign 3 — parallelism: the work can be split into branches run simultaneously",
+          "If even one sign is strong — launch a Sub-agent (see [[node:cc-subagents|Sub-agents]])",
+          "Example: 'walk through all files in the repo and find outdated dependencies'"
+        ],
+        "validate": "For your real task you can point to the exact sign (isolation/tools/parallelism) that makes it a Sub-agent task.",
+        "tip": "The longer and 'messier' the work is for the main chat, the stronger the case for isolation in a Sub-agent."
+      },
+      "svs-4": {
+        "title": "How they combine",
+        "time": "",
+        "why": "It's not either-or. The most powerful scenarios are when the executor works from a recipe.",
+        "instructions": [
+          "Get the pairing: a Sub-agent is the executor, a Skill is the procedure it follows",
+          "Give the Sub-agent access to a [[node:skills|Skill]] so it acts on a fixed recipe inside its own context",
+          "For a pipeline: several Sub-agents in parallel, each with its own Skill recipe",
+          "This way you combine isolation/tools (from the Sub-agent) and step repeatability (from the Skill)"
+        ],
+        "validate": "You can describe one scenario where a Sub-agent does the work relying on a Skill as its procedure.",
+        "tip": "A Skill answers 'what to do', a Sub-agent answers 'who does it and where'. Together they cover both questions."
+      },
+      "svs-5": {
+        "title": "Common confusion",
+        "time": "",
+        "why": "The most expensive mistakes are born here — from wrong assumptions about what's what.",
+        "instructions": [
+          "Bust myth 1: a Skill does NOT have its own context and tools — it lives in the current chat's window",
+          "Bust myth 2: a Sub-agent is context and tool isolation, NOT a model swap",
+          "Remember the cost of a wrong choice: a Sub-agent for a template is overkill (slower launch); a Skill for file research hits the context limit",
+          "Before deciding, always check against the signs from steps 2 and 3, not against habit"
+        ],
+        "validate": "You can name both myths and explain what time loss each wrong choice leads to.",
+        "tip": "If you catch yourself thinking 'I'll grab a Sub-agent just in case' — that's a signal to recheck the signs."
+      },
+      "svs-6": {
+        "title": "Choosing for the task and verifying",
+        "time": "",
+        "why": "The final algorithm turns understanding into a fast, verifiable decision.",
+        "instructions": [
+          "Step 1: does the task repeat and fit into steps without external tools? → [[node:skills|Skill]]",
+          "Step 2: is the task long, needing tools or parallelism? → Sub-agent ([[node:cc-subagents|Sub-agents]])",
+          "Step 3: do you need both? → Sub-agent + Skill as its procedure",
+          "Check: after choosing, ask 'is this overkill?' and 'will I hit the context limit?'",
+          "If both answers are 'no' — the choice is correct"
+        ],
+        "validate": "You ran three of your tasks through the algorithm and each choice passed the overkill and context-limit check.",
+        "tip": "The decision should take seconds. If you're thinking long — the task is hybrid: take Sub-agent + Skill."
+      }
+    }
+  },
+  "course-pl-rate": {
+    "title": "Rate limits API: TPM, RPM and tiers",
+    "subtitle": "How to keep growth from turning prod into a 429 cascade",
+    "totalTime": "6 steps",
+    "whatItIs": "The Anthropic API caps load with three metrics: RPM (requests per minute), TPM (input+output tokens per minute) and a daily token limit. The actual numbers depend on your account tier (Tier 1 → Tier 4), which grows automatically with cumulative spend. On excess the API returns 429 Too Many Requests with a retry-after header. This course teaches you to design integrations so spikes and batch loads don't take the service down. API context lives in [[node:pl-api|Platform: API]] and [[tutorial:api-basics|API basics]].",
+    "approach": "We go from the limit model to practice: first what RPM/TPM/daily actually count and how tiers work, then reading 429 and retry-after, building retry with exponential backoff and jitter, budgeting an 80% buffer, moving offline load to the Message Batches API, and finally planning a tier upgrade against forecast traffic. Every step is a working technique, not theory.",
+    "outcomes": [
+      "You understand RPM vs TPM vs daily limit and which one you'll hit first",
+      "You read 429 and the retry-after header instead of retrying blindly",
+      "You implement retry with exponential backoff and jitter without killing your own limit",
+      "You budget a buffer and use the Message Batches API for batch loads",
+      "You forecast the needed tier from TPM and file an upgrade request ahead of time"
+    ],
+    "applyIn": [
+      {
+        "title": "Production chat under load",
+        "description": "Real users create uneven traffic — backoff and a buffer keep the service stable on spikes without 429."
+      },
+      {
+        "title": "Batch processing (evals, classification)",
+        "description": "Tens of thousands of requests in a window: compute TPM, move it to the Message Batches API for the discount and a separate limit."
+      },
+      {
+        "title": "Growth and budget planning",
+        "description": "Traffic forecast → required tier → upgrade request ahead of time, so a viral launch doesn't get stuck on Tier 1."
+      }
+    ],
+    "pitfalls": [
+      "Ignoring 429 without backoff — blind retries kill your own limit and create an error cascade",
+      "Not reading the retry-after header — you retry before the limit has cleared",
+      "Retry without jitter — all workers retry in sync and hit the limit again (thundering herd)",
+      "Not budgeting a buffer (running at 100% of the limit) — any spike breaks instantly",
+      "Not knowing about the Message Batches API — losing the 50% discount and a separate limit on offline load"
+    ],
+    "exercises": [
+      {
+        "question": "A nightly batch of 50k classifications, ~800 tokens per request, a 2-hour window. What TPM is needed and will it hit RPM?",
+        "hint": "TPM = 50000 × 800 / 120 minutes. Separately estimate RPM = 50000 / 120. Compare both to your tier limits and consider whether the Message Batches API fits better."
+      },
+      {
+        "question": "The API returned 429 with retry-after: 30. How should a client behave with three workers?",
+        "hint": "Wait at least retry-after seconds, then exponential backoff + random jitter per worker so they don't retry simultaneously."
+      },
+      {
+        "question": "The service runs steadily at 95% of the TPM limit. Why is that dangerous and what do you do?",
+        "hint": "Any surge pushes past 100% → 429. You need a ~80% buffer and an upgrade request before you hit the wall."
+      }
+    ],
+    "steps": {
+      "pl-rate-1": {
+        "title": "Break down the three metrics: RPM, TPM, daily",
+        "time": "",
+        "why": "You can't design protection without knowing which limit you'll hit first. TPM and RPM constrain differently, and the bottleneck depends on your load profile.",
+        "instructions": [
+          "Write the definitions: RPM — requests per minute, TPM — sum of input+output tokens per minute, daily — tokens per 24 hours",
+          "Estimate your profile: many small requests hit RPM, few large ones hit TPM",
+          "Open docs.anthropic.com/en/api/rate-limits and copy the current numbers for your tier (Anthropic revises them)",
+          "Note that output tokens also count toward TPM — long answers burn the limit faster"
+        ],
+        "validate": "You can name which of the three metrics is the bottleneck for your load and quote your tier's numbers.",
+        "tip": "TPM counts input + output together. A large max_tokens reserves answer budget up front — factor it into the math."
+      },
+      "pl-rate-2": {
+        "title": "Learn to read 429 and retry-after",
+        "time": "",
+        "why": "429 isn't an app error, it's a 'wait' signal. The retry-after header says exactly how long. Blind retries without it kill the limit and extend downtime.",
+        "instructions": [
+          "Catch the 429 status separately from other 4xx/5xx in code",
+          "Read the retry-after header — it's the seconds until the next safe attempt",
+          "Log which limit fired so you understand the real bottleneck",
+          "Never retry the request before retry-after has elapsed"
+        ],
+        "validate": "On 429 the client waits exactly retry-after seconds before the first retry and logs it.",
+        "tip": "If retry-after is missing — use your base backoff delay as a fallback, but never retry instantly."
+      },
+      "pl-rate-3": {
+        "title": "Build retry with backoff and jitter",
+        "time": "",
+        "why": "Fixed or synchronous retries create a thundering herd: all workers hit the API at once and get 429 again. Exponential backoff with jitter spreads the load out.",
+        "instructions": [
+          "Base delay grows exponentially: 1s, 2s, 4s, 8s by attempt number",
+          "Add random jitter to each delay so workers don't synchronize",
+          "Respect retry-after: take the max of retry-after and the computed backoff",
+          "Cap the attempts (e.g. 5) and after exhaustion do graceful degradation, not an infinite loop"
+        ],
+        "validate": "Under synthetic 429s the retries spread out in time, there are no synchronized bursts, and there's an attempt cap.",
+        "tip": "Many Anthropic SDKs already retry out of the box — check the client settings before writing your own loop."
+      },
+      "pl-rate-4": {
+        "title": "Budget a buffer and a queue",
+        "time": "",
+        "why": "Running at 100% of the limit leaves no headroom for spikes — any surge yields 429. An 80% buffer and a queue smooth uneven traffic before it hits the ceiling.",
+        "instructions": [
+          "Target no more than ~80% of the tier's TPM/RPM, leaving 20% for surges",
+          "Put a queue or rate-limiter on your side so you don't send more than the tier can take",
+          "Add graceful degradation: when the queue fills, answer the user clearly instead of crashing",
+          "Monitor the actual percentage of limit used, not just the error count"
+        ],
+        "validate": "Under a load test the service holds ~80% of the limit and doesn't return 429 to users on expected spikes.",
+        "tip": "A local rate-limiter is cheaper than catching 429 from the API: you save requests and keep predictable latency."
+      },
+      "pl-rate-5": {
+        "title": "Move offline load to the Message Batches API",
+        "time": "",
+        "why": "Batch jobs (evals, classification) don't need an instant answer. The Message Batches API gives a separate limit and a ~50% discount — running them through the regular synchronous limit is wasteful.",
+        "instructions": [
+          "Separate loads that don't need a real-time answer from interactive ones",
+          "Route them through the Message Batches API — it has its own limit that doesn't compete with online RPM/TPM",
+          "Recompute the budget: batch is usually ~50% cheaper than regular requests",
+          "Plan a processing window around the async nature of batch, not an instant SLA"
+        ],
+        "validate": "Offline load goes through the Batches API, freeing the main TPM limit for interactive traffic.",
+        "tip": "Moving evals and background classification to batch often immediately removes half the 429s on your main limit."
+      },
+      "pl-rate-6": {
+        "title": "Forecast the tier and file the request early",
+        "time": "",
+        "why": "Tier grows automatically with spend, but a traffic jump (viral launch, big batch) can outpace the auto-upgrade. Filing early closes the gap between forecast and current limit.",
+        "instructions": [
+          "Compute the required TPM/RPM for the forecast: peak requests × avg tokens / window",
+          "Compare with the current tier's limits and find the gap",
+          "If there's a gap — file a tier upgrade request ahead of time, don't wait for 429 in prod",
+          "Combine measures: buffer + backoff + batch + the right tier, not a single trick"
+        ],
+        "validate": "You have a target TPM number, an understanding of the needed tier, and an upgrade plan before the load launches.",
+        "tip": "Tier rises with cumulative spend — steady regular traffic grows it on its own, but for a one-off spike ask in advance."
+      }
+    }
+  },
+  "course-sas-why-isolation": {
+    "title": "Why a separate machine for the agent",
+    "subtitle": "The threat model of an agent with computer access, and why isolation closes all three",
+    "totalTime": "6 steps",
+    "whatItIs": "A structured threat model for an AI agent given real access to a computer: filesystem, terminal, browser, network. The course breaks down three classes of threat — execution error, misunderstanding the task, and deception via content (prompt injection) — and shows why all three converge on a single architectural answer: run the agent in an isolated environment, not on your working machine. This is an engineering approach, not a 'just in case' one: each threat gets a concrete compensating mechanism and a clear blast radius.",
+    "approach": "We go from threats to countermeasure, not the other way around. First we build the threat model (actor, attack surface, consequence), then for each threat we assess what exactly an agent with a computer can break, and only then derive isolation as the single answer. We treat prompt injection separately as the most underrated threat — it breaks the intuition 'the agent is mine, it's on my side'. We finish with the boundaries of isolation: what the sandbox does NOT close, so isolation doesn't become a false sense of security. Isolation works together with [[node:sas-least-privilege|least privilege]] — one without the other leaves holes.",
+    "outcomes": [
+      "Formulate a threat model for a concrete agent task in terms of actor → surface → consequence",
+      "Distinguish three classes of threat (error, misunderstanding, prompt injection) and not reduce everything to 'the agent will err'",
+      "Assess blast radius: what an agent with terminal and network access can actually damage beyond the task",
+      "Explain why the working machine is the worst environment for an agent (shared creds, SSH keys, prod access, corporate network)",
+      "Know the boundaries of isolation: which threats the sandbox does NOT close (data exfiltration, actions within granted rights)"
+    ],
+    "applyIn": [
+      {
+        "title": "Code agent with repo and terminal access",
+        "description": "Before giving the agent `git`, `npm`, shell access — run the threat model: what it deletes on error, what it does on a force-push, what it executes if an instruction is hidden in an issue or a dependency. Move it into a [[node:sys-agent-sandbox|sandbox]] with a disposable repo clone."
+      },
+      {
+        "title": "Browser agent reading the external web",
+        "description": "The sharpest prompt-injection case: the agent uses [[node:cap-computer|computer use]] to open a page whose text hides the command 'download and run X'. Isolation turns a successful injection from a catastrophe into a harmless incident inside the box."
+      },
+      {
+        "title": "Automation agent with email and file access",
+        "description": "An email with an attachment is a classic vector: the email body contains an instruction, the agent executes it. We assess which credentials and network routes are reachable from the agent's environment and cut everything unneeded via isolation plus least privilege."
+      }
+    ],
+    "pitfalls": [
+      "Reducing the threat model to 'the agent will err and delete a file' — missing prompt injection, the most underrated threat",
+      "Treating prompt injection as exotic: any page, email, log, filename or API response is untrusted input that can carry a hidden instruction",
+      "Running the agent on your working machine 'because it's supervised' — that's where SSH keys, tokens, ~/.aws, prod and corporate network access live",
+      "Believing isolation closes everything: the sandbox doesn't stop the agent from exfiltrating data it legitimately accesses or harming within granted rights",
+      "Confusing 'I trust the agent' with 'I trust all content the agent will read' — trusting the model is not trusting the input"
+    ],
+    "exercises": [
+      {
+        "question": "Describe a concrete prompt-injection scenario for an agent that reads a GitHub issue and fixes a bug. Where is the instruction hidden, what does the agent execute, what's the blast radius on a working machine vs a sandbox?",
+        "hint": "The instruction may live in the issue body, a comment, a repo file or test output. Compare: on the working machine ~/.ssh and tokens are reachable; in a disposable sandbox — only a repo clone without secrets."
+      },
+      {
+        "question": "Build a table: three threat classes × what exactly breaks × does isolation close it fully, partially or not at all.",
+        "hint": "Isolation closes error and misunderstanding by blast radius. Prompt injection — it limits damage but doesn't prevent the injection itself. Exfiltration of legitimately accessible data — isolation barely helps, you need least privilege."
+      },
+      {
+        "question": "List three threats that remain open EVEN under perfect isolation and propose a countermeasure for each.",
+        "hint": "Think about: data reachable inside the box; outbound network connections; actions within legitimate rights (e.g. an agent allowed to write to a DB will corrupt data within its own rights)."
+      }
+    ],
+    "steps": {
+      "sas-why-isolation-1": {
+        "title": "What a threat model is and why an agent needs one",
+        "time": "",
+        "why": "Without an explicit threat model, protection becomes a set of superstitions 'just in case'. A threat model forces you to name the actor, the attack surface and the consequence — only then does a countermeasure become deliberate rather than ritual.",
+        "instructions": [
+          "Write down the agent's task and list ALL real actions it can perform (files, terminal, network, browser, API)",
+          "For each action ask three questions: who can trigger it (actor), through what (surface), what's the worst outcome (consequence)",
+          "Separate 'what the agent should do' from 'what the agent is technically capable of doing' — the gap between them is the risk zone",
+          "Note that the goal of the model is not paranoia but translating a vague 'something might break' into a concrete list"
+        ],
+        "validate": "You have a list of 3+ items, each phrased as actor → surface → consequence, not as an abstract 'something will go wrong'.",
+        "tip": "Compute the worst outcome not from a 'normal' run but from 'the agent did the most destructive available action'. That is the blast radius."
+      },
+      "sas-why-isolation-2": {
+        "title": "Threat 1 — execution error",
+        "time": "",
+        "why": "The most obvious and therefore first threat: the agent is technically right in intent but errs in action — wipes the wrong directory, force-pushes, drops the wrong table. No malice here, just the cost of an error multiplied by privileges.",
+        "instructions": [
+          "List irreversible operations available to the agent: `rm -rf`, `git push --force`, `DROP`, `truncate`, file overwrites",
+          "For each, assess what disappears for good on a ONE-argument mistake (wrong path, wrong branch)",
+          "Mark which have an undo and which don't — the irreversible ones are the protection priority",
+          "Tie damage scale to environment rights: the same `rm -rf` in a sandbox vs the working machine is a different blast radius"
+        ],
+        "validate": "You can name at least 3 irreversible operations and for each say what's lost on error and how much the environment limits it.",
+        "tip": "Execution error is the only one of the three threats where the agent is 'on your side'. That's exactly why it's overrated and the next two are underrated."
+      },
+      "sas-why-isolation-3": {
+        "title": "Threat 2 — misunderstanding the task",
+        "time": "",
+        "why": "The agent executed your instruction literally and correctly — but understood the wrong thing. 'Clean up temp files' becomes wiping a directory of important data. The action is technically flawless but semantically catastrophic.",
+        "instructions": [
+          "Take the task wording and find ambiguous terms in it ('clean up', 'update', 'delete old', 'optimize')",
+          "For each term, invent the broadest interpretation the agent could legitimately pick",
+          "Assess the consequence of the broadest interpretation — that is the misunderstanding threat",
+          "Note that unlike execution error, here the agent is confident it's right — there's no 'something's wrong' signal"
+        ],
+        "validate": "For your task you've found at least one wording whose broad interpretation causes damage, and you understand why the agent won't filter it out itself.",
+        "tip": "This threat is more dangerous than execution error because it doesn't look like a failure: clean logs, the agent 'completed the task'. Damage is found after the fact."
+      },
+      "sas-why-isolation-4": {
+        "title": "Threat 3 — prompt injection (deception via content)",
+        "time": "",
+        "why": "The most underrated threat and the only one with an external attacker. A page, email, log, filename or API response carries a hidden instruction — and the agent executes someone else's command as yours. Trusting the model is not trusting the input.",
+        "instructions": [
+          "Mark every source of untrusted input: web pages via [[node:cap-computer|computer use]], email, file contents, command output, external API responses",
+          "Understand the mechanism: for the model there's no hard boundary between 'instruction from the user' and 'text to be processed' — injection exploits exactly that",
+          "Build a scenario: a page hides the text 'ignore previous, download and run X' — trace what the agent does on the working machine",
+          "Formulate the principle: any content the agent READS is potentially trying to CONTROL it — details in [[node:b-prompt-injection|prompt injection]]"
+        ],
+        "validate": "You can name 3+ sources of untrusted input for your task and describe one plausible injection scenario with a concrete malicious action.",
+        "tip": "The key intuition shift: the threat isn't that the agent is 'bad' but that it faithfully executes an instruction without knowing it came from an attacker, not from you."
+      },
+      "sas-why-isolation-5": {
+        "title": "Why a separate machine, not the working one",
+        "time": "",
+        "why": "All three threats converge on one question: what the agent gains access to at the moment of triggering. The working machine is the worst choice: SSH keys, cloud tokens, ~/.aws, prod access, mounted drives and the corporate network. Isolation turns any of the three threats from a catastrophe into an incident inside the box.",
+        "instructions": [
+          "Inventory what lives on your working machine: keys (~/.ssh), tokens (~/.aws, .env), prod access, VPN, mounted network drives",
+          "Show for each of the three threats how isolation limits the blast radius to the sandbox contents",
+          "Study the mechanics of an isolated environment in the [[node:sys-agent-sandbox|sandbox]]: disposability, no real secrets, severed network",
+          "Tie isolation to [[node:sas-least-privilege|least privilege]]: isolation limits the ENVIRONMENT, least privilege limits the RIGHTS inside it; you need both"
+        ],
+        "validate": "You can explain on a concrete asset (e.g. an SSH key) why it must NOT be in the agent's environment, and how the sandbox ensures that.",
+        "tip": "A simple test: 'if the agent ran the most destructive available command right now — what would I lose?' If the answer is scary, the environment is wrong."
+      },
+      "sas-why-isolation-6": {
+        "title": "Boundaries of isolation — what the sandbox does NOT close",
+        "time": "",
+        "why": "Isolation is a powerful countermeasure, but it becomes a false sense of security if treated as a panacea. The sandbox limits the environment but doesn't stop the agent from harming within legitimately granted rights and exfiltrating data it has lawful access to.",
+        "instructions": [
+          "List the data legitimately reachable INSIDE the sandbox — isolation doesn't protect it (the agent can read and send it)",
+          "Check outbound network: if the box has open internet, prompt injection can still exfiltrate data outward",
+          "Note actions within rights: an agent allowed to write to a test DB can corrupt its data — isolation doesn't catch this",
+          "Close the remaining threats via [[node:sas-least-privilege|least privilege]] (trim rights) and outbound-connection control — isolation works only in combination"
+        ],
+        "validate": "You've listed at least 3 threats remaining open under perfect isolation and named an additional countermeasure for each beyond the sandbox.",
+        "tip": "Isolation answers 'how big is the box'. Least privilege answers 'what can be done inside'. Security is the intersection of both, not either one alone."
+      }
+    }
+  },
+  "course-sas-docker-computer-use": {
+    "title": "Reference Computer Use in Docker",
+    "subtitle": "Running Anthropic's official container: a virtual desktop, noVNC viewing, and hard resource and network isolation",
+    "totalTime": "6 steps",
+    "whatItIs": "Anthropic's reference Computer Use implementation is a Docker image with a full Linux desktop inside: a window manager, a virtual display via Xvfb, a VNC server, and a noVNC bridge that streams the screen to a browser over WebSocket. It also contains the agent loop that turns screenshots into mouse and keyboard actions through the computer use tool. The container is self-contained: nothing is installed on the host, and all of Claude's interaction with the 'computer' happens strictly within the container's boundary.",
+    "approach": "The course moves from image anatomy to a safe, governed launch. First we dissect what actually lives in the layers (X stack, VNC, noVNC, agent loop), then we start the container and connect to the screen through the browser. Once the base loop works, we tighten the screws: limit CPU/RAM/pids, isolate the network, and remove bind-mounts of personal folders and secrets. The finale turns a one-off demo into a reproducible, observable, least-privilege rig suitable for both testing and controlled production.",
+    "outcomes": [
+      "Understand the reference image's layers: Xvfb + window manager + VNC server + noVNC + agent loop, and where the trust boundary runs between them",
+      "Launch the Computer Use container and connect to the virtual desktop via the browser over noVNC without installing anything on the host",
+      "Apply CPU, memory, and pids limits so a stuck or hostile agent cannot take the host down",
+      "Isolate the container's network: cut outbound traffic or restrict it to an allowlist without breaking the agent itself",
+      "Tell a throwaway demo from a reproducible rig: pinned image, no stray mounts, a controlled access surface"
+    ],
+    "applyIn": [
+      {
+        "title": "UI agent regression tests",
+        "description": "Run desktop-control scenarios in an identical, reproducible environment: same image, same screen resolution, same apps — results are comparable across runs."
+      },
+      {
+        "title": "Controlled production worker",
+        "description": "The agent performs routine operations in GUI apps inside a resource- and network-limited container while you observe and intervene via noVNC when needed."
+      },
+      {
+        "title": "Safe environment for untrusted tasks",
+        "description": "Run potentially dangerous or arbitrary user tasks in a throwaway container with no bind-mounts and a trimmed network — consequences stay inside the sandbox."
+      }
+    ],
+    "pitfalls": [
+      "Mounting personal folders or files with real secrets into the container — a bind-mount punches through isolation and gives the agent host access",
+      "Leaving noVNC/VNC reachable without authentication on an external interface — that is an open remote desktop for everyone on the network",
+      "Running without CPU/RAM/pids limits — a stuck agent loop or a fork bomb inside the GUI takes the host machine down",
+      "Assuming the default bridge network is safe: with no explicit policy the agent freely reaches the internet and the host's internal network",
+      "Passing a real API key via environment variables into a shared or logged image — the key leaks into history and layers"
+    ],
+    "exercises": [
+      {
+        "question": "The agent needs to open a web page inside the desktop, but policy requires cutting it off entirely from your internal network. How do you allow only outbound access and close off the RFC1918 ranges?",
+        "hint": "Think at the container's network mode and firewall/allowlist level, not app settings: a dedicated network plus egress rules blocking private subnets."
+      },
+      {
+        "question": "After an hour the container ate all the host's memory. Which three limits do you add to prevent a recurrence, and how do you verify they applied?",
+        "hint": "Memory, CPU, and process-count limits are set at container launch; verify via inspecting the running container and watching it under load."
+      },
+      {
+        "question": "You want reproducibility across test runs. What do you pin in the image and launch so screenshots and click coordinates match?",
+        "hint": "A pinned image tag/digest, a fixed virtual-display resolution, and no volatile state coming in through mounts."
+      }
+    ],
+    "steps": {
+      "sas-docker-computer-use-1": {
+        "title": "Dissect the reference image's anatomy",
+        "time": "",
+        "why": "Before launching, you need to understand what the desktop is built from: which processes draw the screen, which streams it to the browser, and where the agent loop lives. Without this map you cannot meaningfully limit resources and the network.",
+        "instructions": [
+          "Study the reference image's Dockerfile: find the X stack install (Xvfb), the window manager, the VNC server, and noVNC",
+          "Note the agent loop process — the component that sends screenshots to the model and applies computer use tool actions",
+          "Understand the display chain: Xvfb → VNC server → noVNC (WebSocket bridge) → browser",
+          "Confirm that the whole GUI and the whole agent live inside the container — the host link is only via explicitly published ports and mounts"
+        ],
+        "validate": "You can verbally describe which process renders the screen, which streams it to the browser, and which performs Claude's actions.",
+        "tip": "This container is a special case of the general idea of an [[node:sys-agent-sandbox|isolated agent sandbox]]; keep the trust boundary in mind on every step."
+      },
+      "sas-docker-computer-use-2": {
+        "title": "Launch the Computer Use container",
+        "time": "",
+        "why": "The first launch gives you a working 'screenshot → action' loop and the base to bolt restrictions onto. First get the agent alive, then tighten.",
+        "instructions": [
+          "Pass the Claude API key via an environment variable at launch, not baked into the image",
+          "Publish the noVNC port on the local (loopback) interface, not on all host interfaces",
+          "Start the container and wait for Xvfb, VNC, and noVNC to come up",
+          "Check the logs: the agent loop started and is ready to accept a task"
+        ],
+        "validate": "The container is running, the logs show no X/VNC/noVNC startup errors, and the agent process is waiting for input.",
+        "tip": "Binding the port to loopback (not 0.0.0.0) is the cheapest way to avoid turning the demo into an open remote desktop."
+      },
+      "sas-docker-computer-use-3": {
+        "title": "Connect to the desktop via noVNC",
+        "time": "",
+        "why": "noVNC is your observation window and manual intervention point. Without visual control you will not see the agent click the wrong place or get stuck on a dialog.",
+        "instructions": [
+          "Open the published noVNC address in the browser and wait for the virtual desktop to appear",
+          "Confirm you see the cursor and UI reactions — the screen streams in real time",
+          "Give the agent a simple task (e.g., open an app) and watch the actions on screen",
+          "Verify you can take over mouse/keyboard control when needed"
+        ],
+        "validate": "You see a live desktop in the browser, Claude's actions are displayed, and you can intervene manually.",
+        "tip": "This viewing setup is the basis of [[node:sas-remote-access|remote access to the sandbox]]; do not expose it externally without a separate authentication layer."
+      },
+      "sas-docker-computer-use-4": {
+        "title": "Apply resource limits",
+        "time": "",
+        "why": "The agent loop can spin forever and GUI apps can spawn processes uncontrollably. Limits turn 'may take the host down' into 'hits a ceiling inside the container'.",
+        "instructions": [
+          "Set memory and CPU limits at container launch based on the real task profile",
+          "Limit the number of processes (pids-limit) to rule out a fork bomb inside the desktop",
+          "Run a typical workload and watch consumption under the limits",
+          "Confirm that hitting the ceiling kills the container, not the host"
+        ],
+        "validate": "Inspecting the container shows the applied memory, CPU, and pids limits, and under load the host stays responsive.",
+        "tip": "Tune limits to the actual profile: too strict kills legitimate GUI operations, too loose offers no protection."
+      },
+      "sas-docker-computer-use-5": {
+        "title": "Isolate the container's network",
+        "time": "",
+        "why": "By default the container freely reaches the internet and the host's internal network. For untrusted tasks this is the main leak and attack channel — narrow it to the minimum.",
+        "instructions": [
+          "Decide the policy: fully cut the network, keep outbound only, or restrict to an allowlist",
+          "Put the container on a dedicated network and block private subnets (RFC1918) to close off internal infrastructure",
+          "Preserve access to the Anthropic API if the agent needs it, without opening the rest",
+          "Verify the policy from inside the container: allowed works, disallowed does not"
+        ],
+        "validate": "From inside the container only explicitly allowed addresses are reachable; the host's internal network and extra egress are not.",
+        "tip": "Build on the principles of [[node:sas-network-isolation|sandbox network isolation]]: deny by default, open selectively."
+      },
+      "sas-docker-computer-use-6": {
+        "title": "Turn the demo into a reproducible rig",
+        "time": "",
+        "why": "A one-off launch is unfit for testing and production. You need determinism: the same image, the same screen resolution, no volatile state, and no extra privileges.",
+        "instructions": [
+          "Pin the image by tag or digest so runs are comparable",
+          "Set a fixed virtual-display resolution — click coordinates and screenshots depend on it",
+          "Remove all bind-mounts of personal folders and secrets; pass only what is strictly necessary",
+          "Assemble the launch into a single reproducible recipe (compose/script) with the limits and network policy from steps 4–5"
+        ],
+        "validate": "Two independent runs from one recipe yield the same environment and comparable screenshots, with no access to host data.",
+        "tip": "The ability to drive a virtual desktop here is a concrete manifestation of [[node:cap-computer|the computer use capability]]; the rig merely gives it safe boundaries."
+      }
+    }
+  },
+  "course-sas-vm-vps": {
+    "title": "Cloud VM or dedicated PC for the agent",
+    "subtitle": "A permanent, isolated home for an autonomous agent: when a VPS beats Docker, how to pick a provider, and how to keep cost under control",
+    "totalTime": "6 steps",
+    "whatItIs": "A separate cloud virtual machine (VPS) or an old physical computer dedicated solely to the agent. Unlike a container on your work machine, such a VM stays on 24/7, is physically separated from your environment, and has no access to it. This gives the agent a full desktop, a persistent IP, scheduled autostart, and a blast radius limited to a single disposable machine.",
+    "approach": "We move from threat model to infrastructure. First we decide when a VM is actually needed instead of a container — it is not the default but an answer to specific requirements (24/7, GUI, persistent IP, physical isolation). Then we pick a provider and size to fit the budget, stand up an isolated account/project (not a corporate server!), put the agent there, attach secrets and a kill-switch, and on top add autostop and budget alerts so a forgotten machine doesn't eat money. Every step ends with a check: the machine is disposable, tearing it down and recreating it is routine, not a catastrophe.",
+    "outcomes": [
+      "Make a justified VM-vs-container decision from a requirements checklist rather than habit",
+      "Stand up an isolated provider account/project with a separate payment method and no production access",
+      "Deploy the agent with a virtual desktop via a reproducible script (snapshot/cloud-init) ready for recreation",
+      "Keep secrets out of the image and have a working kill-switch for instant shutdown",
+      "Keep cost under control via idle autostop, budget alerts, and snapshot+destroy"
+    ],
+    "applyIn": [
+      {
+        "title": "Nightly autonomous 24/7 agent",
+        "description": "An agent that monitors, scrapes, or runs browser tasks on a schedule while your laptop is off. A VPS gives constant uptime and IP; a local container does not."
+      },
+      {
+        "title": "Computer-use with a GUI",
+        "description": "Tasks where the agent needs a real desktop and browser (clicks, forms, anti-bot). A full desktop in a VM is simpler and more stable than a headless container."
+      },
+      {
+        "title": "Hard isolation of risky actions",
+        "description": "When the agent touches money, external APIs, or untrusted code — a disposable VM in a separate account gives a blast radius of one machine you won't mind destroying."
+      }
+    ],
+    "pitfalls": [
+      "Using the company's work server or a shared account with access to internal systems — isolation is completely lost, blast radius = the entire infrastructure",
+      "Forgetting autostop: a per-hour VM runs idle for months and burns the budget; with no alert you find out from the invoice",
+      "Baking secrets into the image or snapshot — they leak with any copy, and the kill-switch no longer saves you from a compromised key",
+      "Treating the VM as a pet, not cattle: manual tweaking without a script makes fast recreation after an incident impossible",
+      "Exposing SSH/RDP to the world with a password and default port — a machine in a public cloud is scanned by bots within minutes"
+    ],
+    "exercises": [
+      {
+        "question": "Your task: an agent logs into a site via a browser once an hour and collects data; your laptop is off at night. What do you pick — Docker on the laptop, a VPS without GUI, or a VPS with a desktop? Justify it along three axes: uptime, GUI, isolation.",
+        "hint": "Laptop off → a local container can't do 24/7. Browser clicks and anti-bot → you need a real desktop. That leaves a VPS with a virtual desktop in a separate account."
+      },
+      {
+        "question": "Design autostop for a per-hour VM needed only for nightly runs. Which two mechanisms do you set up so a forgotten machine costs nothing?",
+        "hint": "First — a schedule (start before the task window, stop/destroy after). Second — a provider budget alert plus idle autostop (no load for N minutes → shutdown)."
+      },
+      {
+        "question": "The VM is compromised: the agent ran suspicious code. Describe the action sequence given that you have a kill-switch, a separate account, and a snapshot script.",
+        "hint": "Kill-switch kills the agent/network → snapshot for forensics (no secrets!) → destroy the machine → rotate secrets in the store → recreate from cloud-init. The separate account guarantees production is untouched."
+      }
+    ],
+    "steps": {
+      "sas-vm-vps-1": {
+        "title": "Decide: VM or container",
+        "time": "",
+        "why": "A VM is not the default. It is pricier and heavier than a container. Before paying for a 24/7 machine, make sure a container ([[node:sas-docker-computer-use|Docker for computer use]]) truly can't cover the task. Otherwise you're overpaying for isolation Docker would have given anyway.",
+        "instructions": [
+          "Run the 4-requirement checklist: (1) you need 24/7 uptime while your machine is off; (2) you need a full GUI/desktop, not headless; (3) you need a persistent external IP; (4) you need physical isolation from your environment.",
+          "If 0–1 requirements hold — use a container, don't spin up a VM.",
+          "If 2+ hold (especially 24/7 or GUI) — a VM/VPS is justified.",
+          "Record the decision and reason in writing: it will later explain why you pay for a machine.",
+          "Tie the threat model to the sandbox basics in [[node:sys-agent-sandbox|the agent sandbox]]."
+        ],
+        "validate": "You have a written answer to the 4 checklist questions and an explicit reason \"VM because ___\" or \"a container is enough\".",
+        "tip": "Rule of thumb: \"24/7 OR a real desktop\" → VM. Everything else is usually covered by Docker."
+      },
+      "sas-vm-vps-2": {
+        "title": "Pick a provider and size",
+        "time": "",
+        "why": "The provider and tier define cost, billing granularity (per-hour vs per-month), and snapshot/API availability. The wrong choice means either overpaying or no way to autostop.",
+        "instructions": [
+          "Pick a provider with per-hour billing and a start/stop/destroy API — the basis for future autostop.",
+          "Choose the minimal size for the task: a small instance suffices for a headless agent; for desktop+browser budget more RAM (a desktop and Chrome are hungry).",
+          "Check that the provider has a snapshot/image API — needed for reproducible recreation.",
+          "Estimate the monthly cost of two scenarios: a 24/7 machine vs a scheduled machine. The gap is often a multiple.",
+          "Avoid a region/tier without per-hour billing — otherwise autostop saves nothing."
+        ],
+        "validate": "A provider with per-hour billing, a management API, and snapshots is chosen; you have a cost estimate for 24/7 and for a schedule.",
+        "tip": "An old physical PC at home costs zero rent but you pay in electricity, noise, and no snapshot API. Fine for experiments; for reliable 24/7 a VPS is more predictable."
+      },
+      "sas-vm-vps-3": {
+        "title": "Stand up an isolated account/project",
+        "time": "",
+        "why": "The headline mistake here is putting the agent on a corporate or shared server. Then the blast radius = the whole infrastructure. A separate account/project with its own payment method is exactly the isolation a VM is taken for.",
+        "instructions": [
+          "Create a separate provider account (or an isolated project/subaccount) unrelated to production and with no access to internal systems.",
+          "Attach a separate payment method with a limit — so an incident doesn't drag in your main account.",
+          "Give this VM no network access to corporate networks, VPN, or internal APIs.",
+          "Create separate keys/credentials for this machine only — no reuse of production access.",
+          "State it plainly: this machine is disposable and nothing critical is connected to it."
+        ],
+        "validate": "The VM lives in a separate account/project, with no access to internal systems, an isolated payment method, and its own credentials.",
+        "tip": "Isolation test: \"if this machine were deleted or hacked right now — what do I lose?\". The right answer is only the machine itself."
+      },
+      "sas-vm-vps-4": {
+        "title": "Deploy the agent reproducibly",
+        "time": "",
+        "why": "A VM should be cattle, not a pet: any one can be torn down and recreated in minutes. That's only possible if the deployment is described by a script (cloud-init / provision script / golden snapshot), not assembled by hand.",
+        "instructions": [
+          "Describe installing the agent and its environment (desktop, browser, runtime) with a cloud-init or provision script — no manual steps.",
+          "If a GUI is needed — stand up a virtual desktop where the agent and its browser live isolated.",
+          "Take a golden snapshot of the ready machine — but with no secrets inside (secrets are step 5).",
+          "Verify reproducibility: spin up a second VM from the same script/snapshot and confirm it's identical.",
+          "Destroy the second test machine — recreation should be routine."
+        ],
+        "validate": "A working VM with the agent comes up from the script/snapshot with no manual tweaking; the second copy is identical to the first.",
+        "tip": "If you catch yourself doing a \"quick\" manual SSH tweak — stop and add the step to the script. Otherwise you won't recreate it after an incident."
+      },
+      "sas-vm-vps-5": {
+        "title": "Secrets and kill-switch",
+        "time": "",
+        "why": "Secrets in the image leak with any snapshot copy, and an agent with no emergency button can't be stopped fast. These two mechanisms turn a \"dangerous autonomous machine\" into a managed one.",
+        "instructions": [
+          "Keep secrets out of the image and out of snapshots — inject them at runtime per the rules in [[node:sas-secrets|the agent's secrets and access]].",
+          "Set up a kill-switch: one mechanism that instantly kills the agent and/or its network — see [[node:sas-snapshots-killswitch|snapshots and emergency stop]].",
+          "Lock down VM access: SSH/RDP by key only, a non-default port or access via a bastion, an inbound firewall.",
+          "Verify that after the kill-switch the agent truly can't reach the outside world or spend resources.",
+          "Write an incident runbook: kill-switch → snapshot for forensics → destroy → rotate secrets."
+        ],
+        "validate": "Secrets are not in the image; the kill-switch actually stops the agent within seconds; VM access is locked by key/firewall.",
+        "tip": "Test the kill-switch before you need it. Hit it on a test VM and confirm the agent is dead, not \"nearly stopped\"."
+      },
+      "sas-vm-vps-6": {
+        "title": "Autostop and cost control",
+        "time": "",
+        "why": "A forgotten per-hour VM runs idle for months — the most common way to burn an agent budget. Autostop and alerts ensure an idle machine either shuts down itself or you hear about it immediately, not from the invoice.",
+        "instructions": [
+          "Set a schedule: start before the task window, stop or destroy after — via the provider API from step 2.",
+          "Add idle autostop: no load for N minutes → shutdown.",
+          "Enable a provider budget alert at a monthly threshold amount.",
+          "For rare runs use the snapshot+destroy pattern: keep a cheap snapshot, bring up the machine only for the task's duration.",
+          "Weekly, check there are no forgotten running instances or stale snapshots."
+        ],
+        "validate": "The VM doesn't run 24/7 without reason: there's a schedule or idle autostop, a budget alert is set, and extra instances/snapshots don't pile up.",
+        "tip": "Compare the bill: a scheduled machine for nightly tasks is often several times cheaper than 24/7. A snapshot costs pennies; an idle VM does not."
+      }
+    }
+  },
+  "course-sas-least-privilege": {
+    "title": "Least privilege for the agent",
+    "subtitle": "A separate non-admin account: grant only the needed rights and folders, close everything else",
+    "totalTime": "6 steps",
+    "whatItIs": "The least-privilege principle applied to the agent's execution environment: the agent runs as a dedicated unprivileged user with no sudo/admin, no access to other users' home directories or personal data, and filesystem rights limited to exactly the set of folders the task requires. Anything not explicitly granted is denied by default.",
+    "approach": "We move from threat model to concrete configuration. First we accept that the agent is compromisable (prompt injection, a wrong command, a leaked key), then we build the environment so the blast radius is minimal: create a separate user, strip away excess rights, mount only the working directory, remove sudo and host secrets, and finally prove by audit that the excess is actually closed. This is part of the overall [[node:sys-agent-sandbox|sandbox]] strategy and builds on [[node:sas-why-isolation|why isolation matters]].",
+    "outcomes": [
+      "The agent runs under a dedicated UID with no membership in sudo/wheel/docker and no ability to escalate privileges",
+      "Filesystem access is limited to whitelisted task folders; other users' homes and system paths are unreachable",
+      "Host secrets and keys are invisible to the agent process — only those explicitly passed via [[node:sas-secrets|secret management]]",
+      "There is a reproducible audit checklist proving excess rights are closed (not just 'seems to work')",
+      "The configuration is declarative and survives environment recreation without manual tweaking"
+    ],
+    "applyIn": [
+      {
+        "title": "CI/CD runners with an agent",
+        "description": "An agent in a pipeline executes code and commands. A separate unprivileged runner user with access only to the job's workspace stops an injection from reaching runner secrets or neighboring jobs."
+      },
+      {
+        "title": "Long-lived server agent",
+        "description": "An autonomous agent on a VPS processing tasks 24/7. Minimal rights turn a potential breach from 'root on the server' into 'access to one working folder'."
+      },
+      {
+        "title": "Local agent on a developer machine",
+        "description": "An agent with terminal access must not see ~/.ssh, ~/.aws, browser profiles, or personal repos. A separate account splits the work sandbox from the personal environment."
+      }
+    ],
+    "pitfalls": [
+      "Running as admin/root 'to avoid fiddling with permissions' — voids the whole security model in one move",
+      "Created a separate user but left them in the sudo/docker group — escalation to root is trivial, isolation is fictional",
+      "Mounted the entire $HOME or / read-write instead of one working folder — the whitelist became a de-facto 'everything'",
+      "Verified only that 'commands work' but never that the forbidden is actually forbidden (no negative tests)",
+      "Host secrets inherited via the parent process's environment variables — filesystem least privilege holds, yet keys leak"
+    ],
+    "exercises": [
+      {
+        "question": "You created user agent without sudo and mounted /home/agent/work. Which three negative checks prove the excess is closed?",
+        "hint": "Think of attempts to: 1) sudo / escalate; 2) read another $HOME and system secrets; 3) write outside work. Each must return Permission denied, not success."
+      },
+      {
+        "question": "The agent must read /etc/app/config.yaml but must not touch the rest of /etc. How do you grant exactly that without opening the whole directory?",
+        "hint": "A targeted read-only bind-mount or ACL on the specific file instead of directory access. Granularity at the file level, not the folder."
+      },
+      {
+        "question": "After setting permissions you notice the agent still sees the production API key. Where is the leak if the filesystem is correctly closed?",
+        "hint": "Check the process environment (env), inherited variables, and shared configs in accessible folders. Least privilege isn't only about files."
+      }
+    ],
+    "steps": {
+      "sas-least-privilege-1": {
+        "title": "Fix the threat model and minimum required access",
+        "time": "",
+        "why": "Least privilege cannot be configured without knowing what 'minimally needed' is. First define what you defend against and which rights the task truly requires — otherwise you grant excess 'just in case'.",
+        "instructions": [
+          "List realistic threats: prompt injection, a wrong destructive command, a leaked key, a compromised dependency",
+          "Build an exact list of what the agent needs: specific folders (rw/ro), binaries, network targets, secrets",
+          "Everything not on the list is denied by default (default-deny)",
+          "Tie the model to overall isolation: see [[node:sas-why-isolation|why isolation matters]]"
+        ],
+        "validate": "There is a written 'needs' list (whitelist) and an explicit 'everything else is denied'. No items like 'disk access just in case'.",
+        "tip": "If you can't justify why the agent needs a specific right, that's a signal it's excess. Default-deny makes the default decision the safe one."
+      },
+      "sas-least-privilege-2": {
+        "title": "Create a dedicated unprivileged user",
+        "time": "",
+        "why": "A separate account is the foundation of rights isolation. Under a shared/personal user the agent inherits all your access; under a dedicated UID its rights start from zero and grow deliberately.",
+        "instructions": [
+          "Create a service user with no interactive login: useradd -r -s /usr/sbin/nologin -M agent",
+          "Do not add it to any privileged group (sudo, wheel, docker, adm)",
+          "Give it a minimal empty $HOME, without copying a skeleton of foreign configs",
+          "Run the agent process strictly as this user, not as root and not as your account"
+        ],
+        "validate": "id agent shows only its own group, no sudo/wheel/docker. Logging in as agent is impossible (nologin).",
+        "tip": "The -r (system account) prefix and nologin immediately remove a whole class of risks: such a user isn't meant for humans."
+      },
+      "sas-least-privilege-3": {
+        "title": "Remove the ability to escalate privileges",
+        "time": "",
+        "why": "An unprivileged user is useless if they can become root via sudo, a setuid binary, or docker-group membership. Privilege escalation is the main bypass of least privilege and must be explicitly closed.",
+        "instructions": [
+          "Ensure there are no rules for agent in /etc/sudoers and sudoers.d (sudo -l -U agent must refuse)",
+          "Verify the agent isn't in the docker group: membership there equals root on the host",
+          "Run the process with no-new-privileges (kernel flag/service setting) to block setuid escalation",
+          "Restrict available setuid binaries (ping, sudo, su) — the agent doesn't need them"
+        ],
+        "validate": "sudo -l -U agent → refusal. An su/sudo attempt as the agent → Permission denied. Agent not in docker/wheel.",
+        "tip": "no-new-privileges is a cheap, powerful guard: even a setuid binary won't raise rights. In systemd that's NoNewPrivileges=yes."
+      },
+      "sas-least-privilege-4": {
+        "title": "Mount only the task's working folders",
+        "time": "",
+        "why": "The heart of filesystem least privilege: the agent should see the working directory and nothing beyond it. Access to others' $HOME, the system root, or shared configs turns any mistake into a leak.",
+        "instructions": [
+          "Grant rw access only to the task's working folder (e.g. /srv/agent/work); everything else is unreachable",
+          "Mount read-only anything needed only for reading (ro bind-mount or ro ACL)",
+          "Be granular at the file level where possible: a targeted bind-mount of /etc/app/config.yaml instead of all of /etc",
+          "Handle the network part separately — see [[node:sas-network-isolation|network isolation]]"
+        ],
+        "validate": "ls of other users' /home and cat of system files as the agent → Permission denied. Writes are possible only inside work.",
+        "tip": "Read-only by default, read-write only where the agent must write. Excess rw access is the most common source of silent corruption."
+      },
+      "sas-least-privilege-5": {
+        "title": "Cut off host secrets and environment",
+        "time": "",
+        "why": "Filesystem least privilege is worthless if keys leak through environment variables or shared configs. The agent process must not inherit host secrets — only those explicitly passed.",
+        "instructions": [
+          "Start the agent with a clean environment (env -i or ClearEnvironment), not inheriting the parent's env",
+          "Pass only the needed secrets explicitly and narrowly — via [[node:sas-secrets|secret management]]",
+          "Remove from accessible folders any foreign ~/.ssh, ~/.aws, .env, tokens, and CI credentials",
+          "Deliver secrets through a protected channel (ACL'd file/secret store), not hardcoded in env forever"
+        ],
+        "validate": "env as the agent contains only the expected variables. A search across accessible folders finds no host keys or tokens.",
+        "tip": "An inherited env is the most invisible hole: the filesystem is closed, yet $AWS_SECRET_ACCESS_KEY is still in the process. Always start with an empty environment."
+      },
+      "sas-least-privilege-6": {
+        "title": "Prove by audit that the excess is closed",
+        "time": "",
+        "why": "'Commands work' doesn't mean 'excess is forbidden'. Without negative tests you only checked the happy path. An audit turns confidence into proof and catches holes before an attacker does.",
+        "instructions": [
+          "Run negative checks: attempts to sudo, read another $HOME, write outside work, access secrets — all must fail with Permission denied",
+          "Capture the checklist as a reproducible script to rerun after every environment recreation",
+          "Compare actual rights against the step-1 whitelist: nothing excess slipped through",
+          "Add the audit to the sandbox's regular check — see [[node:sys-agent-sandbox|agent sandbox]]"
+        ],
+        "validate": "Every forbidden operation returns a refusal (not success, not an empty result). The audit script passes in full and is repeatable.",
+        "tip": "Store the audit as code next to the environment config: recreated the sandbox — rerun the check. Security you don't verify degrades silently."
+      }
+    }
+  },
+  "course-sas-network-isolation": {
+    "title": "Network isolation and allowlist",
+    "subtitle": "Lock the agent down on the network with deny-by-default: allow only what the task needs",
+    "totalTime": "6 steps",
+    "whatItIs": "Network isolation is control over where the agent's machine can reach on the network. The baseline policy is deny-by-default: all outbound traffic is blocked, and an allowlist opens only the specific domains and ports the task needs. Separately, the local network (RFC1918: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and the cloud metadata endpoint 169.254.169.254 are blocked, so the agent can't pull instance credentials or reach internal services.",
+    "approach": "Move from a full block to targeted allowances. First close all egress, then add the minimal set of domains the agent's task requires to the allowlist, separately cut off private ranges and metadata, verify the task still works, and lock in the security-vs-functionality balance. Every allowance is a deliberate decision, not a 'just in case'.",
+    "outcomes": [
+      "Understand why open internet for an agent is a ready-made channel for data exfiltration and SSRF",
+      "Can build a deny-by-default + domain allowlist policy at the firewall or proxy level",
+      "Block access to the local network (RFC1918) and cloud metadata 169.254.169.254",
+      "Verify the allowlist actually works: allowed traffic passes, everything else fails",
+      "Keep the balance — isolation doesn't break the agent's legitimate task"
+    ],
+    "applyIn": [
+      {
+        "title": "Agent with internet access",
+        "description": "The agent reaches external APIs and sites. Without an allowlist, an agent compromised via prompt injection will leak data to any address. The allowlist leaves it only the API domains."
+      },
+      {
+        "title": "Cloud agent next to metadata",
+        "description": "On EC2/GCE the agent is one step from 169.254.169.254 — the instance's IAM credentials. Blocking the metadata endpoint closes the classic escalation path."
+      },
+      {
+        "title": "Agent next to the internal network",
+        "description": "An agent in a corporate VPC can reach internal databases and admin panels. Blocking RFC1918 ranges cuts off lateral movement on compromise."
+      }
+    ],
+    "pitfalls": [
+      "Leaving egress open 'so it doesn't get in the way' — that is the main data-leak channel",
+      "Blocking domains but forgetting private IPs and metadata — the agent reaches 169.254.169.254 directly",
+      "Allowlisting wildcard domains (*.com, broad CDNs) — effectively reopens the internet",
+      "Not testing the policy in practice: you think the block works, but DNS resolution or the proxy bypasses it",
+      "Overdoing it and blocking domains the task needs — the agent silently fails and isolation gets rolled back entirely"
+    ],
+    "exercises": [
+      {
+        "question": "The agent needs only api.example.com. What default network policy do you set, and what do you add to the allowlist?",
+        "hint": "Start with deny-all on all egress, then a single allow rule for the specific domain and port 443. Think about DNS."
+      },
+      {
+        "question": "Why is blocking 'bad' domains via a denylist not enough, and why is deny-by-default fundamentally better?",
+        "hint": "A denylist enumerates known evil — but the attacker uses a new address. What happens to an unknown domain in each model?"
+      },
+      {
+        "question": "How do you verify that the 169.254.169.254 and RFC1918 block actually works from inside the agent's sandbox?",
+        "hint": "A curl/request to the metadata endpoint and to an arbitrary 10.x should time out or be rejected, while an allowed domain responds."
+      }
+    ],
+    "steps": {
+      "sas-network-isolation-1": {
+        "title": "Understand why restrict the network at all",
+        "time": "",
+        "why": "Open internet for an agent is a bidirectional channel: data can leak out, and external content (via prompt injection) can drive the agent. Without a threat model, isolation becomes a random set of rules.",
+        "instructions": [
+          "State two threats: data exfiltration (the agent sends secrets to a foreign address) and SSRF/access to the internal network",
+          "Connect this to the fact that injection in content can make the agent issue an arbitrary network request — see [[node:b-prompt-injection|prompt injection]]",
+          "Fix the goal: isolation narrows the attack surface, it doesn't break the task",
+          "Lean on the broader minimization principle — see [[node:sas-least-privilege|least privilege]] and [[node:sas-why-isolation|why isolation]]"
+        ],
+        "validate": "You can explain in two sentences exactly what harm the network allowlist prevents for your agent.",
+        "tip": "The network is a privilege like any other. Apply the same minimum-access logic you use for files and tokens."
+      },
+      "sas-network-isolation-2": {
+        "title": "Enable deny-by-default on egress",
+        "time": "",
+        "why": "A denylist (blocking the bad) loses by definition: the attacker picks a new address. Deny-by-default closes everything unknown, and each exception becomes a conscious choice.",
+        "instructions": [
+          "Set the policy: all outbound traffic from the agent's sandbox is denied by default",
+          "Implement it at the container/VM firewall level or via a forced egress proxy the agent can't bypass",
+          "Ensure there's no path around the proxy (the agent must not have a direct raw socket outward)",
+          "Don't add anything to the allowlist yet — at this step the network must be fully closed"
+        ],
+        "validate": "Any outbound request from the agent now fails (timeout or connection refused) — the baseline is set.",
+        "tip": "An egress proxy beats a plain firewall: it logs attempts and filters by domain, not just by IP."
+      },
+      "sas-network-isolation-3": {
+        "title": "Assemble the minimal domain allowlist for the task",
+        "time": "",
+        "why": "The allowlist must cover exactly what the agent's task needs and not a byte more. An extra domain is a potential leak channel; a missing one is a broken task.",
+        "instructions": [
+          "List the domains the task can't run without: target APIs, required services, data sources",
+          "Add full FQDNs with the port (api.example.com:443), avoid wildcards like *.com and broad CDNs",
+          "Account for DNS: either allow resolution of only these names, or pin the allowlist to their IPs",
+          "For each domain record why it's needed — an entry without justification gets removed"
+        ],
+        "validate": "Every allowlist entry has a concrete reason; there's no wildcard and no 'just in case'.",
+        "tip": "If a domain is needed only at one step of the scenario, open it dynamically for that step, not for the whole session."
+      },
+      "sas-network-isolation-4": {
+        "title": "Block the local network and metadata",
+        "time": "",
+        "why": "Even with a domain allowlist, the agent can reach private ranges by IP or the cloud metadata — a path to the instance's IAM credentials and internal services. Cut these addresses off explicitly.",
+        "instructions": [
+          "Block the RFC1918 private ranges: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16",
+          "Block cloud metadata: 169.254.169.254 (and the whole link-local 169.254.0.0/16)",
+          "Block loopback escaping the sandbox and the IPv6 equivalents (fc00::/7, fe80::/10)",
+          "Make sure the block holds even when the agent connects by raw IP rather than by name"
+        ],
+        "validate": "A request to 169.254.169.254 and to any 10.x/192.168.x address is rejected, even if an allowlisted domain resolves to such an IP.",
+        "tip": "Check for rebinding: an allowlisted domain must not point via DNS to a private IP — otherwise the block is bypassed."
+      },
+      "sas-network-isolation-5": {
+        "title": "Verify the policy actually works",
+        "time": "",
+        "why": "An untested policy is more dangerous than none: you think you're protected, but DNS resolution, a proxy bypass, or a forgotten rule opens a hole. Isolation counts only after verification.",
+        "instructions": [
+          "From inside the agent's sandbox, make a request to an allowed domain — it must pass",
+          "Make a request to an arbitrary external domain not on the allowlist — it must fail",
+          "Verify the metadata and private-IP block by connecting to the address directly",
+          "Review the egress proxy log: are rejected attempts visible, and is there no leak past the proxy"
+        ],
+        "validate": "Allowed traffic passes, everything else (including metadata and RFC1918) is reliably blocked — confirmed by tests, not assumption.",
+        "tip": "Automate these checks as a sandbox test — see [[node:sys-agent-sandbox|agent sandbox]] — so policy regressions get caught immediately."
+      },
+      "sas-network-isolation-6": {
+        "title": "Balance isolation against the agent's task",
+        "time": "",
+        "why": "Too strict a policy breaks the task and the team rolls back isolation entirely — worse than a moderate but living policy. The goal is minimum access at which the task still runs.",
+        "instructions": [
+          "Run the real agent scenario under the active policy and collect every network denial",
+          "Triage each denial: a needed domain (add to the allowlist with justification) or a stray attempt (keep it blocked)",
+          "Don't widen the allowlist with a wildcard for convenience — add precisely",
+          "Document the final policy and revisit it when the agent's task changes — see [[node:sas-least-privilege|least privilege]]"
+        ],
+        "validate": "The agent completes its task fully while the allowlist stays minimal and every allowance is justified.",
+        "tip": "Treat the allowlist like a dependency: as the task changes, the set of domains changes with it rather than growing forever."
+      }
+    }
+  },
+  "course-sas-secrets": {
+    "title": "One-time accounts and secrets for the agent",
+    "subtitle": "Give the agent its own least-privilege accounts, revocable tokens, and clean secret delivery — never your passwords",
+    "totalTime": "6 steps",
+    "whatItIs": "The practice of giving an agent not your real passwords but separate one-time or limited accounts and tokens with the minimum set of rights. Secrets are delivered via environment variables or a secret manager — not typed by hand and not written into the instruction text. Each token is isolated, has a lifetime, and can be revoked independently without touching your main credentials.",
+    "approach": "We move from threat model to operations: first separate the agent's identity from yours (a dedicated service account), then trim its rights to the strict minimum, then set up clean secret delivery (env/secret manager, not code or history), add a lifetime and rotation, and finish with a ready revocation and leak-response plan. Each step is a standalone technical control that holds even if the others fail.",
+    "outcomes": [
+      "Create dedicated service accounts for the agent, unlinked from your personal accounts",
+      "Trim token rights to the minimum (scope, read-only, resource and IP restrictions)",
+      "Deliver secrets via env/secret manager so they never reach code, image, or history",
+      "Set token lifetime and regular rotation without task downtime",
+      "Revoke a compromised token in minutes and run an incident review against a checklist"
+    ],
+    "applyIn": [
+      {
+        "title": "Agent with external API access",
+        "description": "The agent calls a GitHub/payment/CRM API: issue a fine-grained token scoped only to the needed repos/endpoints, read-only where writes aren't needed."
+      },
+      {
+        "title": "Automating a service login",
+        "description": "The agent must log into a SaaS: create a separate service account with a reduced role instead of sharing your login and 2FA."
+      },
+      {
+        "title": "CI/CD and background jobs",
+        "description": "The agent runs in a pipeline: the secret comes from a secret manager into the runner's environment for the job's duration and never lands in logs or artifacts."
+      }
+    ],
+    "pitfalls": [
+      "Giving the agent your personal password or admin token \"just to be sure\" — compromising the agent compromises the whole account",
+      "Embedding a secret in the instruction text, code, Docker image, or a commit — it stays forever in git history and image layers",
+      "Issuing an over-privileged token (write/admin instead of read) or one with no resource scope — it blows up the blast radius on leak",
+      "Setting no lifetime and never rotating — an eternal token lives for years and leaks unnoticed",
+      "Having no ready revocation plan — on a leak you spend hours figuring out where the token is even used"
+    ],
+    "exercises": [
+      {
+        "question": "You hold an admin-rights secret the agent uses to read a single table. What three changes do you make first?",
+        "hint": "Think along axes: privilege level (scope), resource binding, lifetime. Least privilege — see [[node:sas-least-privilege|least privilege]]."
+      },
+      {
+        "question": "The agent's token accidentally ended up in a public log. Describe your first 10 minutes of action.",
+        "hint": "Revoke first, then assess usage, then rotate and review. Environment isolation — [[node:sys-agent-sandbox|agent sandbox]], emergency stop — [[node:sas-snapshots-killswitch|snapshots and kill-switch]]."
+      },
+      {
+        "question": "How do you deliver a secret into the agent's container so it never lands in the image or shows up in `docker history`?",
+        "hint": "Build-time vs run-time. The secret goes only into the environment/secret manager at runtime, never into an image layer."
+      }
+    ],
+    "steps": {
+      "sas-secrets-1": {
+        "title": "Separate the agent's identity from yours",
+        "time": "",
+        "why": "If the agent runs under your personal account, any mistake or compromise hits your main access. A dedicated service identity gives isolation and independent revocation.",
+        "instructions": [
+          "Create a separate service account (service account / machine user) per agent or task instead of using your personal login",
+          "Never hand the agent your password or ask it to \"log in with your password\" — that's a direct antipattern",
+          "Tie the account to a clear owner and purpose so it's easy to find and revoke",
+          "Isolate execution in an [[node:sys-agent-sandbox|agent sandbox]] so the environment has no access to your personal sessions and caches"
+        ],
+        "validate": "The service has a separate agent account; your personal account appears nowhere in the agent's config.",
+        "tip": "Name service accounts `agent-<task>-<env>` — during an incident you instantly see what to revoke."
+      },
+      "sas-secrets-2": {
+        "title": "Trim rights to the minimum",
+        "time": "",
+        "why": "The blast radius of a leak equals the token's rights. Read-only and a narrow scope turn a serious leak into a minor one.",
+        "instructions": [
+          "Issue a fine-grained token only for the resources and actions the task actually needs",
+          "Use read-only everywhere writes aren't required; grant write/admin only for the specific operation",
+          "Scope the token to a resource (a specific repo/project/table) and, where possible, to an IP/network",
+          "Cross-check against [[node:sas-least-privilege|least privilege]] and [[node:m-security|security]] before issuing"
+        ],
+        "validate": "The token can't perform anything beyond the task: an attempt to write or reach another resource is rejected.",
+        "tip": "Test rights in reverse: try doing with the token what it shouldn't — a denial confirms the scope is correct."
+      },
+      "sas-secrets-3": {
+        "title": "Deliver the secret cleanly, leaving no trace",
+        "time": "",
+        "why": "A secret in code, image, or git history stays there forever and leaks with the repo. Clean delivery via the environment breaks that link.",
+        "instructions": [
+          "Pass the secret via environment variables or a secret manager at runtime, not typed by hand or in the instruction text",
+          "Never commit secrets: keep them out of the repo, add patterns to `.gitignore`, and enable secret scanning",
+          "Don't bake the secret into a Docker image at build-time — it sticks in layers and `docker history`; use run-time env or mounted secrets",
+          "Exclude secrets from the agent's logs, traces, and error messages"
+        ],
+        "validate": "`git log -p` and `docker history` for the image contain no secret; the agent gets it only from the environment at runtime.",
+        "tip": "Add a pre-commit hook with a secret detector — it catches a token before it reaches history."
+      },
+      "sas-secrets-4": {
+        "title": "Set a lifetime and rotation",
+        "time": "",
+        "why": "An eternal token lives for years and leaks unnoticed. A short TTL and regular rotation by themselves shrink the attack window.",
+        "instructions": [
+          "Give every token a lifetime (TTL): for a one-off task — for the task's duration; for ongoing ones — short with auto-refresh",
+          "Where possible, use short-lived tokens issued on demand instead of static long-lived ones",
+          "Set up regular rotation so the old token leaves circulation without downtime (new/old overlap)",
+          "Keep a registry of active agent tokens: where issued, what rights, when they expire"
+        ],
+        "validate": "Every token has an expiry; rotation passes without breaking tasks, and the old token is rejected after rotation.",
+        "tip": "Tie token expiry to task duration: a one-off agent gets a token that dies by the task's end."
+      },
+      "sas-secrets-5": {
+        "title": "Prepare revocation and emergency stop",
+        "time": "",
+        "why": "In an incident, minutes count. A known way to revoke a token and stop the agent turns panic into a procedure.",
+        "instructions": [
+          "Verify in advance where and how each token is revoked — revocation should take seconds, not a doc search",
+          "Link each token to its consumer so on revocation you immediately know which task will stall",
+          "Prepare an emergency agent stop via [[node:sas-snapshots-killswitch|snapshots and kill-switch]] for active compromise",
+          "Run a revocation drill: revoke a test token and confirm the agent loses access correctly"
+        ],
+        "validate": "A test revocation is done: afterward the agent gets access denied, and you know which task it affected.",
+        "tip": "Keep one command/button to revoke each token at hand — an incident is too late to go searching for it."
+      },
+      "sas-secrets-6": {
+        "title": "Respond to a leak by checklist",
+        "time": "",
+        "why": "Without a rehearsed plan a leak becomes hours of chaos. A checklist sets the order: stop first, then investigate.",
+        "instructions": [
+          "Step 1 — immediately revoke the compromised token and stop the agent, without waiting for a full review",
+          "Step 2 — assess what the token could do in the leak window: check access logs against its rights and resources",
+          "Step 3 — issue a new least-privilege token and find how the old one leaked (code, log, image, history)",
+          "Step 4 — close the root cause and record the incident so the same leak path doesn't recur",
+          "Cross-check the procedure with general [[node:m-security|security]] rules"
+        ],
+        "validate": "For a drill incident all steps are done: token revoked, usage assessed, new one issued, root cause closed and documented.",
+        "tip": "Treat every leaked token as used: assume the worst and check the logs rather than hoping it 'wasn't reached in time'."
+      }
+    }
+  },
+  "course-sas-snapshots-killswitch": {
+    "title": "Snapshots, rollback and kill-switch",
+    "subtitle": "Reversibility and emergency stop for an autonomous agent: clean-state snapshot, fast rollback, instant kill-switch and spending caps",
+    "totalTime": "6 steps",
+    "whatItIs": "A layer of reversibility and control over an autonomous agent. A snapshot captures the clean state of the environment before a run, rollback restores it there in seconds, the kill-switch instantly terminates the agent and all its child processes, and spending and time caps guarantee the loop won't run away or burn the budget. Together they turn any incident from an 'irreversible catastrophe' into a routine rollback to a known point.",
+    "approach": "Build three independent mechanisms and verify each separately. First take a clean-state snapshot (FS + configs + DB), then learn to roll back to it in seconds, then add a kill-switch that tears down the agent's process and leaves no orphaned children, add hard caps on tokens/money/time with automatic stop, and finally rehearse recovery regularly — because an untested backup doesn't exist. Each mechanism must fire without a human and faster than the agent can do damage.",
+    "outcomes": [
+      "Take a reproducible clean-state snapshot of the environment and know exactly what's in it (FS, DB, secrets, agent state)",
+      "Roll back the environment to a snapshot in seconds and verify rollback integrity with an automated check",
+      "Implement a kill-switch that instantly stops the agent along with its entire child process tree",
+      "Configure caps on tokens, money and wall-clock time with an automatic stop on overrun",
+      "Run a regular restore drill and prove that rollback actually works"
+    ],
+    "applyIn": [
+      {
+        "title": "Scheduled autonomous agent",
+        "description": "A cron agent that edits code, migrates data or sends notifications unsupervised at night. A pre-run snapshot plus a time-limit kill-switch turn a silent night failure into a painless morning rollback."
+      },
+      {
+        "title": "Experiments with destructive operations",
+        "description": "An agent testing DB migrations, bulk file edits or commands with side effects. Rolling back to a snapshot after each iteration gives a clean bench and removes cruft accumulating between runs."
+      },
+      {
+        "title": "Budget control on long tasks",
+        "description": "A long reasoning loop risks looping and burning tokens. A hard spending cap with auto-stop catches overspend before the API bill becomes a problem."
+      }
+    ],
+    "pitfalls": [
+      "The snapshot captures a 'dirty' state: uncommitted changes, temp files, caches — rollback restores the wrong thing. Snapshot only a verified-clean point",
+      "The kill-switch kills the parent process but leaves orphaned children and connections — the agent is formally 'stopped' while work continues. Stop the whole process tree",
+      "The spending cap is checked after the fact, not on every step — by the time it triggers the budget is already over. Count tokens incrementally and stop at the threshold",
+      "A backup exists but recovery was never tested — at incident time the snapshot turns out corrupt or incomplete. An untested rollback doesn't exist",
+      "The snapshot excludes external state (external DB, queues, cloud files) — FS rollback exists but data is inconsistent. Clearly fix the boundary of what's reversible"
+    ],
+    "exercises": [
+      {
+        "question": "Your kill-switch sends SIGTERM to the agent process, but after it fires the agent keeps writing to the DB for another minute. Why, and how do you fix it?",
+        "hint": "Think about child processes and process groups: the agent may have spawned subprocesses or background tasks that SIGTERM to the parent doesn't touch. Look toward the process group / whole container."
+      },
+      {
+        "question": "A snapshot is 8 GB and takes 3 minutes to make. How do you take frequent snapshots before every agent iteration without that delay?",
+        "hint": "A full snapshot every time is an antipattern. Think copy-on-write, incremental/differential snapshots and filesystem- or container-level snapshots instead of copying everything."
+      },
+      {
+        "question": "A $10 cap is set, but in one run the agent spent $40. Where's the gap between the cap and reality?",
+        "hint": "When exactly is the cap checked? If only at the end or every N minutes, the agent overspends between checks. You need an incremental check on every model call and a hard stop."
+      }
+    ],
+    "steps": {
+      "sas-snapshots-killswitch-1": {
+        "title": "Snapshot the clean state of the environment",
+        "time": "",
+        "why": "Rollback only makes sense with a reliable return point. The snapshot must capture a known-clean, reproducible state, or you'll roll back into garbage. It's the foundation of all reversibility — inside the [[node:sys-agent-sandbox|agent sandbox]].",
+        "instructions": [
+          "Define the snapshot boundary: working-directory filesystem, configs, DB state, environment variables — and explicitly fix what's NOT included (external services)",
+          "Bring the environment to a clean state: commit or discard changes, clear temp files and caches, stop background tasks",
+          "Take the snapshot at FS/container/VM level (copy-on-write or filesystem snapshot, not manual folder copying)",
+          "Tag the snapshot with a timestamp and content hash to distinguish versions and verify integrity"
+        ],
+        "validate": "The snapshot is created, tagged, and you can name the full list of what's in it and what stayed outside.",
+        "tip": "Snapshot right after a `git clean`/clean checkout — that way the return point is guaranteed free of artifacts from previous runs."
+      },
+      "sas-snapshots-killswitch-2": {
+        "title": "Fast rollback to a snapshot",
+        "time": "",
+        "why": "A snapshot without a rehearsed rollback procedure is dead weight. Rollback must take seconds and be fully automatic, so recovery doesn't depend on manual debugging under stress.",
+        "instructions": [
+          "Write one command/script that fully restores the environment to a given snapshot with no interactive prompts",
+          "Rollback must first destroy the current dirty state, then restore from the snapshot — not layer over it",
+          "Measure rollback time; target seconds, not minutes. If slow, move to CoW/incremental snapshots",
+          "Make rollback idempotent: re-running it on an already rolled-back environment doesn't break it"
+        ],
+        "validate": "Deliberately 'corrupt' the environment, run rollback with one command and confirm it returned to the snapshot in seconds.",
+        "tip": "Keep at least the last 2-3 snapshots: sometimes the latest point is also contaminated and you need to roll back one step deeper."
+      },
+      "sas-snapshots-killswitch-3": {
+        "title": "Kill-switch: instant agent stop",
+        "time": "",
+        "why": "When the agent goes rogue there's no time to investigate — you need one button that immediately tears down it and every process it spawned. A stop that doesn't kill child processes is an illusion of control.",
+        "instructions": [
+          "Run the agent in an isolated process group or container so a single stop covers the whole tree",
+          "Implement the kill-switch as a signal to the whole tree (process group / `docker kill` / stopping the [[node:sas-vm-vps|VM or VPS]] entirely)",
+          "Send SIGTERM first for a graceful exit, then after a short timeout SIGKILL to force it",
+          "Clean up external effects on stop: drop network connections and revoke temporary [[node:sas-remote-access|remote access]] credentials"
+        ],
+        "validate": "Run the agent with background child processes, pull the kill-switch and confirm not a single live agent process remains.",
+        "tip": "Verify the stop by fact (`ps`/process list), not by the kill command's exit code — it can return success while leaving orphaned children."
+      },
+      "sas-snapshots-killswitch-4": {
+        "title": "Caps on spending, tokens and time",
+        "time": "",
+        "why": "An autonomous loop can loop and burn the budget silently. Hard caps are an automatic kill-switch that fires without a human before overspend becomes a problem.",
+        "instructions": [
+          "Set three independent thresholds: max tokens/money per run, max model calls, max wall-clock time",
+          "Count consumption incrementally — after every model call, not at the end of the run",
+          "On hitting any threshold, automatically pull the kill-switch from step 3, not just log a warning",
+          "Log the stop reason (which cap fired and on which step) for later analysis"
+        ],
+        "validate": "Set a deliberately low cap, run a task and confirm the agent is hard-stopped on overrun with the reason recorded.",
+        "tip": "Keep the time cap strictly below the cron schedule interval — otherwise a hung run meets the next launch and they start stacking."
+      },
+      "sas-snapshots-killswitch-5": {
+        "title": "Regular restore drill",
+        "time": "",
+        "why": "An untested rollback doesn't exist. A snapshot can turn out corrupt, incomplete or incompatible — and you find out at exactly the moment of a real incident. A restore drill turns hope into a guarantee.",
+        "instructions": [
+          "Regularly (on a schedule) spin up a clean environment strictly from the snapshot and run a smoke test on it",
+          "Check not the fact of file restoration but workability: the environment starts, the agent launches, a basic scenario passes",
+          "Measure full recovery time and watch that it doesn't degrade as snapshots grow",
+          "If the drill fails, the snapshot is invalid; fix the snapshotting process rather than patching the rollback by hand"
+        ],
+        "validate": "The latest restore drill passed: the environment came up from the snapshot and the smoke test is green; you know the recovery date and time.",
+        "tip": "Automate the drill as a separate cron task with a notification — a manual rehearsal will inevitably be skipped right before the incident where it's needed."
+      },
+      "sas-snapshots-killswitch-6": {
+        "title": "Assembly: a single reversibility protocol",
+        "time": "",
+        "why": "Snapshot, rollback, kill-switch and caps are valuable only as one cycle around every agent run. Scattered mechanisms give a false sense of safety; a linked protocol gives real reversibility.",
+        "instructions": [
+          "Build a wrapper: before the agent runs — snapshot (step 1), then launch under caps (step 4) with an active kill-switch (step 3)",
+          "Tie automatic rollback (step 2) to a non-zero exit code or any cap firing",
+          "Include the periodic restore drill (step 5) in the overall environment maintenance schedule",
+          "Fix the reversibility boundary in writing: what rollback restores and what's external and irreversible",
+          "Run the full cycle on a practice incident end to end"
+        ],
+        "validate": "The single wrapper handles the scenario 'failure → auto-stop on cap → auto-rollback → clean environment' with no manual intervention.",
+        "tip": "Make the wrapper the only way to run the agent in prod: if the agent can be launched bypassing the protocol, sooner or later it will be — with no snapshot and no caps."
+      }
+    }
+  },
+  "course-sas-remote-access": {
+    "title": "Remote access to the agent's environment",
+    "subtitle": "How to connect safely to the agent's machine: SSH, noVNC, tunnels, and closing access afterwards",
+    "totalTime": "6 steps",
+    "whatItIs": "Remote access is the set of channels you use to connect to the agent's environment ([[node:sys-agent-sandbox|agent sandbox]] or [[node:sas-docker-computer-use|Docker container for computer use]]) to observe its actions, intervene, and verify the result. SSH gives you a command line; noVNC shows the desktop right in the browser. The key requirement: access must never be exposed to the public internet — only via key, tunnel, or inside an isolated network.",
+    "approach": "The course follows a 'minimal exposed surface' principle. First you bring up the channel inside isolation, bind it to loopback, forward access through an SSH tunnel instead of a public port, authenticate by key only, observe the agent in real time, and always close access once the session is over. Every step is verified by a command, not by eyeballing it.",
+    "outcomes": [
+      "Bring up SSH and noVNC inside the agent's environment, bound to loopback rather than a public interface",
+      "Forward access through an SSH tunnel (port forwarding) without exposing a single port to the outside",
+      "Configure key-only authentication with passwords and root login disabled",
+      "Observe the agent's actions in real time via noVNC and session logs",
+      "Reliably close the channel, rotate keys, and verify the port is no longer listening"
+    ],
+    "applyIn": [
+      {
+        "title": "Cloud agent environment",
+        "description": "The agent runs on a rented cloud VM. You connect to it through an SSH tunnel from your local machine to view the desktop in noVNC and stop the agent if needed."
+      },
+      {
+        "title": "Long autonomous task",
+        "description": "The agent runs a multi-hour task unattended. You connect periodically, check progress on screen, and step in if it gets stuck — without leaving access open between sessions."
+      },
+      {
+        "title": "Debugging computer use",
+        "description": "The agent drives a GUI application in a [[node:sas-docker-computer-use|Docker container]]. noVNC shows where it clicks and types, helping you find where the scenario breaks."
+      }
+    ],
+    "pitfalls": [
+      "Exposing VNC or SSH on 0.0.0.0 with a public IP — scanners find the port within minutes and brute-force it",
+      "Leaving VNC password authentication as the only defense — the VNC password is weak and transmitted insecurely without encryption",
+      "Forgetting to close access after the session: the tunnel, key, and listening port live on and become a permanent hole",
+      "Placing a private key or access password inside the agent's environment, where it can leak into log [[node:sas-secrets|secrets]] or the model's context",
+      "Relying on 'nobody knows the address' instead of real authentication and network isolation — security by obscurity doesn't work"
+    ],
+    "exercises": [
+      {
+        "question": "Why is noVNC bound to 127.0.0.1 and forwarded through an SSH tunnel safer than noVNC on a public port with a password?",
+        "hint": "Think about what a port scanner sees in each case and where the traffic gets encrypted."
+      },
+      {
+        "question": "The agent has finished its task. List at least three actions you must take so access is actually closed, not just 'disconnected'.",
+        "hint": "The tunnel is one thing. What about the listening process itself, the keys, and verifying the port no longer answers?"
+      },
+      {
+        "question": "Why must you not store the private SSH key inside the agent's environment itself?",
+        "hint": "The agent reads files and logs. Tie this to [[node:sas-secrets|secrets management]] and what can end up in the model's context."
+      }
+    ],
+    "steps": {
+      "sas-remote-access-1": {
+        "title": "Bring up the channel inside isolation, bound to loopback",
+        "time": "",
+        "why": "If a service listens on a public interface, it's reachable by the entire internet before you've set up any protection at all. Binding to loopback (127.0.0.1) makes it visible only from inside the host — the baseline line of defense.",
+        "instructions": [
+          "Start the SSH daemon and the noVNC/VNC server inside the agent's environment (see [[node:sys-agent-sandbox|agent sandbox]])",
+          "In the VNC/noVNC config, explicitly set the bind address to 127.0.0.1, not 0.0.0.0",
+          "For SSH, set ListenAddress 127.0.0.1 in sshd_config if the channel is only needed via a tunnel",
+          "Make sure the environment is already under [[node:sas-network-isolation|network isolation]] — a second layer in case of a bind mistake"
+        ],
+        "validate": "Running `ss -tlnp` (or `netstat -tlnp`) shows the SSH and VNC ports listening only on 127.0.0.1, not on 0.0.0.0 or an external IP.",
+        "tip": "With Docker, don't publish the port via `-p 0.0.0.0:5900:5900`. Either don't publish it at all (access via `docker exec`/tunnel), or use `-p 127.0.0.1:5900:5900`."
+      },
+      "sas-remote-access-2": {
+        "title": "Set up key-only authentication",
+        "time": "",
+        "why": "Passwords get brute-forced, and the VNC password is short and poorly protected on top of that. Key authentication removes a whole class of attacks: without the private key, connecting is impossible.",
+        "instructions": [
+          "Generate a key pair on your own machine (`ssh-keygen -t ed25519`); the private key stays only with you",
+          "Put the public key into the environment's authorized_keys; the private key never goes inside the agent's environment",
+          "In sshd_config disable password login: PasswordAuthentication no and PermitRootLogin no",
+          "For VNC, don't rely on its password as protection — let VNC listen on loopback only, with authentication provided by the SSH tunnel"
+        ],
+        "validate": "An attempt to connect over SSH without a key (or with a password) is rejected. The private key exists nowhere in the agent environment's filesystem.",
+        "tip": "Store the private key and any access secrets outside the environment, following [[node:sas-secrets|secrets management]] rules. Anything inside can potentially be read by the agent and pulled into its context."
+      },
+      "sas-remote-access-3": {
+        "title": "Forward access through an SSH tunnel, not a public port",
+        "time": "",
+        "why": "The tunnel solves two problems at once: it encrypts noVNC traffic (VNC itself is insecure) and requires no extra port open to the internet. From the outside, at most one key-protected SSH is visible.",
+        "instructions": [
+          "From your local machine, set up the forward: `ssh -L 6080:127.0.0.1:6080 user@host -i ~/.ssh/key`",
+          "Now noVNC is reachable only on your localhost:6080 — through the encrypted tunnel",
+          "Don't open the VNC/noVNC port in the host firewall and don't forward it outward in Docker",
+          "If SSH shouldn't be exposed either — use a bastion/jump host or VPN as the single entry point"
+        ],
+        "validate": "noVNC opens in the browser at http://localhost:6080, while from the outside (another machine) the host's port 6080 is closed and the VNC port is unreachable entirely.",
+        "tip": "`ssh -N -L ...` brings up only the tunnel with no interactive session — convenient to keep as a separate process that's easy to kill in the closing step."
+      },
+      "sas-remote-access-4": {
+        "title": "Open the agent's desktop in noVNC and verify the connection",
+        "time": "",
+        "why": "noVNC gives you the desktop image right in the browser with no client to install. This is the main observation channel: you see in real time where the agent clicks and what it types.",
+        "instructions": [
+          "Open the tunnel's localhost address in the browser and wait for the agent environment's screen",
+          "Verify the image updates in real time and you see the agent's current desktop",
+          "For [[node:sas-docker-computer-use|computer use in Docker]], make sure noVNC shows exactly the display the agent works on",
+          "Decide whether access is read-only or interactive — settle in advance whether you can take over control"
+        ],
+        "validate": "The browser shows a live agent desktop, actions appear with minimal lag, and the image flows only through your tunnel.",
+        "tip": "If noVNC lags, lower the VNC server's color depth and resolution. 16-bit color and 1280×720 is usually plenty for observation."
+      },
+      "sas-remote-access-5": {
+        "title": "Observe the agent and be ready to intervene",
+        "time": "",
+        "why": "Remote access isn't for show — it's to catch the moment the agent goes off-track and stop it quickly before irreversible actions.",
+        "instructions": [
+          "Keep noVNC open and, in parallel, watch the agent's session logs over SSH",
+          "Define stop criteria in advance: which agent actions require immediate intervention",
+          "Prepare a way to interrupt the agent fast (stop the process, kill, pause the task) — don't go looking for it during an incident",
+          "Don't intervene needlessly: every manual action changes the environment state and hurts reproducibility"
+        ],
+        "validate": "At any moment you can describe what the agent is doing right now and, within seconds, stop it if it violates a stop criterion.",
+        "tip": "SSH-session logs and the noVNC image complement each other: the screen shows 'what's visible', the logs show 'what's actually running'."
+      },
+      "sas-remote-access-6": {
+        "title": "Close access after the session and rotate keys",
+        "time": "",
+        "why": "An unclosed tunnel, a live listening port, or a forgotten key turns one-off access into a permanent hole. Closing is a mandatory part of the procedure, not a 'deal with it later'.",
+        "instructions": [
+          "Terminate the SSH tunnel (kill the `ssh -N -L ...` process) and close interactive sessions",
+          "Stop the VNC/noVNC server in the environment if it's no longer needed",
+          "Remove the public key from authorized_keys (or rotate the pair) if access was temporary",
+          "Verify via `ss -tlnp` that the SSH/VNC ports are no longer listening externally",
+          "Record the fact of closing — so the next session starts from a known-closed state"
+        ],
+        "validate": "`ss -tlnp` shows no listening VNC/tunnel ports, reconnecting over the old channel fails, and the temporary key is revoked.",
+        "tip": "Make closing part of your session start script: one script brings up the tunnel and channel, its pair reliably tears everything down. Manual closing gets forgotten."
+      }
+    }
   }
 }
