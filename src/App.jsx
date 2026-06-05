@@ -7,9 +7,9 @@ import DetailPanel from './components/DetailPanel.jsx';
 // Тяжёлые модалки — lazy-загружаются только при первом открытии (#21+
 // perf-audit pickup: эти 3 модалки добавляют ~30-50KB в initial bundle, но
 // большинство пользователей открывает их не сразу).
-const TutorialModal      = lazy(() => import('./components/TutorialModal.jsx'));
-const WorkflowsModal     = lazy(() => import('./components/WorkflowsModal.jsx'));
-const PromptLibraryModal = lazy(() => import('./components/PromptLibraryModal.jsx'));
+const TutorialModal      = lazyWithRetry(() => import('./components/TutorialModal.jsx'), 'TutorialModal');
+const WorkflowsModal     = lazyWithRetry(() => import('./components/WorkflowsModal.jsx'), 'WorkflowsModal');
+const PromptLibraryModal = lazyWithRetry(() => import('./components/PromptLibraryModal.jsx'), 'PromptLibraryModal');
 import CommandPalette from './components/CommandPalette.jsx';
 import CanvasZoom from './components/CanvasZoom.jsx';
 import CanvasFilters from './components/CanvasFilters.jsx';
@@ -38,6 +38,7 @@ import { useLocale, useT } from './i18n/LocaleContext.jsx';
 import { getLocalizedFeaturedPrompt } from './i18n/usePrompt.js';
 import { useAuth } from './context/AuthContext.jsx';
 import { STRINGS } from './i18n/strings.js';
+import { lazyWithRetry } from './utils/lazyWithRetry.js';
 import { FALLBACK_LOCALE } from './i18n/config.js';
 import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
@@ -52,7 +53,7 @@ import './App.css';
 
 // Agent Builder — lazy loaded. Не affects main bundle.
 // См. docs/agent-builder/ для полной спецификации.
-const BuilderApp = lazy(() => import('./builder/BuilderApp.jsx'));
+const BuilderApp = lazyWithRetry(() => import('./builder/BuilderApp.jsx'), 'BuilderApp');
 
 const GA_ID = 'G-GLRHYG2JVK';
 
@@ -939,7 +940,7 @@ function AppInner() {
       {activeTutorial && (
         /* Скрываем туториал пока открыт AuthModal из gate (display:none сохраняет состояние) */
         <div style={tutorialAwaitingAuth ? { display: 'none' } : undefined}>
-          <Suspense fallback={null}>
+          <Suspense fallback={<div className="modal-loading" role="status" aria-label="…"><span className="modal-loading__spin" /></div>}>
             <TutorialModal
               tutorialId={activeTutorial}
               onClose={onCloseTutorial}

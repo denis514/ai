@@ -8679,3 +8679,27 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   Fallback-лоадер для лениво-загружаемых модалок (курс/библиотека).
+   Виден вместо пустого экрана, пока грузится chunk.
+   ============================================================ */
+.modal-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
+  backdrop-filter: blur(2px);
+}
+.modal-loading__spin {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent, #2563eb);
+  animation: modal-loading-spin 0.7s linear infinite;
+}
+@keyframes modal-loading-spin { to { transform: rotate(360deg); } }
