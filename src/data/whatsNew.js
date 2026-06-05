@@ -13,6 +13,12 @@
  */
 export const WHATS_NEW = {
   // ─── Туториалы ─────────────────────────────────────────────────────────────
+  'skill-md': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
+  'skill-trigger': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
+  'skill-files': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
+  'skill-ready': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
+  'skill-create': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
+  'skill-vs-subagents': { date: '2026-06-05', type: 'new', kind: 'tutorial' },
   'claude-workspace': { date: '2026-06-04', type: 'updated', kind: 'tutorial' },
   'project-files': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
   'remote-computer-for-claude': { date: '2026-06-04', type: 'updated', kind: 'tutorial' },

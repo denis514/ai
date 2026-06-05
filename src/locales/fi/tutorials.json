@@ -28929,5 +28929,790 @@
         "tip": "Suurin virhe on jättää /doctor ajamatta kun jokin menee rikki. Tee siitä ensimmäinen refleksi, ei viimeinen oljenkorsi."
       }
     }
+  },
+  "skill-md": {
+    "title": "SKILL.md",
+    "subtitle": "Skillin reseptitiedosto: mitä se sisältää ja miten kirjoittaa se niin, että Claude aktivoi sen oikeaan aikaan",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "SKILL.md on tekstitiedosto-resepti, ainoa pakollinen tiedosto kaikissa [[node:skills|Skilleissä]]. Se kertoo Claudelle MITÄ Skill tekee, MILLOIN se aktivoidaan ja MITKÄ vaiheet suoritetaan. Claude lukee SKILL.md:n ohjeena ja seuraa sitä joka kerta samalla tavalla, ilman improvisointia. Ei SKILL.md:tä, ei Skilliä.",
+    "approach": "Etenemme rakenteesta merkitykseen. Ensin käymme läpi miksi tiedosto on olemassa ja mistä osista se koostuu. Sitten jokaisen osan erikseen: name, description tarkkana aktivointiliipaisimena, vaiheittainen ohjerunko ja apuntiedostot vieressä. Lopuksi — mikä useimmin rikkoo aktivoinnin ja miten varmistaa, että tiedosto toimii.",
+    "outcomes": [
+      "Ymmärrät miksi SKILL.md on ainoa pakollinen tiedosto ja miten Claude käyttää sitä",
+      "Tunnet pakolliset osat: name ja description, ja mistä kumpikin vastaa",
+      "Kirjoitat descriptionin tarkkana liipaisimena: MITÄ se tekee + MILLOIN aktivoida",
+      "Muotoilet ohjerungon vaihe vaiheelta niin, että Skill suoriutuu samalla tavalla",
+      "Tarkistat valmiin SKILL.md:n ja nappaat tyypilliset aktivointivirheet"
+    ],
+    "applyIn": [
+      {
+        "title": "Toistuva prosessi",
+        "description": "Mikä tahansa tehtävä, jonka selität Claudelle toista kertaa, muutetaan SKILL.md:ksi — ja siitä eteenpäin se suoriutuu samalla tavalla ilman toistuvia ohjeita."
+      },
+      {
+        "title": "Tiimin standardit",
+        "description": "SKILL.md kiinnittää 'miten meillä tehdään': tehtävien muotoilu, katselmoinnit, julkaisut. Tiedosto on yhteinen totuuden lähde kaikille."
+      },
+      {
+        "title": "Monivaiheinen operaatio",
+        "description": "Kun tarkka vaihejärjestys on tärkeä eikä mitään saa ohittaa, SKILL.md:n runko pitää toimintojen järjestyksen puolestasi."
+      }
+    ],
+    "pitfalls": [
+      "Yhden lauseen description kuten 'auttaa tehtävissä' — Claude ei ymmärrä milloin aktivoida Skill ja käyttää sitä kaikkeen tai ei mihinkään",
+      "Description kertoo vain MITÄ mutta ei MILLOIN — liipaisinta ei ole, joten Skill ei laukea oikeaan hetkeen",
+      "Ohjerunko on kirjoitettu kappaleina selkeiden vaiheiden sijaan — Claude kadottaa järjestyksen ja ohittaa toimintoja",
+      "Apuntiedostot ovat hajallaan SKILL.md:n vieressä olon sijaan — Skill ei löydä malleja ja esimerkkejä",
+      "Tiedostoa ei ole nimetty SKILL.md (kirjainkoko, kirjoitusvirhe) — Skilliä ei yksinkertaisesti ole olemassa Claudelle"
+    ],
+    "exercises": [
+      {
+        "question": "Description on tällainen: 'Skill tekstin käsittelyyn.' Miksi Claude ei pysty aktivoimaan sitä oikein?",
+        "hint": "Descriptionissa pitää olla MITÄ se tekee ja MILLOIN aktivoida. Etsi mitä tästä puuttuu: mikä teksti tarkalleen, missä hetkessä, minkä käyttäjän pyynnön perusteella?"
+      },
+      {
+        "question": "Sinun pitää muuttaa 5-vaiheinen prosessi Skilliksi. Mitkä SKILL.md:n osat ovat pakollisia ja mikä menee runkoon?",
+        "hint": "name ja description ovat pakollisia. Itse 5 vaihetta ovat ohjerunko. Mieti tarvitsetko apuntiedostoja vieressä."
+      },
+      {
+        "question": "Skill laukeaa JOKAISESTA käyttäjän pyynnöstä, jopa aiheen ulkopuolisista. Mitä korjaat ensin?",
+        "hint": "Ongelma on melkein aina descriptionissa: liipaisin on liian laaja. Kavenna MILLOIN — lisää tarkat aktivointiehdot."
+      }
+    ],
+    "steps": {
+      "smd-1": {
+        "title": "Mikä SKILL.md on ja miksi sitä tarvitaan",
+        "time": "",
+        "why": "Ennen kuin on selvää, että SKILL.md on ohje jonka Claude lukee ja suorittaa, sen voi helposti sekoittaa tavalliseen muistiinpanoon. Kaikki muu riippuu tästä.",
+        "instructions": [
+          "Muista: SKILL.md on ainoa pakollinen tiedosto [[node:skills|Skillissä]]. Ei tiedostoa, ei Skilliä",
+          "Claude lukee sen ohjeena ja seuraa sitä joka kerta samalla tavalla, ilman improvisointia",
+          "Tiedosto vastaa kolmeen kysymykseen: MITÄ Skill tekee, MILLOIN aktivoida se, MITKÄ vaiheet suorittaa",
+          "Pääasiallinen vaikutus: yksi hyvä SKILL.md korvaa 20 toistuvaa saman prosessin selitystä"
+        ],
+        "validate": "Pystyt selittämään omin sanoin miksi ilman SKILL.md:tä ei ole Skilliä ja miksi tiedosto on tärkeämpi kuin kertaluonteinen selitys chatissa.",
+        "tip": "Ajattele SKILL.md:tä reseptinä kokille, joka noudattaa sitä tarkalleen — siksi reseptin pitää olla täydellinen."
+      },
+      "smd-2": {
+        "title": "Pakolliset osat: name ja description",
+        "time": "",
+        "why": "Nämä kaksi osaa ovat se, minkä perusteella Claude ylipäätään päättää että Skill on olemassa ja pitääkö se ajaa. Ilman niitä ohjerunko on hyödytön.",
+        "instructions": [
+          "name — Skillin lyhyt nimi: millainen resepti tämä on",
+          "description — pääosa: MITÄ Skill tekee ja MILLOIN se aktivoidaan",
+          "Juuri description ohjaa [[node:s-trigger|aktivointiliipaisinta]] — hetkeä, jolloin Claude käynnistää Skillin",
+          "Muista pari: name vastaa 'mikä nimi', description — 'mitä tekee ja milloin laukeaa'"
+        ],
+        "validate": "Skilliäsi varten pystyt nimeämään name-osan yhdellä rivillä ja kuvaamaan mitä descriptioniin kuuluu (sekä MITÄ että MILLOIN).",
+        "tip": "Jos name ja description menevät sekaisin — name on reseptin otsikko, description on 'milloin kokata tämä ruoka'."
+      },
+      "smd-3": {
+        "title": "Ohjerunko: vaiheet, mitä tehdä",
+        "time": "",
+        "why": "Aktivointi on puolet työstä. Kun Skill on lauennut, Clauden pitää tietää tarkka toimintojen järjestys, muuten tulos on erilainen joka kerta.",
+        "instructions": [
+          "name- ja description-osien jälkeen tulee runko — itse vaiheittaiset ohjeet",
+          "Kirjoita vaiheina, ei yhtenä kappaleena: '1. Tarkenna… 2. Pyydä… 3. Muotoile…'",
+          "Jokainen vaihe on yksi selkeä toiminto, ilman monitulkintaisuutta",
+          "Esimerkki minimaalisesta rungosta: '## Vaiheet — 1. Tarkenna mille järjestelmälle tehtävä on. 2. Pyydä hyväksymiskriteerit. 3. Muotoile: Tavoite / Mitä tehdä / Hyväksymiskriteerit'"
+        ],
+        "validate": "Skillisi runko lukeutuu numeroituna toimintolistana, ja prosessin voi suorittaa sen pohjalta arvailematta mitään.",
+        "tip": "Rungon laatutesti: anna se aiheeseen perehtymättömälle henkilölle. Jos hän suorittaa sen ilman kysymyksiä, vaiheet ovat tarpeeksi selkeät."
+      },
+      "smd-4": {
+        "title": "Apuntiedostot vieressä",
+        "time": "",
+        "why": "Joskus pelkkä ohje ei riitä: tarvitaan malleja, esimerkkejä, tarkistuslistoja. Jos ne ovat vieressä, Skill löytää ja käyttää niitä.",
+        "instructions": [
+          "SKILL.md:n lisäksi Skillin kansiossa voi olla [[node:s-files|apuntiedostoja]]: malleja, esimerkkejä, tulostenäytteitä",
+          "Sijoita ne samaan kansioon kuin SKILL.md — vierekkäin, ei hajalleen",
+          "Viittaa niihin SKILL.md:n rungossa, jotta Claude tietää milloin tarttua niihin",
+          "Älä paisuta itse SKILL.md:tä: siirrä pitkät näytteet erillisiin tiedostoihin viereen"
+        ],
+        "validate": "Ymmärrät mikä menee itse SKILL.md:hen ja mikä apuntiedostoihin viereen, ja miksi pitää ne yhdessä kansiossa.",
+        "tip": "Yksinkertainen sääntö: ohje menee SKILL.md:hen, ohjeen materiaali (mallit, esimerkit) tiedostoihin viereen."
+      },
+      "smd-5": {
+        "title": "Hyvä description = tarkka liipaisin",
+        "time": "",
+        "why": "Yleisin Skillin rikkoutuminen ei ole runko vaan description. Jos liipaisin on epämääräinen, Skill laukeaa väärään aikaan tai ei lainkaan.",
+        "instructions": [
+          "Hyvä description sisältää sekä MITÄ se tekee että MILLOIN aktivoida — molemmat yhdessä",
+          "MILLOIN on konkreettinen ehto: minkä käyttäjän pyynnön perusteella, missä tilanteessa Skill käynnistetään",
+          "Huono: 'auttaa tehtävissä'. Hyvä: 'Käytä kun käyttäjä pyytää luomaan tehtävän tai user storyn'",
+          "Mitä tarkempi aktivointiehto, sitä harvemmin [[node:s-trigger|liipaisin]] laukeaa väärässä paikassa"
+        ],
+        "validate": "Descriptionisi nimeää aktivointitilanteen selvästi niin, että on selvää mitkä pyynnöt käynnistävät Skillin ja mitkä eivät.",
+        "tip": "Liipaisintesti: keksi 3 pyyntöä joista Skillin PITÄÄ laueta ja 3 joista EI pidä. Hyvä description erottaa ne."
+      },
+      "smd-6": {
+        "title": "Yleiset virheet ja tarkistus",
+        "time": "",
+        "why": "Valmiin SKILL.md:n voi helposti luovuttaa hiljaisella virheellä, joka saa Skillin epäonnistumaan äänettömästi. Lopputarkistus nappaa sen ennen kuin Skill pettää.",
+        "instructions": [
+          "Tarkista description: onko siinä SEKÄ mitä se tekee ETTÄ milloin aktivoida — ilman MILLOIN Skill ei laukea",
+          "Tarkista tiedoston nimi: tarkalleen SKILL.md, ilman kirjoitusvirheitä tai väärää kirjainkokoa — muuten [[node:s-create|Skilliä ei ole olemassa]]",
+          "Tarkista runko: se on selkeitä vaiheita, ei yhtenäistä kappaletta",
+          "Aja liipaisin mielessäsi oikeita pyyntöjä vasten: laukeaa siellä missä tarpeen ja vaikenee siellä missä ei pidä"
+        ],
+        "validate": "Kävit läpi tarkistuslistan: tiedoston nimi oikein, descriptionissa MITÄ ja MILLOIN, runko vaiheittainen, liipaisin testattu esimerkeillä.",
+        "tip": "Jos Skill soveltuu 'kaikkeen' tai 'ei koskaan', vika on melkein aina descriptionissa, ei rungossa. Korjaa liipaisin ensin."
+      }
+    }
+  },
+  "skill-trigger": {
+    "title": "Skillin triggerit: miten taito aktivoituu",
+    "subtitle": "Kaksi käynnistysmekanismia — automaattinen merkityksen mukaan ja eksplisiittinen kutsu — ja miten saat Skillin laukeamaan juuri silloin kun tarvitset",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Trigger on ehto, jolla Claude päättää soveltaa Skilliä. Polkuja on kaksi: [[node:pl-web-setup|claude.ai]]:ssa Claude lukee itse Skills-listan ja aktivoi oikean pyynnön merkityksen perusteella; [[node:claude-code|Claude Code]]:ssa kirjoitat eksplisiittisesti /skillname. Automaattisen triggerin avain on description-kenttä tiedostossa [[node:s-md|SKILL.md]].",
+    "approach": "Etenemme mekanismista käytäntöön: ensin miten Claude ylipäätään päättää soveltaa [[node:skills|Skilliä]], sitten descriptionin rooli, automaattitilan ja eksplisiittisen kutsun ero, tarkan descriptionin kaava, «miksi se ei lauennut» -diagnoosi ja lopuksi triggerin tarkistus.",
+    "outcomes": [
+      "Ymmärrät miten Claude päättää soveltaa Skilliä automaattitilassa ja eksplisiittisellä kutsulla",
+      "Osaat kirjoittaa descriptionin joka laukeaa tarkasti — ilman vääriä tai jääneitä aktivointeja",
+      "Erotat triggerin claude.ai:ssa (merkityksen mukaan) ja Claude Codessa (/command-komennolla)",
+      "Diagnosoit miksi Skill ei aktivoitunut: epämääräinen kuvaus, konflikti, puuttuva /command",
+      "Testaat triggerin oikeilla pyynnöillä ennen kuin Skill otetaan käyttöön"
+    ],
+    "applyIn": [
+      {
+        "title": "Uuden Skillin luominen",
+        "description": "Kun kirjoitat SKILL.md:n, description on tärkein kenttä. Sen muotoilu ratkaisee, aktivoituuko Skill itsestään vai pysyykö se hiljaa."
+      },
+      {
+        "title": "«Skill ei lauennut» -vianetsintä",
+        "description": "Skill on olemassa, mutta Claude ohittaa sen. Triggerin mekanismin tuntien löydät syyn nopeasti: liian yleinen kuvaus tai konflikti naapuri-Skillin kanssa."
+      },
+      {
+        "title": "Useita Skillejä yhdessä Projektissa",
+        "description": "Kun projektissa on useita taitoja, niiden descriptionit eivät saa mennä päällekkäin, jotta jokainen laukeaa omaan pyyntöluokkaansa."
+      }
+    ],
+    "pitfalls": [
+      "Liian yleinen kuvaus («auttaa dokumenteissa») — Skill laukeaa joka pyyntöön, tai Claude ei koskaan ymmärrä milloin kutsua sitä",
+      "Odottaa /command-käynnistystä claude.ai:ssa — siellä ei ole eksplisiittistä kutsua, vain automaattinen trigger merkityksen mukaan toimii",
+      "Odottaa Skillin aktivoituvan itsestään Claude Codessa — se aktivoituu vain kun kirjoitat eksplisiittisesti /skillname",
+      "Kaksi Skilliä samankaltaisilla kuvauksilla konfliktissa — Claude valitsee väärän tai epäröi",
+      "Kuvaus kertoo mitä Skill tekee, ei milloin sitä sovelletaan — trigger vaatii «use when…», ei «this skill formats…»"
+    ],
+    "exercises": [
+      {
+        "question": "Sinulla on Skill joka tarkistaa tekstin virheitä. Kirjoita sen description niin, että se laukeaa claude.ai:ssa pyyntöön «oikolue tämä kappale» mutta ei mihin tahansa tekstiä koskevaan kysymykseen.",
+        "hint": "Aloita «Use when the user asks to…» ja luettele konkreettiset toiminnot: proofread, check for typos, review grammar — ei yleistä «works with text»."
+      },
+      {
+        "question": "Claude Codessa kirjoitit descriptionin, mutta Skill «ei aktivoidu itsestään». Mikä odotuksessa on vikana?",
+        "hint": "Muista kaksi mekanismia: Claude Codessa trigger on aina eksplisiittinen — /skillname. Automaattinen aktivointi merkityksen mukaan on claude.ai:n käyttäytymistä."
+      },
+      {
+        "question": "Kaksi Skilliä: yksi «create-slides», toinen «format-document». Pyyntöön «muotoile tämä dokumentti hienoksi» Claude menee sekaisin. Miten erotat triggerit?",
+        "hint": "Tee soveltamisalueista päällekkäin menemättömät itse descriptioneissa: täsmennä «slides/presentation» vs «text document/report», poista yleiset sanat kuten «muotoile hienoksi»."
+      }
+    ],
+    "steps": {
+      "strg-1": {
+        "title": "Miten Claude päättää soveltaa Skilliä",
+        "time": "",
+        "why": "Ilman päätösmekanismin ymmärtämistä et voi kirjoittaa toimivaa triggeriä etkä diagnosoida vikaa.",
+        "instructions": [
+          "Muista: Claude ei «aja ohjelmaa» — se lukee saatavilla olevien [[node:skills|Skillien]] listan ja niiden kuvaukset osana kontekstia",
+          "Automaattitilassa ([[node:pl-web-setup|claude.ai]]) se vertaa pyyntösi merkitystä jokaisen Skillin descriptioniin",
+          "Jos kuvaus vastaa selvästi pyynnön tarkoitusta — Claude aktivoi sen Skillin ja lukee sen [[node:s-md|SKILL.md]]:n",
+          "Eksplisiittisessä tilassa ([[node:claude-code|Claude Code]]) ei ole merkityksen mukaista päätöstä: trigger on /skillname-komento"
+        ],
+        "validate": "Osaat sanoa yhdellä lauseella, millä signaalilla Claude aktivoi Skillin kummassakin tilassa.",
+        "tip": "Ajattele descriptionia «milloin kutsua minua» -kenttänä, ei «mitä osaan» — Claude päättää juuri tästä kentästä."
+      },
+      "strg-2": {
+        "title": "Descriptionin rooli aktivoinnissa",
+        "time": "",
+        "why": "Automaattitilassa description on ainoa signaali, jolla Claude päättää soveltaa Skilliä. SKILL.md:n rungon se lukee vasta aktivoinnin jälkeen.",
+        "instructions": [
+          "Avaa [[node:s-md|SKILL.md]] ja etsi description-kenttä tiedoston alusta",
+          "Ymmärrä jako: description on triggeriä varten (milloin soveltaa), runko on ohjeet (miten suorittaa)",
+          "Claude näkee kaikkien Skillien kuvaukset kerralla, mutta rungon vain aktivoidun",
+          "Siksi epätarkka kuvaus = Skill joko ei aktivoidu tai aktivoituu väärään aikaan — runko ei pelasta"
+        ],
+        "validate": "Osaat selittää, miksi hyvä SKILL.md-runko ei korvaa huonoa descriptionia.",
+        "tip": "Kirjoita description toisen pyyntöä silmällä pitäen: millä sanoilla käyttäjä muotoilee tehtävän, joka tarvitsee tämän Skillin."
+      },
+      "strg-3": {
+        "title": "Automaattinen trigger merkityksen mukaan vs eksplisiittinen kutsu",
+        "time": "",
+        "why": "Kaksi aktivointitilaa toimivat eri tavoin; niiden sekoittaminen on yleinen syy «Skill ei lauennut».",
+        "instructions": [
+          "[[node:pl-web-setup|claude.ai]]: Claude aktivoi Skillin itse pyynnön merkityksen mukaan — käyttäjä ei kirjoita komentoja",
+          "[[node:claude-code|Claude Code]]: aktivointi on eksplisiittinen — kirjoitat /skillname, Claude lukee [[node:s-md|SKILL.md]]:n ja seuraa vaiheita",
+          "Eksplisiittisessä tilassa description tuskin vaikuttaa käynnistykseen — komento ratkaisee; description auttaa Claudea vihjeissä",
+          "Muista sääntö: claude.ai = magiaa merkityksen mukaan, Claude Code = täysi manuaalinen hallinta"
+        ],
+        "validate": "Tietyn Skillin osalta osaat sanoa, miten se käynnistyy claude.ai:ssa ja miten Claude Codessa.",
+        "tip": "Jos tarvitset ennustettavan käynnistyksen ilman yllätyksiä — se on Claude Code eksplisiittisellä /command-komennolla. Jos haluat taidon kytkeytyvän itsestään — se on claude.ai."
+      },
+      "strg-4": {
+        "title": "Miten muotoilla description niin että se laukeaa tarkasti",
+        "time": "",
+        "why": "Tarkka description on ero Skillin, joka laukeaa juuri tarvittaessa, ja sellaisen, joka pysyy hiljaa tai tunkee joka paikkaan, välillä.",
+        "instructions": [
+          "Aloita rakenteella «Use when the user asks to…» — kuvaa soveltamisen ehto, ei funktiota",
+          "Luettele konkreettiset signaalitoiminnot (create a presentation, prepare slides), ei laajoja kategorioita («dokumenttien parissa työskentely»)",
+          "Lisää pyynnön sanasto: millä muotoiluilla käyttäjä kuvaa tehtävän",
+          "Pidä alue kapeana ja päällekkäin menemättömänä muiden Skillien kanssa — yksi Skill = yksi pyyntöluokka",
+          "Tarkista: pelkästä descriptionista on selvää milloin kutsua Skilliä ja milloin ei"
+        ],
+        "validate": "Descriptionisi alkaa sanoilla «use when», sisältää konkreettiset toiminnot eikä mene päällekkäin muiden Skillien kanssa.",
+        "tip": "Kaava: «Use when [pyynnön signaali] — [konkreettiset toiminnot]». Esimerkki: «Use when user asks to create a presentation or prepare slides»."
+      },
+      "strg-5": {
+        "title": "Miksi se ei laukea: epämääräinen kuvaus ja konflikti",
+        "time": "",
+        "why": "Suurin osa triggerin vioista palautuu kahteen syyhyn; kun osaat erottaa ne, korjaat Skillin minuutissa.",
+        "instructions": [
+          "Syy 1 — epämääräinen kuvaus: «auttaa dokumenteissa» vastaa mihin tahansa pyyntöön, eikä Claude löydä hetkeä",
+          "Syy 2 — konflikti: kaksi Skilliä lähekkäisillä kuvauksilla, Claude valitsee väärän tai epäröi",
+          "Syy 3 (Claude Code): odotit automaattista aktivointia mutta et kirjoittanut /skillname — täällä trigger on vain eksplisiittinen",
+          "Diagnoosi: lue description ääneen muodossa «milloin kutsua minua» — jos se sopii kaikkeen, se on epämääräinen",
+          "Konfliktin ratkaisemiseksi — tee soveltamisalueista selvästi erilaiset molemmissa descriptioneissa"
+        ],
+        "validate": "Toimimattomalle Skillille osaat nimetä konkreettisen syyn: epämääräisyys, konflikti tai puuttuva /command.",
+        "tip": "Epämääräisyystesti: jos description sopii 3+ toisiinsa liittymättömään pyyntöön — se on liian yleinen, kavenna."
+      },
+      "strg-6": {
+        "title": "Triggerin testaus ja tyypilliset virheet",
+        "time": "",
+        "why": "Trigger pitää testata oikeilla pyynnöillä ennen kuin Skill otetaan käyttöön — muuten vika paljastuu pahimpaan hetkeen.",
+        "instructions": [
+          "Laadi 3-4 testipyyntöä: ne joihin Skillin PITÄISI laueta, ja samankaltaiset joihin EI pitäisi",
+          "[[node:pl-web-setup|claude.ai]]:ssa aja ne ja tarkista että Skill aktivoituu juuri oikeisiin",
+          "[[node:claude-code|Claude Code]]:ssa varmista että /skillname lukee [[node:s-md|SKILL.md]]:n ja seuraa vaiheita",
+          "Jos laukeaa ylimääräisiin — kavenna descriptionia; jos ohittaa oikeat — lisää signaalimuotoiluja",
+          "Vältä tyypilliset virheet: yleinen kuvaus, /command-odotus claude.ai:ssa, automaattitilan odotus Claude Codessa"
+        ],
+        "validate": "Skill aktivoituu jokaiseen «pitäisi»-pyyntöön ja pysyy hiljaa jokaisessa «ei pitäisi» — molemmissa tiloissa.",
+        "tip": "Testaa myös negatiiviset pyynnöt: Skill joka laukeaa väärässä paikassa häiritsee yhtä paljon kuin se joka pysyy hiljaa."
+      }
+    }
+  },
+  "skill-files": {
+    "title": "Skillin apuriedostot",
+    "subtitle": "Pohjat, tarkistuslistat, skeemat ja skriptit SKILL.md:n vierellä",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Skill-kansio on muutakin kuin SKILL.md. Sen vierellä voi olla apuriedostoja: raporttipohjia, tarkistuslistoja, JSON-skeemoja, valmiita skriptejä. Claude lukee ne osana ohjetta ja täyttää ne käyttäjän tiedoilla. Pitkä pohja siirtyy SKILL.md:stä erilliseen tiedostoon — päätiedosto pysyy lyhyenä ja outputin muoto taattuna.",
+    "approach": "Etenemme motivaatiosta käytäntöön: miksi apuriedostoja ylipäätään tarvitaan, mitä tyyppejä on, miten SKILL.md viittaa niihin, toimiva esimerkki (raporttipohja + JSON-skeema), kansion pitäminen siistinä ja yleisten virheiden sulkeminen tarkistuksella. Rakennamme [[node:skills|Skills]]-solmun sekä [[node:s-md|SKILL.md]]- ja [[node:s-create|Skillin luominen]] -taitojen varaan.",
+    "outcomes": [
+      "Ymmärrät, miksi pohjat ja listat kannattaa siirtää SKILL.md:stä erillisiin tiedostoihin",
+      "Erotat apuriedostojen tyypit: pohjat, tarkistuslistat, skeemat, skriptit",
+      "Osaat viitata tiedostoon SKILL.md:stä niin, että Claude lukee ja soveltaa sitä",
+      "Osaat koota «pohja + JSON-skeema» -parin rakenteellista outputia varten",
+      "Pidät Skill-kansion järjestyksessä ja kevyenä, ilman ylimääräisiä ja raskaita tiedostoja"
+    ],
+    "applyIn": [
+      {
+        "title": "Säännölliset raportit",
+        "description": "Skill raporttipohjalla tuottaa saman muodon joka kerta — otsikot, osiot ja järjestys eivät heilu ajosta toiseen."
+      },
+      {
+        "title": "Rakenteellinen output",
+        "description": "JSON-skeema Skillin vierellä määrittää datan tarkan muodon: Claude palauttaa vastauksen, jonka toinen ohjelma lukee suoraan ilman käsin korjaamista."
+      },
+      {
+        "title": "Toistettavat tarkistukset",
+        "description": "Tarkistuslista erillisessä tiedostossa takaa, että Skill käy läpi kaikki katselmoinnin kohdat joka kerta eikä muistele niitä lennosta."
+      }
+    ],
+    "pitfalls": [
+      "50-rivisen pohjan laittaminen suoraan SKILL.md:hen — tiedosto paisuu ja Claude seuraa ohjetta heikommin",
+      "Raskaiden tai binääritiedostojen pitäminen Skill-kansiossa — ne paisuttavat kontekstia eivätkä ole tarpeen työhön",
+      "Tiedoston luominen mutta siihen viittaamisen unohtaminen SKILL.md:stä — Claude ei saa tietää siitä",
+      "Yhden pohjan monistaminen useaan Skilliin sen sijaan että viittaisi jaettuun tiedostoon",
+      "Tiedostojen nimeäminen kaoottisesti (file1.md, tmp.json) — myöhemmin on epäselvää mikä tekee mitä"
+    ],
+    "exercises": [
+      {
+        "question": "Skill tuottaa viikkoraportin, ja sen SKILL.md on kasvanut 80 riviin sisäisen pohjan takia. Mitä siirrät erilliseen tiedostoon ja miten viittaat siihen?",
+        "hint": "Raporttipohja → templates/report.md. Jätä SKILL.md:hen lyhyt ohje: «Täytä templates/report.md käyttäjän tiedoilla»."
+      },
+      {
+        "question": "Tarvitset, että Skill palauttaa datan aina tiukassa muodossa toista ohjelmaa varten. Minkä apuriedoston lisäät ja miksi?",
+        "hint": "JSON-skeeman: se kiinnittää kenttien joukon ja niiden tyypit, jolloin output on koneluettavaa ilman käsin korjaamista."
+      },
+      {
+        "question": "Skill-kansiossa on report.md, tmp.json, file1.md ja 5 MB:n kuva. Mikä tässä on vialla?",
+        "hint": "Raskas/binääritiedosto on turha, ja tmp.json sekä file1.md eivät kerro tarkoituksestaan — siivoa ja jätä vain tarpeellinen."
+      }
+    ],
+    "steps": {
+      "sfl-1": {
+        "title": "Miksi apuriedostoja Skill-kansiossa",
+        "time": "",
+        "why": "Jos koko pohja ja kaikki kysymyslistat ovat SKILL.md:n sisällä, tiedostosta tulee nopeasti lukukelvoton ja Claude seuraa ohjetta heikommin. Pitkien osien siirtäminen ulos pitää päätiedoston lyhyenä ja outputin muodon vakaana.",
+        "instructions": [
+          "Avaa jokin Skilleistäsi ja katso SKILL.md:tä: onko siinä pitkä sisäinen pohja tai 10+ kohdan lista",
+          "Tajua periaate: päätiedosto on «mitä tehdä» -ohje, kun taas pitkä sisältö (pohja, tarkistuslista, skeema) on erillinen tiedosto, johon ohje viittaa",
+          "Muista hyöty: Skill pohjalla antaa taatun muodon joka kerta, ei «mitä sattuu tulemaan»",
+          "Kytke perusteisiin: apuriedostot ovat osa [[node:skills|Skills]]-rakennetta, ei erillinen kokonaisuus"
+        ],
+        "validate": "Osaat selittää yhdellä lauseella, miksi pitkä pohja kannattaa pitää SKILL.md:n ulkopuolella.",
+        "tip": "Yksinkertainen sääntö: SKILL.md vastaa «mitä tehdä», apuriedostot «missä muodossa»."
+      },
+      "sfl-2": {
+        "title": "Mitä tyyppejä tiedostoja on",
+        "time": "",
+        "why": "Eri tehtävät vaativat eri apuriedostoja. Kun tunnet vakiojoukon, näet nopeasti, mitä juuri sinun tehtävässäsi kannattaa siirtää ulos.",
+        "instructions": [
+          "Pohjat (templates/): outputin aihio osioineen — raportti, kirje, briiffi",
+          "Tarkistuslistat: lista kohtia, jotka Skill käy läpi tarkistuksessa tai katselmoinnissa",
+          "Skeemat (JSON-skeemat): rakenteellisen datan tarkka muoto — mitkä kentät ja minkä tyyppisiä",
+          "Skriptit: valmis koodi, jonka Skill ajaa toistettavaa operaatiota varten",
+          "Mieti omalle Skillillesi, mikä näistä tyypeistä kattaisi sen heikon kohdan"
+        ],
+        "validate": "Nimeät tehtäväsi kohdalla ainakin yhden sopivan tiedostotyypin ja selität, mitä se antaa.",
+        "tip": "Pohja hallitsee tekstin muotoa, JSON-skeema datan muotoa. Ne ovat eri työkaluja — älä sekoita niitä."
+      },
+      "sfl-3": {
+        "title": "Miten SKILL.md viittaa tiedostoihin",
+        "time": "",
+        "why": "Tiedosto Skillin vierellä ei toimi itsestään — Claudelle on annettava ohje lukea se. Ilman viittausta SKILL.md:stä apuriedosto vain makaa kuolleena painona.",
+        "instructions": [
+          "Ilmoita SKILL.md:ssä suhteellinen polku tiedostoon: esimerkiksi templates/report.md",
+          "Anna selkeä toiminta-ohje: «Täytä templates/report.md käyttäjän tiedoilla» tai «Tarkista tulos checklist.md:tä vasten»",
+          "Pidä polku suhteellisena Skill-kansioon nähden — niin linkki kestää siirron",
+          "Varmista, että viittauksen tiedostonimi vastaa tarkalleen levyllä olevaa nimeä",
+          "Rakenna päätiedoston käytäntöjen varaan [[node:s-md|SKILL.md]]-taidosta"
+        ],
+        "validate": "SKILL.md:ssäsi on rivi, jossa on polku tiedostoon ja toimintaverbi (täytä/tarkista/käytä).",
+        "tip": "Verbi ratkaisee: «templates/report.md» ilman toimintaa voidaan ohittaa, «täytä templates/report.md» ei."
+      },
+      "sfl-4": {
+        "title": "Esimerkki: raporttipohja + JSON-skeema",
+        "time": "",
+        "why": "Kahden tiedoston pari on yleisin toimiva tapaus: pohja asettaa ihmiselle luettavan muodon, JSON-skeema tiukan koneellisen muodon. Esimerkki näyttää, miten molemmat viittaukset elävät yhdessä SKILL.md:ssä.",
+        "instructions": [
+          "Kokoa rakenne: skills/report/ tiedostoineen SKILL.md, templates/report.md ja schema.json",
+          "Aseta templates/report.md:hen pohjan osiot: Tavoite / Havainnot / Suositukset",
+          "Kuvaa schema.json:ssa rakenteellisen outputin kentät ja niiden tyypit (esim. goal — merkkijono, findings — lista)",
+          "Lisää SKILL.md:hen kaksi ohjetta: «Täytä templates/report.md käyttäjän tiedoilla» ja «Palauta data tarkalleen schema.json:n mukaan»",
+          "Tarkista Skillin kokoamisjärjestys [[node:s-create|Skillin luominen]] -taidosta"
+        ],
+        "validate": "Sinulla on Skill, jossa SKILL.md viittaa sekä pohjaan että JSON-skeemaan, ja molemmat tiedostot ovat kansiossa.",
+        "tip": "Pohja on ihmissilmälle, JSON-skeema toiselle ohjelmalle. Yksi Skill tuottaa molemmat outputit vaivatta."
+      },
+      "sfl-5": {
+        "title": "Skill-kansion järjestäminen",
+        "time": "",
+        "why": "Kun tiedostoja on enemmän kuin kaksi, ilman järjestystä kansiosta tulee kaatopaikka eikä ole selvää mikä tekee mitä. Selkeä rakenne ja nimet säästävät aikaa joka kerta kun palaat Skilliin.",
+        "instructions": [
+          "Ryhmittele samantyyppiset tiedostot alikansioihin: pohjat templates/-kansioon, skeemat viereen tai erilliseen kansioon",
+          "Anna puhuvat nimet: report.md, review-checklist.md, output-schema.json — ei file1.md tai tmp.json",
+          "Pidä yksi useamman Skillin tarvitsema pohja yhdessä paikassa ja viittaa siihen, älä kopioi",
+          "Poista luonnokset ja väliaikaistiedostot — kansioon jää vain se, mihin SKILL.md oikeasti viittaa"
+        ],
+        "validate": "Kansion tiedostonimistä näkee heti niiden tarkoituksen, ja jokainen tiedosto on mainittu SKILL.md:ssä.",
+        "tip": "Järjestystarkistus: jos tiedoston nimestä ei voi arvata, miksi se on olemassa, nimeä se uudelleen heti."
+      },
+      "sfl-6": {
+        "title": "Virheet ja loppu­tarkistus",
+        "time": "",
+        "why": "Raskaat, ylimääräiset tai viittaamattomat tiedostot rikkovat Skillin hiljaa: ne paisuttavat kontekstia tai jäävät yksinkertaisesti käyttämättä. Loppu­läpikäynti yleisistä virheistä nappaa tämän ennen kuin Skill menee käyttöön.",
+        "instructions": [
+          "Tarkista, ettei SKILL.md:ssä ole sisäistä pitkää pohjaa — sen tulee olla siirretty erilliseen tiedostoon",
+          "Varmista, ettei kansiossa ole raskaita tai binääritiedostoja: vain kevyttä tekstiä, skeemoja ja tarpeellisia skriptejä",
+          "Käy jokainen tiedosto läpi: viitataanko siihen varmasti SKILL.md:stä? Ei viittausta — poista tai lisää se",
+          "Aja Skill oikealla datalla ja varmista, että output vastaa pohjaa ja skeemaa",
+          "Jos muoto heiluu, etsi syytä epätarkasta viittauksesta tai tiedostonimen erosta"
+        ],
+        "validate": "Skill ajaa, output noudattaa pohjaa ja skeemaa tarkasti, eikä kansiossa ole viittaamattomia tai turhia tiedostoja.",
+        "tip": "Pääpunainen lippu on tiedosto, joka makaa kansiossa mutta jota ei mainita missään. Joko viittaa siihen tai poista se."
+      }
+    }
+  },
+  "skill-ready": {
+    "title": "Valmiit Skills",
+    "subtitle": "Anthropicin katalogi: lisää taito yhdellä klikillä",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Valmiit Skills ovat lisäosia, jotka Anthropic on jo kirjoittanut ja testannut: pptx (esitykset), xlsx (taulukot), pdf (dokumenttianalyysi), docx (Word-tiedostot), skill-creator (luo oma). Katalogi sijaitsee [[node:pl-web-setup|claude.ai]]:ssa: Project Settings → Skills → Browse. Ne lisätään yhdellä klikillä ja toimivat heti.",
+    "approach": "Älä kirjoita omaa Skilliä ennen kuin olet tarkistanut katalogin. Avaa ensin Browse, valitse sopiva valmis, ota se käyttöön ja varmista, että Claude oikeasti aktivoi sen tehtävässäsi. Vain jos mikään ei sovi, siirry [[node:s-create|oman rakentamiseen]]. Tämä kurssi käy läpi koko syklin: löydä, valitse, ota käyttöön, varmista, säädä ja vältä yleiset sudenkuopat.",
+    "outcomes": [
+      "Tiedät, missä valmiiden Skillien katalogi on ja mitä siellä on",
+      "Osaat valita Skillin tiettyä tehtävää varten arvaamisen sijaan",
+      "Osaat varmistaa, että Skill oikeasti aktivoitui, ei vain näy käytössä",
+      "Ymmärrät, miten valmis Skill käyttäytyy projektissa ja miten sitä säädetään",
+      "Et tuhlaa aikaa keksimällä uudelleen sitä, mikä on jo olemassa yhdellä klikillä"
+    ],
+    "applyIn": [
+      {
+        "title": "Esitykset tekstistä",
+        "description": "Ota pptx käyttöön, anna Claudelle tekstisi, saat valmiin .pptx:n pohjasta avaamatta PowerPointia."
+      },
+      {
+        "title": "PDF:ien ja dokumenttien jäsentäminen",
+        "description": "pdf-Skill poimii pitkästä dokumentista olennaisen, taulukot ja avainluvut ilman manuaalista kopiointia."
+      },
+      {
+        "title": "Taulukoiden käsittely",
+        "description": "xlsx rakentaa ja muokkaa Excel-tiedostoja — kaavat, pivotit, muotoilu — sanoin kuvatusta tehtävästä."
+      }
+    ],
+    "pitfalls": [
+      "Oman Skillin kirjoittaminen PDF:lle, Excelille tai dioille avaamatta Browsea — menetät puoli tuntia siellä, missä on yhden klikin ratkaisu",
+      "Olettaa että käytössä = aktiivinen: Skill laukeaa vain kun tehtävä vastaa sen tarkoitusta",
+      "Kaiken käyttöönotto 'varmuuden vuoksi' — ylimääräiset Skills sekoittavat Clauden työkaluvalinnan",
+      "Skillin kuvauksen lukematta jättäminen ennen käyttöönottoa ja sitten ihmettely, että se tekee väärää",
+      "Minkä tahansa lähteen luottaminen: asenna Anthropicin Skillit ja tarkista, mitä kolmannen osapuolen Skillit oikeasti tekevät"
+    ],
+    "exercises": [
+      {
+        "question": "Sinun pitää muuttaa pitkä raportti esitykseksi. Mitä valmista Skilliä käytät ja mistä löydät sen?",
+        "hint": "Esitykset = .pptx. Katalogi: Project Settings → Skills → Browse."
+      },
+      {
+        "question": "Otit Skillin käyttöön, mutta Claude näyttää jättävän sen huomiotta. Miten tarkistat, että se oikeasti aktivoitui?",
+        "hint": "Anna tehtävä, joka vastaa suoraan Skillin tarkoitusta, ja katso, seuraako Claude sen vaiheita/pohjaa vastauksessa."
+      },
+      {
+        "question": "Browsessa ei ole valmista Skilliä tehtävällesi. Mitä seuraavaksi?",
+        "hint": "Siirry [[node:s-create|oman Skillin rakentamiseen]] — mutta vasta varmistettuasi, ettei valmista ole."
+      }
+    ],
+    "steps": {
+      "srd-1": {
+        "title": "Mitä valmiit Skills ovat ja mistä ne saa",
+        "time": "",
+        "why": "Ennen kuin teet mitään käsin tai kirjoitat oman Skillin, sinun pitää tietää: puolet rutiinista on jo katettu Anthropicin valmiilla taidoilla.",
+        "instructions": [
+          "Avaa [[node:pl-web-setup|claude.ai]] ja mene projektiin.",
+          "Siirry: Project Settings → Skills → Browse.",
+          "Selaa Anthropicin valmiit Skills: pptx, xlsx, pdf, docx, skill-creator.",
+          "Lue jokaisen kuvaus — mitä se tekee ja mihin tehtävään se on."
+        ],
+        "validate": "Näet Browse-katalogin ja osaat nimetä vähintään 3 valmista Skilliä ja niiden tarkoituksen.",
+        "tip": "Katalogi on ensimmäinen pysähdys ennen mitä tahansa tiedostotehtävää. Browse ensin, kaikki muu sitten."
+      },
+      "srd-2": {
+        "title": "Miten valita oikea Skill",
+        "time": "",
+        "why": "Arvaaminen johtaa siihen, että Skill joko ei laukea tai tekee väärää. Skill valitaan tehtävän tyypin mukaan.",
+        "instructions": [
+          "Muotoile tehtävä yhdellä lauseella: 'tarvitsen esityksen', 'jäsennä PDF', 'koosta taulukko'.",
+          "Sovita tuloksen tyyppi Skillin tarkoitukseen: .pptx → pptx, .xlsx → xlsx, PDF-analyysi → pdf, Word → docx.",
+          "Avaa valitun Skillin kuvaus ja varmista, että se kattaa juuri sinun tapauksesi.",
+          "Jos mikään valmis ei sovi — merkitse se: seuraavaksi tie [[node:s-create|omaan Skilliin]]."
+        ],
+        "validate": "Olet valinnut tehtävällesi yhden tietyn Skillin ja osaat selittää, miksi juuri sen.",
+        "tip": "Skillin tarkoitus on tuloksen muoto, ei aihe. 'Esitys taloudesta' on pptx, ei 'talous'-Skill."
+      },
+      "srd-3": {
+        "title": "Ota käyttöön ja varmista, että aktivoituu",
+        "time": "",
+        "why": "Käyttöön otettu Skill ei ole sama kuin toimiva — se laukeaa vain kun tehtävä vastaa sen tarkoitusta. Tämä pitää varmistaa käytännössä.",
+        "instructions": [
+          "Klikkaa Browsessa lisää valitulla Skillillä — se kytkeytyy päälle projektissa.",
+          "Anna Claudelle tehtävä, joka vastaa suoraan Skillin tarkoitusta (esim. 'Luo esitys tästä tekstistä: …').",
+          "Tarkista vastaus: Clauden pitäisi seurata Skillin vaiheita ja tuottaa oikea tiedosto/muoto.",
+          "Jos Skill ei lauennut — muotoile tehtävä uudelleen niin, että se selvästi vaatii sen tulosta."
+        ],
+        "validate": "Annoit testitehtävän ja sait tuloksen, jossa näkyy Skillin työ (oikea tiedosto tai muoto).",
+        "tip": "Jos Claude jättää Skillin huomiotta, kyse on lähes aina muotoilusta: tehtävä ei 'kuulosta' sen profiililta."
+      },
+      "srd-4": {
+        "title": "Säädä omaan tarpeeseen",
+        "time": "",
+        "why": "Valmis Skill on perusta. Sen käyttäytymistä ohjataan omiin standardeihin (pohja, sävy, rakenne) projektin ja muotoilun kautta.",
+        "instructions": [
+          "Kuvaa tehtävässä vaatimuksesi: brändityyli, diojen rakenne, tarvitsemasi taulukon sarakkeet.",
+          "Käytä projektin ohjeita, jotta toistuvia vaatimuksia ei tarvitse kirjoittaa joka kerta.",
+          "Aja Skill uudelleen ja vertaa tulosta haluamaasi standardiin.",
+          "Tallenna onnistunut muotoilu valmiina pyyntönä uudelleenkäyttöön."
+        ],
+        "validate": "Skillin tulos vastaa standardiasi, ei oletuspohjaa.",
+        "tip": "Valmista Skilliä ei kirjoiteta uudelleen — sitä ohjataan projektin kontekstin ja täsmällisen pyynnön kautta."
+      },
+      "srd-5": {
+        "title": "Päivitykset ja lähteeseen luottaminen",
+        "time": "",
+        "why": "Skills päivittyvät, ja asentaa voi muitakin kuin Anthropicin. Lähde ratkaisee, voitko luottaa siihen, mitä Skill tekee datallesi.",
+        "instructions": [
+          "Priorisoi Anthropicin Skillit Browsessa — ne on virallisesti kirjoitettu ja testattu.",
+          "Ennen kolmannen osapuolen Skillin käyttöönottoa lue sen kuvaus: mitä se tekee ja mihin se pääsee käsiksi.",
+          "Tarkista Browse säännöllisesti — valmiiden Skillien lista ja kyvyt karttuvat.",
+          "Jos Skill käyttäytyy eri tavalla päivityksen jälkeen — varmista se uudelleen vaiheen 3 testitehtävällä."
+        ],
+        "validate": "Osaat selittää, miksi luotat käyttöön otettuun Skilliin, ja tiedät, mistä se on peräisin.",
+        "tip": "Tuntematon lähde = lue ensin kuvaus, ota sitten käyttöön. Anthropicin Skillit ovat turvallisin alku."
+      },
+      "srd-6": {
+        "title": "Virheet ja loppuvarmistus",
+        "time": "",
+        "why": "Valmiiden Skillien yleiset sudenkuopat ovat ennakoitavissa — etukäteen tietäen säästät aikaa etkä saa roskatulosta.",
+        "instructions": [
+          "Tarkista: kirjoitatko omaa Skilliä siellä, missä on valmis Browsessa?",
+          "Varmista, että vain tarvittava Skill on käytössä, ei tusinaa 'varmuuden vuoksi'.",
+          "Lue käyttöön otetun Skillin kuvaus uudelleen — tekeekö se juuri sitä, mitä odotat?",
+          "Aja kontrollitehtävä ja vertaa tulosta siihen, mitä pitäisi tulla.",
+          "Jos valmista ei ole — siirry tietoisesti [[node:s-create|oman rakentamiseen]] tai [[node:skills|Skills]]-yleiskatsaukseen."
+        ],
+        "validate": "Valmis Skill on valittu tietoisesti, vain tarvittava on käytössä, testattu tehtävällä ja antaa odotetun tuloksen.",
+        "tip": "Sääntö on yksinkertainen: Browse ensin, aktivoinnin varmistus, ja vasta sitten — oma Skill."
+      }
+    }
+  },
+  "skill-create": {
+    "title": "Rakenna oma Skill",
+    "subtitle": "Muuta toistuva prosessi /skill-komennoksi /skill-creatorilla",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Skill on paketoitu ohje, jonka Claude poimii kuvauksensa perusteella ja soveltaa automaattisesti. Palvelussa [[node:pl-web-setup|claude.ai]] rakennat sen /skill-creatorilla: vastaat muutamaan kysymykseen ja se tuottaa SKILL.md-tiedoston nimineen, kuvauksineen ja vaiheineen. Kurssi vie päätöksestä «kannattaako Skill ylipäätään» toimivaan, testattuun komentoon.",
+    "approach": "Etenemme Skillin oman logiikan mukaan: varmistetaan ensin että tehtävä on aidosti toistuva, ajetaan /skill-creator, kuvataan täsmällisesti MITÄ ja MILLOIN (name/description) — se ohjaa aktivoitumista, kirjoitetaan rungon vaiheet, lisätään apufiilet ja lopuksi testataan aktivoituminen oikealla pyynnöllä ja korjataan virheet.",
+    "outcomes": [
+      "Erotat Skilliin sopivan tehtävän kertaluonteisesta «≥ 3 kertaa» -säännöllä",
+      "Ajat /skill-creatorin ja käyt sen kysymykset läpi jumiutumatta",
+      "Kirjoitat kuvauksen, jolla Skill laukeaa oikealla hetkellä",
+      "Kirjoitat rungon vaiheet ja liität apufiilet",
+      "Testaat aktivoitumisen ja hiot Skilliä tuloksen perusteella"
+    ],
+    "applyIn": [
+      {
+        "title": "Toistuvat tekstiauditoinnit",
+        "description": "Skill kiinteillä tarkistuskriteereillä — kirjoitat /audit ja Claude soveltaa samaa tarkistuslistaa mihin tahansa tekstiin."
+      },
+      {
+        "title": "Tehtävien ja raporttien muotoilu",
+        "description": "Yksi briiffi- tai raporttipohja Skillissä — et selitä muotoa joka kerta, komento muotoilee tulosteen puolestasi."
+      },
+      {
+        "title": "Tiimiprosessit",
+        "description": "Yksi Skill Projektissa asettaa yhteisen standardin — kaikki saavat saman tuloksen yhdellä komennolla."
+      }
+    ],
+    "pitfalls": [
+      "Skillin rakentaminen «varmuuden vuoksi» ilman todellista toistuvaa tarvetta — se ei maksa itseään takaisin ja sotkee Projektin.",
+      "Epämääräinen kuvaus («apua tekstin kanssa») — Claude ei tiedä MILLOIN laukaista Skill, joten se ei laukea.",
+      "Kolmen eri tehtävän tunkeminen yhteen Skilliin — kolme kapeaa Skilliä voittaa yhden «kaiken tekevän».",
+      "Vaiheiden kirjoittaminen mutta aktivoitumisen testaamatta jättäminen oikealla pyynnöllä.",
+      "Raskaan datan lataaminen suoraan SKILL.md:hen sen sijaan että siirtäisi sen apufiiliin."
+    ],
+    "exercises": [
+      {
+        "question": "Nimeä työstäsi prosessi, joka toistuu ≥ 3 kertaa viikossa ja jonka selität Claudelle joka kerta uudelleen. Sopiiko se Skilliksi?",
+        "hint": "Hyvällä ehdokkaalla on samat vaiheet ja tulostemuoto eri syötteillä."
+      },
+      {
+        "question": "Kirjoita yhden lauseen kuvaus tälle Skillille: MITÄ se tekee ja MILLOIN sen pitäisi laueta.",
+        "hint": "Vahva kuvaus nimeää laukaisutilanteen, ei pelkkää toimintoa: «kun teksti pitää tarkistaa tarkistuslistaa X vasten»."
+      },
+      {
+        "question": "Mikä datapala Skillissäsi kannattaa siirtää erilliseen apufiiliin SKILL.md:n sijaan?",
+        "hint": "Pitkät listat, pohjat, viitteet — kaikki mikä paisuttaa pääfiiliä ja muuttuu harvoin sisällöltään."
+      }
+    ],
+    "steps": {
+      "scr-1": {
+        "title": "Päätä, tarvitsetko Skilliä",
+        "time": "",
+        "why": "Skill maksaa itsensä takaisin vain toistuvassa tehtävässä. «Varmuuden vuoksi» se ei kannata — se vie tilaa ja häiritsee muiden Skillien laukeamista.",
+        "instructions": [
+          "Ota tehtävä, jonka annat Claudelle säännöllisesti.",
+          "Sovella «≥ 3 kertaa viikossa» -sääntöä: jos harvemmin, se on kertaluonteinen, ei Skill.",
+          "Varmista, että vaiheet ja tulostemuoto pysyvät samoina eri syötteillä.",
+          "Jos kyllä kaikkiin kohtiin — tehtävä on valmis Skilliksi."
+        ],
+        "validate": "Sinulla on konkreettinen prosessi, joka toistuu ≥ 3 kertaa ja jonka selität Claudelle joka kerta uudelleen.",
+        "tip": "Epävarma — vertaa [[node:skills|Skills]]-solmuun: Skill korvaa toistuvan «miten tarkalleen tehdään» -selittämisen."
+      },
+      "scr-2": {
+        "title": "Aja /skill-creator",
+        "time": "",
+        "why": "/skill-creator on sisäänrakennettu apuri: se kysyy oikeat kysymykset ja kokoaa kelvollisen SKILL.md:n, jotta et kirjoita rakennetta käsin.",
+        "instructions": [
+          "Avaa oikea Projekti palvelussa [[node:pl-web-setup|claude.ai]].",
+          "Kirjoita chatissa /skill-creator.",
+          "Odota, kunnes se alkaa kysyä tulevasta Skillistä.",
+          "Vastaa asiaan — vaiheen 1 prosessin pohjalta."
+        ],
+        "validate": "/skill-creator käynnistyi ja esitti ensimmäisen kysymyksensä (Skillin nimi tai tarkoitus).",
+        "tip": "Pidä vaiheen 1 prosessikuvaus käsillä — kysymyksiin vastaaminen sujuu nopeammin."
+      },
+      "scr-3": {
+        "title": "Kuvaa MITÄ ja MILLOIN (name/description)",
+        "time": "",
+        "why": "Claude päättää kuvauskentän perusteella, laukaiseeko Skillin. Epämääräinen kuvaus = Skill ei laukea oikealla hetkellä.",
+        "instructions": [
+          "Anna Skillille lyhyt selkeä name kebab-casessa (esim. text-audit).",
+          "Kerro description-kentässä MITÄ Skill tekee yhdellä lauseella.",
+          "Lisää laukaisutilanne MILLOIN se laukaistaan — tarkat sanat ja pyynnön konteksti.",
+          "Vältä yleisluontoisia muotoiluja kuten «apua tekstin kanssa»."
+        ],
+        "validate": "Kuvaus sisältää sekä toiminnon että laukaisuehdon — siitä käy ilmi, milloin Skillin pitäisi aktivoitua.",
+        "tip": "Tiedoston rakenteen yksityiskohdat ovat [[node:s-md|SKILL.md]]-solmussa; laukeamisen periaatteet [[node:s-trigger|liipaisimet]]-solmussa."
+      },
+      "scr-4": {
+        "title": "Kirjoita rungon vaiheet",
+        "time": "",
+        "why": "Skillin runko on ohje, jota Claude seuraa tehtävän tekemiseksi. Selkeät vaiheet antavat toistettavan tuloksen improvisoinnin sijaan.",
+        "instructions": [
+          "Pilko prosessi peräkkäisiin vaiheisiin, kuten tekisit sen käsin.",
+          "Kerro jokaisessa vaiheessa toiminto ja odotettu tulos.",
+          "Lukitse tulostemuoto, jos se on tärkeä (raportin rakenne, tarkistuslista).",
+          "Karsi turha — jätä vain se, mitä tehtävä oikeasti tarvitsee."
+        ],
+        "validate": "SKILL.md-runko kuvaa prosessin vaihe vaiheelta, ja tehtävä voidaan tehdä siitä ilman lisäselityksiä.",
+        "tip": "Nojaa [[node:s-md|SKILL.md]]-solmun rungon rakenteeseen — vaiheotsikot voittavat «tekstiseinän»."
+      },
+      "scr-5": {
+        "title": "Lisää apufiilet",
+        "time": "",
+        "why": "Pohjien, viitteiden ja pitkän datan ei pidä paisuttaa SKILL.md:tä. Ulos siirretyt tiedostot pitävät pääfiilin kevyenä ja luettavana.",
+        "instructions": [
+          "Erota data, joka ei muutu sisällöltään: pohjat, tarkistuslistat, esimerkit.",
+          "Sijoita ne erillisiksi tiedostoiksi SKILL.md:n viereen.",
+          "Viittaa Skillin rungossa näihin tiedostoihin sen sijaan että liittäisit koko sisällön.",
+          "Jätä SKILL.md:hen vain ohje ja logiikka."
+        ],
+        "validate": "Raskas data on siirretty erillisiin tiedostoihin, ja SKILL.md pysyi kompaktina ja viittaa niihin.",
+        "tip": "Mitä tarkalleen siirtää ulos ja miten jäsentää — katso [[node:s-files|apufiilet]]-solmu."
+      },
+      "scr-6": {
+        "title": "Testaa aktivoituminen ja hio",
+        "time": "",
+        "why": "Skill, jota ei ole testattu oikealla pyynnöllä, ei välttämättä laukea tai antaa väärän tuloksen. Testi paljastaa todelliset virheet kuvauksessa ja vaiheissa.",
+        "instructions": [
+          "Anna oikea pyyntö, jolla Skillin pitäisi laueta itsestään.",
+          "Tarkista, että se aktivoitui ilman komennon nimenomaista kutsua.",
+          "Vertaa tulosta vaiheen 4 odotettuun muotoon.",
+          "Jos ei lauennut — terävöitä kuvausta (vaihe 3); jos tulos on väärä — korjaa vaiheet (vaihe 4).",
+          "Toista testi, kunnes aktivoituminen ja tuloste ovat vakaita."
+        ],
+        "validate": "Skill laukeaa oikealla pyynnöllä itsestään ja palauttaa tuloksen oikeassa muodossa.",
+        "tip": "Yleinen virhe on syyttää vaiheita, kun vika on kuvauksessa. Tarkista ensin laukeaminen ([[node:s-trigger|liipaisimet]]), sitten laatu."
+      }
+    }
+  },
+  "skill-vs-subagents": {
+    "title": "Skill ≠ Sub-agent: milloin kumpi",
+    "subtitle": "Resepti 'mitä tehdä' vastaan erillinen suorittaja omalla kontekstilla",
+    "totalTime": "6 vaihetta",
+    "whatItIs": "Lyhyt erittely kahdesta eri mekanismista, jotka on helppo sekoittaa. [[node:skills|Skill]] on resepti MITÄ tehdä: joukko vaiheita, joita Claude seuraa nykyisessä chatissa, ilman omaa kontekstia tai työkaluja. Sub-agent (katso [[node:cc-subagents|Sub-agents]]) on erillinen suorittaja, jolla on oma konteksti-ikkuna ja pääsy työkaluihin (tiedostot, terminaali, verkko), käynnistettynä [[node:claude-code|Claude Codesta]] eristettyjä tehtäviä varten. Kurssi opettaa valitsemaan toisen tietyn tehtävän mukaan.",
+    "approach": "Etenemme eron ytimestä valinnan käytäntöön. Ensin erotamme käsitteet (resepti vs suorittaja), sitten kartoitamme rajat: milloin Skill riittää, milloin tarvitset Sub-agentin, miten ne yhdistyvät ja missä ihmiset menevät sekaisin. Lopuksi valinta-algoritmi tehtävää varten tarkistuksella. Jokainen vaihe nojaa yhteen eroon, ilman toistoa tai täytettä.",
+    "outcomes": [
+      "Selität eron yhdellä lauseella: Skill = MITÄ tehdä, Sub-agent = erillinen suorittaja omalla kontekstilla",
+      "Näet, milloin tehtävä sopii Skilliin eikä ulkoisia työkaluja tarvita",
+      "Tunnistat merkit, jotka vaativat Sub-agentin: kontekstin eristys, työkalut, rinnakkaisuus, pitkä työ",
+      "Yhdistät molemmat: Sub-agent tekee työn nojaten Skilliin toimenpiteenä",
+      "Valitset mekanismin tehtävälle sekunneissa ja varmistat valinnan tarkistuslistalla"
+    ],
+    "applyIn": [
+      {
+        "title": "Toistuva muotoilu",
+        "description": "Mallipohjainen toimenpide ilman ulkoisia työkaluja (tehtävän, raportin, commitin muotoilu) on Skill. Claude seuraa vaiheita suoraan chatissa, välittömästi."
+      },
+      {
+        "title": "Eristetty tutkimus",
+        "description": "Repon tiedostojen läpikäynti, datan kerääminen, vanhentuneiden riippuvuuksien etsintä on Sub-agent: oma konteksti-ikkuna ja työkalupääsy, sotkematta päächatia."
+      },
+      {
+        "title": "Monimutkainen pipeline",
+        "description": "Iso tehtävä jaettuna rinnakkaisiin haaroihin, joissa kukin Sub-agent seuraa omaa Skill-reseptiään — molempien mekanismien yhdistelmä."
+      }
+    ],
+    "pitfalls": [
+      "Sub-agent mallitehtävälle on overkill: käynnistyy hitaammin ja polttaa kontekstia siellä missä Skill riittäisi sekunneissa",
+      "Skill pitkälle tutkimukselle tiedostojen kanssa törmää päächatin kontekstirajaan ja pakottaa tekemään uudelleen",
+      "Olettaa että Skillillä on oma konteksti ja työkalut — ei ole, se toimii nykyisessä chatissa ja riippuu sen ikkunasta",
+      "Sekoittaa 'erillinen suorittaja' ja 'eri malli' — Sub-agent on kontekstin ja työkalujen eristys, ei mallin vaihto",
+      "Valitsee mekanismin tottumuksesta eikä tehtävän mukaan — tarkista aina eristyksen ja työkalujen merkit"
+    ],
+    "exercises": [
+      {
+        "question": "Tehtävä: joka kerta kun pyydetään kirjoittamaan julkaisutiedote, muotoile se kiinteällä pohjalla, ilman tiedostojen lukemista. Skill vai Sub-agent?",
+        "hint": "Kysy: toistuuko tehtävä? Tarvitaanko ulkoisia työkaluja? Jos vaiheet mahtuvat reseptiin eikä työkaluja ole — se on Skill."
+      },
+      {
+        "question": "Tehtävä: käy läpi 200 repon tiedostoa ja kerää lista TODO-merkinnöistä. Mitä valitset ja miksi?",
+        "hint": "Pitkä tiedostojen lukutyö sotkee päächatin. Tarvitset kontekstin eristyksen ja työkalupääsyn — Sub-agentin merkit."
+      },
+      {
+        "question": "Voiko molempia käyttää yhtä aikaa? Anna esimerkki yhdistelmästä.",
+        "hint": "Sub-agent on suorittaja. Anna sille Skill toimenpiteenä: se toimii omassa kontekstissaan seuraten reseptiäsi MITÄ tehdä."
+      }
+    ],
+    "steps": {
+      "svs-1": {
+        "title": "Eron ydin: resepti vastaan suorittaja",
+        "time": "",
+        "why": "Ilman selkeää rajaa 'mitä tehdä' ja 'kuka tekee' välillä jokainen myöhempi päätös on arvaus. Tämä on valinnan perusta.",
+        "instructions": [
+          "Opettele kaava: [[node:skills|Skill]] = resepti MITÄ tehdä, Claude seuraa vaiheita nykyisessä chatissa",
+          "Opettele toinen: Sub-agent = erillinen suorittaja omalla konteksti-ikkunalla ja työkaluilla (tiedostot, terminaali, verkko)",
+          "Huomaa ydinkohta: Skillillä ei ole omaa kontekstia — se riippuu nykyisen chatin ikkunasta",
+          "Huomaa toinen ydinkohta: Sub-agent käynnistetään [[node:claude-code|Claude Codesta]] eristettyjä tehtäviä varten"
+        ],
+        "validate": "Osaat selittää eron yhdellä lauseella sekoittamatta 'reseptiä' ja 'suorittajaa'.",
+        "tip": "Vertaus: Skill on ohje paperilla, Sub-agent on erillinen työntekijä, jolle tuon ohjeen voi antaa."
+      },
+      "svs-2": {
+        "title": "Milloin Skill riittää",
+        "time": "",
+        "why": "Useimmat toistuvat tehtävät eivät tarvitse eristystä — ja Skill ratkaisee ne sekunneissa, ilman lisäkuormaa.",
+        "instructions": [
+          "Tarkista toistuvuuden merkki: tehtävä toistuu säännöllisesti ja mahtuu kiinteisiin vaiheisiin",
+          "Tarkista ei-työkaluja-merkki: ei tiedostoja, terminaalia tai verkkoa — vain teksti ja päättely",
+          "Jos molemmat merkit pätevät — tee siitä [[node:skills|Skill]] (katso [[node:s-create|Skillin luonti]])",
+          "Esimerkki: 'aina kun pyydän kirjoittamaan tehtävän — muotoile tällä pohjalla'"
+        ],
+        "validate": "Osaat nimetä kaksi omaa tehtävääsi, jotka selvästi sopivat Skilliin, ja selittää miksi.",
+        "tip": "Jos tehtävä ratkeaa kokonaan tekstillä yhdessä chat-ikkunassa — se on lähes varmasti Skill, ei Sub-agent."
+      },
+      "svs-3": {
+        "title": "Milloin tarvitset Sub-agentin",
+        "time": "",
+        "why": "Kontekstin eristys ja rinnakkaisuus ovat sitä, mitä Skill ei voi tarjota. Tästä alkaa Sub-agentin alue.",
+        "instructions": [
+          "Merkki 1 — eristys: tehtävä on pitkä ja sotkisi päächatin kontekstin, jos tehtäisiin siinä",
+          "Merkki 2 — työkalut: pitää lukea tiedostoja, käydä verkossa, työskennellä terminaalissa",
+          "Merkki 3 — rinnakkaisuus: työ voidaan jakaa haaroihin, jotka ajetaan yhtä aikaa",
+          "Jos yksikin merkki on vahva — käynnistä Sub-agent (katso [[node:cc-subagents|Sub-agents]])",
+          "Esimerkki: 'käy läpi kaikki repon tiedostot ja etsi vanhentuneet riippuvuudet'"
+        ],
+        "validate": "Oikealle tehtävällesi osaat osoittaa tarkan merkin (eristys/työkalut/rinnakkaisuus), joka tekee siitä Sub-agent-tehtävän.",
+        "tip": "Mitä pidempi ja 'sotkuisempi' työ on päächatille, sitä vahvempi peruste eristykseen Sub-agentissa."
+      },
+      "svs-4": {
+        "title": "Miten ne yhdistyvät",
+        "time": "",
+        "why": "Kyse ei ole joko-tai. Tehokkaimmat skenaariot ovat ne, joissa suorittaja toimii reseptin mukaan.",
+        "instructions": [
+          "Ymmärrä parityö: Sub-agent on suorittaja, Skill on toimenpide jota se seuraa",
+          "Anna Sub-agentille pääsy [[node:skills|Skilliin]], jotta se toimii kiinteällä reseptillä omassa kontekstissaan",
+          "Pipelinea varten: useita Sub-agentteja rinnakkain, kullakin oma Skill-resepti",
+          "Näin yhdistät eristyksen/työkalut (Sub-agentilta) ja vaiheiden toistettavuuden (Skilliltä)"
+        ],
+        "validate": "Osaat kuvata yhden skenaarion, jossa Sub-agent tekee työn nojaten Skilliin toimenpiteenä.",
+        "tip": "Skill vastaa 'mitä tehdä', Sub-agent 'kuka tekee ja missä'. Yhdessä ne kattavat molemmat kysymykset."
+      },
+      "svs-5": {
+        "title": "Tyypillinen sekaannus",
+        "time": "",
+        "why": "Kalleimmat virheet syntyvät juuri täällä — vääristä oletuksista siitä mikä on mitä.",
+        "instructions": [
+          "Murra myytti 1: Skillillä EI ole omaa kontekstia ja työkaluja — se elää nykyisen chatin ikkunassa",
+          "Murra myytti 2: Sub-agent on kontekstin ja työkalujen eristys, EI mallin vaihto",
+          "Muista väärän valinnan hinta: Sub-agent mallille on overkill (hitaampi käynnistys); Skill tiedostotutkimukselle törmää kontekstirajaan",
+          "Ennen päätöstä tarkista aina vaiheiden 2 ja 3 merkit, ei tottumusta vasten"
+        ],
+        "validate": "Osaat nimetä molemmat myytit ja selittää, mihin ajanhukkaan kumpikin väärä valinta johtaa.",
+        "tip": "Jos huomaat ajattelevasi 'otan Sub-agentin varmuuden vuoksi' — se on merkki tarkistaa merkit uudelleen."
+      },
+      "svs-6": {
+        "title": "Valinta tehtävälle ja tarkistus",
+        "time": "",
+        "why": "Lopullinen algoritmi muuttaa ymmärryksen nopeaksi, tarkistettavaksi päätökseksi.",
+        "instructions": [
+          "Vaihe 1: toistuuko tehtävä ja mahtuuko vaiheisiin ilman ulkoisia työkaluja? → [[node:skills|Skill]]",
+          "Vaihe 2: onko tehtävä pitkä, tarvitaanko työkaluja tai rinnakkaisuutta? → Sub-agent ([[node:cc-subagents|Sub-agents]])",
+          "Vaihe 3: tarvitsetko molempia? → Sub-agent + Skill sen toimenpiteenä",
+          "Tarkistus: valinnan jälkeen kysy 'onko tämä overkill?' ja 'törmäänkö kontekstirajaan?'",
+          "Jos molemmat vastaukset ovat 'ei' — valinta on oikea"
+        ],
+        "validate": "Ajoit kolme tehtävääsi algoritmin läpi ja jokainen valinta läpäisi overkill- ja kontekstiraja-tarkistuksen.",
+        "tip": "Päätöksen pitäisi viedä sekunteja. Jos mietit pitkään — tehtävä on hybridi: ota Sub-agent + Skill."
+      }
+    }
   }
 }

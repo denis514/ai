@@ -28927,5 +28927,790 @@
         "tip": "The main mistake is not running /doctor when things break. Make it your first reflex, not a last resort."
       }
     }
+  },
+  "skill-md": {
+    "title": "SKILL.md",
+    "subtitle": "The skill's recipe file: what's inside and how to write it so Claude activates it at the right time",
+    "totalTime": "6 steps",
+    "whatItIs": "SKILL.md is a text recipe file, the only required file in any [[node:skills|Skill]]. It tells Claude WHAT the skill does, WHEN to activate it, and WHICH steps to follow. Claude reads SKILL.md as an instruction and follows it the same way every time, no improvisation. No SKILL.md, no Skill.",
+    "approach": "We go from structure to meaning. First we cover why the file exists and what parts it consists of. Then each part separately: name, description as a precise activation trigger, the step-by-step instruction body, and supporting files next to it. At the end — what most often breaks activation and how to verify the file actually works.",
+    "outcomes": [
+      "Understand why SKILL.md is the only required file and how Claude uses it",
+      "Know the required parts: name and description, and what each is responsible for",
+      "Write a description as a precise trigger: WHAT it does + WHEN to activate",
+      "Format the instruction body step by step so the skill runs the same way",
+      "Check a finished SKILL.md and catch typical activation mistakes"
+    ],
+    "applyIn": [
+      {
+        "title": "Repeating process",
+        "description": "Any task you explain to Claude a second time gets turned into a SKILL.md — and from then on runs the same way without repeated instructions."
+      },
+      {
+        "title": "Team standards",
+        "description": "SKILL.md fixes 'how we do things': task formatting, reviews, releases. The file is a single source of truth for everyone."
+      },
+      {
+        "title": "Complex multi-step operation",
+        "description": "When an exact sequence of steps matters and nothing can be skipped, the SKILL.md body holds the order of actions for you."
+      }
+    ],
+    "pitfalls": [
+      "A one-phrase description like 'helps with tasks' — Claude won't know when to activate the skill and will use it on everything or never",
+      "The description states only WHAT but not WHEN — there's no trigger, so the skill doesn't fire at the right moment",
+      "The instruction body is written in paragraphs instead of clear steps — Claude loses the order and skips actions",
+      "Supporting files are scattered instead of sitting next to SKILL.md — the skill can't find templates and examples",
+      "The file is not named SKILL.md (case, typo) — the Skill simply doesn't exist for Claude"
+    ],
+    "exercises": [
+      {
+        "question": "A description reads: 'A skill for working with text.' Why won't Claude be able to activate it correctly?",
+        "hint": "A description must say WHAT it does and WHEN to activate. Find what's missing here: which text exactly, at what moment, in response to which user request?"
+      },
+      {
+        "question": "You need to turn a 5-step process into a Skill. Which parts of SKILL.md are required, and what goes into the body?",
+        "hint": "name and description are required. The 5 steps themselves are the instruction body. Consider whether you need supporting files alongside."
+      },
+      {
+        "question": "A skill fires on EVERY user request, even off-topic ones. What do you fix first?",
+        "hint": "The problem is almost always in the description: the trigger is too broad. Narrow the WHEN — add specific activation conditions."
+      }
+    ],
+    "steps": {
+      "smd-1": {
+        "title": "What SKILL.md is and why it's needed",
+        "time": "",
+        "why": "Until it's clear that SKILL.md is an instruction Claude reads and executes, it's easy to mistake it for an ordinary note. Everything else depends on this.",
+        "instructions": [
+          "Remember: SKILL.md is the only required file in a [[node:skills|Skill]]. No file, no Skill",
+          "Claude reads it as an instruction and follows it the same way every time, no improvisation",
+          "The file answers three questions: WHAT the skill does, WHEN to activate it, WHICH steps to follow",
+          "Main effect: one good SKILL.md replaces 20 repeated explanations of the same process"
+        ],
+        "validate": "You can explain in your own words why there's no skill without SKILL.md and why the file matters more than a one-time chat explanation.",
+        "tip": "Think of SKILL.md as a recipe for a cook who follows it exactly — so the recipe must be complete."
+      },
+      "smd-2": {
+        "title": "Required parts: name and description",
+        "time": "",
+        "why": "These two parts are how Claude even decides the skill exists and whether to run it. Without them, the instruction body is useless.",
+        "instructions": [
+          "name — the skill's short name: what kind of recipe this is",
+          "description — the main part: WHAT the skill does and WHEN to activate it",
+          "The description is what drives the [[node:s-trigger|activation trigger]] — the moment Claude turns the skill on",
+          "Remember the pairing: name answers 'what it's called', description — 'what it does and when it fires'"
+        ],
+        "validate": "For your skill you can state the name in one line and describe what goes into the description (both WHAT and WHEN).",
+        "tip": "If name and description blur together — name is the recipe title, description is 'when to cook this dish'."
+      },
+      "smd-3": {
+        "title": "The instruction body: steps, what to do",
+        "time": "",
+        "why": "Activation is half the job. Once the skill fires, Claude must know the exact sequence of actions, or the result will differ every time.",
+        "instructions": [
+          "After name and description comes the body — the step-by-step instructions themselves",
+          "Write in steps, not a solid paragraph: '1. Clarify… 2. Request… 3. Format…'",
+          "Each step is one clear action, no ambiguity",
+          "Example of a minimal body: '## Steps — 1. Clarify which system the task is for. 2. Request acceptance criteria. 3. Format: Goal / What to do / Acceptance criteria'"
+        ],
+        "validate": "Your skill's body reads as a numbered list of actions, and you can run the process from it without guessing anything.",
+        "tip": "Body quality check: hand it to someone unfamiliar with the topic. If they execute it without questions, the steps are clear enough."
+      },
+      "smd-4": {
+        "title": "Supporting files alongside",
+        "time": "",
+        "why": "Sometimes the instruction alone isn't enough: you need templates, examples, checklists. If they sit nearby, the skill finds and uses them.",
+        "instructions": [
+          "Besides SKILL.md, the skill folder can hold [[node:s-files|supporting files]]: templates, examples, output samples",
+          "Put them in the same folder as SKILL.md — alongside, not scattered",
+          "Reference them in the SKILL.md body so Claude knows when to reach for them",
+          "Don't bloat SKILL.md itself: move long samples into separate files alongside"
+        ],
+        "validate": "You understand what goes into SKILL.md itself versus into supporting files alongside, and why keep them in one folder.",
+        "tip": "Simple rule: the instruction goes in SKILL.md, the material for the instruction (templates, examples) goes in files alongside."
+      },
+      "smd-5": {
+        "title": "A good description = a precise trigger",
+        "time": "",
+        "why": "The most common skill breakage is not the body but the description. If the trigger is vague, the skill fires at the wrong time or not at all.",
+        "instructions": [
+          "A good description contains both WHAT it does and WHEN to activate — both together",
+          "WHEN is a concrete condition: on which user request, in what situation to turn the skill on",
+          "Bad: 'helps with tasks'. Good: 'Use when the user asks to create a task or user story'",
+          "The more precise the activation condition, the less often the [[node:s-trigger|trigger]] fires out of place"
+        ],
+        "validate": "Your description explicitly names the activation situation so it's clear which requests turn the skill on and which don't.",
+        "tip": "Trigger test: come up with 3 requests the skill MUST fire on and 3 it must NOT. A good description distinguishes them."
+      },
+      "smd-6": {
+        "title": "Common mistakes and verification",
+        "time": "",
+        "why": "A finished SKILL.md is easy to ship with a silent error that makes the skill quietly fail. A final check catches it before the skill lets you down.",
+        "instructions": [
+          "Check the description: does it have BOTH what it does AND when to activate — without WHEN the skill doesn't fire",
+          "Check the file name: exactly SKILL.md, no typos or wrong case — otherwise the [[node:s-create|skill doesn't exist]]",
+          "Check the body: it's clear steps, not a solid paragraph",
+          "Run the trigger mentally against real requests: it fires where needed and stays silent where it shouldn't"
+        ],
+        "validate": "You went through the checklist: file name correct, description has WHAT and WHEN, body is step-by-step, trigger tested on examples.",
+        "tip": "If a skill applies 'to everything' or 'never', it's almost always the description, not the body. Fix the trigger first."
+      }
+    }
+  },
+  "skill-trigger": {
+    "title": "Skill Triggers: how a Skill activates",
+    "subtitle": "Two launch mechanisms — auto by intent and explicit call — and how to make a Skill fire exactly when you need it",
+    "totalTime": "6 steps",
+    "whatItIs": "A trigger is the condition under which Claude decides to apply a Skill. There are two paths: in [[node:pl-web-setup|claude.ai]] Claude reads the Skills list itself and enables the right one based on the request's meaning; in [[node:claude-code|Claude Code]] you explicitly type /skillname. The key to the auto-trigger is the description field in [[node:s-md|SKILL.md]].",
+    "approach": "We move from mechanism to practice: first how Claude even decides to apply a [[node:skills|Skill]], then the role of the description, the difference between auto-mode and explicit call, the formula for a precise description, diagnosing \"why it didn't fire\", and a final trigger check.",
+    "outcomes": [
+      "You understand how Claude decides to apply a Skill in auto-mode and on explicit call",
+      "You can write a description that fires precisely — no false or missed activations",
+      "You distinguish the trigger in claude.ai (by intent) from Claude Code (by /command)",
+      "You diagnose why a Skill didn't activate: vague description, conflict, missing /command",
+      "You test the trigger on real requests before the Skill goes live"
+    ],
+    "applyIn": [
+      {
+        "title": "Creating a new Skill",
+        "description": "When you write SKILL.md, the description is the most important field. Its wording decides whether the Skill turns on by itself or stays silent."
+      },
+      {
+        "title": "Debugging \"the Skill didn't fire\"",
+        "description": "The Skill exists, but Claude ignores it. Knowing the trigger mechanism, you quickly find the cause: a too-general description or a conflict with a neighboring Skill."
+      },
+      {
+        "title": "A set of several Skills in one Project",
+        "description": "With several skills in a project, their descriptions must not overlap, so each fires on its own class of requests."
+      }
+    ],
+    "pitfalls": [
+      "A too-general description (\"helps with documents\") — the Skill fires on every request, or Claude never understands when to call it",
+      "Expecting a /command launch in claude.ai — there is no explicit call there; only the auto-trigger by intent works",
+      "Expecting a Skill to turn on by itself in Claude Code — it only activates when you explicitly type /skillname",
+      "Two Skills with similar descriptions conflict — Claude picks the wrong one or hesitates",
+      "The description states what the Skill does, not when to apply it — a trigger needs \"use when…\", not \"this skill formats…\""
+    ],
+    "exercises": [
+      {
+        "question": "You have a Skill that checks text for errors. Write its description so it fires in claude.ai on \"proofread this paragraph\" but not on any question about text.",
+        "hint": "Start with \"Use when the user asks to…\" and list concrete actions: proofread, check for typos, review grammar — not a generic \"works with text\"."
+      },
+      {
+        "question": "In Claude Code you wrote a description, but the Skill \"won't turn on by itself\". What's wrong with the expectation?",
+        "hint": "Recall the two mechanisms: in Claude Code the trigger is always explicit — /skillname. Auto-activation by intent is claude.ai behavior."
+      },
+      {
+        "question": "Two Skills: one \"create-slides\", another \"format-document\". On \"make this document look nice\" Claude gets confused. How do you separate the triggers?",
+        "hint": "Make the scopes non-overlapping in the descriptions themselves: specify \"slides/presentation\" vs \"text document/report\", drop generic words like \"format nicely\"."
+      }
+    ],
+    "steps": {
+      "strg-1": {
+        "title": "How Claude decides to apply a Skill",
+        "time": "",
+        "why": "Without understanding the decision mechanism, you can neither write a working trigger nor diagnose a failure.",
+        "instructions": [
+          "Remember: Claude doesn't \"run a program\" — it reads the list of available [[node:skills|Skills]] and their descriptions as part of the context",
+          "In auto-mode ([[node:pl-web-setup|claude.ai]]) it matches the meaning of your request against each Skill's description",
+          "If a description clearly matches the request's intent — Claude enables that Skill and reads its [[node:s-md|SKILL.md]]",
+          "In explicit mode ([[node:claude-code|Claude Code]]) there's no decision by meaning: the trigger is the /skillname command"
+        ],
+        "validate": "You can state in one sentence what signal makes Claude enable a Skill in each of the two modes.",
+        "tip": "Think of the description as \"when to call me\", not \"what I can do\" — Claude decides exactly by this field."
+      },
+      "strg-2": {
+        "title": "The role of the description in activation",
+        "time": "",
+        "why": "In auto-mode the description is the only signal by which Claude decides to apply a Skill. It reads the SKILL.md body only after activation.",
+        "instructions": [
+          "Open [[node:s-md|SKILL.md]] and find the description field at the start of the file",
+          "Grasp the split: description is for the trigger (when to apply), the body is the instructions (how to execute)",
+          "Claude sees the descriptions of all Skills at once, but the body only of the activated one",
+          "So an imprecise description = the Skill either won't turn on or turns on at the wrong time — the body can't save it"
+        ],
+        "validate": "You can explain why a great SKILL.md body doesn't compensate for a bad description.",
+        "tip": "Write the description aimed at someone else's request: what words will the user phrase the task with that needs this Skill."
+      },
+      "strg-3": {
+        "title": "Auto-trigger by intent vs explicit call",
+        "time": "",
+        "why": "The two activation modes work differently; confusing them is a common cause of \"the Skill didn't fire\".",
+        "instructions": [
+          "[[node:pl-web-setup|claude.ai]]: Claude enables the Skill itself by the request's meaning — the user types no commands",
+          "[[node:claude-code|Claude Code]]: activation is explicit — you type /skillname, Claude reads [[node:s-md|SKILL.md]] and follows the steps",
+          "In explicit mode the description barely affects the launch — the command decides; the description helps Claude with hints",
+          "Remember the rule: claude.ai = magic by intent, Claude Code = full manual control"
+        ],
+        "validate": "For a specific Skill you can say how it launches in claude.ai and how in Claude Code.",
+        "tip": "If you need a predictable launch with no surprises — that's Claude Code with an explicit /command. If you want the skill to plug in by itself — that's claude.ai."
+      },
+      "strg-4": {
+        "title": "How to phrase a description so it fires precisely",
+        "time": "",
+        "why": "A precise description is the difference between a Skill that fires exactly when needed and one that stays silent or barges in everywhere.",
+        "instructions": [
+          "Start with \"Use when the user asks to…\" — describe the condition of application, not the function",
+          "List concrete signal-actions (create a presentation, prepare slides), not broad categories (\"working with documents\")",
+          "Add the request vocabulary: what phrasings the user will describe the task with",
+          "Keep the scope narrow and non-overlapping with other Skills — one Skill = one class of requests",
+          "Check: from the description alone it's clear when to call the Skill and when not to"
+        ],
+        "validate": "Your description starts with \"use when\", contains concrete actions, and doesn't overlap with other Skills.",
+        "tip": "Formula: \"Use when [request signal] — [concrete actions]\". Example: \"Use when user asks to create a presentation or prepare slides\"."
+      },
+      "strg-5": {
+        "title": "Why it doesn't fire: vague description and conflict",
+        "time": "",
+        "why": "Most trigger failures come down to two causes; able to tell them apart, you fix the Skill in a minute.",
+        "instructions": [
+          "Cause 1 — vague description: \"helps with documents\" matches any request, so Claude can't find the moment",
+          "Cause 2 — conflict: two Skills with close descriptions, Claude picks the wrong one or hesitates",
+          "Cause 3 (Claude Code): you expected auto-activation but didn't type /skillname — here the trigger is explicit only",
+          "Diagnosis: read the description aloud as \"when to call me\" — if it fits everything, it's vague",
+          "To resolve a conflict — make the scopes explicitly different in both descriptions"
+        ],
+        "validate": "For a broken Skill you can name the specific cause: vagueness, conflict, or missing /command.",
+        "tip": "Vagueness test: if the description fits 3+ unrelated requests — it's too general, narrow it."
+      },
+      "strg-6": {
+        "title": "Trigger testing and common mistakes",
+        "time": "",
+        "why": "The trigger must be tested on real requests before the Skill goes live — otherwise the failure surfaces at the worst moment.",
+        "instructions": [
+          "Compose 3-4 test requests: ones the Skill SHOULD fire on, and similar ones it should NOT",
+          "In [[node:pl-web-setup|claude.ai]] run them and check the Skill turns on exactly on the right ones",
+          "In [[node:claude-code|Claude Code]] confirm that /skillname reads [[node:s-md|SKILL.md]] and follows the steps",
+          "If it fires on the extra ones — narrow the description; if it misses the right ones — add signal-phrasings",
+          "Avoid common mistakes: a general description, expecting a /command in claude.ai, expecting auto-mode in Claude Code"
+        ],
+        "validate": "The Skill turns on for every \"should\" request and stays silent for every \"shouldn't\" — in both modes.",
+        "tip": "Test negative requests too: a Skill that fires in the wrong place is as disruptive as one that stays silent."
+      }
+    }
+  },
+  "skill-files": {
+    "title": "Skill helper files",
+    "subtitle": "Templates, checklists, schemas and scripts next to SKILL.md",
+    "totalTime": "6 steps",
+    "whatItIs": "A Skill folder is more than SKILL.md. Alongside it you can keep helper files: report templates, checklists, JSON schemas, ready-made scripts. Claude reads them as part of the instruction and fills them in with user data. A long template moves out of SKILL.md into a separate file — the main file stays short, and the output format becomes guaranteed.",
+    "approach": "We go from motivation to practice: why helper files are needed at all, what types exist, how SKILL.md references them, a working example (report template + JSON schema), keeping the folder tidy, and closing out the common mistakes with a check. We build on the [[node:skills|Skills]] node and the [[node:s-md|SKILL.md]] and [[node:s-create|Creating a Skill]] skills.",
+    "outcomes": [
+      "You understand why to move templates and lists out of SKILL.md into separate files",
+      "You tell apart the types of helper files: templates, checklists, schemas, scripts",
+      "You can reference a file from SKILL.md so that Claude reads and applies it",
+      "You can assemble a \"template + JSON schema\" pair for structured output",
+      "You keep the Skill folder organized and lightweight, free of extra and heavy files"
+    ],
+    "applyIn": [
+      {
+        "title": "Regular reports",
+        "description": "A Skill with a report template produces the same format every time — headings, sections and order don't drift from run to run."
+      },
+      {
+        "title": "Structured output",
+        "description": "A JSON schema next to the Skill defines the exact shape of the data: Claude returns an answer another program can read directly without manual fixes."
+      },
+      {
+        "title": "Repeatable checks",
+        "description": "A checklist in a separate file guarantees the Skill walks through every review item each time instead of recalling them on the fly."
+      }
+    ],
+    "pitfalls": [
+      "Stuffing a 50-line template straight into SKILL.md — the file bloats and Claude follows the instruction less reliably",
+      "Keeping heavy or binary files in the Skill folder — they bloat the context and aren't needed for the work",
+      "Creating a file but forgetting to reference it from SKILL.md — Claude never learns about it",
+      "Duplicating one template across several Skills instead of linking to a shared file",
+      "Naming files chaotically (file1.md, tmp.json) — later it's unclear what does what"
+    ],
+    "exercises": [
+      {
+        "question": "A Skill generates a weekly report, and its SKILL.md has grown to 80 lines because of an inline template. What do you move into a separate file, and how do you reference it?",
+        "hint": "The report template → templates/report.md. In SKILL.md keep a short instruction: \"Fill templates/report.md with user data\"."
+      },
+      {
+        "question": "You need the Skill to always return data in a strict shape for another program. What helper file do you add, and why?",
+        "hint": "A JSON schema: it fixes the set of fields and their types, making the output machine-readable without manual fixes."
+      },
+      {
+        "question": "The Skill folder holds report.md, tmp.json, file1.md and a 5 MB image. What's wrong here?",
+        "hint": "The heavy/binary file is unnecessary, and tmp.json and file1.md say nothing about their purpose — tidy up and keep only what's needed."
+      }
+    ],
+    "steps": {
+      "sfl-1": {
+        "title": "Why helper files in the Skill folder",
+        "time": "",
+        "why": "If the whole template and every question list live inside SKILL.md, the file quickly becomes unreadable and Claude follows the instruction less reliably. Moving long parts outside keeps the main file short and the output format stable.",
+        "instructions": [
+          "Open any of your Skills and look at SKILL.md: does it contain a long inline template or a list of 10+ items",
+          "Grasp the principle: the main file is the \"what to do\" instruction, while long content (template, checklist, schema) is a separate file the instruction points to",
+          "Remember the payoff: a Skill with a template gives a guaranteed format every time, not \"whatever comes out\"",
+          "Tie it to the basics: helper files are part of how [[node:skills|Skills]] are built, not a separate entity"
+        ],
+        "validate": "You can explain in one sentence why a long template is better kept outside SKILL.md.",
+        "tip": "Simple rule: SKILL.md answers \"what to do\", helper files answer \"in what shape\"."
+      },
+      "sfl-2": {
+        "title": "What types of files exist",
+        "time": "",
+        "why": "Different tasks call for different helper files. Knowing the standard set, you quickly see exactly what to move outside for your task.",
+        "instructions": [
+          "Templates (templates/): an output stub with sections — report, letter, brief",
+          "Checklists: a list of items the Skill walks through during a check or review",
+          "Schemas (JSON schemas): the exact shape of structured data — which fields and of what types",
+          "Scripts: ready-made code the Skill runs for a repeatable operation",
+          "Figure out for your Skill which of these types would cover its weak spot"
+        ],
+        "validate": "For your task you name at least one suitable file type and explain what it gives.",
+        "tip": "A template governs the shape of text, a JSON schema the shape of data. They're different tools — don't mix them up."
+      },
+      "sfl-3": {
+        "title": "How SKILL.md references files",
+        "time": "",
+        "why": "A file next to the Skill doesn't work on its own — Claude must get the instruction to read it. Without a reference from SKILL.md, a helper file just sits there as dead weight.",
+        "instructions": [
+          "In SKILL.md state the relative path to the file: for example, templates/report.md",
+          "Give an explicit action instruction: \"Fill templates/report.md with user data\" or \"Check the result against checklist.md\"",
+          "Keep the path relative to the Skill folder — that way the link survives a move",
+          "Make sure the file name in the reference exactly matches the real name on disk",
+          "Build on the main-file conventions from the [[node:s-md|SKILL.md]] skill"
+        ],
+        "validate": "Your SKILL.md has a line with a path to the file and an action verb (fill/check/use).",
+        "tip": "The verb is decisive: \"templates/report.md\" with no action may be ignored, \"fill templates/report.md\" won't be."
+      },
+      "sfl-4": {
+        "title": "Example: report template + JSON schema",
+        "time": "",
+        "why": "A two-file pair is the most common working case: the template sets a human-readable shape, the JSON schema a strict machine shape. The example shows how both references coexist in one SKILL.md.",
+        "instructions": [
+          "Assemble the structure: skills/report/ with SKILL.md, templates/report.md and schema.json",
+          "In templates/report.md set the template sections: Goal / Findings / Recommendations",
+          "In schema.json describe the structured-output fields and their types (e.g. goal — string, findings — list)",
+          "In SKILL.md add two instructions: \"Fill templates/report.md with user data\" and \"Return data strictly per schema.json\"",
+          "Cross-check with the Skill build order from the [[node:s-create|Creating a Skill]] skill"
+        ],
+        "validate": "You have a Skill where SKILL.md references both the template and the JSON schema, and both files sit in the folder.",
+        "tip": "The template is for human eyes, the JSON schema for another program. One Skill happily produces both outputs."
+      },
+      "sfl-5": {
+        "title": "Organizing the Skill folder",
+        "time": "",
+        "why": "Once you have more than two files, without order the folder turns into a dump and it's unclear what does what. A clear structure and names save time on every return to the Skill.",
+        "instructions": [
+          "Group same-type files into subfolders: templates in templates/, schemas alongside or in a separate folder",
+          "Give telling names: report.md, review-checklist.md, output-schema.json — not file1.md or tmp.json",
+          "Keep one template needed by several Skills in one place and reference it, don't copy it",
+          "Delete drafts and temporary files — only what SKILL.md actually references stays in the folder"
+        ],
+        "validate": "The file names in the folder immediately reveal their purpose, and every file is mentioned in SKILL.md.",
+        "tip": "Order check: if a file's name doesn't hint at why it exists, rename it right now."
+      },
+      "sfl-6": {
+        "title": "Mistakes and final check",
+        "time": "",
+        "why": "Heavy, extra or unlinked files quietly break a Skill: they bloat the context or simply go unused. A final pass through the common mistakes catches this before the Skill goes live.",
+        "instructions": [
+          "Check that SKILL.md has no inline long template — it should be moved to a separate file",
+          "Make sure the folder has no heavy or binary files: only light text, schemas and needed scripts",
+          "Walk through each file: is it definitely referenced from SKILL.md? No reference — delete it or add one",
+          "Run the Skill on real data and verify the output matches the template and schema",
+          "If the format drifts, look for the cause in an inaccurate reference or a file-name mismatch"
+        ],
+        "validate": "The Skill runs, output follows the template and schema strictly, and the folder has no unreferenced or needless files.",
+        "tip": "The main red flag is a file that sits in the folder but is mentioned nowhere. Either reference it or remove it."
+      }
+    }
+  },
+  "skill-ready": {
+    "title": "Ready-made Skills",
+    "subtitle": "Anthropic's catalog: add a skill in one click",
+    "totalTime": "6 steps",
+    "whatItIs": "Ready-made Skills are add-ons Anthropic has already written and tested: pptx (presentations), xlsx (spreadsheets), pdf (document analysis), docx (Word files), skill-creator (build your own). The catalog lives in [[node:pl-web-setup|claude.ai]]: Project Settings → Skills → Browse. They're added with one click and work right away.",
+    "approach": "Don't write your own Skill until you've checked the catalog. First open Browse, pick the right ready-made one, enable it, and confirm Claude actually activates it on your task. Only if nothing fits should you move on to [[node:s-create|building your own]]. This course walks the full cycle: find, choose, enable, verify, tune, and avoid the common traps.",
+    "outcomes": [
+      "Know where the ready-made Skills catalog is and what's in it",
+      "Can pick a Skill for a specific task instead of guessing",
+      "Can confirm a Skill actually activated, not just shows as enabled",
+      "Understand how a ready-made Skill behaves in a project and how to tune it",
+      "Stop wasting time reinventing what already exists in one click"
+    ],
+    "applyIn": [
+      {
+        "title": "Presentations from text",
+        "description": "Enable pptx, hand Claude your text, get a finished .pptx from a template without opening PowerPoint."
+      },
+      {
+        "title": "Parsing PDFs and documents",
+        "description": "The pdf Skill pulls the gist, tables and key figures from a long document with no manual copying."
+      },
+      {
+        "title": "Working with spreadsheets",
+        "description": "xlsx builds and edits Excel files — formulas, pivots, formatting — from a task described in words."
+      }
+    ],
+    "pitfalls": [
+      "Writing your own Skill for PDF, Excel or slides without opening Browse — losing half an hour where a one-click solution exists",
+      "Assuming enabled = active: a Skill only fires when the task matches its purpose",
+      "Enabling everything 'just in case' — extra Skills confuse Claude's choice of tool",
+      "Not reading a Skill's description before enabling, then being surprised it does the wrong thing",
+      "Trusting any source: install Anthropic's Skills, and verify what third-party ones actually do"
+    ],
+    "exercises": [
+      {
+        "question": "You need to turn a long report into a presentation. Which ready-made Skill do you use and where do you find it?",
+        "hint": "Presentations = .pptx. Catalog: Project Settings → Skills → Browse."
+      },
+      {
+        "question": "You enabled a Skill, but Claude seems to ignore it. How do you check it actually activated?",
+        "hint": "Give a task that directly matches the Skill's purpose and see whether Claude follows its steps/template in the answer."
+      },
+      {
+        "question": "Browse has no ready-made Skill for your task. What's next?",
+        "hint": "Move on to [[node:s-create|building your own Skill]] — but only after confirming none exists."
+      }
+    ],
+    "steps": {
+      "srd-1": {
+        "title": "What ready-made Skills are and where to get them",
+        "time": "",
+        "why": "Before doing anything by hand or writing your own Skill, you need to know: half the routine is already covered by Anthropic's ready-made skills.",
+        "instructions": [
+          "Open [[node:pl-web-setup|claude.ai]] and go into a project.",
+          "Navigate: Project Settings → Skills → Browse.",
+          "Look through the Anthropic-built Skills: pptx, xlsx, pdf, docx, skill-creator.",
+          "Read each description — what it does and which task it's for."
+        ],
+        "validate": "You can see the Browse catalog and name at least 3 ready-made Skills and their purpose.",
+        "tip": "The catalog is your first stop before any file-related task. Browse first, everything else after."
+      },
+      "srd-2": {
+        "title": "How to choose the right Skill",
+        "time": "",
+        "why": "Guessing leads to a Skill that either doesn't fire or does the wrong thing. A Skill is matched to the type of task.",
+        "instructions": [
+          "State the task in one sentence: 'need a presentation', 'parse a PDF', 'build a table'.",
+          "Match the output type to the Skill's purpose: .pptx → pptx, .xlsx → xlsx, PDF analysis → pdf, Word → docx.",
+          "Open the chosen Skill's description and confirm it covers exactly your case.",
+          "If none fits — note that: next stop is [[node:s-create|your own Skill]]."
+        ],
+        "validate": "You've picked one specific Skill for your task and can explain why that one.",
+        "tip": "A Skill's purpose is the output format, not the topic. 'A presentation about finance' is pptx, not a 'finance' Skill."
+      },
+      "srd-3": {
+        "title": "Enable it and verify it activates",
+        "time": "",
+        "why": "An enabled Skill isn't a working one — it only fires when the task matches its purpose. You need to verify this in practice.",
+        "instructions": [
+          "In Browse, click add on the chosen Skill — it turns on for the project.",
+          "Give Claude a task that directly matches the Skill's purpose (e.g. 'Create a presentation from this text: …').",
+          "Check the answer: Claude should follow the Skill's steps and produce the right file/format.",
+          "If the Skill didn't fire — rephrase the task so it clearly demands its output."
+        ],
+        "validate": "You gave a test task and got a result that shows the Skill at work (the right file or format).",
+        "tip": "If Claude ignores the Skill, it's almost always the wording: the task doesn't 'sound' like its profile."
+      },
+      "srd-4": {
+        "title": "Tune it to your needs",
+        "time": "",
+        "why": "A ready-made Skill is the baseline. You steer its behavior toward your standards (template, tone, structure) through the project and your wording.",
+        "instructions": [
+          "Spell out your requirements in the task: brand style, slide structure, the table columns you need.",
+          "Use project instructions so you don't restate recurring requirements every time.",
+          "Run the Skill again and compare the result against the standard you want.",
+          "Save the winning phrasing as a ready prompt for reuse."
+        ],
+        "validate": "The Skill's output matches your standard, not the default template.",
+        "tip": "You don't rewrite a ready-made Skill — you steer it through project context and a precise request."
+      },
+      "srd-5": {
+        "title": "Updates and trusting the source",
+        "time": "",
+        "why": "Skills get updated, and you can install ones beyond Anthropic's. The source decides whether you can trust what a Skill does with your data.",
+        "instructions": [
+          "Prioritize Anthropic's Skills in Browse — they're officially written and tested.",
+          "Before enabling a third-party Skill, read its description: what it does and what it accesses.",
+          "Check Browse periodically — the list and capabilities of ready-made Skills keep growing.",
+          "If a Skill behaves differently after an update — re-verify it on the test task from step 3."
+        ],
+        "validate": "You can explain why you trust an enabled Skill and know where it came from.",
+        "tip": "Unknown source = read the description first, enable second. Anthropic Skills are the safest start."
+      },
+      "srd-6": {
+        "title": "Mistakes and the final check",
+        "time": "",
+        "why": "The common traps with ready-made Skills are predictable — knowing them upfront saves time and spares you junk output.",
+        "instructions": [
+          "Check: are you writing your own Skill where a ready-made one exists in Browse?",
+          "Make sure only the needed Skill is enabled, not a dozen 'just in case'.",
+          "Re-read the enabled Skill's description — does it do exactly what you expect?",
+          "Run a control task and compare the result against what it should be.",
+          "If nothing ready-made fits — deliberately move to [[node:s-create|building your own]] or the [[node:skills|Skills]] overview."
+        ],
+        "validate": "The ready-made Skill is chosen deliberately, only the needed one is enabled, tested on a task, and gives the expected result.",
+        "tip": "The rule is simple: Browse first, verify activation, and only then — your own Skill."
+      }
+    }
+  },
+  "skill-create": {
+    "title": "Build your own Skill",
+    "subtitle": "Turn a repeating process into a /skill command with /skill-creator",
+    "totalTime": "6 steps",
+    "whatItIs": "A Skill is a packaged instruction that Claude picks up by its description and applies automatically. In [[node:pl-web-setup|claude.ai]] you build one with /skill-creator: you answer a few questions and it produces a SKILL.md file with a name, description, and steps. This course goes from deciding \"is a Skill even worth it\" to a working, tested command.",
+    "approach": "We follow the logic of the Skill itself: first confirm the task is genuinely repeatable, then run /skill-creator, precisely describe WHAT and WHEN (name/description) — that drives activation, write the body steps, add supporting files, and finally test activation on a real request and fix the misses.",
+    "outcomes": [
+      "Tell a Skill-worthy task from a one-off using the \"≥ 3 times\" rule",
+      "Run /skill-creator and walk through its questions without getting stuck",
+      "Write a description that makes the Skill fire at the right moment",
+      "Write the body steps and attach supporting files",
+      "Test activation and refine the Skill based on the result"
+    ],
+    "applyIn": [
+      {
+        "title": "Recurring text audits",
+        "description": "A Skill with fixed review criteria — you type /audit and Claude applies the same checklist to any text."
+      },
+      {
+        "title": "Task and report formatting",
+        "description": "A single brief or report template in a Skill — you don't explain the format each time, the command shapes the output for you."
+      },
+      {
+        "title": "Team processes",
+        "description": "One Skill in a Project sets a shared standard — everyone gets the same result from one command."
+      }
+    ],
+    "pitfalls": [
+      "Building a Skill \"just in case\" with no real repeating need — it never pays off and clutters the Project.",
+      "A vague description (\"help with text\") — Claude can't tell WHEN to fire the Skill, so it doesn't.",
+      "Cramming three different tasks into one Skill — three narrow Skills beat one \"do-everything\" Skill.",
+      "Writing the steps but never testing activation on a live request.",
+      "Loading bulky data straight into SKILL.md instead of moving it to a supporting file."
+    ],
+    "exercises": [
+      {
+        "question": "Name a process from your work that repeats ≥ 3 times a week and that you re-explain to Claude every time. Does it qualify for a Skill?",
+        "hint": "A good candidate has the same steps and output format across different inputs."
+      },
+      {
+        "question": "Write a one-sentence description for that Skill: WHAT it does and WHEN it should fire.",
+        "hint": "A strong description names the trigger situation, not just the function: \"when text needs checking against checklist X.\""
+      },
+      {
+        "question": "Which chunk of data in your Skill should live in a separate supporting file rather than in SKILL.md?",
+        "hint": "Long lists, templates, references — anything that bloats the main file and rarely changes in substance."
+      }
+    ],
+    "steps": {
+      "scr-1": {
+        "title": "Decide whether you need a Skill",
+        "time": "",
+        "why": "A Skill only pays off on a repeatable task. \"Just in case\" it isn't worth it — it takes up space and interferes with other Skills firing.",
+        "instructions": [
+          "Take a task you give Claude regularly.",
+          "Apply the \"≥ 3 times a week\" rule: if rarer, it's a one-off, not a Skill.",
+          "Confirm the steps and output format stay the same across different inputs.",
+          "If yes on all points — the task is ready to become a Skill."
+        ],
+        "validate": "You have a concrete process that repeats ≥ 3 times and that you re-explain to Claude every time.",
+        "tip": "Unsure — compare with the [[node:skills|Skills]] node: a Skill replaces re-explaining \"how exactly to do it\"."
+      },
+      "scr-2": {
+        "title": "Run /skill-creator",
+        "time": "",
+        "why": "/skill-creator is a built-in helper: it asks the right questions and assembles a valid SKILL.md so you don't write the structure by hand.",
+        "instructions": [
+          "Open the right Project in [[node:pl-web-setup|claude.ai]].",
+          "Type /skill-creator in the chat.",
+          "Wait until it starts asking questions about the future Skill.",
+          "Answer to the point — based on the process from step 1."
+        ],
+        "validate": "/skill-creator launched and asked its first question (the Skill's name or purpose).",
+        "tip": "Keep the step-1 process description handy — answering its questions will go faster."
+      },
+      "scr-3": {
+        "title": "Describe WHAT and WHEN (name/description)",
+        "time": "",
+        "why": "Claude decides whether to fire the Skill from its description field. A vague description = the Skill won't fire at the right moment.",
+        "instructions": [
+          "Give the Skill a short, clear name in kebab-case (e.g. text-audit).",
+          "In the description state WHAT the Skill does in one phrase.",
+          "Add the trigger situation WHEN to fire it — specific words and request context.",
+          "Avoid generic wording like \"help with text\"."
+        ],
+        "validate": "The description carries both the function and the firing condition — it's clear when the Skill should activate.",
+        "tip": "File structure details are in the [[node:s-md|SKILL.md]] node; firing principles are in [[node:s-trigger|triggers]]."
+      },
+      "scr-4": {
+        "title": "Write the body steps",
+        "time": "",
+        "why": "The Skill body is the instruction Claude follows to do the task. Clear steps give a repeatable result instead of improvisation.",
+        "instructions": [
+          "Break the process into sequential steps, as you'd do it by hand.",
+          "For each step, state the action and the expected result.",
+          "Pin down the output format if it matters (report structure, checklist).",
+          "Cut the noise — keep only what the task actually needs."
+        ],
+        "validate": "The SKILL.md body describes the process step by step, and the task can be done from it without extra explanation.",
+        "tip": "Lean on the body structure in the [[node:s-md|SKILL.md]] node — step headings beat a \"wall of text\"."
+      },
+      "scr-5": {
+        "title": "Add supporting files",
+        "time": "",
+        "why": "Templates, references, and long data shouldn't bloat SKILL.md. Moved-out files keep the main file light and readable.",
+        "instructions": [
+          "Single out data that doesn't change in substance: templates, checklists, examples.",
+          "Place them as separate files next to SKILL.md.",
+          "In the Skill body, reference these files instead of pasting the full content.",
+          "Keep only the instruction and logic in SKILL.md."
+        ],
+        "validate": "Bulky data is moved into separate files, and SKILL.md stays compact and references them.",
+        "tip": "What exactly to move out and how to structure it — see the [[node:s-files|supporting files]] node."
+      },
+      "scr-6": {
+        "title": "Test activation and refine",
+        "time": "",
+        "why": "A Skill untested on a live request may not fire or may give the wrong result. The test reveals real misses in the description and steps.",
+        "instructions": [
+          "Give a real request that the Skill should fire on by itself.",
+          "Check that it activated without an explicit command call.",
+          "Compare the result with the expected format from step 4.",
+          "If it didn't fire — sharpen the description (step 3); if the result is wrong — fix the steps (step 4).",
+          "Repeat the test until activation and output are stable."
+        ],
+        "validate": "The Skill fires on a real request on its own and returns the result in the right format.",
+        "tip": "A common mistake is blaming the steps when the description is at fault. Check firing first ([[node:s-trigger|triggers]]), then quality."
+      }
+    }
+  },
+  "skill-vs-subagents": {
+    "title": "Skill ≠ Sub-agent: when to use which",
+    "subtitle": "A recipe for 'what to do' versus a separate executor with its own context",
+    "totalTime": "6 steps",
+    "whatItIs": "A short breakdown of two distinct mechanisms that are easy to confuse. A [[node:skills|Skill]] is a recipe for WHAT to do: a set of steps Claude follows inside the current chat, with no context or tools of its own. A Sub-agent (see [[node:cc-subagents|Sub-agents]]) is a separate executor with its own context window and access to tools (files, terminal, network), launched from [[node:claude-code|Claude Code]] for isolated tasks. This course teaches you to pick one for a given task.",
+    "approach": "We move from the core distinction to the practice of choosing. First we separate the concepts (recipe vs executor), then we map the boundaries: when a Skill is enough, when you need a Sub-agent, how they combine, and where people get confused. The finale is a selection algorithm for the task at hand, with a check. Each step rests on one distinction, with no repetition or filler.",
+    "outcomes": [
+      "Explain the distinction in one sentence: Skill = WHAT to do, Sub-agent = a separate executor with its own context",
+      "See when a task fits a Skill and external tools aren't needed",
+      "Recognize the signs that require a Sub-agent: context isolation, tools, parallelism, long-running work",
+      "Combine both: a Sub-agent does the work, relying on a Skill as its procedure",
+      "Pick the mechanism for a task in seconds and verify the choice against a checklist"
+    ],
+    "applyIn": [
+      {
+        "title": "Repeatable formatting",
+        "description": "A template procedure with no external tools (formatting a task, report, commit) is a Skill. Claude follows the steps right in the chat, instantly."
+      },
+      {
+        "title": "Isolated research",
+        "description": "Walking repo files, gathering data, finding outdated dependencies is a Sub-agent: its own context window and tool access, without cluttering the main chat."
+      },
+      {
+        "title": "Complex pipeline",
+        "description": "A large task split into parallel branches, where each Sub-agent follows its own Skill recipe — a combination of both mechanisms."
+      }
+    ],
+    "pitfalls": [
+      "A Sub-agent for a template task is overkill: it takes longer to launch and burns context where a Skill would do in seconds",
+      "A Skill for long research with files will hit the main chat's context limit, forcing a redo",
+      "Assuming a Skill has its own context and tools — it doesn't, it runs inside the current chat and depends on its window",
+      "Confusing 'separate executor' with 'different model' — a Sub-agent is context and tool isolation, not a model swap",
+      "Choosing the mechanism by habit rather than by task — always check against the signs of isolation and tools"
+    ],
+    "exercises": [
+      {
+        "question": "Task: every time you're asked to write a release note, format it using a fixed template, no file reading. Skill or Sub-agent?",
+        "hint": "Ask: does the task repeat? Are external tools needed? If the steps fit a recipe and no tools are involved — it's a Skill."
+      },
+      {
+        "question": "Task: walk through 200 repo files and collect a list of TODOs. What do you pick and why?",
+        "hint": "Long file-reading work clutters the main chat. You need context isolation and tool access — signs of a Sub-agent."
+      },
+      {
+        "question": "Can you use both at once? Give an example of the combination.",
+        "hint": "A Sub-agent is an executor. Give it a Skill as a procedure: it works in its own context, following your recipe for WHAT to do."
+      }
+    ],
+    "steps": {
+      "svs-1": {
+        "title": "The core distinction: recipe vs executor",
+        "time": "",
+        "why": "Without a clear boundary between 'what to do' and 'who does it', every later decision is a guess. This is the foundation of the choice.",
+        "instructions": [
+          "Memorize the formula: a [[node:skills|Skill]] = a recipe for WHAT to do, Claude follows the steps inside the current chat",
+          "Memorize the second: a Sub-agent = a separate executor with its own context window and tools (files, terminal, network)",
+          "Note the key point: a Skill has no context of its own — it depends on the current chat's window",
+          "Note the second key point: a Sub-agent is launched from [[node:claude-code|Claude Code]] for isolated tasks"
+        ],
+        "validate": "You can explain the distinction in one sentence without confusing 'recipe' and 'executor'.",
+        "tip": "Analogy: a Skill is an instruction on paper, a Sub-agent is a separate worker you can hand that instruction to."
+      },
+      "svs-2": {
+        "title": "When a Skill is enough",
+        "time": "",
+        "why": "Most repeatable tasks don't need isolation — and a Skill solves them in seconds, with no overhead.",
+        "instructions": [
+          "Check the repeatability sign: the task recurs regularly and fits into fixed steps",
+          "Check the no-tools sign: no files, terminal, or network needed — only text and reasoning",
+          "If both signs hold — make it a [[node:skills|Skill]] (see [[node:s-create|creating a Skill]])",
+          "Example: 'whenever I ask to write a task — format it using this template'"
+        ],
+        "validate": "You can name two of your own tasks that clearly fit a Skill, and explain why.",
+        "tip": "If the task is fully solved by text in a single chat window — it's almost certainly a Skill, not a Sub-agent."
+      },
+      "svs-3": {
+        "title": "When you need a Sub-agent",
+        "time": "",
+        "why": "Context isolation and parallelism are what a Skill cannot provide. This is where the Sub-agent zone begins.",
+        "instructions": [
+          "Sign 1 — isolation: the task is long and would clutter the main chat's context if done in it",
+          "Sign 2 — tools: you need to read files, hit the network, work in a terminal",
+          "Sign 3 — parallelism: the work can be split into branches run simultaneously",
+          "If even one sign is strong — launch a Sub-agent (see [[node:cc-subagents|Sub-agents]])",
+          "Example: 'walk through all files in the repo and find outdated dependencies'"
+        ],
+        "validate": "For your real task you can point to the exact sign (isolation/tools/parallelism) that makes it a Sub-agent task.",
+        "tip": "The longer and 'messier' the work is for the main chat, the stronger the case for isolation in a Sub-agent."
+      },
+      "svs-4": {
+        "title": "How they combine",
+        "time": "",
+        "why": "It's not either-or. The most powerful scenarios are when the executor works from a recipe.",
+        "instructions": [
+          "Get the pairing: a Sub-agent is the executor, a Skill is the procedure it follows",
+          "Give the Sub-agent access to a [[node:skills|Skill]] so it acts on a fixed recipe inside its own context",
+          "For a pipeline: several Sub-agents in parallel, each with its own Skill recipe",
+          "This way you combine isolation/tools (from the Sub-agent) and step repeatability (from the Skill)"
+        ],
+        "validate": "You can describe one scenario where a Sub-agent does the work relying on a Skill as its procedure.",
+        "tip": "A Skill answers 'what to do', a Sub-agent answers 'who does it and where'. Together they cover both questions."
+      },
+      "svs-5": {
+        "title": "Common confusion",
+        "time": "",
+        "why": "The most expensive mistakes are born here — from wrong assumptions about what's what.",
+        "instructions": [
+          "Bust myth 1: a Skill does NOT have its own context and tools — it lives in the current chat's window",
+          "Bust myth 2: a Sub-agent is context and tool isolation, NOT a model swap",
+          "Remember the cost of a wrong choice: a Sub-agent for a template is overkill (slower launch); a Skill for file research hits the context limit",
+          "Before deciding, always check against the signs from steps 2 and 3, not against habit"
+        ],
+        "validate": "You can name both myths and explain what time loss each wrong choice leads to.",
+        "tip": "If you catch yourself thinking 'I'll grab a Sub-agent just in case' — that's a signal to recheck the signs."
+      },
+      "svs-6": {
+        "title": "Choosing for the task and verifying",
+        "time": "",
+        "why": "The final algorithm turns understanding into a fast, verifiable decision.",
+        "instructions": [
+          "Step 1: does the task repeat and fit into steps without external tools? → [[node:skills|Skill]]",
+          "Step 2: is the task long, needing tools or parallelism? → Sub-agent ([[node:cc-subagents|Sub-agents]])",
+          "Step 3: do you need both? → Sub-agent + Skill as its procedure",
+          "Check: after choosing, ask 'is this overkill?' and 'will I hit the context limit?'",
+          "If both answers are 'no' — the choice is correct"
+        ],
+        "validate": "You ran three of your tasks through the algorithm and each choice passed the overkill and context-limit check.",
+        "tip": "The decision should take seconds. If you're thinking long — the task is hybrid: take Sub-agent + Skill."
+      }
+    }
   }
 }
