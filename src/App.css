@@ -8739,3 +8739,18 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
     -webkit-transform: translateZ(0);
   }
 }
+
+/* ============================================================
+   iOS: убираем декоративный category-tint холста на тач-устройствах.
+   На iOS Safari пограничный псевдо-слой `.mm-canvas::after` (рамка 2px
+   по периметру при выбранном узле/категории) рендерится как жёсткая
+   тёмная рамка вокруг приложения, а анимированный composited-слой
+   усугубляет отложенную перерисовку (контент/меню видны лишь со
+   второго касания). На десктопе эффект остаётся.
+   ============================================================ */
+@media (hover: none) and (pointer: coarse) {
+  .app__main.is-tinted .mm-canvas::before,
+  .app__main.is-tinted .mm-canvas::after {
+    display: none !important;
+  }
+}
