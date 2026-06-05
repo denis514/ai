@@ -31,9 +31,12 @@ export default function LoadingScreen({ onDone }) {
           <circle className="ls__leaf" cx="138" cy="28" r="5" />
           <circle className="ls__leaf" cx="138" cy="60" r="5" />
           <circle className="ls__leaf" cx="138" cy="92" r="5" />
-          {/* центральный узел */}
+          {/* центральный узел-логотип (искра) */}
           <g className="ls__core">
-            <rect x="14" y="46" width="28" height="28" rx="8" />
+            <rect className="ls__core-bg" x="12" y="44" width="32" height="32" rx="9" />
+            <g className="ls__core-mark" transform="translate(20 52) scale(0.66)">
+              <path d="M12 2.5c.6 5.4 1.1 7 9.5 9.5-8.4 2.5-8.9 4.1-9.5 9.5-.6-5.4-1.1-7-9.5-9.5C10.9 9.5 11.4 7.9 12 2.5Z" />
+            </g>
           </g>
           {/* бегущие импульсы */}
           <g className="ls__pulse ls__pulse--1"><circle r="4" /></g>
