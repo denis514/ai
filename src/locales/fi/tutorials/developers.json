@@ -9916,7 +9916,7 @@
     "whatItIs": "Anthropic API rajoittaa kuormaa kolmella mittarilla: RPM (pyyntöjä minuutissa), TPM (input+output-tokeneita minuutissa) ja päivittäinen tokenraja. Todelliset luvut riippuvat tilin tieristä (Tier 1 → Tier 4), joka kasvaa automaattisesti kumulatiivisen kulutuksen myötä. Ylityksissä API palauttaa 429 Too Many Requests + retry-after-otsikon. Kurssi opettaa suunnittelemaan integraation niin, etteivät piikit ja batch-kuormat kaada palvelua. API-konteksti on kohdissa [[node:pl-api|Alusta: API]] ja [[tutorial:api-basics|API:n perusteet]].",
     "approach": "Etenemme rajamallista käytäntöön: ensin mitä RPM/TPM/daily oikeasti laskevat ja miten tierit toimivat, sitten 429:n ja retry-afterin lukeminen, retry eksponentiaalisella backoffilla ja jitterillä, 80% puskurin varaaminen, offline-kuorman siirto Message Batches API:in ja lopuksi tier-noston suunnittelu ennustetun liikenteen mukaan. Jokainen vaihe on toimiva tekniikka, ei teoriaa.",
     "outcomes": [
-      "Ymmärrät eron RPM:n, TPM:n ja päivärajan välillä ja kumpaan törmäät ensin",
+      "Ymmärrät eron RPM:n, TPM:n ja päivärajan välillä ja mihin näistä törmäät ensin",
       "Luet 429:n ja retry-after-otsikon etkä tee sokeita retryjä",
       "Toteutat retryn eksponentiaalisella backoffilla ja jitterillä tappamatta omaa rajaa",
       "Varaat puskurin ja käytät Message Batches API:a batch-kuormiin",
@@ -10348,7 +10348,7 @@
       "sas-vm-vps-1": {
         "title": "Päätä: VM vai kontti",
         "time": "",
-        "why": "VM ei ole oletus. Se on kontti­a kalliimpi ja raskaampi. Ennen kuin maksat 24/7-koneesta, varmista ettei kontti ([[node:sas-docker-computer-use|Docker computer-usea varten]]) todella kata tehtävää. Muuten maksat liikaa eristyksestä, jonka Docker olisi antanut muutenkin.",
+        "why": "VM ei ole oletus. Se on konttia kalliimpi ja raskaampi. Ennen kuin maksat 24/7-koneesta, varmista ettei kontti ([[node:sas-docker-computer-use|Docker computer-usea varten]]) todella kata tehtävää. Muuten maksat liikaa eristyksestä, jonka Docker olisi antanut muutenkin.",
         "instructions": [
           "Käy läpi 4 vaatimuksen tarkistuslista: (1) tarvitset 24/7-käyntiajan, kun koneesi on sammuksissa; (2) tarvitset täyden GUI:n/työpöydän, et headless-tilaa; (3) tarvitset pysyvän ulkoisen IP:n; (4) tarvitset fyysisen eristyksen ympäristöstäsi.",
           "Jos 0–1 vaatimusta täyttyy — käytä konttia, älä pystytä VM:ää.",
@@ -10511,7 +10511,7 @@
         "time": "",
         "why": "Oikeudeton käyttäjä on hyödytön, jos hän voi tulla rootiksi sudon, setuid-binäärin tai docker-ryhmäjäsenyyden kautta. Oikeuksien korotus on vähimpien oikeuksien pääohitus ja se on suljettava nimenomaisesti.",
         "instructions": [
-          "Varmista, ettei agentille ole sääntöjä /etc/sudoers:ssa ja sudoers.d:ssä (sudo -l -U agent kieltäydyttävä)",
+          "Varmista, ettei agentille ole sääntöjä /etc/sudoers:ssa ja sudoers.d:ssä (komennon sudo -l -U agent on annettava kielto)",
           "Tarkista, ettei agentti ole docker-ryhmässä: jäsenyys siinä vastaa rootia isäntäkoneella",
           "Aja prosessi no-new-privileges-asetuksella (ydinlippu/palveluasetus) estäen setuid-korotuksen",
           "Rajoita käytettävissä olevia setuid-binäärejä (ping, sudo, su) — agentti ei tarvitse niitä"
