@@ -307,9 +307,14 @@
   s-create/s-vs-subagents), ru/en/fi. Кнопка «Узнать больше» теперь на всех узлах Skills.
   **Итого 219 курсов.** Слито параллельными агентами → merge-скрипт (ключи s1..6 → prefix-N,
   totalTime по языку), build+links+sync зелёные.
-- 📌 **Деплой-долг (Supabase, делает пользователь)**: редеплой edge-функций после правок
-  `_shared/crypto.ts`+`auth.ts` (все 8 функций) + миграции 006/007; после деплоя ключи
-  (Anthropic/Telegram/Resend/GCal) вводятся заново — старое шифрование не читается.
+- ✅ **Деплой edge-функций ВЫПОЛНЕН** (2026-06-05 10:28-10:29 UTC, через supabase CLI):
+  все 8 функций переразвёрнуты с обновлённым `_shared/crypto.ts`+`auth.ts` —
+  connect-key(v11)/disconnect-key(v8)/execute(v36)/mcp-manage(v4)/gcal-connect(v4) [JWT on],
+  scheduler(v14)/webhook(v9)/gcal-callback(v4) [--no-verify-jwt]. ⚠️ После смены KDF ключи
+  (Anthropic/Telegram/Resend/GCal) надо ввести заново в «Мои ключи».
+- 📌 **Осталось у пользователя**: миграции 006 (mcp) + 007 (webhooks) в SQL-редакторе
+  Supabase, ЕСЛИ ещё не применены (файлы `docs/agent-builder/migrations/00{6,7}_*.sql`).
+  CLI их не применяет — лежат вне `supabase/migrations/`.
 
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
