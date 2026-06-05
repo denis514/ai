@@ -297,8 +297,11 @@
 - ✅ **Включены официальные плагины Anthropic** (личный `settings.local.json`):
   `frontend-design`, `pr-review-toolkit` (скиллы, работают сразу после рестарта),
   `github`, `telegram` (MCP-коннекторы — нужна авторизация токеном пользователем).
-- 📌 **Открыто (контент)**: ветка **Skills (`s-*`, 6 листьев)** без курсов → на этих узлах
-  нет «Узнать больше»/«Пройти курс». Кандидат на следующий батч node-course.
+- ✅ **Ветка Skills закрыта** (commit `8f31cc9`): 6-шаговые курсы на всех 6 листьях
+  (`skill-md/trigger/files/ready/create/vs-subagents` → s-md/s-trigger/s-files/s-ready/
+  s-create/s-vs-subagents), ru/en/fi. Кнопка «Узнать больше» теперь на всех узлах Skills.
+  **Итого 219 курсов.** Слито параллельными агентами → merge-скрипт (ключи s1..6 → prefix-N,
+  totalTime по языку), build+links+sync зелёные.
 - 📌 **Деплой-долг (Supabase, делает пользователь)**: редеплой edge-функций после правок
   `_shared/crypto.ts`+`auth.ts` (все 8 функций) + миграции 006/007; после деплоя ключи
   (Anthropic/Telegram/Resend/GCal) вводятся заново — старое шифрование не читается.
