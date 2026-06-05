@@ -8754,3 +8754,19 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
     display: none !important;
   }
 }
+
+/* ============================================================
+   iOS Safari (особенно старые iPhone, напр. 12): CSS-анимации
+   появления иногда «замораживаются» на первом кадре до касания
+   экрана → залипание на opacity:0 = ПУСТОЙ экран/лист. Снять both
+   недостаточно: активная, но не стартовавшая анимация всё время
+   держит первый кадр. Поэтому на тач-устройствах ОТКЛЮЧАЕМ entrance-
+   анимации и показываем контент сразу. Анимации скрытия не трогаем.
+   ============================================================ */
+@media (hover: none) and (pointer: coarse) {
+  .app { animation: none !important; opacity: 1 !important; }
+  .ls,
+  .ls__logo,
+  .ls__text { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .bsheet { animation: none !important; opacity: 1 !important; }
+}
