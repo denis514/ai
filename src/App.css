@@ -1066,7 +1066,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   height: 44px;
   padding: 0 14px;
   box-sizing: border-box;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border);
@@ -1078,8 +1078,12 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   transition: background .12s ease, border-color .12s ease;
 }
 .canvas-filters__toggle:hover {
-  background: var(--surface);
+  background: var(--surface-3);
   border-color: var(--border-strong);
+}
+.canvas-filters__toggle:focus-visible {
+  outline: 2px solid var(--line);
+  outline-offset: 2px;
 }
 .canvas-filters__toggle.is-open {
   background: var(--surface);
@@ -1181,7 +1185,8 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   height: 44px;
   padding: 4px 4px 4px 4px;
   box-sizing: border-box;
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  /* Прозрачность 90% — единый стандарт стекла для всей шапки. */
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border);
@@ -1193,7 +1198,9 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 10px 8px 8px;
+  /* Бар фиксирован 44px (padding 4 → inner 36). Вертикальный padding 0 даёт
+     запас по высоте при смене line-height/шрифта — flex родителя центрирует. */
+  padding: 0 10px 0 8px;
   background: transparent;
   border: none;
   border-radius: 999px;
@@ -1203,6 +1210,10 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .canvas-header__brand:hover { background: var(--surface-3); }
 .canvas-header__brand.is-open { background: var(--surface-3); }
+.canvas-header__brand:focus-visible {
+  outline: 2px solid var(--line);
+  outline-offset: 2px;
+}
 .canvas-header__brand strong {
   font-size: 14px;
   font-weight: 600;
@@ -1223,8 +1234,9 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 
 .canvas-header__search-btn {
   position: relative;
-  width: 34px;
-  height: 34px;
+  /* Inner-area бара 36px (44 - padding 4×2). Кнопка заполняет всю высоту. */
+  width: 36px;
+  height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1240,6 +1252,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: var(--text);
   border-color: var(--border-strong);
 }
+/* Единый hover-тон шапки = surface-3 (как в Atlas-меню) */
 .canvas-header__search-btn:focus-visible {
   outline: 2px solid var(--line);
   outline-offset: 2px;
@@ -1533,7 +1546,8 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 7;
+  /* Один слой с .canvas-header — единый ряд плашек шапки. */
+  z-index: 8;
 }
 /* Размер совпадает с .fab__btn (52×52) — единая FAB-эстетика */
 .profile-fab__btn {
@@ -1543,17 +1557,20 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border);
-  background: var(--surface);
+  /* Стеклянный фон + blur + shadow-md — единый стиль с двумя другими плашками шапки. */
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--text);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   transition: background .15s ease, transform .12s ease, border-color .15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 .profile-fab__btn:active { transform: scale(0.92); }
 .profile-fab__btn:hover {
-  background: var(--surface-2);
+  background: var(--surface-3);
   border-color: var(--border-strong);
 }
 .profile-fab__btn.is-open {
@@ -8655,7 +8672,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
    Mobile tap-target floor (mobile-gate): ключевые контролы ≥40px.
    ============================================================ */
 @media (max-width: 720px) {
-  .canvas-filters__toggle { min-height: 40px; }
+  /* .canvas-filters__toggle уже фиксирован height: 44px глобально (см. ~line 1067) */
   .canvas-filters__reset { min-width: 40px; min-height: 40px; }
   .archive-modal__page-btn { width: 40px; height: 40px; }
   .bsheet__close,
