@@ -4283,36 +4283,51 @@
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.30);
 }
 .builder-app .builder-run-split--real {
-  background: var(--success, #16a34a);
+  background: #16A34A;       /* нормальный цвет зелёной кнопки */
   box-shadow: 0 4px 14px rgba(22, 163, 74, 0.32);
+  /* Место справа под белый кружок автозапуска */
+  padding-right: 4px;
 }
-/* Общие свойства для обоих сегментов — БЕЗ border-left (fix #3) */
-.builder-app .builder-run-split__main,
-.builder-app .builder-run-split__clock {
+/* Левый сегмент — текст «Запуск» (вся зелёная = кнопка простого запуска) */
+.builder-app .builder-run-split__main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 44px;
+  padding: 0 16px 0 22px;
   border: none;
   background: transparent;
   color: #fff;
   cursor: pointer;
-}
-/* Левый сегмент — текст «Запуск», радиус только слева */
-.builder-app .builder-run-split__main {
-  padding: 0 22px;
   border-radius: 999px 0 0 999px;
-  font-size: 14px;        /* fix #5: явный размер шрифта */
+  font-size: 14px;
   font-weight: 600;
 }
-/* Правый сегмент — часы, 44×44, радиус только справа, тонкий белый дивидер слева */
+/* Правый сегмент — БЕЛЫЙ КРУГ автозапуска внутри зелёной кнопки */
 .builder-app .builder-run-split__clock {
-  width: 44px;
-  border-radius: 0 999px 999px 0;
-  border-left: 1px solid rgba(255, 255, 255, 0.28); /* fix #4: оттенок 0.28 */
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-left: 2px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #16A34A;            /* иконка зелёная на белом */
+  cursor: pointer;
+  transition: background .12s ease, transform .12s ease, box-shadow .12s ease;
 }
-/* Hover только на часах (у main собственный inset-::before paint внизу файла) */
-.builder-app .builder-run-split__clock:hover { background: rgba(0, 0, 0, 0.12); }
+.builder-app .builder-run-split__clock .hgi,
+.builder-app .builder-run-split__clock svg { color: #16A34A; }
+/* Hover белого круга — свой эффект: лёгкое осветление + приподнимание */
+.builder-app .builder-run-split__clock:hover {
+  background: #f3f4f2;
+  transform: scale(1.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+.builder-app .builder-run-split__clock:active { transform: scale(0.96); }
 /* Disabled — не давать ::before hover-заливке вылезать на отключённой кнопке */
 .builder-app .builder-run-split__main:disabled:hover::before { background: transparent; }
 .builder-app .builder-run-split__main:disabled { opacity: 0.55; cursor: default; }
