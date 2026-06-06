@@ -104,7 +104,6 @@ export default function ProfileFab(props) {
             <Icon name="user" size={22} strokeWidth={1.5} />
           )}
           {/* Зелёная точка — индикатор авторизации */}
-          {isLoggedIn && <span className="profile-fab__auth-dot" aria-hidden="true" />}
         </button>
 
         {/* Desktop dropdown */}
