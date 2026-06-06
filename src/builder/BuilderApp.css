@@ -4338,8 +4338,10 @@
 .builder-app .builder-schedule.builder-schedule--pop,
 .builder-app .builder-schedule.builder-allsched {
   position: fixed;          /* привязка к окну: всегда у правого края, рядом с часами */
-  top: 64px;
-  right: 12px;
+  /* Стандарт выпадающих списков: 6px зазор под рядом плашек (16 + 44 + 6 = 66),
+     правый край 16px — как у плашек шапки и центрального дропдауна. */
+  top: 66px;
+  right: 16px;
   left: auto;               /* перебиваем возможную растяжку .builder-modal (width:100%) */
   margin: 0;
   max-width: 420px;
