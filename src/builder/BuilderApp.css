@@ -301,12 +301,13 @@
   gap: 4px;
   height: 44px;
   padding: 0 6px;
-  /* Сдвинуто влево ровно на ширину Suorita (~100px) + 4px зазор —
-     визуально единая правая группа в стиле Atlas. */
-  margin-right: 104px;
+  /* Слита с Suorita справа в единую плашку: actions = левый сегмент (белый),
+     Suorita = правый сегмент (зелёный). Радиус только слева, правый бордер убран. */
+  margin-right: 100px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-right: none;
+  border-radius: 999px 0 0 999px;
   box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
 }
 /* Внутренние icon-кнопки правой плашки — круглые 32×32 (внутри 40px плашки) */
@@ -4147,7 +4148,8 @@
 .builder-app .builder-run-split__main {
   height: 44px;             /* единая высота шапки */
   padding: 0 20px;
-  border-radius: 999px;
+  /* Правый сегмент слитой плашки: радиус только справа, стык с actions без бордера */
+  border-radius: 0 999px 999px 0;
   display: inline-flex;
   align-items: center;
 }
