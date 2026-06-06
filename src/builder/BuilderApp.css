@@ -51,7 +51,7 @@
   padding: 6px 10px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 999px;
   box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
 }
 .builder-app .builder-header__left .builder-header__title {
@@ -64,7 +64,7 @@
   padding: 4px 6px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 999px;
   box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
 }
 /* Кнопка-переключатель «Мои workflow» в шапке */
@@ -283,7 +283,7 @@
   padding: 6px 8px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 999px;
   box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
 }
 
@@ -1144,9 +1144,10 @@
 
 .builder-app .builder-toolbox {
   /* Плавающая стеклянная карточка слева — как .detail в Atlas, только зеркально.
-     position: absolute → не занимает место в grid, холст под ней во всю ширину. */
+     position: absolute → не занимает место в grid, холст под ней во всю ширину.
+     top: 76px — оставляет место под header-таблетку с её крестиком. */
   position: absolute;
-  top: 16px;
+  top: 76px;
   left: 16px;
   bottom: 16px;
   width: var(--toolbox-w, 280px);
@@ -1624,9 +1625,10 @@
 /* ────────────────────────────────────────────────── */
 
 .builder-app .builder-sidebar {
-  /* Плавающая стеклянная карточка справа — зеркало toolbox, как .detail в Atlas. */
+  /* Плавающая стеклянная карточка справа — зеркало toolbox, как .detail в Atlas.
+     top: 76px — оставляет место под header-таблетку с её крестиком. */
   position: absolute;
-  top: 16px;
+  top: 76px;
   right: 16px;
   bottom: 16px;
   width: 280px;
