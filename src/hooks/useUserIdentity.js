@@ -33,18 +33,13 @@ function save(identity) {
 }
 
 /**
- * Детерминированный цвет из имени.
- * Простой hash → hue 0-359 → HSL с фиксированной насыщенностью/яркостью.
+ * Цвет аватара. Раньше генерился из имени детерминированным хэшем — поэтому
+ * у разных пользователей был разный. Теперь — единый брендовый акцент Atlas
+ * (#c2603f, терракота), один на всех авторизованных. Это часть бренд-системы.
  */
 export function colorFromName(name) {
-  if (!name) return '#94a3b8'; // slate-400 как fallback
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    hash |= 0; // 32-bit
-  }
-  const hue = Math.abs(hash) % 360;
-  return `hsl(${hue}, 60%, 50%)`;
+  if (!name) return '#94a3b8'; // slate-400 — fallback для не-залогиненных
+  return '#c2603f';            // Atlas accent — единый для всех залогиненных
 }
 
 /** Первая буква имени, заглавная. Безопасно для unicode. */
