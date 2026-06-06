@@ -54,9 +54,12 @@
   box-shadow: none;
   padding: 0;
 }
-/* Заголовок ✦ Agent Builder — отдельная pill-плашка как в Atlas */
+/* Заголовок ✦ Agent Builder — отдельная pill-плашка как в Atlas, высота 40px */
 .builder-app .builder-header__title {
-  padding: 6px 16px 6px 12px;
+  height: 40px;
+  padding: 0 16px 0 12px;
+  display: inline-flex;
+  align-items: center;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -77,7 +80,8 @@
   align-items: center;
   gap: 8px;
   max-width: 360px;
-  padding: 8px 16px;
+  height: 40px;             /* единая высота шапки */
+  padding: 0 16px;
   border: 1px solid var(--border);
   border-radius: 999px; /* pill */
   background: var(--surface);
@@ -233,8 +237,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border: 1px solid var(--border);
   border-radius: 50%;
@@ -243,6 +247,7 @@
   font-size: 0;       /* прячет текст «Atlas»; иконка-svg видна */
   cursor: pointer;
   transition: background 120ms ease, border-color 120ms ease;
+  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
 }
 
 .builder-app .builder-header__back:hover {
@@ -293,16 +298,17 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 8px;
-  /* Сдвиг влево, чтобы кнопка Suorita (поверх неё right:16) встала справа от actions
-     — визуально единая правая группа в стиле Atlas. */
-  margin-right: 108px;
+  height: 40px;
+  padding: 0 6px;
+  /* Сдвинуто влево ровно на ширину Suorita (~100px) + 4px зазор —
+     визуально единая правая группа в стиле Atlas. */
+  margin-right: 104px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 999px;
   box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
 }
-/* Внутренние icon-кнопки правой плашки — круглые, без рамки. */
+/* Внутренние icon-кнопки правой плашки — круглые 32×32 (внутри 40px плашки) */
 .builder-app .builder-header__actions .builder-btn--ghost {
   width: 32px;
   height: 32px;
@@ -4137,7 +4143,13 @@
   font-weight: 600;
   cursor: pointer;
 }
-.builder-app .builder-run-split__main { padding: 8px 18px; border-radius: 999px; }
+.builder-app .builder-run-split__main {
+  height: 40px;             /* единая высота шапки */
+  padding: 0 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+}
 .builder-app .builder-run-split__clock {
   padding: 8px 10px;
   border-left: 1px solid rgba(255, 255, 255, 0.35); /* дивидер */
