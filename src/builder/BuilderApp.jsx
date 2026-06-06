@@ -4,6 +4,7 @@ import {
   Background,
   Controls,
   MiniMap,
+  ControlButton,
   ReactFlowProvider,
   NodeToolbar,
   Position,
@@ -239,6 +240,9 @@ function BuilderAppInner() {
   }, []);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [execPanelOpen, setExecPanelOpen] = useState(false);
+  // Мини-карта холста — скрыта по умолчанию, открывается отдельной
+  // кнопкой в ряду Controls (правый нижний угол).
+  const [miniMapOpen, setMiniMapOpen] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [previewTplIndex, setPreviewTplIndex] = useState(null); // превью шаблона из левого списка
   const [tooltipInfo, setTooltipInfo] = useState(null); // { defId, top, left }
@@ -1624,8 +1628,18 @@ function BuilderAppInner() {
             deleteKeyCode={null}
           >
             <Background gap={20} size={1} />
-            <Controls />
-            <MiniMap pannable zoomable />
+            <Controls>
+              {/* Кнопка-переключатель мини-карты в общем ряду с зум-контролами */}
+              <ControlButton
+                onClick={() => setMiniMapOpen(v => !v)}
+                title={t(miniMapOpen ? 'builder.minimap.hide' : 'builder.minimap.show') || (miniMapOpen ? 'Скрыть мини-карту' : 'Показать мини-карту')}
+                aria-label={t('builder.minimap.toggle') || 'Toggle minimap'}
+                aria-pressed={miniMapOpen}
+              >
+                <Icon name="grid" size={12} strokeWidth={1.75} />
+              </ControlButton>
+            </Controls>
+            {miniMapOpen && <MiniMap pannable zoomable />}
 
             {/* Панель действий узла — сверху, для любого выбранного узла */}
             {selectedNodeId && (
