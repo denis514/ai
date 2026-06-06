@@ -80,13 +80,17 @@ export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant
       onBlur={handleLeave}
       aria-label={t(def.labelKey) || defId}
     >
-      {/* CTA «Старт»: 2 дополнительных blob'а (оранжевый + янтарный) — пара
-          к двум красным из ::before / ::after, чтобы получился живой градиент.
-          Только для variant='cta'; aria-hidden, чтобы не мешать скринридерам. */}
+      {/* CTA «Старт»: 6 цветных blob'ов для Apple Liquid Glass анимации.
+          Палитра: #633251 #692C37 #AC3731 #D44F29 #DE6B2C #E79B48.
+          Все aria-hidden — не мешают скринридерам. */}
       {variant === 'cta' && (
         <>
-          <span className="builder-cta-blob-o" aria-hidden="true" />
-          <span className="builder-cta-blob-a" aria-hidden="true" />
+          <span className="builder-cta-blob-r1" aria-hidden="true" />
+          <span className="builder-cta-blob-r2" aria-hidden="true" />
+          <span className="builder-cta-blob-p"  aria-hidden="true" />
+          <span className="builder-cta-blob-d"  aria-hidden="true" />
+          <span className="builder-cta-blob-o"  aria-hidden="true" />
+          <span className="builder-cta-blob-a"  aria-hidden="true" />
         </>
       )}
       <Icon name={def.icon} size={iconSize} strokeWidth={1.5} />

@@ -1290,6 +1290,16 @@ function BuilderAppInner() {
       style={{ '--toolbox-w': `${toolboxW}px` }}
     >
       <ToastHost />
+      {/* SVG-фильтр Liquid Glass для CTA «Старт» (палитра и пустой холст).
+          Размещён один раз на корне Builder, ссылка url(#builder-liquid-displace)
+          из CSS на ::before стеклянного слоя. */}
+      <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+        <filter id="builder-liquid-displace" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.018 0.025" numOctaves="2" seed="3" result="noise" />
+          <feGaussianBlur in="noise" stdDeviation="1.2" result="softNoise" />
+          <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
       {/* ── Header ─────────────────────────────────────────────── */}
       <header className="builder-header">
         <div className="builder-header__left">
@@ -1814,8 +1824,12 @@ function BuilderAppInner() {
                 style={{ pointerEvents: 'auto', marginTop: 18 }}
                 aria-label={t('builder.node.trigger_input') || 'Старт'}
               >
-                <span className="builder-cta-blob-o" aria-hidden="true" />
-                <span className="builder-cta-blob-a" aria-hidden="true" />
+                <span className="builder-cta-blob-r1" aria-hidden="true" />
+                <span className="builder-cta-blob-r2" aria-hidden="true" />
+                <span className="builder-cta-blob-p"  aria-hidden="true" />
+                <span className="builder-cta-blob-d"  aria-hidden="true" />
+                <span className="builder-cta-blob-o"  aria-hidden="true" />
+                <span className="builder-cta-blob-a"  aria-hidden="true" />
                 <span className="builder-start-cta__label">
                   <Icon name="flash" size={15} strokeWidth={1.6} />
                   <span>{t('builder.node.trigger_input') || 'Старт'}</span>
