@@ -2,9 +2,8 @@ import React, { useCallback, useState, useRef, useEffect } from 'react';
 import {
   ReactFlow,
   Background,
-  Controls,
   MiniMap,
-  ControlButton,
+  Panel,
   ReactFlowProvider,
   NodeToolbar,
   Position,
@@ -12,6 +11,7 @@ import {
   useNodesState,
   useEdgesState,
   useReactFlow,
+  useViewport,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import Icon from '../components/Icon.jsx';
@@ -369,7 +369,8 @@ function BuilderAppInner() {
   const execRef = useRef(null);
 
   const reactFlowWrapper = useRef(null);
-  const { screenToFlowPosition } = useReactFlow();
+  const { screenToFlowPosition, zoomIn, zoomOut, fitView } = useReactFlow();
+  const { zoom } = useViewport();   // живой % масштаба для зум-бара
 
   /* ────────── Persistence state (B-2.1) ────────── */
   const { user } = useAuth();
@@ -1662,17 +1663,36 @@ function BuilderAppInner() {
             deleteKeyCode={null}
           >
             <Background gap={20} size={1} />
-            <Controls>
-              {/* Кнопка-переключатель мини-карты в общем ряду с зум-контролами */}
-              <ControlButton
-                onClick={() => setMiniMapOpen(v => !v)}
-                title={t(miniMapOpen ? 'builder.minimap.hide' : 'builder.minimap.show') || (miniMapOpen ? 'Скрыть мини-карту' : 'Показать мини-карту')}
-                aria-label={t('builder.minimap.toggle') || 'Toggle minimap'}
-                aria-pressed={miniMapOpen}
-              >
-                <Icon name="grid" size={12} strokeWidth={1.75} />
-              </ControlButton>
-            </Controls>
+            {/* Зум-бар в стиле Atlas — плавающая pill по центру снизу */}
+            <Panel position="bottom-center">
+              <div className="builder-zoom">
+                <button type="button" className="builder-zoom__btn" onClick={() => zoomOut()}
+                  title={t('builder.zoom.out') || 'Уменьшить'} aria-label={t('builder.zoom.out') || 'Zoom out'}>
+                  <Icon name="minus" size={15} strokeWidth={1.9} />
+                </button>
+                <button type="button" className="builder-zoom__value" onClick={() => fitView({ padding: 0.2, duration: 300 })}
+                  title={t('builder.zoom.reset') || 'Вписать в экран'}>
+                  {Math.round((zoom || 1) * 100)}%
+                </button>
+                <button type="button" className="builder-zoom__btn" onClick={() => zoomIn()}
+                  title={t('builder.zoom.in') || 'Увеличить'} aria-label={t('builder.zoom.in') || 'Zoom in'}>
+                  <Icon name="plus" size={15} strokeWidth={1.9} />
+                </button>
+                <span className="builder-zoom__divider" />
+                <button type="button" className="builder-zoom__btn" onClick={() => fitView({ padding: 0.2, duration: 300 })}
+                  title={t('builder.zoom.fit') || 'Вписать в экран'} aria-label={t('builder.zoom.fit') || 'Fit view'}>
+                  <Icon name="fullscreen" size={15} strokeWidth={1.75} />
+                </button>
+                <button type="button"
+                  className={`builder-zoom__btn ${miniMapOpen ? 'is-active' : ''}`}
+                  onClick={() => setMiniMapOpen(v => !v)}
+                  title={t(miniMapOpen ? 'builder.minimap.hide' : 'builder.minimap.show') || (miniMapOpen ? 'Скрыть мини-карту' : 'Мини-карта')}
+                  aria-label={t('builder.minimap.toggle') || 'Toggle minimap'}
+                  aria-pressed={miniMapOpen}>
+                  <Icon name="grid" size={14} strokeWidth={1.75} />
+                </button>
+              </div>
+            </Panel>
             {miniMapOpen && <MiniMap pannable zoomable />}
 
             {/* Панель действий узла — сверху, для любого выбранного узла */}
