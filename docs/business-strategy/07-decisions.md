@@ -335,3 +335,41 @@ Product audit § honest verdict — продукт не готов к paid tier 
 
 _Append-only log. Не редактируем прошлые записи; новые решения отменяющие старые
 добавляем новой записью с reference на предыдущую._
+
+---
+
+## 2026-06-06 — Builder монетизируется через BYOK + capability-gate, НЕ через кредиты Artlist
+
+**Решение:** Agent Builder монетизируется как второй revenue-слой поверх knowledge-Pro,
+по модели **BYOK (свой Anthropic-ключ) + подписка за автоматизацию**. Кредитную систему
+Artlist (перепродажа токенов) НЕ внедряем. Knowledge-Pro и Builder-Pro — единый tier $29.
+
+**Контекст:** пользователь прислал разбор бизнес-модели Artlist (подписка+кредиты+
+маркетплейс+enterprise, агрегатор сторонних AI-моделей). Запрос — адаптировать под Atlas.
+Бизнес-доки V2 (01–07) не учитывали Builder как монетизируемый актив — разрыв закрыт
+документом 08-builder-monetization.md. Анализ проведён 3 агентами (monetization-architect,
+competitive-intelligence, product-strategist).
+
+**Обоснование:** BYOK снимает с нас inference-COGS (главную статью затрат Artlist) →
+маржа 80–95%, нулевая юр.ответственность за чужой биллинг, монетизируем уже построенную
+инфраструктуру (расписания/вебхуки/мультиключи/защита кошелька). Кредиты решают проблему,
+которой у нас при BYOK нет.
+
+**Альтернативы:**
+- ✗ Managed credits (как Artlist) — требует метеринг/circuit-breakers/anti-abuse/буфер,
+  структурный риск маржи, юр.ответственность; нереалистично для solo/early. Отложено в Phase 5+.
+- ✗ Builder как самостоятельный automation-SaaS против Zapier/Make/Dust — проигрыш на
+  интеграциях и деньгах.
+- ✓ BYOK + capability-gate + монетизация СВЯЗКИ «знание+конструктор+язык» — defensible,
+  на готовой инфраструктуре, category-of-one (финский moat).
+
+**Честная оценка выручки:** $1–4k MRR за 12 мес (валидация, не бизнес). $50k MRR —
+фантазия для нашей стадии.
+
+**Что дальше:** MVP = Stripe + capability-gate (расписания/вебхуки/мультиключи) +
+free-лимит запусков + Subscription tab. First-party Builder-шаблоны из transformation-узлов.
+ВСЕ цены — гипотезы до Phase 0 validation interviews (§15a).
+
+**Owner:** Denis
+
+**Status:** PLAN

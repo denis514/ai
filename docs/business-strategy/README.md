@@ -39,6 +39,7 @@ _Создано: 2026-05-24 | Обновлено: 2026-05-24 (post-audit) | Stat
 | 05 | [metrics.md](./05-metrics.md) | KPI: MRR, churn, NPS, conversion |
 | 06 | [competitive-landscape.md](./06-competitive-landscape.md) | Anthropic Academy / Maven / status quo |
 | 07 | [decisions.md](./07-decisions.md) | Append-only log решений |
+| 08 | [builder-monetization.md](./08-builder-monetization.md) | Монетизация Agent Builder (BYOK + capability-gate, уроки Artlist) |
 
 ---
 
