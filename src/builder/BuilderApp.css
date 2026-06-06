@@ -57,15 +57,11 @@
 .builder-app .builder-header__left .builder-header__title {
   flex: 0 0 auto;
 }
-/* Центр: переключатель workflow — таблетка по центру сверху (как «Все категории» в Atlas) */
+/* Центр: переключатель workflow — единая pill-кнопка по центру сверху, без обёртки */
 .builder-app .builder-header__center {
   justify-self: center;
   min-width: 0;
-  padding: 4px 6px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
+  /* Сама кнопка-переключатель ниже даёт фон + бордер + тень = единый компонент. */
 }
 /* Кнопка-переключатель «Мои workflow» в шапке */
 .builder-app .builder-header__wf {
@@ -73,15 +69,16 @@
   align-items: center;
   gap: 8px;
   max-width: 360px;
-  padding: 7px 14px;
+  padding: 8px 16px;
   border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
+  border-radius: 999px; /* pill */
+  background: var(--surface);
   color: var(--text);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: background 120ms ease, border-color 120ms ease;
+  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
 }
 .builder-app .builder-header__wf:hover {
   background: var(--surface-2);
@@ -130,9 +127,11 @@
 
 /* Кластер «Сохранить + Запуск» — на холсте, справа вверху */
 .builder-app .builder-canvas-controls {
+  /* Раньше — отдельный кластер в углу. Теперь приставлен к правой плашке header,
+     визуально образуя с ней единую правую группу (как у Atlas). */
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 16px;
+  right: 16px;
   z-index: 25;
   display: flex;
   align-items: center;
@@ -224,10 +223,10 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  background: transparent;
+  border-radius: 999px; /* pill — в стиле родительской плашки */
+  background: var(--surface);
   color: var(--text);
   font-size: 13px;
   cursor: pointer;
@@ -281,10 +280,27 @@
   align-items: center;
   gap: 4px;
   padding: 6px 8px;
+  /* Сдвиг влево, чтобы кнопка Suorita (поверх неё right:16) встала справа от actions
+     — визуально единая правая группа в стиле Atlas. */
+  margin-right: 108px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 999px;
   box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
+}
+/* Внутренние icon-кнопки правой плашки — круглые, без рамки. */
+.builder-app .builder-header__actions .builder-btn--ghost {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.builder-app .builder-header__actions .builder-btn--ghost:hover {
+  background: var(--surface-2);
 }
 
 /* ────────────────────────────────────────────────── */
@@ -4107,7 +4123,7 @@
   font-weight: 600;
   cursor: pointer;
 }
-.builder-app .builder-run-split__main { padding: 8px 14px; }
+.builder-app .builder-run-split__main { padding: 8px 18px; border-radius: 999px; }
 .builder-app .builder-run-split__clock {
   padding: 8px 10px;
   border-left: 1px solid rgba(255, 255, 255, 0.35); /* дивидер */
