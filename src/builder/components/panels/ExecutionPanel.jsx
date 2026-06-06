@@ -31,6 +31,9 @@ export default function ExecutionPanel({
   onStop,
   onClear,
   onClose,
+  wrapperStyle,    // inline-style: ширина через CSS-переменную --exec-w
+  wrapperClass = '',  // 'is-resizing' пока тянут левую кромку
+  onResizeStart,   // mousedown на левой кромке-handle
 }) {
   const t = useT();
   const bodyRef = useRef(null);
@@ -108,12 +111,27 @@ export default function ExecutionPanel({
     return '';
   })();
 
+  // В docked-режиме применяем wrapperStyle (CSS-var --exec-w для ширины) и
+  // wrapperClass ('is-resizing' пока тянут левую кромку). Floating mode не
+  // трогает ширину — у него свой drag/resize изнутри.
+  const dockedStyle = !floating ? wrapperStyle : undefined;
+  const dockedClass = !floating ? wrapperClass : '';
   return (
     <section
-      className={`builder-exec ${floating ? 'builder-exec--floating' : ''} ${floating && maximized ? 'builder-exec--max' : ''}`}
-      style={floating && !maximized ? { transform: `translate(${pos.x}px, ${pos.y}px)` } : undefined}
+      className={`builder-exec ${floating ? 'builder-exec--floating' : ''} ${floating && maximized ? 'builder-exec--max' : ''} ${dockedClass}`}
+      style={floating && !maximized ? { transform: `translate(${pos.x}px, ${pos.y}px)` } : dockedStyle}
       aria-label={t('builder.exec.aria') || 'Execution log'}
     >
+      {/* Хэндл ресайза по левой кромке — только в docked-режиме */}
+      {!floating && onResizeStart && (
+        <div
+          className="builder-exec__resize-handle"
+          onMouseDown={onResizeStart}
+          role="separator"
+          aria-orientation="vertical"
+          aria-label={t('builder.exec.resize') || 'Изменить ширину'}
+        />
+      )}
       <div
         className={`builder-exec__header ${floating && !maximized ? 'builder-exec__header--drag' : ''}`}
         onPointerDown={onHeaderPointerDown}

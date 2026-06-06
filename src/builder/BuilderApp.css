@@ -1836,30 +1836,46 @@
 /* ────────────────────────────────────────────────── */
 
 .builder-app .builder-exec {
-  /* Плавающая «таблетка запуска» снизу по центру — в стиле Atlas plus-button.
-     Не занимает место в grid, парит над холстом. */
+  /* Правая плавающая панель (как «детали» Atlas, только зеркально к toolbox).
+     Выезжает справа поверх правой sidebar, ширина настраивается ресайзом
+     левой кромки. Не уменьшает холст — холст под ней во всю ширину. */
   position: absolute;
-  left: 50%;
+  top: 76px;
+  right: 16px;
   bottom: 16px;
-  transform: translateX(-50%);
-  width: min(640px, calc(100% - 32px));
-  max-height: 360px;
+  /* Адаптивная ширина — пользователь меняет через CSS variable --exec-w. */
+  width: clamp(320px, var(--exec-w, 460px), 720px);
+  max-height: none;
   display: flex;
   flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-top: 1px solid var(--border); /* совместимость со старыми правилами */
   border-radius: 16px;
   overflow: hidden;
-  z-index: 5;
+  z-index: 12;            /* выше sidebar (10), чтобы реально перекрывать */
   box-shadow: 0 20px 60px rgba(15, 15, 15, 0.16), 0 2px 8px rgba(15, 15, 15, 0.04);
-  /* Плавное появление снизу при открытии консоли — без рывка/прыжка */
   animation: builder-exec-in .28s cubic-bezier(0.16, 1, 0.3, 1) both;
-  transform-origin: 50% 100%;
+  transform-origin: 100% 50%;
+}
+/* Левая кромка консоли — ручка ресайза. Курсор col-resize. */
+.builder-app .builder-exec__resize-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 20;
+  background: transparent;
+  transition: background .12s ease;
+}
+.builder-app .builder-exec__resize-handle:hover,
+.builder-app .builder-exec.is-resizing .builder-exec__resize-handle {
+  background: color-mix(in srgb, var(--accent, #c2603f) 22%, transparent);
 }
 @keyframes builder-exec-in {
-  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 /* Плавающее окно консоли: поверх холста, перетаскиваемое, с изменяемым размером.

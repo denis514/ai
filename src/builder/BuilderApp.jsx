@@ -243,6 +243,40 @@ function BuilderAppInner() {
   // Мини-карта холста — скрыта по умолчанию, открывается отдельной
   // кнопкой в ряду Controls (правый нижний угол).
   const [miniMapOpen, setMiniMapOpen] = useState(false);
+  // Ширина консоли (правая боковая панель), сохраняется в браузере.
+  const [execW, setExecW] = useState(() => {
+    const v = parseInt(localStorage.getItem('atlas:builder:exec-w') || '', 10);
+    return v >= 320 && v <= 720 ? v : 460;
+  });
+  const [execResizing, setExecResizing] = useState(false);
+  const startExecResize = useCallback((e) => {
+    // Старт ресайза: запоминаем pointer X и начальную ширину; листенеры
+    // на window — onMove тянет ширину, onUp снимает листенеры и сохраняет.
+    e.preventDefault();
+    const startX = e.clientX;
+    const startW = execW;
+    setExecResizing(true);
+    document.body.style.cursor = 'col-resize';
+    const onMove = (ev) => {
+      // Тянем за ЛЕВУЮ кромку → движение влево увеличивает ширину
+      const dx = startX - ev.clientX;
+      const next = Math.max(320, Math.min(720, startW + dx));
+      setExecW(next);
+    };
+    const onUp = () => {
+      setExecResizing(false);
+      document.body.style.cursor = '';
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      try { localStorage.setItem('atlas:builder:exec-w', String(execW)); } catch { /* noop */ }
+    };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+  }, [execW]);
+  // Сохраняем ширину при изменении (если пользователь резает несколько раз).
+  useEffect(() => {
+    try { localStorage.setItem('atlas:builder:exec-w', String(execW)); } catch { /* noop */ }
+  }, [execW]);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [previewTplIndex, setPreviewTplIndex] = useState(null); // превью шаблона из левого списка
   const [tooltipInfo, setTooltipInfo] = useState(null); // { defId, top, left }
@@ -1972,6 +2006,9 @@ function BuilderAppInner() {
             onStop={handleStopExec}
             onClear={() => { setExecResult(null); handleClearLogs(); }}
             onClose={() => setExecPanelOpen(false)}
+            wrapperStyle={{ '--exec-w': `${execW}px` }}
+            wrapperClass={execResizing ? 'is-resizing' : ''}
+            onResizeStart={startExecResize}
           />
         )}
 
