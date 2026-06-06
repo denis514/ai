@@ -1759,12 +1759,15 @@
   transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s;
 }
 
-/* Плавающее окно консоли: поверх холста, перетаскиваемое, с изменяемым размером */
+/* Плавающее окно консоли: поверх холста, перетаскиваемое, с изменяемым размером.
+   Центр держим через transform (как у базовой .builder-exec) — НЕ смешиваем
+   с margin-left, иначе при открытии получается прыжок «лево → центр». */
 .builder-app .builder-exec--floating {
   position: fixed;
   top: 96px;
   left: 50%;
-  margin-left: -320px;          /* центрируем окно ~640px */
+  transform: translateX(-50%);   /* единый способ центрирования */
+  margin-left: 0;
   width: 640px;
   height: 440px;
   z-index: 60;
@@ -1778,15 +1781,24 @@
   min-height: 240px;
   max-width: 96vw;
   max-height: 90vh;
+  /* Плавное появление прямо по центру (fade + лёгкий scale-up, без сдвига вбок) */
+  animation: builder-exec-fadein .22s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+@keyframes builder-exec-fadein {
+  from { opacity: 0; transform: translateX(-50%) scale(0.96); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+/* Максимизированное окно: левый край 3vw, центрирование не нужно — отменяем transform */
 .builder-app .builder-exec--max {
   top: 3vh;
   left: 3vw;
   margin-left: 0;
+  transform: none;              /* убираем translateX(-50%), иначе уезжает за экран */
   width: 94vw;
   height: 94vh;
   resize: none;
   border-radius: 14px;
+  animation: none;              /* в max-режиме без анимации входа (просто смена размера) */
 }
 .builder-app .builder-exec__header--drag { cursor: grab; user-select: none; }
 .builder-app .builder-exec__header--drag:active { cursor: grabbing; }
