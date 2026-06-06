@@ -293,34 +293,59 @@
   letter-spacing: 0.05em;
 }
 
+/* actions = ряд отдельных плавающих круглых плашек, без общей обёртки. */
 .builder-app .builder-header__actions {
   flex: 0 0 auto;
   justify-self: end;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   height: 44px;
-  /* Левый padding 6, правый 4 — Suorita сидит вплотную к правому краю плашки.
-     Если бы padding-right был 6, Suorita сдвинулась бы внутрь от края. */
-  padding: 0 4px 0 6px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
-}
-/* Внутренние icon-кнопки правой плашки — круглые 32×32 (внутри 40px плашки) */
-.builder-app .builder-header__actions .builder-btn--ghost {
-  width: 34px;
-  height: 34px;
   padding: 0;
+  background: transparent;
   border: none;
+  box-shadow: none;
+}
+/* Каждая icon-кнопка — отдельная круглая плашка 44×44 в стиле Atlas search-btn */
+.builder-app .builder-header__actions .builder-btn--ghost {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--border);
   border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-muted);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
+  transition: background .12s, color .12s, border-color .12s;
 }
 .builder-app .builder-header__actions .builder-btn--ghost:hover {
   background: var(--surface-3);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+/* Плашка «Очистить» — отдельная pill слева, terracotta-стиль */
+.builder-app .builder-clear-pill {
+  height: 44px;
+  padding: 0 22px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--accent-soft, #fae8df);
+  background: var(--accent-soft, #fae8df);
+  color: var(--accent, #c2603f);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
+  transition: background .12s, color .12s, border-color .12s;
+}
+.builder-app .builder-clear-pill:hover {
+  background: color-mix(in srgb, var(--accent, #c2603f) 18%, transparent);
+  border-color: color-mix(in srgb, var(--accent, #c2603f) 28%, transparent);
 }
 
 /* ────────────────────────────────────────────────── */
@@ -4135,20 +4160,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  width: 44px;
+  height: 44px;
   border: none;
+  border-left: 1px solid rgba(255,255,255,0.28);
+  border-radius: 0 999px 999px 0;
   background: transparent;
   color: #fff;
-  font-size: 13px;
-  font-weight: 600;
   cursor: pointer;
 }
 .builder-app .builder-run-split__main {
-  /* Запуск теперь внутри actions: сидит вплотную к правому краю плашки.
-     Высота 36 (плашка 44 - padding 4×2). Радиус pill — соответствует обёртке. */
-  height: 36px;
-  padding: 0 18px;
-  border-radius: 999px;
+  /* Запуск — отдельная плашка справа от ряда круглых иконок. */
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 999px 0 0 999px;
   display: inline-flex;
   align-items: center;
 }

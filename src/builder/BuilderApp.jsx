@@ -1355,6 +1355,17 @@ function BuilderAppInner() {
         </div>
 
         <div className="builder-header__actions">
+          {/* «Очистить» — отдельная плашка слева, появляется только при наличии узлов */}
+          {nodes.length > 0 && (
+            <button
+              type="button"
+              className="builder-clear-pill"
+              onClick={handleClearCanvas}
+              title={t('builder.clear') || 'Clear canvas'}
+            >
+              <span>{t('builder.clearLabel') || 'Очистить'}</span>
+            </button>
+          )}
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
@@ -1380,7 +1391,7 @@ function BuilderAppInner() {
             title={t('builder.allsched.openBtn') || 'Все автозапуски'}
             aria-label={t('builder.allsched.openBtn') || 'Все автозапуски'}
           >
-            <Icon name="clock" size={14} strokeWidth={1.5} />
+            <Icon name="calendar" size={14} strokeWidth={1.5} />
           </button>
           <button
             type="button"
@@ -1392,17 +1403,6 @@ function BuilderAppInner() {
           >
             <Icon name="terminal" size={14} strokeWidth={1.5} />
           </button>
-          {nodes.length > 0 && (
-            <button
-              type="button"
-              className="builder-btn builder-btn--ghost"
-              onClick={handleClearCanvas}
-              title={t('builder.clear') || 'Clear canvas'}
-            >
-              <Icon name="close" size={14} strokeWidth={1.5} />
-            </button>
-          )}
-
           {/* Сплит-кнопка Запуск + расписание — правый сегмент единой плашки. */}
           <div className="builder-run-split builder-run-split--real">
             <button
