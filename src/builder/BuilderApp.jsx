@@ -1789,11 +1789,29 @@ function BuilderAppInner() {
               <Icon name="sparkles" size={32} strokeWidth={1.25} />
               <h2>{t('builder.canvas.emptyTitle') || 'Build your first agent'}</h2>
               <p>{t('builder.canvas.emptyDesc') || 'Drag a node from the left panel, or pick a template.'}</p>
+
+              {/* Главный CTA — «Старт»: сразу добавляет узел trigger-input на холст.
+                  Pill-форма с живым градиентом (Figma эталон, вариант A). */}
               <button
                 type="button"
-                className="builder-btn builder-btn--primary"
+                className="builder-start-cta"
+                onClick={() => addNodeAtCenter('trigger-input')}
+                style={{ pointerEvents: 'auto', marginTop: 18 }}
+                aria-label={t('builder.node.trigger_input') || 'Старт'}
+              >
+                <span className="builder-cta-blob-o" aria-hidden="true" />
+                <span className="builder-cta-blob-a" aria-hidden="true" />
+                <span className="builder-start-cta__label">
+                  <Icon name="flash" size={15} strokeWidth={1.6} />
+                  <span>{t('builder.node.trigger_input') || 'Старт'}</span>
+                </span>
+              </button>
+
+              <button
+                type="button"
+                className="builder-btn builder-btn--ghost"
                 onClick={() => setGalleryOpen(true)}
-                style={{ pointerEvents: 'auto', marginTop: 16 }}
+                style={{ pointerEvents: 'auto', marginTop: 10 }}
               >
                 <Icon name="books" size={14} strokeWidth={1.5} />
                 <span>{t('builder.canvas.browseTemplates') || 'Browse templates'}</span>
