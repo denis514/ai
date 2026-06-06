@@ -4142,11 +4142,11 @@
 .builder-app .builder-schedule__item-task { font-size: 12px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .builder-app .builder-schedule__del { color: var(--danger, #dc2626); }
 
-/* Сплит-кнопка «Запуск | ⏱» */
+/* Сплит-кнопка «Запуск | ⏱» — полный pill, не прямоугольник */
 .builder-app .builder-run-split {
   display: inline-flex;
   align-items: stretch;
-  border-radius: 10px;
+  border-radius: 999px;   /* fix #1: pill вместо 10px-прямоугольника */
   overflow: hidden;
   background: var(--accent, #2563eb);
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.30);
@@ -4155,34 +4155,35 @@
   background: var(--success, #16a34a);
   box-shadow: 0 4px 14px rgba(22, 163, 74, 0.32);
 }
+/* Общие свойства для обоих сегментов — БЕЗ border-left (fix #3) */
 .builder-app .builder-run-split__main,
 .builder-app .builder-run-split__clock {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
   height: 44px;
   border: none;
-  border-left: 1px solid rgba(255,255,255,0.28);
-  border-radius: 0 999px 999px 0;
   background: transparent;
   color: #fff;
   cursor: pointer;
 }
+/* Левый сегмент — текст «Запуск», радиус только слева */
 .builder-app .builder-run-split__main {
-  /* Запуск — отдельная плашка справа от ряда круглых иконок. */
-  height: 44px;
   padding: 0 22px;
   border-radius: 999px 0 0 999px;
-  display: inline-flex;
-  align-items: center;
+  font-size: 14px;        /* fix #5: явный размер шрифта */
+  font-weight: 600;
 }
+/* Правый сегмент — часы, 44×44, радиус только справа, тонкий белый дивидер слева */
 .builder-app .builder-run-split__clock {
-  padding: 8px 10px;
-  border-left: 1px solid rgba(255, 255, 255, 0.35); /* дивидер */
+  width: 44px;
+  border-radius: 0 999px 999px 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.28); /* fix #4: оттенок 0.28 */
 }
-.builder-app .builder-run-split__main:hover,
+/* Hover только на часах (у main собственный inset-::before paint внизу файла) */
 .builder-app .builder-run-split__clock:hover { background: rgba(0, 0, 0, 0.12); }
+/* Disabled — не давать ::before hover-заливке вылезать на отключённой кнопке */
+.builder-app .builder-run-split__main:disabled:hover::before { background: transparent; }
 .builder-app .builder-run-split__main:disabled { opacity: 0.55; cursor: default; }
 
 /* Расписание как popover у кнопки (правый верхний угол), не центр-модалка */

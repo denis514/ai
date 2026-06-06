@@ -1403,7 +1403,21 @@ function BuilderAppInner() {
           >
             <Icon name="terminal" size={14} strokeWidth={1.5} />
           </button>
-          {/* Сплит-кнопка Запуск + расписание — правый сегмент единой плашки. */}
+          {/* Показать панель «Детали» — стоит ПЕРЕД сплитом, чтобы зелёная плашка
+              осталась в самом правом краю ряда (требование референса). */}
+          {!sidebarOpen && (
+            <button
+              type="button"
+              className="builder-btn builder-btn--ghost"
+              onClick={() => setSidebarOpen(true)}
+              title={t('builder.header.toggleSidebar') || 'Показать детали'}
+              aria-label={t('builder.header.toggleSidebar') || 'Показать детали'}
+            >
+              <Icon name="panel-right" size={14} strokeWidth={1.5} />
+            </button>
+          )}
+
+          {/* Сплит-кнопка Запуск + расписание — последний элемент справа. */}
           <div className="builder-run-split builder-run-split--real">
             <button
               type="button"
@@ -1433,19 +1447,6 @@ function BuilderAppInner() {
               </button>
             )}
           </div>
-
-          {/* Показать панель «Детали» — только когда она закрыта */}
-          {!sidebarOpen && (
-            <button
-              type="button"
-              className="builder-btn builder-btn--ghost"
-              onClick={() => setSidebarOpen(true)}
-              title={t('builder.header.toggleSidebar') || 'Показать детали'}
-              aria-label={t('builder.header.toggleSidebar') || 'Показать детали'}
-            >
-              <Icon name="panel-right" size={14} strokeWidth={1.5} />
-            </button>
-          )}
         </div>
       </header>
 
