@@ -41,14 +41,22 @@
 }
 .builder-app .builder-header > * { pointer-events: auto; }
 
-/* Левая «таблетка» — плавающая стеклянная карточка в верх-левом углу */
+/* Левая зона — две раздельные плашки в стиле Atlas:
+   [✦ Agent Builder pill] и [○ back-icon]. Сам контейнер прозрачный. */
 .builder-app .builder-header__left {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   justify-self: start;
   min-width: 0;
-  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+/* Заголовок ✦ Agent Builder — отдельная pill-плашка как в Atlas */
+.builder-app .builder-header__title {
+  padding: 6px 16px 6px 12px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -219,16 +227,20 @@
 }
 .builder-app .builder-palette__templates:hover { border-color: var(--accent, #2563eb); color: var(--accent, #2563eb); }
 
+/* Back-кнопка → круглая иконка (как круглая кнопка поиска в Atlas).
+   Текст «Atlas» скрыт, остаётся только стрелка-индикатор. */
 .builder-app .builder-header__back {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   border: 1px solid var(--border);
-  border-radius: 999px; /* pill — в стиле родительской плашки */
+  border-radius: 50%;
   background: var(--surface);
   color: var(--text);
-  font-size: 13px;
+  font-size: 0;       /* прячет текст «Atlas»; иконка-svg видна */
   cursor: pointer;
   transition: background 120ms ease, border-color 120ms ease;
 }
@@ -259,9 +271,11 @@
   color: var(--text);
 }
 
-/* BETA — идентично бейджу в выпадающем меню Atlas (.canvas-header__menu-badge--beta):
-   пилюля 999px, синий #2563eb, мелкий шрифт. */
-.builder-app .builder-header__beta {
+/* BETA скрыт — компактная левая плашка в стиле Atlas. */
+.builder-app .builder-header__beta { display: none !important; }
+
+/* legacy beta-style (не используется после скрытия выше) */
+.builder-app .builder-header__beta-legacy {
   display: inline-block;
   margin-left: 4px;
   padding: 2px 6px;
