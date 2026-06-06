@@ -80,6 +80,15 @@ export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant
       onBlur={handleLeave}
       aria-label={t(def.labelKey) || defId}
     >
+      {/* CTA «Старт»: 2 дополнительных blob'а (оранжевый + янтарный) — пара
+          к двум красным из ::before / ::after, чтобы получился живой градиент.
+          Только для variant='cta'; aria-hidden, чтобы не мешать скринридерам. */}
+      {variant === 'cta' && (
+        <>
+          <span className="builder-cta-blob-o" aria-hidden="true" />
+          <span className="builder-cta-blob-a" aria-hidden="true" />
+        </>
+      )}
       <Icon name={def.icon} size={iconSize} strokeWidth={1.5} />
       <span>{t(def.labelKey) || defId}</span>
     </button>
