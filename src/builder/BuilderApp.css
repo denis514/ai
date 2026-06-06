@@ -1070,9 +1070,10 @@
 .builder-app .builder-grid {
   flex: 1 1 auto;
   display: grid;
-  /* Toolbox и Sidebar теперь парят поверх холста (как .detail в Atlas) — колонок не занимают. */
+  /* Все панели парят поверх холста (как .detail в Atlas) — колонок/строк не занимают.
+     Холст — единое поле edge-to-edge. */
   grid-template-columns: 0 1fr 0;
-  grid-template-rows: 1fr 240px;
+  grid-template-rows: 1fr 0;
   grid-template-areas:
     "toolbox canvas  sidebar"
     "toolbox exec    sidebar";
@@ -1654,12 +1655,24 @@
 /* ────────────────────────────────────────────────── */
 
 .builder-app .builder-exec {
-  grid-area: exec;
+  /* Плавающая «таблетка запуска» снизу по центру — в стиле Atlas plus-button.
+     Не занимает место в grid, парит над холстом. */
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: min(640px, calc(100% - 32px));
+  max-height: 360px;
   display: flex;
   flex-direction: column;
   background: var(--surface);
-  border-top: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border); /* совместимость со старыми правилами */
+  border-radius: 16px;
   overflow: hidden;
+  z-index: 5;
+  box-shadow: 0 20px 60px rgba(15, 15, 15, 0.16), 0 2px 8px rgba(15, 15, 15, 0.04);
+  transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s;
 }
 
 /* Плавающее окно консоли: поверх холста, перетаскиваемое, с изменяемым размером */
