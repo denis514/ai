@@ -41,29 +41,29 @@
 }
 .builder-app .builder-header > * { pointer-events: auto; }
 
-/* Левая зона — две раздельные плашки в стиле Atlas:
-   [✦ Agent Builder pill] и [○ back-icon]. Сам контейнер прозрачный. */
+/* Левая зона — единая pill-обёртка как в Atlas: [○ back] [текст].
+   Высота 40px, заголовок справа внутри обёртки. */
 .builder-app .builder-header__left {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   justify-self: start;
   min-width: 0;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-}
-/* Заголовок ✦ Agent Builder — отдельная pill-плашка как в Atlas, высота 40px */
-.builder-app .builder-header__title {
   height: 40px;
-  padding: 0 16px 0 12px;
-  display: inline-flex;
-  align-items: center;
+  padding: 4px 18px 4px 4px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 999px;
   box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
+}
+/* Заголовок «Agent Builder» — без собственного фона/рамки/тени, внутри общей обёртки */
+.builder-app .builder-header__title {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
 .builder-app .builder-header__left .builder-header__title {
   flex: 0 0 auto;
@@ -231,23 +231,22 @@
 }
 .builder-app .builder-palette__templates:hover { border-color: var(--accent, #2563eb); color: var(--accent, #2563eb); }
 
-/* Back-кнопка → круглая иконка (как круглая кнопка поиска в Atlas).
-   Текст «Atlas» скрыт, остаётся только стрелка-индикатор. */
+/* Back-кнопка — круглая внутри общей обёртки. Без собственной рамки/тени;
+   на hover подсвечивается только она (как круглая кнопка поиска в Atlas). */
 .builder-app .builder-header__back {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   padding: 0;
-  border: 1px solid var(--border);
+  border: none;
   border-radius: 50%;
-  background: var(--surface);
+  background: transparent;
   color: var(--text);
   font-size: 0;       /* прячет текст «Atlas»; иконка-svg видна */
   cursor: pointer;
-  transition: background 120ms ease, border-color 120ms ease;
-  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
+  transition: background 120ms ease;
 }
 
 .builder-app .builder-header__back:hover {
