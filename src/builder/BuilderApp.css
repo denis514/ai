@@ -1070,16 +1070,18 @@
 .builder-app .builder-grid {
   flex: 1 1 auto;
   display: grid;
-  grid-template-columns: var(--toolbox-w, 240px) 1fr 280px;
+  /* Toolbox теперь парит поверх холста (как .detail в Atlas) — колонку не занимает. */
+  grid-template-columns: 0 1fr 280px;
   grid-template-rows: 1fr 240px;
   grid-template-areas:
     "toolbox canvas  sidebar"
     "toolbox exec    sidebar";
   overflow: hidden;
   min-height: 0;
+  position: relative; /* контейнер для absolute-позиционирования toolbox */
 }
 
-/* Conditional layout when panels collapsed */
+/* (no-toolbox оставлен на случай обратной совместимости; layout уже 0) */
 .builder-app.no-toolbox .builder-grid {
   grid-template-columns: 0 1fr 280px;
 }
@@ -1121,13 +1123,31 @@
 /* ────────────────────────────────────────────────── */
 
 .builder-app .builder-toolbox {
-  grid-area: toolbox;
+  /* Плавающая стеклянная карточка слева — как .detail в Atlas, только зеркально.
+     position: absolute → не занимает место в grid, холст под ней во всю ширину. */
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  bottom: 16px;
+  width: var(--toolbox-w, 280px);
+  max-width: calc(100% - 32px);
   display: flex;
   flex-direction: row;            /* [рейка | панель] — как в Figma */
   background: var(--surface);
-  border-right: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-right: 1px solid var(--border); /* совместимость со старыми правилами */
+  border-radius: 16px;
   overflow: hidden;
   min-width: 0;
+  box-shadow: 0 20px 60px rgba(15, 15, 15, 0.16), 0 2px 8px rgba(15, 15, 15, 0.04);
+  z-index: 5;
+  transform: translateX(0);
+  transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s;
+}
+.builder-app.no-toolbox .builder-toolbox {
+  transform: translateX(calc(-100% - 32px));
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Узкая вертикальная рейка вкладок (Узлы / Шаблоны) */
