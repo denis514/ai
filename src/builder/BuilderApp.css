@@ -1853,7 +1853,13 @@
   overflow: hidden;
   z-index: 5;
   box-shadow: 0 20px 60px rgba(15, 15, 15, 0.16), 0 2px 8px rgba(15, 15, 15, 0.04);
-  transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s;
+  /* Плавное появление снизу при открытии консоли — без рывка/прыжка */
+  animation: builder-exec-in .28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: 50% 100%;
+}
+@keyframes builder-exec-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* Плавающее окно консоли: поверх холста, перетаскиваемое, с изменяемым размером.
