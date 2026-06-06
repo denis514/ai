@@ -28,7 +28,7 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 // v2 — тур переписан под актуальный поток (Старт/ключи/автозапуск/вебхук).
 // Поднятие версии = обновлённый тур покажется снова даже тем, кто видел v1.
-export const TOUR_SEEN_KEY = 'atlas:builder:tour-seen:v2';
+export const TOUR_SEEN_KEY = 'atlas:builder:tour-seen:v3';
 
 export function isTourSeen() {
   try { return !!localStorage.getItem(TOUR_SEEN_KEY); } catch { return false; }
@@ -51,51 +51,46 @@ export default function BuilderTour({
   const completedRef = useRef({}); // chronological flags
   const autoTimerRef = useRef(null);
 
-  // Step config (на сегодняшний поток): Старт → Агент → связи → ключ → запуск →
-  // консоль → автоматизация. Индекс 0 = welcome, последний = done (без spotlight).
+  // Новый поток (вход через CTA «Старт» → панели уже открыты, узел Старт на холсте):
+  // 1 Старт на холсте → 2 левая панель «Узлы» → 3 связи → 4 правая «Детали» →
+  // 5 Запуск справа сверху → 6 автосейв + кружки помощи/ключей.
   const STEPS = [
     null, // 0 = welcome (no spotlight)
     {
-      selector: '.builder-palette__cta',
-      titleKey: 'builder.tour.step1.title',
-      bodyKey: 'builder.tour.step1.body',
-      checkAdvance: () => nodes.some(n => n.data?.kind === 'trigger'),
+      selector: '.react-flow__node',         // первый узел = Старт
+      titleKey: 'builder.tour.s1.title',
+      bodyKey: 'builder.tour.s1.desc',
+      // ручной Next — пользователь сам решает, когда впишет задание Старту
     },
     {
-      selector: '.builder-palette',
-      titleKey: 'builder.tour.step2.title',
-      bodyKey: 'builder.tour.step2.body',
+      selector: '.builder-toolbox',           // левая плавающая панель «Узлы»
+      titleKey: 'builder.tour.s2.title',
+      bodyKey: 'builder.tour.s2.desc',
       checkAdvance: () => nodes.some(n => n.data?.kind === 'agent'),
     },
     {
-      selector: '.builder-canvas-wrap',
-      titleKey: 'builder.tour.step3.title',
-      bodyKey: 'builder.tour.step3.body',
+      selector: '.react-flow__node',          // соединение между узлами
+      titleKey: 'builder.tour.s3.title',
+      bodyKey: 'builder.tour.s3.desc',
       checkAdvance: () => edges.length > 0,
     },
     {
-      selector: '.builder-header__actions',
-      titleKey: 'builder.tour.step4.title',
-      bodyKey: 'builder.tour.step4.body',
-      // ручной Next — подключение ключа не детектируем
+      selector: '.builder-sidebar',           // правая плавающая панель «Детали»
+      titleKey: 'builder.tour.s4.title',
+      bodyKey: 'builder.tour.s4.desc',
+      // ручной Next
     },
     {
-      selector: '.builder-run-split',
-      titleKey: 'builder.tour.step5.title',
-      bodyKey: 'builder.tour.step5.body',
+      selector: '.builder-run-split--real',   // сплит-Запуск справа сверху
+      titleKey: 'builder.tour.s5.title',
+      bodyKey: 'builder.tour.s5.desc',
       checkAdvance: () => execStatus === 'running' || execStatus === 'completed' || execStatus === 'failed',
     },
     {
-      selector: '.builder-exec',
-      titleKey: 'builder.tour.step6.title',
-      bodyKey: 'builder.tour.step6.body',
-      checkAdvance: () => execStatus === 'completed' || execStatus === 'failed' || execStatus === 'stopped',
-    },
-    {
-      selector: '.builder-run-split__clock',
-      titleKey: 'builder.tour.step7.title',
-      bodyKey: 'builder.tour.step7.body',
-      // ручной Next — рассказываем про автозапуск и вебхук
+      selector: '.builder-header__actions',   // три кружка справа сверху
+      titleKey: 'builder.tour.s6.title',
+      bodyKey: 'builder.tour.s6.desc',
+      // ручной Next — заключительный
     },
     null, // done (no spotlight)
   ];

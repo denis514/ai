@@ -211,7 +211,10 @@ function BuilderAppInner() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState(null);
-  const [toolboxOpen, setToolboxOpen] = useState(true);
+  // По умолчанию обе панели ЗАКРЫТЫ — чистый холст приветствия с центральным CTA.
+  // Открываются только когда пользователь нажмёт «Старт» / «Templates» / Recent
+  // (или вручную через хедер). Тогда же запускается обучающий тур.
+  const [toolboxOpen, setToolboxOpen] = useState(false);
   const [toolboxTab, setToolboxTab] = useState('nodes'); // 'nodes' | 'templates'
   // Ширина левой панели (px) — тянется за правый край, сохраняется в браузере.
   const [toolboxW, setToolboxW] = useState(() => {
@@ -234,7 +237,7 @@ function BuilderAppInner() {
     document.addEventListener('mouseup', onUp);
     document.body.style.cursor = 'col-resize';
   }, []);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [execPanelOpen, setExecPanelOpen] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [previewTplIndex, setPreviewTplIndex] = useState(null); // превью шаблона из левого списка
@@ -246,8 +249,20 @@ function BuilderAppInner() {
   // Гайд «Как использовать узел» — defId типа узла; тоже заменяет NodeDetails.
   const [guideDefId, setGuideDefId] = useState(null);
 
-  // Onboarding tour — показываем при first visit
-  const [tourOpen, setTourOpen] = useState(() => !isTourSeen());
+  // Onboarding tour — НЕ показываем при заходе. Запускается только когда
+  // пользователь нажал «Старт» / «Templates» / Recent (через engageBuilder ниже).
+  const [tourOpen, setTourOpen] = useState(false);
+
+  /**
+   * engageBuilder — пользователь начал работу: раскрываем обе панели и
+   * (если первая встреча) запускаем обучающий тур. Подвешен на 3 CTA на
+   * пустом холсте: «Старт», «Открыть templates», карточки Recent.
+   */
+  const engageBuilder = useCallback(() => {
+    setToolboxOpen(true);
+    setSidebarOpen(true);
+    if (!isTourSeen()) setTourOpen(true);
+  }, []);
 
   const openAtlasPreview = useCallback((atlasId) => {
     if (!atlasId) return;
@@ -1795,7 +1810,7 @@ function BuilderAppInner() {
               <button
                 type="button"
                 className="builder-start-cta"
-                onClick={() => addNodeAtCenter('trigger-input')}
+                onClick={() => { addNodeAtCenter('trigger-input'); engageBuilder(); }}
                 style={{ pointerEvents: 'auto', marginTop: 18 }}
                 aria-label={t('builder.node.trigger_input') || 'Старт'}
               >
@@ -1810,7 +1825,7 @@ function BuilderAppInner() {
               <button
                 type="button"
                 className="builder-btn builder-btn--ghost"
-                onClick={() => setGalleryOpen(true)}
+                onClick={() => { setGalleryOpen(true); engageBuilder(); }}
                 style={{ pointerEvents: 'auto', marginTop: 10 }}
               >
                 <Icon name="books" size={14} strokeWidth={1.5} />
@@ -1819,7 +1834,7 @@ function BuilderAppInner() {
 
               <RecentWorkflows
                 userId={userId}
-                onOpen={handleLoadWorkflow}
+                onOpen={(id) => { handleLoadWorkflow(id); engageBuilder(); }}
                 refreshKey={wfVersion}
               />
             </div>
