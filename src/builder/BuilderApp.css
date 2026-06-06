@@ -4719,3 +4719,33 @@
   border-color: var(--border);
   color: var(--text);
 }
+
+/* ============================================================
+   Стандарт hover-заливки с 5px-инсетом (как в Atlas):
+   плашка остаётся стабильной, заливка появляется ВНУТРИ с
+   отступом 5px от каждой границы — никогда не упирается в край.
+   ============================================================ */
+.builder-app .builder-header__wf,
+.builder-app .builder-run-split__main {
+  position: relative;
+  z-index: 0;
+}
+.builder-app .builder-header__wf > *,
+.builder-app .builder-run-split__main > * {
+  position: relative;
+  z-index: 1;
+}
+.builder-app .builder-header__wf::before,
+.builder-app .builder-run-split__main::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 999px;
+  background: transparent;
+  transition: background .12s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.builder-app .builder-header__wf:hover { background: var(--surface); }
+.builder-app .builder-header__wf:hover::before { background: var(--surface-3); }
+.builder-app .builder-run-split__main:hover::before { background: rgba(255,255,255,0.12); }
