@@ -87,9 +87,16 @@ export default function CanvasFilters({ category, onCategory, onSelectNode, onOp
           aria-expanded={open}
           title={t('category.filterTitle')}
         >
-          {activeColor && activeEntry.id !== 'all' && (
-            <span className="chip__dot" style={{ background: activeColor }} aria-hidden="true" />
-          )}
+          {/* Ведущая иконка слева — как папка в центральной кнопке Builder.
+              При выбранной категории красится в её цвет. */}
+          <Icon
+            name="grid"
+            size={15}
+            strokeWidth={1.6}
+            className="canvas-filters__lead-icon"
+            style={activeEntry.id !== 'all' && activeColor ? { color: activeColor } : undefined}
+            aria-hidden="true"
+          />
           <strong>{activeEntry.id === 'all' ? t('category.allCategories') : categoryLabel(t, activeEntry.id)}</strong>
           {activeEntry.id === 'all' && (
             <Icon name={open ? 'arrow-up' : 'arrow-down'} size={11} strokeWidth={1.75} />

@@ -1077,17 +1077,26 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   cursor: pointer;
   transition: background .12s ease, border-color .12s ease;
 }
-.canvas-filters__toggle:hover {
-  background: var(--surface-3);
-  border-color: var(--border-strong);
+/* Inset-hover как у центральной кнопки Builder: заливка с отступом 5px,
+   плашка неподвижна. Слои: контент z-index 1, ::before z-index 0. */
+.canvas-filters__toggle { position: relative; z-index: 0; }
+.canvas-filters__toggle > * { position: relative; z-index: 1; }
+.canvas-filters__toggle::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  transition: background .12s ease;
+  pointer-events: none;
+  z-index: 0;
 }
+.canvas-filters__toggle:hover::before,
+.canvas-filters__toggle.is-open::before { background: var(--surface-3); }
+.canvas-filters__lead-icon { color: var(--text-muted); flex: 0 0 auto; }
 .canvas-filters__toggle:focus-visible {
   outline: 2px solid var(--line);
   outline-offset: 2px;
-}
-.canvas-filters__toggle.is-open {
-  background: var(--surface);
-  border-color: var(--border-strong);
 }
 .canvas-filters__toggle-label {
   color: var(--text-muted);
