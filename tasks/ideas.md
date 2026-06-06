@@ -124,3 +124,16 @@
 Старая идея: nonprofit, students, teaching tracks. Отброшено: классическая
 LMS-логика «курсы под N аудиторий». Если темы важны — становятся узлами
 Transformation/Use Cases под соответствующий контекст.
+
+## 🅿️ Отложено — монетизация Agent Builder (BYOK + capability-gate)
+
+_Добавлено: 2026-06-06. Вернуться позже._
+
+Полная проработка: `docs/business-strategy/08-builder-monetization.md`, решение в `07-decisions.md` (status PLAN).
+
+Суть: монетизировать связку «знание + конструктор + язык» через единый Pro ~$29 (BYOK,
+платный барьер на автоматизацию — расписания/вебхуки/мультиключи). Кредиты Artlist НЕ берём.
+MVP: Stripe + capability-gate + free-лимит запусков + Subscription tab + first-party шаблоны.
+Все цены — гипотезы до Phase 0 validation. Честная оценка: $1–4k MRR за год = валидация.
+
+**Следующий шаг когда вернёмся:** собрать MVP монетизации (Stripe + paywall на автоматизацию).
