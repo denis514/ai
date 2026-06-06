@@ -1,81 +1,99 @@
 import { useEffect, useState, useCallback } from 'react';
 
 /**
- * useTheme — управление светлой/тёмной темой.
+ * useTheme — светлая / тёмная / авто (по системе).
  *
- * Логика приоритета:
- *  1. localStorage `atlas:theme` если есть (явный выбор пользователя)
- *  2. prefers-color-scheme: dark если в системе включена тёмная
- *  3. light по умолчанию
+ * mode ∈ 'auto' | 'light' | 'dark' (что выбрал пользователь):
+ *  • 'auto'  — следуем системной теме компьютера/телефона (prefers-color-scheme),
+ *              в реальном времени реагируем на смену системной темы. ДЕФОЛТ.
+ *  • 'light' / 'dark' — явный ручной выбор, побеждает систему.
  *
- * Применение: document.documentElement.dataset.theme = 'light' | 'dark'
- * CSS подхватывает через :root[data-theme="dark"] { ... }
+ * resolved theme (что реально применяется) = mode === 'auto' ? система : mode.
+ * Применение: document.documentElement.dataset.theme = 'light' | 'dark'.
  */
 
-const STORAGE_KEY = 'atlas:theme';
+const MODE_KEY = 'atlas:theme-mode';   // 'auto' | 'light' | 'dark'
+const LEGACY_KEY = 'atlas:theme';      // старый ключ (только 'light'|'dark')
 
-function getInitialTheme() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'dark' || saved === 'light') return saved;
-  } catch {}
-  // System preference
+function systemTheme() {
   if (typeof window !== 'undefined' && window.matchMedia) {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
   return 'light';
 }
 
+function getInitialMode() {
+  try {
+    const saved = localStorage.getItem(MODE_KEY);
+    if (saved === 'auto' || saved === 'light' || saved === 'dark') return saved;
+    // Миграция старого ключа: был явный выбор — сохраняем его как ручной режим.
+    const legacy = localStorage.getItem(LEGACY_KEY);
+    if (legacy === 'light' || legacy === 'dark') {
+      localStorage.setItem(MODE_KEY, legacy);
+      localStorage.removeItem(LEGACY_KEY);
+      return legacy;
+    }
+  } catch { /* noop */ }
+  return 'auto';   // по умолчанию — следуем системе
+}
+
+function resolveTheme(mode) {
+  return mode === 'auto' ? systemTheme() : mode;
+}
+
 function applyTheme(theme) {
   if (typeof document !== 'undefined') {
     document.documentElement.dataset.theme = theme;
-    // Update theme-color meta для мобильных браузеров
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.content = theme === 'dark' ? '#0f0f10' : '#f7f7f5';
   }
 }
 
 export function useTheme() {
-  const [theme, setTheme] = useState(getInitialTheme);
+  const [mode, setMode] = useState(getInitialMode);
+  const [theme, setTheme] = useState(() => resolveTheme(getInitialMode()));
 
-  // Применяем тему при изменении
-  useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+  // Применяем resolved-тему при изменении.
+  useEffect(() => { applyTheme(theme); }, [theme]);
 
-  // Слушаем изменение системной темы (если пользователь не сделал явный выбор)
+  // Пересчитываем resolved-тему при смене режима.
+  useEffect(() => { setTheme(resolveTheme(mode)); }, [mode]);
+
+  // В режиме 'auto' — следим за системной темой в реальном времени.
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
+    if (mode !== 'auto' || typeof window === 'undefined' || !window.matchMedia) return;
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const onChange = (e) => {
-      try {
-        // Только если нет явного выбора
-        if (!localStorage.getItem(STORAGE_KEY)) {
-          setTheme(e.matches ? 'dark' : 'light');
-        }
-      } catch {}
-    };
+    const onChange = (e) => setTheme(e.matches ? 'dark' : 'light');
     mq.addEventListener('change', onChange);
     return () => mq.removeEventListener('change', onChange);
+  }, [mode]);
+
+  const setThemeMode = useCallback((m) => {
+    if (m !== 'auto' && m !== 'light' && m !== 'dark') return;
+    try { localStorage.setItem(MODE_KEY, m); } catch { /* noop */ }
+    setMode(m);
   }, []);
 
-  const toggle = useCallback(() => {
-    setTheme(t => {
-      const next = t === 'dark' ? 'light' : 'dark';
-      try { localStorage.setItem(STORAGE_KEY, next); } catch {}
+  // Переключатель по кругу: авто → светлая → тёмная → авто.
+  const cycleMode = useCallback(() => {
+    setMode(prev => {
+      const next = prev === 'auto' ? 'light' : prev === 'light' ? 'dark' : 'auto';
+      try { localStorage.setItem(MODE_KEY, next); } catch { /* noop */ }
       return next;
     });
   }, []);
 
-  const setExplicit = useCallback((t) => {
-    if (t === 'dark' || t === 'light') {
-      try { localStorage.setItem(STORAGE_KEY, t); } catch {}
-      setTheme(t);
-    }
-  }, []);
+  // Совместимость со старым API (toggle между light/dark, фиксирует ручной режим).
+  const toggle = useCallback(() => {
+    setMode(() => {
+      const next = resolveTheme(mode) === 'dark' ? 'light' : 'dark';
+      try { localStorage.setItem(MODE_KEY, next); } catch { /* noop */ }
+      return next;
+    });
+  }, [mode]);
 
-  return { theme, toggle, setExplicit };
+  return { theme, mode, toggle, cycleMode, setThemeMode, setExplicit: setThemeMode };
 }
 
-// Apply initial theme synchronously to avoid flash on load
-applyTheme(getInitialTheme());
+// Синхронно применяем тему до первого рендера — без мигания.
+applyTheme(resolveTheme(getInitialMode()));
