@@ -693,10 +693,8 @@ function BuilderAppInner() {
     window.history.replaceState(null, '', window.location.pathname + (q ? `?${q}` : ''));
   }, [t]);
 
-  // Панель выполнения всегда доступна (там поле задачи) — production-only.
-  useEffect(() => {
-    setExecPanelOpen(true);
-  }, []);
+  // Консоль скрыта по умолчанию. Открывается ТОЛЬКО по явному действию
+  // пользователя: иконка terminal в шапке или launcher-кнопка внизу.
 
   // Загрузка существующего workflow по id.
   const handleLoadWorkflow = useCallback(async (wfId) => {
@@ -1135,7 +1133,8 @@ function BuilderAppInner() {
     setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'idle' } })));
     setExecLogs([]);
     setExecStatus('running');
-    setExecPanelOpen(true);
+    // Консоль НЕ открываем автоматически — пользователь сам решает смотреть ли логи
+    // (через launcher-кнопку «Консоль» снизу или иконку terminal в шапке).
     const stats = { total: nodes.length, done: 0, failed: 0 };
     setExecStats(stats);
     return stats;
@@ -1185,7 +1184,7 @@ function BuilderAppInner() {
   // Кнопка Run: задача вводится заранее в панели выполнения; Run запускает сразу.
   // Реальный запуск без валидации (вызывается после прохождения проверки).
   const proceedRealRun = useCallback(() => {
-    setExecPanelOpen(true); // показать поле задачи/результат
+    // Консоль НЕ открываем — она доступна по запросу пользователя (см. launcher).
     if (!currentWorkflowId || isDirtyRef.current) {
       // Перед реальным запуском схема должна быть сохранена.
       if (!workflowName.trim()) { setNameDraft(''); setNameModalStep('name'); setNameIntent('save'); setNameModalOpen(true); return; }
