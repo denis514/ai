@@ -139,11 +139,11 @@
 
 /* Кластер «Сохранить + Запуск» — на холсте, справа вверху */
 .builder-app .builder-canvas-controls {
-  /* Раньше — отдельный кластер в углу. Теперь приставлен к правой плашке header,
-     визуально образуя с ней единую правую группу (как у Atlas). */
+  /* Suorita = правый сегмент единой плашки с actions. top:20 совпадает с header padding,
+     right:20 — выравнивает по правому краю как Atlas (top:20, left:20). */
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 20px;
+  right: 20px;
   z-index: 25;
   display: flex;
   align-items: center;
@@ -302,8 +302,9 @@
   height: 44px;
   padding: 0 6px;
   /* Слита с Suorita справа в единую плашку: actions = левый сегмент (белый),
-     Suorita = правый сегмент (зелёный). Радиус только слева, правый бордер убран. */
-  margin-right: 100px;
+     Suorita = правый сегмент (зелёный). Радиус только слева, правый бордер убран.
+     margin-right ≈ ширина Suorita (text «Запуск» + padding 20×2 + border) ≈ 116px. */
+  margin-right: 116px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-right: none;
