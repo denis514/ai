@@ -1070,8 +1070,8 @@
 .builder-app .builder-grid {
   flex: 1 1 auto;
   display: grid;
-  /* Toolbox теперь парит поверх холста (как .detail в Atlas) — колонку не занимает. */
-  grid-template-columns: 0 1fr 280px;
+  /* Toolbox и Sidebar теперь парят поверх холста (как .detail в Atlas) — колонок не занимают. */
+  grid-template-columns: 0 1fr 0;
   grid-template-rows: 1fr 240px;
   grid-template-areas:
     "toolbox canvas  sidebar"
@@ -1081,13 +1081,11 @@
   position: relative; /* контейнер для absolute-позиционирования toolbox */
 }
 
-/* (no-toolbox оставлен на случай обратной совместимости; layout уже 0) */
-.builder-app.no-toolbox .builder-grid {
-  grid-template-columns: 0 1fr 280px;
-}
-
+/* no-toolbox / no-sidebar теперь регулируют только видимость плавающих карточек.
+   Колонки и так нулевые — layout менять не нужно. */
+.builder-app.no-toolbox .builder-grid,
 .builder-app.no-sidebar .builder-grid {
-  grid-template-columns: var(--toolbox-w, 240px) 1fr 0;
+  grid-template-columns: 0 1fr 0;
 }
 
 /* Ручка изменения ширины левой панели (правый край) */
@@ -1604,13 +1602,30 @@
 /* ────────────────────────────────────────────────── */
 
 .builder-app .builder-sidebar {
-  grid-area: sidebar;
+  /* Плавающая стеклянная карточка справа — зеркало toolbox, как .detail в Atlas. */
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  width: 280px;
+  max-width: calc(100% - 32px);
   display: flex;
   flex-direction: column;
   background: var(--surface);
-  border-left: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-left: 1px solid var(--border); /* совместимость со старыми правилами */
+  border-radius: 16px;
   overflow: hidden;
   min-width: 0;
+  box-shadow: 0 20px 60px rgba(15, 15, 15, 0.16), 0 2px 8px rgba(15, 15, 15, 0.04);
+  z-index: 5;
+  transform: translateX(0);
+  transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1), opacity .3s;
+}
+.builder-app.no-sidebar .builder-sidebar {
+  transform: translateX(calc(100% + 32px));
+  opacity: 0;
+  pointer-events: none;
 }
 
 .builder-app .builder-sidebar__header {
