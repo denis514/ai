@@ -5,6 +5,7 @@ import BottomSheet from './BottomSheet.jsx';
 import { useIsMobile } from '../hooks/useIsMobile.js';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+import { colorFromName } from '../hooks/useUserIdentity.js';
 
 /**
  * ProfileFab — круглая кнопка профиля (TR угол).
@@ -23,14 +24,16 @@ export default function ProfileFab(props) {
   const containerRef = useRef(null);
 
   const { identityApi, onOpenAuth } = props;
-  const { initial, color, isSet } = identityApi;
+  const { initial, isSet } = identityApi;
 
-  // Если пользователь авторизован — используем имя из Supabase profile как приоритет
+  // Имя: приоритет Supabase profile → localStorage identity (так же, как в ProfilePanel).
   const displayName = profile?.display_name || identityApi?.name || null;
   const displayInitial = displayName
     ? [...displayName.trim()][0]?.toUpperCase() || '?'
     : initial;
-  const displayColor = color;
+  // Цвет считаем ИЗ displayName (не из identityApi.color) — иначе угловая
+  // кнопка и большая иконка в выпадающем меню расходятся в цвете.
+  const displayColor = colorFromName(displayName);
 
   useEffect(() => {
     if (!open || isMobile) return;
