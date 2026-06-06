@@ -231,8 +231,8 @@
 }
 .builder-app .builder-palette__templates:hover { border-color: var(--accent, #2563eb); color: var(--accent, #2563eb); }
 
-/* Back-кнопка — круглая внутри общей обёртки. Без собственной рамки/тени;
-   на hover подсвечивается только она (как круглая кнопка поиска в Atlas). */
+/* Back-кнопка — круглая внутри общей обёртки. Точные значения из Atlas
+   .canvas-header__search-btn: border + surface fill, на hover темнее (surface-3). */
 .builder-app .builder-header__back {
   display: inline-flex;
   align-items: center;
@@ -240,17 +240,18 @@
   width: 32px;
   height: 32px;
   padding: 0;
-  border: none;
+  border: 1px solid var(--border);
   border-radius: 50%;
-  background: transparent;
-  color: var(--text);
+  background: var(--surface);
+  color: var(--text-muted);
   font-size: 0;       /* прячет текст «Atlas»; иконка-svg видна */
   cursor: pointer;
-  transition: background 120ms ease;
+  transition: background .12s, color .12s, border-color .12s;
 }
 
 .builder-app .builder-header__back:hover {
-  background: var(--surface-2);
+  background: var(--surface-3);
+  color: var(--text);
   border-color: var(--border-strong);
 }
 
@@ -4706,7 +4707,6 @@
    Рамка стабильна, цвета акцента не «выпрыгивают», без сдвигов.
    ============================================================ */
 .builder-app .builder-header__wf:hover,
-.builder-app .builder-header__back:hover,
 .builder-app .builder-canvas-btn:hover,
 .builder-app .builder-template-row:hover,
 .builder-app .builder-tpl-preview__arrow:hover,
