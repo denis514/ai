@@ -300,15 +300,12 @@
   align-items: center;
   gap: 4px;
   height: 44px;
-  padding: 0 6px;
-  /* Слита с Suorita справа в единую плашку: actions = левый сегмент (белый),
-     Suorita = правый сегмент (зелёный). Радиус только слева, правый бордер убран.
-     margin-right ≈ ширина Suorita (text «Запуск» + padding 20×2 + border) ≈ 116px. */
-  margin-right: 116px;
+  /* Левый padding 6, правый 4 — Suorita сидит вплотную к правому краю плашки.
+     Если бы padding-right был 6, Suorita сдвинулась бы внутрь от края. */
+  padding: 0 4px 0 6px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-right: none;
-  border-radius: 999px 0 0 999px;
+  border-radius: 999px;
   box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
 }
 /* Внутренние icon-кнопки правой плашки — круглые 32×32 (внутри 40px плашки) */
@@ -4147,10 +4144,11 @@
   cursor: pointer;
 }
 .builder-app .builder-run-split__main {
-  height: 44px;             /* единая высота шапки */
-  padding: 0 20px;
-  /* Правый сегмент слитой плашки: радиус только справа, стык с actions без бордера */
-  border-radius: 0 999px 999px 0;
+  /* Запуск теперь внутри actions: сидит вплотную к правому краю плашки.
+     Высота 36 (плашка 44 - padding 4×2). Радиус pill — соответствует обёртке. */
+  height: 36px;
+  padding: 0 18px;
+  border-radius: 999px;
   display: inline-flex;
   align-items: center;
 }

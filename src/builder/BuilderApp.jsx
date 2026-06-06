@@ -1403,6 +1403,49 @@ function BuilderAppInner() {
             </button>
           )}
 
+          {/* Сплит-кнопка Запуск + расписание — правый сегмент единой плашки. */}
+          <div className="builder-run-split builder-run-split--real">
+            <button
+              type="button"
+              className="builder-run-split__main"
+              onClick={handleRun}
+              disabled={nodes.length === 0 || execStatus === 'running'}
+              title={t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены'}
+            >
+              {execStatus === 'running' && <Icon name="refresh" size={15} strokeWidth={1.6} />}
+              <span>{execStatus === 'running'
+                ? (t('builder.running') || 'Выполняется…')
+                : (t('builder.run') || 'Запуск')}</span>
+            </button>
+            {userId && nodes.length > 0 && (
+              <button
+                type="button"
+                className="builder-run-split__clock"
+                onClick={() => {
+                  if (currentWorkflowId) { setScheduleOpen(true); return; }
+                  toast.info(t('builder.schedule.saveFirst') || 'Сначала сохраните схему — потом нажмите часики ещё раз.');
+                  doSave();
+                }}
+                title={t('builder.schedule.title') || 'Автозапуск по расписанию'}
+                aria-label={t('builder.schedule.title') || 'Автозапуск по расписанию'}
+              >
+                <Icon name="clock" size={15} strokeWidth={1.6} />
+              </button>
+            )}
+          </div>
+
+          {/* Показать панель «Детали» — только когда она закрыта */}
+          {!sidebarOpen && (
+            <button
+              type="button"
+              className="builder-btn builder-btn--ghost"
+              onClick={() => setSidebarOpen(true)}
+              title={t('builder.header.toggleSidebar') || 'Показать детали'}
+              aria-label={t('builder.header.toggleSidebar') || 'Показать детали'}
+            >
+              <Icon name="panel-right" size={14} strokeWidth={1.5} />
+            </button>
+          )}
         </div>
       </header>
 
@@ -1531,52 +1574,8 @@ function BuilderAppInner() {
             </div>
           )}
 
-          {/* Запуск — на холсте, справа вверху, с подписью */}
-          <div className="builder-canvas-controls">
-            {/* Сплит-кнопка: «Запуск» | ⏱ (расписание). Молнию убрали. */}
-            <div className="builder-run-split builder-run-split--real">
-              <button
-                type="button"
-                className="builder-run-split__main"
-                onClick={handleRun}
-                disabled={nodes.length === 0 || execStatus === 'running'}
-                title={t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены'}
-              >
-                {execStatus === 'running' && <Icon name="refresh" size={15} strokeWidth={1.6} />}
-                <span>{execStatus === 'running'
-                  ? (t('builder.running') || 'Выполняется…')
-                  : (t('builder.run') || 'Запуск')}</span>
-              </button>
-              {userId && nodes.length > 0 && (
-                <button
-                  type="button"
-                  className="builder-run-split__clock"
-                  onClick={() => {
-                    if (currentWorkflowId) { setScheduleOpen(true); return; }
-                    toast.info(t('builder.schedule.saveFirst') || 'Сначала сохраните схему — потом нажмите часики ещё раз.');
-                    doSave();
-                  }}
-                  title={t('builder.schedule.title') || 'Автозапуск по расписанию'}
-                  aria-label={t('builder.schedule.title') || 'Автозапуск по расписанию'}
-                >
-                  <Icon name="clock" size={15} strokeWidth={1.6} />
-                </button>
-              )}
-            </div>
-            {/* Показать детали — только когда правая панель ЗАКРЫТА.
-                Свернуть открытую панель можно кнопкой внутри самой панели. */}
-            {!sidebarOpen && (
-              <button
-                type="button"
-                className="builder-canvas-btn builder-canvas-btn--icon"
-                onClick={() => setSidebarOpen(true)}
-                title={t('builder.header.toggleSidebar') || 'Показать детали'}
-                aria-label={t('builder.header.toggleSidebar') || 'Показать детали'}
-              >
-                <Icon name="panel-right" size={15} strokeWidth={1.6} />
-              </button>
-            )}
-          </div>
+          {/* Запуск перенесён в header__actions — становится правым сегментом
+              единой плашки [иконки | Запуск]. См. строки около 1395. */}
           <ReactFlow
             nodes={nodes}
             edges={edges}
