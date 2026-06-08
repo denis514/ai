@@ -345,6 +345,93 @@ export const TEMPLATES = [
       { from: 2, to: 4, sourceHandle: 'false' }, // иначе → просто записать
     ],
   },
+
+  /* ════════════════════════════════════════════════════════════ */
+  /*  «Для всех» — повседневные шаблоны (doc 10). Нетехнические     */
+  /*  люди: малый бизнес, блогеры, мастера, услуги.                 */
+  /* ════════════════════════════════════════════════════════════ */
+
+  /* Ответы клиентам — черновик вежливого ответа на сообщение */
+  {
+    id: 'client-replies',
+    nameKey: 'builder.template.clientReplies.name',
+    descKey: 'builder.template.clientReplies.desc',
+    inputKey: 'builder.template.clientReplies.input',
+    outputKey: 'builder.template.clientReplies.output',
+    iconName: 'users', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.clientReplies.prompt' } },
+      { defId: 'output-text', position: { x: 100, y: 330 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 1, to: 2 }],
+  },
+
+  /* Напоминание о записи — текст напоминания → в Telegram */
+  {
+    id: 'booking-reminder',
+    nameKey: 'builder.template.bookingReminder.name',
+    descKey: 'builder.template.bookingReminder.desc',
+    inputKey: 'builder.template.bookingReminder.input',
+    outputKey: 'builder.template.bookingReminder.output',
+    iconName: 'calendar', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.bookingReminder.prompt' } },
+      { defId: 'output-telegram', position: { x: 100, y: 330 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 1, to: 2 }],
+  },
+
+  /* Ответ на отзыв — тон + черновик ответа */
+  {
+    id: 'review-reply',
+    nameKey: 'builder.template.reviewReply.name',
+    descKey: 'builder.template.reviewReply.desc',
+    inputKey: 'builder.template.reviewReply.input',
+    outputKey: 'builder.template.reviewReply.output',
+    iconName: 'quote', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.reviewReply.prompt' } },
+      { defId: 'output-text', position: { x: 100, y: 330 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 1, to: 2 }],
+  },
+
+  /* Идеи для блога — веб-поиск трендов → план постов */
+  {
+    id: 'content-ideas',
+    nameKey: 'builder.template.contentIdeas.name',
+    descKey: 'builder.template.contentIdeas.desc',
+    inputKey: 'builder.template.contentIdeas.input',
+    outputKey: 'builder.template.contentIdeas.output',
+    iconName: 'paint', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'tool-search', position: { x: -130, y: 190 } },
+      { defId: 'agent-content', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.contentIdeas.prompt' } },
+      { defId: 'output-text', position: { x: 100, y: 340 } },
+    ],
+    edges: [{ from: 0, to: 2 }, { from: 1, to: 2 }, { from: 2, to: 3 }],
+  },
+
+  /* Дайджест по теме — веб-поиск свежего → краткий обзор в Telegram */
+  {
+    id: 'topic-digest',
+    nameKey: 'builder.template.topicDigest.name',
+    descKey: 'builder.template.topicDigest.desc',
+    inputKey: 'builder.template.topicDigest.input',
+    outputKey: 'builder.template.topicDigest.output',
+    iconName: 'globe', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'tool-search', position: { x: -130, y: 190 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.topicDigest.prompt' } },
+      { defId: 'output-telegram', position: { x: 100, y: 340 } },
+    ],
+    edges: [{ from: 0, to: 2 }, { from: 1, to: 2 }, { from: 2, to: 3 }],
+  },
 ];
 
 /**
