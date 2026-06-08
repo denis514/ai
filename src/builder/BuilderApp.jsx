@@ -40,7 +40,7 @@ import { TEMPLATES } from './data/templates.js';
 import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data/outputTiers.js';
 import { templateForRole } from './data/rolePrompts.js';
 import { createRealExecution } from './services/realExecutor.js';
-import { getKeyStatus, listMcpServers } from './services/apiKeyService.js';
+import { getKeyStatus, listMcpServers, listKeys } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
 import ToastHost, { toast } from './components/Toast.jsx';
@@ -842,6 +842,20 @@ function BuilderAppInner() {
       n.id === nodeId ? { ...n, data: { ...n.data, chatId: value } } : n
     ));
   }, [setNodes]);
+
+  // Этап 2: выбрать конкретный ключ (бот/почта) для узла доставки.
+  // '' = использовать основной (default). Сохраняется в config через сериализатор.
+  const handleSetNodeConnection = useCallback((nodeId, connectionId) => {
+    setNodes(nds => nds.map(n =>
+      n.id === nodeId ? { ...n, data: { ...n.data, connectionId: connectionId || undefined } } : n
+    ));
+  }, [setNodes]);
+  // Список Telegram-ключей пользователя (для выпадающего выбора бота в узле).
+  const [telegramKeys, setTelegramKeys] = useState([]);
+  useEffect(() => {
+    if (!user) { setTelegramKeys([]); return; }
+    listKeys('telegram').then(setTelegramKeys).catch(() => setTelegramKeys([]));
+  }, [user, keysModalOpen]); // перечитываем после изменений в «Мои ключи»
 
   // Настройка инструмента (Файлы/Vision): загруженный контент в config узла.
   const handleSetToolData = useCallback((nodeId, patch) => {
@@ -1749,7 +1763,9 @@ function BuilderAppInner() {
                   node={selectedTelegramNode}
                   t={t}
                   telegramConnected={telegramConnected}
+                  keys={telegramKeys}
                   onSetChatId={handleSetChatId}
+                  onSetConnection={handleSetNodeConnection}
                   onConnect={() => setKeysModalOpen(true)}
                   onClose={() => setSelectedNodeId(null)}
                 />
@@ -2556,8 +2572,8 @@ function TriggerTaskPopover({ node, t, runMode, task, onTaskChange, tierId, onTi
 /* TelegramConfigPopover — поле «куда слать» + статус токена бота */
 /* ─────────────────────────────────────────────────────────── */
 
-function TelegramConfigPopover({ node, t, telegramConnected, onSetChatId, onConnect, onClose }) {
-  const { labelKey, chatId = '' } = node.data;
+function TelegramConfigPopover({ node, t, telegramConnected, keys = [], onSetChatId, onSetConnection, onConnect, onClose }) {
+  const { labelKey, chatId = '', connectionId = '' } = node.data;
   return (
     <div
       className="builder-prompt-pop nodrag nopan nowheel"
@@ -2590,6 +2606,26 @@ function TelegramConfigPopover({ node, t, telegramConnected, onSetChatId, onConn
         </>
       ) : (
         <>
+          {/* Этап 2: выбор конкретного бота, если у пользователя их несколько. */}
+          {keys.length > 1 && (
+            <>
+              <p className="builder-prompt-pop__hint">
+                {t('builder.telegram.botPick') || 'Каким ботом слать:'}
+              </p>
+              <select
+                className="builder-name-modal__input"
+                value={connectionId}
+                onChange={(e) => onSetConnection(node.id, e.target.value)}
+              >
+                <option value="">{t('builder.telegram.botDefault') || 'Основной бот'}</option>
+                {keys.map(k => (
+                  <option key={k.id} value={k.id}>
+                    {(k.label || `••••${k.key_hint}`) + (k.is_default ? ' ★' : '')}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
           <p className="builder-prompt-pop__hint">
             {t('builder.telegram.chatHint') || 'ID чата или @username, куда бот пришлёт результат.'}
           </p>

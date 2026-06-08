@@ -345,6 +345,25 @@ Deno.serve(async (req) => {
     try { telegramToken = await decrypt(tgConn.encrypted_key); } catch { telegramToken = ''; }
   }
 
+  // Мультиключи Этап 2: узел доставки может выбрать КОНКРЕТНЫЙ ключ (config.connectionId),
+  // а не default провайдера. Резолвим по id с кэшем (один decrypt на ключ за прогон).
+  // Если id не задан / не найден / чужой провайдер — возвращаем fallback (default).
+  const _keyCache = new Map<string, string>();
+  async function resolveKey(connectionId: string | undefined, provider: string, fallback: string): Promise<string> {
+    const cid = (connectionId || '').trim();
+    if (!cid) return fallback;
+    if (_keyCache.has(cid)) return _keyCache.get(cid)!;
+    const { data } = await admin
+      .from('builder_api_connections')
+      .select('encrypted_key, is_active')
+      .eq('user_id', userId).eq('id', cid).eq('provider', provider)
+      .maybeSingle();
+    let k = fallback;
+    if (data?.is_active) { try { k = await decrypt(data.encrypted_key); } catch { k = fallback; } }
+    _keyCache.set(cid, k);
+    return k;
+  }
+
   // Resend-ключ (опционально) — для узлов доставки на email.
   let resendKey = '';
   const { data: rsConn } = await admin
@@ -607,7 +626,9 @@ Deno.serve(async (req) => {
         // пользователь видит зелёный узел и думает, что сообщение ушло.
         if (node.role === 'telegram') {
           const chatId = typeof node.config?.chatId === 'string' ? node.config.chatId.trim() : '';
-          if (!telegramToken) {
+          // Этап 2: ключ конкретного бота, если узел его выбрал; иначе default.
+          const tgToken = await resolveKey(node.config?.connectionId, 'telegram', telegramToken);
+          if (!tgToken) {
             failed = true;
             await log(id, 'error', 'Telegram bot not connected — connect a bot token in “My keys”.', { status: 'failed' });
           } else if (!chatId) {
@@ -616,7 +637,7 @@ Deno.serve(async (req) => {
           } else {
             try {
               const sendTg = (text: string, parseMode?: string) =>
-                fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+                fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
                   method: 'POST',
                   headers: { 'content-type': 'application/json' },
                   body: JSON.stringify({
