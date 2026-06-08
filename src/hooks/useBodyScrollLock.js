@@ -85,9 +85,13 @@ function forceIosRepaint() {
   if (!window.matchMedia || !window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
   const b = document.body;
   b.style.opacity = '0.999';
-  // принудительный reflow, чтобы значение применилось до следующего кадра
-  void b.offsetHeight;
-  requestAnimationFrame(() => { b.style.opacity = ''; });
+  void b.offsetHeight; // reflow
+  // ДВОЙНОЙ rAF: первый даёт кадру отрисоваться в состоянии 0.999, второй
+  // возвращает обратно. Если вернуть в одном rAF — WebKit схлопнет 0.999→''
+  // до отрисовки, изменения не будет и repaint не запустится (была эта ошибка).
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { b.style.opacity = ''; });
+  });
 }
 
 export function useBodyScrollLock(active = true) {
