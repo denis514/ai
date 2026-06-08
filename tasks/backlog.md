@@ -252,17 +252,8 @@ delete + export.
 - Любая новая идея проходит через `knowledge-architect` или `ai-system-designer`
   и приходит сюда из `ideas.md`.
 
-## 📄 docs-watch: документация изменилась — 2026-06-08
+## 📄 docs-watch: обработано — 2026-06-08
 
-> Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
-> Прогон: прочитать дифф ниже → разнести по узлам Atlas → `node scripts/sync-whats-new.mjs`.
-
-### Индекс всех страниц документации (llms.txt)
-- Источник: https://code.claude.com/docs/llms.txt
-- Изменения: **1** добавлено, **1** удалено
-- Затронутые узлы Atlas (черновик): `новые/удалённые темы в экосистеме`
-
-```diff
-- - [Changelog](https://code.claude.com/docs/en/changelog.md): Release notes for Claude Code, including new features, improvements, and bug fixes by version.
-+ - [Claude Code changelog](https://code.claude.com/docs/en/changelog.md): Release notes for Claude Code, including new features, improvements, and bug fixes by version.
-```
+> Прогон docs-watcher 2026-06-08. Единственное изменение в индексе llms.txt —
+> косметика: ссылка «Changelog» → «Claude Code changelog» (переформулировка без
+> сути, класс `cosmetic`). В узлы Atlas разносить нечего. Секция закрыта.
