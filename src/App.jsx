@@ -362,6 +362,15 @@ function AppInner() {
   const [authOpen, setAuthOpen] = useState(false);
   // true когда AuthModal открыт из tutorial gate — туториал скрывается, но не размонтируется
   const [tutorialAwaitingAuth, setTutorialAwaitingAuth] = useState(false);
+  // Возврат «назад» из входа: что показать, если пользователь ОТМЕНИЛ вход
+  // (передумал). Заполняется при открытии входа из конкретного окна; на отмене
+  // выполняется, на успешном входе — обнуляется (возвращать gate-экран не нужно).
+  const authCancelReturnRef = useRef(null);
+  // Единая точка открытия входа с памятью о возврате.
+  const openAuth = useCallback((onCancelReturn = null) => {
+    authCancelReturnRef.current = onCancelReturn;
+    setAuthOpen(true);
+  }, []);
 
   // Cmd+K / Ctrl+K → открыть command palette
   useEffect(() => {
@@ -387,6 +396,7 @@ function AppInner() {
     if (isLoggedIn && authOpen) {
       setAuthOpen(false);
       setTutorialAwaitingAuth(false);
+      authCancelReturnRef.current = null; // вошёл — возврат к gate-экрану не нужен
     }
   }, [isLoggedIn]); // eslint-disable-line
 
@@ -464,10 +474,15 @@ function AppInner() {
     setAuthOpen(true);
   }, []);
 
-  // Закрыть AuthModal: если открыт из туториала — вернуть туториал
+  // Закрыть AuthModal (ОТМЕНА — пользователь передумал входить).
+  // Если открыт из туториала — вернуть туториал; если задан возврат
+  // (например, интро) — выполнить его, чтобы вернуть на предыдущее окно.
   const handleAuthClose = useCallback(() => {
     setAuthOpen(false);
     setTutorialAwaitingAuth(false);
+    const ret = authCancelReturnRef.current;
+    authCancelReturnRef.current = null;
+    if (ret) ret();
   }, []);
 
   // ===== Prev/Next: плоский список видимых узлов по DFS =====
@@ -1042,10 +1057,11 @@ function AppInner() {
         <IntroModal
           onDone={handleIntroDone}
           onRequestAuth={() => {
-            // Закрываем интро (без открытия курса), затем открываем авторизацию
-            try { localStorage.setItem('atlas:intro-seen:v1', '1'); } catch {}
+            // Прячем интро и открываем вход, НО запоминаем возврат: если пользователь
+            // передумал входить — интро снова появится (а не пустой холст).
+            // Seen НЕ помечаем — уход на вход ≠ «интро пройдено».
             setIntroOpen(false);
-            setAuthOpen(true);
+            openAuth(() => setIntroOpen(true));
           }}
         />
       )}
