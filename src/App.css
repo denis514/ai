@@ -3396,11 +3396,20 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 /* ============================================================
    Bottom Sheet
    ============================================================ */
+/* ============================================================
+   BOTTOM SHEET — стандарт по Apple HIG (Sheets).
+   Единый компонент BottomSheet.jsx; этот блок — единственный источник
+   правды по виду. Принципы Apple:
+   • затемнение фона ~40% чёрного, БЕЗ блюра (Apple dim-, не blur-фон);
+   • грабер 36×5pt, полупрозрачный серый, по центру сверху;
+   • скруглены только верхние углы; «лист» выезжает снизу пружинно;
+   • swipe-down закрывает; safe-area снизу (home indicator);
+   • большой detent оставляет зазор сверху (видно затемнённый фон).
+   ============================================================ */
 .bsheet-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 15, 15, 0.55);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4); /* Apple dim — без backdrop-blur */
   z-index: 150;
   display: flex;
   align-items: flex-end;
@@ -3435,17 +3444,21 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .bsheet__handle {
   width: 100%;
-  padding: 10px 0 6px;
+  padding: 8px 0 6px; /* грабер ~5pt от верхнего края — как у Apple */
   display: flex;
   justify-content: center;
   touch-action: none;
   cursor: grab;
 }
+/* Грабер Apple: 36×5pt, полупрозрачный серый (читается на любом контенте). */
 .bsheet__grip {
-  width: 40px;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--border-strong);
+  width: 36px;
+  height: 5px;
+  border-radius: 2.5px;
+  background: rgba(60, 60, 67, 0.30);  /* iOS systemGray light */
+}
+[data-theme="dark"] .bsheet__grip {
+  background: rgba(235, 235, 245, 0.30); /* iOS systemGray dark */
 }
 .bsheet__header {
   display: flex;
@@ -3509,7 +3522,9 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .bsheet__body {
   flex: 1;
   overflow-y: auto;
-  padding: 14px 18px 20px;
+  /* safe-area снизу — чтобы контент не уходил под home indicator, когда
+     footer отсутствует (если footer есть — он сам держит safe-area). */
+  padding: 14px 18px max(20px, env(safe-area-inset-bottom));
   -webkit-overflow-scrolling: touch;
 }
 .bsheet__footer {
