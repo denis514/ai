@@ -8761,18 +8761,29 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   .prompt-overlay,
   .modal-loading,
   .intro-overlay,
+  .onboarding-overlay,
   .tut-modal,
   .courses-modal,
   .lib-modal,
   .bsheet,
   .auth-modal,
   .prompt-modal,
-  .intro-card {
+  .intro-card,
+  .intro-slide,
+  .onboarding-card {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     animation: none !important;
     transform: none !important;
     -webkit-transform: none !important;
+  }
+  /* Смена выбора роли / шага: transition на state-change тоже «застревает»
+     на старом WebKit (виден старый кружок + новая галочка). Убираем переход —
+     индикатор обновляется мгновенно. */
+  .onboarding-level,
+  .onboarding-level *,
+  .intro-slide * {
+    transition: none !important;
   }
 }
 
