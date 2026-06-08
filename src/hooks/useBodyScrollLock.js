@@ -64,10 +64,37 @@ function removeLock() {
  *
  * @param {boolean} active — когда true, lock активен. По умолчанию true.
  */
+/**
+ * forceIosRepaint — лечит баг старого iOS WebKit (iPhone 12/12 Pro и др.):
+ * только что смонтированный position:fixed-оверлей (модалка/bottom-sheet) НЕ
+ * отрисовывается до второго касания. Симптом: «первый тап — ничего, второй —
+ * появляется окно» (поле даже успевает сфокусироваться → вылезает клавиатура,
+ * но окна не видно).
+ *
+ * Причина: оверлеи анимируются по opacity, а opacity-only entrance на новом
+ * fixed-слое iOS не композитит сразу. Решение — кратко толкнуть перерисовку
+ * всей страницы тогглом body.opacity (0.999 → '') в следующем кадре.
+ *
+ * Почему opacity, а не transform: transform на body создал бы containing-block
+ * для fixed-детей и СМЕСТИЛ бы оверлей. opacity создаёт лишь stacking-context —
+ * для fixed безопасно. Изменение 99.9% незаметно глазу.
+ * Только тач-устройства — на десктопе бага нет.
+ */
+function forceIosRepaint() {
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  if (!window.matchMedia || !window.matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+  const b = document.body;
+  b.style.opacity = '0.999';
+  // принудительный reflow, чтобы значение применилось до следующего кадра
+  void b.offsetHeight;
+  requestAnimationFrame(() => { b.style.opacity = ''; });
+}
+
 export function useBodyScrollLock(active = true) {
   useEffect(() => {
     if (!active) return;
     applyLock();
+    forceIosRepaint(); // iOS: заставить новый оверлей отрисоваться с первого тапа
     return removeLock;
   }, [active]);
 }
