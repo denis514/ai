@@ -47,8 +47,10 @@ export default function ProfilePanel({
   // Supabase stats (только когда залогинен)
   const supaStats = useSupabaseStats(user?.id || null);
 
-  // Имя: приоритет Supabase profile → localStorage identity
-  const displayName = profile?.display_name || identityApi?.name || null;
+  // Имя: profile (async) → localStorage identity → метаданные сессии (синхронно).
+  // Фолбэк на user даёт цвет/букву сразу, не дожидаясь async-профиля.
+  const sessionName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email || null;
+  const displayName = profile?.display_name || identityApi?.name || sessionName || null;
   const displayInitial = displayName ? ([...displayName.trim()][0]?.toUpperCase() || '?') : '?';
   const displayColor  = displayName ? colorFromName(displayName) : '#94a3b8';
 
@@ -500,6 +502,7 @@ export default function ProfilePanel({
           <button
             type="button"
             className={`profile-panel__lang-btn ${langOpen ? 'is-open' : ''}`}
+            onMouseDown={(e) => e.stopPropagation()}
             onClick={() => setLangOpen(v => !v)}
             aria-haspopup="listbox"
             aria-expanded={langOpen}

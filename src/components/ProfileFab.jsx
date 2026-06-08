@@ -26,8 +26,17 @@ export default function ProfileFab(props) {
   const { identityApi, onOpenAuth } = props;
   const { initial, isSet } = identityApi;
 
-  // Имя: приоритет Supabase profile → localStorage identity (так же, как в ProfilePanel).
-  const displayName = profile?.display_name || identityApi?.name || null;
+  // Имя: profile (Supabase, async) → localStorage identity → метаданные сессии.
+  // Фолбэк на user.user_metadata/email КРИТИЧЕН: profile грузится отдельным
+  // async-запросом уже после установки user. Без фолбэка на первом рендере
+  // displayName=null → colorFromName(null)=дефолт, и иконка профиля БЕЛАЯ, пока
+  // не доедет профиль. user (и его metadata) доступен синхронно из сессии —
+  // берём имя оттуда, чтобы цвет/буква появились сразу.
+  const sessionName = user?.user_metadata?.full_name
+    || user?.user_metadata?.name
+    || user?.email
+    || null;
+  const displayName = profile?.display_name || identityApi?.name || sessionName || null;
   const displayInitial = displayName
     ? [...displayName.trim()][0]?.toUpperCase() || '?'
     : initial;

@@ -81,7 +81,16 @@ export function useHashRoute() {
   const [route, setRouteState] = useState(readRoute);
 
   useEffect(() => {
-    const onChange = () => setRouteState(readRoute());
+    // Сравниваем маршрут ПО ЗНАЧЕНИЮ: parseHash отдаёт новый объект {type,id}
+    // на каждое событие. Если вернуть его как есть — ссылка route меняется при
+    // КАЖДОМ routechange/popstate, и все эффекты [route] (которые закрывают
+    // дропдауны) срабатывают вхолостую, гася только что открытое меню в момент
+    // первого клика. Возвращаем prev при том же type/id → нет лишнего ре-рендера.
+    const onChange = () => setRouteState(prev => {
+      const next = readRoute();
+      if (prev && next && prev.type === next.type && prev.id === next.id) return prev;
+      return next;
+    });
     window.addEventListener('popstate', onChange);
     window.addEventListener(EVT, onChange);
     return () => {
