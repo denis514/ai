@@ -678,7 +678,9 @@ Deno.serve(async (req) => {
           // from: Resend test-адрес (onboarding@resend.dev) или верифицированный домен.
           const fromAddr = typeof node.config?.fromEmail === 'string' && node.config.fromEmail.trim()
             ? node.config.fromEmail.trim() : 'Atlas <onboarding@resend.dev>';
-          if (!resendKey) {
+          // Этап 2: ключ конкретной почты (Resend), если узел его выбрал; иначе default.
+          const rsKey = await resolveKey(node.config?.connectionId, 'resend', resendKey);
+          if (!rsKey) {
             failed = true;
             await log(id, 'error', 'Email not connected — add a Resend API key in “My keys”.', { status: 'failed' });
           } else if (!toEmail) {
@@ -688,7 +690,7 @@ Deno.serve(async (req) => {
             try {
               const rsRes = await fetch('https://api.resend.com/emails', {
                 method: 'POST',
-                headers: { Authorization: `Bearer ${resendKey}`, 'content-type': 'application/json' },
+                headers: { Authorization: `Bearer ${rsKey}`, 'content-type': 'application/json' },
                 body: JSON.stringify({ from: fromAddr, to: [toEmail], subject, text: collected.slice(0, 100000) }),
               });
               const rsData = await rsRes.json().catch(() => ({}));

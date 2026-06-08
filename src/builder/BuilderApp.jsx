@@ -850,11 +850,13 @@ function BuilderAppInner() {
       n.id === nodeId ? { ...n, data: { ...n.data, connectionId: connectionId || undefined } } : n
     ));
   }, [setNodes]);
-  // Список Telegram-ключей пользователя (для выпадающего выбора бота в узле).
+  // Списки ключей пользователя (для выпадающего выбора бота/почты в узле).
   const [telegramKeys, setTelegramKeys] = useState([]);
+  const [resendKeys, setResendKeys] = useState([]);
   useEffect(() => {
-    if (!user) { setTelegramKeys([]); return; }
+    if (!user) { setTelegramKeys([]); setResendKeys([]); return; }
     listKeys('telegram').then(setTelegramKeys).catch(() => setTelegramKeys([]));
+    listKeys('resend').then(setResendKeys).catch(() => setResendKeys([]));
   }, [user, keysModalOpen]); // перечитываем после изменений в «Мои ключи»
 
   // Настройка инструмента (Файлы/Vision): загруженный контент в config узла.
@@ -1779,7 +1781,9 @@ function BuilderAppInner() {
                   node={selectedEmailNode}
                   t={t}
                   resendConnected={resendConnected}
+                  keys={resendKeys}
                   onSet={handleSetToolData}
+                  onSetConnection={handleSetNodeConnection}
                   onConnect={() => setKeysModalOpen(true)}
                   onClose={() => setSelectedNodeId(null)}
                 />
@@ -2646,8 +2650,8 @@ function TelegramConfigPopover({ node, t, telegramConnected, keys = [], onSetCha
 /* EmailConfigPopover — адрес получателя + тема (Resend)         */
 /* ─────────────────────────────────────────────────────────── */
 
-function EmailConfigPopover({ node, t, resendConnected, onSet, onConnect, onClose }) {
-  const { labelKey, toEmail = '', subject = '' } = node.data;
+function EmailConfigPopover({ node, t, resendConnected, keys = [], onSet, onSetConnection, onClose, onConnect }) {
+  const { labelKey, toEmail = '', subject = '', connectionId = '' } = node.data;
   return (
     <div
       className="builder-prompt-pop nodrag nopan nowheel"
@@ -2675,6 +2679,26 @@ function EmailConfigPopover({ node, t, resendConnected, onSet, onConnect, onClos
         </>
       ) : (
         <>
+          {/* Этап 2: выбор конкретной почты (Resend-ключа), если их несколько. */}
+          {keys.length > 1 && (
+            <>
+              <p className="builder-prompt-pop__hint">
+                {t('builder.email.keyPick') || 'С какой почты слать:'}
+              </p>
+              <select
+                className="builder-name-modal__input"
+                value={connectionId}
+                onChange={(e) => onSetConnection(node.id, e.target.value)}
+              >
+                <option value="">{t('builder.email.keyDefault') || 'Основная почта'}</option>
+                {keys.map(k => (
+                  <option key={k.id} value={k.id}>
+                    {(k.label || `••••${k.key_hint}`) + (k.is_default ? ' ★' : '')}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
           <p className="builder-prompt-pop__hint">
             {t('builder.email.toHint') || 'Email получателя, куда отправить результат.'}
           </p>
