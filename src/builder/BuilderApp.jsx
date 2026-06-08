@@ -850,6 +850,16 @@ function BuilderAppInner() {
       n.id === nodeId ? { ...n, data: { ...n.data, connectionId: connectionId || undefined } } : n
     ));
   }, [setNodes]);
+  // Этап 3 (веер): список адресатов [{connectionId, chatId}] для узла Telegram.
+  // Непустой → шлём в каждый; пустой → одиночный (connectionId+chatId, Этап 1/2).
+  const handleSetNodeTargets = useCallback((nodeId, targets) => {
+    // Храним массив как есть (включая пустые строки во время ввода — иначе строка
+    // исчезнет пока печатаешь chatId). Пустые отсеивает execute при чтении.
+    const arr = Array.isArray(targets) ? targets : [];
+    setNodes(nds => nds.map(n =>
+      n.id === nodeId ? { ...n, data: { ...n.data, targets: arr.length ? arr : undefined } } : n
+    ));
+  }, [setNodes]);
   // Списки ключей пользователя (для выпадающего выбора бота/почты в узле).
   const [telegramKeys, setTelegramKeys] = useState([]);
   const [resendKeys, setResendKeys] = useState([]);
@@ -1768,6 +1778,7 @@ function BuilderAppInner() {
                   keys={telegramKeys}
                   onSetChatId={handleSetChatId}
                   onSetConnection={handleSetNodeConnection}
+                  onSetTargets={handleSetNodeTargets}
                   onConnect={() => setKeysModalOpen(true)}
                   onClose={() => setSelectedNodeId(null)}
                 />
@@ -2576,8 +2587,19 @@ function TriggerTaskPopover({ node, t, runMode, task, onTaskChange, tierId, onTi
 /* TelegramConfigPopover — поле «куда слать» + статус токена бота */
 /* ─────────────────────────────────────────────────────────── */
 
-function TelegramConfigPopover({ node, t, telegramConnected, keys = [], onSetChatId, onSetConnection, onConnect, onClose }) {
-  const { labelKey, chatId = '', connectionId = '' } = node.data;
+function TelegramConfigPopover({ node, t, telegramConnected, keys = [], onSetChatId, onSetConnection, onSetTargets, onConnect, onClose }) {
+  const { labelKey, chatId = '', connectionId = '', targets } = node.data;
+  // Этап 3: редактируем список адресатов. Если targets ещё нет — берём одиночный
+  // (legacy chatId/connectionId) как первую строку. multi = показываем веер-UI.
+  const rows = (Array.isArray(targets) && targets.length)
+    ? targets
+    : [{ connectionId: connectionId || '', chatId: chatId || '' }];
+  const updateRow = (i, patch) => {
+    const next = rows.map((r, idx) => idx === i ? { ...r, ...patch } : r);
+    onSetTargets(node.id, next);
+  };
+  const addRow = () => onSetTargets(node.id, [...rows, { connectionId: '', chatId: '' }]);
+  const removeRow = (i) => onSetTargets(node.id, rows.filter((_, idx) => idx !== i));
   return (
     <div
       className="builder-prompt-pop nodrag nopan nowheel"
@@ -2610,36 +2632,58 @@ function TelegramConfigPopover({ node, t, telegramConnected, keys = [], onSetCha
         </>
       ) : (
         <>
-          {/* Этап 2: выбор конкретного бота, если у пользователя их несколько. */}
-          {keys.length > 1 && (
-            <>
-              <p className="builder-prompt-pop__hint">
-                {t('builder.telegram.botPick') || 'Каким ботом слать:'}
-              </p>
-              <select
-                className="builder-name-modal__input"
-                value={connectionId}
-                onChange={(e) => onSetConnection(node.id, e.target.value)}
-              >
-                <option value="">{t('builder.telegram.botDefault') || 'Основной бот'}</option>
-                {keys.map(k => (
-                  <option key={k.id} value={k.id}>
-                    {(k.label || `••••${k.key_hint}`) + (k.is_default ? ' ★' : '')}
-                  </option>
-                ))}
-              </select>
-            </>
-          )}
           <p className="builder-prompt-pop__hint">
-            {t('builder.telegram.chatHint') || 'ID чата или @username, куда бот пришлёт результат.'}
+            {rows.length > 1
+              ? (t('builder.telegram.fanHint') || 'Результат уйдёт в каждый адрес из списка.')
+              : (t('builder.telegram.chatHint') || 'ID чата или @username, куда бот пришлёт результат.')}
           </p>
-          <input
-            className="builder-name-modal__input"
-            value={chatId}
-            onChange={(e) => onSetChatId(node.id, e.target.value)}
-            placeholder={t('builder.telegram.chatPlaceholder') || 'например, @my_channel или 123456789'}
-            autoFocus
-          />
+          {/* Этап 3 (веер): список адресатов — для каждого свой бот + чат. */}
+          {rows.map((r, i) => (
+            <div key={i} className="builder-tg-target">
+              {keys.length > 1 && (
+                <select
+                  className="builder-name-modal__input"
+                  value={r.connectionId || ''}
+                  onChange={(e) => updateRow(i, { connectionId: e.target.value })}
+                  title={t('builder.telegram.botPick') || 'Каким ботом слать'}
+                >
+                  <option value="">{t('builder.telegram.botDefault') || 'Основной бот'}</option>
+                  {keys.map(k => (
+                    <option key={k.id} value={k.id}>
+                      {(k.label || `••••${k.key_hint}`) + (k.is_default ? ' ★' : '')}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <div className="builder-tg-target__row">
+                <input
+                  className="builder-name-modal__input"
+                  value={r.chatId || ''}
+                  onChange={(e) => updateRow(i, { chatId: e.target.value })}
+                  placeholder={t('builder.telegram.chatPlaceholder') || 'например, @my_channel или 123456789'}
+                  autoFocus={i === 0}
+                />
+                {rows.length > 1 && (
+                  <button
+                    type="button"
+                    className="builder-mcp__del"
+                    onClick={() => removeRow(i)}
+                    title={t('common.remove') || 'Убрать'}
+                  >
+                    <Icon name="trash" size={13} strokeWidth={1.6} />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost builder-btn--small"
+            onClick={addRow}
+          >
+            <Icon name="plus" size={12} strokeWidth={1.75} />
+            <span>{t('builder.telegram.addTarget') || 'Добавить адрес (веер)'}</span>
+          </button>
         </>
       )}
     </div>

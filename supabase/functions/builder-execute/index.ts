@@ -625,48 +625,67 @@ Deno.serve(async (req) => {
         // ВАЖНО: «не доставлено» помечаем status:'failed' (красным) — иначе
         // пользователь видит зелёный узел и думает, что сообщение ушло.
         if (node.role === 'telegram') {
-          const chatId = typeof node.config?.chatId === 'string' ? node.config.chatId.trim() : '';
-          // Этап 2: ключ конкретного бота, если узел его выбрал; иначе default.
-          const tgToken = await resolveKey(node.config?.connectionId, 'telegram', telegramToken);
-          if (!tgToken) {
-            failed = true;
-            await log(id, 'error', 'Telegram bot not connected — connect a bot token in “My keys”.', { status: 'failed' });
-          } else if (!chatId) {
+          // Этап 3 (веер): node.config.targets = [{connectionId, chatId}] — шлём в КАЖДЫЙ.
+          // Если targets пуст/нет — один адресат из config.connectionId+chatId (Этап 1/2).
+          // Доставка готового результата токены не тратит → веер безопасен для кошелька.
+          const rawTargets = Array.isArray(node.config?.targets) ? node.config.targets : [];
+          const recipients = (rawTargets.length > 0
+            ? rawTargets
+            : [{ connectionId: node.config?.connectionId, chatId: node.config?.chatId }]
+          ).map((r: { connectionId?: string; chatId?: string }) => ({
+            connectionId: r?.connectionId,
+            chatId: typeof r?.chatId === 'string' ? r.chatId.trim() : '',
+          })).filter((r: { chatId: string }) => r.chatId);
+
+          if (recipients.length === 0) {
             failed = true;
             await log(id, 'error', 'No chat ID set on this Telegram node — open it and enter a numeric chat ID.', { status: 'failed' });
-          } else {
+            continue;
+          }
+
+          let okCount = 0;
+          for (const r of recipients) {
+            const token = await resolveKey(r.connectionId, 'telegram', telegramToken);
+            if (!token) {
+              failed = true;
+              await log(id, 'error', `Telegram bot not connected for chat ${r.chatId} — connect a bot token in “My keys”.`, {});
+              continue;
+            }
             try {
               const sendTg = (text: string, parseMode?: string) =>
-                fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+                fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
                   method: 'POST',
                   headers: { 'content-type': 'application/json' },
                   body: JSON.stringify({
-                    chat_id: chatId,
+                    chat_id: r.chatId,
                     text,
                     disable_web_page_preview: true,
                     ...(parseMode ? { parse_mode: parseMode } : {}),
                   }),
                 });
-              // 1) Красивый формат: Markdown → Telegram HTML.
               let tgRes = await sendTg(mdToTelegramHtml(collected).slice(0, 3900), 'HTML');
               let tgData = await tgRes.json().catch(() => ({}));
-              // 2) Фолбэк: если Telegram не принял разметку — шлём чистым текстом.
               if (!(tgRes.ok && tgData?.ok)) {
                 tgRes = await sendTg(stripMd(collected).slice(0, 3900));
                 tgData = await tgRes.json().catch(() => ({}));
               }
               if (tgRes.ok && tgData?.ok) {
-                await log(id, 'info', `Sent to Telegram ✓ (chat ${chatId})`, { status: 'completed' });
+                okCount++;
+                await log(id, 'info', `Sent to Telegram ✓ (chat ${r.chatId})`, {});
               } else {
                 failed = true;
                 const desc = tgData?.description || `http_${tgRes.status}`;
-                await log(id, 'error', `Telegram did not deliver: ${desc}. Tip: chat_id must be your numeric ID or a @channel where the bot is admin — not the bot's own @username.`, { status: 'failed' });
+                await log(id, 'error', `Telegram did not deliver to ${r.chatId}: ${desc}. Tip: chat_id must be a numeric ID or a @channel where the bot is admin.`, {});
               }
             } catch (err) {
               failed = true;
-              await log(id, 'error', `Telegram send failed: ${(err as Error).message}`, { status: 'failed' });
+              await log(id, 'error', `Telegram send failed for ${r.chatId}: ${(err as Error).message}`, {});
             }
           }
+          // Финальный статус узла: completed только если ВСЕ доставлены.
+          await log(id, failed ? 'error' : 'info',
+            `Telegram: delivered ${okCount}/${recipients.length}`,
+            { status: failed ? 'failed' : 'completed' });
           continue;
         }
 
