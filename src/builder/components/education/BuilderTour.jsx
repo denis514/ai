@@ -51,9 +51,10 @@ export default function BuilderTour({
   const completedRef = useRef({}); // chronological flags
   const autoTimerRef = useRef(null);
 
-  // Новый поток (вход через CTA «Старт» → панели уже открыты, узел Старт на холсте):
-  // 1 Старт на холсте → 2 левая панель «Узлы» → 3 связи → 4 правая «Детали» →
-  // 5 Запуск справа сверху → 6 автосейв + кружки помощи/ключей.
+  // Новый поток (вход через CTA «Старт» → панели открыты, узел Старт на холсте).
+  // Старт НЕ подсвечиваем дважды: «как соединять» объяснено внутри шага про
+  // панель узлов (там и добавляешь узел, и сразу узнаёшь про линии).
+  // 1 Старт → 2 панель «Узлы» (+ связи) → 3 правая «Детали» → 4 Запуск → 5 помощь/ключи.
   const STEPS = [
     null, // 0 = welcome (no spotlight)
     {
@@ -66,13 +67,8 @@ export default function BuilderTour({
       selector: '.builder-toolbox',           // левая плавающая панель «Узлы»
       titleKey: 'builder.tour.s2.title',
       bodyKey: 'builder.tour.s2.desc',
-      checkAdvance: () => nodes.some(n => n.data?.kind === 'agent'),
-    },
-    {
-      selector: '.react-flow__node',          // соединение между узлами
-      titleKey: 'builder.tour.s3.title',
-      bodyKey: 'builder.tour.s3.desc',
-      checkAdvance: () => edges.length > 0,
+      // авто-переход когда добавлен узел И появилась связь (узнал про линии)
+      checkAdvance: () => nodes.some(n => n.data?.kind === 'agent') && edges.length > 0,
     },
     {
       selector: '.builder-sidebar',           // правая плавающая панель «Детали»
