@@ -8744,6 +8744,15 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
    отрисовывались сразу.
    ============================================================ */
 @media (hover: none) and (pointer: coarse) {
+  /* На тач-устройствах (особенно старый WebKit iPhone 12/12 Pro):
+     1) backdrop-filter убран — он мешал композитингу нового слоя;
+     2) АНИМАЦИИ ПОЯВЛЕНИЯ оверлеев/модалок отключены — iOS «придерживает»
+        старт opacity/transform-анимации на свежесмонтированном fixed-слое до
+        касания, отсюда «окно появляется только со второго тапа». Без анимации
+        окно рисуется мгновенно в первом же кадре.
+     3) НЕ форсим translateZ на модалках — статичный промоут слоя приводил к
+        «застрявшей» растеризации: контент меняется (шаги интро), а слой не
+        перерисовывается до касания. */
   .tut-overlay,
   .courses-overlay,
   .lib-overlay,
@@ -8751,18 +8760,19 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   .auth-overlay,
   .prompt-overlay,
   .modal-loading,
-  .intro-overlay {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
+  .intro-overlay,
   .tut-modal,
   .courses-modal,
   .lib-modal,
   .bsheet,
   .auth-modal,
-  .prompt-modal {
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+  .prompt-modal,
+  .intro-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    animation: none !important;
+    transform: none !important;
+    -webkit-transform: none !important;
   }
 }
 
