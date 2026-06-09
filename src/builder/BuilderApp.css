@@ -1776,7 +1776,16 @@
   position: relative;
   overflow: hidden;
   min-width: 0;
+  /* статичный точечный фон — общий стиль из index.css (--dot-*),
+     единый с Atlas. Точки не двигаются при панораме и зуме. */
+  background-image: radial-gradient(var(--dot-color) var(--dot-radius), transparent var(--dot-radius));
+  background-size: var(--dot-gap) var(--dot-gap);
+  background-position: 0 0;
 }
+/* холст reactflow прозрачен, чтобы был виден статичный фон контейнера */
+.builder-app .react-flow,
+.builder-app .react-flow__pane,
+.builder-app .react-flow__viewport { background: transparent; }
 
 /* ────────────────────────────────────────────────── */
 /* Sidebar (right)                                    */

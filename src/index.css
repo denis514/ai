@@ -4,6 +4,20 @@
   box-sizing: border-box;
 }
 
+/* ── Единый стиль точечного фона холста (Atlas + Agent Builder) ──
+   Меняешь здесь — обновляется сразу в обоих местах. Точки статичны
+   (не двигаются при панораме и не масштабируются при зуме). */
+:root {
+  --dot-color: rgba(145, 145, 154, 0.5);
+  --dot-gap: 20px;
+  --dot-radius: 0.5px;
+}
+.dot-canvas-bg {
+  background-image: radial-gradient(var(--dot-color) var(--dot-radius), transparent var(--dot-radius));
+  background-size: var(--dot-gap) var(--dot-gap);
+  background-position: 0 0;
+}
+
 html,
 body,
 #root {

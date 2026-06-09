@@ -3792,13 +3792,11 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   min-width: 0;
   overflow: hidden;
   cursor: grab;
-  /* точки: чуть заметные — серый #91919a на ~50% прозрачности.
-     Размер (зум) и смещение (панорама) задаются inline-стилем в Mindmap.jsx,
-     чтобы точки двигались и масштабировались вместе с картой (как в Agent Builder).
-     Значения ниже — дефолт на случай отсутствия inline-стиля (зум 100%). */
+  /* статичный точечный фон — общий стиль из index.css (.dot-canvas-bg / --dot-*).
+     Меняется в одном месте для Atlas и Agent Builder. */
   background-color: var(--bg);
-  background-image: radial-gradient(rgba(145,145,154,0.5) 0.5px, transparent 0.5px);
-  background-size: 20px 20px;
+  background-image: radial-gradient(var(--dot-color) var(--dot-radius), transparent var(--dot-radius));
+  background-size: var(--dot-gap) var(--dot-gap);
   background-position: 0 0;
   user-select: none;
   -webkit-user-select: none;

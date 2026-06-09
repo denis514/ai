@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import {
   ReactFlow,
-  Background,
   MiniMap,
   Panel,
   ReactFlowProvider,
@@ -1690,7 +1689,6 @@ function BuilderAppInner() {
             proOptions={{ hideAttribution: true }}
             deleteKeyCode={null}
           >
-            <Background gap={20} size={1} />
             {/* Зум-бар в стиле Atlas — плавающая pill по центру снизу */}
             <Panel position="bottom-center">
               <div className="builder-zoom">
