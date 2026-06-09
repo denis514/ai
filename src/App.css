@@ -3792,11 +3792,14 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   min-width: 0;
   overflow: hidden;
   cursor: grab;
-  /* точки: чуть заметные — серый #91919a на ~50% прозрачности
-     (мягче полного #91919a, но виднее, чем --bg-grid). gap 20px, радиус 0.5px */
-  background:
-    radial-gradient(rgba(145,145,154,0.5) 0.5px, transparent 0.5px) 0 0 / 20px 20px,
-    var(--bg);
+  /* точки: чуть заметные — серый #91919a на ~50% прозрачности.
+     Размер (зум) и смещение (панорама) задаются inline-стилем в Mindmap.jsx,
+     чтобы точки двигались и масштабировались вместе с картой (как в Agent Builder).
+     Значения ниже — дефолт на случай отсутствия inline-стиля (зум 100%). */
+  background-color: var(--bg);
+  background-image: radial-gradient(rgba(145,145,154,0.5) 0.5px, transparent 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0;
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
