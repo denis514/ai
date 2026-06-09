@@ -4063,13 +4063,16 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   transform-origin: center;
 }
 .planet--live {
-  position: relative;
+  /* заполняем 32px-родитель .mm-sphere__inner; absolute, чтобы width/height
+     применялись к span-у (у строчного span width:100% игнорируется → была ширина 0,
+     из-за чего .pl-liquid схлопывался и пятна-анимация не показывались) */
+  position: absolute;
+  inset: 0;
+  display: block;
   border-radius: 50%;
   overflow: hidden;
   isolation: isolate;
   background: #2a1418;
-  width: 100%;
-  height: 100%;
 }
 .pl-liquid {
   position: absolute;
