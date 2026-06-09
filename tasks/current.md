@@ -329,6 +329,19 @@
 - 📌 **Деплой-долг пользователя**: `supabase functions deploy builder-execute` (включает
   мультиключи этапы 1-3). Без редеплоя per-node выбор и fan-out на сервере не активны.
 
+### 🚀 Сессия 2026-06-09 — публичный релиз + сфера в корне (commit 822cd89)
+- ✅ **Снят пароль-заглушка**: `main.jsx` рендерит `<App/>` напрямую. Atlas открыт всем.
+  `PasswordGate.jsx` оставлен в репо для возможного возврата.
+- ✅ **Сфера-планета в корневом узле**: `MindmapNode.jsx` + `App.css` (planet--live/pl-liquid,
+  как логотип). `index.html`: SVG-фильтр `#liquid-displace`. Структура
+  `mm-node__sphere > mm-sphere__inner(32px×scale2.05) > planet--live`.
+- ✅ **Quality-gate**: security PASS (данные на RLS, не на заглушке; секретов в бандле нет),
+  mobile/code PASS после фикса конфликта классов.
+- 📌 **Операционный долг (прод)**: подтвердить, что RLS включён на всех 14 таблицах —
+  безопасность держится на нём.
+- ⚠️ **Гигиена доступа**: PAT GitHub лежит открытым в URL origin — заменить на credential manager.
+- 🗒️ Лендинг (`atlas-demo/`) — локальный черновик вне репозитория, как задача не ведётся.
+
 ### 💡 Идеи на потом (в `tasks/ideas.md`)
 - Жёсткий barrier прода: pre-push hook или GitHub Actions на PR (сейчас quality-gate
   работает в on-demand режиме — мягкий).
