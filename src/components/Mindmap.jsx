@@ -67,13 +67,6 @@ const Mindmap = forwardRef(function Mindmap(
     <div
       ref={containerRef}
       className="mm-canvas"
-      style={{
-        // Точки фона следуют за панорамой и масштабируются с зумом (как в Agent Builder).
-        backgroundImage: `radial-gradient(rgba(145,145,154,0.5) ${Math.max(0.5 * transform.k, 0.4)}px, transparent ${Math.max(0.5 * transform.k, 0.4)}px)`,
-        backgroundSize: `${20 * transform.k}px ${20 * transform.k}px`,
-        backgroundPosition: `${transform.x}px ${transform.y}px`,
-        transition: isAnimating ? 'background-position 420ms cubic-bezier(0.16, 1, 0.3, 1), background-size 420ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
-      }}
       onWheel={handlers.onWheel}
       onMouseDown={handlers.onMouseDown}
       onTouchStart={handlers.onTouchStart}
