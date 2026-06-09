@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 
 const MIN_ZOOM = 0.25;
-const MAX_ZOOM = 2.5;
+const MAX_ZOOM = 2;   // единый предел с Agent Builder: 25%–200%
 const WHEEL_STEP = 0.0015;
 
 export function usePanZoom(containerRef) {

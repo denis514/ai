@@ -1685,6 +1685,8 @@ function BuilderAppInner() {
             onDrop={onDrop}
             onDragOver={onDragOver}
             fitView
+            minZoom={0.25}
+            maxZoom={2}
             proOptions={{ hideAttribution: true }}
             deleteKeyCode={null}
           >
