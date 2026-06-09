@@ -184,9 +184,9 @@ export default function PasswordGate({ onUnlock }) {
         </div>
 
         <h1 className="pg__title">Atlas</h1>
-        <p className="pg__subtitle">Enter password to continue</p>
+        <p className="pg__subtitle">{PASSWORD_HASH ? 'Enter password to continue' : 'Access is not configured yet'}</p>
 
-        {unlocking ? (
+        {!PASSWORD_HASH ? null : unlocking ? (
           <div className="pg__spinner">
             <div className="pg__spinner-dot pg__spinner-dot--a" />
             <div className="pg__spinner-dot pg__spinner-dot--b" />

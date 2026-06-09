@@ -4017,13 +4017,18 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   height: 64px;
   padding: 0;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 100%);
+  background: #2a1418;
   color: white;
-  border: 1.5px solid #2a2a2a;
-  box-shadow: var(--shadow-lg);
+  border: 1.5px solid rgba(255,255,255,.22);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.18),
+    0 2px 10px rgba(172,55,49,.30),
+    var(--shadow-lg);
   display: grid;
   place-items: center;
   cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
 }
 .mm-node__icon--root {
   width: 32px;
@@ -4032,7 +4037,105 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: white;
   display: grid;
   place-items: center;
-}.mm-node--root:hover { box-shadow: 0 14px 50px rgba(20,20,20, 0.18); }
+}.mm-node--root:hover { box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.18),
+    0 4px 16px rgba(172,55,49,.42),
+    0 14px 50px rgba(20,20,20, 0.18); }
+
+/* ===== Анимированная сфера-планета в центре корневого узла =====
+   Та же «живая» планета, что в логотипе 105 Atlas: бегущая лента
+   тёплых пятен (день) и тёмной паузы (ночь) + жидкое стекло.
+   Внутренний слой 32px масштабируется ×2, чтобы заполнить круг 64px. */
+.mm-node__sphere {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 0;
+}
+.mm-sphere__inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  transform: scale(2.05);
+  transform-origin: center;
+}
+.planet--live {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  isolation: isolate;
+  background: #2a1418;
+  width: 100%;
+  height: 100%;
+}
+.pl-liquid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 350%;
+  z-index: 0;
+  animation: plSpin 11s linear infinite;
+}
+.pl-liquid .blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(5px);
+  pointer-events: none;
+  animation-duration: 6.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.pl-liquid .b-a  { background:#E79B48; left:8px;  top:8px;  width:21px; height:21px; animation-name:pw-1; }
+.pl-liquid .b-b  { background:#DE6B2C; left:2px;  top:9px;  width:16px; height:16px; animation-name:pw-2; }
+.pl-liquid .b-c  { background:#DE6B2C; left:17px; top:11px; width:18px; height:18px; animation-name:pw-3; }
+.pl-liquid .b-d  { background:#D44F29; left:8px;  top:1px;  width:15px; height:15px; animation-name:pw-4; }
+.pl-liquid .b-e  { background:#D44F29; left:7px;  top:17px; width:16px; height:16px; animation-name:pw-5; }
+.pl-liquid .b-f  { background:#D44F29; left:19px; top:1px;  width:15px; height:15px; animation-name:pw-6; }
+.pl-liquid .b-a2 { background:#E79B48; left:88px; top:8px;  width:21px; height:21px; animation-name:pw-1; }
+.pl-liquid .b-b2 { background:#DE6B2C; left:82px; top:9px;  width:16px; height:16px; animation-name:pw-2; }
+.pl-liquid .b-c2 { background:#DE6B2C; left:97px; top:11px; width:18px; height:18px; animation-name:pw-3; }
+.pl-liquid .b-d2 { background:#D44F29; left:88px; top:1px;  width:15px; height:15px; animation-name:pw-4; }
+.pl-liquid .b-e2 { background:#D44F29; left:87px; top:17px; width:16px; height:16px; animation-name:pw-5; }
+.pl-liquid .b-f2 { background:#D44F29; left:99px; top:1px;  width:15px; height:15px; animation-name:pw-6; }
+.planet--live::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+  backdrop-filter: blur(1.5px) saturate(1.3) brightness(1.04);
+  -webkit-backdrop-filter: blur(1.5px) saturate(1.3) brightness(1.04);
+  filter: url(#liquid-displace);
+}
+.planet--live::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255,240,218,.30), rgba(255,240,218,0) 48%),
+    radial-gradient(circle at 72% 78%, rgba(28,10,16,.42), rgba(28,10,16,0) 62%);
+}
+@keyframes plSpin { from { transform: translateX(0); } to { transform: translateX(-71.4286%); } }
+@keyframes pw-1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-2px,3px)} }
+@keyframes pw-2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(3px,2px)} }
+@keyframes pw-3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-3px,-2px)} }
+@keyframes pw-4 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(2px,-3px)} }
+@keyframes pw-5 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-2px,2px)} }
+@keyframes pw-6 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(3px,-2px)} }
+@media (prefers-reduced-motion: reduce) {
+  .pl-liquid { animation: none; }
+  .planet--live { background: radial-gradient(circle at 32% 28%, #E79B48, #D44F29 52%, #692C37); }
+  .planet--live .blob { display: none; }
+}
 
 /* Filter-match подсветка root: рамка + glow цвета фильтра, фон остаётся тёмным. */
 .mm-node--root.is-matched {

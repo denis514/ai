@@ -6,11 +6,14 @@ import { LocaleProvider } from './i18n/LocaleContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { migrateLegacyHash } from './hooks/useHashRoute.js';
 import './index.css';
+import './App.css';
 
 // Обратная совместимость: старые ссылки '#/<lang>/<type>/<id>' → новый путь.
 // Делаем ДО первого рендера, чтобы роутер сразу читал корректный pathname.
 migrateLegacyHash();
 
+// Пароль-заглушка снят — приложение открыто всем. Компонент PasswordGate.jsx
+// оставлен в репозитории на случай, если потребуется вернуть закрытый режим.
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ErrorBoundary>

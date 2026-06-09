@@ -74,8 +74,15 @@ export default function MindmapNode({
         </span>
       )}
       {isRoot && (
-        <span className="mm-node__icon mm-node__icon--root" aria-hidden="true">
-          <Icon name={node.icon} size={26} strokeWidth={1.75} />
+        <span className="mm-node__sphere" aria-hidden="true">
+          <span className="mm-sphere__inner">
+            <span className="planet--live">
+              <span className="pl-liquid">
+                <span className="blob b-a"></span><span className="blob b-b"></span><span className="blob b-c"></span><span className="blob b-d"></span><span className="blob b-e"></span><span className="blob b-f"></span>
+                <span className="blob b-a2"></span><span className="blob b-b2"></span><span className="blob b-c2"></span><span className="blob b-d2"></span><span className="blob b-e2"></span><span className="blob b-f2"></span>
+              </span>
+            </span>
+          </span>
         </span>
       )}
 
