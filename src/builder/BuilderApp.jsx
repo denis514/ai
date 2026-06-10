@@ -396,7 +396,6 @@ function BuilderAppInner() {
   const [nameIntent, setNameIntent] = useState('create');
   const [keysModalOpen, setKeysModalOpen] = useState(false);
   const [scheduleOpen, setScheduleOpen] = useState(false);
-  const [allSchedOpen, setAllSchedOpen] = useState(false); // общий обзор всех автозапусков
   const [authOpen, setAuthOpen] = useState(false);
   // Production-only: демо-режим удалён, запуск всегда реальный (на ключе Claude).
   const runMode = 'real';
@@ -1404,6 +1403,11 @@ function BuilderAppInner() {
         {t('builder.console.tabRun') || 'Запуск'}
         {execStatus === 'running' && <span className="builder-console-tab__dot" aria-hidden="true" />}
       </button>
+      <button
+        type="button" role="tab" aria-selected={consoleTab === 'sched'}
+        className={`builder-console-tab ${consoleTab === 'sched' ? 'is-active' : ''}`}
+        onClick={() => setConsoleTab('sched')}
+      >{t('builder.console.tabSched') || 'Автозапуски'}</button>
     </div>
   );
 
@@ -1553,7 +1557,7 @@ function BuilderAppInner() {
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
-            onClick={() => setAllSchedOpen(true)}
+            onClick={() => { setConsoleOpen(true); setConsoleTab('sched'); }}
             title={t('builder.allsched.openBtn') || 'Все автозапуски'}
             aria-label={t('builder.allsched.openBtn') || 'Все автозапуски'}
           >
@@ -2129,7 +2133,7 @@ function BuilderAppInner() {
             onResizeStart={startExecResize}
             t={t}
           >
-            {consoleTab === 'run' ? (
+            {consoleTab === 'run' && (
               <ExecutionPanel
                 logs={execLogs}
                 status={execStatus}
@@ -2141,7 +2145,8 @@ function BuilderAppInner() {
                 onStop={handleStopExec}
                 onClear={() => { setExecResult(null); handleClearLogs(); }}
               />
-            ) : (
+            )}
+            {consoleTab === 'code' && (
               <CodePanel
                 nodes={nodes}
                 edges={edges}
@@ -2149,6 +2154,9 @@ function BuilderAppInner() {
                 onApply={applyCode}
                 t={t}
               />
+            )}
+            {consoleTab === 'sched' && (
+              <AllSchedulesModal embedded />
             )}
           </ConsoleWindow>
         )}
@@ -2370,11 +2378,6 @@ function BuilderAppInner() {
           locale={locale}
           onClose={() => setScheduleOpen(false)}
         />
-      )}
-
-      {/* Общий обзор всех автозапусков по всем схемам + «Остановить все» */}
-      {allSchedOpen && (
-        <AllSchedulesModal onClose={() => setAllSchedOpen(false)} />
       )}
 
       {/* Auth modal — Builder рендерится вместо Atlas, поэтому свой инстанс */}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
-import { listAllSchedules, toggleSchedule, deleteSchedule, disableAllSchedules, getTodayUsage, listRecentRuns } from '../../services/scheduleService.js';
+import { listAllSchedules, toggleSchedule, deleteSchedule, disableAllSchedules, getTodayUsage, listRecentRuns, clearRunHistory } from '../../services/scheduleService.js';
 import { toast } from '../Toast.jsx';
 import { SkeletonList } from '../Skeleton.jsx';
 
@@ -15,13 +15,15 @@ import { SkeletonList } from '../Skeleton.jsx';
  *
  * Только чтение + выключение/удаление. Создание — в ScheduleModal (по схеме).
  */
-export default function AllSchedulesModal({ onClose }) {
+export default function AllSchedulesModal({ onClose, embedded = false }) {
   const t = useT();
   const [items, setItems] = useState(null);
   const [confirmStopAll, setConfirmStopAll] = useState(false);
   const [busy, setBusy] = useState(false);
   const [usage, setUsage] = useState(null); // { runs, tokens } за сегодня
   const [runs, setRuns] = useState(null);   // история последних прогонов
+  const [confirmClear, setConfirmClear] = useState(false);
+  const [clearing, setClearing] = useState(false);
 
   const refresh = useCallback(() => {
     listAllSchedules().then(setItems).catch(() => setItems([]));
@@ -34,6 +36,19 @@ export default function AllSchedulesModal({ onClose }) {
 
   const onToggle = async (s) => { try { await toggleSchedule(s.id, !s.enabled); refresh(); } catch { /* */ } };
   const onDelete = async (s) => { try { await deleteSchedule(s.id); refresh(); } catch { /* */ } };
+
+  const clearHistory = async () => {
+    setClearing(true);
+    try {
+      await clearRunHistory();
+      setRuns([]);
+      setConfirmClear(false);
+      refresh(); // освежить историю + счётчик «сегодня»
+      toast.success(t('builder.allsched.historyCleared') || 'История запусков очищена');
+    } catch (e) {
+      toast.error((t('builder.allsched.clearErr') || 'Не удалось очистить историю') + (e?.message ? ` (${e.message})` : ''));
+    } finally { setClearing(false); }
+  };
 
   const stopAll = async () => {
     setBusy(true);
@@ -60,18 +75,8 @@ export default function AllSchedulesModal({ onClose }) {
     return String(iso).slice(0, 16).replace('T', ' ') + ' UTC';
   };
 
-  return (
-    <div className="builder-schedule-pop-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
-      <div className="builder-modal builder-schedule builder-allsched" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
-        <header className="builder-modal__header">
-          <h2 className="builder-modal__title">
-            <Icon name="clock" size={16} strokeWidth={1.6} /> {t('builder.allsched.title') || 'Все автозапуски'}
-          </h2>
-          <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={onClose} aria-label={t('common.close') || 'Закрыть'}>
-            <Icon name="close" size={14} strokeWidth={1.75} />
-          </button>
-        </header>
-
+  const body = (
+    <>
         <p className="builder-schedule__lead">
           {t('builder.allsched.lead') || 'Все автозапуски по всем вашим схемам. Они работают на сервере — даже когда компьютер выключен.'}
         </p>
@@ -150,6 +155,28 @@ export default function AllSchedulesModal({ onClose }) {
           <div className="builder-allsched__history-head">
             <Icon name="terminal" size={13} strokeWidth={1.6} />
             <span>{t('builder.allsched.historyTitle') || 'История запусков'}</span>
+            {runs !== null && runs.length > 0 && !confirmClear && (
+              <button
+                type="button"
+                className="builder-btn builder-btn--ghost builder-btn--small builder-allsched__clear"
+                onClick={() => setConfirmClear(true)}
+                title={t('builder.allsched.clearHistory') || 'Очистить историю'}
+              >
+                <Icon name="trash" size={12} strokeWidth={1.7} />
+                <span>{t('builder.allsched.clearHistory') || 'Очистить историю'}</span>
+              </button>
+            )}
+            {confirmClear && (
+              <span className="builder-allsched__confirm builder-allsched__clear-confirm">
+                <span>{t('builder.allsched.clearConfirm') || 'Очистить всю историю?'}</span>
+                <button type="button" className="builder-btn builder-btn--danger builder-btn--small" onClick={clearHistory} disabled={clearing}>
+                  {t('builder.allsched.clearYes') || 'Да, очистить'}
+                </button>
+                <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => setConfirmClear(false)} disabled={clearing}>
+                  {t('common.cancel') || 'Отмена'}
+                </button>
+              </span>
+            )}
           </div>
           {runs === null && <SkeletonList rows={3} />}
           {runs !== null && runs.length === 0 && (
@@ -180,6 +207,27 @@ export default function AllSchedulesModal({ onClose }) {
             </div>
           ))}
         </div>
+    </>
+  );
+
+  // Встроенный режим — содержимое для вкладки «Автозапуски» внутри окна Консоли
+  // (без затемнения и собственной шапки: их даёт ConsoleWindow).
+  if (embedded) {
+    return <div className="builder-allsched builder-allsched--embed">{body}</div>;
+  }
+
+  return (
+    <div className="builder-schedule-pop-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
+      <div className="builder-modal builder-schedule builder-allsched" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+        <header className="builder-modal__header">
+          <h2 className="builder-modal__title">
+            <Icon name="clock" size={16} strokeWidth={1.6} /> {t('builder.allsched.title') || 'Все автозапуски'}
+          </h2>
+          <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={onClose} aria-label={t('common.close') || 'Закрыть'}>
+            <Icon name="close" size={14} strokeWidth={1.75} />
+          </button>
+        </header>
+        {body}
       </div>
     </div>
   );

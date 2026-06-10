@@ -184,3 +184,18 @@ export async function deleteSchedule(id) {
   const { error } = await supabase.from('builder_schedules').delete().eq('id', id);
   if (error) throw error;
 }
+
+/**
+ * Очистить историю прогонов текущего пользователя (таблица builder_executions).
+ * Логи (builder_execution_logs) удаляются каскадом по FK. RLS политика
+ * "builder_exec: own all" (FOR ALL, auth.uid() = user_id) ограничивает удаление
+ * только своими строками. Возвращает true при успехе.
+ */
+export async function clearRunHistory() {
+  if (!supabase) throw new Error('backend_unavailable');
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('not_authenticated');
+  const { error } = await supabase.from('builder_executions').delete().eq('user_id', user.id);
+  if (error) throw error;
+  return true;
+}
