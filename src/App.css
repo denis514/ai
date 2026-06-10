@@ -1408,7 +1408,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  min-width: 150px;
+  min-width: 132px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -1422,16 +1422,19 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   transform-origin: top right;
 }
 .canvas-header__menu-flag { font-size: 16px; line-height: 1; }
-/* Пункт выбора языка: чекмарк слева, текст; компактнее по высоте и промежутку */
-.canvas-header__lang-opt { gap: 6px; padding: 6px 10px; }
-.canvas-header__lang-check {
-  width: 15px;
-  flex: 0 0 auto;
+/* Пункт выбора языка: чекмарк слева, текст вплотную; компактно */
+.canvas-header__lang-opt { gap: 6px; padding: 6px 10px; justify-content: flex-start; }
+/* Слот галочки фиксируем (общее span{flex:1} раздувает его — глушим !important) */
+.canvas-header__pop .canvas-header__lang-opt .canvas-header__lang-check {
+  width: 16px;
+  flex: 0 0 16px !important;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--accent);
 }
+/* Текст языка — по контенту, не растягиваем на всю ширину */
+.canvas-header__lang-opt span:not(.canvas-header__lang-check) { flex: 0 1 auto; }
 .canvas-header__menu-item.is-active { color: var(--text); background: var(--surface-2); }
 .canvas-header__menu-item.is-active span:not(.canvas-header__menu-badge) { font-weight: 600; }
 .canvas-header__menu-item .icon:last-child { margin-left: auto; color: var(--accent); }
