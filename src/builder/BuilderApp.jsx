@@ -1684,6 +1684,7 @@ function BuilderAppInner() {
             onDrop={onDrop}
             onDragOver={onDragOver}
             fitView
+            fitViewOptions={{ maxZoom: 1, padding: 0.2 }}
             minZoom={0.25}
             maxZoom={2}
             proOptions={{ hideAttribution: true }}
