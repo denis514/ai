@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useT } from '../i18n/LocaleContext.jsx';
 import Icon from './Icon.jsx';
 
@@ -76,7 +77,7 @@ export default function Tooltip({ children, label }) {
         onClick={toggle}
       ><Icon name="info" size={16} strokeWidth={1.75} /></button>
 
-      {open && (
+      {open && createPortal(
         <span
           className={`tooltip__bubble tooltip__bubble--portal ${dir === 'down' ? 'tooltip__bubble--down' : ''}`}
           role="tooltip"
@@ -84,7 +85,8 @@ export default function Tooltip({ children, label }) {
           onMouseDown={e => e.stopPropagation()}
         >
           {label || children}
-        </span>
+        </span>,
+        document.body
       )}
     </span>
   );
