@@ -1,0 +1,126 @@
+/* StyleGuide — внутренний эталон. Использует токены App.css (var(--*)),
+   поэтому сам адаптируется к светлой/тёмной теме. Только dev. */
+
+.sg {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+}
+
+/* ── Боковая навигация ── */
+.sg-nav {
+  flex: 0 0 264px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px 18px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+.sg-nav__head { display: flex; align-items: center; gap: 12px; }
+.sg-nav__sphere {
+  width: 36px; height: 36px; flex: 0 0 auto;
+  border-radius: 50%; position: relative; overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.28), 0 2px 8px rgba(172,55,49,.28);
+}
+.sg-nav__sphere .mm-sphere__inner { position: absolute; inset: 0; border-radius: 50%; }
+.sg-nav__title { font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
+.sg-nav__sub { font-size: 11.5px; color: var(--text-dim); }
+
+.sg-theme {
+  display: flex; gap: 6px;
+  padding: 4px; border-radius: var(--radius-pill);
+  background: var(--surface-2); border: 1px solid var(--border);
+}
+.sg-theme__btn {
+  flex: 1; padding: 7px 10px; border: none; cursor: pointer;
+  border-radius: var(--radius-pill); background: transparent;
+  color: var(--text-muted); font-size: 13px; font-weight: 500;
+  transition: background .15s, color .15s;
+}
+.sg-theme__btn.is-active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-sm); }
+
+.sg-nav__list { display: flex; flex-direction: column; gap: 1px; }
+.sg-nav__link {
+  padding: 8px 12px; border-radius: var(--radius-sm);
+  color: var(--text-muted); text-decoration: none; font-size: 14px;
+  transition: background .12s, color .12s;
+}
+.sg-nav__link:hover { background: var(--surface-2); color: var(--text); }
+
+.sg-nav__back {
+  margin-top: auto; padding: 9px 12px; font-size: 13.5px;
+  color: var(--text-muted); text-decoration: none;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  text-align: center; transition: background .12s;
+}
+.sg-nav__back:hover { background: var(--surface-2); color: var(--text); }
+
+/* ── Основная область ── */
+.sg-main { flex: 1; overflow-y: auto; padding: 40px 48px 80px; }
+.sg-hero { max-width: 640px; margin-bottom: 40px; }
+.sg-hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -.03em; margin: 0 0 12px; }
+.sg-hero p { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin: 0; }
+
+.sg-section { padding: 28px 0; border-top: 1px solid var(--border); scroll-margin-top: 24px; }
+.sg-section__head { margin-bottom: 20px; }
+.sg-section__head h2 { font-size: 20px; font-weight: 600; letter-spacing: -.02em; margin: 0 0 6px; }
+.sg-section__head p { font-size: 13.5px; color: var(--text-dim); margin: 0; max-width: 560px; line-height: 1.5; }
+
+/* ── Сетка образцов ── */
+.sg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.sg-swatch {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; border: 1px solid var(--border);
+  border-radius: var(--radius-md); background: var(--surface);
+}
+.sg-swatch__box {
+  width: 46px; height: 46px; flex: 0 0 auto;
+  border-radius: var(--radius-sm); border: 1px solid var(--border);
+}
+.sg-swatch__line { width: 46px; height: 4px; flex: 0 0 auto; border-radius: 2px; }
+.sg-swatch__text { font-size: 22px; font-weight: 600; width: 46px; flex: 0 0 auto; text-align: center; }
+.sg-swatch__meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sg-swatch__name { font-size: 12.5px; font-weight: 600; font-family: ui-monospace, 'SF Mono', Menlo, monospace; }
+.sg-swatch__val { font-size: 11.5px; color: var(--text-muted); font-family: ui-monospace, 'SF Mono', Menlo, monospace; }
+.sg-swatch__desc { font-size: 12px; color: var(--text-dim); }
+
+.sg-shadow { background: var(--surface); border: 1px solid var(--border); }
+.sg-radius { background: var(--accent-soft); border: 1px solid var(--accent); }
+
+/* ── Типографика ── */
+.sg-type { display: flex; flex-direction: column; gap: 14px; }
+.sg-type__row { line-height: 1.3; }
+
+/* ── Ряд элементов (кнопки, чипы) ── */
+.sg-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+
+/* ── Сфера ── */
+.sg-sphere-demo { display: flex; align-items: center; gap: 28px; }
+.sg-sphere {
+  position: relative; border-radius: 50%; overflow: hidden; flex: 0 0 auto;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.28), 0 2px 10px rgba(172,55,49,.3);
+}
+.sg-sphere .mm-sphere__inner { position: absolute; inset: 0; border-radius: 50%; }
+.sg-sphere--lg { width: 96px; height: 96px; }
+.sg-sphere--md { width: 48px; height: 48px; }
+
+/* ── Точечный фон ── */
+.sg-dots {
+  height: 160px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background-color: var(--bg);
+}
+.sg-footer {
+  margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border);
+  font-size: 12.5px; color: var(--text-dim);
+}
+
+@media (max-width: 720px) {
+  .sg-nav { flex-basis: 200px; }
+  .sg-main { padding: 28px 20px 60px; }
+}

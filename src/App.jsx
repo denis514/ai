@@ -57,6 +57,9 @@ import './App.css';
 // См. docs/agent-builder/ для полной спецификации.
 const BuilderApp = lazyWithRetry(() => import('./builder/BuilderApp.jsx'), 'BuilderApp');
 
+// StyleGuide — внутренний эталон компонентов. Только dev (см. AppRouter).
+const StyleGuide = lazyWithRetry(() => import('./styleguide/StyleGuide.jsx'), 'StyleGuide');
+
 const GA_ID = 'G-GLRHYG2JVK';
 
 // ── GA4 Consent Mode v2 (GDPR-compliant) ────────────────────────────────────
@@ -1137,6 +1140,16 @@ function AppRouter() {
     return (
       <Suspense fallback={<BuilderSuspenseFallback />}>
         <BuilderApp />
+      </Suspense>
+    );
+  }
+
+  // Внутренний эталон компонентов — только в режиме разработки.
+  // В публичную сборку не попадает (import.meta.env.DEV === false в prod).
+  if (import.meta.env.DEV && route?.type === 'styleguide') {
+    return (
+      <Suspense fallback={null}>
+        <StyleGuide />
       </Suspense>
     );
   }
