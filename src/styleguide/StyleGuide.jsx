@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '../hooks/useTheme.js';
 import { useHashRoute } from '../hooks/useHashRoute.js';
+import Icon from '../components/Icon.jsx';
 import InlineText from '../components/InlineText.jsx';
 import './StyleGuide.css';
 
@@ -29,6 +30,7 @@ const SECTIONS = [
   { id: 'type',      label: 'Типографика' },
   { id: 'buttons',   label: 'Кнопки' },
   { id: 'chips',     label: 'Чипы и бейджи' },
+  { id: 'fab',       label: 'FAB-кнопки' },
   { id: 'controls',  label: 'Чекбоксы и радио' },
   { id: 'links',     label: 'Ссылки' },
   { id: 'inlinks',   label: 'Инлайновые ссылки' },
@@ -289,6 +291,22 @@ export default function StyleGuide() {
             <span className="chip"><span className="chip__dot" style={{ background: 'var(--line)' }} />Настройка</span>
             <span className="chip">Промпты</span>
           </div>
+        </Section>
+
+        <Section id="fab" title="FAB-кнопки"
+          note="Единый стандарт плавающих кнопок: круг 52×52, фон --surface, граница, тень --shadow-lg. Применяется к кнопке профиля (.profile-fab__btn) и мобильным FAB (.fab__btn) — один размер и стиль.">
+          <div className="sg-row">
+            <button type="button" className="profile-fab__btn" aria-label="FAB">
+              <Icon name="sparkles" size={22} strokeWidth={1.5} />
+            </button>
+            <button type="button" className="profile-fab__btn" aria-label="FAB">
+              <Icon name="search" size={22} strokeWidth={1.5} />
+            </button>
+            <button type="button" className="profile-fab__btn" aria-label="FAB">
+              <Icon name="settings" size={22} strokeWidth={1.5} />
+            </button>
+          </div>
+          <p className="sg-hint">Размер 52×52, скругление 50%, граница 1px, тень --shadow-lg. Иконка ~22px.</p>
         </Section>
 
         <Section id="controls" title="Чекбоксы и радио"

@@ -1622,21 +1622,20 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 /* Размер совпадает с .fab__btn (52×52) — единая FAB-эстетика */
 .profile-fab__btn {
-  width: 44px;
-  height: 44px;
+  /* Стандарт FAB (= .fab__btn): 52×52, фон --surface, тень --shadow-lg, круг.
+     См. раздел «FAB-кнопки» в /styleguide. */
+  width: 52px;
+  height: 52px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border);
-  /* Стеклянный фон + blur + shadow-md — единый стиль с двумя другими плашками шапки. */
-  background: color-mix(in srgb, var(--surface) 90%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--surface);
   color: var(--text);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: var(--shadow-md);
-  transition: background .15s ease, transform .12s ease, border-color .15s ease;
+  box-shadow: var(--shadow-lg);
+  transition: background .15s ease, transform .12s ease, border-color .15s ease, color .15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 .profile-fab__btn:active { transform: scale(0.92); }
@@ -1649,8 +1648,8 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   border-color: var(--accent);
 }
 .profile-fab__btn:focus-visible {
-  outline: 2px solid var(--line);
-  outline-offset: 2px;
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: var(--focus-offset);
 }
 /* Когда имя задано — фон цветной (детерминированный по имени) */
 .profile-fab__btn.has-identity {
