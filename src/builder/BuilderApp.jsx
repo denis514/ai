@@ -14,6 +14,7 @@ import {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import Icon from '../components/Icon.jsx';
+import PlanetLogo from '../components/PlanetLogo.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE, canAddNode, hasConfigPanel } from './data/nodeTypes.js';
@@ -1394,9 +1395,7 @@ function BuilderAppInner() {
           )}
 
           <div className="builder-header__title">
-            <span className="builder-header__logo" aria-hidden="true">
-              <Icon name="sparkles" size={18} strokeWidth={1.5} />
-            </span>
+            <PlanetLogo size={22} className="builder-header__logo" />
             <strong>Agent Builder</strong>
             <span className="builder-header__beta">BETA</span>
             {nodes.length > 0 && (

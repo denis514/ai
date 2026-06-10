@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
+import PlanetLogo from './PlanetLogo.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { LOCALE_LABEL } from '../i18n/config.js';
 import { useTheme } from '../hooks/useTheme.js';
@@ -98,9 +99,7 @@ export default function CanvasHeader({
           aria-haspopup="menu"
           title={t('header.menu.title')}
         >
-          <span className="canvas-header__logo" aria-hidden="true">
-            <Icon name="sparkles" size={18} strokeWidth={1.5} />
-          </span>
+          <PlanetLogo size={22} className="canvas-header__logo" />
           <strong>Atlas</strong>
           <span className="canvas-header__chevron" aria-hidden="true">
             <Icon
