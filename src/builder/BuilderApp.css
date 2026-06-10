@@ -4983,15 +4983,46 @@
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px;
 }
-.builder-app .builder-allsched__clear { margin-left: auto; text-transform: none; letter-spacing: 0; }
-.builder-app .builder-allsched__clear-confirm { margin-left: auto; text-transform: none; letter-spacing: 0; }
-
 /* Встроенный режим: «Автозапуски» как вкладка внутри окна Консоли. */
 .builder-app .builder-allsched--embed {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
   padding: 14px;
+}
+
+/* Липкий футер очистки истории — прилипает к низу при прокрутке. */
+.builder-app .builder-allsched__footer {
+  position: sticky;
+  bottom: 0;
+  margin: 12px -14px -14px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  z-index: 2;
+}
+/* В модальном режиме (не embed) полей -14px нет — компенсируем. */
+.builder-app .builder-modal .builder-allsched__footer { margin: 12px 0 0; }
+
+.builder-app .builder-allsched__clear-btn { width: 100%; justify-content: center; }
+
+.builder-app .builder-allsched__clear-confirm {
+  display: flex; flex-direction: column; gap: 9px; text-align: center;
+}
+.builder-app .builder-allsched__clear-q { font-size: 13px; font-weight: 600; color: var(--text); }
+.builder-app .builder-allsched__clear-actions { display: flex; gap: 8px; }
+.builder-app .builder-allsched__clear-actions .builder-btn { flex: 1; justify-content: center; }
+
+/* Тёмная (инвертированная) кнопка: чёрная в светлой теме, светлая в тёмной —
+   всегда контрастная и «намеренная», без жёсткого хардкода чёрного. */
+.builder-app .builder-btn--dark {
+  background: var(--text, #1a1a1a);
+  color: var(--surface, #fff);
+  border-color: var(--text, #1a1a1a);
+}
+.builder-app .builder-btn--dark:hover {
+  background: color-mix(in srgb, var(--text, #1a1a1a) 85%, var(--accent, #2563eb));
+  border-color: color-mix(in srgb, var(--text, #1a1a1a) 85%, var(--accent, #2563eb));
 }
 .builder-app .builder-runrow {
   display: flex; align-items: flex-start; gap: 9px;

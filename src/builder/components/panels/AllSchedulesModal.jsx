@@ -155,28 +155,6 @@ export default function AllSchedulesModal({ onClose, embedded = false }) {
           <div className="builder-allsched__history-head">
             <Icon name="terminal" size={13} strokeWidth={1.6} />
             <span>{t('builder.allsched.historyTitle') || 'История запусков'}</span>
-            {runs !== null && runs.length > 0 && !confirmClear && (
-              <button
-                type="button"
-                className="builder-btn builder-btn--ghost builder-btn--small builder-allsched__clear"
-                onClick={() => setConfirmClear(true)}
-                title={t('builder.allsched.clearHistory') || 'Очистить историю'}
-              >
-                <Icon name="trash" size={12} strokeWidth={1.7} />
-                <span>{t('builder.allsched.clearHistory') || 'Очистить историю'}</span>
-              </button>
-            )}
-            {confirmClear && (
-              <span className="builder-allsched__confirm builder-allsched__clear-confirm">
-                <span>{t('builder.allsched.clearConfirm') || 'Очистить всю историю?'}</span>
-                <button type="button" className="builder-btn builder-btn--danger builder-btn--small" onClick={clearHistory} disabled={clearing}>
-                  {t('builder.allsched.clearYes') || 'Да, очистить'}
-                </button>
-                <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => setConfirmClear(false)} disabled={clearing}>
-                  {t('common.cancel') || 'Отмена'}
-                </button>
-              </span>
-            )}
           </div>
           {runs === null && <SkeletonList rows={3} />}
           {runs !== null && runs.length === 0 && (
@@ -207,6 +185,35 @@ export default function AllSchedulesModal({ onClose, embedded = false }) {
             </div>
           ))}
         </div>
+
+        {/* Липкий футер: очистка истории. Тёмная кнопка во всю ширину;
+            красный цвет — только на шаге подтверждения. */}
+        {runs !== null && runs.length > 0 && (
+          <div className="builder-allsched__footer">
+            {!confirmClear ? (
+              <button
+                type="button"
+                className="builder-btn builder-btn--dark builder-allsched__clear-btn"
+                onClick={() => setConfirmClear(true)}
+              >
+                <Icon name="trash" size={14} strokeWidth={1.75} />
+                <span>{t('builder.allsched.clearHistory') || 'Очистить историю'}</span>
+              </button>
+            ) : (
+              <div className="builder-allsched__clear-confirm">
+                <span className="builder-allsched__clear-q">{t('builder.allsched.clearConfirm') || 'Очистить всю историю?'}</span>
+                <div className="builder-allsched__clear-actions">
+                  <button type="button" className="builder-btn builder-btn--ghost" onClick={() => setConfirmClear(false)} disabled={clearing}>
+                    {t('common.cancel') || 'Отмена'}
+                  </button>
+                  <button type="button" className="builder-btn builder-btn--danger" onClick={clearHistory} disabled={clearing}>
+                    {t('builder.allsched.clearYes') || 'Да, очистить'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
     </>
   );
 
