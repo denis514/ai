@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useT } from '../i18n/LocaleContext.jsx';
+import Icon from './Icon.jsx';
 
 const BUBBLE_W = 220;
 const GAP      = 8;
@@ -73,7 +74,7 @@ export default function Tooltip({ children, label }) {
         aria-expanded={open}
         aria-label={t('tooltip.aria')}
         onClick={toggle}
-      >?</button>
+      ><Icon name="info" size={12} strokeWidth={2} /></button>
 
       {open && (
         <span
