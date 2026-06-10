@@ -4988,20 +4988,22 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  padding: 14px;
+  /* Без нижнего padding: иначе под липким футером остаётся зазор,
+     сквозь который виден прокручиваемый контент. Низ закрывает сам футер. */
+  padding: 14px 14px 0;
 }
 
 /* Липкий футер очистки истории — прилипает к низу при прокрутке. */
 .builder-app .builder-allsched__footer {
   position: sticky;
   bottom: 0;
-  margin: 12px -14px -14px;
+  margin: 12px -14px 0;
   padding: 12px 14px;
   background: var(--surface);
   border-top: 1px solid var(--border);
   z-index: 2;
 }
-/* В модальном режиме (не embed) полей -14px нет — компенсируем. */
+/* В модальном режиме (не embed) горизонтальных полей -14px нет. */
 .builder-app .builder-modal .builder-allsched__footer { margin: 12px 0 0; }
 
 .builder-app .builder-allsched__clear-btn { width: 100%; justify-content: center; }
