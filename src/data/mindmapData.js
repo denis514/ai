@@ -1053,6 +1053,41 @@ export const mindmapData = {
           "minLevel": "advanced",
           "children": [
             {
+              "id": "cc-scheduled-runs",
+              "icon": "calendar",
+              "category": "automation"
+            },
+            {
+              "id": "cc-background-tasks",
+              "icon": "loop",
+              "category": "automation"
+            },
+            {
+              "id": "auto-webhooks-triggers",
+              "icon": "flash",
+              "category": "automation"
+            },
+            {
+              "id": "cc-hooks-blocking",
+              "icon": "shield",
+              "category": "automation"
+            },
+            {
+              "id": "auto-human-in-loop",
+              "icon": "user",
+              "category": "automation"
+            },
+            {
+              "id": "auto-spend-limits",
+              "icon": "lock",
+              "category": "automation"
+            },
+            {
+              "id": "auto-retry-recovery",
+              "icon": "repeat",
+              "category": "automation"
+            },
+            {
               "id": "cc-install",
               "icon": "inbox",
               "category": "automation",
@@ -1345,6 +1380,16 @@ export const mindmapData = {
             "mcp"
           ],
           "children": [
+            {
+              "id": "ag-orchestration",
+              "icon": "branch",
+              "category": "agents"
+            },
+            {
+              "id": "ag-context-handoff",
+              "icon": "send",
+              "category": "agents"
+            },
             {
               "id": "ag-principles",
               "icon": "bricks",

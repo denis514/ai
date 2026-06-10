@@ -1798,5 +1798,86 @@
     "impact": "Removing 2-3 anti-patterns often turns the same prompt from \"useless\" into \"working\" without changing the model.",
     "example": "Bad: \"write about marketing\". Good: \"You are a marketer. 3 post ideas for a B2B LinkedIn audience, 2 sentences each, no hashtags\".",
     "mistakes": "Adding \"this is very important\" and \"please try hard\" — a modern model ignores this and the prompt just bloats."
+  },
+  "cc-background-tasks": {
+    "title": "Background tasks",
+    "what": "Long tasks in Claude Code that keep running while you do something else: you start a command in the background, and the assistant returns to you when it finishes.",
+    "why": "Without background runs you block the chat for minutes waiting on a build or tests. A background task frees the conversation — you ask the next thing without waiting.",
+    "when": "When a command takes longer than 30 seconds (tests, build, indexing) and you do not need the result instantly.",
+    "impact": "You parallelize work: while tests run in the background, the assistant already edits the next file. On big projects that is hours saved a day.",
+    "example": "Ask: \"run the full test suite in the background and keep refactoring the login module\" — tests start in the background and report when done.",
+    "mistakes": "Pushing a command to the background when you need its result right now for the next step — then you are still waiting, just blindly."
+  },
+  "cc-scheduled-runs": {
+    "title": "Scheduled runs",
+    "what": "A task that runs automatically on a clock: \"every morning\", \"Mondays at 9:00\", \"hourly\". The assistant starts on its own, does the work, and sends the result.",
+    "why": "Routine that repeats on a calendar (a digest, a release check, a summary) is silly to run by hand — you forget or run it at the wrong time.",
+    "when": "For time-based recurring tasks with no human in the moment: a morning digest, a nightly check, a weekly report.",
+    "impact": "The task runs reliably and on time even when you are away. Zero misses from the human factor.",
+    "example": "Set: \"every Monday at 9:00 gather the week's new tasks and send a summary by priority\" — the assistant starts itself.",
+    "mistakes": "Scheduling a task that spends paid tokens and forgetting it — over a month the bill grows for runs no one reads."
+  },
+  "cc-hooks-blocking": {
+    "title": "Blocking hooks",
+    "what": "A hook that does not just run a command on an event but can STOP the assistant's action: forbid a dangerous call or require confirmation before writing to a protected file.",
+    "why": "A regular hook reacts after the fact. A blocking one is a safety catch: it stands before the action and refuses what is not allowed. More reliable than persuasion by text.",
+    "when": "When there are actions the assistant must not take on its own: deleting in production, publishing to the main branch, writing secrets, paid calls.",
+    "impact": "A guarantee, not a hope: a forbidden action physically will not run even if the model \"decides\" it should. Removes a whole class of incidents.",
+    "example": "Before a command runs, the hook checks it for dangerous patterns (mass delete, force push) — finds one, returns a block, and the action does not run.",
+    "mistakes": "Relying on a text instruction \"never do X\" instead of a blocking hook — the model can ignore an instruction, but not a hook."
+  },
+  "ag-orchestration": {
+    "title": "Agent orchestration",
+    "what": "Several agents working under a lead: the lead splits the task, hands pieces to specialized helpers, and assembles their results into one answer.",
+    "why": "One agent with two dozen tools gets confused and overflows its context. Orchestration gives each worker a narrow role and clean context — quality goes up.",
+    "when": "When a task breaks into different parts: \"find → analyze → format\", where each step is done best by a separate specialist.",
+    "impact": "Complex multi-step tasks resolve predictably: the lead controls the flow, helpers do not interfere. The setup is easier to debug than one know-it-all.",
+    "example": "For \"prepare a market overview\", the lead runs a research helper to find sources, then hands the findings to an analyst for a comparison table.",
+    "mistakes": "Spawning helpers where one would do: orchestration adds latency for context handoff. Split into agents only when the roles are truly different."
+  },
+  "ag-context-handoff": {
+    "title": "Context handoff between agents",
+    "what": "How one agent passes its result to another: what to send (the conclusion, not all the reasoning \"noise\"), in what format, and how much. A helper does not see the parent's context automatically.",
+    "why": "The most common break in agent chains is the second agent getting either too little (missing data) or too much (drowning in someone else's context and losing focus).",
+    "when": "Always when you build a chain of two or more agents: design the input/output \"contract\" for each handoff up front.",
+    "impact": "A clean handoff means each agent works with the minimum context it needs: faster, cheaper in tokens, fewer made-up answers from extra noise.",
+    "example": "The researcher hands the analyst not the whole search log but a structured list: \"5 sources and the key fact from each\" — exactly what the table needs.",
+    "mistakes": "Forwarding the whole raw output \"so nothing is lost\" — you bloat the context and pay for tokens that only get in the way."
+  },
+  "auto-human-in-loop": {
+    "title": "Human in the loop",
+    "what": "Points in automation where the assistant must stop and ask a human before an irreversible or costly action: apply a change, email a client, spend money.",
+    "why": "Full autonomy is dangerous where a mistake is expensive. Human in the loop keeps the automation fast but returns control exactly at the critical points.",
+    "when": "Before irreversible actions (deleting, publishing, paying, external communication) and when the model's confidence is low.",
+    "impact": "Automation speed without the \"did it and never asked\" risk: most steps run themselves, the critical ones pass through your confirmation.",
+    "example": "The assistant drafts a client reply entirely on its own, but before sending shows the draft \"send?\" — the email goes only after your yes.",
+    "mistakes": "Putting a confirmation on every step — then automation loses its point and you click everything by hand again. Stop only at the truly risky moments."
+  },
+  "auto-spend-limits": {
+    "title": "Spend limits",
+    "what": "A ceiling on autonomous work: a maximum of tokens or money per task or per period. On reaching the limit, the assistant stops and asks instead of burning more budget.",
+    "why": "An autonomous or scheduled agent in a loop can quietly spend a lot: it loops, repeats an expensive call, runs a heavy model where a light one would do.",
+    "when": "Mandatory for anything running unattended: schedules, background tasks, long autonomous agents.",
+    "impact": "A predictable bill instead of an end-of-month surprise. An agent failure costs \"the limit\", not \"the whole budget\".",
+    "example": "Give a nightly agent a limit of \"no more than $2 per run\": hit the ceiling and it writes \"reached the limit, stopped\" instead of looping on.",
+    "mistakes": "Running an autonomous agent with no spend ceiling at all, hoping \"it is sensible\" — one bug in a loop and the bill grows tenfold."
+  },
+  "auto-retry-recovery": {
+    "title": "Retries and recovery",
+    "what": "Behavior on a failed step: instead of stopping at once, the assistant retries with a pause, and after a few failures ends cleanly with a clear message rather than hanging.",
+    "why": "In autonomous work, failures are inevitable: the network blinks, an external service errors, a rate limit is hit. Without retries one random error wrecks the whole task.",
+    "when": "In any automation with external calls (network, third-party services), especially in unattended schedules and background tasks.",
+    "impact": "Resilience: random temporary failures survive on their own, and only real problems reach a human, not \"the network blinked\".",
+    "example": "The agent calls an external service, gets \"temporarily unavailable\" — waits a couple of seconds and tries again; after 3 failures writes \"service down, deferred\".",
+    "mistakes": "Retrying with no pause and no cap on attempts — the agent floods the service. And do not retry a non-idempotent action, or you get a double charge."
+  },
+  "auto-webhooks-triggers": {
+    "title": "Webhooks and triggers",
+    "what": "Running not on a clock but on an event: a new request comes in, a message lands in a channel, a ticket is created, a document changes. An external system \"pings\" the assistant and it gets to work at once.",
+    "why": "A schedule checks \"did something happen\" blindly and with delay. An event trigger reacts instantly and exactly when there is something to react to — no idle runs.",
+    "when": "When real-time reaction to an external event matters: replying to a new ticket, handling an incoming message, checking a fresh change.",
+    "impact": "A reaction in seconds instead of \"hourly on a schedule\", and zero empty runs — the assistant works only when an event actually occurs.",
+    "example": "Set a trigger \"new ticket created\" — the assistant reads it immediately, drafts a reply, and calls a human, without waiting for someone to ask.",
+    "mistakes": "Attaching a heavy, expensive agent to a frequent event with no spend limit — a stream of events becomes a stream of paid runs."
   }
 }

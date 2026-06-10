@@ -1798,5 +1798,86 @@
     "impact": "Kun poistat 2-3 anti-patternia, sama kehote muuttuu usein \"hyödyttömästä\" \"toimivaksi\" ilman mallin vaihtoa.",
     "example": "Huono: \"kirjoita markkinoinnista\". Hyvä: \"Olet markkinoija. 3 julkaisuideaa B2B-yleisölle LinkedIniin, 2 lausetta kukin, ei hashtageja\".",
     "mistakes": "Lisätä \"tämä on erittäin tärkeää\" ja \"yritä parhaasi\" — moderni malli ohittaa tämän ja kehote vain paisuu."
+  },
+  "cc-background-tasks": {
+    "title": "Taustatehtävät",
+    "what": "Pitkät tehtävät Claude Codessa, jotka jatkuvat samalla kun teet muuta: käynnistät komennon taustalle, ja avustaja palaa luoksesi, kun se on valmis.",
+    "why": "Ilman taustaa jumitat keskustelun minuuteiksi odottaessasi käännöstä tai testejä. Taustatehtävä vapauttaa keskustelun — kysyt seuraavan asian odottamatta.",
+    "when": "Kun komento kestää yli 30 sekuntia (testit, käännös, indeksointi) etkä tarvitse tulosta heti.",
+    "impact": "Rinnakkaistat työn: testien pyöriessä taustalla avustaja jo muokkaa seuraavaa tiedostoa. Isoissa projekteissa tunteja säästöä päivässä.",
+    "example": "Pyydä: \"aja koko testisarja taustalla ja jatka kirjautumismoduulin refaktorointia\" — testit alkavat taustalla ja raportoivat valmistuessaan.",
+    "mistakes": "Työntää taustalle komento, jonka tulosta tarvitset heti seuraavaan vaiheeseen — silloin odotat silti, vain sokkona."
+  },
+  "cc-scheduled-runs": {
+    "title": "Ajastetut ajot",
+    "what": "Tehtävä, joka käynnistyy automaattisesti kellon mukaan: \"joka aamu\", \"maanantaisin klo 9\", \"tunneittain\". Avustaja käynnistyy itse, tekee työn ja lähettää tuloksen.",
+    "why": "Kalenterin mukaan toistuvaa rutiinia (kooste, julkaisutarkistus, yhteenveto) on tyhmä ajaa käsin — unohdat tai ajat väärään aikaan.",
+    "when": "Aikaperusteisille toistuville tehtäville ilman ihmistä hetkessä: aamukooste, yötarkistus, viikkoraportti.",
+    "impact": "Tehtävä ajetaan luotettavasti ja ajallaan, vaikka olisit poissa. Ei yhtään ohitusta inhimillisen tekijän takia.",
+    "example": "Aseta: \"joka maanantai klo 9 kerää viikon uudet tehtävät ja lähetä yhteenveto prioriteeteittain\" — avustaja käynnistyy itse.",
+    "mistakes": "Ajastaa tehtävä, joka kuluttaa maksullisia tokeneita, ja unohtaa se — kuukaudessa lasku kasvaa ajoista, joita kukaan ei lue."
+  },
+  "cc-hooks-blocking": {
+    "title": "Estävät koukut",
+    "what": "Koukku, joka ei vain aja komentoa tapahtumasta vaan voi PYSÄYTTÄÄ avustajan toiminnon: estää vaarallisen kutsun tai vaatia vahvistuksen ennen suojattuun tiedostoon kirjoittamista.",
+    "why": "Tavallinen koukku reagoi jälkikäteen. Estävä on varoke: se asettuu ennen toimintoa ja kieltää sen, mikä ei ole sallittua. Luotettavampi kuin tekstillä suostuttelu.",
+    "when": "Kun on toimintoja, joita avustaja ei saa tehdä itse: poisto tuotannossa, julkaisu päähaaraan, salaisuuksien kirjoitus, maksulliset kutsut.",
+    "impact": "Takuu, ei toive: kielletty toiminto ei fyysisesti aja, vaikka malli \"päättäisi\" niin. Poistaa kokonaisen luokan vahinkoja.",
+    "example": "Ennen komennon ajoa koukku tarkistaa sen vaarallisten kuvioiden varalta (massapoisto, pakkolähetys) — löytää, palauttaa eston, toiminto ei aja.",
+    "mistakes": "Luottaa tekstiohjeeseen \"älä koskaan tee X\" estävän koukun sijaan — ohjeen malli voi ohittaa, koukkua ei."
+  },
+  "ag-orchestration": {
+    "title": "Agenttien orkestrointi",
+    "what": "Useita agentteja johtoagentin alaisuudessa: johtaja pilkkoo tehtävän, jakaa palat erikoistuneille avustajille ja kokoaa tulokset yhdeksi vastaukseksi.",
+    "why": "Yksi agentti, jolla on parikymmentä työkalua, hämmentyy ja täyttää kontekstinsa. Orkestrointi antaa kullekin kapean roolin ja puhtaan kontekstin — laatu nousee.",
+    "when": "Kun tehtävä jakautuu erilaisiin osiin: \"etsi → analysoi → muotoile\", joissa kunkin vaiheen tekee parhaiten oma erikoisosaaja.",
+    "impact": "Monivaiheiset tehtävät ratkeavat ennustettavasti: johtaja hallitsee kulkua, avustajat eivät häiritse. Kokonaisuutta on helpompi korjata kuin yhtä kaikkitietävää.",
+    "example": "Pyyntöön \"valmistele markkinakatsaus\" johtaja ajaa tutkimusavustajan lähteille, ja antaa sitten löydökset analyytikolle taulukkoa varten.",
+    "mistakes": "Luoda avustajia siellä, missä yksi riittäisi: orkestrointi lisää viivettä kontekstin siirrossa. Pilko agentteihin vain, kun roolit ovat aidosti erilaiset."
+  },
+  "ag-context-handoff": {
+    "title": "Kontekstin siirto agenteille",
+    "what": "Miten yksi agentti antaa tuloksensa toiselle: mitä siirtää (johtopäätös, ei kaikkea päättelyn \"kohinaa\"), missä muodossa ja kuinka paljon. Avustaja ei näe vanhemman kontekstia automaattisesti.",
+    "why": "Yleisin ketjun rikkoutuminen on, että toinen agentti saa joko liian vähän (dataa puuttuu) tai liian paljon (hukkuu toisen kontekstiin ja menettää fokuksen).",
+    "when": "Aina kun rakennat kahden tai useamman agentin ketjun: suunnittele syötteen ja tuloksen \"sopimus\" jokaiselle siirrolle etukäteen.",
+    "impact": "Puhdas siirto tarkoittaa, että kukin agentti toimii vähimmäiskontekstilla: nopeammin, halvemmin tokeneissa, vähemmän keksittyjä vastauksia kohinasta.",
+    "example": "Tutkija antaa analyytikolle ei koko hakulokia vaan jäsennellyn listan: \"5 lähdettä ja avainfakta kustakin\" — juuri sen, mitä taulukko tarvitsee.",
+    "mistakes": "Välittää koko raaka tuloste \"ettei mitään katoa\" — paisutat kontekstin ja maksat tokeneista, jotka vain haittaavat."
+  },
+  "auto-human-in-loop": {
+    "title": "Ihminen silmukassa",
+    "what": "Automaation kohdat, joissa avustajan on pysähdyttävä ja kysyttävä ihmiseltä ennen peruuttamatonta tai kallista toimintoa: ota muutos käyttöön, lähetä viesti asiakkaalle, käytä rahaa.",
+    "why": "Täysi autonomia on vaarallista siellä, missä virhe maksaa. Ihminen silmukassa pitää automaation nopeana mutta palauttaa hallinnan juuri kriittisissä kohdissa.",
+    "when": "Ennen peruuttamattomia toimintoja (poisto, julkaisu, maksu, ulkoinen viestintä) ja kun mallin varmuus on matala.",
+    "impact": "Automaation nopeus ilman \"teki eikä kysynyt\" -riskiä: useimmat vaiheet ajavat itsensä, kriittiset kulkevat vahvistuksesi kautta.",
+    "example": "Avustaja laatii asiakasvastauksen täysin itse, mutta näyttää ennen lähetystä luonnoksen \"lähetä?\" — viesti lähtee vasta kun sanot kyllä.",
+    "mistakes": "Laittaa vahvistus joka vaiheeseen — silloin automaatio menettää tarkoituksensa ja klikkaat kaiken taas käsin. Pysäytä vain aidosti riskialttiissa."
+  },
+  "auto-spend-limits": {
+    "title": "Kulutusrajat",
+    "what": "Katto autonomiselle työlle: enimmäismäärä tokeneita tai rahaa tehtävää tai jaksoa kohti. Rajaan päästyään avustaja pysähtyy ja kysyy sen sijaan, että polttaisi budjettia lisää.",
+    "why": "Autonominen tai ajastettu agentti silmukassa voi huomaamatta kuluttaa paljon: jää silmukkaan, toistaa kallista kutsua, ajaa raskasta mallia kevyen sijaan.",
+    "when": "Pakollinen kaikelle valvomatta ajettavalle: ajastukset, taustatehtävät, pitkät autonomiset agentit.",
+    "impact": "Ennustettava lasku kuukauden lopun yllätyksen sijaan. Agentin vika maksaa \"rajan\", ei \"koko budjettia\".",
+    "example": "Anna yöagentille raja \"enintään 2 $ per ajo\": kattoon osuessaan se kirjoittaa \"raja saavutettu, pysähdyin\" eikä jatka silmukkaa.",
+    "mistakes": "Ajaa autonominen agentti ilman mitään kulutuskattoa toivoen \"se on järkevä\" — yksi bugi silmukassa ja lasku kasvaa kymmenkertaiseksi."
+  },
+  "auto-retry-recovery": {
+    "title": "Uudelleenyritys ja toipuminen",
+    "what": "Toiminta epäonnistuneessa vaiheessa: heti pysähtymisen sijaan avustaja yrittää uudelleen tauon kanssa, ja muutaman epäonnistumisen jälkeen päättyy siististi selkeällä viestillä eikä jää jumiin.",
+    "why": "Autonomisessa työssä viat ovat väistämättömiä: verkko pätkii, ulkoinen palvelu antaa virheen, raja ylittyy. Ilman uudelleenyrityksiä yksi satunnainen virhe kaataa koko tehtävän.",
+    "when": "Kaikessa automaatiossa, jossa on ulkoisia kutsuja (verkko, kolmannen osapuolen palvelut), etenkin valvomattomissa ajastuksissa ja taustatehtävissä.",
+    "impact": "Sietokyky: satunnaiset tilapäiset viat selviävät itsestään, ja ihmiselle päätyvät vain todelliset ongelmat, ei \"verkko pätki\".",
+    "example": "Agentti kutsuu ulkoista palvelua, saa \"tilapäisesti ei käytettävissä\" — odottaa pari sekuntia ja yrittää taas; 3 epäonnistumisen jälkeen kirjoittaa \"palvelu alhaalla, lykätty\".",
+    "mistakes": "Yrittää uudelleen ilman taukoa ja yrityskattoa — agentti tukkii palvelun. Äläkä toista ei-idempotenttia toimintoa, tai saat kaksoisveloituksen."
+  },
+  "auto-webhooks-triggers": {
+    "title": "Webhookit ja liipaisimet",
+    "what": "Ajo ei kellon vaan tapahtuman mukaan: tulee uusi pyyntö, viesti putoaa kanavaan, luodaan tiketti, dokumentti muuttuu. Ulkoinen järjestelmä \"tönäisee\" avustajaa, ja se ryhtyy heti töihin.",
+    "why": "Ajastus tarkistaa \"tapahtuiko jotain\" sokeasti ja viiveellä. Tapahtumaliipaisin reagoi heti ja juuri silloin, kun on mihin reagoida — ei tyhjäkäyntiä.",
+    "when": "Kun reaaliaikainen reaktio ulkoiseen tapahtumaan on tärkeä: vastaus uuteen tikettiin, saapuvan viestin käsittely, tuoreen muutoksen tarkistus.",
+    "impact": "Reaktio sekunneissa \"tunneittain ajastuksella\" sijaan, ja nolla tyhjää ajoa — avustaja toimii vain, kun tapahtuma todella sattuu.",
+    "example": "Aseta liipaisin \"uusi tiketti luotu\" — avustaja lukee sen heti, laatii vastausluonnoksen ja kutsuu ihmisen odottamatta, että joku pyytää.",
+    "mistakes": "Kiinnittää raskas, kallis agentti tiheään tapahtumaan ilman kulutusrajaa — tapahtumavirta muuttuu maksullisten ajojen virraksi."
   }
 }
