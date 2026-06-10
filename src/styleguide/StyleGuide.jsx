@@ -3,6 +3,7 @@ import { useTheme } from '../hooks/useTheme.js';
 import { useHashRoute } from '../hooks/useHashRoute.js';
 import Icon from '../components/Icon.jsx';
 import InlineText from '../components/InlineText.jsx';
+import PlanetLogo from '../components/PlanetLogo.jsx';
 import './StyleGuide.css';
 
 /**
@@ -377,28 +378,32 @@ export default function StyleGuide() {
         </Section>
 
         <Section id="sphere" title="Сфера-логотип"
-          note="Анимированная планета день/ночь. Та же разметка, что в корне карты и на лендинге.">
+          note="Анимированная планета день/ночь — фирменный логотип. Один компонент PlanetLogo (масштабируется под размер). Та же сфера в корне карты, на лендинге и в шапках Atlas / Agent Builder.">
           <div className="sg-sphere-demo">
-            <span className="sg-sphere sg-sphere--lg" aria-hidden="true">
-              <span className="mm-sphere__inner">
-                <span className="planet--live">
-                  <span className="pl-liquid">
-                    <span className="blob b-a" /><span className="blob b-b" /><span className="blob b-c" /><span className="blob b-d" /><span className="blob b-e" /><span className="blob b-f" />
-                    <span className="blob b-a2" /><span className="blob b-b2" /><span className="blob b-c2" /><span className="blob b-d2" /><span className="blob b-e2" /><span className="blob b-f2" />
-                  </span>
-                </span>
-              </span>
-            </span>
-            <span className="sg-sphere sg-sphere--md" aria-hidden="true">
-              <span className="mm-sphere__inner">
-                <span className="planet--live">
-                  <span className="pl-liquid">
-                    <span className="blob b-a" /><span className="blob b-b" /><span className="blob b-c" /><span className="blob b-d" /><span className="blob b-e" /><span className="blob b-f" />
-                    <span className="blob b-a2" /><span className="blob b-b2" /><span className="blob b-c2" /><span className="blob b-d2" /><span className="blob b-e2" /><span className="blob b-f2" />
-                  </span>
-                </span>
-              </span>
-            </span>
+            <div className="sg-logo-item">
+              <PlanetLogo size={96} />
+              <span className="sg-logo-cap">96 — крупный</span>
+            </div>
+            <div className="sg-logo-item">
+              <PlanetLogo size={64} />
+              <span className="sg-logo-cap">64 — корень карты</span>
+            </div>
+            <div className="sg-logo-item">
+              <PlanetLogo size={32} />
+              <span className="sg-logo-cap">32 — средний</span>
+            </div>
+            <div className="sg-logo-item">
+              <PlanetLogo size={22} />
+              <span className="sg-logo-cap">22 — шапка</span>
+            </div>
+          </div>
+          <p className="sg-hint">Логотип в шапке: PlanetLogo рядом с «Atlas» и «Agent Builder».</p>
+          <div className="sg-logo-inline">
+            <PlanetLogo size={22} />
+            <strong>Atlas</strong>
+            <span className="sg-logo-sep" />
+            <PlanetLogo size={22} />
+            <strong>Agent Builder</strong>
           </div>
         </Section>
 
