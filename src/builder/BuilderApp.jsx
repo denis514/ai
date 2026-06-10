@@ -21,6 +21,7 @@ import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE, canAddNode, h
 import { nodeTypes } from './components/canvas/index.js';
 import NodePalette from './components/canvas/NodePalette.jsx';
 import HelpPanel from './components/panels/HelpPanel.jsx';
+import CodePanel from './components/panels/CodePanel.jsx';
 import ConnectionLine from './components/canvas/ConnectionLine.jsx';
 import BuilderEdge from './components/canvas/BuilderEdge.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
@@ -243,6 +244,7 @@ function BuilderAppInner() {
   // Мини-карта холста — скрыта по умолчанию, открывается отдельной
   // кнопкой в ряду Controls (правый нижний угол).
   const [miniMapOpen, setMiniMapOpen] = useState(false);
+  const [codeOpen, setCodeOpen] = useState(false);
   // Ширина консоли (правая боковая панель), сохраняется в браузере.
   const [execW, setExecW] = useState(() => {
     const v = parseInt(localStorage.getItem('atlas:builder:exec-w') || '', 10);
@@ -1151,6 +1153,20 @@ function BuilderAppInner() {
     setTimeout(() => fitView({ padding: 0.25, maxZoom: 1, duration: 400 }), 90);
   }, [setNodes, setEdges, t, nodes.length, pushHistory, fitView]);
 
+  /* ────────── Применить код (панель «Код схемы») ────────── */
+  // Получает готовые React Flow nodes/edges (CodePanel уже распарсил и проверил)
+  // и собирает их на холсте с центрированием.
+  const applyCode = useCallback((rfNodes, rfEdges) => {
+    if (nodes.length > 0) pushHistory();
+    skipDirtyRef.current = true;
+    setNodes(rfNodes);
+    setEdges(rfEdges);
+    setSelectedNodeId(null);
+    setExecLogs([]);
+    setExecStatus('idle');
+    setTimeout(() => fitView({ padding: 0.25, maxZoom: 1, duration: 400 }), 90);
+  }, [nodes.length, pushHistory, setNodes, setEdges, fitView]);
+
   /* ────────── Selection ────────── */
   const onNodeClick = useCallback((event, node) => {
     setSelectedNodeId(node.id);
@@ -1462,6 +1478,16 @@ function BuilderAppInner() {
               <span>{t('builder.clearLabel') || 'Очистить'}</span>
             </button>
           )}
+          <button
+            type="button"
+            className={`builder-btn builder-btn--ghost ${codeOpen ? 'is-active' : ''}`}
+            onClick={() => setCodeOpen(o => !o)}
+            title={t('builder.code.openBtn') || 'Код схемы'}
+            aria-label={t('builder.code.openBtn') || 'Код схемы'}
+            aria-pressed={codeOpen}
+          >
+            <Icon name="terminal" size={15} strokeWidth={1.6} />
+          </button>
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
@@ -2116,6 +2142,17 @@ function BuilderAppInner() {
           execStatus={execStatus}
           onClose={() => setTourOpen(false)}
           onOpenTemplates={() => setGalleryOpen(true)}
+        />
+      )}
+
+      {codeOpen && (
+        <CodePanel
+          nodes={nodes}
+          edges={edges}
+          edgeStyle={EDGE_STYLE}
+          onApply={applyCode}
+          onClose={() => setCodeOpen(false)}
+          t={t}
         />
       )}
 
