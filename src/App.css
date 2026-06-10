@@ -5331,6 +5331,41 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .btn--primary:hover:not(:disabled) { background: #2a2a2a; border-color: #2a2a2a; }
 
+/* ============================================================
+   Примитивы дизайн-системы: чекбоксы, радио, текстовые ссылки.
+   Тема-агностичны (на токенах). Документированы в /styleguide.
+   ============================================================ */
+.ctrl {
+  display: inline-flex; align-items: center; gap: 9px;
+  cursor: pointer; font-size: 14px; color: var(--text); user-select: none;
+}
+.ctrl input { position: absolute; opacity: 0; width: 0; height: 0; }
+.ctrl__box {
+  width: 18px; height: 18px; flex: 0 0 auto;
+  border: 1.5px solid var(--border-strong); border-radius: 5px;
+  background: var(--surface); display: grid; place-items: center;
+  transition: background .15s, border-color .15s;
+}
+.ctrl__box--radio { border-radius: 50%; }
+.ctrl input:focus-visible + .ctrl__box { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ctrl input:checked + .ctrl__box { background: var(--accent); border-color: var(--accent); }
+.ctrl__box svg { width: 11px; height: 11px; color: #fff; opacity: 0; transition: opacity .12s; }
+.ctrl input:checked + .ctrl__box svg { opacity: 1; }
+.ctrl__dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; opacity: 0; transition: opacity .12s; }
+.ctrl input:checked + .ctrl__box--radio .ctrl__dot { opacity: 1; }
+.ctrl input:disabled + .ctrl__box { opacity: .45; }
+.ctrl:has(input:disabled) { cursor: not-allowed; color: var(--text-dim); }
+
+.link {
+  color: var(--accent); text-decoration: none; cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s, color .15s;
+}
+.link:hover { border-bottom-color: currentColor; }
+.link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.link--muted { color: var(--text-muted); }
+.link--muted:hover { color: var(--text); }
+
 .tut-hotkeys {
   position: absolute;
   bottom: 12px;

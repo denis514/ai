@@ -27,6 +27,8 @@ const SECTIONS = [
   { id: 'type',      label: 'Типографика' },
   { id: 'buttons',   label: 'Кнопки' },
   { id: 'chips',     label: 'Чипы и бейджи' },
+  { id: 'controls',  label: 'Чекбоксы и радио' },
+  { id: 'links',     label: 'Ссылки' },
   { id: 'sphere',    label: 'Сфера-логотип' },
   { id: 'dots',      label: 'Точечный фон' },
 ];
@@ -276,6 +278,60 @@ export default function StyleGuide() {
             <span className="chip is-active">Активный</span>
             <span className="chip"><span className="chip__dot" style={{ background: 'var(--line)' }} />Настройка</span>
             <span className="chip">Промпты</span>
+          </div>
+        </Section>
+
+        <Section id="controls" title="Чекбоксы и радио"
+          note="Реальные классы .ctrl + .ctrl__box (/.ctrl__box--radio). На токенах бренда.">
+          <div className="sg-controls">
+            <label className="ctrl">
+              <input type="checkbox" defaultChecked />
+              <span className="ctrl__box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </span>
+              Выбрано
+            </label>
+            <label className="ctrl">
+              <input type="checkbox" />
+              <span className="ctrl__box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </span>
+              Не выбрано
+            </label>
+            <label className="ctrl">
+              <input type="checkbox" defaultChecked disabled />
+              <span className="ctrl__box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </span>
+              Выключено
+            </label>
+          </div>
+          <div className="sg-controls" style={{ marginTop: 14 }}>
+            <label className="ctrl">
+              <input type="radio" name="sg-demo-radio" defaultChecked />
+              <span className="ctrl__box ctrl__box--radio"><span className="ctrl__dot" /></span>
+              Вариант A
+            </label>
+            <label className="ctrl">
+              <input type="radio" name="sg-demo-radio" />
+              <span className="ctrl__box ctrl__box--radio"><span className="ctrl__dot" /></span>
+              Вариант B
+            </label>
+            <label className="ctrl">
+              <input type="radio" name="sg-demo-radio-2" defaultChecked disabled />
+              <span className="ctrl__box ctrl__box--radio"><span className="ctrl__dot" /></span>
+              Выключено
+            </label>
+          </div>
+        </Section>
+
+        <Section id="links" title="Ссылки"
+          note="Реальные классы .link и .link--muted. Подчёркивание появляется при наведении.">
+          <div className="sg-links">
+            <p>Текст с <a href="#sg-links" className="link">обычной ссылкой</a> внутри абзаца —
+               акцент бренда, подчёркивание при наведении.</p>
+            <p>И вариант <a href="#sg-links" className="link link--muted">приглушённой ссылки</a> для
+               второстепенных переходов.</p>
           </div>
         </Section>
 
