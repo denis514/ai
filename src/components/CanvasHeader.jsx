@@ -4,7 +4,6 @@ import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { LOCALE_LABEL } from '../i18n/config.js';
 import { useTheme } from '../hooks/useTheme.js';
 
-const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
 
 /**
  * CanvasHeader — плавающая шапка в левом-верхнем углу canvas (desktop).
@@ -195,7 +194,7 @@ export default function CanvasHeader({
             aria-expanded={bar === 'lang'}
             title="Язык"
           >
-            <span className="canvas-header__tool-flag">{LOCALE_FLAG[locale]}</span>
+            <Icon name="globe" size={18} strokeWidth={1.5} />
           </button>
           {bar === 'lang' && (
             <div className="canvas-header__pop" role="listbox">
@@ -203,14 +202,15 @@ export default function CanvasHeader({
                 <button
                   key={code}
                   type="button"
-                  className={`canvas-header__menu-item ${locale === code ? 'is-active' : ''}`}
+                  className={`canvas-header__menu-item canvas-header__lang-opt ${locale === code ? 'is-active' : ''}`}
                   onClick={() => { setLocale(code); setBar(null); }}
                   role="option"
                   aria-selected={locale === code}
                 >
-                  <span className="canvas-header__menu-flag">{LOCALE_FLAG[code]}</span>
+                  <span className="canvas-header__lang-check" aria-hidden="true">
+                    {locale === code && <Icon name="check" size={14} strokeWidth={2} />}
+                  </span>
                   <span>{LOCALE_LABEL[code]}</span>
-                  {locale === code && <Icon name="check" size={14} strokeWidth={2} />}
                 </button>
               ))}
             </div>
