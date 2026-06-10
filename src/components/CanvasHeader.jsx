@@ -31,20 +31,16 @@ export default function CanvasHeader({
   const { mode, setThemeMode } = useTheme();
   const { locale, setLocale, locales } = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [sub, setSub] = useState(null); // 'theme' | 'lang' | null
+  const [bar, setBar] = useState(null); // 'theme' | 'lang' | null — независимые кнопки справа
   const [searchOpen, setSearchOpen] = useState(false);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Закрываем dropdown при любом изменении route (открытие узла, модалки и т.д.)
+  // Закрываем все попапы при любом изменении route (открытие узла, модалки и т.д.)
   useEffect(() => {
     setMenuOpen(false);
+    setBar(null);
   }, [route]);
-
-  // При закрытии меню сбрасываем открытое подменю (тема/язык)
-  useEffect(() => {
-    if (!menuOpen) setSub(null);
-  }, [menuOpen]);
 
   const THEME_OPTS = [
     { m: 'light', icon: 'sun',    label: t('profile.theme.light') || 'Светлая тема' },
@@ -52,23 +48,25 @@ export default function CanvasHeader({
     { m: 'auto',  icon: 'laptop', label: t('profile.theme.auto')  || 'Как в системе' },
   ];
 
-  // Click-outside закрывает dropdown
+  // Click-outside закрывает меню «Atlas» и независимые попапы (тема/язык)
   useEffect(() => {
-    if (!menuOpen) return;
+    if (!menuOpen && !bar) return;
     const onClick = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
         setMenuOpen(false);
+        setBar(null);
       }
     };
     document.addEventListener('mousedown', onClick);
     return () => document.removeEventListener('mousedown', onClick);
-  }, [menuOpen]);
+  }, [menuOpen, bar]);
 
-  // Esc — закрывает оба попапа
+  // Esc — закрывает попапы
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape') {
         if (menuOpen) setMenuOpen(false);
+        if (bar) setBar(null);
         if (searchOpen) {
           if (query) onQuery('');
           setSearchOpen(false);
@@ -77,7 +75,7 @@ export default function CanvasHeader({
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [menuOpen, searchOpen, query, onQuery]);
+  }, [menuOpen, bar, searchOpen, query, onQuery]);
 
   const openSearch = () => {
     setSearchOpen(true);
@@ -91,6 +89,7 @@ export default function CanvasHeader({
 
   return (
     <div className="canvas-header" ref={containerRef}>
+      <div className="canvas-header__row">
       <div className="canvas-header__bar">
         <button
           type="button"
@@ -150,6 +149,76 @@ export default function CanvasHeader({
         )}
       </div>
 
+      {/* Независимые кнопки справа от плашки «Atlas»: тема и язык */}
+      <div className="canvas-header__tools">
+        <div className="canvas-header__tool">
+          <button
+            type="button"
+            className={`canvas-header__tool-btn ${bar === 'theme' ? 'is-open' : ''}`}
+            onClick={() => setBar(b => (b === 'theme' ? null : 'theme'))}
+            aria-haspopup="listbox"
+            aria-expanded={bar === 'theme'}
+            title={t('profile.theme.cycle') || 'Тема'}
+          >
+            <Icon
+              name={mode === 'auto' ? 'laptop' : mode === 'dark' ? 'moon' : 'sun'}
+              size={16}
+              strokeWidth={1.5}
+            />
+          </button>
+          {bar === 'theme' && (
+            <div className="canvas-header__pop" role="listbox">
+              {THEME_OPTS.map(({ m, icon, label }) => (
+                <button
+                  key={m}
+                  type="button"
+                  className={`canvas-header__menu-item ${mode === m ? 'is-active' : ''}`}
+                  onClick={() => { setThemeMode(m); setBar(null); }}
+                  role="option"
+                  aria-selected={mode === m}
+                >
+                  <Icon name={icon} size={16} strokeWidth={1.5} />
+                  <span>{label}</span>
+                  {mode === m && <Icon name="check" size={14} strokeWidth={2} />}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="canvas-header__tool">
+          <button
+            type="button"
+            className={`canvas-header__tool-btn ${bar === 'lang' ? 'is-open' : ''}`}
+            onClick={() => setBar(b => (b === 'lang' ? null : 'lang'))}
+            aria-haspopup="listbox"
+            aria-expanded={bar === 'lang'}
+            title="Язык"
+          >
+            <span className="canvas-header__tool-flag">{LOCALE_FLAG[locale]}</span>
+          </button>
+          {bar === 'lang' && (
+            <div className="canvas-header__pop" role="listbox">
+              {locales.map(code => (
+                <button
+                  key={code}
+                  type="button"
+                  className={`canvas-header__menu-item ${locale === code ? 'is-active' : ''}`}
+                  onClick={() => { setLocale(code); setBar(null); }}
+                  role="option"
+                  aria-selected={locale === code}
+                >
+                  <span className="canvas-header__menu-flag">{LOCALE_FLAG[code]}</span>
+                  <span>{LOCALE_LABEL[code]}</span>
+                  {locale === code && <Icon name="check" size={14} strokeWidth={2} />}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      </div>
+
       {menuOpen && (
         <div className="canvas-header__menu" role="menu">
           <button
@@ -196,74 +265,6 @@ export default function CanvasHeader({
             <Icon name="question" size={16} strokeWidth={1.5} />
             <span>{t('header.help')}</span>
           </button>
-
-          <div className="canvas-header__menu-sep" role="separator" />
-
-          {/* Футер: тема и язык — иконками. Клик раскрывает мини-список выбора. */}
-          <div className="canvas-header__menu-tools">
-            <button
-              type="button"
-              className={`canvas-header__menu-tool ${sub === 'theme' ? 'is-open' : ''}`}
-              onClick={() => setSub(s => (s === 'theme' ? null : 'theme'))}
-              aria-haspopup="listbox"
-              aria-expanded={sub === 'theme'}
-              title={t('profile.theme.cycle') || 'Тема'}
-            >
-              <Icon
-                name={mode === 'auto' ? 'laptop' : mode === 'dark' ? 'moon' : 'sun'}
-                size={18}
-                strokeWidth={1.5}
-              />
-            </button>
-            <button
-              type="button"
-              className={`canvas-header__menu-tool ${sub === 'lang' ? 'is-open' : ''}`}
-              onClick={() => setSub(s => (s === 'lang' ? null : 'lang'))}
-              aria-haspopup="listbox"
-              aria-expanded={sub === 'lang'}
-              title="Язык"
-            >
-              <span className="canvas-header__menu-flag">{LOCALE_FLAG[locale]}</span>
-            </button>
-          </div>
-
-          {sub === 'theme' && (
-            <div className="canvas-header__submenu" role="listbox">
-              {THEME_OPTS.map(({ m, icon, label }) => (
-                <button
-                  key={m}
-                  type="button"
-                  className={`canvas-header__menu-item ${mode === m ? 'is-active' : ''}`}
-                  onClick={() => { setThemeMode(m); setSub(null); }}
-                  role="option"
-                  aria-selected={mode === m}
-                >
-                  <Icon name={icon} size={16} strokeWidth={1.5} />
-                  <span>{label}</span>
-                  {mode === m && <Icon name="check" size={14} strokeWidth={2} />}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {sub === 'lang' && (
-            <div className="canvas-header__submenu" role="listbox">
-              {locales.map(code => (
-                <button
-                  key={code}
-                  type="button"
-                  className={`canvas-header__menu-item ${locale === code ? 'is-active' : ''}`}
-                  onClick={() => { setLocale(code); setSub(null); }}
-                  role="option"
-                  aria-selected={locale === code}
-                >
-                  <span className="canvas-header__menu-flag">{LOCALE_FLAG[code]}</span>
-                  <span>{LOCALE_LABEL[code]}</span>
-                  {locale === code && <Icon name="check" size={14} strokeWidth={2} />}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       )}
     </div>

@@ -1363,44 +1363,65 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   transition: background .12s ease;
 }
 .canvas-header__menu-item:hover { background: var(--surface-3); }
-.canvas-header__menu-sep {
-  height: 1px;
-  background: var(--border);
-  margin: 5px 6px;
+/* Строка шапки: плашка «Atlas» + независимые кнопки справа */
+.canvas-header__row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
-/* Футер меню: тема + язык иконками */
-.canvas-header__menu-tools {
-  display: flex;
-  gap: 6px;
-  padding: 2px 4px;
+/* Независимые кнопки (тема, язык) — отдельные стеклянные кружки справа */
+.canvas-header__tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
 }
-.canvas-header__menu-tool {
+.canvas-header__tool { position: relative; }
+.canvas-header__tool-btn {
   display: inline-grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--border);
-  background: var(--surface-2);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--text-muted);
-  border-radius: 9px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
   cursor: pointer;
   transition: background .12s, color .12s, border-color .12s;
 }
-.canvas-header__menu-tool:hover { background: var(--surface-3); color: var(--text); }
-.canvas-header__menu-tool.is-open {
+.canvas-header__tool-btn:hover { background: var(--surface); color: var(--text); }
+.canvas-header__tool-btn.is-open {
   background: var(--surface-3);
   color: var(--text);
   border-color: var(--border-strong);
 }
-.canvas-header__menu-flag { font-size: 16px; line-height: 1; }
-/* Мини-список выбора (тема/язык) */
-.canvas-header__submenu {
+.canvas-header__tool-btn:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: var(--focus-offset);
+}
+.canvas-header__tool-flag { font-size: 18px; line-height: 1; }
+/* Выпадающий список независимой кнопки — карточка под кнопкой справа */
+.canvas-header__pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 184px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.04);
+  padding: 6px;
   display: flex;
   flex-direction: column;
-  margin-top: 2px;
-  padding-top: 4px;
-  border-top: 1px dashed var(--border);
+  gap: 2px;
+  z-index: 9;
+  animation: ch-menu .15s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top right;
 }
+.canvas-header__menu-flag { font-size: 16px; line-height: 1; }
 .canvas-header__menu-item.is-active { color: var(--text); background: var(--surface-2); }
 .canvas-header__menu-item.is-active span:not(.canvas-header__menu-badge) { font-weight: 600; }
 .canvas-header__menu-item .icon:last-child { margin-left: auto; color: var(--accent); }
