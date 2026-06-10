@@ -2045,15 +2045,16 @@
 .builder-app .builder-console-window__header.is-drag { cursor: grab; user-select: none; }
 .builder-app .builder-console-window__header.is-drag:active { cursor: grabbing; }
 .builder-app .builder-console-window__controls { display: inline-flex; align-items: center; gap: 4px; }
+/* Кнопки окна — в том же стиле, что collapse-кнопки боковых панелей. */
 .builder-app .builder-console-window__ctrl {
-  width: 30px; height: 30px; display: inline-grid; place-items: center;
-  border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2);
-  color: var(--text-muted); cursor: pointer; transition: background .12s, color .12s;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px;
+  border: none; border-radius: 6px; background: transparent;
+  color: var(--text-muted); cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
 }
 .builder-app .builder-console-window__ctrl:hover { background: var(--surface-3); color: var(--text); }
-.builder-app .builder-console-window__ctrl[aria-pressed="true"] {
-  background: var(--surface-3); border-color: var(--border-strong); color: var(--text);
-}
+.builder-app .builder-console-window__ctrl[aria-pressed="true"] { background: var(--surface-3); color: var(--text); }
 .builder-app .builder-console-window__body {
   flex: 1 1 auto;
   min-height: 0;
