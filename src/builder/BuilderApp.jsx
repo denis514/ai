@@ -242,6 +242,11 @@ function BuilderAppInner() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [consoleOpen, setConsoleOpen] = useState(false); // объединённая «Консоль»
   const [consoleTab, setConsoleTab] = useState('code');  // 'code' | 'run'
+  // Общий режим окна Консоли — поднят сюда, чтобы плавающее/перетаскиваемое окно
+  // вело себя одинаково в обеих вкладках (Код/Запуск) и сохранялось при переключении.
+  const [consoleFloating, setConsoleFloating] = useState(false);
+  const [consoleMax, setConsoleMax] = useState(false);
+  const [consolePos, setConsolePos] = useState({ x: 0, y: 0 });
   // Мини-карта холста — скрыта по умолчанию, открывается отдельной
   // кнопкой в ряду Controls (правый нижний угол).
   const [miniMapOpen, setMiniMapOpen] = useState(false);
@@ -1366,6 +1371,30 @@ function BuilderAppInner() {
   }, [handleRun, galleryOpen, undo, redo, doSave, nodes.length]);
 
   // Переключатель вкладок объединённой «Консоли» (Код ↔ Запуск).
+  // Перетаскивание плавающего окна Консоли за шапку (но не за кнопки).
+  const consoleHeaderPointerDown = useCallback((e) => {
+    if (!consoleFloating || consoleMax) return;
+    if (e.target.closest('button')) return;
+    const start = { mx: e.clientX, my: e.clientY, px: consolePos.x, py: consolePos.y };
+    const move = (ev) => setConsolePos({ x: start.px + (ev.clientX - start.mx), y: start.py + (ev.clientY - start.my) });
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  }, [consoleFloating, consoleMax, consolePos]);
+
+  // Общий props-объект режима окна для обеих панелей Консоли.
+  const consoleWindow = {
+    floating: consoleFloating,
+    maximized: consoleMax,
+    pos: consolePos,
+    onToggleFloat: () => { setConsoleFloating(f => !f); setConsoleMax(false); },
+    onToggleMax: () => setConsoleMax(m => !m),
+    onHeaderPointerDown: consoleHeaderPointerDown,
+  };
+
   const consoleTabs = (
     <div className="builder-console-tabs" role="tablist">
       <button
@@ -2094,6 +2123,7 @@ function BuilderAppInner() {
         {consoleOpen && consoleTab === 'run' && (
           <ExecutionPanel
             tabs={consoleTabs}
+            windowState={consoleWindow}
             logs={execLogs}
             status={execStatus}
             nodesTotal={execStats.total}
@@ -2160,6 +2190,7 @@ function BuilderAppInner() {
       {consoleOpen && consoleTab === 'code' && (
         <CodePanel
           tabs={consoleTabs}
+          windowState={consoleWindow}
           nodes={nodes}
           edges={edges}
           edgeStyle={EDGE_STYLE}

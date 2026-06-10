@@ -5238,6 +5238,40 @@
   transition: filter .12s;
 }
 .builder-app .builder-code-panel__apply:hover { filter: brightness(1.06); }
+.builder-app .builder-code-panel__head-actions { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Плавающее окно панели «Код» — зеркалит поведение панели «Запуск», чтобы
+   перетаскивание работало одинаково в обеих вкладках Консоли. */
+.builder-app .builder-code-panel--floating {
+  position: fixed;
+  top: 96px;
+  left: calc(50% - 320px);
+  right: auto;
+  bottom: auto;
+  width: 640px;
+  height: 440px;
+  z-index: 70;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.45);
+  resize: both;
+  overflow: auto;
+  min-width: 360px;
+  min-height: 240px;
+  max-width: 96vw;
+  max-height: 90vh;
+}
+.builder-app .builder-code-panel--max {
+  top: 3vh;
+  left: 3vw;
+  right: auto;
+  bottom: auto;
+  width: 94vw;
+  height: 94vh;
+  resize: none;
+  border-radius: 14px;
+}
+.builder-app .builder-code-panel__head--drag { cursor: grab; user-select: none; }
+.builder-app .builder-code-panel__head--drag:active { cursor: grabbing; }
 
 @media (max-width: 720px) {
   .builder-app .builder-code-panel { top: 70px; left: 12px; right: 12px; bottom: 12px; width: auto; }

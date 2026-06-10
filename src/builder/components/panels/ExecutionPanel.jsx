@@ -35,6 +35,7 @@ export default function ExecutionPanel({
   wrapperClass = '',  // 'is-resizing' пока тянут левую кромку
   onResizeStart,   // mousedown на левой кромке-handle
   tabs = null,     // JSX переключателя вкладок Консоли (Код/Запуск) — рендерится в шапке
+  windowState = null, // общий режим окна Консоли (плавающее/макс/позиция) — поднят в BuilderApp
 }) {
   const t = useT();
   const bodyRef = useRef(null);
@@ -42,16 +43,25 @@ export default function ExecutionPanel({
   const [copiedAll, setCopiedAll] = useState(false);
 
   // Режим окна: пристыковано снизу → плавающее → на весь экран.
-  const [floating, setFloating] = useState(false);
-  const [maximized, setMaximized] = useState(false);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+  // Если передан общий windowState (Консоль) — используем его, чтобы режим окна
+  // сохранялся при переключении вкладок Код/Запуск. Иначе — локальный fallback.
+  const [locFloating, setLocFloating] = useState(false);
+  const [locMaximized, setLocMaximized] = useState(false);
+  const [locPos, setLocPos] = useState({ x: 0, y: 0 });
+  const floating = windowState ? windowState.floating : locFloating;
+  const maximized = windowState ? windowState.maximized : locMaximized;
+  const pos = windowState ? windowState.pos : locPos;
+  const toggleFloat = windowState
+    ? windowState.onToggleFloat
+    : () => { setLocFloating(f => !f); setLocMaximized(false); };
+  const toggleMax = windowState ? windowState.onToggleMax : () => setLocMaximized(m => !m);
 
   // Перетаскивание плавающего окна за шапку (но не за кнопки).
-  const onHeaderPointerDown = (e) => {
+  const onHeaderPointerDown = windowState ? windowState.onHeaderPointerDown : (e) => {
     if (!floating || maximized) return;
     if (e.target.closest('button')) return;
     const start = { mx: e.clientX, my: e.clientY, px: pos.x, py: pos.y };
-    const move = (ev) => setPos({ x: start.px + (ev.clientX - start.mx), y: start.py + (ev.clientY - start.my) });
+    const move = (ev) => setLocPos({ x: start.px + (ev.clientX - start.mx), y: start.py + (ev.clientY - start.my) });
     const up = () => {
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);
@@ -182,7 +192,7 @@ export default function ExecutionPanel({
           <button
             type="button"
             className="builder-btn builder-btn--ghost builder-btn--small builder-exec__icon-btn"
-            onClick={() => { setFloating(f => !f); setMaximized(false); }}
+            onClick={toggleFloat}
             title={floating ? (t('builder.exec.dock') || 'Dock') : (t('builder.exec.popout') || 'Open as window')}
             aria-pressed={floating}
           >
@@ -193,7 +203,7 @@ export default function ExecutionPanel({
             <button
               type="button"
               className="builder-btn builder-btn--ghost builder-btn--small builder-exec__icon-btn"
-              onClick={() => setMaximized(m => !m)}
+              onClick={toggleMax}
               title={maximized ? (t('builder.exec.restore') || 'Restore') : (t('builder.exec.fullscreen') || 'Fullscreen')}
               aria-pressed={maximized}
             >
