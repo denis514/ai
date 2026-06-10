@@ -74,7 +74,7 @@ export default function Tooltip({ children, label }) {
         aria-expanded={open}
         aria-label={t('tooltip.aria')}
         onClick={toggle}
-      ><Icon name="info" size={12} strokeWidth={2} /></button>
+      ><Icon name="info" size={16} strokeWidth={1.75} /></button>
 
       {open && (
         <span

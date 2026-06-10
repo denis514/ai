@@ -4420,22 +4420,22 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .tooltip {
   position: relative;
   display: inline-flex;
+  vertical-align: middle;
 }
+/* Чистая иконка-триггер: без чипа/круга/фона — только значок Hugeicons.
+   Размер иконки ≥ 16px (см. Tooltip.jsx). */
 .tooltip__trigger {
-  width: 18px; height: 18px;
-  border: 1px solid var(--border);
-  background: var(--surface-2);
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
   color: var(--text-muted);
-  border-radius: 50%;
-  font-size: 11px;
-  font-weight: 600;
-  display: grid; place-items: center;
-  line-height: 1;
+  line-height: 0;
+  cursor: pointer;
+  transition: color .12s;
 }
-.tooltip__trigger:hover {
-  background: var(--surface-3);
-  color: var(--text);
-}
+.tooltip__trigger:hover { color: var(--text); }
 /* Tooltip-цвета адаптируются к теме через CSS variables */
 :root {
   --tooltip-bg: #1a1a1a;
