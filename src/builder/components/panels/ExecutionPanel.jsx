@@ -30,45 +30,11 @@ export default function ExecutionPanel({
   runSetup,   // { task, onTaskChange, tierId, onTierChange, estimate } | null — только real-режим
   onStop,
   onClear,
-  onClose,
-  wrapperStyle,    // inline-style: ширина через CSS-переменную --exec-w
-  wrapperClass = '',  // 'is-resizing' пока тянут левую кромку
-  onResizeStart,   // mousedown на левой кромке-handle
-  tabs = null,     // JSX переключателя вкладок Консоли (Код/Запуск) — рендерится в шапке
-  windowState = null, // общий режим окна Консоли (плавающее/макс/позиция) — поднят в BuilderApp
 }) {
   const t = useT();
   const bodyRef = useRef(null);
   const [copied, setCopied] = useState(false);
   const [copiedAll, setCopiedAll] = useState(false);
-
-  // Режим окна: пристыковано снизу → плавающее → на весь экран.
-  // Если передан общий windowState (Консоль) — используем его, чтобы режим окна
-  // сохранялся при переключении вкладок Код/Запуск. Иначе — локальный fallback.
-  const [locFloating, setLocFloating] = useState(false);
-  const [locMaximized, setLocMaximized] = useState(false);
-  const [locPos, setLocPos] = useState({ x: 0, y: 0 });
-  const floating = windowState ? windowState.floating : locFloating;
-  const maximized = windowState ? windowState.maximized : locMaximized;
-  const pos = windowState ? windowState.pos : locPos;
-  const toggleFloat = windowState
-    ? windowState.onToggleFloat
-    : () => { setLocFloating(f => !f); setLocMaximized(false); };
-  const toggleMax = windowState ? windowState.onToggleMax : () => setLocMaximized(m => !m);
-
-  // Перетаскивание плавающего окна за шапку (но не за кнопки).
-  const onHeaderPointerDown = windowState ? windowState.onHeaderPointerDown : (e) => {
-    if (!floating || maximized) return;
-    if (e.target.closest('button')) return;
-    const start = { mx: e.clientX, my: e.clientY, px: pos.x, py: pos.y };
-    const move = (ev) => setLocPos({ x: start.px + (ev.clientX - start.mx), y: start.py + (ev.clientY - start.my) });
-    const up = () => {
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-    };
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
-  };
 
   // Копировать весь журнал + результат одним кликом.
   const handleCopyAll = () => {
@@ -122,37 +88,12 @@ export default function ExecutionPanel({
     return '';
   })();
 
-  // В docked-режиме применяем wrapperStyle (CSS-var --exec-w для ширины) и
-  // wrapperClass ('is-resizing' пока тянут левую кромку). Floating mode не
-  // трогает ширину — у него свой drag/resize изнутри.
-  const dockedStyle = !floating ? wrapperStyle : undefined;
-  const dockedClass = !floating ? wrapperClass : '';
   return (
-    <section
-      className={`builder-exec ${floating ? 'builder-exec--floating' : ''} ${floating && maximized ? 'builder-exec--max' : ''} ${dockedClass}`}
-      style={floating && !maximized ? { transform: `translate(${pos.x}px, ${pos.y}px)` } : dockedStyle}
-      aria-label={t('builder.exec.aria') || 'Execution log'}
-    >
-      {/* Хэндл ресайза по левой кромке — только в docked-режиме */}
-      {!floating && onResizeStart && (
-        <div
-          className="builder-exec__resize-handle"
-          onMouseDown={onResizeStart}
-          role="separator"
-          aria-orientation="vertical"
-          aria-label={t('builder.exec.resize') || 'Изменить ширину'}
-        />
-      )}
-      <div
-        className={`builder-exec__header ${floating && !maximized ? 'builder-exec__header--drag' : ''}`}
-        onPointerDown={onHeaderPointerDown}
-      >
-        <span className="builder-exec__title-wrap">
-          {tabs || <span className="builder-exec__title">{t('builder.exec.title') || 'Execution'}</span>}
-          <span className={`builder-exec__summary builder-exec__summary--${status}`}>
-            {status === 'running' && <span className="builder-exec__pulse" />}
-            {summaryText}
-          </span>
+    <div className="builder-exec__content">
+      <div className="builder-exec__toolbar">
+        <span className={`builder-exec__summary builder-exec__summary--${status}`}>
+          {status === 'running' && <span className="builder-exec__pulse" />}
+          {summaryText}
         </span>
 
         <div className="builder-exec__actions">
@@ -188,36 +129,6 @@ export default function ExecutionPanel({
               <span>{copiedAll ? (t('builder.exec.copied') || 'Copied') : (t('builder.exec.copyAll') || 'Copy all')}</span>
             </button>
           )}
-          {/* Открыть как отдельное окно / вернуть в док снизу */}
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost builder-btn--small builder-exec__icon-btn"
-            onClick={toggleFloat}
-            title={floating ? (t('builder.exec.dock') || 'Dock') : (t('builder.exec.popout') || 'Open as window')}
-            aria-pressed={floating}
-          >
-            <Icon name={floating ? 'dock' : 'window'} size={13} strokeWidth={1.75} />
-          </button>
-          {/* На весь экран / свернуть (только в плавающем режиме) */}
-          {floating && (
-            <button
-              type="button"
-              className="builder-btn builder-btn--ghost builder-btn--small builder-exec__icon-btn"
-              onClick={toggleMax}
-              title={maximized ? (t('builder.exec.restore') || 'Restore') : (t('builder.exec.fullscreen') || 'Fullscreen')}
-              aria-pressed={maximized}
-            >
-              <Icon name={maximized ? 'restore' : 'fullscreen'} size={13} strokeWidth={1.75} />
-            </button>
-          )}
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost builder-btn--small builder-exec__icon-btn"
-            onClick={onClose}
-            aria-label={t('builder.exec.close') || 'Close panel'}
-          >
-            <Icon name="close" size={12} strokeWidth={1.75} />
-          </button>
         </div>
       </div>
 
@@ -353,7 +264,7 @@ export default function ExecutionPanel({
           </ol>
         )}
       </div>
-    </section>
+    </div>
   );
 }
 

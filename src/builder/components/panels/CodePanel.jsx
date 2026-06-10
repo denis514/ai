@@ -66,14 +66,7 @@ function fromCode(obj, edgeStyle) {
   return deserializeFromDb(dbNodes, dbEdges, edgeStyle);
 }
 
-export default function CodePanel({ nodes, edges, edgeStyle, onApply, onClose, t, tabs = null, windowState = null }) {
-  // Общий режим окна Консоли (плавающее/на весь экран/позиция) — поднят в BuilderApp,
-  // чтобы перетаскивание работало одинаково во вкладках Код и Запуск и сохранялось
-  // при переключении между ними.
-  const floating = windowState ? windowState.floating : false;
-  const maximized = windowState ? windowState.maximized : false;
-  const pos = windowState ? windowState.pos : { x: 0, y: 0 };
-  const onHeaderPointerDown = windowState ? windowState.onHeaderPointerDown : undefined;
+export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
   const canvasCode = useMemo(() => JSON.stringify(toCode(nodes, edges), null, 2), [nodes, edges]);
   const [draft, setDraft] = useState(canvasCode);
   const [edited, setEdited] = useState(false);
@@ -117,51 +110,7 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, onClose, t
   };
 
   return (
-    <aside
-      className={`builder-code-panel ${floating ? 'builder-code-panel--floating' : ''} ${floating && maximized ? 'builder-code-panel--max' : ''}`}
-      style={floating && !maximized ? { transform: `translate(${pos.x}px, ${pos.y}px)` } : undefined}
-      role="dialog"
-      aria-label={t('builder.code.title') || 'Код схемы'}
-    >
-      <header
-        className={`builder-code-panel__head ${floating && !maximized ? 'builder-code-panel__head--drag' : ''}`}
-        onPointerDown={onHeaderPointerDown}
-      >
-        {tabs || (
-          <span className="builder-code-panel__title">
-            <Icon name="terminal" size={15} strokeWidth={1.6} />
-            {t('builder.code.title') || 'Код схемы'}
-          </span>
-        )}
-        <div className="builder-code-panel__head-actions">
-          {windowState && (
-            <button
-              type="button"
-              className="builder-code-panel__close"
-              onClick={windowState.onToggleFloat}
-              title={floating ? (t('builder.exec.dock') || 'Закрепить') : (t('builder.exec.popout') || 'Открыть окном')}
-              aria-pressed={floating}
-            >
-              <Icon name={floating ? 'dock' : 'window'} size={14} strokeWidth={1.75} />
-            </button>
-          )}
-          {windowState && floating && (
-            <button
-              type="button"
-              className="builder-code-panel__close"
-              onClick={windowState.onToggleMax}
-              title={maximized ? (t('builder.exec.restore') || 'Свернуть') : (t('builder.exec.fullscreen') || 'На весь экран')}
-              aria-pressed={maximized}
-            >
-              <Icon name={maximized ? 'restore' : 'fullscreen'} size={14} strokeWidth={1.75} />
-            </button>
-          )}
-          <button type="button" className="builder-code-panel__close" onClick={onClose} aria-label={t('common.close') || 'Закрыть'}>
-            <Icon name="close" size={14} strokeWidth={2} />
-          </button>
-        </div>
-      </header>
-
+    <div className="builder-code-panel__content" role="group" aria-label={t('builder.code.title') || 'Код схемы'}>
       <p className="builder-code-panel__hint">
         {t('builder.code.hint') || 'Узлы и связи схемы в реальном времени. Вставьте свой код и нажмите «Собрать», чтобы построить схему на холсте.'}
       </p>
@@ -200,6 +149,6 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, onClose, t
           {t('builder.code.apply') || 'Собрать на холсте'}
         </button>
       </div>
-    </aside>
+    </div>
   );
 }

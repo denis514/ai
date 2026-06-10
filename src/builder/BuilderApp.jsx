@@ -22,6 +22,7 @@ import { nodeTypes } from './components/canvas/index.js';
 import NodePalette from './components/canvas/NodePalette.jsx';
 import HelpPanel from './components/panels/HelpPanel.jsx';
 import CodePanel from './components/panels/CodePanel.jsx';
+import ConsoleWindow from './components/panels/ConsoleWindow.jsx';
 import ConnectionLine from './components/canvas/ConnectionLine.jsx';
 import BuilderEdge from './components/canvas/BuilderEdge.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
@@ -1385,15 +1386,8 @@ function BuilderAppInner() {
     window.addEventListener('pointerup', up);
   }, [consoleFloating, consoleMax, consolePos]);
 
-  // Общий props-объект режима окна для обеих панелей Консоли.
-  const consoleWindow = {
-    floating: consoleFloating,
-    maximized: consoleMax,
-    pos: consolePos,
-    onToggleFloat: () => { setConsoleFloating(f => !f); setConsoleMax(false); },
-    onToggleMax: () => setConsoleMax(m => !m),
-    onHeaderPointerDown: consoleHeaderPointerDown,
-  };
+  const consoleToggleFloat = () => { setConsoleFloating(f => !f); setConsoleMax(false); };
+  const consoleToggleMax = () => setConsoleMax(m => !m);
 
   const consoleTabs = (
     <div className="builder-console-tabs" role="tablist">
@@ -2119,25 +2113,44 @@ function BuilderAppInner() {
           </aside>
         )}
 
-        {/* Консоль — вкладка «Запуск» */}
-        {consoleOpen && consoleTab === 'run' && (
-          <ExecutionPanel
+        {/* Единое окно «Консоль» — одна рамка, внутри переключаются вкладки. */}
+        {consoleOpen && (
+          <ConsoleWindow
             tabs={consoleTabs}
-            windowState={consoleWindow}
-            logs={execLogs}
-            status={execStatus}
-            nodesTotal={execStats.total}
-            nodesDone={execStats.done}
-            nodesFailed={execStats.failed}
-            result={execResult}
-            runSetup={null}
-            onStop={handleStopExec}
-            onClear={() => { setExecResult(null); handleClearLogs(); }}
+            floating={consoleFloating}
+            maximized={consoleMax}
+            pos={consolePos}
+            onToggleFloat={consoleToggleFloat}
+            onToggleMax={consoleToggleMax}
+            onHeaderPointerDown={consoleHeaderPointerDown}
             onClose={() => setConsoleOpen(false)}
             wrapperStyle={{ '--exec-w': `${execW}px` }}
             wrapperClass={execResizing ? 'is-resizing' : ''}
             onResizeStart={startExecResize}
-          />
+            t={t}
+          >
+            {consoleTab === 'run' ? (
+              <ExecutionPanel
+                logs={execLogs}
+                status={execStatus}
+                nodesTotal={execStats.total}
+                nodesDone={execStats.done}
+                nodesFailed={execStats.failed}
+                result={execResult}
+                runSetup={null}
+                onStop={handleStopExec}
+                onClear={() => { setExecResult(null); handleClearLogs(); }}
+              />
+            ) : (
+              <CodePanel
+                nodes={nodes}
+                edges={edges}
+                edgeStyle={EDGE_STYLE}
+                onApply={applyCode}
+                t={t}
+              />
+            )}
+          </ConsoleWindow>
         )}
 
       </div>
@@ -2184,19 +2197,6 @@ function BuilderAppInner() {
           execStatus={execStatus}
           onClose={() => setTourOpen(false)}
           onOpenTemplates={() => setGalleryOpen(true)}
-        />
-      )}
-
-      {consoleOpen && consoleTab === 'code' && (
-        <CodePanel
-          tabs={consoleTabs}
-          windowState={consoleWindow}
-          nodes={nodes}
-          edges={edges}
-          edgeStyle={EDGE_STYLE}
-          onApply={applyCode}
-          onClose={() => setConsoleOpen(false)}
-          t={t}
         />
       )}
 

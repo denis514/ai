@@ -1961,6 +1961,117 @@
 .builder-app .builder-exec__header--drag:active { cursor: grabbing; }
 .builder-app .builder-exec__icon-btn { padding-left: 8px; padding-right: 8px; }
 
+/* ════════════════════════════════════════════════════ */
+/* Единое окно «Консоль» (одна рамка, вкладки Код/Запуск) */
+/* ════════════════════════════════════════════════════ */
+.builder-app .builder-console-window {
+  /* Док справа — как прежняя панель запуска. Ширина через --exec-w. */
+  position: absolute;
+  top: 76px;
+  right: 16px;
+  bottom: 16px;
+  width: clamp(320px, var(--exec-w, 460px), 720px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  z-index: 12;
+  box-shadow: 0 20px 60px rgba(15, 15, 15, 0.16), 0 2px 8px rgba(15, 15, 15, 0.04);
+  animation: builder-exec-in .28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: 100% 50%;
+}
+.builder-app .builder-console-window__resize-handle {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 20;
+  background: transparent;
+  transition: background .12s ease;
+}
+.builder-app .builder-console-window__resize-handle:hover,
+.builder-app .builder-console-window.is-resizing .builder-console-window__resize-handle {
+  background: color-mix(in srgb, var(--accent, #c2603f) 22%, transparent);
+}
+/* Плавающее окно: поверх холста, перетаскиваемое, изменяемого размера. */
+.builder-app .builder-console-window.is-floating {
+  position: fixed;
+  top: 96px;
+  left: calc(50% - 320px);
+  right: auto;
+  bottom: auto;
+  width: 640px;
+  height: 440px;
+  z-index: 60;
+  border-radius: 12px;
+  box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.45);
+  resize: both;
+  overflow: hidden;
+  min-width: 360px;
+  min-height: 240px;
+  max-width: 96vw;
+  max-height: 90vh;
+  animation: builder-exec-fadein .22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.builder-app .builder-console-window.is-max {
+  top: 3vh;
+  left: 3vw;
+  right: auto;
+  bottom: auto;
+  width: 94vw;
+  height: 94vh;
+  resize: none;
+  border-radius: 14px;
+  animation: none;
+}
+.builder-app .builder-console-window__header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.builder-app .builder-console-window__header.is-drag { cursor: grab; user-select: none; }
+.builder-app .builder-console-window__header.is-drag:active { cursor: grabbing; }
+.builder-app .builder-console-window__controls { display: inline-flex; align-items: center; gap: 4px; }
+.builder-app .builder-console-window__ctrl {
+  width: 30px; height: 30px; display: inline-grid; place-items: center;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2);
+  color: var(--text-muted); cursor: pointer; transition: background .12s, color .12s;
+}
+.builder-app .builder-console-window__ctrl:hover { background: var(--surface-3); color: var(--text); }
+.builder-app .builder-console-window__ctrl[aria-pressed="true"] {
+  background: var(--surface-3); border-color: var(--border-strong); color: var(--text);
+}
+.builder-app .builder-console-window__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Содержимое вкладки «Запуск» внутри окна. */
+.builder-app .builder-exec__content {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.builder-app .builder-exec__toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
 .builder-app .builder-exec__header {
   flex: 0 0 auto;
   display: flex;
@@ -5238,40 +5349,17 @@
   transition: filter .12s;
 }
 .builder-app .builder-code-panel__apply:hover { filter: brightness(1.06); }
-.builder-app .builder-code-panel__head-actions { display: inline-flex; align-items: center; gap: 6px; }
 
-/* Плавающее окно панели «Код» — зеркалит поведение панели «Запуск», чтобы
-   перетаскивание работало одинаково в обеих вкладках Консоли. */
-.builder-app .builder-code-panel--floating {
-  position: fixed;
-  top: 96px;
-  left: calc(50% - 320px);
-  right: auto;
-  bottom: auto;
-  width: 640px;
-  height: 440px;
-  z-index: 70;
-  border-radius: 12px;
-  box-shadow: 0 24px 60px -16px rgba(0, 0, 0, 0.45);
-  resize: both;
-  overflow: auto;
-  min-width: 360px;
-  min-height: 240px;
-  max-width: 96vw;
-  max-height: 90vh;
+/* Содержимое вкладки «Код» внутри единого окна Консоли. */
+.builder-app .builder-code-panel__content {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
 }
-.builder-app .builder-code-panel--max {
-  top: 3vh;
-  left: 3vw;
-  right: auto;
-  bottom: auto;
-  width: 94vw;
-  height: 94vh;
-  resize: none;
-  border-radius: 14px;
-}
-.builder-app .builder-code-panel__head--drag { cursor: grab; user-select: none; }
-.builder-app .builder-code-panel__head--drag:active { cursor: grabbing; }
+.builder-app .builder-code-panel__content .builder-code-panel__area { flex: 1 1 auto; }
 
 @media (max-width: 720px) {
   .builder-app .builder-code-panel { top: 70px; left: 12px; right: 12px; bottom: 12px; width: auto; }
