@@ -9,6 +9,9 @@ import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
 import { tutorials, tutorialIds } from '../data/tutorials.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { getNode } from '../i18n/strings.js';
+import { WHATS_NEW } from '../data/whatsNew.js';
+import { nodeIndex } from '../data/mindmapData.js';
+import { useWhatsNew } from '../hooks/useWhatsNew.js';
 
 /**
  * AccountPage — страница управления аккаунтом.
@@ -27,7 +30,7 @@ export default function AccountPage({
   onOpenCourses,
 }) {
   const t = useT();
-  const { locale, setLocale, locales } = useLocale();
+  const { locale, setLocale, locales, contentVersion } = useLocale();
   const { user, profile, setProfile, signOut } = useAuth();
 
   // Статистика активности из Supabase
@@ -53,14 +56,60 @@ export default function AccountPage({
     }
     result.sort((a, b) => (b.startedAt || 0) - (a.startedAt || 0));
     return result;
-  }, [progressApi, locale]);
+  }, [progressApi, locale, contentVersion]);
 
   // ── Узлы «на повторение» — заголовки из локали ────────────────────────────
   const reviewNodes = useMemo(() => {
     return (supaStats.reviewIds || [])
       .map(id => ({ id, title: getNode(locale, id)?.title || id }))
       .slice(0, 6);
-  }, [supaStats.reviewIds, locale]);
+  }, [supaStats.reviewIds, locale, contentVersion]);
+
+  // ── Что нового (реестр обновлений, TTL 60 дней) ──────────────────────────
+  const { isNew, markSeen } = useWhatsNew();
+  const whatsNewItems = useMemo(() => {
+    const TTL = 60;
+    const now = Date.now();
+    return Object.entries(WHATS_NEW)
+      .filter(([id, e]) => {
+        const age = (now - new Date(e.date).getTime()) / 86400000;
+        if (age > TTL) return false;
+        if (e.kind !== 'tutorial' && !nodeIndex[id]) return false; // узел исчез
+        return true;
+      })
+      .sort((a, b) => b[1].date.localeCompare(a[1].date))
+      .slice(0, 4)
+      .map(([id, e]) => ({
+        id,
+        type: e.type,
+        kind: e.kind,
+        title: e.kind === 'tutorial'
+          ? (getLocalizedTutorial(id, locale)?.title || id)
+          : (getNode(locale, id)?.title || id),
+      }));
+  }, [locale, contentVersion]);
+
+  const openWhatsNew = (item) => {
+    markSeen(item.id);
+    if (item.kind === 'tutorial') onStartTutorial?.(item.id);
+    else onShowNodes?.([item.id], item.title);
+  };
+
+  // ── Достижения (как в ProfilePanel, на данных Supabase) ───────────────────
+  const earnedAchievements = useMemo(() => {
+    const d = supaStats.tutorialsDone || 0;
+    const v = supaStats.nodesViewed || 0;
+    const b = supaStats.bookmarksCount || 0;
+    const all = [
+      { id: 'first-tut',  ok: d >= 1,  icon: 'graduation',      key: 'achievement.firstTutorial' },
+      { id: 'five-tuts',  ok: d >= 5,  icon: 'graduation',      key: 'achievement.fiveTutorials' },
+      { id: 'ten-tuts',   ok: d >= 10, icon: 'trophy',          key: 'achievement.tenTutorials' },
+      { id: 'explorer10', ok: v >= 10, icon: 'compass',         key: 'achievement.explorer10' },
+      { id: 'explorer50', ok: v >= 50, icon: 'compass',         key: 'achievement.explorer50' },
+      { id: 'collector',  ok: b >= 5,  icon: 'bookmark-filled', key: 'achievement.collector' },
+    ];
+    return all.filter(a => a.ok);
+  }, [supaStats.tutorialsDone, supaStats.nodesViewed, supaStats.bookmarksCount]);
 
   // Delete account
   const [deleteStep, setDeleteStep] = useState('idle'); // idle | confirm | deleting | done
@@ -309,6 +358,53 @@ export default function AccountPage({
                       </li>
                     ))}
                   </ul>
+                )}
+              </div>
+
+              {/* Что нового с прошлого визита */}
+              <div className="account-widget">
+                <div className="account-widget__head"><h3>{t('account.dash.whatsNew') || 'Что нового'}</h3></div>
+                {whatsNewItems.length === 0 ? (
+                  <div className="account-widget__empty account-widget__empty--sm">
+                    <Icon name="check" size={18} strokeWidth={1.75} />
+                    <p>{t('account.dash.whatsNewEmpty') || 'Пока без новинок.'}</p>
+                  </div>
+                ) : (
+                  <ul className="account-wn-list">
+                    {whatsNewItems.map(item => (
+                      <li key={item.id}>
+                        <button type="button" className={`account-wn__item ${isNew(item.id) ? 'is-unseen' : ''}`} onClick={() => openWhatsNew(item)}>
+                          <span className={`account-wn__badge account-wn__badge--${item.type}`}>
+                            {item.type === 'new' ? (t('category.updatesNew') || 'Новое') : (t('category.updatesUpdated') || 'Обновлено')}
+                          </span>
+                          <span className="account-wn__title">
+                            {item.kind === 'tutorial' && <Icon name="graduation" size={12} strokeWidth={1.5} />}
+                            {item.title}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* Достижения */}
+              <div className="account-widget">
+                <div className="account-widget__head"><h3>{t('account.dash.achievements') || 'Достижения'}</h3></div>
+                {earnedAchievements.length === 0 ? (
+                  <div className="account-widget__empty account-widget__empty--sm">
+                    <Icon name="trophy" size={18} strokeWidth={1.5} />
+                    <p>{t('account.dash.achievementsEmpty') || 'Учись и собирай достижения.'}</p>
+                  </div>
+                ) : (
+                  <div className="account-ach-grid">
+                    {earnedAchievements.map(a => (
+                      <span key={a.id} className="account-ach" title={t(a.key)}>
+                        <Icon name={a.icon} size={18} strokeWidth={1.5} />
+                        <span className="account-ach__label">{t(a.key)}</span>
+                      </span>
+                    ))}
+                  </div>
                 )}
               </div>
             </div>

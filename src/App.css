@@ -2614,6 +2614,36 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .account-review__item .hgi, .account-review__item svg { color: var(--text-dim); flex: 0 0 auto; }
 .account-review__item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* Что нового */
+.account-wn-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.account-wn__item {
+  display: flex; flex-direction: column; gap: 4px; width: 100%;
+  padding: 8px 10px; border: none; border-radius: 9px; background: transparent;
+  cursor: pointer; text-align: left; transition: background .12s;
+}
+.account-wn__item:hover { background: var(--surface-2); }
+.account-wn__item.is-unseen { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.account-wn__badge {
+  align-self: flex-start; font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .04em; padding: 1px 7px; border-radius: 999px;
+}
+.account-wn__badge--new { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); }
+.account-wn__badge--updated { background: color-mix(in srgb, #d97706 15%, transparent); color: #b45309; }
+.account-wn__title {
+  display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.account-wn__title .hgi, .account-wn__title svg { color: var(--text-dim); flex: 0 0 auto; }
+
+/* Достижения */
+.account-ach-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.account-ach {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 12px; border: 1px solid var(--border); border-radius: 999px;
+  background: var(--surface-2); font-size: 12.5px; color: var(--text);
+}
+.account-ach .hgi, .account-ach svg { color: var(--accent); flex: 0 0 auto; }
+
 @media (max-width: 760px) {
   .account-dash__grid { grid-template-columns: 1fr; }
 }
