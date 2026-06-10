@@ -1048,6 +1048,12 @@ function AppInner() {
       {accountOpen && (
         <AccountPage
           onClose={() => setRoute(null)}
+          progressApi={progressApi}
+          nodeProgressApi={nodeProgressApi}
+          bookmarksApi={bookmarksApi}
+          onStartTutorial={onStartTutorial}
+          onShowNodes={(ids, label) => { setRoute(null); onShowNodes(ids, label); }}
+          onOpenCourses={onOpenCourses}
           onRequestAuth={() => {
             setRoute(null);      // закрываем AccountPage (z-index 8000)
             setAuthOpen(true);   // открываем AuthModal поверх

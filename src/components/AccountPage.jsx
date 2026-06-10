@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './Icon.jsx';
 import PlanetLogo from './PlanetLogo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -6,6 +6,9 @@ import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { updateProfile, deleteProfile } from '../services/profileService.js';
 import { supabase } from '../lib/supabaseClient.js';
 import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
+import { tutorials, tutorialIds } from '../data/tutorials.js';
+import { getLocalizedTutorial } from '../i18n/useTutorial.js';
+import { getNode } from '../i18n/strings.js';
 
 /**
  * AccountPage — страница управления аккаунтом.
@@ -15,7 +18,14 @@ import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
  * (стрелка) и логотипом-сферой + «Аккаунт». Ниже — боковая панель с кнопками
  * разделов профиля; по клику в основной области показывается выбранный раздел.
  */
-export default function AccountPage({ onClose, onRequestAuth }) {
+export default function AccountPage({
+  onClose,
+  onRequestAuth,
+  progressApi,
+  onStartTutorial,
+  onShowNodes,
+  onOpenCourses,
+}) {
   const t = useT();
   const { locale, setLocale, locales } = useLocale();
   const { user, profile, setProfile, signOut } = useAuth();
@@ -23,8 +33,34 @@ export default function AccountPage({ onClose, onRequestAuth }) {
   // Статистика активности из Supabase
   const supaStats = useSupabaseStats(user?.id || null);
 
-  // Активный раздел боковой панели
-  const [section, setSection] = useState('profile');
+  // Активный раздел боковой панели (дефолт — дашборд «Обзор»)
+  const [section, setSection] = useState('overview');
+
+  // ── Активные курсы (в процессе) — как в ProfilePanel ──────────────────────
+  const activeCourses = useMemo(() => {
+    if (!progressApi) return [];
+    const result = [];
+    for (const id of tutorialIds) {
+      const p = progressApi.getProgress(id);
+      const isStarted = (p?.completedSteps?.length || 0) > 0 || (p?.lastStepIndex || 0) > 0;
+      const isDone = !!p?.completedAt;
+      if (!isStarted || isDone) continue;
+      const stepCount = tutorials[id]?.steps?.length || 1;
+      const doneCount = p?.completedSteps?.length || 0;
+      const percent = Math.round((doneCount / stepCount) * 100);
+      const title = getLocalizedTutorial(id, locale)?.title || id;
+      result.push({ id, title, percent, startedAt: p?.startedAt || null });
+    }
+    result.sort((a, b) => (b.startedAt || 0) - (a.startedAt || 0));
+    return result;
+  }, [progressApi, locale]);
+
+  // ── Узлы «на повторение» — заголовки из локали ────────────────────────────
+  const reviewNodes = useMemo(() => {
+    return (supaStats.reviewIds || [])
+      .map(id => ({ id, title: getNode(locale, id)?.title || id }))
+      .slice(0, 6);
+  }, [supaStats.reviewIds, locale]);
 
   // Delete account
   const [deleteStep, setDeleteStep] = useState('idle'); // idle | confirm | deleting | done
@@ -146,6 +182,7 @@ export default function AccountPage({ onClose, onRequestAuth }) {
 
   // ── Разделы боковой панели ───────────────────────────────────────────────
   const NAV = [
+    { id: 'overview', icon: 'grid',     label: t('account.dash.overview') || 'Обзор' },
     { id: 'profile',  icon: 'user',     label: t('account.profile')     || 'Профиль' },
     { id: 'activity', icon: 'flash',    label: t('profile.activity')    || 'Активность' },
     { id: 'data',     icon: 'download', label: t('account.dataPrivacy') || 'Данные и приватность' },
@@ -155,8 +192,129 @@ export default function AccountPage({ onClose, onRequestAuth }) {
     { id: 'danger',   icon: 'trash',    label: t('account.dangerZone')  || 'Удаление', danger: true },
   ];
 
+  const greetName = profile?.display_name || (user.email || '').split('@')[0];
+  const coursesDone = supaStats.tutorialsDone || 0;
+  const coursesTotal = tutorialIds.length;
+
   const renderSection = () => {
     switch (section) {
+      // ── Обзор (дашборд: всё сразу) ──
+      case 'overview':
+        return (
+          <div className="account-dash">
+            {/* Приветствие + серия дней */}
+            <div className="account-dash__hero">
+              <div>
+                <h2 className="account-dash__hello">
+                  {(t('account.dash.greeting') || 'С возвращением, {name}').replace('{name}', greetName)}
+                </h2>
+                {!supaStats.loading && (
+                  <p className="account-dash__streak">
+                    <Icon name="flash" size={14} strokeWidth={1.6} />
+                    {supaStats.streak > 0
+                      ? (t('account.dash.streak') || 'Серия: {n} дн. подряд').replace('{n}', String(supaStats.streak))
+                      : (t('account.dash.streakNone') || 'Загляни сегодня — начни серию')}
+                    <span className="account-dash__streak-total">
+                      · {(t('account.dash.totalDays') || 'всего {n} дн.').replace('{n}', String(supaStats.totalDays || 0))}
+                    </span>
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="account-dash__grid">
+              {/* Продолжить обучение */}
+              <div className="account-widget account-widget--wide">
+                <div className="account-widget__head">
+                  <h3>{t('account.dash.continue') || 'Продолжить обучение'}</h3>
+                  {onOpenCourses && (
+                    <button type="button" className="account-widget__more" onClick={() => { onClose?.(); onOpenCourses(); }}>
+                      {t('account.dash.allCourses') || 'Все курсы'}
+                      <Icon name="arrow-right" size={13} strokeWidth={1.75} />
+                    </button>
+                  )}
+                </div>
+                {activeCourses.length === 0 ? (
+                  <div className="account-widget__empty">
+                    <Icon name="idea" size={20} strokeWidth={1.5} />
+                    <p>{t('account.dash.continueEmpty') || 'Нет начатых курсов. Начни любой — он появится здесь.'}</p>
+                    {onOpenCourses && (
+                      <button type="button" className="account-btn account-btn--outline" onClick={() => { onClose?.(); onOpenCourses(); }}>
+                        {t('account.dash.browseCourses') || 'Выбрать курс'}
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="account-course-list">
+                    {activeCourses.slice(0, 3).map(c => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        className="account-course"
+                        onClick={() => onStartTutorial?.(c.id)}
+                      >
+                        <div className="account-course__top">
+                          <span className="account-course__title">{c.title}</span>
+                          <span className="account-course__pct">{c.percent}%</span>
+                        </div>
+                        <div className="account-course__bar"><span style={{ width: `${c.percent}%` }} /></div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Мой прогресс одним взглядом */}
+              <div className="account-widget">
+                <div className="account-widget__head"><h3>{t('account.dash.progress') || 'Мой прогресс'}</h3></div>
+                <div className="account-stat-grid">
+                  <button type="button" className="account-stat" disabled={!supaStats.viewedIds?.length}
+                    onClick={() => onShowNodes?.(supaStats.viewedIds, t('account.dash.viewed') || 'Изучено')}>
+                    <span className="account-stat__val">{supaStats.nodesViewed || 0}</span>
+                    <span className="account-stat__label">{t('account.dash.viewed') || 'Изучено'}</span>
+                  </button>
+                  <button type="button" className="account-stat account-stat--review" disabled={!supaStats.reviewIds?.length}
+                    onClick={() => onShowNodes?.(supaStats.reviewIds, t('account.dash.review') || 'На повторение')}>
+                    <span className="account-stat__val">{supaStats.nodesReview || 0}</span>
+                    <span className="account-stat__label">{t('account.dash.review') || 'На повторение'}</span>
+                  </button>
+                  <button type="button" className="account-stat" disabled={!supaStats.bookmarkNodeIds?.length}
+                    onClick={() => onShowNodes?.(supaStats.bookmarkNodeIds, t('account.dash.bookmarks') || 'Закладки')}>
+                    <span className="account-stat__val">{supaStats.bookmarksCount || 0}</span>
+                    <span className="account-stat__label">{t('account.dash.bookmarks') || 'Закладки'}</span>
+                  </button>
+                  <div className="account-stat account-stat--static">
+                    <span className="account-stat__val">{coursesDone}<span className="account-stat__of">/{coursesTotal}</span></span>
+                    <span className="account-stat__label">{t('account.dash.coursesDone') || 'Курсы'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* На повторение */}
+              <div className="account-widget">
+                <div className="account-widget__head"><h3>{t('account.dash.review') || 'На повторение'}</h3></div>
+                {reviewNodes.length === 0 ? (
+                  <div className="account-widget__empty account-widget__empty--sm">
+                    <Icon name="check" size={18} strokeWidth={1.75} />
+                    <p>{t('account.dash.reviewEmpty') || 'Пусто — нечего повторять.'}</p>
+                  </div>
+                ) : (
+                  <ul className="account-review-list">
+                    {reviewNodes.map(n => (
+                      <li key={n.id}>
+                        <button type="button" className="account-review__item" onClick={() => onShowNodes?.([n.id], n.title)}>
+                          <Icon name="refresh-circle" size={13} strokeWidth={1.6} />
+                          <span>{n.title}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
       // ── Профиль ──
       case 'profile':
         return (
@@ -206,7 +364,7 @@ export default function AccountPage({ onClose, onRequestAuth }) {
             <h2>{t('profile.activity')}</h2>
             {supaStats.loading ? (
               <div className="account-activity-loading">
-                <Icon name="refresh" size={14} strokeWidth={1.5} />
+                <Icon name="refresh-circle" size={14} strokeWidth={1.5} />
                 <span>{t('common.loading')}</span>
               </div>
             ) : (
@@ -277,7 +435,7 @@ export default function AccountPage({ onClose, onRequestAuth }) {
                   window.location.reload();
                 }}
               >
-                <Icon name="refresh" size={16} strokeWidth={1.5} />
+                <Icon name="refresh-circle" size={16} strokeWidth={1.5} />
                 {t('account.cookieReset')}
               </button>
             </div>
@@ -376,7 +534,7 @@ export default function AccountPage({ onClose, onRequestAuth }) {
 
             {deleteStep === 'deleting' && (
               <div className="account-delete-confirm">
-                <Icon name="refresh" size={20} strokeWidth={1.5} />
+                <Icon name="refresh-circle" size={20} strokeWidth={1.5} />
                 <p>{t('account.deleting')}</p>
               </div>
             )}
