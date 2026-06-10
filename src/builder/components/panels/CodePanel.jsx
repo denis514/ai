@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { serializeForLocal, deserializeFromDb } from '../../services/workflowSerializer.js';
 import { getNodeDef } from '../../data/nodeTypes.js';
+import { validateGraph } from '../../services/connectionRules.js';
 
 /**
  * CodePanel — прозрачный «код ↔ холст» для Agent Builder.
@@ -93,7 +94,19 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, onClose, t
     catch (e) { setMsg({ type: 'err', text: e.message }); return; }
     onApply(rf.nodes, rf.edges);
     setEdited(false);
-    setMsg({ type: 'ok', text: t('builder.code.applied', { n: rf.nodes.length, e: rf.edges.length }) });
+    // Мягкая проверка собранной схемы правилами запуска (не блокирует сборку).
+    const v = validateGraph(rf.nodes, rf.edges);
+    const reason = (code) => t(code === 'no-agent' ? 'builder.validation.noAgent' : `builder.validation.${code}`);
+    const issues = [
+      ...v.errors.map(reason),
+      ...v.warnings.map(w => reason(w.type)),
+    ];
+    const okText = t('builder.code.applied', { n: rf.nodes.length, e: rf.edges.length });
+    if (issues.length) {
+      setMsg({ type: 'warn', text: okText + ' ' + (t('builder.code.checkRun') || 'Проверьте связи перед запуском:'), issues });
+    } else {
+      setMsg({ type: 'ok', text: okText });
+    }
   };
 
   return (
@@ -122,7 +135,14 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, onClose, t
       />
 
       {msg && (
-        <div className={`builder-code-panel__msg builder-code-panel__msg--${msg.type}`}>{msg.text}</div>
+        <div className={`builder-code-panel__msg builder-code-panel__msg--${msg.type}`}>
+          {msg.text}
+          {msg.issues && msg.issues.length > 0 && (
+            <ul className="builder-code-panel__issues">
+              {msg.issues.map((it, i) => <li key={i}>{it}</li>)}
+            </ul>
+          )}
+        </div>
       )}
 
       <div className="builder-code-panel__actions">

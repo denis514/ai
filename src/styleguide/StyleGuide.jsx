@@ -37,6 +37,7 @@ const SECTIONS = [
   { id: 'inlinks',   label: 'Инлайновые ссылки' },
   { id: 'sphere',    label: 'Сфера-логотип' },
   { id: 'dots',      label: 'Точечный фон' },
+  { id: 'buildercode', label: 'Код схемы (Builder)' },
 ];
 
 // Токены ровно как в App.css :root (имя → описание).
@@ -424,6 +425,21 @@ export default function StyleGuide() {
               </div>
             ))}
           </div>
+        </Section>
+
+        <Section id="buildercode" title="Код схемы (Builder)"
+          note="Прозрачный «код ↔ холст» в Agent Builder. Панель показывает узлы и связи схемы в реальном времени; вставка кода собирает схему на холсте с проверкой связей.">
+          <p className="sg-hint">Читаемый формат: узлы (id, type, координаты, настройки) и связи (from → to). Вставил → «Собрать» строит узлы с правильными подключениями.</p>
+          <pre className="sg-codeblock">{`{
+  "nodes": [
+    { "id": "a", "type": "agent-research",  "x": 80,  "y": 120 },
+    { "id": "b", "type": "agent-analytics", "x": 440, "y": 120 }
+  ],
+  "edges": [
+    { "from": "a", "to": "b" }
+  ]
+}`}</pre>
+          <p className="sg-hint">При сборке схема мягко проверяется правилами запуска: если связь не пройдёт (нет агента, висячий узел, Telegram без чата) — показывается предупреждение, но холст всё равно собирается.</p>
         </Section>
 
         <footer className="sg-footer">
