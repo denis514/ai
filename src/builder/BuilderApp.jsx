@@ -641,8 +641,11 @@ function BuilderAppInner() {
     setExecStatus('idle');
     setNameModalOpen(false);
     setNameModalStep('name');
+    // Центрируем загруженный шаблон на холсте (иначе он остаётся слева и
+    // непонятно, загрузилось ли). Задержка — чтобы узлы успели измериться.
+    setTimeout(() => fitView({ padding: 0.25, maxZoom: 1, duration: 400 }), 90);
     await persist(name, newNodes, newEdges, null);
-  }, [nameDraft, t, persist, setNodes, setEdges]);
+  }, [nameDraft, t, persist, setNodes, setEdges, fitView]);
 
   // Закрытие модалки (cancel) — сброс на шаг имени.
   const closeNameModal = useCallback(() => {
@@ -1143,7 +1146,9 @@ function BuilderAppInner() {
     // Reset exec state
     setExecLogs([]);
     setExecStatus('idle');
-  }, [setNodes, setEdges, t, nodes.length, pushHistory]);
+    // Центрируем загруженный шаблон на холсте (иначе остаётся слева).
+    setTimeout(() => fitView({ padding: 0.25, maxZoom: 1, duration: 400 }), 90);
+  }, [setNodes, setEdges, t, nodes.length, pushHistory, fitView]);
 
   /* ────────── Selection ────────── */
   const onNodeClick = useCallback((event, node) => {
