@@ -6,7 +6,7 @@
  *
  * Проверяет:
  *  - mindmap: schema (6 details fields), уникальность id, валидные icon/category,
- *             глубина <= 4, ширина <= 12, длина title <= 30
+ *             глубина <= 4, ширина <= 18, длина title <= 30
  *  - prompts.js: валидные icon
  *  - promptLibrary.js: схема, валидные category/level/icon, уникальные id
  *  - tutorials.js: валидные icon
@@ -74,7 +74,11 @@ while ((m = keyRe.exec(registryBlock)) !== null) {
 const ALLOWED_CATEGORIES = new Set(Object.keys(CATEGORIES));
 const REQUIRED_DETAILS = ['what', 'why', 'when', 'impact', 'example', 'mistakes'];
 const MAX_DEPTH = 4;
-const MAX_WIDTH = 12;
+// Ширина ветки. Порог 18: широкие хабы (foundation, claude-code, use-cases,
+// ec) — осознанные каталоги/инструменты. Группировать их нельзя без выхода
+// за глубину 4 (правило «≤3 клика до узла»), поэтому плоский-широкий вид
+// предпочтительнее глубокого. См. §6/§9 CLAUDE.md.
+const MAX_WIDTH = 18;
 const MAX_TITLE_LEN = 30;
 
 const allIds = new Map(); // id -> human-readable path
