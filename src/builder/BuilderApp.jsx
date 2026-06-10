@@ -240,11 +240,11 @@ function BuilderAppInner() {
     document.body.style.cursor = 'col-resize';
   }, []);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [execPanelOpen, setExecPanelOpen] = useState(false);
+  const [consoleOpen, setConsoleOpen] = useState(false); // объединённая «Консоль»
+  const [consoleTab, setConsoleTab] = useState('code');  // 'code' | 'run'
   // Мини-карта холста — скрыта по умолчанию, открывается отдельной
   // кнопкой в ряду Controls (правый нижний угол).
   const [miniMapOpen, setMiniMapOpen] = useState(false);
-  const [codeOpen, setCodeOpen] = useState(false);
   // Ширина консоли (правая боковая панель), сохраняется в браузере.
   const [execW, setExecW] = useState(() => {
     const v = parseInt(localStorage.getItem('atlas:builder:exec-w') || '', 10);
@@ -1219,8 +1219,9 @@ function BuilderAppInner() {
     setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'idle' } })));
     setExecLogs([]);
     setExecStatus('running');
-    // Консоль НЕ открываем автоматически — пользователь сам решает смотреть ли логи
-    // (через launcher-кнопку «Консоль» снизу или иконку terminal в шапке).
+    // Открываем консоль на вкладке «Запуск» — видно ход выполнения сразу.
+    setConsoleOpen(true);
+    setConsoleTab('run');
     const stats = { total: nodes.length, done: 0, failed: 0 };
     setExecStats(stats);
     return stats;
@@ -1364,13 +1365,32 @@ function BuilderAppInner() {
     return () => window.removeEventListener('keydown', handler);
   }, [handleRun, galleryOpen, undo, redo, doSave, nodes.length]);
 
+  // Переключатель вкладок объединённой «Консоли» (Код ↔ Запуск).
+  const consoleTabs = (
+    <div className="builder-console-tabs" role="tablist">
+      <button
+        type="button" role="tab" aria-selected={consoleTab === 'code'}
+        className={`builder-console-tab ${consoleTab === 'code' ? 'is-active' : ''}`}
+        onClick={() => setConsoleTab('code')}
+      >{t('builder.console.tabCode') || 'Код'}</button>
+      <button
+        type="button" role="tab" aria-selected={consoleTab === 'run'}
+        className={`builder-console-tab ${consoleTab === 'run' ? 'is-active' : ''}`}
+        onClick={() => setConsoleTab('run')}
+      >
+        {t('builder.console.tabRun') || 'Запуск'}
+        {execStatus === 'running' && <span className="builder-console-tab__dot" aria-hidden="true" />}
+      </button>
+    </div>
+  );
+
   return (
     <div
       className={[
         'builder-app',
         toolboxOpen ? 'has-toolbox' : 'no-toolbox',
         sidebarOpen ? 'has-sidebar' : 'no-sidebar',
-        execPanelOpen ? 'has-exec' : 'no-exec',
+        consoleOpen ? 'has-exec' : 'no-exec',
       ].join(' ')}
       style={{ '--toolbox-w': `${toolboxW}px` }}
     >
@@ -1480,13 +1500,14 @@ function BuilderAppInner() {
           )}
           <button
             type="button"
-            className={`builder-btn builder-btn--ghost ${codeOpen ? 'is-active' : ''}`}
-            onClick={() => setCodeOpen(o => !o)}
-            title={t('builder.code.openBtn') || 'Код схемы'}
-            aria-label={t('builder.code.openBtn') || 'Код схемы'}
-            aria-pressed={codeOpen}
+            className={`builder-btn builder-btn--ghost builder-console-btn ${consoleOpen ? 'is-active' : ''}`}
+            onClick={() => setConsoleOpen(o => !o)}
+            title={t('builder.console.openBtn') || 'Консоль'}
+            aria-label={t('builder.console.openBtn') || 'Консоль'}
+            aria-pressed={consoleOpen}
           >
             <Icon name="terminal" size={15} strokeWidth={1.6} />
+            {execStatus === 'running' && <span className="builder-console-dot" aria-hidden="true" />}
           </button>
           <button
             type="button"
@@ -1514,16 +1535,6 @@ function BuilderAppInner() {
             aria-label={t('builder.allsched.openBtn') || 'Все автозапуски'}
           >
             <Icon name="calendar" size={14} strokeWidth={1.5} />
-          </button>
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
-            onClick={() => setExecPanelOpen(v => !v)}
-            aria-pressed={execPanelOpen}
-            title={t('builder.header.toggleExec') || 'Toggle execution panel'}
-            aria-label={t('builder.header.toggleExec') || 'Toggle execution panel'}
-          >
-            <Icon name="terminal" size={14} strokeWidth={1.5} />
           </button>
           {/* Показать панель «Детали» — стоит ПЕРЕД сплитом, чтобы зелёная плашка
               осталась в самом правом краю ряда (требование референса). */}
@@ -2079,9 +2090,10 @@ function BuilderAppInner() {
           </aside>
         )}
 
-        {/* Execution panel (bottom) */}
-        {execPanelOpen && (
+        {/* Консоль — вкладка «Запуск» */}
+        {consoleOpen && consoleTab === 'run' && (
           <ExecutionPanel
+            tabs={consoleTabs}
             logs={execLogs}
             status={execStatus}
             nodesTotal={execStats.total}
@@ -2091,7 +2103,7 @@ function BuilderAppInner() {
             runSetup={null}
             onStop={handleStopExec}
             onClear={() => { setExecResult(null); handleClearLogs(); }}
-            onClose={() => setExecPanelOpen(false)}
+            onClose={() => setConsoleOpen(false)}
             wrapperStyle={{ '--exec-w': `${execW}px` }}
             wrapperClass={execResizing ? 'is-resizing' : ''}
             onResizeStart={startExecResize}
@@ -2145,13 +2157,14 @@ function BuilderAppInner() {
         />
       )}
 
-      {codeOpen && (
+      {consoleOpen && consoleTab === 'code' && (
         <CodePanel
+          tabs={consoleTabs}
           nodes={nodes}
           edges={edges}
           edgeStyle={EDGE_STYLE}
           onApply={applyCode}
-          onClose={() => setCodeOpen(false)}
+          onClose={() => setConsoleOpen(false)}
           t={t}
         />
       )}

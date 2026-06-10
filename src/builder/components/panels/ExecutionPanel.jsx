@@ -34,6 +34,7 @@ export default function ExecutionPanel({
   wrapperStyle,    // inline-style: ширина через CSS-переменную --exec-w
   wrapperClass = '',  // 'is-resizing' пока тянут левую кромку
   onResizeStart,   // mousedown на левой кромке-handle
+  tabs = null,     // JSX переключателя вкладок Консоли (Код/Запуск) — рендерится в шапке
 }) {
   const t = useT();
   const bodyRef = useRef(null);
@@ -137,7 +138,7 @@ export default function ExecutionPanel({
         onPointerDown={onHeaderPointerDown}
       >
         <span className="builder-exec__title-wrap">
-          <span className="builder-exec__title">{t('builder.exec.title') || 'Execution'}</span>
+          {tabs || <span className="builder-exec__title">{t('builder.exec.title') || 'Execution'}</span>}
           <span className={`builder-exec__summary builder-exec__summary--${status}`}>
             {status === 'running' && <span className="builder-exec__pulse" />}
             {summaryText}

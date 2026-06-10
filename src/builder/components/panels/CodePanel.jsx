@@ -66,7 +66,7 @@ function fromCode(obj, edgeStyle) {
   return deserializeFromDb(dbNodes, dbEdges, edgeStyle);
 }
 
-export default function CodePanel({ nodes, edges, edgeStyle, onApply, onClose, t }) {
+export default function CodePanel({ nodes, edges, edgeStyle, onApply, onClose, t, tabs = null }) {
   const canvasCode = useMemo(() => JSON.stringify(toCode(nodes, edges), null, 2), [nodes, edges]);
   const [draft, setDraft] = useState(canvasCode);
   const [edited, setEdited] = useState(false);
@@ -112,10 +112,12 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, onClose, t
   return (
     <aside className="builder-code-panel" role="dialog" aria-label={t('builder.code.title') || 'Код схемы'}>
       <header className="builder-code-panel__head">
-        <span className="builder-code-panel__title">
-          <Icon name="terminal" size={15} strokeWidth={1.6} />
-          {t('builder.code.title') || 'Код схемы'}
-        </span>
+        {tabs || (
+          <span className="builder-code-panel__title">
+            <Icon name="terminal" size={15} strokeWidth={1.6} />
+            {t('builder.code.title') || 'Код схемы'}
+          </span>
+        )}
         <button type="button" className="builder-code-panel__close" onClick={onClose} aria-label={t('common.close') || 'Закрыть'}>
           <Icon name="close" size={14} strokeWidth={2} />
         </button>

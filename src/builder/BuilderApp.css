@@ -2873,6 +2873,45 @@
 }
 @keyframes builder-pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
+/* Единая кнопка «Консоль» в шапке + индикатор выполнения */
+.builder-app .builder-console-btn { position: relative; }
+.builder-app .builder-console-btn.is-active {
+  background: var(--surface-3);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.builder-app .builder-console-dot {
+  position: absolute; top: 5px; right: 5px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent, #2563eb);
+  animation: builder-pulse-dot 1.2s ease-in-out infinite;
+}
+
+/* Переключатель вкладок внутри Консоли (Код / Запуск) */
+.builder-app .builder-console-tabs {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px; border-radius: 9px;
+  background: var(--surface-2); border: 1px solid var(--border);
+}
+.builder-app .builder-console-tab {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 11px; border: 0; border-radius: 7px;
+  background: transparent; color: var(--text-muted);
+  font-size: 12.5px; font-weight: 500; cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.builder-app .builder-console-tab:hover { color: var(--text); }
+.builder-app .builder-console-tab.is-active {
+  background: var(--surface); color: var(--text);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+.builder-app .builder-console-tab__dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent, #2563eb);
+  animation: builder-pulse-dot 1.2s ease-in-out infinite;
+}
+
 /* Подсказка-причина отказа в соединении (всплывает над status-hint) */
 .builder-app .builder-connect-hint {
   position: absolute;
