@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '../hooks/useTheme.js';
+import Icon from '../components/Icon.jsx';
 import './StyleGuide.css';
 
 /**
@@ -29,6 +30,7 @@ const SECTIONS = [
   { id: 'chips',     label: 'Чипы и бейджи' },
   { id: 'controls',  label: 'Чекбоксы и радио' },
   { id: 'links',     label: 'Ссылки' },
+  { id: 'inlinks',   label: 'Инлайновые ссылки' },
   { id: 'sphere',    label: 'Сфера-логотип' },
   { id: 'dots',      label: 'Точечный фон' },
 ];
@@ -332,6 +334,45 @@ export default function StyleGuide() {
                акцент бренда, подчёркивание при наведении.</p>
             <p>И вариант <a href="#sg-links" className="link link--muted">приглушённой ссылки</a> для
                второстепенных переходов.</p>
+          </div>
+        </Section>
+
+        <Section id="inlinks" title="Инлайновые ссылки"
+          note="Реальные классы .inline-link (виды --node / --tutorial / --prompt) из InlineText.jsx. Чеврон-иконка + карточка-превью при наведении.">
+          <div className="sg-row">
+            <span className="inline-link-wrap">
+              <button type="button" className="inline-link inline-link--node">
+                <span className="inline-link__icon" aria-hidden="true"><Icon name="arrow-right" size={12} strokeWidth={1.75} /></span>
+                <span className="inline-link__label">sys-rag-architecture</span>
+              </button>
+            </span>
+            <span className="inline-link-wrap">
+              <button type="button" className="inline-link inline-link--tutorial">
+                <span className="inline-link__icon" aria-hidden="true"><Icon name="graduation" size={12} strokeWidth={1.75} /></span>
+                <span className="inline-link__label">Туториал: первый агент</span>
+              </button>
+            </span>
+            <span className="inline-link-wrap">
+              <button type="button" className="inline-link inline-link--prompt">
+                <span className="inline-link__icon" aria-hidden="true"><Icon name="sparkles" size={12} strokeWidth={1.75} /></span>
+                <span className="inline-link__label">Промпт: дайджест</span>
+              </button>
+            </span>
+            <span className="inline-link inline-link--broken">битая ссылка</span>
+          </div>
+
+          <p className="sg-hint">Карточка-превью (показывается при наведении, здесь — статично для эталона):</p>
+          <div className="sg-inlink-preview">
+            <span className="inline-link-wrap">
+              <button type="button" className="inline-link inline-link--node">
+                <span className="inline-link__icon" aria-hidden="true"><Icon name="arrow-right" size={12} strokeWidth={1.75} /></span>
+                <span className="inline-link__label">sys-rag-architecture</span>
+              </button>
+              <span className="inline-link__preview inline-link__preview--node" role="tooltip">
+                <span className="inline-link__preview-title">RAG — как AI достаёт нужный документ из базы</span>
+                <span className="inline-link__preview-body">Знаешь, как Google ищет по сайтам? RAG — это такой же поиск, но по твоим документам, плюс AI собирает ответ из найденного…</span>
+              </span>
+            </span>
           </div>
         </Section>
 
