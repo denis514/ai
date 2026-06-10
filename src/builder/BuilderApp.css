@@ -1981,6 +1981,13 @@
   box-shadow: 0 20px 60px rgba(15, 15, 15, 0.16), 0 2px 8px rgba(15, 15, 15, 0.04);
   animation: builder-exec-in .28s cubic-bezier(0.16, 1, 0.3, 1) both;
   transform-origin: 100% 50%;
+  /* Плавный сдвиг, когда панель «Детали» открывается/закрывается рядом. */
+  transition: right .3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* Если панель «Детали» (правый sidebar, 280px) открыта — докнутая консоль
+   встаёт левее неё, а не поверх. Открытие деталей «толкает» консоль. */
+.builder-app.has-sidebar .builder-console-window:not(.is-floating) {
+  right: calc(280px + 32px); /* 16 базовый отступ + 280 ширина деталей + 16 зазор */
 }
 .builder-app .builder-console-window__resize-handle {
   position: absolute;
