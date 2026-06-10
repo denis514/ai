@@ -3,15 +3,16 @@ import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
 
 /**
- * UpdateBanner — тонкий баннер снизу экрана.
- * Показывается когда useVersionCheck обнаружил новый деплой.
- * Предлагает перезагрузить страницу.
+ * UpdateBanner — баннер снизу экрана при обнаружении нового деплоя.
+ * Обновление ОБЯЗАТЕЛЬНОЕ: закрыть нельзя (нет ×), единственное действие —
+ * перезагрузить страницу. Иначе старый код может работать некорректно
+ * со свежим контентом/бэкендом.
  */
-export default function UpdateBanner({ onReload, onDismiss }) {
+export default function UpdateBanner({ onReload }) {
   const t = useT();
 
   return (
-    <div className="update-banner" role="alert" aria-live="polite">
+    <div className="update-banner update-banner--forced" role="alertdialog" aria-live="assertive">
       <span className="update-banner__icon" aria-hidden="true">
         <Icon name="refresh" size={15} strokeWidth={2} />
       </span>
@@ -22,16 +23,9 @@ export default function UpdateBanner({ onReload, onDismiss }) {
         type="button"
         className="update-banner__reload"
         onClick={onReload}
+        autoFocus
       >
         {t('app.updateReload')}
-      </button>
-      <button
-        type="button"
-        className="update-banner__dismiss"
-        onClick={onDismiss}
-        aria-label={t('common.close')}
-      >
-        <Icon name="close" size={14} strokeWidth={2} />
       </button>
     </div>
   );

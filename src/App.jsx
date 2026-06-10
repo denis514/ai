@@ -186,7 +186,7 @@ function AppInner() {
   const [introOpen, setIntroOpen] = useState(() => !isIntroSeen());
 
   // Обнаружение нового деплоя → показ баннера обновления
-  const { hasUpdate, dismiss: dismissUpdate, reload: reloadPage } = useVersionCheck();
+  const { hasUpdate, reload: reloadPage } = useVersionCheck();
 
   // При нажатии «Обновить страницу» — просто перезагружаем.
   // Сессия сохраняется: Supabase автоматически восстанавливает токен из localStorage.
@@ -1082,7 +1082,7 @@ function AppInner() {
 
       {/* Баннер новой версии — показывается после деплоя */}
       {hasUpdate && (
-        <UpdateBanner onReload={handleUpdateReload} onDismiss={dismissUpdate} />
+        <UpdateBanner onReload={handleUpdateReload} />
       )}
 
       {/* Глобальные системы уведомлений и подтверждений */}
