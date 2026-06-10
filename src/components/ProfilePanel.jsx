@@ -3,7 +3,6 @@ import Icon from './Icon.jsx';
 import { tutorialIds, tutorials } from '../data/tutorials.js';
 import { initialFromName, colorFromName } from '../hooks/useUserIdentity.js';
 import { useLocale, useT } from '../i18n/LocaleContext.jsx';
-import { LOCALE_LABEL } from '../i18n/config.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
 import { updateProfile } from '../services/profileService.js';
@@ -11,7 +10,6 @@ import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { useConfirm } from '../hooks/useConfirm.js';
 import { useToast } from '../hooks/useToast.js';
 
-const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
 
 const STORAGE_KEYS = [
   'claude-mindmap:bookmarks:v1',
@@ -37,9 +35,8 @@ export default function ProfilePanel({
   const t = useT();
   const { confirm } = useConfirm();
   const { toast } = useToast();
-  const { locale, setLocale, locales } = useLocale();
+  const { locale } = useLocale();
   const { user, profile, setProfile, isLoggedIn } = useAuth();
-  const [langOpen, setLangOpen] = useState(false);
   const [completedOpen, setCompletedOpen] = useState(false);
 
   // Supabase stats (только когда залогинен)
@@ -477,39 +474,7 @@ export default function ProfilePanel({
         </section>
       )}
 
-      {/* ── LANGUAGE ── (тема переехала в меню «Atlas» слева) */}
-      <div className="profile-panel__lang-bar">
-        <div className="profile-panel__lang-picker">
-          <button
-            type="button"
-            className={`profile-panel__lang-btn ${langOpen ? 'is-open' : ''}`}
-            onMouseDown={(e) => e.stopPropagation()}
-            onClick={() => setLangOpen(v => !v)}
-            aria-haspopup="listbox"
-            aria-expanded={langOpen}
-          >
-            <span className="profile-panel__lang-flag">{LOCALE_FLAG[locale]}</span>
-            <span className="profile-panel__lang-label">{LOCALE_LABEL[locale]}</span>
-            <Icon name="arrow-down" size={12} strokeWidth={2} />
-          </button>
-          {langOpen && (
-            <ul className="profile-panel__lang-dropdown" role="listbox">
-              {locales.map(code => (
-                <li key={code} role="option" aria-selected={locale === code}>
-                  <button
-                    type="button"
-                    className={`profile-panel__lang-option ${locale === code ? 'is-active' : ''}`}
-                    onClick={() => { setLocale(code); setLangOpen(false); }}
-                  >
-                    <span>{LOCALE_FLAG[code]}</span>
-                    <span>{LOCALE_LABEL[code]}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
+      {/* Тема и язык переехали в выпадающее меню «Atlas» (слева). */}
     </div>
   );
 }

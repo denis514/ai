@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
-import { useT } from '../i18n/LocaleContext.jsx';
+import { useT, useLocale } from '../i18n/LocaleContext.jsx';
+import { LOCALE_LABEL } from '../i18n/config.js';
 import { useTheme } from '../hooks/useTheme.js';
+
+const LOCALE_FLAG = { en: '🇬🇧', ru: '🇷🇺', fi: '🇫🇮' };
 
 /**
  * CanvasHeader — плавающая шапка в левом-верхнем углу canvas (desktop).
@@ -25,8 +28,10 @@ export default function CanvasHeader({
   route
 }) {
   const t = useT();
-  const { mode, cycleMode } = useTheme();
+  const { mode, setThemeMode } = useTheme();
+  const { locale, setLocale, locales } = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [sub, setSub] = useState(null); // 'theme' | 'lang' | null
   const [searchOpen, setSearchOpen] = useState(false);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
@@ -35,6 +40,17 @@ export default function CanvasHeader({
   useEffect(() => {
     setMenuOpen(false);
   }, [route]);
+
+  // При закрытии меню сбрасываем открытое подменю (тема/язык)
+  useEffect(() => {
+    if (!menuOpen) setSub(null);
+  }, [menuOpen]);
+
+  const THEME_OPTS = [
+    { m: 'light', icon: 'sun',    label: t('profile.theme.light') || 'Светлая тема' },
+    { m: 'dark',  icon: 'moon',   label: t('profile.theme.dark')  || 'Тёмная тема' },
+    { m: 'auto',  icon: 'laptop', label: t('profile.theme.auto')  || 'Как в системе' },
+  ];
 
   // Click-outside закрывает dropdown
   useEffect(() => {
@@ -183,28 +199,71 @@ export default function CanvasHeader({
 
           <div className="canvas-header__menu-sep" role="separator" />
 
-          {/* Переключатель темы: клик циклит светлая → тёмная → как в системе.
-              Меню остаётся открытым, чтобы видеть результат. */}
-          <button
-            type="button"
-            className="canvas-header__menu-item"
-            onClick={cycleMode}
-            role="menuitem"
-            aria-label={t('profile.theme.cycle') || 'Переключить тему'}
-          >
-            <Icon
-              name={mode === 'auto' ? 'laptop' : mode === 'dark' ? 'moon' : 'sun'}
-              size={16}
-              strokeWidth={1.5}
-            />
-            <span>
-              {mode === 'auto'
-                ? (t('profile.theme.auto') || 'Как в системе')
-                : mode === 'light'
-                  ? (t('profile.theme.light') || 'Светлая тема')
-                  : (t('profile.theme.dark') || 'Тёмная тема')}
-            </span>
-          </button>
+          {/* Футер: тема и язык — иконками. Клик раскрывает мини-список выбора. */}
+          <div className="canvas-header__menu-tools">
+            <button
+              type="button"
+              className={`canvas-header__menu-tool ${sub === 'theme' ? 'is-open' : ''}`}
+              onClick={() => setSub(s => (s === 'theme' ? null : 'theme'))}
+              aria-haspopup="listbox"
+              aria-expanded={sub === 'theme'}
+              title={t('profile.theme.cycle') || 'Тема'}
+            >
+              <Icon
+                name={mode === 'auto' ? 'laptop' : mode === 'dark' ? 'moon' : 'sun'}
+                size={18}
+                strokeWidth={1.5}
+              />
+            </button>
+            <button
+              type="button"
+              className={`canvas-header__menu-tool ${sub === 'lang' ? 'is-open' : ''}`}
+              onClick={() => setSub(s => (s === 'lang' ? null : 'lang'))}
+              aria-haspopup="listbox"
+              aria-expanded={sub === 'lang'}
+              title="Язык"
+            >
+              <span className="canvas-header__menu-flag">{LOCALE_FLAG[locale]}</span>
+            </button>
+          </div>
+
+          {sub === 'theme' && (
+            <div className="canvas-header__submenu" role="listbox">
+              {THEME_OPTS.map(({ m, icon, label }) => (
+                <button
+                  key={m}
+                  type="button"
+                  className={`canvas-header__menu-item ${mode === m ? 'is-active' : ''}`}
+                  onClick={() => { setThemeMode(m); setSub(null); }}
+                  role="option"
+                  aria-selected={mode === m}
+                >
+                  <Icon name={icon} size={16} strokeWidth={1.5} />
+                  <span>{label}</span>
+                  {mode === m && <Icon name="check" size={14} strokeWidth={2} />}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {sub === 'lang' && (
+            <div className="canvas-header__submenu" role="listbox">
+              {locales.map(code => (
+                <button
+                  key={code}
+                  type="button"
+                  className={`canvas-header__menu-item ${locale === code ? 'is-active' : ''}`}
+                  onClick={() => { setLocale(code); setSub(null); }}
+                  role="option"
+                  aria-selected={locale === code}
+                >
+                  <span className="canvas-header__menu-flag">{LOCALE_FLAG[code]}</span>
+                  <span>{LOCALE_LABEL[code]}</span>
+                  {locale === code && <Icon name="check" size={14} strokeWidth={2} />}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -1368,6 +1368,42 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   background: var(--border);
   margin: 5px 6px;
 }
+/* Футер меню: тема + язык иконками */
+.canvas-header__menu-tools {
+  display: flex;
+  gap: 6px;
+  padding: 2px 4px;
+}
+.canvas-header__menu-tool {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.canvas-header__menu-tool:hover { background: var(--surface-3); color: var(--text); }
+.canvas-header__menu-tool.is-open {
+  background: var(--surface-3);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.canvas-header__menu-flag { font-size: 16px; line-height: 1; }
+/* Мини-список выбора (тема/язык) */
+.canvas-header__submenu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--border);
+}
+.canvas-header__menu-item.is-active { color: var(--text); background: var(--surface-2); }
+.canvas-header__menu-item.is-active span:not(.canvas-header__menu-badge) { font-weight: 600; }
+.canvas-header__menu-item .icon:last-child { margin-left: auto; color: var(--accent); }
 .canvas-header__menu-item span:not(.canvas-header__menu-badge) {
   flex: 1;
   min-width: 0;
