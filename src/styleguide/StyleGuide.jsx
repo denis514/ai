@@ -124,6 +124,14 @@ export default function StyleGuide() {
 
   return (
     <div className="sg" data-sg-theme={theme}>
+      {/* SVG-фильтр «жидкого стекла» для Hero-кнопки (.lg-btn::before) */}
+      <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+        <filter id="liquid-displace" x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.018 0.025" numOctaves="2" seed="3" result="noise" />
+          <feGaussianBlur in="noise" stdDeviation="1.2" result="softNoise" />
+          <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
       <aside className="sg-nav">
         <div className="sg-nav__head">
           <span className="sg-nav__sphere" aria-hidden="true">
@@ -246,6 +254,19 @@ export default function StyleGuide() {
             <button className="btn btn--ghost">Призрак</button>
             <button className="btn" disabled>Выключена</button>
           </div>
+          <div className="sg-row" style={{ marginTop: 22 }}>
+            <button className="lg-btn lg-btn--lg" type="button">
+              <span className="blob blob-r1" /><span className="blob blob-r2" /><span className="blob blob-p" />
+              <span className="blob blob-d" /><span className="blob blob-o" /><span className="blob blob-a" />
+              <span className="lg-btn__l">Войти в Atlas <span className="arr">→</span></span>
+            </button>
+            <button className="lg-btn" type="button">
+              <span className="blob blob-r1" /><span className="blob blob-r2" /><span className="blob blob-p" />
+              <span className="blob blob-d" /><span className="blob blob-o" /><span className="blob blob-a" />
+              <span className="lg-btn__l">Hero · обычный</span>
+            </button>
+          </div>
+          <p className="sg-hint">Hero Liquid Glass — бренд-CTA с анимацией (как «Войти в Atlas» на лендинге).</p>
         </Section>
 
         <Section id="chips" title="Чипы и бейджи"
