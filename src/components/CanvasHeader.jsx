@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
+import { useTheme } from '../hooks/useTheme.js';
 
 /**
  * CanvasHeader — плавающая шапка в левом-верхнем углу canvas (desktop).
@@ -24,6 +25,7 @@ export default function CanvasHeader({
   route
 }) {
   const t = useT();
+  const { mode, cycleMode } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const containerRef = useRef(null);
@@ -177,6 +179,31 @@ export default function CanvasHeader({
           >
             <Icon name="question" size={16} strokeWidth={1.5} />
             <span>{t('header.help')}</span>
+          </button>
+
+          <div className="canvas-header__menu-sep" role="separator" />
+
+          {/* Переключатель темы: клик циклит светлая → тёмная → как в системе.
+              Меню остаётся открытым, чтобы видеть результат. */}
+          <button
+            type="button"
+            className="canvas-header__menu-item"
+            onClick={cycleMode}
+            role="menuitem"
+            aria-label={t('profile.theme.cycle') || 'Переключить тему'}
+          >
+            <Icon
+              name={mode === 'auto' ? 'laptop' : mode === 'dark' ? 'moon' : 'sun'}
+              size={16}
+              strokeWidth={1.5}
+            />
+            <span>
+              {mode === 'auto'
+                ? (t('profile.theme.auto') || 'Как в системе')
+                : mode === 'light'
+                  ? (t('profile.theme.light') || 'Светлая тема')
+                  : (t('profile.theme.dark') || 'Тёмная тема')}
+            </span>
           </button>
         </div>
       )}

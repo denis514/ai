@@ -8,7 +8,6 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
 import { updateProfile } from '../services/profileService.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
-import { useTheme } from '../hooks/useTheme.js';
 import { useConfirm } from '../hooks/useConfirm.js';
 import { useToast } from '../hooks/useToast.js';
 
@@ -42,7 +41,6 @@ export default function ProfilePanel({
   const { user, profile, setProfile, isLoggedIn } = useAuth();
   const [langOpen, setLangOpen] = useState(false);
   const [completedOpen, setCompletedOpen] = useState(false);
-  const { theme, mode, cycleMode: cycleTheme } = useTheme();
 
   // Supabase stats (только когда залогинен)
   const supaStats = useSupabaseStats(user?.id || null);
@@ -479,25 +477,8 @@ export default function ProfilePanel({
         </section>
       )}
 
-      {/* ── LANGUAGE + THEME ── */}
+      {/* ── LANGUAGE ── (тема переехала в меню «Atlas» слева) */}
       <div className="profile-panel__lang-bar">
-        <button
-          type="button"
-          className="profile-panel__theme-btn"
-          onClick={cycleTheme}
-          title={mode === 'auto'
-            ? (t('profile.theme.auto') || 'Как в системе')
-            : mode === 'light'
-              ? (t('profile.theme.light') || 'Светлая')
-              : (t('profile.theme.dark') || 'Тёмная')}
-          aria-label={t('profile.theme.cycle') || 'Переключить тему'}
-        >
-          <Icon
-            name={mode === 'auto' ? 'laptop' : mode === 'dark' ? 'moon' : 'sun'}
-            size={16}
-            strokeWidth={1.5}
-          />
-        </button>
         <div className="profile-panel__lang-picker">
           <button
             type="button"
