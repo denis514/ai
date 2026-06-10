@@ -5321,6 +5321,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .btn:hover:not(:disabled) { background: var(--surface-2); }
 .btn:active:not(:disabled) { transform: translateY(1px); }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:focus-visible { outline: var(--focus-width) solid var(--focus-color); outline-offset: var(--focus-offset); }
 .btn--ghost {
   background: transparent;
 }
@@ -5347,7 +5348,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   transition: background .15s, border-color .15s;
 }
 .ctrl__box--radio { border-radius: 50%; }
-.ctrl input:focus-visible + .ctrl__box { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ctrl input:focus-visible + .ctrl__box { outline: var(--focus-width) solid var(--focus-color); outline-offset: var(--focus-offset); }
 .ctrl input:checked + .ctrl__box { background: var(--accent); border-color: var(--accent); }
 .ctrl__box svg { width: 11px; height: 11px; color: #fff; opacity: 0; transition: opacity .12s; }
 .ctrl input:checked + .ctrl__box svg { opacity: 1; }
@@ -5362,7 +5363,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   transition: border-color .15s, color .15s;
 }
 .link:hover { border-bottom-color: currentColor; }
-.link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+.link:focus-visible { outline: var(--focus-width) solid var(--focus-color); outline-offset: var(--focus-offset); border-radius: 2px; }
 .link--muted { color: var(--text-muted); }
 .link--muted:hover { color: var(--text); }
 
@@ -8249,6 +8250,10 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .inline-link:active {
   background: color-mix(in srgb, var(--accent, #6f5dde) 28%, transparent);
+}
+.inline-link:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: var(--focus-offset);
 }
 .inline-link__icon {
   display: inline-flex;

@@ -18,6 +18,20 @@
   background-position: 0 0;
 }
 
+/* ── Единое кольцо фокуса (единая правда для клавиатурной доступности) ──
+   Значение совпадает с принятым в приложении (синяя линия связи).
+   Меняешь здесь — обновляется везде, где используется var(--focus-*).
+   Утилита .focus-ring навешивает кольцо на :focus-visible. */
+:root {
+  --focus-color: var(--line);
+  --focus-width: 2px;
+  --focus-offset: 2px;
+}
+.focus-ring:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: var(--focus-offset);
+}
+
 html,
 body,
 #root {
