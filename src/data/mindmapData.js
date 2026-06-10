@@ -2394,6 +2394,16 @@ export const mindmapData = {
           ],
           "children": [
             {
+              "id": "en-readiness-assessment",
+              "icon": "clipboard",
+              "category": "transformation"
+            },
+            {
+              "id": "en-adoption-roadmap",
+              "icon": "compass",
+              "category": "transformation"
+            },
+            {
               "id": "en-transformation-strategy",
               "icon": "expand",
               "category": "transformation",
@@ -2807,6 +2817,11 @@ export const mindmapData = {
         "uc-ai-vendor-selection"
       ],
       "children": [
+        {
+          "id": "uc-ai-customer-assistant",
+          "icon": "robot",
+          "category": "use-cases"
+        },
         {
           "id": "uc-ai-reporting-launch",
           "icon": "clipboard",
