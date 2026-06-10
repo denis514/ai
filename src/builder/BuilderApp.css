@@ -43,11 +43,40 @@
 
 /* Левая зона — единая pill-обёртка как в Atlas: [○ back] [текст].
    Высота 40px, заголовок справа внутри обёртки. */
-.builder-app .builder-header__left {
+/* Группа левой части: плашка + (при свёрнутой панели) независимая кнопка справа */
+.builder-app .builder-header__left-group {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   justify-self: start;
+  min-width: 0;
+}
+/* Независимая круглая кнопка показа левой панели — стиль кнопок правой части */
+.builder-app .builder-header__sidebtn {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.08), 0 1px 3px rgba(15, 15, 15, 0.04);
+  transition: background .12s, color .12s, border-color .12s;
+}
+.builder-app .builder-header__sidebtn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.builder-app .builder-header__left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   min-width: 0;
   height: 44px;
   padding: 4px 18px 4px 4px;

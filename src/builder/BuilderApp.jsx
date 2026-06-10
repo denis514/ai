@@ -1371,39 +1371,43 @@ function BuilderAppInner() {
       </svg>
       {/* ── Header ─────────────────────────────────────────────── */}
       <header className="builder-header">
-        <div className="builder-header__left">
-          <button
-            type="button"
-            className="builder-header__back"
-            onClick={handleAtlasBack}
-            aria-label={t('builder.backToAtlas') || 'Back to Atlas'}
-          >
-            <Icon name="arrow-left" size={16} strokeWidth={1.75} />
-            <span>{t('builder.backToAtlas') || 'Atlas'}</span>
-          </button>
+        <div className="builder-header__left-group">
+          <div className="builder-header__left">
+            <button
+              type="button"
+              className="builder-header__back"
+              onClick={handleAtlasBack}
+              aria-label={t('builder.backToAtlas') || 'Back to Atlas'}
+            >
+              <Icon name="arrow-left" size={16} strokeWidth={1.75} />
+              <span>{t('builder.backToAtlas') || 'Atlas'}</span>
+            </button>
 
+            <div className="builder-header__title">
+              <PlanetLogo size={22} className="builder-header__logo" />
+              <strong>Agent Builder</strong>
+              <span className="builder-header__beta">BETA</span>
+              {nodes.length > 0 && (
+                <span className="builder-header__counter">
+                  {nodes.length} {t(nodes.length === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || (nodes.length === 1 ? 'node' : 'nodes')}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Свёрнута левая панель → независимая круглая кнопка справа от плашки
+              (в стиле кнопок правой части). */}
           {!toolboxOpen && (
             <button
               type="button"
-              className="builder-btn builder-btn--ghost"
+              className="builder-header__sidebtn"
               onClick={() => setToolboxOpen(true)}
               title={t('builder.header.toggleToolbox') || 'Показать узлы'}
               aria-label={t('builder.header.toggleToolbox') || 'Показать узлы'}
             >
-              <Icon name="panel-left" size={15} strokeWidth={1.6} />
+              <Icon name="panel-left" size={16} strokeWidth={1.6} />
             </button>
           )}
-
-          <div className="builder-header__title">
-            <PlanetLogo size={22} className="builder-header__logo" />
-            <strong>Agent Builder</strong>
-            <span className="builder-header__beta">BETA</span>
-            {nodes.length > 0 && (
-              <span className="builder-header__counter">
-                {nodes.length} {t(nodes.length === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || (nodes.length === 1 ? 'node' : 'nodes')}
-              </span>
-            )}
-          </div>
         </div>
 
         {/* Центр: переключатель «Мои workflow» (имя текущей схемы + список) */}
