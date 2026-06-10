@@ -2536,5 +2536,50 @@
     "impact": "Full control and observation of the agent from anywhere — and the ability to step in quickly.",
     "example": "You open the agent's screen in the browser via noVNC and see in real time what it is doing.",
     "mistakes": "Exposing remote access to the internet without a password/key and IP restriction — a direct path to getting the machine hacked."
+  },
+  "b-hallucinations": {
+    "title": "Hallucinations",
+    "what": "A hallucination is when Claude confidently states a plausible but invented fact: a non-existent quote, link, number, or function.",
+    "why": "The model is tuned to give a coherent answer, not to stay silent when unsure. A confident tone doesn't mean it's right.",
+    "when": "Always with facts, names, numbers, quotes, links, and versions — especially where you can't quickly verify.",
+    "impact": "Once you build the habit of checking, you stop carrying made-up details into your work and use Claude where it is strong.",
+    "example": "You ask for a list of articles and three of five links lead nowhere. Fix: turn on web search or ask Claude to flag what needs checking.",
+    "mistakes": "Copying a quote or figure from an answer without checking the source — a common way to publish an error."
+  },
+  "b-good-prompt": {
+    "title": "A good prompt",
+    "what": "The basic principle of a good prompt: give a role, context, a specific task, and the desired answer format — instead of one vague phrase.",
+    "why": "Answer quality is mostly set by prompt quality. \"Tell me about marketing\" and a structured prompt give very different results.",
+    "when": "From your first conversation. It's the foundation for every prompt technique.",
+    "impact": "You stop rephrasing three times — the first attempt returns an answer of the right depth and shape.",
+    "example": "Instead of \"help with an email\" — \"You are an editor. Rewrite this client email: more polite but shorter, max 5 sentences, no jargon.\"",
+    "mistakes": "Throwing a one-line request with no context or format, then being surprised by a watery answer."
+  },
+  "i-when-where": {
+    "title": "Where each instruction goes",
+    "what": "A priority map: account-wide instructions → Project instructions → CLAUDE.md in Claude Code. A narrower level extends or overrides a wider one.",
+    "why": "Beginners write the same thing in three places, or wonder why a global setting \"does not work\" inside a Project.",
+    "when": "Before writing any standing instruction — decide which level it belongs to.",
+    "impact": "You stop duplicating rules and hitting conflicts: general lives globally, specific lives in a Project or CLAUDE.md.",
+    "example": "\"Answer in Russian\" — global. \"You are an expert on our product\" — in the Project. \"We use Vitest for tests\" — in the project CLAUDE.md.",
+    "mistakes": "Duplicating global rules into every Project, then not understanding why editing the global one changes nothing inside the project."
+  },
+  "pr-constraints": {
+    "title": "Constraints and taboos",
+    "what": "An explicit list of what the model must NOT do: no preamble, no more than 5 points, do not invent numbers, do not change the format.",
+    "why": "A ban works more precisely than praise: \"no preamble\" is more reliable than \"be concise\". The model grasps a boundary better than a wish.",
+    "when": "When answers keep drifting: extra intros, filler, invented facts, wrong length or tone.",
+    "impact": "A couple of precise bans remove most of the typical \"noise\" in an answer and make the result predictable.",
+    "example": "Constraints: no intros or \"hope this helps\" lines; max 5 points; if data is missing, write \"I do not know\" instead of inventing.",
+    "mistakes": "Writing bans vaguely (\"do not write badly\") — the model will not get the boundary. A ban must name a specific action."
+  },
+  "pr-antipatterns": {
+    "title": "Prompt anti-patterns",
+    "what": "Common request mistakes that make answers \"bad\": a one-liner \"do it well\", a wall of text with no structure, polite noise, \"think step by step\" where the model already reasons.",
+    "why": "You learn fastest from failures: seeing why a prompt did not work stops you repeating it.",
+    "when": "When the answer disappoints but you cannot tell why — check the anti-pattern list before blaming the model.",
+    "impact": "Removing 2-3 anti-patterns often turns the same prompt from \"useless\" into \"working\" without changing the model.",
+    "example": "Bad: \"write about marketing\". Good: \"You are a marketer. 3 post ideas for a B2B LinkedIn audience, 2 sentences each, no hashtags\".",
+    "mistakes": "Adding \"this is very important\" and \"please try hard\" — a modern model ignores this and the prompt just bloats."
   }
 }

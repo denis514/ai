@@ -842,7 +842,7 @@
     "why": "Perus «luonne»: kieli, sävy, muoto — ei tarvitse toistaa jokaisessa Projectissä.",
     "when": "Kerran — tilin asetuksessa.",
     "impact": "Ilman niitä — jokainen uusi chat alkaa nollasta tyylin osalta.",
-    "example": "Always answer in Russian. Be concise. Use bullet points by default.",
+    "example": "Vastaa aina suomeksi. Ole ytimekäs. Käytä oletuksena luettelomerkkejä.",
     "mistakes": "Olla ristiriidassa Project instructions kanssa — Project voittaa, ja globaalisi lakkaa toimimasta siellä."
   },
   "i-project": {
@@ -1753,5 +1753,50 @@
     "impact": "Täysi hallinta ja agentin tarkkailu mistä tahansa — ja mahdollisuus puuttua nopeasti.",
     "example": "Avaat agentin näytön selaimessa noVNC:n kautta ja näet reaaliajassa, mitä se tekee.",
     "mistakes": "Etäkäytön avaaminen internetiin ilman salasanaa tai avainta ja IP-rajausta — suora tie koneen murtamiseen."
+  },
+  "b-hallucinations": {
+    "title": "Hallusinaatiot",
+    "what": "Hallusinaatio on, kun Claude esittää itsevarmasti uskottavan mutta keksityn faktan: olemattoman sitaatin, linkin, luvun tai funktion.",
+    "why": "Malli on viritetty antamaan johdonmukainen vastaus, ei vaikenemaan epävarmuudessa. Itsevarma sävy ei tarkoita, että se on oikeassa.",
+    "when": "Aina faktojen, nimien, lukujen, sitaattien, linkkien ja versioiden kanssa — etenkin siellä, missä et voi tarkistaa nopeasti.",
+    "impact": "Kun opit tarkistamaan, et enää siirrä keksittyjä yksityiskohtia työhösi ja käytät Claudea siellä, missä se on vahva.",
+    "example": "Pyydät listan artikkeleista ja kolme viidestä linkistä ei johda mihinkään. Korjaus: kytke verkkohaku tai pyydä Claudea merkitsemään, mikä vaatii tarkistusta.",
+    "mistakes": "Kopioida sitaatti tai luku vastauksesta tarkistamatta lähdettä — yleinen tapa julkaista virhe."
+  },
+  "b-good-prompt": {
+    "title": "Hyvä kehote",
+    "what": "Hyvän kehotteen perusperiaate: anna rooli, konteksti, tarkka tehtävä ja haluttu vastauksen muoto — yhden epämääräisen lauseen sijaan.",
+    "why": "Vastauksen laatu määräytyy pitkälti kehotteen laadusta. \"Kerro markkinoinnista\" ja jäsennelty kehote antavat hyvin eri tuloksen.",
+    "when": "Heti ensimmäisestä keskustelusta. Se on perusta kaikille kehotetekniikoille.",
+    "impact": "Et muotoile kysymystä kolmesti — ensimmäinen yritys tuottaa oikean syvyisen ja muotoisen vastauksen.",
+    "example": "\"Auta sähköpostissa\" sijaan: \"Olet toimittaja. Kirjoita tämä asiakaskirje uudelleen: kohteliaammin mutta lyhyemmin, enintään 5 lausetta, ilman kapulakieltä.\"",
+    "mistakes": "Heittää yhden rivin pyyntö ilman kontekstia ja muotoa, ja ihmetellä sitten vastauksen vetisyyttä."
+  },
+  "i-when-where": {
+    "title": "Minne mikäkin ohje",
+    "what": "Prioriteettikartta: tilin laajuiset ohjeet → Project-ohjeet → CLAUDE.md Claude Codessa. Kapeampi taso täydentää tai ohittaa laajemman.",
+    "why": "Aloittelijat kirjoittavat saman kolmeen paikkaan tai ihmettelevät, miksi globaali asetus \"ei toimi\" Projectin sisällä.",
+    "when": "Ennen kuin kirjoitat pysyvän ohjeen — päätä, mille tasolle se kuuluu.",
+    "impact": "Et enää monista sääntöjä etkä törmää ristiriitoihin: yleinen elää globaalisti, erityinen Projectissa tai CLAUDE.md:ssä.",
+    "example": "\"Vastaa venäjäksi\" — globaali. \"Olet tuotteemme asiantuntija\" — Projectissa. \"Käytämme testeihin Vitestiä\" — projektin CLAUDE.md:ssä.",
+    "mistakes": "Monistaa globaalit säännöt jokaiseen Projectiin, eikä sitten ymmärrä, miksi globaalin muokkaus ei vaikuta projektin sisällä."
+  },
+  "pr-constraints": {
+    "title": "Rajoitukset ja kiellot",
+    "what": "Selkeä lista siitä, mitä mallin EI pidä tehdä: ei alkupuhetta, ei yli viittä kohtaa, ei keksittyjä lukuja, ei muodon muuttamista.",
+    "why": "Kielto toimii täsmällisemmin kuin kehu: \"ei alkupuhetta\" on luotettavampi kuin \"ole ytimekäs\". Malli ymmärtää rajan paremmin kuin toiveen.",
+    "when": "Kun vastaukset karkaavat toistuvasti: ylimääräiset johdannot, täytesana, keksityt faktat, väärä pituus tai sävy.",
+    "impact": "Pari täsmällistä kieltoa poistaa suurimman osan vastauksen tyypillisestä \"kohinasta\" ja tekee tuloksesta ennustettavan.",
+    "example": "Rajoitukset: ei johdantoja eikä \"toivottavasti tästä on apua\" -lauseita; enintään 5 kohtaa; jos tieto puuttuu, kirjoita \"en tiedä\" äläkä keksi.",
+    "mistakes": "Kirjoittaa kiellot epämääräisesti (\"älä kirjoita huonosti\") — malli ei tajua rajaa. Kiellon pitää nimetä tarkka toiminto."
+  },
+  "pr-antipatterns": {
+    "title": "Kehotteiden anti-patternit",
+    "what": "Yleiset pyyntövirheet, jotka tekevät vastauksesta \"huonon\": yhden rivin \"tee hyvin\", jäsentymätön tekstiseinä, kohtelias kohina, \"ajattele askel askeleelta\" siellä, missä malli jo päättelee.",
+    "why": "Opit nopeimmin epäonnistumisista: kun näet, miksi kehote ei toiminut, et toista virhettä.",
+    "when": "Kun vastaus ei tyydytä etkä tiedä miksi — tarkista anti-pattern-lista ennen kuin syytät mallia.",
+    "impact": "Kun poistat 2-3 anti-patternia, sama kehote muuttuu usein \"hyödyttömästä\" \"toimivaksi\" ilman mallin vaihtoa.",
+    "example": "Huono: \"kirjoita markkinoinnista\". Hyvä: \"Olet markkinoija. 3 julkaisuideaa B2B-yleisölle LinkedIniin, 2 lausetta kukin, ei hashtageja\".",
+    "mistakes": "Lisätä \"tämä on erittäin tärkeää\" ja \"yritä parhaasi\" — moderni malli ohittaa tämän ja kehote vain paisuu."
   }
 }

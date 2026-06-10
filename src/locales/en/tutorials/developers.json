@@ -9911,7 +9911,7 @@
     "title": "Rate limits API: TPM, RPM and tiers",
     "subtitle": "How to keep growth from turning prod into a 429 cascade",
     "totalTime": "6 steps",
-    "whatItIs": "The Anthropic API caps load with three metrics: RPM (requests per minute), TPM (input+output tokens per minute) and a daily token limit. The actual numbers depend on your account tier (Tier 1 → Tier 4), which grows automatically with cumulative spend. When you exceed them, the API returns 429 Too Many Requests with a retry-after header. This course teaches you to design integrations so spikes and batch loads don't take the service down. API context lives in [[node:pl-api|Platform: API]] and [[tutorial:api-basics|API basics]].",
+    "whatItIs": "The Anthropic API caps load with three metrics: RPM (requests per minute), TPM (input+output tokens per minute) and a daily token limit. The actual numbers depend on your account tier (Tier 1 → Tier 4), which grows automatically with cumulative spend. On excess the API returns 429 Too Many Requests with a retry-after header. This course teaches you to design integrations so spikes and batch loads don't take the service down. API context lives in [[node:pl-api|Platform: API]] and [[tutorial:api-basics|API basics]].",
     "approach": "We go from the limit model to practice: first what RPM/TPM/daily actually count and how tiers work, then reading 429 and retry-after, building retry with exponential backoff and jitter, budgeting an 80% buffer, moving offline load to the Message Batches API, and finally planning a tier upgrade against forecast traffic. Every step is a working technique, not theory.",
     "outcomes": [
       "You understand RPM vs TPM vs daily limit and which one you'll hit first",
@@ -9938,7 +9938,7 @@
       "Ignoring 429 without backoff — blind retries kill your own limit and create an error cascade",
       "Not reading the retry-after header — you retry before the limit has cleared",
       "Retry without jitter — all workers retry in sync and hit the limit again (thundering herd)",
-      "Not budgeting a buffer (running at 100% of the limit) — any spike degrades it instantly",
+      "Not budgeting a buffer (running at 100% of the limit) — any spike breaks instantly",
       "Not knowing about the Message Batches API — losing the 50% discount and a separate limit on offline load"
     ],
     "exercises": [
@@ -9972,7 +9972,7 @@
       "pl-rate-2": {
         "title": "Learn to read 429 and retry-after",
         "time": "",
-        "why": "429 isn't an app error — it's a 'wait' signal. The retry-after header says exactly how long. Blind retries without it kill the limit and extend downtime.",
+        "why": "429 isn't an app error, it's a 'wait' signal. The retry-after header says exactly how long. Blind retries without it kill the limit and extend downtime.",
         "instructions": [
           "Catch the 429 status separately from other 4xx/5xx in code",
           "Read the retry-after header — it's the seconds until the next safe attempt",

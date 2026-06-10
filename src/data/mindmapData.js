@@ -201,6 +201,16 @@ export const mindmapData = {
           "minLevel": "beginner",
           "children": [
             {
+              "id": "b-good-prompt",
+              "icon": "target",
+              "category": "foundation"
+            },
+            {
+              "id": "b-hallucinations",
+              "icon": "warning",
+              "category": "foundation"
+            },
+            {
               "id": "b-claude",
               "icon": "sparkles",
               "category": "foundation"
@@ -485,6 +495,11 @@ export const mindmapData = {
           ],
           "children": [
             {
+              "id": "i-when-where",
+              "icon": "compass",
+              "category": "configuration"
+            },
+            {
               "id": "i-global",
               "icon": "globe",
               "category": "configuration",
@@ -757,6 +772,16 @@ export const mindmapData = {
           "category": "prompts",
           "minLevel": "intermediate",
           "children": [
+            {
+              "id": "pr-constraints",
+              "icon": "unlink",
+              "category": "prompts"
+            },
+            {
+              "id": "pr-antipatterns",
+              "icon": "warning",
+              "category": "prompts"
+            },
             {
               "id": "pr-4d",
               "icon": "compass",

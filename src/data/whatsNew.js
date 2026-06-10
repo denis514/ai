@@ -114,7 +114,6 @@ export const WHATS_NEW = {
   'cap-files': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
   'cap-computer': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
   'cap-citations': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
-  'i-global': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
   'i-project': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
   'i-style': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
   'i-templates': { date: '2026-06-04', type: 'new', kind: 'tutorial' },
@@ -276,6 +275,12 @@ export const WHATS_NEW = {
   'claude-for-educators': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
+  'i-global': { date: '2026-06-10', type: 'updated' },
+  'b-hallucinations': { date: '2026-06-10', type: 'new' },
+  'b-good-prompt': { date: '2026-06-10', type: 'new' },
+  'i-when-where': { date: '2026-06-10', type: 'new' },
+  'pr-constraints': { date: '2026-06-10', type: 'new' },
+  'pr-antipatterns': { date: '2026-06-10', type: 'new' },
   'pl-desktop': { date: '2026-06-04', type: 'updated' },
   'sys-agent-sandbox': { date: '2026-06-03', type: 'new' },
   'sas-why-isolation': { date: '2026-06-03', type: 'updated' },
