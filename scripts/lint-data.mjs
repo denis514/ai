@@ -442,8 +442,16 @@ const fiAll = [
 ];
 
 const glossaryTerms = Array.isArray(glossary.terms) ? glossary.terms : [];
+// Имена собственные / бренды: в живом тексте используется и полная, и краткая
+// форма (RU «Atlas», FI «Atlasin», «Atlas-solmun»), поэтому счётчики между
+// языками естественно расходятся. Паритет для них не проверяем — это не перевод.
+const BRAND_TERMS = new Set([
+  '105 Atlas', 'Atlas', 'Claude', 'Claude.ai', 'Claude Code', 'Anthropic',
+  'ChatGPT', 'CLAUDE.md', 'Artifact', 'Artifacts',
+]);
 let glossaryDropped = 0;
 for (const term of glossaryTerms) {
+  if (BRAND_TERMS.has(term)) continue; // бренды/имена собственные — без проверки паритета
   const ruN = countTerm(ruAll, term);
   if (ruN === 0) continue; // термин не используется в текущем контенте — норма
   const fiN = countTerm(fiAll, term);
