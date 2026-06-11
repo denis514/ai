@@ -83,11 +83,11 @@
   "b-knowledge": {
     "title": "Knowledge cutoff",
     "what": "У каждой модели есть **knowledge cutoff** — дата отсечения обучающих данных. О событиях, ценах, релизах продуктов **после** этой даты модель не знает (или знает неполно).\n\nCutoff отличается между моделями и обновляется при выходе новых версий. На момент написания текущие cutoff'ы (проверь актуальные на anthropic.com):\n- Claude Opus 4 / Sonnet 4: early 2025\n- Claude Haiku 4.5: early 2025\n- Старые модели (3.5/3.7): ранее\n\n**Trick:** cutoff — это не «полный stop». Модель может знать про события за пару месяцев до cutoff неполно (под-репрезентация в training data).",
-    "why": "Это причина почему **нельзя доверять Claude свежие факты без верификации**.\n\nДля product team это означает: AI-workflow который оперирует «текущим состоянием рынка», ценами конкурентов, новыми законами — **обязан** использовать web search или RAG над свежими источниками. Просто prompt → Claude → answer без свежих данных = production bug.",
+    "why": "Это причина почему **нельзя доверять Claude свежие факты без верификации**.\n\nДля product team это означает: AI-workflow который оперирует «текущим состоянием рынка», ценами конкурентов, новыми законами — **обязан** использовать web search или RAG над свежими источниками. Просто prompt, затем Claude, затем answer без свежих данных = production bug.",
     "when": "**Помни про cutoff когда:**\n- Свежие новости, релизы, статьи (последние 6-12 месяцев)\n- Цены, тарифы, лимиты (любого SaaS)\n- Законы, регуляции (меняются ежегодно)\n- Версии библиотек, API breaking changes\n- Анализ конкурентов\n- Любые time-sensitive факты\n\n**Cutoff не важен когда:**\n- Принципы, концепты, паттерны (стабильны годами)\n- Грамматика, перевод, общее писание\n- Math, logic, алгоритмы\n- Historical analysis где данные внутри cutoff",
     "impact": "**Что меняется при правильном понимании cutoff:**\n- Архитектура AI workflow: всегда добавляешь свежий context при time-sensitive задачах\n- Trust calibration: Claude **уверенно** говорит про события после cutoff (training fact) — это False Confidence, не правда\n- Tool design: [[node:cap-search|Web search]] tool становится обязательным компонентом, не optional\n- Quality metric: «факт-чек» становится отдельным шагом workflow, не trust на default\n\nDeprecate-watch: knowledge cutoff каждой модели меняется при release новой версии. Обновляй этот узел при каждом major Claude release.",
     "example": "**Antipaттерн:**\n```\nuser: «Что сейчас стоит Claude Pro?»\nClaude: «$20/мес» ← ответ из training, может быть устарел\n```\n\n**Правильный паттерн:**\n```\nuser query: «Что сейчас стоит Claude Pro?»\n  ↓\nWorkflow:\n  1. Web search «Claude Pro pricing» (use [[node:cap-search|cap-search]])\n  2. Fetch anthropic.com/pricing\n  3. Pass actual price as context\n  ↓\nClaude: «Согласно текущей странице — $X/мес. (sourced)»\n```\n\nЕсли user работает в IDE, можно проще: добавь в system prompt дату сегодня + источник правды для критичных фактов.",
-    "mistakes": "**1. Спрашивать «сколько сейчас стоит X»** — Claude ответит уверенно с training data, которая может быть устаревшей на 6-18 месяцев. Без свежего context = false answer с high confidence.\n\n**2. Не маркировать time-sensitive content** — если в Atlas пишешь «Anthropic выпустил X», без даты это станет устарелым в течение года. **Правильно**: «На момент написания (2026-05): X». См. правило `docs/maintenance.md` и deprecate-watch таблицу.\n\n**3. Confusing cutoff с context** — cutoff = что модель знает изначально. Context = что ты ей даёшь в prompt. Если в prompt вложить свежую статью — Claude использует её, **независимо** от cutoff.\n\n**4. Игнорирование cutoff для библиотек** — «расскажи новейшие React 19 features» → Claude знает только то что было в training. Для актуального — Web search или фокус на stable patterns."
+    "mistakes": "**1. Спрашивать «сколько сейчас стоит X»** — Claude ответит уверенно с training data, которая может быть устаревшей на 6-18 месяцев. Без свежего context = false answer с high confidence.\n\n**2. Не маркировать time-sensitive content** — если в Atlas пишешь «Anthropic выпустил X», без даты это станет устарелым в течение года. **Правильно**: «На момент написания (2026-05): X». См. правило `docs/maintenance.md` и deprecate-watch таблицу.\n\n**3. Confusing cutoff с context** — cutoff = что модель знает изначально. Context = что ты ей даёшь в prompt. Если в prompt вложить свежую статью — Claude использует её, **независимо** от cutoff.\n\n**4. Игнорирование cutoff для библиотек** — «расскажи новейшие React 19 features», и Claude знает только то что было в training. Для актуального — Web search или фокус на stable patterns."
   },
   "b-help": {
     "title": "Где найти помощь",
@@ -131,12 +131,12 @@
     "why": "Половина возможностей Claude ([[node:claude-code|Claude Code]], MCP, скрипты, установка пакетов) живёт в терминале. Без него ты ограничен только [[node:pl-web-setup|claude.ai]].",
     "when": "В первый раз — за 5 минут до первой команды. «Чёрный экран» — не сложнее ввода текста в чат, просто другие правила.",
     "impact": "Снимается психологический блок. Терминал — рабочий инструмент уровня сложности «блокнота», а не «программирования».",
-    "example": "Открыл Terminal.app → ввёл `pwd` → увидел /Users/имя → я понимаю, где я. Дальше можно `mkdir my-project`.",
+    "example": "Открыл Terminal.app, ввёл `pwd`, увидел /Users/имя — я понимаю, где я. Дальше можно `mkdir my-project`.",
     "mistakes": "Бояться «сломать компьютер». Терминал в обычном режиме не делает ничего непоправимого. Опасны только конкретные команды типа rm -rf / — и их легко не запускать."
   },
   "fs-folder-create": {
     "title": "Создать папку",
-    "what": "Два способа сделать новую папку. Через Finder/Explorer: правый клик → New Folder. Через терминал: `mkdir имя-папки`. Оба валидны, оба создают одно и то же. Выбирай по настроению.",
+    "what": "Два способа сделать новую папку. Через Finder/Explorer: правый клик, затем New Folder. Через терминал: `mkdir имя-папки`. Оба валидны, оба создают одно и то же. Выбирай по настроению.",
     "why": "Папка = контейнер для одного проекта. Без неё файлы валяются на рабочем столе, и через неделю ты не помнишь, какие к чему.",
     "when": "Каждый раз, когда начинаешь новую тему (новая работа с [[node:claude-code|Claude Code]], новый набор файлов на анализ, новый эксперимент).",
     "impact": "Чёткая граница: «этот проект — эта папка». Удалить проект = удалить папку, без следов. Скопировать проект = скопировать папку.",
@@ -149,7 +149,7 @@
     "why": "Без навигации ты не сможешь сказать [[node:claude-code|Claude Code]] «работай вот здесь». А Claude Code всегда работает в текущей папке (той, что показывает pwd).",
     "when": "Перед каждой сессией [[node:claude-code|Claude Code]]. Перед установкой зависимостей. Перед запуском скриптов.",
     "impact": "Ты всегда знаешь, где ты, и можешь быстро прыгнуть куда надо. 5 секунд против 5 минут «куда меня занесло».",
-    "example": "`cd ~/projects/atlas` → `pwd` показывает /Users/denisa/projects/atlas → `ls` показывает src/, [[node:cc-md|CLAUDE.md]], package.json. Я готов запустить claude.",
+    "example": "`cd ~/projects/atlas`, затем `pwd` показывает /Users/denisa/projects/atlas, затем `ls` показывает src/, [[node:cc-md|CLAUDE.md]], package.json. Я готов запустить claude.",
     "mistakes": "Запускать команды, не проверив `pwd`, — потом удивляться, почему файлы создались «непонятно где». Всегда проверь, где ты, перед тем как что-то делать."
   },
   "fs-install-node": {
@@ -158,7 +158,7 @@
     "why": "Без Node.js не работает npm install, а значит — не работает [[node:claude-code|Claude Code]]. Это базовый prerequisite перед любой локальной AI-работой.",
     "when": "Один раз — на каждом компьютере, где будешь использовать [[node:claude-code|Claude Code]]. Версии 18+ достаточно.",
     "impact": "После установки ты можешь поставить любой npm-пакет одной командой. Открывается доступ к [[node:claude-code|Claude Code]], MCP-серверам, инструментам разработки.",
-    "example": "На mac в терминале: `brew install node` → ждёшь 30 секунд → `node -v` → видишь v20.11.0. Готово. Дальше `npm install -g @anthropic-ai/claude-code`.",
+    "example": "На mac в терминале: `brew install node`, затем ждёшь 30 секунд, затем `node -v`, затем видишь v20.11.0. Готово. Дальше `npm install -g @anthropic-ai/claude-code`.",
     "mistakes": "Установить старую версию (например, 14.x) и потом удивляться ошибкам «engine not supported». Всегда ставь свежую LTS-версию."
   },
   "platform": {
@@ -176,7 +176,7 @@
     "why": "Чтобы платить за реальный уровень использования. Нижний план = упираешься в лимиты в середине дня. Завышенный = переплата за пустоту.\n\nКлючевая ловушка: Free создаёт ложное впечатление возможностей. Серьёзные демо упираются в квоту через час и формируют ошибочное мнение «Claude слаб».",
     "when": "**Free** — первые 1-2 дня знакомства, не для работы.\n**Pro** — ежедневное использование индивидуально (5-20 длинных сессий в неделю).\n**Max** — если регулярно упираешься в недельный лимит Opus на Pro.\n**Team** — Projects между ≥3 коллегами + общий биллинг.\n**Enterprise** — compliance / audit log / SSO критичны.",
     "impact": "Правильный план окупается за 1-2 недели через снятие friction от лимитов и доступ к Opus. Неправильный — либо платишь за неиспользуемые места (Team на двоих), либо ежедневно теряешь время в ожидании reset (Free для работы).",
-    "example": "«Работаю с Claude 3-5 часов в день: Sonnet на код + 2-3 длинные сессии Opus в неделю. Pro или Max?» → Pro, пока не упрёшься в weekly-лимит Opus. Если упираешься регулярно — Max.",
+    "example": "«Работаю с Claude 3-5 часов в день: Sonnet на код + 2-3 длинные сессии Opus в неделю. Pro или Max?» Ответ: Pro, пока не упрёшься в weekly-лимит Opus. Если упираешься регулярно — Max.",
     "mistakes": "❌ Team когда команда < 3 человек — переплата.\n❌ Сидеть на Free «пока не разберусь» — лимиты не дают разобраться.\n❌ Платить за Pro и работать только на Sonnet — Opus оправдывает разницу в цене.\n\n*deprecate-watch: точные цены и состав планов Anthropic меняет 1-2 раза в год — проверять на anthropic.com/pricing.*"
   },
   "pl-limits": {
@@ -185,7 +185,7 @@
     "why": "Лимиты — не баг, а защита инфраструктуры от перегрузки. Понимание устройства окна (rolling, не календарное) меняет планирование: не «жду понедельника», а «работаю короткими спринтами с перерывами».",
     "when": "Замечаешь «Claude притормаживает» или появляется warning о приближении к лимиту — обычно это 5-часовое окно. Если упираешься несколько раз в неделю на Opus — это weekly-лимит, повод задуматься о Max.",
     "impact": "Понимание лимита позволяет распределять тяжёлые запросы по дню, переключаться на Sonnet для рутины и оставлять Opus на сложные задачи. Результат — стабильная продуктивность без «стен» в середине дня.",
-    "example": "«Сегодня 3 длинные сессии Opus с обработкой 100k токенов каждая. Когда лучше делать четвёртую — сейчас или утром?» → Утром, иначе упрёшься в 5-часовое окно и потеряешь 2-3 часа.",
+    "example": "«Сегодня 3 длинные сессии Opus с обработкой 100k токенов каждая. Когда лучше делать четвёртую — сейчас или утром?» Ответ: Утром, иначе упрёшься в 5-часовое окно и потеряешь 2-3 часа.",
     "mistakes": "❌ Сидеть на Opus для всех задач — самый быстрый способ исчерпать квоту. Sonnet справится с 80% работы.\n❌ Считать что лимит «сбросится в полночь» — он rolling, не календарный.\n❌ Не следить за индикатором использования в UI — он показывает приближение к лимиту заранее.\n\n*deprecate-watch: точные числа и формулы расчёта Anthropic меняет регулярно. Структура (5h + weekly) стабильна.*"
   },
   "pl-models": {
@@ -208,20 +208,20 @@
   },
   "pl-rate": {
     "title": "Rate limits API",
-    "what": "У Anthropic API три типа ограничений:\n\n- **RPM** (requests per minute) — количество запросов в минуту\n- **TPM** (tokens per minute) — суммарный объём токенов (input + output) в минуту\n- **Daily tokens** — суммарный объём токенов в сутки\n\nЛимиты зависят от **tier-а аккаунта** (Tier 1 → Tier 4), который растёт автоматически по мере использования и суммарных затрат. Для скачков нагрузки можно подать заявку на повышение tier.\n\nПри превышении API возвращает **429 Too Many Requests** с заголовком `retry-after`.\n\n*На момент написания (2026-05) актуальные числа лимитов по tier-ам — на [docs.anthropic.com/en/api/rate-limits](https://docs.anthropic.com/en/api/rate-limits). Anthropic корректирует их по мере роста инфраструктуры.*",
+    "what": "У Anthropic API три типа ограничений:\n\n- **RPM** (requests per minute) — количество запросов в минуту\n- **TPM** (tokens per minute) — суммарный объём токенов (input + output) в минуту\n- **Daily tokens** — суммарный объём токенов в сутки\n\nЛимиты зависят от **tier-а аккаунта** (с Tier 1 до Tier 4), который растёт автоматически по мере использования и суммарных затрат. Для скачков нагрузки можно подать заявку на повышение tier.\n\nПри превышении API возвращает **429 Too Many Requests** с заголовком `retry-after`.\n\n*На момент написания (2026-05) актуальные числа лимитов по tier-ам — на [docs.anthropic.com/en/api/rate-limits](https://docs.anthropic.com/en/api/rate-limits). Anthropic корректирует их по мере роста инфраструктуры.*",
     "why": "Чтобы прод не падал на пиках нагрузки и чтобы рост через tier-ы был осознанным. Без понимания rate limits первый же batch-job или вирусный запуск превращается в каскад 429.",
     "when": "При любой production-интеграции, batch-обработке (евалы, классификация), росте трафика. На MVP этапе обычно достаточно Tier 1; на проде с реальными пользователями — нужен Tier 2-3.",
     "impact": "Знание лимитов = архитектура с retry/backoff, очередями и graceful degradation. Без этого сервис нестабилен, пользователи видят ошибки, retention падает.",
-    "example": "«Запускаю еженочный batch на 50k классификаций. На каком tier-е безопасно?» → Считаешь TPM: 50k × средний токенов на запрос / целевое окно времени. Если упирается в Tier 1 — заявка на Tier 2 + Message Batches API (дешевле и без RPM).",
+    "example": "«Запускаю еженочный batch на 50k классификаций. На каком tier-е безопасно?» Ответ: Считаешь TPM: 50k × средний токенов на запрос / целевое окно времени. Если упирается в Tier 1 — заявка на Tier 2 + Message Batches API (дешевле и без RPM).",
     "mistakes": "❌ Игнорировать 429 в продакшене без backoff — каскад ошибок и нестабильность.\n❌ Не использовать `retry-after` заголовок — слепые retry-loop добивают свой же лимит.\n❌ Не закладывать buffer (80% от лимита) — пики трафика проседают на ровном месте.\n❌ Не знать про **Message Batches API** для оффлайн-нагрузок — это 50% скидка и отдельный лимит.\n\n*deprecate-watch: конкретные числа RPM/TPM по tier-ам Anthropic пересматривает; структура (RPM + TPM + daily + tier-based) стабильна.*"
   },
   "pl-compare": {
     "title": "Claude.ai vs Code vs API",
     "what": "Три главных канала, между которыми путаются новички. [[node:pl-web-setup|Claude.ai]] — чат в браузере для повседневных задач. [[node:claude-code|Claude Code]] — CLI/IDE для работы с файлами и кодом. API — программный доступ для интеграций и автоматизации.",
     "why": "Выбор канала под задачу определяет 50% успеха: на API делать ad-hoc вопросы — медленно и дорого; в [[node:pl-web-setup|Claude.ai]] делать рефакторинг 20 файлов — невозможно.",
-    "when": "В самом начале, до подписки. И повторно — когда задача меняет характер (от чата → к коду → к интеграции).",
+    "when": "В самом начале, до подписки. И повторно — когда задача меняет характер (от чата к коду, затем к интеграции).",
     "impact": "Правильный канал = в 2-5× быстрее и в 2-3× дешевле за ту же задачу.",
-    "example": "Чат / разовый аудит документа → [[node:pl-web-setup|Claude.ai]]. Работа с репозиторием → [[node:claude-code|Claude Code]]. Встроить Claude в свой продукт / батч → API.",
+    "example": "Чат / разовый аудит документа — [[node:pl-web-setup|Claude.ai]]. Работа с репозиторием — [[node:claude-code|Claude Code]]. Встроить Claude в свой продукт / батч — API.",
     "mistakes": "Жить только в [[node:pl-web-setup|Claude.ai]] когда задачи связаны с файлами — теряете [[node:claude-code|Claude Code]]. Лезть в API «потому что разработчик» — теряете готовый UI Claude.ai для интерактивной работы."
   },
   "pl-web-setup": {
@@ -231,7 +231,7 @@
     "when": "В первый день — до начала серьёзной работы. Пересматривай каждые 2-3 месяца по мере изменения задач.",
     "impact": "С [[node:instructions|Custom Instructions]]: первый черновик уже хороший, правишь 5 минут. Без — пишешь полный промпт с нуля каждый раз, тратишь 15-20 минут на объяснения.",
     "example": "После настройки: открываешь новый чат, пишешь 'проверь этот черновик письма' — Claude уже знает твою роль, предпочтительный язык, тон и формат. Никакого брифинга.",
-    "mistakes": "Пропустить настройки Privacy — по умолчанию твои данные могут использоваться для обучения модели. Отключи в Settings → Privacy если это важно."
+    "mistakes": "Пропустить настройки Privacy — по умолчанию твои данные могут использоваться для обучения модели. Отключи в Settings, раздел Privacy, если это важно."
   },
   "pl-desktop": {
     "title": "Claude Desktop",
@@ -272,10 +272,10 @@
   "cap-input-modalities": {
     "title": "Что Claude принимает на вход",
     "what": "Overview всех каналов input + специальных режимов обработки. Claude — не «текстовая болталка», а multi-modal система:\n\n**Каналы input:**\n- **Текст** — обычный chat, system prompts, attachments\n- **[[node:cap-vision|Изображения]]** — PNG/JPG/WebP/GIF (статика). Скриншоты, фото, графики, дизайны\n- **[[node:cap-files|Файлы]]** — PDF, DOCX, XLSX, CSV, JSON, MD, TXT и др.\n- **[[node:cap-search|Web search]]** — свежая информация вне cutoff даты\n\n**Спец-режимы обработки:**\n- **[[node:cap-citations|Citations]]** — ответы со ссылками на конкретные фрагменты документов\n- **[[node:cap-code-exec|Code execution]]** — Claude запускает Python-код в sandbox для расчётов",
-    "why": "**Главное:** если ты используешь только text → Claude → text — ты работаешь с 30-40% возможностей.\n\nДля product/ops команд это значит: AI workflow который обрабатывает только текст пропускает PDF-документы, скриншоты процессов, CSV выгрузки. Это блокирует автоматизацию real-world tasks которые **всегда** мульти-модальные (документы, диаграммы, дашборды, фото продуктов).\n\nЧтобы спроектировать workflow правильно — нужно знать какой канал input использовать для какой задачи.",
+    "why": "**Главное:** если ты используешь только text, затем Claude, затем text — ты работаешь с 30-40% возможностей.\n\nДля product/ops команд это значит: AI workflow который обрабатывает только текст пропускает PDF-документы, скриншоты процессов, CSV выгрузки. Это блокирует автоматизацию real-world tasks которые **всегда** мульти-модальные (документы, диаграммы, дашборды, фото продуктов).\n\nЧтобы спроектировать workflow правильно — нужно знать какой канал input использовать для какой задачи.",
     "when": "**Decision matrix** — какой modality использовать:\n\n| Задача | Modality |\n|--------|----------|\n| Analyze company brand guide PDF | Files |\n| Review UX screenshot | Vision |\n| Find recent competitor pricing | Web search |\n| Extract data from invoices/receipts | Vision + Files |\n| Verify claims с source references | Citations |\n| Compute statistics from raw CSV | Code execution |\n| Read code from screenshot | Vision |\n| Parse customer survey JSON | Files |\n\n**Combine modalities:** одна задача может использовать несколько (например, audit landing page = vision screenshot + web search конкурентов + files brand guide).",
     "impact": "**Что разблокируется при использовании modalities за пределами text:**\n- **Time savings**: автоматизация 10-100× больше задач (любые input не только запросы в чате)\n- **Accuracy**: PDF parsing + Vision = меньше OCR errors, прямое понимание layout\n- **Scope**: workflow обрабатывает то что приходит как PDF/PNG в реальном бизнесе\n- **Cost-vs-quality**: code execution на CSV дешевле и точнее чем «попроси Claude вычислить mentally»\n\n**Realistic upper bound:** 80-90% real-world business inputs могут быть обработаны Claude через комбинацию modalities. Только voice/video и proprietary file formats требуют preprocessing.",
-    "example": "**Multi-modal workflow — invoice processing:**\n```\nInput:\n  - PDF: invoice scan from supplier (Files)\n  - Image: receipt photo from employee (Vision)\n  - Web: current tax rates lookup (Web search)\n\nClaude:\n  1. Vision OCR'ит receipt → JSON {amount, date, vendor}\n  2. Files parse invoice → structured tax + line items\n  3. Web search текущий tax rate для region\n  4. Code execution: compare invoice tax vs current rate\n  5. Citations: highlight discrepancies в исходных документах\n\nOutput: structured report + flagged items для accountant review\n```\n\nЭто не futuristic example — это типичный workflow для finance ops, customer support tier-1, marketing analytics. Все modalities используются вместе.\n\n(Концептуальный слой — [[node:af-multimodal|Multimodal AI]]: как модели обрабатывают разные типы входа.)",
+    "example": "**Multi-modal workflow — invoice processing:**\n```\nInput:\n  - PDF: invoice scan from supplier (Files)\n  - Image: receipt photo from employee (Vision)\n  - Web: current tax rates lookup (Web search)\n\nClaude:\n  1. Vision OCR'ит receipt, затем JSON {amount, date, vendor}\n  2. Files parse invoice, затем structured tax + line items\n  3. Web search текущий tax rate для region\n  4. Code execution: compare invoice tax vs current rate\n  5. Citations: highlight discrepancies в исходных документах\n\nOutput: structured report + flagged items для accountant review\n```\n\nЭто не futuristic example — это типичный workflow для finance ops, customer support tier-1, marketing analytics. Все modalities используются вместе.\n\n(Концептуальный слой — [[node:af-multimodal|Multimodal AI]]: как модели обрабатывают разные типы входа.)",
     "mistakes": "**1. «Конвертирую всё в текст перед prompt»** — потеря context. Layout в PDF, цвет/композиция в дизайне — Claude может это анализировать. Не конвертируй.\n\n**2. Использование Vision где достаточно Files** — Vision дороже (image tokens). Если PDF имеет text layer — Files (parse-able) лучше чем screenshot страницы.\n\n**3. Игнорирование code execution для math/data** — «Claude посчитай mean этой колонки в CSV» через text = ошибки accumulate. Code execution = точно. Cost равный, accuracy higher.\n\n**4. Web search вместо Citations** — если нужно «найди confirm факт в моих документах» — Citations. Если «найди свежие данные в интернете» — Web search. Перепутать = wrong tool.\n\n**5. Не использовать combination** — workflows которые **только text** или **только vision** — обычно недо-оптимальны. Multi-modal комбинации дают real efficiency gain."
   },
   "cap-vision": {
@@ -284,7 +284,7 @@
     "why": "Чтобы обсуждать дизайн, разбирать графики, читать чеки/документы по фото, делать UX-аудит макетов.",
     "when": "Когда у тебя визуальный материал — скриншот, фото, диаграмма, дизайн-мокап.",
     "impact": "Открывает целый класс задач: дизайн-критика, разбор инфографики, OCR простых документов.",
-    "example": "Загрузи макет → «Найди 5 проблем читаемости и предложи правки».\n\n(Общая концепция — [[node:af-multimodal|Multimodal AI]]. Claude Vision — конкретная реализация для изображений.)",
+    "example": "Загрузи макет, затем «Найди 5 проблем читаемости и предложи правки».\n\n(Общая концепция — [[node:af-multimodal|Multimodal AI]]. Claude Vision — конкретная реализация для изображений.)",
     "mistakes": "Ожидать пиксель-перфектного измерения — Claude видит структуру, не точные координаты."
   },
   "cap-files": {
@@ -293,7 +293,7 @@
     "why": "Чтобы Claude работал с реальными документами — отчётами, контрактами, спецификациями, данными — а не пересказом.",
     "when": "При анализе документов, конвертации данных, подготовке summary, fact-checking.",
     "impact": "Прямой доступ к содержимому файлов = высокая точность ответов без копипаста.",
-    "example": "Загрузи PDF контракта → «Найди риски в разделах об ответственности и расторжении».",
+    "example": "Загрузи PDF контракта, затем «Найди риски в разделах об ответственности и расторжении».",
     "mistakes": "Загружать огромные файлы целиком когда нужна одна секция — расход контекста. Лучше вырезать релевантную часть."
   },
   "cap-search": {
@@ -310,7 +310,7 @@
     "what": "Memory — фича Claude, которая позволяет модели **помнить факты о тебе между разными чатами**. Claude записывает в долговременную память твою роль, предпочтения, контекст работы — и автоматически использует это в будущих диалогах.\n\nДоступно в claude.ai на Pro/Max планах (toggle «Memory» в settings). Через API — отдельный memory tool. На enterprise — управляется admin'ом, может быть disabled из compliance соображений.",
     "why": "Без memory каждый новый чат начинается с нуля — нужно повторять «я работаю в SaaS-компании, наш стек React+Postgres, аудитория product-leads» в каждом prompt. Это «налог на брифинг» — в среднем 100-300 токенов и 30-60 секунд впустую перед реальной работой.\n\nMemory снимает этот налог: Claude знает контекст и фокусируется на новой задаче сразу.\n\nДля персонализации продуктов (см. [[node:ec-personalization|ec-personalization]]) — это foundation feature: ваш AI помнит returning-пользователя между сессиями.",
     "when": "**Включай Memory когда:**\n- Устойчивые факты о тебе/работе которые применимы в большинстве задач (роль, индустрия, стек, voice/tone preferences)\n- Project continuity: long-running проект где детали важны через несколько недель\n- Personalization: когда строишь eCommerce/SaaS-продукт где user должен ощущать «AI меня знает»\n- Team context: shared knowledge о компании, процессах, named entities (см. [[node:cs-team-workflow|cs-team-workflow]])\n\n**НЕ включай / отключай Memory:**\n- Sensitive data (PII, financial, medical) — Memory persists, риск утечки выше\n- Compliance-restricted industries (healthcare HIPAA, finance) — может нарушать data handling правила\n- One-shot задачи где сохранение контекста не value\n- Когда нужна consistency between users (например, support agent должен работать identically для всех)",
-    "impact": "**Concrete shifts:**\n- Time-to-task: «3 минуты setup context» → «0 секунд, сразу к задаче»\n- Cost per session: на 100-300 токенов меньше per prompt (cumulative значимо)\n- Personalization signal: in product UX users ощущают «AI меня помнит» — главный retention driver\n- Friction reduction: returning user experience значимо лучше (см. [[node:ec-personalization|ec-personalization]])\n\n**Реальный signal:** если ты в claude.ai пишешь одно и то же brief в начало каждого чата — Memory сэкономит часы в месяц.",
+    "impact": "**Concrete shifts:**\n- Time-to-task: с «3 минуты setup context» до «0 секунд, сразу к задаче»\n- Cost per session: на 100-300 токенов меньше per prompt (cumulative значимо)\n- Personalization signal: in product UX users ощущают «AI меня помнит» — главный retention driver\n- Friction reduction: returning user experience значимо лучше (см. [[node:ec-personalization|ec-personalization]])\n\n**Реальный signal:** если ты в claude.ai пишешь одно и то же brief в начало каждого чата — Memory сэкономит часы в месяц.",
     "example": "**Use case 1 — Personal assistant:**\nВ Memory: «Я Head of Product в финской SaaS компании (50-200 employees). Стек: React + Supabase + Tailwind. Voice: action-oriented, no fluff. Аудитория контента — product/ops leads.»\n\nКаждый новый чат: «Напиши email команде про deploy» — Claude сразу использует action-oriented tone, не нужно объяснять.\n\n**Use case 2 — eCommerce personalization (через API memory tool):**\nUser returns на сайт после 2 недель. Claude memory загружает: предыдущие просмотры, brand preferences, размер, abandoned cart. Homepage показывает relevant categories без повторного onboarding.\n\n**Use case 3 — Team context:**\nProject CLAUDE.md как «прокачанная Memory»: shared facts о codebase, conventions, naming, текущие WIP проекты. Каждый contributor получает same context при первом prompt.\n\n(Общая концепция AI-памяти — [[node:af-memory-systems|Память AI]]: short-term context, long-term storage, retrieval.)",
     "mistakes": "**1. Сохранять разовое в Memory** — «запомни этот email, я отправлю его завтра». Через месяц это garbage. Memory для **устойчивых** фактов, не для todo list.\n\n**2. Игнорирование privacy implications** — Memory persists. Если запомнить sensitive data (паспортные данные, медицинские диагнозы, financial info), они хранятся в Anthropic infrastructure. GDPR — user должен явно consent на это. Для production AI products: либо disable Memory, либо explicit privacy policy.\n\n**3. Memory pollution** — слишком много фактов в Memory приводит к overhead в каждом prompt + Claude может миксовать contexts. Sweet spot: 10-30 значимых facts. Periodically review + clean.\n\n**4. Использование Memory вместо CLAUDE.md в коде** — для **technical** project context (codebase rules, naming conventions) Memory не подходит — она user-bound. CLAUDE.md лучше потому что shared across all contributors и version-controlled.\n\n**5. Доверие Memory как single source of truth** — Memory не deterministic. Critical facts (legal, compliance, security) пиши в system prompt каждый раз, не полагайся что Memory их «вспомнит»."
   },
@@ -328,13 +328,13 @@
     "what": "Tool use — механика, через которую Claude вызывает внешние функции. Ты описываешь tool через JSON-схему (имя, параметры, что возвращает), Claude по контексту решает когда позвать и с какими аргументами.\n\nЭто фундамент всего что больше чем чат: [[node:mcp|MCP-серверы]], [[node:agents|агенты]], [[node:skills|skills]], [[node:cc-subagents|sub-agents]] — все они tool use под капотом.",
     "why": "Без tools Claude умеет только говорить «как делать». С tools Claude **делает**: читает базы данных, отправляет email, вызывает API, обновляет CRM, рассчитывает на калькуляторе.\n\nЭто разница между «AI пишет инструкцию» и «AI выполняет задачу». Для продуктовой команды это разница между copy-paste assistant и реальной автоматизацией.",
     "when": "Когда задача требует **действий** в системе, а не только текста:\n- CRM lookup и update\n- Web search для свежих данных\n- File read (PDF, CSV, JSON)\n- Code execution (расчёты, парсинг)\n- Slack/email отправка\n- Database query\n\nЕсли вся задача укладывается в «прочитай документ и напиши summary» — tools не нужны. Если нужно «прочитай tickets из Zendesk, классифицируй, обнови статусы» — без tools никак.",
-    "impact": "Tool use превращает Claude из ассистента в исполнителя.\n\nКонкретные сдвиги:\n- Time-to-action: «10 минут на ручной CRM update» → «10 секунд через tool call»\n- Accuracy: human-in-the-loop точка контроля становится «approve tool calls» вместо «redo everything»\n- Scale: один Claude-агент с tools заменяет 5-10 типовых тикетов в час\n\nГлавное: без tools нет MCP. Без MCP нет реальной интеграции. Tool use — gate ко всему integration ecosystem.",
+    "impact": "Tool use превращает Claude из ассистента в исполнителя.\n\nКонкретные сдвиги:\n- Time-to-action: с «10 минут на ручной CRM update» до «10 секунд через tool call»\n- Accuracy: human-in-the-loop точка контроля становится «approve tool calls» вместо «redo everything»\n- Scale: один Claude-агент с tools заменяет 5-10 типовых тикетов в час\n\nГлавное: без tools нет MCP. Без MCP нет реальной интеграции. Tool use — gate ко всему integration ecosystem.",
     "example": "JSON-схема для CRM tool:\n```json\n{\n  \"name\": \"update_lead_status\",\n  \"description\": \"Обновить status лида в Salesforce. Идемпотентна.\",\n  \"input_schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"lead_id\": {\"type\": \"string\"},\n      \"new_status\": {\"type\": \"string\", \"enum\": [\"qualified\", \"contacted\", \"closed\"]}\n    },\n    \"required\": [\"lead_id\", \"new_status\"]\n  }\n}\n```\n\nЗатем prompt: «Лид #4521 ответил yes на demo. Обнови статус.» Claude вызовет `update_lead_status({lead_id:\"4521\", new_status:\"qualified\"})`.\n\nWorkflow:\n1. Define tools с описанием **эффектов**, не только параметров\n2. Pass tools в API call\n3. Claude returns tool_use block\n4. Your code executes function, returns result\n5. Claude continues conversation с результатом",
-    "mistakes": "**1. Vague descriptions** — «get_lead» без указания что возвращает и какие side-effects. Claude угадает неправильно. Правило: каждая description должна отвечать «что произойдёт когда я это вызову».\n\n**2. Too many tools в одном вызове** — Claude теряется среди 20+ tools. Sweet spot: 3-8 tools на одну задачу. Больше → split на agents.\n\n**3. Destructive без confirmation** — `delete_customer` без human-in-the-loop = катастрофа. Для деструктивных tools: либо обёртка с approval, либо dry-run mode по умолчанию.\n\n**4. Tools-as-RPC** — превращать каждую функцию приложения в tool. Лучше: 5 высокоуровневых tools, чем 50 атомарных.\n\n**5. Игнорирование cost** — каждый tool call съедает токены (description + arguments + result). При 100k вызовов в день это значимо. Cache tool definitions через [[node:cap-caching|prompt caching]]."
+    "mistakes": "**1. Vague descriptions** — «get_lead» без указания что возвращает и какие side-effects. Claude угадает неправильно. Правило: каждая description должна отвечать «что произойдёт когда я это вызову».\n\n**2. Too many tools в одном вызове** — Claude теряется среди 20+ tools. Sweet spot: 3-8 tools на одну задачу. Больше — split на agents.\n\n**3. Destructive без confirmation** — `delete_customer` без human-in-the-loop = катастрофа. Для деструктивных tools: либо обёртка с approval, либо dry-run mode по умолчанию.\n\n**4. Tools-as-RPC** — превращать каждую функцию приложения в tool. Лучше: 5 высокоуровневых tools, чем 50 атомарных.\n\n**5. Игнорирование cost** — каждый tool call съедает токены (description + arguments + result). При 100k вызовов в день это значимо. Cache tool definitions через [[node:cap-caching|prompt caching]]."
   },
   "cap-caching": {
     "title": "Prompt caching — экономия",
-    "what": "Prompt caching — это не «фича Claude», а **рычаг оптимизации стоимости** при работе с большим повторяющимся контекстом. Anthropic кэширует prefix твоего prompt'а на 5 минут (или 1 час с extended TTL): повторные запросы с тем же префиксом оплачиваются по сниженной ставке.\n\nMechanics: ставишь `cache_control: { type: \"ephemeral\" }` на блок в API запросе → этот блок и всё до него кэшируется. Минимальный размер кэшируемого блока: 1024 токена (Sonnet/Opus) или 2048 токенов (Haiku).",
+    "what": "Prompt caching — это не «фича Claude», а **рычаг оптимизации стоимости** при работе с большим повторяющимся контекстом. Anthropic кэширует prefix твоего prompt'а на 5 минут (или 1 час с extended TTL): повторные запросы с тем же префиксом оплачиваются по сниженной ставке.\n\nMechanics: ставишь `cache_control: { type: \"ephemeral\" }` на блок в API запросе, и этот блок и всё до него кэшируется. Минимальный размер кэшируемого блока: 1024 токена (Sonnet/Opus) или 2048 токенов (Haiku).",
     "why": "На production AI-workflows **самая большая статья расходов — не модель, а повторяющийся контекст**:\n- System prompt с правилами компании (3-10k токенов) — отправляется в КАЖДОМ запросе\n- Project Knowledge / [[node:cc-md|CLAUDE.md]] — тоже каждый раз\n- Tool definitions (см. [[node:cap-tools|cap-tools]]) — каждый запрос с tools\n- Brand voice examples, few-shot patterns\n\nБез caching: при 1000 запросов/день каждый prefix билятся полностью = $50-200/день впустую. С caching: 90% этих токенов идут по сниженной ставке.\n\nЭто **главный cost lever** для production AI workflows на масштабе.",
     "when": "**Включай caching когда:**\n- System prompt > 1024 токенов и не меняется между запросами\n- Используешь tool definitions (см. [[node:cap-tools|cap-tools]]) — кэшируй их\n- Long [[node:cc-md|CLAUDE.md]] в Claude Code (auto-cached фактически)\n- Knowledge base passing в каждом запросе ([[node:af-rag-basics|RAG]] context)\n- Few-shot examples в [[node:pr-fewshot|few-shot prompts]]\n- ≥10 запросов/час на тот же префикс (амортизация cache write)\n\n**НЕ кэшируй когда:**\n- Контекст меняется каждый запрос (динамические данные)\n- < 1024 токенов в кэшируемом блоке (просто не активируется)\n- Singleton tasks без повторов\n- Cache TTL (5 min) недостаточно — запросы реже чем раз в 5 мин",
     "impact": "**Economics (на момент написания):**\n- Cache write: **1.25×** обычной input цены (один раз per block)\n- Cache read: **0.1×** обычной input цены (каждый последующий запрос)\n- Net savings: **70-90% input costs** на cached blocks при regular usage\n\n**Реальный кейс** для product team:\n- System prompt 8000 токенов + 1000 запросов/день\n- Без cache: 8M tokens × $3/1M = **$24/день** = $720/мес только на повторяющийся system prompt\n- С cache: $3 на write + (999 reads × 8000 × $0.30/1M) = **$2.40/день** = $72/мес\n- Экономия: **$648/мес** на одном Workflow\n\nЭто [[node:sys-cost-management|cost management lever #1]] для AI-powered продуктов на scale.",
@@ -356,7 +356,7 @@
     "why": "Чтобы цифры не были «придуманы»: реальные вычисления, валидация формул, обработка реальных данных без перевода в текст.",
     "when": "При анализе таблиц, статистике, конвертациях, любых задачах где «модель посчитала» = «модель угадала».",
     "impact": "Code execution превращает Claude из «умного собеседника» в «аналитика с калькулятором» — числа корректны, не приближены.",
-    "example": "Загрузи CSV с продажами → «Посчитай month-over-month рост, найди топ-5 аномалий, построй график тренда». Получаешь реальные числа.",
+    "example": "Загрузи CSV с продажами, затем «Посчитай month-over-month рост, найди топ-5 аномалий, построй график тренда». Получаешь реальные числа.",
     "mistakes": "Просить Claude считать «в голове» сложные агрегаты без sandbox — модель может ошибиться в арифметике. Включи code execution."
   },
   "projects": {
@@ -383,7 +383,7 @@
     "why": "Делает Claude «специализированным» — он отвечает уже в нужной роли (аналитик / редактор / разработчик / любой ваш профиль).",
     "when": "Сразу при создании Project: пока нет инструкций — все ответы общие.",
     "impact": "Без инструкций — общий ассистент. С инструкциями — эксперт в вашей задаче.",
-    "example": "Ты — эксперт в моей предметной области. Структура: Контекст → Проблема → Влияние → Рекомендация. Только русский.",
+    "example": "Ты — эксперт в моей предметной области. Структура: Контекст, затем Проблема, затем Влияние, затем Рекомендация. Только русский.",
     "mistakes": "Слишком общие фразы вроде «будь полезным» — это шум, не инструкция."
   },
   "p-team": {
@@ -417,7 +417,7 @@
     "title": "Типы артефактов",
     "what": "HTML, React-компоненты, SVG, Mermaid-диаграммы, Markdown-документы, отдельные файлы кода.",
     "why": "Каждый тип имеет свой preview — можно сразу увидеть результат.",
-    "when": "Когда выбираете формат: «прототип кнопки» → React, «схема процесса» → Mermaid, «отчёт» → Markdown.",
+    "when": "Когда выбираете формат: «прототип кнопки» — React, «схема процесса» — Mermaid, «отчёт» — Markdown.",
     "impact": "Правильный тип = живой preview вместо статичного текста.",
     "example": "Оформи UX-карту в виде Mermaid flowchart как Artifact — хочу увидеть схему сразу.",
     "mistakes": "Просить React-компонент, когда нужен просто HTML — добавляете лишний уровень сложности."
@@ -454,7 +454,7 @@
     "what": "Готовые инструкции для Claude: ты добавляешь Skill в Project ([[node:pl-web-setup|claude.ai]]) или создаёшь папку skills/ в [[node:claude-code|Claude Code]] — и Claude выполняет сложный процесс по рецепту, а не «угадывает» что делать.",
     "why": "Без Skills каждый раз объясняешь Claude «как именно»: тратишь токены и получаешь разный результат. Skill фиксирует правила один раз — и они работают каждый раз.",
     "when": "Когда один и тот же многошаговый процесс повторяется ≥ 3 раз в неделю и ты хочешь одинаковый результат.",
-    "impact": "Skill = воспроизводимое качество. Запустил → получил тот же результат, что и в прошлый раз, без повторных объяснений.",
+    "impact": "Skill = воспроизводимое качество. Запустил, затем получил тот же результат, что и в прошлый раз, без повторных объяснений.",
     "example": "Часто готовишь задачи для разработчиков? Создай Skill «user-story» — Claude сам спросит нужные детали и оформит задачу по твоему шаблону, без подсказок.",
     "mistakes": "Создавать Skill под одноразовую задачу — плюс только от повторений, иначе тратишь больше времени на настройку, чем экономишь."
   },
@@ -473,7 +473,7 @@
     "why": "Знаешь механизм — понимаешь, почему Skill «не сработал»: либо description слишком размытый ([[node:pl-web-setup|claude.ai]]), либо ты не написал /skillname ([[node:claude-code|Claude Code]]).",
     "when": "При написании description для любого Skill — это самый важный элемент.",
     "impact": "Точный description в [[node:pl-web-setup|claude.ai]] = Skill включается сам в нужный момент. Точный /command в [[node:claude-code|Claude Code]] = никакой магии, полный контроль.",
-    "example": "[[node:pl-web-setup|claude.ai]] — описание «Use when user asks to create a presentation or prepare slides» → Claude сам включит Skill при запросе «сделай мне слайды».\n[[node:claude-code|Claude Code]] — ты пишешь /audit → Claude читает SKILL.md и следует шагам, игнорируя остальные Skills.",
+    "example": "[[node:pl-web-setup|claude.ai]] — описание «Use when user asks to create a presentation or prepare slides», и Claude сам включит Skill при запросе «сделай мне слайды».\n[[node:claude-code|Claude Code]] — ты пишешь /audit, и Claude читает SKILL.md и следует шагам, игнорируя остальные Skills.",
     "mistakes": "[[node:pl-web-setup|claude.ai]]: слишком общее описание «помогает с документами» — Skill будет срабатывать на любой вопрос. [[node:claude-code|Claude Code]]: ждать что Skill включится сам — он активируется только по явному /command."
   },
   "s-files": {
@@ -482,16 +482,16 @@
     "why": "Выносишь длинный шаблон или список вопросов из SKILL.md в отдельный файл — основной файл остаётся коротким и понятным.",
     "when": "Когда Skill генерирует структурированный output: отчёт, таблицу, техническое задание по шаблону.",
     "impact": "Skill с шаблоном = гарантированный формат вывода каждый раз, а не «как получится».",
-    "example": "Структура Skill:\nskills/report/\n  SKILL.md → «Заполни templates/report.md по данным пользователя»\n  templates/report.md → шаблон: Цель / Выводы / Рекомендации\n\nClaude сам читает шаблон и подставляет данные.",
+    "example": "Структура Skill:\nskills/report/\n  SKILL.md — «Заполни templates/report.md по данным пользователя»\n  templates/report.md — шаблон: Цель / Выводы / Рекомендации\n\nClaude сам читает шаблон и подставляет данные.",
     "mistakes": "Запихнуть 50-строчный шаблон прямо в SKILL.md — файл разрастается до нечитаемого состояния, Claude хуже следует инструкции."
   },
   "s-ready": {
     "title": "Готовые Skills",
-    "what": "В [[node:pl-web-setup|claude.ai]]: Project Settings → Skills → Browse → Skills от Anthropic. Добавляешь одним кликом: pptx (презентации), xlsx (таблицы), pdf (анализ документов), docx (Word-файлы), skill-creator (создать свой Skill).",
+    "what": "В [[node:pl-web-setup|claude.ai]]: Project Settings, затем Skills, затем Browse, затем Skills от Anthropic. Добавляешь одним кликом: pptx (презентации), xlsx (таблицы), pdf (анализ документов), docx (Word-файлы), skill-creator (создать свой Skill).",
     "why": "Рутинные задачи — слайды, PDF-анализ, Excel — уже написаны и отлажены командой Anthropic. Не нужно изобретать велосипед.",
     "when": "Первый шаг перед созданием своего Skill: проверь, нет ли готового под твою задачу.",
     "impact": "Готовый Skill работает с первого запуска — Anthropic уже написала шаги, шаблоны и промпты за тебя.",
-    "example": "Project Settings → Skills → Browse → добавь «pptx» → напиши «Сделай презентацию по этому тексту: [текст]» → Claude создаст .pptx файл по шаблону.",
+    "example": "Project Settings, затем Skills, затем Browse, затем добавь «pptx», затем напиши «Сделай презентацию по этому тексту: [текст]», и Claude создаст .pptx файл по шаблону.",
     "mistakes": "Писать свой Skill для PDF, Excel или слайдов не проверив готовые — тратишь 30 минут там, где есть готовое решение за 1 клик."
   },
   "s-create": {
@@ -500,7 +500,7 @@
     "why": "Любой повторяющийся процесс — кандидат на Skill: аудит текста, оформление задач, подготовка отчётов, брифинги.",
     "when": "Когда используешь один и тот же процесс ≥ 3 раз в неделю и устал каждый раз объяснять Claude «как именно».",
     "impact": "Окупается уже с 3-го запуска: экономишь 5–15 минут каждый раз на повторном объяснении.",
-    "example": "[[node:pl-web-setup|claude.ai]]: напиши /skill-creator → он спросит «название?», «когда активировать?», «какие шаги?» → создаст Skill автоматически.\n[[node:claude-code|Claude Code]]: создай skills/brief/SKILL.md → опиши шаги → пиши /brief в чате терминала.",
+    "example": "[[node:pl-web-setup|claude.ai]]: напиши /skill-creator, и он спросит «название?», «когда активировать?», «какие шаги?», затем создаст Skill автоматически.\n[[node:claude-code|Claude Code]]: создай skills/brief/SKILL.md, затем опиши шаги, затем пиши /brief в чате терминала.",
     "mistakes": "Создавать Skill «про запас» — без реального повторяющегося запроса он никогда не окупится и будет занимать место в Project."
   },
   "s-vs-subagents": {
@@ -518,7 +518,7 @@
     "why": "Чтобы Claude мог реально работать с вашим кодом — а не давать советы «вставьте этот сниппет».",
     "when": "Для разработки, рефакторинга, аудитов кода, автоматизации задач в репозитории.",
     "impact": "Полноценная среда: качество в 5-10× выше «копипаста из чата».",
-    "example": "Запусти claude в репозитории → [[node:cc-cmd-init|/init]] → попроси провести security review последних коммитов.",
+    "example": "Запусти claude в репозитории, затем [[node:cc-cmd-init|/init]], затем попроси провести security review последних коммитов.",
     "mistakes": "Использовать Claude Code без [[node:cc-md|CLAUDE.md]] — модель каждый раз заново разбирается в проекте."
   },
   "cc-install": {
@@ -527,7 +527,7 @@
     "why": "Полноценный CLI-агент с доступом к файлам, терминалу, сети — в одну команду.",
     "when": "Один раз при настройке окружения — потом просто claude в папке проекта.",
     "impact": "Без установки нет ни Skills, ни Hooks, ни Subagents — это база.",
-    "example": "cd ~/projects/site && claude → [[node:cc-cmd-init|/init]] для генерации [[node:cc-md|CLAUDE.md]].",
+    "example": "cd ~/projects/site && claude, затем [[node:cc-cmd-init|/init]] для генерации [[node:cc-md|CLAUDE.md]].",
     "mistakes": "Запускать вне git-репозитория — теряете контекст истории и часть фич."
   },
   "cc-terminal": {
@@ -535,7 +535,7 @@
     "what": "Терминальный режим работы с Claude: сессии, drag-and-drop файлов, режимы (Plan / Fast), хоткеи.",
     "why": "Чтобы получать максимум из CLI: меньше переключений, больше времени в потоке.",
     "when": "Каждую сессию с [[node:claude-code|Claude Code]] — базовые приёмы экономят часы за неделю.",
-    "impact": "Раньше: смена окна → клик мышью → правка → вернуться к Claude — каждый чих 30 секунд. Теперь: всё через клавиатуру, без переключений — сессия течёт без разрывов.",
+    "impact": "Раньше: смена окна, затем клик мышью, затем правка, затем вернуться к Claude — каждый чих 30 секунд. Теперь: всё через клавиатуру, без переключений — сессия течёт без разрывов.",
     "example": "claude --resume вернёт вчерашнюю сессию. @src/App.jsx — Claude автоматически прочитает файл.",
     "mistakes": "Игнорировать сессии и хоткеи — каждый раз заново брифуете модель и теряете контекст."
   },
@@ -545,7 +545,7 @@
     "why": "Чтобы не терять контекст между перерывами и не делать брифинг заново.",
     "when": "При длинных задачах и при работе в нескольких ветках параллельно.",
     "impact": "Возврат к работе за 5 секунд вместо повторного брифинга модели.",
-    "example": "Закрыл терминал → завтра claude --resume → продолжаешь с того же диалога.",
+    "example": "Закрыл терминал, затем завтра claude --resume, затем продолжаешь с того же диалога.",
     "mistakes": "Игнорировать сессии и каждый раз начинать с нуля — теряете контекст и токены."
   },
   "cc-tty-files": {
@@ -571,7 +571,7 @@
     "what": "Tab — автодополнение пути / команды, ↑/↓ — история, Esc — прервать, Ctrl+C — выйти.",
     "why": "Чтобы не отрывать руки от клавиатуры — терминальная работа в потоке.",
     "when": "Каждую сессию, начиная с первого дня — за неделю это становится мышечной памятью.",
-    "impact": "Раньше: ⌘+Tab → переписать команду заново → ввести. Теперь: ↑ или Ctrl+R → нашёл прошлую → Enter. Час работы в терминале превращается в 30 минут.",
+    "impact": "Раньше: ⌘+Tab, затем переписать команду заново, затем ввести. Теперь: ↑ или Ctrl+R, затем нашёл прошлую, затем Enter. Час работы в терминале превращается в 30 минут.",
     "example": "Tab после @src/ — автодополнение пути к файлу без ручного набора имени.",
     "mistakes": "Мышиная работа в терминале — теряете главное преимущество CLI."
   },
@@ -607,7 +607,7 @@
     "what": "~/.claude/settings.json — настройки на всех ваших проектах: язык, формат ответов, статуслайн.",
     "why": "Для правил, применимых везде: предпочтительный язык, любимые инструменты, базовая безопасность.",
     "when": "Первичная настройка [[node:claude-code|Claude Code]] на новой машине — задать всё, что не зависит от проекта.",
-    "impact": "Один раз настроил → работает во всех проектах без копипаста конфигов.",
+    "impact": "Один раз настроил, и работает во всех проектах без копипаста конфигов.",
     "example": "Глобальный allow для безопасных Bash-команд (ls, git status, npm test) — экономит подтверждения.",
     "mistakes": "Класть туда специфичное для одного проекта — мусор и риск конфликтов с проектными настройками."
   },
@@ -634,7 +634,7 @@
     "what": "Команды вида [[node:cc-cmd-init|/init]], [[node:cc-cmd-clear|/clear]], [[node:cc-cmd-compact|/compact]], /model, /review — встроенные и пользовательские. Работают и в терминале, и в чатах [[node:pl-web-setup|claude.ai]].",
     "why": "Запускают сложные сценарии в одно нажатие — без длинного промпта.",
     "when": "Когда задача типичная: ревью, инициализация, очистка контекста, смена модели.",
-    "impact": "Вместо набирать «помоги переименовать беседу и сжать историю» — три символа `/r` → автодополнение → Enter. Сэкономленное время на сессию: 15-20 минут.",
+    "impact": "Вместо набирать «помоги переименовать беседу и сжать историю» — три символа `/r`, затем автодополнение, затем Enter. Сэкономленное время на сессию: 15-20 минут.",
     "example": "/review — структурированный code review текущей ветки. [[node:cc-cmd-compact|/compact]] — сжать контекст без потери истории.",
     "mistakes": "Игнорировать [[node:cc-cmd-clear|/clear]] когда контекст «протух» — снижается качество ответов."
   },
@@ -643,8 +643,8 @@
     "what": "Сканирует текущий проект и генерирует [[node:cc-md|CLAUDE.md]]: стек, конвенции, точки входа, табу.",
     "why": "Чтобы не писать [[node:cc-md|CLAUDE.md]] с нуля — модель сама опишет рамки, а вы их доточите.",
     "when": "При первом запуске [[node:claude-code|Claude Code]] в новом проекте.",
-    "impact": "30 минут ручной работы → 3 минуты, плюс охват того, о чём вы не подумали бы.",
-    "example": "claude в репо → /init → доточить разделы «табу» и «архитектурные решения».",
+    "impact": "С 30 минут ручной работы до 3 минут, плюс охват того, о чём вы не подумали бы.",
+    "example": "claude в репо, затем /init, затем доточить разделы «табу» и «архитектурные решения».",
     "mistakes": "Использовать сгенерированный файл как финальный — без правок он избыточен."
   },
   "cc-cmd-clear": {
@@ -671,7 +671,7 @@
     "why": "Под разные задачи — разные модели: исследование на Opus, генерация на Sonnet, рутина на Haiku.",
     "when": "Когда задача требует другой глубины или скорости, чем стартовая модель.",
     "impact": "Правильная модель = либо быстрее в 5×, либо глубже в 2×.",
-    "example": "/model sonnet для рутины → /model opus для архитектурного решения → обратно.",
+    "example": "/model sonnet для рутины, затем /model opus для архитектурного решения, затем обратно.",
     "mistakes": "Всё делать на одной модели — либо медленно/дорого, либо поверхностно."
   },
   "cc-cmd-permissions": {
@@ -680,7 +680,7 @@
     "why": "Чтобы не подтверждать каждый Bash/Edit вручную, но запретить разрушительное.",
     "when": "При первой настройке проекта и при добавлении новых типов команд.",
     "impact": "80% подтверждений уходит — безопасные действия выполняются автоматически.",
-    "example": "/permissions → разрешить Bash(npm test) и Edit(./src/**), запретить Bash(rm -rf:*).",
+    "example": "/permissions, затем разрешить Bash(npm test) и Edit(./src/**), запретить Bash(rm -rf:*).",
     "mistakes": "Разрешать всё подряд — теряете контроль над тем, что меняется."
   },
   "cc-cmd-agents": {
@@ -689,7 +689,7 @@
     "why": "Чтобы видеть, какие агенты Claude может вызвать и быстро создавать новые.",
     "when": "При настройке скрытых процессов и при дебаге, почему агент не активируется.",
     "impact": "Прозрачность того, что Claude может делегировать без вашего участия.",
-    "example": "/agents → создать code-reviewer с триггером «ревью PR», описанием и шагами.",
+    "example": "/agents, затем создать code-reviewer с триггером «ревью PR», описанием и шагами.",
     "mistakes": "Создавать агента без чёткого триггера в description — он никогда не активируется."
   },
   "cc-cmd-mcp": {
@@ -698,7 +698,7 @@
     "why": "Чтобы видеть, к чему Claude имеет доступ из внешних систем (трекер, документация, БД).",
     "when": "При подключении новой интеграции и при ошибках вроде «не вижу нужные данные».",
     "impact": "Прозрачность доступа: понятно, что Claude может прочитать и изменить снаружи.",
-    "example": "/mcp → добавить сервер с токеном → проверить, что выставленные tools доступны.",
+    "example": "/mcp, затем добавить сервер с токеном, затем проверить, что выставленные tools доступны.",
     "mistakes": "Подключать всё подряд — каждый сервер грузится при старте, замедляет запуск."
   },
   "cc-cmd-review": {
@@ -707,7 +707,7 @@
     "why": "Структурированный аудит вместо «глянь, как тебе» — с приоритетом и обоснованием.",
     "when": "Перед merge, после большой правки, при подозрении на регресс.",
     "impact": "Качество ревью на уровне опытного разработчика, время — минуты вместо часа.",
-    "example": "/review без аргументов на текущей ветке → отчёт с категориями «критично / важно / опционально».",
+    "example": "/review без аргументов на текущей ветке, затем отчёт с категориями «критично / важно / опционально».",
     "mistakes": "Полагаться только на /review без человеческого взгляда — не заменяет архитектурное мышление."
   },
   "cc-cmd-custom": {
@@ -716,7 +716,7 @@
     "why": "Чтобы превратить регулярный длинный промпт в одну короткую команду.",
     "when": "Если повторяешь один и тот же сложный запрос ≥ 3 раз.",
     "impact": "Одно нажатие вместо 300 символов промпта — кратно ускоряет повторяемую рутину.",
-    "example": ".claude/commands/dev-task.md → теперь /dev-task в чате выполняет твой шаблон.",
+    "example": ".claude/commands/dev-task.md, и теперь /dev-task в чате выполняет твой шаблон.",
     "mistakes": "Делать команду для одноразовой задачи — окупаемости не будет."
   },
   "cc-hooks": {
@@ -725,7 +725,7 @@
     "why": "Автоматизация поведения: «после каждого Write — запусти линтер», «перед Bash — проверь команду».",
     "when": "Когда нужно гарантированное действие при событии, без напоминания модели.",
     "impact": "Хуки превращают [[node:claude-code|Claude Code]] из ассистента в дисциплинированного джуниора.",
-    "example": "PostToolUse:Write → npx prettier --write $CLAUDE_FILE_PATH",
+    "example": "PostToolUse:Write, затем npx prettier --write $CLAUDE_FILE_PATH",
     "mistakes": "Без хуков надеяться, что модель «не забудет» форматировать — будет забывать."
   },
   "cc-md": {
@@ -761,7 +761,7 @@
     "why": "Чтобы не переключаться между терминалом и IDE на каждую правку: меньше контекстных переключений, быстрее ревью изменений.",
     "when": "Когда основная работа — в IDE, и Claude нужен «под рукой» внутри редактора, а не в отдельном окне терминала.",
     "impact": "IDE-интеграция = в 1.5-2× быстрее accept/reject цикл vs терминал; видишь правку в контексте окружающего кода.",
-    "example": "Установи VS Code extension → Cmd+Shift+P → Claude: ask in current file → правка приходит как inline diff.",
+    "example": "Установи VS Code extension, затем Cmd+Shift+P, затем Claude: ask in current file, и правка приходит как inline diff.",
     "mistakes": "Использовать только IDE-расширение и не знать CLI — теряешь сессии, --resume, плагины. Они дополняют друг друга, не заменяют."
   },
   "mcp": {
@@ -770,7 +770,7 @@
     "why": "Чтобы Claude видел Linear, Jira, Figma, БД, файлы — без копипаста и API-обвязки вручную.",
     "when": "Когда Claude должен «жить» в вашей среде: знать тикеты, читать дизайны, выполнять запросы.",
     "impact": "MCP — это разница между «AI-чат» и «AI-сотрудник, у которого есть доступ к рабочим инструментам».",
-    "example": "Подключи MCP Linear → попроси «возьми все P0-баги в спринте и сгруппируй по компонентам».",
+    "example": "Подключи MCP Linear, затем попроси «возьми все P0-баги в спринте и сгруппируй по компонентам».",
     "mistakes": "Давать MCP-серверу слишком широкие права — потенциальная утечка данных."
   },
   "m-what": {
@@ -788,7 +788,7 @@
     "why": "Включаешь один сервер — получаешь десятки готовых инструментов с уже отлаженной аутентификацией, схемами, обработкой ошибок. Свой коннектор = 1-4 недели разработки и постоянная поддержка.",
     "when": "Когда нужный продукт уже в каталоге — бери готовый. Свой пиши только если: (а) сервиса нет в каталоге, (б) нужна специфичная логика на стороне сервера, (в) compliance запрещает сторонние серверы.",
     "impact": "Готовый сервер: минуты на подключение vs недели на разработку своего. Плюс — обновления приходят автоматически когда поставщик меняет API.",
-    "example": "«Хочу чтобы Claude читал тикеты Linear и создавал PR в GitHub». → `claude_desktop_config.json`: подключаешь `@modelcontextprotocol/server-linear` и `@modelcontextprotocol/server-github` с токенами. Через 10 минут работает.",
+    "example": "«Хочу чтобы Claude читал тикеты Linear и создавал PR в GitHub». Решение: `claude_desktop_config.json`: подключаешь `@modelcontextprotocol/server-linear` и `@modelcontextprotocol/server-github` с токенами. Через 10 минут работает.",
     "mistakes": "❌ Писать свой коннектор к Jira/Slack/Figma — для 95% задач хватит официального.\n❌ Подключать community-сервер на продовом окружении без аудита кода — security-риск.\n❌ Не проверять scope/permissions токена — даёшь Claude больше прав чем нужно.\n❌ Игнорировать **MCP Inspector** для отладки — теряешь часы на угадывание ошибок.\n\n*deprecate-watch: список серверов растёт ежемесячно. Структура (официальные / вендорские / community) стабильна.*"
   },
   "m-custom": {
@@ -824,7 +824,7 @@
     "why": "Без отладки «MCP не видит мои данные» останется навсегда. Систематический подход экономит часы.",
     "when": "Когда новый сервер подключён, но Claude его «не использует» или вызывает с ошибочными параметрами.",
     "impact": "Знание /mcp + логов = решение проблемы за 5-10 минут вместо случайных попыток.",
-    "example": "/mcp → проверь что сервер running. Затем включи DEBUG в env-переменной сервера → читай stderr.",
+    "example": "/mcp, затем проверь что сервер running. Затем включи DEBUG в env-переменной сервера, затем читай stderr.",
     "mistakes": "Винить Claude в том, что «не использует MCP». В 90% случаев причина — описание tool или auth-ошибка сервера."
   },
   "instructions": {
@@ -833,7 +833,7 @@
     "why": "Чтобы не повторять «отвечай по-русски, кратко, без воды» в каждом сообщении.",
     "when": "Сразу при настройке окружения — это первая инвестиция, которая окупается с первого диалога.",
     "impact": "Хорошие [[node:instructions|инструкции]] = тон, стиль, формат единый по всем ответам. Без них: каждый ответ как новый человек — разный голос, разная структура, нет последовательности.",
-    "example": "Я — продакт. Отвечай тезисно, в формате «факт → следствие → рекомендация», без формальных вводных.",
+    "example": "Я — продакт. Отвечай тезисно, в формате «факт, затем следствие, затем рекомендация», без формальных вводных.",
     "mistakes": "Писать туда длинные простыни «помогай мне со всем» — модель перестаёт замечать важное."
   },
   "i-global": {
@@ -851,7 +851,7 @@
     "why": "Делает Project «экспертом» в одной теме — без раздувания глобалки.",
     "when": "Каждый раз при создании серьёзного Project.",
     "impact": "Без них Project = просто папка с файлами, а не специализированный ассистент.",
-    "example": "Ты — эксперт в моей предметной области. Структура: проблема → влияние → рекомендация.",
+    "example": "Ты — эксперт в моей предметной области. Структура: проблема, затем влияние, затем рекомендация.",
     "mistakes": "Дублировать глобальные инструкции в каждом Project — дополняйте, а не повторяйте."
   },
   "i-claudemd": {
@@ -892,7 +892,7 @@
   },
   "pr-principles": {
     "title": "Принципы",
-    "what": "Контекст → Роль → Задача → Формат → Ограничения. Чем конкретнее, тем точнее.",
+    "what": "Контекст, затем Роль, затем Задача, затем Формат, затем Ограничения. Чем конкретнее, тем точнее.",
     "why": "Это базовый каркас, который работает почти всегда.",
     "when": "Перед любым нетривиальным запросом потратьте 30 секунд на структуру.",
     "impact": "Структурированный промпт = ответ который можно использовать без переписывания. Без структуры: первый черновик «вроде ничё», тратишь ещё 15 минут на уточнения и переписку.",
@@ -910,7 +910,7 @@
   },
   "pr-fewshot": {
     "title": "Few-shot examples",
-    "what": "Дать 1-3 примера вход→выход — и модель уловит паттерн без объяснений.",
+    "what": "Дать 1-3 примера вход-выход — и модель уловит паттерн без объяснений.",
     "why": "Это самый сильный приём для нестандартных форматов и тонкого стиля.",
     "when": "Когда формат сложно описать словами или нужен особый тон.",
     "impact": "Few-shot = +30-80% точности формата vs zero-shot объяснение.",
@@ -955,11 +955,11 @@
   },
   "pr-iterate": {
     "title": "Итерация промпта",
-    "what": "Системный подход к улучшению промпта: запустить → найти конкретный провал → внести 1 правку (роль / пример / ограничение) → повторить. Не «переписать целиком», а гипотеза → проверка.",
+    "what": "Системный подход к улучшению промпта: запустить, затем найти конкретный провал, затем внести 1 правку (роль / пример / ограничение), затем повторить. Не «переписать целиком», а гипотеза, затем проверка.",
     "why": "Большинство «плохих промптов» становятся «отличными» за 3-5 точечных итераций. Без метода вы либо сдаётесь, либо переписываете заново и теряете рабочие части.",
     "when": "Когда промпт даёт ~70% результата, и есть конкретное «не нравится X» — это ровно та ситуация, где итерация эффективнее переписывания.",
     "impact": "Итеративный подход = в 5-10× быстрее «переписать с нуля» и сохраняет рабочие наработки.",
-    "example": "Запусти промпт на 3 разных входах → выпиши, что плохо в каждом → найди общий паттерн → добавь одно ограничение → повтори.",
+    "example": "Запусти промпт на 3 разных входах, затем выпиши, что плохо в каждом, затем найди общий паттерн, затем добавь одно ограничение, затем повтори.",
     "mistakes": "Менять 5 вещей разом — непонятно, что помогло. Меняй по одному, фиксируй эффект."
   },
   "ready-prompts": {
@@ -1021,7 +1021,7 @@
     "what": "Типовые задачи, в которых Claude приносит максимум ценности: код, дизайн, контент, исследование, анализ.",
     "why": "Чтобы видеть, куда применить инструмент сразу — без долгого «а где он мне поможет?».",
     "when": "На старте работы с Claude — определяете 1-2 свои сценария и углубляете их.",
-    "impact": "Понимание сценария → выбор правильного инструмента (Project / Skill / Code / Artifact).",
+    "impact": "Понимание сценария, затем выбор правильного инструмента (Project / Skill / Code / Artifact).",
     "example": "У меня регулярная задача — <опиши>. Какой сценарий и стек инструментов оптимален?",
     "mistakes": "Использовать Claude везде «по чуть-чуть» — нигде не получите экспертного уровня."
   },
@@ -1076,7 +1076,7 @@
     "why": "Чтобы перейти от Excel-формул к человеческому языку: «найди топ-5 SKU с падением выручки и объясни паттерн» — без VLOOKUP.",
     "when": "Когда есть таблица данных и вопросы вида «что здесь интересного», «что аномально», «какие тренды».",
     "impact": "Снимает «налог на инструмент»: вместо часа на формулы — минуты на разговор с данными.",
-    "example": "Загрузи CSV с заказами → «Найди SKU с падением >30% в марте vs февраль. Покажи топ-5 с возможными причинами по доступным колонкам».",
+    "example": "Загрузи CSV с заказами, затем «Найди SKU с падением >30% в марте vs февраль. Покажи топ-5 с возможными причинами по доступным колонкам».",
     "mistakes": "Просить «проанализируй данные» без вопроса — получишь generic-описание. Хороший анализ начинается с конкретного вопроса."
   },
   "b-educators": {
@@ -1130,7 +1130,7 @@
     "why": "Снимает 70% «грязной» работы: чтение, конспектирование, цитирование.",
     "when": "Перед запуском продукта, при анализе конкурентов, обзоре рынка.",
     "impact": "С [[node:cap-search|Web Search]] + тематическим Skill — выдаёт качество грамотного аналитика.",
-    "example": "Agent researcher: тема + 3 вопроса → отчёт 2 стр. с источниками и таблицей сравнения.",
+    "example": "Agent researcher: тема + 3 вопроса, затем отчёт 2 стр. с источниками и таблицей сравнения.",
     "mistakes": "Принимать выводы без проверки источников — модель может галлюцинировать ссылки."
   },
   "ag-designer": {
@@ -1139,7 +1139,7 @@
     "why": "Партнёр по обсуждению — задаёт вопросы, предлагает альтернативы, ловит косяки.",
     "when": "В дизайн-команде на этапе исследования и итераций — до handoff (передача задачи человеку).",
     "impact": "Заменяет «второй взгляд» когда коллега занят, плюс быстрее.",
-    "example": "Agent designer-buddy: input — макет / URL → 5 наблюдений + 3 идеи альтернатив.",
+    "example": "Agent designer-buddy: input — макет / URL, затем 5 наблюдений + 3 идеи альтернатив.",
     "mistakes": "Ждать от него безупречного художественного вкуса — он силён в эвристиках, не в эстетике."
   },
   "ag-pm": {
@@ -1148,7 +1148,7 @@
     "why": "Освобождает PM от рутины формулировок — оставляет время на стратегию.",
     "when": "В продуктовых командах с активным backlog и спринтами.",
     "impact": "Меньше misalignment с командой — задачи чёткие и единообразные.",
-    "example": "Agent pm-assistant: тезис задачи → User story + AC + риски + оценка размера.",
+    "example": "Agent pm-assistant: тезис задачи, затем User story + AC + риски + оценка размера.",
     "mistakes": "Заменять стейкхолдер-интервью генерацией — гипотезы ≠ потребности пользователей."
   },
   "cap-thinking": {
@@ -1158,7 +1158,7 @@
     "when": "**Включай thinking когда:**\n- Multi-step reasoning: цепочка из 3+ зависимых решений (архитектурный design, debug сложного бага)\n- Math/logic: задачи где нужно держать в голове константы и условия\n- Ambiguous prompts: когда нужно явно proverить интерпретации перед action\n- Code review: анализ trade-offs архитектуры\n- High-stakes decisions: rare-but-critical действия (миграция БД, deployment plan)\n\n**НЕ включай thinking когда:**\n- Простые questions (summarize, translate, format)\n- Streaming UX где важна low latency\n- Tool use где Claude должен быстро решить какой tool вызвать\n- Bulk operations (1000s of similar tasks — burn money без gain)",
     "impact": "**Trade-offs:**\n- Time: 3-5× медленнее обычного response (thinking сам по себе занимает 5-30 секунд)\n- Cost: 2-3× дороже на токены (thinking blocks тоже билятся)\n- Accuracy: значимо выше на complex tasks (по Anthropic benchmarks — до 30-50% на math/code)\n\n**Реальный signal:** если ты выбираешь Opus over Sonnet для сложной задачи — try Sonnet + thinking сначала. Часто equal accuracy при половине стоимости.",
     "example": "**Хороший случай** — debug:\n```\nthinking: enabled, budget: 8000\nprompt: «Production падает с 502 раз в 2 часа. Logs прикреплены.\n         Найди root cause.»\n```\nClaude в thinking блоке: проверяет hypotheses (memory leak, race condition, external dep), отбрасывает несовместимые с логами, выдаёт final answer с обоснованием.\n\n**Плохой случай** — summarize:\n```\nthinking: enabled\nprompt: «Подытожь этот email в 3 пункта.»\n```\nThinking тут не помогает, только burns tokens. Должно быть thinking: disabled.",
-    "mistakes": "**1. «Включаю thinking везде по умолчанию»** — самый дорогой anti-pattern. На simple tasks даёт +200-300% cost без accuracy gain. Используй decision criteria выше.\n\n**2. «Не включаю никогда»** — теряешь accuracy в decision-critical scenarios. Если debug занимает 30 минут вручную → thinking за 15 секунд экономит время×деньги.\n\n**3. Игнорирование budget_tokens** — default budget может быть слишком low/high. Math задача с budget=1000 — Claude не успевает дойти до ответа. Simple task с budget=20000 — burn money. Tune per use case.\n\n**4. Использование thinking output для UX** — thinking блок предназначен для INTERNAL reasoning, не для пользователя. Не показывай его в production UI без редактирования."
+    "mistakes": "**1. «Включаю thinking везде по умолчанию»** — самый дорогой anti-pattern. На simple tasks даёт +200-300% cost без accuracy gain. Используй decision criteria выше.\n\n**2. «Не включаю никогда»** — теряешь accuracy в decision-critical scenarios. Если debug занимает 30 минут вручную, то thinking за 15 секунд экономит время×деньги.\n\n**3. Игнорирование budget_tokens** — default budget может быть слишком low/high. Math задача с budget=1000 — Claude не успевает дойти до ответа. Simple task с budget=20000 — burn money. Tune per use case.\n\n**4. Использование thinking output для UX** — thinking блок предназначен для INTERNAL reasoning, не для пользователя. Не показывай его в production UI без редактирования."
   },
   "ag-managed": {
     "title": "Claude Managed Agents",
@@ -1175,7 +1175,7 @@
     "why": "Сессии постоянны — их можно приостанавливать, продолжать, разветвлять и экспортировать. Понимание команд сессий исключает потерю контекста.",
     "when": "Долгие сессии кодинга, смена устройства, сохранение прогресса, откат ошибок через /rewind.",
     "impact": "Никогда не теряешь работу. Возобновление сложных многочасовых задач. Эксперименты без риска через /branch.",
-    "example": "/branch перед рискованным рефакторингом → эксперимент свободно → если не вышло, основная сессия нетронута.",
+    "example": "/branch перед рискованным рефакторингом, затем эксперимент свободно, и если не вышло, основная сессия нетронута.",
     "mistakes": "Использовать [[node:cc-cmd-clear|/clear]] вместо [[node:cc-cmd-compact|/compact]] — /clear удаляет контекст, /compact сжимает его."
   },
   "cc-grp-context": {
@@ -1184,7 +1184,7 @@
     "why": "[[node:b-context|Контекстное окно]] конечно. Эти команды управляют тем, что видит Claude и куда направлено его внимание.",
     "when": "Большие кодовые базы (добавить только нужные папки), долгие сессии (мониторить через /context), начало проекта ([[node:cc-cmd-init|/init]]).",
     "impact": "Лучшие ответы, меньше галлюцинаций, быстрее реакция — Claude видит ровно то, что нужно.",
-    "example": "/add-dir src/components → Claude автоматически читает все компоненты без необходимости ссылаться на каждый.",
+    "example": "/add-dir src/components, и Claude автоматически читает все компоненты без необходимости ссылаться на каждый.",
     "mistakes": "Добавить весь репозиторий когда нужна одна папка — тратит контекст и замедляет Claude."
   },
   "cc-grp-model": {
@@ -1193,7 +1193,7 @@
     "why": "Разные задачи требуют разных моделей. Смена модели в середине сессии экономит стоимость без потери контекста.",
     "when": "/fast для быстрых правок, /model для архитектурной работы, /usage для отслеживания расходов, /status при проблемах с подключением.",
     "impact": "Существенная экономия. Правильная модель для каждой задачи. Никаких неожиданных лимитов.",
-    "example": "/fast для написания тестов → /model Opus для сложного алгоритма → обратно на /fast для чистки.",
+    "example": "/fast для написания тестов, затем /model Opus для сложного алгоритма, затем обратно на /fast для чистки.",
     "mistakes": "Никогда не проверять /usage — неожиданный счёт в конце месяца."
   },
   "cc-grp-ui": {
@@ -1202,7 +1202,7 @@
     "why": "Комфортный интерфейс снижает усталость во время долгих сессий кодинга.",
     "when": "/theme и /color для визуальной ясности. /terminal-setup один раз после установки. /focus когда вывод слишком шумный.",
     "impact": "Меньше когнитивной нагрузки. Лучше читаемость в долгих сессиях.",
-    "example": "/theme dark + /color #d97757 → терминал Claude визуально отличается от других окон.",
+    "example": "/theme dark + /color #d97757, и терминал Claude визуально отличается от других окон.",
     "mistakes": "Пропустить /terminal-setup — Option+Enter не будет работать для многострочных промптов на macOS."
   },
   "cc-grp-config": {
@@ -1211,7 +1211,7 @@
     "why": "Права и горячие клавиши — основа безопасной и эффективной работы. Неправильные права = постоянные запросы на подтверждение.",
     "when": "/permissions после первой установки для разрешения частых инструментов. /keybindings для Cmd+Enter как отправки. /config для общего обзора настроек.",
     "impact": "Меньше прерываний, быстрее рабочий процесс, безопаснее выполнение.",
-    "example": "/permissions → разрешить 'Bash(npm run *)' → Claude запускает npm-скрипты без подтверждения каждый раз.",
+    "example": "/permissions, затем разрешить 'Bash(npm run *)', и Claude запускает npm-скрипты без подтверждения каждый раз.",
     "mistakes": "Разрешить все bash-команды глобально — риск безопасности. Будь конкретен: 'Bash(npm run *)' а не 'Bash(*)'."
   },
   "cc-grp-integrations": {
@@ -1220,7 +1220,7 @@
     "why": "Интеграции встраивают [[node:claude-code|Claude Code]] в полный рабочий процесс разработки — IDE, GitHub, Slack, браузер.",
     "when": "/ide после установки расширения VS Code. /mcp для подключения БД или API. /hooks для автоматизации до/после выполнения инструментов.",
     "impact": "Claude работает внутри твоих инструментов, а не параллельно с ними.",
-    "example": "/ide → интеграция VS Code активна → Claude автоматически видит открытые файлы и диагностику.",
+    "example": "/ide, и интеграция VS Code активна, и Claude автоматически видит открытые файлы и диагностику.",
     "mistakes": "Не вызвать /reload-plugins после добавления плагина — новый плагин не активируется до следующей сессии."
   },
   "cc-grp-automation": {
@@ -1229,7 +1229,7 @@
     "why": "Эти команды превращают Claude из чат-помощника в автономного исполнителя, работающего пока ты занят другим.",
     "when": "/loop для повторяющихся задач. /batch для крупных рефакторингов. /schedule для ночной автоматизации. /ultrareview перед мажорными релизами.",
     "impact": "Часы работы в фоновых задачах. Claude управляет параллелизмом, с которым не справился бы вручную.",
-    "example": "/batch 'добавить JSDoc ко всем функциям в src/' → 20 параллельных агентов, каждый открывает PR для своей группы файлов.",
+    "example": "/batch 'добавить JSDoc ко всем функциям в src/', затем 20 параллельных агентов, каждый открывает PR для своей группы файлов.",
     "mistakes": "Запускать /batch без /plan — всегда утверди план перед параллельным выполнением."
   },
   "cc-grp-quality": {
@@ -1238,7 +1238,7 @@
     "why": "Это ворота качества перед деплоем. Claude находит то, что пропускают линтеры: логические ошибки, проблемы безопасности, избыточную сложность.",
     "when": "Перед каждым мержем PR: /review. Перед деплоем: /security-review. После долгой сессии: /simplify.",
     "impact": "Меньше багов в продакшене. Чище код. Проблемы безопасности до деплоя.",
-    "example": "/review → Claude перечисляет проблемы по серьёзности: Critical (риск SQL-инъекции), Warning (нет обработки ошибок), Info (переименовать для ясности).",
+    "example": "/review, и Claude перечисляет проблемы по серьёзности: Critical (риск SQL-инъекции), Warning (нет обработки ошибок), Info (переименовать для ясности).",
     "mistakes": "Использовать /review как формальность — читай вывод внимательно, особенно Critical-пункты."
   },
   "cc-grp-help": {
@@ -1247,7 +1247,7 @@
     "why": "Онбординг и непрерывное обучение. /btw и /insights — недооценённые жемчужины.",
     "when": "/doctor когда что-то сломалось. /powerup в начале работы. /btw для быстрых вопросов в середине задачи. /insights раз в неделю для анализа паттернов.",
     "impact": "/btw один только экономит десятки прерываний контекста в день.",
-    "example": "В середине рефакторинга: /btw что решает паттерн Builder? → Claude отвечает кратко → основная задача продолжается.",
+    "example": "В середине рефакторинга: /btw что решает паттерн Builder?, затем Claude отвечает кратко, и основная задача продолжается.",
     "mistakes": "Никогда не запускать /doctor при странном поведении CLI — он решает 90% типичных проблем мгновенно."
   },
   "pl-cowork": {
@@ -1265,7 +1265,7 @@
     "why": "Держит Claude внутри твоего рабочего процесса вместо копирования контента между приложениями. Claude видит контекст в котором ты уже работаешь.",
     "when": "Chrome: автоматизация повторяющихся задач в браузере, извлечение данных с сайтов, заполнение форм. M365: вопросы по письмам, документам, встречам не выходя из Claude. Google: ссылки на файлы Drive или события календаря в чате. Slack: поиск прошлых решений или резюме встреч.",
     "impact": "Убирает главное трение в AI-рабочих процессах — ручное перемещение контекста между инструментами. Claude становится слоем поверх твоих существующих приложений.",
-    "example": "Подключи M365 коннектор → спроси Claude: «Обобщи письма прошлой недели о бюджетном предложении и перечисли открытые задачи». Claude ищет в Outlook и Teams, читает переписку и возвращает структурированное резюме.",
+    "example": "Подключи M365 коннектор, затем спроси Claude: «Обобщи письма прошлой недели о бюджетном предложении и перечисли открытые задачи». Claude ищет в Outlook и Teams, читает переписку и возвращает структурированное резюме.",
     "mistakes": "Ждать что коннекторы M365/Google будут отправлять письма или создавать документы — пока только ЧТЕНИЕ. Не давать нужные разрешения при установке расширения Chrome — без них Claude не видит содержимое страниц."
   },
   "cap-limitations": {
@@ -1293,7 +1293,7 @@
     "when": "Когда читаешь о Claude или AI в целом и не понимаешь термины. Когда планируешь AI-проект и нужно выбрать технологию. Когда команда обсуждает архитектуру и тебе хочется участвовать на равных.",
     "impact": "Понимая базу, ты переходишь от «я использую AI как чёрный ящик» к «я понимаю что под капотом». Это даёт уверенность в обсуждениях и выборе решений. Plus — экономия времени: знаешь когда AI не подходит для задачи, не тратишь часы на ненужное.",
     "example": "Типичный путь по Foundation:\n\n  1. [[node:b-claude|«Что такое Claude»]] — общая картина.\n  2. [[node:ai-fundamentals|«AI Fundamentals»]] — LLM, RAG, [[node:af-embeddings|embeddings]] простыми словами.\n  3. «Промпт-инжиниринг» — как разговаривать с AI чтобы получать что нужно.\n  4. «Projects и инструкции» — как настроить Claude под себя.\n\nДальше можно идти в [[node:systems|Systems]] (как соединять компоненты) или [[node:transformation|Transformation]] (как менять процессы команды).",
-    "mistakes": "Учить базу «от корки до корки» как учебник. Так быстро устаёшь и забываешь. Лучше: возьми реальную задачу из работы → начинай делать её через Claude → когда упрёшься во что-то непонятное, открывай нужный узел Foundation. Учишься в процессе, не «впрок»."
+    "mistakes": "Учить базу «от корки до корки» как учебник. Так быстро устаёшь и забываешь. Лучше: возьми реальную задачу из работы, затем начинай делать её через Claude, и когда упрёшься во что-то непонятное, открывай нужный узел Foundation. Учишься в процессе, не «впрок»."
   },
   "systems": {
     "title": "Systems — AI как система",
@@ -1333,7 +1333,7 @@
   },
   "af-llm-basics": {
     "title": "Что такое LLM — на пальцах",
-    "what": "Знаешь как iPhone подсказывает следующее слово когда ты пишешь SMS? «Я приеду…» → телефон предлагает «домой / поздно / завтра». LLM делает то же самое — предсказывает следующее слово на основе того, что было до этого. Только обучен он не на твоих SMS, а на огромном куске интернета: Wikipedia, книги, статьи, форумы.\n\nClaude, ChatGPT, Gemini — это всё LLM. Разные «модели» = разные размеры (больше = умнее, дороже, медленнее) и разные обучающие данные.",
+    "what": "Знаешь как iPhone подсказывает следующее слово когда ты пишешь SMS? «Я приеду…», и телефон предлагает «домой / поздно / завтра». LLM делает то же самое — предсказывает следующее слово на основе того, что было до этого. Только обучен он не на твоих SMS, а на огромном куске интернета: Wikipedia, книги, статьи, форумы.\n\nClaude, ChatGPT, Gemini — это всё LLM. Разные «модели» = разные размеры (больше = умнее, дороже, медленнее) и разные обучающие данные.",
     "why": "Если ты понимаешь что AI просто **предсказывает следующее слово** — у тебя отваливаются все нереалистичные ожидания. «Почему AI ошибся в умножении 47×83?» — потому что он не считает, а угадывает следующую цифру. «Почему он не знает что было вчера?» — потому что вчерашнего разговора нет в его обучающих данных.\n\nЭто как понять что машина — не лошадь. Лошадь умеет сама. Машина — нет. Тебе нужно её вести.",
     "when": "Перед тем как впервые серьёзно использовать AI на работе. Перед спором с коллегой «AI должен / не должен X». Перед оценкой «сколько это будет стоить» — стоимость зависит от размера модели.\n\nЕсли ты уже год работаешь с AI — можешь пропустить, но проверь себя: понимаешь ли ты почему AI иногда ошибается в простых вещах? Если нет — вернись.",
     "impact": "Раньше: «AI должен знать, он же AI». Удивление когда не работает. Бесконечные попытки переписать промпт.\n\nТеперь: «AI — это умный угадыватель слов на основе огромной базы текстов. Что-то он угадывает блестяще, что-то — мимо. Я понимаю где».\n\nГлавное: вместо борьбы с AI ты начинаешь его правильно использовать.",
@@ -1342,11 +1342,11 @@
   },
   "af-embeddings": {
     "title": "Embeddings — смысл текста",
-    "what": "Знаешь как Google Photos находит «всех котов» на твоих фотках, хотя ты не подписывал ни одну фотку? Или как Spotify находит «похожие песни», когда ты слушаешь что-то новое?\n\nЭто работает через **embeddings** — каждое слово, фотка или песня превращается в набор чисел (вектор). Похожие вещи получают похожие числа. AI потом просто сравнивает: «эти два набора чисел близкие → значит и смысл близкий».",
-    "why": "Обычный поиск ищет **точные слова**. Ты вводишь «не работает интернет» — Google ищет страницы со словами «не», «работает», «интернет». Если страница называется «WiFi проблемы дома» — она не найдётся, хотя про то же самое.\n\nПоиск через embeddings ищет **по смыслу**. «Не работает интернет» = «WiFi проблемы дома» — близкие наборы чисел → находит обе.\n\nЭто та же магия, что позволяет AI понять что «забыл пароль, помогите» и «как сбросить пароль» — про одно и то же.",
+    "what": "Знаешь как Google Photos находит «всех котов» на твоих фотках, хотя ты не подписывал ни одну фотку? Или как Spotify находит «похожие песни», когда ты слушаешь что-то новое?\n\nЭто работает через **embeddings** — каждое слово, фотка или песня превращается в набор чисел (вектор). Похожие вещи получают похожие числа. AI потом просто сравнивает: «эти два набора чисел близкие, значит и смысл близкий».",
+    "why": "Обычный поиск ищет **точные слова**. Ты вводишь «не работает интернет» — Google ищет страницы со словами «не», «работает», «интернет». Если страница называется «WiFi проблемы дома» — она не найдётся, хотя про то же самое.\n\nПоиск через embeddings ищет **по смыслу**. «Не работает интернет» = «WiFi проблемы дома» — близкие наборы чисел, и находит обе.\n\nЭто та же магия, что позволяет AI понять что «забыл пароль, помогите» и «как сбросить пароль» — про одно и то же.",
     "when": "Когда нужно искать в большом количестве документов и точных слов не хватает. Когда строишь поиск который должен «понимать» запросы пользователя. Когда хочешь рекомендации «похожие товары / документы / клиенты».\n\nВсё что делает [[node:af-rag-basics|RAG]] — стоит на embeddings.",
-    "impact": "Раньше: пользователь спрашивает «не приходит почта» → поиск в FAQ находит ноль (там написано «email не доставляется») → клиент идёт в поддержку.\n\nТеперь: embeddings ловят что «не приходит почта» = «email не доставляется» → находит FAQ → клиент решает сам.\n\nГлавное: качество self-service (клиент решает сам, без поддержки) поиска прыгает в 2-3 раза без переписывания контента.",
-    "example": "У тебя в Notion статья «Сброс пароля: пошаговая инструкция». Сотрудник пишет в Slack-бот: «забыл пароль, помогите».\n\nБез embeddings: бот ищет слово «забыл» в статьях. В заголовке «забыл» нет → ничего не нашёл → «обратись к админу».\n\nС embeddings: «забыл пароль, помогите» → набор чисел. «Сброс пароля: инструкция» → похожий набор чисел. Бот находит статью → кидает ссылку → сотрудник решил вопрос за 5 секунд.\n\nУ Anthropic своих embeddings нет: для гибридной архитектуры популярны Voyage AI, OpenAI text-embedding-3 и open-source модели.",
+    "impact": "Раньше: пользователь спрашивает «не приходит почта», затем поиск в FAQ находит ноль (там написано «email не доставляется»), затем клиент идёт в поддержку.\n\nТеперь: embeddings ловят что «не приходит почта» = «email не доставляется», затем находит FAQ, затем клиент решает сам.\n\nГлавное: качество self-service (клиент решает сам, без поддержки) поиска прыгает в 2-3 раза без переписывания контента.",
+    "example": "У тебя в Notion статья «Сброс пароля: пошаговая инструкция». Сотрудник пишет в Slack-бот: «забыл пароль, помогите».\n\nБез embeddings: бот ищет слово «забыл» в статьях. В заголовке «забыл» нет, значит ничего не нашёл, затем «обратись к админу».\n\nС embeddings: «забыл пароль, помогите», затем набор чисел. «Сброс пароля: инструкция», затем похожий набор чисел. Бот находит статью, затем кидает ссылку, затем сотрудник решил вопрос за 5 секунд.\n\nУ Anthropic своих embeddings нет: для гибридной архитектуры популярны Voyage AI, OpenAI text-embedding-3 и open-source модели.",
     "mistakes": "Главная ошибка: использовать embeddings от случайной модели. Старая дешёвая модель = плохие наборы чисел = плохие совпадения. Нормальные модели сегодня — text-embedding-3 от OpenAI, Cohere embed, или нативно у Claude.\n\nВторая ошибка: думать что embeddings = «AI понимает смысл как человек». Он понимает **похожесть паттернов**. Иногда находит совсем не то — особенно для редких терминов или внутреннего сленга компании."
   },
   "af-vector-db": {
@@ -1354,18 +1354,18 @@
     "what": "Знаешь как в библиотеке книги расставлены по темам, а не по алфавиту? Берёшь книгу про садоводство — рядом ещё 10 про садоводство. Это удобно если ищешь по смыслу.\n\nVector database работает так же, но для AI. Хранит миллионы [[node:af-embeddings|embeddings]] (наборов чисел для смыслов) и умеет быстро находить «вот этим 10 ближайших по смыслу». Pinecone, pgvector (для Postgres), Qdrant, Weaviate, Chroma — это всё vector БД.",
     "why": "Без vector БД embeddings бесполезны. Представь что у тебя 50 000 документов компании в виде наборов чисел. Когда сотрудник задаёт вопрос — нужно найти 5 самых релевантных за миллисекунды.\n\nОбычная база данных (Postgres / MySQL) сделает это за 30 секунд — будет перебирать все 50 000. Vector БД — за 50 миллисекунд. Это разница между «работает» и «не работает в production».",
     "when": "Когда у тебя [[node:af-rag-basics|RAG-система]] с больше чем 1000 документов. Когда нужен семантический поиск по большой базе знаний. Когда строишь рекомендации (похожие товары / документы / клиенты).\n\nЕсли у тебя 50 документов — не нужна. Можно держать всё в памяти приложения, обрабатывать на лету.",
-    "impact": "Без vector БД: пробуешь RAG на 50 документах → работает → пробуешь на 10 000 → каждый запрос 30 секунд → пользователи разбегаются.\n\nС vector БД: 1 миллион документов, ответ за 100 миллисекунд, тысячи параллельных запросов. Это разница между демо и production.",
-    "example": "У тебя 50 000 статей базы знаний компании. Сотрудник пишет в Slack-боте: «Как оформить командировку в Германию?»\n\nЧто происходит:\n1. Бот переводит вопрос в [[node:af-embeddings|embedding]] (набор чисел)\n2. Идёт в vector БД: «найди 5 статей с самыми похожими наборами чисел»\n3. Vector БД за 50 мс находит: «Регламент командировок ЕС», «Виза в Германию», «Оформление расходов»\n4. Бот передаёт эти 5 статей Claude → Claude отвечает\n\nИтог: ответ за 2 секунды вместо 30 секунд + поиска руками.\n\nС Claude чаще всего связывают Pinecone, Qdrant, pgvector — стек выбирается по compliance и масштабу, не по совместимости с LLM.",
+    "impact": "Без vector БД: пробуешь RAG на 50 документах, затем работает, затем пробуешь на 10 000, затем каждый запрос 30 секунд, затем пользователи разбегаются.\n\nС vector БД: 1 миллион документов, ответ за 100 миллисекунд, тысячи параллельных запросов. Это разница между демо и production.",
+    "example": "У тебя 50 000 статей базы знаний компании. Сотрудник пишет в Slack-боте: «Как оформить командировку в Германию?»\n\nЧто происходит:\n1. Бот переводит вопрос в [[node:af-embeddings|embedding]] (набор чисел)\n2. Идёт в vector БД: «найди 5 статей с самыми похожими наборами чисел»\n3. Vector БД за 50 мс находит: «Регламент командировок ЕС», «Виза в Германию», «Оформление расходов»\n4. Бот передаёт эти 5 статей Claude, затем Claude отвечает\n\nИтог: ответ за 2 секунды вместо 30 секунд + поиска руками.\n\nС Claude чаще всего связывают Pinecone, Qdrant, pgvector — стек выбирается по compliance и масштабу, не по совместимости с LLM.",
     "mistakes": "Главная ошибка: брать дорогой managed-сервис (Pinecone, Weaviate Cloud) когда хватит pgvector. Если у твоей команды уже есть Postgres — pgvector добавляет векторный поиск как расширение. Просто, дёшево, под контролем.\n\nManaged-решения нужны когда у тебя > 10 миллионов векторов или особые требования к латентности. Иначе — переплата за «модно»."
   },
   "af-rag-basics": {
     "title": "RAG — ответы по документам",
-    "what": "Помнишь как ты на экзамене сначала открывал шпаргалку и потом отвечал? RAG работает так же. AI получает вопрос → сначала достаёт релевантные куски из твоей базы → читает их → формулирует ответ. Не из головы, а из конкретных найденных документов.\n\nRAG = Retrieval (нашёл) + Augmented (добавил к промпту) + Generation (сгенерировал ответ). Звучит сложно, делается просто. Подробнее про **архитектуру** — [[node:sys-rag-architecture|RAG-архитектура]].",
+    "what": "Помнишь как ты на экзамене сначала открывал шпаргалку и потом отвечал? RAG работает так же. AI получает вопрос, затем сначала достаёт релевантные куски из твоей базы, затем читает их, затем формулирует ответ. Не из головы, а из конкретных найденных документов.\n\nRAG = Retrieval (нашёл) + Augmented (добавил к промпту) + Generation (сгенерировал ответ). Звучит сложно, делается просто. Подробнее про **архитектуру** — [[node:sys-rag-architecture|RAG-архитектура]].",
     "why": "AI сам по себе не знает твоих документов. Спросишь его про вашу политику возврата — либо скажет «не знаю», либо придумает что-то правдоподобное (это и есть галлюцинация).\n\nС RAG он отвечает **по вашим документам** и может даже дать ссылку «вот откуда взял». Никаких выдумок.\n\nЭто самый частый способ как AI используется в компаниях. Не «AI пишет креатив» — а «AI отвечает на основе нашей базы знаний».",
     "when": "Когда у тебя есть **документы которые AI должен знать**:\n- База знаний поддержки\n- Внутренние регламенты HR\n- Документация продукта\n- История общения с клиентом\n- Архив встреч и решений\n\nКогда AI без RAG отвечает «не знаю» на вопросы, ответы на которые **есть** в твоих документах — пора подключать.",
     "impact": "Без RAG: AI отвечает правильно на 30% вопросов про твою компанию. На остальные галлюцинирует или сдаётся.\n\nС RAG: 80-90% правильных ответов, со ссылками на источники.\n\nГлавное: пользователи начинают **доверять** AI потому что видят откуда взялся ответ.",
-    "example": "Клиент пишет в чат: «Какая у вас политика возврата для подарочных карт?»\n\nRAG-система:\n1. Берёт вопрос → переводит в [[node:af-embeddings|набор чисел (embedding)]]\n2. Ищет в базе документов «похожие по смыслу» куски\n3. Находит раздел «Returns Policy → Gift Cards: возврат в течение 30 дней, не использованные»\n4. Передаёт Claude: «вот вопрос клиента + вот что нашли в документах → ответь»\n5. Claude: «Подарочные карты можно вернуть в течение 30 дней, если они не использованы. Источник: Политика возвратов, раздел 4.»\n\nКлиент получает точный ответ со ссылкой за 5 секунд.\n\nВ Claude RAG строится без отдельного сервиса: [[node:cap-search|Web search]] + [[node:cap-files|Files]] + [[node:projects|Projects]] для grounding.",
-    "mistakes": "Главная ошибка: «давайте просто RAG и всё заработает». Naive RAG (нашёл первые 3 чанка → отдал AI) работает на 50%. Production-RAG требует настройки: re-ranking найденного, проверка релевантности, метаданные, разбиение документов на правильные куски.\n\nВторая ошибка: пихать в базу всё подряд — устаревшие черновики, дубли, противоречивые версии. AI находит мусор → отвечает мусор. Чистота базы важнее количества документов."
+    "example": "Клиент пишет в чат: «Какая у вас политика возврата для подарочных карт?»\n\nRAG-система:\n1. Берёт вопрос, затем переводит в [[node:af-embeddings|набор чисел (embedding)]]\n2. Ищет в базе документов «похожие по смыслу» куски\n3. Находит раздел «Returns Policy, раздел Gift Cards: возврат в течение 30 дней, не использованные»\n4. Передаёт Claude: «вот вопрос клиента + вот что нашли в документах, теперь ответь»\n5. Claude: «Подарочные карты можно вернуть в течение 30 дней, если они не использованы. Источник: Политика возвратов, раздел 4.»\n\nКлиент получает точный ответ со ссылкой за 5 секунд.\n\nВ Claude RAG строится без отдельного сервиса: [[node:cap-search|Web search]] + [[node:cap-files|Files]] + [[node:projects|Projects]] для grounding.",
+    "mistakes": "Главная ошибка: «давайте просто RAG и всё заработает». Naive RAG (нашёл первые 3 чанка, затем отдал AI) работает на 50%. Production-RAG требует настройки: re-ranking найденного, проверка релевантности, метаданные, разбиение документов на правильные куски.\n\nВторая ошибка: пихать в базу всё подряд — устаревшие черновики, дубли, противоречивые версии. AI находит мусор, затем отвечает мусор. Чистота базы важнее количества документов."
   },
   "af-memory-systems": {
     "title": "Память AI",
@@ -1373,16 +1373,16 @@
     "why": "Без понимания типов памяти ты делаешь чат-бота, который «не помнит» — и не знаешь что с этим делать. Просто увеличить контекстное окно? Дорого и не масштабируется. Подключить базу знаний? Какую? Каждый тип памяти решает свою задачу.\n\nЭто как со своей памятью: ты не пытаешься удержать в голове всю Wikipedia. Ты помнишь главное, а остальное — записываешь.",
     "when": "Когда проектируешь AI-помощника который должен **помнить** что-то между разговорами:\n- Чат-бот поддержки с памятью истории клиента\n- AI-ассистент с памятью твоих предпочтений\n- Бот для команды накапливающий решения и контекст\n\nЕсли у тебя одноразовые задачи («переведи этот текст») — память не нужна.",
     "impact": "Без архитектуры памяти: AI = «помощник на 1 запрос». Каждый раз с нуля. Пользователь раздражён: «я же говорил вчера, ты что, забыл?».\n\nС правильной архитектурой: AI = «коллега который помнит контекст». Помнит проект, стиль работы, прошлые решения. Возвращаешься через неделю — продолжаете с того же места.",
-    "example": "Чат-бот для product manager в SaaS:\n\n- **Короткая память (in-context):** в текущем разговоре помнит «ты сейчас обсуждаешь фичу X»\n- **Внешняя (RAG):** [[node:af-rag-basics|RAG]] подключён к базе спек и интервью с клиентами\n- **Семантическая (Memory tool):** запоминает «этот PM работает над B2B-продуктом, любит data-driven подход»\n- **Эпизодическая (history log):** хранит конкретные принятые решения «3 апреля решили запускать фичу X в beta»\n\nКогда PM спрашивает «что мы решили с фичей X?» — AI идёт в эпизодическую → находит решение → отвечает с датой.\n\nПодробнее у Claude: [[node:cap-memory|Memory tool]], [[node:p-files|Project Files]], [[node:i-claudemd|CLAUDE.md]].",
+    "example": "Чат-бот для product manager в SaaS:\n\n- **Короткая память (in-context):** в текущем разговоре помнит «ты сейчас обсуждаешь фичу X»\n- **Внешняя (RAG):** [[node:af-rag-basics|RAG]] подключён к базе спек и интервью с клиентами\n- **Семантическая (Memory tool):** запоминает «этот PM работает над B2B-продуктом, любит data-driven подход»\n- **Эпизодическая (history log):** хранит конкретные принятые решения «3 апреля решили запускать фичу X в beta»\n\nКогда PM спрашивает «что мы решили с фичей X?» — AI идёт в эпизодическую, затем находит решение, затем отвечает с датой.\n\nПодробнее у Claude: [[node:cap-memory|Memory tool]], [[node:p-files|Project Files]], [[node:i-claudemd|CLAUDE.md]].",
     "mistakes": "Главная ошибка: «давайте увеличим контекстное окно до миллиона и AI всё запомнит». Дорого, медленно, на проде не работает. AI начинает теряться когда контекст слишком большой («lost in the middle»).\n\nВторая ошибка: всё пихать в один тип памяти. Текущий разговор в RAG-базу — бессмысленно, грузит её мусором. Долгий профиль клиента в контекст каждого запроса — переплата. Каждый тип под свою задачу."
   },
   "af-multimodal": {
     "title": "Multimodal — видит и слышит",
     "what": "Раньше AI работал только с текстом: «напиши письмо», «переведи статью». Multimodal AI работает с разными типами данных одновременно: текст + картинки + аудио + видео.\n\nТы можешь показать AI скриншот ошибки и спросить «что тут не так?». Или сфотографировать счёт и попросить «занеси цифры в Excel». Claude видит и читает картинку, понимает что там, отвечает.",
     "why": "Реальный мир не текстовый. Дизайнер показывает мокап, маркетолог постит инфографику, бухгалтер сканирует чек. Если AI понимает только текст — он закрывает только половину задач.\n\nMultimodal AI открывает доступ к задачам которые раньше требовали человека или специального софта: чтение чеков, разбор графиков, понимание мокапов.",
-    "when": "Когда задача требует понимания не только текста:\n- Скриншот с ошибкой → «почему не работает?»\n- Мокап дизайна → «сверстай HTML»\n- Фото счёта → «выпиши сумму и дату»\n- График из отчёта → «опиши тренд»\n- Видео встречи → «сделай краткое summary»\n\nЕсли у тебя задача в основном про текст — multimodal не нужен.",
-    "impact": "Раньше: разбор чеков из командировки — секретарь 30 минут переписывает суммы в Excel.\n\nТеперь: скинул AI фото 10 чеков → AI распознал, выписал даты и суммы → 2 минуты на проверку.\n\nГлавное: задачи которые требовали «глаз человека» теперь делает AI.",
-    "example": "Ситуация: тебе прислали скриншот с ошибкой Python: длинный stack trace, непонятно где проблема.\n\nРаньше: ты переписываешь текст ошибки в чат AI (10 минут возни), потом спрашиваешь.\n\nС multimodal: кидаешь скриншот → «что не так?» → Claude видит весь stack trace, находит конкретную строку: «у тебя на строке 47 переменная `data` равна None, а ты пытаешься обратиться к её атрибуту. Добавь проверку `if data is not None`».\n\nОт скриншота к ответу — 10 секунд.\n\nВ Claude мультимодальность — это [[node:cap-input-modalities|Input modalities]]: изображения через [[node:cap-vision|Vision]] и документы через [[node:cap-files|Files]].",
+    "when": "Когда задача требует понимания не только текста:\n- Скриншот с ошибкой, затем «почему не работает?»\n- Мокап дизайна, затем «сверстай HTML»\n- Фото счёта, затем «выпиши сумму и дату»\n- График из отчёта, затем «опиши тренд»\n- Видео встречи, затем «сделай краткое summary»\n\nЕсли у тебя задача в основном про текст — multimodal не нужен.",
+    "impact": "Раньше: разбор чеков из командировки — секретарь 30 минут переписывает суммы в Excel.\n\nТеперь: скинул AI фото 10 чеков, затем AI распознал, выписал даты и суммы, затем 2 минуты на проверку.\n\nГлавное: задачи которые требовали «глаз человека» теперь делает AI.",
+    "example": "Ситуация: тебе прислали скриншот с ошибкой Python: длинный stack trace, непонятно где проблема.\n\nРаньше: ты переписываешь текст ошибки в чат AI (10 минут возни), потом спрашиваешь.\n\nС multimodal: кидаешь скриншот, спрашиваешь «что не так?», и Claude видит весь stack trace, находит конкретную строку: «у тебя на строке 47 переменная `data` равна None, а ты пытаешься обратиться к её атрибуту. Добавь проверку `if data is not None`».\n\nОт скриншота к ответу — 10 секунд.\n\nВ Claude мультимодальность — это [[node:cap-input-modalities|Input modalities]]: изображения через [[node:cap-vision|Vision]] и документы через [[node:cap-files|Files]].",
     "mistakes": "Главная ошибка: думать что multimodal = «AI всё видит как человек». На самом деле:\n- Распознать предметы на фото — хорошо\n- Прочитать печатный текст — хорошо\n- Прочитать рукописный — хуже специализированных OCR\n- Понять сложный график со множеством линий — может ошибиться\n- Точно посчитать объекты на фото — слабее\n\nТестируй на своих типах задач, не верь общим обещаниям."
   },
   "af-fine-tuning": {
@@ -1390,8 +1390,8 @@
     "what": "Представь что нанимаешь нового сотрудника. Два варианта:\n\n1. **Prompting** = дать ему инструкцию каждый раз. «Сегодня делаешь так, завтра вот так». Быстро, гибко, можно поменять подход за минуту.\n\n2. **Fine-tuning** = «обучить» его 6 месяцев чтобы он сам всё знал и делал без напоминаний. Дорого, долго, зато потом работает без объяснений.\n\nДля 95% задач **prompting + примеры** ([[node:pr-fewshot|few-shot]]) — достаточно. Fine-tuning — крайнее средство.",
     "why": "Fine-tuning звучит круто («наш собственный AI!»), но это технический долг. Через 3 месяца выходит новая версия Claude — лучше твоей fine-tuned. Чтобы её использовать — нужно fine-tuning заново. Прошёл квартал, потратили $10k, а ты всё ещё на старой модели.\n\nPrompting — мгновенный. Поменял текст в промпте — поведение AI поменялось. Хочешь новую модель — переключил, всё работает.",
     "when": "Fine-tuning имеет смысл когда:\n- **Особый стиль / тон** который не передаётся через примеры в промпте (редко)\n- **Узкий домен** где у тебя ТЫСЯЧИ примеров «вход-выход» (медицина, юриспруденция)\n- **Нужно сделать дешевле и быстрее** — fine-tune маленькую модель чтобы заменить большую\n\nВо всех остальных случаях — prompting + RAG + tools. Если не пробовал — даже не думай про fine-tuning.",
-    "impact": "Правильный выбор экономит месяцы. Команды слышат «fine-tuning» → решают что это магия → тратят квартал на сбор обучающих данных → запускают, оно работает на 80%.\n\nВ это же время другая команда написала промпт на 10 строк + подключила [[node:af-rag-basics|RAG]] → у них уже работает на 85% через неделю.\n\nГлавное: не путай «модно» с «нужно».",
-    "example": "Задача: «AI отвечает клиентам в стиле нашего CEO — лаконично, дружелюбно, без жаргона».\n\n**Сначала попробуй prompting:**\n```\nSystem: Отвечай как наш CEO. Стиль: лаконичный, дружелюбный, без корпоративного жаргона.\n\nПример 1: Вопрос «когда будет фича X?» — CEO бы ответил: «Скоро. На следующей неделе. Спасибо что ждёте.»\nПример 2: Вопрос «почему дорого?» — CEO бы ответил: «Потому что мы платим людям хорошо. Это того стоит.»\n[ещё 3-5 примеров]\n```\n\n50 итераций промпта → если всё ещё не звучит как CEO → тогда подумай о fine-tuning. В 80% случаев промпт работает.\n\nClaude не предлагает fine-tuning — вместо него используй [[node:prompting|Prompting]], [[node:projects|Projects]] и [[node:cap-memory|Memory]].",
+    "impact": "Правильный выбор экономит месяцы. Команды слышат «fine-tuning», решают что это магия, тратят квартал на сбор обучающих данных, запускают, и оно работает на 80%.\n\nВ это же время другая команда написала промпт на 10 строк и подключила [[node:af-rag-basics|RAG]], и у них уже работает на 85% через неделю.\n\nГлавное: не путай «модно» с «нужно».",
+    "example": "Задача: «AI отвечает клиентам в стиле нашего CEO — лаконично, дружелюбно, без жаргона».\n\n**Сначала попробуй prompting:**\n```\nSystem: Отвечай как наш CEO. Стиль: лаконичный, дружелюбный, без корпоративного жаргона.\n\nПример 1: Вопрос «когда будет фича X?» — CEO бы ответил: «Скоро. На следующей неделе. Спасибо что ждёте.»\nПример 2: Вопрос «почему дорого?» — CEO бы ответил: «Потому что мы платим людям хорошо. Это того стоит.»\n[ещё 3-5 примеров]\n```\n\n50 итераций промпта, и если всё ещё не звучит как CEO, тогда подумай о fine-tuning. В 80% случаев промпт работает.\n\nClaude не предлагает fine-tuning — вместо него используй [[node:prompting|Prompting]], [[node:projects|Projects]] и [[node:cap-memory|Memory]].",
     "mistakes": "Главная ошибка: fine-tuning «на всякий случай» в самом начале. Это как тюнинг машины которую ты ещё не водил. Сначала научись водить.\n\nВторая ошибка: думать что fine-tuning = «AI становится умнее». Нет — он становится «более похож на твои данные», но может ХУДШЕ отвечать на вопросы вне этих данных. Это специализация, не апгрейд."
   },
   "ai-native-operations": {
@@ -1401,11 +1401,11 @@
     "when": "Когда замечаешь:\n- Один человек = одно узкое место («без Маши ничего не оформить»)\n- Куча типовых запросов отвлекают от важного\n- Регламенты есть, но никто их не помнит — все спрашивают друг друга\n- Отчёты по понедельникам = 3 часа копирования в Excel\n- Новые сотрудники тратят 2 недели чтобы разобраться где что лежит",
     "impact": "Раньше: HR-специалист тратит 60% времени на типовые вопросы про отпуска / больничные / справки. Теперь: AI отвечает на 70% этих вопросов сам, HR занимается онбордингом, развитием, культурой.\n\nРаньше: финансист 2 дня делает месячный отчёт. Теперь: AI собирает черновик за час, финансист тратит 4 часа на проверку и анализ.\n\nГлавное: люди в операционке перестают быть «обслугой запросов», становятся стратегами.",
     "example": "5 направлений показывают, как меняется типовая работа:\n- [[node:ops-process-automation|Автоматизация процессов]]\n- [[node:ops-decision-intelligence|Поддержка решений через AI]]\n- [[node:ops-reporting-automation|Регулярная отчётность]]\n- [[node:ops-resource-optimization|Оптимизация ресурсов]]\n- [[node:ops-team-workflow|Командные workflow]]\n\nКонкретные сценарии — внутри каждого узла этого раздела.",
-    "mistakes": "Главная ошибка: пытаться автоматизировать всё сразу. «Полная AI-трансформация операционки» — звучит круто, на практике никто не пользуется.\n\nЛучше: выбери одну боль (например, типовые HR-вопросы) → закрой её AI → получи результат за 2 недели → переходи к следующей.\n\nВторая ошибка: автоматизировать без участия команды. Если HR не участвовал в настройке — будет саботировать. AI должен быть инструментом, который сами операционщики хотят использовать."
+    "mistakes": "Главная ошибка: пытаться автоматизировать всё сразу. «Полная AI-трансформация операционки» — звучит круто, на практике никто не пользуется.\n\nЛучше: выбери одну боль (например, типовые HR-вопросы), закрой её AI, получи результат за 2 недели, затем переходи к следующей.\n\nВторая ошибка: автоматизировать без участия команды. Если HR не участвовал в настройке — будет саботировать. AI должен быть инструментом, который сами операционщики хотят использовать."
   },
   "ops-process-automation": {
     "title": "Автоматизация процессов с ИИ",
-    "what": "Автоматизация повторяющихся процессов через AI: вход (триггер) → AI-обработка → выход (результат + следующее действие). Skills + Hooks + RAG как основной стек.",
+    "what": "Автоматизация повторяющихся процессов через AI: вход (триггер), затем AI-обработка, затем выход (результат + следующее действие). Skills + Hooks + RAG как основной стек.",
     "why": "У любой команды 30-50% задач = повторяющиеся: онбординг, статус-апдейты, рутинная коммуникация. AI закрывает большинство этих задач без потери качества.",
     "when": "Когда задача делается ≥5 раз в неделю + имеет чёткие inputs/outputs + результат можно валидировать. Идеальные кандидаты: weekly reports, customer welcome emails, internal status digests.",
     "impact": "Time savings: 70-90% на конкретной задаче. Consistency: единый качественный результат вместо вариативности «зависит кто делал».",
@@ -1414,7 +1414,7 @@
   },
   "ops-decision-intelligence": {
     "title": "AI Decision Intelligence",
-    "what": "AI как «второй мнение» для операционных решений: AI анализирует данные + контекст + историю решений → даёт structured рекомендацию. Не заменяет человека, но дисциплинирует процесс.",
+    "what": "AI как «второй мнение» для операционных решений: AI анализирует данные + контекст + историю решений, затем даёт structured рекомендацию. Не заменяет человека, но дисциплинирует процесс.",
     "why": "Operational решения часто делаются «по чутью» под нагрузкой. AI-структурирование заставляет рассмотреть alternatives, риски, метрики — снижает количество reactive решений.",
     "when": "Hire/no-hire decisions. Resource allocation. Vendor selection. Process change vs no-change. Решения с >$10k impact или >2 weeks horizon.",
     "impact": "Reduction in reactive decisions: 50-70%. Decision quality measurable (track outcomes).",
@@ -1426,9 +1426,9 @@
     "what": "Автогенерация отчётов из структурированных данных: CRM, аналитика, project management. AI читает данные, пишет insight-driven нарратив, формирует action items.",
     "why": "Команды тратят 4-8 часов в неделю на ручной репортинг. AI закрывает 80% работы, оставляя человеку review и executive judgment.",
     "when": "Регулярные отчёты (weekly/monthly). Данные в системах с API/export. Аудитория ожидает consistency в формате. KPI (ключевой показатель эффективности) можно посчитать.",
-    "impact": "Time-to-report: 4 часа → 30 минут. Раньше: разные люди — разные шаблоны. Теперь: один формат, один тон, везде. Отчёты приходят вовремя, не «когда руки дошли».",
-    "example": "Sales Weekly Report:\n1. Export из CRM (HubSpot/Salesforce) → CSV.\n2. Project с system prompt: «ты sales analyst, формат отчёта — XYZ».\n3. Промпт: «вот данные за неделю, напиши executive summary + 3 action items».\n4. Output: готовый отчёт с числами, трендами, рекомендациями.\n\nMetrics: время на репортинг 4h→30min, точность данных 100% (autopull), insights consistency 95%.",
-    "mistakes": "Делать «AI generates pretty text» без действий. Отчёт без action items — мусор. Структура должна быть: что изменилось → почему → что делаем → KPI. Каждый раз."
+    "impact": "Time-to-report: с 4 часов до 30 минут. Раньше: разные люди — разные шаблоны. Теперь: один формат, один тон, везде. Отчёты приходят вовремя, не «когда руки дошли».",
+    "example": "Sales Weekly Report:\n1. Export из CRM (HubSpot/Salesforce) в CSV.\n2. Project с system prompt: «ты sales analyst, формат отчёта — XYZ».\n3. Промпт: «вот данные за неделю, напиши executive summary + 3 action items».\n4. Output: готовый отчёт с числами, трендами, рекомендациями.\n\nMetrics: время на репортинг с 4h до 30min, точность данных 100% (autopull), insights consistency 95%.",
+    "mistakes": "Делать «AI generates pretty text» без действий. Отчёт без action items — мусор. Структура должна быть: что изменилось, почему, что делаем, KPI. Каждый раз."
   },
   "ops-resource-optimization": {
     "title": "AI Resource Optimization",
@@ -1436,7 +1436,7 @@
     "why": "Operations teams часто overspend на инструментах и ресурсах потому что «всегда так делали». AI-аудит выявляет over-provisioning, model mismatch, idle resources.",
     "when": "Quarterly resource review. Перед годовым бюджетным планированием. Когда AI-расходы становятся видимы в P&L.",
     "impact": "Cost reduction: 20-40% на operations спендинг. Productivity: better tool-to-task fit.",
-    "example": "AI Spend Audit:\n1. Export всех AI-API logs за 30 дней.\n2. AI анализ: «какие задачи используют Opus, можно ли заменить на Sonnet?»\n3. Output: список задач + alternative модели + estimated savings.\n4. Тест: один week на новом mix → измерить quality.\n5. Roll out: если quality не падает, перевести 80% задач.\n\nReal case: $5k/month Opus → $1.2k/month Sonnet, quality drop <5%, ROI = 4x.",
+    "example": "AI Spend Audit:\n1. Export всех AI-API logs за 30 дней.\n2. AI анализ: «какие задачи используют Opus, можно ли заменить на Sonnet?»\n3. Output: список задач + alternative модели + estimated savings.\n4. Тест: один week на новом mix, затем измерить quality.\n5. Roll out: если quality не падает, перевести 80% задач.\n\nReal case: с $5k/month Opus до $1.2k/month Sonnet, quality drop <5%, ROI = 4x.",
     "mistakes": "Оптимизировать только cost без quality measurement. Cheaper модель может «сэкономить» $1000, но снизить conversion на $5000. Track quality metrics параллельно с cost."
   },
   "ops-team-workflow": {
@@ -1450,11 +1450,11 @@
   },
   "ai-workflows": {
     "title": "AI Workflows — шаг за шагом",
-    "what": "Workflow — это когда ты бросаешь файл → AI разбирает → ты получаешь summary. Или: входящее письмо → AI классифицирует → отвечает черновиком → ты правишь → отправляешь. Workflow — последовательность шагов, где AI делает свою часть, а ты — свою.\n\nВсе AI-инструменты которыми ты уже пользуешься (Notion AI, Gmail Smart Reply, Notta для встреч) — это workflow. Просто кто-то спрятал их под кнопку.",
-    "why": "Когда ты делаешь одно и то же руками 5 раз в неделю — это сигнал что нужен workflow. AI один раз настроил → дальше работает сам. Ты переходишь от «открыл чат → скопировал → вставил» к «нажал кнопку → получил результат».\n\nЭто разница между «играюсь с ChatGPT» и «у меня есть AI-ассистент который делает X».",
+    "what": "Workflow — это когда ты бросаешь файл, AI разбирает, и ты получаешь summary. Или: входящее письмо, AI классифицирует, отвечает черновиком, ты правишь, отправляешь. Workflow — последовательность шагов, где AI делает свою часть, а ты — свою.\n\nВсе AI-инструменты которыми ты уже пользуешься (Notion AI, Gmail Smart Reply, Notta для встреч) — это workflow. Просто кто-то спрятал их под кнопку.",
+    "why": "Когда ты делаешь одно и то же руками 5 раз в неделю — это сигнал что нужен workflow. AI один раз настроил, и дальше работает сам. Ты переходишь от «открыл чат, скопировал, вставил» к «нажал кнопку, получил результат».\n\nЭто разница между «играюсь с ChatGPT» и «у меня есть AI-ассистент который делает X».",
     "when": "Когда замечаешь:\n- Делаешь одно и то же действие чаще 3 раз в неделю\n- Копируешь текст из одного места в другое\n- AI помогает, но каждый раз приходится объяснять заново\n- Команда из 3+ человек делает одинаковую задачу — у каждого свой способ",
-    "impact": "Раньше: разбор почты — 1 час утром. Теперь: AI разобрал ночью → ты тратишь 10 минут утром на проверку.\n\nРаньше: подготовка отчёта по встрече — 40 минут. Теперь: AI достал из записи решения и задачи → ты правишь 10 минут.\n\nГлавное: ты не «делаешь быстрее», ты «делаешь только важную часть».",
-    "example": "Workflow «разбор клиентского письма» (подробнее про сам паттерн см. [[node:sys-workflows-basics|Что такое AI Workflow]] и [[node:sys-linear-chain|Linear Chain]]):\n1. Письмо приходит на адрес support@\n2. AI читает и определяет тип: вопрос / жалоба / отмена\n3. Если вопрос → AI пишет черновик ответа на основе базы знаний\n4. Если жалоба → AI зовёт человека с готовым summary\n5. Ты смотришь черновик → правишь 1-2 слова → отправляешь\n\nРезультат: 50 писем в день вместо 15. Не потому что быстрее печатаешь — потому что AI убрал «думать с нуля».",
+    "impact": "Раньше: разбор почты — 1 час утром. Теперь: AI разобрал ночью, и ты тратишь 10 минут утром на проверку.\n\nРаньше: подготовка отчёта по встрече — 40 минут. Теперь: AI достал из записи решения и задачи, и ты правишь 10 минут.\n\nГлавное: ты не «делаешь быстрее», ты «делаешь только важную часть».",
+    "example": "Workflow «разбор клиентского письма» (подробнее про сам паттерн см. [[node:sys-workflows-basics|Что такое AI Workflow]] и [[node:sys-linear-chain|Linear Chain]]):\n1. Письмо приходит на адрес support@\n2. AI читает и определяет тип: вопрос / жалоба / отмена\n3. Если вопрос, AI пишет черновик ответа на основе базы знаний\n4. Если жалоба, AI зовёт человека с готовым summary\n5. Ты смотришь черновик, правишь 1-2 слова, отправляешь\n\nРезультат: 50 писем в день вместо 15. Не потому что быстрее печатаешь — потому что AI убрал «думать с нуля».",
     "mistakes": "Главная ошибка: пытаться сделать workflow «который всё умеет». Лучше 5 простых workflow под конкретные задачи, чем один сложный.\n\nВторая ошибка: автоматизировать всё. Если шаг требует человеческого суждения (важный клиент, юр риск, деньги) — оставь его человеку. Workflow ≠ автопилот."
   },
   "ai-data-systems": {
@@ -1462,9 +1462,9 @@
     "what": "Знаешь как Google ищет по сайтам и находит нужный? AI Data Systems — это такой же поиск, но по ТВОИМ документам: PDF-ам команды, заметкам в Notion, переписке в Slack, базе клиентов в CRM.\n\nБез этого AI знает только то, что было в интернете на момент обучения. С этим — AI знает то, что знает твоя команда.",
     "why": "Без data systems AI отвечает «не знаю» на любой вопрос про твою компанию. С data systems — отвечает «вот документ от 14 марта, там написано X, ссылка такая».\n\nЭто разница между «AI как Wikipedia» и «AI как новый сотрудник который прочитал всю базу знаний».",
     "when": "Когда замечаешь:\n- Спрашиваешь AI про свою компанию — он отвечает общими словами\n- В команде есть «человек который помнит где это лежит» — узкое место\n- Новые сотрудники тратят 2 недели чтобы найти нужные документы\n- Клиенты задают одни и те же вопросы — ответы есть, но разбросаны",
-    "impact": "Раньше: «где у нас процесс возврата?» → 30 минут поиска в Notion + Slack. Теперь: спросил AI → ссылка на документ + цитата за 5 секунд.\n\nРаньше: новый сотрудник задаёт 20 вопросов в первую неделю. Теперь: задаёт AI, к коллегам идёт только с реально сложным.\n\nГлавное: знания компании перестают быть «в голове у Маши».",
+    "impact": "Раньше: «где у нас процесс возврата?» — 30 минут поиска в Notion + Slack. Теперь: спросил AI, и получаешь ссылку на документ + цитату за 5 секунд.\n\nРаньше: новый сотрудник задаёт 20 вопросов в первую неделю. Теперь: задаёт AI, к коллегам идёт только с реально сложным.\n\nГлавное: знания компании перестают быть «в голове у Маши».",
     "example": "Подключаем AI к Notion-базе с регламентами компании (под капотом — [[node:sys-rag-architecture|RAG-архитектура]]). Сотрудник спрашивает в Slack: «Как оформить командировку в Берлин на 5 дней?»\n\nAI:\n1. Ищет в Notion релевантные документы (regulations, expense policy)\n2. Находит 3 документа\n3. Собирает ответ: «По регламенту от 2024-03 (ссылка): билеты — Concur, отель — до 180€/ночь, чек — в течение 5 дней через Bookkeeper. Командировка в Германию требует уведомления HR за 7 дней.»\n4. Сотрудник получает ответ за 10 секунд вместо часа поисков",
-    "mistakes": "Главная ошибка: подключить «все документы» сразу. Получишь шум — AI отвечает с цитатами из черновика 2019 года.\n\nЛучше: подключить 1 источник (актуальные регламенты) → проверить качество ответов → потом добавлять остальное.\n\nВторая ошибка: не показывать источники. Если AI отвечает без ссылки «откуда взял» — никто не доверяет."
+    "mistakes": "Главная ошибка: подключить «все документы» сразу. Получишь шум — AI отвечает с цитатами из черновика 2019 года.\n\nЛучше: подключить 1 источник (актуальные регламенты), проверить качество ответов, потом добавлять остальное.\n\nВторая ошибка: не показывать источники. Если AI отвечает без ссылки «откуда взял» — никто не доверяет."
   },
   "ai-native-marketing": {
     "title": "AI для маркетинга",
@@ -1478,9 +1478,9 @@
   "ai-native-customer-support": {
     "title": "AI для поддержки клиентов",
     "what": "Поддержка — это 70% типовых вопросов («где счёт», «как сменить пароль», «не приходит письмо») и 30% реальных проблем. AI закрывает типовые сам, операторы занимаются только сложным.\n\nЭто не «чат-бот который раздражает». Это «AI который реально решает вопрос за 5 секунд или зовёт человека, если не справился».",
-    "why": "Поддержка — больная точка любого продукта. Растёт клиентская база → растут вопросы → нанимаешь людей → горят бюджеты → выгорают операторы.\n\nС AI поддержка перестаёт расти линейно: 100 клиентов = 1 оператор, 10 000 клиентов = всё ещё 3 оператора. Потому что 70% типового AI решает.",
+    "why": "Поддержка — больная точка любого продукта. Растёт клиентская база, растут вопросы, нанимаешь людей, горят бюджеты, выгорают операторы.\n\nС AI поддержка перестаёт расти линейно: 100 клиентов = 1 оператор, 10 000 клиентов = всё ещё 3 оператора. Потому что 70% типового AI решает.",
     "when": "Когда замечаешь:\n- Команда поддержки растёт быстрее чем клиентская база\n- Операторы пишут одно и то же 20 раз в день\n- Время первого ответа > 30 минут — клиенты раздражены\n- Текучка в поддержке — все выгорают за 6 месяцев\n- База знаний есть, но никто туда не ходит — проще спросить",
-    "impact": "Раньше: время первого ответа 2 часа, оператор обрабатывает 40 тикетов в день.\n\nТеперь: AI отвечает на типовое за 5 секунд (70% тикетов), оператор обрабатывает 30 сложных в день (но тратит на каждый больше времени → выше качество).\n\nКлиенты получают ответ быстрее, операторы не выгорают на повторяющемся, бюджет не растёт линейно с базой клиентов.\n\nГлавное: поддержка перестаёт быть «затыкаем дыры» и становится «помогаем клиентам успешнее использовать продукт».",
+    "impact": "Раньше: время первого ответа 2 часа, оператор обрабатывает 40 тикетов в день.\n\nТеперь: AI отвечает на типовое за 5 секунд (70% тикетов), оператор обрабатывает 30 сложных в день (но тратит на каждый больше времени, и за счёт этого выше качество).\n\nКлиенты получают ответ быстрее, операторы не выгорают на повторяющемся, бюджет не растёт линейно с базой клиентов.\n\nГлавное: поддержка перестаёт быть «затыкаем дыры» и становится «помогаем клиентам успешнее использовать продукт».",
     "example": "7 направлений внутри:\n- [[node:cs-tier1|Tier-1 автоматизация]]\n- [[node:cs-agent-assist|Agent-assist — AI помогает оператору]]\n- [[node:cs-knowledge-base|База знаний поддержки]]\n- [[node:cs-escalation|Умная эскалация]]\n- [[node:cs-quality-monitoring|Контроль качества]]\n- [[node:cs-support-analytics|Аналитика обращений]]\n- [[node:cs-team-workflow|Командные workflow]]",
     "mistakes": "Главная ошибка: «AI заменит поддержку». Не заменит. AI закроет типовое, оставив сложное людям. Если попробуешь полностью убрать операторов — пожалеешь после первой жалобы.\n\nВторая ошибка: не показывать что говорит AI. Если оператор не видит что ответил клиенту AI — будет дублировать, путать, портить отношения. AI должен быть «прозрачен» для команды.\n\nТретья ошибка: запустить AI без эскалации. Клиент 3 раза задаёт один вопрос, AI 3 раза отвечает одно и то же — клиент в ярости. Нужен явный путь «зови человека»."
   },
@@ -1489,7 +1489,7 @@
     "what": "Product-менеджер тратит 50% времени на «собрать insights»: интервью с клиентами, фидбек из поддержки, данные из аналитики, тикеты от стейкхолдеров. И 50% на «принять решение и оформить».\n\nAI ускоряет первую половину в 5 раз: читает интервью, сводит фидбек, находит паттерны. У PM остаётся время на стратегию.",
     "why": "Продуктовая работа — это «много шума, мало сигнала». AI хорошо отделяет одно от другого: из 200 фидбеков выделяет 5 настоящих тем, из 30 интервью — 3 устойчивых инсайта.\n\nГлавное: PM перестаёт быть «оператором инструментов сбора фидбека», становится «человеком который принимает решения».",
     "when": "Когда замечаешь:\n- У тебя 30 интервью с клиентами, ты их не прочитал ещё\n- В Notion 200 фидбеков от команды поддержки — синтез сделаешь «когда-нибудь»\n- Roadmap делается «по громкости», а не по данным\n- Тратишь час каждое утро на «что вчера происходило в продукте»\n- Спеки пишешь 3 дня — потом ещё неделю правишь",
-    "impact": "Раньше: 30 интервью с клиентами = месяц синтеза, к концу забыл что было в первых.\n\nТеперь: AI сделал первичный синтез за 2 часа, PM проверил, доразобрал важное → 3 дня вместо месяца.\n\nРаньше: PRD пишется неделю, рецензируется неделю.\n\nТеперь: AI сделал черновик за полчаса по brief'у, PM правит 2 дня, рецензенты получают чистый документ.\n\nГлавное: PM работает над «что важно сделать», а не «как собрать данные».",
+    "impact": "Раньше: 30 интервью с клиентами = месяц синтеза, к концу забыл что было в первых.\n\nТеперь: AI сделал первичный синтез за 2 часа, PM проверил, доразобрал важное — 3 дня вместо месяца.\n\nРаньше: PRD пишется неделю, рецензируется неделю.\n\nТеперь: AI сделал черновик за полчаса по brief'у, PM правит 2 дня, рецензенты получают чистый документ.\n\nГлавное: PM работает над «что важно сделать», а не «как собрать данные».",
     "example": "7 направлений внутри:\n- [[node:pd-discovery-research|Discovery — интервью и синтез]]\n- [[node:pd-spec-generation|Создание спек и PRD]]\n- [[node:pd-roadmap-intelligence|Работа с roadmap]]\n- [[node:pd-experimentation|Эксперименты (A/B)]]\n- [[node:pd-feedback-synthesis|Синтез фидбека]]\n- [[node:pd-product-analytics|Аналитика продукта]]\n- [[node:pd-team-workflow|Командные workflow]]",
     "mistakes": "Главная ошибка: давать AI принимать продуктовые решения. AI хорош в синтезе данных, но решения «что важнее» — твоя работа. Если AI скажет «стройте X» и ты построил без своего анализа — будешь винить AI когда не выстрелит.\n\nВторая ошибка: автоматизировать интервью без человека. AI берёт интервью у клиента, AI обрабатывает, AI решает что важно — получишь то что и так знал. Живое интервью с человеком — обязательно. AI ускоряет обработку, не замену.\n\nТретья ошибка: верить AI «без проверки». AI может галлюцинировать инсайты которых нет в данных. Всегда проверяй ключевые выводы по первоисточникам."
   },
@@ -1497,10 +1497,10 @@
     "title": "AI-трансформация компании",
     "what": "Раздел для руководителей (CTO, CIO, Head of Transformation): как внедрить AI не «в отделе маркетинга», а во всю компанию из 200+ человек. Стратегия, управление изменениями, governance, ROI, риски.\n\nЭто не «купим лицензии ChatGPT». Это «как сделать так, чтобы AI стал способом работы, а не игрушкой в углу».",
     "why": "Большая компания не превращается в AI-native за месяц. Это 1-3 года работы со стратегией, командами, культурой и процессами. Без системного подхода — внедрение умрёт на середине.\n\nЭтот раздел — карта типичных задач трансформации и предупреждения о граблях на которые наступает 80% компаний.",
-    "when": "Когда:\n- Вы CTO/CIO компании 100+ человек и нужно подготовить AI-стратегию\n- Совет директоров спросил «что у нас с AI» — нужен внятный ответ\n- Уже есть 5 пилотов AI в разных отделах, но это разрозненно\n- Конкуренты ушли вперёд, нужно догонять системно\n- Запустили AI-пилоты — никто не пользуется → нужно разобраться почему",
+    "when": "Когда:\n- Вы CTO/CIO компании 100+ человек и нужно подготовить AI-стратегию\n- Совет директоров спросил «что у нас с AI» — нужен внятный ответ\n- Уже есть 5 пилотов AI в разных отделах, но это разрозненно\n- Конкуренты ушли вперёд, нужно догонять системно\n- Запустили AI-пилоты — никто не пользуется, и нужно разобраться почему",
     "impact": "Без системы: 20 пилотов, 3 живут, 17 заброшены. Команды разочарованы, бюджет растрачен.\n\nС системой: 5 направлений приоритизированы, 4 доведены до production, измеримый ROI на квартал, команды видят результат и хотят больше.\n\nГлавное: AI не «модная игрушка» а реальный способ работы команды.",
     "example": "7 направлений внутри:\n- [[node:en-transformation-strategy|Стратегия трансформации]]\n- [[node:en-change-management|Управление изменениями]]\n- [[node:en-governance|Governance и риски]]\n- [[node:en-risk-management|Управление рисками]]\n- [[node:en-coe|Центр компетенций (CoE)]]\n- [[node:en-roi-measurement|Измерение ROI]]\n- [[node:en-talent-strategy|Управление талантами]]",
-    "mistakes": "Главная ошибка: «спустить AI сверху». «Все теперь работают с AI» в письме CEO — через 2 недели все вернулись к старым методам. Нужен низовой подъём из команд + поддержка сверху.\n\nВторая ошибка: считать ROI «через 6 месяцев». К тому моменту проект забудут. Меряй маленькие победы каждые 2-4 недели (тогда люди верят и поддерживают).\n\nТретья ошибка: не вкладываться в обучение. Купили лицензии, забыли про команду → лицензии лежат → ROI ноль. Бюджет на инструменты ≤ бюджету на обучение."
+    "mistakes": "Главная ошибка: «спустить AI сверху». «Все теперь работают с AI» в письме CEO — через 2 недели все вернулись к старым методам. Нужен низовой подъём из команд + поддержка сверху.\n\nВторая ошибка: считать ROI «через 6 месяцев». К тому моменту проект забудут. Меряй маленькие победы каждые 2-4 недели (тогда люди верят и поддерживают).\n\nТретья ошибка: не вкладываться в обучение. Купили лицензии, забыли про команду, и лицензии лежат, ROI ноль. Бюджет на инструменты ≤ бюджету на обучение."
   },
   "en-transformation-strategy": {
     "title": "AI Transformation Strategy",
@@ -1516,7 +1516,7 @@
     "what": "Структурированный подход к изменению behaviors команд под AI-native operations: communication, training, role evolution, resistance management. Tech adoption ≠ change management — это разные дисциплины.",
     "why": "Самая частая причина failed AI initiatives — не tech, а адопция. Команды боятся (job loss), не верят (видели hype before), не знают (skills gap). Change management addresses это explicitly.",
     "when": "Перед roll-out tactical direction на full team. Когда первые pilots работают, но adoption stalls. Когда есть «AI champions» и «AI skeptics» split в команде.",
-    "impact": "Adoption rate: 30% → 80% при правильном change mgmt. Resistance reduced (не eliminated). Skills gap closes via structured training. Time-to-Stage 3: -50% для tactical directions.",
+    "impact": "Adoption rate: с 30% до 80% при правильном change mgmt. Resistance reduced (не eliminated). Skills gap closes via structured training. Time-to-Stage 3: -50% для tactical directions.",
     "example": "Change Management Framework (для одного tactical direction):\n\nPhase 1: Awareness (week 1-2)\n  - All-hands: «вот что мы делаем + зачем»\n  - Q&A sessions: address concerns openly\n  - Champions identification\n\nPhase 2: Education (week 3-4)\n  - Hands-on workshops для всех\n  - Skill development: 10 hours of structured learning\n  - Champions trained deeper\n\nPhase 3: Adoption (week 5-12)\n  - Pilot teams using daily\n  - Office hours для help\n  - Wins shared widely\n\nPhase 4: Reinforcement (ongoing)\n  - Promotion criteria включают AI usage\n  - Career path для «AI-augmented» roles\n  - Continuous learning culture\n\nMetric: % team actively using AI weekly.",
     "mistakes": "Думать что training = change management. Training — это skill transfer. Change mgmt — это behavioral shift. Без второго первое = waste. И: не отвечать на «потеряю ли я работу?». Avoid это = doubt grows."
   },
@@ -1532,9 +1532,9 @@
   "en-coe": {
     "title": "AI Center of Excellence",
     "what": "Центральная команда (3-10 человек) — AI lead, ML engineers, AI ethicists, product manager — поддерживающая tactical teams: best practices, shared infrastructure, training, governance liaison. Не build всё, а enable других.",
-    "why": "Без CoE каждая tactical team изобретает велосипед: discover RAG, learn prompt engineering, set up vector DB. CoE shares это знание и infrastructure → 5-10× faster для всех subsequent teams.",
+    "why": "Без CoE каждая tactical team изобретает велосипед: discover RAG, learn prompt engineering, set up vector DB. CoE shares это знание и infrastructure, и это 5-10× faster для всех subsequent teams.",
     "when": "После 2-3 successful tactical AI directions. Когда «как и где найти AI expert?» becomes regular question. При signup на enterprise AI vendors (CoE manages).",
-    "impact": "New AI initiative time-to-launch: 6 months → 2 months. Cost: shared infra cheaper than per-team setup. Quality: best practices spread. Career: clear AI path для talent.",
+    "impact": "New AI initiative time-to-launch: с 6 months до 2 months. Cost: shared infra cheaper than per-team setup. Quality: best practices spread. Career: clear AI path для talent.",
     "example": "CoE Structure:\n\nCore team (3-5):\n  - Head of AI / Chief AI Officer\n  - Senior ML/AI engineer\n  - AI Product Manager\n  - AI Ethics & Governance lead\n\nFunctions:\n  1. Shared infrastructure (vector DBs, LLM API contracts, monitoring)\n  2. Best practices library ([[node:cc-md|CLAUDE.md]] templates, Skills, patterns)\n  3. Office hours (weekly, anyone can attend)\n  4. Training programs (3 levels: foundational, intermediate, advanced)\n  5. Tooling decisions (which AI tools company-wide)\n  6. Governance coordination (with security/legal)\n  7. Talent: hiring AI roles + upskilling existing\n  8. Showcase: monthly «AI demos» across company\n\nKey metric: CoE-enabled launches / quarter.",
     "mistakes": "Делать CoE как «AI department» — building всё. CoE = enablement, не execution. Tactical teams build, CoE shares know-how. Иначе CoE становится bottleneck."
   },
@@ -1571,7 +1571,7 @@
     "why": "Один AI — как один сотрудник: может почти всё, но качество среднее. Если попросишь его сделать пять разных дел за один раз — половину забудет, остальное сделает поверхностно. Несколько AI в команде работают как маленький отдел: каждый специализируется, проверяет другого, общий результат заметно лучше. Минус — настройка занимает больше времени, и если что-то ломается, разбираться где именно сложнее.",
     "when": "Признаки что пора собрать команду из AI:\n• Просишь одного AI сделать сложную задачу, а он «забывает» половину твоих указаний.\n• Ответы стабильно «нормальные», но никогда не «хорошие» — приходится много править руками.\n• Задача явно делится на разные этапы (например, сначала исследовать, потом написать, потом проверить).\n\nЕсли пишешь короткий email или ищешь информацию — одного AI хватит, не усложняй.",
     "impact": "Пример из жизни: «проанализируй 50 отзывов клиентов, напиши отчёт, предложи план действий».\n• С одним AI — 40 минут возни: задаёшь запрос, получаешь поверхностный ответ, правишь, переспрашиваешь, снова правишь. В конце среднее качество.\n• С командой AI — 15 минут: один AI читает отзывы и собирает темы, второй пишет отчёт по этим темам, третий проверяет нет ли пропусков. Ты делаешь только финальную проверку.",
-    "example": "Самый простой пример — пишешь блог-пост через трёх AI:\n\n  1. Первый AI пишет первый вариант по твоему брифу (2 минуты).\n  2. Второй AI читает первый вариант и играет роль придирчивого редактора:\n     «Заголовок слабый — не цепляет. В лиде нет крючка.\n      В части 3 много общих фраз без примеров. Тезисы повторяются.»\n  3. Третий AI берёт первый вариант + замечания → выдаёт улучшенный текст.\n  4. Ты делаешь финальную правку — 5 минут вместо 30.\n\nЭто самая частая схема. В 105 Atlas есть ещё три похожих способа под разные задачи — подробнее в [[node:sys-multi-agent-patterns|Multi-Agent — 4 способа работать командой]].",
+    "example": "Самый простой пример — пишешь блог-пост через трёх AI:\n\n  1. Первый AI пишет первый вариант по твоему брифу (2 минуты).\n  2. Второй AI читает первый вариант и играет роль придирчивого редактора:\n     «Заголовок слабый — не цепляет. В лиде нет крючка.\n      В части 3 много общих фраз без примеров. Тезисы повторяются.»\n  3. Третий AI берёт первый вариант + замечания и выдаёт улучшенный текст.\n  4. Ты делаешь финальную правку — 5 минут вместо 30.\n\nЭто самая частая схема. В 105 Atlas есть ещё три похожих способа под разные задачи — подробнее в [[node:sys-multi-agent-patterns|Multi-Agent — 4 способа работать командой]].",
     "mistakes": "Главная ошибка — делать «команду AI» потому что звучит круто. На простой задаче это только тратит время и деньги. Если ты пишешь короткое сообщение или ищешь данные — одного AI хватит. Несколько AI имеют смысл только когда: один AI уже бьётся в потолок и правки запроса не помогают; задача правда большая (много шагов, много данных); качество критично важно (документ для клиента, публичный пост, важное решение)."
   },
   "ai-human-collaboration": {
@@ -1585,28 +1585,28 @@
   },
   "ai-operations": {
     "title": "AI в продакшне",
-    "what": "Запустил AI-фичу → работает → через 2 недели качество падает → пользователи жалуются → ты не понимаешь почему. AI Operations — это набор практик чтобы такого не было.\n\nВключает: смотреть что AI отвечает (а не верить что «всё ок»), мерить качество регулярно, контролировать сколько денег уходит на API, версионировать промпты как код.",
-    "why": "AI ведёт себя не как обычный софт. Обычный код: написал → работает → работает. AI-код: написал → работает → через месяц модель обновили → ведёт себя иначе.\n\nБез AI Ops твой AI = вечный пилот. С AI Ops — production-система которая живёт годами.",
+    "what": "Запустил AI-фичу, работает, через 2 недели качество падает, пользователи жалуются, ты не понимаешь почему. AI Operations — это набор практик чтобы такого не было.\n\nВключает: смотреть что AI отвечает (а не верить что «всё ок»), мерить качество регулярно, контролировать сколько денег уходит на API, версионировать промпты как код.",
+    "why": "AI ведёт себя не как обычный софт. Обычный код: написал, работает, работает. AI-код: написал, работает, через месяц модель обновили, и ведёт себя иначе.\n\nБез AI Ops твой AI = вечный пилот. С AI Ops — production-система которая живёт годами.",
     "when": "С первого дня когда AI ушёл к пользователям. Не «когда понадобится» — потом будет поздно.\n\nСигналы что Ops не хватает:\n- Не знаешь сколько ты потратил на AI в прошлом месяце\n- Пользователи жалуются на качество — ты не можешь проверить, правда ли стало хуже\n- Промпт меняли 5 раз — не помнишь какая версия в продакшне\n- AI начал отвечать странно — ты не понимаешь, это модель обновилась или промпт изменили",
-    "impact": "Без Ops: AI-фича живёт 3 месяца, потом «что-то сломалось», команда устаёт чинить → выкидывают.\n\nС Ops: AI-фича работает 2+ года, ты замечаешь деградацию за день а не за месяц, расходы предсказуемы.\n\nГлавное: ты управляешь системой, а не она тобой.",
-    "example": "AI-чат поддержки в B2B-SaaS:\n1. Каждую неделю автоматически прогоняется 50 типовых вопросов (см. [[node:sys-evals-benchmarks|Как проверить что AI работает]]) → проверяется качество ответов → если падает на 10% — алерт\n2. В Slack приходит ежедневный отчёт: «за вчера 340 запросов, $4.20 потрачено, 92% positive feedback»\n3. Все промпты лежат в git, расходы под контролем (см. [[node:sys-cost-management|Как не разориться на AI-API]]), при изменении — review от 2 человек\n4. Если AI начинает отвечать длиннее обычного на 30% → автоматический алерт (часто признак деградации)\n\nКоманда видит проблемы за день, а не от жалобы клиента через 2 недели.",
+    "impact": "Без Ops: AI-фича живёт 3 месяца, потом «что-то сломалось», команда устаёт чинить и выкидывают.\n\nС Ops: AI-фича работает 2+ года, ты замечаешь деградацию за день а не за месяц, расходы предсказуемы.\n\nГлавное: ты управляешь системой, а не она тобой.",
+    "example": "AI-чат поддержки в B2B-SaaS:\n1. Каждую неделю автоматически прогоняется 50 типовых вопросов (см. [[node:sys-evals-benchmarks|Как проверить что AI работает]]), проверяется качество ответов, и если падает на 10% — алерт\n2. В Slack приходит ежедневный отчёт: «за вчера 340 запросов, $4.20 потрачено, 92% positive feedback»\n3. Все промпты лежат в git, расходы под контролем (см. [[node:sys-cost-management|Как не разориться на AI-API]]), при изменении — review от 2 человек\n4. Если AI начинает отвечать длиннее обычного на 30% — автоматический алерт (часто признак деградации)\n\nКоманда видит проблемы за день, а не от жалобы клиента через 2 недели.",
     "mistakes": "Главная ошибка: «запустим, потом подумаем про мониторинг». Через месяц у тебя 10 000 запросов и ноль данных о том, что AI отвечал. Не сможешь даже понять, стало хуже или нет.\n\nВторая ошибка: мерить только «работает / не работает». Нужно мерить качество — иначе пропустишь медленную деградацию когда AI отвечает технически правильно, но не то что нужно."
   },
   "ai-integration-systems": {
     "title": "AI в твоих инструментах",
-    "what": "AI в Slack где ты и так общаешься. AI в Notion где у тебя документы. AI в Linear где задачи. Integration — это когда AI приходит в твои инструменты, а не наоборот.\n\nПротивоположность: «открой ChatGPT → скопируй контекст → вставь → скопируй ответ → вставь обратно». Никто так долго не делает.",
+    "what": "AI в Slack где ты и так общаешься. AI в Notion где у тебя документы. AI в Linear где задачи. Integration — это когда AI приходит в твои инструменты, а не наоборот.\n\nПротивоположность: «открой ChatGPT, скопируй контекст, вставь, скопируй ответ, вставь обратно». Никто так долго не делает.",
     "why": "AI без интеграции = классный демо, но люди им не пользуются. Потому что переключать контекст из Slack в ChatGPT и обратно — мучение.\n\nAI в инструменте который и так открыт = люди используют каждый день, без напоминаний.",
-    "when": "Когда замечаешь:\n- Сделал AI-инструмент → команда восхищается → через 2 недели не открывает\n- Люди говорят «классно, но я забываю что он есть»\n- Большинство задач команды живут в Slack / Notion / Linear / CRM\n- AI = отдельная вкладка которую закрывают первой",
+    "when": "Когда замечаешь:\n- Сделал AI-инструмент, команда восхищается, и через 2 недели не открывает\n- Люди говорят «классно, но я забываю что он есть»\n- Большинство задач команды живут в Slack / Notion / Linear / CRM\n- AI = отдельная вкладка которую закрывают первой",
     "impact": "AI в чате: пользуются 10-20% команды.\nAI внутри Slack/Notion: пользуются 60-80%.\n\nНе потому что лучше работает — потому что не надо никуда ходить.\n\nГлавное: AI становится частью workflow, а не отдельным шагом.",
-    "example": "Команда продаж работает в HubSpot. Раньше:\n1. Менеджер видит письмо от клиента\n2. Идёт в ChatGPT\n3. Копирует историю общения\n4. Просит «напиши follow-up»\n5. Копирует обратно в HubSpot\n\nСейчас:\n1. Менеджер видит письмо в HubSpot (под капотом — [[node:sys-api-patterns|паттерны API-интеграции]])\n2. Жмёт «AI follow-up» прямо в карточке\n3. AI уже знает историю клиента, последние сделки, тон общения\n4. Получает 3 варианта черновика\n5. Выбирает → правит → отправляет\n\nОт 5 минут к 30 секундам. Но главное — менеджер реально это делает, а не «забыл про AI».",
+    "example": "Команда продаж работает в HubSpot. Раньше:\n1. Менеджер видит письмо от клиента\n2. Идёт в ChatGPT\n3. Копирует историю общения\n4. Просит «напиши follow-up»\n5. Копирует обратно в HubSpot\n\nСейчас:\n1. Менеджер видит письмо в HubSpot (под капотом — [[node:sys-api-patterns|паттерны API-интеграции]])\n2. Жмёт «AI follow-up» прямо в карточке\n3. AI уже знает историю клиента, последние сделки, тон общения\n4. Получает 3 варианта черновика\n5. Выбирает, правит, отправляет\n\nОт 5 минут к 30 секундам. Но главное — менеджер реально это делает, а не «забыл про AI».",
     "mistakes": "Главная ошибка: сделать «portal» — отдельный сайт где живут все AI-фичи. Никто туда не ходит. Лучше встроить AI в 1 инструмент которым команда пользуется каждый день.\n\nВторая ошибка: интегрировать AI везде сразу. Получишь 10 половинчатых интеграций. Лучше 1 интеграция которая действительно работает (Slack или Notion или CRM — что-то одно)."
   },
   "ai-native-design": {
     "title": "AI для дизайн-команд",
-    "what": "Дизайн — это «провести 5 интервью → синтезировать → нарисовать 10 прототипов → собрать фидбек → переделать». Куча шагов, каждый медленный.\n\nAI ускоряет всё что между «было исследование» и «есть финальный макет»: синтезирует интервью, генерит идеи прототипов, проверяет accessibility, поддерживает design system, пишет UX-копи.",
+    "what": "Дизайн — это «провести 5 интервью, синтезировать, нарисовать 10 прототипов, собрать фидбек, переделать». Куча шагов, каждый медленный.\n\nAI ускоряет всё что между «было исследование» и «есть финальный макет»: синтезирует интервью, генерит идеи прототипов, проверяет accessibility, поддерживает design system, пишет UX-копи.",
     "why": "Дизайнер тратит 60% времени на «подготовительную работу»: систематизация исследований, рутинные правки, проверки на consistency. AI убирает рутину — дизайнер фокусируется на креативе и стратегии.\n\nГлавное: AI не «рисует за тебя». Он ускоряет всё вокруг рисования, чтобы у тебя было больше времени думать.",
     "when": "Когда замечаешь:\n- 10 пользовательских интервью лежат в Notion, синтез сделал на двух\n- Каждую неделю проверяешь руками что в макетах есть alt-текст\n- Design system есть, но все рисуют как хотят\n- UX-копи пишет product writer, ты ждёшь 2 дня\n- На «варианты прототипа» уходит 3 дня, выбираете в итоге первый",
-    "impact": "Раньше: синтез 10 интервью = неделя.\n\nТеперь: AI сделал первичный синтез за 2 часа, дизайнер проверил и доразобрал → 1-2 дня.\n\nРаньше: 3 варианта прототипа за день — мало времени.\n\nТеперь: AI генерит 10 вариантов идей за час, дизайнер выбирает 3 и углубляется.\n\nГлавное: больше времени на «решать как лучше», меньше на «собирать материал».",
+    "impact": "Раньше: синтез 10 интервью = неделя.\n\nТеперь: AI сделал первичный синтез за 2 часа, дизайнер проверил и доразобрал — 1-2 дня.\n\nРаньше: 3 варианта прототипа за день — мало времени.\n\nТеперь: AI генерит 10 вариантов идей за час, дизайнер выбирает 3 и углубляется.\n\nГлавное: больше времени на «решать как лучше», меньше на «собирать материал».",
     "example": "7 направлений внутри:\n- [[node:ds-design-research|Research synthesis — работа с интервью]]\n- [[node:ds-prototype-generation|Генерация идей прототипов]]\n- [[node:ds-design-ops|Design ops автоматизация]]\n- [[node:ds-accessibility|Accessibility аудиты]]\n- [[node:ds-design-system|Эволюция design system]]\n- [[node:ds-content-design|Content / UX-копи]]\n- [[node:ds-team-workflow|Командные workflow]]",
     "mistakes": "Главная ошибка: ждать что AI «придумает дизайн за тебя». Не придумает. AI даёт варианты — твоя работа выбрать и довести.\n\nВторая ошибка: использовать AI для финальных макетов. AI хорош в эскизах и черновиках. На финальных макетах твоя рука и вкус решают.\n\nТретья ошибка: автоматизировать design review. «AI проверит дизайн на consistency» — не заменит дизайн-ревью с командой. Используй AI для механической проверки (alt-текст, контраст), но дизайн-смыслы — на людях."
   },
@@ -1615,16 +1615,16 @@
     "what": "AI-powered user research для дизайнеров: synthesis usability tests, поведенческий анализ session recordings, competitor design pattern analysis. От «100 интервью = 2 недели на разбор» — к «AI извлекает themes за час, designer валидирует».",
     "why": "Research — критическая часть design, но time-intensive. Designer тратит 50% времени на синтез, 50% на actual design. AI сдвигает баланс к 20/80.",
     "when": "Usability testing rounds (5-15 sessions). Competitor research. Card sorting analysis. Когда есть session recordings и нужно extract patterns.",
-    "impact": "Time-to-insight (время от данных до вывода): дни → часы. Theme extraction structured вместо «designer's gut feel».",
+    "impact": "Time-to-insight (время от данных до вывода): с дней до часов. Theme extraction structured вместо «designer's gut feel».",
     "example": "Usability Synthesis Workflow:\n\n  Inputs:\n  - 10 session recordings (transcripts)\n  - User interview notes\n  - Pre/post task survey data\n        ↓\n  AI Steps:\n  1. Extract pain points (frequency + severity)\n  2. Group by user task / journey stage\n  3. Identify quick wins vs structural issues\n  4. Generate improvement hypotheses\n        ↓\n  Designer validates:\n  - Pain point severity rated through design lens\n  - Solutions ranked by feasibility\n        ↓\n  Output: structured research report + prioritized backlog\n\nMetric: time-to-insight, design improvements shipped.",
-    "mistakes": "Делать AI synthesis без designer eye-on-data. AI пропускает emotional nuance, frustration patterns, edge cases. Workflow: AI extracts themes → designer reviews 20% with original recordings → confidence в остальном."
+    "mistakes": "Делать AI synthesis без designer eye-on-data. AI пропускает emotional nuance, frustration patterns, edge cases. Workflow: AI extracts themes, затем designer reviews 20% with original recordings, и confidence в остальном."
   },
   "ds-prototype-generation": {
     "title": "AI Prototype Generation",
-    "what": "AI-генерация прототипов: design mockup → HTML/React код, sketches → Figma compositions, multiple style variants за минуты. От «designer кодит prototype 2 дня» — к «AI даёт 5 вариантов за час, designer выбирает + refine».",
+    "what": "AI-генерация прототипов: design mockup в HTML/React код, sketches в Figma compositions, multiple style variants за минуты. От «designer кодит prototype 2 дня» — к «AI даёт 5 вариантов за час, designer выбирает + refine».",
     "why": "Prototyping — bottleneck в design cycle. AI закрывает «технический» аспект (превратить идею в kod/Figma), designer фокусируется на concept + critique.",
     "when": "Early-stage exploration (need many variants quickly). Design system component variants. Conversion of mockup to code. A/B testing variant generation.",
-    "impact": "Time-to-prototype: 2 дня → 4 часа. Variant coverage: 1-2 → 5-10 per concept. Iteration speed: 2-3× faster.",
+    "impact": "Time-to-prototype: с 2 дней до 4 часов. Variant coverage: с 1-2 до 5-10 per concept. Iteration speed: 2-3× faster.",
     "example": "Prototype Workflow:\n\n  Designer brief:\n  «Onboarding flow для B2B SaaS,\n   3 шага, brand color #2563eb,\n   шрифт Inter, mood: friendly+confident»\n        ↓\n  AI Step 1: Generate 5 layout variants\n        ↓\n  Designer selects 2 most promising\n        ↓\n  AI Step 2: Generate React/HTML for each\n        ↓\n  Designer refines via Figma OR direct code edits\n        ↓\n  Output: working prototype 4 hours after brief\n\nReal usage: AI-generated code = starting point, не final. Designer refines 30-50%.",
     "mistakes": "Ждать от AI «pixel-perfect output». AI dает 70% from idea to code, последние 30% (taste, brand fit, accessibility) — designer. Treating AI as starting point = speed. Treating as final = mediocre output."
   },
@@ -1633,8 +1633,8 @@
     "what": "Автоматизация design ops: asset documentation, component change-logs, Figma library management, design QA. От «у нас всё есть, но никто не знает где» — к «AI maintains documentation continuously».",
     "why": "Design ops invisible until breaks. Asset chaos, outdated components, missing docs — все это убивает velocity. AI maintains это continuously без manual effort.",
     "when": "Design system есть, но poorly documented. Multiple designers, components diverge. New hires спрашивают «где X компонент?». Pre-handoff QA не выполняется.",
-    "impact": "Designer time on ops: -50%. New hire onboarding: 2 weeks → 1 week. Component reuse: +30% (вместо переизобретения).",
-    "example": "Design Ops Automation:\n\n1. Component Documentation:\n   - AI читает Figma file → генерирует MD docs per component\n   - Updates: AI диффит changes weekly → adds changelog\n\n2. Asset Audit:\n   - AI scans products → finds inconsistent components\n   - Flags: «button styles diverge across 5 screens»\n\n3. Handoff (передача задачи человеку) QA:\n   - Pre-handoff AI checks: token usage, accessibility, spacing\n   - Generates QA report для dev review\n\n4. Library Health:\n   - Weekly: AI identifies unused components, outdated tokens\n   - Suggests cleanup\n\nMetric: design system health score, time saved on documentation.",
+    "impact": "Designer time on ops: -50%. New hire onboarding: с 2 weeks до 1 week. Component reuse: +30% (вместо переизобретения).",
+    "example": "Design Ops Automation:\n\n1. Component Documentation:\n   - AI читает Figma file, затем генерирует MD docs per component\n   - Updates: AI диффит changes weekly, затем adds changelog\n\n2. Asset Audit:\n   - AI scans products, затем finds inconsistent components\n   - Flags: «button styles diverge across 5 screens»\n\n3. Handoff (передача задачи человеку) QA:\n   - Pre-handoff AI checks: token usage, accessibility, spacing\n   - Generates QA report для dev review\n\n4. Library Health:\n   - Weekly: AI identifies unused components, outdated tokens\n   - Suggests cleanup\n\nMetric: design system health score, time saved on documentation.",
     "mistakes": "Делать design ops AI без integration в actual tools. «AI генерит docs в отдельном Notion» = никто не читает. AI должен жить там где designers работают: Figma plugins, Slack integrations, CI/CD для design."
   },
   "ds-accessibility": {
@@ -1642,7 +1642,7 @@
     "what": "AI-проверки a11y на каждом шаге: contrast checks, alt-text generation, screen reader simulation, keyboard navigation audit. От «accessibility = специальный audit раз в полгода» — к «accessibility-by-default через AI».",
     "why": "Accessibility часто проверяется в конце, когда переделывать дорого. AI catches issues в real-time во время design. Стоимость в 10× меньше.",
     "when": "Design system accessibility setup. New feature launches с user-facing UI. Quarterly product audits. Customer complaints about a11y issues.",
-    "impact": "A11y bug rate: 30% → 5% (issues caught at design stage). Compliance: WCAG AA reached confidently. Legal risk: significantly reduced.",
+    "impact": "A11y bug rate: с 30% до 5% (issues caught at design stage). Compliance: WCAG AA reached confidently. Legal risk: significantly reduced.",
     "example": "A11y Automation Pipeline:\n\n  Design phase:\n  1. AI checks contrast ratios on every screen\n  2. Auto-generates alt-text suggestions for images\n  3. Flags missing focus states, keyboard traps\n  4. Reviews color usage (color as sole indicator?)\n\n  Pre-handoff:\n  5. Full WCAG checklist auto-run\n  6. Report: issues + recommendations + WCAG criteria mapping\n\n  Post-launch:\n  7. Real screen reader test simulation\n  8. AI describes UX as blind user would experience it\n\nMetric: WCAG compliance %, a11y issues per release.",
     "mistakes": "Думать что AI = «полный a11y replacement». Manual testing с real assistive tech (real screen readers, real keyboard navigation) — still required. AI catches 80%, last 20% — manual + user testing с a11y users."
   },
@@ -1651,8 +1651,8 @@
     "what": "AI помогает развивать design system: генерация token sets, component variants, documentation для каждого компонента, миграция usage при breaking changes. Design system из «статичный документ» в «живая система с AI-помощником».",
     "why": "Design systems обычно стагнируют: нет ресурсов на поддержку, breaking changes откладываются. AI снимает operational burden — система остаётся свежей.",
     "when": "Design system есть, но maintenance burden высокий. Migration к новому token system. Component variants нужно создать (sizes, states, themes). Documentation поразлета по разным местам.",
-    "impact": "Design system update velocity: 3-5× faster. Migration speed: weeks → days. Documentation freshness: always current.",
-    "example": "Design System Evolution:\n\n1. Token Generation:\n   - Designer задаёт «brand uses warm palette, modern feel»\n   - AI generates: color scale, spacing scale, typography scale\n   - Designer refines: 70% AI output → 30% manual adjustment\n\n2. Component Variants:\n   - Designer creates base button\n   - AI generates: sizes (sm/md/lg), states (default/hover/focus/disabled), themes (light/dark)\n   - Outputs Figma file + code stubs\n\n3. Breaking Change Migration:\n   - «We changed token spacing from 4px to 8px»\n   - AI scans codebase + Figma files\n   - Generates migration PR + Figma changes list\n\n4. Documentation:\n   - AI maintains MDX docs per component\n   - Updates on component changes automatically\n\nMetric: components shipped, time-to-update.",
+    "impact": "Design system update velocity: 3-5× faster. Migration speed: с weeks до days. Documentation freshness: always current.",
+    "example": "Design System Evolution:\n\n1. Token Generation:\n   - Designer задаёт «brand uses warm palette, modern feel»\n   - AI generates: color scale, spacing scale, typography scale\n   - Designer refines: 70% AI output, 30% manual adjustment\n\n2. Component Variants:\n   - Designer creates base button\n   - AI generates: sizes (sm/md/lg), states (default/hover/focus/disabled), themes (light/dark)\n   - Outputs Figma file + code stubs\n\n3. Breaking Change Migration:\n   - «We changed token spacing from 4px to 8px»\n   - AI scans codebase + Figma files\n   - Generates migration PR + Figma changes list\n\n4. Documentation:\n   - AI maintains MDX docs per component\n   - Updates on component changes automatically\n\nMetric: components shipped, time-to-update.",
     "mistakes": "Полностью полагаться на AI для design system decisions. Design system embodies brand strategy + UX principles — это критические human decisions. AI = executor, не decision-maker для system architecture."
   },
   "ds-content-design": {
@@ -1675,10 +1675,10 @@
   },
   "ai-native-ecommerce": {
     "title": "AI для eCommerce",
-    "what": "Флагманское transformation-направление: как AI меняет работу команд каталога, мерчандайзинга, CRO, поддержки и аналитики в интернет-магазине. 15 узлов с явными workflow, метриками и связями к Foundation/Systems.\n\nЭто не «AI рекомендации» в общем виде, а конкретные сценарии: «10k SKU без описаний → AI генерирует PDP за минуты», «поиск по сайту не находит товаров → семантический поиск через embeddings», «CRO-тесты идут 6 недель → AI генерирует варианты за час».",
+    "what": "Флагманское transformation-направление: как AI меняет работу команд каталога, мерчандайзинга, CRO, поддержки и аналитики в интернет-магазине. 15 узлов с явными workflow, метриками и связями к Foundation/Systems.\n\nЭто не «AI рекомендации» в общем виде, а конкретные сценарии: «10k SKU без описаний, и AI генерирует PDP за минуты», «поиск по сайту не находит товаров, и семантический поиск через embeddings», «CRO-тесты идут 6 недель, а AI генерирует варианты за час».",
     "why": "eCommerce — самый чёткий вертикальный рынок для AI: процессы документированы, метрики измеряемы, ROI считается прямо (выручка, конверсия, AOV). Это делает домен лучшей площадкой для системного внедрения AI.\n\nГлавное: AI здесь не косметика, а замена существующих ручных процессов. PDP-копирайтеры, мерчандайзеры, аналитики — все получают AI-усиление на 5-10× при тех же зарплатах.",
     "when": "Когда каталог > 500 SKU и команда контента ≤ 5. Когда конверсия плато 3-6 месяцев. Когда поиск даёт >20% \"ничего не найдено\". Когда мерчандайзинг ручной и устаревает на день. Когда service-команда тонет в типовых запросах. Когда планируется выход на новый рынок и нужна локализация.",
-    "impact": "По всему направлению ожидаемые сдвиги: time-to-publish PDP 4ч → 5мин, поисковая конверсия +20-40%, среднее качество рекомендаций +30%, support-нагрузка -50% на tier-1, time-to-insight по данным дни → часы.\n\nГлавное — измеримость: каждое внедрение можно посчитать в выручке за 90 дней.",
+    "impact": "По всему направлению ожидаемые сдвиги: time-to-publish PDP с 4ч до 5мин, поисковая конверсия +20-40%, среднее качество рекомендаций +30%, support-нагрузка -50% на tier-1, time-to-insight по данным с дней до часов.\n\nГлавное — измеримость: каждое внедрение можно посчитать в выручке за 90 дней.",
     "example": "15 узлов в направлении, сгруппированы по value-stream:\n\n**Каталог:** [[node:ec-pdp-gen|AI PDP Generation]], [[node:ec-search-opt|AI Search]], [[node:ec-merchandising|AI Merchandising]], [[node:ec-recommendations|AI Recommendations]]\n\n**Конверсия:** [[node:ec-cro|AI CRO]], [[node:ec-experimentation|AI Experimentation]], [[node:ec-checkout-opt|AI Checkout Optimization]], [[node:ec-personalization|AI Personalization]]\n\n**Operations:** [[node:ec-support|AI Commerce Support]], [[node:ec-loyalty|AI Loyalty]], [[node:ec-analytics|AI Analytics]], [[node:ec-pricing|AI Pricing]], [[node:ec-inventory|AI Inventory]], [[node:ec-segmentation|AI Segmentation]]\n\n**Команда:** [[node:ec-team-workflow|Team Workflow]]",
     "mistakes": "Главная ошибка — пробовать «всё сразу». 15 узлов = карта возможностей, не roadmap внедрения. Стартуй с одного узла, дай ему 60-90 дней, посчитай ROI, потом расширяй.\n\nВторая ошибка: AI-генерация без quality gate. На каталоге в 10k SKU плохо настроенный AI выдаст 10k плохих карточек за час — это хуже, чем 100 хороших, сделанных вручную. Quality gate обязателен.\n\nТретья: не локализовывать brand voice. Generic AI-английский на финском или русском рынке — мгновенно опознаётся покупателями."
   },
@@ -1774,7 +1774,7 @@
   },
   "i-when-where": {
     "title": "Где какие инструкции",
-    "what": "Карта приоритетов: глобальные инструкции аккаунта → инструкции Project → CLAUDE.md в Claude Code. Более узкий уровень дополняет или переопределяет более широкий.",
+    "what": "Карта приоритетов: глобальные инструкции аккаунта, затем инструкции Project, затем CLAUDE.md в Claude Code. Более узкий уровень дополняет или переопределяет более широкий.",
     "why": "Новички пишут одно и то же в трёх местах или удивляются, почему глобальная настройка «не работает» внутри Project.",
     "when": "Перед тем как записать постоянную инструкцию — реши, на каком уровне ей место.",
     "impact": "Перестаёшь дублировать правила и ловить конфликты: общее живёт глобально, специфичное — в Project или CLAUDE.md.",
@@ -1830,7 +1830,7 @@
     "title": "Оркестрация агентов",
     "what": "Связка нескольких агентов под управлением главного: ведущий разбивает задачу, раздаёт куски специализированным помощникам и собирает их результаты в один ответ.",
     "why": "Один агент с двумя десятками инструментов путается и переполняет контекст. Оркестрация даёт каждому исполнителю узкую роль и чистый контекст — качество растёт.",
-    "when": "Когда задача распадается на разнородные части: «найти → проанализировать → оформить», где каждый шаг лучше делает отдельный специалист.",
+    "when": "Когда задача распадается на разнородные части: «найти, проанализировать, оформить», где каждый шаг лучше делает отдельный специалист.",
     "impact": "Сложные многошаговые задачи решаются предсказуемо: ведущий контролирует ход, помощники не мешают друг другу. Связку легче чинить, чем одного «всезнайку».",
     "example": "На запрос «подготовь обзор рынка» ведущий запускает помощника-исследователя для поиска источников, затем передаёт находки аналитику для таблицы.",
     "mistakes": "Плодить помощников там, где хватит одного: оркестрация добавляет задержку на передачу контекста. Дроби на агентов, только когда роли реально разные."
