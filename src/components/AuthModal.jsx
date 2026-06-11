@@ -5,6 +5,12 @@ import { useT } from '../i18n/LocaleContext.jsx';
 import { useFocusReturn } from '../hooks/useFocusReturn.js';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 
+// «Войти через Apple» — кнопка и логика готовы, но провайдер Apple ещё не
+// настроен (нужен платный Apple Developer аккаунт + конфиг в Supabase, см.
+// docs/auth-apple-setup.md). Пока скрываем, чтобы не показывать нерабочую
+// кнопку. Переключить в true ПОСЛЕ настройки провайдера.
+const APPLE_SIGNIN_ENABLED = false;
+
 /**
  * AuthModal — модалка входа.
  *
@@ -170,7 +176,8 @@ export default function AuthModal({ onClose }) {
                 <span>{googleLoading ? t('auth.connecting') : t('auth.continueGoogle')}</span>
               </button>
 
-              {/* ── Apple Sign-In ── */}
+              {/* ── Apple Sign-In (скрыта до настройки провайдера, см. флаг выше) ── */}
+              {APPLE_SIGNIN_ENABLED && (
               <button
                 type="button"
                 className="auth-apple-btn"
@@ -187,6 +194,7 @@ export default function AuthModal({ onClose }) {
                 )}
                 <span>{appleLoading ? t('auth.connecting') : (t('auth.continueApple') || 'Войти через Apple')}</span>
               </button>
+              )}
 
               {/* ── Разделитель ── */}
               <div className="auth-divider">

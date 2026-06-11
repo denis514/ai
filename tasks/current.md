@@ -5,6 +5,16 @@
 
 ---
 
+## ⏸️ Отложено до действия пользователя
+
+- **«Войти через Apple»** — кнопка, обработчик (`signInWithApple`), стили и i18n
+  готовы и в проде, но **скрыты флагом** `APPLE_SIGNIN_ENABLED = false` в
+  `src/components/AuthModal.jsx`. Ждём: купить Apple Developer аккаунт ($99/год) +
+  настроить провайдера в Apple и Supabase по `docs/auth-apple-setup.md`, затем
+  поставить флаг в `true` и задеплоить. (Отложено 2026-06-11.)
+
+---
+
 ## 🎯 Текущий фокус (2026-05-27): Product-first
 
 **Все distribution-процессы заморожены** — см. `docs/business-strategy/PIVOT-PRODUCT-FIRST.md`.
