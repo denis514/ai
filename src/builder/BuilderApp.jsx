@@ -1876,7 +1876,7 @@ function BuilderAppInner() {
                   onSetChatId={handleSetChatId}
                   onSetConnection={handleSetNodeConnection}
                   onSetTargets={handleSetNodeTargets}
-                  onConnect={() => setKeysModalOpen(true)}
+                  onConnect={openKeysOrAuth}
                   onClose={() => setSelectedNodeId(null)}
                 />
               </NodeToolbar>
@@ -1892,7 +1892,7 @@ function BuilderAppInner() {
                   keys={resendKeys}
                   onSet={handleSetToolData}
                   onSetConnection={handleSetNodeConnection}
-                  onConnect={() => setKeysModalOpen(true)}
+                  onConnect={openKeysOrAuth}
                   onClose={() => setSelectedNodeId(null)}
                 />
               </NodeToolbar>
@@ -1906,7 +1906,7 @@ function BuilderAppInner() {
                   t={t}
                   gcalConnected={gcalConnected}
                   onSet={handleSetToolData}
-                  onConnect={() => setKeysModalOpen(true)}
+                  onConnect={openKeysOrAuth}
                   onClose={() => setSelectedNodeId(null)}
                 />
               </NodeToolbar>
