@@ -1904,6 +1904,32 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   flex-shrink: 0;
 }
 
+/* ── Apple Sign-In (чёрная кнопка по гайдлайнам Apple, работает в обеих темах) ── */
+.auth-apple-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 11px 16px;
+  border: 1.5px solid #000;
+  background: #000;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.15s, box-shadow 0.15s;
+}
+.auth-apple-btn:hover:not(:disabled) { opacity: 0.85; }
+.auth-apple-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.auth-apple-btn__icon { width: 17px; height: 17px; flex-shrink: 0; margin-top: -2px; }
+:root[data-theme="dark"] .auth-apple-btn { background: #fff; border-color: #fff; color: #000; }
+@media (max-width: 480px) {
+  .auth-apple-btn { padding: 13px 16px; font-size: 15px; }
+}
+
 /* ── OR divider ── */
 .auth-divider {
   display: flex;

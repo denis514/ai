@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Icon from './Icon.jsx';
-import { sendMagicLink, signInWithGoogle } from '../services/authService.js';
+import { sendMagicLink, signInWithGoogle, signInWithApple } from '../services/authService.js';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { useFocusReturn } from '../hooks/useFocusReturn.js';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
@@ -28,6 +28,7 @@ export default function AuthModal({ onClose }) {
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [appleLoading, setAppleLoading] = useState(false);
   const [error, setError] = useState('');
 
   // Оба условия должны быть выполнены для любого метода входа
@@ -55,6 +56,16 @@ export default function AuthModal({ onClose }) {
     setGoogleLoading(false);
     if (err) setError(err);
     // При успехе — браузер уйдёт на Google, onClose не нужен
+  };
+
+  const handleApple = async () => {
+    if (!canProceed) { setError(t('auth.errorConsent')); return; }
+    setError('');
+    setAppleLoading(true);
+    const { error: err } = await signInWithApple();
+    setAppleLoading(false);
+    if (err) setError(err);
+    // При успехе — браузер уйдёт на Apple, onClose не нужен
   };
 
   const handleSubmit = async (e) => {
@@ -157,6 +168,24 @@ export default function AuthModal({ onClose }) {
                   </svg>
                 )}
                 <span>{googleLoading ? t('auth.connecting') : t('auth.continueGoogle')}</span>
+              </button>
+
+              {/* ── Apple Sign-In ── */}
+              <button
+                type="button"
+                className="auth-apple-btn"
+                onClick={handleApple}
+                disabled={appleLoading || loading || !canProceed}
+                title={!canProceed ? t('auth.errorConsent') : ''}
+              >
+                {appleLoading ? (
+                  <Icon name="refresh" size={18} strokeWidth={1.75} />
+                ) : (
+                  <svg className="auth-apple-btn__icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="currentColor" d="M17.05 12.04c-.03-2.43 1.99-3.6 2.08-3.66-1.13-1.66-2.9-1.89-3.52-1.91-1.5-.15-2.93.88-3.69.88-.76 0-1.93-.86-3.18-.84-1.63.02-3.14.95-3.98 2.41-1.7 2.95-.43 7.31 1.22 9.7.81 1.17 1.77 2.48 3.03 2.43 1.22-.05 1.68-.79 3.15-.79 1.47 0 1.88.79 3.16.76 1.31-.02 2.14-1.19 2.94-2.37.93-1.36 1.31-2.68 1.33-2.75-.03-.01-2.55-.98-2.58-3.9zM14.62 4.84c.67-.81 1.12-1.94.99-3.06-.96.04-2.13.64-2.82 1.45-.62.72-1.16 1.87-1.02 2.97 1.07.08 2.17-.55 2.85-1.36z"/>
+                  </svg>
+                )}
+                <span>{appleLoading ? t('auth.connecting') : (t('auth.continueApple') || 'Войти через Apple')}</span>
               </button>
 
               {/* ── Разделитель ── */}

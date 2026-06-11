@@ -82,6 +82,26 @@ export async function signInWithGoogle() {
 }
 
 /**
+ * Войти через Apple OAuth (Sign in with Apple).
+ * Тот же механизм, что и Google: Supabase редиректит на Apple и обратно;
+ * onAuthStateChange ловит SIGNED_IN. Требует включённого провайдера Apple в
+ * Supabase (Client ID + сгенерированный Secret) — см. docs/auth-apple-setup.md.
+ *
+ * @returns {{ error: string|null }}
+ */
+export async function signInWithApple() {
+  if (!supabase) return { error: 'Supabase not configured' };
+  saveReturnRoute();
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'apple',
+    options: {
+      redirectTo: window.location.origin + '/',
+    },
+  });
+  return { error: error?.message || null };
+}
+
+/**
  * Выход из аккаунта.
  */
 export async function signOut() {
