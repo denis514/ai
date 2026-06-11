@@ -15,6 +15,7 @@ import {
 import 'reactflow/dist/style.css';
 import Icon from '../components/Icon.jsx';
 import PlanetLogo from '../components/PlanetLogo.jsx';
+import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE, canAddNode, hasConfigPanel } from './data/nodeTypes.js';
@@ -1536,6 +1537,7 @@ function BuilderAppInner() {
             <Icon name="terminal" size={15} strokeWidth={1.6} />
             {execStatus === 'running' && <span className="builder-console-dot" aria-hidden="true" />}
           </button>
+          <LanguageSwitcher className="builder-lang" title={t('common.language') || 'Язык'} />
           <button
             type="button"
             className="builder-btn builder-btn--ghost"

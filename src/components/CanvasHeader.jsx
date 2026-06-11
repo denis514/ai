@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import PlanetLogo from './PlanetLogo.jsx';
-import { useT, useLocale } from '../i18n/LocaleContext.jsx';
-import { LOCALE_LABEL } from '../i18n/config.js';
+import { useT } from '../i18n/LocaleContext.jsx';
 import { useTheme } from '../hooks/useTheme.js';
+import LanguageSwitcher from './LanguageSwitcher.jsx';
 
 
 /**
@@ -29,7 +29,6 @@ export default function CanvasHeader({
 }) {
   const t = useT();
   const { mode, setThemeMode } = useTheme();
-  const { locale, setLocale, locales } = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
   const [bar, setBar] = useState(null); // 'theme' | 'lang' | null — независимые кнопки справа
   const [searchOpen, setSearchOpen] = useState(false);
@@ -184,37 +183,11 @@ export default function CanvasHeader({
           )}
         </div>
 
-        <div className="canvas-header__tool">
-          <button
-            type="button"
-            className={`canvas-header__tool-btn ${bar === 'lang' ? 'is-open' : ''}`}
-            onClick={() => setBar(b => (b === 'lang' ? null : 'lang'))}
-            aria-haspopup="listbox"
-            aria-expanded={bar === 'lang'}
-            title="Язык"
-          >
-            <Icon name="globe" size={18} strokeWidth={1.5} />
-          </button>
-          {bar === 'lang' && (
-            <div className="canvas-header__pop" role="listbox">
-              {locales.map(code => (
-                <button
-                  key={code}
-                  type="button"
-                  className={`canvas-header__menu-item canvas-header__lang-opt ${locale === code ? 'is-active' : ''}`}
-                  onClick={() => { setLocale(code); setBar(null); }}
-                  role="option"
-                  aria-selected={locale === code}
-                >
-                  <span className="canvas-header__lang-check" aria-hidden="true">
-                    {locale === code && <Icon name="check" size={14} strokeWidth={2} />}
-                  </span>
-                  <span>{LOCALE_LABEL[code]}</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        <LanguageSwitcher
+          title={t('common.language') || 'Язык'}
+          open={bar === 'lang'}
+          onOpenChange={(v) => setBar(v ? 'lang' : null)}
+        />
       </div>
       </div>
 
