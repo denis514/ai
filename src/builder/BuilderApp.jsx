@@ -842,6 +842,11 @@ function BuilderAppInner() {
     setNodes(nds => {
       const src = nds.find(n => n.id === nodeId);
       if (!src) return nds;
+      // «Старт» можно только удалить — он singleton (один вход = один поток).
+      if (src.data?.kind === 'trigger') {
+        showHintText(t('builder.singleton.start') || '«Старт» может быть только один — его нельзя дублировать.');
+        return nds;
+      }
       pushHistoryRef.current?.();
       const copy = {
         ...src,
@@ -852,7 +857,9 @@ function BuilderAppInner() {
       };
       return nds.concat(copy);
     });
-  }, [setNodes]);
+    // showHintText/t намеренно не в deps: showHintText объявлена ниже по файлу,
+    // в массиве зависимостей это TDZ. В теле ссылка безопасна (вызов после монтирования).
+  }, [setNodes]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Задать/обновить инструкцию узла (data.prompt + флаг hasPrompt для значка).
   const handleSetPrompt = useCallback((nodeId, value) => {
@@ -1822,14 +1829,17 @@ function BuilderAppInner() {
             {selectedNodeId && (
               <NodeToolbar nodeId={selectedNodeId} isVisible position={Position.Top} offset={28}>
                 <div className="builder-node-actions" onClick={(e) => e.stopPropagation()}>
-                  <button
-                    type="button"
-                    className="builder-node-actions__btn"
-                    onClick={() => handleDuplicateNode(selectedNodeId)}
-                    title={t('builder.nodeActions.duplicate') || 'Duplicate'}
-                  >
-                    <Icon name="clipboard" size={13} strokeWidth={1.75} />
-                  </button>
+                  {/* «Старт» — singleton: дублировать нельзя, только удалить. */}
+                  {!selectedTriggerNode && (
+                    <button
+                      type="button"
+                      className="builder-node-actions__btn"
+                      onClick={() => handleDuplicateNode(selectedNodeId)}
+                      title={t('builder.nodeActions.duplicate') || 'Duplicate'}
+                    >
+                      <Icon name="clipboard" size={13} strokeWidth={1.75} />
+                    </button>
+                  )}
                   <button
                     type="button"
                     className="builder-node-actions__btn builder-node-actions__btn--danger"
