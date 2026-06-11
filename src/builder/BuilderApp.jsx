@@ -1472,6 +1472,9 @@ function BuilderAppInner() {
               <Icon name="panel-left" size={16} strokeWidth={1.6} />
             </button>
           )}
+
+          {/* Переключатель языка — ВСЕГДА в левой части (как в Atlas) */}
+          <LanguageSwitcher title={t('common.language') || 'Язык'} />
         </div>
 
         {/* Центр: переключатель «Мои workflow» (имя текущей схемы + список) */}
@@ -1537,7 +1540,6 @@ function BuilderAppInner() {
             <Icon name="terminal" size={15} strokeWidth={1.6} />
             {execStatus === 'running' && <span className="builder-console-dot" aria-hidden="true" />}
           </button>
-          <LanguageSwitcher title={t('common.language') || 'Язык'} />
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
