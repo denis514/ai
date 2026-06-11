@@ -1,0 +1,48 @@
+name: Help Watch
+
+# Сторож актуальности вкладки «Помощь» в Agent Builder.
+# Понедельник 08:30 UTC. Сверяет хеши функциональных файлов билдера с базой
+# (docs/help-watch/baseline.json). Если функции изменились с последней сверки —
+# пишет напоминание в tasks/backlog.md и сигналит в Telegram.
+# Базу НЕ трогает: принять сверку нужно вручную (npm run help:watch -- --accept),
+# чтобы сигнал не «замолкал» сам собой.
+# Можно запустить вручную через workflow_dispatch.
+
+on:
+  schedule:
+    - cron: '30 8 * * 1'  # Monday 08:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  watch-help:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run help-watch
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: node scripts/help-watch.mjs
+
+      - name: Commit backlog reminder if added
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tasks/backlog.md
+          if git diff --cached --quiet; then
+            echo "Help is in sync (nothing to commit)"
+            exit 0
+          fi
+          DATE=$(date -u +%Y-%m-%d)
+          git commit -m "chore(help-watch): builder features changed — review Help tab ${DATE} (auto)"
+          git push

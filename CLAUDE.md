@@ -444,6 +444,7 @@ UI (`*.css`, `src/**/*.jsx`, `src/builder/**`) ПОСЛЕ того как сде
 | UX-аудит взаимодействия и навигации    | `skills/ux-interaction-tester/` (on-demand) |
 | Проверить релизы Anthropic еженедельно | `skills/news-watcher/`     |
 | Следить за официальной документацией (Desktop/web/Code) | `skills/docs-watcher/` + `docs/docs-watch/` + `node scripts/docs-watcher.mjs` |
+| Держать вкладку «Помощь» (Builder) актуальной — еженедельный сторож | `scripts/help-watch.mjs` (+ `.github/workflows/help-watch.yml`, пн 08:30 UTC). После правки/сверки справки: `npm run help:watch -- --accept` |
 | Правила AI-обучения                    | `docs/learning-design-rules.md` |
 | Maintenance / deprecate-watch          | `docs/maintenance.md`      |
 | **Бизнес-стратегия проекта**           | `docs/business-strategy/`  |
