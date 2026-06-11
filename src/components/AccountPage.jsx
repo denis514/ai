@@ -114,6 +114,39 @@ export default function AccountPage({
     return all.filter(a => a.ok);
   }, [supaStats.tutorialsDone, supaStats.nodesViewed, supaStats.bookmarksCount]);
 
+  // ── Полные списки для раздела «Обучение» (этап 4) ─────────────────────────
+  const allReviewNodes = useMemo(() => {
+    return (supaStats.reviewIds || []).map(id => ({ id, title: getNode(locale, id)?.title || id }));
+  }, [supaStats.reviewIds, locale, contentVersion]);
+
+  const bookmarkNodes = useMemo(() => {
+    return (supaStats.bookmarkNodeIds || [])
+      .filter(id => nodeIndex[id])
+      .map(id => ({ id, title: getNode(locale, id)?.title || id }));
+  }, [supaStats.bookmarkNodeIds, locale, contentVersion]);
+
+  const completedCourses = useMemo(() => {
+    const ids = (supaStats.completedTutorialIds && supaStats.completedTutorialIds.length)
+      ? supaStats.completedTutorialIds
+      : (progressApi ? tutorialIds.filter(id => !!progressApi.getProgress(id)?.completedAt) : []);
+    return ids.map(id => ({ id, title: getLocalizedTutorial(id, locale)?.title || id }));
+  }, [supaStats.completedTutorialIds, progressApi, locale, contentVersion]);
+
+  // Достижения с состоянием (заработано / закрыто) — для полного раздела
+  const allAchievements = useMemo(() => {
+    const d = supaStats.tutorialsDone || 0;
+    const v = supaStats.nodesViewed || 0;
+    const b = supaStats.bookmarksCount || 0;
+    return [
+      { id: 'first-tut',  ok: d >= 1,  icon: 'graduation',      key: 'achievement.firstTutorial' },
+      { id: 'five-tuts',  ok: d >= 5,  icon: 'graduation',      key: 'achievement.fiveTutorials' },
+      { id: 'ten-tuts',   ok: d >= 10, icon: 'trophy',          key: 'achievement.tenTutorials' },
+      { id: 'explorer10', ok: v >= 10, icon: 'compass',         key: 'achievement.explorer10' },
+      { id: 'explorer50', ok: v >= 50, icon: 'compass',         key: 'achievement.explorer50' },
+      { id: 'collector',  ok: b >= 5,  icon: 'bookmark-filled', key: 'achievement.collector' },
+    ];
+  }, [supaStats.tutorialsDone, supaStats.nodesViewed, supaStats.bookmarksCount]);
+
   // ── Сводка конструктора (мои агенты + автозапуски) ────────────────────────
   const [builder, setBuilder] = useState({ loading: true, workflows: [], activeRuns: 0, todayRuns: 0 });
   useEffect(() => {
@@ -256,6 +289,7 @@ export default function AccountPage({
   // ── Разделы боковой панели ───────────────────────────────────────────────
   const NAV = [
     { id: 'overview', icon: 'grid',     label: t('account.dash.overview') || 'Обзор' },
+    { id: 'learning', icon: 'graduation', label: t('account.dash.learning') || 'Обучение' },
     { id: 'profile',  icon: 'user',     label: t('account.profile')     || 'Профиль' },
     { id: 'activity', icon: 'flash',    label: t('profile.activity')    || 'Активность' },
     { id: 'data',     icon: 'download', label: t('account.dataPrivacy') || 'Данные и приватность' },
@@ -339,7 +373,13 @@ export default function AccountPage({
 
               {/* Мой прогресс одним взглядом */}
               <div className="account-widget">
-                <div className="account-widget__head"><h3>{t('account.dash.progress') || 'Мой прогресс'}</h3></div>
+                <div className="account-widget__head">
+                  <h3>{t('account.dash.progress') || 'Мой прогресс'}</h3>
+                  <button type="button" className="account-widget__link" onClick={() => setSection('learning')}>
+                    {t('account.dash.details') || 'Подробнее'}
+                    <Icon name="arrow-right" size={13} strokeWidth={1.75} />
+                  </button>
+                </div>
                 <div className="account-stat-grid">
                   <button type="button" className="account-stat" disabled={!supaStats.viewedIds?.length}
                     onClick={() => onShowNodes?.(supaStats.viewedIds, t('account.dash.viewed') || 'Изучено')}>
@@ -365,7 +405,15 @@ export default function AccountPage({
 
               {/* На повторение */}
               <div className="account-widget">
-                <div className="account-widget__head"><h3>{t('account.dash.review') || 'На повторение'}</h3></div>
+                <div className="account-widget__head">
+                  <h3>{t('account.dash.review') || 'На повторение'}</h3>
+                  {allReviewNodes.length > 0 && (
+                    <button type="button" className="account-widget__link" onClick={() => setSection('learning')}>
+                      {t('account.dash.details') || 'Подробнее'}
+                      <Icon name="arrow-right" size={13} strokeWidth={1.75} />
+                    </button>
+                  )}
+                </div>
                 {reviewNodes.length === 0 ? (
                   <div className="account-widget__empty account-widget__empty--sm">
                     <Icon name="check" size={18} strokeWidth={1.75} />
@@ -474,6 +522,147 @@ export default function AccountPage({
                     </ul>
                   </>
                 )}
+              </div>
+            </div>
+          </div>
+        );
+
+      // ── Обучение (полные списки) ──
+      case 'learning':
+        return (
+          <div className="account-learning">
+            <h2 className="account-learning__title">{t('account.dash.learning') || 'Обучение'}</h2>
+
+            {/* Прогресс — все плитки */}
+            <div className="account-card">
+              <h3 className="account-card__title">{t('account.dash.progress') || 'Мой прогресс'}</h3>
+              <div className="account-stat-grid">
+                <button type="button" className="account-stat" disabled={!supaStats.viewedIds?.length}
+                  onClick={() => onShowNodes?.(supaStats.viewedIds, t('account.dash.viewed') || 'Изучено')}>
+                  <span className="account-stat__val">{supaStats.nodesViewed || 0}</span>
+                  <span className="account-stat__label">{t('account.dash.viewed') || 'Изучено'}</span>
+                </button>
+                <button type="button" className="account-stat account-stat--review" disabled={!supaStats.reviewIds?.length}
+                  onClick={() => onShowNodes?.(supaStats.reviewIds, t('account.dash.review') || 'На повторение')}>
+                  <span className="account-stat__val">{supaStats.nodesReview || 0}</span>
+                  <span className="account-stat__label">{t('account.dash.review') || 'На повторение'}</span>
+                </button>
+                <button type="button" className="account-stat" disabled={!supaStats.bookmarkNodeIds?.length}
+                  onClick={() => onShowNodes?.(supaStats.bookmarkNodeIds, t('account.dash.bookmarks') || 'Закладки')}>
+                  <span className="account-stat__val">{supaStats.bookmarksCount || 0}</span>
+                  <span className="account-stat__label">{t('account.dash.bookmarks') || 'Закладки'}</span>
+                </button>
+                <div className="account-stat account-stat--static">
+                  <span className="account-stat__val">{coursesDone}<span className="account-stat__of">/{coursesTotal}</span></span>
+                  <span className="account-stat__label">{t('account.dash.coursesDone') || 'Курсы'}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Активные курсы (все) */}
+            <div className="account-card">
+              <div className="account-card__head">
+                <h3 className="account-card__title">{t('account.dash.continue') || 'Продолжить обучение'}</h3>
+                {onOpenCourses && (
+                  <button type="button" className="account-widget__link" onClick={() => { onClose?.(); onOpenCourses(); }}>
+                    {t('account.dash.allCourses') || 'Все курсы'}
+                    <Icon name="arrow-right" size={13} strokeWidth={1.75} />
+                  </button>
+                )}
+              </div>
+              {activeCourses.length === 0 ? (
+                <p className="account-card__empty">{t('account.dash.continueEmpty') || 'Нет начатых курсов.'}</p>
+              ) : (
+                <div className="account-course-list">
+                  {activeCourses.map(c => (
+                    <button key={c.id} type="button" className="account-course" onClick={() => onStartTutorial?.(c.id)}>
+                      <div className="account-course__top">
+                        <span className="account-course__title">{c.title}</span>
+                        <span className="account-course__pct">{c.percent}%</span>
+                      </div>
+                      <div className="account-course__bar"><span style={{ width: `${c.percent}%` }} /></div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Завершённые курсы */}
+            <div className="account-card">
+              <h3 className="account-card__title">
+                {t('account.dash.completed') || 'Завершённые курсы'}
+                {completedCourses.length > 0 && <span className="account-card__count">{completedCourses.length}</span>}
+              </h3>
+              {completedCourses.length === 0 ? (
+                <p className="account-card__empty">{t('account.dash.completedEmpty') || 'Пока нет завершённых курсов.'}</p>
+              ) : (
+                <ul className="account-review-list">
+                  {completedCourses.map(c => (
+                    <li key={c.id}>
+                      <button type="button" className="account-review__item" onClick={() => onStartTutorial?.(c.id)}>
+                        <Icon name="check" size={13} strokeWidth={2} />
+                        <span>{c.title}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* На повторение (все) */}
+            <div className="account-card">
+              <h3 className="account-card__title">
+                {t('account.dash.review') || 'На повторение'}
+                {allReviewNodes.length > 0 && <span className="account-card__count">{allReviewNodes.length}</span>}
+              </h3>
+              {allReviewNodes.length === 0 ? (
+                <p className="account-card__empty">{t('account.dash.reviewEmpty') || 'Пусто — нечего повторять.'}</p>
+              ) : (
+                <ul className="account-review-list">
+                  {allReviewNodes.map(n => (
+                    <li key={n.id}>
+                      <button type="button" className="account-review__item" onClick={() => onShowNodes?.([n.id], n.title)}>
+                        <Icon name="refresh-circle" size={13} strokeWidth={1.6} />
+                        <span>{n.title}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Закладки (все) */}
+            <div className="account-card">
+              <h3 className="account-card__title">
+                {t('account.dash.bookmarks') || 'Закладки'}
+                {bookmarkNodes.length > 0 && <span className="account-card__count">{bookmarkNodes.length}</span>}
+              </h3>
+              {bookmarkNodes.length === 0 ? (
+                <p className="account-card__empty">{t('account.dash.bookmarksEmpty') || 'Закладок пока нет.'}</p>
+              ) : (
+                <ul className="account-review-list">
+                  {bookmarkNodes.map(n => (
+                    <li key={n.id}>
+                      <button type="button" className="account-review__item" onClick={() => onShowNodes?.([n.id], n.title)}>
+                        <Icon name="bookmark-filled" size={13} strokeWidth={1.6} />
+                        <span>{n.title}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            {/* Достижения (заработано + закрытые) */}
+            <div className="account-card">
+              <h3 className="account-card__title">{t('account.dash.achievements') || 'Достижения'}</h3>
+              <div className="account-ach-grid">
+                {allAchievements.map(a => (
+                  <span key={a.id} className={`account-ach ${a.ok ? '' : 'account-ach--locked'}`} title={t(a.key)}>
+                    <Icon name={a.ok ? a.icon : 'lock'} size={18} strokeWidth={1.5} />
+                    <span className="account-ach__label">{t(a.key)}</span>
+                  </span>
+                ))}
               </div>
             </div>
           </div>
