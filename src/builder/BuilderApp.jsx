@@ -135,6 +135,22 @@ function buildTemplateGraph(template, edgeStyle, t) {
     return { id, type: KIND_TO_NODE_TYPE[def.kind] || 'agentNode', position: tn.position, data };
   }).filter(Boolean);
 
+  // Демо-задача «Старта»: берём из i18n builder.template.<ns>.start (ns выводим из
+  // nameKey). Без задачи в «Старте» схема не запускается — поэтому шаблон всегда
+  // приходит с примерным текстом (точка отправления для пользователя). Если ключа
+  // нет (t вернул сам ключ) — не трогаем.
+  if (template.nameKey) {
+    const startKey = template.nameKey.replace(/\.name$/, '.start');
+    const startText = tr(startKey);
+    if (startText && startText !== startKey) {
+      const trig = nodes.find(n => n.data?.kind === 'trigger');
+      if (trig && !String(trig.data.task || '').trim()) {
+        trig.data.task = startText;
+        trig.data.hasInput = true;
+      }
+    }
+  }
+
   // Резолвим ссылку Цикла на узел по индексу шаблона → реальный client_id.
   template.nodes.forEach((tn, idx) => {
     if (tn.dataOverride?.loopBackToIndex != null) {
