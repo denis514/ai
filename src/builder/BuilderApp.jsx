@@ -1160,6 +1160,9 @@ function BuilderAppInner() {
     skipDirtyRef.current = true;
     setNodes(newNodes);
     setEdges(newEdges);
+    // Синхронизируем поле «Старта» (runInput) с задачей нового шаблона — иначе
+    // панель Старта показывала бы текст предыдущего шаблона до перезагрузки.
+    setRunInput(newNodes.find(n => n.data?.kind === 'trigger')?.data?.task || '');
     setSelectedNodeId(null);
     setGalleryOpen(false);
     // Имя нового workflow берём из шаблона (localized). Это новый workflow —
@@ -1183,6 +1186,7 @@ function BuilderAppInner() {
     skipDirtyRef.current = true;
     setNodes(rfNodes);
     setEdges(rfEdges);
+    setRunInput(rfNodes.find(n => n.data?.kind === 'trigger')?.data?.task || '');
     setSelectedNodeId(null);
     setExecLogs([]);
     setExecStatus('idle');
