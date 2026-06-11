@@ -12,6 +12,7 @@ import { getNode } from '../i18n/strings.js';
 import { WHATS_NEW } from '../data/whatsNew.js';
 import { nodeIndex } from '../data/mindmapData.js';
 import { useWhatsNew } from '../hooks/useWhatsNew.js';
+import Skeleton from './Skeleton.jsx';
 import { listWorkflows } from '../builder/services/workflowStorage.js';
 import { listAllSchedules, getTodayUsage } from '../builder/services/scheduleService.js';
 
@@ -380,27 +381,33 @@ export default function AccountPage({
                     <Icon name="arrow-right" size={13} strokeWidth={1.75} />
                   </button>
                 </div>
-                <div className="account-stat-grid">
-                  <button type="button" className="account-stat" disabled={!supaStats.viewedIds?.length}
-                    onClick={() => onShowNodes?.(supaStats.viewedIds, t('account.dash.viewed') || 'Изучено')}>
-                    <span className="account-stat__val">{supaStats.nodesViewed || 0}</span>
-                    <span className="account-stat__label">{t('account.dash.viewed') || 'Изучено'}</span>
-                  </button>
-                  <button type="button" className="account-stat account-stat--review" disabled={!supaStats.reviewIds?.length}
-                    onClick={() => onShowNodes?.(supaStats.reviewIds, t('account.dash.review') || 'На повторение')}>
-                    <span className="account-stat__val">{supaStats.nodesReview || 0}</span>
-                    <span className="account-stat__label">{t('account.dash.review') || 'На повторение'}</span>
-                  </button>
-                  <button type="button" className="account-stat" disabled={!supaStats.bookmarkNodeIds?.length}
-                    onClick={() => onShowNodes?.(supaStats.bookmarkNodeIds, t('account.dash.bookmarks') || 'Закладки')}>
-                    <span className="account-stat__val">{supaStats.bookmarksCount || 0}</span>
-                    <span className="account-stat__label">{t('account.dash.bookmarks') || 'Закладки'}</span>
-                  </button>
-                  <div className="account-stat account-stat--static">
-                    <span className="account-stat__val">{coursesDone}<span className="account-stat__of">/{coursesTotal}</span></span>
-                    <span className="account-stat__label">{t('account.dash.coursesDone') || 'Курсы'}</span>
+                {supaStats.loading ? (
+                  <div className="account-stat-grid">
+                    {[0, 1, 2, 3].map(i => <Skeleton key={i} height="62px" radius="12px" />)}
                   </div>
-                </div>
+                ) : (
+                  <div className="account-stat-grid">
+                    <button type="button" className="account-stat" disabled={!supaStats.viewedIds?.length}
+                      onClick={() => onShowNodes?.(supaStats.viewedIds, t('account.dash.viewed') || 'Изучено')}>
+                      <span className="account-stat__val">{supaStats.nodesViewed || 0}</span>
+                      <span className="account-stat__label">{t('account.dash.viewed') || 'Изучено'}</span>
+                    </button>
+                    <button type="button" className="account-stat account-stat--review" disabled={!supaStats.reviewIds?.length}
+                      onClick={() => onShowNodes?.(supaStats.reviewIds, t('account.dash.review') || 'На повторение')}>
+                      <span className="account-stat__val">{supaStats.nodesReview || 0}</span>
+                      <span className="account-stat__label">{t('account.dash.review') || 'На повторение'}</span>
+                    </button>
+                    <button type="button" className="account-stat" disabled={!supaStats.bookmarkNodeIds?.length}
+                      onClick={() => onShowNodes?.(supaStats.bookmarkNodeIds, t('account.dash.bookmarks') || 'Закладки')}>
+                      <span className="account-stat__val">{supaStats.bookmarksCount || 0}</span>
+                      <span className="account-stat__label">{t('account.dash.bookmarks') || 'Закладки'}</span>
+                    </button>
+                    <div className="account-stat account-stat--static">
+                      <span className="account-stat__val">{coursesDone}<span className="account-stat__of">/{coursesTotal}</span></span>
+                      <span className="account-stat__label">{t('account.dash.coursesDone') || 'Курсы'}</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* На повторение */}
@@ -414,10 +421,12 @@ export default function AccountPage({
                     </button>
                   )}
                 </div>
-                {reviewNodes.length === 0 ? (
+                {supaStats.loading ? (
+                  <Skeleton.Text lines={3} />
+                ) : reviewNodes.length === 0 ? (
                   <div className="account-widget__empty account-widget__empty--sm">
                     <Icon name="check" size={18} strokeWidth={1.75} />
-                    <p>{t('account.dash.reviewEmpty') || 'Пусто — нечего повторять.'}</p>
+                    <p>{t('account.dash.reviewEmpty') || 'Нечего повторять.'}</p>
                   </div>
                 ) : (
                   <ul className="account-review-list">
@@ -463,10 +472,19 @@ export default function AccountPage({
               {/* Достижения */}
               <div className="account-widget">
                 <div className="account-widget__head"><h3>{t('account.dash.achievements') || 'Достижения'}</h3></div>
-                {earnedAchievements.length === 0 ? (
+                {supaStats.loading ? (
+                  <div className="account-ach-grid">
+                    {[0, 1, 2].map(i => <Skeleton key={i} width="120px" height="34px" radius="999px" />)}
+                  </div>
+                ) : earnedAchievements.length === 0 ? (
                   <div className="account-widget__empty account-widget__empty--sm">
                     <Icon name="trophy" size={18} strokeWidth={1.5} />
                     <p>{t('account.dash.achievementsEmpty') || 'Учись и собирай достижения.'}</p>
+                    {onOpenCourses && (
+                      <button type="button" className="account-btn account-btn--outline" onClick={() => { onClose?.(); onOpenCourses(); }}>
+                        {t('account.dash.browseCourses') || 'Выбрать курс'}
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <div className="account-ach-grid">
@@ -480,49 +498,55 @@ export default function AccountPage({
                 )}
               </div>
 
-              {/* Мои агенты и автозапуски */}
-              <div className="account-widget account-widget--wide">
-                <div className="account-widget__head">
-                  <h3>{t('account.dash.agents') || 'Мои агенты'}</h3>
-                  <button type="button" className="account-widget__link" onClick={() => onOpenBuilder?.()}>
-                    {t('account.dash.openBuilder') || 'Открыть конструктор'}
-                    <Icon name="arrow-right" size={13} strokeWidth={1.75} />
-                  </button>
+              {/* Мои агенты и автозапуски.
+                  Новичку без агентов — тонкая подсказка, а не большой пустой виджет;
+                  это learning-first продукт, конструктор не навязываем. */}
+              {builder.loading ? (
+                <div className="account-widget account-widget--wide">
+                  <div className="account-widget__head"><h3>{t('account.dash.agents') || 'Мои агенты'}</h3></div>
+                  <Skeleton.Text lines={2} />
                 </div>
-                {builder.workflows.length === 0 ? (
-                  <div className="account-widget__empty account-widget__empty--sm">
-                    <Icon name="robot" size={18} strokeWidth={1.5} />
-                    <p>{t('account.dash.agentsEmpty') || 'У вас пока нет агентов — соберите первого в конструкторе.'}</p>
+              ) : builder.workflows.length === 0 ? (
+                <button type="button" className="account-widget--wide account-agents-hint" onClick={() => onOpenBuilder?.()}>
+                  <Icon name="robot" size={16} strokeWidth={1.5} />
+                  <span>{t('account.dash.agentsHint') || 'Собери первого агента в конструкторе'}</span>
+                  <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+                </button>
+              ) : (
+                <div className="account-widget account-widget--wide">
+                  <div className="account-widget__head">
+                    <h3>{t('account.dash.agents') || 'Мои агенты'}</h3>
+                    <button type="button" className="account-widget__link" onClick={() => onOpenBuilder?.()}>
+                      {t('account.dash.openBuilder') || 'Открыть конструктор'}
+                      <Icon name="arrow-right" size={13} strokeWidth={1.75} />
+                    </button>
                   </div>
-                ) : (
-                  <>
-                    <div className="account-stat-grid">
-                      <div className="account-stat account-stat--static">
-                        <span className="account-stat__val">{builder.workflows.length}</span>
-                        <span className="account-stat__label">{t('account.dash.agentsWorkflows') || 'Схем'}</span>
-                      </div>
-                      <div className="account-stat account-stat--static">
-                        <span className="account-stat__val">{builder.activeRuns}</span>
-                        <span className="account-stat__label">{t('account.dash.agentsActive') || 'Автозапусков'}</span>
-                      </div>
-                      <div className="account-stat account-stat--static">
-                        <span className="account-stat__val">{builder.todayRuns}</span>
-                        <span className="account-stat__label">{t('account.dash.agentsToday') || 'Запусков сегодня'}</span>
-                      </div>
+                  <div className="account-stat-grid">
+                    <div className="account-stat account-stat--static">
+                      <span className="account-stat__val">{builder.workflows.length}</span>
+                      <span className="account-stat__label">{t('account.dash.agentsWorkflows') || 'Схем'}</span>
                     </div>
-                    <ul className="account-review-list account-agents-list">
-                      {builder.workflows.slice(0, 4).map(w => (
-                        <li key={w.id}>
-                          <button type="button" className="account-review__item" onClick={() => onOpenBuilder?.()}>
-                            <Icon name="folder" size={13} strokeWidth={1.6} />
-                            <span>{w.name || (t('account.dash.agentUntitled') || 'Без имени')}</span>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-              </div>
+                    <div className="account-stat account-stat--static">
+                      <span className="account-stat__val">{builder.activeRuns}</span>
+                      <span className="account-stat__label">{t('account.dash.agentsActive') || 'Автозапусков'}</span>
+                    </div>
+                    <div className="account-stat account-stat--static">
+                      <span className="account-stat__val">{builder.todayRuns}</span>
+                      <span className="account-stat__label">{t('account.dash.agentsToday') || 'Запусков сегодня'}</span>
+                    </div>
+                  </div>
+                  <ul className="account-review-list account-agents-list">
+                    {builder.workflows.slice(0, 4).map(w => (
+                      <li key={w.id}>
+                        <button type="button" className="account-review__item" onClick={() => onOpenBuilder?.()}>
+                          <Icon name="folder" size={13} strokeWidth={1.6} />
+                          <span>{w.name || (t('account.dash.agentUntitled') || 'Без имени')}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         );
@@ -532,32 +556,7 @@ export default function AccountPage({
         return (
           <div className="account-learning">
             <h2 className="account-learning__title">{t('account.dash.learning') || 'Обучение'}</h2>
-
-            {/* Прогресс — все плитки */}
-            <div className="account-card">
-              <h3 className="account-card__title">{t('account.dash.progress') || 'Мой прогресс'}</h3>
-              <div className="account-stat-grid">
-                <button type="button" className="account-stat" disabled={!supaStats.viewedIds?.length}
-                  onClick={() => onShowNodes?.(supaStats.viewedIds, t('account.dash.viewed') || 'Изучено')}>
-                  <span className="account-stat__val">{supaStats.nodesViewed || 0}</span>
-                  <span className="account-stat__label">{t('account.dash.viewed') || 'Изучено'}</span>
-                </button>
-                <button type="button" className="account-stat account-stat--review" disabled={!supaStats.reviewIds?.length}
-                  onClick={() => onShowNodes?.(supaStats.reviewIds, t('account.dash.review') || 'На повторение')}>
-                  <span className="account-stat__val">{supaStats.nodesReview || 0}</span>
-                  <span className="account-stat__label">{t('account.dash.review') || 'На повторение'}</span>
-                </button>
-                <button type="button" className="account-stat" disabled={!supaStats.bookmarkNodeIds?.length}
-                  onClick={() => onShowNodes?.(supaStats.bookmarkNodeIds, t('account.dash.bookmarks') || 'Закладки')}>
-                  <span className="account-stat__val">{supaStats.bookmarksCount || 0}</span>
-                  <span className="account-stat__label">{t('account.dash.bookmarks') || 'Закладки'}</span>
-                </button>
-                <div className="account-stat account-stat--static">
-                  <span className="account-stat__val">{coursesDone}<span className="account-stat__of">/{coursesTotal}</span></span>
-                  <span className="account-stat__label">{t('account.dash.coursesDone') || 'Курсы'}</span>
-                </div>
-              </div>
-            </div>
+            <p className="account-learning__lead">{t('account.dash.learningLead') || 'Полные списки твоего обучения. Сводка — на «Обзоре».'}</p>
 
             {/* Активные курсы (все) */}
             <div className="account-card">
