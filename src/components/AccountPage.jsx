@@ -12,6 +12,8 @@ import { getNode } from '../i18n/strings.js';
 import { WHATS_NEW } from '../data/whatsNew.js';
 import { nodeIndex } from '../data/mindmapData.js';
 import { useWhatsNew } from '../hooks/useWhatsNew.js';
+import { listWorkflows } from '../builder/services/workflowStorage.js';
+import { listAllSchedules, getTodayUsage } from '../builder/services/scheduleService.js';
 
 /**
  * AccountPage — страница управления аккаунтом.
@@ -28,6 +30,7 @@ export default function AccountPage({
   onStartTutorial,
   onShowNodes,
   onOpenCourses,
+  onOpenBuilder,
 }) {
   const t = useT();
   const { locale, setLocale, locales, contentVersion } = useLocale();
@@ -110,6 +113,27 @@ export default function AccountPage({
     ];
     return all.filter(a => a.ok);
   }, [supaStats.tutorialsDone, supaStats.nodesViewed, supaStats.bookmarksCount]);
+
+  // ── Сводка конструктора (мои агенты + автозапуски) ────────────────────────
+  const [builder, setBuilder] = useState({ loading: true, workflows: [], activeRuns: 0, todayRuns: 0 });
+  useEffect(() => {
+    if (!user?.id) { setBuilder(b => ({ ...b, loading: false })); return; }
+    let alive = true;
+    Promise.all([
+      listWorkflows(user.id).catch(() => []),
+      listAllSchedules().catch(() => []),
+      getTodayUsage().catch(() => null),
+    ]).then(([wfs, scheds, usage]) => {
+      if (!alive) return;
+      setBuilder({
+        loading: false,
+        workflows: wfs || [],
+        activeRuns: (scheds || []).filter(s => s.enabled).length,
+        todayRuns: usage?.runs || 0,
+      });
+    });
+    return () => { alive = false; };
+  }, [user?.id]);
 
   // Delete account
   const [deleteStep, setDeleteStep] = useState('idle'); // idle | confirm | deleting | done
@@ -405,6 +429,50 @@ export default function AccountPage({
                       </span>
                     ))}
                   </div>
+                )}
+              </div>
+
+              {/* Мои агенты и автозапуски */}
+              <div className="account-widget account-widget--wide">
+                <div className="account-widget__head">
+                  <h3>{t('account.dash.agents') || 'Мои агенты'}</h3>
+                  <button type="button" className="account-widget__link" onClick={() => onOpenBuilder?.()}>
+                    {t('account.dash.openBuilder') || 'Открыть конструктор'}
+                    <Icon name="arrow-right" size={13} strokeWidth={1.75} />
+                  </button>
+                </div>
+                {builder.workflows.length === 0 ? (
+                  <div className="account-widget__empty account-widget__empty--sm">
+                    <Icon name="robot" size={18} strokeWidth={1.5} />
+                    <p>{t('account.dash.agentsEmpty') || 'У вас пока нет агентов — соберите первого в конструкторе.'}</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="account-stat-grid">
+                      <div className="account-stat account-stat--static">
+                        <span className="account-stat__val">{builder.workflows.length}</span>
+                        <span className="account-stat__label">{t('account.dash.agentsWorkflows') || 'Схем'}</span>
+                      </div>
+                      <div className="account-stat account-stat--static">
+                        <span className="account-stat__val">{builder.activeRuns}</span>
+                        <span className="account-stat__label">{t('account.dash.agentsActive') || 'Автозапусков'}</span>
+                      </div>
+                      <div className="account-stat account-stat--static">
+                        <span className="account-stat__val">{builder.todayRuns}</span>
+                        <span className="account-stat__label">{t('account.dash.agentsToday') || 'Запусков сегодня'}</span>
+                      </div>
+                    </div>
+                    <ul className="account-review-list account-agents-list">
+                      {builder.workflows.slice(0, 4).map(w => (
+                        <li key={w.id}>
+                          <button type="button" className="account-review__item" onClick={() => onOpenBuilder?.()}>
+                            <Icon name="folder" size={13} strokeWidth={1.6} />
+                            <span>{w.name || (t('account.dash.agentUntitled') || 'Без имени')}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
                 )}
               </div>
             </div>

@@ -1054,6 +1054,7 @@ function AppInner() {
           onStartTutorial={onStartTutorial}
           onShowNodes={(ids, label) => { setRoute(null); onShowNodes(ids, label); }}
           onOpenCourses={onOpenCourses}
+          onOpenBuilder={() => setRoute({ type: 'builder' })}
           onRequestAuth={() => {
             setRoute(null);      // закрываем AccountPage (z-index 8000)
             setAuthOpen(true);   // открываем AuthModal поверх
