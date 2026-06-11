@@ -2545,17 +2545,21 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   color: var(--text);
 }
 
-/* ── Раскладка: боковая навигация + основная область ── */
+/* ── Раскладка: боковая навигация + основная область ──
+   Прокрутка — на уровне всей страницы (.account-page), а не во внутренней панели:
+   контент свободно уходит вверх, не обрезается. Боковое меню «липкое». */
 .account-page__layout {
-  flex: 1 1 auto;
-  min-height: 0;
   display: flex;
+  align-items: flex-start;
   gap: 16px;
   padding: 0 20px 24px;
-  overflow: hidden;
 }
 .account-sidebar {
+  position: sticky;
+  top: 12px;
   flex: 0 0 240px;
+  align-self: flex-start;
+  max-height: calc(100dvh - 96px);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -2591,7 +2595,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .account-main {
   flex: 1 1 auto;
   min-width: 0;
-  overflow-y: auto;
+  /* без внутренней прокрутки — контент скроллится вместе со страницей */
 }
 .account-main .account-section { max-width: 640px; }
 
