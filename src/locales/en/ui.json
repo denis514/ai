@@ -700,6 +700,9 @@
     },
     "template": {
       "uxAudit": {
+        "promptMain": "You're the lead analyst. Break down the task: which site or screen to assess and what matters for it (sign-ups, sales, readability). Split the work between helpers: one gathers facts about the page, the other judges usability. Set the overall tone of the report at the end.",
+        "promptResearch": "You gather facts about the page: which elements it has (headings, buttons, forms, navigation, mobile version) and what stands out. Don't judge — just describe what you see, so there's something to build conclusions on.",
+        "promptUx": "You're a UX specialist. Based on what was gathered, assess usability and accessibility: contrast, button clarity, form length, readability, mobile version. Give 5-7 concrete issues with priority (critical first) and a short recommendation for each.",
         "start": "You're a UX consultant. A client sent a link to their landing page https://example.com and complains that visitors leave without signing up. Review the page, find usability and accessibility issues (contrast, navigation, forms, mobile) and return a prioritized list of findings with short fixes, what to address first.",
         "name": "UX Audit Agent",
         "desc": "Audit UX/accessibility from a screenshot or URL. Main agent + research + UX critic in parallel.",
@@ -707,6 +710,9 @@
         "output": "Prioritized list of accessibility & UX issues (on screen)."
       },
       "analytics": {
+        "promptMain": "You're the analysis lead. Understand which data came in and the question behind it (“what's going on with sales”). Delegate: one helper crunches the numbers, the other explains the context. Pull their work into a short conclusion.",
+        "promptAnalyze": "You compute from the data: key metrics, trends, anomalies and outliers. Give concrete numbers and comparisons (period over period). No fluff — only what the numbers show.",
+        "promptResearch": "You explain what's behind the numbers: likely reasons for a rise or drop, what to watch. Tie the numbers to real events (season, promos, changes) and suggest what to check next.",
         "start": "You're an analyst at a small company. Your manager shared this month's sales export and wants you to “figure out what's going on”. Explore the data, spot trends and anomalies, compute the key metrics and write a short report: the 3 main takeaways and what to do next.",
         "name": "Analytics Agent",
         "desc": "Data analysis + research patterns. Main, analytics + research, insights report.",
@@ -714,6 +720,9 @@
         "output": "Findings and key numbers from your data."
       },
       "content": {
+        "promptMain": "You're the editor. Clarify the topic and who we're writing for. Split the work: one helper gathers fresh facts and examples, the other writes and edits the text. Make sure it comes out clear and on-topic.",
+        "promptResearch": "You gather material for the article: fresh examples, facts and figures on the topic. Pick only reliable and relevant ones, briefly note the source. This is the basis the text will be written on.",
+        "promptWrite": "You write and edit. From the gathered material, write a clear article with subheadings and a friendly tone (~600 words), no clichés. End with a short call to try it. Reread and cut the excess.",
         "start": "You run a small-business blog. You need a post on “how AI helps small teams save time”. Gather current examples and write a clear ~600-word article with subheadings and a friendly tone, ending with a short call to try it.",
         "name": "Content Agent",
         "desc": "Content pipeline: brief, SERP research, branded draft, SEO pass, publish-ready.",
@@ -721,6 +730,9 @@
         "output": "A ready post after research and editing."
       },
       "research": {
+        "promptMain": "You're the lead researcher. Break the question into parts and decide what needs finding out. Delegate: one helper finds and reads sources, the other distills everything into conclusions. Keep focus on the original question.",
+        "promptResearch": "You search and read sources on the topic: find 3-5 reliable ones, pull the key point from each, drop the outdated. Return facts with a short note of where they came from.",
+        "promptAnalyze": "You distill the findings into a clear summary: what we now know, where the sources agree and where they differ, and what it means. Plain language, with practical examples and an answer to the original question.",
         "start": "You're preparing a brief for a team that's never heard of RAG. Figure out what retrieval-augmented generation is, why it matters and where it's used, find 3–5 reliable sources, and write a clear plain-language summary with practical examples.",
         "name": "Research Agent",
         "desc": "Structured research: web + files, analyst, critic, report.",

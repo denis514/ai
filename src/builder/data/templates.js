@@ -29,10 +29,10 @@ export const TEMPLATES = [
     author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
-      { defId: 'agent-main',    position: { x: 100, y: 180 } },
+      { defId: 'agent-main',    position: { x: 100, y: 180 }, dataOverride: { promptKey: 'builder.template.uxAudit.promptMain' } },
       { defId: 'tool-vision',   position: { x: -120, y: 320 } },
-      { defId: 'agent-research',position: { x: 100, y: 320 } },
-      { defId: 'agent-ux',      position: { x: 320, y: 320 } },
+      { defId: 'agent-research',position: { x: 100, y: 320 }, dataOverride: { promptKey: 'builder.template.uxAudit.promptResearch' } },
+      { defId: 'agent-ux',      position: { x: 320, y: 320 }, dataOverride: { promptKey: 'builder.template.uxAudit.promptUx' } },
       { defId: 'output-text',   position: { x: 100, y: 480 } },
     ],
     edges: [
@@ -60,10 +60,10 @@ export const TEMPLATES = [
     author: 'builtin',
     nodes: [
       { defId: 'trigger-input',    position: { x: 100, y: 50 } },
-      { defId: 'agent-main',       position: { x: 100, y: 180 } },
+      { defId: 'agent-main',       position: { x: 100, y: 180 }, dataOverride: { promptKey: 'builder.template.analytics.promptMain' } },
       { defId: 'tool-file',        position: { x: -100, y: 320 } },
-      { defId: 'agent-analytics',  position: { x: 100, y: 320 } },
-      { defId: 'agent-research',   position: { x: 300, y: 320 } },
+      { defId: 'agent-analytics',  position: { x: 100, y: 320 }, dataOverride: { promptKey: 'builder.template.analytics.promptAnalyze' } },
+      { defId: 'agent-research',   position: { x: 300, y: 320 }, dataOverride: { promptKey: 'builder.template.analytics.promptResearch' } },
       { defId: 'output-text',      position: { x: 100, y: 480 } },
     ],
     edges: [
@@ -91,10 +91,10 @@ export const TEMPLATES = [
     author: 'builtin',
     nodes: [
       { defId: 'trigger-input',   position: { x: 100, y: 50 } },
-      { defId: 'agent-main',      position: { x: 100, y: 180 } },
-      { defId: 'agent-research',  position: { x: -120, y: 320 } },
+      { defId: 'agent-main',      position: { x: 100, y: 180 }, dataOverride: { promptKey: 'builder.template.content.promptMain' } },
+      { defId: 'agent-research',  position: { x: -120, y: 320 }, dataOverride: { promptKey: 'builder.template.content.promptResearch' } },
       { defId: 'tool-search',     position: { x: -120, y: 450 } },
-      { defId: 'agent-ux',        position: { x: 100, y: 320 } },
+      { defId: 'agent-ux',        position: { x: 100, y: 320 }, dataOverride: { promptKey: 'builder.template.content.promptWrite' } },
       { defId: 'tool-memory',     position: { x: 320, y: 320 } },
       { defId: 'output-text',     position: { x: 100, y: 600 } },
     ],
@@ -124,11 +124,11 @@ export const TEMPLATES = [
     author: 'builtin',
     nodes: [
       { defId: 'trigger-input',   position: { x: 100, y: 50 } },
-      { defId: 'agent-main',      position: { x: 100, y: 180 } },
+      { defId: 'agent-main',      position: { x: 100, y: 180 }, dataOverride: { promptKey: 'builder.template.research.promptMain' } },
       { defId: 'tool-search',     position: { x: -150, y: 320 } },
       { defId: 'tool-file',       position: { x: 0, y: 320 } },
-      { defId: 'agent-research',  position: { x: 150, y: 320 } },
-      { defId: 'agent-analytics', position: { x: 320, y: 320 } },
+      { defId: 'agent-research',  position: { x: 150, y: 320 }, dataOverride: { promptKey: 'builder.template.research.promptResearch' } },
+      { defId: 'agent-analytics', position: { x: 320, y: 320 }, dataOverride: { promptKey: 'builder.template.research.promptAnalyze' } },
       { defId: 'output-text',     position: { x: 100, y: 500 } },
     ],
     edges: [
