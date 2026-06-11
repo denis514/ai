@@ -580,7 +580,7 @@
       "tool_memory": "Memory",
       "tool_memory_desc": "Long-term storage between runs: preferences, history, context.",
       "trigger_input": "Start",
-      "trigger_input_desc": "The flow entry point. Write the task here — it flows along the arrows.",
+      "trigger_input_desc": "The flow entry point. Write the task here, it flows along the arrows.",
       "output_text": "Markdown Output",
       "output_text_desc": "Final result formatted as Markdown.",
       "agent_code": "Code Reviewer",
@@ -608,7 +608,7 @@
       "loop": "Loop",
       "loop_desc": "Repeats a chain of steps several times (bounded), refining the result.",
       "configured": "Instruction set",
-      "needsSetup": "Needs an instruction — click to set it up",
+      "needsSetup": "Needs an instruction, click to set it up",
       "output_email": "Email",
       "output_email_desc": "Deliver the result to an email address.",
       "output_calendar": "Calendar",
@@ -627,7 +627,7 @@
     },
     "canvas": {
       "emptyTitle": "Build your first agent",
-      "emptyDesc": "Tap «Start» — or pick a ready template below.",
+      "emptyDesc": "Tap «Start», or pick a ready template below.",
       "browseTemplates": "Browse templates",
       "hint": "Click a node for details. Drag handles to connect. Delete key to remove."
     },
@@ -653,7 +653,7 @@
       "cancel": "Cancel"
     },
     "runmode": {
-      "realHint": "Runs on the real Claude API — uses tokens"
+      "realHint": "Runs on the real Claude API, uses tokens"
     },
     "runInput": {
       "title": "What should the workflow work on?",
@@ -664,7 +664,7 @@
       "estimate": "Estimated:",
       "tokens": "tokens",
       "estNote": "rough max, on your key",
-      "startHint": "This is the workflow’s entry point. Describe the task — it flows along the arrows to the nodes."
+      "startHint": "This is the workflow’s entry point. Describe the task, it flows along the arrows to the nodes."
     },
     "prompt": {
       "title": "Instruction for this agent",
@@ -678,7 +678,7 @@
       "aria": "Result size",
       "heading": "Result size",
       "s.label": "Brief",
-      "s.desc": "Concise answer. Cheapest — copy the text.",
+      "s.desc": "Concise answer. Cheapest, copy the text.",
       "m.label": "Document",
       "m.desc": "Structured document. Downloadable.",
       "l.label": "Full",
@@ -700,7 +700,7 @@
     },
     "template": {
       "uxAudit": {
-        "start": "You're a UX consultant. A client sent a link to their landing page https://example.com and complains that visitors leave without signing up. Review the page, find usability and accessibility issues (contrast, navigation, forms, mobile) and return a prioritized list of findings with short fixes — what to address first.",
+        "start": "You're a UX consultant. A client sent a link to their landing page https://example.com and complains that visitors leave without signing up. Review the page, find usability and accessibility issues (contrast, navigation, forms, mobile) and return a prioritized list of findings with short fixes, what to address first.",
         "name": "UX Audit Agent",
         "desc": "Audit UX/accessibility from a screenshot or URL. Main agent + research + UX critic in parallel.",
         "input": "A site URL in the task.",
@@ -709,21 +709,21 @@
       "analytics": {
         "start": "You're an analyst at a small company. Your manager shared this month's sales export and wants you to “figure out what's going on”. Explore the data, spot trends and anomalies, compute the key metrics and write a short report: the 3 main takeaways and what to do next.",
         "name": "Analytics Agent",
-        "desc": "Data analysis + research patterns. Main → analytics + research → insights report.",
+        "desc": "Data analysis + research patterns. Main, analytics + research, insights report.",
         "input": "A question + a data file (CSV/text) uploaded on the Files node.",
         "output": "Findings and key numbers from your data."
       },
       "content": {
         "start": "You run a small-business blog. You need a post on “how AI helps small teams save time”. Gather current examples and write a clear ~600-word article with subheadings and a friendly tone, ending with a short call to try it.",
         "name": "Content Agent",
-        "desc": "Content pipeline: brief → SERP research → branded draft → SEO pass → publish-ready.",
+        "desc": "Content pipeline: brief, SERP research, branded draft, SEO pass, publish-ready.",
         "input": "A topic or brief in the task.",
         "output": "A ready post after research and editing."
       },
       "research": {
         "start": "You're preparing a brief for a team that's never heard of RAG. Figure out what retrieval-augmented generation is, why it matters and where it's used, find 3–5 reliable sources, and write a clear plain-language summary with practical examples.",
         "name": "Research Agent",
-        "desc": "Structured research: web + files → analyst → critic → report.",
+        "desc": "Structured research: web + files, analyst, critic, report.",
         "input": "A research question (links allowed).",
         "output": "A summary using every step; can be sent to Telegram."
       },
@@ -732,7 +732,7 @@
         "name": "Request triage",
         "desc": "A classifier labels the message; two Conditions route it into three actions.",
         "input": "The request text in the task.",
-        "output": "Urgent → Telegram; complaint/normal → on screen. The taken branch is visible.",
+        "output": "Urgent, Telegram; complaint/normal, on screen. The taken branch is visible.",
         "prompt": "Classify the request from the task. Answer with EXACTLY one uppercase word, no period: URGENT, COMPLAINT or NORMAL. Write nothing else."
       },
       "imageReview": {
@@ -750,45 +750,45 @@
         "input": "A writing brief in the task.",
         "output": "A proofread, refined text after several passes.",
         "promptDraft": "Write a draft of the text for the task. Be concrete and to the point.",
-        "promptReview": "Check the text for errors, clarity and tone. If anything can be improved — rewrite it better. Return the final version."
+        "promptReview": "Check the text for errors, clarity and tone. If anything can be improved, rewrite it better. Return the final version."
       },
       "radar": {
-        "start": "You track competitor “Acme”. You need to know what's new this week — launches, news, price changes. Find fresh sources, drop the stale ones and compile a short digest of 3–5 items with links.",
+        "start": "You track competitor “Acme”. You need to know what's new this week, launches, news, price changes. Find fresh sources, drop the stale ones and compile a short digest of 3–5 items with links.",
         "name": "Competitor radar",
         "desc": "Opens competitor sites, compares them, and sends a summary to Telegram.",
         "input": "A few site links in the task.",
-        "output": "A comparison summary with takeaways — to a Telegram chat.",
+        "output": "A comparison summary with takeaways, to a Telegram chat.",
         "promptResearch": "Open each site from the task. For each, briefly note: what they do, key products, strengths.",
         "promptCompare": "Compare the competitors. Give a summary table and 3 takeaways: where they're stronger, where weaker, where our opportunity is."
       },
       "webhookLead": {
         "start": "A new lead just hit the CRM from a form: “Ivan, clothing store, wants to automate customer replies.” Score how qualified it is, pull out the key details, and suggest the next step for the manager: what to write and when to reach out.",
-        "name": "Website lead → Telegram",
+        "name": "Website lead, Telegram",
         "desc": "Triggered by a webhook on a new website lead: scores the lead and sends a Telegram alert.",
-        "input": "Lead data (name, contact, message) — sent by the form via webhook.",
+        "input": "Lead data (name, contact, message), sent by the form via webhook.",
         "output": "A short lead assessment and a Telegram notification.",
         "prompt": "This is a new website lead. Briefly assess it: how 'hot' it is (high/medium/low interest), what the client wants and the next step. Be concise, use bullet points."
       },
       "webhookPayment": {
         "start": "Payment for order #2048 (₽3,500) just went through from a returning customer. Write a short, warm confirmation: thank them, say what's next (timing, tracking) and leave a good impression.",
-        "name": "Payment → email to client",
+        "name": "Payment, email to client",
         "desc": "Triggered by a webhook on payment: composes and sends the client a confirmation email.",
-        "input": "Payment data (item, amount, client name and e-mail) — sent by the payment service via webhook.",
+        "input": "Payment data (item, amount, client name and e-mail), sent by the payment service via webhook.",
         "output": "A ready confirmation email sent to the client.",
         "prompt": "This is a successful payment. Write a warm, short confirmation email to the client: thank them, confirm the item and amount, state the next step. Friendly tone, no fluff."
       },
       "webhookReview": {
         "start": "A new review appeared on a product page: “Delivery was two days late, but the quality is great.” Detect the sentiment (positive / neutral / negative), capture the gist and draft a polite public reply: thank them, gently explain the delay and invite them back.",
-        "name": "Review → negative alert",
+        "name": "Review, negative alert",
         "desc": "Triggered by a webhook on a new review: detects tone and pings Telegram if it's negative.",
-        "input": "Review text — sent via webhook (site, marketplace, form).",
-        "output": "Review tone; on negative — an instant Telegram alert.",
-        "prompt": "Detect the sentiment of the review in the task. First answer with EXACTLY one uppercase word: POSITIVE, NEGATIVE or NEUTRAL. Then on a new line — one sentence with the gist of the review."
+        "input": "Review text, sent via webhook (site, marketplace, form).",
+        "output": "Review tone; on negative, an instant Telegram alert.",
+        "prompt": "Detect the sentiment of the review in the task. First answer with EXACTLY one uppercase word: POSITIVE, NEGATIVE or NEUTRAL. Then on a new line, one sentence with the gist of the review."
       },
       "clientReplies": {
         "start": "You run an online store. A customer writes: “I ordered a coffee grinder 5 days ago (#1024), where is it?” Reply politely and to the point: confirm the order, explain the delivery status and offer help if the parcel is delayed.",
         "name": "Customer replies",
-        "desc": "A customer message → a polite ready reply.",
+        "desc": "A customer message, a polite ready reply.",
         "input": "Customer message or question",
         "output": "A warm ready reply",
         "prompt": "You are a friendly assistant for a small-business owner. Given a customer's message, write a short, warm, clear reply: thank them, answer the point, suggest a next step. No corporate jargon."
@@ -796,7 +796,7 @@
       "bookingReminder": {
         "start": "You're a salon receptionist. Tomorrow at 3:00 PM, client Anna has a haircut appointment. Write a friendly reminder: confirm the date and time, mention the address and offer to reschedule if it's inconvenient.",
         "name": "Booking reminder",
-        "desc": "Name and time → a ready reminder to Telegram.",
+        "desc": "Name and time, a ready reminder to Telegram.",
         "input": "Client name and appointment time",
         "output": "A reminder to Telegram",
         "prompt": "Write a short, friendly appointment reminder: name, date and time, a gentle ask to confirm or reschedule. Warm tone, no formality."
@@ -804,7 +804,7 @@
       "reviewReply": {
         "start": "A review came in: “Waited a long time for delivery, but the product is great, thanks.” Write a warm reply: thank them for rating the product, gently apologize for the wait and signal that you're improving delivery speed.",
         "name": "Review reply",
-        "desc": "A review → tone read + a ready reply.",
+        "desc": "A review, tone read + a ready reply.",
         "input": "Customer review text",
         "output": "Tone + draft reply",
         "prompt": "Label the review tone (positive / neutral / negative) in one word. Then write a polite reply: thank them; if negative, apologize and offer a fix, no excuses."
@@ -812,7 +812,7 @@
       "contentIdeas": {
         "start": "You run a beauty-salon blog and need topics for the week. Suggest 5 ideas that hook your current audience (care, trends, tips, promos), each with a short description and format (post / story / reel).",
         "name": "Blog ideas",
-        "desc": "A topic → fresh trends and a post plan.",
+        "desc": "A topic, fresh trends and a post plan.",
         "input": "Your blog topic or niche",
         "output": "5 post ideas with titles",
         "prompt": "Find fresh trends on the topic via web search. Propose 5 post ideas: a catchy title + one line on what the post covers. Plain language, for a general audience."
@@ -820,7 +820,7 @@
       "topicDigest": {
         "start": "You compile a weekly roundup for your team on “AI in marketing”. Find this week's news and cases, pick the 5 most useful, and add a one-line “why it matters” and a link to each.",
         "name": "Topic digest",
-        "desc": "A topic → a short fresh recap to Telegram.",
+        "desc": "A topic, a short fresh recap to Telegram.",
         "input": "A topic to follow",
         "output": "A short recap to Telegram",
         "prompt": "Find the freshest and most important on the topic via web search. Build a short digest: 3–5 plain-language bullets, each one sentence. No fluff."
@@ -863,7 +863,7 @@
       "confirmYes": "Delete",
       "confirmCancel": "Cancel",
       "local": "Local",
-      "localHint": "Saved locally — sign in to sync",
+      "localHint": "Saved locally, sign in to sync",
       "rename": "Rename",
       "defaultName": "Untitled workflow"
     },
@@ -891,14 +891,14 @@
       "tgPlaceholder": "123456:ABC-DEF...",
       "tgErrRejected": "Telegram rejected this token. Check it and try again.",
       "tgErrFormat": "This does not look like a bot token.",
-      "tgErrUnsupported": "Server is not updated for Telegram yet — redeploy the connect-key function.",
+      "tgErrUnsupported": "Server is not updated for Telegram yet, redeploy the connect-key function.",
       "tgErrStorage": "Could not save the token on the server.",
       "rsTitle": "Email delivery (optional)",
       "rsDesc": "Connect a Resend key so the “Email” node sends the result by mail. The key is encrypted on the server.",
       "rsPlaceholder": "re_...",
       "rsErrRejected": "Resend rejected this key. Check it and try again.",
       "rsErrFormat": "This does not look like a Resend key.",
-      "rsErrUnsupported": "Server not updated yet — redeploy the connect-key function.",
+      "rsErrUnsupported": "Server not updated yet, redeploy the connect-key function.",
       "gcTitle": "Google Calendar (optional)",
       "gcDesc": "Connect your Google account so the “Calendar” node creates events. Access is limited to calendar events.",
       "gcConnect": "Connect Google Calendar",
@@ -915,24 +915,24 @@
       "addKey": "Add key",
       "isDefault": "Default",
       "makeDefault": "Make default",
-      "errLabelExists": "That name is taken — choose another."
+      "errLabelExists": "That name is taken, choose another."
     },
     "nameModal": {
       "title": "Name your workflow",
       "placeholder": "e.g. Customer support triage",
       "save": "Save",
       "cancel": "Cancel",
-      "chooseHint": "Enter a name and click Create — or pick a ready-made template.",
+      "chooseHint": "Enter a name and click Create, or pick a ready-made template.",
       "blank": "Create",
       "fromTemplate": "From template",
       "pickTemplate": "Pick a template",
       "back": "Back",
       "saveTitle": "Name your workflow to save it",
-      "saveHint": "Your current workflow will be saved under this name — nothing is lost."
+      "saveHint": "Your current workflow will be saved under this name, nothing is lost."
     },
     "mobile": {
       "title": "Open on a larger screen",
-      "body": "Agent Builder needs space — open on desktop or tablet to design workflows."
+      "body": "Agent Builder needs space, open on desktop or tablet to design workflows."
     },
     "console": {
       "openBtn": "Console",
@@ -950,7 +950,7 @@
       "reset": "Reset to canvas",
       "applied": "Built: {n} nodes, {e} connections.",
       "badJson": "Invalid format (not JSON):",
-      "checkRun": "Connection issues — check before running:"
+      "checkRun": "Connection issues, check before running:"
     },
     "tour": {
       "openBtn": "Take the tour",
@@ -962,12 +962,12 @@
         "title": "Welcome to Agent Builder",
         "subtitle": "Want a quick 2-minute tour? We'll cover the core flow together.",
         "start": "Start tour",
-        "skip": "Skip — I'll explore",
+        "skip": "Skip, I'll explore",
         "close": "Close"
       },
       "step1": {
         "title": "Start with «Start»",
-        "body": "Drag the yellow «Start» button onto the canvas and type the task — it is the entry point of the whole flow."
+        "body": "Drag the yellow «Start» button onto the canvas and type the task, it is the entry point of the whole flow."
       },
       "step2": {
         "title": "Add an agent",
@@ -983,26 +983,26 @@
       },
       "step5": {
         "title": "Run it",
-        "body": "Press «Run». The flow runs along the arrows and delivers the result. No need to save — it autosaves."
+        "body": "Press «Run». The flow runs along the arrows and delivers the result. No need to save, it autosaves."
       },
       "done": {
-        "title": "Done — you've got it",
-        "subtitle": "That's the core flow. Explore templates for ready examples — or build your own.",
+        "title": "Done, you've got it",
+        "subtitle": "That's the core flow. Explore templates for ready examples, or build your own.",
         "finish": "Done",
         "templates": "Show templates"
       },
       "step6": {
         "title": "Watch progress",
-        "body": "Below — the console: every step, token spend and errors."
+        "body": "Below, the console: every step, token spend and errors."
       },
       "step7": {
         "title": "Autorun & webhook",
-        "body": "The clock next to «Run» — a schedule (runs on the server even when your computer is off) and a secret webhook link to trigger from outside."
+        "body": "The clock next to «Run», a schedule (runs on the server even when your computer is off) and a secret webhook link to trigger from outside."
       },
-      "intro": "A tiny tour of Builder — 30 seconds and you're in.",
+      "intro": "A tiny tour of Builder, 30 seconds and you're in.",
       "s1": {
-        "title": "Nice — your Start is ready",
-        "desc": "This is the first node of your flow. Click it and write what the agent should do — in plain words, like to a friend."
+        "title": "Nice, your Start is ready",
+        "desc": "This is the first node of your flow. Click it and write what the agent should do, in plain words, like to a friend."
       },
       "s2": {
         "title": "Nodes live on the left",
@@ -1014,7 +1014,7 @@
       },
       "s4": {
         "title": "Details live on the right",
-        "desc": "Click any node — its settings and hints open on the right. This is where you tell it exactly how to behave."
+        "desc": "Click any node, its settings and hints open on the right. This is where you tell it exactly how to behave."
       },
       "s5": {
         "title": "Run is top-right",
@@ -1022,7 +1022,7 @@
       },
       "s6": {
         "title": "Saved for you, automatically",
-        "desc": "Nothing gets lost — your flow saves itself. Help and keys for Claude, Telegram and email live in the three round buttons up top-right."
+        "desc": "Nothing gets lost, your flow saves itself. Help and keys for Claude, Telegram and email live in the three round buttons up top-right."
       }
     },
     "preview": {
@@ -1068,14 +1068,14 @@
       "title": "Check the workflow before running",
       "blockTitle": "This workflow can't run yet",
       "warnTitle": "Check the workflow before running",
-      "noAgent": "No agent node — nothing to run. Add at least one agent node.",
+      "noAgent": "No agent node, nothing to run. Add at least one agent node.",
       "isolated": "Some nodes aren't connected (not part of the flow)",
       "fix": "Fix it",
       "runAnyway": "Run anyway",
-      "multi-trigger": "Multiple start nodes — the flow may run differently than expected",
-      "output-empty": "An output node isn't connected to anything — there will be no result",
-      "tool-unattached": "A tool isn't attached to any agent — it won't be used",
-      "telegram-no-chat": "A Telegram node has no chat address — it will not deliver"
+      "multi-trigger": "Multiple start nodes, the flow may run differently than expected",
+      "output-empty": "An output node isn't connected to anything, there will be no result",
+      "tool-unattached": "A tool isn't attached to any agent, it won't be used",
+      "telegram-no-chat": "A Telegram node has no chat address, it will not deliver"
     },
     "palette": {
       "search": "Search nodes…",
@@ -1086,7 +1086,7 @@
       "title": "Delivery",
       "needToken": "First connect a Telegram bot token in “My keys”.",
       "connectBtn": "Connect bot",
-      "chatHint": "Private chat — numeric ID only (one-time lookup). @name works only for channels where the bot is admin.",
+      "chatHint": "Private chat, numeric ID only (one-time lookup). @name works only for channels where the bot is admin.",
       "chatPlaceholder": "numeric ID, e.g. 75888153 (or @channel)",
       "botPick": "Which bot to send with:",
       "botDefault": "Default bot",
@@ -1097,7 +1097,7 @@
       "deny": {
         "self": "A node can’t connect to itself.",
         "incompatible": "These nodes don’t connect this way. Check direction and node types.",
-        "duplicate": "These nodes are already connected — only one link per pair.",
+        "duplicate": "These nodes are already connected, only one link per pair.",
         "cycle": "That would create a loop. Use a Loop node for repeats.",
         "unknown": "That connection isn’t allowed."
       }
@@ -1111,7 +1111,7 @@
       "remove": "Remove variable"
     },
     "condition": {
-      "title": "Condition — where the flow goes",
+      "title": "Condition, where the flow goes",
       "hint": "If the previous node’s result passes the check, the flow takes the “Yes” path, otherwise “No”.",
       "yes": "Yes",
       "no": "No",
@@ -1120,9 +1120,9 @@
       "opNotContains": "does not contain",
       "opEquals": "equals",
       "placeholder": "e.g. error, success, yes…",
-      "trueHint": "“Yes” branch — if the condition holds",
-      "falseHint": "“No” branch — if the condition fails",
-      "agentTitle": "Condition Agent — question to decide",
+      "trueHint": "“Yes” branch, if the condition holds",
+      "falseHint": "“No” branch, if the condition fails",
+      "agentTitle": "Condition Agent, question to decide",
       "agentHint": "The agent answers Yes or No to your question about the previous result and routes the flow.",
       "agentPlaceholder": "e.g. Is this urgent? Is the tone negative?"
     },
@@ -1135,7 +1135,7 @@
     },
     "titleShort": "Builder",
     "loop": {
-      "title": "Loop — repeat steps",
+      "title": "Loop, repeat steps",
       "hint": "Flow returns to the chosen node and repeats the chain up to this loop a set number of times. Each pass gets the previous result.",
       "backTo": "Return to",
       "pick": "— pick a node —",
@@ -1144,7 +1144,7 @@
     "toast": {
       "saveFailed": "Could not save the workflow. Try again.",
       "loadFailed": "Could not open the workflow.",
-      "runFailed": "The run finished with an error — see the console."
+      "runFailed": "The run finished with an error, see the console."
     },
     "help": {
       "title": "Help",
@@ -1157,54 +1157,54 @@
       "s_logic": "Choice and repeat",
       "s_run": "Run, schedule, save",
       "s_mistakes": "If something doesn't work",
-      "start_1": "On the left under “Nodes” are ready-made blocks. Drag one onto the board, or just click it — it appears in the center.",
-      "start_2": "The simplest build: “Start” (you write the task here) → “Agent” (it does the task) → a result block (show on screen, send to Telegram, email or calendar).",
-      "start_3": "You write the task inside the “Start” block: click it — a field opens on the right. Just describe in plain words what you need.",
-      "conn_1": "Blocks work as a chain: the task travels along the arrow from one to the next. Hover a block, pull a line to the next — done.",
-      "conn_2": "You can pull from any side. The main one is the block you pulled the line FROM.",
-      "conn_3": "Changed your mind? Hover the line and click the red circle — the link is removed, the blocks stay.",
-      "conn_4": "If a connection isn't allowed, a hint explains why. Nothing breaks.",
-      "link_1": "Arrows between blocks are the task's path: “Start” → “Agent” → result. The thing to do and the finished answer travel along them.",
-      "link_2": "Skills (web search, working with files, etc.) attach to the “Agent” from the side — they're its extra abilities. They're not in the chain, they're attached to the helper.",
-      "grp_agents": "Agent — your helper: it thinks, writes, reviews, answers. You tell it in your own words what to do.",
-      "grp_tools": "Skills — give the helper extra abilities: search the web, read files, look at images, remember. They attach to the agent from the side.",
-      "grp_logic": "Choice and repeat — help the helper make a decision (“if this, do one thing, otherwise another”) or repeat an action a few times.",
-      "grp_flow": "Result — where the answer goes: show on screen, send to Telegram, email, or add to Google Calendar.",
-      "logic_1": "Choice is a question with two paths: green “Yes” and red “No”. For example: “does the review contain the word ‘bad’?” → if yes, one path; if no, another.",
-      "logic_2": "Need three paths? Put two “Choices” in a row (the “No” path leads to the second question).",
-      "logic_3": "Repeat — the helper repeats an action several times (e.g. improving a text in rounds). You set how many times.",
-      "run_1": "The “Run” button actually starts the helper — it does the task. For that you need your key (connect it via the lock button at the top).",
+      "start_1": "On the left under “Nodes” you'll find ready-made blocks. Drag one onto the board or just click it, and it appears in the center.",
+      "start_2": "The simplest build has three blocks: “Start”, where you write the task; “Agent”, which does it; and a result block that shows the answer on screen or sends it to Telegram, email or a calendar.",
+      "start_3": "You write the task inside the “Start” block. Click it and a field opens on the right. Just describe in plain words what you need.",
+      "conn_1": "Blocks work as a chain: the task travels along the arrow from one to the next. Hover a block, pull a line to the next one, and the link is made.",
+      "conn_2": "You can pull from any side. The main block is the one you pulled the line from.",
+      "conn_3": "Changed your mind? Hover the line and click the red circle. The link is removed and the blocks stay.",
+      "conn_4": "If a connection isn't allowed, a hint shows why. Nothing breaks.",
+      "link_1": "Arrows between blocks show the task's path: first “Start”, then “Agent”, then the result. Both the task and the finished answer travel along them.",
+      "link_2": "Skills like web search or working with files attach to the “Agent” from the side. They're its extra abilities, not part of the chain but attached to the helper.",
+      "grp_agents": "The Agent is your helper. It thinks, writes, reviews and answers. You tell it in your own words what to do.",
+      "grp_tools": "Skills give the helper extra abilities: search the web, read files, look at images, remember. They attach to the agent from the side.",
+      "grp_logic": "Choice and repeat help the helper make a decision (if this, do one thing, otherwise another) or repeat an action a few times.",
+      "grp_flow": "The result is where the answer goes: show it on screen, send it to Telegram, email, or add it to Google Calendar.",
+      "logic_1": "Choice is a question with two paths: a green “Yes” and a red “No”. For example: “does the review contain the word ‘bad’?”. If yes, go one way; if no, go the other.",
+      "logic_2": "Need three paths? Put two “Choices” in a row, and the “No” path leads into the second question.",
+      "logic_3": "Repeat makes the helper do an action several times, for example improving a text in rounds. You decide how many times.",
+      "run_1": "The “Run” button really starts the helper and it does the task. For that you need your key, connected via the lock button at the top.",
       "run_2": "Before running, the build checks itself: is everything connected and is there a helper. The answer size and rough cost show in the “Start” block.",
-      "run_3": "Schedule — the helper works on its own on a timer (e.g. every morning), even when the site is closed. The clock by “Run” is for the current build; all auto-runs and their history are in the Console → “Auto-runs”.",
-      "mis_1": "You put a skill (e.g. search) “in the chain” between blocks. It should attach to the helper from the side, not into the line.",
-      "mis_2": "A block sits on its own — it never gets its turn. Connect it to the chain with an arrow.",
-      "mis_3": "Telegram to a private chat: you need the numeric chat address. An @name works only for channels where the bot is an admin.",
+      "run_3": "On a schedule the helper works by itself at set times, for example every morning, even when the site is closed. The clock by “Run” sets the current build, while all auto-runs and their history live in the Console on the “Auto-runs” tab.",
+      "mis_1": "A skill like search was placed in the chain between blocks. It should attach to the helper from the side, not sit in the line.",
+      "mis_2": "A block sits on its own, so its turn never comes. Connect it to the chain with an arrow.",
+      "mis_3": "For a private Telegram message you need the numeric chat address. An @name works only for channels where the bot is an admin.",
       "s_vars": "Fill-ins",
       "s_keys": "Keys & connections",
-      "start_4": "No need to save anything — it saves itself. The build's name is at the top center, with the list of all your builds.",
-      "var_1": "A fill-in is a “blank” that gets filled when you run. Write {{city}} in the task and the helper drops in the right value.",
-      "var_2": "Where to set it: click “Start” → “Variables” → “Add”. On the left — the blank's name, on the right — what to fill it with.",
-      "var_3": "Why: one build for many cases. “Weather in {{city}}” — change only the city, leave the build alone.",
-      "var_4": "Some things fill in automatically: {{input}} is your task text, {{today}} is today's date. No need to add them.",
-      "var_5": "If you don't fill a blank — it just stays in the text as is, nothing breaks.",
-      "run_4": "No need to save by hand — it saves itself. “Saved” flashes briefly at the top.",
-      "keys_1": "The lock button at the top is where you connect: the helper's key (needed to run), Telegram, email, Google Calendar.",
-      "keys_2": "Sending to Telegram, email and calendar works only after you connect it here. Everything is stored securely.",
-      "mis_4": "You wrote {{blank}} but didn't fill it — it stays in the text as is. Fill it in “Start” → “Variables”.",
-      "run_5": "You can trigger a build from outside via a secret link: an event arrives — the build runs. This is for advanced use, not needed at the start.",
-      "run_6": "The Console window (terminal button at the top) shows how the work is going and the resulting answer. Tabs: “Run”, “Code” and “Auto-runs”.",
-      "run_7": "The “Code” tab is optional: it shows the build as text and back. An ordinary user doesn't need it."
+      "start_4": "You don't have to save anything, it saves itself. The build's name sits at the top center, next to the list of all your builds.",
+      "var_1": "A fill-in works like a blank that gets filled when you run. Write {{city}} in the task and the helper drops in the right value.",
+      "var_2": "To set one, click “Start”, then “Variables” and “Add”. On the left type the blank's name, on the right what to fill it with.",
+      "var_3": "It's handy when one build serves many cases. In “Weather in {{city}}” you change only the city and leave the build alone.",
+      "var_4": "Some things fill in by themselves. {{input}} is your task text and {{today}} is today's date. You don't need to add them.",
+      "var_5": "If you leave a blank unfilled, it simply stays in the text as is and nothing breaks.",
+      "run_4": "You don't need to save by hand, it saves itself. A short “Saved” flashes at the top.",
+      "keys_1": "The lock button at the top is where you connect the helper's key (needed to run), as well as Telegram, email and Google Calendar.",
+      "keys_2": "Sending to Telegram, email and a calendar works only after you connect it here. Everything is stored securely.",
+      "mis_4": "You wrote {{blank}} but didn't fill it, so it stayed in the text as is. Fill it in “Start”, in the “Variables” section.",
+      "run_5": "You can trigger a build from outside with a secret link: an event arrives and the build runs. This is for advanced use and isn't needed at the start.",
+      "run_6": "The Console window opens from the terminal button at the top. Here you see how the work is going and the answer it produced. Inside are three tabs: “Run”, “Code” and “Auto-runs”.",
+      "run_7": "The “Code” tab is there for those who want it: it shows the build as text and back. An ordinary user doesn't need it."
     },
     "tool": {
       "fileTitle": "File for the agent",
       "visionTitle": "Image to analyze",
-      "fileHint": "Upload a text file — the connected agent receives its content.",
-      "visionHint": "Upload an image — the connected agent “sees” it on run. Up to 1.5 MB.",
+      "fileHint": "Upload a text file, the connected agent receives its content.",
+      "visionHint": "Upload an image, the connected agent “sees” it on run. Up to 1.5 MB.",
       "upload": "Upload",
       "replace": "Replace",
       "fileLoaded": "File loaded",
       "imgLoaded": "Image loaded",
-      "imgTooBig": "Image is over 1.5 MB — choose a smaller one."
+      "imgTooBig": "Image is over 1.5 MB, choose a smaller one."
     },
     "tpl": {
       "input": "What you provide",
@@ -1216,7 +1216,7 @@
     },
     "schedule": {
       "title": "Scheduled auto-run",
-      "lead": "“{name}” will run by itself on the server — even when your computer is off.",
+      "lead": "“{name}” will run by itself on the server, even when your computer is off.",
       "freq": "Frequency",
       "hourly": "Hourly",
       "daily": "Daily",
@@ -1234,7 +1234,7 @@
       "needInput": "Enter a task for the auto-run.",
       "err": "Could not create",
       "weekdays": "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
-      "saveFirst": "Save the workflow first — then click the clock again.",
+      "saveFirst": "Save the workflow first, then click the clock again.",
       "helpAria": "What this means",
       "helpHourly": "Runs once per hour, at minute {m} of every hour. E.g. 13:{m}, 14:{m}, 15:{m}… “Minute” is the minute-of-hour mark, not an interval.",
       "helpDaily": "Runs once a day at {h}:{m} UTC. E.g. today and tomorrow at the same time.",
@@ -1243,13 +1243,13 @@
       "minutes": "Every N minutes",
       "everyN": "Interval (min)",
       "everyFmt": "Every {n} min",
-      "helpMinutes": "Runs every {n} minutes (min 1). ⚠️ Very frequent runs burn tokens fast on your key — pause after testing.",
+      "helpMinutes": "Runs every {n} minutes (min 1). ⚠️ Very frequent runs burn tokens fast on your key, pause after testing.",
       "confirmFreq": "Runs: {f}",
       "confirmWarn": "The workflow will run by itself on the server and spend tokens on your key on every run.",
       "confirmRuns": "≈ {n} runs per day",
-      "confirmHigh": "⚠️ very frequent — spending adds up fast",
+      "confirmHigh": "⚠️ very frequent, spending adds up fast",
       "confirmYes": "Yes, enable automation",
-      "asCanvas": "Runs the flow as on the canvas — the task comes from the Start node. Edit the flow and the automation updates too.",
+      "asCanvas": "Runs the flow as on the canvas, the task comes from the Start node. Edit the flow and the automation updates too.",
       "asCanvasShort": "as on canvas"
     },
     "edge": {
@@ -1275,11 +1275,11 @@
     "gcal": {
       "ok": "Google Calendar connected ✓",
       "denied": "Calendar access was not granted.",
-      "norefresh": "Google did not return a token — revoke the app in your Google account and reconnect.",
+      "norefresh": "Google did not return a token, revoke the app in your Google account and reconnect.",
       "err": "Could not connect Google Calendar."
     },
     "mcp": {
-      "desc": "Connect a remote MCP server by URL — the “MCP” node gives its tools to the agent. Using it spends your Claude key tokens.",
+      "desc": "Connect a remote MCP server by URL, the “MCP” node gives its tools to the agent. Using it spends your Claude key tokens.",
       "addServer": "Add MCP server",
       "namePh": "Name",
       "urlPh": "https://… (MCP server URL)",
@@ -1290,9 +1290,9 @@
     },
     "mcpNode": {
       "title": "Servers",
-      "empty": "No MCP servers connected. Add one in “My keys” → MCP servers.",
+      "empty": "No MCP servers connected. Add one in “My keys”, MCP servers.",
       "manage": "Open MCP servers",
-      "pick": "Which servers to give this agent. If none selected — all are available."
+      "pick": "Which servers to give this agent. If none selected, all are available."
     },
     "guide": {
       "subtitle": "How to use",
@@ -1308,12 +1308,12 @@
       "aria": "Keyboard shortcuts"
     },
     "singleton": {
-      "start": "There is already a «Start» on the flow — only one is allowed."
+      "start": "There is already a «Start» on the flow, only one is allowed."
     },
     "allsched": {
       "openBtn": "All automations",
       "title": "All automations",
-      "lead": "All scheduled runs across your workflows. They run on the server — even when your computer is off.",
+      "lead": "All scheduled runs across your workflows. They run on the server, even when your computer is off.",
       "activeN": "Active: {n}",
       "noneActive": "None active",
       "stopAll": "Stop all",
@@ -1340,13 +1340,13 @@
       "tok": "tok."
     },
     "webhook": {
-      "title": "Webhook — trigger from outside",
+      "title": "Webhook, trigger from outside",
       "lead": "Secret link: a POST request to it runs the workflow. Request data becomes the task (otherwise the Start text).",
       "create": "Create webhook link",
       "created": "Webhook link created",
-      "regen": "Link rotated — the old one no longer works",
+      "regen": "Link rotated, the old one no longer works",
       "regen_btn": "New link",
-      "disabled": "Disabled — enable to get the link",
+      "disabled": "Disabled, enable to get the link",
       "err": "Could not create the link"
     },
     "clearLabel": "Clear"
