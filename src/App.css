@@ -2546,6 +2546,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .account-dash__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start; /* виджеты не растягиваются до соседа — ровный верх, без пустот */
   gap: 14px;
 }
 .account-widget {
@@ -2628,7 +2629,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
   letter-spacing: .04em; padding: 1px 7px; border-radius: 999px;
 }
 .account-wn__badge--new { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); }
-.account-wn__badge--updated { background: color-mix(in srgb, #d97706 15%, transparent); color: #b45309; }
+.account-wn__badge--updated { background: var(--surface-3); color: var(--text-muted); }
 .account-wn__title {
   display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -2655,8 +2656,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .account-ach--locked { opacity: .5; }
 .account-ach--locked .hgi, .account-ach--locked svg { color: var(--text-dim); }
 
-/* Мои агенты — широкий виджет на всю строку сетки */
-.account-widget--wide { grid-column: 1 / -1; }
+/* Мои агенты — широкий виджет (правило .account-widget--wide объявлено выше) */
 .account-widget__link {
   display: inline-flex; align-items: center; gap: 4px; margin-left: auto;
   border: none; background: transparent; cursor: pointer;
@@ -2718,7 +2718,7 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 .account-label {
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--text-muted);
 }
 .account-hint {
   font-size: 12px;
