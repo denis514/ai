@@ -47,10 +47,10 @@
         "time": "2 min",
         "why": "Before configuring anything, confirm you're on the right plan. Free limits hit fast during active use.",
         "instructions": {
-          "0": "Go to claude.ai → click your avatar (top right) → Settings → Account.",
+          "0": "Go to claude.ai, then click your avatar (top right), then Settings, then Account.",
           "1": "Check your current plan: Free / Pro / Team.",
           "2": "Free: limited daily usage, Sonnet/Haiku models only. Pro ($20/mo): Opus access, higher limits, all features.",
-          "3": "Rule: use Free for 1 week. If you hit limits daily → upgrade to Pro."
+          "3": "Rule: use Free for 1 week. If you hit limits daily, upgrade to Pro."
         },
         "validate": "You know your current plan and whether it fits your usage.",
         "tip": "Don't upgrade immediately. Use Free for a week as a diagnostic — you'll know exactly what limits you actually hit."
@@ -60,7 +60,7 @@
         "time": "4 min",
         "why": "This tells Claude who you are. Without it, every answer is generic. With it, every answer is tailored to your role.",
         "instructions": {
-          "0": "Settings → Profile → Custom Instructions → 'About me' field.",
+          "0": "Settings, then Profile, then Custom Instructions, then 'About me' field.",
           "1": "Write: your role, industry, main tasks, audience, technical stack.",
           "2": "Keep it under 1500 characters. Dense > long.",
           "3": "Avoid: 'I am a kind person'. Write what changes answers: 'I am a senior iOS developer working on fintech apps.'"
@@ -74,7 +74,7 @@
         "time": "3 min",
         "why": "Controls format, tone, length. The difference between needing to rewrite every answer vs using it directly.",
         "instructions": {
-          "0": "Same Settings → Custom Instructions → 'How to respond' field.",
+          "0": "Same Settings, then Custom Instructions, then 'How to respond' field.",
           "1": "Specify: language, format (bullets/prose), length, tone, and what NOT to do.",
           "2": "Save and test on a real task."
         },
@@ -87,7 +87,7 @@
         "time": "2 min",
         "why": "Memory lets Claude remember facts across conversations. Useful for recurring context — but not a replacement for Custom Instructions.",
         "instructions": {
-          "0": "Settings → Profile → Memory (if available on your plan).",
+          "0": "Settings, then Profile, then Memory (if available on your plan).",
           "1": "Enable Memory if you want Claude to remember things you tell it across sessions.",
           "2": "You can view and delete what Claude remembers at any time.",
           "3": "Note: Memory works in claude.ai chats. For Claude Desktop, memory is available via MCP memory server."
@@ -100,7 +100,7 @@
         "time": "1 min",
         "why": "By default, Anthropic may use your conversations to improve models. If you work with sensitive data, opt out.",
         "instructions": {
-          "0": "Settings → Privacy.",
+          "0": "Settings, then Privacy.",
           "1": "Find 'Improve Claude for everyone' or similar training data option.",
           "2": "Toggle OFF if you don't want your conversations used for model training.",
           "3": "Pro and Team plans have stronger privacy defaults than Free."
@@ -113,7 +113,7 @@
         "time": "3 min",
         "why": "Projects give Claude persistent context, files, and specialized instructions for a specific domain of work. Better than repeating context every chat.",
         "instructions": {
-          "0": "In the left sidebar → click 'New Project'.",
+          "0": "In the left sidebar, click 'New Project'.",
           "1": "Name it by domain: 'Work', 'Coding', 'Writing', etc.",
           "2": "Add Project Instructions: paste a specialized version of your Custom Instructions for this domain.",
           "3": "Upload 1-3 reference files if relevant (style guide, codebase docs, templates).",
@@ -181,7 +181,7 @@
     ],
     "exercises": [
       {
-        "question": "Take a real work task and write a prompt using the schema 'Role → Task → Format → Constraints'. Send it to Sonnet.",
+        "question": "Take a real work task and write a prompt using the schema 'Role, then Task, then Format, then Constraints'. Send it to Sonnet.",
         "hint": "If you get a generic answer — check whether you explicitly stated the constraints and format."
       },
       {
@@ -210,7 +210,7 @@
         "time": "",
         "why": "Without comparison you won't pick the right model for a task — you'll either overpay or lose depth.",
         "instructions": [
-          "Create 3 chats (one per model: Haiku → Sonnet → Opus).",
+          "Create 3 chats (one per model: Haiku, then Sonnet, then Opus).",
           "Send the same prompt below to each — WITHOUT changes.",
           "Compare the answers by: length, specificity, nuance, generation speed.",
           "Note down: which model 'hit' the task best."
@@ -232,9 +232,9 @@
           "Open a second chat, send the 'prompt with role'.",
           "Compare: how much more concrete the second answer is, tied to constraints, without fluff."
         ],
-        "prompt": "[NAIVE PROMPT — send as-is]\nHow can I improve my project?\n\n[PROMPT WITH ROLE — send in the second chat]\nYou are an expert in my domain with a focus on practical results.\nContext: describe your task, audience, environment (1–2 sentences).\nTask: give 5 recommendations for improving <your object — page / report / process>.\nFormat: problem → why it hurts the result → what to do.\nConstraint: only things that can be implemented in a week without outside help.",
+        "prompt": "[NAIVE PROMPT — send as-is]\nHow can I improve my project?\n\n[PROMPT WITH ROLE — send in the second chat]\nYou are an expert in my domain with a focus on practical results.\nContext: describe your task, audience, environment (1–2 sentences).\nTask: give 5 recommendations for improving <your object — page / report / process>.\nFormat: problem, then why it hurts the result, then what to do.\nConstraint: only things that can be implemented in a week without outside help.",
         "validate": "The second answer is specific, tied to constraints, without generic phrases.",
-        "tip": "Memorize the structure: context → role → task → format → constraints. That's 80% of a good prompt."
+        "tip": "Memorize the structure: context, then role, then task, then format, then constraints. That's 80% of a good prompt."
       },
       "s4": {
         "title": "See how the context window works",
@@ -324,7 +324,7 @@
       },
       {
         "title": "Template documents",
-        "description": "Templates and examples in Knowledge → Claude drafts in your style, you refine."
+        "description": "Templates and examples in Knowledge, then Claude drafts in your style, you refine."
       },
       {
         "title": "Onboarding a new hire",
@@ -352,8 +352,8 @@
         "time": "",
         "why": "Projects are only available on paid plans — without one the next steps are impossible. And a meaningful name becomes an anchor: 'Project 1' you won't remember in 2 weeks; 'Regular Report Audit' you will.",
         "instructions": [
-          "Go to claude.ai → top-right corner → check your subscription. If Free — upgrade to Pro ($20/month) or use a team account.",
-          "In the left sidebar find 'Projects' → '+ New project'.",
+          "Go to claude.ai, then top-right corner, then check your subscription. If Free — upgrade to Pro ($20/month) or use a team account.",
+          "In the left sidebar find 'Projects', then '+ New project'.",
           "Name: '<what we do> <for whom / what>'. E.g., 'Regular Report Audit' or 'Client Meeting Prep'.",
           "Description: 1–2 lines — what the project is for, who will work in it, what result is expected. Example: 'We come here before each iteration to prepare/review results. Core materials and templates are here.'",
           "Click Create.",
@@ -367,8 +367,8 @@
         "time": "",
         "why": "This is the highest-ROI time investment in the Project. Without instructions — a folder with files; with them — a specialized assistant.",
         "instructions": [
-          "Open the Project panel → Custom instructions.",
-          "Use the framework below, filling in your domain:\n\nYou are a [role] with [N] years of experience in [niche].\n\nWork context:\n- Task type: [the main thing we do]\n- Audience for results: [who will read]\n- Team style: [how we communicate, format]\n\nAnswer format:\n- Key point first, then details\n- Bullet lists for enumerations\n- For recommendations: problem → impact → what to do\n- Length: exactly what's needed — no fluff\n\nWhat you do NOT do:\n- Don't give generic advice without grounding in context\n- Don't suggest solutions that require resources we don't have\n- Don't mix languages unnecessarily",
+          "Open the Project panel, then Custom instructions.",
+          "Use the framework below, filling in your domain:\n\nYou are a [role] with [N] years of experience in [niche].\n\nWork context:\n- Task type: [the main thing we do]\n- Audience for results: [who will read]\n- Team style: [how we communicate, format]\n\nAnswer format:\n- Key point first, then details\n- Bullet lists for enumerations\n- For recommendations: problem, then impact, then what to do\n- Length: exactly what's needed — no fluff\n\nWhat you do NOT do:\n- Don't give generic advice without grounding in context\n- Don't suggest solutions that require resources we don't have\n- Don't mix languages unnecessarily",
           "Save. All future chats in this Project will automatically pick up the instructions."
         ],
         "validate": "After saving, send 'who are you?' — Claude should answer as the assigned role, not a generic assistant.",
@@ -379,7 +379,7 @@
         "time": "",
         "why": "Files become 'permanent memory' — Claude sees them in all Project chats, no need to repeat context.",
         "instructions": [
-          "In the right Project panel → Project knowledge → Add content / Upload.",
+          "In the right Project panel, then Project knowledge, then Add content / Upload.",
           "Upload 3–7 KEY documents: brand guide, brief, guidelines, reference cases.",
           "Don't upload everything — 5 precise ones beat 50 random ones. Each extra file dilutes focus.",
           "Give each file a clear name — Claude uses it for navigation.",
@@ -417,7 +417,7 @@
         "time": "",
         "why": "One Project for the team = one quality standard. Everyone stops 'inventing their own Claude'.",
         "instructions": [
-          "Open the Project → Share → Add team members.",
+          "Open the Project, then Share, then Add team members.",
           "Choose access level: Editor (can change instructions) / Viewer (read chats only).",
           "Pin the Project in the team wiki / Notion with a short note: 'when and how to use it'."
         ],
@@ -431,7 +431,7 @@
     "subtitle": "A prototype you can open, click around, and rebuild",
     "totalTime": "6 steps",
     "whatItIs": "You asked Claude for an HTML landing page prototype — it opens in a separate window next to the chat, you can see how it looks and immediately say 'make the button greener'. No copy-pasting to an editor and back. That's an Artifact.\n\nA separate 'canvas' in [[node:pl-web-setup|claude.ai]] for code, HTML, SVG, documents. Runnable preview right in the browser, iterations with version history, no walls of text in chat.",
-    "approach": "Don't try to 'draw' a perfect final version in the Artifact right away. It's an iteration tool — 3–5 cycles of 'get → poke → rewrite' produce a better result than '10 pages of requirements upfront'.",
+    "approach": "Don't try to 'draw' a perfect final version in the Artifact right away. It's an iteration tool — 3–5 cycles of 'get, then poke, then rewrite' produce a better result than '10 pages of requirements upfront'.",
     "outcomes": [
       "You trigger an Artifact intentionally — not by accident",
       "You build interactive HTML prototypes in minutes",
@@ -503,7 +503,7 @@
           "Don't use 'improve everything' — Claude will rewrite half randomly.",
           "Wait for the new version — 'Version 2' will appear at the top of the Artifact."
         ],
-        "prompt": "In this Artifact change the primary color to #0F172A. Don't touch the font in the other sections. Make the buttons slightly larger (py-3 → py-4).",
+        "prompt": "In this Artifact change the primary color to #0F172A. Don't touch the font in the other sections. Make the buttons slightly larger (from py-3 to py-4).",
         "validate": "Version 2 contains exactly those three changes; everything else is identical.",
         "tip": "The more precisely you state the edit, the fewer unwanted changes. Compare: 'make it prettier' ❌ vs 'change the radius from 8 to 12, leave everything else' ✅"
       },
@@ -621,7 +621,7 @@
         "time": "",
         "why": "Custom Instructions at the profile level apply to ALL chats — this is the baseline investment.",
         "instructions": {
-          "0": "In claude.ai → click the avatar (top right) → Settings.",
+          "0": "In claude.ai, then click the avatar (top right), then Settings.",
           "1": "Find the 'Profile' / 'Custom Instructions' section.",
           "2": "You see two fields: 'About me' and 'How to respond'."
         },
@@ -662,7 +662,7 @@
         "why": "A vague rule like 'write well' gets ignored — the model doesn't know what 'well' means to you. A concrete, observable rule changes the answer; a fuzzy one doesn't.",
         "instructions": {
           "0": "Reread your instructions and underline abstract words: 'quality', 'professional', 'clear', 'friendly'.",
-          "1": "Replace each one with observable behavior: 'clear' → 'no jargon; explain a term in parentheses on first use'.",
+          "1": "Replace each one with observable behavior: 'clear' becomes 'no jargon; explain a term in parentheses on first use'.",
           "2": "Delete rules Claude already follows by default — they only add noise to the instruction.",
           "3": "Check rule: if you can't tell unambiguously whether a line was followed or not, rewrite it."
         },
@@ -688,7 +688,7 @@
         "time": "",
         "why": "[[node:p-instructions|Project instructions]] override global ones. Each niche gets its own specialized set.",
         "instructions": {
-          "0": "Open your Project → Custom Instructions.",
+          "0": "Open your Project, then Custom Instructions.",
           "1": "Here add only what is specific to the Project's NICHE.",
           "2": "Global rules (language, format) are already inherited — don't duplicate."
         },
@@ -727,7 +727,7 @@
     "whatItIs": "Same request to Claude — one gives a hollow 'here's a general overview of the topic...', another gives a concrete plan with numbers. The only difference is the wording. That's prompt engineering — the skill of 'how to ask so AI answers usefully'.\n\nFive levers: structure, context, examples, role, constraints. Same AI, results 5-10× apart — all the difference is in how you phrase the request.",
     "approach": "Don't study techniques from a list. Take your REAL weak prompt and upgrade it step by step. Each step = +one technique. By the end of the tutorial this prompt works 3–5× better — and you understand why.",
     "outcomes": [
-      "You write prompts using the schema context → role → task → format → constraints",
+      "You write prompts using the schema context, then role, then task, then format, then constraints",
       "You use XML tags to separate instructions from data",
       "You apply few-shot when the model doesn't catch the pattern",
       "You enable Chain of Thought on analytical tasks"
@@ -778,7 +778,7 @@
       "s2": {
         "title": "Apply the basic structure",
         "time": "",
-        "why": "The structure 'context → role → task → format → constraints' solves 80% of weak-prompt problems.",
+        "why": "The structure 'context, then role, then task, then format, then constraints' solves 80% of weak-prompt problems.",
         "instructions": [
           "Rewrite your prompt using the template below.",
           "Fill in all fields — missing ones = weak spots.",
@@ -804,9 +804,9 @@
       "s4": {
         "title": "Give a few-shot example",
         "time": "",
-        "why": "'Input → output' examples are stronger than any description. This is the most underrated technique.",
+        "why": "'Input, then output' examples are stronger than any description. This is the most underrated technique.",
         "instructions": [
-          "Give 1–3 examples: what input → what output.",
+          "Give 1–3 examples: from what input to what output.",
           "Examples — for the SAME type of task as the real request.",
           "After the examples — your real request.",
           "Example:\n<example>\nInput: \"SaaS login form\"\nOutput:\n- Problem: 6 fields including password repeat and captcha — that causes 30% drop-off at this step.\n- Impact: high — this is a critical funnel point.\n- Recommendation: remove captcha (show only on suspicion), remove 'repeat password' (there's a 'show password' option).\n</example>\n\n<example>\nInput: \"SaaS landing hero section\"\nOutput:\n- Problem: headline 'Business Solution' — generic, doesn't explain the value.\n- Impact: high — the user doesn't understand what the product is.\n- Recommendation: rewrite in the format '<verb> <result> <in time>' — e.g., 'Track your team's work hours in 5 minutes a day'.\n</example>\n\nNow do the same for my material: [URL / document / description]"
@@ -894,7 +894,7 @@
       },
       {
         "title": "Adaptation",
-        "description": "Take a template → tune it to your domain → save as your own → use every time."
+        "description": "Take a template, then tune it to your domain, then save as your own, then use every time."
       }
     ],
     "pitfalls": [
@@ -967,7 +967,7 @@
           "Change one parameter at a time and re-run — that way you see what actually worked.",
           "Stop iterating once the answer reliably satisfies you."
         ],
-        "example": "Added to the audit template:\n'Response format: a 3-column table — Problem | Impact | What to do. No more than 7 rows. Tone — business, no intros.'\n→ The answer became predictable and immediately usable for pasting into a ticket.",
+        "example": "Added to the audit template:\n'Response format: a 3-column table — Problem | Impact | What to do. No more than 7 rows. Tone — business, no intros.'\nThe answer became predictable and immediately usable for pasting into a ticket.",
         "validate": "You have a version of the prompt that reliably produces an answer in the format and tone you need.",
         "tip": "The most valuable additions are about output format and length limits. They save the most time on editing the answer."
       },
@@ -1215,7 +1215,7 @@
         "time": "",
         "why": "To see current prices and limits — they can change.",
         "instructions": [
-          "Go to [[node:pl-web-setup|claude.ai]]/upgrade or click on profile → Plans.",
+          "Go to [[node:pl-web-setup|claude.ai]]/upgrade or click on profile, then Plans.",
           "Read what Free, Pro, Team include.",
           "Don't buy now — go through the tutorial first."
         ],
@@ -1253,10 +1253,10 @@
         "time": "",
         "why": "The same plan works in several places — web, Desktop, Code, API. The right surface saves time and needs no extra payment.",
         "instructions": [
-          "A quick question, text, or image from your phone or laptop → claude.ai (web) or the mobile app.",
-          "Keeping Claude close all the time, dragging in files, wanting a quick hotkey launch → the Desktop app.",
-          "Working with code and project files right in the terminal → Claude Code.",
-          "Embedding Claude into your product or script, needing automation → the API via Anthropic Console."
+          "A quick question, text, or image from your phone or laptop, then claude.ai (web) or the mobile app.",
+          "Keeping Claude close all the time, dragging in files, wanting a quick hotkey launch, then the Desktop app.",
+          "Working with code and project files right in the terminal, then Claude Code.",
+          "Embedding Claude into your product or script, needing automation, then the API via Anthropic Console."
         ],
         "validate": "You can name which surface you'll use for your 2-3 typical tasks."
       },
@@ -1278,9 +1278,9 @@
         "time": "",
         "why": "Without action, knowledge stays theory.",
         "instructions": [
-          "If N < 5 per week → stay on Free, measure for one more week.",
-          "If N > 15 → upgrade to Pro now.",
-          "If in a team → discuss Team with colleagues."
+          "If N < 5 per week, stay on Free, measure for one more week.",
+          "If N > 15, upgrade to Pro now.",
+          "If in a team, discuss Team with colleagues."
         ],
         "validate": "Decision made: 'staying on Free for N weeks' / 'getting Pro now' / 'discussing Team'."
       }
@@ -1323,15 +1323,15 @@
     "applyIn": {
       "0": {
         "title": "Document audit",
-        "description": "Upload a contract → found the risks in a minute instead of an hour."
+        "description": "Upload a contract, then found the risks in a minute instead of an hour."
       },
       "1": {
         "title": "Design critique",
-        "description": "Upload a mockup → get structured feedback."
+        "description": "Upload a mockup, then get structured feedback."
       },
       "2": {
         "title": "Data processing",
-        "description": "Upload a spreadsheet → ask to clean / aggregate → ready result."
+        "description": "Upload a spreadsheet, then ask to clean / aggregate, then ready result."
       }
     },
     "pitfalls": {
@@ -1388,7 +1388,7 @@
       "cap-4": {
         "title": "Extract data from a spreadsheet",
         "time": "3 min",
-        "why": "Excel/CSV → ready analysis without copy-pasting.",
+        "why": "Excel/CSV, then ready analysis without copy-pasting.",
         "instructions": {
           "0": "Upload an .xlsx or .csv with real data.",
           "1": "Ask: 'Find anomalies / trends / top-5 values'.",
@@ -1452,7 +1452,7 @@
     "subtitle": "Few-shot, CoT, XML, Prefill, Structured output — on one task",
     "totalTime": "6 steps",
     "whatItIs": "A workshop on 5 fundamental techniques that turn an 'average' prompt into a reliable tool. You apply each technique to the same task to see what each one affects.",
-    "approach": "One baseline prompt → 5 versions with different techniques → comparison. Without comparison you won't feel the effect; with it — the techniques settle into muscle memory.",
+    "approach": "One baseline prompt, then 5 versions with different techniques, then comparison. Without comparison you won't feel the effect; with it — the techniques settle into muscle memory.",
     "outcomes": [
       "Apply Few-shot, CoT, XML, Prefill consciously — to a specific problem",
       "Get JSON output that parses on the first try",
@@ -1489,7 +1489,7 @@
         "hint": "Compare time 'prompt + manual parse' vs 'prompt + auto-parse'. Should be 5–10× savings."
       },
       {
-        "question": "Take a prompt that gives ~70% results. Make 3 iterations using 'one fix → check → next fix'.",
+        "question": "Take a prompt that gives ~70% results. Make 3 iterations using 'one fix, then check, then next fix'.",
         "hint": "After each iteration write down: what improved, what broke."
       }
     ],
@@ -1523,8 +1523,8 @@
         "time": "",
         "why": "Few-shot (a handful of examples in the prompt that AI mimics) is the most powerful technique for non-standard formats and tone.",
         "instructions": [
-          "Come up with 2 mini-examples: what input → what output you want.",
-          "Structure: 'Example 1: input: ... output: ... Example 2: ... Now do for: ...'. Example prompt: 'Example 1: input: <short text> → output: <in your format>. Example 2: input: <another text> → output: <in your format>. Now do for: <your real input>.'",
+          "Come up with 2 mini-examples: from what input to what output you want.",
+          "Structure: 'Example 1: input: ... output: ... Example 2: ... Now do for: ...'. Example prompt: 'Example 1: input: <short text>, output: <in your format>. Example 2: input: <another text>, output: <in your format>. Now do for: <your real input>.'",
           "Run. Check — did the model reproduce the style of the examples?",
           "If the model copies the example verbatim — the examples are too close to your input: make them on-topic but not same-content. If it ignores the example format — add explicitly: 'Format — strictly as in the examples'."
         ],
@@ -1744,7 +1744,7 @@
         "why": "By default Claude answers in a generic way. [[node:instructions|Custom Instructions]] help it understand your context, and Projects are handy when you have a series of similar tasks.",
         "instructions": [
           "Custom Instructions is a short message Claude sees inside every conversation of yours. You write your role, your industry, the tone you want, and what NOT to do. Example: I am an accountant in a small business. Answer briefly, without fluff, in simple words. Do not give legal advice.",
-          "Where to find it on the website: in claude.ai open your profile (top right), then Settings → Custom Instructions. The desktop app has a similar setting. Set it once and it always works. Update it when something starts to annoy you in the replies.",
+          "Where to find it on the website: in claude.ai open your profile (top right), then Settings, then Custom Instructions. The desktop app has a similar setting. Set it once and it always works. Update it when something starts to annoy you in the replies.",
           "A Project is a folder where you keep several chats on one topic. All chats inside a Project share knowledge and instructions. Example: a Project called Marketing for company X, with 20 chats all sharing the same uploaded files: the brand guide, past reports, the yearly plan.",
           "Where to find Projects: on claude.ai look in the left menu for Projects, then New Project. Serious use needs a Pro plan. Do not make a Project for a single task, use it for things that repeat."
         ],
@@ -1907,7 +1907,7 @@
         "tip": "For your first task, create a test folder with a few non-critical files. This lets you experiment safely.",
         "troubleshoot": {
           "Cannot find 'Connect folder' button": "Check that you are in the Cowork tab, not the regular chat. The interface is different.",
-          "Permission denied by OS": "On macOS, go to System Settings → Privacy & Security → Files & Folders and grant Claude Desktop access."
+          "Permission denied by OS": "On macOS, go to System Settings, then Privacy & Security, then Files & Folders and grant Claude Desktop access."
         }
       },
       "s3": {
@@ -2106,7 +2106,7 @@
           "4. Use Projects instead of long chats — persistent instructions, fresh context each session, no context window degradation.",
           "5. Break large tasks — instead of one 3-hour session, run three 45-minute sessions with clear handoffs between them."
         ],
-        "example": "Research task without strategies: one long chat, no web search, no verification → potential hallucinations, context degradation.\n\nWith strategies: Project with your research context, web search enabled, Claude flags uncertainty, you verify key statistics, each session has a clear scope → reliable, high-quality output.",
+        "example": "Research task without strategies: one long chat, no web search, no verification, leading to potential hallucinations, context degradation.\n\nWith strategies: Project with your research context, web search enabled, Claude flags uncertainty, you verify key statistics, each session has a clear scope, leading to reliable, high-quality output.",
         "validate": "You have a mental checklist: web search on/off? Uncertainty flagging in prompt? Verification plan? Project or long chat?",
         "tip": "The 4D Framework's Discernment step IS this checklist. Limitations are not Claude's problem to solve — they are yours to design around."
       },
@@ -2122,8 +2122,8 @@
           "Do the final check against the primary source (official documentation, the paper itself, primary data), not against Claude's paraphrase or a second answer from Claude.",
           "Build the habit: one important claim — one external check. That is cheaper than fixing the consequences of an error."
         ],
-        "example": "Claude cites a statistic: 'according to report X, the market grew 23% in 2025.' Verification: you ask for the exact link → enable web search → open report X itself → find the figure. It turns out growth was 13%, not 23% — a hallucination in a single number that would have slipped by because of the confident tone.",
-        "validate": "You have a concrete ritual: triage what matters → request the source → re-ask with web search → open the primary source.",
+        "example": "Claude cites a statistic: 'according to report X, the market grew 23% in 2025.' Verification: you ask for the exact link, then enable web search, then open report X itself, then find the figure. It turns out growth was 13%, not 23% — a hallucination in a single number that would have slipped by because of the confident tone.",
+        "validate": "You have a concrete ritual: triage what matters, then request the source, then re-ask with web search, then open the primary source.",
         "tip": "Don't ask Claude to 'check itself' in a second message as your only verification — it can confidently confirm its own hallucination. Only external checking is reliable."
       }
     },
@@ -2205,7 +2205,7 @@
         "instructions": [
           "AI Fluency ≠ prompt engineering tricks. It's the ability to work with AI as a skilled collaborator — knowing when to use it, how to guide it, and when to step back.",
           "Think of it like language fluency. You don't need to know grammar rules to hold a conversation — but you do need enough internalized structure to communicate precisely. Same with Claude.",
-          "Three levels of AI use: Occasional user (one-off prompts, unpredictable results) → Competent user (clear prompts, knows limitations) → Fluent collaborator (integrates AI into workflow, calibrates based on task type).",
+          "Three levels of AI use: Occasional user (one-off prompts, unpredictable results), then Competent user (clear prompts, knows limitations), then Fluent collaborator (integrates AI into workflow, calibrates based on task type).",
           "This course moves you from level 1 toward level 3. Not by learning tricks — by building a durable mental model."
         ],
         "validate": "You can explain in one sentence what separates an AI-fluent user from someone who just types questions into Claude.",
@@ -2230,7 +2230,7 @@
         "time": "5 min",
         "why": "Most AI interactions fail not because the model is bad, but because the collaboration design is weak. The 4D Framework gives you a repeatable structure that works across any task type.",
         "instructions": [
-          "The 4D Framework: Describe → Delegate → Discern → Develop. Each step is a question you ask before or during your interaction with Claude.",
+          "The 4D Framework: Describe, then Delegate, then Discern, then Develop. Each step is a question you ask before or during your interaction with Claude.",
           "DESCRIBE: Give Claude enough context to do the task well. Who are you? What's the goal? What format do you need? What's the audience? Most prompts fail because they're missing this. Rule: a good description takes 30–60 seconds to write and saves 5–10 minutes of back-and-forth.",
           "DELEGATE: Choose the right tasks for AI. Claude excels at: drafting, summarizing, explaining, restructuring, brainstorming, code. Claude is weak at: tasks requiring current information (without search), precise numerical calculations, tasks where being wrong has serious consequences. Delegation isn't about using AI for everything — it's about strategic choice.",
           "DISCERN: Evaluate the output critically. Check: Does this answer the actual question? Are specific facts verifiable? Does the reasoning hold up? Does the output match the format I need? Never paste AI output directly into something important without reading it carefully.",
@@ -2371,7 +2371,7 @@
         "time": "3 min",
         "why": "Your Project is the container. Everything else lives inside it. Setting it up correctly takes 3 minutes and determines whether Claude always has the right context loaded.",
         "instructions": [
-          "Go to claude.ai → click 'Projects' in the left sidebar → '+ New project'.",
+          "Go to claude.ai, then click 'Projects' in the left sidebar, then '+ New project'.",
           "Name your project specifically. Not 'My Project' — something like 'Marketing — Q3 Campaigns' or 'Content — Blog & Newsletter' or 'Research — Competitor Analysis'. The name is just for your navigation.",
           "Add a brief description (1–2 sentences). Claude doesn't read this — it's for you when you have multiple projects.",
           "You now have an empty project. Don't add anything yet — we'll add content step by step."
@@ -2385,7 +2385,7 @@
         "time": "6 min",
         "why": "Project Instructions are what Claude reads before every single conversation in your project. This is the most important piece of your architecture. Good instructions mean Claude arrives fully briefed — bad instructions mean you're still re-explaining.",
         "instructions": [
-          "In your Project, click 'Edit project details' → 'Project instructions' → add your instructions here.",
+          "In your Project, click 'Edit project details', then 'Project instructions', then add your instructions here.",
           "What good Project Instructions include:\n  • WHO YOU ARE: your role, your organization, relevant background\n  • WHAT THIS PROJECT IS FOR: the purpose, the goals, what success looks like\n  • YOUR PREFERENCES: communication style, output format, level of detail\n  • CONSTRAINTS: what to avoid, what you don't want Claude to do\n  • CONTEXT: key facts Claude needs to know about your work",
           "Length: aim for 200–400 words. Short enough that Claude actually uses all of it. Long enough to cover the key context.",
           "Use the prompt below to have Claude WRITE your Project Instructions for you. Then paste the result into your project.",
@@ -2400,7 +2400,7 @@
         "time": "4 min",
         "why": "Project Knowledge is Claude's reference library. Unlike instructions (which Claude reads every time), Knowledge is searched when relevant. This is where your reference materials live — but only the ones Claude actually needs.",
         "instructions": [
-          "In your Project → 'Add content' → 'Add files' or paste text directly.",
+          "In your Project, then 'Add content', then 'Add files' or paste text directly.",
           "What belongs in Knowledge:\n  ✓ Style guides, tone references, brand documents\n  ✓ Process documentation, SOPs, checklists\n  ✓ Templates you want Claude to follow\n  ✓ Key reference data (product info, org charts, client profiles)\n  ✓ Past examples of work you want Claude to match",
           "What does NOT belong in Knowledge:\n  ✗ General information Claude already knows (company history, public info)\n  ✗ Sensitive data you don't want stored\n  ✗ Outdated documents (they confuse more than help)\n  ✗ Documents Claude will never need to reference",
           "Quality rule: when in doubt, leave it out. 3 highly relevant documents beat 30 loosely relevant ones.",
@@ -2476,7 +2476,7 @@
     "whatItIs": "A practical course on creating AI workflows without code — for any user who wants to turn scattered Claude interactions into a coherent system. You will learn how Projects serve as containers, Skills as reusable modules, and Scenarios as application patterns. By the end you will have built your first end-to-end workflow and documented it for your team.",
     "approach": "The course is structured as a workshop: each step produces an artifact you create for a real task from your own work. Theory is minimal — every concept is immediately reinforced with practice. By the final step you will have a documented workflow ready to hand off to a colleague.",
     "outcomes": [
-      "Can analyse a task and extract the workflow pattern: input → process → output",
+      "Can analyse a task and extract the workflow pattern: input, then process, then output",
       "Structure Projects as workspaces with persistent context",
       "Write reusable Skills — modules for repeating operations",
       "Build step chains where the output of one step becomes the input of the next",
@@ -2486,7 +2486,7 @@
     "applyIn": [
       {
         "title": "Analytics and reporting",
-        "description": "Turn the cycle 'gather data → analyse → write report' into a repeatable workflow. Every step is documented, quality is stable, the next report takes half the time."
+        "description": "Turn the cycle 'gather data, then analyse, then write report' into a repeatable workflow. Every step is documented, quality is stable, the next report takes half the time."
       },
       {
         "title": "Content and communications",
@@ -2528,11 +2528,11 @@
         "validate": "You can name one task from your work and explain what its Project will be, which Skill is needed and in which Scenario it is executed."
       },
       "wa-2": {
-        "title": "Anatomy of a good workflow: input → process → output",
+        "title": "Anatomy of a good workflow: input, then process, then output",
         "time": "4 min",
         "why": "A workflow without a clear input/output structure cannot be repeated, handed to a colleague or improved — it runs differently every time.",
         "instructions": [
-          "Let us break it down with an example: 'preparing an analytical report'. Input: raw data (table, export, set of facts) + the question the report must answer. Process: 3 Claude steps (structure → analyse → format). Output: a finished report draft in an agreed format.",
+          "Let us break it down with an example: 'preparing an analytical report'. Input: raw data (table, export, set of facts) + the question the report must answer. Process: 3 Claude steps (structure, then analyse, then format). Output: a finished report draft in an agreed format.",
           "Three questions for any workflow: (1) What must be provided to Claude for it to begin? (2) What steps must be taken and in what order? (3) What does a result that counts as 'done' look like?",
           "Describing the input is the most important part. Undefined input = unpredictable result. A good input description covers: data format, volume, required fields, language and any constraints.",
           "Intermediate outputs are the inputs for the next steps. For each step write down: what is being passed forward and in what format. This lets you find bottlenecks before you run anything.",
@@ -2605,7 +2605,7 @@
       "Target metric: time / quality / volume"
     ],
     "outputs": [
-      "A workflow map: trigger → steps → outcome",
+      "A workflow map: trigger, then steps, then outcome",
       "A ready prompt + Project for the task",
       "A before/after metric for the team report"
     ],
@@ -2630,7 +2630,7 @@
     "subtitle": "Three modes, every menu, and Settings — a walkthrough of each item",
     "totalTime": "6 steps",
     "whatItIs": "A complete walkthrough of the Claude app (Desktop for macOS/Windows and web at [[node:pl-web-setup|claude.ai]]): three tabs — Chat, [[node:pl-cowork|Cowork]], and Code — plus the entire Settings screen. After this tutorial you understand what every menu does and can set up your workspace for projects and code deliberately instead of by guesswork.",
-    "approach": "We go top to bottom: install → the three modes → working in each → panels and shortcuts → Computer use → a full walkthrough of Settings (General, Account, Privacy, Billing, Usage, Capabilities, Connectors, Claude Code, Cowork) and the Desktop app section (General, Extensions, Developer) → the link with the CLI and troubleshooting.",
+    "approach": "We go top to bottom: install, then the three modes, then working in each, then panels and shortcuts, then Computer use, then a full walkthrough of Settings (General, Account, Privacy, Billing, Usage, Capabilities, Connectors, Claude Code, Cowork) and the Desktop app section (General, Extensions, Developer), then the link with the CLI and troubleshooting.",
     "outcomes": [
       "You understand the difference between the three modes — Chat / Cowork / Code — and when to use each",
       "You know the purpose of every Settings item, not just General",
@@ -2655,7 +2655,7 @@
     "pitfalls": [
       "Thinking Desktop is \"just a chat\": in reality it's three distinct modes with different capabilities.",
       "Turning on Bypass permissions outside a sandbox — Claude runs commands without confirmation.",
-      "Ignoring Settings → Privacy and Capabilities — that's where both your data privacy and the available tools live.",
+      "Ignoring Settings, then Privacy and Capabilities — that's where both your data privacy and the available tools live.",
       "Confusing local and remote sessions: a remote session has no @-files and no access to your local disk.",
       "Enabling Computer use without understanding the app access tiers and the risk of prompt injection from the screen."
     ],
@@ -2679,12 +2679,12 @@
         "time": "",
         "why": "This is the entry point: install sets the requirements, and the three modes are the app’s main fork. Pick the wrong mode and you won’t find the features you need.",
         "instructions": [
-          "Install: download the app at claude.com/download (macOS — universal, Windows — x64/ARM64; Linux isn’t supported — use the CLI there), launch it and sign in. For the Code tab on Windows you need Git for Windows — install it and restart. Version — macOS: Claude → About Claude, Windows: Help → About.",
+          "Install: download the app at claude.com/download (macOS — universal, Windows — x64/ARM64; Linux isn’t supported — use the CLI there), launch it and sign in. For the Code tab on Windows you need Git for Windows — install it and restart. Version — macOS: Claude, then About Claude, Windows: Help, then About.",
           "The web version ([[node:pl-web-setup|claude.ai]]) runs in the browser with no install, but without local files, a terminal, or the Desktop app section.",
           "Chat — a regular conversation (questions, text, working through files); the left menu is the list of conversations. This is where 80% of everyday work happens.",
           "Cowork — agentic and long-running tasks: New task, Projects, Scheduled, Live artifacts, Dispatch (from your phone), Customize.",
           "Code — development: each conversation is a \"session\" with its own history, project folder, and code changes; the menu has New session, Routines, Customize.",
-          "Rule of thumb: ask / write / work through something → Chat; hand off something long-running or scheduled → Cowork; code in a repository → Code. You can switch modes at the top at any time.",
+          "Rule of thumb: ask / write / work through something, then Chat; hand off something long-running or scheduled, then Cowork; code in a repository, then Code. You can switch modes at the top at any time.",
           "Chat composer: input field + Enter, next to it the model picker (e.g. Opus/Sonnet) and the voice button (microphone); model and effort change right inside a conversation. The \"+\" button on the left: attach files, connect [[node:skills|Skills]], [[node:mcp|Connectors]], and plugins. Drag files straight into the field — Claude works through images and PDFs ([[node:cap-input-modalities|file and image support]])."
         ],
         "validate": "The app opened, you’re signed in, you see the three tabs at the top and can explain what each (Chat, Cowork, Code) is for and where the composer’s “+” is.",
@@ -2701,10 +2701,10 @@
           "Auto accept edits — accepts file edits and safe commands (mkdir, mv) on its own, but asks about other commands.",
           "Plan mode — explores and proposes a plan without touching the source; great for complex \"think first\" tasks.",
           "Auto — does everything with background safety checks (research preview, requires a recent Opus/Sonnet).",
-          "Bypass permissions — no confirmations at all; sandbox/VM only, enabled in Settings → Claude Code."
+          "Bypass permissions — no confirmations at all; sandbox/VM only, enabled in Settings, then Claude Code."
         ],
         "validate": "Before sending you can see the Environment, folder, and model pickers and can pick the right permission mode for the task, knowing which is dangerous outside a sandbox.",
-        "tip": "A solid workflow: start in Plan → approve the plan → switch to Auto accept edits to carry it out. For long refactors and test runs choose Remote — the task won’t be interrupted even if you close the app."
+        "tip": "A solid workflow: start in Plan, then approve the plan, then switch to Auto accept edits to carry it out. For long refactors and test runs choose Remote — the task won’t be interrupted even if you close the app."
       },
       "s3": {
         "title": "Working with code: context, preview, diff, and review",
@@ -2731,19 +2731,19 @@
           "Transcript modes (Normal/Verbose/Summary) — Ctrl+O. All shortcuts — Cmd+/ (macOS) or Ctrl+/ (Windows).",
           "Parallel sessions: + New session (Cmd+N), Ctrl+Tab switches between them; for Git repositories each session gets its own isolated copy via a worktree — edits don’t overlap until a commit.",
           "Side-chat (Cmd+; or /btw) — an aside question with the session’s context, without cluttering the main conversation. The Tasks panel shows background work: subagents and background commands.",
-          "Computer use — controlling apps on your screen: enabled in Settings → General (Desktop app section) with the Computer use toggle; on macOS it needs Accessibility and Screen Recording; requires a Pro/Max plan (not Team/Enterprise) and a running Desktop app.",
+          "Computer use — controlling apps on your screen: enabled in Settings, then General (Desktop app section) with the Computer use toggle; on macOS it needs Accessibility and Screen Recording; requires a Pro/Max plan (not Team/Enterprise) and a running Desktop app.",
           "Computer use access tiers are fixed: browsers — view only, terminals/IDEs — clicks only, everything else — full control. More on safe, isolated execution — [[node:sys-agent-sandbox|an isolated environment for the agent]] and [[node:cap-computer|Computer use]]."
         ],
         "validate": "You opened a second panel from Views, switched the transcript mode, opened a second session, and understand which permissions Computer use needs.",
-        "tip": "Verbose shows every step Claude takes — handy to understand why it did something a certain way. Auto-archive after a merge/closed PR (Settings → Claude Code) clears out finished sessions for you."
+        "tip": "Verbose shows every step Claude takes — handy to understand why it did something a certain way. Auto-archive after a merge/closed PR (Settings, then Claude Code) clears out finished sessions for you."
       },
       "s5": {
         "title": "Settings, part 1: General, Account, Privacy, Billing, Usage, Capabilities",
         "time": "",
         "why": "These Settings sections define how Claude behaves everywhere, sign-in security, data privacy, money, and the set of available tools.",
         "instructions": [
-          "General → Profile: name, \"what to call you\", occupation, and Instructions for Claude — general guidance for all chats and Cowork ([[node:i-global|global instructions]]).",
-          "General → Preferences: Appearance (system/light/dark), Chat font. General → Voice (voice style and speed) and Notifications (response completion, Code notifications, permission requests, Dispatch messages).",
+          "General, then Profile: name, \"what to call you\", occupation, and Instructions for Claude — general guidance for all chats and Cowork ([[node:i-global|global instructions]]).",
+          "General, then Preferences: Appearance (system/light/dark), Chat font. General, then Voice (voice style and speed) and Notifications (response completion, Code notifications, permission requests, Dispatch messages).",
           "Account: \"Log out of all devices\", Organization ID, the list of active sessions (device, city, dates), account deletion.",
           "Privacy — how your data is used and model training; go through this section deliberately ([[node:pl-privacy|privacy]]).",
           "Billing — plan and payment; Usage — usage by period and by model (the plan is shared across all Claude surfaces).",
@@ -2758,15 +2758,15 @@
         "why": "Here live the Cowork agentic mode, the app’s “sockets” (Connectors/MCP), code-session behavior, local Desktop extensions, and the link with the CLI — everything beyond the browser.",
         "instructions": [
           "Cowork: New task sets up a task, \"Work in a project\" ties it to a [[node:projects|project]] with its knowledge and instructions; Scheduled — recurring tasks on a schedule; Live artifacts — result artifacts that keep updating; Dispatch (Beta) — sending tasks from your phone (requires Pro/Max, not Team/Enterprise); Customize — connectors, skills, and plugins in one place. A detailed walkthrough is in the tutorial [[tutorial:claude-cowork|Claude Cowork]].",
-          "Settings → Connectors — integrations (Google Calendar, Slack, GitHub, Linear, Notion …): these are [[node:mcp|MCP servers]] with a graphical setup, also added from the \"+\" in the composer; for services not on the list, add MCP manually via the config files (custom connectors exist too).",
-          "Settings → Claude Code — the behavior of Code sessions: allow Bypass permissions, worktree location, auto-archive after a PR, turning Preview and Persist sessions on/off. Settings → Cowork — agentic-mode and Dispatch settings.",
-          "The Desktop app → General section: the Computer use toggle, the status of system permissions, Denied apps (apps Claude won’t touch), and \"Unhide apps when Claude finishes\".",
-          "Desktop app → Extensions — install extensions/connectors in one click, no terminal needed. Desktop app → Developer — connect local MCP servers and developer configuration; MCP from the chat app (claude_desktop_config.json) is picked up in the Code tab too.",
+          "Settings, then Connectors — integrations (Google Calendar, Slack, GitHub, Linear, Notion …): these are [[node:mcp|MCP servers]] with a graphical setup, also added from the \"+\" in the composer; for services not on the list, add MCP manually via the config files (custom connectors exist too).",
+          "Settings, then Claude Code — the behavior of Code sessions: allow Bypass permissions, worktree location, auto-archive after a PR, turning Preview and Persist sessions on/off. Settings, then Cowork — agentic-mode and Dispatch settings.",
+          "The Desktop app, then General section: the Computer use toggle, the status of system permissions, Denied apps (apps Claude won’t touch), and \"Unhide apps when Claude finishes\".",
+          "Desktop app, then Extensions — install extensions/connectors in one click, no terminal needed. Desktop app, then Developer — connect local MCP servers and developer configuration; MCP from the chat app (claude_desktop_config.json) is picked up in the Code tab too.",
           "CLI ↔ Desktop: it’s one engine with shared config (CLAUDE.md, MCP servers ~/.claude.json and .mcp.json, hooks, skills, settings); move a session from the terminal with the /desktop command ([[node:claude-code|CLI]]). What Desktop lacks: third-party providers (Bedrock/Vertex/Foundry), Linux, inline suggestions, agent teams, terminal dialogs (/permissions, /config, /agents).",
           "Troubleshooting: 403 — sign out and back in; blank screen — restart/update; on Windows, Code needs Git; if an MCP server isn’t responding on Windows — check the config, restart the app, and see whether the server process is still alive in Task Manager."
         ],
-        "validate": "You opened Connectors (understanding they’re MCP), found the Computer use toggle in Desktop app → General, and know the first thing to do on a 403 error.",
-        "tip": "Disconnect/Manage connectors — in Settings → Connectors or via “Manage connectors” in the composer. On a 403, sign out and back in; blank screen — restart/update; on Windows, Code needs Git."
+        "validate": "You opened Connectors (understanding they’re MCP), found the Computer use toggle in Desktop app, then General, and know the first thing to do on a 403 error.",
+        "tip": "Disconnect/Manage connectors — in Settings, then Connectors or via “Manage connectors” in the composer. On a 403, sign out and back in; blank screen — restart/update; on Windows, Code needs Git."
       }
     }
   },
@@ -2775,7 +2775,7 @@
     "subtitle": "How to give Claude documents as context and ask questions about them",
     "totalTime": "6 steps",
     "whatItIs": "A walkthrough of how to upload files to a [[node:projects|Project]] so Claude answers based on your documents — brand guidelines, specs, code, spreadsheets — instead of relying on general knowledge.",
-    "approach": "We move from \"what Claude can read\" → how and where to upload → what belongs in project knowledge versus a chat → how to phrase a request about the files → common mistakes → keeping everything current.",
+    "approach": "We move from \"what Claude can read\", then how and where to upload, then what belongs in project knowledge versus a chat, then how to phrase a request about the files, then common mistakes, then keeping everything current.",
     "outcomes": [
       "Understand which formats Claude can read and how it uses them in its answers",
       "Know the difference between project knowledge and an attachment in a single chat",
@@ -2831,9 +2831,9 @@
         "time": "",
         "why": "There are two places for files, and your choice determines which conversations Claude will see them in.",
         "instructions": [
-          "Project knowledge: open the [[node:projects|Project]] → the knowledge/files section → add the document. It's available across every conversation in that project.",
+          "Project knowledge: open the [[node:projects|Project]], then the knowledge/files section, then add the document. It's available across every conversation in that project.",
           "Chat attachment: use the attach button or drag the file straight into the input field — the file only lives in that one conversation.",
-          "Rule of thumb: permanent and shared → Project knowledge; one-off → chat attachment.",
+          "Rule of thumb: permanent and shared, then Project knowledge; one-off, then chat attachment.",
           "You can drag files in with the mouse, and several at once too."
         ],
         "validate": "You've added a file to the Project's knowledge and understand how that differs from a chat attachment.",
@@ -2898,7 +2898,7 @@
     "subtitle": "6 steps to make Claude an expert in exactly your task",
     "totalTime": "6 steps",
     "whatItIs": "Project Instructions is a text field in [[node:projects|Project]] settings that Claude reads before every reply inside the project. You write once who Claude should be, in what style and format it should answer, and what constraints to keep. After that, every conversation in the project already runs \"in role\" — no need to repeat instructions in each chat.\n\nThis is not the product's system prompt (set by Anthropic) and not [[node:instructions|Custom Instructions]] (those are about you personally and apply across all chats). Project Instructions are narrow and local: they describe the working context of one specific project.",
-    "approach": "Write the instruction like a brief for a new hire: role, style, format, constraints. Specificity beats length. One precise line (\"structure: Context → Problem → Recommendation\") changes answers more than a paragraph of vague wishes like \"be helpful\".",
+    "approach": "Write the instruction like a brief for a new hire: role, style, format, constraints. Specificity beats length. One precise line (\"structure: Context, then Problem, then Recommendation\") changes answers more than a paragraph of vague wishes like \"be helpful\".",
     "outcomes": [
       "Understand the difference between Project Instructions, the system prompt, and Custom Instructions",
       "Know where the field is and which four blocks to write into it (role / style / format / constraints)",
@@ -2938,7 +2938,7 @@
       },
       {
         "question": "Find the vaguest phrase in your instruction and rewrite it into a concrete rule with an example.",
-        "hint": "\"Write concisely\" → \"Answer in up to 5 points, each ≤ 2 sentences\"."
+        "hint": "\"Write concisely\" becomes \"Answer in up to 5 points, each ≤ 2 sentences\"."
       }
     ],
     "steps": {
@@ -2950,7 +2950,7 @@
           "Grasp the key point: Project Instructions are read before every reply inside the project — persistent context, not a one-off message.",
           "Difference from the system prompt: the system prompt is set by Anthropic, covers safety and base behavior, and you don't change it.",
           "Difference from [[node:instructions|Custom Instructions]]: those describe you personally and apply across all chats; Project Instructions are narrow and act only in this project.",
-          "Remember the hierarchy: system prompt → Custom Instructions → Project Instructions. The most specific layer is the project."
+          "Remember the hierarchy: system prompt, then Custom Instructions, then Project Instructions. The most specific layer is the project."
         ],
         "validate": "You can explain in one sentence how Project Instructions differ from Custom Instructions.",
         "tip": "If a rule is needed in all projects — that's Custom Instructions. If only in one — Project Instructions."
@@ -2960,7 +2960,7 @@
         "time": "",
         "why": "Most people drop random wishes into the instruction. A four-block structure makes it complete and checkable from the start.",
         "instructions": [
-          "Open the [[node:projects|Project]] → project settings → the Instructions block (next to Project knowledge).",
+          "Open the [[node:projects|Project]], then project settings, then the Instructions block (next to Project knowledge).",
           "Block 1 — role: who Claude acts as (\"you're a financial analyst\", \"you're a technical editor\").",
           "Block 2 — style: tone and language of the answer (formal / conversational, English only).",
           "Block 3 — format: the answer's skeleton (structure, length, required sections).",
@@ -2975,7 +2975,7 @@
         "why": "Claude can't act on generic words: \"be helpful\" sets neither a role nor a format. Specificity is the only thing that actually changes answers.",
         "instructions": [
           "Go through each phrase and ask: can I verify this in the answer? If not — the phrase is too generic.",
-          "Replace judgment words with measurable rules: \"write concisely\" → \"no more than 5 points\".",
+          "Replace judgment words with measurable rules: \"write concisely\" becomes \"no more than 5 points\".",
           "Add domain context to the role, not just a job title.",
           "Delete anything that doesn't affect the answer: polite wishes and motivation are ignored by Claude."
         ],
@@ -2987,7 +2987,7 @@
         "time": "",
         "why": "A ready skeleton saves time and keeps you from forgetting any of the four blocks. It's reusable in new projects.",
         "instructions": [
-          "Study the example: \"You're an expert in my domain. Answer structure: Context → Problem → Impact → Recommendation. English only. No generic phrases, rely on project files\".",
+          "Study the example: \"You're an expert in my domain. Answer structure: Context, then Problem, then Impact, then Recommendation. English only. No generic phrases, rely on project files\".",
           "Take the template: \"Role: … / Style: … / Format: … / Don't: …\".",
           "Fill each line for your task, keeping the wording concrete.",
           "Save the template separately — it'll help when creating your next project."
@@ -3195,7 +3195,7 @@
       },
       {
         "question": "Take that task and decide: Project or Chat? Name one argument for your decision.",
-        "hint": "Repetition + similar context → Project. One-off → Chat. In doubt — it's still a Chat."
+        "hint": "Repetition + similar context, then Project. One-off, then Chat. In doubt — it's still a Chat."
       },
       {
         "question": "For the chosen task, list what is stable in it (repeats every time) versus what changes from request to request.",
@@ -3415,7 +3415,7 @@
   },
   "prompt-principles": {
     "title": "Core Prompt Principles",
-    "subtitle": "Context → Role → Task → Format → Constraints — the framework that works almost always",
+    "subtitle": "Context, then Role, then Task, then Format, then Constraints — the framework that works almost always",
     "totalTime": "6 steps",
     "whatItIs": "Five elements that turn a vague request into a precise one: context (what's the situation), role (who the model should be), task (what exactly to do), format (how to deliver), and constraints (what to avoid). It's not \"prompt magic\" but a simple habit: 30 seconds of structure save 15 minutes of back-and-forth.\n\nThe course walks through each principle in turn with live examples, and at the end you assemble everything into one working prompt and test it. Related nodes: [[node:prompting|prompting]] as the overall discipline, [[node:pr-role|role]], [[node:pr-4d|4D task]], and [[node:pr-xml|XML tags]] for format.",
     "approach": "Don't memorize — apply it right away to your real task. After each step, add one more element to your own prompt, and at the end send it to Claude and compare it with what you'd get without structure.",
@@ -3532,7 +3532,7 @@
         "time": "",
         "why": "The power of the framework shows only when all five elements work together — and that's easy to verify by comparison.",
         "instructions": [
-          "Assemble the final prompt in order: Context → Role → Task → Format → Constraints.",
+          "Assemble the final prompt in order: Context, then Role, then Task, then Format, then Constraints.",
           "Send it to Claude in a fresh chat — without the history of past attempts.",
           "Compare the result with the \"raw\" draft from step 1.",
           "If something is off, find the missing or weak block and strengthen just that one instead of rewriting everything."
@@ -3631,7 +3631,7 @@
           "Lean on the principles from [[node:pr-principles|prompting principles]]: one task = one clear statement"
         ],
         "validate": "Your long prompt is split into at least 3 tags, and each block contains only one type of content.",
-        "tip": "The order \"context → data → task → constraints\" works best: the model gets the background first, then the command."
+        "tip": "The order \"context, then data, then task, then constraints\" works best: the model gets the background first, then the command."
       },
       "s4": {
         "title": "A worked example: before and after",
@@ -3678,15 +3678,15 @@
     }
   },
   "prompt-fewshot": {
-    "title": "Few-shot: teaching by input→output examples",
+    "title": "Few-shot: teaching by input-to-output examples",
     "subtitle": "Show 1-3 examples — and the model picks up the pattern without long explanations",
     "totalTime": "6 steps",
-    "whatItIs": "Few-shot is a technique where instead of describing a task in words, you show ready input→output pairs. The model picks up the pattern from the examples and continues it on new data. It is the strongest way to lock in a format, tone, and style that are hard to put into instructions.\n\nWhere zero-shot (just an instruction) gives a vague result, two or three precise examples set a firm frame. Few-shot pairs well with [[node:prompting|basic prompting]] and [[node:pr-xml|XML structure]], which cleanly separates the examples from the request.",
+    "whatItIs": "Few-shot is a technique where instead of describing a task in words, you show ready input-to-output pairs. The model picks up the pattern from the examples and continues it on new data. It is the strongest way to lock in a format, tone, and style that are hard to put into instructions.\n\nWhere zero-shot (just an instruction) gives a vague result, two or three precise examples set a firm frame. Few-shot pairs well with [[node:prompting|basic prompting]] and [[node:pr-xml|XML structure]], which cleanly separates the examples from the request.",
     "approach": "Don't explain what's easier to show. Give 1-3 diverse, non-contradictory examples in a single format, wrap them in tags, and end with a real input without an answer — the model will complete the output by pattern. Example quality matters more than quantity.",
     "outcomes": [
       "Understand when examples beat verbal instructions",
       "Choose the right number of examples (1-3) and their diversity",
-      "Format input→output pairs via XML tags so the model doesn't confuse them with the request",
+      "Format input-to-output pairs via XML tags so the model doesn't confuse them with the request",
       "Recognize and remove example bias and contradictions",
       "Combine few-shot with other techniques and validate the result"
     ],
@@ -3713,7 +3713,7 @@
     ],
     "exercises": [
       {
-        "question": "Take a task you usually describe in words (e.g. 'summarize in 3 bullets') and rebuild it as few-shot: give 2 input→output pairs and one new input. Compare the result to the purely verbal version.",
+        "question": "Take a task you usually describe in words (e.g. 'summarize in 3 bullets') and rebuild it as few-shot: give 2 input-to-output pairs and one new input. Compare the result to the purely verbal version.",
         "hint": "Wrap examples in <example>...</example> tags so the model doesn't mistake them for the task."
       },
       {
@@ -3731,7 +3731,7 @@
         "time": "",
         "why": "The key insight: showing a finished result is often more effective than describing it. Few-shot removes ambiguity where words fail — in format, tone, and structure.",
         "instructions": [
-          "State the task two ways: as a verbal instruction (zero-shot) and as an input→output example.",
+          "State the task two ways: as a verbal instruction (zero-shot) and as an input-to-output example.",
           "Ask yourself: can you describe the desired format in one precise sentence? If not — that's a signal for few-shot.",
           "Remember the rule: format, tone, and style are almost always better shown; facts and logic are better explained (see [[node:prompting|basic prompting]]).",
           "Few-shot gives roughly +30-80% format accuracy compared to zero-shot."
@@ -3753,7 +3753,7 @@
         "tip": "Diversity matters more than quantity: two different examples are stronger than five nearly identical ones."
       },
       "s3": {
-        "title": "How to format examples: input→output pairs and XML",
+        "title": "How to format examples: input-to-output pairs and XML",
         "time": "",
         "why": "The model must clearly understand which parts are samples and which is the actual task. Without markup it confuses examples with the request and tries to 'perform' them.",
         "instructions": [
@@ -4054,7 +4054,7 @@
           "The system prompt has priority — a role there affects the whole dialogue, not just one message."
         ],
         "validate": "For your role you can say where it belongs — in chat or in Custom Instructions — and justify the choice by frequency of use.",
-        "tip": "The rule is simple: repeats every time → Custom Instructions; unique to the task → chat."
+        "tip": "The rule is simple: repeats every time, then Custom Instructions; unique to the task, then chat."
       },
       "s6": {
         "title": "Common mistakes and validation",
@@ -4164,7 +4164,7 @@
         "tip": "The Workbench is convenient for experimenting: you change the anchor and immediately see how the start of the response changes."
       },
       "s4": {
-        "title": "Worked example: prefill `{` → clean JSON",
+        "title": "Worked example: prefill `{`, then clean JSON",
         "time": "",
         "why": "The most common scenario is getting JSON that a program parses without cleanup. Prefill `{` solves this with a single character.",
         "instructions": [
@@ -4343,7 +4343,7 @@
   },
   "prompt-iterate": {
     "title": "Prompt iteration",
-    "subtitle": "Run → find one failure → one edit → repeat",
+    "subtitle": "Run, then find one failure, then one edit, then repeat",
     "totalTime": "6 steps",
     "whatItIs": "A systematic way to get a prompt to the result without rewriting it from scratch. Instead of \"I'll redo it all\", you treat the prompt as a hypothesis: you run it, find ONE concrete failure, make ONE edit (role / example / constraint), compare — and repeat the cycle.\n\nMost \"bad\" prompts turn into \"great\" ones after 3-5 targeted iterations. This course gives you the method: how to lock in a baseline, how to find a real failure, how to change one thing at a time and know exactly what helped. It builds on [[node:prompting|basic prompting]] and works together with [[node:pr-fewshot|few-shot examples]].",
     "approach": "The key rule: one edit per iteration. If you change five things at once, it's impossible to tell what worked. Don't rewrite the working parts: fix a specific failure, not a \"general feeling\". And always compare with the previous version on the same inputs.",
@@ -4396,7 +4396,7 @@
         "why": "Rewriting a prompt from scratch throws away the working parts and starts over every time. Iteration keeps what already works and fixes only the problem — it's many times faster and clearer.",
         "instructions": [
           "Adopt the mindset: a prompt is a hypothesis, not a final text. You improve it in cycles, not in one heroic rewrite.",
-          "Memorize the four-step cycle: run → find one failure → one edit → compare.",
+          "Memorize the four-step cycle: run, then find one failure, then one edit, then compare.",
           "Don't throw away the old version: working parts (format, good phrasing) should be preserved, not lost in a rewrite.",
           "Set the course goal: learn to change ONE thing at a time and know exactly what helped."
         ],
@@ -4441,7 +4441,7 @@
           "If it's worse or unchanged, roll the edit back and formulate a different hypothesis. That's a normal part of the cycle."
         ],
         "validate": "You made exactly one edit, ran it on the same inputs, and can say whether it helped or not.",
-        "tip": "Keep a short log: \"edit → effect\". After 3-4 iterations you'll see which techniques really work for your task."
+        "tip": "Keep a short log: \"edit, then effect\". After 3-4 iterations you'll see which techniques really work for your task."
       },
       "s5": {
         "title": "When to stop and save as a template",
@@ -4992,7 +4992,7 @@
         "time": "",
         "why": "The report must be not only correct but reproducible: a month later it should be clear where each conclusion came from. A good format and a final checklist lock in the discipline built in the previous steps.",
         "instructions": [
-          "Structure the report: question → brief conclusion → facts with sources → table/comparison → list of links",
+          "Structure the report: question, then brief conclusion, then facts with sources, then table/comparison, then list of links",
           "Record the search date and the original question wording",
           "Run the checklist: every fact has a link, key figures are verified, conflicts are shown",
           "Separate the agent's opinion from source facts in a dedicated block",
@@ -5316,7 +5316,7 @@
       },
       {
         "question": "For your own task decide: Managed Agents, a self-built agent on the [[node:pl-api|API]], or a simple Messages API call? Justify it.",
-        "hint": "One-shot and simple → Messages API. Long and standard → Managed Agents. Long with a non-standard loop → your own agent."
+        "hint": "One-shot and simple, then Messages API. Long and standard, then Managed Agents. Long with a non-standard loop, then your own agent."
       }
     ],
     "steps": {
@@ -5393,10 +5393,10 @@
         "time": "",
         "why": "The most common mistake is applying a powerful tool to the wrong place. Clear understanding of the boundaries matters as much as understanding the capabilities.",
         "instructions": [
-          "Simple one-shot task → the Messages API directly; Managed Agents are overkill.",
-          "Need an instant synchronous reply → the asynchronous model doesn't fit.",
-          "Need full customization of the agent loop → build your own agent on the [[node:pl-api|API]] following the [[node:ag-principles|agent loop principles]].",
-          "Need non-standard tools beyond the built-ins → check whether web search and files are enough, otherwise look toward [[node:mcp|MCP]] and your own harness.",
+          "Simple one-shot task, then the Messages API directly; Managed Agents are overkill.",
+          "Need an instant synchronous reply, then the asynchronous model doesn't fit.",
+          "Need full customization of the agent loop, then build your own agent on the [[node:pl-api|API]] following the [[node:ag-principles|agent loop principles]].",
+          "Need non-standard tools beyond the built-ins, then check whether web search and files are enough, otherwise look toward [[node:mcp|MCP]] and your own harness.",
           "Check your task against all the signs and make a deliberate decision."
         ],
         "validate": "You can make a reasoned choice for a specific task between Managed Agents, a self-built API agent, and a simple Messages API call.",
@@ -5526,7 +5526,7 @@
           "Remember the limits: audio and video aren't accepted directly — they need preprocessing (e.g., into text)",
           "Watch for common mistakes: converting everything to text, Vision instead of Files, context overload",
           "Confirm the input was actually recognized — ask Claude to briefly describe what it received",
-          "Match the channel to the task: structure and text layer → file, visuals → image, fresh data → web search"
+          "Match the channel to the task: structure and text layer, then file, visuals, then image, fresh data, then web search"
         ],
         "validate": "You can name at least one unsupported input and two common modality-choice mistakes.",
         "tip": "Before a long multi-modal request, do a quick check: \"what do you see in the attachments?\" — it catches problems early."
@@ -5972,7 +5972,7 @@
         "instructions": [
           "Remember: the context window is memory within a single conversation; start a new chat and it's empty",
           "Memory is long-term memory that carries stable facts about you from chat to chat",
-          "Open claude.ai → settings and find the Memory toggle (available on Pro/Max)",
+          "Open claude.ai, then go to settings and find the Memory toggle (available on Pro/Max)",
           "Formulate one fact about your work that applies across most tasks (e.g., role and stack)",
           "Tie this to the general AI memory model: short-term context vs long-term storage (see [[node:capabilities|Claude capabilities]])"
         ],
@@ -6016,7 +6016,7 @@
           "For a long-lived space with files and shared context, see [[node:projects|Projects]]",
           "For technical project context (code rules, naming), CLAUDE.md is better — it's shared and version-controlled",
           "For repeatable behavior rules within one space, use [[node:instructions|instructions]]",
-          "Pick for your current task: personal context → Memory, team/version-controlled → Projects/CLAUDE.md/instructions"
+          "Pick for your current task: personal context, then Memory; team/version-controlled, then Projects/CLAUDE.md/instructions"
         ],
         "validate": "For a specific task, you can justify the choice between Memory, Projects, and instructions.",
         "tip": "The key question: \"is this about ME or about the TEAM/PROJECT?\" About me — Memory; about the team — Projects/CLAUDE.md."
@@ -6120,7 +6120,7 @@
         "instructions": [
           "Check the plan: computer control is available on paid plans (Pro or Max), not the free tier.",
           "Install and open [[node:pl-desktop|Claude Desktop]] — screen control works through the desktop app, not the web version.",
-          "On macOS, grant system permissions: Screen Recording (to see the screen) and Accessibility (to move the cursor and click) under System Settings → Privacy & Security.",
+          "On macOS, grant system permissions: Screen Recording (to see the screen) and Accessibility (to move the cursor and click) under System Settings, then Privacy & Security.",
           "Be aware: these permissions give the app real power over your screen and input. Grant them only when you understand why."
         ],
         "validate": "The plan fits, Claude Desktop is installed, both system permissions are granted, and you understand exactly what each one allows.",
@@ -6621,7 +6621,7 @@
       },
       {
         "question": "Write one role sentence for your project and one answer-format sentence. Check: do they repeat what is already set globally?",
-        "hint": "A good role is concrete: \"You are an editor of legal texts.\" A good format states the structure: \"problem → impact → recommendation.\""
+        "hint": "A good role is concrete: \"You are an editor of legal texts.\" A good format states the structure: \"problem, then impact, then recommendation.\""
       },
       {
         "question": "Open a chat in the project and ask a question. Does the answer change as the instruction describes? If not — where is the conflict with the [[node:i-global|global]] rules?",
@@ -6674,7 +6674,7 @@
         "why": "The value of a project instruction is in the specifics of one task or team. Generic wishes duplicate the global layer and change nothing.",
         "instructions": [
           "Describe the role in one precise sentence: \"You are …\" (e.g. an analyst, editor, developer in this topic).",
-          "Set the answer format: structure, tone, length (e.g. \"problem → impact → recommendation\").",
+          "Set the answer format: structure, tone, length (e.g. \"problem, then impact, then recommendation\").",
           "List the constraints of this project: what to avoid, what to rely on.",
           "Remove anything already in the [[node:i-global|global]] rules — keep only the narrow part."
         ],
@@ -6714,7 +6714,7 @@
     "subtitle": "One consistent tone without repeating \"keep it short\" in every chat",
     "totalTime": "6 steps",
     "whatItIs": "Response style means length, format (lists or paragraphs), level of formality, emoji, and language. By default Claude answers \"average for everyone\": opener phrases, extra emoji, paragraphs where bullets would fit. Through [[node:instructions|Custom Instructions]] you set the style once and it applies to every chat.\n\nThis tutorial teaches you to state style concretely — not \"be friendlier\" but \"no openers, use bullets, headers up to H3\". The result: answers ready to use without edits.",
-    "approach": "Describe style through measurable parameters, not emotions. \"Short\" → \"no more than 5 bullets\". \"Professional\" → \"no emoji, no opener phrases\". Test the style in one chat first, then lock it into instructions.",
+    "approach": "Describe style through measurable parameters, not emotions. \"Short\" becomes \"no more than 5 bullets\". \"Professional\" becomes \"no emoji, no opener phrases\". Test the style in one chat first, then lock it into instructions.",
     "outcomes": [
       "You understand the 5 style parameters: length, format, formality, emoji, language",
       "You can turn vague \"be shorter\" into a concrete rule",
@@ -6789,8 +6789,8 @@
         "time": "",
         "why": "Claude doesn't guess emotions. \"Be friendlier\" gets interpreted randomly; a measurable rule is followed precisely.",
         "instructions": [
-          "Turn each preference into a measurable rule: \"short\" → \"no more than 5 bullets\".",
-          "Replace emotions with bans or permissions: \"professional\" → \"no emoji, no openers like 'great question'\".",
+          "Turn each preference into a measurable rule: \"short\" becomes \"no more than 5 bullets\".",
+          "Replace emotions with bans or permissions: \"professional\" becomes \"no emoji, no openers like 'great question'\".",
           "State the format explicitly: \"answer in bullets\", \"headers up to H3 max\".",
           "Collect the rules into a short block of 3-5 lines — no wall of text."
         ],
@@ -7280,7 +7280,7 @@
         "time": "",
         "why": "This is the foundation of the whole course. Grasp one idea — \"the model just guesses the next chunk of text\" — and the rest falls into place, and unrealistic expectations disappear.",
         "instructions": [
-          "Recall how your phone suggests a word in a text: \"I'll be...\" → \"home / late / there soon\". The model does the same, just at a different scale.",
+          "Recall how your phone suggests a word in a text: \"I'll be...\" becomes \"home / late / there soon\". The model does the same, just at a different scale.",
           "Replace \"word\" with \"next chunk of text\": the model looks at all the prior text and picks the most plausible continuation.",
           "Remember: it wasn't trained on your texts, but on a huge slice of the internet — Wikipedia, books, articles, forums.",
           "Connect the names: Claude, ChatGPT, Gemini are all LLMs (large language models). Different models = different sizes and data.",
@@ -7411,7 +7411,7 @@
     ],
     "steps": {
       "s1": {
-        "title": "What an embedding is: text → vector of meaning",
+        "title": "What an embedding is: text becomes a vector of meaning",
         "time": "",
         "why": "Without the intuition \"a word becomes numbers\", everything else sounds like magic. This step removes the magic.",
         "instructions": [
@@ -7458,7 +7458,7 @@
           "Embeddings produce numbers — those numbers need to be stored and searched for nearest matches",
           "That's the job of [[node:af-vector-db|vector DBs]]: storage tuned for finding close vectors",
           "On top of that runs [[node:af-rag-basics|RAG]]: it finds the relevant chunks and feeds them to the AI for the answer",
-          "Assemble the chain: text → embedding → vector DB → RAG finds and answers",
+          "Assemble the chain: text, then embedding, then vector DB, then RAG finds and answers",
           "All of this is part of [[node:ai-fundamentals|AI fundamentals]], not separate exotica"
         ],
         "validate": "You can sketch the four-link chain and state what each link is responsible for.",
@@ -7566,7 +7566,7 @@
           "Large documents are split into chunks beforehand — so search can find the specific relevant fragment.",
           "Once loaded, the database is ready: meanings sit there waiting for a query."
         ],
-        "validate": "You can describe the path \"text → number set → record in the database\" in your own words.",
+        "validate": "You can describe the path \"text, then number set, then record in the database\" in your own words.",
         "tip": "A separate model creates the embeddings — the database only stores and searches."
       },
       "s3": {
@@ -7592,7 +7592,7 @@
           "The model answers based on your data, not on general knowledge from training.",
           "So the database handles \"find the right thing\", and the model handles \"phrase the answer\"."
         ],
-        "validate": "You can order the RAG steps: question → search in the database → pass to model → answer.",
+        "validate": "You can order the RAG steps: question, then search in the database, then pass to model, then answer.",
         "tip": "The database finds, the model phrases — different roles, don't mix them up."
       },
       "s5": {
@@ -7628,7 +7628,7 @@
     "subtitle": "From question to sourced answer — in 6 steps",
     "totalTime": "6 steps",
     "whatItIs": "RAG (Retrieval-Augmented Generation) is a way to make AI answer not from its head, but from your documents. The AI first finds relevant chunks in your knowledge base, reads them, and only then forms an answer. Like a cheat-sheet at an exam: open the right section first, then answer. For how it's built — [[node:sys-rag-architecture|RAG architecture]].",
-    "approach": "We go from \"why\" to \"how\": first understand the problem RAG solves, then break the pipeline into parts (chunking → [[node:af-embeddings|embeddings]] → [[node:af-vector-db|vector DB]] → search → answer), then what drives quality, why RAG beats simply uploading a file, common mistakes, and where to start. Conceptual but practical: every step can be touched in [[node:ai-fundamentals|AI fundamentals]].",
+    "approach": "We go from \"why\" to \"how\": first understand the problem RAG solves, then break the pipeline into parts (chunking, then [[node:af-embeddings|embeddings]], then [[node:af-vector-db|vector DB]], then search, then answer), then what drives quality, why RAG beats simply uploading a file, common mistakes, and where to start. Conceptual but practical: every step can be touched in [[node:ai-fundamentals|AI fundamentals]].",
     "outcomes": [
       "Explain in plain words what RAG is and why it's needed",
       "Break down the RAG pipeline step by step: chunking, embeddings, vector DB, search, answer",
@@ -7711,7 +7711,7 @@
           "In production add re-ranking: reordering the found chunks by accuracy"
         ],
         "validate": "You can explain why chunks that are too big and too small both hurt quality.",
-        "tip": "Naive RAG (grab top 3 chunks → hand to AI) works at 50%. Tuning chunking and relevance raises it to 80-90%."
+        "tip": "Naive RAG (grab top 3 chunks, then hand to AI) works at 50%. Tuning chunking and relevance raises it to 80-90%."
       },
       "s4": {
         "title": "RAG vs just uploading a file to chat",
@@ -7732,8 +7732,8 @@
         "time": "",
         "why": "Most RAG failures aren't about the model — they're about garbage in and bad chunking. Knowing the common mistakes saves weeks of debugging.",
         "instructions": [
-          "Mistake \"garbage in\": old drafts, duplicates, contradictions in the base → AI answers garbage",
-          "Mistake \"bad chunks\": chunks cut a thought or are too large → search finds the wrong pieces",
+          "Mistake \"garbage in\": old drafts, duplicates, contradictions in the base, so AI answers garbage",
+          "Mistake \"bad chunks\": chunks cut a thought or are too large, so search finds the wrong pieces",
           "Check 1: ask 10 real questions and compare answers against what the documents actually say",
           "Check 2: for each answer, look at which chunks the system found — are they on topic?",
           "Cleanliness beats quantity: remove duplicates and stale content before adding more"
@@ -8034,7 +8034,7 @@
     "outcomes": [
       "Explain the difference between fine-tuning and prompting in your own words",
       "Understand when fine-tuning is genuinely needed versus wasted spend",
-      "Know the choice ladder: prompt → few-shot → RAG → fine-tune",
+      "Know the choice ladder: prompt, then few-shot, then RAG, then fine-tune",
       "Estimate the real cost and complexity of fine-tuning before you start",
       "Stop confusing \"trendy\" with \"needed\" when picking an approach"
     ],
@@ -8160,7 +8160,7 @@
     "title": "What an AI Workflow really is — in plain terms",
     "subtitle": "Turn \"AI helps me\" into a repeatable process with predictable quality",
     "totalTime": "6 steps",
-    "whatItIs": "An AI workflow is a stable chain \"input → AI processes → result is checked → passed on\" that runs the same way every day. It's not a single chat prompt and not just a trigger firing: it's a process where AI plays a specific role and you get a stable result without re-explaining context each time.",
+    "whatItIs": "An AI workflow is a stable chain \"input, then AI processes, then result is checked, then passed on\" that runs the same way every day. It's not a single chat prompt and not just a trigger firing: it's a process where AI plays a specific role and you get a stable result without re-explaining context each time.",
     "approach": "The course moves from understanding \"what it is and when you need it\" to being able to assemble a working workflow yourself. First we tell a workflow apart from chat and from blind automation, then break down its anatomy (input, AI steps, a check point, output), then build a simple process for one task, test it on a real example, draw the boundaries and risks, and close with a readiness checklist.",
     "outcomes": [
       "You tell a workflow apart from a one-off chat and from trigger-based automation",
@@ -8197,7 +8197,7 @@
       },
       {
         "question": "Take the chosen task and lay it out as a chain: what comes in, what steps AI does, where a human checks, what goes out.",
-        "hint": "The simplest form is a [[node:sys-linear-chain|Linear Chain]] A → B → C. No more than 4-5 steps for the first time."
+        "hint": "The simplest form is a [[node:sys-linear-chain|Linear Chain]] A, then B, then C. No more than 4-5 steps for the first time."
       },
       {
         "question": "In your chain, find the step that must not be handed to AI without a human check. Why is that one risky?",
@@ -8210,7 +8210,7 @@
         "time": "",
         "why": "Without a clear sense of how a workflow differs from chat and from blind automation, it's easy to spend effort where a one-off prompt would do — or, the other way around, to do by hand for years what should long ago have become a process.",
         "instructions": [
-          "Memorize the core: a workflow = \"input → AI processes → result is checked → passed on\", the same way every day.",
+          "Memorize the core: a workflow = \"input, then AI processes, then result is checked, then passed on\", the same way every day.",
           "Tell it apart from chat: in chat you re-explain context every time — fine for a one-off, not for 50 repeats a week.",
           "Tell it apart from blind automation: a workflow isn't just \"a trigger fired\" — AI performs a meaningful processing step inside it.",
           "Check the applicability threshold: the task repeats more than 3 times a week, you catch yourself thinking \"this same prompt again\" or \"copying data back and forth again\"."
@@ -8224,13 +8224,13 @@
         "why": "To assemble a process yourself you need to see its parts: every workflow breaks down into the same blocks. Whoever sees the blocks can fix and extend it, not just run someone else's.",
         "instructions": [
           "Identify the four blocks of any workflow: input (what comes in), AI steps (what gets processed), check point (where a human looks), output (what's passed on).",
-          "Start with the simplest shape — a [[node:sys-linear-chain|Linear Chain]]: A → B → C, no branches or loops.",
+          "Start with the simplest shape — a [[node:sys-linear-chain|Linear Chain]]: A, then B, then C, no branches or loops.",
           "For each step answer: what does it receive as input and what does it pass to the next step.",
           "Mark where a human is mandatory: that's your future quality control point (more in [[node:sys-quality-gates|Quality Gates]]).",
           "Connect it to the bigger picture: a workflow is a special case of [[node:ai-workflows|AI Workflows]] and a building block of [[node:systems|Systems of agents]]."
         ],
         "validate": "You can draw your workflow as a chain of blocks and point to where the input, the AI, the check, and the output are.",
-        "tip": "If you can't describe a step as \"input → output\", the step is stated vaguely. Split or sharpen it before moving on."
+        "tip": "If you can't describe a step as \"input, then output\", the step is stated vaguely. Split or sharpen it before moving on."
       },
       "s3": {
         "title": "How to assemble a workflow step by step",
@@ -8255,7 +8255,7 @@
           "Input: in the morning AI checks your calendar and takes the day's meetings.",
           "AI steps: for each meeting it finds the customer profile in the CRM, pulls the latest email thread, writes a brief summary (\"yesterday discussed X, open items Y, pain points Z\").",
           "Output: by 8:00 your Slack has summaries for all the day's meetings — you walk in prepared, not \"hold on, let me remember\".",
-          "Match the example's blocks to your own chain from step 3: does the input → steps → output structure line up?"
+          "Match the example's blocks to your own chain from step 3: does the input, then steps, then output structure line up?"
         ],
         "validate": "You can explain which block of the example maps to which block of your own workflow.",
         "tip": "Notice that the check is minimal here because the summary is only for you. The higher the stakes of the output, the stricter the check point must be."
@@ -8280,7 +8280,7 @@
         "why": "A workflow counts as ready not when it \"seems to work\" but when it passes clear criteria. The checklist protects you from putting a half-finished process into daily use.",
         "instructions": [
           "Check: input and output are described concretely — it's clear what the process eats and produces.",
-          "Check: each step does one thing and is phrased as \"input → output\".",
+          "Check: each step does one thing and is phrased as \"input, then output\".",
           "Check: there's a human check point where the cost of error is high.",
           "Check: the workflow covers one task, not everything at once.",
           "Run the process on 2-3 real inputs in a row and compare the results — is it stable from run to run?"
@@ -8292,9 +8292,9 @@
   },
   "sys-linear-chain": {
     "title": "Linear Chain — a simple sequence of steps",
-    "subtitle": "A straight line A → B → C: the most reliable way to assemble an AI task",
+    "subtitle": "A straight line A, then B, then C: the most reliable way to assemble an AI task",
     "totalTime": "6 steps",
-    "whatItIs": "A linear chain is a workflow with no branching: steps run one after another, each taking the previous step's output (A → B → C). No \"if-then\", no parallel branches. It's the basic form of a [[node:sys-workflows-basics|workflow]] and a special case of [[node:sys-prompt-chaining|prompt chaining]], where each step is a separate, understandable piece of logic. About 80% of real AI tasks look exactly like this.",
+    "whatItIs": "A linear chain is a workflow with no branching: steps run one after another, each taking the previous step's output (A, then B, then C). No \"if-then\", no parallel branches. It's the basic form of a [[node:sys-workflows-basics|workflow]] and a special case of [[node:sys-prompt-chaining|prompt chaining]], where each step is a separate, understandable piece of logic. About 80% of real AI tasks look exactly like this.",
     "approach": "The course moves from understanding \"when a linear chain is the right call\" to a working pipeline. First we cover the essence and the limits of applicability, then the mechanics (one step = one meaning, passing the result forward), then we build the chain step by step, walk through a live example, outline the risks and boundaries, and finally run a readiness checklist with a reliability check.",
     "outcomes": [
       "You understand when a linear chain covers the task and when you need branching",
@@ -8306,15 +8306,15 @@
     "applyIn": [
       {
         "title": "Content pipeline",
-        "description": "Receive an article → translate → check terminology → publish. Each step is debugged separately, and you see where it broke."
+        "description": "Receive an article, then translate, then check terminology, then publish. Each step is debugged separately, and you see where it broke."
       },
       {
         "title": "Inbound processing",
-        "description": "Transcribe meeting audio → extract decisions → send to Notion. A straight line with no branching covers the whole task."
+        "description": "Transcribe meeting audio, then extract decisions, then send to Notion. A straight line with no branching covers the whole task."
       },
       {
         "title": "Screening and scoring",
-        "description": "Read a resume → extract skills → match to a job → score. A sequence of steps = a transparent result."
+        "description": "Read a resume, then extract skills, then match to a job, then score. A sequence of steps = a transparent result."
       }
     ],
     "pitfalls": [
@@ -8326,15 +8326,15 @@
     ],
     "exercises": [
       {
-        "question": "Your task: incoming client email → identify the topic → draft a reply → send. Is this a good linear chain or do you need branching?",
+        "question": "Your task: incoming client email, then identify the topic, then draft a reply, then send. Is this a good linear chain or do you need branching?",
         "hint": "Ask yourself: does each step follow the previous one without conditions? If \"identify the topic\" doesn't change the route ahead but just feeds the next step — a linear chain fits."
       },
       {
         "question": "One step in your chain reads: \"read the document, summarize, and translate to English.\" What's wrong with it and how do you fix it?",
-        "hint": "That's three actions in one step. Split it into three: read → summarize → translate. Debugging each separately becomes far easier."
+        "hint": "That's three actions in one step. Split it into three: read, then summarize, then translate. Debugging each separately becomes far easier."
       },
       {
-        "question": "Where in the chain \"form → welcome email → checklist → contract draft → send\" should you put a checkpoint?",
+        "question": "Where in the chain \"form, then welcome email, then checklist, then contract draft, then send\" should you put a checkpoint?",
         "hint": "Before the irreversible action — sending. A Quality Gate right before the final step catches errors from all previous steps before they reach the client."
       }
     ],
@@ -8349,7 +8349,7 @@
           "If \"but what if…, then differently\" comes up — that's a signal for [[node:sys-branching-logic|branching]], not a linear chain.",
           "Set a rule for yourself: start with a straight line, add complexity only when truly necessary."
         ],
-        "validate": "You can describe the task as \"A → B → C\" with no \"if-then\" in the route.",
+        "validate": "You can describe the task as \"A, then B, then C\" with no \"if-then\" in the route.",
         "tip": "If you're torn between a linear chain and branching — starting linear is almost always right. Adding complexity later is cheaper than untangling premature complexity."
       },
       "s2": {
@@ -8384,8 +8384,8 @@
         "time": "",
         "why": "A live example shows how abstract rules turn into a working pipeline and exactly where a check goes in.",
         "instructions": [
-          "Walk through the \"customer onboarding\" example: form → welcome email → onboarding checklist → contract draft → send.",
-          "Trace how each step's output feeds the next: form data → email personalization → industry for the checklist → pricing in the contract.",
+          "Walk through the \"customer onboarding\" example: form, then welcome email, then onboarding checklist, then contract draft, then send.",
+          "Trace how each step's output feeds the next: form data, then email personalization, then industry for the checklist, then pricing in the contract.",
           "Find the irreversible step — sending — and see why the check is needed right before it.",
           "Imagine a failure at step 3 (\"wrong industry in the checklist\") and confirm only that step gets fixed, not the whole chain."
         ],
@@ -8398,7 +8398,7 @@
         "why": "A linear chain isn't universal. You need to know when it stops working and which mistakes most often break even a simple chain.",
         "instructions": [
           "Limit of applicability: if the route genuinely depends on the data — it's time for [[node:sys-branching-logic|branching]], not stretching the line.",
-          "Overloaded-step risk: several actions in one step → split them into separate ones.",
+          "Overloaded-step risk: several actions in one step, so split them into separate ones.",
           "Silent-failure risk: a step can return a bad result with no explicit error — you need [[node:sys-error-handling|error handling]] and checks.",
           "Error-propagation risk: with no checkpoint, a step-N failure reaches the user.",
           "Anti-pattern: premature complexity \"just in case\" — two simple chains beat one tangled one."
@@ -8450,7 +8450,7 @@
       }
     ],
     "pitfalls": [
-      "A gate at every step — the workflow becomes \"AI 10 seconds → human 5 minutes → AI 10 seconds\", nobody can stand it",
+      "A gate at every step — the workflow becomes \"AI 10 seconds, then human 5 minutes, then AI 10 seconds\", nobody can stand it",
       "\"AI checks AI\": if the main model made a mistake, the checking model makes the same one — you need a different principle (rules) or a human",
       "Too strict a gate: it rejects correct results, the human is called constantly, and people start ignoring the gate",
       "Too loose a gate: it lets errors through and creates a false sense of safety — worse than no gate",
@@ -8458,7 +8458,7 @@
     ],
     "exercises": [
       {
-        "question": "In the workflow \"generate a post → check → publish on social media\", where do you put a gate and of what type?",
+        "question": "In the workflow \"generate a post, then check, then publish on social media\", where do you put a gate and of what type?",
         "hint": "Publishing is irreversible. Which step has consequences? What can rules check (length, banned words), and what needs a human (tone, appropriateness)?"
       },
       {
@@ -8487,14 +8487,14 @@
       "s2": {
         "title": "How the check before passing on works",
         "time": "",
-        "why": "A gate isn't just a checkmark \"ok\". It's a fork: passed → onward, failed → return with a note on what to fix. Without a clear return, step 1 repeats the same error.",
+        "why": "A gate isn't just a checkmark \"ok\". It's a fork: passed, then onward; failed, then return with a note on what to fix. Without a clear return, step 1 repeats the same error.",
         "instructions": [
           "Picture the gate as a fork with two exits: PASS (onward) and FAIL (back)",
           "Decide who checks: AI by rules (fast, cheap) or a human (slow, but catches meaning)",
           "For FAIL, describe what to return to the previous step: not just \"error\", but \"field X is empty, fix it\"",
           "Tie failure to a human when AI can't cope — this is [[node:sys-escalation-paths|escalation to a human]]"
         ],
-        "validate": "You can draw the gate as a fork: condition → PASS/FAIL → where each outcome goes",
+        "validate": "You can draw the gate as a fork: condition, then PASS/FAIL, then where each outcome goes",
         "tip": "The best return on FAIL is a machine-readable note: which rule was broken and what exactly to fix. Then step 1 doesn't repeat the error blindly."
       },
       "s3": {
@@ -8516,9 +8516,9 @@
         "why": "A concrete example shows how two gates (AI + human) give 95% automation without losing control over the numbers. It's a template for your own task.",
         "instructions": [
           "Step 1: AI generates the contract from the template and customer data",
-          "Gate 1 (AI, by rules): all required fields filled, amounts match the CRM, no duplicate paragraphs; FAIL → return to step 1 with a note",
-          "Gate 2 (human): the lawyer scans for 30 seconds → ok / not ok",
-          "If both gates pass → send; record the result: 95% of contracts without a lawyer, zero number errors"
+          "Gate 1 (AI, by rules): all required fields filled, amounts match the CRM, no duplicate paragraphs; on FAIL return to step 1 with a note",
+          "Gate 2 (human): the lawyer scans for 30 seconds, then ok / not ok",
+          "If both gates pass, then send; record the result: 95% of contracts without a lawyer, zero number errors"
         ],
         "validate": "You understand why there are two gates of different types here and what each catches: AI — formal errors, human — meaning",
         "tip": "A strong move is a two-tier gate: a cheap AI check filters out 95% of formal errors, and the human only steps in on the remaining edge cases."
@@ -8568,11 +8568,11 @@
     "applyIn": [
       {
         "title": "Customer support and triage",
-        "description": "One incoming ticket → refund / how-to / bug / feature-request → different prompts, different tools, different models. Router on Haiku, specialists on Sonnet."
+        "description": "One incoming ticket, then refund / how-to / bug / feature-request, then different prompts, different tools, different models. Router on Haiku, specialists on Sonnet."
       },
       {
         "title": "Email and input triage",
-        "description": "spam / sales / urgent → different actions. The structure and priority of the response depend on an input type you don't know upfront."
+        "description": "spam / sales / urgent, then different actions. The structure and priority of the response depend on an input type you don't know upfront."
       },
       {
         "title": "Multi-stage AI pipelines",
@@ -8583,7 +8583,7 @@
       "Open text output instead of an enum: the model writes \"Refund Request\" instead of \"refund\" and routing breaks. Always a closed enum via JSON schema or tool use.",
       "No default branch: the router returns something unexpected, the code crashes. Always default to fallback or human escalation.",
       "Ignoring confidence: a router at confidence=0.3 confidently routes the wrong way. Minimum: confidence < 0.7 triggers escalation.",
-      "Too many branches: 15 categories drop router accuracy below 70%. Cap at 5-7; otherwise a hierarchy router → sub-router.",
+      "Too many branches: 15 categories drop router accuracy below 70%. Cap at 5-7; otherwise a hierarchy router, then sub-router.",
       "Branching without logging the decision: a ticket lands in the wrong place and you can't inspect what the router decided. Log (input_hash, category, confidence, reason)."
     ],
     "exercises": [
@@ -8593,11 +8593,11 @@
       },
       {
         "question": "The router returned category=\"refund\" with confidence=0.35. What should the workflow do, and why exactly?",
-        "hint": "confidence < 0.7 → don't trust the decision; escalate to a human or fall back, and log the reason. Otherwise the specialist runs a refund flow on the wrong case."
+        "hint": "confidence < 0.7, then don't trust the decision; escalate to a human or fall back, and log the reason. Otherwise the specialist runs a refund flow on the wrong case."
       },
       {
         "question": "The business wants 18 ticket categories in one router. What's the risk and the architectural fix?",
-        "hint": "Combinatorial explosion: the router gets confused, accuracy drops below 70%. Fix: a hierarchy — a top router into 5-7 groups → a sub-router inside each group."
+        "hint": "Combinatorial explosion: the router gets confused, accuracy drops below 70%. Fix: a hierarchy — a top router into 5-7 groups, then a sub-router inside each group."
       }
     ],
     "steps": {
@@ -8634,12 +8634,12 @@
         "why": "A schema with no implementation is useless. Here we assemble the working two-stage shape: a cheap router classifies the input, then code picks a specialized prompt and the right model/tools by category.",
         "instructions": [
           "Step 1 — router: a Haiku call that returns strict JSON matching your decision schema.",
-          "Step 2 — confidence gate: if confidence < 0.7 → escalate_to_human(reason=...) before any branch is chosen.",
+          "Step 2 — confidence gate: if confidence < 0.7, then escalate_to_human(reason=...) before any branch is chosen.",
           "Step 3 — dispatcher: a dict {category: specialist_prompt}, each branch with its own prompt + tools (billing_api, search_kb, etc.).",
           "Step 4 — specialist: a Sonnet call with the chosen prompt; pass metadata {prompt_version, branch} for tracing.",
           "Step 5 — cost optimization: router on a cheap model, specialists on a strong one — typically 5-10x cheaper than one big do-everything call."
         ],
-        "validate": "Your code has two calls (router → specialist), the confidence gate sits BEFORE branch selection, and each branch has its own prompt.",
+        "validate": "Your code has two calls (router, then specialist), the confidence gate sits BEFORE branch selection, and each branch has its own prompt.",
         "tip": "Make the dispatcher a dict, not an if-elif cascade: adding a branch is one line, and the full route list is visible at a glance."
       },
       "s4": {
@@ -8648,8 +8648,8 @@
         "why": "An end-to-end example shows how the pieces fit at real volume: a Haiku router, five Sonnet branches with different tools, a confidence gate, and metadata for monitoring.",
         "instructions": [
           "Read the router_prompt: \"Categorize this support ticket. Return JSON: {category: refund|how-to|bug|feature-request|other, confidence: 0..1, reason}\".",
-          "Trace the gate: routing.confidence < 0.7 → return escalate_to_human(ticket, reason=routing.reason).",
-          "Map branches to tools: refund→billing_api, how-to→search_kb, bug→linear_create, feature-request→feedback_log, other→general.",
+          "Trace the gate: routing.confidence < 0.7, then return escalate_to_human(ticket, reason=routing.reason).",
+          "Map branches to tools: refund to billing_api, how-to to search_kb, bug to linear_create, feature-request to feedback_log, other to general.",
           "Note the metadata {prompt_version: 'router-1.2.0', branch: category} — without it you can't compute accuracy per version.",
           "Read the data-driven rule: if 30% lands in other, that's a signal to add a new branch."
         ],
@@ -8662,12 +8662,12 @@
         "why": "Branching scales badly without discipline. The main risk is a growing number of branches and their combinations: router accuracy drops and the number of paths to test grows nonlinearly.",
         "instructions": [
           "Keep the limit at 5-7 branches per router: at 15+ categories accuracy drops below 70%.",
-          "If you genuinely have more categories, build a hierarchy: a top router into 5-7 groups → a sub-router inside each group (not one flat 20-way enum).",
-          "Count the combinatorics: nested branching (branch → another branch) multiplies the number of paths; each path must be tested and logged.",
+          "If you genuinely have more categories, build a hierarchy: a top router into 5-7 groups, then a sub-router inside each group (not one flat 20-way enum).",
+          "Count the combinatorics: nested branching (branch, then another branch) multiplies the number of paths; each path must be tested and logged.",
           "Don't confuse branching with [[node:sys-loop-patterns|loops]]: repeating one step until a condition is a loop, not a new branch.",
-          "Always keep a default → escalation: an uncovered input must not crash the code or silently go the wrong way."
+          "Always keep a default escalation: an uncovered input must not crash the code or silently go the wrong way."
         ],
-        "validate": "For your case you've named the branch count (≤7) and decided whether you need a router → sub-router hierarchy.",
+        "validate": "For your case you've named the branch count (≤7) and decided whether you need a router, then sub-router hierarchy.",
         "tip": "Before adding a 6th branch, ask: is this truly a new scenario or a sub-type of an existing one? Sub-types are better handled inside a branch than as a new route."
       },
       "s6": {
@@ -8676,8 +8676,8 @@
         "why": "Branching breaks quietly in production without observability and guardrails. The final checklist closes the 5 common failures and fixes the minimal router monitoring.",
         "instructions": [
           "Schema: the router returns a closed enum (not free text), with confidence and reason fields.",
-          "Safety: there's a default branch; confidence below the threshold → escalation/fallback; the code doesn't crash on an unexpected response.",
-          "Size: 3-7 branches per level; more than that → a router → sub-router hierarchy.",
+          "Safety: there's a default branch; confidence below the threshold triggers escalation/fallback; the code doesn't crash on an unexpected response.",
+          "Size: 3-7 branches per level; more than that needs a router, then sub-router hierarchy.",
           "Logging: every decision records (input_hash, category, confidence, reason) plus branch and prompt_version.",
           "Monitoring: a dashboard shows branch distribution, router accuracy (via human-review sampling), and confidence distribution."
         ],
@@ -8690,7 +8690,7 @@
     "title": "Loop patterns: refine until quality",
     "subtitle": "Refinement loops with a stop criterion and budget guards",
     "totalTime": "6 steps",
-    "whatItIs": "A single-pass prompt hits a ceiling: the model will not rewrite its answer \"considering the issue found\" unless you ask explicitly. A loop repeats a step (or chain) until a quality criterion is met or the iteration budget runs out — self-correction without a human.\n\nThree canonical patterns: critique-revise (generator → critic → rewrite with feedback → repeat), a ReAct-style tool-use loop (think → call tool → see result → continue), and a convergence loop (two variants compared, agree in substance → finish). Every loop must have a max-iterations guard (3-10) and stop detection, or cost runs away.",
+    "whatItIs": "A single-pass prompt hits a ceiling: the model will not rewrite its answer \"considering the issue found\" unless you ask explicitly. A loop repeats a step (or chain) until a quality criterion is met or the iteration budget runs out — self-correction without a human.\n\nThree canonical patterns: critique-revise (generator, then critic, then rewrite with feedback, then repeat), a ReAct-style tool-use loop (think, then call tool, then see result, then continue), and a convergence loop (two variants compared, agree in substance, then finish). Every loop must have a max-iterations guard (3-10) and stop detection, or cost runs away.",
     "approach": "A loop without two guards is a bomb under your budget. First formulate a measurable stop criterion (compile, test pass, schema-valid, judge-score ≥ 8/10, embedding cosine > 0.92), then set hard limits: max-iterations AND a cost-cap. The critic must not be the same model with the same prompt as the generator — otherwise it cannot see its own errors. Log every iteration so you can tell where the model \"got lost.\"",
     "outcomes": [
       "Distinguish the three loop patterns and pick the right one for the task",
@@ -8710,7 +8710,7 @@
       },
       {
         "title": "Multi-step agents",
-        "description": "Browsing, research, multi-step calculations: a tool-use loop thinks → calls a tool → sees the result → finishes, under a step limit."
+        "description": "Browsing, research, multi-step calculations: a tool-use loop thinks, then calls a tool, then sees the result, then finishes, under a step limit."
       }
     ],
     "pitfalls": [
@@ -8769,7 +8769,7 @@
           "Set max-iterations: 3 for interactive (UX), 5-10 for async (research, code-gen).",
           "Add a cost guard — a hard cap per request (3-5x average), fail fast on overflow.",
           "Add a time guard: < 30s for interactive, < 5min for async.",
-          "In the loop body: generate → critic-check → if threshold met return; if cost/iter exceeded — return with an overflow flag.",
+          "In the loop body: generate, then critic-check; if threshold met return; if cost/iter exceeded — return with an overflow flag.",
           "Log every iteration: input, output, score, accumulated cost."
         ],
         "validate": "The loop cannot run forever: there is a max-iterations, a cost-cap, and a time guard, and every exit is logged.",
@@ -8977,7 +8977,7 @@
       }
     ],
     "pitfalls": [
-      "Escalating by AI \"confidence\" (confidence < 80% → call a human): AI is almost always confident, so it either doesn't escalate or does so randomly",
+      "Escalating by AI \"confidence\" (confidence < 80%, then call a human): AI is almost always confident, so it either doesn't escalate or does so randomly",
       "Passing a \"bare\" task without context: the agent re-discovers what AI already knew",
       "Over-escalation: AI calls a human for every little thing, people get overloaded, the point of AI is lost",
       "Under-escalation: AI endlessly repeats failing attempts and annoys the customer instead of calling a human",
@@ -9017,8 +9017,8 @@
         "why": "The main mistake is escalating by AI \"confidence\". AI is almost always confident, so such a trigger either doesn't fire or fires randomly. Explainable triggers — by task type and keywords — work predictably. This is adjacent to [[node:sys-confidence-thresholds|confidence thresholds]] but is not replaced by them.",
         "instructions": [
           "Build a keyword trigger list: \"complaint\", \"cancellation\", \"refund\", \"lawsuit\"",
-          "Add a retry threshold: AI failed twice in a row → escalation",
-          "Add risk and amount thresholds: deal above a money threshold → human",
+          "Add a retry threshold: AI failed twice in a row, then escalation",
+          "Add risk and amount thresholds: deal above a money threshold, then human",
           "Mark task categories as \"always human\" (legal, medical, disputed)",
           "Always honor the customer's explicit \"get me a human\" — it's an unconditional trigger"
         ],
@@ -9044,10 +9044,10 @@
         "time": "",
         "why": "Triggers and handoffs come alive only on a real flow. Let's trace escalation from the first message to the agent's decision using e-commerce support.",
         "instructions": [
-          "Customer: \"my order didn't arrive\" → AI checks tracking → stuck at sorting center → replies \"order is delayed, delivery on such-and-such date\"",
-          "Customer: \"this is the third time, I want a full refund\" → AI detects \"refund\" + \"third time\" → escalation trigger fires",
+          "Customer: \"my order didn't arrive\", then AI checks tracking, then stuck at sorting center, then replies \"order is delayed, delivery on such-and-such date\"",
+          "Customer: \"this is the third time, I want a full refund\", then AI detects \"refund\" + \"third time\", then escalation trigger fires",
           "AI prepares for the agent: \"customer Ivanov, order #1234, 3rd delay in 2 months, previously ordered $50k, status — angry. Recommendation: refund + promo code. History: link\"",
-          "Agent opens → immediately sees the context → makes a decision in 2 minutes",
+          "Agent opens, then immediately sees the context, then makes a decision in 2 minutes",
           "Check both outcomes: the customer quickly got a live person, the agent didn't spend 20 minutes on \"tell me again\""
         ],
         "validate": "You can walk through your scenario step by step and, at the escalation point, show which trigger fired and what summary went to the human.",
@@ -9058,8 +9058,8 @@
         "time": "",
         "why": "Escalation breaks both ways. Too much — people are overloaded, AI is useless. Too little — the customer suffers, trust drops. The balance is held by rules, not by AI intuition.",
         "instructions": [
-          "Over-escalation: AI calls a human for every little thing → tighten triggers, remove extra keywords, raise thresholds",
-          "Under-escalation: AI endlessly repeats attempts → add a hard retry threshold and mandatory keyword triggers",
+          "Over-escalation: AI calls a human for every little thing, then tighten triggers, remove extra keywords, raise thresholds",
+          "Under-escalation: AI endlessly repeats attempts, then add a hard retry threshold and mandatory keyword triggers",
           "Track the metric: what percent of tasks actually needed a human vs. what got escalated",
           "Remember the AI boundary: it shouldn't make irreversible decisions (large refund, data deletion) on its own — that's always a human",
           "Review triggers regularly: keywords and thresholds go stale along with the product"
@@ -9152,7 +9152,7 @@
         "instructions": [
           "Split actions on 3 axes: irreversible (delete, payment, email N>10), high-cost (compute > $X), high-risk (production deploy, customer-facing)",
           "Map to 4 tiers: Tier 0 — no approval (read-only, label, draft); Tier 1 — soft (runs + notify + revert); Tier 2 — hard gating; Tier 3 — multi-approval (2+ approvers, 4-eyes)",
-          "Define thresholds via parameters: refund < $50 → tier 0, < $500 → tier 2, else tier 3",
+          "Define thresholds via parameters: refund < $50, then tier 0, < $500, then tier 2, else tier 3",
           "Note where soft approval is enough: internal actions, low-cost reversible, read-only research"
         ],
         "validate": "You have a table of actions with an assigned tier and numeric thresholds where appropriate",
@@ -9177,8 +9177,8 @@
         "time": "",
         "why": "Rules come alive only on a concrete flow. A customer-ops bot with refunds shows all tiers, dry-run, multi-approval, and metrics in one place.",
         "instructions": [
-          "Define APPROVAL_RULES for your domain: refund by amount, send_mass_email by count > 10, delete_account → tier 3",
-          "Walk the tier 2 path: AI proposes a $300 refund → a request with preview is created → notify Slack → await decision → execute or reject",
+          "Define APPROVAL_RULES for your domain: refund by amount, send_mass_email by count > 10, delete_account, then tier 3",
+          "Walk the tier 2 path: AI proposes a $300 refund, then a request with preview is created, then notify Slack, then await decision, then execute or reject",
           "Walk tier 3: delete_account requires 2 approvers, and verify that a single approve does not execute the action",
           "Set up metrics: approval rate (norm > 90%, otherwise the AI is poorly calibrated), median approval latency, rejection-reason distribution"
         ],
@@ -9191,10 +9191,10 @@
         "why": "Approval easily turns into either a bottleneck (everything waits for a human) or a fiction (people stamp without looking). Both extremes kill speed and protection.",
         "instructions": [
           "Bottleneck: approval latency of 1min–1h does not fit urgent paths — those go either tier 0 (auto) or [[node:sys-escalation-paths|escalation]], not a blocking gate",
-          "Approval fatigue: gating trivial actions → people rubber-stamp everything → the guard fails. Gate only actually risky actions",
+          "Approval fatigue: gating trivial actions, then people rubber-stamp everything, then the guard fails. Gate only actually risky actions",
           "Rubber-stamping without preview: \"Approve refund #1234\" with no amount or context = a formality. Always show what/to whom/cost/reversibility",
-          "Single-approver risk: one compromised account → disaster on destructive actions. Use 4-eyes for those",
-          "Stale context: a request with no expiration gets approved on outdated data → wrong action"
+          "Single-approver risk: one compromised account, then disaster on destructive actions. Use 4-eyes for those",
+          "Stale context: a request with no expiration gets approved on outdated data, then wrong action"
         ],
         "validate": "You can name which actions should NOT go through the gate (urgent, trivial) and which 3 measures protect against rubber-stamping (preview, tier-based, expiration)",
         "tip": "If the approver cannot explain what exactly they are approving, the preview is not informative enough. That is a dry-run bug, not a human one."
@@ -9403,9 +9403,9 @@
         "time": "",
         "why": "Without explicit thresholds an AI \"confidently produces nonsense\" as often as it is confidently right: a correct answer and a hallucination look identical, and the user cannot tell them apart — a direct hit to trust.",
         "instructions": [
-          "State the problem: a correct answer and a hallucination are indistinguishable by tone → the user cannot judge the risk.",
+          "State the problem: a correct answer and a hallucination are indistinguishable by tone, then the user cannot judge the risk.",
           "Describe what a threshold gives: the AI explicitly says \"not sure,\" escalates, or falls back to a conservative answer.",
-          "Lock in the trade-off: worse UX in edge cases, but longer-lasting trust → more adoption.",
+          "Lock in the trade-off: worse UX in edge cases, but longer-lasting trust, then more adoption.",
           "Connect to context: this is infrastructure for [[node:systems|production systems]] and part of [[node:ai-human-collaboration|human-AI collaboration]]."
         ],
         "validate": "You can explain in two sentences why \"confidently wrong\" is more dangerous than a visible error and what a threshold changes.",
@@ -9416,7 +9416,7 @@
         "time": "",
         "why": "To set a threshold you need a numeric confidence signal. But all three sources are imperfect, and ignoring their weakness is the classic beginner mistake.",
         "instructions": [
-          "Log-probs: token probabilities; low ones on key tokens → the model is uncertain. Not every API exposes them (Anthropic — partially via structured outputs).",
+          "Log-probs: token probabilities; low ones on key tokens, then the model is uncertain. Not every API exposes them (Anthropic — partially via structured outputs).",
           "Structured self-report: ask the model to return `{answer, confidence: 0..1, reasoning}`. Cheap, but calibration is weak.",
           "Verification call: a separate LLM call scores confidence against criteria. More expensive but better calibrated.",
           "Remember the key limit: models are systematically overconfident — claimed confidence ≠ real accuracy."
@@ -9429,7 +9429,7 @@
         "time": "",
         "why": "A threshold with no explicit action is useless: \"confidence < 0.5 — then what?\" makes the code crash or return a confused response. Every range needs a defined outcome.",
         "instructions": [
-          "Set the ranges: > 0.8 → respond directly; 0.5–0.8 → hedge (\"Based on what I know…\") + log for review; ≤ 0.5 → escalate or an honest \"I don't know.\"",
+          "Set the ranges: > 0.8, then respond directly; 0.5–0.8, then hedge (\"Based on what I know…\") + log for review; ≤ 0.5, then escalate or an honest \"I don't know.\"",
           "Define an explicit fallback action for each range — no undefined branches.",
           "Tie the low range to [[node:sys-escalation-paths|escalation paths]] and decisions to act via [[node:sys-approval-flows|approval flows]].",
           "Account for segmentation: factual and opinion questions may need different thresholds."
@@ -9457,9 +9457,9 @@
         "why": "The nastiest failure is not the absence of a threshold but a threshold trusted in vain: claimed confidence doesn't match real accuracy, and the whole logic quietly falls apart.",
         "instructions": [
           "Recognize false calibration: the model claims 0.9 but is accurate at 0.65 — the thresholds become meaningless.",
-          "Run a calibration process quarterly: sample 200 responses across buckets → human-label correctness → plot confidence vs accuracy → adjust.",
+          "Run a calibration process quarterly: sample 200 responses across buckets, then human-label correctness, then plot confidence vs accuracy, then adjust.",
           "Calibration target: 80% claimed confidence ≈ 80% real accuracy (±5%).",
-          "Don't tune thresholds \"by gut\": any change → A/B test → measure → roll back if there's no gain.",
+          "Don't tune thresholds \"by gut\": any change, then A/B test, then measure, then roll back if there's no gain.",
           "Don't hide uncertainty for UX — an honest hedge wins in the long run."
         ],
         "validate": "You can describe how to check calibration on data and why shifting a threshold without measurement is more dangerous than it looks.",
@@ -9779,7 +9779,7 @@
     "exercises": [
       {
         "question": "A Skill generates a weekly report, and its SKILL.md has grown to 80 lines because of an inline template. What do you move into a separate file, and how do you reference it?",
-        "hint": "The report template → templates/report.md. In SKILL.md keep a short instruction: \"Fill templates/report.md with user data\"."
+        "hint": "The report template goes in templates/report.md. In SKILL.md keep a short instruction: \"Fill templates/report.md with user data\"."
       },
       {
         "question": "You need the Skill to always return data in a strict shape for another program. What helper file do you add, and why?",
@@ -9879,7 +9879,7 @@
     "title": "Ready-made Skills",
     "subtitle": "Anthropic's catalog: add a skill in one click",
     "totalTime": "6 steps",
-    "whatItIs": "Ready-made Skills are add-ons Anthropic has already written and tested: pptx (presentations), xlsx (spreadsheets), pdf (document analysis), docx (Word files), skill-creator (build your own). The catalog lives in [[node:pl-web-setup|claude.ai]]: Project Settings → Skills → Browse. They're added with one click and work right away.",
+    "whatItIs": "Ready-made Skills are add-ons Anthropic has already written and tested: pptx (presentations), xlsx (spreadsheets), pdf (document analysis), docx (Word files), skill-creator (build your own). The catalog lives in [[node:pl-web-setup|claude.ai]]: Project Settings, then Skills, then Browse. They're added with one click and work right away.",
     "approach": "Don't write your own Skill until you've checked the catalog. First open Browse, pick the right ready-made one, enable it, and confirm Claude actually activates it on your task. Only if nothing fits should you move on to [[node:s-create|building your own]]. This course walks the full cycle: find, choose, enable, verify, tune, and avoid the common traps.",
     "outcomes": [
       "Know where the ready-made Skills catalog is and what's in it",
@@ -9912,7 +9912,7 @@
     "exercises": [
       {
         "question": "You need to turn a long report into a presentation. Which ready-made Skill do you use and where do you find it?",
-        "hint": "Presentations = .pptx. Catalog: Project Settings → Skills → Browse."
+        "hint": "Presentations = .pptx. Catalog: Project Settings, then Skills, then Browse."
       },
       {
         "question": "You enabled a Skill, but Claude seems to ignore it. How do you check it actually activated?",
@@ -9930,7 +9930,7 @@
         "why": "Before doing anything by hand or writing your own Skill, you need to know: half the routine is already covered by Anthropic's ready-made skills.",
         "instructions": [
           "Open [[node:pl-web-setup|claude.ai]] and go into a project.",
-          "Navigate: Project Settings → Skills → Browse.",
+          "Navigate: Project Settings, then Skills, then Browse.",
           "Look through the Anthropic-built Skills: pptx, xlsx, pdf, docx, skill-creator.",
           "Read each description — what it does and which task it's for."
         ],
@@ -9943,7 +9943,7 @@
         "why": "Guessing leads to a Skill that either doesn't fire or does the wrong thing. A Skill is matched to the type of task.",
         "instructions": [
           "State the task in one sentence: 'need a presentation', 'parse a PDF', 'build a table'.",
-          "Match the output type to the Skill's purpose: .pptx → pptx, .xlsx → xlsx, PDF analysis → pdf, Word → docx.",
+          "Match the output type to the Skill's purpose: .pptx for pptx, .xlsx for xlsx, PDF analysis for pdf, Word for docx.",
           "Open the chosen Skill's description and confirm it covers exactly your case.",
           "If none fits — note that: next stop is [[node:s-create|your own Skill]]."
         ],
@@ -10117,14 +10117,14 @@
       "b-anthropic-6": {
         "title": "Putting the picture together",
         "time": "",
-        "why": "The final assembly turns scattered facts into a working model: company → method → behavior → trust.",
+        "why": "The final assembly turns scattered facts into a working model: company, then method, then behavior, then trust.",
         "instructions": [
-          "Retell the chain: who Anthropic is → Constitutional AI → why Claude plays it safe",
+          "Retell the chain: who Anthropic is, then Constitutional AI, then why Claude plays it safe",
           "Look into the [[node:basics|Basics]] section to connect the topic with the rest",
           "State one rule for yourself about assessing trust in Claude's answers"
         ],
         "validate": "You explain the link between the company, the training method and Claude's behavior without prompts.",
-        "tip": "Keep the chain \"company → values → behavior\" as a map for understanding any AI product."
+        "tip": "Keep the chain \"company, then values, then behavior\" as a map for understanding any AI product."
       }
     }
   },
@@ -10133,7 +10133,7 @@
     "subtitle": "Opus, Sonnet, Haiku — when to use which",
     "totalTime": "6 steps",
     "whatItIs": "A practical course on choosing the right Claude model for the task. Opus is the flagship for the most complex work, Sonnet is the best balance of capability and speed, and Haiku is the fastest and lightest. The course teaches you to deliberately balance speed, quality, and cost instead of reflexively reaching for the most powerful model.",
-    "approach": "We move from the nature of the trade-off to practice: first understand that each model trades capability for speed and cost, then learn to profile a task by reasoning depth, volume, and acceptable latency, match a model to each class of work, and assemble a multi-model pipeline (Haiku→Sonnet→Opus). Every step leans on the node: the right choice saves tokens and latency without losing quality.",
+    "approach": "We move from the nature of the trade-off to practice: first understand that each model trades capability for speed and cost, then learn to profile a task by reasoning depth, volume, and acceptable latency, match a model to each class of work, and assemble a multi-model pipeline (from Haiku to Sonnet to Opus). Every step leans on the node: the right choice saves tokens and latency without losing quality.",
     "outcomes": [
       "See the three models as points on a 'capability ↔ speed/cost' axis, not as 'better/worse'",
       "Profile a task by reasoning depth, volume, and acceptable latency in a minute",
@@ -10160,7 +10160,7 @@
       "Using Haiku for complex reasoning — you get shallow results and end up redoing the work",
       "Picking a model out of habit ('I'll grab the most powerful') without checking the task's complexity",
       "Ignoring latency: in interactive scenarios a slow model breaks the experience even if the answer is more accurate",
-      "Not splitting a composite task — running the whole pipeline through one expensive model instead of Haiku→Sonnet→Opus"
+      "Not splitting a composite task — running the whole pipeline through one expensive model instead of from Haiku to Sonnet to Opus"
     ],
     "exercises": [
       {
@@ -10173,7 +10173,7 @@
       },
       {
         "question": "Task: build a document outline draft, then write the text, then do a final expert review. Lay out the model pipeline.",
-        "hint": "Three different classes of work — three models. Recall the node's example: draft→generation→final review."
+        "hint": "Three different classes of work — three models. Recall the node's example: draft, then generation, then final review."
       }
     ],
     "steps": {
@@ -10247,13 +10247,13 @@
         "time": "",
         "why": "Savings and quality grow most when a cheap model preps the work for an expensive one — that's deliberate speed/quality/cost balance in action.",
         "instructions": [
-          "Split the composite task into stages: draft → generation → final review",
+          "Split the composite task into stages: draft, then generation, then final review",
           "Assign a model to each stage: outline draft — Haiku, code generation — Sonnet, final architectural review — Opus",
           "Run everything you can through the cheap model, leaving Opus only the narrow critical part",
           "Tie this to matching a model to the task in [[node:pl-models|Models on the Platform]] if you work through the platform",
-          "Write yourself a personal guide: which class of task → which model"
+          "Write yourself a personal guide: which class of task maps to which model"
         ],
-        "validate": "You laid out at least one of your real processes as a Haiku→Sonnet→Opus pipeline.",
+        "validate": "You laid out at least one of your real processes as a Haiku-to-Sonnet-to-Opus pipeline.",
         "tip": "Each time ask: can I shift part of the work to a cheaper model without losing final quality?"
       }
     }
@@ -10381,7 +10381,7 @@
           "When answers start drifting in a long conversation — collapse the takeaways into a summary and start a fresh conversation from it (like /compact: remove accumulated junk, keep the substance)",
           "Before every large paste, pause: is this relevant to the task or \"just in case\"?",
           "Keep only active data in the window; move finished work outside",
-          "Build a personal hygiene checklist: select → structure → watch for overflow → refresh the conversation",
+          "Build a personal hygiene checklist: select, then structure, then watch for overflow, then refresh the conversation",
           "Reinforce the link to the basics — [[node:basics|Claude basics]]"
         ],
         "validate": "You have your own short checklist and applied it to at least one real conversation.",
@@ -10394,7 +10394,7 @@
     "subtitle": "How one hidden instruction sets Claude's behavior for the whole conversation",
     "totalTime": "6 steps",
     "whatItIs": "A system prompt is a hidden instruction the model reads before the user's first message. It sets the role, style, language, and constraints, and stays in effect across the entire conversation. Unlike a regular message that affects only a single reply, a system prompt is the pre-set \"character\" of your counterpart, defined once and up front.",
-    "approach": "We move from the distinction between two layers (system vs. regular message) to the structure of a working system prompt and rule priority. First we figure out what actually belongs there, then we assemble the prompt from blocks (role → style → format → constraints), test it on real requests, and learn to resolve conflicts when a message argues with the system.",
+    "approach": "We move from the distinction between two layers (system vs. regular message) to the structure of a working system prompt and rule priority. First we figure out what actually belongs there, then we assemble the prompt from blocks (role, then style, then format, then constraints), test it on real requests, and learn to resolve conflicts when a message argues with the system.",
     "outcomes": [
       "You understand the difference between a system prompt and a regular message and don't confuse their roles",
       "You can break behavior into blocks: role, style, language, format, constraints",
@@ -10434,7 +10434,7 @@
       },
       {
         "question": "Break your ideal work assistant into system-prompt blocks: role, style, language, format, constraints. One line per block.",
-        "hint": "Each block answers its own question: who you are → how you sound → in which language → how you structure → what you don't do."
+        "hint": "Each block answers its own question: who you are, then how you sound, then in which language, then how you structure, then what you don't do."
       }
     ],
     "steps": {
@@ -10467,7 +10467,7 @@
       "b-system-3": {
         "title": "Structure: assembling the prompt from blocks",
         "time": "",
-        "why": "Rules dumped in a pile are held worse by the model than ones sorted into blocks. The order \"role → style → format → constraints\" gives predictability.",
+        "why": "Rules dumped in a pile are held worse by the model than ones sorted into blocks. The order \"role, then style, then format, then constraints\" gives predictability.",
         "instructions": [
           "Arrange the five lines from step 2 in order: role first, then style and language, then format, constraints last",
           "Phrase each rule checkably: not \"be helpful,\" but \"first facts, then hypotheses, then recommendations\"",
@@ -10817,7 +10817,7 @@
     "exercises": [
       {
         "question": "You need today's Claude Pro price. Describe a 3-step workflow that returns the current figure instead of an answer from the model's memory.",
-        "hint": "Search the source → fetch the page → pass the real price as context. Think about which tool handles fresh data."
+        "hint": "Search the source, then fetch the page, then pass the real price as context. Think about which tool handles fresh data."
       },
       {
         "question": "Given a task list: translate a paragraph, a competitor's plan price, explain the Strategy pattern, React 19 features. Split into time-sensitive and stable.",
@@ -10874,7 +10874,7 @@
         "why": "For time-sensitive tasks search turns from optional into a mandatory component. It's the main way to get around the cutoff.",
         "instructions": [
           "Take your time-sensitive question from step 3",
-          "Build the workflow: search the source → fetch the page → pass the fact as context",
+          "Build the workflow: search the source, then fetch the page, then pass the fact as context",
           "Use the model's search capability — see [[node:cap-search|Web search]]",
           "Ask for an answer with a source link, not from memory"
         ],
@@ -11036,7 +11036,7 @@
           "Ask one specific question, not \"everything broke, help\""
         ],
         "validate": "You turned a vague complaint into a specific request with details, the error, and context.",
-        "tip": "Rule: expected → got → error text → what you tried. That covers 90% of cases."
+        "tip": "Rule: expected, got, error text, what you tried. That covers 90% of cases."
       }
     }
   },
@@ -11113,7 +11113,7 @@
           "Note for yourself: which kind of task fits you — files on your computer or work in the browser"
         ],
         "validate": "You can name both places and one difference between them.",
-        "tip": "Code and local files → folder. Documents and templates without code → often the cloud is handier."
+        "tip": "Code and local files belong in a folder. Documents and templates without code — often the cloud is handier."
       },
       "fs-what-is-project-3": {
         "title": "What's inside a project folder",
@@ -11146,8 +11146,8 @@
         "time": "",
         "why": "Now that the difference is clear, the choice takes a minute — and you stop mixing up places.",
         "instructions": [
-          "Ask yourself: do I need code and files on my computer? Yes → folder",
-          "Only documents and templates, working in the browser? → cloud Project",
+          "Ask yourself: do I need code and files on my computer? If yes, use a folder",
+          "Only documents and templates, working in the browser? Use a cloud Project",
           "Pick one place for a specific task and stick to it",
           "Write the decision down: \"this task lives there\" — so you don't go searching later"
         ],
@@ -11431,7 +11431,7 @@
     "subtitle": "Set up the npm \"engine\" from scratch — and verify it works",
     "totalTime": "6 steps",
     "whatItIs": "Node.js is the program that runs npm commands on your computer. npm is how you install [[node:cc-install|Claude Code]] and most developer tools. Without Node.js, the `npm install` command simply doesn't exist on your system. Installation takes a couple of minutes and is done once per machine.",
-    "approach": "We follow the principle \"download LTS → install → verify\". LTS is the stable, long-term-support version — that's the one to install (fresh, not ancient). On Mac it's easiest via Homebrew or the official installer; on Windows via the installer from nodejs.org. At the end two short commands `node -v` and `npm -v` confirm everything is in place.",
+    "approach": "We follow the principle \"download LTS, install, verify\". LTS is the stable, long-term-support version — that's the one to install (fresh, not ancient). On Mac it's easiest via Homebrew or the official installer; on Windows via the installer from nodejs.org. At the end two short commands `node -v` and `npm -v` confirm everything is in place.",
     "outcomes": [
       "You understand why Node.js is needed for Claude Code and npm",
       "You know the difference between LTS and Current and why we pick LTS",
@@ -11507,7 +11507,7 @@
         "why": "Mac has two convenient paths; pick one. If you're on Windows, skip to step 4.",
         "instructions": [
           "Option 1 (if you have Homebrew): open Terminal and type `brew install node`.",
-          "Option 2 (no Homebrew): download the .pkg installer from nodejs.org and go through the \"Next → Next\" wizard.",
+          "Option 2 (no Homebrew): download the .pkg installer from nodejs.org and go through the \"Next, Next\" wizard.",
           "Wait for it to finish — usually under a minute.",
           "Close the Terminal window and open a new one so the system sees the new program."
         ],
@@ -11560,7 +11560,7 @@
     "subtitle": "What each plan includes, who needs which, and how to avoid overpaying",
     "totalTime": "6 steps",
     "whatItIs": "Claude's plan lineup is simple: you pay not for individual features but for **access tier to models + quota volume**. Free is a trial (limited models, low quotas). Pro is for daily individual work with all models. Max gives the same models but much higher Opus limits. Team adds Projects and shared team billing. This course teaches you to read the lineup and match a plan to your real usage rather than the marketing.",
-    "approach": "We start from your actual scenario, not from a price table. First we unpack how plans really differ (models and quotas, not features), then we estimate your weekly Opus and long-session volume, then we map it against the Pro→Max and one→Team thresholds. We deliberately don't memorize prices — Anthropic changes them 1-2 times a year, so the final step is always \"check anthropic.com/pricing\".",
+    "approach": "We start from your actual scenario, not from a price table. First we unpack how plans really differ (models and quotas, not features), then we estimate your weekly Opus and long-session volume, then we map it against the thresholds from Pro to Max and from one seat to Team. We deliberately don't memorize prices — Anthropic changes them 1-2 times a year, so the final step is always \"check anthropic.com/pricing\".",
     "outcomes": [
       "You understand that Pro/Max/Team give identical functionality — the difference is only models and limits",
       "You can estimate your weekly Opus and long-session volume to choose between Pro and Max",
@@ -11654,7 +11654,7 @@
           "Don't jump to Max \"just in case\" — hitting the wall once every couple of weeks isn't a reason",
           "If you pay for Pro but only sit on Sonnet — reconsider: you aren't using the main advantage a paid plan is taken for"
         ],
-        "validate": "You've chosen Pro or Max and can name a concrete reason (e.g. \"I hit Opus 3-4 times a week → Max\").",
+        "validate": "You've chosen Pro or Max and can name a concrete reason (e.g. \"I hit Opus 3-4 times a week, so Max\").",
         "tip": "Max pays off through removed friction: if you wait daily for the Opus limit to reset, the lost time is worth more than the price difference."
       },
       "pl-plans-5": {
@@ -11675,7 +11675,7 @@
         "time": "",
         "why": "Choosing a plan isn't a one-time decision. Volume changes, and Anthropic revises plan composition and prices 1-2 times a year. The right habit is to move by fact and always check the primary source.",
         "instructions": [
-          "Agree on triggers with yourself: regularly hitting the limit → upgrade; seats/Opus sitting idle → downgrade",
+          "Agree on triggers with yourself: regularly hitting the limit means upgrade; seats/Opus sitting idle means downgrade",
           "Don't memorize exact prices — they change; keep only the choice logic in mind",
           "Before paying or switching plans, always open anthropic.com/pricing and look at the current composition",
           "Every few months re-check your plan: has volume grown, has a new plan appeared for your case"
@@ -11818,10 +11818,10 @@
   },
   "course-pl-models": {
     "title": "Models per plan: what's available and when you need the bigger one",
-    "subtitle": "Linking plan→models, picking a model for the task, and switching deliberately",
+    "subtitle": "Linking each plan to its models, picking a model for the task, and switching deliberately",
     "totalTime": "6 steps",
     "whatItIs": "A mini-course on which Claude models are available on each plan. Free usually gives Sonnet and Haiku, while Opus unlocks on Pro/Team/Enterprise. The exact model list changes over time, so this course teaches you not to memorize it but to check the current one in the interface and pick a model for the specific task.",
-    "approach": "We go from basics to practice: first the link 'plan→set of models', then reading the current list in [[node:pl-web-setup|claude.ai]], then when you truly need the bigger model, how to switch within a plan, and how to match the choice with your limits. Grounded only in the node's facts, without guessing prices or exact names.",
+    "approach": "We go from basics to practice: first the link from a plan to its set of models, then reading the current list in [[node:pl-web-setup|claude.ai]], then when you truly need the bigger model, how to switch within a plan, and how to match the choice with your limits. Grounded only in the node's facts, without guessing prices or exact names.",
     "outcomes": [
       "You understand why Opus isn't visible on Free — it's a plan limit, not a bug",
       "You can check the current list of available models right in the interface",
@@ -12065,7 +12065,7 @@
         "why": "All platforms run under one account with shared history and subscription. What's left is to lock in the skill: see a task — instantly know the channel.",
         "instructions": [
           "Check that you signed in with one account everywhere — history is in sync",
-          "Boil it down to a rule: chat/docs → web; on the go → mobile; local files → desktop; code → Claude Code; embedding → API",
+          "Boil it down to a rule: chat/docs use web; on the go use mobile; local files use desktop; code use Claude Code; embedding use API",
           "Open the [[node:pl-compare|platform comparison]] and check your cheat sheet",
           "Run a couple of your real tasks through this rule"
         ],
@@ -12085,7 +12085,7 @@
       "You pick a channel for a task in seconds, not by trial and error",
       "You don't pay for API where chat is enough, and don't struggle in chat where an agent is needed",
       "You can switch channels when a task changes character right in the middle of work",
-      "You combine channels in one project: research in chat → edits by the agent → automation via API"
+      "You combine channels in one project: research in chat, then edits by the agent, then automation via API"
     ],
     "applyIn": [
       {
@@ -12119,7 +12119,7 @@
       },
       {
         "question": "Design a 3-stage process for one large task so that each stage runs in its own channel.",
-        "hint": "A typical chain: discuss the approach in chat → make edits with the agent → run it in a batch via API."
+        "hint": "A typical chain: discuss the approach in chat, then make edits with the agent, then run it in a batch via API."
       }
     ],
     "steps": {
@@ -12176,12 +12176,12 @@
         "tip": "Don't use the API for a one-off question. Programmatic access pays off only with repetition or embedding."
       },
       "pl-compare-5": {
-        "title": "Decision map: task → channel",
+        "title": "Decision map: from task to channel",
         "time": "",
         "why": "Knowing the three channels isn't enough — the skill is picking in seconds. That takes a simple decision scheme, not deliberation every time.",
         "instructions": [
           "Build a tree from two questions: does the task touch project files? does it need to be repeated programmatically?",
-          "No files and no repetition → Claude.ai. Files involved → Claude Code. Programmatic repetition/embedding → API",
+          "No files and no repetition means Claude.ai. Files involved means Claude Code. Programmatic repetition/embedding means API",
           "Run 5 of your real tasks through the scheme and check that the choice is obvious",
           "Note the edge cases and justify them in one sentence"
         ],
@@ -12193,8 +12193,8 @@
         "time": "",
         "why": "Strong teams don't pick a channel forever — they switch mid-work when the task changes character. That is what a mature workflow looks like.",
         "instructions": [
-          "Take one large task and break it into stages: research → edits → automation",
-          "Assign each stage its channel: discuss the approach in [[node:pl-web-setup|Claude.ai]] → make edits in [[node:claude-code|Claude Code]] → run a batch via [[node:pl-api|API]]",
+          "Take one large task and break it into stages: research, then edits, then automation",
+          "Assign each stage its channel: discuss the approach in [[node:pl-web-setup|Claude.ai]], then make edits in [[node:claude-code|Claude Code]], then run a batch via [[node:pl-api|API]]",
           "Rehearse the switch: learn to notice the moment dialogue has grown into file work",
           "Cross-check against the overview in [[node:pl-platforms|Claude platforms]] that nothing was missed"
         ],
@@ -12231,7 +12231,7 @@
       }
     ],
     "pitfalls": [
-      "Skipping privacy settings — by default your data may go toward model training; opt out in Settings → Privacy.",
+      "Skipping privacy settings — by default your data may go toward model training; opt out in Settings, then Privacy.",
       "Buying a paid plan immediately without trying the free one — free limits are often enough to start.",
       "Leaving the profile empty and then wondering why Claude answers impersonally.",
       "Writing vague instructions like 'answer well' instead of being specific about role, language, and format.",
@@ -12602,7 +12602,7 @@
     "subtitle": "Pick the right format — so instead of a wall of text you get a live preview you can see at once",
     "totalTime": "6 steps",
     "whatItIs": "An artifact is a separate panel next to the chat where the model assembles the result as a standalone object: an HTML page, a React component, an SVG drawing, a Mermaid diagram, a Markdown document, or just a code file. Each type has its own preview: HTML and React render as a working page, Mermaid and SVG as an image, Markdown as a formatted document, code with syntax highlighting. Choosing the type decides whether you see the finished result live or only text you still have to paste somewhere and run.",
-    "approach": "We move from the question \"what do I want to see in the end\" to picking a type. First we go over which types exist and what each gives you in the preview. Then we learn to match the type to the task (prototype → React, diagram → Mermaid, report → Markdown). Then how to explicitly ask for the type you need, how to read the preview, and how not to over-complicate (don't reach for React where HTML is enough). One principle: the format should match how you'll actually use the result.",
+    "approach": "We move from the question \"what do I want to see in the end\" to picking a type. First we go over which types exist and what each gives you in the preview. Then we learn to match the type to the task (prototype to React, diagram to Mermaid, report to Markdown). Then how to explicitly ask for the type you need, how to read the preview, and how not to over-complicate (don't reach for React where HTML is enough). One principle: the format should match how you'll actually use the result.",
     "outcomes": [
       "You know the main artifact types and what each shows in the preview",
       "You match a type to a task in seconds: prototype, diagram, document, or code file",
@@ -12665,23 +12665,23 @@
         "why": "You can't choose a type without knowing the range. Each type gives its own preview, and understanding this map is the basis of every later decision.",
         "instructions": [
           "Remember the six working types: code file (with highlighting), HTML page, React component, SVG drawing, Mermaid diagram, Markdown document",
-          "Tie each type to its preview: HTML and React → working page, SVG and Mermaid → image, Markdown → formatted document, code → highlighted text",
+          "Tie each type to its preview: HTML and React give a working page, SVG and Mermaid give an image, Markdown gives a formatted document, code gives highlighted text",
           "Note the main distinction: HTML and React are interactive (clickable), while Mermaid, SVG, and Markdown are static (they show but don't react to clicks)",
           "Estimate against your own tasks which type would cover each of them"
         ],
         "validate": "You can name at least four artifact types and say what each shows in the preview.",
-        "tip": "Interactivity (buttons, forms) → HTML/React. Image-diagram → Mermaid/SVG. Text → Markdown. Three families — navigate by them."
+        "tip": "Interactivity (buttons, forms) uses HTML/React. Image-diagram uses Mermaid/SVG. Text uses Markdown. Three families — navigate by them."
       },
       "a-types-3": {
         "title": "Which type for which task",
         "time": "",
-        "why": "The list of types alone is useless without a rule for choosing. The \"task → type\" link is the whole reason to bother understanding artifacts.",
+        "why": "The list of types alone is useless without a rule for choosing. The link from task to type is the whole reason to bother understanding artifacts.",
         "instructions": [
-          "Interface prototype (button, form, mini-page) → React if there's state and logic; HTML if the page is static",
-          "Process, architecture, or relationship diagram → Mermaid flowchart: draws a diagram from a text description",
-          "Icon, simple drawing, logo → SVG: a crisp vector image",
-          "Article, guide, summary, report → Markdown document with headings and lists",
-          "A piece of logic in a specific language without an interface → code file with highlighting"
+          "Interface prototype (button, form, mini-page): React if there's state and logic; HTML if the page is static",
+          "Process, architecture, or relationship diagram: Mermaid flowchart draws a diagram from a text description",
+          "Icon, simple drawing, logo: SVG, a crisp vector image",
+          "Article, guide, summary, report: Markdown document with headings and lists",
+          "A piece of logic in a specific language without an interface: code file with highlighting"
         ],
         "validate": "Give yourself three random tasks and for each name a fitting type within a couple of seconds.",
         "tip": "Ask yourself: \"is this interactivity, an image, or text?\" — and the type is almost chosen."
@@ -12849,13 +12849,13 @@
       "a-trigger-6": {
         "title": "The trigger in the work cycle",
         "time": "",
-        "why": "Creating an artifact isn't the finale but the start of a cycle: create → look → ask for an edit. By linking the trigger to follow-up work, you stop starting from scratch and start iterating on top of what exists.",
+        "why": "Creating an artifact isn't the finale but the start of a cycle: create, then look, then ask for an edit. By linking the trigger to follow-up work, you stop starting from scratch and start iterating on top of what exists.",
         "instructions": [
           "Create an artifact with an explicit request (repeat the lever from step 3)",
           "Without opening a new chat, ask for a change: \"Change the heading and add a button\" — this is the move to [[node:a-iterate|editing the artifact]]",
           "Note: Claude edits the existing artifact rather than spawning a new one in chat",
           "Think about which [[node:a-types|artifact type]] fits your task: code, HTML, document, diagram",
-          "Assemble the chain: trigger → preview → edit — as a single workflow"
+          "Assemble the chain: trigger, then preview, then edit — as a single workflow"
         ],
         "validate": "You run the full cycle: force an artifact, view the result, ask for an edit — and it applies to the same artifact instead of going to chat.",
         "tip": "To make an edit land in the artifact rather than the chat, reference it: \"in the artifact, change…\". That keeps Claude [[node:a-iterate|iterating]] instead of starting over."
@@ -13000,7 +13000,7 @@
     "approach": "We work from the update-vs-rewrite contrast: first learn to see the line between them, then phrase a targeted request (what to change, where, what to leave alone), then judge when each is faster and cheaper. Every step uses one concrete artifact: we edit a color, text, a piece of logic, and compare against a full rewrite.",
     "outcomes": [
       "Distinguish a targeted part-update from a full rewrite and pick the mode deliberately",
-      "Phrase an edit with the formula \"what → where → what to leave alone\"",
+      "Phrase an edit with the formula \"what, where, what to leave alone\"",
       "Judge when an update is faster and cheaper, and when a rewrite wins",
       "Avoid vague \"improve everything\" prompts that make the model break finished work",
       "Connect targeted edits to iterative work on an artifact"
@@ -13048,7 +13048,7 @@
         "instructions": [
           "Open any finished [[node:artifacts|artifact]] of medium length (an interface or a document)",
           "Write down: what you want to change in it and what must stay untouched",
-          "Estimate the share of change: one element among many → update; almost everything changes → rewrite",
+          "Estimate the share of change: one element among many means update; almost everything changes means rewrite",
           "State the rule aloud: \"small and targeted change — I ask to update a part, not rewrite\""
         ],
         "validate": "You can say of any of your requests whether it's an update or a rewrite, and why.",
@@ -13060,9 +13060,9 @@
         "why": "A precise edit rests on three parts: what to change, where exactly, what to leave alone. Without the third part Claude edits the neighbors \"while it's at it.\"",
         "instructions": [
           "Name the element specifically: not \"the button\" but \"the CTA button in the header\"",
-          "State the target value: \"primary color → #0F172A\"",
+          "State the target value: \"primary color, set to #0F172A\"",
           "Add a stop boundary: \"don't touch the rest\", \"keep the structure\"",
-          "Combine into one request: what → where → what to leave alone",
+          "Combine into one request: what, where, what to leave alone",
           "Send it and compare: did exactly the named spot change?"
         ],
         "validate": "Only the stated part changed; neighboring blocks are untouched.",
@@ -13089,7 +13089,7 @@
           "Take the edit from step 2 and estimate how much of the artifact actually changes",
           "An update wins when: a small part changes, the rest is already polished, and prior decisions matter",
           "Assess breakage risk: a targeted edit touches neighbors 3-5× less often than \"improve everything\"",
-          "Set yourself a threshold: \"editing one or two spots → update\""
+          "Set yourself a threshold: \"editing one or two spots means update\""
         ],
         "validate": "You can name three signs that an update beats a rewrite.",
         "tip": "The main saving of an update isn't tokens — it's the manual polish a rewrite would lose."
@@ -13112,10 +13112,10 @@
         "time": "",
         "why": "Targeted edits are a tool inside [[node:a-iterate|iterative polishing]] of an artifact. Knowing which [[node:a-types|types of artifacts]] you're editing lets you choose the mode deliberately.",
         "instructions": [
-          "Run one artifact through a cycle: create → edit targeted 2-3 times → rewrite the section once edits pile up",
+          "Run one artifact through a cycle: create, then edit targeted 2-3 times, then rewrite the section once edits pile up",
           "Notice the artifact type: text, interface, code — each has its own convenient anchors",
           "Treat edits as a series of deliberate updates, not a stream of \"improve more\"",
-          "Lock in a personal rule for the update → rewrite switch for future sessions"
+          "Lock in a personal rule for the switch from update to rewrite for future sessions"
         ],
         "validate": "You run artifact polishing as an alternation of targeted edits and rare rewrites, without losing finished work.",
         "tip": "Tie targeted edits to iteration: each edit is a deliberate step, not a random \"improve.\""
@@ -13127,7 +13127,7 @@
     "subtitle": "How Claude helps you write, explain, debug, and refactor code",
     "totalTime": "6 steps",
     "whatItIs": "Claude is one of the strongest coding models. It writes new code, explains existing code, finds and fixes bugs, refactors, and runs migrations. In [[node:scenarios|Claude.ai]] chat you work with pasted code snippets; in [[node:claude-code|Claude Code]] it reads and edits your project files directly, sees history, and runs commands.",
-    "approach": "The main rule: give context. Claude is exactly as good as its understanding of your task, stack, and constraints. In chat that means pasting real code and describing the environment; in Claude Code it means pointing to files and keeping a [[node:claude-code|CLAUDE.md]] with project rules. Then you work in iterations: request → check the output → refine. Never take code on faith — read it and run it.",
+    "approach": "The main rule: give context. Claude is exactly as good as its understanding of your task, stack, and constraints. In chat that means pasting real code and describing the environment; in Claude Code it means pointing to files and keeping a [[node:claude-code|CLAUDE.md]] with project rules. Then you work in iterations: request, then check the output, then refine. Never take code on faith — read it and run it.",
     "outcomes": [
       "You know when chat [[node:scenarios|Claude.ai]] is enough and when you need [[node:claude-code|Claude Code]] with file access",
       "You can give Claude enough context for code to fit your project on the first or second try",
@@ -13242,7 +13242,7 @@
         "time": "",
         "why": "Development is a cycle, not a single request. In [[node:claude-code|Claude Code]] history and the [[node:claude-code|CLAUDE.md]] make each next iteration more accurate.",
         "instructions": [
-          "Work in iterations: request → check → refine, not one big dump",
+          "Work in iterations: request, then check, then refine, not one big dump",
           "Feed check results back to Claude: what worked, what didn't, what the output was",
           "In Claude Code record stable rules and style in the [[node:claude-code|CLAUDE.md]]",
           "Save successful task phrasings — reuse them as templates"
@@ -13257,7 +13257,7 @@
     "subtitle": "From UX copywriting and prototyping to auditing an interface from a screenshot",
     "totalTime": "6 steps",
     "whatItIs": "A hands-on course on using Claude in design: writing UX copy, building a working prototype in an HTML/React artifact, auditing an interface from a screenshot, and maintaining a design system. Claude is a strong co-designer, especially when it sees the actual layout (via [[node:artifacts|artifacts]] or Figma MCP), but it doesn't replace a designer — it speeds up routine and widens options.",
-    "approach": "We follow a real workflow loop: copy → prototype → audit → system. At each step Claude gets maximum context (screenshot, text, brand rules) and produces options you critique and select from. Text without an image is weak input; feed Claude the visual, not a description of the visual.",
+    "approach": "We follow a real workflow loop: copy, then prototype, then audit, then system. At each step Claude gets maximum context (screenshot, text, brand rules) and produces options you critique and select from. Text without an image is weak input; feed Claude the visual, not a description of the visual.",
     "outcomes": [
       "Write UX copy (buttons, errors, empty states) matched to your product's tone and context",
       "Build a clickable prototype right in an HTML/React artifact without leaving the chat",
@@ -13780,7 +13780,7 @@
     "subtitle": "Turn the \"Create an Artifact\" template into a working interactive prototype in 1-2 iterations",
     "totalTime": "6 steps",
     "whatItIs": "The ready-made \"Create an Artifact\" prompt is a pre-built request skeleton that already includes requirements for preview, responsiveness, and baseline accessibility. You don't write the prompt from scratch — you fill placeholders with your data: artifact type, audience, device, content. The output is an interactive HTML or React prototype, not a text description.",
-    "approach": "We move from template to result along a chain: understand why a ready-made prompt helps → choose the artifact type → fill placeholders with specifics → run it and get a preview → read the prototype and form precise edits → iterate to the target. Each step narrows uncertainty, so almost no edits remain at the end.",
+    "approach": "We move from template to result along a chain: understand why a ready-made prompt helps, then choose the artifact type, then fill placeholders with specifics, then run it and get a preview, then read the prototype and form precise edits, then iterate to the target. Each step narrows uncertainty, so almost no edits remain at the end.",
     "outcomes": [
       "You understand why a ready-made prompt beats a from-scratch request and when to use it",
       "You can pick the right artifact type for the task (page, widget, dashboard, mini-app)",
@@ -13848,7 +13848,7 @@
           "Pick one type and write it into the matching placeholder of the template"
         ],
         "validate": "The artifact type is chosen deliberately: you can explain in one phrase why this one and not its neighbor.",
-        "tip": "Torn between HTML and React — ask: \"will the user press something and see a reaction?\" Yes → React."
+        "tip": "Torn between HTML and React — ask: \"will the user press something and see a reaction?\" If yes, React."
       },
       "rp-artifact-3": {
         "title": "Fill placeholders with specifics",
@@ -14175,7 +14175,7 @@
       "Know when an audit pays off and when it's just an extra step",
       "Can assign the model an expert role and explicit evaluation criteria",
       "Prepare material so recommendations stay tied to context and audience",
-      "Get a structured breakdown: problem → cause → action",
+      "Get a structured breakdown: problem, then cause, then action",
       "Check conclusions for hallucinations and apply only what's justified"
     ],
     "applyIn": [
@@ -14253,10 +14253,10 @@
       "rp-audit-4": {
         "title": "Get a structured breakdown",
         "time": "",
-        "why": "Structured output turns opinions into actions: problem → cause → concrete step.",
+        "why": "Structured output turns opinions into actions: problem, then cause, then concrete step.",
         "instructions": [
           "Ask for output by axis: structure, clarity, risks, alignment, recommendation",
-          "For each problem require the format: what's wrong → why → what to do",
+          "For each problem require the format: what's wrong, then why, then what to do",
           "Set the format via [[node:pr-structured|structured output]] (a table or list)"
         ],
         "validate": "Every item in the breakdown ties to a spot in the material and contains an action.",

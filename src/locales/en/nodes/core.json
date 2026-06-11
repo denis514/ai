@@ -83,11 +83,11 @@
   "b-knowledge": {
     "title": "Knowledge cutoff (what Claude knows and doesn't)",
     "what": "Every model has a **knowledge cutoff** — the date its training data ends. About events, prices, product releases **after** that date the model doesn't know (or knows incompletely).\n\nThe cutoff differs between models and updates when new versions ship. At time of writing the current cutoffs (check current values on anthropic.com):\n- Claude Opus 4 / Sonnet 4: early 2025\n- Claude Haiku 4.5: early 2025\n- Older models (3.5/3.7): earlier\n\n**Trick:** the cutoff isn't a clean stop. The model may know about events a couple months before the cutoff incompletely (under-representation in training data).",
-    "why": "This is why **you can't trust Claude with fresh facts without verification**.\n\nFor product teams it means: an AI workflow that operates on \"current market state\", competitor pricing, new laws — **must** use web search or RAG over fresh sources. Just prompt → Claude → answer without fresh data = production bug.",
+    "why": "This is why **you can't trust Claude with fresh facts without verification**.\n\nFor product teams it means: an AI workflow that operates on \"current market state\", competitor pricing, new laws — **must** use web search or RAG over fresh sources. Just prompt, then Claude, then answer without fresh data = production bug.",
     "when": "**Remember the cutoff when:**\n- Fresh news, releases, articles (past 6-12 months)\n- Prices, plans, limits (of any SaaS)\n- Laws, regulations (change yearly)\n- Library versions, API breaking changes\n- Competitor analysis\n- Any time-sensitive facts\n\n**Cutoff doesn't matter when:**\n- Principles, concepts, patterns (stable for years)\n- Grammar, translation, general writing\n- Math, logic, algorithms\n- Historical analysis where the data is inside the cutoff",
     "impact": "**What changes when you understand the cutoff:**\n- AI workflow architecture: always inject fresh context on time-sensitive tasks\n- Trust calibration: Claude **confidently** speaks about events after the cutoff (training fact) — that's False Confidence, not truth\n- Tool design: [[node:cap-search|Web search]] tool becomes a mandatory component, not optional\n- Quality metric: \"fact-check\" becomes its own workflow step, not default-trust\n\nDeprecate-watch: each model's knowledge cutoff updates when a new version ships. Refresh this node on every major Claude release.",
     "example": "**Anti-pattern:**\n```\nuser: \"How much does Claude Pro cost now?\"\nClaude: \"$20/mo\" ← answer from training, may be outdated\n```\n\n**Correct pattern:**\n```\nuser query: \"How much does Claude Pro cost now?\"\n  ↓\nWorkflow:\n  1. Web search \"Claude Pro pricing\" (use [[node:cap-search|cap-search]])\n  2. Fetch anthropic.com/pricing\n  3. Pass the actual price as context\n  ↓\nClaude: \"According to the current page — $X/mo. (sourced)\"\n```\n\nIf the user is in an IDE, simpler: add today's date plus a source of truth for critical facts to the system prompt.",
-    "mistakes": "**1. Asking \"how much does X cost now\"** — Claude will answer confidently with training data which may be 6-18 months stale. Without fresh context = false answer with high confidence.\n\n**2. Not marking time-sensitive content** — if Atlas says \"Anthropic released X\", without a date it becomes outdated within a year. **Right way**: \"At the time of writing (2026-05): X\". See the `docs/maintenance.md` rule and the deprecate-watch table.\n\n**3. Confusing cutoff with context** — cutoff = what the model knew originally. Context = what you give it in the prompt. If you paste a fresh article into the prompt — Claude uses it, **regardless** of cutoff.\n\n**4. Ignoring cutoff for libraries** — \"tell me the newest React 19 features\" → Claude only knows what was in training. For current info — web search or focus on stable patterns."
+    "mistakes": "**1. Asking \"how much does X cost now\"** — Claude will answer confidently with training data which may be 6-18 months stale. Without fresh context = false answer with high confidence.\n\n**2. Not marking time-sensitive content** — if Atlas says \"Anthropic released X\", without a date it becomes outdated within a year. **Right way**: \"At the time of writing (2026-05): X\". See the `docs/maintenance.md` rule and the deprecate-watch table.\n\n**3. Confusing cutoff with context** — cutoff = what the model knew originally. Context = what you give it in the prompt. If you paste a fresh article into the prompt — Claude uses it, **regardless** of cutoff.\n\n**4. Ignoring cutoff for libraries** — \"tell me the newest React 19 features\", and Claude only knows what was in training. For current info — web search or focus on stable patterns."
   },
   "b-help": {
     "title": "Where to find help",
@@ -131,12 +131,12 @@
     "why": "Half of Claude's capabilities ([[node:claude-code|Claude Code]], MCP, scripts, package installs) live in the terminal. Without it you're limited to [[node:pl-web-setup|claude.ai]] only.",
     "when": "First time — 5 minutes before your first command. The \"black screen\" is no harder than typing into a chat, just different rules.",
     "impact": "The psychological block is removed. The terminal is a tool roughly as complex as a text editor, not as \"programming\".",
-    "example": "Opened Terminal.app → typed `pwd` → saw /Users/name → I know where I am. Next I can `mkdir my-project`.",
+    "example": "Opened Terminal.app, typed `pwd`, saw /Users/name — I know where I am. Next I can `mkdir my-project`.",
     "mistakes": "Being afraid of \"breaking the computer\". In normal use the terminal does nothing irreversible. Only specific commands like rm -rf / are dangerous — and they're easy to not type."
   },
   "fs-folder-create": {
     "title": "Create a folder",
-    "what": "Two ways to make a new folder. Via Finder/Explorer: right click → New Folder. Via terminal: `mkdir folder-name`. Both are valid, both create the same thing. Pick by mood.",
+    "what": "Two ways to make a new folder. Via Finder/Explorer: right click, then New Folder. Via terminal: `mkdir folder-name`. Both are valid, both create the same thing. Pick by mood.",
     "why": "A folder = container for a single project. Without it files pile up on the Desktop and a week later you don't remember which is which.",
     "when": "Every time you start a new topic (new [[node:claude-code|Claude Code]] work, a new set of files to analyze, a new experiment).",
     "impact": "Clear boundary: \"this project — this folder\". Delete project = delete folder, no traces. Copy project = copy folder.",
@@ -149,7 +149,7 @@
     "why": "Without navigation you can't tell [[node:claude-code|Claude Code]] \"work here\". Claude Code always operates in the current folder (the one shown by pwd).",
     "when": "Before every [[node:claude-code|Claude Code]] session. Before installing dependencies. Before running scripts.",
     "impact": "You always know where you are and can jump to where you need fast. 5 seconds vs. 5 minutes of \"where did I end up?\".",
-    "example": "`cd ~/projects/atlas` → `pwd` shows /Users/denisa/projects/atlas → `ls` shows src/, [[node:cc-md|CLAUDE.md]], package.json. I'm ready to launch claude.",
+    "example": "`cd ~/projects/atlas`, then `pwd` shows /Users/denisa/projects/atlas, then `ls` shows src/, [[node:cc-md|CLAUDE.md]], package.json. I'm ready to launch claude.",
     "mistakes": "Running commands without checking `pwd` first — then wondering why files ended up \"who knows where\". Always check where you are before doing anything."
   },
   "fs-install-node": {
@@ -158,7 +158,7 @@
     "why": "Without Node.js, npm install doesn't work — and that means [[node:claude-code|Claude Code]] doesn't work. This is the basic prerequisite before any local AI work.",
     "when": "Once per machine where you'll use [[node:claude-code|Claude Code]]. Version 18+ is enough.",
     "impact": "After install you can grab any npm package with one command. Opens access to [[node:claude-code|Claude Code]], MCP servers, dev tools.",
-    "example": "On mac in the terminal: `brew install node` → wait 30 seconds → `node -v` → see v20.11.0. Done. Next `npm install -g @anthropic-ai/claude-code`.",
+    "example": "On mac in the terminal: `brew install node`, wait 30 seconds, `node -v`, see v20.11.0. Done. Next `npm install -g @anthropic-ai/claude-code`.",
     "mistakes": "Installing an old version (e.g., 14.x) and then being puzzled by \"engine not supported\" errors. Always install a fresh LTS version."
   },
   "platform": {
@@ -176,7 +176,7 @@
     "why": "So you pay for your real level of use. A lower plan = you hit the wall mid-day. An inflated one = you pay for empty seats.\n\nKey trap: Free creates a false impression of Claude's capabilities. Any serious demo hits the quota within an hour and seeds the wrong opinion \"Claude is weak\".",
     "when": "**Free** — first 1-2 days of getting acquainted, not for work.\n**Pro** — daily individual use (5-20 long sessions per week).\n**Max** — if you regularly hit Pro's weekly Opus limit.\n**Team** — Projects shared between ≥3 colleagues + unified billing.\n**Enterprise** — compliance / audit log / SSO are critical.",
     "impact": "The right plan pays for itself within 1-2 weeks via removed friction from limits and Opus access. The wrong one: either you pay for unused seats (Team for two), or daily you waste time waiting for reset (Free for work).",
-    "example": "\"I work with Claude 3-5 hours a day: Sonnet for code + 2-3 long Opus sessions per week. Pro or Max?\" → Pro until you hit the weekly Opus limit. If you hit it regularly — Max.",
+    "example": "\"I work with Claude 3-5 hours a day: Sonnet for code + 2-3 long Opus sessions per week. Pro or Max?\" Answer: Pro until you hit the weekly Opus limit. If you hit it regularly — Max.",
     "mistakes": "❌ Team when the team is < 3 people — overpayment.\n❌ Staying on Free \"until I figure it out\" — limits won't let you figure it out.\n❌ Paying for Pro and only using Sonnet — Opus justifies the price difference.\n\n*deprecate-watch: Anthropic changes exact prices and the plan mix 1-2 times per year — check anthropic.com/pricing.*"
   },
   "pl-limits": {
@@ -185,7 +185,7 @@
     "why": "Limits aren't a bug — they're infrastructure protection from overload. Understanding the window mechanics (rolling, not calendar) changes planning: not \"I'll wait until Monday\", but \"I'll work in short sprints with breaks\".",
     "when": "You notice \"Claude is slowing down\" or a warning appears about approaching the limit — that's usually the 5-hour window. If you hit the wall several times a week on Opus — that's the weekly limit, time to consider Max.",
     "impact": "Understanding the limit lets you spread heavy requests across the day, switch to Sonnet for routine and save Opus for hard tasks. Result — stable productivity without mid-day walls.",
-    "example": "\"Today I have 3 long Opus sessions processing 100k tokens each. When should I do the fourth — now or tomorrow morning?\" → Morning, otherwise you'll hit the 5-hour window and lose 2-3 hours.",
+    "example": "\"Today I have 3 long Opus sessions processing 100k tokens each. When should I do the fourth — now or tomorrow morning?\" Answer: Morning, otherwise you'll hit the 5-hour window and lose 2-3 hours.",
     "mistakes": "❌ Staying on Opus for every task — the fastest way to exhaust the quota. Sonnet handles 80% of work.\n❌ Assuming the limit \"resets at midnight\" — it's rolling, not calendar-based.\n❌ Not watching the usage indicator in the UI — it shows the approach to the limit in advance.\n\n*deprecate-watch: Anthropic regularly tweaks exact numbers and formulas. The structure (5h + weekly) is stable.*"
   },
   "pl-models": {
@@ -208,20 +208,20 @@
   },
   "pl-rate": {
     "title": "Rate limits API",
-    "what": "The Anthropic API has three constraint types:\n\n- **RPM** (requests per minute) — request count per minute\n- **TPM** (tokens per minute) — total token volume (input + output) per minute\n- **Daily tokens** — total token volume per 24 hours\n\nLimits depend on **account tier** (Tier 1 → Tier 4), which grows automatically as usage and spend increase. You can also apply for a higher tier ahead of spikes.\n\nOn excess, the API returns **429 Too Many Requests** with a `retry-after` header.\n\n*As of writing (2026-05) the current per-tier numbers are at [docs.anthropic.com/en/api/rate-limits](https://docs.anthropic.com/en/api/rate-limits). Anthropic adjusts them as infrastructure grows.*",
+    "what": "The Anthropic API has three constraint types:\n\n- **RPM** (requests per minute) — request count per minute\n- **TPM** (tokens per minute) — total token volume (input + output) per minute\n- **Daily tokens** — total token volume per 24 hours\n\nLimits depend on **account tier** (from Tier 1 to Tier 4), which grows automatically as usage and spend increase. You can also apply for a higher tier ahead of spikes.\n\nOn excess, the API returns **429 Too Many Requests** with a `retry-after` header.\n\n*As of writing (2026-05) the current per-tier numbers are at [docs.anthropic.com/en/api/rate-limits](https://docs.anthropic.com/en/api/rate-limits). Anthropic adjusts them as infrastructure grows.*",
     "why": "So prod doesn't fall over on load spikes and so you grow through tiers deliberately. Without understanding rate limits, the first batch job or viral launch becomes a 429 cascade.",
     "when": "On any production integration, batch processing (evals, classification), traffic growth. Tier 1 is usually enough for MVP; production with real users typically needs Tier 2-3.",
     "impact": "Knowing the limits = architecture with retry/backoff, queues and graceful degradation. Without this the service is unstable, users see errors, retention falls.",
-    "example": "\"I'm launching a nightly batch of 50k classifications. What tier is safe?\" → Calculate TPM: 50k × avg tokens per request / target time window. If it doesn't fit Tier 1 — apply for Tier 2 + use Message Batches API (cheaper, separate limit).",
+    "example": "\"I'm launching a nightly batch of 50k classifications. What tier is safe?\" Answer: Calculate TPM: 50k × avg tokens per request / target time window. If it doesn't fit Tier 1 — apply for Tier 2 + use Message Batches API (cheaper, separate limit).",
     "mistakes": "❌ Ignoring 429 in production without backoff — error cascade and instability.\n❌ Not using the `retry-after` header — blind retry loops kill your own limit.\n❌ Not budgeting buffer (80% of limit) — traffic spikes break things needlessly.\n❌ Not knowing about **Message Batches API** for offline loads — that's a 50% discount with a separate limit.\n\n*deprecate-watch: Anthropic revises specific RPM/TPM numbers per tier; the structure (RPM + TPM + daily + tier-based) is stable.*"
   },
   "pl-compare": {
     "title": "Claude.ai vs Code vs API",
     "what": "Three main channels that newcomers confuse. [[node:pl-web-setup|Claude.ai]] — browser chat for everyday tasks. [[node:claude-code|Claude Code]] — CLI/IDE for working with files and code. API — programmatic access for integrations and automation.",
     "why": "Picking the channel for the task determines 50% of success: doing ad-hoc questions through API — slow and expensive; refactoring 20 files inside [[node:pl-web-setup|Claude.ai]] — impossible.",
-    "when": "Right at the start, before subscribing. And again — when the task changes character (chat → code → integration).",
+    "when": "Right at the start, before subscribing. And again — when the task changes character (from chat to code to integration).",
     "impact": "The right channel = 2-5× faster and 2-3× cheaper for the same task.",
-    "example": "Chat / one-off document audit → [[node:pl-web-setup|Claude.ai]]. Repo work → [[node:claude-code|Claude Code]]. Embed Claude into your product / batch → API.",
+    "example": "Chat / one-off document audit, then [[node:pl-web-setup|Claude.ai]]. Repo work, then [[node:claude-code|Claude Code]]. Embed Claude into your product / batch, then API.",
     "mistakes": "Living only in [[node:pl-web-setup|Claude.ai]] when tasks involve files — you miss [[node:claude-code|Claude Code]]. Going into API \"because I'm a developer\" — you miss Claude.ai's ready UI for interactive work."
   },
   "pl-web-setup": {
@@ -231,7 +231,7 @@
     "when": "On day one — before any serious work. Revisit every 2-3 months as your tasks evolve.",
     "impact": "With [[node:instructions|Custom Instructions]]: first draft is already good, you tweak for 5 minutes. Without: you write the full prompt from scratch every time, spending 15-20 minutes on explanations.",
     "example": "After setup: open a new chat, type 'review this email draft' — Claude already knows your role, preferred language, tone, and format. No briefing needed.",
-    "mistakes": "Skipping Privacy settings — by default your data may be used for model training. Opt out in Settings → Privacy if that matters to you."
+    "mistakes": "Skipping Privacy settings — by default your data may be used for model training. Opt out in Settings, then Privacy if that matters to you."
   },
   "pl-desktop": {
     "title": "Claude Desktop",
@@ -272,10 +272,10 @@
   "cap-input-modalities": {
     "title": "Input modalities (what Claude can ingest and process)",
     "what": "Overview of all input channels and special processing modes. Claude isn't just a \"text chatter\" — it's a multi-modal system:\n\n**Input channels:**\n- **Text** — regular chat, system prompts, attachments\n- **[[node:cap-vision|Images]]** — PNG/JPG/WebP/GIF (static). Screenshots, photos, charts, designs\n- **[[node:cap-files|Files]]** — PDF, DOCX, XLSX, CSV, JSON, MD, TXT and more\n- **[[node:cap-search|Web search]]** — fresh info beyond the cutoff date\n\n**Special processing modes:**\n- **[[node:cap-citations|Citations]]** — answers with links to specific document passages\n- **[[node:cap-code-exec|Code execution]]** — Claude runs Python code in a sandbox for calculations",
-    "why": "**Key insight:** if you're using only text → Claude → text, you're working with 30-40% of the tool's capabilities.\n\nFor product/ops teams, this means: an AI workflow that processes only text misses PDFs, screenshots and CSV exports. This blocks automation of real-world tasks that are **always** multi-modal (documents, diagrams, dashboards, product photos).\n\nTo design a workflow correctly — you need to know which input channel to use for which task.",
+    "why": "**Key insight:** if you're using only text, then Claude, then text, you're working with 30-40% of the tool's capabilities.\n\nFor product/ops teams, this means: an AI workflow that processes only text misses PDFs, screenshots and CSV exports. This blocks automation of real-world tasks that are **always** multi-modal (documents, diagrams, dashboards, product photos).\n\nTo design a workflow correctly — you need to know which input channel to use for which task.",
     "when": "**Decision matrix** — which modality to use:\n\n| Task | Modality |\n|------|----------|\n| Analyze a company brand-guide PDF | Files |\n| Review a UX screenshot | Vision |\n| Find recent competitor pricing | Web search |\n| Extract data from invoices/receipts | Vision + Files |\n| Verify claims with source references | Citations |\n| Compute statistics from raw CSV | Code execution |\n| Read code from a screenshot | Vision |\n| Parse a customer survey JSON | Files |\n\n**Combine modalities:** one task may use several (e.g., a landing-page audit = vision screenshot + web search for competitors + files brand guide).",
     "impact": "**What unlocks when you use modalities beyond text:**\n- **Time savings:** automation of 10-100× more tasks (any input, not just chat queries)\n- **Accuracy:** PDF parsing + Vision = fewer OCR errors, direct layout understanding\n- **Scope:** workflows handle what actually arrives as PDF/PNG in real business\n- **Cost-vs-quality:** code execution on CSV is cheaper and more accurate than \"ask Claude to calculate it mentally\"\n\n**Realistic upper bound:** 80-90% of real-world business inputs can be handled by Claude through a combination of modalities. Only voice/video and proprietary file formats need preprocessing.",
-    "example": "**Multi-modal workflow — invoice processing:**\n```\nInput:\n  - PDF: invoice scan from supplier (Files)\n  - Image: receipt photo from employee (Vision)\n  - Web: current tax rates lookup (Web search)\n\nClaude:\n  1. Vision OCRs the receipt → JSON {amount, date, vendor}\n  2. Files parses the invoice → structured tax + line items\n  3. Web search gets the current tax rate for the region\n  4. Code execution: compares invoice tax vs current rate\n  5. Citations: highlights discrepancies in the source documents\n\nOutput: structured report + flagged items for accountant review\n```\n\nThis isn't a futuristic example — it's a typical workflow for finance ops, customer support tier-1, marketing analytics. All modalities work together.\n\n(Conceptual layer — [[node:af-multimodal|Multimodal AI]]: how models process different input types.)",
+    "example": "**Multi-modal workflow — invoice processing:**\n```\nInput:\n  - PDF: invoice scan from supplier (Files)\n  - Image: receipt photo from employee (Vision)\n  - Web: current tax rates lookup (Web search)\n\nClaude:\n  1. Vision OCRs the receipt, producing JSON {amount, date, vendor}\n  2. Files parses the invoice, producing structured tax + line items\n  3. Web search gets the current tax rate for the region\n  4. Code execution: compares invoice tax vs current rate\n  5. Citations: highlights discrepancies in the source documents\n\nOutput: structured report + flagged items for accountant review\n```\n\nThis isn't a futuristic example — it's a typical workflow for finance ops, customer support tier-1, marketing analytics. All modalities work together.\n\n(Conceptual layer — [[node:af-multimodal|Multimodal AI]]: how models process different input types.)",
     "mistakes": "**1. \"I convert everything to text before prompting\"** — context loss. Layout in PDF, color/composition in design — Claude can analyze these. Don't convert.\n\n**2. Using Vision where Files would suffice** — Vision is more expensive (image tokens). If a PDF has a text layer — Files (parseable) is better than a screenshot of the page.\n\n**3. Ignoring code execution for math/data** — \"Claude, calculate the mean of this column\" via text = errors accumulate. Code execution = precise. Same cost, higher accuracy.\n\n**4. Web search instead of Citations** — if you need \"find/confirm this fact in my documents\" — Citations. If \"find fresh data on the internet\" — Web search. Mix them up = wrong tool.\n\n**5. Not using combinations** — workflows that are **only text** or **only vision** are usually sub-optimal. Multi-modal combinations deliver real efficiency gains."
   },
   "cap-vision": {
@@ -284,7 +284,7 @@
     "why": "To discuss design, parse charts, read receipts/documents from photos, run UX audits of layouts.",
     "when": "When you have visual material — a screenshot, photo, diagram, design mockup.",
     "impact": "Opens a whole class of tasks: design critique, infographic analysis, OCR of simple documents.",
-    "example": "Upload a layout → \"Find 5 readability problems and propose fixes\".\n\n(General concept — [[node:af-multimodal|Multimodal AI]]. Claude Vision is the concrete image implementation.)",
+    "example": "Upload a layout, then \"Find 5 readability problems and propose fixes\".\n\n(General concept — [[node:af-multimodal|Multimodal AI]]. Claude Vision is the concrete image implementation.)",
     "mistakes": "Expecting pixel-perfect measurement — Claude sees structure, not exact coordinates."
   },
   "cap-files": {
@@ -293,7 +293,7 @@
     "why": "So Claude works with real documents — reports, contracts, specs, data — not paraphrases.",
     "when": "On document analysis, data conversion, preparing summaries, fact-checking.",
     "impact": "Direct access to file content = high answer accuracy without copy-paste.",
-    "example": "Upload a contract PDF → \"Find risks in the liability and termination sections\".",
+    "example": "Upload a contract PDF, then \"Find risks in the liability and termination sections\".",
     "mistakes": "Uploading huge files whole when you need a single section — burning context. Better to cut out the relevant part."
   },
   "cap-search": {
@@ -310,7 +310,7 @@
     "what": "Memory is a Claude feature that lets the model **remember facts about you across different chats**. Claude stores in long-term memory your role, preferences, work context — and automatically uses them in future conversations.\n\nAvailable in claude.ai on Pro/Max plans (Memory toggle in settings). Via API — a separate memory tool. On enterprise — admin-managed, may be disabled for compliance reasons.",
     "why": "Without memory, every new chat starts from zero — you have to repeat \"I work at a SaaS company, our stack is React+Postgres, audience is product leads\" in every prompt. That's the \"briefing tax\" — on average 100-300 tokens and 30-60 seconds wasted before the real work.\n\nMemory removes that tax: Claude knows the context and focuses on the new task immediately.\n\nFor product personalization (see [[node:ec-personalization|ec-personalization]]) — this is a foundation feature: your AI remembers a returning user across sessions.",
     "when": "**Enable Memory when:**\n- Stable facts about you/work that apply across most tasks (role, industry, stack, voice/tone preferences)\n- Project continuity: long-running projects where details matter weeks later\n- Personalization: building eCommerce/SaaS products where users should feel \"the AI knows me\"\n- Team context: shared knowledge about the company, processes, named entities (see [[node:cs-team-workflow|cs-team-workflow]])\n\n**Do NOT enable / disable Memory:**\n- Sensitive data (PII, financial, medical) — Memory persists, higher leak risk\n- Compliance-restricted industries (healthcare HIPAA, finance) — may break data handling rules\n- One-shot tasks where context preservation has no value\n- When consistency between users matters (e.g., a support agent should behave identically for everyone)",
-    "impact": "**Concrete shifts:**\n- Time-to-task: \"3 minutes setting up context\" → \"0 seconds, straight to the task\"\n- Cost per session: 100-300 tokens less per prompt (cumulatively significant)\n- Personalization signal: in product UX, users feel \"the AI remembers me\" — a top retention driver\n- Friction reduction: returning-user experience is significantly better (see [[node:ec-personalization|ec-personalization]])\n\n**Real signal:** if you find yourself writing the same brief into the top of every claude.ai chat — Memory will save you hours per month.",
+    "impact": "**Concrete shifts:**\n- Time-to-task: from \"3 minutes setting up context\" to \"0 seconds, straight to the task\"\n- Cost per session: 100-300 tokens less per prompt (cumulatively significant)\n- Personalization signal: in product UX, users feel \"the AI remembers me\" — a top retention driver\n- Friction reduction: returning-user experience is significantly better (see [[node:ec-personalization|ec-personalization]])\n\n**Real signal:** if you find yourself writing the same brief into the top of every claude.ai chat — Memory will save you hours per month.",
     "example": "**Use case 1 — Personal assistant:**\nIn Memory: \"I'm Head of Product at a Finnish SaaS company (50-200 employees). Stack: React + Supabase + Tailwind. Voice: action-oriented, no fluff. Content audience — product/ops leads.\"\n\nEvery new chat: \"Write an email to the team about deploy\" — Claude immediately uses the action-oriented tone, no need to explain.\n\n**Use case 2 — eCommerce personalization (via API memory tool):**\nA user returns to the site after 2 weeks. Claude memory loads: previous views, brand preferences, size, abandoned cart. Homepage shows relevant categories without re-onboarding.\n\n**Use case 3 — Team context:**\nProject CLAUDE.md as \"upgraded Memory\": shared facts about the codebase, conventions, naming, current WIP. Every contributor gets the same context on the first prompt.\n\n(General AI memory concept — [[node:af-memory-systems|AI memory]]: short-term context, long-term storage, retrieval.)",
     "mistakes": "**1. Saving one-off info into Memory** — \"remember this email, I'll send it tomorrow\". A month later it's garbage. Memory is for **stable** facts, not a todo list.\n\n**2. Ignoring privacy implications** — Memory persists. If sensitive data is stored (passport numbers, medical diagnoses, financial info), it lives in Anthropic's infrastructure. GDPR — the user must explicitly consent. For production AI products: either disable Memory, or have an explicit privacy policy.\n\n**3. Memory pollution** — too many facts in Memory adds overhead to every prompt + Claude may mix contexts. Sweet spot: 10-30 meaningful facts. Periodically review and clean.\n\n**4. Using Memory instead of CLAUDE.md in code** — for **technical** project context (codebase rules, naming conventions) Memory isn't a fit — it's user-bound. CLAUDE.md is better because it's shared across all contributors and version-controlled.\n\n**5. Trusting Memory as the single source of truth** — Memory is not deterministic. Critical facts (legal, compliance, security) should be written into the system prompt every time, not relying on Memory to \"remember\" them."
   },
@@ -328,13 +328,13 @@
     "what": "Tool use is the mechanism by which Claude calls external functions. You describe a tool via JSON schema (name, parameters, return value), and Claude decides from context when to invoke it and with what arguments.\n\nThis is the foundation of everything beyond chat: [[node:mcp|MCP servers]], [[node:agents|agents]], [[node:skills|skills]], [[node:cc-subagents|sub-agents]] — they're all tool use under the hood.",
     "why": "Without tools, Claude can only say \"how to do it\". With tools, Claude **does**: reads databases, sends emails, calls APIs, updates CRM, runs calculations.\n\nThat's the difference between \"AI writes instructions\" and \"AI completes the task\". For a product team, that's the difference between a copy-paste assistant and real automation.",
     "when": "When the task requires **actions** in the system, not just text:\n- CRM lookup and update\n- Web search for fresh data\n- File read (PDF, CSV, JSON)\n- Code execution (calculations, parsing)\n- Slack/email send\n- Database query\n\nIf the entire task is \"read this document and write a summary\" — tools aren't needed. If it's \"read tickets from Zendesk, classify them, update statuses\" — you can't do it without tools.",
-    "impact": "Tool use turns Claude from an assistant into an executor.\n\nConcrete shifts:\n- Time-to-action: \"10 minutes on manual CRM update\" → \"10 seconds via tool call\"\n- Accuracy: the human-in-the-loop checkpoint becomes \"approve tool calls\" instead of \"redo everything\"\n- Scale: one Claude agent with tools handles 5–10 routine tickets per hour\n\nMost important: no tools, no MCP. No MCP, no real integration. Tool use is the gate to the entire integration ecosystem.",
+    "impact": "Tool use turns Claude from an assistant into an executor.\n\nConcrete shifts:\n- Time-to-action: from \"10 minutes on manual CRM update\" to \"10 seconds via tool call\"\n- Accuracy: the human-in-the-loop checkpoint becomes \"approve tool calls\" instead of \"redo everything\"\n- Scale: one Claude agent with tools handles 5–10 routine tickets per hour\n\nMost important: no tools, no MCP. No MCP, no real integration. Tool use is the gate to the entire integration ecosystem.",
     "example": "JSON schema for a CRM tool:\n```json\n{\n  \"name\": \"update_lead_status\",\n  \"description\": \"Update lead status in Salesforce. Idempotent.\",\n  \"input_schema\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"lead_id\": {\"type\": \"string\"},\n      \"new_status\": {\"type\": \"string\", \"enum\": [\"qualified\", \"contacted\", \"closed\"]}\n    },\n    \"required\": [\"lead_id\", \"new_status\"]\n  }\n}\n```\n\nThen prompt: \"Lead #4521 said yes to the demo. Update status.\" Claude calls `update_lead_status({lead_id:\"4521\", new_status:\"qualified\"})`.\n\nWorkflow:\n1. Define tools with descriptions of **effects**, not just parameters\n2. Pass tools in the API call\n3. Claude returns a tool_use block\n4. Your code executes the function and returns the result\n5. Claude continues the conversation with that result",
-    "mistakes": "**1. Vague descriptions** — \"get_lead\" without saying what it returns or what side effects it has. Claude will guess wrong. Rule: every description must answer \"what happens when I call this\".\n\n**2. Too many tools per call** — Claude loses focus among 20+ tools. Sweet spot: 3–8 tools per task. More → split into agents.\n\n**3. Destructive without confirmation** — `delete_customer` without human-in-the-loop is a disaster waiting to happen. For destructive tools: either wrap with approval, or default to dry-run mode.\n\n**4. Tools-as-RPC** — turning every app function into a tool. Better: 5 high-level tools rather than 50 atomic ones.\n\n**5. Ignoring cost** — each tool call burns tokens (description + arguments + result). At 100k calls/day, that's significant. Cache tool definitions via [[node:cap-caching|prompt caching]]."
+    "mistakes": "**1. Vague descriptions** — \"get_lead\" without saying what it returns or what side effects it has. Claude will guess wrong. Rule: every description must answer \"what happens when I call this\".\n\n**2. Too many tools per call** — Claude loses focus among 20+ tools. Sweet spot: 3–8 tools per task. More than that, split into agents.\n\n**3. Destructive without confirmation** — `delete_customer` without human-in-the-loop is a disaster waiting to happen. For destructive tools: either wrap with approval, or default to dry-run mode.\n\n**4. Tools-as-RPC** — turning every app function into a tool. Better: 5 high-level tools rather than 50 atomic ones.\n\n**5. Ignoring cost** — each tool call burns tokens (description + arguments + result). At 100k calls/day, that's significant. Cache tool definitions via [[node:cap-caching|prompt caching]]."
   },
   "cap-caching": {
     "title": "Prompt caching (cost optimization lever)",
-    "what": "Prompt caching isn't a \"Claude feature\" — it's a **cost optimization lever** when working with large recurring context. Anthropic caches your prompt prefix for 5 minutes (or 1 hour with extended TTL): repeat requests with the same prefix are billed at a discounted rate.\n\nMechanics: set `cache_control: { type: \"ephemeral\" }` on a block in the API request → that block and everything before it is cached. Minimum cacheable block size: 1024 tokens (Sonnet/Opus) or 2048 tokens (Haiku).",
+    "what": "Prompt caching isn't a \"Claude feature\" — it's a **cost optimization lever** when working with large recurring context. Anthropic caches your prompt prefix for 5 minutes (or 1 hour with extended TTL): repeat requests with the same prefix are billed at a discounted rate.\n\nMechanics: set `cache_control: { type: \"ephemeral\" }` on a block in the API request, and that block and everything before it is cached. Minimum cacheable block size: 1024 tokens (Sonnet/Opus) or 2048 tokens (Haiku).",
     "why": "In production AI workflows, **the biggest cost line isn't the model — it's the recurring context**:\n- System prompt with company rules (3-10k tokens) — sent in EVERY request\n- Project Knowledge / [[node:cc-md|CLAUDE.md]] — same every time\n- Tool definitions (see [[node:cap-tools|cap-tools]]) — every request with tools\n- Brand voice examples, few-shot patterns\n\nWithout caching: at 1000 requests/day each prefix is billed in full = $50-200/day wasted. With caching: 90% of those tokens go at the discounted rate.\n\nThis is **the main cost lever** for production AI workflows at scale.",
     "when": "**Enable caching when:**\n- System prompt > 1024 tokens and stable between requests\n- You use tool definitions (see [[node:cap-tools|cap-tools]]) — cache them\n- Long [[node:cc-md|CLAUDE.md]] in Claude Code (effectively auto-cached)\n- Knowledge base passed in each request ([[node:af-rag-basics|RAG]] context)\n- Few-shot examples in [[node:pr-fewshot|few-shot prompts]]\n- ≥10 requests/hour against the same prefix (amortizes cache write cost)\n\n**Do NOT cache when:**\n- Context changes every request (dynamic data)\n- < 1024 tokens in the cacheable block (caching just won't activate)\n- Singleton tasks with no repeats\n- Cache TTL (5 min) insufficient — requests less often than once per 5 min",
     "impact": "**Economics (at time of writing):**\n- Cache write: **1.25×** normal input price (once per block)\n- Cache read: **0.1×** normal input price (each subsequent request)\n- Net savings: **70-90% input costs** on cached blocks with regular usage\n\n**Real case** for a product team:\n- System prompt 8000 tokens + 1000 requests/day\n- Without cache: 8M tokens × $3/1M = **$24/day** = $720/mo just on the recurring system prompt\n- With cache: $3 on write + (999 reads × 8000 × $0.30/1M) = **$2.40/day** = $72/mo\n- Savings: **$648/mo** on a single Workflow\n\nThis is the [[node:sys-cost-management|#1 cost management lever]] for AI-powered products at scale.",
@@ -356,7 +356,7 @@
     "why": "So the numbers aren't \"made up\": real computation, formula validation, real data processing without translating to text.",
     "when": "On table analysis, statistics, conversions, any tasks where \"the model computed\" = \"the model guessed\".",
     "impact": "Code execution turns Claude from a \"smart conversationalist\" into an \"analyst with a calculator\" — numbers are correct, not approximated.",
-    "example": "Upload a sales CSV → \"Compute month-over-month growth, find top-5 anomalies, plot the trend chart\". You get real numbers.",
+    "example": "Upload a sales CSV, then \"Compute month-over-month growth, find top-5 anomalies, plot the trend chart\". You get real numbers.",
     "mistakes": "Asking Claude to compute complex aggregates \"in its head\" without a sandbox — the model may err in arithmetic. Enable Code execution."
   },
   "projects": {
@@ -383,7 +383,7 @@
     "why": "Makes Claude \"specialized\" — it already replies in the needed role (analyst / editor / developer / whatever profile of yours).",
     "when": "Right when creating a Project: without instructions, all answers are generic.",
     "impact": "Without instructions — a generic assistant. With instructions — an expert in your task.",
-    "example": "You're an expert in my domain. Structure: Context → Problem → Impact → Recommendation. English only.",
+    "example": "You're an expert in my domain. Structure: Context, then Problem, then Impact, then Recommendation. English only.",
     "mistakes": "Vague phrases like \"be helpful\" — that's noise, not an instruction."
   },
   "p-team": {
@@ -417,7 +417,7 @@
     "title": "Artifact types",
     "what": "HTML, React components, SVG, Mermaid diagrams, Markdown documents, standalone code files.",
     "why": "Each type has its own preview — you can see the result immediately.",
-    "when": "When choosing format: \"button prototype\" → React, \"process diagram\" → Mermaid, \"report\" → Markdown.",
+    "when": "When choosing format: \"button prototype\" means React, \"process diagram\" means Mermaid, \"report\" means Markdown.",
     "impact": "The right type = a live preview instead of static text.",
     "example": "Format the UX map as a Mermaid flowchart Artifact — I want to see the diagram immediately.",
     "mistakes": "Asking for a React component when plain HTML is enough — adding an unnecessary complexity layer."
@@ -454,7 +454,7 @@
     "what": "Ready-made instructions for Claude: you add a Skill to a Project ([[node:pl-web-setup|claude.ai]]) or create a skills/ folder in [[node:claude-code|Claude Code]] — and Claude follows a recipe instead of guessing what to do.",
     "why": "Without Skills you re-explain \"how exactly\" every time: wasting tokens and getting inconsistent results. A Skill locks in the rules once — and they work every time.",
     "when": "When the same multi-step process repeats ≥ 3 times a week and you want the same result each time.",
-    "impact": "Skill = reproducible quality. Run it → get the same result as last time, without re-explaining anything.",
+    "impact": "Skill = reproducible quality. Run it, get the same result as last time, without re-explaining anything.",
     "example": "Always preparing tasks for developers? Create a \"user-story\" Skill — Claude will ask for the details and format the task using your template, no prompting needed.",
     "mistakes": "Creating a Skill for a one-off task — the value only comes from repetition, otherwise setup costs more time than it saves."
   },
@@ -473,7 +473,7 @@
     "why": "Know the mechanism — understand why a Skill \"didn't fire\": either the description is too vague ([[node:pl-web-setup|claude.ai]]), or you didn't type /skillname ([[node:claude-code|Claude Code]]).",
     "when": "When writing the description for any Skill — this is the most critical element.",
     "impact": "Precise description in [[node:pl-web-setup|claude.ai]] = Skill activates on its own at the right moment. Explicit /command in [[node:claude-code|Claude Code]] = no magic, full control.",
-    "example": "[[node:pl-web-setup|claude.ai]] — description \"Use when user asks to create a presentation or prepare slides\" → Claude activates the Skill automatically when asked \"make me some slides\".\n[[node:claude-code|Claude Code]] — you type /audit → Claude reads SKILL.md and follows the steps, ignoring all other Skills.",
+    "example": "[[node:pl-web-setup|claude.ai]] — description \"Use when user asks to create a presentation or prepare slides\", and Claude activates the Skill automatically when asked \"make me some slides\".\n[[node:claude-code|Claude Code]] — you type /audit, then Claude reads SKILL.md and follows the steps, ignoring all other Skills.",
     "mistakes": "[[node:pl-web-setup|claude.ai]]: a description like \"helps with documents\" — the Skill fires on every question. [[node:claude-code|Claude Code]]: waiting for the Skill to activate on its own — it only runs when you type the explicit /command."
   },
   "s-files": {
@@ -482,16 +482,16 @@
     "why": "Move a long template or question list out of SKILL.md into a separate file — the main file stays short and readable.",
     "when": "When the Skill generates structured output: a report, spreadsheet, or brief based on a template.",
     "impact": "A Skill with a template = a guaranteed output format every time, not \"whatever comes out\".",
-    "example": "Skill structure:\nskills/report/\n  SKILL.md → \"Fill templates/report.md with user data\"\n  templates/report.md → template: Goal / Findings / Recommendations\n\nClaude reads the template and populates it automatically.",
+    "example": "Skill structure:\nskills/report/\n  SKILL.md, containing \"Fill templates/report.md with user data\"\n  templates/report.md, the template: Goal / Findings / Recommendations\n\nClaude reads the template and populates it automatically.",
     "mistakes": "Stuffing a 50-line template directly into SKILL.md — the file becomes unreadable and Claude follows the instruction less reliably."
   },
   "s-ready": {
     "title": "Ready-made Skills",
-    "what": "In [[node:pl-web-setup|claude.ai]]: Project Settings → Skills → Browse → Anthropic-built Skills. Add with one click: pptx (presentations), xlsx (spreadsheets), pdf (document analysis), docx (Word files), skill-creator (build your own Skill).",
+    "what": "In [[node:pl-web-setup|claude.ai]]: Project Settings, then Skills, then Browse, then Anthropic-built Skills. Add with one click: pptx (presentations), xlsx (spreadsheets), pdf (document analysis), docx (Word files), skill-creator (build your own Skill).",
     "why": "Routine tasks — slides, PDF analysis, Excel — are already written and tested by Anthropic. No need to reinvent the wheel.",
     "when": "First step before building your own Skill: check whether a ready-made one already covers your task.",
     "impact": "A ready-made Skill works from the first run — Anthropic already wrote the steps, templates and prompts for you.",
-    "example": "Project Settings → Skills → Browse → add \"pptx\" → type \"Create a presentation from this text: [text]\" → Claude builds a .pptx file using the template.",
+    "example": "Project Settings, then Skills, then Browse, then add \"pptx\", then type \"Create a presentation from this text: [text]\", and Claude builds a .pptx file using the template.",
     "mistakes": "Writing your own Skill for PDF, Excel or slides without checking the ready-made ones — spending 30 minutes where a 1-click solution already exists."
   },
   "s-create": {
@@ -500,7 +500,7 @@
     "why": "Any repeating process is a Skill candidate: text audits, task formatting, report drafting, briefings.",
     "when": "When you use the same process ≥ 3 times a week and are tired of explaining \"how exactly\" to Claude each time.",
     "impact": "Pays off from the 3rd run: saves 5–15 minutes every time you'd otherwise re-explain the process.",
-    "example": "[[node:pl-web-setup|claude.ai]]: type /skill-creator → it asks \"name?\", \"when to activate?\", \"what steps?\" → builds the Skill automatically.\n[[node:claude-code|Claude Code]]: create skills/brief/SKILL.md → write the steps → type /brief in the terminal chat.",
+    "example": "[[node:pl-web-setup|claude.ai]]: type /skill-creator, then it asks \"name?\", \"when to activate?\", \"what steps?\", then builds the Skill automatically.\n[[node:claude-code|Claude Code]]: create skills/brief/SKILL.md, then write the steps, then type /brief in the terminal chat.",
     "mistakes": "Creating a Skill \"just in case\" — without a real repeating need it never pays off and clutters your Project."
   },
   "s-vs-subagents": {
@@ -518,7 +518,7 @@
     "why": "So Claude can actually work with your code — not just give \"paste this snippet\" advice.",
     "when": "For development, refactoring, code audits, automating tasks in the repo.",
     "impact": "A full-featured environment: quality 5-10× higher than \"copy-paste from chat\".",
-    "example": "Run claude in your repo → [[node:cc-cmd-init|/init]] → ask to do a security review of recent commits.",
+    "example": "Run claude in your repo, then [[node:cc-cmd-init|/init]], then ask to do a security review of recent commits.",
     "mistakes": "Using Claude Code without [[node:cc-md|CLAUDE.md]] — the model re-discovers the project every time."
   },
   "cc-install": {
@@ -527,7 +527,7 @@
     "why": "A full-featured CLI agent with access to files, terminal, network — in one command.",
     "when": "Once when setting up the environment — then just claude in the project folder.",
     "impact": "Without installation there are no Skills, no Hooks, no Subagents — this is the base.",
-    "example": "cd ~/projects/site && claude → [[node:cc-cmd-init|/init]] to generate [[node:cc-md|CLAUDE.md]].",
+    "example": "cd ~/projects/site && claude, then [[node:cc-cmd-init|/init]] to generate [[node:cc-md|CLAUDE.md]].",
     "mistakes": "Running outside a git repository — you lose history context and some features."
   },
   "cc-terminal": {
@@ -535,7 +535,7 @@
     "what": "Terminal mode for Claude: sessions, drag-and-drop files, modes (Plan / Fast), hotkeys.",
     "why": "To get the maximum from the CLI: fewer switches, more time in flow.",
     "when": "Every session with [[node:claude-code|Claude Code]] — basic techniques save hours over a week.",
-    "impact": "Before: switch windows → click → edit → return to Claude — every little thing takes 30 seconds. After: all keyboard, no switching — session flows without breaks.",
+    "impact": "Before: switch windows, click, edit, return to Claude — every little thing takes 30 seconds. After: all keyboard, no switching — session flows without breaks.",
     "example": "claude --resume restores yesterday's session. @src/App.jsx — Claude reads the file automatically.",
     "mistakes": "Ignoring sessions and hotkeys — you re-brief the model every time and lose context."
   },
@@ -545,7 +545,7 @@
     "why": "So you don't lose context across breaks and don't re-brief.",
     "when": "On long tasks and when working on several branches in parallel.",
     "impact": "Return to work in 5 seconds instead of re-briefing the model.",
-    "example": "Closed the terminal → tomorrow claude --resume → continue from the same conversation.",
+    "example": "Closed the terminal, then tomorrow claude --resume, then continue from the same conversation.",
     "mistakes": "Ignoring sessions and starting from scratch every time — you lose context and tokens."
   },
   "cc-tty-files": {
@@ -571,7 +571,7 @@
     "what": "Tab — autocomplete path / command, ↑/↓ — history, Esc — interrupt, Ctrl+C — exit.",
     "why": "So you don't take your hands off the keyboard — terminal work in flow.",
     "when": "Every session from day one — within a week this becomes muscle memory.",
-    "impact": "Before: ⌘+Tab → retype the command → enter. After: ↑ or Ctrl+R → found previous → Enter. An hour in the terminal becomes 30 minutes.",
+    "impact": "Before: ⌘+Tab, retype the command, enter. After: ↑ or Ctrl+R, found previous, then Enter. An hour in the terminal becomes 30 minutes.",
     "example": "Tab after @src/ — autocomplete the file path without typing the name.",
     "mistakes": "Using the mouse in the terminal — you lose the main CLI advantage."
   },
@@ -607,7 +607,7 @@
     "what": "~/.claude/settings.json — settings across all your projects: language, response format, Statusline.",
     "why": "For rules applicable everywhere: preferred language, favorite tools, baseline safety.",
     "when": "Initial [[node:claude-code|Claude Code]] setup on a new machine — set everything that doesn't depend on the project.",
-    "impact": "Set once → works in all projects without copy-pasting configs.",
+    "impact": "Set once, works in all projects without copy-pasting configs.",
     "example": "Global allow for safe Bash commands (ls, git status, npm test) — saves confirmations.",
     "mistakes": "Putting project-specific stuff there — junk and risk of conflicts with project settings."
   },
@@ -634,7 +634,7 @@
     "what": "Commands like [[node:cc-cmd-init|/init]], [[node:cc-cmd-clear|/clear]], [[node:cc-cmd-compact|/compact]], /model, /review — built-in and custom. Work in both the terminal and [[node:pl-web-setup|claude.ai]] chats.",
     "why": "Launch complex scenarios with a single press — without a long prompt.",
     "when": "When the task is typical: review, init, context cleanup, model switch.",
-    "impact": "Instead of typing \"help me rename the conversation and compact the history\" — three chars `/r` → autocomplete → Enter. Time saved per session: 15-20 minutes.",
+    "impact": "Instead of typing \"help me rename the conversation and compact the history\" — three chars `/r`, then autocomplete, then Enter. Time saved per session: 15-20 minutes.",
     "example": "/review — structured code review of the current branch. [[node:cc-cmd-compact|/compact]] — compress context without losing history.",
     "mistakes": "Ignoring [[node:cc-cmd-clear|/clear]] when context goes \"stale\" — answer quality drops."
   },
@@ -643,8 +643,8 @@
     "what": "Scans the current project and generates [[node:cc-md|CLAUDE.md]]: stack, conventions, entry points, taboos.",
     "why": "So you don't write [[node:cc-md|CLAUDE.md]] from scratch — the model describes the frame, you fine-tune.",
     "when": "On the first [[node:claude-code|Claude Code]] launch in a new project.",
-    "impact": "30 minutes of manual work → 3 minutes, plus coverage of what you wouldn't have thought of.",
-    "example": "claude in the repo → /init → finalize the \"taboos\" and \"architectural decisions\" sections.",
+    "impact": "30 minutes of manual work becomes 3 minutes, plus coverage of what you wouldn't have thought of.",
+    "example": "claude in the repo, then /init, then finalize the \"taboos\" and \"architectural decisions\" sections.",
     "mistakes": "Using the generated file as final — without edits it's bloated."
   },
   "cc-cmd-clear": {
@@ -671,7 +671,7 @@
     "why": "Different tasks — different models: research on Opus, generation on Sonnet, routine on Haiku.",
     "when": "When the task requires different depth or speed than the starting model.",
     "impact": "The right model = either 5× faster or 2× deeper.",
-    "example": "/model sonnet for routine → /model opus for an architectural decision → back.",
+    "example": "/model sonnet for routine, then /model opus for an architectural decision, then back.",
     "mistakes": "Doing everything on one model — either slow/expensive or shallow."
   },
   "cc-cmd-permissions": {
@@ -680,7 +680,7 @@
     "why": "So you don't confirm every Bash/Edit by hand, but block the destructive.",
     "when": "On initial project setup and when adding new command types.",
     "impact": "80% of confirmations go away — safe actions run automatically.",
-    "example": "/permissions → allow Bash(npm test) and Edit(./src/**), deny Bash(rm -rf:*).",
+    "example": "/permissions, then allow Bash(npm test) and Edit(./src/**), deny Bash(rm -rf:*).",
     "mistakes": "Allowing everything — you lose control over what changes."
   },
   "cc-cmd-agents": {
@@ -689,7 +689,7 @@
     "why": "So you see which agents Claude can call and quickly create new ones.",
     "when": "When configuring hidden processes and debugging why an agent isn't activating.",
     "impact": "Transparency about what Claude can delegate without your involvement.",
-    "example": "/agents → create code-reviewer with the trigger \"review PR\", description and steps.",
+    "example": "/agents, then create code-reviewer with the trigger \"review PR\", description and steps.",
     "mistakes": "Creating an agent without a clear trigger in description — it'll never activate."
   },
   "cc-cmd-mcp": {
@@ -698,7 +698,7 @@
     "why": "So you see what Claude has access to from external systems (tracker, docs, DB).",
     "when": "On connecting a new integration and on errors like \"can't see the data\".",
     "impact": "Access transparency: clear what Claude can read and change outside.",
-    "example": "/mcp → add a server with a token → check that the exposed tools are available.",
+    "example": "/mcp, then add a server with a token, then check that the exposed tools are available.",
     "mistakes": "Connecting everything in a row — each server loads at startup, slowing it down."
   },
   "cc-cmd-review": {
@@ -707,7 +707,7 @@
     "why": "A structured audit instead of \"take a look\" — with priority and rationale.",
     "when": "Before merge, after a large edit, on suspicion of regression.",
     "impact": "Review quality at the level of an experienced developer, time — minutes instead of an hour.",
-    "example": "/review without arguments on the current branch → report with categories \"critical / important / optional\".",
+    "example": "/review without arguments on the current branch, then report with categories \"critical / important / optional\".",
     "mistakes": "Relying only on /review without a human eye — doesn't replace architectural thinking."
   },
   "cc-cmd-custom": {
@@ -716,7 +716,7 @@
     "why": "To turn a recurring long prompt into one short command.",
     "when": "If you repeat the same complex request ≥ 3 times.",
     "impact": "One press instead of 300 characters of prompt — multiplies the speed of recurring routine.",
-    "example": ".claude/commands/dev-task.md → now /dev-task in chat runs your template.",
+    "example": ".claude/commands/dev-task.md, then now /dev-task in chat runs your template.",
     "mistakes": "Making a command for a one-off task — no payoff."
   },
   "cc-hooks": {
@@ -725,7 +725,7 @@
     "why": "Behavior automation: \"after every Write — run the linter\", \"before Bash — check the command\".",
     "when": "When you need a guaranteed action on an event, without reminding the model.",
     "impact": "Hooks turn [[node:claude-code|Claude Code]] from an assistant into a disciplined junior.",
-    "example": "PostToolUse:Write → npx prettier --write $CLAUDE_FILE_PATH",
+    "example": "PostToolUse:Write, then npx prettier --write $CLAUDE_FILE_PATH",
     "mistakes": "Without Hooks, hoping the model \"won't forget\" to format — it will forget."
   },
   "cc-md": {
@@ -761,7 +761,7 @@
     "why": "So you don't switch between terminal and IDE on every edit: fewer context switches, faster review of changes.",
     "when": "When the main work is in the IDE and Claude needs to be \"at hand\" inside the editor, not in a separate terminal window.",
     "impact": "IDE integration = 1.5-2× faster accept/reject cycle vs the terminal; you see the edit in the surrounding code context.",
-    "example": "Install the VS Code extension → Cmd+Shift+P → Claude: ask in current file → the edit arrives as an inline diff.",
+    "example": "Install the VS Code extension, then Cmd+Shift+P, then Claude: ask in current file, and the edit arrives as an inline diff.",
     "mistakes": "Using only the IDE extension and not knowing the CLI — you lose sessions, --resume, plugins. They complement each other, not replace."
   },
   "mcp": {
@@ -770,7 +770,7 @@
     "why": "So Claude sees Linear, Jira, Figma, DBs, files — without copy-paste and manual API wiring.",
     "when": "When Claude needs to \"live\" in your environment: know tickets, read designs, run queries.",
     "impact": "MCP is the difference between \"AI chat\" and \"AI coworker who has access to work tools\".",
-    "example": "Connect MCP Linear → ask \"take all P0 bugs from the sprint and group them by component\".",
+    "example": "Connect MCP Linear, then ask \"take all P0 bugs from the sprint and group them by component\".",
     "mistakes": "Giving an MCP server too many privileges — a potential data leak."
   },
   "m-what": {
@@ -788,7 +788,7 @@
     "why": "Turn on one server — get dozens of ready tools with authentication, schemas and error handling already debugged. Writing your own connector = 1-4 weeks of development plus ongoing maintenance.",
     "when": "When the product is already in the catalog — take the ready-made one. Write your own only if: (a) the service isn't in the catalog, (b) you need specific server-side logic, (c) compliance forbids third-party servers.",
     "impact": "A ready-made server: minutes to connect vs weeks to build your own. Plus — updates arrive automatically when the provider changes their API.",
-    "example": "\"I want Claude to read Linear tickets and open PRs on GitHub.\" → `claude_desktop_config.json`: hook up `@modelcontextprotocol/server-linear` and `@modelcontextprotocol/server-github` with tokens. Working in 10 minutes.",
+    "example": "\"I want Claude to read Linear tickets and open PRs on GitHub.\" Answer: `claude_desktop_config.json`: hook up `@modelcontextprotocol/server-linear` and `@modelcontextprotocol/server-github` with tokens. Working in 10 minutes.",
     "mistakes": "❌ Writing your own Jira/Slack/Figma connector — the official one is enough for 95% of cases.\n❌ Hooking up a community server in prod without code audit — security risk.\n❌ Not checking the token's scope/permissions — you give Claude more rights than needed.\n❌ Skipping **MCP Inspector** for debugging — you lose hours guessing errors.\n\n*deprecate-watch: the server list grows monthly. The structure (official / vendor / community) is stable.*"
   },
   "m-custom": {
@@ -824,7 +824,7 @@
     "why": "Without debugging, \"MCP doesn't see my data\" stays forever. A systematic approach saves hours.",
     "when": "When a new server is connected but Claude \"doesn't use it\" or calls it with wrong parameters.",
     "impact": "Knowing /mcp + logs = fixing the problem in 5-10 minutes instead of random attempts.",
-    "example": "/mcp → check the server is running. Then enable DEBUG via env-var of the server → read stderr.",
+    "example": "/mcp, then check the server is running. Then enable DEBUG via env-var of the server, then read stderr.",
     "mistakes": "Blaming Claude for \"not using MCP\". In 90% of cases the cause is a faulty tool description or a server auth error."
   },
   "instructions": {
@@ -833,7 +833,7 @@
     "why": "So you don't repeat \"answer in English, concise, no fluff\" in every message.",
     "when": "Right when setting up the environment — this is the first investment that pays off from the first conversation.",
     "impact": "Good [[node:instructions|instructions]] = unified tone, style, format across all answers. Without them: each answer feels like a new person — different voice, different structure, no consistency.",
-    "example": "I'm a product manager. Reply tersely, in the format \"fact → consequence → recommendation\", without formal preambles.",
+    "example": "I'm a product manager. Reply tersely, in the format \"fact, then consequence, then recommendation\", without formal preambles.",
     "mistakes": "Writing long rants there like \"help me with everything\" — the model stops noticing what matters."
   },
   "i-global": {
@@ -851,7 +851,7 @@
     "why": "Makes the Project an \"expert\" on one topic — without bloating the global.",
     "when": "Every time you create a serious Project.",
     "impact": "Without them the Project = just a folder with files, not a specialized assistant.",
-    "example": "You're an expert in my domain. Structure: problem → impact → recommendation.",
+    "example": "You're an expert in my domain. Structure: problem, then impact, then recommendation.",
     "mistakes": "Duplicating global instructions in every Project — extend, don't repeat."
   },
   "i-claudemd": {
@@ -892,7 +892,7 @@
   },
   "pr-principles": {
     "title": "Principles",
-    "what": "Context → Role → Task → Format → Constraints. The more concrete, the more accurate.",
+    "what": "Context, then Role, then Task, then Format, then Constraints. The more concrete, the more accurate.",
     "why": "It's the base framework that works almost always.",
     "when": "Before any non-trivial request, spend 30 seconds on structure.",
     "impact": "A structured prompt = an answer you can use without rewriting. Without structure: first draft is \"meh\", you spend another 15 minutes on clarifications and rewrites.",
@@ -910,7 +910,7 @@
   },
   "pr-fewshot": {
     "title": "Few-shot examples",
-    "what": "Give 1-3 input→output examples — and the model picks up the pattern without explanations.",
+    "what": "Give 1-3 input-to-output examples — and the model picks up the pattern without explanations.",
     "why": "This is the strongest technique for non-standard formats and subtle style.",
     "when": "When the format is hard to describe in words or you need a particular tone.",
     "impact": "Few-shot = +30-80% format accuracy vs zero-shot explanation.",
@@ -955,11 +955,11 @@
   },
   "pr-iterate": {
     "title": "Prompt iteration",
-    "what": "A systematic approach to improving a prompt: run → find a concrete failure → make 1 edit (role / example / constraint) → repeat. Not \"rewrite entirely\", but hypothesis → verification.",
+    "what": "A systematic approach to improving a prompt: run, find a concrete failure, make 1 edit (role / example / constraint), repeat. Not \"rewrite entirely\", but hypothesis, then verification.",
     "why": "Most \"bad prompts\" turn into \"great ones\" after 3-5 targeted iterations. Without a method, you either give up or rewrite and lose the working parts.",
     "when": "When the prompt gives ~70% of the result and there's a concrete \"I don't like X\" — that's exactly the situation where iteration beats rewriting.",
     "impact": "An iterative approach = 5-10× faster than \"rewrite from scratch\" and preserves working pieces.",
-    "example": "Run the prompt on 3 different inputs → note what's bad in each → find the common pattern → add one constraint → repeat.",
+    "example": "Run the prompt on 3 different inputs, then note what's bad in each, then find the common pattern, then add one constraint, then repeat.",
     "mistakes": "Changing 5 things at once — you can't tell what helped. Change one at a time, fix the effect."
   },
   "ready-prompts": {
@@ -1021,7 +1021,7 @@
     "what": "Typical tasks where Claude delivers max value: code, design, content, research, analysis.",
     "why": "So you see where to apply the tool right away — without long \"where will it help me?\".",
     "when": "At the start of Claude work — define 1-2 of your scenarios and deepen them.",
-    "impact": "Understanding the scenario → choosing the right tool (Project / Skill / Code / Artifact).",
+    "impact": "Understanding the scenario, then choosing the right tool (Project / Skill / Code / Artifact).",
     "example": "I have a regular task — <describe>. What scenario and tool stack is optimal?",
     "mistakes": "Using Claude everywhere \"a little bit\" — nowhere will you get to expert level."
   },
@@ -1076,7 +1076,7 @@
     "why": "To move from Excel formulas to human language: \"find top-5 SKUs with revenue drops and explain the pattern\" — without VLOOKUP.",
     "when": "When there's a data table and questions like \"what's interesting here\", \"what's anomalous\", \"what are the trends\".",
     "impact": "Removes the \"tool tax\": instead of an hour on formulas — minutes of conversation with the data.",
-    "example": "Upload a CSV of orders → \"Find SKUs with a >30% drop in March vs February. Show top-5 with possible causes from available columns\".",
+    "example": "Upload a CSV of orders, then \"Find SKUs with a >30% drop in March vs February. Show top-5 with possible causes from available columns\".",
     "mistakes": "Asking to \"analyze the data\" without a question — you'll get a generic description. Good analysis starts from a concrete question."
   },
   "b-educators": {
@@ -1130,7 +1130,7 @@
     "why": "Removes 70% of the \"dirty\" work: reading, note-taking, citing.",
     "when": "Before a product launch, in competitor analysis, market overview.",
     "impact": "With [[node:cap-search|Web search]] + a topical Skill — delivers quality of a competent analyst.",
-    "example": "Agent researcher: topic + 3 questions → 2-page report with sources and a comparison table.",
+    "example": "Agent researcher: topic + 3 questions, then 2-page report with sources and a comparison table.",
     "mistakes": "Accepting conclusions without verifying sources — the model can hallucinate links."
   },
   "ag-designer": {
@@ -1139,7 +1139,7 @@
     "why": "A discussion partner — asks questions, suggests alternatives, catches flaws.",
     "when": "In a design team during research and iteration — before handoff.",
     "impact": "Replaces the \"second pair of eyes\" when a colleague is busy, plus faster.",
-    "example": "Agent designer-buddy: input — layout / URL → 5 observations + 3 alternative ideas.",
+    "example": "Agent designer-buddy: input is layout / URL, then 5 observations + 3 alternative ideas.",
     "mistakes": "Expecting flawless artistic taste from it — it's strong in heuristics, not aesthetics."
   },
   "ag-pm": {
@@ -1148,7 +1148,7 @@
     "why": "Frees the PM from formulation routine — leaves time for strategy.",
     "when": "In product teams with an active backlog and sprints.",
     "impact": "Less misalignment with the team — tasks are clear and uniform.",
-    "example": "Agent pm-assistant: task statement → User story + AC + risks + size estimate.",
+    "example": "Agent pm-assistant: task statement, then User story + AC + risks + size estimate.",
     "mistakes": "Replacing stakeholder interviews with generation — hypotheses ≠ user needs."
   },
   "cap-thinking": {
@@ -1158,7 +1158,7 @@
     "when": "**Enable thinking when:**\n- Multi-step reasoning: a chain of 3+ dependent decisions (architecture design, debugging a complex bug)\n- Math/logic: tasks where constants and conditions must be held in memory\n- Ambiguous prompts: when interpretations must be checked explicitly before action\n- Code review: analyzing architectural trade-offs\n- High-stakes decisions: rare-but-critical actions (DB migration, deployment plan)\n\n**Do NOT enable thinking when:**\n- Simple questions (summarize, translate, format)\n- Streaming UX where low latency matters\n- Tool use where Claude needs to quickly decide which tool to call\n- Bulk operations (1000s of similar tasks — burns money without gain)",
     "impact": "**Trade-offs:**\n- Time: 3-5× slower than a regular response (thinking itself takes 5-30 seconds)\n- Cost: 2-3× more expensive in tokens (thinking blocks are billed too)\n- Accuracy: significantly higher on complex tasks (per Anthropic benchmarks — up to 30-50% on math/code)\n\n**Real signal:** if you're picking Opus over Sonnet for a complex task — try Sonnet + thinking first. Often equal accuracy at half the cost.",
     "example": "**Good case** — debugging:\n```\nthinking: enabled, budget: 8000\nprompt: \"Production fails with 502 every 2 hours. Logs attached.\n         Find root cause.\"\n```\nClaude in the thinking block: checks hypotheses (memory leak, race condition, external dep), discards those incompatible with logs, produces final answer with reasoning.\n\n**Bad case** — summarize:\n```\nthinking: enabled\nprompt: \"Summarize this email in 3 bullets.\"\n```\nThinking doesn't help here, just burns tokens. Should be thinking: disabled.",
-    "mistakes": "**1. \"I enable thinking everywhere by default\"** — the most expensive anti-pattern. On simple tasks it adds +200-300% cost without accuracy gain. Use the decision criteria above.\n\n**2. \"I never enable thinking\"** — you lose accuracy in decision-critical scenarios. If debugging takes 30 min manually → thinking in 15 seconds saves time × money.\n\n**3. Ignoring budget_tokens** — default budget may be too low/high. A math task with budget=1000 — Claude doesn't reach the answer. A simple task with budget=20000 — burn money. Tune per use case.\n\n**4. Using thinking output for UX** — the thinking block is designed for INTERNAL reasoning, not for the user. Don't show it in production UI without editing."
+    "mistakes": "**1. \"I enable thinking everywhere by default\"** — the most expensive anti-pattern. On simple tasks it adds +200-300% cost without accuracy gain. Use the decision criteria above.\n\n**2. \"I never enable thinking\"** — you lose accuracy in decision-critical scenarios. If debugging takes 30 min manually, then thinking in 15 seconds saves time × money.\n\n**3. Ignoring budget_tokens** — default budget may be too low/high. A math task with budget=1000 — Claude doesn't reach the answer. A simple task with budget=20000 — burn money. Tune per use case.\n\n**4. Using thinking output for UX** — the thinking block is designed for INTERNAL reasoning, not for the user. Don't show it in production UI without editing."
   },
   "ag-managed": {
     "title": "Claude Managed Agents",
@@ -1175,7 +1175,7 @@
     "why": "Sessions are persistent — you can pause, resume, fork, and export any conversation. Understanding session commands prevents losing context.",
     "when": "Long coding sessions, switching devices, saving progress, recovering from mistakes with /rewind.",
     "impact": "Never lose work. Resume complex multi-hour tasks. Fork experiments without breaking the main session.",
-    "example": "/branch before a risky refactor → experiment freely → if it fails, original session intact.",
+    "example": "/branch before a risky refactor, then experiment freely, and if it fails, original session intact.",
     "mistakes": "Using [[node:cc-cmd-clear|/clear]] when you meant [[node:cc-cmd-compact|/compact]] — /clear deletes context, /compact summarizes it."
   },
   "cc-grp-context": {
@@ -1184,7 +1184,7 @@
     "why": "Claude's [[node:b-context|context window]] is finite. These commands let you control what Claude sees and focus its attention.",
     "when": "Large codebases (add only relevant dirs), long sessions (monitor with /context), starting new projects ([[node:cc-cmd-init|/init]]).",
     "impact": "Better answers, fewer hallucinations, faster responses — Claude sees exactly what it needs.",
-    "example": "/add-dir src/components → Claude now reads all component files without you referencing each one.",
+    "example": "/add-dir src/components, then Claude now reads all component files without you referencing each one.",
     "mistakes": "Adding the entire repo when only one folder is relevant — wastes context and slows Claude down."
   },
   "cc-grp-model": {
@@ -1193,7 +1193,7 @@
     "why": "Different tasks need different models. Switching mid-session saves cost without losing context.",
     "when": "Use /fast for quick edits, /model for architecture work, /usage to track spend, /status to diagnose connection issues.",
     "impact": "Significant cost savings. Correct model for each task. Never hit limits unexpectedly.",
-    "example": "/fast for writing tests → /model Opus for the tricky algorithm → back to /fast for cleanup.",
+    "example": "/fast for writing tests, then /model Opus for the tricky algorithm, then back to /fast for cleanup.",
     "mistakes": "Never checking /usage — unexpected bill at end of month."
   },
   "cc-grp-ui": {
@@ -1202,7 +1202,7 @@
     "why": "A comfortable interface reduces friction during long coding sessions.",
     "when": "/theme and /color for visual clarity. /terminal-setup once after install. /focus when output is too noisy.",
     "impact": "Less cognitive load. Better readability in long sessions.",
-    "example": "/theme dark + /color #d97757 → visually distinct Claude terminal from other windows.",
+    "example": "/theme dark + /color #d97757, then visually distinct Claude terminal from other windows.",
     "mistakes": "Skipping /terminal-setup — Option+Enter won't work for multi-line prompts on macOS."
   },
   "cc-grp-config": {
@@ -1211,7 +1211,7 @@
     "why": "Permissions and keybindings are core to safe, efficient [[node:claude-code|Claude Code]] usage. Misconfigured permissions = constant approval prompts.",
     "when": "/permissions after first install to allowlist common tools. /keybindings to set Cmd+Enter as submit. /config for one-stop settings overview.",
     "impact": "Fewer interruptions, faster workflow, safer execution.",
-    "example": "/permissions → allow 'Bash(npm run *)' → Claude can run npm scripts without asking every time.",
+    "example": "/permissions, then allow 'Bash(npm run *)', then Claude can run npm scripts without asking every time.",
     "mistakes": "Allowing all bash commands globally — security risk. Be specific: 'Bash(npm run *)' not 'Bash(*)'."
   },
   "cc-grp-integrations": {
@@ -1220,7 +1220,7 @@
     "why": "Integrations extend [[node:claude-code|Claude Code]] into your full development workflow — IDE, GitHub, Slack, browser.",
     "when": "/ide after installing VS Code extension. /mcp to connect databases or APIs. /hooks for pre/post-tool automation.",
     "impact": "Claude works inside your existing tools instead of alongside them.",
-    "example": "/ide → VS Code integration active → Claude sees open files and inline diagnostics automatically.",
+    "example": "/ide, then VS Code integration active, then Claude sees open files and inline diagnostics automatically.",
     "mistakes": "/reload-plugins not called after adding a plugin — new plugin won't activate until next session."
   },
   "cc-grp-automation": {
@@ -1229,7 +1229,7 @@
     "why": "These commands turn Claude from a chat assistant into an autonomous worker that runs tasks while you focus elsewhere.",
     "when": "/loop for recurring tasks. /batch for large refactors across many files. /schedule for nightly automation. /ultrareview before major releases.",
     "impact": "Hours of work compressed into background tasks. Claude handles parallelism you couldn't manage manually.",
-    "example": "/batch 'add JSDoc to all functions in src/' → 20 parallel agents, each opens a PR for their file group.",
+    "example": "/batch 'add JSDoc to all functions in src/', then 20 parallel agents, each opens a PR for their file group.",
     "mistakes": "Running /batch without /plan first — always approve the plan before parallel execution."
   },
   "cc-grp-quality": {
@@ -1238,7 +1238,7 @@
     "why": "These are the quality gates before shipping. Claude catches what linters miss: logic errors, security issues, over-engineering.",
     "when": "Before every PR merge: /review. Before deploy: /security-review. After a long session: /simplify.",
     "impact": "Fewer bugs in production. Cleaner code. Security issues caught before they ship.",
-    "example": "/review → Claude lists issues by severity: Critical (SQL injection risk), Warning (no error handling), Info (rename for clarity).",
+    "example": "/review, then Claude lists issues by severity: Critical (SQL injection risk), Warning (no error handling), Info (rename for clarity).",
     "mistakes": "Using /review as a rubber stamp — read the output carefully, especially Critical items."
   },
   "cc-grp-help": {
@@ -1247,7 +1247,7 @@
     "why": "Onboarding and ongoing learning. /btw and /insights are underused gems.",
     "when": "/doctor when something breaks. /powerup when starting out. /btw for quick questions mid-task. /insights weekly to see your usage patterns.",
     "impact": "/btw alone saves dozens of context-breaking interruptions per day.",
-    "example": "Mid-refactor: /btw what does the Builder pattern solve? → Claude answers briefly → main task continues.",
+    "example": "Mid-refactor: /btw what does the Builder pattern solve? Then Claude answers briefly, then main task continues.",
     "mistakes": "Never running /doctor when CLI behaves strangely — it catches 90% of common issues instantly."
   },
   "pl-cowork": {
@@ -1265,7 +1265,7 @@
     "why": "Keeps Claude inside your existing workflow instead of requiring you to copy-paste content between apps. Claude sees the context you're already working in.",
     "when": "Chrome: automating repetitive browser tasks, extracting data from websites, filling forms. M365: asking questions about your emails, documents, meetings without leaving Claude. Google: referencing Drive files or calendar events in chat. Slack: finding past decisions or meeting summaries.",
     "impact": "Eliminates the biggest friction in AI workflows — manually moving context between tools. Claude becomes a layer on top of your existing apps.",
-    "example": "Enable M365 connector → ask Claude: 'Summarize the emails from last week about the budget proposal and list open action items.' Claude searches Outlook and Teams, reads the threads, and returns a structured summary.",
+    "example": "Enable M365 connector, then ask Claude: 'Summarize the emails from last week about the budget proposal and list open action items.' Claude searches Outlook and Teams, reads the threads, and returns a structured summary.",
     "mistakes": "Expecting M365/Google connectors to take actions (send emails, create docs) — they are READ-ONLY for now. Not granting the necessary permissions when installing Chrome extension — Claude can't see page content without them."
   },
   "cap-limitations": {
@@ -1318,8 +1318,8 @@
     "what": "[[node:foundation|Foundation]] / [[node:systems|Systems]] / [[node:transformation|Transformation]] answer \"what / how / why\". Use Cases answer \"here's exactly what to do for this specific task\".\n\nA Use Case is a path: \"I need to organize support — read these 5 nodes in this order, watch these 2 tutorials, you'll get a working system in 2 weeks\".\n\nIt's a shortcut from \"there's tons of stuff in the knowledge base\" to \"here's the path for your situation\".",
     "why": "The knowledge base has hundreds of nodes. Most people can't and won't read all of it. They want \"I need X — show me what to read for that\".\n\nUse Cases are pre-assembled answers to the most common \"I need X\". You don't think about which nodes are relevant — you follow the path.",
     "when": "Start with a Use Case when:\n- You have a specific business task (organize support, set up brand voice, automate operations)\n- You don't know where to start in the knowledge base\n- You want to see how nodes connect into a real solution\n- You need a result in 2-4 weeks, not \"learn AI in general\"",
-    "impact": "Without Use Cases: you spend 2 weeks reading the knowledge base, get tons of theory but no clear answer to \"what do I actually do\".\n\nWith Use Cases: 2 hours through the path → a clear plan → 2 weeks of implementation → measurable result.\n\nMain point: knowledge → action, not knowledge → more knowledge.",
-    "example": "Use Case \"AI in support\": you read 5 specific nodes (tier-1 automation, knowledge base, escalation, evals, cost management) + watch 2 tutorials about prompt and Project setup → in 2 weeks you have an AI handling 60% of typical tickets.\n\nIf you tried to do this from scratch through the knowledge base — you'd spend a month reading first.",
+    "impact": "Without Use Cases: you spend 2 weeks reading the knowledge base, get tons of theory but no clear answer to \"what do I actually do\".\n\nWith Use Cases: 2 hours through the path, then a clear plan, then 2 weeks of implementation, then measurable result.\n\nMain point: knowledge leads to action, not knowledge leading to more knowledge.",
+    "example": "Use Case \"AI in support\": you read 5 specific nodes (tier-1 automation, knowledge base, escalation, evals, cost management) + watch 2 tutorials about prompt and Project setup, then in 2 weeks you have an AI handling 60% of typical tickets.\n\nIf you tried to do this from scratch through the knowledge base — you'd spend a month reading first.",
     "mistakes": "Main mistake: think a Use Case will solve everything for you. No — it shows the path. You still have to walk it: read, configure, test on your data.\n\nSecond mistake: try to apply someone else's Use Case verbatim to your company. Use Cases are templates. Take 80% from the template, adapt 20% to your specifics."
   },
   "ai-fundamentals": {
@@ -1333,7 +1333,7 @@
   },
   "af-llm-basics": {
     "title": "What an LLM actually is — plain language",
-    "what": "You know how iPhone suggests the next word as you type a text? \"I'll be...\" → phone offers \"home / late / there soon\". An LLM does the same — predicts the next word based on what came before. Only it wasn't trained on your texts, but on a huge slice of the internet: Wikipedia, books, articles, forums.\n\nClaude, ChatGPT, Gemini — they're all LLMs. Different \"models\" = different sizes (bigger = smarter, pricier, slower) and different training data.",
+    "what": "You know how iPhone suggests the next word as you type a text? \"I'll be...\" and the phone offers \"home / late / there soon\". An LLM does the same — predicts the next word based on what came before. Only it wasn't trained on your texts, but on a huge slice of the internet: Wikipedia, books, articles, forums.\n\nClaude, ChatGPT, Gemini — they're all LLMs. Different \"models\" = different sizes (bigger = smarter, pricier, slower) and different training data.",
     "why": "Once you understand AI just **predicts the next word**, all your unrealistic expectations fall away. \"Why did AI mess up 47×83?\" — because it doesn't calculate, it guesses the next digit. \"Why doesn't it remember yesterday?\" — because yesterday's conversation isn't in its training data.\n\nIt's like understanding that a car isn't a horse. A horse knows the way. A car doesn't. You have to drive it.",
     "when": "Before you seriously start using AI at work. Before arguing with a colleague about \"AI should / shouldn't do X\". Before estimating \"how much will this cost\" — cost depends on model size.\n\nIf you've worked with AI for a year — skip if you want, but check yourself: do you know **why** AI sometimes fails on simple things? If not, come back.",
     "impact": "Before: \"AI should know, it's AI after all\". Surprise when it fails. Endless prompt rewrites.\n\nAfter: \"AI is a smart word-guesser on top of a huge text corpus. Some things it guesses brilliantly, some it gets wrong. I know which is which\".\n\nMain point: instead of fighting AI, you start using it correctly.",
@@ -1342,11 +1342,11 @@
   },
   "af-embeddings": {
     "title": "Embeddings — how AI understands \"by meaning\"",
-    "what": "You know how Google Photos finds \"all the cats\" in your photos, even though you never labeled any? Or how Spotify finds \"similar songs\" when you play something new?\n\nThat runs on **embeddings** — every word, photo, or song gets turned into a set of numbers (a vector). Similar things get similar numbers. AI then just compares: \"these two sets of numbers are close → the meanings are close\".",
-    "why": "Regular search looks for **exact words**. You type \"internet not working\" — Google searches pages with the words \"internet\", \"not\", \"working\". If a page is called \"WiFi problems at home\" — it won't show up, even though it's about the same thing.\n\nEmbedding-based search looks **by meaning**. \"Internet not working\" = \"WiFi problems at home\" — close number sets → finds both.\n\nIt's the same magic that lets AI understand \"forgot my password, help\" and \"how do I reset my password\" are the same thing.",
+    "what": "You know how Google Photos finds \"all the cats\" in your photos, even though you never labeled any? Or how Spotify finds \"similar songs\" when you play something new?\n\nThat runs on **embeddings** — every word, photo, or song gets turned into a set of numbers (a vector). Similar things get similar numbers. AI then just compares: \"these two sets of numbers are close, so the meanings are close\".",
+    "why": "Regular search looks for **exact words**. You type \"internet not working\" — Google searches pages with the words \"internet\", \"not\", \"working\". If a page is called \"WiFi problems at home\" — it won't show up, even though it's about the same thing.\n\nEmbedding-based search looks **by meaning**. \"Internet not working\" = \"WiFi problems at home\" — close number sets, so it finds both.\n\nIt's the same magic that lets AI understand \"forgot my password, help\" and \"how do I reset my password\" are the same thing.",
     "when": "When you need to search large piles of documents and exact-words aren't enough. When you're building search that should \"understand\" what users mean. When you want recommendations \"similar products / docs / customers\".\n\nEverything [[node:af-rag-basics|RAG]] does — stands on embeddings.",
-    "impact": "Before: user asks \"email not arriving\" → FAQ search returns nothing (FAQ says \"email delivery failures\") → customer goes to support.\n\nAfter: embeddings catch \"email not arriving\" = \"email delivery failures\" → finds the FAQ → customer self-serves.\n\nMain point: self-service search quality jumps 2-3× without rewriting any content.",
-    "example": "You have a Notion article \"Password reset: step-by-step guide\". An employee asks the Slack bot: \"forgot my password, help\".\n\nWithout embeddings: bot looks for the word \"forgot\" in articles. \"Forgot\" isn't in the title → nothing found → \"contact admin\".\n\nWith embeddings: \"forgot my password, help\" → number set. \"Password reset: guide\" → similar number set. Bot finds the article → drops the link → employee solves it in 5 seconds.\n\nAnthropic doesn't ship its own embeddings: for hybrid architectures common choices are Voyage AI, OpenAI text-embedding-3, and open-source models.",
+    "impact": "Before: user asks \"email not arriving\", then FAQ search returns nothing (FAQ says \"email delivery failures\"), then customer goes to support.\n\nAfter: embeddings catch \"email not arriving\" = \"email delivery failures\", then finds the FAQ, then customer self-serves.\n\nMain point: self-service search quality jumps 2-3× without rewriting any content.",
+    "example": "You have a Notion article \"Password reset: step-by-step guide\". An employee asks the Slack bot: \"forgot my password, help\".\n\nWithout embeddings: bot looks for the word \"forgot\" in articles. \"Forgot\" isn't in the title, so nothing found, so \"contact admin\".\n\nWith embeddings: \"forgot my password, help\" becomes a number set. \"Password reset: guide\" becomes a similar number set. Bot finds the article, then drops the link, then employee solves it in 5 seconds.\n\nAnthropic doesn't ship its own embeddings: for hybrid architectures common choices are Voyage AI, OpenAI text-embedding-3, and open-source models.",
     "mistakes": "Main mistake: using embeddings from a random model. Old cheap model = bad number sets = bad matches. Solid options today — OpenAI text-embedding-3, Cohere embed, or natively in Claude.\n\nSecond mistake: thinking embeddings = \"AI understands meaning like a human\". It understands **pattern similarity**. Sometimes finds completely the wrong thing — especially for rare terms or in-house slang."
   },
   "af-vector-db": {
@@ -1354,18 +1354,18 @@
     "what": "You know how in a library books are shelved by topic, not alphabetically? Pick up a book on gardening — 10 more on gardening sit nearby. Handy when you search by meaning.\n\nA vector database works the same, but for AI. Stores millions of [[node:af-embeddings|embeddings]] (number sets for meanings) and quickly finds \"the 10 closest in meaning to this\". Pinecone, pgvector (for Postgres), Qdrant, Weaviate, Chroma — these are all vector DBs.",
     "why": "Without a vector DB embeddings are useless. Imagine you have 50,000 company documents as number sets. When an employee asks a question — you need to find the 5 most relevant in milliseconds.\n\nA regular database (Postgres / MySQL) would take 30 seconds — scanning all 50,000. A vector DB — 50 milliseconds. That's the difference between \"works\" and \"doesn't work in production\".",
     "when": "When you have a [[node:af-rag-basics|RAG system]] with more than 1,000 documents. When you need semantic search across a large knowledge base. When you're building recommendations (similar products / docs / customers).\n\nIf you have 50 documents — you don't need one. Keep everything in app memory, process on the fly.",
-    "impact": "Without a vector DB: you try RAG on 50 docs → works → try on 10,000 → every query takes 30 seconds → users leave.\n\nWith a vector DB: 1 million documents, 100 millisecond response, thousands of parallel queries. That's the gap between demo and production.",
-    "example": "You have 50,000 knowledge base articles. An employee asks the Slack bot: \"How do I file a business trip to Germany?\"\n\nWhat happens:\n1. Bot turns the question into an [[node:af-embeddings|embedding]] (number set)\n2. Goes to the vector DB: \"find 5 articles with the most similar number sets\"\n3. Vector DB finds in 50 ms: \"EU Business Trip Policy\", \"Visa to Germany\", \"Expense Filing\"\n4. Bot hands these 5 to Claude → Claude answers\n\nResult: answer in 2 seconds instead of 30 + manual searching.\n\nWith Claude, common pairings are Pinecone, Qdrant, pgvector — pick by compliance and scale, not by LLM compatibility.",
+    "impact": "Without a vector DB: you try RAG on 50 docs, it works, then try on 10,000, then every query takes 30 seconds, then users leave.\n\nWith a vector DB: 1 million documents, 100 millisecond response, thousands of parallel queries. That's the gap between demo and production.",
+    "example": "You have 50,000 knowledge base articles. An employee asks the Slack bot: \"How do I file a business trip to Germany?\"\n\nWhat happens:\n1. Bot turns the question into an [[node:af-embeddings|embedding]] (number set)\n2. Goes to the vector DB: \"find 5 articles with the most similar number sets\"\n3. Vector DB finds in 50 ms: \"EU Business Trip Policy\", \"Visa to Germany\", \"Expense Filing\"\n4. Bot hands these 5 to Claude, then Claude answers\n\nResult: answer in 2 seconds instead of 30 + manual searching.\n\nWith Claude, common pairings are Pinecone, Qdrant, pgvector — pick by compliance and scale, not by LLM compatibility.",
     "mistakes": "Main mistake: grabbing an expensive managed service (Pinecone, Weaviate Cloud) when pgvector would do. If your team already has Postgres — pgvector adds vector search as an extension. Simple, cheap, under your control.\n\nManaged solutions are needed at > 10 million vectors or with strict latency requirements. Otherwise — you're paying for \"fashionable\"."
   },
   "af-rag-basics": {
     "title": "RAG: how AI answers from your documents",
-    "what": "Remember how at school you opened your cheat-sheet first, and then answered? RAG works the same way. AI gets the question → first pulls relevant chunks from your knowledge base → reads them → forms an answer. Not from its head, but from concrete documents it found.\n\nRAG = Retrieval (found it) + Augmented (added to the prompt) + Generation (wrote the answer). Sounds complex, but it's easy to set up. For the **architecture details** see [[node:sys-rag-architecture|RAG architecture]].",
+    "what": "Remember how at school you opened your cheat-sheet first, and then answered? RAG works the same way. AI gets the question, then first pulls relevant chunks from your knowledge base, then reads them, then forms an answer. Not from its head, but from concrete documents it found.\n\nRAG = Retrieval (found it) + Augmented (added to the prompt) + Generation (wrote the answer). Sounds complex, but it's easy to set up. For the **architecture details** see [[node:sys-rag-architecture|RAG architecture]].",
     "why": "AI on its own doesn't know your documents. Ask about your refund policy — it'll either say \"I don't know\" or invent something plausible (that's hallucination).\n\nWith RAG it answers **from your documents** and can cite the source. No invention.\n\nThis is the most common way AI is used in companies. Not \"AI writes creative copy\" — but \"AI answers based on our knowledge base\".",
     "when": "When you have **documents AI needs to know**:\n- Support knowledge base\n- HR internal policies\n- Product documentation\n- Customer conversation history\n- Archive of meetings and decisions\n\nWhen AI without RAG says \"I don't know\" to questions that **do** have answers in your documents — it's time.",
     "impact": "Without RAG: AI answers correctly on 30% of questions about your company. The rest — hallucinates or gives up.\n\nWith RAG: 80-90% correct answers, with source citations.\n\nMain point: users start **trusting** AI because they see where the answer came from.",
-    "example": "Customer asks in chat: \"What's your return policy for gift cards?\"\n\nRAG system:\n1. Takes the question → turns it into an [[node:af-embeddings|embedding (number set)]]\n2. Searches the document base for \"meaning-similar\" chunks\n3. Finds the section \"Returns Policy → Gift Cards: returnable within 30 days, unused\"\n4. Passes to Claude: \"here's the question + here's what we found → answer\"\n5. Claude: \"Gift cards can be returned within 30 days if unused. Source: Returns Policy, section 4.\"\n\nCustomer gets a precise, sourced answer in 5 seconds.\n\nIn Claude, RAG can be built without a separate service: [[node:cap-search|Web search]] + [[node:cap-files|Files]] + [[node:projects|Projects]] for grounding.",
-    "mistakes": "Main mistake: \"let's just RAG it and we're done\". Naive RAG (found top 3 chunks → handed to AI) works at 50%. Production RAG needs tuning: re-ranking, relevance checks, metadata, splitting documents into the right-sized chunks.\n\nSecond mistake: dumping everything into the base — old drafts, duplicates, contradicting versions. AI finds garbage → answers garbage. Cleanliness beats quantity."
+    "example": "Customer asks in chat: \"What's your return policy for gift cards?\"\n\nRAG system:\n1. Takes the question, then turns it into an [[node:af-embeddings|embedding (number set)]]\n2. Searches the document base for \"meaning-similar\" chunks\n3. Finds the section \"Returns Policy, Gift Cards: returnable within 30 days, unused\"\n4. Passes to Claude: \"here's the question + here's what we found, now answer\"\n5. Claude: \"Gift cards can be returned within 30 days if unused. Source: Returns Policy, section 4.\"\n\nCustomer gets a precise, sourced answer in 5 seconds.\n\nIn Claude, RAG can be built without a separate service: [[node:cap-search|Web search]] + [[node:cap-files|Files]] + [[node:projects|Projects]] for grounding.",
+    "mistakes": "Main mistake: \"let's just RAG it and we're done\". Naive RAG (found top 3 chunks, handed to AI) works at 50%. Production RAG needs tuning: re-ranking, relevance checks, metadata, splitting documents into the right-sized chunks.\n\nSecond mistake: dumping everything into the base — old drafts, duplicates, contradicting versions. AI finds garbage, then answers garbage. Cleanliness beats quantity."
   },
   "af-memory-systems": {
     "title": "AI memory — why it \"forgets\"",
@@ -1373,16 +1373,16 @@
     "why": "Without understanding memory types, you build a chatbot that \"doesn't remember\" — and don't know what to do. Just expand context window? Expensive and doesn't scale. Plug in a knowledge base? Which one? Each memory type solves its own problem.\n\nIt's like with your own memory: you don't try to hold all of Wikipedia in your head. You remember the important things, write down the rest.",
     "when": "When designing an AI assistant that needs to **remember** something across conversations:\n- Support chatbot that remembers customer history\n- AI assistant that remembers your preferences\n- Team bot that accumulates decisions and context\n\nIf you have one-shot tasks (\"translate this text\") — memory isn't needed.",
     "impact": "Without memory architecture: AI = \"one-question helper\". Starts from scratch every time. User is irritated: \"I told you yesterday, did you forget?\".\n\nWith the right architecture: AI = \"colleague who remembers context\". Remembers the project, work style, past decisions. Come back a week later — you continue from where you stopped.",
-    "example": "Chatbot for product managers in SaaS:\n\n- **Short-term (in-context):** in this conversation remembers \"you're currently discussing feature X\"\n- **External (RAG):** [[node:af-rag-basics|RAG]] connected to spec base and customer interviews\n- **Semantic (Memory tool):** remembers \"this PM works on a B2B product, prefers data-driven approach\"\n- **Episodic (history log):** stores specific decisions \"April 3: decided to launch feature X in beta\"\n\nWhen PM asks \"what did we decide about feature X?\" — AI goes to episodic → finds the decision → answers with the date.\n\nMore in Claude: [[node:cap-memory|Memory tool]], [[node:p-files|Project Files]], [[node:i-claudemd|CLAUDE.md]].",
+    "example": "Chatbot for product managers in SaaS:\n\n- **Short-term (in-context):** in this conversation remembers \"you're currently discussing feature X\"\n- **External (RAG):** [[node:af-rag-basics|RAG]] connected to spec base and customer interviews\n- **Semantic (Memory tool):** remembers \"this PM works on a B2B product, prefers data-driven approach\"\n- **Episodic (history log):** stores specific decisions \"April 3: decided to launch feature X in beta\"\n\nWhen PM asks \"what did we decide about feature X?\" — AI goes to episodic, then finds the decision, then answers with the date.\n\nMore in Claude: [[node:cap-memory|Memory tool]], [[node:p-files|Project Files]], [[node:i-claudemd|CLAUDE.md]].",
     "mistakes": "Main mistake: \"let's just expand the context window to a million and AI will remember everything\". Expensive, slow, doesn't work in production. AI gets lost when context is too big (\"lost in the middle\").\n\nSecond mistake: cramming everything into one memory type. Current conversation in a RAG base — pointless, fills it with garbage. Long customer profile in every request context — overpay. Each type for its own job."
   },
   "af-multimodal": {
     "title": "Multimodal AI — AI that sees and hears",
     "what": "AI used to only work with text: \"write an email\", \"translate this article\". Multimodal AI handles different data types at once: text + images + audio + video.\n\nYou can show AI a screenshot of an error and ask \"what's wrong here?\". Or photograph an invoice and ask \"put these numbers into Excel\". Claude sees and reads the image, understands what's there, answers.",
     "why": "The real world isn't text. A designer shows a mockup, a marketer posts an infographic, an accountant scans a receipt. If AI only understands text — it only covers half the tasks.\n\nMultimodal AI opens up tasks that used to require a human or specialized software: receipt reading, chart analysis, mockup understanding.",
-    "when": "When the task needs more than text:\n- Screenshot with error → \"why isn't this working?\"\n- Design mockup → \"build the HTML\"\n- Receipt photo → \"extract amount and date\"\n- Chart from a report → \"describe the trend\"\n- Meeting video → \"short summary\"\n\nIf your task is mostly text — multimodal isn't needed.",
-    "impact": "Before: parsing trip receipts — a secretary spends 30 minutes typing amounts into Excel.\n\nAfter: you send AI 10 receipt photos → AI extracts dates and amounts → 2 minutes for you to review.\n\nMain point: tasks that needed \"human eyes\" are now done by AI.",
-    "example": "Situation: someone sent you a screenshot with a Python error — a long stack trace, unclear where the problem is.\n\nBefore: you re-type the error text into AI chat (10 minutes of fiddling), then ask.\n\nWith multimodal: drop the screenshot in → \"what's wrong?\" → Claude sees the whole stack trace, finds the specific line: \"on line 47 your `data` variable is None, but you're trying to access its attribute. Add an `if data is not None` check\".\n\nScreenshot to answer — 10 seconds.\n\nIn Claude, multimodality is [[node:cap-input-modalities|Input modalities]]: images via [[node:cap-vision|Vision]] and documents via [[node:cap-files|Files]].",
+    "when": "When the task needs more than text:\n- Screenshot with error, then \"why isn't this working?\"\n- Design mockup, then \"build the HTML\"\n- Receipt photo, then \"extract amount and date\"\n- Chart from a report, then \"describe the trend\"\n- Meeting video, then \"short summary\"\n\nIf your task is mostly text — multimodal isn't needed.",
+    "impact": "Before: parsing trip receipts — a secretary spends 30 minutes typing amounts into Excel.\n\nAfter: you send AI 10 receipt photos, then AI extracts dates and amounts, then 2 minutes for you to review.\n\nMain point: tasks that needed \"human eyes\" are now done by AI.",
+    "example": "Situation: someone sent you a screenshot with a Python error — a long stack trace, unclear where the problem is.\n\nBefore: you re-type the error text into AI chat (10 minutes of fiddling), then ask.\n\nWith multimodal: drop the screenshot in, then \"what's wrong?\", then Claude sees the whole stack trace, finds the specific line: \"on line 47 your `data` variable is None, but you're trying to access its attribute. Add an `if data is not None` check\".\n\nScreenshot to answer — 10 seconds.\n\nIn Claude, multimodality is [[node:cap-input-modalities|Input modalities]]: images via [[node:cap-vision|Vision]] and documents via [[node:cap-files|Files]].",
     "mistakes": "Main mistake: thinking multimodal = \"AI sees everything like a human\". Reality:\n- Recognize objects in photos — good\n- Read printed text — good\n- Read handwriting — worse than specialized OCR\n- Understand a busy chart with many lines — may err\n- Count objects precisely in a photo — weaker\n\nTest on your task types — don't trust generic promises."
   },
   "af-fine-tuning": {
@@ -1390,8 +1390,8 @@
     "what": "Imagine you're hiring a new employee. Two options:\n\n1. **Prompting** = give them instructions each time. \"Today do it this way, tomorrow that way\". Fast, flexible, you can change the approach in a minute.\n\n2. **Fine-tuning** = \"train\" them for 6 months so they just know without reminders. Expensive, slow, but then works without explanation.\n\nFor 95% of tasks **prompting + examples** ([[node:pr-fewshot|few-shot]]) is enough. Fine-tuning is a last resort.",
     "why": "Fine-tuning sounds cool (\"our own AI!\"), but it's tech debt. In 3 months a new Claude version drops — better than your fine-tuned one. To use it — you fine-tune again. A quarter has passed, $10k spent, and you're still on the old model.\n\nPrompting is instant. Change the text in the prompt — AI behavior changes. Want a new model — just switch, everything works.",
     "when": "Fine-tuning makes sense when:\n- **Distinct style / tone** that doesn't transfer via prompt examples (rare)\n- **Narrow domain** where you have THOUSANDS of input-output pairs (medicine, law)\n- **You need cheaper and faster** — fine-tune a small model to replace a big one\n\nIn all other cases — prompting + RAG + tools. If you haven't tried that — don't even think about fine-tuning yet.",
-    "impact": "The right choice saves months. Teams hear \"fine-tuning\" → decide it's magic → spend a quarter gathering training data → ship, it works at 80%.\n\nAt the same time another team wrote a 10-line prompt + plugged in [[node:af-rag-basics|RAG]] → they shipped at 85% in a week.\n\nMain point: don't confuse \"fashionable\" with \"needed\".",
-    "example": "Task: \"AI answers customers in our CEO's voice — concise, friendly, no jargon\".\n\n**Try prompting first:**\n```\nSystem: Reply like our CEO. Style: concise, friendly, no corporate jargon.\n\nExample 1: Q \"when will feature X ship?\" — CEO would say: \"Soon. Next week. Thanks for waiting.\"\nExample 2: Q \"why is it expensive?\" — CEO would say: \"Because we pay people well. It's worth it.\"\n[3-5 more examples]\n```\n\n50 prompt iterations → if it still doesn't sound like the CEO → then think fine-tuning. 80% of cases — the prompt is enough.\n\nClaude doesn't offer fine-tuning — use [[node:prompting|Prompting]], [[node:projects|Projects]] and [[node:cap-memory|Memory]] instead.",
+    "impact": "The right choice saves months. Teams hear \"fine-tuning\", then decide it's magic, then spend a quarter gathering training data, then ship, and it works at 80%.\n\nAt the same time another team wrote a 10-line prompt + plugged in [[node:af-rag-basics|RAG]], then they shipped at 85% in a week.\n\nMain point: don't confuse \"fashionable\" with \"needed\".",
+    "example": "Task: \"AI answers customers in our CEO's voice — concise, friendly, no jargon\".\n\n**Try prompting first:**\n```\nSystem: Reply like our CEO. Style: concise, friendly, no corporate jargon.\n\nExample 1: Q \"when will feature X ship?\" — CEO would say: \"Soon. Next week. Thanks for waiting.\"\nExample 2: Q \"why is it expensive?\" — CEO would say: \"Because we pay people well. It's worth it.\"\n[3-5 more examples]\n```\n\n50 prompt iterations, then if it still doesn't sound like the CEO, then think fine-tuning. 80% of cases — the prompt is enough.\n\nClaude doesn't offer fine-tuning — use [[node:prompting|Prompting]], [[node:projects|Projects]] and [[node:cap-memory|Memory]] instead.",
     "mistakes": "Main mistake: fine-tuning \"just in case\" from day one. Like tuning a car you haven't driven yet. Learn to drive first.\n\nSecond mistake: thinking fine-tuning = \"AI gets smarter\". No — it gets \"more like your data\", but may answer WORSE on questions outside that data. It's specialization, not an upgrade."
   },
   "ai-native-operations": {
@@ -1401,11 +1401,11 @@
     "when": "When you notice:\n- One person = one bottleneck (\"without Mary nothing gets processed\")\n- Tons of routine requests distract from important work\n- Policies exist but nobody remembers them — everyone asks each other\n- Monday reports = 3 hours of copying into Excel\n- New hires spend 2 weeks figuring out where things are",
     "impact": "Before: HR spends 60% of time on routine questions about vacations / sick leave / certificates. After: AI answers 70% of these itself, HR works on onboarding, development, culture.\n\nBefore: finance takes 2 days for a monthly report. After: AI assembles a draft in an hour, finance spends 4 hours reviewing and analyzing.\n\nMain point: operations people stop being \"request handlers\" and become strategists.",
     "example": "5 directions inside:\n- [[node:ops-process-automation|Process automation]]\n- [[node:ops-decision-intelligence|Decision support via AI]]\n- [[node:ops-reporting-automation|Regular reporting]]\n- [[node:ops-resource-optimization|Resource optimization]]\n- [[node:ops-team-workflow|Team workflows]]",
-    "mistakes": "Main mistake: try to automate everything at once. \"Full AI operations transformation\" — sounds great, in practice nobody uses it.\n\nBetter: pick one pain (e.g. routine HR questions) → close it with AI → see a result in 2 weeks → move to the next.\n\nSecond mistake: automating without the team's involvement. If HR didn't help configure it — they'll sabotage it. AI should be a tool operations people want to use."
+    "mistakes": "Main mistake: try to automate everything at once. \"Full AI operations transformation\" — sounds great, in practice nobody uses it.\n\nBetter: pick one pain (e.g. routine HR questions), then close it with AI, then see a result in 2 weeks, then move to the next.\n\nSecond mistake: automating without the team's involvement. If HR didn't help configure it — they'll sabotage it. AI should be a tool operations people want to use."
   },
   "ops-process-automation": {
     "title": "AI Process Automation",
-    "what": "Automating recurring processes via AI: input (trigger) → AI processing → output (result + next action). Skills + Hooks + RAG as the core stack.",
+    "what": "Automating recurring processes via AI: input (trigger), then AI processing, then output (result + next action). Skills + Hooks + RAG as the core stack.",
     "why": "Every team has 30-50% of tasks = recurring: onboarding, status updates, routine comms. AI handles most of these without quality loss.",
     "when": "When a task happens ≥5×/week + has clear inputs/outputs + result can be validated. Ideal candidates: weekly reports, customer welcome emails, internal status digests.",
     "impact": "Time savings: 70-90% on a specific task. Consistency: a single quality result instead of \"depends who did it\".",
@@ -1414,7 +1414,7 @@
   },
   "ops-decision-intelligence": {
     "title": "AI Decision Intelligence",
-    "what": "AI as a \"second opinion\" for operational decisions: AI analyzes data + context + history of decisions → gives a structured recommendation. Does not replace human, but disciplines the process.",
+    "what": "AI as a \"second opinion\" for operational decisions: AI analyzes data + context + history of decisions, then gives a structured recommendation. Does not replace human, but disciplines the process.",
     "why": "Operational decisions are often made \"by gut\" under pressure. AI structuring forces consideration of alternatives, risks, metrics — reduces reactive decisions.",
     "when": "Hire/no-hire decisions. Resource allocation. Vendor selection. Process change vs no-change. Decisions with >$10k impact or >2 weeks horizon.",
     "impact": "Reduction in reactive decisions: 50-70%. Decision quality measurable (track outcomes).",
@@ -1426,9 +1426,9 @@
     "what": "Auto-generating reports from structured data: CRM, analytics, project management. AI reads data, writes insight-driven narrative, forms action items.",
     "why": "Teams spend 4-8 hours a week on manual reporting. AI handles 80% of the work, leaving the human with review and executive judgment.",
     "when": "Regular reports (weekly/monthly). Data in systems with API/export. Audience expects consistency in format. KPIs are countable.",
-    "impact": "Time-to-report: 4 hours → 30 minutes. Before: different people, different templates. Now: one format, one tone, everywhere. Reports arrive on time, not \"when I got around to it\".",
-    "example": "Sales Weekly Report:\n1. Export from CRM (HubSpot/Salesforce) → CSV.\n2. Project with [[node:b-system|system prompt]]: \"you are a sales analyst, report format is XYZ\".\n3. Prompt: \"here is data for the week, write executive summary + 3 action items\".\n4. Output: ready report with numbers, trends, recommendations.\n\nMetrics: reporting time 4h→30min, data accuracy 100% (autopull), insights consistency 95%.",
-    "mistakes": "Doing \"AI generates pretty text\" without action. A report without action items is trash. Structure must be: what changed → why → what we do → KPI. Every time."
+    "impact": "Time-to-report: from 4 hours to 30 minutes. Before: different people, different templates. Now: one format, one tone, everywhere. Reports arrive on time, not \"when I got around to it\".",
+    "example": "Sales Weekly Report:\n1. Export from CRM (HubSpot/Salesforce) to CSV.\n2. Project with [[node:b-system|system prompt]]: \"you are a sales analyst, report format is XYZ\".\n3. Prompt: \"here is data for the week, write executive summary + 3 action items\".\n4. Output: ready report with numbers, trends, recommendations.\n\nMetrics: reporting time from 4h to 30min, data accuracy 100% (autopull), insights consistency 95%.",
+    "mistakes": "Doing \"AI generates pretty text\" without action. A report without action items is trash. Structure must be: what changed, then why, then what we do, then KPI. Every time."
   },
   "ops-resource-optimization": {
     "title": "AI Resource Optimization",
@@ -1436,7 +1436,7 @@
     "why": "Operations teams often overspend on tools and resources because \"we have always done it this way\". AI audit reveals over-provisioning, model mismatch, idle resources.",
     "when": "Quarterly resource review. Before annual budget planning. When AI spend becomes visible in P&L.",
     "impact": "Cost reduction: 20-40% on operations spend. Productivity: better tool-to-task fit.",
-    "example": "AI Spend Audit:\n1. Export all AI-API logs for 30 days.\n2. AI analysis: \"which tasks use Opus, can they be moved to Sonnet?\"\n3. Output: list of tasks + alternative models + estimated savings.\n4. Test: one week on the new mix → measure quality.\n5. Roll out: if quality does not drop, move 80% of tasks.\n\nReal case: $5k/month Opus → $1.2k/month Sonnet, quality drop <5%, ROI = 4x.",
+    "example": "AI Spend Audit:\n1. Export all AI-API logs for 30 days.\n2. AI analysis: \"which tasks use Opus, can they be moved to Sonnet?\"\n3. Output: list of tasks + alternative models + estimated savings.\n4. Test: one week on the new mix, then measure quality.\n5. Roll out: if quality does not drop, move 80% of tasks.\n\nReal case: from $5k/month Opus to $1.2k/month Sonnet, quality drop <5%, ROI = 4x.",
     "mistakes": "Optimizing only cost without quality measurement. A cheaper model can \"save\" $1000 but reduce conversion by $5000. Track quality metrics in parallel with cost."
   },
   "ops-team-workflow": {
@@ -1450,11 +1450,11 @@
   },
   "ai-workflows": {
     "title": "AI Workflows — how AI gets the task done step by step",
-    "what": "A workflow is when you drop a file → AI parses it → you get a summary. Or: an incoming email → AI classifies → drafts a reply → you tweak → send. A workflow is a sequence of steps where AI does its part and you do yours.\n\nEvery AI tool you already use (Notion AI, Gmail Smart Reply, meeting transcribers) is a workflow. Someone just hid it behind a button.",
-    "why": "When you do the same thing manually 5 times a week — that's a signal you need a workflow. Configure AI once → it works on its own from then on. You move from \"open chat → copy → paste\" to \"press a button → get a result\".\n\nThis is the difference between \"playing with ChatGPT\" and \"I have an AI assistant that does X for me\".",
+    "what": "A workflow is when you drop a file, then AI parses it, then you get a summary. Or: an incoming email, then AI classifies, then drafts a reply, then you tweak, then send. A workflow is a sequence of steps where AI does its part and you do yours.\n\nEvery AI tool you already use (Notion AI, Gmail Smart Reply, meeting transcribers) is a workflow. Someone just hid it behind a button.",
+    "why": "When you do the same thing manually 5 times a week — that's a signal you need a workflow. Configure AI once, then it works on its own from then on. You move from \"open chat, then copy, then paste\" to \"press a button, then get a result\".\n\nThis is the difference between \"playing with ChatGPT\" and \"I have an AI assistant that does X for me\".",
     "when": "When you notice:\n- You do the same action more than 3 times a week\n- You copy text from one place to another\n- AI helps, but every time you have to re-explain\n- A team of 3+ does the same task — everyone in their own way",
-    "impact": "Before: sorting email — 1 hour each morning. After: AI sorted it overnight → you spend 10 minutes in the morning checking.\n\nBefore: writing a meeting recap — 40 minutes. After: AI pulled decisions and action items from the recording → you tweak for 10 minutes.\n\nMain point: you don't \"do it faster\", you \"do only the important part\".",
-    "example": "Workflow \"handle an incoming customer email\" (for the pattern itself see [[node:sys-workflows-basics|What an AI Workflow really is]] and [[node:sys-linear-chain|Linear Chain]]):\n1. Email arrives at support@\n2. AI reads and categorizes: question / complaint / cancellation\n3. If a question → AI drafts a reply based on the knowledge base\n4. If a complaint → AI calls a human with a ready-made summary\n5. You glance at the draft → tweak 1-2 words → send\n\nResult: 50 emails per day instead of 15. Not because you type faster — because AI removed \"start from scratch\".",
+    "impact": "Before: sorting email — 1 hour each morning. After: AI sorted it overnight, then you spend 10 minutes in the morning checking.\n\nBefore: writing a meeting recap — 40 minutes. After: AI pulled decisions and action items from the recording, then you tweak for 10 minutes.\n\nMain point: you don't \"do it faster\", you \"do only the important part\".",
+    "example": "Workflow \"handle an incoming customer email\" (for the pattern itself see [[node:sys-workflows-basics|What an AI Workflow really is]] and [[node:sys-linear-chain|Linear Chain]]):\n1. Email arrives at support@\n2. AI reads and categorizes: question / complaint / cancellation\n3. If a question, AI drafts a reply based on the knowledge base\n4. If a complaint, AI calls a human with a ready-made summary\n5. You glance at the draft, tweak 1-2 words, send\n\nResult: 50 emails per day instead of 15. Not because you type faster — because AI removed \"start from scratch\".",
     "mistakes": "Main mistake: trying to build a workflow \"that does everything\". Better 5 simple workflows for specific tasks than one giant one.\n\nSecond mistake: automating everything. If a step requires human judgement (important client, legal risk, money) — leave it to a human. Workflow ≠ autopilot."
   },
   "ai-data-systems": {
@@ -1462,9 +1462,9 @@
     "what": "You know how Google searches websites and finds the right one? AI Data Systems is the same search, but over YOUR documents: team PDFs, Notion notes, Slack threads, CRM customer records.\n\nWithout this AI only knows what was in the internet at training time. With this — AI knows what your team knows.",
     "why": "Without data systems AI says \"I don't know\" to any company-specific question. With data systems — it says \"here's the doc from March 14th, it says X, here's the link\".\n\nThat's the difference between \"AI as Wikipedia\" and \"AI as a new hire who has read the entire knowledge base\".",
     "when": "When you notice:\n- You ask AI about your company — it gives generic answers\n- The team has a \"person who remembers where things live\" — a bottleneck\n- New hires spend 2 weeks finding the right documents\n- Customers ask the same questions — the answers exist, but they're scattered",
-    "impact": "Before: \"where's our refund process?\" → 30 minutes searching Notion + Slack. After: ask AI → link to doc + quote in 5 seconds.\n\nBefore: a new hire asks 20 questions in week one. After: they ask AI, only go to colleagues with genuinely complex things.\n\nMain point: the company's knowledge stops being \"in Mary's head\".",
+    "impact": "Before: \"where's our refund process?\", then 30 minutes searching Notion + Slack. After: ask AI, then link to doc + quote in 5 seconds.\n\nBefore: a new hire asks 20 questions in week one. After: they ask AI, only go to colleagues with genuinely complex things.\n\nMain point: the company's knowledge stops being \"in Mary's head\".",
     "example": "We connect AI to a Notion base with company policies (under the hood — [[node:sys-rag-architecture|RAG architecture]]). An employee asks in Slack: \"How do I file a 5-day business trip to Berlin?\"\n\nAI:\n1. Searches Notion for relevant documents (regulations, expense policy)\n2. Finds 3 documents\n3. Assembles the answer: \"Per the 2024-03 policy (link): book flights through Concur, hotel up to €180/night, expenses within 5 days via Bookkeeper. Business trips to Germany require 7-day notice to HR.\"\n4. Employee gets the answer in 10 seconds instead of an hour of searching",
-    "mistakes": "Main mistake: hook up \"all documents\" at once. You get noise — AI answers citing a 2019 draft.\n\nBetter: connect 1 source (current policies) → check answer quality → then add the rest.\n\nSecond mistake: not showing sources. If AI answers without a link to \"where it got it\" — nobody trusts it."
+    "mistakes": "Main mistake: hook up \"all documents\" at once. You get noise — AI answers citing a 2019 draft.\n\nBetter: connect 1 source (current policies), check answer quality, then add the rest.\n\nSecond mistake: not showing sources. If AI answers without a link to \"where it got it\" — nobody trusts it."
   },
   "ai-native-marketing": {
     "title": "AI for marketing",
@@ -1478,9 +1478,9 @@
   "ai-native-customer-support": {
     "title": "AI for customer support",
     "what": "Support = 70% routine questions (\"where's my invoice\", \"how to change password\", \"email not arriving\") and 30% real problems. AI closes the routine itself, agents handle only the hard stuff.\n\nThis isn't \"an annoying chatbot\". It's \"AI that actually solves the issue in 5 seconds or calls a human if it can't\".",
-    "why": "Support is a pain point in any product. Customer base grows → questions grow → you hire more people → budgets burn → agents burn out.\n\nWith AI, support stops scaling linearly: 100 customers = 1 agent, 10,000 customers = still 3 agents. Because AI handles 70% of routine.",
+    "why": "Support is a pain point in any product. Customer base grows, then questions grow, then you hire more people, then budgets burn, then agents burn out.\n\nWith AI, support stops scaling linearly: 100 customers = 1 agent, 10,000 customers = still 3 agents. Because AI handles 70% of routine.",
     "when": "When you notice:\n- Support team grows faster than customer base\n- Agents write the same thing 20 times a day\n- Time to first reply > 30 minutes — customers irritated\n- Turnover in support — everyone burns out in 6 months\n- Knowledge base exists, nobody reads it — easier to ask",
-    "impact": "Before: time to first reply 2 hours, agent handles 40 tickets a day.\n\nAfter: AI answers routine in 5 seconds (70% of tickets), agent handles 30 complex tickets a day (but more time per one → higher quality).\n\nCustomers get answers faster, agents don't burn out on repetition, budget doesn't scale linearly with customer base.\n\nMain point: support stops \"plugging holes\" and starts \"helping customers succeed with the product\".",
+    "impact": "Before: time to first reply 2 hours, agent handles 40 tickets a day.\n\nAfter: AI answers routine in 5 seconds (70% of tickets), agent handles 30 complex tickets a day (but more time per one, so higher quality).\n\nCustomers get answers faster, agents don't burn out on repetition, budget doesn't scale linearly with customer base.\n\nMain point: support stops \"plugging holes\" and starts \"helping customers succeed with the product\".",
     "example": "7 directions inside:\n- [[node:cs-tier1|Tier-1 automation]]\n- [[node:cs-agent-assist|Agent-assist — AI helps the agent]]\n- [[node:cs-knowledge-base|Support knowledge base]]\n- [[node:cs-escalation|Smart escalation]]\n- [[node:cs-quality-monitoring|Quality monitoring]]\n- [[node:cs-support-analytics|Ticket analytics]]\n- [[node:cs-team-workflow|Team workflows]]",
     "mistakes": "Main mistake: \"AI will replace support\". It won't. AI closes routine, leaving the complex to humans. If you try to fully remove agents — you'll regret it after the first complaint.\n\nSecond mistake: not showing what AI says. If the agent can't see what AI told the customer — they'll duplicate, confuse, and damage the relationship. AI should be transparent to the team.\n\nThird mistake: launching AI without escalation. Customer asks the same question 3 times, AI repeats the same answer 3 times — customer livid. You need an explicit \"call a human\" path."
   },
@@ -1489,7 +1489,7 @@
     "what": "A product manager spends 50% of time \"gathering insights\": customer interviews, feedback from support, analytics data, stakeholder tickets. And 50% on \"making a decision and writing it up\".\n\nAI speeds up the first half by 5×: reads interviews, aggregates feedback, finds patterns. PM has time left for strategy.",
     "why": "Product work is \"lots of noise, little signal\". AI is good at separating one from the other: from 200 feedbacks it pulls out 5 real themes, from 30 interviews — 3 stable insights.\n\nMain point: PM stops being a \"feedback-tool operator\" and becomes \"the person who makes decisions\".",
     "when": "When you notice:\n- 30 customer interviews and you haven't read them yet\n- 200 feedbacks from support in Notion — synthesis \"someday\"\n- Roadmap built by \"loudness\", not by data\n- Spending an hour every morning on \"what happened in the product yesterday\"\n- Specs take 3 days — then a week of revisions",
-    "impact": "Before: 30 customer interviews = a month of synthesis, by the end you've forgotten the first ones.\n\nAfter: AI does the first-pass synthesis in 2 hours, PM verifies and digs into the important parts → 3 days instead of a month.\n\nBefore: PRD takes a week to write, a week to review.\n\nAfter: AI drafts in 30 minutes from a brief, PM revises for 2 days, reviewers get a clean document.\n\nMain point: PM works on \"what's important to do\", not on \"how to gather data\".",
+    "impact": "Before: 30 customer interviews = a month of synthesis, by the end you've forgotten the first ones.\n\nAfter: AI does the first-pass synthesis in 2 hours, PM verifies and digs into the important parts, then 3 days instead of a month.\n\nBefore: PRD takes a week to write, a week to review.\n\nAfter: AI drafts in 30 minutes from a brief, PM revises for 2 days, reviewers get a clean document.\n\nMain point: PM works on \"what's important to do\", not on \"how to gather data\".",
     "example": "7 directions inside:\n- [[node:pd-discovery-research|Discovery — interviews & synthesis]]\n- [[node:pd-spec-generation|Spec & PRD generation]]\n- [[node:pd-roadmap-intelligence|Roadmap work]]\n- [[node:pd-experimentation|Experiments (A/B)]]\n- [[node:pd-feedback-synthesis|Feedback synthesis]]\n- [[node:pd-product-analytics|Product analytics]]\n- [[node:pd-team-workflow|Team workflows]]",
     "mistakes": "Main mistake: letting AI make product decisions. AI is good at data synthesis, but \"what matters more\" is your job. If AI says \"build X\" and you build it without your own analysis — you'll blame AI when it doesn't work out.\n\nSecond mistake: automating interviews without a human. AI does the interview, AI processes it, AI decides what's important — you'll get what you already knew. Live interviews with a human are mandatory. AI speeds up processing, not replacement.\n\nThird mistake: trusting AI \"without verification\". AI can hallucinate insights that aren't in the data. Always verify key conclusions against the original sources."
   },
@@ -1497,10 +1497,10 @@
     "title": "AI transformation for the whole company",
     "what": "A section for leaders (CTO, CIO, Head of Transformation): how to roll out AI not just \"in marketing\" but across a 200+ person company. Strategy, change management, governance, ROI, risks.\n\nThis isn't \"buy ChatGPT licenses\". It's \"how to make AI the way of working, not a toy in the corner\".",
     "why": "A big company doesn't turn AI-native in a month. It's 1-3 years of work on strategy, teams, culture and processes. Without a systematic approach — the rollout dies halfway.\n\nThis section is a map of typical transformation tasks and a warning about the rakes 80% of companies step on.",
-    "when": "When:\n- You're a CTO/CIO at a 100+ person company and need to prepare an AI strategy\n- The board asked \"what's our AI story\" — you need a clear answer\n- You already have 5 AI pilots in different departments, but they're disconnected\n- Competitors are pulling ahead — you need to catch up systematically\n- You launched AI pilots — nobody uses them → need to understand why",
+    "when": "When:\n- You're a CTO/CIO at a 100+ person company and need to prepare an AI strategy\n- The board asked \"what's our AI story\" — you need a clear answer\n- You already have 5 AI pilots in different departments, but they're disconnected\n- Competitors are pulling ahead — you need to catch up systematically\n- You launched AI pilots — nobody uses them, so you need to understand why",
     "impact": "Without a system: 20 pilots, 3 alive, 17 abandoned. Teams disillusioned, budget wasted.\n\nWith a system: 5 directions prioritized, 4 driven to production, measurable quarterly ROI, teams see results and want more.\n\nMain point: AI stops being a \"fashionable toy\" and becomes a real way of working.",
     "example": "7 directions inside:\n- [[node:en-transformation-strategy|Transformation strategy]]\n- [[node:en-change-management|Change management]]\n- [[node:en-governance|Governance & risk]]\n- [[node:en-risk-management|Risk management]]\n- [[node:en-coe|Center of Excellence (CoE)]]\n- [[node:en-roi-measurement|ROI measurement]]\n- [[node:en-talent-strategy|Talent strategy]]",
-    "mistakes": "Main mistake: \"push AI from the top\". \"Everyone now works with AI\" in a CEO email — 2 weeks later everyone's back to old ways. You need bottom-up momentum from teams + top-down support.\n\nSecond mistake: measuring ROI \"in 6 months\". By then the project is forgotten. Measure small wins every 2-4 weeks (that's how people believe and back it).\n\nThird mistake: not investing in training. Bought licenses, forgot the team → licenses sit idle → ROI zero. Tooling budget ≤ training budget."
+    "mistakes": "Main mistake: \"push AI from the top\". \"Everyone now works with AI\" in a CEO email — 2 weeks later everyone's back to old ways. You need bottom-up momentum from teams + top-down support.\n\nSecond mistake: measuring ROI \"in 6 months\". By then the project is forgotten. Measure small wins every 2-4 weeks (that's how people believe and back it).\n\nThird mistake: not investing in training. Bought licenses, forgot the team, then licenses sit idle, then ROI zero. Tooling budget ≤ training budget."
   },
   "en-transformation-strategy": {
     "title": "AI Transformation Strategy",
@@ -1516,7 +1516,7 @@
     "what": "Structured approach to changing team behaviors under AI-native operations: communication, training, role evolution, resistance management. Tech adoption ≠ change management — these are different disciplines.",
     "why": "The most common cause of failed AI initiatives is not tech, but adoption. Teams fear (job loss), do not believe (saw hype before), do not know (skills gap). Change management addresses this explicitly.",
     "when": "Before rolling out a tactical direction to the full team. When the first pilots work but adoption stalls. When there is an \"AI champions\" vs \"AI skeptics\" split on the team.",
-    "impact": "Adoption rate: 30% → 80% with proper change mgmt. Resistance reduced (not eliminated). Skills gap closes via structured training. Time-to-Stage 3: -50% for tactical directions.",
+    "impact": "Adoption rate: from 30% to 80% with proper change mgmt. Resistance reduced (not eliminated). Skills gap closes via structured training. Time-to-Stage 3: -50% for tactical directions.",
     "example": "Change Management Framework (for one tactical direction):\n\nPhase 1: Awareness (week 1-2)\n  - All-hands: \"here is what we are doing + why\"\n  - Q&A sessions: address concerns openly\n  - Champions identification\n\nPhase 2: Education (week 3-4)\n  - Hands-on workshops for everyone\n  - Skill development: 10 hours of structured learning\n  - Champions trained deeper\n\nPhase 3: Adoption (week 5-12)\n  - Pilot teams using daily\n  - Office hours for help\n  - Wins shared widely\n\nPhase 4: Reinforcement (ongoing)\n  - Promotion criteria include AI usage\n  - Career path for \"AI-augmented\" roles\n  - Continuous learning culture\n\nMetric: % of team actively using AI weekly.",
     "mistakes": "Thinking that training = change management. Training is skill transfer. Change mgmt is behavioral shift. Without the second, the first = waste. And: not answering \"will I lose my job?\". Avoiding it = doubt grows."
   },
@@ -1532,9 +1532,9 @@
   "en-coe": {
     "title": "AI Center of Excellence",
     "what": "Central team (3-10 people) — AI lead, ML engineers, AI ethicists, product manager — supporting tactical teams: best practices, shared infrastructure, training, governance liaison. Not building everything, but enabling others.",
-    "why": "Without a CoE, each tactical team reinvents the wheel: discovers RAG, learns prompt engineering, sets up vector DB. CoE shares this knowledge and infrastructure → 5-10× faster for all subsequent teams.",
+    "why": "Without a CoE, each tactical team reinvents the wheel: discovers RAG, learns prompt engineering, sets up vector DB. CoE shares this knowledge and infrastructure, making it 5-10× faster for all subsequent teams.",
     "when": "After 2-3 successful tactical AI directions. When \"how and where do I find an AI expert?\" becomes a regular question. When signing up for enterprise AI vendors (CoE manages).",
-    "impact": "New AI initiative time-to-launch: 6 months → 2 months. Cost: shared infra cheaper than per-team setup. Quality: best practices spread. Career: clear AI path for talent.",
+    "impact": "New AI initiative time-to-launch: from 6 months to 2 months. Cost: shared infra cheaper than per-team setup. Quality: best practices spread. Career: clear AI path for talent.",
     "example": "CoE Structure:\n\nCore team (3-5):\n  - Head of AI / Chief AI Officer\n  - Senior ML/AI engineer\n  - AI Product Manager\n  - AI Ethics & Governance lead\n\nFunctions:\n  1. Shared infrastructure (vector DBs, LLM API contracts, monitoring)\n  2. Best practices library ([[node:cc-md|CLAUDE.md]] templates, Skills, patterns)\n  3. Office hours (weekly, anyone can attend)\n  4. Training programs (3 levels: foundational, intermediate, advanced)\n  5. Tooling decisions (which AI tools company-wide)\n  6. Governance coordination (with security/legal)\n  7. Talent: hiring AI roles + upskilling existing\n  8. Showcase: monthly \"AI demos\" across the company\n\nKey metric: CoE-enabled launches per quarter.",
     "mistakes": "Making CoE \"the AI department\" — building everything. CoE = enablement, not execution. Tactical teams build, CoE shares know-how. Otherwise CoE becomes a bottleneck."
   },
@@ -1569,7 +1569,7 @@
     "title": "A team of multiple AIs",
     "what": "Sometimes one AI isn't enough. The task is too big, requires different skills, needs steps that depend on each other. Then you build an AI team: one writes, another checks, a third decides what to do next.\n\nLike a real team: each AI has its own role, they hand work over to each other, and you watch from the outside.",
     "why": "One AI in a complex task is like asking a single person to be a copywriter, editor, fact-checker and lawyer at the same time. They can do all of it — but poorly.\n\nA team of AIs lets each one focus on its piece. Output quality jumps not because the model is smarter, but because each role is set up properly.",
-    "when": "When you notice:\n- One AI handles a task at 70% quality — there's a ceiling\n- The task has clear stages with different skills (research → writing → fact-check → polish)\n- You want repeatable quality without retrying 5 times\n- A single prompt has turned into a wall of text with 20 rules — impossible to maintain (for base patterns see [[node:sys-multi-agent-patterns|Multi-Agent — 4 ways]])",
+    "when": "When you notice:\n- One AI handles a task at 70% quality — there's a ceiling\n- The task has clear stages with different skills (research, then writing, then fact-check, then polish)\n- You want repeatable quality without retrying 5 times\n- A single prompt has turned into a wall of text with 20 rules — impossible to maintain (for base patterns see [[node:sys-multi-agent-patterns|Multi-Agent — 4 ways]])",
     "impact": "One AI: 70% acceptable outputs.\n\nTeam of AIs: 90% acceptable outputs. Not because the model improved, but because each step has clear focus.\n\nMain point: instead of fighting one prompt that does it all, you assemble a team where each member does one thing well.",
     "example": "Writing analytical articles:\n1. **Researcher AI**: takes the topic, finds 10 sources, makes a summary with facts and quotes\n2. **Outline AI**: takes the research, builds an article structure (intro, 3 blocks, conclusion)\n3. **Writer AI**: takes the outline, writes the first draft in the brand voice\n4. **Fact-checker AI**: takes the draft, checks every claim against sources, marks doubtful ones\n5. **Editor AI**: removes water, tightens long sentences\n6. Person: reads, makes final edits, publishes\n\nResult: 1 hour of work instead of a day. Each step is debuggable separately.",
     "mistakes": "Main mistake: build a team of AIs for a simple task. If one AI handles it well — don't complicate.\n\nSecond mistake: not setting clear interfaces between AIs. \"AI 1 gives some text, AI 2 figures out what to do with it\" = chaos. Each step needs a clear input and output format.\n\nThird mistake: not adding humans in the right places. A fully autonomous team of AIs without checkpoints will drift in unexpected directions in 2 weeks."
@@ -1585,28 +1585,28 @@
   },
   "ai-operations": {
     "title": "AI in production — so it doesn't break in a month",
-    "what": "You shipped an AI feature → it works → 2 weeks later quality drops → users complain → you don't know why. AI Operations is a set of practices to prevent that.\n\nIt includes: watching what AI actually replies (instead of trusting \"it's fine\"), measuring quality regularly, controlling how much you spend on the API, versioning prompts like code.",
-    "why": "AI doesn't behave like regular software. Regular code: wrote it → works → works. AI code: wrote it → works → a month later the model is updated → behaves differently.\n\nWithout AI Ops your AI = an eternal pilot. With AI Ops — a production system that lives for years.",
+    "what": "You shipped an AI feature, then it works, then 2 weeks later quality drops, then users complain, then you don't know why. AI Operations is a set of practices to prevent that.\n\nIt includes: watching what AI actually replies (instead of trusting \"it's fine\"), measuring quality regularly, controlling how much you spend on the API, versioning prompts like code.",
+    "why": "AI doesn't behave like regular software. Regular code: wrote it, then works, then works. AI code: wrote it, then works, then a month later the model is updated, then behaves differently.\n\nWithout AI Ops your AI = an eternal pilot. With AI Ops — a production system that lives for years.",
     "when": "From day one in production. Not \"when we need to\" — by then it's too late.\n\nSignals you're missing Ops:\n- You don't know how much you spent on AI last month\n- Users complain about quality — you can't verify if it actually got worse\n- The prompt was changed 5 times — you don't remember which version is in prod\n- AI started answering oddly — you don't know if the model was updated or the prompt was edited",
-    "impact": "Without Ops: an AI feature lives 3 months, then \"something broke\", the team gets tired of fixing it → they kill it.\n\nWith Ops: an AI feature lives 2+ years, you spot degradation in a day instead of a month, costs are predictable.\n\nMain point: you run the system, not the other way around.",
-    "example": "AI support chat in a B2B SaaS:\n1. Every week 50 typical questions are auto-run (see [[node:sys-evals-benchmarks|How to actually check AI works]]) → answer quality checked → if it drops 10%, alert\n2. A daily Slack report: \"yesterday 340 requests, $4.20 spent, 92% positive feedback\"\n3. All prompts live in git, costs under control (see [[node:sys-cost-management|How not to go broke on the AI API]]), changes need review from 2 people\n4. If AI starts answering 30% longer than usual → automatic alert (often a sign of degradation)\n\nThe team catches issues in a day, not a customer complaint two weeks later.",
+    "impact": "Without Ops: an AI feature lives 3 months, then \"something broke\", the team gets tired of fixing it, then they kill it.\n\nWith Ops: an AI feature lives 2+ years, you spot degradation in a day instead of a month, costs are predictable.\n\nMain point: you run the system, not the other way around.",
+    "example": "AI support chat in a B2B SaaS:\n1. Every week 50 typical questions are auto-run (see [[node:sys-evals-benchmarks|How to actually check AI works]]), then answer quality checked, then if it drops 10%, alert\n2. A daily Slack report: \"yesterday 340 requests, $4.20 spent, 92% positive feedback\"\n3. All prompts live in git, costs under control (see [[node:sys-cost-management|How not to go broke on the AI API]]), changes need review from 2 people\n4. If AI starts answering 30% longer than usual, then automatic alert (often a sign of degradation)\n\nThe team catches issues in a day, not a customer complaint two weeks later.",
     "mistakes": "Main mistake: \"we'll launch first, think about monitoring later\". A month in you have 10,000 requests and zero data about what AI said. You can't even tell if quality got worse.\n\nSecond mistake: measuring only \"works / doesn't work\". You need to measure quality — otherwise you'll miss slow degradation where AI answers technically correctly but not what's needed."
   },
   "ai-integration-systems": {
     "title": "AI inside the tools you already use",
-    "what": "AI in Slack, where you already chat. AI in Notion, where your docs live. AI in Linear, where the tickets are. Integration means AI comes to your tools, not the other way around.\n\nThe opposite: \"open ChatGPT → copy context → paste → copy the answer → paste back\". Nobody keeps doing that for long.",
+    "what": "AI in Slack, where you already chat. AI in Notion, where your docs live. AI in Linear, where the tickets are. Integration means AI comes to your tools, not the other way around.\n\nThe opposite: \"open ChatGPT, then copy context, then paste, then copy the answer, then paste back\". Nobody keeps doing that for long.",
     "why": "AI without integration = a cool demo that nobody uses. Because switching between Slack and ChatGPT and back is exhausting.\n\nAI inside the tool that's already open = used every day, no reminders needed.",
-    "when": "When you notice:\n- You shipped an AI tool → the team is impressed → 2 weeks later nobody opens it\n- People say \"cool, but I forget it exists\"\n- Most of the team's work lives in Slack / Notion / Linear / CRM\n- AI = a separate tab people close first",
+    "when": "When you notice:\n- You shipped an AI tool, then the team is impressed, then 2 weeks later nobody opens it\n- People say \"cool, but I forget it exists\"\n- Most of the team's work lives in Slack / Notion / Linear / CRM\n- AI = a separate tab people close first",
     "impact": "AI in chat: 10-20% of the team uses it.\nAI inside Slack/Notion: 60-80% use it.\n\nNot because it works better — because there's no need to go anywhere.\n\nMain point: AI becomes part of the workflow, not a separate step.",
-    "example": "A sales team works in HubSpot (under the hood — [[node:sys-api-patterns|API integration patterns]]). Before:\n1. Rep sees an email from a customer\n2. Goes to ChatGPT\n3. Copies the conversation history\n4. Asks \"write a follow-up\"\n5. Copies the result back to HubSpot\n\nNow:\n1. Rep sees the email in HubSpot\n2. Clicks \"AI follow-up\" right in the card\n3. AI already knows the customer's history, recent deals, tone of voice\n4. Gets 3 draft options\n5. Picks one → tweaks → sends\n\nFrom 5 minutes to 30 seconds. But more importantly — the rep actually does it, instead of \"forgetting about AI\".",
+    "example": "A sales team works in HubSpot (under the hood — [[node:sys-api-patterns|API integration patterns]]). Before:\n1. Rep sees an email from a customer\n2. Goes to ChatGPT\n3. Copies the conversation history\n4. Asks \"write a follow-up\"\n5. Copies the result back to HubSpot\n\nNow:\n1. Rep sees the email in HubSpot\n2. Clicks \"AI follow-up\" right in the card\n3. AI already knows the customer's history, recent deals, tone of voice\n4. Gets 3 draft options\n5. Picks one, tweaks, sends\n\nFrom 5 minutes to 30 seconds. But more importantly — the rep actually does it, instead of \"forgetting about AI\".",
     "mistakes": "Main mistake: build a \"portal\" — a separate website where all AI features live. Nobody goes there. Better to embed AI into 1 tool the team uses daily.\n\nSecond mistake: integrate AI everywhere at once. You'll get 10 half-baked integrations. Better 1 integration that actually works (Slack or Notion or CRM — pick one)."
   },
   "ai-native-design": {
     "title": "AI for design teams",
-    "what": "Design = \"do 5 interviews → synthesize → sketch 10 prototypes → gather feedback → redo\". Many steps, each slow.\n\nAI speeds up everything between \"the research is done\" and \"the final mockup\": synthesizes interviews, generates prototype ideas, checks accessibility, supports the design system, writes UX copy.",
+    "what": "Design = \"do 5 interviews, then synthesize, then sketch 10 prototypes, then gather feedback, then redo\". Many steps, each slow.\n\nAI speeds up everything between \"the research is done\" and \"the final mockup\": synthesizes interviews, generates prototype ideas, checks accessibility, supports the design system, writes UX copy.",
     "why": "A designer spends 60% of time on \"prep work\": organizing research, routine edits, consistency checks. AI removes the routine — the designer focuses on creativity and strategy.\n\nMain point: AI doesn't \"draw for you\". It speeds up everything around drawing so you have more time to think.",
     "when": "When you notice:\n- 10 user interviews sit in Notion, you synthesized two\n- Every week you check by hand that mockups have alt text\n- A design system exists but everyone draws their own way\n- UX copy is written by the product writer, you wait 2 days\n- \"Prototype variants\" eat 3 days, you end up picking the first one",
-    "impact": "Before: synthesizing 10 interviews = a week.\n\nAfter: AI does the first-pass synthesis in 2 hours, designer verifies and finalizes → 1-2 days.\n\nBefore: 3 prototype variants in a day — not enough time.\n\nAfter: AI generates 10 idea variants in an hour, designer picks 3 and goes deep.\n\nMain point: more time on \"deciding what's better\", less on \"gathering material\".",
+    "impact": "Before: synthesizing 10 interviews = a week.\n\nAfter: AI does the first-pass synthesis in 2 hours, designer verifies and finalizes, then 1-2 days.\n\nBefore: 3 prototype variants in a day — not enough time.\n\nAfter: AI generates 10 idea variants in an hour, designer picks 3 and goes deep.\n\nMain point: more time on \"deciding what's better\", less on \"gathering material\".",
     "example": "7 directions inside:\n- [[node:ds-design-research|Research synthesis — working with interviews]]\n- [[node:ds-prototype-generation|Prototype idea generation]]\n- [[node:ds-design-ops|Design ops automation]]\n- [[node:ds-accessibility|Accessibility audits]]\n- [[node:ds-design-system|Design system evolution]]\n- [[node:ds-content-design|Content / UX copy]]\n- [[node:ds-team-workflow|Team workflows]]",
     "mistakes": "Main mistake: expecting AI to \"come up with the design for you\". It won't. AI gives variants — your job is to pick and refine.\n\nSecond mistake: using AI for final mockups. AI is good at sketches and drafts. On final mockups your hand and taste decide.\n\nThird mistake: automating design review. \"AI will check the design for consistency\" — won't replace design review with the team. Use AI for mechanical checks (alt text, contrast), but design judgement — on humans."
   },
@@ -1615,16 +1615,16 @@
     "what": "AI-powered user research for designers: synthesis of usability tests, behavioral analysis of session recordings, competitor design pattern analysis. From \"100 interviews = 2 weeks of processing\" — to \"AI extracts themes in an hour, designer validates\".",
     "why": "Research is a critical part of design, but time-intensive. The designer spends 50% of time on synthesis, 50% on actual design. AI shifts the balance to 20/80.",
     "when": "Usability testing rounds (5-15 sessions). Competitor research. Card sorting analysis. When there are session recordings and you need to extract patterns.",
-    "impact": "Time-to-insight: days → hours. Theme extraction structured instead of \"designer's gut feel\".",
+    "impact": "Time-to-insight: from days to hours. Theme extraction structured instead of \"designer's gut feel\".",
     "example": "Usability Synthesis Workflow:\n\n  Inputs:\n  - 10 session recordings (transcripts)\n  - User interview notes\n  - Pre/post task survey data\n        ↓\n  AI Steps:\n  1. Extract pain points (frequency + severity)\n  2. Group by user task / journey stage\n  3. Identify quick wins vs structural issues\n  4. Generate improvement hypotheses\n        ↓\n  Designer validates:\n  - Pain point severity rated through design lens\n  - Solutions ranked by feasibility\n        ↓\n  Output: structured research report + prioritized backlog\n\nMetric: time-to-insight, design improvements shipped.",
-    "mistakes": "Doing AI synthesis without designer eye-on-data. AI misses emotional nuance, frustration patterns, edge cases. Workflow: AI extracts themes → designer reviews 20% with original recordings → confidence in the rest."
+    "mistakes": "Doing AI synthesis without designer eye-on-data. AI misses emotional nuance, frustration patterns, edge cases. Workflow: AI extracts themes, then designer reviews 20% with original recordings, then confidence in the rest."
   },
   "ds-prototype-generation": {
     "title": "AI Prototype Generation",
-    "what": "AI generation of prototypes: design mockup → HTML/React code, sketches → Figma compositions, multiple style variants in minutes. From \"designer codes prototype for 2 days\" — to \"AI provides 5 variants in an hour, designer selects + refines\".",
+    "what": "AI generation of prototypes: design mockup to HTML/React code, sketches to Figma compositions, multiple style variants in minutes. From \"designer codes prototype for 2 days\" — to \"AI provides 5 variants in an hour, designer selects + refines\".",
     "why": "Prototyping is a bottleneck in the design cycle. AI handles the \"technical\" aspect (turn idea into code/Figma), the designer focuses on concept + critique.",
     "when": "Early-stage exploration (need many variants quickly). Design system component variants. Conversion of mockup to code. A/B testing variant generation.",
-    "impact": "Time-to-prototype: 2 days → 4 hours. Variant coverage: 1-2 → 5-10 per concept. Iteration speed: 2-3× faster.",
+    "impact": "Time-to-prototype: from 2 days to 4 hours. Variant coverage: from 1-2 to 5-10 per concept. Iteration speed: 2-3× faster.",
     "example": "Prototype Workflow:\n\n  Designer brief:\n  \"Onboarding flow for B2B SaaS,\n   3 steps, brand color #2563eb,\n   font Inter, mood: friendly+confident\"\n        ↓\n  AI Step 1: Generate 5 layout variants\n        ↓\n  Designer selects 2 most promising\n        ↓\n  AI Step 2: Generate React/HTML for each\n        ↓\n  Designer refines via Figma OR direct code edits\n        ↓\n  Output: working prototype 4 hours after brief\n\nReal usage: AI-generated code = starting point, not final. Designer refines 30-50%.",
     "mistakes": "Expecting \"pixel-perfect output\" from AI. AI gives 70% from idea to code, the last 30% (taste, brand fit, accessibility) — designer. Treating AI as starting point = speed. Treating as final = mediocre output."
   },
@@ -1633,8 +1633,8 @@
     "what": "Automating design ops: asset documentation, component change-logs, Figma library management, design QA. From \"we have everything but no one knows where\" — to \"AI maintains documentation continuously\".",
     "why": "Design ops are invisible until they break. Asset chaos, outdated components, missing docs — all kill velocity. AI maintains this continuously without manual effort.",
     "when": "Design system exists but is poorly documented. Multiple designers, components diverge. New hires ask \"where is X component?\". Pre-handoff QA is not performed.",
-    "impact": "Designer time on ops: -50%. New hire onboarding: 2 weeks → 1 week. Component reuse: +30% (instead of reinvention).",
-    "example": "Design Ops Automation:\n\n1. Component Documentation:\n   - AI reads Figma file → generates MD docs per component\n   - Updates: AI diffs changes weekly → adds changelog\n\n2. Asset Audit:\n   - AI scans products → finds inconsistent components\n   - Flags: \"button styles diverge across 5 screens\"\n\n3. Handoff QA:\n   - Pre-handoff AI checks: token usage, accessibility, spacing\n   - Generates QA report for dev review\n\n4. Library Health:\n   - Weekly: AI identifies unused components, outdated tokens\n   - Suggests cleanup\n\nMetric: design system health score, time saved on documentation.",
+    "impact": "Designer time on ops: -50%. New hire onboarding: from 2 weeks to 1 week. Component reuse: +30% (instead of reinvention).",
+    "example": "Design Ops Automation:\n\n1. Component Documentation:\n   - AI reads Figma file, then generates MD docs per component\n   - Updates: AI diffs changes weekly, then adds changelog\n\n2. Asset Audit:\n   - AI scans products, then finds inconsistent components\n   - Flags: \"button styles diverge across 5 screens\"\n\n3. Handoff QA:\n   - Pre-handoff AI checks: token usage, accessibility, spacing\n   - Generates QA report for dev review\n\n4. Library Health:\n   - Weekly: AI identifies unused components, outdated tokens\n   - Suggests cleanup\n\nMetric: design system health score, time saved on documentation.",
     "mistakes": "Doing AI design ops without integration into actual tools. \"AI generates docs in a separate Notion\" = no one reads. AI must live where designers work: Figma plugins, Slack integrations, CI/CD for design."
   },
   "ds-accessibility": {
@@ -1642,7 +1642,7 @@
     "what": "AI a11y checks at every step: contrast checks, alt-text generation, screen reader simulation, keyboard navigation audit. From \"accessibility = a special audit once every six months\" — to \"accessibility-by-default through AI\".",
     "why": "Accessibility is often checked at the end, when fixing is expensive. AI catches issues in real-time during design. Cost is 10× lower.",
     "when": "Design system accessibility setup. New feature launches with user-facing UI. Quarterly product audits. Customer complaints about a11y issues.",
-    "impact": "A11y bug rate: 30% → 5% (issues caught at design stage). Compliance: WCAG AA reached confidently. Legal risk: significantly reduced.",
+    "impact": "A11y bug rate: from 30% to 5% (issues caught at design stage). Compliance: WCAG AA reached confidently. Legal risk: significantly reduced.",
     "example": "A11y Automation Pipeline:\n\n  Design phase:\n  1. AI checks contrast ratios on every screen\n  2. Auto-generates alt-text suggestions for images\n  3. Flags missing focus states, keyboard traps\n  4. Reviews color usage (color as sole indicator?)\n\n  Pre-handoff:\n  5. Full WCAG checklist auto-run\n  6. Report: issues + recommendations + WCAG criteria mapping\n\n  Post-launch:\n  7. Real screen reader test simulation\n  8. AI describes UX as a blind user would experience it\n\nMetric: WCAG compliance %, a11y issues per release.",
     "mistakes": "Thinking AI = \"full a11y replacement\". Manual testing with real assistive tech (real screen readers, real keyboard navigation) — still required. AI catches 80%, the last 20% — manual + user testing with a11y users."
   },
@@ -1651,8 +1651,8 @@
     "what": "AI helps evolve the design system: token set generation, component variants, documentation for every component, usage migration on breaking changes. Design system from a \"static document\" to \"a living system with an AI helper\".",
     "why": "Design systems usually stagnate: no resources for maintenance, breaking changes are postponed. AI removes the operational burden — the system stays fresh.",
     "when": "Design system exists but maintenance burden is high. Migration to a new token system. Component variants need to be created (sizes, states, themes). Documentation is scattered across different places.",
-    "impact": "Design system update velocity: 3-5× faster. Migration speed: weeks → days. Documentation freshness: always current.",
-    "example": "Design System Evolution:\n\n1. Token Generation:\n   - Designer says \"brand uses warm palette, modern feel\"\n   - AI generates: color scale, spacing scale, typography scale\n   - Designer refines: 70% AI output → 30% manual adjustment\n\n2. Component Variants:\n   - Designer creates base button\n   - AI generates: sizes (sm/md/lg), states (default/hover/focus/disabled), themes (light/dark)\n   - Outputs Figma file + code stubs\n\n3. Breaking Change Migration:\n   - \"We changed token spacing from 4px to 8px\"\n   - AI scans codebase + Figma files\n   - Generates migration PR + Figma changes list\n\n4. Documentation:\n   - AI maintains MDX docs per component\n   - Updates on component changes automatically\n\nMetric: components shipped, time-to-update.",
+    "impact": "Design system update velocity: 3-5× faster. Migration speed: from weeks to days. Documentation freshness: always current.",
+    "example": "Design System Evolution:\n\n1. Token Generation:\n   - Designer says \"brand uses warm palette, modern feel\"\n   - AI generates: color scale, spacing scale, typography scale\n   - Designer refines: 70% AI output, then 30% manual adjustment\n\n2. Component Variants:\n   - Designer creates base button\n   - AI generates: sizes (sm/md/lg), states (default/hover/focus/disabled), themes (light/dark)\n   - Outputs Figma file + code stubs\n\n3. Breaking Change Migration:\n   - \"We changed token spacing from 4px to 8px\"\n   - AI scans codebase + Figma files\n   - Generates migration PR + Figma changes list\n\n4. Documentation:\n   - AI maintains MDX docs per component\n   - Updates on component changes automatically\n\nMetric: components shipped, time-to-update.",
     "mistakes": "Relying entirely on AI for design system decisions. The design system embodies brand strategy + UX principles — these are critical human decisions. AI = executor, not decision-maker for system architecture."
   },
   "ds-content-design": {
@@ -1675,10 +1675,10 @@
   },
   "ai-native-ecommerce": {
     "title": "AI for eCommerce",
-    "what": "Flagship transformation direction: how AI changes how catalog, merchandising, CRO, support, and analytics teams work in an online store. 15 nodes with explicit workflows, metrics, and links to Foundation/Systems.\n\nThis isn't \"AI recommendations\" in the abstract — it's concrete scenarios: \"10k SKUs with no descriptions → AI generates PDPs in minutes\", \"site search returns nothing → semantic search via embeddings\", \"CRO tests take 6 weeks → AI generates variants in an hour\".",
+    "what": "Flagship transformation direction: how AI changes how catalog, merchandising, CRO, support, and analytics teams work in an online store. 15 nodes with explicit workflows, metrics, and links to Foundation/Systems.\n\nThis isn't \"AI recommendations\" in the abstract — it's concrete scenarios: \"10k SKUs with no descriptions, then AI generates PDPs in minutes\", \"site search returns nothing, then semantic search via embeddings\", \"CRO tests take 6 weeks, then AI generates variants in an hour\".",
     "why": "E-commerce is the clearest vertical market for AI: processes are documented, metrics are measurable, ROI is measurable directly (revenue, conversion, AOV). This makes the domain the best ground for systematic AI adoption.\n\nThe key: AI here isn't cosmetic — it replaces existing manual processes. PDP copywriters, merchandisers, analysts — all get 5-10× leverage from AI at the same headcount.",
     "when": "When the catalog has >500 SKUs and the content team is ≤5. When conversion has plateaued for 3-6 months. When search returns \"no results\" >20% of the time. When merchandising is manual and goes stale within a day. When the service team is drowning in routine queries. When entering a new market and localization is needed.",
-    "impact": "Across the whole direction the expected shifts: PDP time-to-publish 4h → 5min, search conversion +20-40%, average recommendation quality +30%, support load −50% on tier-1, time-to-insight on data days → hours.\n\nKey point — measurability: every rollout can be counted in revenue within 90 days.",
+    "impact": "Across the whole direction the expected shifts: PDP time-to-publish from 4h to 5min, search conversion +20-40%, average recommendation quality +30%, support load −50% on tier-1, time-to-insight on data from days to hours.\n\nKey point — measurability: every rollout can be counted in revenue within 90 days.",
     "example": "15 nodes in the direction, grouped by value stream:\n\n**Catalog:** [[node:ec-pdp-gen|AI PDP Generation]], [[node:ec-search-opt|AI Search]], [[node:ec-merchandising|AI Merchandising]], [[node:ec-recommendations|AI Recommendations]]\n\n**Conversion:** [[node:ec-cro|AI CRO]], [[node:ec-experimentation|AI Experimentation]], [[node:ec-checkout-opt|AI Checkout Optimization]], [[node:ec-personalization|AI Personalization]]\n\n**Operations:** [[node:ec-support|AI Commerce Support]], [[node:ec-loyalty|AI Loyalty]], [[node:ec-analytics|AI Analytics]], [[node:ec-pricing|AI Pricing]], [[node:ec-inventory|AI Inventory]], [[node:ec-segmentation|AI Segmentation]]\n\n**Team:** [[node:ec-team-workflow|Team Workflow]]",
     "mistakes": "The main mistake — trying \"everything at once\". 15 nodes = a map of possibilities, not an adoption roadmap. Start with one node, give it 60-90 days, count ROI, then expand.\n\nSecond mistake: AI generation with no quality gate. On a 10k SKU catalog a badly tuned AI will produce 10k bad cards in an hour — worse than 100 good manual ones. A quality gate is mandatory.\n\nThird: not localizing brand voice. Generic AI-English on a Finnish or Russian market is spotted by shoppers instantly."
   },
@@ -1774,7 +1774,7 @@
   },
   "i-when-where": {
     "title": "Where each instruction goes",
-    "what": "A priority map: account-wide instructions → Project instructions → CLAUDE.md in Claude Code. A narrower level extends or overrides a wider one.",
+    "what": "A priority map: account-wide instructions, then Project instructions, then CLAUDE.md in Claude Code. A narrower level extends or overrides a wider one.",
     "why": "Beginners write the same thing in three places, or wonder why a global setting \"does not work\" inside a Project.",
     "when": "Before writing any standing instruction — decide which level it belongs to.",
     "impact": "You stop duplicating rules and hitting conflicts: general lives globally, specific lives in a Project or CLAUDE.md.",
@@ -1830,7 +1830,7 @@
     "title": "Agent orchestration",
     "what": "Several agents working under a lead: the lead splits the task, hands pieces to specialized helpers, and assembles their results into one answer.",
     "why": "One agent with two dozen tools gets confused and overflows its context. Orchestration gives each worker a narrow role and clean context — quality goes up.",
-    "when": "When a task breaks into different parts: \"find → analyze → format\", where each step is done best by a separate specialist.",
+    "when": "When a task breaks into different parts: \"find, then analyze, then format\", where each step is done best by a separate specialist.",
     "impact": "Complex multi-step tasks resolve predictably: the lead controls the flow, helpers do not interfere. The setup is easier to debug than one know-it-all.",
     "example": "For \"prepare a market overview\", the lead runs a research helper to find sources, then hands the findings to an analyst for a comparison table.",
     "mistakes": "Spawning helpers where one would do: orchestration adds latency for context handoff. Split into agents only when the roles are truly different."

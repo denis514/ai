@@ -37,7 +37,7 @@
       },
       {
         "question": "Test the Skill: ask Claude a question where it SHOULD activate, and an anti-trigger question where it should NOT.",
-        "hint": "Doesn't activate when it should → loosen the description. Activates when it shouldn't → add anti-triggers."
+        "hint": "Doesn't activate when it should, then loosen the description. Activates when it shouldn't, then add anti-triggers."
       }
     ],
     "steps": {
@@ -47,10 +47,10 @@
         "why": "A Skill pays off when the process repeats ≥ 5 times a week. Otherwise you'll spend more time building it than you save.",
         "instructions": [
           "Write down 3 tasks you repeat regularly with a similar context.",
-          "For each, answer: how similar is the process? (≥80% → Skill candidate).",
+          "For each, answer: how similar is the process? (≥80%, then Skill candidate).",
           "Choose one — the most frequent and stable. Start there."
         ],
-        "validate": "One routine is chosen and you can clearly say: 'input → steps → output'.",
+        "validate": "One routine is chosen and you can clearly say: 'input, then steps, then output'.",
         "tip": "A good Skill signal — you're ALREADY catching yourself copying an old prompt.",
         "example": "Candidates:\n1. ✅ Regular audit of your items — every week, same process\n2. ❌ 'Help with a task' — too varied, doesn't formalize\n3. ✅ Preparing a standard document — several times a day, same template\n\nI choose: preparing the standard document — most frequent."
       },
@@ -160,7 +160,7 @@
     "subtitle": "A full AI agent in the terminal",
     "totalTime": "6 steps",
     "whatItIs": "You know VS Code Copilot that completes lines of code? [[node:claude-code|Claude Code]] does the same, but 10× the scope: reads your whole project, edits dozens of files, runs commands, does refactors. And it lives in your terminal, not your editor.\n\nAnthropic's CLI tool for working with Claude directly in the terminal. Uses [[node:cc-cmd-init|/init]], sub-agents, [[node:mcp|MCP servers]] and [[node:cc-md|CLAUDE.md]] as project memory. Turns the terminal into a full AI-powered development environment.",
-    "approach": "Don't try to master everything at once. Install → run [[node:cc-cmd-init|/init]] → try one real edit → tune [[node:cc-md|CLAUDE.md]]. Most of Claude Code's power unlocks through the CLAUDE.md you write for your own project.",
+    "approach": "Don't try to master everything at once. Install, then run [[node:cc-cmd-init|/init]], then try one real edit, then tune [[node:cc-md|CLAUDE.md]]. Most of Claude Code's power unlocks through the CLAUDE.md you write for your own project.",
     "outcomes": [
       "Installed Claude Code and launched it in your project",
       "Generated CLAUDE.md with /init and tuned it",
@@ -170,11 +170,11 @@
     "applyIn": [
       {
         "title": "Code review",
-        "description": "claude in the repo → /review → a structured audit at the level of an experienced developer in minutes."
+        "description": "claude in the repo, then /review, then a structured audit at the level of an experienced developer in minutes."
       },
       {
         "title": "Safe refactoring",
-        "description": "Plan mode → a change plan → you approve → execution. No surprises in the code."
+        "description": "Plan mode, then a change plan, then you approve, then execution. No surprises in the code."
       },
       {
         "title": "Auto-documentation",
@@ -188,7 +188,7 @@
     ],
     "exercises": [
       {
-        "question": "In your real repo: run claude → /init → tune CLAUDE.md (add a 'forbidden' section with your rules).",
+        "question": "In your real repo: run claude, then /init, then tune CLAUDE.md (add a 'forbidden' section with your rules).",
         "hint": "At least 3 lines in the forbidden section — this shows the result immediately."
       },
       {
@@ -202,7 +202,7 @@
         "time": "",
         "why": "Claude Code is an npm package — without Node.js it won't run. A global install lets you call `claude` from any folder.",
         "instructions": [
-          "Check Node.js: open terminal → `node -v`.",
+          "Check Node.js: open terminal, then `node -v`.",
           "If there's no version or it's < 18 — install a fresh Node.js. macOS: `brew install node`. Windows: download the installer from nodejs.org.",
           "`node -v` should show 18.x or higher.",
           "Install Claude Code: `npm install -g @anthropic-ai/claude-code`.",
@@ -323,15 +323,15 @@
     "applyIn": [
       {
         "title": "Context from a tracker",
-        "description": "MCP to a task tracker → Claude sees fresh tickets, can comment and suggest decompositions."
+        "description": "MCP to a task tracker, then Claude sees fresh tickets, can comment and suggest decompositions."
       },
       {
         "title": "Documentation in context",
-        "description": "MCP to Confluence/Notion → Claude answers with your internal documentation in mind."
+        "description": "MCP to Confluence/Notion, then Claude answers with your internal documentation in mind."
       },
       {
         "title": "Code access",
-        "description": "MCP to GitHub → Claude sees PRs, can comment, make review observations."
+        "description": "MCP to GitHub, then Claude sees PRs, can comment, make review observations."
       }
     ],
     "pitfalls": [
@@ -381,7 +381,7 @@
         "time": "",
         "why": "The token is the security checkpoint. What MCP can read and change depends on its scope.",
         "instructions": [
-          "In the service (Linear/Figma/etc.) → Settings → API → Create token.",
+          "In the service (Linear/Figma/etc.), then Settings, then API, then Create token.",
           "Grant the minimum necessary permissions. Prefer read-only; if writes are needed — a separate token.",
           "Copy the token somewhere safe (1Password / Bitwarden). It's shown ONCE.",
           "Not sure which scopes you need — take 'read-only on main resources' (e.g., Issues for Linear), expand later."
@@ -394,7 +394,7 @@
         "time": "",
         "why": "Configuration is the most common source of errors. Follow the checklist.",
         "instructions": [
-          "Open `~/.config/claude-code/mcp.json` (Code) or Settings → Connectors ([[node:pl-web-setup|claude.ai]]).",
+          "Open `~/.config/claude-code/mcp.json` (Code) or Settings, then Connectors ([[node:pl-web-setup|claude.ai]]).",
           "Add the server configuration block (see example).",
           "Insert the token from your password manager (DON'T hardcode it — use ENV).",
           "Restart Claude.",
@@ -425,7 +425,7 @@
         "time": "",
         "why": "The MCP server sees what the token sees. Checking scope = insurance.",
         "instructions": [
-          "Open the token panel in the service → check what permissions it has.",
+          "Open the token panel in the service, then check what permissions it has.",
           "If there's write permission — ask yourself: do I actually need write?",
           "If in doubt — recreate the token with fewer permissions.",
           "Enable 2FA in the service if not already."
@@ -476,15 +476,15 @@
     "applyIn": {
       "0": {
         "title": "Code review",
-        "description": "Sub-agent with a review checklist → run before merge, get a filtered report."
+        "description": "Sub-agent with a review checklist, then run before merge, get a filtered report."
       },
       "1": {
         "title": "Audit agent",
-        "description": "Regular audit against fixed criteria → one trigger instead of a long prompt."
+        "description": "Regular audit against fixed criteria, then one trigger instead of a long prompt."
       },
       "2": {
         "title": "Researcher",
-        "description": "Agent for gathering and synthesizing sources with web search → a report with links instead of manual work."
+        "description": "Agent for gathering and synthesizing sources with web search, then a report with links instead of manual work."
       }
     },
     "pitfalls": {
@@ -513,7 +513,7 @@
           "2": "Choose ONE — the most frequent and stable."
         },
         "example": "Candidates:\n1. ✅ Code review for PRs — daily, same steps\n2. ✅ Regular audit of your materials — weekly, same steps\n3. ❌ 'Help me discuss an idea' — too varied, not an agent\n\nI choose: code-reviewer.",
-        "validate": "A specific routine is chosen with a clear 'input → steps → output'.",
+        "validate": "A specific routine is chosen with a clear 'input, then steps, then output'.",
         "tip": "If the task requires creativity and context — that's your job, not the agent's. Agents are about repeatability."
       },
       "ag-2": {
@@ -723,7 +723,7 @@
         "time": "4 min",
         "why": "Your own turns a regular task into a button.",
         "instructions": {
-          "0": "In the chat: /agents → create new.",
+          "0": "In the chat: /agents, then create new.",
           "1": "Name: e.g., security-reviewer.",
           "2": "Description: 'Use when user asks to review security of changes / PR / branch' (trigger!).",
           "3": "Steps: 1) read git diff, 2) check OWASP top-10, 3) output as a severity-ranked list.",
@@ -745,8 +745,8 @@
         "instructions": {
           "0": "Take 3 of your recurring tasks.",
           "1": "For each answer: is context isolation needed? Are custom tools needed? Is the task long?",
-          "2": "All 'yes' → subagent. All 'no' → Skill. Mixed → think more.",
-          "3": "Record the choice in a table: Task → Skill | Subagent | Hybrid."
+          "2": "All 'yes', then subagent. All 'no', then Skill. Mixed, then think more.",
+          "3": "Record the choice in a table: Task, then Skill | Subagent | Hybrid."
         },
         "validate": "You have 3 tasks with a justified tool choice. You can explain the choice in words.",
         "tip": "Hybrid is also possible: a Skill invokes a Subagent for the heavy part — best of both worlds."
@@ -786,7 +786,7 @@
     "whatItIs": "[[node:cap-tools|Tool use]] (function calling) is the mechanism through which Claude calls your functions via a JSON schema. It's the basis of MCP, custom agents, and any integrations. After this workshop you understand the architecture from the inside, not as 'magic'.",
     "approach": "Without good tool descriptions the agent will constantly make mistakes. First learn to write descriptions, then design tool sets. The actual call code is secondary — the SDK writes it.",
     "outcomes": {
-      "0": "Understand the tool use flow: schema → tool selection → call → result → answer",
+      "0": "Understand the tool use flow: schema, then tool selection, then call, then result, then answer",
       "1": "Describe a tool so Claude picks the right one 95% of the time",
       "2": "Know when tool use beats MCP and when it's the reverse",
       "3": "Competently design a tool set for your agent"
@@ -831,7 +831,7 @@
         "time": "2 min",
         "why": "Without an interaction model the next steps are someone else's kitchen.",
         "instructions": {
-          "0": "Read the flow schema: User → Claude → Claude picks a tool → your system executes → result → Claude forms the answer.",
+          "0": "Read the flow schema: User, then Claude, then Claude picks a tool, then your system executes, then result, then Claude forms the answer.",
           "1": "Notice: Claude does NOT execute code. It only decides 'which tool to call and with what arguments'.",
           "2": "Execution is on your side (SDK / MCP-server / your backend)."
         },
@@ -856,7 +856,7 @@
         "time": "4 min",
         "why": "The most common reason 'the agent doesn't work' — a bad description.",
         "instructions": {
-          "0": "Template: WHAT it does (1 phrase) → WHEN to apply (trigger) → WHEN NOT to apply (anti-trigger) → EXAMPLE arguments.",
+          "0": "Template: WHAT it does (1 phrase), then WHEN to apply (trigger), then WHEN NOT to apply (anti-trigger), then EXAMPLE arguments.",
           "1": "Take your tool from exercise 2. Write the description using the template.",
           "2": "Test: give 3 different user requests — Claude should correctly decide whether to use the tool."
         },
@@ -949,22 +949,22 @@
     "applyIn": {
       "0": {
         "title": "Code quality",
-        "description": "PostToolUse:Write → prettier / linter. Guaranteed format on every edit."
+        "description": "PostToolUse:Write, then prettier / linter. Guaranteed format on every edit."
       },
       "1": {
         "title": "Security",
-        "description": "PreToolUse:Bash → block dangerous commands (rm -rf, git push --force) before execution."
+        "description": "PreToolUse:Bash, then block dangerous commands (rm -rf, git push --force) before execution."
       },
       "2": {
         "title": "Metrics / observability",
-        "description": "Stop → log the session to jsonl. See what Claude did and how many tokens it spent."
+        "description": "Stop, then log the session to jsonl. See what Claude did and how many tokens it spent."
       }
     },
     "pitfalls": {
       "0": "A heavy shell script in a hook — slows every Claude action. A hook must be fast (<500ms).",
       "1": "A hook that edits the same file — can get into an infinite loop with the model. Use PostToolUse:Write carefully.",
       "2": "Putting hooks with secrets in the shared settings.json — they end up in git. Sensitive ones go in settings.local.json.",
-      "3": "Using a hook instead of a subagent for long tasks — a hook blocks. Long tasks → subagent."
+      "3": "Using a hook instead of a subagent for long tasks — a hook blocks. Long tasks, then subagent."
     },
     "exercises": {
       "0": {
@@ -973,7 +973,7 @@
       },
       "1": {
         "question": "Find a dangerous command you don't trust Claude with. Make a PreToolUse hook that blocks it.",
-        "hint": "Template: check $CLAUDE_BASH_COMMAND via grep -E for the pattern → exit 1 on match."
+        "hint": "Template: check $CLAUDE_BASH_COMMAND via grep -E for the pattern, then exit 1 on match."
       },
       "2": {
         "question": "Make a Stop hook that logs the session end to .claude/logs/session.jsonl. Use for analytics on 'what I worked on'.",
@@ -1056,7 +1056,7 @@
           "0": "Hook — on an event, synchronous, fast (<500ms), no decision logic.",
           "1": "Slash command — on a user trigger, can be long-running.",
           "2": "Subagent — a parallel task with context isolation.",
-          "3": "Take 3 of your needs → choose a tool for each."
+          "3": "Take 3 of your needs, then choose a tool for each."
         },
         "validate": "You can justify the choice for 3 tasks — why specifically hook / slash / subagent.",
         "tip": "Hooks are especially valuable for guaranteed actions — the model might 'forget', a hook won't."
@@ -1142,7 +1142,7 @@
           "claude.ai (path A): browser chat, Projects, Artifacts. No terminal. No install. Enough for most tasks: writing, analysis, discussion.",
           "Claude Code (path B): a CLI tool that works with your local files, uses git and MCP. Needs a terminal and Node.js. For development and automation.",
           "Rule of thumb: if your task is \"discuss a document\" — path A is enough. If it's \"edit code in a repo\" — path B.",
-          "Pick a path and commit: A → go to step 2 and finish. B → go to step 3 and the rest of the tutorial."
+          "Pick a path and commit: A, then go to step 2 and finish. B, then go to step 3 and the rest of the tutorial."
         ],
         "validate": "You can explain to yourself in one sentence why you picked this path.",
         "tip": "Unsure — start with A. Moving to B later is no harder than now."
@@ -1152,8 +1152,8 @@
         "time": "",
         "why": "A Project is your persistent workspace in claude.ai with its own instructions and knowledge base. This is the final step of the short path.",
         "instructions": [
-          "Open claude.ai → sign in (Free is enough to start, Pro is needed for Projects).",
-          "In the left sidebar find \"Projects\" → \"+ New project\".",
+          "Open claude.ai, then sign in (Free is enough to start, Pro is needed for Projects).",
+          "In the left sidebar find \"Projects\", then \"+ New project\".",
           "Name: what you do + for what (e.g., \"Regular report audit\").",
           "Description: 1–2 lines — what this project is for and what result you expect.",
           "Upload 1–3 files into Project knowledge (if you have any). That's enough to start.",
@@ -1170,13 +1170,13 @@
         "time": "",
         "why": "Node.js is required to run npm packages, including Claude Code — without it nothing will install. The terminal is the workspace for Claude Code, and it's worth getting over the fear of it.",
         "instructions": [
-          "Install Node.js, macOS (recommended): open Terminal.app (Cmd+Space → \"Terminal\" → Enter) and run `brew install node`. If brew isn't installed — install it first from brew.sh.",
-          "Install Node.js, macOS (alternative): download the installer from nodejs.org → run the .pkg → follow the steps.",
-          "Install Node.js, Windows: download the installer from nodejs.org → run the .msi → tick \"Add to PATH\" → restart PowerShell.",
+          "Install Node.js, macOS (recommended): open Terminal.app (Cmd+Space, then \"Terminal\", then Enter) and run `brew install node`. If brew isn't installed — install it first from brew.sh.",
+          "Install Node.js, macOS (alternative): download the installer from nodejs.org, then run the .pkg, then follow the steps.",
+          "Install Node.js, Windows: download the installer from nodejs.org, then run the .msi, then tick \"Add to PATH\", then restart PowerShell.",
           "Verify Node.js: in the terminal run `node -v`. It should print a version like v20.11.0 or newer (≥ 18). `npm -v` should also work. Version 20 or 22 LTS is optimal; 14 or 16 is old and may have issues.",
           "If `command not found: node` — the terminal doesn't see the install: close and reopen it; on Windows make sure you ticked \"Add to PATH\". If `command not found: brew (mac)` — open brew.sh, copy the install command, run it in the terminal (≈5 minutes).",
-          "Open the terminal, macOS: Cmd+Space → \"Terminal\" → Enter. A black (or white) window with a cursor opens. Windows: Start menu → \"PowerShell\" or \"Windows Terminal\" → Enter.",
-          "Figure out where you are: run `pwd` (mac) or `pwd` / `echo %cd%` (Windows) → press Enter. It shows the current folder — usually your home: /Users/name (mac) or C:\\Users\\name (Windows). That's normal."
+          "Open the terminal, macOS: Cmd+Space, then \"Terminal\", then Enter. A black (or white) window with a cursor opens. Windows: Start menu, then \"PowerShell\" or \"Windows Terminal\", then Enter.",
+          "Figure out where you are: run `pwd` (mac) or `pwd` / `echo %cd%` (Windows), then press Enter. It shows the current folder — usually your home: /Users/name (mac) or C:\\Users\\name (Windows). That's normal."
         ],
         "validate": "`node -v` prints version ≥ 18, `npm -v` works; the terminal is open and `pwd` prints the path to your home folder.",
         "tip": "The \"black screen\" does nothing scary on its own. Only specific commands (rm -rf and similar) are dangerous, and you won't type them in this tutorial."
@@ -1187,10 +1187,10 @@
         "why": "A folder is the \"home\" of your project — without one, files pile up wherever. And Claude Code operates in the folder where you launched it: if you're not in the right one, Claude will see the wrong files.",
         "instructions": [
           "Decide where all your projects will live. I recommend `~/projects/` in home.",
-          "Create the folder: `mkdir -p ~/projects/my-first-claude-project` — creates the folder (and the parent `projects/` if it didn't exist). Alternative via Finder/Explorer: open home → create a `projects` folder → inside it another one `my-first-claude-project`.",
+          "Create the folder: `mkdir -p ~/projects/my-first-claude-project` — creates the folder (and the parent `projects/` if it didn't exist). Alternative via Finder/Explorer: open home, then create a `projects` folder, then inside it another one `my-first-claude-project`.",
           "Name — ASCII only, no spaces. Use hyphens or underscores instead of spaces.",
           "Verify it was created: `ls ~/projects/` (mac) or `dir %USERPROFILE%\\projects\\` (Windows) — you'll see `my-first-claude-project` in the list.",
-          "Enter the folder: `cd ~/projects/my-first-claude-project`. Check: `pwd` → should print /Users/.../projects/my-first-claude-project.",
+          "Enter the folder: `cd ~/projects/my-first-claude-project`. Check: `pwd`, then should print /Users/.../projects/my-first-claude-project.",
           "Check what's inside: `ls` (mac) or `dir` (Windows). The folder is empty — that's normal for a new project. Memorize `cd ~/projects/my-first-claude-project` — you'll use it every time you start working.",
           "If `permission denied` — you're creating a folder where you don't have rights: ~/ (home) is always yours, don't create folders in /Applications or /System. If `mkdir: -p: command not found` — you're on Windows in cmd.exe (old): switch to PowerShell or use `mkdir my-first-claude-project` without `-p`."
         ],
@@ -1203,10 +1203,10 @@
         "why": "Claude Code is Claude's \"hands\" in your terminal; after install the `claude` command is available everywhere. First launch is short: you authenticate once via the browser, after that Claude Code remembers you.",
         "instructions": [
           "Install Claude Code (any folder): `npm install -g @anthropic-ai/claude-code`. Wait 30–60 seconds — npm will download and install the package globally.",
-          "Verify the install: `claude --version` → it should print the version number with no errors.",
+          "Verify the install: `claude --version`, then it should print the version number with no errors.",
           "If you get EACCES — on mac/Linux run with sudo: `sudo npm install -g @anthropic-ai/claude-code`, or configure npm prefix into your own folder (~/.npm-global, google \"npm permission EACCES\"). If EEXIST — an old version is installed: `npm uninstall -g @anthropic-ai/claude-code`, then install again.",
-          "Make sure you're in your working folder: `pwd` → my-first-claude-project. Run: `claude`.",
-          "A browser opens with Anthropic auth → sign in with the same account as in claude.ai. Return to the terminal — you'll see Claude Code's interactive prompt, you can type messages.",
+          "Make sure you're in your working folder: `pwd`, then my-first-claude-project. Run: `claude`.",
+          "A browser opens with Anthropic auth, then sign in with the same account as in claude.ai. Return to the terminal — you'll see Claude Code's interactive prompt, you can type messages.",
           "If the browser doesn't open — copy the URL from the terminal manually and open it in the browser."
         ],
         "validate": "`claude --version` works; the terminal shows Claude Code's input field and the session is active.",
@@ -1222,7 +1222,7 @@
           "Save the file (Ctrl+S or :wq in Vim, depending on your editor). Verify: `ls` (mac) or `dir` (Windows) — you'll see CLAUDE.md in the project folder.",
           "If /init doesn't work — you may have typed it in a regular claude.ai chat, not Claude Code: /init is a Claude Code slash command, make sure you're in the terminal session.",
           "Now think: what real task would you delegate to Claude right now? E.g., \"help me structure my notes\", \"let's analyze this document\", \"sketch a plan for project X\".",
-          "Phrase the request in the \"Role → Task → Format\" style (if you don't remember — do the basics tutorial afterward). Example: \"I'm working on <your context>. Help me <specific task> in <markdown / list / table> format. If you need inputs — ask questions.\"",
+          "Phrase the request in the \"Role, then Task, then Format\" style (if you don't remember — do the basics tutorial afterward). Example: \"I'm working on <your context>. Help me <specific task> in <markdown / list / table> format. If you need inputs — ask questions.\"",
           "Send it to Claude Code, read the answer. If Claude wants to create a file — allow it, that's normal in your working folder."
         ],
         "validate": "A CLAUDE.md file appeared in the folder with your custom rules; Claude gave a meaningful answer tied to your context, possibly created a file in the project folder.",
@@ -1305,8 +1305,8 @@
         "time": "",
         "why": "The terminal is always \"inside\" some folder. Finding out which is the first command of the day.",
         "instructions": [
-          "Open the terminal (if it isn't already): macOS Cmd+Space → \"Terminal\"; Windows — PowerShell.",
-          "Type: `pwd` (mac/linux/PowerShell) → press Enter.",
+          "Open the terminal (if it isn't already): macOS Cmd+Space, then \"Terminal\"; Windows — PowerShell.",
+          "Type: `pwd` (mac/linux/PowerShell), then press Enter.",
           "Look at the output. That's the path to the folder you're in right now."
         ],
         "prompt": "pwd",
@@ -1320,7 +1320,7 @@
         "time": "",
         "why": "Without ls you're flying blind. ls shows what folders and files are in the current one.",
         "instructions": [
-          "macOS / Linux: type `ls` → Enter.",
+          "macOS / Linux: type `ls`, then Enter.",
           "Windows (PowerShell): `ls` works too. Old cmd.exe — `dir`.",
           "Look at the list. That's the contents of your home folder: Documents, Downloads, Desktop, etc."
         ],
@@ -1333,17 +1333,17 @@
         "id": "s3",
         "title": "mkdir + cd — create a folder and enter it",
         "time": "",
-        "why": "That's the entire \"start a new project\" toolkit: create a folder → enter it.",
+        "why": "That's the entire \"start a new project\" toolkit: create a folder, then enter it.",
         "instructions": [
-          "Create a test folder: `mkdir tutorial-sandbox` → Enter.",
-          "Check it appeared: `ls` → it should be in the list.",
-          "Enter it: `cd tutorial-sandbox` → Enter.",
-          "Verify you're inside: `pwd` → should end with /tutorial-sandbox."
+          "Create a test folder: `mkdir tutorial-sandbox`, then Enter.",
+          "Check it appeared: `ls`, then it should be in the list.",
+          "Enter it: `cd tutorial-sandbox`, then Enter.",
+          "Verify you're inside: `pwd`, then should end with /tutorial-sandbox."
         ],
         "prompt": "mkdir tutorial-sandbox\ncd tutorial-sandbox\npwd",
         "example": "After three commands:\n$ pwd\n/Users/denisa/tutorial-sandbox",
         "validate": "pwd prints a path ending with /tutorial-sandbox. Folder created, you're in it.",
-        "tip": "Tab is your best friend. Start typing `cd tut` → press Tab → the terminal completes to `cd tutorial-sandbox/`. Saves 90% of typing."
+        "tip": "Tab is your best friend. Start typing `cd tut`, then press Tab, then the terminal completes to `cd tutorial-sandbox/`. Saves 90% of typing."
       },
       "s4": {
         "id": "s4",
@@ -1351,9 +1351,9 @@
         "time": "",
         "why": "Knowing how to go back is as important as going in. Insurance against \"where did I end up?\".",
         "instructions": [
-          "You're now in tutorial-sandbox. Type `cd ..` → Enter. (Two dots = \"folder above\".)",
-          "Check: `pwd` → you're back in home.",
-          "Now go back in: `cd tutorial-sandbox` → verify pwd.",
+          "You're now in tutorial-sandbox. Type `cd ..`, then Enter. (Two dots = \"folder above\".)",
+          "Check: `pwd`, you're back in home.",
+          "Now go back in: `cd tutorial-sandbox`, then verify pwd.",
           "From anywhere you can return home with one command: `cd ~` (or just `cd`)."
         ],
         "prompt": "cd ..\npwd\ncd ~\npwd",
@@ -1367,9 +1367,9 @@
         "time": "",
         "why": "Real task: create ~/projects/<name>/notes/ in one go. `mkdir -p` can do it.",
         "instructions": [
-          "From anywhere type: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
-          "Enter it: `cd ~/projects/my-first-project` → check `ls` (you should see the notes folder).",
-          "You can delete the test: `cd ~` → then `rm -r tutorial-sandbox` (Mac/Linux) or `Remove-Item -Recurse tutorial-sandbox` (PowerShell). This removes the folder permanently.",
+          "From anywhere type: `mkdir -p ~/projects/my-first-project/notes`, then Enter.",
+          "Enter it: `cd ~/projects/my-first-project`, then check `ls` (you should see the notes folder).",
+          "You can delete the test: `cd ~`, then `rm -r tutorial-sandbox` (Mac/Linux) or `Remove-Item -Recurse tutorial-sandbox` (PowerShell). This removes the folder permanently.",
           "Don't delete ~/projects/my-first-project — it'll come in handy in the first-project tutorial."
         ],
         "prompt": "mkdir -p ~/projects/my-first-project/notes\ncd ~/projects/my-first-project\nls",
@@ -1390,7 +1390,7 @@
           "Run an \"endless\" command so there's something to interrupt: `ping example.com` (Mac/Linux) — lines will scroll forever.",
           "Press `Ctrl+C` — the command stops and you get the prompt back. It's safe: Ctrl+C just interrupts the current command, it doesn't touch your files.",
           "If you've half-typed a line and changed your mind — press `Ctrl+C` again: the terminal clears the line so you can start over.",
-          "When the screen is cluttered with output — type `clear` (Mac/Linux/PowerShell) → Enter. The screen clears, but your command history stays (the up arrow brings back past commands)."
+          "When the screen is cluttered with output — type `clear` (Mac/Linux/PowerShell), then Enter. The screen clears, but your command history stays (the up arrow brings back past commands)."
         ],
         "prompt": "ping example.com\nclear",
         "example": "$ ping example.com\nPING example.com ...\n64 bytes from ...\n^C        ← here you pressed Ctrl+C\n$         ← prompt is back, everything under control",
@@ -1456,7 +1456,7 @@
       }
     ],
     "pitfalls": [
-      "Spaces and non-ASCII in names — the terminal and git don't like them. \"my project\" ❌ → \"my-project\" ✅.",
+      "Spaces and non-ASCII in names — the terminal and git don't like them. \"my project\" ❌ becomes \"my-project\" ✅.",
       "Folders on the Desktop — a week later there are 30 of them and you can't find anything. Use ~/projects/.",
       "Deleting a folder with rm -rf without checking — it's gone forever. ls first, then rm."
     ],
@@ -1467,7 +1467,7 @@
       },
       {
         "question": "Delete a temp folder both ways: once via the Trash (drag-to-trash), once via rm -r. Notice the difference.",
-        "hint": "Trash → recoverable. rm -r → no, gone forever. When in doubt — Trash."
+        "hint": "Trash is recoverable. rm -r is not, gone forever. When in doubt — Trash."
       }
     ],
     "steps": {
@@ -1505,13 +1505,13 @@
         "time": "",
         "why": "Scenario: you're learning something new and want to keep notes. Visual is more convenient — that's fine.",
         "instructions": [
-          "macOS: open Finder → Cmd+Shift+H (return to home) → find the projects folder (or create it with Cmd+Shift+N).",
-          "Inside projects: right click → New Folder → type `learning-notes` → Enter.",
+          "macOS: open Finder, press Cmd+Shift+H (return to home), then find the projects folder (or create it with Cmd+Shift+N).",
+          "Inside projects: right click, then New Folder, type `learning-notes`, then Enter.",
           "Inside learning-notes — create two more: `claude` and `terminal-basics`.",
-          "Windows: open Explorer → navigate to C:\\Users\\<name>\\projects → right click → New Folder. Repeat for subfolders."
+          "Windows: open Explorer, navigate to C:\\Users\\<name>\\projects, right click, then New Folder. Repeat for subfolders."
         ],
         "example": "The Finder structure:\nprojects/\n  learning-notes/\n    claude/\n    terminal-basics/",
-        "validate": "In Finder/Explorer you see the tree: projects → learning-notes → claude / terminal-basics.",
+        "validate": "In Finder/Explorer you see the tree: projects, then learning-notes, then claude / terminal-basics.",
         "tip": "Terminal and Finder work on the same filesystem. A folder created in one is visible in the other. You can mix them."
       },
       "s4": {
@@ -1643,7 +1643,7 @@
         "why": "The API key is your credential — it identifies your account, tracks usage, and authorizes requests. Every API call requires one.",
         "instructions": {
           "0": "Go to console.anthropic.com and sign in (or create an account).",
-          "1": "Navigate to Settings → API Keys → Create Key.",
+          "1": "Navigate to Settings, then API Keys, then Create Key.",
           "2": "Give it a descriptive name (e.g. 'dev-local' or 'my-project').",
           "3": "Copy the key immediately — you will not be able to see it again.",
           "4": "Store it in an environment variable: export ANTHROPIC_API_KEY='sk-ant-...'",
@@ -1835,7 +1835,7 @@
           "Run via stdio (`node dist/index.js`), confirm the process stays up.",
           "Distribute the primitives. Tools = actions with side-effects or computation (search, create, calculate) — the model calls them as needed. Resources = data readable by URI (files, DB records, documents) — the client can pre-fetch and show to the user. Prompts = workflow templates the user explicitly picks (\"do a code review\"), parameterized.",
           "Walk through your list: each operation lands in one of the three. In doubt — tool (most compatible, supported by all clients). Resource vs tool: \"would the client want to show this object BEFORE the model mentions it?\" If yes — resource.",
-          "Distribution example for trace-storage: search_traces → tool (has parameters, computation); get_trace(id) → resource (`trace://abc123`) — client caches; review_incident → prompt (template: \"analyze trace X vs baseline Y\").",
+          "Distribution example for trace-storage: search_traces, then tool (has parameters, computation); get_trace(id), then resource (`trace://abc123`) — client caches; review_incident, then prompt (template: \"analyze trace X vs baseline Y\").",
           "Minimal server example (TypeScript):\n// src/index.ts\nimport { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\n\nconst server = new Server(\n  { name: \"trace-storage\", version: \"0.1.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(\"tools/list\", async () => ({\n  tools: [{\n    name: \"search_traces\",\n    description: \"Search traces by service and time range\",\n    inputSchema: {\n      type: \"object\",\n      properties: {\n        service: { type: \"string\" },\n        since: { type: \"string\", format: \"date-time\" }\n      },\n      required: [\"service\"]\n    }\n  }]\n}));\n\nserver.setRequestHandler(\"tools/call\", async (req) => ({\n  content: [{ type: \"text\", text: `stub: ${JSON.stringify(req.params)}` }]\n}));\n\nconst transport = new StdioServerTransport();\nawait server.connect(transport);",
           "If `TypeError: Cannot find module @modelcontextprotocol/sdk` — run `npm i @modelcontextprotocol/sdk`, make sure package.json has `\"type\": \"module\"`. If the process exits immediately — you forgot `await server.connect(transport)`: without `await` the process closes before connection."
         ],
@@ -1942,7 +1942,7 @@
     "whatItIs": "[[node:claude-code|Claude Code]] out of the box is already powerful. But in a big project without setup it quickly becomes the \"smart but unpredictable teammate\": breaks style, goes the wrong direction, burns tokens on the same thing.\n\nA production-grade setup turns Claude Code into a reliable contributor: knows your architecture, does not touch what is off-limits, specializes per task, sees your internal tools, gets verified on every commit.",
     "approach": "In layers. First the CLAUDE.md hierarchy (context and rules), then slash commands (repeatable operations), then guard-rails (hooks + permission policy), subagents (specialization), MCP (integrations), and finally headless mode for CI. Each layer is verified separately.",
     "outcomes": [
-      "You build a CLAUDE.md hierarchy (root → area → package) without duplication",
+      "You build a CLAUDE.md hierarchy (root, then area, then package) without duplication",
       "You author custom slash commands for repeatable team workflows",
       "You configure [[node:cc-hooks|hooks]] (pre/post-tool-use) for lint, audit, secret scan",
       "You deploy [[node:cc-subagents|subagents]] for specialization (reviewer, test-writer, debugger)",
@@ -1961,7 +1961,7 @@
       },
       {
         "title": "On-call incident helper",
-        "description": "MCP to logs/metrics + slash command `/incident` → fast triage."
+        "description": "MCP to logs/metrics + slash command `/incident`, then fast triage."
       }
     ],
     "pitfalls": [
@@ -1996,7 +1996,7 @@
           "If Claude ignores some rules — file too long or rules conflicting; shorten, move rare ones to /docs."
         ],
         "validate": "The hierarchy is visible to Claude (ask an init-like question — you see it reads multiple CLAUDE.md files).",
-        "tip": "In CLAUDE.md write \"rules\", not \"tutorials\". Long explanations → /docs with a link."
+        "tip": "In CLAUDE.md write \"rules\", not \"tutorials\". Long explanations go to /docs with a link."
       },
       "s2": {
         "title": "Custom slash commands",
@@ -2005,7 +2005,7 @@
         "instructions": [
           "Commands live in `.claude/commands/<name>.md`.",
           "Each = markdown with instructions + `$ARGUMENTS` placeholders.",
-          "Filename = command name (`.claude/commands/review-pr.md` → `/review-pr`).",
+          "Filename = command name (`.claude/commands/review-pr.md` becomes `/review-pr`).",
           "At the top of the command — frontmatter with `description`, `allowed-tools`.",
           "Commit to the repo — the command becomes shared for the team.",
           "Example. `.claude/commands/release-notes.md` with frontmatter (`description: Generate release notes from commits since last tag`, `allowed-tools: Bash, Read`) and body: get commits since the last tag via `git log $(git describe --tags --abbrev=0)..HEAD --oneline`, group by type (feat/fix/chore/docs), write a human-readable summary, output in CHANGELOG.md format, version: $ARGUMENTS. Call: `/release-notes v2.4.0`."
@@ -2021,7 +2021,7 @@
           "Hooks and permissions config in `.claude/settings.json` (project) or `~/.claude/settings.json` (user).",
           "Hooks: `PreToolUse` can block a tool (exit code 2 = block + message for the model); `PostToolUse` for audit, notifications, does not block.",
           "Matcher — regex on tool name: `Bash`, `Write`, `Edit|MultiEdit`. Hook reads JSON from stdin (tool params), writes JSON to stdout (response/error).",
-          "Example settings.json hooks: `PreToolUse` matcher `Bash` → command `.claude/hooks/guard-bash.sh`; `PostToolUse` matcher `Edit|Write` → command `.claude/hooks/secret-scan.sh`. The guard-bash.sh script reads stdin, extracts `.tool_input.command` via jq, and on match against `rm -rf|git push.*--force.*main|DROP TABLE` prints `{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}` and exits 2, otherwise exits 0.",
+          "Example settings.json hooks: `PreToolUse` matcher `Bash`, then command `.claude/hooks/guard-bash.sh`; `PostToolUse` matcher `Edit|Write`, then command `.claude/hooks/secret-scan.sh`. The guard-bash.sh script reads stdin, extracts `.tool_input.command` via jq, and on match against `rm -rf|git push.*--force.*main|DROP TABLE` prints `{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}` and exits 2, otherwise exits 0.",
           "Permission policy: `permissions` section in settings.json. `allow` — list of patterns (tool + matcher) allowed without asking. `deny` — list FORBIDDEN always (overrides allow).",
           "Principle: deny — destructive (rm, force push, drop), allow — frequent safe (read, lint, test). Everything else will be asked — those questions signal \"add to allow or deny\".",
           "Example permissions: allow = [`Bash(npm test:*)`, `Bash(pnpm lint:*)`, `Bash(git status)`, `Bash(git diff:*)`, `Read(**)`, `Edit(src/**)`]; deny = [`Bash(rm -rf:*)`, `Bash(git push --force*)`, `Bash(curl:*sh)`, `Write(.env*)`].",
@@ -2055,7 +2055,7 @@
           "Config — `.mcp.json` at the project root (project-scoped, goes to git) OR `~/.claude/mcp.json` (user).",
           "For each MCP server: `command`, `args`, `env`. Secrets via `${ENV_VAR}`, do not hardcode.",
           "Check token scopes — prefer read-only over admin.",
-          "After adding — `/mcp` in Claude Code → you see connection status and tool list.",
+          "After adding — `/mcp` in Claude Code, then you see connection status and tool list.",
           "If you have your own server (see \"Advanced MCP\") — publish internally and connect here.",
           "Example. `.mcp.json` with `mcpServers`: `linear` (command `npx`, args `[\"-y\", \"@modelcontextprotocol/server-linear\"]`, env `{ \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\" }`) and `internal-traces` (command `npx`, args `[\"-y\", \"@acme/mcp-trace-storage\"]`, env `{ \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }`). Secrets come from `.envrc` (direnv): `export LINEAR_API_KEY=$(op read \"op://Eng/linear/api-key\")` and `export TRACE_API_KEY=$(op read \"op://Eng/traces/api-key\")`.",
           "If a server is connected but tools are empty — the server started but declared no capabilities; check server logs via `claude --mcp-debug` or call the server manually via Inspector."
@@ -2076,7 +2076,7 @@
           "Example. `.github/workflows/claude-review.yml`: trigger `on: pull_request`, job `review` on `ubuntu-latest` with permissions `contents: read` and `pull-requests: write`. Steps: `actions/checkout@v4` with `fetch-depth: 0`, then `anthropics/claude-code-action@v1` with `api-key: ${{ secrets.ANTHROPIC_API_KEY }}`, `mode: review`, prompt \"Review the diff against main. Focus: bugs/edge cases, missing error handling, test coverage gaps. Skip: style/formatting (handled by linters). Post inline comments.\" and `allowed-tools: \"Read,Bash(git diff:*),Bash(pnpm test:*)\"`.",
           "If the action exceeds the timeout — reduce scope in prompt (\"only diff, not the whole file\"), shrink allowed-tools, set max-turns. Permission denied on Bash in CI — the CI sandbox is isolated, there `--permission-mode acceptEdits` is safe, but do NOT use it on a self-hosted runner in prod."
         ],
-        "validate": "PR opens → action runs → you see inline comments from Claude within 5 minutes.",
+        "validate": "PR opens, then action runs, then you see inline comments from Claude within 5 minutes.",
         "tip": "Cost control: in CI use model `sonnet` (not opus) for routine tasks + `--max-tokens` cap. Otherwise budget blows up."
       }
     },
@@ -2118,7 +2118,7 @@
       "You know when rule-based scorer applies and when LLM-as-judge does",
       "You compute an agg metric (accuracy, F1, custom rubric)",
       "You do run-vs-run diff and see regressions",
-      "You integrate evals into CI: a PR with promptlib changes → auto-eval",
+      "You integrate evals into CI: a PR with promptlib changes, then auto-eval",
       "You balance cost vs quality of the eval run"
     ],
     "applyIn": [
@@ -2128,7 +2128,7 @@
       },
       {
         "title": "Model migration",
-        "description": "Sonnet 4 → 4.5: one eval run = decision \"migrate or wait\"."
+        "description": "Sonnet 4 to 4.5: one eval run = decision \"migrate or wait\"."
       },
       {
         "title": "RAG tuning",
@@ -2148,7 +2148,7 @@
         "hint": "If accuracy is 95%+ — the dataset is too easy. Add edge cases."
       },
       {
-        "question": "Swap the model (e.g. sonnet → haiku) and run the same dataset. Compare results. Is the cost saving worth the quality loss?",
+        "question": "Swap the model (e.g. sonnet to haiku) and run the same dataset. Compare results. Is the cost saving worth the quality loss?",
         "hint": "Look not only at avg, but where exactly haiku fails — perhaps on a specific type of case."
       }
     ],
@@ -2186,13 +2186,13 @@
         "validate": "Every case in the dataset has a scorer function (or classification of scorer type).",
         "tip": "For CI prefer rule-based — cheaper and deterministic. LLM judge for weekly deep evals.",
         "troubleshoot": {
-          "LLM judge gives different scores on the same case": "Set `temperature=0`, fix seed if supported, use structured output. If still noisy — simplify the rubric (5 levels → 3)."
+          "LLM judge gives different scores on the same case": "Set `temperature=0`, fix seed if supported, use structured output. If still noisy — simplify the rubric (from 5 levels to 3)."
         }
       },
       "be-3": {
         "title": "Run loop and agg metric",
         "time": "6 min",
-        "why": "A run = (model, prompt) applied to (dataset) → aggregated metrics. Without aggregation you only see scattered scores.",
+        "why": "A run = (model, prompt) applied to (dataset), then aggregated metrics. Without aggregation you only see scattered scores.",
         "instructions": [
           "Loop: for each record in dataset — call the system, scorer, save {id, input, output, score, metadata}.",
           "Save full run to a file with timestamp and git SHA: `evals/runs/2026-05-27-abc1234.jsonl`.",
@@ -2211,7 +2211,7 @@
         "time": "6 min",
         "why": "Avg score went from 0.82 to 0.84 — success? Maybe you fixed 5 cases and broke 3. Diff shows the truth.",
         "instructions": [
-          "Diff = join by `id` of two runs → score delta per case.",
+          "Diff = join by `id` of two runs, then score delta per case.",
           "Categorize: improved, regressed (score dropped), stable, new (not in baseline).",
           "Threshold: regression significant if score drops by ≥ 0.2 on a specific case or ≥ 0.05 on average per category.",
           "If ≥ 1 significant regression — fail the PR, require review.",
@@ -2227,13 +2227,13 @@
         "why": "An eval that does not run automatically dies over time. CI is the only way to keep it alive.",
         "instructions": [
           "Trigger: on PR that changes files in `prompts/`, `evals/`, `src/llm/`.",
-          "Steps: run eval → diff vs baseline (last main run) → comment on PR.",
+          "Steps: run eval, then diff vs baseline (last main run), then comment on PR.",
           "Store baseline as an artifact or commit it under `evals/runs/main/`.",
           "API key via secrets, NOT in code/config.",
           "Timeout: 10-15 min max. If dataset is large — Batch API or sample (random 30 cases)."
         ],
         "example": ".github/workflows/eval.yml:\n```yaml\nname: Eval\non:\n  pull_request:\n    paths: [\"prompts/**\", \"src/llm/**\", \"evals/dataset.jsonl\"]\n\njobs:\n  eval:\n    runs-on: ubuntu-latest\n    timeout-minutes: 15\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with: { python-version: \"3.11\" }\n      - run: pip install anthropic\n      - name: Run eval\n        env:\n          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}\n        run: python evals/run_eval.py | tee eval-output.txt\n      - name: Diff vs baseline\n        run: python evals/diff_runs.py evals/runs/main/latest.jsonl evals/runs/$(ls -t evals/runs | head -1)\n      - uses: marocchino/sticky-pull-request-comment@v2\n        if: always()\n        with:\n          path: eval-output.txt\n```",
-        "validate": "PR with a prompt change → action runs, posts a comment with avg, cost, and diff.",
+        "validate": "PR with a prompt change, then action runs, posts a comment with avg, cost, and diff.",
         "troubleshoot": {
           "CI eval fails intermittently": "Network errors to the API. Add retry with exponential backoff (3 tries), tenacity style."
         }
@@ -2245,11 +2245,11 @@
         "instructions": [
           "Budget per run = $0.10-$1 for CI (on PR), $5-$20 for weekly deep eval.",
           "Sampling: 30-50 cases for PR (fast feedback), full dataset for nightly/weekly.",
-          "Tiered evals: smoke (5 cases, $0.01, on every commit) → full (50 cases, on PR) → deep (200 + LLM judge, weekly).",
+          "Tiered evals: smoke (5 cases, $0.01, on every commit), then full (50 cases, on PR), then deep (200 + LLM judge, weekly).",
           "Caching: same input + same prompt — cache the answer. Only changes when prompt/model changes.",
           "Batch API for non-realtime — half price, up to 24h delay."
         ],
-        "example": "Triggers:\n- commit → smoke (5 cases, $0.01, 30 sec) — on pre-commit hook\n- PR → fast (30 cases, rule-based, $0.30, 2 min) — github action\n- nightly main → full (50 cases, $0.80, 5 min) — cron\n- weekly → deep (200 cases + LLM judge, $15, 30 min) — manual / schedule\n\nThis split covers 90% of cases at a reasonable cost.",
+        "example": "Triggers:\n- commit, then smoke (5 cases, $0.01, 30 sec) — on pre-commit hook\n- PR, then fast (30 cases, rule-based, $0.30, 2 min) — github action\n- nightly main, then full (50 cases, $0.80, 5 min) — cron\n- weekly, then deep (200 cases + LLM judge, $15, 30 min) — manual / schedule\n\nThis split covers 90% of cases at a reasonable cost.",
         "validate": "You have a written budget for evals (per PR / per week) and a tiering that fits in it.",
         "tip": "When the product is stable — deep eval may be monthly, not weekly. Measure eval ROI (bugs caught) — that is the argument for management that the budget is justified."
       }
@@ -2343,7 +2343,7 @@
         "role": "24/7 hosting"
       }
     ],
-    "savings": "Days of trial-and-error and risk to your personal PC → a managed sandbox in ~1.5 hours",
+    "savings": "Days of trial-and-error and risk to your personal PC become a managed sandbox in ~1.5 hours",
     "steps": {
       "s1": {
         "title": "Why isolation: threat model and choosing a host",
@@ -2368,7 +2368,7 @@
           "Download Docker Desktop (Windows/Mac) or Docker Engine (Linux) from docker.com, install and start it.",
           "Check in the terminal: `docker --version`.",
           "Run a test container: `docker run hello-world` — it should print a greeting.",
-          "Open the anthropic-quickstarts repo → the computer-use-demo folder — it has the current command, image name and ports (they can change).",
+          "Open the anthropic-quickstarts repo, then the computer-use-demo folder — it has the current command, image name and ports (they can change).",
           "Run the container, passing the key via the environment. Roughly: `docker run -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -p 8080:8080 -it <computer-use-demo-image>` — take the exact ports from the README.",
           "Wait for the container to come up (the interface address appears in the logs). The key is set up in step s4 — come back here after it if you haven't set the variable yet."
         ],
@@ -2421,7 +2421,7 @@
         "time": "",
         "why": "Reversibility and control: whatever happens, you put it back and stop it instantly. One pass through the checklist catches most dangerous mistakes. See [[node:sas-snapshots-killswitch|snapshots, rollback and kill-switch]].",
         "instructions": [
-          "Snapshot and rollback. Docker: a clean state = recreate the container from the image (`docker rm` + `docker run` again). VM: take a snapshot before experiments via the provider. Rule: a new risky task → first fix a clean state.",
+          "Snapshot and rollback. Docker: a clean state = recreate the container from the image (`docker rm` + `docker run` again). VM: take a snapshot before experiments via the provider. Rule: a new risky task, then first fix a clean state.",
           "Kill-switch: `docker stop <container>` instantly halts the agent. Check the spending cap on the key (step s4) is active. Decide in advance: on odd behavior — stop first, investigate later.",
           "Final checklist: home folders are NOT mounted; real passwords are NOT passed; the key is separate, capped, in env, not in code; the network is minimal; the kill-switch and rollback are tested; remote access (if any) is protected with a password/key and an IP restriction.",
           "What's next: go through the [[node:sys-agent-sandbox|Isolated environment for the agent]] path in full, start with simple tasks, and expand access gradually and deliberately.",
@@ -2436,7 +2436,7 @@
     "title": "Prompt caching — the lever for lower cost and latency",
     "subtitle": "Cache the stable prefix — pay 0.1× on repeats and respond faster",
     "totalTime": "6 steps",
-    "whatItIs": "Prompt caching isn't a \"Claude feature\" — it's the main lever for optimizing cost and latency in production AI workflows on the [[node:pl-api|API]]. Anthropic caches the stable prefix of your prompt (system, instructions, large context, tool definitions) for 5 minutes (or 1 hour with extended TTL). Repeat requests with the same prefix are billed at a discounted rate (cache read = 0.1× input) and processed faster.\n\nMechanics: set `cache_control: { type: \"ephemeral\" }` on a block → that block and everything before it is cached. Minimum: 1024 tokens (Sonnet/Opus) or 2048 (Haiku).",
+    "whatItIs": "Prompt caching isn't a \"Claude feature\" — it's the main lever for optimizing cost and latency in production AI workflows on the [[node:pl-api|API]]. Anthropic caches the stable prefix of your prompt (system, instructions, large context, tool definitions) for 5 minutes (or 1 hour with extended TTL). Repeat requests with the same prefix are billed at a discounted rate (cache read = 0.1× input) and processed faster.\n\nMechanics: set `cache_control: { type: \"ephemeral\" }` on a block, then that block and everything before it is cached. Minimum: 1024 tokens (Sonnet/Opus) or 2048 (Haiku).",
     "approach": "Cache only what stably repeats ≥10 times per TTL — system, instructions, large context. Keep the dynamic part (user query) at the very end, after the cache boundary. Measure savings on real traffic first, then scale — don't guess.",
     "outcomes": [
       "You understand prompt caching as a lever for cost and latency, not magic",
@@ -2683,7 +2683,7 @@
           "Understand the division of roles: files and [[node:sys-rag-architecture|RAG]] decide which documents are available, while Citations show where exactly an answer came from",
           "Connect with the document-upload practice from the step on [[node:cap-files|files]] — this is the material to cite",
           "In a RAG scenario, citations show which retrieved fragment underpins the claim",
-          "Assemble the full chain: documents → retrieval/access (RAG) → answer with linkage (Citations) → manual check"
+          "Assemble the full chain: documents, then retrieval/access (RAG), then answer with linkage (Citations), then manual check"
         ],
         "validate": "You can describe the full path from an uploaded document to a verifiable claim with a citation.",
         "tip": "Citations answer 'where is this from', RAG answers 'what is available at all'; together they give traceability."
@@ -3436,7 +3436,7 @@
           "Return to normal mode on sensitive files to control every change"
         ],
         "validate": "You switched between normal mode and Plan via Shift+Tab and saw the behavior change.",
-        "tip": "The combo works like this: agree in Plan → switch to auto-accept for the mechanical part → return to normal for the final check."
+        "tip": "The combo works like this: agree in Plan, then switch to auto-accept for the mechanical part, then return to normal for the final check."
       },
       "s4": {
         "title": "Useful hotkeys",
@@ -3536,7 +3536,7 @@
         "why": "Without understanding priority, any setting becomes guesswork: you edit one file but another takes effect. Three levels exist to separate 'my personal', 'shared team', and 'secret local'.",
         "instructions": [
           "Remember three files: ~/.claude/settings.json (global, for all your projects), .claude/settings.json (project, in the repository), .claude/settings.local.json (local, not committed)",
-          "Remember the priority from weakest to strongest: global → project → local. A stronger level overrides a weaker one",
+          "Remember the priority from weakest to strongest: global, then project, then local. A stronger level overrides a weaker one",
           "Grasp the idea: global sets your general preferences, project sets the team standard, local sets personal additions and secrets for a specific project",
           "More about the tool itself — see [[node:claude-code|Claude Code]]"
         ],
@@ -3588,14 +3588,14 @@
         "time": "",
         "why": "The key practical skill is placing permissions at the right level. It determines whether the whole team sees them, only you, or they leak into git.",
         "instructions": [
-          "Permissions needed everywhere and always (e.g. safe read commands) → global ~/.claude/settings.json",
-          "Permissions shared for the project and team (Bash(npm test), Edit(./src/**)) → project .claude/settings.json in the repository",
-          "Personal permissions and secrets for this project → local settings.local.json outside git",
+          "Permissions needed everywhere and always (e.g. safe read commands) go in global ~/.claude/settings.json",
+          "Permissions shared for the project and team (Bash(npm test), Edit(./src/**)) go in project .claude/settings.json in the repository",
+          "Personal permissions and secrets for this project go in local settings.local.json outside git",
           "Don't duplicate one rule across several levels — pick one and keep it there",
           "How permissions themselves work and their syntax — see [[node:cc-cfg-permissions|Permissions]]"
         ],
         "validate": "For any rule you can unambiguously say which level it should live at and why.",
-        "tip": "Simple test: 'Does the whole team need this?' → project. 'Only me?' → local. 'On all my projects?' → global."
+        "tip": "Simple test: 'Does the whole team need this?' means project. 'Only me?' means local. 'On all my projects?' means global."
       },
       "s6": {
         "title": "Common mistakes and verification",
@@ -3829,7 +3829,7 @@
           "Work in a session until answers get worse or the model 'forgets' the beginning.",
           "Run [[node:cc-cmd-compact|/compact]] — the history compresses, key conclusions remain.",
           "If the task changed completely — run /clear to start with fresh context.",
-          "Choosing rule: same task but bloated context → /compact; new task → /clear."
+          "Choosing rule: same task but bloated context, use /compact; new task, use /clear."
         ],
         "validate": "After /compact Claude still remembers the gist; after /clear it starts from scratch.",
         "tip": "Don't wait for full degradation — compact context ahead of time, at logical task boundaries."
@@ -4098,7 +4098,7 @@
         "time": "",
         "why": "The main value of the IDE version is visual diffs. Being able to read and apply them is the core working loop.",
         "instructions": [
-          "Ask for an edit to the current file (in VS Code — Cmd+Shift+P → Claude: ask in current file)",
+          "Ask for an edit to the current file (in VS Code — Cmd+Shift+P, then Claude: ask in current file)",
           "Wait for the edit — it arrives as an inline diff right in the editor",
           "Review the change in the context of the surrounding code",
           "Accept or reject the change with the button in the diff view"
@@ -4272,7 +4272,7 @@
     "subtitle": "We treat RAG not as an idea but as a system: which components are inside, how they connect, and which pattern to choose",
     "totalTime": "6 steps",
     "whatItIs": "RAG (Retrieval-Augmented Generation) as an architecture is a pipeline of three parts: the index (a base of preprocessed documents), the retriever (finds relevant chunks for a query), and the generator (the LLM that assembles an answer from what was found). This course isn't about \"why RAG\" — it's about HOW it's built inside and where its limits are.",
-    "approach": "We go from the overall diagram to the details. First we see the whole pipeline (query → retrieval → generation), then we break down each component separately, then we look at patterns of varying complexity (naive / hybrid / re-rank) and decide which one fits the task. We finish by assembling a minimal system, reviewing risks, and a production-readiness checklist.",
+    "approach": "We go from the overall diagram to the details. First we see the whole pipeline (query, then retrieval, then generation), then we break down each component separately, then we look at patterns of varying complexity (naive / hybrid / re-rank) and decide which one fits the task. We finish by assembling a minimal system, reviewing risks, and a production-readiness checklist.",
     "outcomes": [
       "You understand the RAG pipeline as a set of components, not as \"search magic\"",
       "You can name and separate the roles: index, retriever, generator",
@@ -4321,7 +4321,7 @@
         "time": "",
         "why": "Before fixing details, you need to see the system as a data flow. RAG isn't \"smart search\" — it's a pipeline: the query passes through retrieval and reaches generation together with the found context. Without this picture you can't tell where things break.",
         "instructions": [
-          "Draw three blocks in a row: Index → Retriever → Generator, and a query arrow entering the Retriever",
+          "Draw three blocks in a row: Index, then Retriever, then Generator, and a query arrow entering the Retriever",
           "Trace the data path: documents go into the index in advance; the query goes to the retriever; the retriever pulls top-N chunks; chunks + query go to the LLM; the LLM produces an answer with links",
           "Note there are two run times: offline (filling the index) and online (answering a query) — these are often confused",
           "Compare with the intro node [[node:af-rag-basics|RAG basics]]: there RAG is the idea \"find and answer\"; here it's a system with component boundaries",
@@ -4349,10 +4349,10 @@
         "time": "",
         "why": "RAG comes in varying complexity, and grabbing the complex one right away is a mistake in cost and maintenance. Three base patterns cover almost all cases; the task is to understand how they differ and what each is for.",
         "instructions": [
-          "Naive RAG: one vector search for the query → top-N chunks → into the LLM. Simple, cheap, enough for small volumes and simple queries",
+          "Naive RAG: one vector search for the query, then top-N chunks, then into the LLM. Simple, cheap, enough for small volumes and simple queries",
           "Hybrid search: you combine vector search (by meaning) and keyword search (by exact words/terms), merging results — saves you where codes, SKUs, names matter ([[node:sys-hybrid-search|Hybrid search]])",
           "Re-ranking: you pull more candidates (e.g. top-20), then re-sort with a separate model and keep the best top-3-5 — top precision rises, but latency and cost are added",
-          "Map the pattern to the task: small volume → naive; specific terms → hybrid; many noisy candidates and precision needed → re-rank",
+          "Map the pattern to the task: small volume, then naive; specific terms, then hybrid; many noisy candidates and precision needed, then re-rank",
           "Remember the quality ladder from the node: naive ~50-60%, with relevance checks 75-85%, with re-ranking 90%+ good answers"
         ],
         "validate": "For a concrete task you can justify the pattern choice and name what you pay for the added complexity (latency, cost, maintenance).",
@@ -4363,7 +4363,7 @@
         "time": "",
         "why": "Understanding components isn't enough — you need to see them assembled. A minimal working RAG is simpler than it seems: it can be described in 5 steps. This is the base on top of which hybrid and re-rank are later layered.",
         "instructions": [
-          "Offline stage: gather documents → cut into chunks → turn into vectors → put into the index/vector store",
+          "Offline stage: gather documents, then cut into chunks, then turn into vectors, then put into the index/vector store",
           "Online stage, step 1: turn the user query into a vector the same way as the documents",
           "Online stage, step 2: the retriever searches the index for the top-N nearest chunks by this vector",
           "Online stage, step 3: assemble the prompt = instruction + found chunks + query; the instruction explicitly demands \"answer only from the context and give links\"",
@@ -4377,7 +4377,7 @@
         "time": "",
         "why": "RAG is no silver bullet. The architecture has built-in weak spots: they're predictable, and knowing them you design the system to be resilient rather than patching it after complaints.",
         "instructions": [
-          "Garbage in = garbage out: stale, duplicate, draft documents in the index → the retriever confidently finds noise. Build a process for removing the outdated",
+          "Garbage in = garbage out: stale, duplicate, draft documents in the index, then the retriever confidently finds noise. Build a process for removing the outdated",
           "Retrieval is the bottleneck: if the needed chunk isn't in the top-N, the generator won't see it and either stays silent or invents; answer quality is capped by search quality",
           "Hallucinations on top of context: even with the right chunks the LLM can improvise — cured by a strict instruction and showing sources for verification",
           "Chunking tears meaning: too fine a cut loses context, too coarse dilutes relevance — this is an architectural, not a \"tuning\" risk ([[node:sys-chunking-strategies|Chunking strategies]])",
@@ -4482,10 +4482,10 @@
         "time": "",
         "why": "The choice comes down to two things: how big the context is and how much it changes from step to step. Those two questions give you a ready answer.",
         "instructions": [
-          "2-3 steps and small context → full. Don't overcomplicate.",
-          "Large, dynamic context (long conversations, multi-step research) → summary, refreshed as it grows.",
-          "You know exactly which fields the step needs → structured: pass only those.",
-          "Data is large and lives in a source the step can reach → referential."
+          "2-3 steps and small context, then full. Don't overcomplicate.",
+          "Large, dynamic context (long conversations, multi-step research), then summary, refreshed as it grows.",
+          "You know exactly which fields the step needs, then structured: pass only those.",
+          "Data is large and lives in a source the step can reach, then referential."
         ],
         "validate": "For each transition in your workflow you can name the chosen strategy and one reason for the choice.",
         "tip": "Start with the simplest thing that works. Add complexity only when you hit cost or a limit."
@@ -4671,7 +4671,7 @@
     "title": "Chunking strategies for RAG",
     "subtitle": "How document splitting decides retrieval quality",
     "totalTime": "6 steps",
-    "whatItIs": "Chunking is splitting documents into pieces (chunks) before embedding. It is the foundational step of a [[node:sys-rag-architecture|RAG pipeline]]: what the model finds and cites depends on chunking more than on the vector store or embedding model choice.\n\nFour core strategies: fixed-size (N tokens with overlap), recursive splitter (paragraph→sentence→word), semantic chunking (boundary where the topic shifts) and document-aware (by structure: headings, code blocks, tables). This course teaches you to pick a strategy by content type and to avoid breaking retrieval at chunk boundaries.",
+    "whatItIs": "Chunking is splitting documents into pieces (chunks) before embedding. It is the foundational step of a [[node:sys-rag-architecture|RAG pipeline]]: what the model finds and cites depends on chunking more than on the vector store or embedding model choice.\n\nFour core strategies: fixed-size (N tokens with overlap), recursive splitter (paragraph, then sentence, then word), semantic chunking (boundary where the topic shifts) and document-aware (by structure: headings, code blocks, tables). This course teaches you to pick a strategy by content type and to avoid breaking retrieval at chunk boundaries.",
     "approach": "Don't memorize numbers — test on your own data. Take a real corpus, run 2-3 chunk_size and overlap variants, measure recall on an eval set. Intuition for the right size only comes from A/B testing on your own content.",
     "outcomes": [
       "Understand why chunking is the main cause of poor RAG (60-70% of diagnoses)",
@@ -4721,8 +4721,8 @@
         "time": "",
         "why": "Bad chunking breaks everything downstream, yet it gets fixed last — people swap the model first, even though chunk size is the culprit 60-70% of the time.",
         "instructions": [
-          "Learn the mechanics: a too-large chunk → the embedding dilutes into an \"average meaning\" vector, top-N pulls in garbage.",
-          "A too-small chunk → context is lost and the model has no idea what the fragment is about.",
+          "Learn the mechanics: a too-large chunk, then the embedding dilutes into an \"average meaning\" vector, top-N pulls in garbage.",
+          "A too-small chunk, then context is lost and the model has no idea what the fragment is about.",
           "Tie this to [[node:sys-rag-architecture|RAG architecture]]: chunking sits before embedding and decides what is retrievable at all.",
           "Adopt the rule: when someone says \"RAG answers poorly,\" check chunking first, not the model."
         ],
@@ -4735,7 +4735,7 @@
         "why": "Without understanding the differences you'll default to fixed-size — the simplest and most context-losing strategy.",
         "instructions": [
           "Fixed-size: N tokens (usually 256-512) with 10-20% overlap. Simple and fast, but tears context at boundaries.",
-          "Recursive splitter (LangChain RecursiveCharacterTextSplitter): splits by paragraph → sentence → word until a piece fits. The best default for prose.",
+          "Recursive splitter (LangChain RecursiveCharacterTextSplitter): splits by paragraph, then sentence, then word until a piece fits. The best default for prose.",
           "Semantic chunking: adjacent sentences are compared by embedding similarity, the boundary lands where similarity drops (topic shift). Costlier to ingest, more precise retrieval.",
           "Document-aware: respects structure (markdown headings, HTML tags, code blocks). A chunk is a logical section, not an arbitrary window.",
           "Remember the role of overlap: it preserves a fact that straddles two chunks."
@@ -4748,11 +4748,11 @@
         "time": "",
         "why": "The choice follows content type, not fashion: the wrong strategy bakes in weak retrieval that model tuning won't cure.",
         "instructions": [
-          "Prose / articles / docs → recursive splitter, chunk_size 256-512. Fast and sufficient.",
-          "Mixed format (code + text) → document-aware with per-block-type splitting.",
-          "Long structured documents (contracts, research papers) → semantic chunking.",
-          "Tabular / structured data → row-based splitting, not text-based.",
-          "FAQ-style content → smaller chunk_size (128-256), technical docs → larger (512-1024)."
+          "Prose / articles / docs, then recursive splitter, chunk_size 256-512. Fast and sufficient.",
+          "Mixed format (code + text), then document-aware with per-block-type splitting.",
+          "Long structured documents (contracts, research papers), then semantic chunking.",
+          "Tabular / structured data, then row-based splitting, not text-based.",
+          "FAQ-style content, then smaller chunk_size (128-256), technical docs, then larger (512-1024)."
         ],
         "validate": "For three of your content types you can name a strategy and an approximate chunk_size with justification.",
         "tip": "If you're torn between two options, that's a signal to A/B test, not to guess. An eval set answers more precisely than intuition."
@@ -4939,7 +4939,7 @@
     "subtitle": "ETL for documents that feed RAG: from source to a vector in the index",
     "totalTime": "6 steps",
     "whatItIs": "A document ingestion pipeline is a continuously running conveyor that pulls documents from sources (Notion, Confluence, Drive, GitHub, Zendesk), parses, normalizes, deduplicates, chunks, computes embeddings, and writes them into a [[node:sys-rag-architecture|vector store]]. Not a one-off script but a service with incremental sync, deletion handling, retries, and monitoring.",
-    "approach": "We follow the real lifecycle of a document: first understand why a continuous pipeline is needed (rather than a one-shot script), then walk the full chain extraction → cleanup → chunking → embeddings → index, add incremental updates and deletion handling, build a minimal event-driven architecture, examine the limits and risks (garbage in, duplicates, drift), and close with a checklist of metrics.",
+    "approach": "We follow the real lifecycle of a document: first understand why a continuous pipeline is needed (rather than a one-shot script), then walk the full chain extraction, then cleanup, then chunking, then embeddings, then index, add incremental updates and deletion handling, build a minimal event-driven architecture, examine the limits and risks (garbage in, duplicates, drift), and close with a checklist of metrics.",
     "outcomes": [
       "You understand why RAG degrades within weeks without a pipeline and how incremental sync differs from a nightly full re-sync",
       "You know every stage of the chain: extraction, normalization, dedup, chunking, embedding, upsert — and what each one does",
@@ -4963,10 +4963,10 @@
     ],
     "pitfalls": [
       "Nightly full re-sync as the only strategy: for 100k+ docs that's hours of compute and a stale index 23 hours a day — you need incremental + weekly full",
-      "Not handling deletions: a doc removed at the source stays in the index → answers linking to a 404 and a privacy issue",
+      "Not handling deletions: a doc removed at the source stays in the index, then answers linking to a 404 and a privacy issue",
       "Parsing without error handling: one corrupted PDF breaks the whole batch — per-document try/except and a dead-letter queue are mandatory",
       "No deduplication: the same FAQ from 3 sources returns 3 identical hits and erodes trust",
-      "Embeddings without version-tracking: after a model swap half the index is on old vectors, half on new → search degrades"
+      "Embeddings without version-tracking: after a model swap half the index is on old vectors, half on new, then search degrades"
     ],
     "exercises": [
       {
@@ -4975,7 +4975,7 @@
       },
       {
         "question": "A document was deleted at the source. Describe what must happen in the pipeline so it stops being cited, and the difference between soft and hard delete.",
-        "hint": "A deletion signal (webhook or periodic diff) → an action in the [[node:sys-rag-architecture|vector store]]. Soft delete = tombstone + filter, hard delete = DELETE + audit for compliance."
+        "hint": "A deletion signal (webhook or periodic diff), then an action in the [[node:sys-rag-architecture|vector store]]. Soft delete = tombstone + filter, hard delete = DELETE + audit for compliance."
       },
       {
         "question": "RAG recall has slowly dropped for a month with no obvious cause. Which pipeline metrics do you check first?",
@@ -4997,14 +4997,14 @@
         "tip": "Plan the pipeline the moment RAG ships to production — \"we'll add it later\" almost never arrives."
       },
       "s2": {
-        "title": "The chain: extraction → cleanup → chunking → embeddings → index",
+        "title": "The chain: extraction, then cleanup, then chunking, then embeddings, then index",
         "time": "",
         "why": "Each stage solves its own task, and an error at an early stage (garbage parsing) poisons everything downstream. You need to see the whole conveyor.",
         "instructions": [
           "Extraction: parse by type — PDF (PyMuPDF, Unstructured), HTML (BeautifulSoup, trafilatura), Office (python-docx), Markdown",
           "Normalization: Unicode NFC, strip boilerplate (nav, footer), language detection, fix encoding",
           "Deduplication: full-text hash + near-dup detection (MinHash / SimHash) for versioned copies of one document",
-          "Chunking → embeddings: split by the source's strategy (see [[node:sys-chunking-strategies|chunking strategies]]), then compute vectors in batches",
+          "Chunking, then embeddings: split by the source's strategy (see [[node:sys-chunking-strategies|chunking strategies]]), then compute vectors in batches",
           "Upsert to the index: write chunks with embeddings into the [[node:sys-rag-architecture|vector store]] along with metadata (source, doc_id, model version)"
         ],
         "validate": "For each of the 5 stages you can name its input, output, and one characteristic failure mode.",
@@ -5015,7 +5015,7 @@
         "time": "",
         "why": "This is the heart of a production pipeline: incremental sync keeps the index fresh without full re-indexing, and deletion handling closes privacy/compliance gaps.",
         "instructions": [
-          "Webhook-driven (preferred): Notion, Linear, GitHub fire events → enqueue → process, source-to-index latency 1-10 minutes",
+          "Webhook-driven (preferred): Notion, Linear, GitHub fire events, then enqueue, then process, source-to-index latency 1-10 minutes",
           "Polling fallback for sources without webhooks: cursor by `updated_at` + diff, interval 5 min — 1 h depending on volume",
           "Weekly full re-sync as catch-up for missed events and to fight data drift — expensive but mandatory",
           "Deletion: soft delete (tombstone + filter `is_deleted = false`) for speed, hard delete (DELETE from the index) for GDPR with a mandatory audit",
@@ -5031,8 +5031,8 @@
         "instructions": [
           "Connectors publish events to a queue: `{source, doc_id, action: upsert|delete}` (e.g. via SQS)",
           "Worker on `delete`: removes chunks by filter `{source, doc_id}` from the index and writes to audit_log",
-          "Worker on `upsert`: fetch → parse → normalize → compare the text sha256 with the previous hash, skip if equal",
-          "On change: chunk by source strategy → embed_batch → delete the document's old chunks → upsert new ones → save the new hash",
+          "Worker on `upsert`: fetch, then parse, then normalize, then compare the text sha256 with the previous hash, skip if equal",
+          "On change: chunk by source strategy, then embed_batch, then delete the document's old chunks, then upsert new ones, then save the new hash",
           "Parse failures and exhausted retries go to a dead-letter queue with an alert when failure rate > 1%"
         ],
         "validate": "You have a working loop where reprocessing an unchanged document writes nothing to the index (idempotent via hash).",
@@ -5044,7 +5044,7 @@
         "why": "Pipelines break quietly: a connector dies, embeddings split across versions, duplicates pile up. You need to know the limits and close the risks ahead of time.",
         "instructions": [
           "Garbage in: one corrupted PDF must not kill the batch — per-document try/except + dead-letter queue, alert above 1% failures",
-          "Duplicates: exact hash match → drop; MinHash similarity > 0.95 → keep the newer one, mark as duplicate (normal dedup rate 5-15%)",
+          "Duplicates: exact hash match, then drop; MinHash similarity > 0.95, then keep the newer one, mark as duplicate (normal dedup rate 5-15%)",
           "Embedding versions: track `embedding_model_version` in metadata + a migration plan, otherwise half the index sits on the old model",
           "Drift: weekly full re-sync + an alert on ingestion lag so a dead connector doesn't freeze the index unnoticed",
           "Retries on flaky sources — exponential backoff so you don't slam into the source's rate limits"
@@ -5108,7 +5108,7 @@
         "hint": "Think about whether the task splits into independent chunks and who assembles the result. See [[node:sys-parallel-fan-out|parallel fan-out]]."
       },
       {
-        "question": "A team wants \"AI writes → AI critiques → rewrites → critiques again...\" with no limits. What's the risk and how do you close it?",
+        "question": "A team wants \"AI writes, then AI critiques, then rewrites, then critiques again...\" with no limits. What's the risk and how do you close it?",
         "hint": "This is the reflection/debate pattern. What happens without a cap on the number of rounds?"
       },
       {
@@ -5137,7 +5137,7 @@
         "instructions": [
           "Supervisor-worker: a boss agent splits the task, specialist helpers do the parts, the boss assembles the result. See [[node:sys-supervisor-worker|supervisor-worker]]",
           "Parallel (fan-out): one task is broken into identical chunks, agents process them in parallel, results are merged. See [[node:sys-parallel-fan-out|parallel fan-out]]",
-          "Pipeline: agents are lined up in a conveyor — one's output is the next one's input (classify → process → format)",
+          "Pipeline: agents are lined up in a conveyor — one's output is the next one's input (classify, then process, then format)",
           "Debate/discussion: several agents produce different options or critique each other, a separate agent picks the best or merges the strengths",
           "For each pattern, write one word for its purpose: splittability / scale / stages / quality-through-comparison"
         ],
@@ -5150,8 +5150,8 @@
         "why": "The wrong pattern makes a system expensive, slow and undebuggable. The right one makes it predictable and cheap to maintain. The choice flows from the task signal, not from trends.",
         "instructions": [
           "Take the signal you found in step 1 and map it to a pattern",
-          "Task splits into different subtasks → supervisor-worker; splits into identical chunks at scale → parallel",
-          "Task passes through clear stages in sequence → pipeline; needs differing viewpoints or iterative quality → debate",
+          "Task splits into different subtasks, then supervisor-worker; splits into identical chunks at scale, then parallel",
+          "Task passes through clear stages in sequence, then pipeline; needs differing viewpoints or iterative quality, then debate",
           "Pick EXACTLY one main scheme. If you need more, add a second as a small tool inside the first, not as parallel work",
           "Cross-check against orchestration principles: [[node:ai-orchestration|agent orchestration]]"
         ],
@@ -5165,7 +5165,7 @@
         "instructions": [
           "Take a support task: an incoming request must be classified and routed to the right specialist — this is pipeline + supervisor-worker",
           "Step 1: a coordinator agent receives the message and determines the type (password / billing / bug / complaint)",
-          "Step 2: routes to a specialized worker — each has its own data and instructions; complex cases and complaints → a human",
+          "Step 2: routes to a specialized worker — each has its own data and instructions; complex cases and complaints, then a human",
           "Step 3: the worker does its part and returns the answer; the coordinator formats it and sends it to the customer",
           "Trace where control passes between agents — that's the handoff protocol. See [[node:sys-handoff-protocols|handoff protocols]]"
         ],
@@ -5210,15 +5210,15 @@
     "approach": "Don't build a do-everything agent. Start with a supervisor that executes nothing itself plus 2-3 workers with clean boundaries. Routing goes through [[node:sys-branching-logic|branching logic]], task passing through a structured [[node:sys-handoff-protocols|handoff]]. Test each worker in isolation first, then wire the loop and measure the bottleneck — the supervisor itself.",
     "outcomes": [
       "Know when supervisor-worker is justified vs. when prompt chaining or fan-out suffices",
-      "Designed a supervisor: decompose → delegate → synthesize, with no specialized execution",
+      "Designed a supervisor: decompose, then delegate, then synthesize, with no specialized execution",
       "Defined 2-3 workers with non-overlapping boundaries and narrow tool sets",
-      "Built the loop: plan → sequential worker calls → synthesis with an audit trail",
+      "Built the loop: plan, then sequential worker calls, then synthesis with an audit trail",
       "Set the limits: max-depth, max-workers-per-turn, latency and cost control"
     ],
     "applyIn": [
       {
         "title": "Research agent",
-        "description": "The supervisor delegates: web research → data analysis → writing the brief. Each stage is a separate worker with its own tools."
+        "description": "The supervisor delegates: web research, then data analysis, then writing the brief. Each stage is a separate worker with its own tools."
       },
       {
         "title": "Customer ops",
@@ -5258,7 +5258,7 @@
         "instructions": [
           "Memorize the essence: the supervisor decomposes and synthesizes; workers execute narrow tasks.",
           "Check the applicability test: the task needs 3+ different kinds of expertise AND the steps can't be fixed up front.",
-          "Rule out alternatives: one type of task → one agent; rigid sequence → [[node:sys-prompt-chaining|prompt chaining]]; parallel identical tasks → [[node:sys-parallel-fan-out|fan-out]].",
+          "Rule out alternatives: one type of task, then one agent; rigid sequence, then [[node:sys-prompt-chaining|prompt chaining]]; parallel identical tasks, then [[node:sys-parallel-fan-out|fan-out]].",
           "Fix in mind that the supervisor is a sequential dispatcher, not parallel."
         ],
         "validate": "You can state in one sentence why it's supervisor-worker and not chaining/fan-out/a single agent.",
@@ -5275,7 +5275,7 @@
           "Add a synthesis mode: the supervisor aggregates worker outputs into the final answer."
         ],
         "validate": "The supervisor prompt contains no subject-matter tool — only delegation and synthesis.",
-        "tip": "A good supervisor reads like a dispatcher: \"given X → call workers A and B → assemble the answer\", with no \"how\" to do the subtask."
+        "tip": "A good supervisor reads like a dispatcher: \"given X, then call workers A and B, then assemble the answer\", with no \"how\" to do the subtask."
       },
       "s3": {
         "title": "The workers' role",
@@ -5284,7 +5284,7 @@
         "instructions": [
           "Split responsibility by domain or action so the boundaries don't overlap.",
           "Give each worker its own system prompt (500-1500 tokens) and 2-5 tools, no more.",
-          "Match the model to the task: simple lookup → Haiku, reasoning/analysis → Sonnet.",
+          "Match the model to the task: simple lookup, then Haiku, reasoning/analysis, then Sonnet.",
           "Give each worker its own eval set so you can test it in isolation (see [[node:sys-evals-benchmarks|evals]])."
         ],
         "validate": "For any subtask it's unambiguous which single worker owns it.",
@@ -5293,7 +5293,7 @@
       "s4": {
         "title": "How to wire the loop",
         "time": "",
-        "why": "Wiring turns the supervisor and workers into a working system: plan → calls → synthesis. Without an audit trail you can't debug \"why is the result weak.\"",
+        "why": "Wiring turns the supervisor and workers into a working system: plan, then calls, then synthesis. Without an audit trail you can't debug \"why is the result weak.\"",
         "instructions": [
           "Step 1: the supervisor returns a delegation plan from the input (which workers and with what input).",
           "Step 2: call the workers from the plan sequentially, collecting results into a shared dict.",
@@ -5476,7 +5476,7 @@
       "You understand why a formal handoff protocol beats forwarding the whole conversation",
       "You know the 5 mandatory components of a handoff package: task, context, state, constraints, success_criteria",
       "You can assemble a structured handoff message the receiver reads in seconds",
-      "You see the boundaries and risks: lost context, infinite A→B→A loops, private data leaking into logs",
+      "You see the boundaries and risks: lost context, infinite A-to-B-to-A loops, private data leaking into logs",
       "You have a checklist to validate a handoff before shipping it to production"
     ],
     "applyIn": [
@@ -5486,11 +5486,11 @@
       },
       {
         "title": "Sequential agent pipeline",
-        "description": "research agent → writer agent → editor agent: each passes a compact package with references to artifacts, not its whole context."
+        "description": "research agent, then writer agent, then editor agent: each passes a compact package with references to artifacts, not its whole context."
       },
       {
         "title": "Human-in-the-loop",
-        "description": "An agent prepares a result → a human reviews → the agent continues. Without an explicit package the human cannot tell what is done or where to stop."
+        "description": "An agent prepares a result, then a human reviews, then the agent continues. Without an explicit package the human cannot tell what is done or where to stop."
       }
     ],
     "pitfalls": [
@@ -5498,7 +5498,7 @@
       "Handoff without success_criteria — the receiver does not know when to stop and either over-works or under-delivers.",
       "Losing trace_id across handoffs: logs fall apart and debugging handoff failures takes far longer.",
       "Putting PII and secrets straight into the package: they land in every agent's logs — pass references (IDs) and resolve values inside a trusted boundary.",
-      "Handoff without max-hops: A→B→A→B turns into infinite ping-pong. You need a hard hop limit (3–5) and escalation on overflow."
+      "Handoff without max-hops: A-to-B-to-A-to-B turns into infinite ping-pong. You need a hard hop limit (3–5) and escalation on overflow."
     ],
     "exercises": [
       {
@@ -5520,7 +5520,7 @@
         "time": "",
         "why": "With a single agent no handoff is needed. But the moment two or more agents split a task, implicit transfer breaks in two ways: either the sender ships everything (context and cost explode) or it ships \"continue\" with no context (the receiver asks back or hallucinates). The protocol removes both extremes.",
         "instructions": [
-          "Find every point in your scenario where one agent hands work to another: supervisor→worker, agent→agent in a pipeline, agent→human→agent.",
+          "Find every point in your scenario where one agent hands work to another: supervisor-to-worker, agent-to-agent in a pipeline, agent-to-human-to-agent.",
           "For each point answer: what is passed today — the whole conversation, a short phrase, or nothing?",
           "Estimate the cost: multiply the size of the passed context by the number of handoffs in a typical task.",
           "State the problem in words: \"the receiver redoes work\", \"context bloats\", \"constraints get lost\"."
@@ -5559,7 +5559,7 @@
       "s4": {
         "title": "How to apply it in practice",
         "time": "",
-        "why": "A schema is useless until it is wired into the transfer code. The goal of this step is to assemble a real handoff in a typical scenario (e.g. customer support: triage→specialist→escalation) and validate it against metrics.",
+        "why": "A schema is useless until it is wired into the transfer code. The goal of this step is to assemble a real handoff in a typical scenario (e.g. customer support: triage-to-specialist-to-escalation) and validate it against metrics.",
         "instructions": [
           "Describe the package as a data structure (dataclass / typed dict) with the fields from steps 2–3.",
           "In the sending agent: after work, build the package — a summary instead of raw context, artifact IDs instead of values.",
@@ -5582,7 +5582,7 @@
           "Degradation: decide what the receiver does with an incomplete package — ask, escalate, or work with what it has."
         ],
         "validate": "For each risk (context, loops, privacy, trace_id) you have a concrete protection mechanism, not a \"hope it won't happen\".",
-        "tip": "The A→B→A→B loop is the most common hidden failure. A hop counter in the trace plus a hard cap is cheaper than any post-hoc log dig."
+        "tip": "The A-to-B-to-A-to-B loop is the most common hidden failure. A hop counter in the trace plus a hard cap is cheaper than any post-hoc log dig."
       },
       "s6": {
         "title": "Checklist and validation",
@@ -5607,7 +5607,7 @@
     "whatItIs": "Tool orchestration is managing how one model works with a set of tools: which tool to call, in what order, what to run in parallel, how to handle results and errors. It is the layer between [[node:cap-tools|the ability to call tools]] and a real agent that has 3, 10, or 20 of them. Without orchestration the model confuses similar tools, does everything sequentially, and loops on failed calls.",
     "approach": "We move from mechanics to reliability. First we understand what physically happens during tool use / function calling (the model requests a call, your code executes it, the result is returned). Then we learn to write descriptions so selection is unambiguous. Next: parallel vs sequential and dependencies between calls. Then handling results and errors in a structured format. After that, boundaries and risks (wrong selection, loops, tool budget). Finally, a checklist and a check on a real tool set.",
     "outcomes": [
-      "You understand the tool-use cycle: model requests a call → code executes → result returned → next turn",
+      "You understand the tool-use cycle: model requests a call, then code executes, then result returned, then next turn",
       "You write tool descriptions so the model picks the right one in >95% of cases",
       "You run independent tools in parallel and cut latency several-fold",
       "You return errors in a structured form so the model chooses retry / fallback / skip deliberately",
@@ -5628,11 +5628,11 @@
       }
     ],
     "pitfalls": [
-      "Vague descriptions: `search_data` and `query_db` are indistinguishable → the model picks randomly, up to 30% wrong calls",
+      "Vague descriptions: `search_data` and `query_db` are indistinguishable, then the model picks randomly, up to 30% wrong calls",
       "No parallel hint: without it the model goes sequential ~70% of the time even on independent tools",
-      "Dependent tools without explicit order: get_user → get_orders with no hint causes ordering errors",
-      "No tool budget: the model loops and calls one tool dozens of times → cost and latency",
-      "Raw errors fed back: \"500 Internal Server Error\" instead of structured → unpredictable retry or failure"
+      "Dependent tools without explicit order: get_user, then get_orders with no hint causes ordering errors",
+      "No tool budget: the model loops and calls one tool dozens of times, then cost and latency",
+      "Raw errors fed back: \"500 Internal Server Error\" instead of structured, then unpredictable retry or failure"
     ],
     "exercises": [
       {
@@ -5654,7 +5654,7 @@
         "time": "",
         "why": "Before tuning selection and parallelism you must see the cycle: the model does not execute tools itself — it requests a call, your code executes it, the result goes back. Orchestration manages this cycle when there are many tools.",
         "instructions": [
-          "Memorize the tool use / function calling cycle: the model returns tool_use → your code executes → the result returns as tool_result → the model takes the next turn",
+          "Memorize the tool use / function calling cycle: the model returns tool_use, then your code executes, then the result returns as tool_result, then the model takes the next turn",
           "Distinguish orchestration from the bare ability to call tools (see [[node:cap-tools|tool use]]) — orchestration is about selection, order, and resilience across a set of tools",
           "Tie it to the layer above: orchestration is part of building [[node:systems|systems from Claude]] and [[node:ai-orchestration|AI orchestration]]",
           "List your current tool set and note how many there are and which ones resemble each other"
@@ -5696,7 +5696,7 @@
           "Return results structured (JSON), not raw text — easier for the model to extract what it needs",
           "Make errors explicit objects: { error_code, retry_after, should_retry } instead of \"500 Internal Server Error\"",
           "State a failure policy in the system prompt: \"If a tool fails twice, skip it and note in response\"",
-          "Distinguish transient errors (rate limit → retry) from permanent ones (no permission → skip and report)"
+          "Distinguish transient errors (rate limit, then retry) from permanent ones (no permission, then skip and report)"
         ],
         "validate": "When a tool fails the model behaves predictably: it retries, routes around, or reports — it does not hang.",
         "tip": "should_retry: true|false in the error response saves the model from guessing and from extra calls."
@@ -5766,7 +5766,7 @@
     "exercises": [
       {
         "question": "Your feature makes 50,000 calls a day on an expensive model at $0.015. How do you halve the bill within a week without losing quality?",
-        "hint": "First measure the share of simple vs complex requests. Simple → cheap model, repeats → cache, long context → compress. Count savings per lever separately."
+        "hint": "First measure the share of simple vs complex requests. Simple, then cheap model, repeats, then cache, long context, then compress. Count savings per lever separately."
       },
       {
         "question": "This morning yesterday's bill came in 10× higher than usual. Which two mechanisms should have warned you earlier, and how do you set them up?",
@@ -5958,10 +5958,10 @@
           "Build a dashboard from 3 panels: latency (p50/p95/p99 + RPS + error rate), cost ($/day by feature compose/summarize/classify + top-10 expensive users), quality (output length histogram + tool success rate + refusal rate trend)",
           "Set deviation alerts: \"p99 grew 2× vs rolling 1h avg\", \"cost/hour > 2× rolling avg\", \"refusal rate > 3%\"",
           "Avoid absolute thresholds like \"p99 > 5s\" — they fire 100×/day from batch jobs and people stop reading them",
-          "Tie the response to rollback: alert → trace analysis by prompt_version → rollback via feature flag (see [[node:sys-rollback-strategies|rollback strategies]])",
+          "Tie the response to rollback: alert, then trace analysis by prompt_version, then rollback via feature flag (see [[node:sys-rollback-strategies|rollback strategies]])",
           "Reaction-time goal: from alert to rollback — hours, not days"
         ],
-        "validate": "Each of the 3 key alerts is phrased as a deviation from a rolling baseline, and there is a written alert → trace → rollback path.",
+        "validate": "Each of the 3 key alerts is phrased as a deviation from a rolling baseline, and there is a written alert, then trace, then rollback path.",
         "tip": "If an alert gets ignored, it's either too frequent (absolute threshold) or doesn't lead to action. Every alert needs a runbook: what to do when it fires."
       },
       "s5": {
@@ -5981,7 +5981,7 @@
       "s6": {
         "title": "Checklist and readiness test",
         "time": "",
-        "why": "The final assembly turns scattered settings into a working observability loop. The checklist guarantees that none of the 5 metrics and none of the layers (metric → trace → alert) dropped out.",
+        "why": "The final assembly turns scattered settings into a working observability loop. The checklist guarantees that none of the 5 metrics and none of the layers (metric, then trace, then alert) dropped out.",
         "instructions": [
           "Metrics: all 5 signals are collected (latency, cost per call, output distribution, tool-call success, refusal rate), each with a target",
           "Traces: every request is traced with model, prompt_version, user_id, tokens, tool_calls, refusal_flag, drill-down available",
@@ -6023,7 +6023,7 @@
     ],
     "pitfalls": [
       "Logging everything to hot storage: 100k requests × 5k tokens = ~2GB/day in prompts alone, $30k+/year in Datadog. Sample full payloads, aggregate metadata.",
-      "PII in plaintext — the most common incident. Email AI logs the full body → grabs the customer's email → GDPR violation. Redact BEFORE writing, not after.",
+      "PII in plaintext — the most common incident. Email AI logs the full body, then grabs the customer's email, then GDPR violation. Redact BEFORE writing, not after.",
       "Blacklisting tool-arg fields: a new secret in a new tool will leak. Whitelist — log only explicitly allowed fields.",
       "Not logging prompt_version: in 3 months you can't tie a bad answer to a prompt version. Pinning to git SHA is required (see [[node:sys-versioning|sys-versioning]]).",
       "Infinite retention \"just in case\": GDPR requires deletion, storage grows linearly, value drops exponentially. 7/30/90 is the standard."
@@ -6075,7 +6075,7 @@
         "why": "Prompts may contain user PII, completions generated PII, and tool_calls secrets (db_password, tokens). Wrong logging = GDPR incident or credential leak. Redaction is done at the SDK/middleware layer BEFORE writing. Details in [[node:pl-privacy|privacy]].",
         "instructions": [
           "Build a \"never log\" list: API keys, OAuth tokens, raw passwords, card numbers, SSN, plaintext PII (email/phone/address)",
-          "Put a redactor in middleware BEFORE writing the log: regex for email/phone + a name detector (e.g. Claude Haiku) → replaces with [REDACTED:type]",
+          "Put a redactor in middleware BEFORE writing the log: regex for email/phone + a name detector (e.g. Claude Haiku), then replaces with [REDACTED:type]",
           "For tool_call arguments use a field WHITELIST (log only explicitly allowed ones), not a blacklist — otherwise a new secret leaks",
           "Verify redaction fires in BOTH directions: on the prompt (user input) and on the completion (generated text)"
         ],
@@ -6089,7 +6089,7 @@
         "instructions": [
           "Split the tiers: hot 7d (fast debug, expensive storage like Datadog), warm 30d (post-mortem), cold 90d (compliance/audit, cheap storage)",
           "Keep full prompts sampled only and with short retention 14-30d max — longer = GDPR risk and cost spike",
-          "Enable encryption at rest for the sampled store with full payloads and a lifecycle policy hot → cold → delete",
+          "Enable encryption at rest for the sampled store with full payloads and a lifecycle policy hot, then cold, then delete",
           "Pin prompt_version to a git SHA from CI so the log unambiguously connects to the [[node:sys-versioning|prompt version]] in code"
         ],
         "validate": "Each log tier has a lifespan and a cost, and full prompts are auto-deleted by lifecycle — nothing is kept \"forever\".",
@@ -6128,7 +6128,7 @@
     "subtitle": "Prompts are code: semver, lock files, and an eval gate so \"AI worked yesterday, not today\" becomes debuggable",
     "totalTime": "6 steps",
     "whatItIs": "A two-layer discipline. Layer 1 — prompt versions: prompts live in git as files (`prompts/*.yaml`), carry semver, go through PR review, and every request injects `prompt_version`. Layer 2 — model versions: snapshot pinning (`claude-sonnet-4-5-20250929`) vs alias (`claude-sonnet-4-5`), plus a `models.lock.json` with every pinned snapshot ID — analogous to `package-lock.json`.",
-    "approach": "We move from motive to practice: why version at all → what exactly goes into a version (prompt, model, parameters, eval dataset, tool schema) → how to store versions and tie them to results via logs → how to roll back and compare versions → where the limits and desync risks are → a final checklist with verification. Anchored on the [[node:sys-versioning|versioning]] node inside [[node:ai-operations|AI operations]].",
+    "approach": "We move from motive to practice: why version at all, then what exactly goes into a version (prompt, model, parameters, eval dataset, tool schema), then how to store versions and tie them to results via logs, then how to roll back and compare versions, then where the limits and desync risks are, then a final checklist with verification. Anchored on the [[node:sys-versioning|versioning]] node inside [[node:ai-operations|AI operations]].",
     "outcomes": [
       "Every AI response is tied to a (prompt_version, model_snapshot) pair and traceable to a specific commit",
       "Prompts are moved out of code into git-versioned files with semver and PR review",
@@ -6218,7 +6218,7 @@
         "time": "",
         "why": "Versioning pays off the moment a regression hits: you need to revert to a working version fast and understand exactly what changed between \"working\" and \"broken\".",
         "instructions": [
-          "Prompt rollback: `git revert` the PR → CI redeploy in minutes; or instantly via a [[node:sys-rollback-strategies|feature flag]] to the old version",
+          "Prompt rollback: `git revert` the PR, then CI redeploy in minutes; or instantly via a [[node:sys-rollback-strategies|feature flag]] to the old version",
           "Version comparison: run the eval suite on both versions and produce a diff report (where answers diverged)",
           "Eval gate on bump: the new version's pass rate must not drop more than 2% from baseline — otherwise don't ship",
           "For the model: bump the snapshot in the lock file via a dedicated PR with an eval suite on the new model vs production",
@@ -6309,7 +6309,7 @@
       "s1": {
         "title": "Why you need a rollback strategy",
         "time": "",
-        "why": "Without infrastructure the path detect → debug → fix → PR → CI → deploy takes hours or days. With feature flags: detect → flip → seconds. Time from detection to rollback is MTTR, and for customer-facing AI it must be measured in minutes, because bad answers to customers damage trust.",
+        "why": "Without infrastructure the path detect, then debug, then fix, then PR, then CI, then deploy takes hours or days. With feature flags: detect, then flip, then seconds. Time from detection to rollback is MTTR, and for customer-facing AI it must be measured in minutes, because bad answers to customers damage trust.",
         "instructions": [
           "List your AI features and mark which are customer-facing or revenue-critical.",
           "For each, estimate current MTTR: how long it actually takes from a complaint to restoring the previous version.",
@@ -6344,14 +6344,14 @@
           "Verify the previous stable version is available for rollback (see [[node:sys-versioning|versioning]])."
         ],
         "validate": "A simulated trigger moves the flag to the previous version automatically in under 5 minutes with no manual action.",
-        "tip": "Auto-rollback is critical: a manual flip loses 15-30 minutes on 'human noticed → decided → switched'. The trigger must fire on its own."
+        "tip": "Auto-rollback is critical: a manual flip loses 15-30 minutes on 'human noticed, then decided, then switched'. The trigger must fire on its own."
       },
       "s4": {
         "title": "Canary: gradual rollout against risk",
         "time": "",
         "why": "The best rollback is the one you never needed at scale. Canary rolls a new version to a small percentage of traffic and expands only if metrics hold. That way a regression hits 1-10% of users instead of everyone, and auto-rollback fires before the incident grows large.",
         "instructions": [
-          "Set stages: 1% (24h) → 10% (24h) → 50% (24h) → 100%, selecting users by a stable random hash.",
+          "Set stages: 1% (24h), then 10% (24h), then 50% (24h), then 100%, selecting users by a stable random hash.",
           "Hold each stage under observation for at least 24h or until N ≥ 1000 requests for statistical significance.",
           "Compare the canary group's metrics against a baseline group, not against absolute values.",
           "Wire in the same auto-rollback triggers as step 3 — at any stage the flag drops to 0%.",
@@ -6377,7 +6377,7 @@
       "s6": {
         "title": "Checklist and verification via game day",
         "time": "",
-        "why": "A broken rollback mechanism surfaces exactly during an incident — the most expensive moment. A quarterly game day simulates a regression and verifies the whole chain (detection → trigger → rollback → fallback) works within the target under 5 minutes.",
+        "why": "A broken rollback mechanism surfaces exactly during an incident — the most expensive moment. A quarterly game day simulates a regression and verifies the whole chain (detection, then trigger, then rollback, then fallback) works within the target under 5 minutes.",
         "instructions": [
           "Build a checklist: the feature has a flag, canary stages, auto-triggers, a kill switch with a fallback, and stored versions.",
           "Once a quarter run a game day: artificially introduce a regression and time the rollback.",
@@ -6446,7 +6446,7 @@
         "instructions": [
           "Distinguish three response types: 429 (rate limit — your traffic exceeded the tier), 529 (Anthropic overloaded), 5xx (server error). The reaction to each differs.",
           "Find your current RPM/TPM limits in the Anthropic docs and map them to your account's [[node:pl-rate|tier limits]].",
-          "Understand the cascade mechanic: one runaway script or viral peak hits the limit → the 429 spreads across the whole tier → even interactive users get errors.",
+          "Understand the cascade mechanic: one runaway script or viral peak hits the limit, then the 429 spreads across the whole tier, then even interactive users get errors.",
           "Write down which traffic sources to the API you have (interactive, batch, async jobs) — this is the basis for future queues."
         ],
         "validate": "You can explain in words why retrying a 429 request immediately is a mistake, and how that differs from a retry on a 5xx.",
@@ -6497,7 +6497,7 @@
         "why": "Retry is safe only for idempotent operations. A blind retry of a non-idempotent call (e.g., with a write or billing side effect) on a timeout can execute the action twice. And during a long outage even correct backoff becomes an expensive retry storm.",
         "instructions": [
           "Split calls into idempotent (safe to retry) and non-idempotent (double execution is dangerous) — retry the latter only with deduplication.",
-          "Add a circuit breaker: after 5 failures / 30s go to open (fail fast) → half-open after 30s → closed after 3 consecutive successes.",
+          "Add a circuit breaker: after 5 failures / 30s go to open (fail fast), then half-open after 30s, then closed after 3 consecutive successes.",
           "Set a cost ceiling: during a prolonged outage a retry storm generates $1000+ in failed calls — the circuit breaker cuts it off.",
           "Tie the behavior to your overall error strategy (see [[node:sys-error-handling|error handling]]): after retries are exhausted — an explicit fallback, not a silent hang."
         ],
@@ -6521,12 +6521,12 @@
   },
   "sys-semantic-cache": {
     "title": "Semantic cache",
-    "subtitle": "Queries that mean the same thing → a ready answer, no AI call",
+    "subtitle": "Queries that mean the same thing, then a ready answer, no AI call",
     "totalTime": "6 steps",
     "whatItIs": "A semantic cache answers repeating questions phrased differently without calling the model. For an incoming request it computes an embedding ([[node:af-embeddings|embeddings]]), searches a [[node:af-vector-db|vector DB]] for a similar prior query, and if cosine similarity is above a threshold it returns the existing answer in tens of milliseconds for $0.\n\nIt's an infrastructure technique for [[node:ai-operations|running AI in production]]: on FAQ and classification loads 30-40% of queries are rephrasings of the same thing, and an exact cache never catches them.",
     "approach": "Don't confuse it with an exact cache or with [[node:cap-caching|prompt caching]]: those cache text, the semantic cache caches meaning. Start with a high threshold (0.95), cache only non-personalized answers, and always design invalidation. Without these three rules the cache starts lying fast.",
     "outcomes": [
-      "You understand how a semantic cache works: embedding → similar-query search → ready answer",
+      "You understand how a semantic cache works: embedding, then similar-query search, then ready answer",
       "You distinguish exact cache, [[node:cap-caching|prompt caching]] and semantic cache — and combine them",
       "You can judge whether a semantic cache pays off for a given workload",
       "You know the risks: false hits, personal-data leakage, staleness",
@@ -6571,7 +6571,7 @@
       "s1": {
         "title": "What a semantic cache is",
         "time": "",
-        "why": "Without a clear \"similar-meaning query → ready answer\" model it's easy to expect magic and put the cache in the wrong place.",
+        "why": "Without a clear \"similar-meaning query, then ready answer\" model it's easy to expect magic and put the cache in the wrong place.",
         "instructions": [
           "Lock in the core: on an incoming request you compute an embedding, search a vector DB for a similar prior query, and above a threshold return the ready answer — the model isn't called.",
           "State the cache's key question: \"has anyone asked this in meaning over the last N days?\"",
@@ -6599,7 +6599,7 @@
         "time": "",
         "why": "The similarity threshold is the cache's main dial: it directly sets the balance between number of hits and the risk of returning a wrong answer.",
         "instructions": [
-          "The query path: text → embedding ([[node:af-embeddings|embeddings]]) → cosine similarity search in a [[node:af-vector-db|vector DB]] → top-1 candidate.",
+          "The query path: text, then embedding ([[node:af-embeddings|embeddings]]), then cosine similarity search in a [[node:af-vector-db|vector DB]], then top-1 candidate.",
           "Compare the candidate's similarity to the threshold: a typical range is 0.92-0.97.",
           "Lock in what the threshold means: 0.97 — strict (few false hits, lower hit rate); 0.92 — risky (you get a similar-but-not-the-same answer); 0.95 — a working recall/precision balance.",
           "On a hit, check the entry's freshness (TTL) before returning the answer."
@@ -6686,7 +6686,7 @@
     "exercises": [
       {
         "question": "You have 4 AI operations: (1) detect an email's tone in 1 sec, (2) build a quarterly report in 2 minutes, (3) respond when a customer writes in chat, (4) write a long email in front of the user. Which pattern for each?",
-        "hint": "Duration + who initiates + need for instant answer. 1 → sync, 2 → async, 3 → webhook, 4 → streaming."
+        "hint": "Duration + who initiates + need for instant answer. 1, then sync, 2, then async, 3, then webhook, 4, then streaming."
       },
       {
         "question": "An operation averages 8 seconds, sometimes up to 40. The user clicks a button and waits. What's wrong with sync here, and how do you fix it?",
@@ -6729,9 +6729,9 @@
         "time": "",
         "why": "Choosing a pattern isn't a matter of taste — it's the answer to 3 clear questions. Run them and the pattern is almost unambiguous.",
         "instructions": [
-          "Question 1: who initiates? The user → sync/async/streaming. An external event → webhook.",
-          "Question 2: how long does the operation take? Up to ~5 seconds → sync. Longer → async.",
-          "Question 3: does the user need visible progress along the way? Yes, and it's a long text → streaming.",
+          "Question 1: who initiates? The user, then sync/async/streaming. An external event, then webhook.",
+          "Question 2: how long does the operation take? Up to ~5 seconds, then sync. Longer, then async.",
+          "Question 3: does the user need visible progress along the way? Yes, and it's a long text, then streaming.",
           "Treat \"now or in the background\" as a special case of the bigger realtime-vs-batch decision (see [[node:sys-batch-vs-realtime|Batch vs Realtime]])."
         ],
         "validate": "Take any of your AI operations and name the pattern via the three questions.",
@@ -6744,7 +6744,7 @@
         "instructions": [
           "sync: \"classify the task type\" — 1 second, the button returns the answer immediately.",
           "async: \"do a full quarterly analysis\" — 2 minutes, the user starts it, keeps working, gets a \"report ready\" notification.",
-          "webhook: a customer wrote in support chat → an external webhook triggers AI → AI drafts a reply for the agent.",
+          "webhook: a customer wrote in support chat, then an external webhook triggers AI, then AI drafts a reply for the agent.",
           "streaming: \"write a long email\" — AI types piece by piece, the user sees the process and can interrupt."
         ],
         "validate": "You understand why each case took its own pattern rather than one shared one.",
@@ -6769,7 +6769,7 @@
         "why": "Before shipping, run the chosen pattern through a short checklist — it catches most mistakes before they reach production.",
         "instructions": [
           "The operation's duration is measured (not guessed), and the 5-second threshold is factored into sync vs async.",
-          "The initiator is identified correctly: user vs external event → sync isn't confused with webhook.",
+          "The initiator is identified correctly: user vs external event, so sync isn't confused with webhook.",
           "async has a notification or status polling; webhook has acknowledgment and retry; sync has a timeout within the server limit.",
           "Streaming is used only where the answer is genuinely long; for a short answer, sync is chosen.",
           "Validated on a real scenario: the user sees what they expect (\"fast\" when fast, \"working\" when slow)."
@@ -6784,10 +6784,10 @@
     "subtitle": "How to build AI integrations on events instead of synchronous requests",
     "totalTime": "6 steps",
     "whatItIs": "Event-driven AI architecture is an approach where AI processing is triggered by events (a webhook from a CRM, a message in a queue, an uploaded file) rather than a synchronous user request. Accepting the event is fast and durable, while the AI processing itself is decoupled: it can scale, retry, and apply backpressure under load without losing events. This is the foundation for scalable AI integrations described in the [[node:sys-event-driven|event-driven AI architecture]] node.",
-    "approach": "We move from idea to practice: first why decoupling ingestion from processing matters, then the event → queue → handler-agent path, then how to avoid processing one event twice (idempotency) and how to handle ordering. Next we build a minimal pipeline on your own case, mark the boundaries and risks (debugging, duplicates, DLQ), and close with a pre-production checklist.",
+    "approach": "We move from idea to practice: first why decoupling ingestion from processing matters, then the path of event, then queue, then handler-agent, then how to avoid processing one event twice (idempotency) and how to handle ordering. Next we build a minimal pipeline on your own case, mark the boundaries and risks (debugging, duplicates, DLQ), and close with a pre-production checklist.",
     "outcomes": [
-      "Explain why a synchronous webhook → LLM call → 200 breaks on slow and long-running AI tasks",
-      "Draw the event path: source → ingestion (fast 200) → queue → worker-agent",
+      "Explain why a synchronous webhook, then LLM call, then 200 breaks on slow and long-running AI tasks",
+      "Draw the event path: source, then ingestion (fast 200), then queue, then worker-agent",
       "Make processing idempotent using an idempotency key and a dedup table",
       "Set up retries with exponential backoff and a DLQ so events are neither lost nor duplicated",
       "Understand the boundaries: where event-driven is overkill and where it is mandatory"
@@ -6807,11 +6807,11 @@
       }
     ],
     "pitfalls": [
-      "AI call inside the webhook handler: a 5s LLM call exceeds the provider timeout (3s) → retry → duplicates. The webhook must ALWAYS just enqueue-and-return-200",
-      "No idempotency: webhook delivery is at-least-once, one event gets processed twice → duplicate AI calls and actions. You need an idempotency key and a dedup table check before processing",
+      "AI call inside the webhook handler: a 5s LLM call exceeds the provider timeout (3s), then retry, then duplicates. The webhook must ALWAYS just enqueue-and-return-200",
+      "No idempotency: webhook delivery is at-least-once, one event gets processed twice, causing duplicate AI calls and actions. You need an idempotency key and a dedup table check before processing",
       "Ignoring the DLQ: failed events sit for months with no alert and no review. DLQ monitoring and a weekly review are mandatory",
       "One queue for all priorities: batch jobs eat the capacity and interactive processing suffers. Separate queues per priority",
-      "Retry without exponential backoff: a transient rate limit → instant retry → another limit → infinite loop. Backoff (1s, 4s, 16s, 64s) is mandatory"
+      "Retry without exponential backoff: a transient rate limit, then instant retry, then another limit, then infinite loop. Backoff (1s, 4s, 16s, 64s) is mandatory"
     ],
     "exercises": [
       {
@@ -6834,7 +6834,7 @@
         "why": "Without understanding why the synchronous scheme breaks, it's easy to wire an AI call right into the webhook and get a retry storm in production. First we pin down the essence: reacting to events and decoupling ingestion from processing.",
         "instructions": [
           "Read the what and why sections of the [[node:sys-event-driven|event-driven AI architecture]] node: what event sources, ingestion, and workers are",
-          "List 4 scenarios where the synchronous webhook → LLM call → 200 scheme breaks: slow LLM, downtime, spike traffic, long AI tasks",
+          "List 4 scenarios where the synchronous webhook, then LLM call, then 200 scheme breaks: slow LLM, downtime, spike traffic, long AI tasks",
           "State the decoupling idea in your own words: accepting the event is fast and durable, AI processing is separate and scalable",
           "Compare with the synchronous API approach from [[node:sys-api-patterns|API patterns]] — understand when request-response is appropriate and when it isn't"
         ],
@@ -6842,11 +6842,11 @@
         "tip": "The key idea: a webhook is responsible for \"accepted and not lost\", not for \"processed\". These are different responsibilities."
       },
       "s2": {
-        "title": "The event path: event → queue → handler-agent",
+        "title": "The event path: event, then queue, then handler-agent",
         "time": "",
         "why": "This is the basic skeleton of any event-driven system. Until you see the three links — source, ingestion, worker — you cannot design either scaling or reliability.",
         "instructions": [
-          "Draw the chain: event source (webhook/queue/CDC) → ingestion endpoint → queue → worker-agent with an AI call",
+          "Draw the chain: event source (webhook/queue/CDC), then ingestion endpoint, then queue, then worker-agent with an AI call",
           "Define the ingestion contract: validation (including verify_signature), enqueue, return 200 in < 100ms — no AI inside",
           "Describe the worker as a separate process: pulls a message from the queue, calls the AI, writes the result, deletes the message",
           "Map the infrastructure choices from the node: Kafka/RabbitMQ (self-hosted) versus AWS SQS/Google Pub/Sub (managed)",
@@ -6862,7 +6862,7 @@
         "instructions": [
           "Study exactly-once via an idempotency key in the impact section of the node: a dedup table check before processing",
           "Build the idempotency key from a stable event identifier (e.g., zendesk_ticket_{id}_{event_id})",
-          "Describe the transaction: check the key → call the AI → write the result → insert the key into the dedup table with a TTL",
+          "Describe the transaction: check the key, then call the AI, then write the result, then insert the key into the dedup table with a TTL",
           "Settle the ordering question: where order matters (use an ordering/partition key) and where events are independent",
           "Link retries and failures to [[node:sys-error-handling|error handling]]: what counts as transient and what as final"
         ],
@@ -6875,7 +6875,7 @@
         "why": "Theory only sticks on your own case. A minimal pipeline on a single event source shows all the links in action and surfaces real decisions about priorities and retries.",
         "instructions": [
           "Pick one real source: a webhook from Stripe/Linear/Zendesk or a message in a queue",
-          "Implement ingestion: verify_signature → send_message to the queue with an idempotency key → return 200",
+          "Implement ingestion: verify_signature, then send_message to the queue with an idempotency key, then return 200",
           "Implement the worker: receive with visibility_timeout, dedup check, AI call, write the result, delete",
           "Add retries with exponential backoff (1s, 4s, 16s, 64s, max 5) and send to the DLQ once attempts are exhausted",
           "Split queues by priority: critical (interactive) > standard > batch, so batch doesn't eat the capacity"
@@ -6905,7 +6905,7 @@
           "Run the checklist: ingestion returns 200 in < 100ms with no AI call inside",
           "Check: verify_signature on the webhook, idempotency key + dedup, retries with exponential backoff, DLQ configured",
           "Make sure queues are split by priority and the worker is async (not blocked on a single AI call)",
-          "Run a double-delivery test and an N-failures test → the event must land in the DLQ, not loop forever",
+          "Run a double-delivery test and an N-failures test: the event must land in the DLQ, not loop forever",
           "Lock in DLQ monitoring and a weekly review plan; link further development to the [[node:ai-integration-systems|AI integration systems]] and [[node:systems|systems layer]] nodes"
         ],
         "validate": "All checklist items are ticked, the duplicate and DLQ tests pass, and DLQ monitoring is on — the pipeline is production-ready.",
@@ -6995,9 +6995,9 @@
         "why": "The Anthropic Message Batches API gives a 50% discount on input+output and a separate rate-limit pool — a cost game changer.",
         "instructions": [
           "Memorize the parameters (2026-05 baseline): 50% discount on input+output, up to 100k requests per batch (jsonl), latency 5min—24h (often 1-2h), separate rate-limit pool",
-          "Study the flow: messages.batches.create(requests=[...]) → poll/wait → messages.batches.results(batch.id)",
+          "Study the flow: messages.batches.create(requests=[...]), then poll/wait, then messages.batches.results(batch.id)",
           "Compute the saving on an example: 10k requests, 5k input + 1k output, Sonnet — realtime $300 vs batch $150",
-          "Estimate the scale: 100k requests/day → saving ~$4,500/mo",
+          "Estimate the scale: from 100k requests/day, saving ~$4,500/mo",
           "Tie it to [[node:sys-cost-management|cost management]] and [[node:sys-rate-limiting|rate limiting]]"
         ],
         "validate": "You can state the 50% discount, the 100k/batch limit, the latency window, and compute the saving for your volumes.",
@@ -7014,7 +7014,7 @@
           "Introduce explicit routing by a signal (tag/source/priority), not \"realtime by default\"",
           "Add batch SLA monitoring: alert if processing exceeds the usual 1-2h"
         ],
-        "validate": "You have a scheme: which request → which path, and a cron that picks up batch results when ready.",
+        "validate": "You have a scheme: which request takes which path, and a cron that picks up batch results when ready.",
         "tip": "Lean on [[node:sys-api-patterns|API patterns]] and [[node:ai-integration-systems|AI integration systems]] — batch/realtime is part of the broader integration architecture."
       },
       "s5": {
@@ -7251,7 +7251,7 @@
           "For MCP: local servers — local credentials and OS keychain; remote servers — mandatory OAuth (see [[node:mcp|mcp]])"
         ],
         "validate": "For each of your integrations you can justify the chosen mechanism.",
-        "tip": "Heuristic: a specific user and their personal data → OAuth. System to system with no user → API key or service account."
+        "tip": "Heuristic: a specific user and their personal data, use OAuth. System to system with no user, use API key or service account."
       },
       "s3": {
         "title": "Secret storage: env/vault, not code or logs",
@@ -7287,7 +7287,7 @@
           "Enforce strict per-tenant credential isolation: A's credentials are unreachable from code handling B",
           "Minimize scopes so prompt injection cannot reach extra rights",
           "Keep an audit trail of every credential use (who, what, when, from where, success/fail) — integrate with [[node:sys-logging-patterns|logging patterns]]",
-          "Build a working revocation process: disconnect in the UI → revoke at provider + delete from store",
+          "Build a working revocation process: disconnect in the UI, then revoke at provider + delete from store",
           "For MCP, scope tools and rely on OS-level permissions; never grant unbounded filesystem access"
         ],
         "validate": "You can show exactly how the damage from a leaked key and from prompt injection is bounded.",
@@ -7318,7 +7318,7 @@
     "outcomes": [
       "Classify AI-system errors by category (rate limit, 5xx, 529, invalid JSON, context limit, refusal, tool failure) and assign each its own policy",
       "Tell retry (repeating the same operation) apart from fallback (switching to a backup path) and apply them in the right order",
-      "Build a graceful degradation chain: reduced context → fallback model → cache → canned response",
+      "Build a graceful degradation chain: reduced context, then fallback model, then cache, then canned response",
       "Word clear user-facing degradation messages instead of a silent fail or a generic \"something went wrong\"",
       "Set limits: circuit breaker, timeout budgets, logging and metrics on every fallback"
     ],
@@ -7341,7 +7341,7 @@
       "Infinite retry without a circuit breaker: provider downtime turns into a retry storm that burns through the rate limit again on recovery.",
       "Silent fallback without logs and metrics: you fell back to Haiku, quality dropped, and you do not know why complaints are growing.",
       "Treating refusal as an error: the model intentionally declined — retry will not help, fallback is irrelevant, you need a separate user-friendly path.",
-      "Timeout too high: 30s on an interactive request → the user decides \"it broke\" after 5s and refreshes, creating 6 parallel requests."
+      "Timeout too high: 30s on an interactive request, so the user decides \"it broke\" after 5s and refreshes, creating 6 parallel requests."
     ],
     "exercises": [
       {
@@ -7368,7 +7368,7 @@
           "For each category, note what the user currently sees in your project if you do nothing.",
           "Find the AI-call and tool-call sites in your code — these are the points where any of these errors can surface."
         ],
-        "validate": "You have a table: error category → group (transient / format / intentional) → current behavior. No category is simply marked \"crash.\"",
+        "validate": "You have a table: error category, then group (transient / format / intentional), then current behavior. No category is simply marked \"crash.\"",
         "tip": "Refusal is not a bug. It is the model's intentional output under policy. Confuse it with an error and you will retry forever something that will never pass."
       },
       "s2": {
@@ -7376,7 +7376,7 @@
         "time": "",
         "why": "Retry and fallback are often confused. Retry is repeating the same operation (helps with transient failures). Fallback is switching to a backup path (needed when a repeat is pointless or exhausted). The wrong choice either deepens the outage or needlessly degrades quality.",
         "instructions": [
-          "Assign each category from step 1 a policy: 5xx → retry 2× with jitter, then fallback; 529 → fallback immediately (repeating is useless); 429 → backoff + retry; invalid JSON → retry 1× with a corrective prompt; refusal → no retry and no fallback, a separate path.",
+          "Assign each category from step 1 a policy: 5xx, retry 2× with jitter, then fallback; 529, fallback immediately (repeating is useless); 429, backoff + retry; invalid JSON, retry 1× with a corrective prompt; refusal, no retry and no fallback, a separate path.",
           "State the transition rule: how many times to retry and on what trigger to move to fallback.",
           "Add jitter (a random addition to the pause) to the backoff so client retries do not synchronize into a single storm.",
           "Link the backoff/retry policy to the node [[node:sys-rate-limiting|rate limiting]] — that is where limits and the circuit breaker live, on which retry relies."
@@ -7389,7 +7389,7 @@
         "time": "",
         "why": "One fallback is better than nothing, but real resilience comes from a degradation ladder: each next level is cheaper/simpler than the previous, and the user almost always gets at least some useful answer.",
         "instructions": [
-          "Build the chain from the node: Primary (full context + tools) → reduced context (last N messages) → fallback model Haiku (faster, cheaper) → semantic cache → canned response.",
+          "Build the chain from the node: Primary (full context + tools), then reduced context (last N messages), then fallback model Haiku (faster, cheaper), then semantic cache, then canned response.",
           "Make sure the fallback model has a compatible signature — it can be swapped in without rewriting the call (swappable).",
           "For an agent with tools, add a partial response: if 1 of N tools fails, return the result from the working ones plus a note, not a total failure.",
           "Assign timeout budgets: interactive — 10s total (primary 5s, fallback 3s, network buffer 2s); async — 60s+ acceptable.",
@@ -7404,7 +7404,7 @@
         "why": "Even perfect technical degradation is useless if the user does not understand what happened. A silent fail breeds distrust, a generic \"something went wrong\" is useless. The message must be honest and suggest an action.",
         "instructions": [
           "For each chain level, decide whether to tell the user: light degradation (reduced context, Haiku) — usually silent; partial response — with an explicit note; full exhaustion — with a clear message.",
-          "Replace generic text with specific, actionable text: instead of \"Something went wrong\" → \"AI is currently slow — try again or contact support if urgent.\"",
+          "Replace generic text with specific, actionable text: instead of \"Something went wrong\", use \"AI is currently slow — try again or contact support if urgent.\"",
           "For refusal, make a separate user-friendly message explaining that the request cannot be fulfilled — without the technical details of the exception.",
           "Implement graceful UI degradation: on an AI-feature failure only its block breaks with an explicit \"AI temporarily unavailable,\" the rest of the page stays alive."
         ],
@@ -7566,7 +7566,7 @@
           "On a long session, run /compact in time; when the topic changes — a new session",
           "Test yourself: resume yesterday's work, compact the context, start a second session in another folder"
         ],
-        "validate": "You went through the whole cycle: --continue → /compact → a second session in another folder — without losing context or tokens.",
+        "validate": "You went through the whole cycle: --continue, then /compact, then a second session in another folder — without losing context or tokens.",
         "tip": "If you're unsure you'll resume the right session — --resume and the list settle it in a second."
       }
     }
@@ -7809,9 +7809,9 @@
         "why": "A mode is not a whole-session setting: you change it on the fly to fit the current step. Shift+Tab cycles through modes without interrupting the conversation.",
         "instructions": [
           "Press Shift+Tab in a session and watch the active-mode indicator change",
-          "Go through the cycle: normal → auto-accept edits → plan mode → back",
+          "Go through the cycle: normal, then auto-accept edits, then plan mode, then back",
           "Before each task quickly check which mode is currently active",
-          "Build the habit: recon → plan, routine → auto-accept, risk → normal"
+          "Build the habit: recon, then plan; routine, then auto-accept; risk, then normal"
         ],
         "validate": "You switch mode in one keystroke and always know which one you're in.",
         "tip": "Task first, then mode: ask yourself \"how risky is this?\" and switch to fit the answer."
@@ -7821,7 +7821,7 @@
         "time": "",
         "why": "The main mistake is getting stuck in one mode. The final step cements picking the mode per task and warns about bypass permissions, where the agent acts with no confirmations at all.",
         "instructions": [
-          "Form the rule: unfamiliar/risky → plan or normal, routine in familiar code → auto-accept",
+          "Form the rule: unfamiliar/risky, then plan or normal; routine in familiar code, then auto-accept",
           "Grasp the danger of bypass permissions: any action is allowed, including commands, with no questions",
           "Don't enable bypass on prod, in someone else's code, or when you don't control the consequences",
           "After each switch double-check: edits apply / don't apply exactly as you expect",
@@ -8160,10 +8160,10 @@
           "settings.json — shared: committed to git and applies to the whole team",
           "settings.local.json — personal: not committed, applies only to you",
           "The fields are identical; the difference is scope and whether it lands in the repository",
-          "Rule: shared for the team → settings.json; personal for the machine → settings.local.json"
+          "Rule: shared for the team, then settings.json; personal for the machine, then settings.local.json"
         ],
         "validate": "For any setting you can say which of the two files it should go into.",
-        "tip": "If unsure 'shared or personal', ask: should colleagues receive this? Yes → settings.json."
+        "tip": "If unsure 'shared or personal', ask: should colleagues receive this? Yes, then settings.json."
       },
       "s3": {
         "title": "What to put in settings.local.json",
@@ -8256,7 +8256,7 @@
     "exercises": [
       {
         "question": "You want Claude to answer in English everywhere and not ask for confirmation on git status. Where do you put this?",
-        "hint": "These are project-independent rules → the global ~/.claude/ layer. Language/style go in CLAUDE.md, the command allow goes in settings.json (permissions.allow)."
+        "hint": "These are project-independent rules, so use the global ~/.claude/ layer. Language/style go in CLAUDE.md, the command allow goes in settings.json (permissions.allow)."
       },
       {
         "question": "In one project a global allow on npm test is a problem because tests there are slow and costly. What do you do?",
@@ -8343,7 +8343,7 @@
           "Make sure the global layer has no project-specific junk and no dangerous allow entries.",
           "Check that the global CLAUDE.md has no rules conflicting with project ones.",
           "Restart the Claude Code session and confirm the settings applied as expected.",
-          "If something behaves oddly — walk the layers top to bottom: local → project → global."
+          "If something behaves oddly — walk the layers top to bottom: local, then project, then global."
         ],
         "validate": "settings.json parses as valid JSON, the global layer is clean of project specifics, and Claude's behavior matches your expectation.",
         "tip": "Keep the global config minimal: the fewer rules in it, the fewer unexpected conflicts with projects."
@@ -8599,9 +8599,9 @@
         "time": "",
         "why": "The power of the commands shows in chains. The final step locks in working combinations and guards against common mistakes.",
         "instructions": [
-          "Experiment chain: /branch → experiment → if it goes wrong, the main session is intact (or /rewind to roll back)",
-          "Long-session chain: /compact as context grows → /background before you leave → /resume the next day",
-          "Device-switch chain: /export or /desktop → continue elsewhere",
+          "Experiment chain: /branch, then experiment; if it goes wrong, the main session is intact (or /rewind to roll back)",
+          "Long-session chain: /compact as context grows, then /background before you leave, then /resume the next day",
+          "Device-switch chain: /export or /desktop, then continue elsewhere",
           "The main mistake — /clear instead of /compact: remember /clear deletes, /compact compresses",
           "Always check with /help instead of guessing — the set depends on the version"
         ],
@@ -8678,7 +8678,7 @@
         "why": "The base pair: one command adds the needed folders to context, the other shows how much context is already used. Conscious management starts here.",
         "instructions": [
           "/add-dir — adds a directory to Claude's working context. Use it when Claude needs to see a specific folder in full.",
-          "Example: /add-dir src/components → Claude reads all components automatically without referencing each file.",
+          "Example: /add-dir src/components, then Claude reads all components automatically without referencing each file.",
           "/context — visualizes current context usage as a grid. Use it in long sessions to know your headroom.",
           "Add only the needed folders, not the whole repo — this saves context."
         ],
@@ -8729,7 +8729,7 @@
         "time": "",
         "why": "The commands shine in combination. The final step: assemble a working scenario and lock in how to avoid common mistakes and check yourself.",
         "instructions": [
-          "Build a chain: /init → /add-dir the needed folders → /context to monitor → /goal on the task → /diff before committing.",
+          "Build a chain: /init, then /add-dir the needed folders, then /context to monitor, then /goal on the task, then /diff before committing.",
           "Avoid the main mistake: don't add the whole repo with /add-dir when one folder is needed.",
           "In a long session, check /context regularly so you don't hit the limit unexpectedly.",
           "Don't invent commands or flags — the seven-command list is fixed; see the current set with /help.",
@@ -8854,10 +8854,10 @@
         "time": "",
         "why": "Now tie the commands into a workflow: the right model for the task plus regular control. The main mistake is never checking /usage and getting a surprise bill at the end of the month.",
         "instructions": [
-          "Build a route for a typical session: /fast for routine → /model for complex → back to /fast",
+          "Build a route for a typical session: /fast for routine, then /model for complex, then back to /fast",
           "Add /advisor for one-off hard decisions and /effort to fine-tune effort",
           "Lock in the habit: periodic /usage, /status on failures, and only then /upgrade or /extra-usage if you hit a limit",
-          "Test yourself on the node's example: /fast for writing tests → /model Opus for the tricky algorithm → back to /fast for cleanup"
+          "Test yourself on the node's example: /fast for writing tests, then /model Opus for the tricky algorithm, then back to /fast for cleanup"
         ],
         "validate": "You can assemble a command sequence for a mixed session unaided and name how you control spend.",
         "tip": "The most common mistake is not looking at /usage. Make the spend check a habit, not a reaction to a bill."
@@ -9067,7 +9067,7 @@
           "Save and run an allowed command — Claude executes it without asking."
         ],
         "validate": "An allowed tool runs without confirmation while others still ask.",
-        "tip": "Example: /permissions → allow 'Bash(npm run *)' → npm scripts run without asking every time."
+        "tip": "Example: /permissions, then allow 'Bash(npm run *)', then npm scripts run without asking every time."
       },
       "s3": {
         "title": "Keybindings: /keybindings",
@@ -9336,7 +9336,7 @@
           "First call /plan — plan mode — so Claude drafts the change plan before executing it.",
           "Approve the plan: this is the key safety rule before any parallel run.",
           "Run /batch for a large-scale change — it spreads work across 5-30 parallel agents, each opening its own PR.",
-          "Example: /batch 'add JSDoc to all functions in src/' → 20 agents, each taking its file group."
+          "Example: /batch 'add JSDoc to all functions in src/', then 20 agents, each taking its file group."
         ],
         "validate": "You understand why /batch always follows an approved /plan, and you can describe what parallel agents return (a PR per file group).",
         "tip": "The clearer the plan, the fewer divergences between parallel agents — a plan saves time sorting results."
@@ -9351,7 +9351,7 @@
           "Draw a clear line: /loop is a local recurring interval, /schedule is a remote agent on a schedule (cron).",
           "For /loop, keep a stop condition in mind so the loop doesn't run forever."
         ],
-        "validate": "You can pick the right command for the task: \"repeat locally\" → /loop, \"nightly remote\" → /schedule.",
+        "validate": "You can pick the right command for the task: \"repeat locally\", then /loop; \"nightly remote\", then /schedule.",
         "tip": "Nightly automation via /schedule is the most underrated scenario: checks and reports get done while you sleep."
       },
       "s5": {
@@ -9379,7 +9379,7 @@
           "Verify results: open /tasks to confirm background tasks completed correctly."
         ],
         "validate": "You can list at least 3 common automation mistakes and, for each, name how to avoid it.",
-        "tip": "The discipline of \"plan → run → verify via /tasks\" makes automation reliable rather than risky."
+        "tip": "The discipline of \"plan, then run, then verify via /tasks\" makes automation reliable rather than risky."
       }
     }
   },
@@ -9506,7 +9506,7 @@
         "time": "",
         "why": "The commands only pay off when wired into a steady cycle and not turned into a formality. The final step cements the habit and helps you check yourself.",
         "instructions": [
-          "Fix your cycle: /diff → /review before merge, /security-review before deploy, /simplify after a session",
+          "Fix your cycle: /diff, then /review before merge, /security-review before deploy, /simplify after a session",
           "Check you don't use /review formally: re-read the Critical items of your last review",
           "Make sure /security-review runs regularly, not once per release",
           "If unsure about flags or the command set — open /help instead of guessing",
@@ -9896,9 +9896,9 @@
         "time": "",
         "why": "The final algorithm turns understanding into a fast, verifiable decision.",
         "instructions": [
-          "Step 1: does the task repeat and fit into steps without external tools? → [[node:skills|Skill]]",
-          "Step 2: is the task long, needing tools or parallelism? → Sub-agent ([[node:cc-subagents|Sub-agents]])",
-          "Step 3: do you need both? → Sub-agent + Skill as its procedure",
+          "Step 1: does the task repeat and fit into steps without external tools? Then [[node:skills|Skill]]",
+          "Step 2: is the task long, needing tools or parallelism? Then Sub-agent ([[node:cc-subagents|Sub-agents]])",
+          "Step 3: do you need both? Then Sub-agent + Skill as its procedure",
           "Check: after choosing, ask 'is this overkill?' and 'will I hit the context limit?'",
           "If both answers are 'no' — the choice is correct"
         ],
@@ -9911,7 +9911,7 @@
     "title": "Rate limits API: TPM, RPM and tiers",
     "subtitle": "How to keep growth from turning prod into a 429 cascade",
     "totalTime": "6 steps",
-    "whatItIs": "The Anthropic API caps load with three metrics: RPM (requests per minute), TPM (input+output tokens per minute) and a daily token limit. The actual numbers depend on your account tier (Tier 1 → Tier 4), which grows automatically with cumulative spend. On excess the API returns 429 Too Many Requests with a retry-after header. This course teaches you to design integrations so spikes and batch loads don't take the service down. API context lives in [[node:pl-api|Platform: API]] and [[tutorial:api-basics|API basics]].",
+    "whatItIs": "The Anthropic API caps load with three metrics: RPM (requests per minute), TPM (input+output tokens per minute) and a daily token limit. The actual numbers depend on your account tier (from Tier 1 to Tier 4), which grows automatically with cumulative spend. On excess the API returns 429 Too Many Requests with a retry-after header. This course teaches you to design integrations so spikes and batch loads don't take the service down. API context lives in [[node:pl-api|Platform: API]] and [[tutorial:api-basics|API basics]].",
     "approach": "We go from the limit model to practice: first what RPM/TPM/daily actually count and how tiers work, then reading 429 and retry-after, building retry with exponential backoff and jitter, budgeting an 80% buffer, moving offline load to the Message Batches API, and finally planning a tier upgrade against forecast traffic. Every step is a working technique, not theory.",
     "outcomes": [
       "You understand RPM vs TPM vs daily limit and which one you'll hit first",
@@ -9931,7 +9931,7 @@
       },
       {
         "title": "Growth and budget planning",
-        "description": "Traffic forecast → required tier → upgrade request ahead of time, so a viral launch doesn't get stuck on Tier 1."
+        "description": "Traffic forecast, then required tier, then an upgrade request ahead of time, so a viral launch doesn't get stuck on Tier 1."
       }
     ],
     "pitfalls": [
@@ -9952,7 +9952,7 @@
       },
       {
         "question": "The service runs steadily at 95% of the TPM limit. Why is that dangerous and what do you do?",
-        "hint": "Any surge pushes past 100% → 429. You need a ~80% buffer and an upgrade request before you hit the wall."
+        "hint": "Any surge pushes past 100% and triggers 429. You need a ~80% buffer and an upgrade request before you hit the wall."
       }
     ],
     "steps": {
@@ -10043,7 +10043,7 @@
     "whatItIs": "A structured threat model for an AI agent given real access to a computer: filesystem, terminal, browser, network. The course breaks down three classes of threat — execution error, misunderstanding the task, and deception via content (prompt injection) — and shows why all three converge on a single architectural answer: run the agent in an isolated environment, not on your working machine. This is an engineering approach, not a 'just in case' one: each threat gets a concrete compensating mechanism and a clear blast radius.",
     "approach": "We go from threats to countermeasure, not the other way around. First we build the threat model (actor, attack surface, consequence), then for each threat we assess what exactly an agent with a computer can break, and only then derive isolation as the single answer. We treat prompt injection separately as the most underrated threat — it breaks the intuition 'the agent is mine, it's on my side'. We finish with the boundaries of isolation: what the sandbox does NOT close, so isolation doesn't become a false sense of security. Isolation works together with [[node:sas-least-privilege|least privilege]] — one without the other leaves holes.",
     "outcomes": [
-      "Formulate a threat model for a concrete agent task in terms of actor → surface → consequence",
+      "Formulate a threat model for a concrete agent task in terms of actor, then surface, then consequence",
       "Distinguish three classes of threat (error, misunderstanding, prompt injection) and not reduce everything to 'the agent will err'",
       "Assess blast radius: what an agent with terminal and network access can actually damage beyond the task",
       "Explain why the working machine is the worst environment for an agent (shared creds, SSH keys, prod access, corporate network)",
@@ -10095,7 +10095,7 @@
           "Separate 'what the agent should do' from 'what the agent is technically capable of doing' — the gap between them is the risk zone",
           "Note that the goal of the model is not paranoia but translating a vague 'something might break' into a concrete list"
         ],
-        "validate": "You have a list of 3+ items, each phrased as actor → surface → consequence, not as an abstract 'something will go wrong'.",
+        "validate": "You have a list of 3+ items, each phrased as actor, then surface, then consequence, not as an abstract 'something will go wrong'.",
         "tip": "Compute the worst outcome not from a 'normal' run but from 'the agent did the most destructive available action'. That is the blast radius."
       },
       "sas-why-isolation-2": {
@@ -10221,7 +10221,7 @@
         "instructions": [
           "Study the reference image's Dockerfile: find the X stack install (Xvfb), the window manager, the VNC server, and noVNC",
           "Note the agent loop process — the component that sends screenshots to the model and applies computer use tool actions",
-          "Understand the display chain: Xvfb → VNC server → noVNC (WebSocket bridge) → browser",
+          "Understand the display chain: Xvfb, then VNC server, then noVNC (WebSocket bridge), then browser",
           "Confirm that the whole GUI and the whole agent live inside the container — the host link is only via explicitly published ports and mounts"
         ],
         "validate": "You can verbally describe which process renders the screen, which streams it to the browser, and which performs Claude's actions.",
@@ -10230,7 +10230,7 @@
       "sas-docker-computer-use-2": {
         "title": "Launch the Computer Use container",
         "time": "",
-        "why": "The first launch gives you a working 'screenshot → action' loop and the base to bolt restrictions onto. First get the agent alive, then tighten.",
+        "why": "The first launch gives you a working loop from screenshot to action and the base to bolt restrictions onto. First get the agent alive, then tighten.",
         "instructions": [
           "Pass the Claude API key via an environment variable at launch, not baked into the image",
           "Publish the noVNC port on the local (loopback) interface, not on all host interfaces",
@@ -10331,15 +10331,15 @@
     "exercises": [
       {
         "question": "Your task: an agent logs into a site via a browser once an hour and collects data; your laptop is off at night. What do you pick — Docker on the laptop, a VPS without GUI, or a VPS with a desktop? Justify it along three axes: uptime, GUI, isolation.",
-        "hint": "Laptop off → a local container can't do 24/7. Browser clicks and anti-bot → you need a real desktop. That leaves a VPS with a virtual desktop in a separate account."
+        "hint": "Laptop off means a local container can't do 24/7. Browser clicks and anti-bot mean you need a real desktop. That leaves a VPS with a virtual desktop in a separate account."
       },
       {
         "question": "Design autostop for a per-hour VM needed only for nightly runs. Which two mechanisms do you set up so a forgotten machine costs nothing?",
-        "hint": "First — a schedule (start before the task window, stop/destroy after). Second — a provider budget alert plus idle autostop (no load for N minutes → shutdown)."
+        "hint": "First — a schedule (start before the task window, stop/destroy after). Second — a provider budget alert plus idle autostop (no load for N minutes means shutdown)."
       },
       {
         "question": "The VM is compromised: the agent ran suspicious code. Describe the action sequence given that you have a kill-switch, a separate account, and a snapshot script.",
-        "hint": "Kill-switch kills the agent/network → snapshot for forensics (no secrets!) → destroy the machine → rotate secrets in the store → recreate from cloud-init. The separate account guarantees production is untouched."
+        "hint": "Kill-switch kills the agent/network, then snapshot for forensics (no secrets!), then destroy the machine, then rotate secrets in the store, then recreate from cloud-init. The separate account guarantees production is untouched."
       }
     ],
     "steps": {
@@ -10355,7 +10355,7 @@
           "Tie the threat model to the sandbox basics in [[node:sys-agent-sandbox|the agent sandbox]]."
         ],
         "validate": "You have a written answer to the 4 checklist questions and an explicit reason \"VM because ___\" or \"a container is enough\".",
-        "tip": "Rule of thumb: \"24/7 OR a real desktop\" → VM. Everything else is usually covered by Docker."
+        "tip": "Rule of thumb: \"24/7 OR a real desktop\" means VM. Everything else is usually covered by Docker."
       },
       "sas-vm-vps-2": {
         "title": "Pick a provider and size",
@@ -10408,7 +10408,7 @@
           "Set up a kill-switch: one mechanism that instantly kills the agent and/or its network — see [[node:sas-snapshots-killswitch|snapshots and emergency stop]].",
           "Lock down VM access: SSH/RDP by key only, a non-default port or access via a bastion, an inbound firewall.",
           "Verify that after the kill-switch the agent truly can't reach the outside world or spend resources.",
-          "Write an incident runbook: kill-switch → snapshot for forensics → destroy → rotate secrets."
+          "Write an incident runbook: kill-switch, then snapshot for forensics, then destroy, then rotate secrets."
         ],
         "validate": "Secrets are not in the image; the kill-switch actually stops the agent within seconds; VM access is locked by key/firewall.",
         "tip": "Test the kill-switch before you need it. Hit it on a test VM and confirm the agent is dead, not \"nearly stopped\"."
@@ -10419,7 +10419,7 @@
         "why": "A forgotten per-hour VM runs idle for months — the most common way to burn an agent budget. Autostop and alerts ensure an idle machine either shuts down itself or you hear about it immediately, not from the invoice.",
         "instructions": [
           "Set a schedule: start before the task window, stop or destroy after — via the provider API from step 2.",
-          "Add idle autostop: no load for N minutes → shutdown.",
+          "Add idle autostop: no load for N minutes means shutdown.",
           "Enable a provider budget alert at a monthly threshold amount.",
           "For rare runs use the snapshot+destroy pattern: keep a cheap snapshot, bring up the machine only for the task's duration.",
           "Weekly, check there are no forgotten running instances or stale snapshots."
@@ -10514,7 +10514,7 @@
           "Run the process with no-new-privileges (kernel flag/service setting) to block setuid escalation",
           "Restrict available setuid binaries (ping, sudo, su) — the agent doesn't need them"
         ],
-        "validate": "sudo -l -U agent → refusal. An su/sudo attempt as the agent → Permission denied. Agent not in docker/wheel.",
+        "validate": "sudo -l -U agent gives refusal. An su/sudo attempt as the agent gives Permission denied. Agent not in docker/wheel.",
         "tip": "no-new-privileges is a cheap, powerful guard: even a setuid binary won't raise rights. In systemd that's NoNewPrivileges=yes."
       },
       "sas-least-privilege-4": {
@@ -10527,7 +10527,7 @@
           "Be granular at the file level where possible: a targeted bind-mount of /etc/app/config.yaml instead of all of /etc",
           "Handle the network part separately — see [[node:sas-network-isolation|network isolation]]"
         ],
-        "validate": "ls of other users' /home and cat of system files as the agent → Permission denied. Writes are possible only inside work.",
+        "validate": "ls of other users' /home and cat of system files as the agent give Permission denied. Writes are possible only inside work.",
         "tip": "Read-only by default, read-write only where the agent must write. Excess rw access is the most common source of silent corruption."
       },
       "sas-least-privilege-5": {
@@ -10942,7 +10942,7 @@
           "Fix the reversibility boundary in writing: what rollback restores and what's external and irreversible",
           "Run the full cycle on a practice incident end to end"
         ],
-        "validate": "The single wrapper handles the scenario 'failure → auto-stop on cap → auto-rollback → clean environment' with no manual intervention.",
+        "validate": "The single wrapper handles the scenario 'failure, then auto-stop on cap, then auto-rollback, then clean environment' with no manual intervention.",
         "tip": "Make the wrapper the only way to run the agent in prod: if the agent can be launched bypassing the protocol, sooner or later it will be — with no snapshot and no caps."
       }
     }

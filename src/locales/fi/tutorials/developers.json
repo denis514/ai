@@ -37,7 +37,7 @@
       },
       {
         "question": "Testaa Skill: esitä Claudelle kysymys, jossa sen PITÄÄ aktivoitua, ja anti-trigger-kysymys, jossa EI saa.",
-        "hint": "Ei aktivoidu kun pitäisi → kevennä description:ia; aktivoituu kun ei pitäisi → lisää anti-triggereitä."
+        "hint": "Ei aktivoidu kun pitäisi: kevennä description:ia; aktivoituu kun ei pitäisi: lisää anti-triggereitä."
       }
     ],
     "steps": {
@@ -50,7 +50,7 @@
           "Jokaisesta vastaa: kuinka samankaltainen prosessi on? (≥80 % — Skill-ehdokas).",
           "Valitse yksi — yleisin ja vakain. Siitä aloitetaan."
         ],
-        "validate": "Yksi rutiini on valittu, ja voit selvästi sanoa: \"syöte → askeleet → tulos\".",
+        "validate": "Yksi rutiini on valittu, ja voit selvästi sanoa: \"ensin syöte, sitten askeleet, sitten tulos\".",
         "tip": "Hyvä Skill-merkki — kopioit JO vanhoja kehotteita itseäsi varten.",
         "example": "Ehdokkaita:\n1. ✅ Kohteiden säännöllinen auditointi — joka viikko, prosessi sama\n2. ❌ \"Auta tehtävän kanssa\" — liian erilaista, ei formalisoidu\n3. ✅ Tyyppidokumentin valmistelu — useita kertoja päivässä, pohja sama\n\nValitsen: tyyppidokumentin valmistelu — yleisin."
       },
@@ -159,7 +159,7 @@
     "subtitle": "Täysiverinen AI-agentti terminaalissa",
     "totalTime": "6 vaihetta",
     "whatItIs": "Tunnetko VS Code Copilotin joka täydentää koodirivejä? [[node:claude-code|Claude Code]] tekee saman, mutta 10× laajemmin: lukee koko projektisi, muokkaa kymmeniä tiedostoja, ajaa komentoja, tekee refaktorointia. Ja elää terminaalissasi, ei editorissa.\n\nAnthropicin CLI-työkalu Clauden kanssa työskentelyyn suoraan terminaalissa. Käyttää [[node:cc-cmd-init|/init]]:iä, sub-agents:eja, [[node:mcp|MCP-palvelimia]] ja [[node:cc-md|CLAUDE.md]]:tä projektimuistina. Muuttaa terminaalin täysipainoiseksi AI-kehitysympäristöksi.",
-    "approach": "Älä yritä hallita kaikkea kerralla. Asenna → tee [[node:cc-cmd-init|/init]] → kokeile yhtä oikeaa korjausta → viilaa [[node:cc-md|CLAUDE.md]]. Suurin osa Claude Coden voimasta avautuu CLAUDE.md:n kautta, jonka kirjoitat itse omalle projektillesi.",
+    "approach": "Älä yritä hallita kaikkea kerralla. Asenna, sitten tee [[node:cc-cmd-init|/init]], sitten kokeile yhtä oikeaa korjausta, sitten viilaa [[node:cc-md|CLAUDE.md]]. Suurin osa Claude Coden voimasta avautuu CLAUDE.md:n kautta, jonka kirjoitat itse omalle projektillesi.",
     "outcomes": [
       "Asensit Claude Coden ja ajoit sen omassa projektissasi",
       "Generoit CLAUDE.md:n komennolla /init ja viilasit sitä",
@@ -169,11 +169,11 @@
     "applyIn": [
       {
         "title": "Code review",
-        "description": "claude repossa → /review → kokeneen kehittäjän tasoinen rakenteellinen auditointi minuuteissa."
+        "description": "claude repossa, sitten /review, ja saat kokeneen kehittäjän tasoisen rakenteellisen auditoinnin minuuteissa."
       },
       {
         "title": "Turvallinen refaktorointi",
-        "description": "Plan mode → muutossuunnitelma → hyväksyt → suoritus. Ei yllätyksiä koodissa."
+        "description": "Plan mode, sitten muutossuunnitelma, sitten hyväksyt, sitten suoritus. Ei yllätyksiä koodissa."
       },
       {
         "title": "Automaattidokumentaatio",
@@ -187,7 +187,7 @@
     ],
     "exercises": [
       {
-        "question": "Omassa oikeassa repossasi aja claude → /init → viilaa CLAUDE.md (lisää \"tabu\"-osio ja suosikkitabusi).",
+        "question": "Omassa oikeassa repossasi aja claude, sitten /init, sitten viilaa CLAUDE.md (lisää \"tabu\"-osio ja suosikkitabusi).",
         "hint": "Vähintään 3 riviä tabuja — tulos näkyy heti."
       },
       {
@@ -201,7 +201,7 @@
         "time": "",
         "why": "Claude Code on npm-paketti — ilman Node.js:ää se ei käynnisty. Globaali asennus mahdollistaa `claude`-komennon kutsumisen mistä tahansa kansiosta.",
         "instructions": [
-          "Tarkista Node.js: avaa terminaali → `node -v`.",
+          "Tarkista Node.js: avaa terminaali, sitten `node -v`.",
           "Jos versiota ei ole tai se on < 18 — asenna tuore Node.js. macOS: `brew install node`. Windows: lataa asennusohjelma osoitteesta nodejs.org.",
           "`node -v` näyttää 18.x tai uudemman.",
           "Asenna Claude Code: `npm install -g @anthropic-ai/claude-code`.",
@@ -322,15 +322,15 @@
     "applyIn": [
       {
         "title": "Konteksti seuraajasta",
-        "description": "MCP tehtäväseuraajaan → Claude näkee tuoreet tiketit, voi kommentoida ja ehdottaa dekomposition."
+        "description": "MCP tehtäväseuraajaan, ja Claude näkee tuoreet tiketit, voi kommentoida ja ehdottaa dekomposition."
       },
       {
         "title": "Dokumentaatio kontekstissa",
-        "description": "MCP Confluence:en/Notion:iin → Claude vastaa sisäinen dokumentaatiosi huomioiden."
+        "description": "MCP Confluence:en/Notion:iin, ja Claude vastaa sisäinen dokumentaatiosi huomioiden."
       },
       {
         "title": "Pääsy koodiin",
-        "description": "MCP GitHub:iin → Claude näkee PR:t, voi kommentoida ja tehdä review-huomioita."
+        "description": "MCP GitHub:iin, ja Claude näkee PR:t, voi kommentoida ja tehdä review-huomioita."
       }
     ],
     "pitfalls": [
@@ -380,7 +380,7 @@
         "time": "",
         "why": "Token on tietoturvapiste. Sen scope:sta riippuu, mitä MCP voi lukea ja muuttaa.",
         "instructions": [
-          "Palvelussa (Linear/Figma/etc.) → Settings → API → Create token.",
+          "Palvelussa (Linear/Figma/etc.): Settings, sitten API, sitten Create token.",
           "Anna minimaaliset tarvittavat oikeudet. Mieluummin read-only; jos kirjoittaa — erillinen token.",
           "Kopioi token turvalliseen paikkaan (1Password / Bitwarden). Se näytetään KERRAN.",
           "Et ymmärrä, mitä scopes:eja tarvitset — ota \"read-only pääresursseihin\" (esim. Issues Linear:lle), laajennat myöhemmin."
@@ -393,7 +393,7 @@
         "time": "",
         "why": "Konfiguraatio on yleisin virheen lähde. Toimi tarkistuslistan mukaan.",
         "instructions": [
-          "Avaa `~/.config/claude-code/mcp.json` (Code) tai Settings → Connectors ([[node:pl-web-setup|claude.ai]]).",
+          "Avaa `~/.config/claude-code/mcp.json` (Code) tai Settings, sitten Connectors ([[node:pl-web-setup|claude.ai]]).",
           "Lisää server-konfiguraation lohko (katso esimerkki).",
           "Sijoita token salasananhallinnasta (ÄLÄ koodaa sitä — käytä ENV).",
           "Käynnistä Claude uudelleen.",
@@ -424,7 +424,7 @@
         "time": "",
         "why": "MCP-palvelin näkee sen, minkä token näkee. Scope:n tarkistus = vakuutus.",
         "instructions": [
-          "Avaa tokenin paneeli palvelussa → tarkista, mitkä oikeudet sillä on.",
+          "Avaa tokenin paneeli palvelussa ja tarkista, mitkä oikeudet sillä on.",
           "Jos on write — kysy itseltäsi: tarvitsenko oikeasti write:in?",
           "Jos on epäilyksiä — luo token uudelleen pienemmillä oikeuksilla.",
           "Kytke 2FA palveluun, jos ei ole jo päällä."
@@ -475,15 +475,15 @@
     "applyIn": {
       "0": {
         "title": "Code review",
-        "description": "Sub-agent review-tarkistuslistalla → ennen merge:ä ajat, saat suodatetun raportin."
+        "description": "Sub-agent review-tarkistuslistalla, ja ennen merge:ä ajat sen, saat suodatetun raportin."
       },
       "1": {
         "title": "Auditointiagentti",
-        "description": "Säännöllinen auditointi kiinteillä kriteereillä → yksi trigger pitkän kehotteen sijaan."
+        "description": "Säännöllinen auditointi kiinteillä kriteereillä, eli yksi trigger pitkän kehotteen sijaan."
       },
       "2": {
         "title": "Researcher",
-        "description": "Agentti lähteiden keräämiseen ja synteesiin Web search:lla → raportti linkkeineen käsityön sijaan."
+        "description": "Agentti lähteiden keräämiseen ja synteesiin Web search:lla, eli raportti linkkeineen käsityön sijaan."
       }
     },
     "pitfalls": {
@@ -512,7 +512,7 @@
           "2": "Valitse YKSI — yleisin ja vakain."
         },
         "example": "Ehdokkaita:\n1. ✅ Code review PR:lle — joka päivä, askeleet samat\n2. ✅ Materiaaliesi säännöllinen auditointi — joka viikko, askeleet samat\n3. ❌ \"Auta pohtimaan ideaa\" — liian erilaista, ei agentti\n\nValitsen: code-reviewer.",
-        "validate": "Valittu konkreettinen rutiini selkeällä \"syöte → askeleet → tulos\".",
+        "validate": "Valittu konkreettinen rutiini selkeällä rakenteella \"ensin syöte, sitten askeleet, sitten tulos\".",
         "tip": "Jos tehtävä vaatii luovuutta ja kontekstia — se ei ole agentti, se on sinun työtäsi. Agentti — toistettavuudesta."
       },
       "ag-2": {
@@ -721,7 +721,7 @@
         "time": "4 min",
         "why": "Oma muuttaa säännöllisen tehtävän napiksi.",
         "instructions": {
-          "0": "Keskustelussa: /agents → luo uusi.",
+          "0": "Keskustelussa: /agents, sitten luo uusi.",
           "1": "Nimi: esim. security-reviewer.",
           "2": "Description: \"Use when user asks to review security of changes / PR / branch\" (trigger!).",
           "3": "Askeleet: 1) read git diff, 2) check OWASP top-10, 3) output severity-ranked list.",
@@ -743,8 +743,8 @@
         "instructions": {
           "0": "Ota 3 omaa säännöllistä tehtävääsi.",
           "1": "Jokaisesta vastaa: tarvitaanko kontekstin eristys? Tarvitaanko omat tools:it? Onko tehtävä pitkä?",
-          "2": "Kaikki \"kyllä\" → subagent. Kaikki \"ei\" → Skill. Sekoitettu → mieti vielä.",
-          "3": "Kirjaa valinta taulukkoon: Tehtävä → Skill | Subagent | Hybrid."
+          "2": "Kaikki \"kyllä\": subagent. Kaikki \"ei\": Skill. Sekoitettu: mieti vielä.",
+          "3": "Kirjaa valinta taulukkoon: Tehtävä, sitten Skill | Subagent | Hybrid."
         },
         "validate": "Sinulla on 3 tehtävää perustellulla työkaluvalinnalla. Osaat selittää valinnan sanoin.",
         "tip": "Hybrid:iäkin esiintyy: Skill kutsuu Subagent:ia raskaaseen osaan — parasta molemmista maailmoista."
@@ -784,7 +784,7 @@
     "whatItIs": "Tool use (function calling) on mekanismi, jonka kautta Claude kutsuu sinun funktioitasi JSON-schema:n perusteella. Tämä on MCP:n, custom-agenttien ja minkä tahansa integraatioiden perusta. Käytännönkurssin jälkeen ymmärrät arkkitehtuurin sisältäpäin, et \"taikana\".",
     "approach": "Ilman hyviä tools-kuvauksia agentti erehtyy jatkuvasti. Opettele ensin kirjoittamaan kuvauksia, sitten suunnittele setit. Itse kutsujen koodi on toissijaista, sen kirjoittaa SDK.",
     "outcomes": {
-      "0": "Ymmärrät tool use:n virran: schema → tool:in valinta → kutsu → tulos → vastaus",
+      "0": "Ymmärrät tool use:n virran: ensin schema, sitten tool:in valinta, sitten kutsu, sitten tulos, sitten vastaus",
       "1": "Kuvaat tool:in niin, että Claude valitsee oikean 95 %:ssa tapauksista",
       "2": "Tiedät milloin tool use on parempi kuin MCP ja päinvastoin",
       "3": "Suunnittelet asiantuntevasti tools-setin omalle agentillesi"
@@ -829,7 +829,7 @@
         "time": "2 min",
         "why": "Ilman vuorovaikutusmallia seuraavat askeleet ovat \"jonkun muun keittiöstä\".",
         "instructions": {
-          "0": "Lue virran kaavio: User → Claude → Claude valitsee tool:in → sinun järjestelmäsi suorittaa → tulos → Claude muotoilee vastauksen.",
+          "0": "Lue virran kaavio: ensin User, sitten Claude, sitten Claude valitsee tool:in, sitten sinun järjestelmäsi suorittaa, sitten tulos, sitten Claude muotoilee vastauksen.",
           "1": "Huomaa: Claude EI suorita koodia. Se vain päättää \"mikä tool kutsutaan ja millä argumenteilla\".",
           "2": "Suorittaminen on sinun puolellasi (SDK / MCP-server / sinun backendisi)."
         },
@@ -854,7 +854,7 @@
         "time": "4 min",
         "why": "Yleisin syy \"agentti ei toimi\" on huono description.",
         "instructions": {
-          "0": "Pohja: MITÄ tekee (1 lause) → MILLOIN soveltaa (trigger) → MILLOIN EI soveltaa (anti-trigger) → ESIMERKKEJÄ argumenteista.",
+          "0": "Pohja: MITÄ tekee (1 lause), sitten MILLOIN soveltaa (trigger), sitten MILLOIN EI soveltaa (anti-trigger), sitten ESIMERKKEJÄ argumenteista.",
           "1": "Ota tool:isi tehtävästä 2. Kirjoita description pohjan mukaan.",
           "2": "Testi: anna 3 erilaista käyttäjän pyyntöä — Clauden pitää päättää oikein, käyttääkö tool:ia vai ei."
         },
@@ -948,15 +948,15 @@
     "applyIn": {
       "0": {
         "title": "Koodin laatu",
-        "description": "PostToolUse:Write → prettier / lintteri. Taattu muoto jokaisella korjauksella."
+        "description": "PostToolUse:Write, sitten prettier / lintteri. Taattu muoto jokaisella korjauksella."
       },
       "1": {
         "title": "Turvallisuus",
-        "description": "PreToolUse:Bash → estää vaaralliset komennot (rm -rf, git push --force) ennen suoritusta."
+        "description": "PreToolUse:Bash estää vaaralliset komennot (rm -rf, git push --force) ennen suoritusta."
       },
       "2": {
         "title": "Mittarit / observability",
-        "description": "Stop → istunnon loki jsonl:ksi. Näet, mitä Claude teki ja paljonko tokeneita kului."
+        "description": "Stop, sitten istunnon loki jsonl:ksi. Näet, mitä Claude teki ja paljonko tokeneita kului."
       }
     },
     "pitfalls": {
@@ -972,7 +972,7 @@
       },
       "1": {
         "question": "Etsi vaarallinen komento, jota et luota Claudelle. Tee PreToolUse hook, joka estää sen.",
-        "hint": "Pohja: tarkista $CLAUDE_BASH_COMMAND grep -E:llä kuvioon → exit 1 jos osuma."
+        "hint": "Pohja: tarkista $CLAUDE_BASH_COMMAND grep -E:llä kuvioon, sitten exit 1 jos osuma."
       },
       "2": {
         "question": "Tee Stop-hook, joka kirjaa istunnon päättymisen .claude/logs/session.jsonl:iin. Käytä analytiikkaan \"minkä parissa työskentelin\".",
@@ -1055,7 +1055,7 @@
           "0": "Hook — tapahtumaan, synkronisesti, nopea (<500 ms), ilman päätöslogiikkaa.",
           "1": "Slash-komento — käyttäjän triggerillä, voi olla pitkä.",
           "2": "Subagent — rinnakkainen tehtävä kontekstin eristyksellä.",
-          "3": "Ota 3 tarvettasi → valitse työkalu kullekin."
+          "3": "Ota 3 tarvettasi, sitten valitse työkalu kullekin."
         },
         "validate": "Osaat perustella valinnan 3 tehtävälle — miksi juuri hook / slash / subagent.",
         "tip": "Hooks ovat erityisen arvokkaita taattuihin toimintoihin — malli voi \"unohtaa\", hook ei unohda."
@@ -1141,7 +1141,7 @@
           "claude.ai (polku A): selainpohjainen chat, Projects, Artifacts. Ei tarvita terminaalia. Ei tarvita asennusta. Riittää useimpiin tehtäviin: kirjoittaminen, analysointi, keskustelu.",
           "Claude Code (polku B): CLI-työkalu, työskentelee paikallisten tiedostojesi kanssa, käyttää git:iä ja MCP:tä. Tarvitaan terminaali ja Node.js. Kehitykseen ja automaatioon.",
           "Sääntö: jos tehtäväsi on \"keskustella dokumentista\" — polku A riittää. Jos tehtävä on \"muokata koodia repositoriossa\" — polku B.",
-          "Valitse polku ja kiinnitä: A → siirry vaiheeseen 2 ja lopeta. B → vaiheeseen 3 ja koko loput oppitunnista."
+          "Valitse polku ja kiinnitä: A, siirry vaiheeseen 2 ja lopeta. B, siirry vaiheeseen 3 ja koko loput oppitunnista."
         ],
         "validate": "Osaat selittää itsellesi yhdessä lauseessa, miksi valitsit juuri tämän polun.",
         "tip": "Epäröit — aloita A:lla. B:hen siirtyminen myöhemmin ei ole vaikeampaa kuin nyt."
@@ -1151,8 +1151,8 @@
         "time": "",
         "why": "Project on pysyvä työtilasi claude.ai:ssa omilla ohjeillaan ja tietopohjallaan. Tämä on lyhyen polun viimeinen vaihe.",
         "instructions": [
-          "Avaa claude.ai → kirjaudu (Free riittää aloitukseen, Pro Projects:eihin).",
-          "Vasemmalta sivupalkista löydä \"Projects\" → \"+ New project\".",
+          "Avaa claude.ai, sitten kirjaudu (Free riittää aloitukseen, Pro Projects:eihin).",
+          "Vasemmalta sivupalkista löydä \"Projects\", sitten \"+ New project\".",
           "Nimi: mitä teet + mihin (esim. \"Raporttien säännöllinen auditointi\").",
           "Description: 1–2 riviä — mihin projekti on ja mitä tulosta odotat.",
           "Lataa 1–3 tiedostoa Project knowledge:en (jos on). Riittää aloitukseen.",
@@ -1169,13 +1169,13 @@
         "time": "",
         "why": "Node.js tarvitaan npm-pakettien ajamiseen, mukaan lukien Claude Code — ilman sitä mitään ei asennu. Terminaali on työpiste Claude Code:lle, ja kannattaa lakata pelkäämästä sitä.",
         "instructions": [
-          "Node.js:n asennus, macOS (suositeltava): avaa Terminal.app (Cmd+Space → \"Terminal\" → Enter) ja kirjoita `brew install node`. Jos brew ei ole asennettuna — asenna se ensin osoitteesta brew.sh.",
-          "Node.js:n asennus, macOS (vaihtoehto): lataa installer osoitteesta nodejs.org → aja .pkg → käy vaiheet läpi.",
-          "Node.js:n asennus, Windows: lataa installer osoitteesta nodejs.org → aja .msi → rastita \"Add to PATH\" → käynnistä PowerShell uudelleen.",
+          "Node.js:n asennus, macOS (suositeltava): avaa Terminal.app (Cmd+Space, kirjoita \"Terminal\", sitten Enter) ja kirjoita `brew install node`. Jos brew ei ole asennettuna — asenna se ensin osoitteesta brew.sh.",
+          "Node.js:n asennus, macOS (vaihtoehto): lataa installer osoitteesta nodejs.org, sitten aja .pkg, sitten käy vaiheet läpi.",
+          "Node.js:n asennus, Windows: lataa installer osoitteesta nodejs.org, sitten aja .msi, sitten rastita \"Add to PATH\", sitten käynnistä PowerShell uudelleen.",
           "Node.js:n tarkistus: terminaalissa kirjoita `node -v`. Pitää näyttää versio muodossa v20.11.0 tai uudempi (≥ 18). `npm -v` toimii myös. Versio 20 tai 22 LTS — optimaalinen; 14 tai 16 — vanha, voi olla ongelmia.",
           "Jos `command not found: node` — terminaali ei näe asennusta: sulje ja avaa se uudelleen; Windows:issa tarkista, että rastitit \"Add to PATH\". Jos `command not found: brew (mac)` — avaa brew.sh, kopioi asennuskomento, suorita terminaalissa (≈5 minuuttia).",
-          "Avaa terminaali, macOS: Cmd+Space → \"Terminal\" → Enter. Avautuu musta (tai valkoinen) ikkuna kursorin kanssa. Windows: \"Käynnistä\"-valikko → \"PowerShell\" tai \"Windows Terminal\" → Enter.",
-          "Ymmärrä missä olet: kirjoita `pwd` (mac) tai `pwd` / `echo %cd%` (Windows) → paina Enter. Näyttää nykyisen kansion — yleensä home-kansiosi: /Users/nimi (mac) tai C:\\Users\\nimi (Windows). Tämä on normaalia."
+          "Avaa terminaali, macOS: Cmd+Space, kirjoita \"Terminal\", sitten Enter. Avautuu musta (tai valkoinen) ikkuna kursorin kanssa. Windows: \"Käynnistä\"-valikko, sitten \"PowerShell\" tai \"Windows Terminal\", sitten Enter.",
+          "Ymmärrä missä olet: kirjoita `pwd` (mac) tai `pwd` / `echo %cd%` (Windows), sitten paina Enter. Näyttää nykyisen kansion — yleensä home-kansiosi: /Users/nimi (mac) tai C:\\Users\\nimi (Windows). Tämä on normaalia."
         ],
         "validate": "`node -v` näyttää version ≥ 18, `npm -v` toimii; terminaali on auki ja `pwd` näyttää polun home-kansioosi.",
         "tip": "\"Musta ruutu\" ei tee mitään pelottavaa itsestään. Vaarallisia ovat vain tietyt komennot (rm -rf ja vastaavat), joita et tule kirjoittamaan tässä oppitunnissa."
@@ -1186,10 +1186,10 @@
         "why": "Kansio = projektisi \"koti\", ilman sitä tiedostot lojuvat missä sattuu. Ja Claude Code toimii siinä kansiossa, jossa käynnistit sen: jos et ole oikeassa — Claude näkee vääriä tiedostoja.",
         "instructions": [
           "Päätä, missä kaikki projektisi asuvat. Suosittelen kansiota `~/projects/` home:ssa.",
-          "Luo kansio: `mkdir -p ~/projects/my-first-claude-project` — luo kansion (ja vanhemman `projects/`, jos sitä ei ole). Vaihtoehto Finder:in/Explorer:in kautta: avaa home → luo kansio `projects` → sen sisälle vielä yksi `my-first-claude-project`.",
+          "Luo kansio: `mkdir -p ~/projects/my-first-claude-project` — luo kansion (ja vanhemman `projects/`, jos sitä ei ole). Vaihtoehto Finder:in/Explorer:in kautta: avaa home, luo kansio `projects`, sen sisälle vielä yksi `my-first-claude-project`.",
           "Nimi — vain latinalainen, ilman välilyöntejä. Yhdysmerkit tai alaviivat välilyöntien sijaan.",
           "Tarkista, että kansio luotiin: `ls ~/projects/` (mac) tai `dir %USERPROFILE%\\projects\\` (Windows) — näet `my-first-claude-project` listalla.",
-          "Siirry kansioon: `cd ~/projects/my-first-claude-project`. Tarkista: `pwd` → pitää näyttää /Users/.../projects/my-first-claude-project.",
+          "Siirry kansioon: `cd ~/projects/my-first-claude-project`. Tarkista: `pwd`, pitää näyttää /Users/.../projects/my-first-claude-project.",
           "Tarkista, mitä sisällä: `ls` (mac) tai `dir` (Windows). Kansio on tyhjä — tämä on normaalia uudelle projektille. Muista komento `cd ~/projects/my-first-claude-project` — käytät sitä joka kerta aloittaessasi työn.",
           "Jos `permission denied` — luot kansion paikkaan, jossa ei ole oikeuksia: ~/ (home) on aina sinun, älä luo kansioita /Applications- tai /System-paikkoihin. Jos `mkdir: -p: command not found` — olet Windows:issa cmd.exe:ssä (vanha): siirry PowerShell:iin tai käytä `mkdir my-first-claude-project` ilman `-p`."
         ],
@@ -1202,10 +1202,10 @@
         "why": "Claude Code on Clauden \"kädet\" terminaalissasi; asennuksen jälkeen komento `claude` on käytettävissä kaikkialla. Ensimmäinen käynnistys on lyhyt: kerran autentikoidut selaimen kautta, sen jälkeen Claude Code muistaa sinut.",
         "instructions": [
           "Asenna Claude Code (missä tahansa kansiossa): `npm install -g @anthropic-ai/claude-code`. Odota 30–60 sekuntia — npm lataa paketin ja asentaa sen globaalisti.",
-          "Tarkista asennus: `claude --version` → pitää näyttää versionumero ilman virheitä.",
+          "Tarkista asennus: `claude --version`, pitää näyttää versionumero ilman virheitä.",
           "Jos saat EACCES — mac/Linux:issa aja sudo:lla: `sudo npm install -g @anthropic-ai/claude-code`, tai aseta npm prefix omaan kansioon (~/.npm-global, googlautuu \"npm permission EACCES\"). Jos EEXIST — vanha versio on asennettu: `npm uninstall -g @anthropic-ai/claude-code`, sitten asenna uudelleen.",
-          "Varmista, että olet työkansiossasi: `pwd` → my-first-claude-project. Käynnistä: `claude`.",
-          "Avautuu selain Anthropic auth:lla → kirjaudu samalla tilillä kuin claude.ai:hin. Palaa terminaaliin — näet interaktiivisen Claude Code -kehotteen, voit kirjoittaa viestejä.",
+          "Varmista, että olet työkansiossasi: `pwd`, pitää näyttää my-first-claude-project. Käynnistä: `claude`.",
+          "Avautuu selain Anthropic auth:lla, sitten kirjaudu samalla tilillä kuin claude.ai:hin. Palaa terminaaliin — näet interaktiivisen Claude Code -kehotteen, voit kirjoittaa viestejä.",
           "Jos selain ei avaudu — kopioi URL terminaalista käsin ja avaa selaimessa."
         ],
         "validate": "`claude --version` toimii; terminaalissa on Claude Code:n viestien syöttökenttä ja istunto on aktiivinen.",
@@ -1221,7 +1221,7 @@
           "Tallenna tiedosto (Ctrl+S tai :wq Vim:issä, riippuen editoristasi). Tarkista: `ls` (mac) tai `dir` (Windows) — näet CLAUDE.md:n projektikansiossa.",
           "Jos /init ei toimi — olet ehkä kirjoittanut sen tavalliseen claude.ai-keskusteluun, ei Claude Code:en: /init on Claude Code:n slash-komento, tarkista, että olet terminaali-istunnossa.",
           "Mieti nyt: minkä oikean tehtävän antaisit Claudelle juuri nyt? Esim. \"auta strukturoimaan muistiinpanot\", \"erittellään dokumentti\", \"luo suunnitelma projektille X\".",
-          "Muotoile pyyntö muodossa \"Rooli → Tehtävä → Muoto\" (jos et muista — käy myöhemmin läpi basics-oppitunti). Esimerkki: \"Työskentelen <oma kontekstisi> parissa. Auta minua <konkreettinen tehtävä> muodossa <markdown / lista / taulukko>. Jos tarvitset alustusta — esitä kysymyksiä.\"",
+          "Muotoile pyyntö muodossa \"Rooli, sitten Tehtävä, sitten Muoto\" (jos et muista — käy myöhemmin läpi basics-oppitunti). Esimerkki: \"Työskentelen <oma kontekstisi> parissa. Auta minua <konkreettinen tehtävä> muodossa <markdown / lista / taulukko>. Jos tarvitset alustusta — esitä kysymyksiä.\"",
           "Lähetä Claude Code:lle, lue vastaus. Jos Claude haluaa luoda tiedoston — salli, tämä on normaalia työkansiolle."
         ],
         "validate": "Projektikansioon ilmestyi CLAUDE.md-tiedosto omilla säännöilläsi; Claude antoi mielekkään vastauksen, joka on sidottu kontekstiisi, mahdollisesti loi tiedoston projektikansioon.",
@@ -1304,8 +1304,8 @@
         "time": "",
         "why": "Terminaali on aina \"jossakin\" kansiossa. Selvittää, missä, on päivän ensimmäinen komento.",
         "instructions": [
-          "Avaa terminaali (jos ei vielä auki): macOS Cmd+Space → \"Terminal\"; Windows — PowerShell.",
-          "Kirjoita: `pwd` (mac/linux/PowerShell) → paina Enter.",
+          "Avaa terminaali (jos ei vielä auki): macOS Cmd+Space, sitten \"Terminal\"; Windows — PowerShell.",
+          "Kirjoita: `pwd` (mac/linux/PowerShell), sitten paina Enter.",
           "Katso tuloste. Tämä on polku kansioon, jossa olet nyt."
         ],
         "prompt": "pwd",
@@ -1319,7 +1319,7 @@
         "time": "",
         "why": "Ilman ls:ää olet sokkona. ls näyttää, mitä kansioita ja tiedostoja on nykyisessä.",
         "instructions": [
-          "macOS / Linux: kirjoita `ls` → Enter.",
+          "macOS / Linux: kirjoita `ls`, sitten Enter.",
           "Windows (PowerShell): `ls` toimii myös. Vanha cmd.exe — `dir`.",
           "Katso listaa. Tämä on home-kansiosi sisältö: Documents, Downloads, Desktop, jne."
         ],
@@ -1332,17 +1332,17 @@
         "id": "s3",
         "title": "mkdir + cd — luo kansio ja astu sisään",
         "time": "",
-        "why": "Tämä on koko setti \"aloittaa uusi projekti\": luo kansio → astu sisään.",
+        "why": "Tämä on koko setti \"aloittaa uusi projekti\": ensin luo kansio, sitten astu sisään.",
         "instructions": [
-          "Luo testikansio: `mkdir tutorial-sandbox` → Enter.",
-          "Tarkista, että ilmestyi: `ls` → pitää olla listalla.",
-          "Astu sisään: `cd tutorial-sandbox` → Enter.",
-          "Tarkista, että olet sisällä: `pwd` → pitää päättyä /tutorial-sandbox:iin."
+          "Luo testikansio: `mkdir tutorial-sandbox`, sitten Enter.",
+          "Tarkista, että ilmestyi: `ls`, pitää olla listalla.",
+          "Astu sisään: `cd tutorial-sandbox`, sitten Enter.",
+          "Tarkista, että olet sisällä: `pwd`, pitää päättyä /tutorial-sandbox:iin."
         ],
         "prompt": "mkdir tutorial-sandbox\ncd tutorial-sandbox\npwd",
         "example": "Kolmen komennon jälkeen:\n$ pwd\n/Users/denisa/tutorial-sandbox",
         "validate": "pwd näyttää polun, joka päättyy /tutorial-sandbox:iin. Kansio on luotu ja olet siinä.",
-        "tip": "Tab — paras ystäväsi. Aloita kirjoittaa `cd tut` → paina Tab → terminaali täydentää muotoon `cd tutorial-sandbox/`. Säästää 90 % kirjoittamisesta."
+        "tip": "Tab — paras ystäväsi. Aloita kirjoittaa `cd tut`, sitten paina Tab, ja terminaali täydentää muotoon `cd tutorial-sandbox/`. Säästää 90 % kirjoittamisesta."
       },
       "s4": {
         "id": "s4",
@@ -1350,9 +1350,9 @@
         "time": "",
         "why": "Osata palata on yhtä tärkeää kuin astua sisään. Tämä on vakuutus \"minne minä jouduin\" -tilannetta vastaan.",
         "instructions": [
-          "Olet nyt tutorial-sandbox:issa. Kirjoita `cd ..` → Enter. (Kaksi pistettä = \"kansio ylempänä\".)",
-          "Tarkista: `pwd` → olet taas home:ssa.",
-          "Mene takaisin: `cd tutorial-sandbox` → tarkista pwd.",
+          "Olet nyt tutorial-sandbox:issa. Kirjoita `cd ..`, sitten Enter. (Kaksi pistettä = \"kansio ylempänä\".)",
+          "Tarkista: `pwd`, sitten näet että olet taas home:ssa.",
+          "Mene takaisin: `cd tutorial-sandbox`, sitten tarkista pwd.",
           "Mistä tahansa kohdasta voi palata kotiin yhdellä komennolla: `cd ~` (tai vain `cd`)."
         ],
         "prompt": "cd ..\npwd\ncd ~\npwd",
@@ -1366,9 +1366,9 @@
         "time": "",
         "why": "Todellinen tehtävä: luoda ~/projects/<nimi>/notes/ kerralla. `mkdir -p` osaa tämän.",
         "instructions": [
-          "Mistä tahansa kirjoita: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
-          "Astu sisään: `cd ~/projects/my-first-project` → tarkista `ls` (pitää olla notes-kansio).",
-          "Voit poistaa testin: `cd ~` → sitten `rm -r tutorial-sandbox` (Mac/Linux) tai `Remove-Item -Recurse tutorial-sandbox` (PowerShell). Tämä poistaa kansion peruuttamattomasti.",
+          "Mistä tahansa kirjoita: `mkdir -p ~/projects/my-first-project/notes`, sitten Enter.",
+          "Astu sisään: `cd ~/projects/my-first-project`, sitten tarkista `ls` (pitää olla notes-kansio).",
+          "Voit poistaa testin: `cd ~`, sitten `rm -r tutorial-sandbox` (Mac/Linux) tai `Remove-Item -Recurse tutorial-sandbox` (PowerShell). Tämä poistaa kansion peruuttamattomasti.",
           "Älä poista ~/projects/my-first-project — sitä tarvitaan first-project-oppitunnissa."
         ],
         "prompt": "mkdir -p ~/projects/my-first-project/notes\ncd ~/projects/my-first-project\nls",
@@ -1391,7 +1391,7 @@
           "Käynnistä \"loputon\" komento, jotta on jotain keskeytettävää: `ping example.com` (Mac/Linux) — rivit vierivät loputtomiin.",
           "Paina `Ctrl+C` — komento pysähtyy ja saat kehotteen takaisin. Tämä on turvallista: Ctrl+C vain keskeyttää nykyisen komennon, se ei kosketa tiedostojasi.",
           "Jos olet kirjoittanut rivin puoliksi ja muutat mielesi — paina `Ctrl+C` uudelleen: terminaali tyhjentää rivin, jotta voit aloittaa alusta.",
-          "Kun näyttö on täynnä tulostetta — kirjoita `clear` (Mac/Linux/PowerShell) → Enter. Näyttö tyhjenee, mutta komentohistoria säilyy (ylänuoli tuo takaisin aiemmat komennot)."
+          "Kun näyttö on täynnä tulostetta — kirjoita `clear` (Mac/Linux/PowerShell), sitten Enter. Näyttö tyhjenee, mutta komentohistoria säilyy (ylänuoli tuo takaisin aiemmat komennot)."
         ],
         "prompt": "ping example.com\nclear",
         "example": "$ ping example.com\nPING example.com ...\n64 bytes from ...\n^C        ← tässä painoit Ctrl+C\n$         ← kehote takaisin, kaikki hallinnassa",
@@ -1457,7 +1457,7 @@
       }
     ],
     "pitfalls": [
-      "Välilyönnit ja kyrillinen kirjaimisto nimissä — terminaali ja git eivät pidä niistä. \"my project\" ❌ → \"my-project\" ✅.",
+      "Välilyönnit ja kyrillinen kirjaimisto nimissä — terminaali ja git eivät pidä niistä. \"my project\" ❌, käytä sen sijaan \"my-project\" ✅.",
       "Kansiot työpöydällä — viikon kuluttua siellä on 30 kappaletta, mitään ei löydä. Käytä ~/projects/.",
       "Kansion poistaminen `rm -rf`:llä ilman tarkistusta — kansio katoaa peruuttamattomasti. Ensin ls, sitten rm."
     ],
@@ -1468,7 +1468,7 @@
       },
       {
         "question": "Poista väliaikainen kansio molemmilla tavoilla: kerran Roskakorin kautta (drag-to-trash), kerran rm -r:n kautta. Huomaa ero.",
-        "hint": "Roskakori → voi palauttaa. rm -r → ei, peruuttamattomasti. Epäilyksessä — Roskakori."
+        "hint": "Roskakori — voi palauttaa. rm -r — ei, peruuttamattomasti. Epäilyksessä — Roskakori."
       }
     ],
     "steps": {
@@ -1506,13 +1506,13 @@
         "time": "",
         "why": "Skenaario: opit jotain uutta, haluat säilyttää muistiinpanoja. Visuaalisesti mukavampi — se on normaalia.",
         "instructions": [
-          "macOS: avaa Finder → Cmd+Shift+H (palaa home:en) → löydä projects-kansio (tai luo se Cmd+Shift+N:llä).",
-          "projects:in sisällä: oikea klikkaus → New Folder → kirjoita `learning-notes` → Enter.",
+          "macOS: avaa Finder, sitten Cmd+Shift+H (palaa home:en), sitten löydä projects-kansio (tai luo se Cmd+Shift+N:llä).",
+          "projects:in sisällä: oikea klikkaus, sitten New Folder, sitten kirjoita `learning-notes`, sitten Enter.",
           "learning-notes:in sisälle — luo vielä kaksi: `claude` ja `terminal-basics`.",
-          "Windows: avaa Explorer → mene C:\\Users\\<nimi>\\projects → oikea klikkaus → New Folder. Toista alikansioille."
+          "Windows: avaa Explorer, sitten mene C:\\Users\\<nimi>\\projects, sitten oikea klikkaus, sitten New Folder. Toista alikansioille."
         ],
         "example": "Finder:in kautta rakenne:\nprojects/\n  learning-notes/\n    claude/\n    terminal-basics/",
-        "validate": "Finder:issä/Explorer:issa näet puun: projects → learning-notes → claude / terminal-basics.",
+        "validate": "Finder:issä/Explorer:issa näet puun: projects, sitten learning-notes, sitten claude / terminal-basics.",
         "tip": "Terminaali ja Finder toimivat samalla tiedostojärjestelmällä. Yhdessä luotu kansio näkyy toisessa. Niitä voi sekoittaa."
       },
       "s4": {
@@ -1646,7 +1646,7 @@
         "why": "API-avain on tunnistetietosi — se tunnistaa tilisi, seuraa käyttöä ja valtuuttaa pyynnöt. Jokainen API-kutsu vaatii sen.",
         "instructions": {
           "0": "Mene osoitteeseen console.anthropic.com ja kirjaudu sisään (tai luo tili).",
-          "1": "Siirry kohtaan Settings → API Keys → Create Key.",
+          "1": "Siirry kohtaan Settings, sitten API Keys, sitten Create Key.",
           "2": "Anna sille kuvaava nimi (esim. 'dev-local' tai 'my-project').",
           "3": "Kopioi avain heti — et voi enää nähdä sitä.",
           "4": "Tallenna ympäristömuuttujaan: export ANTHROPIC_API_KEY='sk-ant-...'",
@@ -1837,7 +1837,7 @@
           "Aja stdio:n kautta (`node dist/index.js`), varmista että prosessi pysyy pystyssä.",
           "Jaa primitiivit. Tools = toimintoja side-effecteillä tai laskennalla (search, create, calculate) — malli kutsuu tarpeen mukaan. Resources = data joka luetaan URI:llä (tiedostot, tietueet, dokumentit) — client voi pre-fetchata ja näyttää käyttäjälle. Prompts = workflow-pohjia jotka käyttäjä valitsee selkeästi (\"tee code review\"), parametrisoitu.",
           "Käy listasi läpi: jokainen operaatio yhteen kolmesta. Epävarmana — tool (yhteensopivin, tukee kaikkia clientteja). Resource vai tool: \"haluaisiko client näyttää tämän objektin ENNEN kuin malli mainitsee sen?\" Jos kyllä — resource.",
-          "Jako-esimerkki trace-storagelle: search_traces → tool (parametrit, laskenta); get_trace(id) → resource (`trace://abc123`) — client cachettaa; review_incident → prompt (pohja: \"analysoi trace X vs baseline Y\").",
+          "Jako-esimerkki trace-storagelle: search_traces, sitten tool (parametrit, laskenta); get_trace(id), sitten resource (`trace://abc123`) — client cachettaa; review_incident, sitten prompt (pohja: \"analysoi trace X vs baseline Y\").",
           "Minimaalisen palvelimen esimerkki (TypeScript):\n// src/index.ts\nimport { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\n\nconst server = new Server(\n  { name: \"trace-storage\", version: \"0.1.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(\"tools/list\", async () => ({\n  tools: [{\n    name: \"search_traces\",\n    description: \"Search traces by service and time range\",\n    inputSchema: {\n      type: \"object\",\n      properties: {\n        service: { type: \"string\" },\n        since: { type: \"string\", format: \"date-time\" }\n      },\n      required: [\"service\"]\n    }\n  }]\n}));\n\nserver.setRequestHandler(\"tools/call\", async (req) => ({\n  content: [{ type: \"text\", text: `stub: ${JSON.stringify(req.params)}` }]\n}));\n\nconst transport = new StdioServerTransport();\nawait server.connect(transport);",
           "Jos `TypeError: Cannot find module @modelcontextprotocol/sdk` — asenna `npm i @modelcontextprotocol/sdk`, varmista että package.json sisältää `\"type\": \"module\"`. Jos prosessi sulkeutuu heti — unohdit `await server.connect(transport)`: ilman `await` prosessi sulkeutuu ennen yhteyttä."
         ],
@@ -1944,7 +1944,7 @@
     "whatItIs": "[[node:claude-code|Claude Code]] sellaisenaan on jo tehokas. Mutta isossa projektissa ilman asetuksia siitä tulee nopeasti \"fiksu mutta arvaamaton tiimiläinen\": rikkoo tyyliä, menee väärään suuntaan, polttaa tokeneita samaan asiaan.\n\nProduction-tason setup tekee Claude Codesta luotettavan contributorin: tuntee arkkitehtuurisi, ei koske kiellettyihin alueisiin, erikoistuu tehtävän mukaan, näkee sisäiset työkalut, tarkistuu joka committissa.",
     "approach": "Kerroksittain. Ensin CLAUDE.md-hierarkia (konteksti ja säännöt), sitten slash-komennot (toistuvat operaatiot), sitten guard-railit (hooks + permission policy), subagents (erikoistuminen), MCP (integraatiot), ja lopuksi headless mode CI:hin. Jokainen kerros validoidaan erikseen.",
     "outcomes": [
-      "Rakennat CLAUDE.md-hierarkian (root → alue → paketti) ilman päällekkäisyyttä",
+      "Rakennat CLAUDE.md-hierarkian (rootista alueeseen ja pakettiin) ilman päällekkäisyyttä",
       "Teet custom slash-komennot tiimin toistuviin workfloweihin",
       "Konfiguroit [[node:cc-hooks|hooks]] (pre/post-tool-use) linttiin, audittiin, secret-scaniin",
       "Otat käyttöön [[node:cc-subagents|subagents]] erikoistumiseen (reviewer, test-writer, debugger)",
@@ -1963,7 +1963,7 @@
       },
       {
         "title": "On-call incident-apulainen",
-        "description": "MCP lokeihin/metriikoihin + slash-komento `/incident` → nopea triage."
+        "description": "MCP lokeihin/metriikoihin + slash-komento `/incident`, sitten nopea triage."
       }
     ],
     "pitfalls": [
@@ -1998,7 +1998,7 @@
           "Jos Claude ohittaa osan säännöistä — tiedosto liian pitkä tai säännöt ristiriidassa; lyhennä, siirrä harvinaiset /docs:iin."
         ],
         "validate": "Hierarkia näkyy Claudelle (kysy init-tyyppinen kysymys — näet että lukee useita CLAUDE.md-tiedostoja).",
-        "tip": "CLAUDE.md:hen kirjoita \"säännöt\", ei \"tutoriaalit\". Pitkät selitykset → /docs:iin linkillä."
+        "tip": "CLAUDE.md:hen kirjoita \"säännöt\", ei \"tutoriaalit\". Pitkät selitykset siirrä /docs:iin linkillä."
       },
       "s2": {
         "title": "Custom slash-komennot",
@@ -2007,7 +2007,7 @@
         "instructions": [
           "Komennot ovat `.claude/commands/<name>.md`:ssä.",
           "Jokainen = markdown ohjeineen + `$ARGUMENTS`-placeholderit.",
-          "Tiedostonimi = komennon nimi (`.claude/commands/review-pr.md` → `/review-pr`).",
+          "Tiedostonimi = komennon nimi (`.claude/commands/review-pr.md`, josta tulee `/review-pr`).",
           "Komennon alussa frontmatter: `description`, `allowed-tools`.",
           "Committoi repoon — komento muuttuu tiimin yhteiseksi.",
           "Esimerkki. `.claude/commands/release-notes.md` frontmatterilla (`description: Generate release notes from commits since last tag`, `allowed-tools: Bash, Read`) ja bodylla: hae commitit viime tagista `git log $(git describe --tags --abbrev=0)..HEAD --oneline`, ryhmittele tyypin mukaan (feat/fix/chore/docs), kirjoita ihmiselle luettava yhteenveto, tulosta CHANGELOG.md-formaatissa, versio: $ARGUMENTS. Kutsu: `/release-notes v2.4.0`."
@@ -2023,7 +2023,7 @@
           "Hooks- ja permissions-konfiguraatio `.claude/settings.json`:ssa (projekti) tai `~/.claude/settings.json`:ssa (user).",
           "Hooks: `PreToolUse` voi blokata tool:n (exit code 2 = block + viesti mallille); `PostToolUse` audittiin, notifikaatioihin, ei blokkaa.",
           "Matcher — regex tool:n nimelle: `Bash`, `Write`, `Edit|MultiEdit`. Hook lukee JSON:in stdin:istä (tool-parametrit), kirjoittaa JSON:in stdoutiin (vastaus/error).",
-          "Esimerkki settings.json hooks: `PreToolUse` matcher `Bash` → command `.claude/hooks/guard-bash.sh`; `PostToolUse` matcher `Edit|Write` → command `.claude/hooks/secret-scan.sh`. guard-bash.sh lukee stdin:in, poimii `.tool_input.command` jq:lla ja jos osuu `rm -rf|git push.*--force.*main|DROP TABLE` -kaavaan, tulostaa `{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}` ja tekee exit 2, muuten exit 0.",
+          "Esimerkki settings.json hooks: `PreToolUse` matcher `Bash`, sitten command `.claude/hooks/guard-bash.sh`; `PostToolUse` matcher `Edit|Write`, sitten command `.claude/hooks/secret-scan.sh`. guard-bash.sh lukee stdin:in, poimii `.tool_input.command` jq:lla ja jos osuu `rm -rf|git push.*--force.*main|DROP TABLE` -kaavaan, tulostaa `{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}` ja tekee exit 2, muuten exit 0.",
           "Permission policy: `permissions`-osio settings.json:ssa. `allow`: lista pattern:eista (tool + matcher) jotka sallittu ilman kysymistä. `deny`: lista jotka KIELLETTY aina (ohittaa allow:n).",
           "Periaate: deny — destruktiivinen (rm, force push, drop), allow — usein toistuvat turvalliset (read, lint, test). Muut — kysytään; ne kysymykset ovat signaaleja \"lisää allow:hun tai deny:yn\".",
           "Esimerkki permissions: allow = [`Bash(npm test:*)`, `Bash(pnpm lint:*)`, `Bash(git status)`, `Bash(git diff:*)`, `Read(**)`, `Edit(src/**)`]; deny = [`Bash(rm -rf:*)`, `Bash(git push --force*)`, `Bash(curl:*sh)`, `Write(.env*)`].",
@@ -2057,7 +2057,7 @@
           "Konfiguraatio — `.mcp.json` projektin juuressa (project-scoped, menee gittiin) TAI `~/.claude/mcp.json` (user).",
           "Jokaiselle MCP-palvelimelle: `command`, `args`, `env`. Secrets `${ENV_VAR}`-syntaksilla, ei hardcoodattuna.",
           "Tarkista token-scope:t — read-only mieluummin kuin admin.",
-          "Lisäämisen jälkeen — `/mcp` Claude Codessa → näet yhteyden statuksen ja tool-listan.",
+          "Lisäämisen jälkeen — `/mcp` Claude Codessa, sitten näet yhteyden statuksen ja tool-listan.",
           "Jos sinulla on oma palvelin (ks. \"Advanced MCP\") — julkaise sisäisesti ja yhdistä tähän.",
           "Esimerkki. `.mcp.json` jossa `mcpServers`: `linear` (command `npx`, args `[\"-y\", \"@modelcontextprotocol/server-linear\"]`, env `{ \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\" }`) ja `internal-traces` (command `npx`, args `[\"-y\", \"@acme/mcp-trace-storage\"]`, env `{ \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }`). Secretit tulevat `.envrc`:stä (direnv): `export LINEAR_API_KEY=$(op read \"op://Eng/linear/api-key\")` ja `export TRACE_API_KEY=$(op read \"op://Eng/traces/api-key\")`.",
           "Jos palvelin connected mutta tools tyhjät — palvelin käynnistyi mutta ei ilmoittanut capabilitieseja; tarkista palvelimen lokit `claude --mcp-debug`:lla tai kutsu Inspectorilla manuaalisesti."
@@ -2078,7 +2078,7 @@
           "Esimerkki. `.github/workflows/claude-review.yml`: triggeri `on: pull_request`, job `review` `ubuntu-latest`:lla permissioneilla `contents: read` ja `pull-requests: write`. Vaiheet: `actions/checkout@v4` `fetch-depth: 0`:lla, sitten `anthropics/claude-code-action@v1` arvoilla `api-key: ${{ secrets.ANTHROPIC_API_KEY }}`, `mode: review`, prompt \"Review the diff against main. Focus: bugs/edge cases, missing error handling, test coverage gaps. Skip: style/formatting (handled by linters). Post inline comments.\" ja `allowed-tools: \"Read,Bash(git diff:*),Bash(pnpm test:*)\"`.",
           "Jos action ylittää timeoutin — pienennä scopea promptissa (\"vain diff, ei koko tiedosto\"), karsi allowed-tools, aseta max-turns. Permission denied Bashissa CI:ssä — CI sandbox on eristetty, siellä `--permission-mode acceptEdits` on turvallinen, mutta ÄLÄ käytä self-hosted runnerissa prodissa."
         ],
-        "validate": "PR avautuu → action käynnistyy → näet inline-kommentit Claudelta 5 minuutissa.",
+        "validate": "PR avautuu, sitten action käynnistyy, sitten näet inline-kommentit Claudelta 5 minuutissa.",
         "tip": "Cost control: CI:ssä käytä mallia `sonnet` (ei opus) rutiinitehtäviin + `--max-tokens` raja. Muuten budjetti räjähtää."
       }
     },
@@ -2120,7 +2120,7 @@
       "Tiedät milloin rule-based scorer, milloin LLM-as-judge",
       "Lasket agg-metriikan (accuracy, F1, custom rubric)",
       "Teet run-vs-run diff:n ja näet regressiot",
-      "Integroit evaluaatiot CI:hin: PR promptlib-muutoksella → auto-eval",
+      "Integroit evaluaatiot CI:hin: PR promptlib-muutoksella, sitten auto-eval",
       "Tasapainotat cost vs quality eval-ajossa"
     ],
     "applyIn": [
@@ -2130,7 +2130,7 @@
       },
       {
         "title": "Mallin migraatio",
-        "description": "Sonnet 4 → 4.5: yksi eval-ajo = päätös \"migroi vai odota\"."
+        "description": "Sonnet 4:stä 4.5:hyn: yksi eval-ajo = päätös \"migroi vai odota\"."
       },
       {
         "title": "RAG-tuunaus",
@@ -2150,7 +2150,7 @@
         "hint": "Jos accuracy on 95%+ — dataset liian helppo. Lisää edge case:ja."
       },
       {
-        "question": "Vaihda malli (esim. sonnet → haiku) ja aja sama dataset. Vertaa tuloksia. Onko säästö laadun arvoinen?",
+        "question": "Vaihda malli (esim. sonnetista haikuun) ja aja sama dataset. Vertaa tuloksia. Onko säästö laadun arvoinen?",
         "hint": "Katso ei vain keskiarvoa, vaan missä haiku fail:aa — ehkä tietyssä case-tyypissä."
       }
     ],
@@ -2188,13 +2188,13 @@
         "validate": "Jokaisella datasetin casella on scorer function (tai luokitus scorer-tyypille).",
         "tip": "CI:hin mieluummin rule-based — halvempi ja deterministinen. LLM-judge weekly deep-evaluun.",
         "troubleshoot": {
-          "LLM-judge antaa eri pisteet samasta casesta": "Aseta `temperature=0`, fix seed jos tuettu, käytä structured output:ia. Jos vieläkin kohinaa — yksinkertaista rubricia (5 tasoa → 3)."
+          "LLM-judge antaa eri pisteet samasta casesta": "Aseta `temperature=0`, fix seed jos tuettu, käytä structured output:ia. Jos vieläkin kohinaa — yksinkertaista rubricia (5 tasosta 3 tasoon)."
         }
       },
       "be-3": {
         "title": "Run-loop ja agg-metriikka",
         "time": "6 min",
-        "why": "Run = (model, prompt) applied (dataset):iin → aggregated metrics. Ilman aggregointia näet vain hajanaiset pisteet.",
+        "why": "Run = (model, prompt) applied (dataset):iin, josta saadaan aggregated metrics. Ilman aggregointia näet vain hajanaiset pisteet.",
         "instructions": [
           "Loop: jokaiselle tietueelle datasetissä — kutsu järjestelmää, scorer, talleta {id, input, output, score, metadata}.",
           "Talleta täysi run tiedostoon timestampin ja git SHA:n kanssa: `evals/runs/2026-05-27-abc1234.jsonl`.",
@@ -2213,7 +2213,7 @@
         "time": "6 min",
         "why": "Avg score nousi 0.82:sta 0.84:ään — onnistuminen? Ehkä korjasit 5 caseä ja rikoit 3. Diff näyttää totuuden.",
         "instructions": [
-          "Diff = kahden runin join `id`:n mukaan → score delta per case.",
+          "Diff = kahden runin join `id`:n mukaan, josta saadaan score delta per case.",
           "Luokittele: improved, regressed (score laski), stable, new (ei baselinessä).",
           "Threshold: regressio merkittävä jos score laskee ≥ 0.2 yksittäisessä casessä tai ≥ 0.05 keskimäärin per kategoria.",
           "Jos ≥ 1 merkittävä regressio — fail PR, vaadi review.",
@@ -2229,13 +2229,13 @@
         "why": "Eval joka ei aja automaattisesti, kuolee ajan myötä. CI on ainoa tapa pitää se elossa.",
         "instructions": [
           "Trigger: PR joka muuttaa tiedostoja `prompts/`:ssa, `evals/`:ssa, `src/llm/`:ssa.",
-          "Steps: run eval → diff vs baseline (viimeisin main-ajo) → comment PR:iin.",
+          "Steps: run eval, sitten diff vs baseline (viimeisin main-ajo), sitten comment PR:iin.",
           "Säilytä baseline artifact:na tai committoi `evals/runs/main/`:iin.",
           "API key — secrets-kautta, EI koodissa/configissa.",
           "Timeout: 10-15 min max. Jos dataset on iso — Batch API tai sample (random 30 caseä)."
         ],
         "example": ".github/workflows/eval.yml:\n```yaml\nname: Eval\non:\n  pull_request:\n    paths: [\"prompts/**\", \"src/llm/**\", \"evals/dataset.jsonl\"]\n\njobs:\n  eval:\n    runs-on: ubuntu-latest\n    timeout-minutes: 15\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with: { python-version: \"3.11\" }\n      - run: pip install anthropic\n      - name: Run eval\n        env:\n          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}\n        run: python evals/run_eval.py | tee eval-output.txt\n      - name: Diff vs baseline\n        run: python evals/diff_runs.py evals/runs/main/latest.jsonl evals/runs/$(ls -t evals/runs | head -1)\n      - uses: marocchino/sticky-pull-request-comment@v2\n        if: always()\n        with:\n          path: eval-output.txt\n```",
-        "validate": "PR prompt-muutoksella → action käynnistyy, postaa kommentin avg:llä, kustannuksella, diff:llä.",
+        "validate": "PR prompt-muutoksella, sitten action käynnistyy, postaa kommentin avg:llä, kustannuksella, diff:llä.",
         "troubleshoot": {
           "CI eval kaatuu satunnaisesti": "Verkkovirheet API:in. Lisää retry exponential backoff:lla (3 yritystä), tenacity-tyylillä."
         }
@@ -2247,11 +2247,11 @@
         "instructions": [
           "Budjetti per run = $0.10-$1 CI:hin (PR:lle), $5-$20 weekly deep-eval:lle.",
           "Sampling: 30-50 caseä PR:lle (fast feedback), täysi dataset nightly/weekly.",
-          "Tiered evals: smoke (5 caseä, $0.01, joka commit) → full (50 caseä, PR:llä) → deep (200 + LLM-judge, weekly).",
+          "Tiered evals: smoke (5 caseä, $0.01, joka commit), sitten full (50 caseä, PR:llä), sitten deep (200 + LLM-judge, weekly).",
           "Cache:tys: sama input + sama prompt — cache:ta vastaus. Muuttuu vain promptin/mallin muuttuessa.",
           "Batch API non-realtime:lle — puoli hintaa, jopa 24h viive."
         ],
-        "example": "Triggerit:\n- commit → smoke (5 caseä, $0.01, 30 sek) — pre-commit hookilla\n- PR → fast (30 caseä, rule-based, $0.30, 2 min) — github action\n- nightly main → full (50 caseä, $0.80, 5 min) — cron\n- weekly → deep (200 caseä + LLM-judge, $15, 30 min) — manual / schedule\n\nTämä jako kattaa 90% tapauksista järkevällä kustannuksella.",
+        "example": "Triggerit:\n- commit, sitten smoke (5 caseä, $0.01, 30 sek) — pre-commit hookilla\n- PR, sitten fast (30 caseä, rule-based, $0.30, 2 min) — github action\n- nightly main, sitten full (50 caseä, $0.80, 5 min) — cron\n- weekly, sitten deep (200 caseä + LLM-judge, $15, 30 min) — manual / schedule\n\nTämä jako kattaa 90% tapauksista järkevällä kustannuksella.",
         "validate": "Sinulla on kirjallinen budjetti evaluaatioille (per PR / per week) ja tiering joka mahtuu siihen.",
         "tip": "Kun tuote on vakaa — deep eval voi olla kuukausittain, ei viikoittain. Mittaa evaluaatioiden ROI (kiinniotetut bugit) — se on argumentti johdolle että budjetti on perusteltu."
       }
@@ -2345,7 +2345,7 @@
         "role": "ympärivuorokautinen ylläpito"
       }
     ],
-    "savings": "Päiviä yritystä ja erehdystä sekä riski omalle koneelle → hallittu hiekkalaatikko ~1,5 tunnissa",
+    "savings": "Päiviä yritystä ja erehdystä sekä riski omalle koneelle, nyt hallittu hiekkalaatikko ~1,5 tunnissa",
     "steps": {
       "s1": {
         "title": "Miksi eristys: uhkamalli ja alustan valinta",
@@ -2370,7 +2370,7 @@
           "Lataa Docker Desktop (Windows/Mac) tai Docker Engine (Linux) osoitteesta docker.com, asenna ja käynnistä.",
           "Tarkista päätteessä: `docker --version`.",
           "Aja testikontti: `docker run hello-world` — sen pitäisi tulostaa tervehdys.",
-          "Avaa anthropic-quickstarts-repositorio → computer-use-demo-kansio — siellä on ajantasainen komento, kuvan nimi ja portit (voivat muuttua).",
+          "Avaa anthropic-quickstarts-repositorio, sitten computer-use-demo-kansio — siellä on ajantasainen komento, kuvan nimi ja portit (voivat muuttua).",
           "Aja kontti välittäen avain ympäristön kautta. Suunnilleen näin: `docker run -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY -p 8080:8080 -it <computer-use-demo-kuva>` — tarkat portit README:stä.",
           "Odota, että kontti nousee (käyttöliittymän osoite ilmestyy lokeihin). Avain asetetaan vaiheessa s4 — palaa tähän sen jälkeen, jos et ole vielä asettanut muuttujaa."
         ],
@@ -2423,7 +2423,7 @@
         "time": "",
         "why": "Peruutettavuus ja hallinta: tapahtui mitä tahansa, palautat ennalleen ja pysäytät heti. Yksi lista-ajo nappaa useimmat vaaralliset virheet. Katso [[node:sas-snapshots-killswitch|tilannevedokset, palautus ja hätäkatkaisu]].",
         "instructions": [
-          "Tilannevedos ja palautus. Docker: puhdas tila = luo kontti uudelleen kuvasta (`docker rm` + `docker run` uudelleen). VM: ota tilannevedos ennen kokeiluja palveluntarjoajan kautta. Sääntö: uusi riskialtis tehtävä → varmista ensin puhdas tila.",
+          "Tilannevedos ja palautus. Docker: puhdas tila = luo kontti uudelleen kuvasta (`docker rm` + `docker run` uudelleen). VM: ota tilannevedos ennen kokeiluja palveluntarjoajan kautta. Sääntö: uusi riskialtis tehtävä, sitten varmista ensin puhdas tila.",
           "Hätäkatkaisu: `docker stop <kontti>` pysäyttää agentin heti. Tarkista, että avaimen kulutusraja (vaihe s4) on voimassa. Päätä etukäteen: oudossa käytöksessä — ensin pysäytä, sitten selvitä.",
           "Lopullinen tarkistuslista: kotikansioita EI ole liitetty; oikeita salasanoja EI ole välitetty; avain on erillinen, rajalla, env:ssä, ei koodissa; verkko on minimissään; hätäkatkaisu ja palautus on testattu; etäkäyttö (jos on) on suojattu salasanalla/avaimella ja IP-rajauksella.",
           "Mitä seuraavaksi: käy [[node:sys-agent-sandbox|Eristetty ympäristö agentille]] -polku kokonaan, aloita yksinkertaisista tehtävistä ja laajenna pääsyä asteittain ja harkiten.",
@@ -2438,7 +2438,7 @@
     "title": "Prompt caching — vipu kustannusten ja viiveen pienentämiseen",
     "subtitle": "Välimuistita stabiili prefix — maksa toistoista 0.1× ja vastaa nopeammin",
     "totalTime": "6 vaihetta",
-    "whatItIs": "Prompt caching ei ole «Clauden ominaisuus» — se on pääasiallinen vipu kustannusten ja viiveen optimointiin production AI-workfloweissa [[node:pl-api|API]]:lla. Anthropic välimuistittaa promptisi stabiilin prefiksin (system, instructions, suuri konteksti, tool definitions) 5 minuutiksi (tai 1 tunniksi extended TTL:llä). Toistuvat pyynnöt samalla prefiksillä laskutetaan alennetulla hinnalla (cache read = 0.1× input) ja käsitellään nopeammin.\n\nMechanics: aseta `cache_control: { type: \"ephemeral\" }` blokkiin → tämä blokki ja kaikki sitä ennen tallentuu välimuistiin. Minimi: 1024 tokenia (Sonnet/Opus) tai 2048 (Haiku).",
+    "whatItIs": "Prompt caching ei ole «Clauden ominaisuus» — se on pääasiallinen vipu kustannusten ja viiveen optimointiin production AI-workfloweissa [[node:pl-api|API]]:lla. Anthropic välimuistittaa promptisi stabiilin prefiksin (system, instructions, suuri konteksti, tool definitions) 5 minuutiksi (tai 1 tunniksi extended TTL:llä). Toistuvat pyynnöt samalla prefiksillä laskutetaan alennetulla hinnalla (cache read = 0.1× input) ja käsitellään nopeammin.\n\nMechanics: aseta `cache_control: { type: \"ephemeral\" }` blokkiin, jolloin tämä blokki ja kaikki sitä ennen tallentuu välimuistiin. Minimi: 1024 tokenia (Sonnet/Opus) tai 2048 (Haiku).",
     "approach": "Välimuistita vain se, mikä toistuu stabiilisti ≥10 kertaa per TTL — system, instructions, suuri konteksti. Pidä dynaaminen osa (user query) aivan lopussa, cache boundaryn jälkeen. Mittaa säästöt oikealla liikenteellä ensin, skaalaa sitten — älä arvaa.",
     "outcomes": [
       "Ymmärrät prompt cachingin vipuna kustannukselle ja viiveelle, et taikana",
@@ -2685,7 +2685,7 @@
           "Ymmärrä roolijako: tiedostot ja [[node:sys-rag-architecture|RAG]] päättävät, mitkä dokumentit ovat saatavilla, kun taas Citations näyttää, mistä vastaus tarkalleen tuli",
           "Yhdistä dokumenttien latauskäytäntöön [[node:cap-files|tiedostot]]-vaiheesta — tämä on lainattava materiaali",
           "RAG-skenaariossa lainaukset näyttävät, mikä haettu osa on väitteen perustana",
-          "Kokoa koko ketju: dokumentit → haku/pääsy (RAG) → vastaus viittauksineen (Citations) → manuaalinen tarkistus"
+          "Kokoa koko ketju: dokumentit, sitten haku/pääsy (RAG), sitten vastaus viittauksineen (Citations), sitten manuaalinen tarkistus"
         ],
         "validate": "Osaat kuvata koko polun ladatusta dokumentista verifioitavaan väitteeseen lainauksineen.",
         "tip": "Citations vastaa 'mistä tämä on', RAG vastaa 'mitä ylipäätään on saatavilla'; yhdessä ne antavat jäljitettävyyden."
@@ -3438,7 +3438,7 @@
           "Palaa normaalitilaan herkissä tiedostoissa hallitaksesi jokaisen muutoksen"
         ],
         "validate": "Vaihdoit normaalitilan ja Planin välillä Shift+Tabilla ja näit käytöksen muuttuvan.",
-        "tip": "Yhdistelmä toimii näin: sovit Planissa → vaihdat auto-acceptiin mekaaniselle osalle → palaat normaaliin lopputarkistukseen."
+        "tip": "Yhdistelmä toimii näin: sovit Planissa, sitten vaihdat auto-acceptiin mekaaniselle osalle, sitten palaat normaaliin lopputarkistukseen."
       },
       "s4": {
         "title": "Hyödylliset hotkeyt",
@@ -3538,7 +3538,7 @@
         "why": "Ilman prioriteetin ymmärtämistä mikä tahansa asetus muuttuu arvailuksi: muokkaat yhtä tiedostoa, mutta toinen vaikuttaa. Kolme tasoa on olemassa erottaakseen 'minun henkilökohtainen', 'tiimin yhteinen' ja 'salainen paikallinen'.",
         "instructions": [
           "Muista kolme tiedostoa: ~/.claude/settings.json (globaali, kaikille projekteillesi), .claude/settings.json (projekti, repositoriossa), .claude/settings.local.json (paikallinen, ei committoida)",
-          "Muista prioriteetti heikoimmasta vahvimpaan: globaali → projekti → paikallinen. Vahvempi taso ohittaa heikomman",
+          "Muista prioriteetti heikoimmasta vahvimpaan: globaali, sitten projekti, sitten paikallinen. Vahvempi taso ohittaa heikomman",
           "Ymmärrä idea: globaali asettaa yleiset preferenssisi, projekti asettaa tiimistandardin, paikallinen asettaa henkilökohtaiset lisäykset ja salaisuudet tietylle projektille",
           "Lisää itse työkalusta — katso [[node:claude-code|Claude Code]]"
         ],
@@ -3590,14 +3590,14 @@
         "time": "",
         "why": "Keskeinen käytännön taito on sijoittaa käyttöoikeudet oikealle tasolle. Se ratkaisee, näkeekö koko tiimi ne, vain sinä, vai vuotavatko ne gitiin.",
         "instructions": [
-          "Kaikkialla ja aina tarvittavat oikeudet (esim. turvalliset read-komennot) → globaali ~/.claude/settings.json",
-          "Projektin ja tiimin yhteiset oikeudet (Bash(npm test), Edit(./src/**)) → projekti .claude/settings.json repositoriossa",
-          "Henkilökohtaiset oikeudet ja salaisuudet tälle projektille → paikallinen settings.local.json gitin ulkopuolella",
+          "Kaikkialla ja aina tarvittavat oikeudet (esim. turvalliset read-komennot) kuuluvat globaaliin ~/.claude/settings.json:iin",
+          "Projektin ja tiimin yhteiset oikeudet (Bash(npm test), Edit(./src/**)) kuuluvat projektin .claude/settings.json:iin repositoriossa",
+          "Henkilökohtaiset oikeudet ja salaisuudet tälle projektille kuuluvat paikalliseen settings.local.json:iin gitin ulkopuolella",
           "Älä monista yhtä sääntöä useille tasoille — valitse yksi ja pidä se siellä",
           "Miten käyttöoikeudet itse toimivat ja niiden syntaksi — katso [[node:cc-cfg-permissions|Permissions]]"
         ],
         "validate": "Mille tahansa säännölle osaat yksiselitteisesti sanoa, millä tasolla sen tulisi sijaita ja miksi.",
-        "tip": "Yksinkertainen testi: 'Tarvitseeko koko tiimi tätä?' → projekti. 'Vain minä?' → paikallinen. 'Kaikissa projekteissani?' → globaali."
+        "tip": "Yksinkertainen testi: 'Tarvitseeko koko tiimi tätä?' kuuluu projektiin. 'Vain minä?' kuuluu paikalliseen. 'Kaikissa projekteissani?' kuuluu globaaliin."
       },
       "s6": {
         "title": "Tyypilliset virheet ja tarkistus",
@@ -3831,7 +3831,7 @@
           "Työskentele sessiossa siihen asti, kun vastaukset heikkenevät tai malli «unohtaa» alun.",
           "Aja [[node:cc-cmd-compact|/compact]] — historia tiivistyy, keskeiset johtopäätökset säilyvät.",
           "Jos tehtävä vaihtui kokonaan — aja /clear aloittaaksesi puhtaalla kontekstilla.",
-          "Valintasääntö: sama tehtävä mutta paisunut konteksti → /compact; uusi tehtävä → /clear."
+          "Valintasääntö: sama tehtävä mutta paisunut konteksti vaatii /compact; uusi tehtävä vaatii /clear."
         ],
         "validate": "/compactin jälkeen Claude muistaa yhä olennaisen; /clearin jälkeen se aloittaa alusta.",
         "tip": "Älä odota täydellistä heikkenemistä — tiivistä konteksti etukäteen, tehtävän loogisilla rajoilla."
@@ -4100,7 +4100,7 @@
         "time": "",
         "why": "IDE-version pääarvo ovat visuaaliset diffit. Kyky lukea ja soveltaa niitä on ydintyösykli.",
         "instructions": [
-          "Pyydä muutosta nykyiseen tiedostoon (VS Codessa — Cmd+Shift+P → Claude: ask in current file)",
+          "Pyydä muutosta nykyiseen tiedostoon (VS Codessa — Cmd+Shift+P, sitten Claude: ask in current file)",
           "Odota muutosta — se tulee inline-diffinä suoraan editoriin",
           "Katselmoi muutos ympäröivän koodin kontekstissa",
           "Hyväksy (accept) tai hylkää (reject) muutos diff-view'n painikkeella"
@@ -4274,7 +4274,7 @@
     "subtitle": "Käsittelemme RAG:ia ei ideana vaan järjestelmänä: mitkä komponentit ovat sisällä, miten ne yhdistyvät ja minkä mallin valita",
     "totalTime": "6 vaihetta",
     "whatItIs": "RAG (Retrieval-Augmented Generation) arkkitehtuurina on kolmiosainen putki: indeksi (esikäsiteltyjen dokumenttien tietokanta), retriever (löytää kyselylle olennaiset palat) ja generaattori (LLM, joka kokoaa vastauksen löydetystä). Tämä kurssi ei kerro \"miksi RAG\" — se kertoo MITEN se on rakennettu sisältä ja missä sen rajat ovat.",
-    "approach": "Etenemme yleiskaaviosta yksityiskohtiin. Ensin näemme koko putken (kysely → haku → generointi), sitten puramme jokaisen komponentin erikseen, sitten katsomme eri monimutkaisuuden malleja (naive / hybrid / re-rank) ja päätämme, mikä sopii tehtävään. Lopetamme kokoamalla minimijärjestelmän, käymällä läpi riskit ja tuotantovalmiuden tarkistuslistan.",
+    "approach": "Etenemme yleiskaaviosta yksityiskohtiin. Ensin näemme koko putken (kysely, sitten haku, sitten generointi), sitten puramme jokaisen komponentin erikseen, sitten katsomme eri monimutkaisuuden malleja (naive / hybrid / re-rank) ja päätämme, mikä sopii tehtävään. Lopetamme kokoamalla minimijärjestelmän, käymällä läpi riskit ja tuotantovalmiuden tarkistuslistan.",
     "outcomes": [
       "Ymmärrät RAG-putken komponenttijoukkona, et \"hakutaikuutena\"",
       "Osaat nimetä ja erottaa roolit: indeksi, retriever, generaattori",
@@ -4323,7 +4323,7 @@
         "time": "",
         "why": "Ennen yksityiskohtien korjaamista pitää nähdä järjestelmä datavirtana. RAG ei ole \"älykäs haku\" — se on putki: kysely kulkee haun läpi ja päätyy generointiin löydetyn kontekstin kanssa. Ilman tätä kuvaa ei voi sanoa, missä asiat hajoavat.",
         "instructions": [
-          "Piirrä kolme lohkoa riviin: Indeksi → Retriever → Generaattori, ja kyselynuoli joka tulee Retrieveriin",
+          "Piirrä kolme lohkoa riviin: Indeksi, sitten Retriever, sitten Generaattori, ja kyselynuoli joka tulee Retrieveriin",
           "Seuraa datapolkua: dokumentit menevät indeksiin etukäteen; kysely menee retrieveriin; retriever hakee top-N palaa; palat + kysely menevät LLM:lle; LLM tuottaa vastauksen linkein",
           "Huomaa että on kaksi ajoaikaa: offline (indeksin täyttö) ja online (kyselyyn vastaaminen) — nämä sekoitetaan usein",
           "Vertaa johdantosolmuun [[node:af-rag-basics|RAG basics]]: siellä RAG on idea \"löydä ja vastaa\"; tässä se on järjestelmä komponenttirajoineen",
@@ -4351,10 +4351,10 @@
         "time": "",
         "why": "RAG tulee eri monimutkaisuuksissa, ja tarttua heti monimutkaiseen on virhe kulujen ja ylläpidon kannalta. Kolme perusmallia kattavat lähes kaikki tapaukset; tehtävä on ymmärtää miten ne eroavat ja mihin kukin on.",
         "instructions": [
-          "Naive RAG: yksi vektorihaku kyselylle → top-N palaa → LLM:lle. Yksinkertainen, halpa, riittää pieniin määriin ja yksinkertaisiin kyselyihin",
+          "Naive RAG: yksi vektorihaku kyselylle, top-N palaa, sitten LLM:lle. Yksinkertainen, halpa, riittää pieniin määriin ja yksinkertaisiin kyselyihin",
           "Hybrid search: yhdistät vektorihaun (merkityksen mukaan) ja avainsanahaun (tarkkojen sanojen/termien mukaan), yhdistät tulokset — pelastaa siellä missä koodit, tuotenumerot, nimet ratkaisevat ([[node:sys-hybrid-search|Hybridihaku]])",
           "Re-ranking: haet enemmän ehdokkaita (esim. top-20), sitten uudelleenjärjestät erillisellä mallilla ja jätät parhaat top-3-5 — topin tarkkuus nousee, mutta viive ja kulu lisääntyvät",
-          "Sovita malli tehtävään: pieni määrä → naive; erityiset termit → hybrid; paljon meluisia ehdokkaita ja tarkkuus tarvitaan → re-rank",
+          "Sovita malli tehtävään: pieni määrä, sitten naive; erityiset termit, sitten hybrid; paljon meluisia ehdokkaita ja tarkkuus tarvitaan, sitten re-rank",
           "Muista laatuportaikko solmusta: naive ~50-60%, relevanssitarkistuksin 75-85%, re-rankingin kanssa 90%+ hyviä vastauksia"
         ],
         "validate": "Osaat konkreettiselle tehtävälle perustella mallin valinnan ja nimetä mistä maksat lisämonimutkaisuudesta (viive, kulu, ylläpito).",
@@ -4365,7 +4365,7 @@
         "time": "",
         "why": "Komponenttien ymmärtäminen ei riitä — pitää nähdä ne koottuina. Minimi toimiva RAG on yksinkertaisempi kuin näyttää: sen voi kuvata 5 vaiheessa. Tämä on perusta jonka päälle hybrid ja re-rank myöhemmin kerrostetaan.",
         "instructions": [
-          "Offline-vaihe: kerää dokumentit → leikkaa paloiksi → muunna vektoreiksi → laita indeksiin/vektorivarastoon",
+          "Offline-vaihe: kerää dokumentit, sitten leikkaa paloiksi, sitten muunna vektoreiksi, sitten laita indeksiin/vektorivarastoon",
           "Online-vaihe, askel 1: muunna käyttäjän kysely vektoriksi samalla tavalla kuin dokumentit",
           "Online-vaihe, askel 2: retriever etsii indeksistä top-N lähintä palaa tällä vektorilla",
           "Online-vaihe, askel 3: kokoa kehote = ohje + löydetyt palat + kysely; ohje vaatii eksplisiittisesti \"vastaa vain kontekstista ja anna linkit\"",
@@ -4379,7 +4379,7 @@
         "time": "",
         "why": "RAG ei ole hopealuoti. Arkkitehtuurilla on sisäänrakennettuja heikkoja kohtia: ne ovat ennustettavia, ja tuntemalla ne suunnittelet järjestelmän kestäväksi etkä paikkaa valitusten jälkeen.",
         "instructions": [
-          "Roska sisään = roska ulos: vanhentuneet, päällekkäiset, luonnosdokumentit indeksissä → retriever löytää itsevarmasti melua. Rakenna prosessi vanhentuneiden poistolle",
+          "Roska sisään = roska ulos: kun indeksissä on vanhentuneet, päällekkäiset, luonnosdokumentit, retriever löytää itsevarmasti melua. Rakenna prosessi vanhentuneiden poistolle",
           "Haku on pullonkaula: jos tarvittava pala ei ole top-N:ssä, generaattori ei näe sitä ja joko vaikenee tai keksii; vastauksen laatu on katossa haun laadun mukaan",
           "Hallusinaatiot kontekstin päälle: oikeillakin paloilla LLM voi keksiä — paranee tiukalla ohjeella ja lähteiden näytöllä tarkistusta varten",
           "Palastelu repii merkityksen: liian hieno leikkaus menettää kontekstin, liian karkea laimentaa relevanssia — tämä on arkkitehtoninen, ei \"säätö\"-riski ([[node:sys-chunking-strategies|Palastelustrategiat]])",
@@ -4484,10 +4484,10 @@
         "time": "",
         "why": "Valinta riippuu kahdesta asiasta: kuinka iso konteksti on ja kuinka paljon se muuttuu askeleelta toiselle. Nämä kaksi kysymystä antavat valmiin vastauksen.",
         "instructions": [
-          "2-3 askelta ja pieni konteksti → täysi. Älä monimutkaista.",
-          "Iso, dynaaminen konteksti (pitkät keskustelut, monivaiheinen tutkimus) → tiivistelmä, jota päivitetään kasvaessa.",
-          "Tiedät tarkalleen, mitä kenttiä askel tarvitsee → strukturoitu: välitä vain ne.",
-          "Data on iso ja sijaitsee lähteessä, johon askel pääsee → viitteellinen."
+          "2-3 askelta ja pieni konteksti, sitten täysi. Älä monimutkaista.",
+          "Iso, dynaaminen konteksti (pitkät keskustelut, monivaiheinen tutkimus): tiivistelmä, jota päivitetään kasvaessa.",
+          "Tiedät tarkalleen, mitä kenttiä askel tarvitsee, sitten strukturoitu: välitä vain ne.",
+          "Data on iso ja sijaitsee lähteessä, johon askel pääsee, sitten viitteellinen."
         ],
         "validate": "Jokaisesta workflow:si siirtymästä osaat nimetä valitun strategian ja yhden syyn valinnalle.",
         "tip": "Aloita yksinkertaisimmasta, mikä toimii. Lisää monimutkaisuutta vain, kun törmäät kustannukseen tai rajaan."
@@ -4673,7 +4673,7 @@
     "title": "Chunking-strategiat RAG:lle",
     "subtitle": "Miten dokumenttien pilkkominen ratkaisee retrieval-laadun",
     "totalTime": "6 vaihetta",
-    "whatItIs": "Chunking on dokumenttien jakamista paloiksi (chunkeiksi) ennen embedingiä. Se on [[node:sys-rag-architecture|RAG-putken]] perustavaa laatua oleva askel: se, mitä malli löytää ja lainaa, riippuu chunkingista enemmän kuin vector storen tai embedding-mallin valinnasta.\n\nNeljä perusstrategiaa: fixed-size (N tokenia overlapilla), recursive splitter (kappale→lause→sana), semantic chunking (raja siellä missä aihe vaihtuu) ja document-aware (rakenteen mukaan: headings, code blocks, taulukot). Tämä kurssi opettaa valitsemaan strategian sisältötyypin mukaan eikä rikkomaan retrievalia chunkin rajoilla.",
+    "whatItIs": "Chunking on dokumenttien jakamista paloiksi (chunkeiksi) ennen embedingiä. Se on [[node:sys-rag-architecture|RAG-putken]] perustavaa laatua oleva askel: se, mitä malli löytää ja lainaa, riippuu chunkingista enemmän kuin vector storen tai embedding-mallin valinnasta.\n\nNeljä perusstrategiaa: fixed-size (N tokenia overlapilla), recursive splitter (kappaleesta lauseeseen, sitten sanaan), semantic chunking (raja siellä missä aihe vaihtuu) ja document-aware (rakenteen mukaan: headings, code blocks, taulukot). Tämä kurssi opettaa valitsemaan strategian sisältötyypin mukaan eikä rikkomaan retrievalia chunkin rajoilla.",
     "approach": "Älä opettele numeroita ulkoa — testaa omalla datalla. Ota oikea korpus, aja 2-3 chunk_size- ja overlap-varianttia, mittaa recall eval-setissä. Intuitio oikeasta koosta syntyy vain omalla sisällöllä tehdystä A/B:stä.",
     "outcomes": [
       "Ymmärrät, miksi chunking on huonon RAG:n pääsyy (60-70 % diagnooseista)",
@@ -4723,8 +4723,8 @@
         "time": "",
         "why": "Huono chunking rikkoo kaiken muun putkessa, mutta se korjataan viimeisenä — malli vaihdetaan ensin, vaikka chunkin koko on syyllinen 60-70 % tapauksista.",
         "instructions": [
-          "Opi mekaniikka: liian iso chunk → embedding hämärtyy \"keskiarvomerkityksen\" vektoriksi, top-N vetää mukaan roskaa.",
-          "Liian pieni chunk → konteksti menetetään, eikä malli tiedä mistä fragmentti kertoo.",
+          "Opi mekaniikka: liian iso chunk hämärtää embeddingin \"keskiarvomerkityksen\" vektoriksi, ja top-N vetää mukaan roskaa.",
+          "Liian pieni chunk: konteksti menetetään, eikä malli tiedä mistä fragmentti kertoo.",
           "Kytke tämä [[node:sys-rag-architecture|RAG-arkkitehtuuriin]]: chunking on ennen embedingiä ja määrittää mitä ylipäänsä voi retrievata.",
           "Omaksu sääntö: kun joku sanoo \"RAG vastaa huonosti\", tarkista chunking ensin, ei mallia."
         ],
@@ -4737,7 +4737,7 @@
         "why": "Ilman erojen ymmärtämistä päädyt oletuksena fixed-sizeen — yksinkertaisimpaan ja eniten kontekstia menettävään strategiaan.",
         "instructions": [
           "Fixed-size: N tokenia (yleensä 256-512) 10-20 % overlapilla. Yksinkertainen ja nopea, mutta repii kontekstin rajoilla.",
-          "Recursive splitter (LangChain RecursiveCharacterTextSplitter): jakaa kappaleen → lauseen → sanan kunnes pala mahtuu. Paras oletus proosalle.",
+          "Recursive splitter (LangChain RecursiveCharacterTextSplitter): jakaa kappaleesta lauseeseen, sitten sanaan kunnes pala mahtuu. Paras oletus proosalle.",
           "Semantic chunking: viereisiä lauseita verrataan embedding-similarityllä, raja on missä similarity laskee (aiheen vaihtuminen). Kalliimpi ingestoinnissa, tarkempi retrievalissa.",
           "Document-aware: huomioi rakenteen (markdown headings, HTML tags, code blocks). Chunk on looginen sektio, ei mielivaltainen ikkuna.",
           "Muista overlapin rooli: se säilyttää faktan, joka osuu kahden chunkin rajalle."
@@ -4750,11 +4750,11 @@
         "time": "",
         "why": "Valinta seuraa sisältötyyppiä, ei muotia: väärä strategia upottaa heikon retrievalin, jota mallin viritys ei paranna.",
         "instructions": [
-          "Proosa / artikkelit / docs → recursive splitter, chunk_size 256-512. Nopea ja riittävä.",
-          "Sekaformaatti (koodi + teksti) → document-aware lohkotyypin mukaan.",
-          "Pitkät rakenteiset dokumentit (kontraktit, research papers) → semantic chunking.",
-          "Tabular / structured data → row-based pilkkominen, ei text-based.",
-          "FAQ-tyyppinen sisältö → pienempi chunk_size (128-256), tekniset docit → suurempi (512-1024)."
+          "Proosa / artikkelit / docs: recursive splitter, chunk_size 256-512. Nopea ja riittävä.",
+          "Sekaformaatti (koodi + teksti): document-aware lohkotyypin mukaan.",
+          "Pitkät rakenteiset dokumentit (kontraktit, research papers): semantic chunking.",
+          "Tabular / structured data: row-based pilkkominen, ei text-based.",
+          "FAQ-tyyppinen sisältö: pienempi chunk_size (128-256), tekniset docit: suurempi (512-1024)."
         ],
         "validate": "Kolmelle sisältötyypillesi osaat nimetä strategian ja arvioidun chunk_sizen perusteluineen.",
         "tip": "Jos olet kahden vaihtoehdon välissä, se on signaali A/B-testata, ei arvata. Eval-setti vastaa tarkemmin kuin intuitio."
@@ -4941,7 +4941,7 @@
     "subtitle": "ETL dokumenteille jotka syöttävät RAGia: lähteestä vektoriksi indeksissä",
     "totalTime": "6 vaihetta",
     "whatItIs": "Document ingestion -pipeline on jatkuvasti toimiva konveijeri, joka vetää dokumentteja lähteistä (Notion, Confluence, Drive, GitHub, Zendesk), parsii, normalisoi, deduplikoi, chunkkaa, laskee embeddingsit ja kirjoittaa ne [[node:sys-rag-architecture|vector storeen]]. Ei kertaluonteinen skripti vaan palvelu jossa on incremental sync, deletion handling, retryt ja monitorointi.",
-    "approach": "Seuraamme dokumentin todellista elinkaarta: ensin ymmärrämme miksi jatkuva pipeline tarvitaan (eikä one-shot skripti), sitten käymme läpi koko ketjun extraction → siivous → chunking → embeddings → indeksi, lisäämme inkrementaalisen päivityksen ja deletion handlingin, rakennamme minimaalisen event-driven arkkitehtuurin, tarkastelemme rajat ja riskit (roska sisään, duplikaatit, drift) ja päätämme metriikkojen tarkistuslistaan.",
+    "approach": "Seuraamme dokumentin todellista elinkaarta: ensin ymmärrämme miksi jatkuva pipeline tarvitaan (eikä one-shot skripti), sitten käymme läpi koko ketjun extraction, sitten siivous, sitten chunking, sitten embeddings, sitten indeksi, lisäämme inkrementaalisen päivityksen ja deletion handlingin, rakennamme minimaalisen event-driven arkkitehtuurin, tarkastelemme rajat ja riskit (roska sisään, duplikaatit, drift) ja päätämme metriikkojen tarkistuslistaan.",
     "outcomes": [
       "Ymmärrät miksi RAG degradoituu viikoissa ilman putkea ja miten incremental sync eroaa yöllisestä full re-syncistä",
       "Tunnet ketjun jokaisen vaiheen: extraction, normalization, dedup, chunking, embedding, upsert — ja mitä kukin tekee",
@@ -4965,10 +4965,10 @@
     ],
     "pitfalls": [
       "Yöllinen full re-sync ainoana strategiana: 100k+ dokumentille tunteja computea ja vanhentunut indeksi 23 tuntia vuorokaudessa — tarvitset incremental + viikoittainen full",
-      "Poistojen käsittelemättä jättäminen: lähteestä poistettu dokumentti jää indeksiin → vastauksia 404-linkillä ja privacy-ongelma",
+      "Poistojen käsittelemättä jättäminen: lähteestä poistettu dokumentti jää indeksiin, jolloin tulee vastauksia 404-linkillä ja privacy-ongelma",
       "Parsing ilman error handlingia: yksi corrupted PDF rikkoo koko batchin — try/except per dokumentti ja dead-letter queue ovat pakollisia",
       "Ei dedupia: sama FAQ 3 lähteestä palauttaa 3 samaa tulosta ja murentaa luottamuksen",
-      "Embeddings ilman version-trackingia: mallin vaihdon jälkeen puoli indeksiä vanhoilla vektoreilla, puoli uusilla → haku degradoituu"
+      "Embeddings ilman version-trackingia: mallin vaihdon jälkeen puoli indeksiä vanhoilla vektoreilla, puoli uusilla, jolloin haku degradoituu"
     ],
     "exercises": [
       {
@@ -4977,7 +4977,7 @@
       },
       {
         "question": "Dokumentti poistettiin lähteestä. Kuvaa mitä putkessa on tapahduttava jotta sitä ei enää siteerata, ja soft vs hard delete -ero.",
-        "hint": "Poistosignaali (webhook tai periodic diff) → toiminto [[node:sys-rag-architecture|vector storessa]]. Soft delete = tombstone + filter, hard delete = DELETE + audit compliancelle."
+        "hint": "Poistosignaali (webhook tai periodic diff) laukaisee toiminnon [[node:sys-rag-architecture|vector storessa]]. Soft delete = tombstone + filter, hard delete = DELETE + audit compliancelle."
       },
       {
         "question": "RAGin recall on hitaasti laskenut kuukauden ilman selvää syytä. Mitkä pipeline-metriikat tarkistat ensin?",
@@ -4999,14 +4999,14 @@
         "tip": "Suunnittele pipeline heti kun RAG viedään tuotantoon — \"lisätään myöhemmin\" ei lähes koskaan tule."
       },
       "s2": {
-        "title": "Ketju: extraction → siivous → chunking → embeddings → indeksi",
+        "title": "Ketju: extraction, sitten siivous, sitten chunking, sitten embeddings, sitten indeksi",
         "time": "",
         "why": "Jokainen vaihe ratkaisee oman tehtävänsä, ja virhe varhaisessa vaiheessa (roskainen parsing) myrkyttää kaiken alavirrassa. Konveijeri on nähtävä kokonaisuutena.",
         "instructions": [
           "Extraction: parsi tyypin mukaan — PDF (PyMuPDF, Unstructured), HTML (BeautifulSoup, trafilatura), Office (python-docx), Markdown",
           "Normalization: Unicode NFC, boilerplaten poisto (nav, footer), language detection, encodingin korjaus",
           "Deduplication: full-text hash + near-dup detection (MinHash / SimHash) yhden dokumentin eri versioille",
-          "Chunking → embeddings: pilko lähteen strategian mukaan (ks. [[node:sys-chunking-strategies|chunking-strategiat]]), laske sitten vektorit batcheissa",
+          "Chunking, sitten embeddings: pilko lähteen strategian mukaan (ks. [[node:sys-chunking-strategies|chunking-strategiat]]), laske sitten vektorit batcheissa",
           "Upsert indeksiin: kirjoita chunkit embeddingsien kanssa [[node:sys-rag-architecture|vector storeen]] metadatan kanssa (source, doc_id, mallin versio)"
         ],
         "validate": "Jokaiselle 5 vaiheelle osaat nimetä sen syötteen, tulosteen ja yhden tyypillisen virhetilan.",
@@ -5017,7 +5017,7 @@
         "time": "",
         "why": "Tämä on production-putken sydän: incremental sync pitää indeksin tuoreena ilman täyttä uudelleenindeksointia, ja poistojen käsittely sulkee privacy/compliance-aukot.",
         "instructions": [
-          "Webhook-driven (suositeltu): Notion, Linear, GitHub lähettävät eventit → enqueue → process, latenssi lähteestä indeksiin 1-10 min",
+          "Webhook-driven (suositeltu): Notion, Linear, GitHub lähettävät eventit, sitten enqueue, sitten process, latenssi lähteestä indeksiin 1-10 min",
           "Polling fallback lähteille ilman webhookeja: cursor `updated_at`:llä + diff, intervalli 5 min — 1 h volyymin mukaan",
           "Viikoittainen full re-sync catch-upina pelätyille eventeille ja data driftiä vastaan — kallis mutta pakollinen",
           "Deletion: soft delete (tombstone + filter `is_deleted = false`) nopeudelle, hard delete (DELETE indeksistä) GDPR:lle pakollisella auditilla",
@@ -5033,8 +5033,8 @@
         "instructions": [
           "Connectorit julkaisevat eventit jonoon: `{source, doc_id, action: upsert|delete}` (esim. SQS:n kautta)",
           "Worker `delete`-eventillä: poistaa chunkit filtterillä `{source, doc_id}` indeksistä ja kirjoittaa audit_logiin",
-          "Worker `upsert`-eventillä: fetch → parse → normalize → vertaa tekstin sha256 edelliseen hashiin, skip jos sama",
-          "Muutoksella: chunk lähteen strategialla → embed_batch → poista dokumentin vanhat chunkit → upsert uudet → tallenna uusi hash",
+          "Worker `upsert`-eventillä: fetch, sitten parse, sitten normalize, sitten vertaa tekstin sha256 edelliseen hashiin, skip jos sama",
+          "Muutoksella: chunk lähteen strategialla, sitten embed_batch, sitten poista dokumentin vanhat chunkit, sitten upsert uudet, sitten tallenna uusi hash",
           "Parse-failuret ja loppuun käytetyt retryt menevät dead-letter queueen alertilla kun failure rate > 1%"
         ],
         "validate": "Sinulla on toimiva sykli jossa muuttumattoman dokumentin uudelleenkäsittely ei kirjoita mitään indeksiin (idempotent hashin kautta).",
@@ -5046,7 +5046,7 @@
         "why": "Putket rikkoutuvat hiljaa: connector kaatuu, embeddings hajoaa versioihin, duplikaatit kasaantuvat. Rajat on tunnettava ja riskit suljettava etukäteen.",
         "instructions": [
           "Roska sisään: yksi corrupted PDF ei saa tappaa batchia — try/except per dokumentti + dead-letter queue, alert yli 1% failureilla",
-          "Duplikaatit: exact hash match → drop; MinHash similarity > 0.95 → pidä uudempi, merkitse duplikaatiksi (normaali dedup rate 5-15%)",
+          "Duplikaatit: exact hash match, sitten drop; MinHash similarity > 0.95, sitten pidä uudempi, merkitse duplikaatiksi (normaali dedup rate 5-15%)",
           "Embedding-versiot: track `embedding_model_version` metadatassa + migraatiostrategia, muuten puoli indeksiä on vanhalla mallilla",
           "Drift: viikoittainen full re-sync + alert ingestion lagiin jotta kuollut connector ei jäädytä indeksiä huomaamatta",
           "Retryt flaky-lähteille — exponential backoff jottet törmää lähteen rate limitteihin"
@@ -5110,7 +5110,7 @@
         "hint": "Mieti, jakautuuko tehtävä itsenäisiin osiin ja kuka kokoaa tuloksen. Katso [[node:sys-parallel-fan-out|parallel fan-out]]."
       },
       {
-        "question": "Tiimi haluaa «AI kirjoittaa → AI kritisoi → kirjoittaa uudelleen → kritisoi taas...» ilman rajoja. Mikä on riski ja miten suljet sen?",
+        "question": "Tiimi haluaa «AI kirjoittaa, sitten AI kritisoi, sitten kirjoittaa uudelleen, sitten kritisoi taas...» ilman rajoja. Mikä on riski ja miten suljet sen?",
         "hint": "Tämä on reflection/debate-pattern. Mitä tapahtuu ilman kattoa kierrosten määrälle?"
       },
       {
@@ -5139,7 +5139,7 @@
         "instructions": [
           "Supervisor-worker: pomo-agentti jakaa tehtävän, erikoistuneet apurit tekevät osat, pomo kokoaa tuloksen. Katso [[node:sys-supervisor-worker|supervisor-worker]]",
           "Parallel (fan-out): yksi tehtävä pilkotaan samanlaisiin osiin, agentit käsittelevät ne rinnakkain, tulokset yhdistetään. Katso [[node:sys-parallel-fan-out|parallel fan-out]]",
-          "Pipeline: agentit ovat jonossa kuin liukuhihnalla — yhden tuotos on seuraavan syöte (luokittele → käsittele → muotoile)",
+          "Pipeline: agentit ovat jonossa kuin liukuhihnalla — yhden tuotos on seuraavan syöte (luokittele, sitten käsittele, sitten muotoile)",
           "Debate/keskustelu: useat agentit tuottavat eri vaihtoehtoja tai kritisoivat toisiaan, erillinen agentti valitsee parhaan tai yhdistää vahvuudet",
           "Kirjoita kullekin patternille yksi sana sen tarkoitukselle: jaettavuus / mittakaava / vaiheet / laatu-vertailun-kautta"
         ],
@@ -5152,8 +5152,8 @@
         "why": "Väärä pattern tekee järjestelmästä kalliin, hitaan ja debuggaamattoman. Oikea tekee siitä ennustettavan ja halvan ylläpitää. Valinta lähtee tehtävän signaalista, ei trendeistä.",
         "instructions": [
           "Ota signaali jonka löysit vaiheessa 1 ja yhdistä se patterniin",
-          "Tehtävä jakautuu erilaisiin alitehtäviin → supervisor-worker; jakautuu samanlaisiin osiin mittakaavassa → parallel",
-          "Tehtävä kulkee selkeiden vaiheiden läpi järjestyksessä → pipeline; tarvitsee eri näkökulmia tai iteratiivista laatua → debate",
+          "Tehtävä jakautuu erilaisiin alitehtäviin, sitten supervisor-worker; jakautuu samanlaisiin osiin mittakaavassa, sitten parallel",
+          "Tehtävä kulkee selkeiden vaiheiden läpi järjestyksessä, sitten pipeline; tarvitsee eri näkökulmia tai iteratiivista laatua, sitten debate",
           "Valitse TÄSMÄLLEEN yksi pääskeema. Jos tarvitset enemmän, lisää toinen pienenä työkaluna ensimmäisen sisään, ei rinnakkaisena työnä",
           "Vertaa orkestroinnin periaatteisiin: [[node:ai-orchestration|agenttien orkestrointi]]"
         ],
@@ -5167,7 +5167,7 @@
         "instructions": [
           "Ota tukitehtävä: saapuva pyyntö pitää luokitella ja reitittää oikealle asiantuntijalle — tämä on pipeline + supervisor-worker",
           "Vaihe 1: koordinaattori-agentti saa viestin ja määrittää tyypin (salasana / lasku / bugi / valitus)",
-          "Vaihe 2: reitittää erikoistuneelle workerille — jokaisella oma datansa ja ohjeensa; monimutkaiset tapaukset ja valitukset → ihmiselle",
+          "Vaihe 2: reitittää erikoistuneelle workerille — jokaisella oma datansa ja ohjeensa; monimutkaiset tapaukset ja valitukset menevät ihmiselle",
           "Vaihe 3: worker tekee oman osansa ja palauttaa vastauksen; koordinaattori muotoilee sen ja lähettää asiakkaalle",
           "Jäljitä missä hallinta siirtyy agenttien välillä — se on luovutusprotokolla. Katso [[node:sys-handoff-protocols|luovutusprotokollat]]"
         ],
@@ -5212,15 +5212,15 @@
     "approach": "Älä rakenna kaiken-tekevää agenttia. Aloita supervisorista, joka ei suorita itse mitään, plus 2-3 workeria selkein rajoin. Reititys kulkee [[node:sys-branching-logic|branching logicin]] kautta, tehtävien välitys strukturoidun [[node:sys-handoff-protocols|handoffin]] kautta. Testaa jokainen worker ensin erikseen, kytke sitten silmukka ja mittaa pullonkaula — supervisor itse.",
     "outcomes": [
       "Tiedät, milloin supervisor-worker on perusteltu vs. milloin prompt chaining tai fan-out riittää",
-      "Suunnittelit supervisorin: hajota → delegoi → syntetisoi, ilman spesialisoitunutta suoritusta",
+      "Suunnittelit supervisorin: hajota, sitten delegoi, sitten syntetisoi, ilman spesialisoitunutta suoritusta",
       "Määrittelit 2-3 workeria päällekkäisyydettömin rajoin ja kapein toolset-joukoin",
-      "Rakensit silmukan: suunnitelma → sekventiaaliset worker-kutsut → synteesi audit trailin kanssa",
+      "Rakensit silmukan: suunnitelma, sitten sekventiaaliset worker-kutsut, sitten synteesi audit trailin kanssa",
       "Asetit rajat: max-depth, max-workers-per-turn, latenssin ja costin hallinta"
     ],
     "applyIn": [
       {
         "title": "Research-agentti",
-        "description": "Supervisor delegoi: web research → data-analyysi → briefin kirjoitus. Jokainen vaihe on erillinen worker omine tooleineen."
+        "description": "Supervisor delegoi: web research, sitten data-analyysi, sitten briefin kirjoitus. Jokainen vaihe on erillinen worker omine tooleineen."
       },
       {
         "title": "Customer ops",
@@ -5260,7 +5260,7 @@
         "instructions": [
           "Painota ydin: supervisor hajottaa ja syntetisoi, workerit suorittavat kapeita tehtäviä.",
           "Tarkista soveltuvuuskriteeri: tehtävä vaatii 3+ erilaista asiantuntemusta JA askeleita ei voi lukita etukäteen.",
-          "Karsi vaihtoehdot: yksi tehtävätyyppi → yksi agentti; tiukka sekvenssi → [[node:sys-prompt-chaining|prompt chaining]]; parallel samat tehtävät → [[node:sys-parallel-fan-out|fan-out]].",
+          "Karsi vaihtoehdot: yksi tehtävätyyppi, sitten yksi agentti; tiukka sekvenssi, sitten [[node:sys-prompt-chaining|prompt chaining]]; parallel samat tehtävät, sitten [[node:sys-parallel-fan-out|fan-out]].",
           "Pidä mielessä, että supervisor on sekventiaalinen dispatcher, ei parallel."
         ],
         "validate": "Osaat sanoa yhdellä lauseella, miksi juuri supervisor-worker eikä chaining/fan-out/yksi agentti.",
@@ -5277,7 +5277,7 @@
           "Lisää synteesitila: supervisor aggregoi workerien tulokset lopulliseksi vastaukseksi."
         ],
         "validate": "Supervisorin promptti ei sisällä yhtään aihealuetyökalua — vain delegoinnin ja synteesin.",
-        "tip": "Hyvä supervisor lukeutuu dispatcherina: \"annettu X → kutsu workerit A ja B → kokoa vastaus\", ilman \"miten\" alitehtävä tehdään."
+        "tip": "Hyvä supervisor lukeutuu dispatcherina: \"annettu X, kutsu workerit A ja B, kokoa vastaus\", ilman \"miten\" alitehtävä tehdään."
       },
       "s3": {
         "title": "Workereiden rooli",
@@ -5286,7 +5286,7 @@
         "instructions": [
           "Jaa vastuu domainin tai actionin mukaan niin, etteivät rajat mene päällekkäin.",
           "Anna jokaiselle workerille oma systeempromptti (500-1500 tokenia) ja 2-5 toolia, ei enempää.",
-          "Sovita malli tehtävään: yksinkertainen lookup → Haiku, päättely/analyysi → Sonnet.",
+          "Sovita malli tehtävään: yksinkertainen lookup, sitten Haiku, päättely/analyysi, sitten Sonnet.",
           "Anna jokaiselle workerille oma eval-set, jotta voit testata sen erikseen (ks. [[node:sys-evals-benchmarks|evals]])."
         ],
         "validate": "Mille tahansa alitehtävälle on yksiselitteistä, mikä yksi worker siitä vastaa.",
@@ -5295,7 +5295,7 @@
       "s4": {
         "title": "Miten silmukka kytketään",
         "time": "",
-        "why": "Kytkentä muuttaa supervisorin ja workerit toimivaksi järjestelmäksi: suunnitelma → kutsut → synteesi. Ilman audit trailia et voi debugata \"miksi tulos on heikko\".",
+        "why": "Kytkentä muuttaa supervisorin ja workerit toimivaksi järjestelmäksi: suunnitelma, sitten kutsut, sitten synteesi. Ilman audit trailia et voi debugata \"miksi tulos on heikko\".",
         "instructions": [
           "Vaihe 1: supervisor palauttaa syötteestä delegointisuunnitelman (mitkä workerit ja millä syötteellä).",
           "Vaihe 2: kutsu suunnitelman workereita sekventiaalisesti ja kerää tulokset yhteiseen dictiin.",
@@ -5478,7 +5478,7 @@
       "Ymmärrät, miksi formaali handoff-protokolla on parempi kuin koko keskustelun edelleenvälitys",
       "Tunnet handoff-paketin 5 pakollista komponenttia: task, context, state, constraints, success_criteria",
       "Osaat koota strukturoidun handoff-viestin, jonka vastaanottaja lukee sekunneissa",
-      "Näet rajat ja riskit: kontekstin menetys, äärettömät A→B→A-silmukat, yksityisdatan vuotaminen lokeihin",
+      "Näet rajat ja riskit: kontekstin menetys, äärettömät A, sitten B, sitten A -silmukat, yksityisdatan vuotaminen lokeihin",
       "Sinulla on tarkistuslista handoffin validoimiseksi ennen tuotantoon vientiä"
     ],
     "applyIn": [
@@ -5488,11 +5488,11 @@
       },
       {
         "title": "Peräkkäinen agenttiputki",
-        "description": "research-agentti → writer-agentti → editor-agentti: kukin välittää kompaktin paketin viittauksineen artifactteihin, ei koko kontekstiaan."
+        "description": "research-agentti, sitten writer-agentti, sitten editor-agentti: kukin välittää kompaktin paketin viittauksineen artifactteihin, ei koko kontekstiaan."
       },
       {
         "title": "Human-in-the-loop",
-        "description": "Agentti valmistelee tuloksen → ihminen tarkistaa → agentti jatkaa. Ilman eksplisiittistä pakettia ihminen ei tiedä, mitä on tehty tai mihin pysähtyä."
+        "description": "Agentti valmistelee tuloksen, sitten ihminen tarkistaa, sitten agentti jatkaa. Ilman eksplisiittistä pakettia ihminen ei tiedä, mitä on tehty tai mihin pysähtyä."
       }
     ],
     "pitfalls": [
@@ -5500,7 +5500,7 @@
       "Handoff ilman success_criteriaa — vastaanottaja ei tiedä milloin pysähtyä ja joko ylityö tai alityö.",
       "trace_id:n menettäminen handoffeissa: lokit hajoavat ja handoff-failureiden debug kestää huomattavasti kauemmin.",
       "PII:n ja salaisuuksien laittaminen suoraan pakettiin: ne päätyvät jokaisen agentin lokeihin — välitä viittaukset (ID:t) ja resolvoi arvot luotetun rajan sisällä.",
-      "Handoff ilman max-hopsia: A→B→A→B muuttuu äärettömäksi pingikseksi. Tarvitaan kova hyppyraja (3–5) ja eskalointi ylityksessä."
+      "Handoff ilman max-hopsia: A, sitten B, sitten A, sitten B muuttuu äärettömäksi pingikseksi. Tarvitaan kova hyppyraja (3–5) ja eskalointi ylityksessä."
     ],
     "exercises": [
       {
@@ -5522,7 +5522,7 @@
         "time": "",
         "why": "Yhdellä agentilla handoffia ei tarvita. Mutta heti kun ≥2 agenttia jakaa tehtävän, implisiittinen siirto hajoaa kahdella tavalla: joko lähettäjä lähettää kaiken (konteksti ja kustannus räjähtävät) tai lähettää \"jatka\" ilman kontekstia (vastaanottaja kysyy tai hallusinoi). Protokolla poistaa molemmat ääripäät.",
         "instructions": [
-          "Etsi skenaariostasi kaikki kohdat, joissa yksi agentti siirtää työn toiselle: supervisor→worker, agentti→agentti putkessa, agentti→ihminen→agentti.",
+          "Etsi skenaariostasi kaikki kohdat, joissa yksi agentti siirtää työn toiselle: supervisorista workeriin, agentista agenttiin putkessa, agentista ihmiseen ja takaisin agenttiin.",
           "Vastaa kullekin kohdalle: mitä siirretään tänään — koko keskustelu, lyhyt lause vai ei mitään?",
           "Arvioi kustannus: kerro siirretyn kontekstin koko handoffien määrällä tyypillisessä tehtävässä.",
           "Muotoile ongelma sanoiksi: \"vastaanottaja tekee uudelleen\", \"konteksti paisuu\", \"rajoitukset katoavat\"."
@@ -5561,7 +5561,7 @@
       "s4": {
         "title": "Miten soveltaa käytännössä",
         "time": "",
-        "why": "Skeema on hyödytön, kunnes se on kytketty siirtokoodiin. Tämän vaiheen tavoite on koota oikea handoff tyypillisessä skenaariossa (esim. customer support: triage→spesialisti→eskalointi) ja validoida se metriikoita vasten.",
+        "why": "Skeema on hyödytön, kunnes se on kytketty siirtokoodiin. Tämän vaiheen tavoite on koota oikea handoff tyypillisessä skenaariossa (esim. customer support: triage, sitten spesialisti, sitten eskalointi) ja validoida se metriikoita vasten.",
         "instructions": [
           "Kuvaa paketti tietorakenteena (dataclass / typed dict) vaiheiden 2–3 kentillä.",
           "Lähettävässä agentissa: työn jälkeen kokoa paketti — summary raakakontekstin sijaan, artifact-ID:t arvojen sijaan.",
@@ -5584,7 +5584,7 @@
           "Degradaatio: päätä, mitä vastaanottaja tekee epätäydellisellä paketilla — kysyy, eskaloi vai työskentelee sillä mitä on."
         ],
         "validate": "Jokaiselle riskille (konteksti, silmukat, yksityisyys, trace_id) sinulla on konkreettinen suojausmekanismi, ei \"toivotaan ettei satu\".",
-        "tip": "A→B→A→B-silmukka on yleisin piilevä vika. Hyppylaskuri tracessa plus kova katto on halvempi kuin mikään jälkikäteinen lokien kaivelu."
+        "tip": "A, sitten B, sitten A, sitten B -silmukka on yleisin piilevä vika. Hyppylaskuri tracessa plus kova katto on halvempi kuin mikään jälkikäteinen lokien kaivelu."
       },
       "s6": {
         "title": "Tarkistuslista ja validointi",
@@ -5609,7 +5609,7 @@
     "whatItIs": "Tool orchestration on sen hallintaa, miten yksi malli toimii tool-joukon kanssa: mikä tool kutsutaan, missä järjestyksessä, mitä ajetaan parallel, miten käsitellään tulokset ja virheet. Se on kerros [[node:cap-tools|toolien kutsumiskyvyn]] ja oikean agentin välissä, jolla niitä on 3, 10 tai 20. Ilman orchestrationia malli sekoittaa samankaltaiset toolit, tekee kaiken sequentialina ja loopaa failanneilla kutsuilla.",
     "approach": "Etenemme mekaniikasta luotettavuuteen. Ensin ymmärrämme mitä fyysisesti tapahtuu tool use / function calling -aikana (malli pyytää kutsun, koodi suorittaa, tulos palautetaan). Sitten opimme kirjoittamaan kuvaukset niin, että valinta on yksiselitteinen. Seuraavaksi parallel vs sequential ja kutsujen väliset dependencyt. Sitten tulosten ja virheiden käsittely structured-muodossa. Sen jälkeen rajat ja riskit (väärä valinta, loopit, tool budget). Lopuksi checklist ja tarkistus oikealla tool-joukolla.",
     "outcomes": [
-      "Ymmärrät tool use -syklin: malli pyytää kutsun → koodi suorittaa → tulos palautuu → seuraava turn",
+      "Ymmärrät tool use -syklin: malli pyytää kutsun, sitten koodi suorittaa, sitten tulos palautuu, sitten seuraava turn",
       "Kirjoitat tool-kuvaukset niin, että malli valitsee oikean >95 %:ssa tapauksista",
       "Ajat riippumattomat toolit parallelina ja leikkaat latenssin moninkertaisesti",
       "Palautat virheet structured-muodossa, jotta malli valitsee retry / fallback / skip tietoisesti",
@@ -5630,11 +5630,11 @@
       }
     ],
     "pitfalls": [
-      "Sumeat kuvaukset: \"search_data\" ja \"query_db\" eivät erotu → malli valitsee satunnaisesti, jopa 30 % vääriä kutsuja",
+      "Sumeat kuvaukset: \"search_data\" ja \"query_db\" eivät erotu, jolloin malli valitsee satunnaisesti, jopa 30 % vääriä kutsuja",
       "Ei parallel-hinttiä: ilman sitä malli menee sequentialia ~70 %:ssa vaikka toolit ovat riippumattomia",
-      "Riippuvat toolit ilman eksplisiittistä järjestystä: get_user → get_orders ilman hinttiä aiheuttaa järjestysvirheitä",
-      "Ei tool budgetia: malli loopaa ja kutsuu yhtä toolia kymmeniä kertoja → kustannus ja latenssi",
-      "Raw-virheet takaisin: \"500 Internal Server Error\" structured-muodon sijaan → ennustamaton retry tai failure"
+      "Riippuvat toolit ilman eksplisiittistä järjestystä: get_user ja get_orders ilman hinttiä aiheuttaa järjestysvirheitä",
+      "Ei tool budgetia: malli loopaa ja kutsuu yhtä toolia kymmeniä kertoja, jolloin kustannus ja latenssi kasvavat",
+      "Raw-virheet takaisin: \"500 Internal Server Error\" structured-muodon sijaan johtaa ennustamattomaan retryyn tai failureen"
     ],
     "exercises": [
       {
@@ -5656,7 +5656,7 @@
         "time": "",
         "why": "Ennen valinnan ja parallelin virittämistä pitää nähdä sykli: malli ei suorita tooleja itse — se pyytää kutsun, koodi suorittaa, tulos palaa. Orchestration hallitsee tätä sykliä kun tooleja on monta.",
         "instructions": [
-          "Opettele tool use / function calling -sykli: malli palauttaa tool_use → koodisi suorittaa → tulos palautuu tool_resultina → malli ottaa seuraavan turnin",
+          "Opettele tool use / function calling -sykli: malli palauttaa tool_use, sitten koodisi suorittaa, sitten tulos palautuu tool_resultina, sitten malli ottaa seuraavan turnin",
           "Erota orchestration pelkästä toolien kutsumiskyvystä (ks. [[node:cap-tools|tool use]]) — orchestration on valinnasta, järjestyksestä ja kestävyydestä tool-joukolla",
           "Sido se ylempään kerrokseen: orchestration on osa [[node:systems|järjestelmien rakentamista Claudesta]] ja [[node:ai-orchestration|AI-orchestrationia]]",
           "Listaa nykyinen tool-joukkosi ja merkitse montako niitä on ja mitkä muistuttavat toisiaan"
@@ -5698,7 +5698,7 @@
           "Palauta tulokset structured (JSON), ei raakatekstinä — mallin on helpompi poimia tarvittava",
           "Tee virheistä eksplisiittisiä objekteja: { error_code, retry_after, should_retry } eikä \"500 Internal Server Error\"",
           "Kerro failure-politiikka system promptissa: \"If a tool fails twice, skip it and note in response\"",
-          "Erota transient-virheet (rate limit → retry) pysyvistä (ei oikeuksia → skip ja raportoi)"
+          "Erota transient-virheet (rate limit, sitten retry) pysyvistä (ei oikeuksia, sitten skip ja raportoi)"
         ],
         "validate": "Toolin failatessa malli toimii ennustettavasti: toistaa, kiertää tai raportoi — ei jää jumiin.",
         "tip": "should_retry: true|false virhevastauksessa säästää mallin arvailulta ja ylimääräisiltä kutsuilta."
@@ -5768,7 +5768,7 @@
     "exercises": [
       {
         "question": "Ominaisuutesi tekee 50 000 kutsua päivässä kalliilla mallilla hintaan $0.015. Miten puolitat laskun viikossa laadusta tinkimättä?",
-        "hint": "Mittaa ensin yksinkertaisten vs monimutkaisten pyyntöjen osuus. Yksinkertaiset → halpa malli, toistot → välimuisti, pitkä konteksti → tiivistä. Laske säästö vivuittain erikseen."
+        "hint": "Mittaa ensin yksinkertaisten vs monimutkaisten pyyntöjen osuus. Yksinkertaiset, sitten halpa malli, toistot, sitten välimuisti, pitkä konteksti, sitten tiivistä. Laske säästö vivuittain erikseen."
       },
       {
         "question": "Aamulla eilinen lasku oli 10× normaalia korkeampi. Mitkä kaksi mekanismia olisivat varoittaneet aiemmin ja miten ne asetetaan?",
@@ -5917,7 +5917,7 @@
         "why": "Tavallinen APM (CPU/RPS/500-virheet) näyttää että API on elossa, mutta ei että AI toimii hyvin. Voit pitää 100% uptimea ja silti tarjoilla 40% roskavastauksia — tavallinen monitoring ei huomaa. AI hajoaa hiljaa: malli vastaa, mutta huonommin.",
         "instructions": [
           "Kirjoita ylös mitä nykyinen monitoring oikeasti saa kiinni: ovatko nämä infrastruktuurisignaaleja (onko palvelu elossa) vai mallin käyttäytymissignaaleja (ovatko vastaukset hyviä)?",
-          "Muotoile 3 AI:n silent-failure-skenaariota: quality drift (malli vastaa huonommin API:n ollessa elossa), cost spike (yksi käyttäjä polttaa $500/päivä pitkillä konteksteilla), latency tail (p99 nousi 3s → 12s — UX kuoli 1%:lle)",
+          "Muotoile 3 AI:n silent-failure-skenaariota: quality drift (malli vastaa huonommin API:n ollessa elossa), cost spike (yksi käyttäjä polttaa $500/päivä pitkillä konteksteilla), latency tail (p99 nousi 3s:stä 12s:ään — UX kuoli 1%:lle)",
           "Tarkista voiko nykyinen systeemi vastata \"meniko huonommaksi deployn jälkeen vai ei\" — jos ei, kirjaa se aukoksi",
           "Yhdistä observability operatiiviseen silmukkaan: ks. [[node:ai-operations|AI-systeemien operointi]] ja yleinen [[node:systems|production-systeemit]] -node"
         ],
@@ -5960,10 +5960,10 @@
           "Rakenna dashboard 3 panelista: latency (p50/p95/p99 + RPS + error rate), cost ($/päivä featureittain compose/summarize/classify + top-10 kalleinta käyttäjää), quality (output length histogrammi + tool success rate + refusal rate trend)",
           "Aseta poikkeamahälytykset: \"p99 nousi 2× vs rolling 1h avg\", \"cost/hour > 2× rolling avg\", \"refusal rate > 3%\"",
           "Vältä absoluuttisia kynnyksiä kuten \"p99 > 5s\" — ne laukeavat 100×/päivä batch-jobeista ja niiden lukeminen lopetetaan",
-          "Sido reaktio rollbackiin: hälytys → trace-analyysi prompt_versionin mukaan → rollback feature flagilla (ks. [[node:sys-rollback-strategies|rollback-strategiat]])",
+          "Sido reaktio rollbackiin: hälytys, sitten trace-analyysi prompt_versionin mukaan, sitten rollback feature flagilla (ks. [[node:sys-rollback-strategies|rollback-strategiat]])",
           "Reaktioaikatavoite: hälytyksestä rollbackiin — tunteja, ei päiviä"
         ],
-        "validate": "Jokainen 3 keskeisestä hälytyksestä on muotoiltu poikkeamana rolling baselinesta, ja on kirjattu hälytys → trace → rollback -polku.",
+        "validate": "Jokainen 3 keskeisestä hälytyksestä on muotoiltu poikkeamana rolling baselinesta, ja on kirjattu polku hälytyksestä traceen ja rollbackiin.",
         "tip": "Jos hälytys ohitetaan, se on joko liian usein (absoluuttinen kynnys) tai ei johda toimintaan. Jokaisella hälytyksellä pitää olla runbook: mitä tehdä kun se laukeaa."
       },
       "s5": {
@@ -5983,7 +5983,7 @@
       "s6": {
         "title": "Tarkistuslista ja valmiustesti",
         "time": "",
-        "why": "Lopullinen kokoaminen muuttaa hajanaiset asetukset toimivaksi observability-silmukaksi. Tarkistuslista takaa ettei yksikään 5 metriikasta eikä yksikään kerros (metriikka → trace → hälytys) pudonnut pois.",
+        "why": "Lopullinen kokoaminen muuttaa hajanaiset asetukset toimivaksi observability-silmukaksi. Tarkistuslista takaa ettei yksikään 5 metriikasta eikä yksikään kerros (metriikasta traceen ja hälytykseen) pudonnut pois.",
         "instructions": [
           "Metriikat: kaikki 5 signaalia kerätään (latency, cost per call, output distribution, tool-call success, refusal rate), kullakin target",
           "Traces: jokainen request jäljitetään model, prompt_version, user_id, tokens, tool_calls, refusal_flag -tiedoilla, drill-down saatavilla",
@@ -6025,7 +6025,7 @@
     ],
     "pitfalls": [
       "Kaiken logaaminen hot storageen: 100k requestiä × 5k tokenia = ~2GB/päivä pelkkiä prompteja, $30k+/vuosi Datadogissa. Sample full payloads, aggregoi metadata.",
-      "PII plaintextinä — yleisin incident. Email-AI logaa full bodyn → asiakkaan email logeihin → GDPR-rike. Redact ENNEN kirjoitusta, ei jälkikäteen.",
+      "PII plaintextinä — yleisin incident. Email-AI logaa full bodyn, sitten asiakkaan email logeihin, sitten GDPR-rike. Redact ENNEN kirjoitusta, ei jälkikäteen.",
       "Tool-arg-kenttien blacklistaus: uusi secret uudessa työkalussa vuotaa. Whitelist — logaa vain eksplisiittisesti sallitut kentät.",
       "prompt_versionin logaamatta jättäminen: 3 kuukauden päästä et yhdistä huonoa vastausta promptversioon. Sidonta git SHA:han pakollinen (katso [[node:sys-versioning|sys-versioning]]).",
       "Ääretön retention \"varmuuden vuoksi\": GDPR vaatii poistoa, storage kasvaa lineaarisesti, arvo putoaa eksponentiaalisesti. 7/30/90 on standardi."
@@ -6077,7 +6077,7 @@
         "why": "Promptit voivat sisältää käyttäjän PII:tä, completionit generoitua PII:tä, ja tool_callit secretsejä (db_password, tokenit). Wrong logging = GDPR-incident tai credential leak. Redaction tehdään SDK/middleware-tasolla ENNEN kirjoitusta. Yksityiskohdat [[node:pl-privacy|privacyssä]].",
         "instructions": [
           "Rakenna \"älä koskaan logaa\" -lista: API keys, OAuth tokens, raw passwords, korttinumerot, SSN, plaintext PII (email/phone/address)",
-          "Aseta redactor middlewareen ENNEN lokin kirjoitusta: regex emailille/puhelimelle + nimidetektori (esim. Claude Haiku) → korvaa [REDACTED:type]:lla",
+          "Aseta redactor middlewareen ENNEN lokin kirjoitusta: regex emailille/puhelimelle + nimidetektori (esim. Claude Haiku), sitten korvaa [REDACTED:type]:lla",
           "tool_call argumenteille käytä kenttien WHITELISTiä (logaa vain eksplisiittisesti sallitut), älä blacklistiä — muuten uusi secret vuotaa",
           "Varmista että redaction laukeaa MOLEMPIIN suuntiin: promptiin (käyttäjän input) ja completioniin (generoitu teksti)"
         ],
@@ -6091,7 +6091,7 @@
         "instructions": [
           "Jaa tasot: hot 7d (nopea debug, kallis storage kuten Datadog), warm 30d (post-mortem), cold 90d (compliance/audit, halpa storage)",
           "Säilytä full prompts vain sampled ja lyhyellä retentionilla 14-30d max — pidempi = GDPR-riski ja cost spike",
-          "Ota encryption at rest käyttöön sampled-storelle full payloadeilla ja lifecycle-policy hot → cold → delete",
+          "Ota encryption at rest käyttöön sampled-storelle full payloadeilla ja lifecycle-policy hot, sitten cold, sitten delete",
           "Sido prompt_version git SHA:han CI:stä niin että loki yhdistyy yksiselitteisesti [[node:sys-versioning|prompt-versioon]] koodissa"
         ],
         "validate": "Jokaisella lokitasolla on elinaika ja kustannus, ja full prompts poistuvat automaattisesti lifecyclellä — mitään ei säilytetä \"ikuisesti\".",
@@ -6130,7 +6130,7 @@
     "subtitle": "Promptit ovat koodia: semver, lock-filet ja eval-gate, jotta \"AI toimi eilen, ei tänään\" muuttuu debuggattavaksi",
     "totalTime": "6 vaihetta",
     "whatItIs": "Kahden kerroksen kuri. Layer 1 — prompttien versiot: promptit asuvat gitissä fileinä (`prompts/*.yaml`), kantavat semverin, käyvät PR-reviewn ja jokaiseen pyyntöön injektoidaan `prompt_version`. Layer 2 — mallien versiot: snapshot pinning (`claude-sonnet-4-5-20250929`) vs alias (`claude-sonnet-4-5`), plus `models.lock.json` kaikilla pinnatuilla snapshot-ID:llä — analogia `package-lock.json`:lle.",
-    "approach": "Edetään motiivista käytäntöön: miksi versioida ollenkaan → mitä versioon kuuluu (prompti, malli, parametrit, eval-datasetti, tool schema) → miten versiot säilytetään ja sidotaan tuloksiin lokien kautta → miten rollataan takaisin ja vertaillaan versioita → missä rajat ja desync-riskit ovat → lopuksi checklist tarkistuksineen. Pohjana [[node:sys-versioning|versiointi]]-solmu osana [[node:ai-operations|AI-operaatioita]].",
+    "approach": "Edetään motiivista käytäntöön: miksi versioida ollenkaan, sitten mitä versioon kuuluu (prompti, malli, parametrit, eval-datasetti, tool schema), sitten miten versiot säilytetään ja sidotaan tuloksiin lokien kautta, sitten miten rollataan takaisin ja vertaillaan versioita, sitten missä rajat ja desync-riskit ovat, lopuksi checklist tarkistuksineen. Pohjana [[node:sys-versioning|versiointi]]-solmu osana [[node:ai-operations|AI-operaatioita]].",
     "outcomes": [
       "Jokainen AI-vastaus on sidottu pariin (prompt_version, model_snapshot) ja jäljitettävissä tiettyyn committiin",
       "Promptit on siirretty koodista git-versioituihin fileihin semverillä ja PR-reviewllä",
@@ -6220,7 +6220,7 @@
         "time": "",
         "why": "Versiointi maksaa itsensä takaisin regression hetkellä: sinun on palattava toimivaan versioon nopeasti ja ymmärrettävä tarkalleen mikä muuttui \"toimii\" ja \"rikki\" välillä.",
         "instructions": [
-          "Promptin rollback: `git revert` PR → CI redeploy minuuteissa; tai välittömästi [[node:sys-rollback-strategies|feature flag]]:lla vanhaan versioon",
+          "Promptin rollback: `git revert` PR, sitten CI redeploy minuuteissa; tai välittömästi [[node:sys-rollback-strategies|feature flag]]:lla vanhaan versioon",
           "Versioiden vertailu: aja eval-suite molemmilla versioilla ja tuota diff-report (missä vastaukset erosivat)",
           "Eval-gate bumpissa: uuden version pass rate ei saa pudota yli 2% baselinesta — muuten älä shippaa",
           "Mallille: bumppaa snapshot lock-filessä erillisellä PR:llä jossa eval-suite uudella mallilla vs production",
@@ -6311,7 +6311,7 @@
       "s1": {
         "title": "Miksi rollback-strategia tarvitaan",
         "time": "",
-        "why": "Ilman infraa polku detect → debug → fix → PR → CI → deploy vie tunteja tai päiviä. Feature flageilla: detect → flip → sekunteja. Aika detectionista rollbackiin on MTTR, ja customer-facing AI:lla se pitää mitata minuuteissa, koska huonot vastaukset asiakkaille vahingoittavat luottamusta.",
+        "why": "Ilman infraa polku detect, sitten debug, sitten fix, sitten PR, sitten CI, sitten deploy vie tunteja tai päiviä. Feature flageilla: detect, sitten flip, sekunteja. Aika detectionista rollbackiin on MTTR, ja customer-facing AI:lla se pitää mitata minuuteissa, koska huonot vastaukset asiakkaille vahingoittavat luottamusta.",
         "instructions": [
           "Listaa AI-featuresi ja merkitse, mitkä ovat customer-facing tai revenue-critical.",
           "Arvioi jokaiselle nykyinen MTTR: kuinka kauan oikeasti kuluu valituksesta edellisen version palautukseen.",
@@ -6346,14 +6346,14 @@
           "Varmista, että edellinen vakaa versio on saatavilla rollbackiin (ks. [[node:sys-versioning|versiointi]])."
         ],
         "validate": "Simuloitu triggeri siirtää flagin edelliseen versioon automaattisesti alle 5 minuutissa ilman manuaalista toimintoa.",
-        "tip": "Auto-rollback on kriittinen: manuaalinen flip hukkaa 15-30 minuuttia 'ihminen huomasi → päätti → vaihtoi' -ketjuun. Triggerin pitää laueta itse."
+        "tip": "Auto-rollback on kriittinen: manuaalinen flip hukkaa 15-30 minuuttia 'ihminen huomasi, sitten päätti, sitten vaihtoi' -ketjuun. Triggerin pitää laueta itse."
       },
       "s4": {
         "title": "Canary: asteittainen rollout riskiä vastaan",
         "time": "",
         "why": "Paras rollback on se, jota et tarvinnut massamittakaavassa. Canary rullaa uuden version pienelle prosentille liikenteestä ja laajentaa vain jos metriikat pitävät. Näin regressio osuu 1-10%:iin käyttäjistä kaikkien sijaan, ja auto-rollback laukeaa ennen kuin incidentista tulee iso.",
         "instructions": [
-          "Aseta stages: 1% (24h) → 10% (24h) → 50% (24h) → 100%, valiten käyttäjät vakaalla random hashilla.",
+          "Aseta stages: 1% (24h), sitten 10% (24h), sitten 50% (24h), sitten 100%, valiten käyttäjät vakaalla random hashilla.",
           "Pidä jokainen stage seurannassa vähintään 24h tai kunnes N ≥ 1000 requestiä statistical significancen vuoksi.",
           "Vertaa canary-ryhmän metriikoita baseline-ryhmään, ei absoluuttisiin arvoihin.",
           "Kytke samat auto-rollback-triggerit kuin askeleessa 3 — millä tahansa stagella flag putoaa 0%:iin.",
@@ -6379,7 +6379,7 @@
       "s6": {
         "title": "Tarkistuslista ja varmistus game dayllä",
         "time": "",
-        "why": "Rikkinäinen rollback-mekanismi paljastuu juuri incidentin aikana — kalleimpana hetkenä. Quarterly game day simuloi regression ja varmistaa, että koko ketju (detection → trigger → rollback → fallback) toimii tavoitteen alle 5 minuutissa.",
+        "why": "Rikkinäinen rollback-mekanismi paljastuu juuri incidentin aikana — kalleimpana hetkenä. Quarterly game day simuloi regression ja varmistaa, että koko ketju (detection, sitten trigger, sitten rollback, sitten fallback) toimii tavoitteen alle 5 minuutissa.",
         "instructions": [
           "Rakenna tarkistuslista: featurella on flag, canary-stages, auto-triggerit, kill switch fallbackilla ja tallennetut versiot.",
           "Kerran kvartaalissa aja game day: tuo keinotekoisesti regressio ja ota aikaa rollbackiin.",
@@ -6448,7 +6448,7 @@
         "instructions": [
           "Erota kolme vastaustyyppiä: 429 (rate limit — liikenteesi ylitti tierin), 529 (Anthropic ylikuormittunut), 5xx (server error). Reaktio kuhunkin on eri.",
           "Etsi nykyiset RPM/TPM-limitit Anthropicin dokumentaatiosta ja kytke ne tilisi [[node:pl-rate|tier-limitteihin]].",
-          "Ymmärrä cascade-mekaniikka: yksi runaway-script tai viraalipiikki törmää limittiin → 429 leviää koko tieriin → myös interactive-käyttäjät saavat virheitä.",
+          "Ymmärrä cascade-mekaniikka: yksi runaway-script tai viraalipiikki törmää limittiin, sitten 429 leviää koko tieriin, sitten myös interactive-käyttäjät saavat virheitä.",
           "Kirjoita ylös mitä liikennelähteitä APIin sinulla on (interactive, batch, async jobs) — tämä on tulevien jonojen perusta."
         ],
         "validate": "Osaat selittää sanoin miksi 429-pyynnön heti uudelleenyrittäminen on virhe, ja miten se eroaa retrystä 5xx:ssä.",
@@ -6499,7 +6499,7 @@
         "why": "Retry on turvallinen vain idempotenteille operaatioille. Sokea retry ei-idempotentista kutsusta (esim. kirjoitus- tai laskutus-side-effectillä) timeoutissa voi suorittaa toiminnon kahdesti. Ja pitkässä outagessa jopa oikea backoff muuttuu kalliiksi retry-myrskyksi.",
         "instructions": [
           "Jaa kutsut idempotentteihin (turvallista retryata) ja ei-idempotentteihin (kaksoissuoritus vaarallista) — jälkimmäisiä retryaa vain deduplikaatiolla.",
-          "Lisää circuit breaker: 5 failuren / 30s jälkeen mene open-tilaan (fail fast) → half-open 30s jälkeen → closed 3 peräkkäisen onnistumisen jälkeen.",
+          "Lisää circuit breaker: 5 failuren / 30s jälkeen mene open-tilaan (fail fast), sitten half-open 30s jälkeen, sitten closed 3 peräkkäisen onnistumisen jälkeen.",
           "Aseta kustannuskatto: pitkittyneessä outagessa retry-myrsky generoi $1000+ failed calleja — circuit breaker katkaisee sen.",
           "Kytke käyttäytyminen yleiseen error-strategiaan (katso [[node:sys-error-handling|virheenkäsittely]]): retryjen loputtua — selkeä fallback, ei hiljainen roikkuminen."
         ],
@@ -6523,12 +6523,12 @@
   },
   "sys-semantic-cache": {
     "title": "Semanttinen cache",
-    "subtitle": "Merkitykseltään samat kyselyt → valmis vastaus, ilman AI-kutsua",
+    "subtitle": "Merkitykseltään samat kyselyt, sitten valmis vastaus, ilman AI-kutsua",
     "totalTime": "6 vaihetta",
     "whatItIs": "Semanttinen cache vastaa eri sanoin esitettyihin toistuviin kysymyksiin kutsumatta mallia. Saapuvalle pyynnölle lasketaan embedding ([[node:af-embeddings|embeddings]]), [[node:af-vector-db|vector DB:stä]] haetaan samankaltainen aiempi kysely, ja jos cosine similarity ylittää kynnyksen, valmis vastaus palautetaan kymmenissä millisekunneissa hintaan $0.\n\nKyse on infrastruktuuritekniikasta AI:n [[node:ai-operations|tuotantokäyttöön]]: FAQ- ja luokituskuormissa 30-40% kyselyistä on saman asian uudelleenmuotoiluja, eikä tarkka cache saa niitä koskaan kiinni.",
     "approach": "Älä sekoita sitä tarkkaan cacheen äläkä [[node:cap-caching|prompt cachingiin]]: ne cachettavat tekstiä, semanttinen cache merkitystä. Aloita korkeasta kynnyksestä (0.95), cachettaa vain ei-personoidut vastaukset ja suunnittele aina invalidaatio. Ilman näitä kolmea sääntöä cache alkaa nopeasti valehdella.",
     "outcomes": [
-      "Ymmärrät miten semanttinen cache toimii: embedding → samankaltaisen kyselyn haku → valmis vastaus",
+      "Ymmärrät miten semanttinen cache toimii: embedding, sitten samankaltaisen kyselyn haku, sitten valmis vastaus",
       "Erotat tarkan cachen, [[node:cap-caching|prompt cachingin]] ja semanttisen cachen — ja yhdistät ne",
       "Osaat arvioida, kannattaako semanttinen cache tietyllä kuormalla",
       "Tunnet riskit: väärät osumat, henkilötietojen vuoto, vanheneminen",
@@ -6573,7 +6573,7 @@
       "s1": {
         "title": "Mikä semanttinen cache on",
         "time": "",
-        "why": "Ilman selkeää mallia \"merkitykseltään samankaltainen kysely → valmis vastaus\" on helppo odottaa taikuutta ja sijoittaa cache väärään paikkaan.",
+        "why": "Ilman selkeää mallia \"merkitykseltään samankaltainen kysely, sitten valmis vastaus\" on helppo odottaa taikuutta ja sijoittaa cache väärään paikkaan.",
         "instructions": [
           "Lukitse ydin: saapuvalle pyynnölle lasketaan embedding, vector DB:stä haetaan samankaltainen aiempi kysely, ja kynnyksen ylittyessä palautetaan valmis vastaus — mallia ei kutsuta.",
           "Muotoile cachen avainkysymys: \"onko joku kysynyt tätä merkitykseltään viimeisen N päivän aikana?\"",
@@ -6601,7 +6601,7 @@
         "time": "",
         "why": "Samankaltaisuuskynnys on cachen pääsäädin: se asettaa suoraan tasapainon osumien määrän ja väärän vastauksen riskin välillä.",
         "instructions": [
-          "Kyselyn polku: teksti → embedding ([[node:af-embeddings|embeddings]]) → cosine similarity -haku [[node:af-vector-db|vector DB:ssä]] → top-1 ehdokas.",
+          "Kyselyn polku: teksti, sitten embedding ([[node:af-embeddings|embeddings]]), sitten cosine similarity -haku [[node:af-vector-db|vector DB:ssä]], sitten top-1 ehdokas.",
           "Vertaa ehdokkaan similarityä kynnykseen: tyypillinen vaihteluväli on 0.92-0.97.",
           "Lukitse kynnyksen merkitys: 0.97 — strict (vähän vääriä osumia, matalampi hit rate); 0.92 — riskialtis (saat samankaltaisen-mutta-ei-saman vastauksen); 0.95 — toimiva recall/precision-tasapaino.",
           "Osumalla tarkista tietueen tuoreus (TTL) ennen vastauksen palauttamista."
@@ -6688,7 +6688,7 @@
     "exercises": [
       {
         "question": "Sinulla on 4 AI-operaatiota: (1) tunnista postin sävy 1 sekunnissa, (2) kokoa neljännesraportti 2 minuutissa, (3) vastaa kun asiakas kirjoittaa chattiin, (4) kirjoita pitkä email käyttäjän silmien edessä. Mikä pattern kullekin?",
-        "hint": "Kesto + kuka aloittaa + tarvitaanko välitön vastaus. 1 → sync, 2 → async, 3 → webhook, 4 → streaming."
+        "hint": "Kesto + kuka aloittaa + tarvitaanko välitön vastaus. 1, sitten sync, 2, sitten async, 3, sitten webhook, 4, sitten streaming."
       },
       {
         "question": "Operaatio kestää keskimäärin 8 sekuntia, joskus jopa 40. Käyttäjä painaa nappia ja odottaa. Mikä syncissä on vialla ja miten korjaat?",
@@ -6731,9 +6731,9 @@
         "time": "",
         "why": "Patternin valinta ei ole makuasia — se on vastaus 3 selkeään kysymykseen. Käy ne läpi ja pattern on lähes yksiselitteinen.",
         "instructions": [
-          "Kysymys 1: kuka aloittaa? Käyttäjä → sync/async/streaming. Ulkoinen tapahtuma → webhook.",
-          "Kysymys 2: kuinka kauan operaatio kestää? Korkeintaan ~5 sekuntia → sync. Pidempään → async.",
-          "Kysymys 3: tarvitseeko käyttäjä näkyvää edistymistä matkan varrella? Kyllä, ja se on pitkä teksti → streaming.",
+          "Kysymys 1: kuka aloittaa? Käyttäjä aloittaa sync/async/streaming. Ulkoinen tapahtuma aloittaa webhookin.",
+          "Kysymys 2: kuinka kauan operaatio kestää? Korkeintaan ~5 sekuntia tarkoittaa synciä. Pidempään tarkoittaa asynciä.",
+          "Kysymys 3: tarvitseeko käyttäjä näkyvää edistymistä matkan varrella? Kyllä, ja se on pitkä teksti, joten streaming.",
           "Kohtele «heti vai taustalla» -valintaa erikoistapauksena isommasta realtime-vs-batch-päätöksestä (ks. [[node:sys-batch-vs-realtime|Batch vs Realtime]])."
         ],
         "validate": "Otat minkä tahansa AI-operaatiosi ja nimeät patternin kolmen kysymyksen kautta.",
@@ -6746,7 +6746,7 @@
         "instructions": [
           "sync: «luokittele tehtävän tyyppi» — 1 sekunti, nappi antaa vastauksen heti.",
           "async: «tee täysi neljännesanalyysi» — 2 minuuttia, käyttäjä käynnistää, jatkaa työtä, saa «raportti valmis» -notifikaation.",
-          "webhook: asiakas kirjoitti tukichattiin → ulkoinen webhook laukaisee AI:n → AI luonnostelee vastauksen operaattorille.",
+          "webhook: asiakas kirjoitti tukichattiin, sitten ulkoinen webhook laukaisee AI:n, sitten AI luonnostelee vastauksen operaattorille.",
           "streaming: «kirjoita pitkä email» — AI kirjoittaa osissa, käyttäjä näkee prosessin ja voi keskeyttää."
         ],
         "validate": "Ymmärrät, miksi jokainen tapaus otti oman patterninsa eikä yhtä yhteistä.",
@@ -6771,7 +6771,7 @@
         "why": "Ennen julkaisua käy valittu pattern läpi lyhyellä tarkistuslistalla — se nappaa suurimman osan virheistä ennen kuin ne päätyvät tuotantoon.",
         "instructions": [
           "Operaation kesto on mitattu (ei arvattu), ja 5 sekunnin raja on otettu huomioon syncin ja asyncin valinnassa.",
-          "Aloittaja on tunnistettu oikein: käyttäjä vs ulkoinen tapahtuma → syncia ei sekoiteta webhookiin.",
+          "Aloittaja on tunnistettu oikein: käyttäjä vs ulkoinen tapahtuma, joten synciä ei sekoiteta webhookiin.",
           "asyncilla on notifikaatio tai tilakysely; webhookilla kuittaus ja uudelleenyritys; syncillä timeout palvelinrajan sisällä.",
           "Streamingia käytetään vain siellä, missä vastaus on aidosti pitkä; lyhyeen vastaukseen valitaan sync.",
           "Varmistettu todellisella skenaariolla: käyttäjä näkee mitä odottaa («nopeasti» kun nopeasti, «työskentelen» kun hidasta)."
@@ -6786,10 +6786,10 @@
     "subtitle": "Miten rakentaa AI-integraatiot eventeille synkronisten requestien sijaan",
     "totalTime": "6 vaihetta",
     "whatItIs": "Event-driven AI-arkkitehtuuri on lähestymistapa, jossa AI-prosessoinnin triggeröivät eventit (webhook CRM:stä, message queuessa, ladattu tiedosto) eikä synkroninen käyttäjän request. Eventin vastaanotto on nopea ja luotettava, kun taas AI-prosessointi on decoupled: se voi skaalata, tehdä retryä ja soveltaa backpressurea kuormituksen alla menettämättä eventejä. Tämä on perusta skaalattaville AI-integraatioille, jotka on kuvattu solmussa [[node:sys-event-driven|event-driven AI-arkkitehtuuri]].",
-    "approach": "Etenemme ideasta käytäntöön: ensin miksi vastaanoton ja prosessoinnin decoupling on tärkeää, sitten polku event → queue → käsittelijä-agentti, sen jälkeen miten välttää saman eventin prosessointi kahdesti (idempotency) ja miten käsitellä järjestystä. Seuraavaksi rakennamme minimaalisen putken omalle casellesi, merkitsemme rajat ja riskit (debuggaus, duplikaatit, DLQ) ja päätämme ennen tuotantoa -tarkistuslistaan.",
+    "approach": "Etenemme ideasta käytäntöön: ensin miksi vastaanoton ja prosessoinnin decoupling on tärkeää, sitten polku event, sitten queue, sitten käsittelijä-agentti, sen jälkeen miten välttää saman eventin prosessointi kahdesti (idempotency) ja miten käsitellä järjestystä. Seuraavaksi rakennamme minimaalisen putken omalle casellesi, merkitsemme rajat ja riskit (debuggaus, duplikaatit, DLQ) ja päätämme ennen tuotantoa -tarkistuslistaan.",
     "outcomes": [
-      "Selität, miksi synkroninen webhook → LLM call → 200 rikkoutuu hitailla ja pitkillä AI-taskeilla",
-      "Piirrät eventin polun: source → ingestion (nopea 200) → queue → worker-agentti",
+      "Selität, miksi synkroninen webhook, sitten LLM call, sitten 200 rikkoutuu hitailla ja pitkillä AI-taskeilla",
+      "Piirrät eventin polun: source, sitten ingestion (nopea 200), sitten queue, sitten worker-agentti",
       "Teet prosessoinnista idempotentin idempotency keyllä ja dedup tablella",
       "Asetat retryt exponential backoffilla ja DLQ:n niin, ettei eventejä menetetä eikä duplikoida",
       "Ymmärrät rajat: missä event-driven on ylimitoitettu ja missä pakollinen"
@@ -6809,11 +6809,11 @@
       }
     ],
     "pitfalls": [
-      "AI-call webhook handlerin sisällä: 5s LLM-call ylittää providerin timeoutin (3s) → retry → duplikaatit. Webhookin pitää AINA vain enqueue-and-return-200",
-      "Ilman idempotencya: webhook delivery on at-least-once, yksi event prosessoidaan kahdesti → duplikaatti AI-kutsuja ja actionsia. Tarvitset idempotency keyn ja dedup table -tarkistuksen ennen prosessointia",
+      "AI-call webhook handlerin sisällä: 5s LLM-call ylittää providerin timeoutin (3s), sitten retry, sitten duplikaatit. Webhookin pitää AINA vain enqueue-and-return-200",
+      "Ilman idempotencya: webhook delivery on at-least-once, yksi event prosessoidaan kahdesti, jolloin syntyy duplikaatti AI-kutsuja ja actionsia. Tarvitset idempotency keyn ja dedup table -tarkistuksen ennen prosessointia",
       "DLQ:n sivuuttaminen: epäonnistuneet eventit makaavat kuukausia ilman alerttia ja reviewiä. DLQ-monitoring ja viikkoreview ovat pakollisia",
       "Yksi queue kaikille prioriteeteille: batch jobs syö kapasiteetin ja interactive-prosessointi kärsii. Erilliset queuet per prioriteetti",
-      "Retry ilman exponential backoffia: transient rate limit → instant retry → uusi limit → infinite loop. Backoff (1s, 4s, 16s, 64s) on pakollinen"
+      "Retry ilman exponential backoffia: transient rate limit, sitten instant retry, sitten uusi limit, sitten infinite loop. Backoff (1s, 4s, 16s, 64s) on pakollinen"
     ],
     "exercises": [
       {
@@ -6836,7 +6836,7 @@
         "why": "Ymmärtämättä miksi synkroninen malli rikkoutuu, on helppoa kytkeä AI-call suoraan webhookiin ja saada retry-myrsky tuotantoon. Ensin kiinnitämme ytimen: eventeihin reagointi ja vastaanoton decoupling prosessoinnista.",
         "instructions": [
           "Lue solmun [[node:sys-event-driven|event-driven AI-arkkitehtuuri]] what- ja why-osiot: mitä ovat event sources, ingestion ja workers",
-          "Listaa 4 skenaariota joissa synkroninen webhook → LLM call → 200 -malli rikkoutuu: hidas LLM, downtime, spike-trafiikki, pitkät AI-taskit",
+          "Listaa 4 skenaariota joissa synkroninen webhook, sitten LLM call, sitten 200 -malli rikkoutuu: hidas LLM, downtime, spike-trafiikki, pitkät AI-taskit",
           "Muotoile decoupling-idea omin sanoin: eventin vastaanotto on nopea ja luotettava, AI-prosessointi on erillinen ja skaalattava",
           "Vertaa synkroniseen API-lähestymistapaan solmusta [[node:sys-api-patterns|API-patternit]] — ymmärrä milloin request-response on sopiva ja milloin ei"
         ],
@@ -6844,11 +6844,11 @@
         "tip": "Avainajatus: webhook vastaa siitä että \"vastaanotettu eikä menetetty\", ei siitä että \"prosessoitu\". Nämä ovat eri vastuita."
       },
       "s2": {
-        "title": "Eventin polku: event → queue → käsittelijä-agentti",
+        "title": "Eventin polku: event, sitten queue, sitten käsittelijä-agentti",
         "time": "",
         "why": "Tämä on minkä tahansa event-driven-systeemin perusrunko. Ennen kuin näet kolme lenkkiä — source, ingestion, worker — et voi suunnitella skaalausta etkä luotettavuutta.",
         "instructions": [
-          "Piirrä ketju: event source (webhook/queue/CDC) → ingestion endpoint → queue → worker-agentti AI-callilla",
+          "Piirrä ketju: event source (webhook/queue/CDC), sitten ingestion endpoint, sitten queue, sitten worker-agentti AI-callilla",
           "Määritä ingestion-sopimus: validointi (mukaan lukien verify_signature), enqueue, palauta 200 alle 100ms:ssa — ei AI:ta sisällä",
           "Kuvaa worker erillisenä prosessina: nostaa messagen queuesta, kutsuu AI:ta, kirjoittaa tuloksen, poistaa messagen",
           "Kartoita solmun infrastruktuurivalinnat: Kafka/RabbitMQ (self-hosted) vastaan AWS SQS/Google Pub/Sub (managed)",
@@ -6864,7 +6864,7 @@
         "instructions": [
           "Opiskele exactly-once idempotency keyllä solmun impact-osiossa: dedup table -tarkistus ennen prosessointia",
           "Rakenna idempotency key vakaasta eventin tunnisteesta (esim. zendesk_ticket_{id}_{event_id})",
-          "Kuvaa transaktio: tarkista key → kutsu AI → kirjoita tulos → lisää key dedup tableen TTL:llä",
+          "Kuvaa transaktio: tarkista key, sitten kutsu AI, sitten kirjoita tulos, sitten lisää key dedup tableen TTL:llä",
           "Ratkaise järjestyskysymys: missä järjestys merkitsee (käytä ordering/partition keyä) ja missä eventit ovat riippumattomia",
           "Linkitä retryt ja virheet solmuun [[node:sys-error-handling|virheenkäsittely]]: mikä lasketaan transientiksi ja mikä finaaliksi"
         ],
@@ -6877,7 +6877,7 @@
         "why": "Teoria jää mieleen vain omalla casella. Minimaalinen pipeline yhdellä event sourcella näyttää kaikki lenkit toiminnassa ja nostaa esiin oikeat päätökset prioriteeteista ja retryistä.",
         "instructions": [
           "Valitse yksi oikea source: webhook Stripestä/Linearista/Zendeskistä tai message queuessa",
-          "Toteuta ingestion: verify_signature → send_message queueen idempotency keyllä → return 200",
+          "Toteuta ingestion: verify_signature, sitten send_message queueen idempotency keyllä, sitten return 200",
           "Toteuta worker: receive visibility_timeoutilla, dedup-tarkistus, AI-call, kirjoita tulos, delete",
           "Lisää retryt exponential backoffilla (1s, 4s, 16s, 64s, max 5) ja lähetä DLQ:hen kun yritykset on käytetty",
           "Jaa queuet prioriteetin mukaan: critical (interactive) > standard > batch, jottei batch syö kapasiteettia"
@@ -6907,7 +6907,7 @@
           "Käy läpi tarkistuslista: ingestion palauttaa 200 alle 100ms:ssa ilman AI-callia sisällä",
           "Tarkista: verify_signature webhookissa, idempotency key + dedup, retryt exponential backoffilla, DLQ konfiguroitu",
           "Varmista että queuet on jaettu prioriteetin mukaan ja worker on async (ei blokkaa yhdellä AI-callilla)",
-          "Aja tuplatoimitustesti ja N-epäonnistumistesti → eventin pitää päätyä DLQ:hen, ei loopata ikuisesti",
+          "Aja tuplatoimitustesti ja N-epäonnistumistesti: eventin pitää päätyä DLQ:hen, ei loopata ikuisesti",
           "Lukitse DLQ-monitoring ja viikkoreview-suunnitelma; linkitä jatkokehitys solmuihin [[node:ai-integration-systems|AI-integraatiosysteemit]] ja [[node:systems|systeemikerros]]"
         ],
         "validate": "Kaikki tarkistuslistan kohdat on rastittu, tupla- ja DLQ-testit menevät läpi, ja DLQ-monitoring on päällä — pipeline on tuotantovalmis.",
@@ -6997,9 +6997,9 @@
         "why": "Anthropic Message Batches API antaa 50 % alennuksen input+output:iin ja erillisen rate-limit-poolin — cost game-changer.",
         "instructions": [
           "Opettele parametrit (2026-05 baseline): 50 % alennus input+output:iin, jopa 100k pyyntöä per batch (jsonl), latenssi 5min—24h (usein 1-2h), erillinen rate-limit-pool",
-          "Opiskele flow: messages.batches.create(requests=[...]) → poll/wait → messages.batches.results(batch.id)",
+          "Opiskele flow: messages.batches.create(requests=[...]), sitten poll/wait, sitten messages.batches.results(batch.id)",
           "Laske säästö esimerkillä: 10k pyyntöä, 5k input + 1k output, Sonnet — realtime $300 vs batch $150",
-          "Arvioi mittakaava: 100k pyyntöä/päivä → säästö ~$4500/kk",
+          "Arvioi mittakaava: 100k pyyntöä/päivä, säästö ~$4500/kk",
           "Kytke tämä [[node:sys-cost-management|cost managementiin]] ja [[node:sys-rate-limiting|rate limitingiin]]"
         ],
         "validate": "Osaat sanoa 50 % alennuksen, 100k/batch-rajan, latenssi-ikkunan ja laskea säästön omille volyymeillesi.",
@@ -7016,7 +7016,7 @@
           "Tuo eksplisiittinen routing signaalin (tag/source/priority) mukaan, ei \"realtime by default\"",
           "Lisää batch SLA -monitorointi: alert jos prosessointi ylittää tavallisen 1-2h"
         ],
-        "validate": "Sinulla on skeema: mikä pyyntö → mikä polku, ja cron joka noutaa batch-tulokset valmistuessaan.",
+        "validate": "Sinulla on skeema: mikä pyyntö vie mihin polkuun, ja cron joka noutaa batch-tulokset valmistuessaan.",
         "tip": "Nojaa [[node:sys-api-patterns|API-patterneihin]] ja [[node:ai-integration-systems|AI integration systemsiin]] — batch/realtime on osa laajempaa integraatioarkkitehtuuria."
       },
       "s5": {
@@ -7253,7 +7253,7 @@
           "MCP:lle: local-serverit — paikalliset credit ja OS keychain; remote-serverit — pakollinen OAuth (ks. [[node:mcp|mcp]])"
         ],
         "validate": "Jokaiselle integraatiollesi osaat perustella valitun mekanismin.",
-        "tip": "Heuristiikka: konkreettinen käyttäjä ja hänen personal datansa → OAuth. Systeemi systeemille ilman käyttäjää → API key tai service account."
+        "tip": "Heuristiikka: konkreettinen käyttäjä ja hänen personal datansa tarkoittaa OAuthia. Systeemi systeemille ilman käyttäjää tarkoittaa API keytä tai service accountia."
       },
       "s3": {
         "title": "Secret storage: env/vault, ei koodi eikä logit",
@@ -7289,7 +7289,7 @@
           "Pakota tiukka per-tenant credential isolation: A:n creds eivät ole B:tä käsittelevän koodin saavutettavissa",
           "Minimoi scopet niin ettei prompt injection yllä ylimääräisiin oikeuksiin",
           "Pidä audit trail jokaisesta credentialin käytöstä (who, what, when, from where, success/fail) — integroi [[node:sys-logging-patterns|logging patternsin]] kanssa",
-          "Rakenna toimiva revocation-prosessi: disconnect UI:ssa → revoke at provider + poisto storesta",
+          "Rakenna toimiva revocation-prosessi: disconnect UI:ssa, sitten revoke at provider + poisto storesta",
           "MCP:lle scopeta tools ja nojaa OS-level permissioneihin; älä koskaan anna rajatonta filesystem-pääsyä"
         ],
         "validate": "Osaat näyttää tarkalleen miten vuotaneen keyn ja prompt injectionin vahinko on rajattu.",
@@ -7320,7 +7320,7 @@
     "outcomes": [
       "Luokitella AI-järjestelmän virheet kategorioittain (rate limit, 5xx, 529, invalid JSON, context limit, refusal, tool failure) ja antaa kullekin oma politiikka",
       "Erottaa retry (saman operaation toisto) fallbackista (siirtyminen varareitille) ja soveltaa niitä oikeassa järjestyksessä",
-      "Rakentaa graceful degradation -ketju: reduced context → fallback-malli → cache → canned response",
+      "Rakentaa graceful degradation -ketju: reduced context, sitten fallback-malli, sitten cache, sitten canned response",
       "Muotoilla selkeät käyttäjälle näkyvät degradation-viestit silent failin tai geneerisen \"jotain meni pieleen\" sijaan",
       "Asettaa rajat: circuit breaker, timeout-budjetit, logging ja metriikat jokaiselle fallbackille"
     ],
@@ -7343,7 +7343,7 @@
       "Infinite retry ilman circuit breakeria: providerin downtime muuttuu retry-stormiksi, joka polttaa rate-limitin uudelleen recoveryssä.",
       "Silent fallback ilman logeja ja metriikoita: putosit Haikuun, laatu laski, etkä tiedä miksi valitukset kasvavat.",
       "Refusalin käsittely virheenä: malli kieltäytyi tahallaan — retry ei auta, fallback on irrelevantti, tarvitset erillisen user-friendly reitin.",
-      "Liian korkea timeout: 30s interaktiivisessa pyynnössä → käyttäjä päättää \"rikki\" 5s:n jälkeen ja refreshaa, luoden 6 rinnakkaista pyyntöä."
+      "Liian korkea timeout: 30s interaktiivisessa pyynnössä saa käyttäjän päättämään \"rikki\" 5s:n jälkeen ja refreshaamaan, luoden 6 rinnakkaista pyyntöä."
     ],
     "exercises": [
       {
@@ -7370,7 +7370,7 @@
           "Merkitse kullekin kategorialle, mitä käyttäjä tällä hetkellä näkee projektissasi, jos et tee mitään.",
           "Etsi koodistasi AI-kutsujen ja tool-kutsujen kohdat — nämä ovat pisteet, joissa mikä tahansa näistä virheistä voi nousta pintaan."
         ],
-        "validate": "Sinulla on taulukko: virhekategoria → ryhmä (transient / formaatti / tahallinen) → nykyinen käyttäytyminen. Yhtäkään kategoriaa ei ole merkitty pelkäksi \"crashiksi\".",
+        "validate": "Sinulla on taulukko: virhekategoria vie ryhmään (transient / formaatti / tahallinen) ja nykyiseen käyttäytymiseen. Yhtäkään kategoriaa ei ole merkitty pelkäksi \"crashiksi\".",
         "tip": "Refusal ei ole bugi. Se on mallin tahallinen output policyn mukaan. Sekoita se virheeseen, ja retryät ikuisesti jotain, joka ei koskaan mene läpi."
       },
       "s2": {
@@ -7378,7 +7378,7 @@
         "time": "",
         "why": "Retry ja fallback sekoitetaan usein. Retry on saman operaation toisto (auttaa transient-faileissa). Fallback on siirtyminen varareitille (tarvitaan, kun toisto on turha tai loppuun käytetty). Väärä valinta joko syventää outagea tai turhaan laskee laatua.",
         "instructions": [
-          "Anna jokaiselle vaiheen 1 kategorialle politiikka: 5xx → retry 2× jitterillä, sitten fallback; 529 → fallback heti (toisto turha); 429 → backoff + retry; invalid JSON → retry 1× corrective-promptilla; refusal → ei retryä eikä fallbackia, erillinen reitti.",
+          "Anna jokaiselle vaiheen 1 kategorialle politiikka: 5xx tarkoittaa retry 2× jitterillä, sitten fallback; 529 tarkoittaa fallback heti (toisto turha); 429 tarkoittaa backoff + retry; invalid JSON tarkoittaa retry 1× corrective-promptilla; refusal tarkoittaa ei retryä eikä fallbackia, erillinen reitti.",
           "Muotoile siirtymäsääntö: montako kertaa retryta ja millä triggerillä siirtyä fallbackiin.",
           "Lisää jitter (satunnainen lisäys taukoon) backoffiin, jotta clienttien retryt eivät synkronoidu yhdeksi stormiksi.",
           "Linkitä backoff/retry-politiikka solmuun [[node:sys-rate-limiting|rate limiting]] — siellä ovat limitit ja circuit breaker, joihin retry nojaa."
@@ -7391,7 +7391,7 @@
         "time": "",
         "why": "Yksi fallback on parempi kuin ei mitään, mutta todellinen resilienssi tulee degradation-tikkaista: jokainen seuraava taso on edellistä halvempi/yksinkertaisempi, ja käyttäjä saa lähes aina edes jonkin hyödyllisen vastauksen.",
         "instructions": [
-          "Rakenna solmun ketju: Primary (full context + tools) → reduced context (last N messages) → fallback-malli Haiku (nopeampi, halvempi) → semanttinen cache → canned response.",
+          "Rakenna solmun ketju: Primary (full context + tools), sitten reduced context (last N messages), sitten fallback-malli Haiku (nopeampi, halvempi), sitten semanttinen cache, sitten canned response.",
           "Varmista, että fallback-mallilla on compatible signature — sen voi vaihtaa sisään kutsua uudelleenkirjoittamatta (swappable).",
           "Lisää tooleja käyttävälle agentille partial response: jos 1/N toolista failaa, palauta tulos toimivista plus note, ei totaalista failia.",
           "Aseta timeout-budjetit: interaktiivinen — 10s yhteensä (primary 5s, fallback 3s, network buffer 2s); async — 60s+ hyväksyttävä.",
@@ -7406,7 +7406,7 @@
         "why": "Täydellinenkin tekninen degradation on turha, jos käyttäjä ei ymmärrä mitä tapahtui. Silent fail synnyttää epäluottamusta, geneerinen \"jotain meni pieleen\" on hyödytön. Viestin pitää olla rehellinen ja ehdottaa toimintaa.",
         "instructions": [
           "Päätä jokaiselle ketjun tasolle, kerrotaanko käyttäjälle: kevyt degradation (reduced context, Haiku) — yleensä hiljaa; partial response — explicit notella; täysi loppuunkäyttö — selkeällä viestillä.",
-          "Korvaa geneerinen teksti spesifillä ja actionable-tekstillä: \"Something went wrong\" sijaan → \"AI is currently slow — try again or contact support if urgent.\"",
+          "Korvaa geneerinen teksti spesifillä ja actionable-tekstillä: \"Something went wrong\" sijaan \"AI is currently slow — try again or contact support if urgent.\"",
           "Tee refusalille erillinen user-friendly viesti, joka selittää ettei pyyntöä voi toteuttaa — ilman exceptionin teknisiä yksityiskohtia.",
           "Toteuta graceful UI degradation: AI-featuren failatessa vain sen lohko hajoaa explicit \"AI temporarily unavailable\" -viestillä, muu sivu pysyy elossa."
         ],
@@ -7568,7 +7568,7 @@
           "Pitkässä sessiossa aja /compact ajoissa; aiheen vaihtuessa — uusi sessio",
           "Testaa itsesi: jatka eilistä työtä, tiivistä konteksti, aloita toinen sessio toisessa kansiossa"
         ],
-        "validate": "Kävit läpi koko syklin: --continue → /compact → toinen sessio toisessa kansiossa — menettämättä kontekstia tai tokeneita.",
+        "validate": "Kävit läpi koko syklin: --continue, sitten /compact, sitten toinen sessio toisessa kansiossa — menettämättä kontekstia tai tokeneita.",
         "tip": "Jos et ole varma, jatkatko oikeaa sessiota — --resume ja lista ratkaisevat asian sekunnissa."
       }
     }
@@ -7811,9 +7811,9 @@
         "why": "Tila ei ole koko istunnon asetus: vaihdat sitä lennossa sopimaan nykyiseen askeleeseen. Shift+Tab kiertää tiloja keskustelua keskeyttämättä.",
         "instructions": [
           "Paina Shift+Tab istunnossa ja seuraa, miten aktiivisen tilan ilmaisin muuttuu",
-          "Käy kierros: tavallinen → auto-accept edits → plan mode → takaisin",
+          "Käy kierros: tavallinen, sitten auto-accept edits, sitten plan mode, sitten takaisin",
           "Tarkista nopeasti ennen jokaista tehtävää, mikä tila on aktiivinen",
-          "Rakenna tapa: tiedustelu → plan, rutiini → auto-accept, riski → tavallinen"
+          "Rakenna tapa: tiedustelu, sitten plan, rutiini, sitten auto-accept, riski, sitten tavallinen"
         ],
         "validate": "Vaihdat tilaa yhdellä näppäilyllä ja tiedät aina, missä tilassa olet.",
         "tip": "Tehtävä ensin, sitten tila: kysy itseltäsi \"kuinka riskialtista tämä on?\" ja vaihda vastauksen mukaan."
@@ -7823,7 +7823,7 @@
         "time": "",
         "why": "Päävirhe on jumiutua yhteen tilaan. Viimeinen askel vahvistaa tilan valinnan tehtävän mukaan ja varoittaa bypass permissions -tilasta, jossa agentti toimii ilman mitään vahvistuksia.",
         "instructions": [
-          "Muodosta sääntö: vieras/riskialtis → plan tai tavallinen, rutiini tutussa koodissa → auto-accept",
+          "Muodosta sääntö: vieras/riskialtis, sitten plan tai tavallinen, rutiini tutussa koodissa, sitten auto-accept",
           "Hahmota bypass permissionsin vaara: mikä tahansa toiminto on sallittu, mukaan lukien komennot, ilman kysymyksiä",
           "Älä ota bypassia käyttöön tuotannossa, vieraassa koodissa tai kun et hallitse seurauksia",
           "Tarkista joka vaihdon jälkeen: muutokset tehdään / ei tehdä juuri kuten odotat",
@@ -8162,10 +8162,10 @@
           "settings.json — jaettu: committataan gitiin ja koskee koko tiimiä",
           "settings.local.json — henkilökohtainen: ei committata, koskee vain sinua",
           "Kentät ovat identtiset; ero on laajuudessa ja siinä, päätyykö repoon",
-          "Sääntö: tiimille jaettu → settings.json; koneelle henkilökohtainen → settings.local.json"
+          "Sääntö: tiimille jaettu, sitten settings.json; koneelle henkilökohtainen, sitten settings.local.json"
         ],
         "validate": "Osaat sanoa mille tahansa asetukselle, kumpaan tiedostoon se kuuluu.",
-        "tip": "Jos epäröit 'jaettu vai henkilökohtainen', kysy: pitäisikö kollegoiden saada tämä? Kyllä → settings.json."
+        "tip": "Jos epäröit 'jaettu vai henkilökohtainen', kysy: pitäisikö kollegoiden saada tämä? Kyllä, eli settings.json."
       },
       "s3": {
         "title": "Mitä settings.local.jsoniin laitetaan",
@@ -8258,7 +8258,7 @@
     "exercises": [
       {
         "question": "Haluat Clauden vastaavan kaikkialla suomeksi eikä kysyvän vahvistusta git status -komennolle. Minne tämä laitetaan?",
-        "hint": "Nämä ovat projektista riippumattomia sääntöjä → globaali ~/.claude/-kerros. Kieli/tyyli CLAUDE.md:hen, komennon allow settings.json:iin (permissions.allow)."
+        "hint": "Nämä ovat projektista riippumattomia sääntöjä, joten globaali ~/.claude/-kerros. Kieli/tyyli CLAUDE.md:hen, komennon allow settings.json:iin (permissions.allow)."
       },
       {
         "question": "Yhdessä projektissa globaali allow npm test -komennolle on ongelma, koska testit ovat siellä hitaita ja maksullisia. Mitä teet?",
@@ -8345,7 +8345,7 @@
           "Varmista että globaalissa kerroksessa ei ole projektikohtaista roskaa eikä vaarallisia allow-merkintöjä.",
           "Tarkista että globaali CLAUDE.md ei sisällä projektikohtaisten kanssa ristiriitaisia sääntöjä.",
           "Käynnistä Claude Code -istunto uudelleen ja varmista että asetukset astuivat voimaan odotetusti.",
-          "Jos jokin käyttäytyy oudosti — käy kerrokset läpi ylhäältä alas: paikallinen → projekti → globaali."
+          "Jos jokin käyttäytyy oudosti — käy kerrokset läpi ylhäältä alas: paikallinen, sitten projekti, sitten globaali."
         ],
         "validate": "settings.json jäsentyy kelvollisena JSON:ina, globaali kerros on puhdas projektispesifeistä, ja Clauden käytös vastaa odotuksiasi.",
         "tip": "Pidä globaali konfiguraatio minimaalisena: mitä vähemmän sääntöjä siinä on, sitä vähemmän odottamattomia konflikteja projektien kanssa."
@@ -8601,9 +8601,9 @@
         "time": "",
         "why": "Komentojen voima paljastuu ketjuissa. Viimeinen vaihe lukitsee toimivat yhdistelmät ja suojaa yleisiltä virheiltä.",
         "instructions": [
-          "Kokeiluketju: /branch → kokeile → jos menee pieleen, pääistunto on ehjä (tai /rewind palautukseen)",
-          "Pitkän session ketju: /compact kontekstin kasvaessa → /background ennen lähtöä → /resume seuraavana päivänä",
-          "Laitteenvaihtoketju: /export tai /desktop → jatka muualla",
+          "Kokeiluketju: /branch, sitten kokeile, sitten jos menee pieleen, pääistunto on ehjä (tai /rewind palautukseen)",
+          "Pitkän session ketju: /compact kontekstin kasvaessa, sitten /background ennen lähtöä, sitten /resume seuraavana päivänä",
+          "Laitteenvaihtoketju: /export tai /desktop, sitten jatka muualla",
           "Päävirhe — /clear /compactin sijaan: muista, että /clear poistaa, /compact tiivistää",
           "Tarkista aina /helpillä äläkä arvaa komentoja — joukko riippuu versiosta"
         ],
@@ -8680,7 +8680,7 @@
         "why": "Peruspari: yksi komento lisää tarvittavat kansiot kontekstiin, toinen näyttää kuinka paljon kontekstia on jo käytössä. Tietoinen hallinta alkaa tästä.",
         "instructions": [
           "/add-dir — lisää hakemiston Clauden työkontekstiin. Käytä kun Clauden pitää nähdä tietty kansio kokonaan.",
-          "Esimerkki: /add-dir src/components → Claude lukee kaikki komponentit automaattisesti viittaamatta jokaiseen tiedostoon.",
+          "Esimerkki: /add-dir src/components, sitten Claude lukee kaikki komponentit automaattisesti viittaamatta jokaiseen tiedostoon.",
           "/context — visualisoi nykyisen kontekstin käytön ruudukkona. Käytä pitkissä sessioissa nähdäksesi liikkumavaran.",
           "Lisää vain tarvittavat kansiot, ei koko repoa — tämä säästää kontekstia."
         ],
@@ -8731,7 +8731,7 @@
         "time": "",
         "why": "Komennot loistavat yhdistelmänä. Viimeinen vaihe: kokoa toimiva skenaario ja lukitse miten välttää yleiset virheet ja tarkistaa itsesi.",
         "instructions": [
-          "Rakenna ketju: /init → /add-dir tarvittavat kansiot → /context seurantaan → /goal tehtävään → /diff ennen sitoutusta.",
+          "Rakenna ketju: /init, sitten /add-dir tarvittavat kansiot, sitten /context seurantaan, sitten /goal tehtävään, sitten /diff ennen sitoutusta.",
           "Vältä päävirhe: älä lisää koko repoa /add-dir-komennolla kun tarvitaan yksi kansio.",
           "Tarkista pitkässä sessiossa /context säännöllisesti, jotta et osu rajaan yllättäen.",
           "Älä keksi komentoja tai lippuja — seitsemän komennon lista on kiinteä; katso ajantasainen joukko /help-komennosta.",
@@ -8856,10 +8856,10 @@
         "time": "",
         "why": "Nyt yhdistämme komennot työnkuluksi: oikea malli tehtävään plus säännöllinen hallinta. Pääsyvirhe on olla koskaan tarkistamatta /usagea ja saada yllätyslasku kuun lopussa.",
         "instructions": [
-          "Rakenna reitti tyypilliselle istunnolle: /fast rutiiniin → /model monimutkaiseen → takaisin /fastiin",
+          "Rakenna reitti tyypilliselle istunnolle: /fast rutiiniin, sitten /model monimutkaiseen, sitten takaisin /fastiin",
           "Lisää /advisor kertaluonteisiin vaikeisiin päätöksiin ja /effort vaivannäön hienosäätöön",
           "Lukitse tapa: ajoittain /usage, vikatilanteissa /status, ja vasta sitten /upgrade tai /extra-usage jos rajat tulevat vastaan",
-          "Testaa itseäsi solmun esimerkillä: /fast testien kirjoittamiseen → /model Opus monimutkaiseen algoritmiin → takaisin /fastiin siivoukseen"
+          "Testaa itseäsi solmun esimerkillä: /fast testien kirjoittamiseen, sitten /model Opus monimutkaiseen algoritmiin, sitten takaisin /fastiin siivoukseen"
         ],
         "validate": "Osaat koota komentosarjan sekoitettuun istuntoon ilman apua ja nimetä, miten hallitset kulutusta.",
         "tip": "Yleisin virhe on olla katsomatta /usagea. Tee kulutuksen tarkistuksesta tapa, ei reaktio laskuun."
@@ -9069,7 +9069,7 @@
           "Tallenna ja aja sallittu komento — Claude suorittaa sen kysymättä."
         ],
         "validate": "Sallittu työkalu ajetaan ilman vahvistusta, kun muut yhä kysyvät.",
-        "tip": "Esimerkki: /permissions → salli 'Bash(npm run *)' → npm-skriptit ajetaan ilman vahvistusta joka kerta."
+        "tip": "Esimerkki: /permissions, sitten salli 'Bash(npm run *)', sitten npm-skriptit ajetaan ilman vahvistusta joka kerta."
       },
       "s3": {
         "title": "Näppäinmääritykset: /keybindings",
@@ -9338,7 +9338,7 @@
           "Kutsu ensin /plan — suunnittelutila — jotta Claude laatii muutossuunnitelman ennen sen suoritusta.",
           "Hyväksy suunnitelma: tämä on tärkein turvasääntö ennen rinnakkaista ajoa.",
           "Aja /batch suureen muutokseen — se jakaa työn 5-30 rinnakkaiselle agentille, joista jokainen avaa oman PR:nsä.",
-          "Esimerkki: /batch 'lisää JSDoc kaikkiin funktioihin src/:ssä' → 20 agenttia, jokainen ottaa oman tiedostoryhmänsä."
+          "Esimerkki: /batch 'lisää JSDoc kaikkiin funktioihin src/:ssä', sitten 20 agenttia, jokainen ottaa oman tiedostoryhmänsä."
         ],
         "validate": "Ymmärrät, miksi /batch seuraa aina hyväksyttyä /plania, ja osaat kuvata, mitä rinnakkaiset agentit palauttavat (PR per tiedostoryhmä).",
         "tip": "Mitä selkeämpi suunnitelma, sitä vähemmän eroavaisuuksia rinnakkaisten agenttien välillä — suunnitelma säästää aikaa tulosten käsittelyssä."
@@ -9353,7 +9353,7 @@
           "Vedä selvä raja: /loop on paikallinen toistoväli, /schedule on etäagentti aikataululla (cron).",
           "Pidä /loopissa pysäytysehto mielessä, jottei silmukka pyöri loputtomasti."
         ],
-        "validate": "Osaat valita oikean komennon tehtävään: \"toista paikallisesti\" → /loop, \"yöllä etänä\" → /schedule.",
+        "validate": "Osaat valita oikean komennon tehtävään: \"toista paikallisesti\", sitten /loop, \"yöllä etänä\", sitten /schedule.",
         "tip": "Yöautomaatio /schedulella on aliarvostetuin skenaario: tarkistukset ja raportit tehdään, kun nukut."
       },
       "s5": {
@@ -9381,7 +9381,7 @@
           "Varmista tulokset: avaa /tasks varmistaaksesi, että taustatehtävät valmistuivat oikein."
         ],
         "validate": "Osaat luetella vähintään 3 yleistä automaatiovirhettä ja kullekin nimetä, miten se vältetään.",
-        "tip": "Kuri \"suunnittele → aja → varmista /tasksilla\" tekee automaatiosta luotettavaa eikä riskialtista."
+        "tip": "Kuri \"suunnittele, sitten aja, sitten varmista /tasksilla\" tekee automaatiosta luotettavaa eikä riskialtista."
       }
     }
   },
@@ -9508,7 +9508,7 @@
         "time": "",
         "why": "Komennot maksavat itsensä takaisin vain, kun ne on kytketty jatkuvaan sykliin eivätkä muutu muodollisuudeksi. Viimeinen vaihe vakiinnuttaa tavan ja auttaa tarkistamaan itsesi.",
         "instructions": [
-          "Vakiinnuta syklisi: /diff → /review ennen yhdistämistä, /security-review ennen käyttöönottoa, /simplify session jälkeen",
+          "Vakiinnuta syklisi: /diff, sitten /review ennen yhdistämistä, /security-review ennen käyttöönottoa, /simplify session jälkeen",
           "Tarkista, ettet käytä /reviewia muodollisesti: lue uudelleen viimeisen katselmointisi Kriittiset kohdat",
           "Varmista, että /security-review ajetaan säännöllisesti, ei kerran julkaisua kohden",
           "Jos olet epävarma lipuista tai komentojoukosta — avaa /help arvaamisen sijaan",
@@ -9898,9 +9898,9 @@
         "time": "",
         "why": "Lopullinen algoritmi muuttaa ymmärryksen nopeaksi, tarkistettavaksi päätökseksi.",
         "instructions": [
-          "Vaihe 1: toistuuko tehtävä ja mahtuuko vaiheisiin ilman ulkoisia työkaluja? → [[node:skills|Skill]]",
-          "Vaihe 2: onko tehtävä pitkä, tarvitaanko työkaluja tai rinnakkaisuutta? → Sub-agent ([[node:cc-subagents|Sub-agents]])",
-          "Vaihe 3: tarvitsetko molempia? → Sub-agent + Skill sen toimenpiteenä",
+          "Vaihe 1: toistuuko tehtävä ja mahtuuko vaiheisiin ilman ulkoisia työkaluja? Jos kyllä: [[node:skills|Skill]]",
+          "Vaihe 2: onko tehtävä pitkä, tarvitaanko työkaluja tai rinnakkaisuutta? Jos kyllä: Sub-agent ([[node:cc-subagents|Sub-agents]])",
+          "Vaihe 3: tarvitsetko molempia? Jos kyllä: Sub-agent + Skill sen toimenpiteenä",
           "Tarkistus: valinnan jälkeen kysy 'onko tämä overkill?' ja 'törmäänkö kontekstirajaan?'",
           "Jos molemmat vastaukset ovat 'ei' — valinta on oikea"
         ],
@@ -9913,7 +9913,7 @@
     "title": "Rate limits API: TPM, RPM ja tierit",
     "subtitle": "Miten kasvu ei muutu tuotannon 429-kaskadiksi",
     "totalTime": "6 vaihetta",
-    "whatItIs": "Anthropic API rajoittaa kuormaa kolmella mittarilla: RPM (pyyntöjä minuutissa), TPM (input+output-tokeneita minuutissa) ja päivittäinen tokenraja. Todelliset luvut riippuvat tilin tieristä (Tier 1 → Tier 4), joka kasvaa automaattisesti kumulatiivisen kulutuksen myötä. Ylityksissä API palauttaa 429 Too Many Requests + retry-after-otsikon. Kurssi opettaa suunnittelemaan integraation niin, etteivät piikit ja batch-kuormat kaada palvelua. API-konteksti on kohdissa [[node:pl-api|Alusta: API]] ja [[tutorial:api-basics|API:n perusteet]].",
+    "whatItIs": "Anthropic API rajoittaa kuormaa kolmella mittarilla: RPM (pyyntöjä minuutissa), TPM (input+output-tokeneita minuutissa) ja päivittäinen tokenraja. Todelliset luvut riippuvat tilin tieristä (Tier 1:stä Tier 4:ään), joka kasvaa automaattisesti kumulatiivisen kulutuksen myötä. Ylityksissä API palauttaa 429 Too Many Requests + retry-after-otsikon. Kurssi opettaa suunnittelemaan integraation niin, etteivät piikit ja batch-kuormat kaada palvelua. API-konteksti on kohdissa [[node:pl-api|Alusta: API]] ja [[tutorial:api-basics|API:n perusteet]].",
     "approach": "Etenemme rajamallista käytäntöön: ensin mitä RPM/TPM/daily oikeasti laskevat ja miten tierit toimivat, sitten 429:n ja retry-afterin lukeminen, retry eksponentiaalisella backoffilla ja jitterillä, 80% puskurin varaaminen, offline-kuorman siirto Message Batches API:in ja lopuksi tier-noston suunnittelu ennustetun liikenteen mukaan. Jokainen vaihe on toimiva tekniikka, ei teoriaa.",
     "outcomes": [
       "Ymmärrät eron RPM:n, TPM:n ja päivärajan välillä ja kumpaan törmäät ensin",
@@ -9933,7 +9933,7 @@
       },
       {
         "title": "Kasvun ja budjetin suunnittelu",
-        "description": "Liikenne-ennuste → tarvittava tier → nostopyyntö etukäteen, jottei virusmainen julkaisu jää jumiin Tier 1:een."
+        "description": "Liikenne-ennuste, sitten tarvittava tier, sitten nostopyyntö etukäteen, jottei virusmainen julkaisu jää jumiin Tier 1:een."
       }
     ],
     "pitfalls": [
@@ -9954,7 +9954,7 @@
       },
       {
         "question": "Palvelu pyörii vakaasti 95%:ssa TPM-rajasta. Miksi tämä on vaarallista ja mitä teet?",
-        "hint": "Mikä tahansa piikki työntää yli 100% → 429. Tarvitset ~80% puskurin ja nostopyynnön ennen kuin törmäät seinään."
+        "hint": "Mikä tahansa piikki työntää yli 100%, jolloin tulee 429. Tarvitset ~80% puskurin ja nostopyynnön ennen kuin törmäät seinään."
       }
     ],
     "steps": {
@@ -10045,7 +10045,7 @@
     "whatItIs": "Jäsennelty uhkamalli AI-agentille, jolle on annettu todellinen pääsy tietokoneeseen: tiedostojärjestelmä, pääte, selain, verkko. Kurssi erittelee kolme uhkaluokkaa — suoritusvirhe, tehtävän väärinymmärrys ja huijaus sisällön kautta (prompt-injektio) — ja näyttää, miksi kaikki kolme johtavat yhteen arkkitehtuuriseen vastaukseen: aja agenttia eristetyssä ympäristössä, ei työkoneellasi. Tämä on insinöörimäinen lähestymistapa, ei ”varmuuden vuoksi”: jokainen uhka saa konkreettisen kompensointimekanismin ja selkeän vaikutussäteen.",
     "approach": "Etenemme uhista vastatoimeen, emme päinvastoin. Ensin rakennamme uhkamallin (tekijä, hyökkäyspinta, seuraus), sitten jokaiselle uhalle arvioimme, mitä tietokonepääsyn omaava agentti voi rikkoa, ja vasta sitten johdamme eristyksen ainoana vastauksena. Käsittelemme prompt-injektion erikseen aliarvioiduimpana uhkana — se rikkoo intuition ”agentti on minun, se on puolellani”. Lopuksi käsittelemme eristyksen rajat: mitä hiekkalaatikko EI sulje, jotta eristyksestä ei tule väärää turvallisuudentunnetta. Eristys toimii yhdessä [[node:sas-least-privilege|pienimmän oikeuden]] kanssa — toinen ilman toista jättää aukkoja.",
     "outcomes": [
-      "Muotoile konkreettisen agenttitehtävän uhkamalli muodossa tekijä → pinta → seuraus",
+      "Muotoile konkreettisen agenttitehtävän uhkamalli muodossa tekijä, sitten pinta, sitten seuraus",
       "Erota kolme uhkaluokkaa (virhe, väärinymmärrys, prompt-injektio) äläkä typistä kaikkea muotoon ’agentti erehtyy’",
       "Arvioi vaikutussäde: mitä pääte- ja verkkopääsyn omaava agentti voi todella vahingoittaa tehtävän ulkopuolella",
       "Selitä, miksi työkone on huonoin ympäristö agentille (jaetut tunnukset, SSH-avaimet, tuotantopääsy, yritysverkko)",
@@ -10097,7 +10097,7 @@
           "Erota ’mitä agentin pitäisi tehdä’ ja ’mihin agentti teknisesti kykenee’ — niiden välinen ero on riskialue",
           "Huomaa, että mallin tavoite ei ole vainoharhaisuus vaan epämääräisen ’jokin voi rikkoutua’ kääntäminen konkreettiseksi listaksi"
         ],
-        "validate": "Sinulla on lista 3+ kohdasta, joista jokainen on muotoiltu tekijä → pinta → seuraus, ei abstraktina ’jokin menee pieleen’.",
+        "validate": "Sinulla on lista 3+ kohdasta, joista jokainen on muotoiltu tekijä, sitten pinta, sitten seuraus, ei abstraktina ’jokin menee pieleen’.",
         "tip": "Laske pahin lopputulos ei ’normaalista’ ajosta vaan tilanteesta ’agentti teki tuhoisimman saatavilla olevan toimen’. Se on vaikutussäde."
       },
       "sas-why-isolation-2": {
@@ -10223,7 +10223,7 @@
         "instructions": [
           "Tutki esikuva-imagen Dockerfile: löydä X-pinon asennus (Xvfb), ikkunamanageri, VNC-palvelin ja noVNC",
           "Merkitse agenttisilmukan prosessi — komponentti, joka lähettää kuvankaappaukset mallille ja soveltaa computer use -työkalun toimintoja",
-          "Ymmärrä näyttöketju: Xvfb → VNC-palvelin → noVNC (WebSocket-silta) → selain",
+          "Ymmärrä näyttöketju: Xvfb, sitten VNC-palvelin, sitten noVNC (WebSocket-silta), sitten selain",
           "Vahvista, että koko GUI ja koko agentti asuvat kontin sisällä — yhteys isäntäkoneeseen vain nimenomaisesti julkaistujen porttien ja mounttien kautta"
         ],
         "validate": "Pystyt sanallisesti kuvaamaan, mikä prosessi piirtää näytön, mikä striimaa sen selaimeen ja mikä suorittaa Clauden toiminnot.",
@@ -10232,7 +10232,7 @@
       "sas-docker-computer-use-2": {
         "title": "Käynnistä Computer Use -kontti",
         "time": "",
-        "why": "Ensimmäinen käynnistys antaa toimivan 'kuvankaappaus → toiminto' -silmukan ja perustan, johon rajoitukset kiinnitetään. Ensin agentti henkiin, sitten kiristetään.",
+        "why": "Ensimmäinen käynnistys antaa toimivan 'kuvankaappaus, sitten toiminto' -silmukan ja perustan, johon rajoitukset kiinnitetään. Ensin agentti henkiin, sitten kiristetään.",
         "instructions": [
           "Välitä Claude API key ympäristömuuttujalla käynnistyksessä, ei imageen paahdettuna",
           "Julkaise noVNC-portti paikalliseen (loopback) rajapintaan, ei kaikkiin isäntäkoneen rajapintoihin",
@@ -10333,15 +10333,15 @@
     "exercises": [
       {
         "question": "Tehtäväsi: agentti kirjautuu sivustolle selaimen kautta kerran tunnissa ja kerää dataa; läppärisi on yöllä sammuksissa. Mitä valitset — Docker läppärillä, VPS ilman GUI:ta vai VPS työpöydällä? Perustele kolmen akselin mukaan: käyntiaika, GUI, eristys.",
-        "hint": "Läppäri sammuksissa → paikallinen kontti ei pysty 24/7. Selainklikkaukset ja botin esto → tarvitaan oikea työpöytä. Jäljelle jää VPS virtuaalityöpöydällä erillisellä tilillä."
+        "hint": "Läppäri sammuksissa, joten paikallinen kontti ei pysty 24/7. Selainklikkaukset ja botin esto, joten tarvitaan oikea työpöytä. Jäljelle jää VPS virtuaalityöpöydällä erillisellä tilillä."
       },
       {
         "question": "Suunnittele automaattipysäytys tuntiveloitteiselle VM:lle, jota tarvitaan vain öisiin ajoihin. Mitkä kaksi mekanismia laitat, jottei unohtunut kone maksa mitään?",
-        "hint": "Ensimmäinen — aikataulu (käynnistys ennen tehtäväikkunaa, stop/destroy jälkeen). Toinen — tarjoajan budjettihälytys plus joutokäynnin automaattipysäytys (ei kuormaa N minuuttiin → shutdown)."
+        "hint": "Ensimmäinen — aikataulu (käynnistys ennen tehtäväikkunaa, stop/destroy jälkeen). Toinen — tarjoajan budjettihälytys plus joutokäynnin automaattipysäytys (ei kuormaa N minuuttiin, joten shutdown)."
       },
       {
         "question": "VM on vaarantunut: agentti ajoi epäilyttävää koodia. Kuvaa toimintajärjestys, kun sinulla on hätäkatkaisin, erillinen tili ja snapshot-skripti.",
-        "hint": "Hätäkatkaisin tappaa agentin/verkon → snapshot forensiikkaa varten (ei salaisuuksia!) → koneen tuhoaminen → salaisuuksien kierrätys varastossa → uudelleenluonti cloud-initistä. Erillinen tili takaa, ettei tuotantoon kosketa."
+        "hint": "Hätäkatkaisin tappaa agentin/verkon, sitten snapshot forensiikkaa varten (ei salaisuuksia!), sitten koneen tuhoaminen, sitten salaisuuksien kierrätys varastossa, sitten uudelleenluonti cloud-initistä. Erillinen tili takaa, ettei tuotantoon kosketa."
       }
     ],
     "steps": {
@@ -10357,7 +10357,7 @@
           "Yhdistä uhkamalli hiekkalaatikon perusteisiin: [[node:sys-agent-sandbox|agentin hiekkalaatikko]]."
         ],
         "validate": "Sinulla on kirjallinen vastaus 4 tarkistuslistan kysymykseen ja selkeä syy \"VM koska ___\" tai \"kontti riittää\".",
-        "tip": "Nyrkkisääntö: \"24/7 TAI oikea työpöytä\" → VM. Kaiken muun kattaa yleensä Docker."
+        "tip": "Nyrkkisääntö: \"24/7 TAI oikea työpöytä\", valitse VM. Kaiken muun kattaa yleensä Docker."
       },
       "sas-vm-vps-2": {
         "title": "Valitse tarjoaja ja koko",
@@ -10410,7 +10410,7 @@
           "Aseta hätäkatkaisin: yksi mekanismi, joka tappaa agentin ja/tai sen verkon välittömästi — ks. [[node:sas-snapshots-killswitch|snapshotit ja hätäpysäytys]].",
           "Lukitse VM-pääsy: SSH/RDP vain avaimella, ei-oletusportti tai pääsy bastionin kautta, saapuvan liikenteen palomuuri.",
           "Varmista, että hätäkatkaisimen jälkeen agentti ei todella pääse ulkomaailmaan eikä kuluta resursseja.",
-          "Kirjoita häiriön runbook: hätäkatkaisin → snapshot forensiikkaa varten → tuhoa → kierrätä salaisuudet."
+          "Kirjoita häiriön runbook: hätäkatkaisin, sitten snapshot forensiikkaa varten, sitten tuhoa, sitten kierrätä salaisuudet."
         ],
         "validate": "Salaisuudet eivät ole levykuvassa; hätäkatkaisin pysäyttää agentin todella sekunneissa; VM-pääsy on lukittu avaimella/palomuurilla.",
         "tip": "Testaa hätäkatkaisin ennen kuin tarvitset sitä. Paina sitä testi-VM:ssä ja varmista, että agentti on kuollut, ei \"melkein pysähtynyt\"."
@@ -10421,7 +10421,7 @@
         "why": "Unohtunut tuntiveloitteinen VM pyörii joutokäynnillä kuukausia — yleisin tapa polttaa agenttibudjetti. Automaattipysäytys ja hälytykset varmistavat, että joutokäyvä kone joko sammuu itse tai kuulet siitä heti, et laskusta.",
         "instructions": [
           "Aseta aikataulu: käynnistys ennen tehtäväikkunaa, stop tai destroy jälkeen — vaiheen 2 tarjoajan API:n kautta.",
-          "Lisää joutokäynnin automaattipysäytys: ei kuormaa N minuuttiin → shutdown.",
+          "Lisää joutokäynnin automaattipysäytys: ei kuormaa N minuuttiin, joten shutdown.",
           "Ota käyttöön tarjoajan budjettihälytys kuukausittaisella kynnyssummalla.",
           "Harvoihin ajoihin käytä snapshot+destroy-mallia: säilytä halpa snapshot, nosta kone vain tehtävän ajaksi.",
           "Tarkista viikoittain, ettei ole unohtuneita käynnissä olevia instansseja tai vanhentuneita snapshoteja."
@@ -10516,7 +10516,7 @@
           "Aja prosessi no-new-privileges-asetuksella (ydinlippu/palveluasetus) estäen setuid-korotuksen",
           "Rajoita käytettävissä olevia setuid-binäärejä (ping, sudo, su) — agentti ei tarvitse niitä"
         ],
-        "validate": "sudo -l -U agent → kieltäytyminen. su-/sudo-yritys agenttina → Permission denied. Agentti ei docker/wheel-ryhmässä.",
+        "validate": "sudo -l -U agent johtaa kieltäytymiseen. su-/sudo-yritys agenttina johtaa Permission denied. Agentti ei docker/wheel-ryhmässä.",
         "tip": "no-new-privileges on halpa ja tehokas suoja: edes setuid-binääri ei nosta oikeuksia. systemd:ssä se on NoNewPrivileges=yes."
       },
       "sas-least-privilege-4": {
@@ -10529,7 +10529,7 @@
           "Ole tarkka tiedostotasolla mahdollisuuksien mukaan: kohdistettu /etc/app/config.yaml -liitos koko /etc:n sijaan",
           "Käsittele verkko-osa erikseen — katso [[node:sas-network-isolation|verkon eristäminen]]"
         ],
-        "validate": "Muiden käyttäjien /home:n ls ja järjestelmätiedostojen cat agenttina → Permission denied. Kirjoitus on mahdollista vain workin sisällä.",
+        "validate": "Muiden käyttäjien /home:n ls ja järjestelmätiedostojen cat agenttina johtaa Permission denied. Kirjoitus on mahdollista vain workin sisällä.",
         "tip": "Vain-luku oletuksena, luku-kirjoitus vain siellä, missä agentin on kirjoitettava. Ylimääräinen rw-pääsy on yleisin hiljaisen vaurion lähde."
       },
       "sas-least-privilege-5": {
@@ -10944,7 +10944,7 @@
           "Kiinnitä peruutettavuuden raja kirjallisesti: mitä palautus tuo takaisin ja mikä on ulkoista ja peruuttamatonta",
           "Aja koko sykli harjoitustapahtumalla alusta loppuun"
         ],
-        "validate": "Yhtenäinen kääre hoitaa skenaarion 'vika → automaattipysäytys rajalla → automaattipalautus → puhdas ympäristö' ilman manuaalista väliintuloa.",
+        "validate": "Yhtenäinen kääre hoitaa skenaarion 'vika, sitten automaattipysäytys rajalla, sitten automaattipalautus, sitten puhdas ympäristö' ilman manuaalista väliintuloa.",
         "tip": "Tee käämistä ainoa tapa ajaa agentti tuotannossa: jos agentin voi käynnistää protokollan ohi, ennemmin tai myöhemmin niin tehdään — ilman vedosta ja ilman rajoja."
       }
     }
