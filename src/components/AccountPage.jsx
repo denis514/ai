@@ -56,7 +56,7 @@ export default function AccountPage({
       const doneCount = p?.completedSteps?.length || 0;
       const percent = Math.round((doneCount / stepCount) * 100);
       const title = getLocalizedTutorial(id, locale)?.title || id;
-      result.push({ id, title, percent, startedAt: p?.startedAt || null });
+      result.push({ id, title, percent, stepCount, doneCount, startedAt: p?.startedAt || null });
     }
     result.sort((a, b) => (b.startedAt || 0) - (a.startedAt || 0));
     return result;
@@ -289,20 +289,20 @@ export default function AccountPage({
 
   // ── Разделы боковой панели ───────────────────────────────────────────────
   const NAV = [
-    { id: 'overview', icon: 'grid',     label: t('account.dash.overview') || 'Обзор' },
+    { id: 'overview', icon: 'grid',       label: t('account.dash.overview') || 'Обзор' },
     { id: 'learning', icon: 'graduation', label: t('account.dash.learning') || 'Обучение' },
-    { id: 'profile',  icon: 'user',     label: t('account.profile')     || 'Профиль' },
-    { id: 'activity', icon: 'flash',    label: t('profile.activity')    || 'Активность' },
-    { id: 'data',     icon: 'download', label: t('account.dataPrivacy') || 'Данные и приватность' },
-    { id: 'cookie',   icon: 'settings', label: t('account.cookieTitle') || 'Cookie' },
-    { id: 'support',  icon: 'mail',     label: t('account.gdprContact') || 'Поддержка' },
-    { id: 'session',  icon: 'login',    label: t('account.session')     || 'Сессия' },
-    { id: 'danger',   icon: 'trash',    label: t('account.dangerZone')  || 'Удаление', danger: true },
+    { id: 'settings', icon: 'settings',   label: t('account.settings')      || 'Настройки' },
   ];
 
   const greetName = profile?.display_name || (user.email || '').split('@')[0];
   const coursesDone = supaStats.tutorialsDone || 0;
   const coursesTotal = tutorialIds.length;
+  // Hero-метрика: % карты знаний, изученный пользователем (узлы / все узлы карты).
+  const mapTotal = Object.keys(nodeIndex).length;
+  const mapPct = mapTotal ? Math.round(((supaStats.nodesViewed || 0) / mapTotal) * 100) : 0;
+  const dueCount = supaStats.nodesReview || 0;
+  const achTotal = allAchievements.length;
+  const achDone = earnedAchievements.length;
 
   const renderSection = () => {
     switch (section) {
@@ -310,9 +310,9 @@ export default function AccountPage({
       case 'overview':
         return (
           <div className="account-dash">
-            {/* Приветствие + серия дней */}
+            {/* Шапка: приветствие + серия + «к повторению»; справа — главная метрика «% карты изучено» */}
             <div className="account-dash__hero">
-              <div>
+              <div className="account-dash__hero-main">
                 <h2 className="account-dash__hello">
                   {(t('account.dash.greeting') || 'С возвращением, {name}').replace('{name}', greetName)}
                 </h2>
@@ -322,12 +322,27 @@ export default function AccountPage({
                     {supaStats.streak > 0
                       ? (t('account.dash.streak') || 'Серия: {n} дн. подряд').replace('{n}', String(supaStats.streak))
                       : (t('account.dash.streakNone') || 'Загляни сегодня — начни серию')}
-                    <span className="account-dash__streak-total">
-                      · {(t('account.dash.totalDays') || 'всего {n} дн.').replace('{n}', String(supaStats.totalDays || 0))}
-                    </span>
+                    {dueCount > 0 && (
+                      <span className="account-dash__due"> · {(t('account.dash.due') || 'сегодня к повторению: {n}').replace('{n}', String(dueCount))}</span>
+                    )}
                   </p>
                 )}
               </div>
+              {!supaStats.loading && (
+                <div
+                  className="account-hero-metric"
+                  role="img"
+                  aria-label={(t('account.dash.mapProgress') || 'Карта изучена на {n}%').replace('{n}', String(mapPct))}
+                >
+                  <div className="account-hero-metric__ring" style={{ '--pct': mapPct }}>
+                    <span className="account-hero-metric__pct">{mapPct}%</span>
+                  </div>
+                  <div className="account-hero-metric__text">
+                    <strong>{t('account.dash.mapTitle') || 'Карта Claude'}</strong>
+                    <span>{(t('account.dash.mapOf') || '{a} из {b} тем').replace('{a}', String(supaStats.nodesViewed || 0)).replace('{b}', String(mapTotal))}</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="account-dash__grid">
@@ -354,18 +369,37 @@ export default function AccountPage({
                   </div>
                 ) : (
                   <div className="account-course-list">
-                    {activeCourses.slice(0, 3).map(c => (
+                    {/* Верхний (последний начатый) — крупная доминанта с шагом и кнопкой */}
+                    <button
+                      type="button"
+                      className="account-course account-course--lead"
+                      onClick={() => onStartTutorial?.(activeCourses[0].id)}
+                    >
+                      <div className="account-course__top">
+                        <span className="account-course__title">{activeCourses[0].title}</span>
+                        <span className="account-course__pct">{activeCourses[0].percent}%</span>
+                      </div>
+                      <div className="account-course__meta">
+                        {(t('account.dash.step') || 'шаг {n} из {m}')
+                          .replace('{n}', String((activeCourses[0].doneCount || 0) + 1))
+                          .replace('{m}', String(activeCourses[0].stepCount))}
+                      </div>
+                      <div className="account-course__bar"><span style={{ width: `${activeCourses[0].percent}%` }} /></div>
+                      <span className="account-course__cta">
+                        {t('account.dash.resume') || 'Продолжить'}
+                        <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+                      </span>
+                    </button>
+                    {/* Остальные — компактным списком */}
+                    {activeCourses.slice(1, 4).map(c => (
                       <button
                         key={c.id}
                         type="button"
-                        className="account-course"
+                        className="account-course account-course--mini"
                         onClick={() => onStartTutorial?.(c.id)}
                       >
-                        <div className="account-course__top">
-                          <span className="account-course__title">{c.title}</span>
-                          <span className="account-course__pct">{c.percent}%</span>
-                        </div>
-                        <div className="account-course__bar"><span style={{ width: `${c.percent}%` }} /></div>
+                        <span className="account-course__title">{c.title}</span>
+                        <span className="account-course__pct">{c.percent}%</span>
                       </button>
                     ))}
                   </div>
@@ -408,27 +442,41 @@ export default function AccountPage({
                     </div>
                   </div>
                 )}
+                {!supaStats.loading && achTotal > 0 && (
+                  <button type="button" className="account-progress__ach" onClick={() => setSection('learning')}>
+                    <Icon name="trophy" size={13} strokeWidth={1.6} />
+                    <span>{(t('account.dash.achTeaser') || 'Достижений: {a} из {b}').replace('{a}', String(achDone)).replace('{b}', String(achTotal))}</span>
+                    <Icon name="arrow-right" size={12} strokeWidth={1.75} />
+                  </button>
+                )}
               </div>
 
-              {/* На повторение */}
-              <div className="account-widget">
-                <div className="account-widget__head">
-                  <h3>{t('account.dash.review') || 'На повторение'}</h3>
-                  {allReviewNodes.length > 0 && (
-                    <button type="button" className="account-widget__link" onClick={() => setSection('learning')}>
-                      {t('account.dash.details') || 'Подробнее'}
-                      <Icon name="arrow-right" size={13} strokeWidth={1.75} />
-                    </button>
-                  )}
-                </div>
-                {supaStats.loading ? (
+              {/* На повторение — блок-действие. Скрыт, когда повторять нечего. */}
+              {supaStats.loading ? (
+                <div className="account-widget">
+                  <div className="account-widget__head"><h3>{t('account.dash.review') || 'На повторение'}</h3></div>
                   <Skeleton.Text lines={3} />
-                ) : reviewNodes.length === 0 ? (
-                  <div className="account-widget__empty account-widget__empty--sm">
-                    <Icon name="check" size={18} strokeWidth={1.75} />
-                    <p>{t('account.dash.reviewEmpty') || 'Нечего повторять.'}</p>
+                </div>
+              ) : reviewNodes.length > 0 ? (
+                <div className="account-widget">
+                  <div className="account-widget__head">
+                    <h3>{t('account.dash.review') || 'На повторение'}</h3>
+                    {allReviewNodes.length > reviewNodes.length && (
+                      <button type="button" className="account-widget__link" onClick={() => setSection('learning')}>
+                        {t('account.dash.details') || 'Подробнее'}
+                        <Icon name="arrow-right" size={13} strokeWidth={1.75} />
+                      </button>
+                    )}
                   </div>
-                ) : (
+                  <button
+                    type="button"
+                    className="account-btn account-btn--primary account-review-cta"
+                    onClick={() => onShowNodes?.(supaStats.reviewIds, t('account.dash.review') || 'На повторение')}
+                  >
+                    <Icon name="refresh-circle" size={15} strokeWidth={1.6} />
+                    {(t('account.dash.reviewCta') || 'Повторить {n} тем').replace('{n}', String(dueCount))}
+                    <Icon name="arrow-right" size={14} strokeWidth={1.75} />
+                  </button>
                   <ul className="account-review-list">
                     {reviewNodes.map(n => (
                       <li key={n.id}>
@@ -439,8 +487,8 @@ export default function AccountPage({
                       </li>
                     ))}
                   </ul>
-                )}
-              </div>
+                </div>
+              ) : null}
 
               {/* Что нового с прошлого визита */}
               <div className="account-widget">
@@ -469,34 +517,8 @@ export default function AccountPage({
                 )}
               </div>
 
-              {/* Достижения */}
-              <div className="account-widget">
-                <div className="account-widget__head"><h3>{t('account.dash.achievements') || 'Достижения'}</h3></div>
-                {supaStats.loading ? (
-                  <div className="account-ach-grid">
-                    {[0, 1, 2].map(i => <Skeleton key={i} width="120px" height="34px" radius="999px" />)}
-                  </div>
-                ) : earnedAchievements.length === 0 ? (
-                  <div className="account-widget__empty account-widget__empty--sm">
-                    <Icon name="trophy" size={18} strokeWidth={1.5} />
-                    <p>{t('account.dash.achievementsEmpty') || 'Учись и собирай достижения.'}</p>
-                    {onOpenCourses && (
-                      <button type="button" className="account-btn account-btn--outline" onClick={() => { onClose?.(); onOpenCourses(); }}>
-                        {t('account.dash.browseCourses') || 'Выбрать курс'}
-                      </button>
-                    )}
-                  </div>
-                ) : (
-                  <div className="account-ach-grid">
-                    {earnedAchievements.map(a => (
-                      <span key={a.id} className="account-ach" title={t(a.key)}>
-                        <Icon name={a.icon} size={18} strokeWidth={1.5} />
-                        <span className="account-ach__label">{t(a.key)}</span>
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
+              {/* Достижения убраны с Обзора — это «история/гордость», а не действие.
+                  Полный список — в разделе «Обучение»; тизер — в виджете «Прогресс». */}
 
               {/* Мои агенты и автозапуски.
                   Новичку без агентов — тонкая подсказка, а не большой пустой виджет;
@@ -668,8 +690,10 @@ export default function AccountPage({
         );
 
       // ── Профиль ──
-      case 'profile':
+      // ── Настройки (профиль + данные + cookie + поддержка + сессия + удаление) ──
+      case 'settings':
         return (
+          <div className="account-settings">
           <section className="account-section">
             <h2>{t('account.profile')}</h2>
 
@@ -707,45 +731,7 @@ export default function AccountPage({
               </div>
             </div>
           </section>
-        );
 
-      // ── Активность ──
-      case 'activity':
-        return (
-          <section className="account-section">
-            <h2>{t('profile.activity')}</h2>
-            {supaStats.loading ? (
-              <div className="account-activity-loading">
-                <Icon name="refresh-circle" size={14} strokeWidth={1.5} />
-                <span>{t('common.loading')}</span>
-              </div>
-            ) : (
-              <div className="account-activity-row">
-                <div className="account-activity-card">
-                  <span className="account-activity-val">{supaStats.streak}</span>
-                  <span className="account-activity-label">
-                    {supaStats.streak === 1
-                      ? t('profile.activity.dayStreak.one')
-                      : t('profile.activity.dayStreak.many')}
-                  </span>
-                  {supaStats.streak >= 3 && <span className="account-activity-fire">🔥</span>}
-                </div>
-                <div className="account-activity-card">
-                  <span className="account-activity-val">{supaStats.totalDays}</span>
-                  <span className="account-activity-label">
-                    {supaStats.totalDays === 1
-                      ? t('profile.activity.daysTotal.one')
-                      : t('profile.activity.daysTotal.many')}
-                  </span>
-                </div>
-              </div>
-            )}
-          </section>
-        );
-
-      // ── Данные и приватность ──
-      case 'data':
-        return (
           <section className="account-section">
             <h2>{t('account.dataPrivacy')}</h2>
             <p className="account-section__desc">{t('account.gdprNote')}</p>
@@ -770,11 +756,7 @@ export default function AccountPage({
               </a>
             </div>
           </section>
-        );
 
-      // ── Cookie ──
-      case 'cookie':
-        return (
           <section className="account-section">
             <h2>{t('account.cookieTitle')}</h2>
             <p className="account-section__desc">{t('account.cookieDesc')}</p>
@@ -792,11 +774,7 @@ export default function AccountPage({
               </button>
             </div>
           </section>
-        );
 
-      // ── Поддержка / GDPR contact ──
-      case 'support':
-        return (
           <section className="account-section">
             <h2>{t('account.gdprContact')}</h2>
             <p className="account-section__desc">{t('account.gdprContactDesc')}</p>
@@ -809,11 +787,7 @@ export default function AccountPage({
               privacy@105-atlas.vercel.app
             </a>
           </section>
-        );
 
-      // ── Сессия / выход ──
-      case 'session':
-        return (
           <section className="account-section">
             <h2>{t('account.session')}</h2>
             <div className="account-value account-value--readonly" style={{ marginBottom: 12 }}>
@@ -829,11 +803,7 @@ export default function AccountPage({
               {t('auth.signOut')}
             </button>
           </section>
-        );
 
-      // ── Опасная зона ──
-      case 'danger':
-        return (
           <section className="account-section account-section--danger">
             <h2>{t('account.dangerZone')}</h2>
             <p className="account-section__desc">{t('account.deleteDesc')}</p>
@@ -898,6 +868,7 @@ export default function AccountPage({
               </div>
             )}
           </section>
+          </div>
         );
 
       default:
@@ -916,7 +887,7 @@ export default function AccountPage({
             <button
               key={item.id}
               type="button"
-              className={`account-nav-btn ${section === item.id ? 'is-active' : ''} ${item.danger ? 'account-nav-btn--danger' : ''}`}
+              className={`account-nav-btn ${section === item.id ? 'is-active' : ''}`}
               onClick={() => setSection(item.id)}
               aria-current={section === item.id ? 'page' : undefined}
             >
