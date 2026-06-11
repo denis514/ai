@@ -37,7 +37,7 @@
       },
       {
         "question": "Протестируй Skill: задай Claude вопрос, где он ДОЛЖЕН активироваться, и вопрос-anti-trigger, где НЕ должен.",
-        "hint": "Не активируется когда надо → ослабь description; активируется когда не надо → добавь anti-triggers."
+        "hint": "Не активируется когда надо — ослабь description; активируется когда не надо — добавь anti-triggers."
       }
     ],
     "steps": {
@@ -50,7 +50,7 @@
           "Для каждой ответь: насколько похож процесс? (≥80% — кандидат в Skill).",
           "Выбери одну — самую частую и стабильную. С неё начинаем."
         ],
-        "validate": "Выбрана одна рутина, для которой ты можешь чётко сказать: \"вход → шаги → выход\".",
+        "validate": "Выбрана одна рутина, для которой ты можешь чётко сказать: \"вход, затем шаги, затем выход\".",
         "tip": "Хороший признак Skill — ты УЖЕ ловишь себя на копировании старого промпта.",
         "example": "Кандидаты:\n1. ✅ Регулярный аудит ваших объектов — каждую неделю, процесс одинаковый\n2. ❌ \"Помоги с задачей\" — слишком разное, не формализуется\n3. ✅ Подготовка типового документа — несколько раз в день, шаблон одинаков\n\nВыбираю: подготовка типового документа — самое частое."
       },
@@ -159,7 +159,7 @@
     "subtitle": "Полноценный AI-агент в терминале",
     "totalTime": "6 шагов",
     "whatItIs": "Знаешь VS Code Copilot который дописывает строчки кода? [[node:claude-code|Claude Code]] делает то же, но в 10× больше задач: читает весь проект, правит десятки файлов, запускает команды, делает рефакторинг. И живёт в твоём терминале, не в редакторе.\n\nCLI-инструмент от Anthropic для работы с Claude прямо в терминале. Использует [[node:cc-cmd-init|/init]], sub-agents, [[node:mcp|MCP-серверы]] и [[node:cc-md|CLAUDE.md]] как память проекта. Превращает терминал в полноценную среду разработки с AI.",
-    "approach": "Не пытайся освоить всё сразу. Поставь → сделай [[node:cc-cmd-init|/init]] → попробуй одну реальную правку → доточи [[node:cc-md|CLAUDE.md]]. Большая часть мощи Claude Code раскрывается через CLAUDE.md, который ты сам пишешь под свой проект.",
+    "approach": "Не пытайся освоить всё сразу. Поставь, затем сделай [[node:cc-cmd-init|/init]], затем попробуй одну реальную правку, затем доточи [[node:cc-md|CLAUDE.md]]. Большая часть мощи Claude Code раскрывается через CLAUDE.md, который ты сам пишешь под свой проект.",
     "outcomes": [
       "Установил Claude Code и запустил в своём проекте",
       "Сгенерировал [[node:i-claudemd|CLAUDE.md]] командой /init и доточил его",
@@ -169,11 +169,11 @@
     "applyIn": [
       {
         "title": "Code review",
-        "description": "claude в репо → /review → структурный аудит уровня опытного разработчика за минуты."
+        "description": "claude в репо, затем /review — структурный аудит уровня опытного разработчика за минуты."
       },
       {
         "title": "Безопасный рефакторинг",
-        "description": "[[node:cc-plan-mode|Plan mode]] → план изменений → одобряешь → исполнение. Без сюрпризов в коде."
+        "description": "[[node:cc-plan-mode|Plan mode]], затем план изменений, затем одобряешь, затем исполнение. Без сюрпризов в коде."
       },
       {
         "title": "Авто-документация",
@@ -187,7 +187,7 @@
     ],
     "exercises": [
       {
-        "question": "В своём реальном репо запусти claude → /init → доточи CLAUDE.md (добавь раздел «табу» и любимые табу).",
+        "question": "В своём реальном репо запусти claude, затем /init, затем доточи CLAUDE.md (добавь раздел «табу» и любимые табу).",
         "hint": "Минимум 3 строки в табу — это покажет результат сразу."
       },
       {
@@ -201,7 +201,7 @@
         "time": "",
         "why": "Claude Code — npm-пакет, без Node.js не запустится. Глобальная установка позволяет вызывать `claude` из любой папки.",
         "instructions": [
-          "Проверь Node.js: открой терминал → `node -v`.",
+          "Проверь Node.js: открой терминал, затем `node -v`.",
           "Если версии нет или < 18 — установи свежий Node.js. macOS: `brew install node`. Windows: скачай инсталлер с nodejs.org.",
           "`node -v` должен показывать 18.x или выше.",
           "Установи Claude Code: `npm install -g @anthropic-ai/claude-code`.",
@@ -322,15 +322,15 @@
     "applyIn": [
       {
         "title": "Контекст из трекера",
-        "description": "MCP к трекеру задач → Claude видит свежие тикеты, может комментировать и предлагать декомпозицию."
+        "description": "MCP к трекеру задач, и Claude видит свежие тикеты, может комментировать и предлагать декомпозицию."
       },
       {
         "title": "Документация в контексте",
-        "description": "MCP к Confluence/Notion → Claude отвечает с учётом твоей внутренней документации."
+        "description": "MCP к Confluence/Notion, и Claude отвечает с учётом твоей внутренней документации."
       },
       {
         "title": "Доступ к коду",
-        "description": "MCP к GitHub → Claude видит PR, может комментировать, делать review-замечания."
+        "description": "MCP к GitHub, и Claude видит PR, может комментировать, делать review-замечания."
       }
     ],
     "pitfalls": [
@@ -380,7 +380,7 @@
         "time": "",
         "why": "Токен — точка безопасности. От его scope зависит, что MCP сможет читать и менять.",
         "instructions": [
-          "В сервисе (Linear/Figma/etc.) → Settings → API → Create token.",
+          "В сервисе (Linear/Figma/etc.), затем Settings, затем API, затем Create token.",
           "Дай минимально необходимые права. Лучше read-only, если пишет — отдельный токен.",
           "Скопируй токен в безопасное место (1Password / Bitwarden). Он показывается ОДИН раз.",
           "Не понимаешь, какие scopes нужны — возьми read-only на основные ресурсы (например, Issues для Linear), потом расширишь."
@@ -393,7 +393,7 @@
         "time": "",
         "why": "Конфигурация — самый частый источник ошибок. Действуй по чеклисту.",
         "instructions": [
-          "Открой `~/.config/claude-code/mcp.json` (Code) или Settings → Connectors ([[node:pl-web-setup|claude.ai]]).",
+          "Открой `~/.config/claude-code/mcp.json` (Code) или Settings, затем Connectors ([[node:pl-web-setup|claude.ai]]).",
           "Добавь блок server конфигурации (см. пример).",
           "Подставь токен из менеджера паролей (НЕ хардкодь его — используй ENV).",
           "Перезапусти Claude.",
@@ -424,7 +424,7 @@
         "time": "",
         "why": "MCP-сервер видит то, что видит токен. Проверка scope = страховка.",
         "instructions": [
-          "Открой панель токена в сервисе → проверь, какие права у него.",
+          "Открой панель токена в сервисе, затем проверь, какие права у него.",
           "Если есть write — задай себе: реально ли мне нужен write?",
           "Если сомнения — пересоздай токен с меньшими правами.",
           "Включи 2FA в сервисе, если ещё нет."
@@ -475,15 +475,15 @@
     "applyIn": [
       {
         "title": "Code review",
-        "description": "Sub-agent с чек-листом ревью → перед merge запускаешь, получаешь отфильтрованный отчёт."
+        "description": "Sub-agent с чек-листом ревью, и перед merge запускаешь, получаешь отфильтрованный отчёт."
       },
       {
         "title": "Аудит-агент",
-        "description": "Регулярный аудит по фиксированным критериям → один триггер вместо длинного промпта."
+        "description": "Регулярный аудит по фиксированным критериям, и один триггер вместо длинного промпта."
       },
       {
         "title": "Researcher",
-        "description": "Агент для сбора и синтеза источников с [[node:cap-search|web search]] → отчёт со ссылками вместо ручной работы."
+        "description": "Агент для сбора и синтеза источников с [[node:cap-search|web search]], и получаешь отчёт со ссылками вместо ручной работы."
       }
     ],
     "pitfalls": [
@@ -512,7 +512,7 @@
           "Выбери ОДИН — самый частый и стабильный."
         ],
         "example": "Кандидаты:\n1. ✅ Code review для PR — каждый день, шаги одинаковые\n2. ✅ Регулярный аудит твоих материалов — каждую неделю, шаги одинаковые\n3. ❌ \"Помоги обсудить идею\" — слишком разное, не агент\n\nВыбираю: code-reviewer.",
-        "validate": "Выбрана конкретная рутина с понятным «вход → шаги → выход».",
+        "validate": "Выбрана конкретная рутина с понятным «вход, затем шаги, затем выход».",
         "tip": "Если задача требует креатива и контекста — это не агент, это твоя работа. Агент — про повторяемость."
       },
       "ag-2": {
@@ -719,7 +719,7 @@
         "time": "4 мин",
         "why": "Свой — превращает регулярную задачу в кнопку.",
         "instructions": [
-          "В чате: /agents → создать новый.",
+          "В чате: /agents, затем создать новый.",
           "Имя: например, security-reviewer.",
           "Description: «Use when user asks to review security of changes / PR / branch» (триггер!).",
           "Шаги: 1) read git diff, 2) check OWASP top-10, 3) output как severity-ranked list.",
@@ -739,8 +739,8 @@
         "instructions": [
           "Возьми 3 свои регулярные задачи.",
           "Для каждой ответь: нужна изоляция контекста? Нужны свои tools? Задача длинная?",
-          "Все «да» → subagent. Все «нет» → Skill. Mixed → подумай ещё.",
-          "Запиши выбор в табличку: Задача → Skill | Subagent | Hybrid."
+          "Все «да» — subagent. Все «нет» — Skill. Mixed — подумай ещё.",
+          "Запиши выбор в табличку: Задача, затем Skill | Subagent | Hybrid."
         ],
         "validate": "У тебя 3 задачи с обоснованным выбором инструмента. Можешь объяснить выбор словами.",
         "tip": "Hybrid тоже бывает: Skill вызывает Subagent для тяжёлой части — лучшее из обоих миров."
@@ -780,7 +780,7 @@
     "whatItIs": "[[node:cap-tools|Tool use]] (function calling) — механизм, через который Claude вызывает ваши функции по JSON-схеме. Это база MCP, custom-агентов, любых интеграций. После практикума вы понимаете архитектуру изнутри, а не «магией».",
     "approach": "Без хороших описаний tools агент будет постоянно ошибаться. Сначала научись писать описания, потом проектируй наборы. Сам код вызовов — вторичен, его пишет SDK.",
     "outcomes": [
-      "Понимаешь поток tool use: schema → выбор tool → вызов → результат → ответ",
+      "Понимаешь поток tool use: schema, затем выбор tool, затем вызов, затем результат, затем ответ",
       "Описываешь tool так, что Claude выбирает правильный в 95% случаев",
       "Знаешь, когда tool use лучше MCP, когда наоборот",
       "Грамотно проектируешь набор tools для своего агента"
@@ -825,7 +825,7 @@
         "time": "2 мин",
         "why": "Без модели взаимодействия дальнейшие шаги — про чужую кухню.",
         "instructions": [
-          "Прочитай схему потока: User → Claude → Claude выбирает tool → твоя система выполняет → результат → Claude формирует ответ.",
+          "Прочитай схему потока: User, затем Claude, затем Claude выбирает tool, затем твоя система выполняет, затем результат, затем Claude формирует ответ.",
           "Заметь: Claude НЕ выполняет код. Он только решает «какой tool вызвать и с какими аргументами».",
           "Выполнение — на твоей стороне (SDK / MCP-server / твой бэкенд)."
         ],
@@ -850,7 +850,7 @@
         "time": "4 мин",
         "why": "Самая частая причина «агент не работает» — плохое description.",
         "instructions": [
-          "Шаблон: ЧТО делает (1 фраза) → КОГДА применять (триггер) → КОГДА НЕ применять (анти-триггер) → ПРИМЕРЫ аргументов.",
+          "Шаблон: ЧТО делает (1 фраза), затем КОГДА применять (триггер), затем КОГДА НЕ применять (анти-триггер), затем ПРИМЕРЫ аргументов.",
           "Возьми свой tool из ex.2. Напиши description по шаблону.",
           "Тест: дай 3 разных запроса пользователя — Claude должен правильно решить, использовать tool или нет."
         ],
@@ -942,15 +942,15 @@
     "applyIn": [
       {
         "title": "Качество кода",
-        "description": "PostToolUse:Write → prettier / линтер. Гарантированный формат на каждой правке."
+        "description": "PostToolUse:Write, затем prettier / линтер. Гарантированный формат на каждой правке."
       },
       {
         "title": "Безопасность",
-        "description": "PreToolUse:Bash → блокировать опасные команды (rm -rf, git push --force) до выполнения."
+        "description": "PreToolUse:Bash, затем блокировать опасные команды (rm -rf, git push --force) до выполнения."
       },
       {
         "title": "Метрики / observability",
-        "description": "Stop → лог сессии в jsonl. Видишь, что делал Claude и сколько токенов потратил."
+        "description": "Stop, затем лог сессии в jsonl. Видишь, что делал Claude и сколько токенов потратил."
       }
     ],
     "pitfalls": [
@@ -966,7 +966,7 @@
       },
       {
         "question": "Найди опасную команду, которой ты не доверяешь Claude. Сделай PreToolUse hook, который её блокирует.",
-        "hint": "Шаблон: проверь $CLAUDE_BASH_COMMAND через grep -E на паттерн → exit 1 если матч."
+        "hint": "Шаблон: проверь $CLAUDE_BASH_COMMAND через grep -E на паттерн, затем exit 1 если матч."
       },
       {
         "question": "Сделай Stop-hook, который логирует завершение сессии в .claude/logs/session.jsonl. Используй для аналитики «над чем работал».",
@@ -1048,7 +1048,7 @@
           "Hook — на ивент, синхронно, быстро (<500ms), без логики решения.",
           "Slash-команда — по триггеру пользователя, может быть длинной.",
           "Subagent — параллельная задача с изоляцией контекста.",
-          "Возьми 3 свои потребности → выбери инструмент для каждой."
+          "Возьми 3 свои потребности, затем выбери инструмент для каждой."
         ],
         "validate": "Можешь обосновать выбор для 3 задач — почему именно hook / slash / subagent.",
         "tip": "Hooks особенно ценны для гарантированных действий — модель может «забыть», hook не забудет."
@@ -1134,7 +1134,7 @@
           "claude.ai (путь A): браузерный чат, Projects, Artifacts. Не нужен терминал. Не нужна установка. Хватает для большинства задач: писать, анализировать, обсуждать.",
           "Claude Code (путь B): CLI-инструмент, работает с твоими локальными файлами, использует git и MCP. Нужен терминал и Node.js. Для разработки и автоматизации.",
           "Правило: если у тебя задача «обсудить документ» — путь A хватит. Если задача «править код в репозитории» — путь B.",
-          "Выбери путь и зафиксируй: A → перейди к шагу 2 и заканчивай. B → к шагу 3 и весь оставшийся туториал."
+          "Выбери путь и зафиксируй: A — перейди к шагу 2 и заканчивай. B — к шагу 3 и весь оставшийся туториал."
         ],
         "validate": "Ты можешь объяснить себе в одно предложение, почему выбрал именно этот путь.",
         "tip": "Сомневаешься — начни с A. Перейти на B потом не сложнее, чем сейчас."
@@ -1144,8 +1144,8 @@
         "time": "",
         "why": "Project — твоё постоянное рабочее пространство в claude.ai с собственными инструкциями и базой знаний. Это финальный шаг короткого пути.",
         "instructions": [
-          "Открой claude.ai → войди (Free достаточно для старта, Pro для Projects).",
-          "Слева в сайдбаре найди «Projects» → «+ New project».",
+          "Открой claude.ai, затем войди (Free достаточно для старта, Pro для Projects).",
+          "Слева в сайдбаре найди «Projects», затем «+ New project».",
           "Имя: что делаешь + для чего (например, «Регулярный аудит отчётов»).",
           "Description: 1–2 строки — зачем этот проект и какой результат ожидаешь.",
           "Загрузи 1–3 файла в Project knowledge (если есть). Этого хватит на старт.",
@@ -1162,13 +1162,13 @@
         "time": "",
         "why": "Node.js нужен для запуска npm-пакетов, включая Claude Code — без него ничего не поставится. Терминал — рабочее место для Claude Code, и полезно перестать его бояться.",
         "instructions": [
-          "Установка Node.js, macOS (рекомендую): открой Terminal.app (Cmd+Space → «Terminal» → Enter) и введи `brew install node`. Если brew не установлен — сначала поставь его с brew.sh.",
-          "Установка Node.js, macOS (альтернатива): скачай installer с nodejs.org → запусти .pkg → пройди шаги.",
-          "Установка Node.js, Windows: скачай installer с nodejs.org → запусти .msi → отметь «Add to PATH» → перезапусти PowerShell.",
+          "Установка Node.js, macOS (рекомендую): открой Terminal.app (Cmd+Space, затем «Terminal», затем Enter) и введи `brew install node`. Если brew не установлен — сначала поставь его с brew.sh.",
+          "Установка Node.js, macOS (альтернатива): скачай installer с nodejs.org, затем запусти .pkg, затем пройди шаги.",
+          "Установка Node.js, Windows: скачай installer с nodejs.org, затем запусти .msi, затем отметь «Add to PATH», затем перезапусти PowerShell.",
           "Проверка Node.js: в терминале введи `node -v`. Должен показать версию вида v20.11.0 или новее (≥ 18). `npm -v` тоже должен работать. Версия 20 или 22 LTS — оптимально; 14 или 16 — старо, могут быть проблемы.",
           "Если `command not found: node` — терминал не видит установку: закрой и открой его заново; на Windows проверь, что отметил «Add to PATH». Если `command not found: brew (mac)` — открой brew.sh, скопируй команду установки, выполни в терминале (≈5 минут).",
-          "Открыть терминал, macOS: Cmd+Space → «Terminal» → Enter. Откроется чёрное (или белое) окно с курсором. Windows: меню «Пуск» → «PowerShell» или «Windows Terminal» → Enter.",
-          "Понять, где ты: введи `pwd` (mac) или `pwd` / `echo %cd%` (Windows) → Enter. Покажет текущую папку — обычно это твоя home: /Users/имя (mac) или C:\\Users\\имя (Windows). Это нормально."
+          "Открыть терминал, macOS: Cmd+Space, затем «Terminal», затем Enter. Откроется чёрное (или белое) окно с курсором. Windows: меню «Пуск», затем «PowerShell» или «Windows Terminal», затем Enter.",
+          "Понять, где ты: введи `pwd` (mac) или `pwd` / `echo %cd%` (Windows), затем Enter. Покажет текущую папку — обычно это твоя home: /Users/имя (mac) или C:\\Users\\имя (Windows). Это нормально."
         ],
         "validate": "`node -v` показывает версию ≥ 18, `npm -v` работает; терминал открыт, `pwd` показывает путь к твоей home-папке.",
         "tip": "«Чёрный экран» не делает ничего страшного сам по себе. Опасны только конкретные команды (rm -rf и подобные), которых ты не будешь набирать в этом туториале."
@@ -1179,10 +1179,10 @@
         "why": "Папка = «дом» твоего проекта, без неё файлы будут валяться где попало. А Claude Code работает в той папке, где ты его запустил: если ты не в нужной — Claude увидит не те файлы.",
         "instructions": [
           "Реши, где будут жить все твои проекты. Рекомендую папку `~/projects/` в home.",
-          "Создай папку: `mkdir -p ~/projects/my-first-claude-project` — создаст папку (и родительскую `projects/`, если её нет). Альтернатива через Finder/Explorer: открой home → создай `projects` → внутри неё `my-first-claude-project`.",
+          "Создай папку: `mkdir -p ~/projects/my-first-claude-project` — создаст папку (и родительскую `projects/`, если её нет). Альтернатива через Finder/Explorer: открой home, затем создай `projects`, затем внутри неё `my-first-claude-project`.",
           "Имя — только латиница, без пробелов. Дефисы или подчёркивания вместо пробелов.",
           "Проверь, что папка создана: `ls ~/projects/` (mac) или `dir %USERPROFILE%\\projects\\` (Windows) — увидишь `my-first-claude-project` в списке.",
-          "Перейди в папку: `cd ~/projects/my-first-claude-project`. Проверь: `pwd` → должен показать /Users/.../projects/my-first-claude-project.",
+          "Перейди в папку: `cd ~/projects/my-first-claude-project`. Проверь: `pwd`, затем должен показать /Users/.../projects/my-first-claude-project.",
           "Посмотри, что внутри: `ls` (mac) или `dir` (Windows). Папка пустая — это нормально для нового проекта. Запомни команду `cd ~/projects/my-first-claude-project` — будешь использовать её каждый раз, начиная работу.",
           "Если `permission denied` — ты создаёшь папку там, где нет прав: ~/ (home) всегда твой, не создавай папки в /Applications или /System. Если `mkdir: -p: command not found` — ты на Windows в cmd.exe (старый): перейди в PowerShell или используй `mkdir my-first-claude-project` без `-p`."
         ],
@@ -1195,10 +1195,10 @@
         "why": "Claude Code — это «руки» Claude в твоём терминале; после установки команда `claude` будет доступна везде. Первый запуск короткий: один раз авторизуешься через браузер, дальше Claude Code помнит тебя.",
         "instructions": [
           "Установи Claude Code (в любой папке): `npm install -g @anthropic-ai/claude-code`. Подожди 30–60 секунд — npm загрузит пакет и установит глобально.",
-          "Проверь установку: `claude --version` → должен показать номер версии без ошибок.",
+          "Проверь установку: `claude --version`, затем должен показать номер версии без ошибок.",
           "Если получаешь EACCES — на mac/Linux запусти с sudo: `sudo npm install -g @anthropic-ai/claude-code`, либо настрой npm prefix в свою папку (~/.npm-global, гуглится «npm permission EACCES»). Если EEXIST — старая версия установлена: `npm uninstall -g @anthropic-ai/claude-code`, потом снова install.",
-          "Убедись, что ты в своей рабочей папке: `pwd` → my-first-claude-project. Запусти: `claude`.",
-          "Откроется браузер с Anthropic auth → войди тем же аккаунтом, что и в claude.ai. Вернись в терминал — увидишь интерактивный prompt Claude Code, можно вводить сообщения.",
+          "Убедись, что ты в своей рабочей папке: `pwd`, затем my-first-claude-project. Запусти: `claude`.",
+          "Откроется браузер с Anthropic auth, затем войди тем же аккаунтом, что и в claude.ai. Вернись в терминал — увидишь интерактивный prompt Claude Code, можно вводить сообщения.",
           "Если браузер не открывается — скопируй URL из терминала вручную и открой в браузере."
         ],
         "validate": "`claude --version` работает; в терминале — поле для ввода сообщений Claude Code, сессия активна.",
@@ -1214,7 +1214,7 @@
           "Сохрани файл (Ctrl+S или :wq в Vim, в зависимости от твоего редактора). Проверь: `ls` (mac) или `dir` (Windows) — увидишь CLAUDE.md в папке проекта.",
           "Если /init не работает — возможно, ты ввёл его в обычном чате claude.ai, а не в Claude Code: /init — slash-команда Claude Code, проверь, что ты в терминальной сессии.",
           "Теперь подумай: какую реальную задачу ты бы поручил Claude прямо сейчас? Например: «помоги структурировать заметки», «давай разберём документ», «накидай план проекта X».",
-          "Сформулируй запрос в стиле «Роль → Задача → Формат» (если не помнишь — пройди потом туториал basics). Пример: «Я работаю над <твой контекст>. Помоги мне <конкретная задача> в формате <markdown / список / таблица>. Если нужны вводные — задай вопросы.»",
+          "Сформулируй запрос в стиле «Роль, затем Задача, затем Формат» (если не помнишь — пройди потом туториал basics). Пример: «Я работаю над <твой контекст>. Помоги мне <конкретная задача> в формате <markdown / список / таблица>. Если нужны вводные — задай вопросы.»",
           "Отправь в Claude Code, прочитай ответ. Если Claude хочет создать файл — разреши, это нормально для рабочей папки."
         ],
         "validate": "В папке появился CLAUDE.md с правилами под себя; Claude дал осмысленный ответ, привязанный к твоему контексту, возможно, создал файл в папке проекта.",
@@ -1297,8 +1297,8 @@
         "time": "",
         "why": "Терминал всегда «находится» в какой-то папке. Узнать, в какой, — первая команда дня.",
         "instructions": [
-          "Открой терминал (если ещё не открыт): macOS Cmd+Space → «Terminal»; Windows — PowerShell.",
-          "Введи: `pwd` (mac/linux/PowerShell) → нажми Enter.",
+          "Открой терминал (если ещё не открыт): macOS Cmd+Space, затем «Terminal»; Windows — PowerShell.",
+          "Введи: `pwd` (mac/linux/PowerShell), затем нажми Enter.",
           "Посмотри вывод. Это путь к папке, в которой ты сейчас."
         ],
         "prompt": "pwd",
@@ -1312,7 +1312,7 @@
         "time": "",
         "why": "Без ls ты вслепую. ls показывает, какие папки и файлы есть в текущей.",
         "instructions": [
-          "macOS / Linux: введи `ls` → Enter.",
+          "macOS / Linux: введи `ls`, затем Enter.",
           "Windows (PowerShell): `ls` тоже работает. Старый cmd.exe — `dir`.",
           "Посмотри список. Это содержимое твоей home-папки: Documents, Downloads, Desktop, и т.д."
         ],
@@ -1325,17 +1325,17 @@
         "id": "s3",
         "title": "mkdir + cd — создать папку и зайти в неё",
         "time": "",
-        "why": "Это весь набор для «начать новый проект»: создать папку → войти.",
+        "why": "Это весь набор для «начать новый проект»: создать папку, затем войти.",
         "instructions": [
-          "Создай тестовую папку: `mkdir tutorial-sandbox` → Enter.",
-          "Проверь, что появилась: `ls` → должна быть в списке.",
-          "Зайди в неё: `cd tutorial-sandbox` → Enter.",
-          "Проверь, что ты внутри: `pwd` → должен заканчиваться на /tutorial-sandbox."
+          "Создай тестовую папку: `mkdir tutorial-sandbox`, затем Enter.",
+          "Проверь, что появилась: `ls`, затем должна быть в списке.",
+          "Зайди в неё: `cd tutorial-sandbox`, затем Enter.",
+          "Проверь, что ты внутри: `pwd`, затем должен заканчиваться на /tutorial-sandbox."
         ],
         "prompt": "mkdir tutorial-sandbox\ncd tutorial-sandbox\npwd",
         "example": "После трёх команд:\n$ pwd\n/Users/denisa/tutorial-sandbox",
         "validate": "pwd показывает путь, заканчивающийся на /tutorial-sandbox. Папка создана и ты в ней.",
-        "tip": "Tab — твой лучший друг. Начни вводить `cd tut` → нажми Tab → терминал дополнит до `cd tutorial-sandbox/`. Экономит 90% набора."
+        "tip": "Tab — твой лучший друг. Начни вводить `cd tut`, затем нажми Tab, и терминал дополнит до `cd tutorial-sandbox/`. Экономит 90% набора."
       },
       "s4": {
         "id": "s4",
@@ -1343,9 +1343,9 @@
         "time": "",
         "why": "Уметь возвращаться так же важно, как входить. Это страховка от «куда меня занесло».",
         "instructions": [
-          "Сейчас ты в tutorial-sandbox. Введи `cd ..` → Enter. (Две точки = «папка выше».)",
-          "Проверь: `pwd` → ты снова в home.",
-          "Теперь зайди обратно: `cd tutorial-sandbox` → проверь pwd.",
+          "Сейчас ты в tutorial-sandbox. Введи `cd ..`, затем Enter. (Две точки = «папка выше».)",
+          "Проверь: `pwd`, затем ты снова в home.",
+          "Теперь зайди обратно: `cd tutorial-sandbox`, затем проверь pwd.",
           "Из любой точки можно вернуться домой одной командой: `cd ~` (или просто `cd`)."
         ],
         "prompt": "cd ..\npwd\ncd ~\npwd",
@@ -1359,9 +1359,9 @@
         "time": "",
         "why": "Реальная задача: создать ~/projects/<имя>/notes/ за раз. `mkdir -p` это умеет.",
         "instructions": [
-          "Из любой точки введи: `mkdir -p ~/projects/my-first-project/notes` → Enter.",
-          "Зайди в неё: `cd ~/projects/my-first-project` → проверь `ls` (должна быть папка notes).",
-          "Можешь удалить тестовое: `cd ~` → потом `rm -r tutorial-sandbox` (Mac/Linux) или `Remove-Item -Recurse tutorial-sandbox` (PowerShell). Это удалит папку безвозвратно.",
+          "Из любой точки введи: `mkdir -p ~/projects/my-first-project/notes`, затем Enter.",
+          "Зайди в неё: `cd ~/projects/my-first-project`, затем проверь `ls` (должна быть папка notes).",
+          "Можешь удалить тестовое: `cd ~`, потом `rm -r tutorial-sandbox` (Mac/Linux) или `Remove-Item -Recurse tutorial-sandbox` (PowerShell). Это удалит папку безвозвратно.",
           "Не удаляй ~/projects/my-first-project — она пригодится в туториале first-project."
         ],
         "prompt": "mkdir -p ~/projects/my-first-project/notes\ncd ~/projects/my-first-project\nls",
@@ -1384,7 +1384,7 @@
           "Запусти «бесконечную» команду, чтобы было что прерывать: `ping example.com` (Mac/Linux) — строки побегут без конца.",
           "Нажми `Ctrl+C` — команда остановится, и ты снова увидишь приглашение для ввода. Это безопасно: Ctrl+C просто прерывает текущую команду, файлы не трогает.",
           "Если строка ввода набита наполовину и ты передумал — нажми `Ctrl+C` ещё раз: терминал очистит строку и даст начать заново.",
-          "Когда экран зарос выводом — введи `clear` (Mac/Linux/PowerShell) → Enter. Экран очистится, а история команд останется (стрелка вверх вернёт прошлые команды)."
+          "Когда экран зарос выводом — введи `clear` (Mac/Linux/PowerShell), затем Enter. Экран очистится, а история команд останется (стрелка вверх вернёт прошлые команды)."
         ],
         "prompt": "ping example.com\nclear",
         "example": "$ ping example.com\nPING example.com ...\n64 bytes from ...\n^C        ← здесь ты нажал Ctrl+C\n$         ← снова приглашение, всё под контролем",
@@ -1450,7 +1450,7 @@
       }
     ],
     "pitfalls": [
-      "Пробелы и кириллица в именах — терминал и git их не любят. «my project» ❌ → «my-project» ✅.",
+      "Пробелы и кириллица в именах — терминал и git их не любят. «my project» ❌, а правильно «my-project» ✅.",
       "Папки на рабочем столе — через неделю там 30 штук, ничего не найти. Используй ~/projects/.",
       "Удаление папки через rm -rf без проверки — папка пропадает безвозвратно. Сначала ls, потом rm."
     ],
@@ -1461,7 +1461,7 @@
       },
       {
         "question": "Удали временную папку обоими способами: один раз через Корзину (drag-to-trash), один раз через rm -r. Заметь разницу.",
-        "hint": "Корзина → можно вернуть. rm -r → нет, безвозвратно. В сомнении — Корзина."
+        "hint": "Корзина — можно вернуть. rm -r — нет, безвозвратно. В сомнении — Корзина."
       }
     ],
     "steps": {
@@ -1499,13 +1499,13 @@
         "time": "",
         "why": "Сценарий: ты учишься чему-то новому, хочешь хранить заметки. Удобнее визуально — это нормально.",
         "instructions": [
-          "macOS: открой Finder → Cmd+Shift+H (вернуться в home) → найди папку projects (или создай её через Cmd+Shift+N).",
-          "Внутри projects: правый клик → New Folder → введи `learning-notes` → Enter.",
+          "macOS: открой Finder, нажми Cmd+Shift+H (вернуться в home), затем найди папку projects (или создай её через Cmd+Shift+N).",
+          "Внутри projects: правый клик, затем New Folder, введи `learning-notes`, затем Enter.",
           "Внутри learning-notes — создай ещё две: `claude` и `terminal-basics`.",
-          "Windows: открой Explorer → перейди в C:\\Users\\<имя>\\projects → правый клик → New Folder. Повтори для подпапок."
+          "Windows: открой Explorer, перейди в C:\\Users\\<имя>\\projects, правый клик, затем New Folder. Повтори для подпапок."
         ],
         "example": "Через Finder структура:\nprojects/\n  learning-notes/\n    claude/\n    terminal-basics/",
-        "validate": "В Finder/Explorer видишь дерево: projects → learning-notes → claude / terminal-basics.",
+        "validate": "В Finder/Explorer видишь дерево: projects, внутри learning-notes, внутри claude и terminal-basics.",
         "tip": "Терминал и Finder работают с одной файловой системой. Папка, созданная в одном, видна в другом. Их можно смешивать."
       },
       "s4": {
@@ -1639,7 +1639,7 @@
         "why": "API-ключ — ваши учётные данные: идентифицирует аккаунт, отслеживает использование и авторизует запросы. Каждый API-вызов требует ключ.",
         "instructions": [
           "Зайдите на console.anthropic.com и войдите (или создайте аккаунт).",
-          "Перейдите в Settings → API Keys → Create Key.",
+          "Перейдите в Settings, затем API Keys, далее Create Key.",
           "Дайте понятное имя (например, 'dev-local' или 'my-project').",
           "Скопируйте ключ сразу — вы больше не сможете его увидеть.",
           "Сохраните в переменную окружения: export ANTHROPIC_API_KEY='sk-ant-...'",
@@ -1830,7 +1830,7 @@
           "Запусти через stdio (`node dist/index.js`), убедись что процесс не падает.",
           "Распредели примитивы. Tools = действия с side-effects или вычислением (search, create, calculate) — модель вызывает по необходимости. Resources = данные, читаемые по URI (файлы, записи БД, документы) — клиент может pre-fetch и показать пользователю. Prompts = шаблоны workflow, которые пользователь явно выбирает («сделай code review»), параметризованы.",
           "Прогон по своему списку: каждой операции — свой примитив. Сомневаешься — tool (самый совместимый, его поддерживают все клиенты). Резолв resource vs tool: «может ли клиент захотеть показать этот объект ДО того, как модель его упомянет?» Если да — resource.",
-          "Пример распределения для trace-storage: search_traces → tool (есть параметры, вычисление); get_trace(id) → resource (`trace://abc123`) — клиент кэширует; review_incident → prompt (шаблон: «проанализируй trace X и сравни с baseline Y»).",
+          "Пример распределения для trace-storage: search_traces — это tool (есть параметры, вычисление); get_trace(id) — это resource (`trace://abc123`), клиент кэширует; review_incident — это prompt (шаблон: «проанализируй trace X и сравни с baseline Y»).",
           "Пример минимального сервера (TypeScript):\n// src/index.ts\nimport { Server } from \"@modelcontextprotocol/sdk/server/index.js\";\nimport { StdioServerTransport } from \"@modelcontextprotocol/sdk/server/stdio.js\";\n\nconst server = new Server(\n  { name: \"trace-storage\", version: \"0.1.0\" },\n  { capabilities: { tools: {} } }\n);\n\nserver.setRequestHandler(\"tools/list\", async () => ({\n  tools: [{\n    name: \"search_traces\",\n    description: \"Search traces by service and time range\",\n    inputSchema: {\n      type: \"object\",\n      properties: {\n        service: { type: \"string\" },\n        since: { type: \"string\", format: \"date-time\" }\n      },\n      required: [\"service\"]\n    }\n  }]\n}));\n\nserver.setRequestHandler(\"tools/call\", async (req) => ({\n  content: [{ type: \"text\", text: `stub: ${JSON.stringify(req.params)}` }]\n}));\n\nconst transport = new StdioServerTransport();\nawait server.connect(transport);",
           "Если `TypeError: Cannot find module @modelcontextprotocol/sdk` — поставь `npm i @modelcontextprotocol/sdk`, проверь, что в package.json есть `\"type\": \"module\"`. Если процесс закрывается сразу — не забыл `await server.connect(transport)`: без `await` процесс закроется до подключения."
         ],
@@ -1937,7 +1937,7 @@
     "whatItIs": "[[node:claude-code|Claude Code]] из коробки — это уже мощно. Но в большом проекте без настройки он быстро становится «умный, но непредсказуемый коллега»: то ломает стиль, то делает не туда, то жжёт токены на одном и том же.\n\nProduction-grade setup — это превратить Claude Code в надёжного контрибьютора: знает твою архитектуру, не трогает запретное, специализируется под задачу, видит твои внутренние тулзы, проверяется на каждом коммите.",
     "approach": "Слоями. Сначала иерархия CLAUDE.md (контекст и правила), потом slash-команды (повторяемые операции), затем guard-rails (hooks + permission policy), subagents (специализация), MCP (integrations), и финал — headless mode для CI. Каждый слой проверяется отдельно.",
     "outcomes": [
-      "Строишь иерархию CLAUDE.md (root → область → пакет) без дублирования",
+      "Строишь иерархию CLAUDE.md (root, затем область, затем пакет) без дублирования",
       "Заводишь custom slash-команды для повторяющихся workflow команды",
       "Настраиваешь [[node:cc-hooks|hooks]] (pre/post-tool-use) под линт, audit, secret-scan",
       "Разворачиваешь [[node:cc-subagents|subagents]] для специализации (reviewer, test-writer, debugger)",
@@ -1956,7 +1956,7 @@
       },
       {
         "title": "On-call инцидент-помощник",
-        "description": "MCP к логам/метрикам + slash-команда `/incident` → быстрый triage."
+        "description": "MCP к логам/метрикам + slash-команда `/incident` — быстрый triage."
       }
     ],
     "pitfalls": [
@@ -1991,7 +1991,7 @@
           "Если Claude игнорирует часть правил — файл слишком длинный или правила противоречивы; сокращай, переноси редкое в /docs."
         ],
         "validate": "Иерархия видна Claude (задай `/init`-like вопрос — увидишь, как читает несколько CLAUDE.md).",
-        "tip": "В CLAUDE.md пиши «правила», не «туториалы». Длинные объяснения → в /docs со ссылкой."
+        "tip": "В CLAUDE.md пиши «правила», не «туториалы». Длинные объяснения — в /docs со ссылкой."
       },
       "s2": {
         "title": "Custom slash-команды",
@@ -2000,7 +2000,7 @@
         "instructions": [
           "Команды лежат в `.claude/commands/<name>.md`.",
           "Каждая = markdown с инструкцией + плейсхолдеры `$ARGUMENTS`.",
-          "Имя файла = имя команды (`.claude/commands/review-pr.md` → `/review-pr`).",
+          "Имя файла = имя команды (`.claude/commands/review-pr.md`, то есть `/review-pr`).",
           "В начале команды — frontmatter с `description`, `allowed-tools`.",
           "Закоммить в репо — команда становится shared для всей команды.",
           "Пример. `.claude/commands/release-notes.md` с frontmatter (`description: Generate release notes from commits since last tag`, `allowed-tools: Bash, Read`) и телом: получи commits с последнего тега через `git log $(git describe --tags --abbrev=0)..HEAD --oneline`, сгруппируй по типу (feat/fix/chore/docs), напиши human-readable summary, выведи в формате CHANGELOG.md, версия: $ARGUMENTS. Вызов: `/release-notes v2.4.0`."
@@ -2016,7 +2016,7 @@
           "Конфиг hooks и permissions — в `.claude/settings.json` (project) или `~/.claude/settings.json` (user).",
           "Hooks: `PreToolUse` может блокировать tool (exit code 2 = block + сообщение модели); `PostToolUse` — для аудита, нотификаций, не блокирует.",
           "Matcher — regex по имени tool: `Bash`, `Write`, `Edit|MultiEdit`. Hook читает JSON с stdin (tool params), пишет JSON в stdout (response/error).",
-          "Пример settings.json hooks: `PreToolUse` matcher `Bash` → command `.claude/hooks/guard-bash.sh`; `PostToolUse` matcher `Edit|Write` → command `.claude/hooks/secret-scan.sh`. Скрипт guard-bash.sh читает stdin, достаёт `.tool_input.command` через jq и при совпадении с `rm -rf|git push.*--force.*main|DROP TABLE` печатает `{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}` и делает exit 2, иначе exit 0.",
+          "Пример settings.json hooks: `PreToolUse` matcher `Bash`, command `.claude/hooks/guard-bash.sh`; `PostToolUse` matcher `Edit|Write`, command `.claude/hooks/secret-scan.sh`. Скрипт guard-bash.sh читает stdin, достаёт `.tool_input.command` через jq и при совпадении с `rm -rf|git push.*--force.*main|DROP TABLE` печатает `{\"decision\": \"block\", \"reason\": \"Destructive command blocked by policy\"}` и делает exit 2, иначе exit 0.",
           "Permission policy: секция `permissions` в settings.json. `allow` — список pattern (tool + matcher), разрешённых без спроса. `deny` — список, запрещённый всегда (overrides allow).",
           "Принцип: deny — destructive (rm, force push, drop), allow — частые safe (read, lint, test). Остальное будет спрашиваться — эти спросы сигнал «добавить в allow или deny».",
           "Пример permissions: allow = [`Bash(npm test:*)`, `Bash(pnpm lint:*)`, `Bash(git status)`, `Bash(git diff:*)`, `Read(**)`, `Edit(src/**)`]; deny = [`Bash(rm -rf:*)`, `Bash(git push --force*)`, `Bash(curl:*sh)`, `Write(.env*)`].",
@@ -2050,7 +2050,7 @@
           "Конфиг — `.mcp.json` в корне проекта (project-scoped, попадает в git) ИЛИ `~/.claude/mcp.json` (user).",
           "Для каждого MCP-сервера: `command`, `args`, `env`. Secrets — через `${ENV_VAR}`, не хардкодь.",
           "Проверь scope токенов — лучше read-only, чем admin.",
-          "После добавления — `/mcp` в Claude Code → видишь статус подключения и список tools.",
+          "После добавления — `/mcp` в Claude Code, и видишь статус подключения и список tools.",
           "Если есть свой сервер (см. workflow «Advanced MCP») — публикуй внутренне и подключай тут.",
           "Пример. `.mcp.json` с `mcpServers`: `linear` (command `npx`, args `[\"-y\", \"@modelcontextprotocol/server-linear\"]`, env `{ \"LINEAR_API_KEY\": \"${LINEAR_API_KEY}\" }`) и `internal-traces` (command `npx`, args `[\"-y\", \"@acme/mcp-trace-storage\"]`, env `{ \"TRACE_API_KEY\": \"${TRACE_API_KEY}\" }`). Секреты подтягиваются из `.envrc` (direnv): `export LINEAR_API_KEY=$(op read \"op://Eng/linear/api-key\")` и `export TRACE_API_KEY=$(op read \"op://Eng/traces/api-key\")`.",
           "Если сервер connected, но tools пустые — сервер запустился, но не объявил capabilities; проверь логи сервера через `claude --mcp-debug` или вызови сервер вручную через Inspector."
@@ -2071,7 +2071,7 @@
           "Пример. `.github/workflows/claude-review.yml`: триггер `on: pull_request`, job `review` на `ubuntu-latest` с permissions `contents: read` и `pull-requests: write`. Шаги: `actions/checkout@v4` с `fetch-depth: 0`, затем `anthropics/claude-code-action@v1` с `api-key: ${{ secrets.ANTHROPIC_API_KEY }}`, `mode: review`, prompt «Review the diff against main. Focus: bugs/edge cases, missing error handling, test coverage gaps. Skip: style/formatting (handled by linters). Post inline comments.» и `allowed-tools: \"Read,Bash(git diff:*),Bash(pnpm test:*)\"`.",
           "Если action превышает таймаут — сократи scope в prompt («только diff, не весь файл»), уменьши allowed-tools, поставь max-turns. Permission denied на Bash в CI — CI sandbox изолирован, там `--permission-mode acceptEdits` безопасен, но НЕ используй в self-hosted runner на проде."
         ],
-        "validate": "PR открывается → action запускается → видишь inline-комментарии от Claude в течение 5 минут.",
+        "validate": "PR открывается, затем action запускается, и видишь inline-комментарии от Claude в течение 5 минут.",
         "tip": "Cost-control: в CI поставь model `sonnet` (не opus) для рутинных задач + `--max-tokens` лимит. Иначе бюджет улетит."
       }
     },
@@ -2113,7 +2113,7 @@
       "Понимаешь, когда rule-based scorer, когда LLM-as-judge",
       "Считаешь agg-метрику (accuracy, F1, custom rubric)",
       "Делаешь run-vs-run diff и видишь regressions",
-      "Интегрируешь evals в CI: PR с promptlib-изменением → авто-eval",
+      "Интегрируешь evals в CI: PR с promptlib-изменением запускает авто-eval",
       "Балансируешь cost vs quality для eval-прогона"
     ],
     "applyIn": [
@@ -2123,7 +2123,7 @@
       },
       {
         "title": "Model migration",
-        "description": "Sonnet 4 → 4.5: один прогон evals = решение «мигрировать или ждать»."
+        "description": "Sonnet с 4 на 4.5: один прогон evals = решение «мигрировать или ждать»."
       },
       {
         "title": "RAG-tuning",
@@ -2143,7 +2143,7 @@
         "hint": "Если accuracy 95%+ — dataset слишком простой. Добавь edge cases."
       },
       {
-        "question": "Замени модель (например sonnet → haiku) и прогон тот же dataset. Сравни results. Стоит ли экономия качества?",
+        "question": "Замени модель (например с sonnet на haiku) и прогон тот же dataset. Сравни results. Стоит ли экономия качества?",
         "hint": "Смотри не только avg, а где именно haiku фейлит — может, на конкретном типе кейсов."
       }
     ],
@@ -2181,13 +2181,13 @@
         "validate": "У каждого кейса в dataset есть scorer function (или классификация типа scorer).",
         "tip": "Для CI чаще rule-based — дешевле и детерминированно. LLM-judge — для weekly deep-eval.",
         "troubleshoot": {
-          "LLM-judge даёт разные оценки на одном кейсе": "Поставь `temperature=0`, fix seed если поддерживается, используй structured output. Если всё равно шум — упрощай rubric (5 уровней → 3)."
+          "LLM-judge даёт разные оценки на одном кейсе": "Поставь `temperature=0`, fix seed если поддерживается, используй structured output. Если всё равно шум — упрощай rubric (с 5 уровней до 3)."
         }
       },
       "be-3": {
         "title": "Run-loop и agg-метрика",
         "time": "6 мин",
-        "why": "Прогон = прогоняешь (модель, промпт) по (датасету) → получаешь агрегированные метрики. Без агрегации видишь только разрозненные scores.",
+        "why": "Прогон = прогоняешь (модель, промпт) по (датасету), и получаешь агрегированные метрики. Без агрегации видишь только разрозненные scores.",
         "instructions": [
           "Loop: для каждой записи в dataset — вызов системы, scorer, сохрани {id, input, output, score, metadata}.",
           "Сохрани полный run в файл с timestamp и git SHA: `evals/runs/2026-05-27-abc1234.jsonl`.",
@@ -2206,7 +2206,7 @@
         "time": "6 мин",
         "why": "Avg score вырос с 0.82 до 0.84 — успех? Может, ты починил 5 кейсов и сломал 3. Diff показывает истину.",
         "instructions": [
-          "Diff = join по `id` двух runs → разница scores per case.",
+          "Diff = join по `id` двух runs, то есть разница scores per case.",
           "Категоризируй: improved, regressed (score упал), stable, new (нет в baseline).",
           "Threshold: regression значим, если score упал на ≥ 0.2 на конкретном кейсе или на ≥ 0.05 в среднем по категории.",
           "Если ≥ 1 значимая regression — fail PR, требуй ревью.",
@@ -2222,13 +2222,13 @@
         "why": "Eval, который не запускается автоматически, со временем умирает. CI — единственный способ держать его живым.",
         "instructions": [
           "Trigger: на PR, который меняет файлы в `prompts/`, `evals/`, `src/llm/`.",
-          "Steps: run eval → diff vs baseline (последний run на main) → comment в PR.",
+          "Steps: run eval, затем diff vs baseline (последний run на main), затем comment в PR.",
           "Baseline хранить как artifact или коммитить в `evals/runs/main/`.",
           "API key — через secrets, НЕ в коде/конфиге.",
           "Timeout: 10-15 минут max. Если dataset большой — Batch API или sample (random 30 кейсов)."
         ],
         "example": ".github/workflows/eval.yml:\n```yaml\nname: Eval\non:\n  pull_request:\n    paths: [\"prompts/**\", \"src/llm/**\", \"evals/dataset.jsonl\"]\n\njobs:\n  eval:\n    runs-on: ubuntu-latest\n    timeout-minutes: 15\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with: { python-version: \"3.11\" }\n      - run: pip install anthropic\n      - name: Run eval\n        env:\n          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}\n        run: python evals/run_eval.py | tee eval-output.txt\n      - name: Diff vs baseline\n        run: python evals/diff_runs.py evals/runs/main/latest.jsonl evals/runs/$(ls -t evals/runs | head -1)\n      - uses: marocchino/sticky-pull-request-comment@v2\n        if: always()\n        with:\n          path: eval-output.txt\n```",
-        "validate": "PR с изменением промпта → action запускается, постит comment с avg, cost и diff.",
+        "validate": "PR с изменением промпта запускает action, постит comment с avg, cost и diff.",
         "troubleshoot": {
           "CI eval падает intermittently": "Сетевые ошибки к API. Добавь retry с exponential backoff (3 попытки), tenacity-стиль."
         }
@@ -2240,11 +2240,11 @@
         "instructions": [
           "Budget per run = $0.10-$1 для CI (на PR), $5-$20 для weekly deep-eval.",
           "Sampling: 30-50 кейсов для PR (fast feedback), full dataset для nightly/weekly.",
-          "Tiered evals: smoke (5 кейсов, $0.01, на каждый commit) → full (50 кейсов, на PR) → deep (200 + LLM-judge, weekly).",
+          "Tiered evals: smoke (5 кейсов, $0.01, на каждый commit), затем full (50 кейсов, на PR), затем deep (200 + LLM-judge, weekly).",
           "Кэширование: одинаковый input + одинаковый промпт — закэшируй ответ. Меняется только при изменении prompt/model.",
           "Batch API для не-realtime — половина цены, до 24ч задержка."
         ],
-        "example": "Триггеры:\n- commit → smoke (5 cases, $0.01, 30 sec) — на pre-commit hook\n- PR → fast (30 cases, rule-based, $0.30, 2 min) — github action\n- nightly main → full (50 cases, $0.80, 5 min) — cron\n- weekly → deep (200 cases + LLM-judge, $15, 30 min) — manual / schedule\n\nЭто разделение покрывает 90% случаев при разумной стоимости.",
+        "example": "Триггеры:\n- commit запускает smoke (5 cases, $0.01, 30 sec) — на pre-commit hook\n- PR запускает fast (30 cases, rule-based, $0.30, 2 min) — github action\n- nightly main запускает full (50 cases, $0.80, 5 min) — cron\n- weekly запускает deep (200 cases + LLM-judge, $15, 30 min) — manual / schedule\n\nЭто разделение покрывает 90% случаев при разумной стоимости.",
         "validate": "У тебя есть письменный budget на eval (per PR / per week) и tiering, который в него вписывается.",
         "tip": "Когда продукт стабилен — deep eval может быть раз в месяц, не в неделю. Меряй ROI evals (сколько багов поймал) — это аргумент перед менеджментом, что бюджет оправдан."
       }
@@ -2338,7 +2338,7 @@
         "role": "размещение 24/7"
       }
     ],
-    "savings": "Дни разбирательств и риск сломать личный ПК → управляемая песочница за ~1.5 часа",
+    "savings": "Дни разбирательств и риск сломать личный ПК превращаются в управляемую песочницу за ~1.5 часа",
     "steps": {
       "s1": {
         "title": "Зачем изоляция: модель угроз и выбор площадки",
@@ -2416,7 +2416,7 @@
         "time": "",
         "why": "Обратимость и контроль: что бы ни случилось — вернул как было и мгновенно остановил. Один проход по чек-листу ловит большинство опасных ошибок. См. [[node:sas-snapshots-killswitch|снимки, откат и стоп-кран]].",
         "instructions": [
-          "Снимок и откат. Docker: чистое состояние = пересоздать контейнер из образа (`docker rm` + повторный `docker run`). VM: сделай snapshot до экспериментов средствами провайдера. Правило: новая рискованная задача → сперва зафиксируй чистое состояние.",
+          "Снимок и откат. Docker: чистое состояние = пересоздать контейнер из образа (`docker rm` + повторный `docker run`). VM: сделай snapshot до экспериментов средствами провайдера. Правило: новая рискованная задача — сперва зафиксируй чистое состояние.",
           "Стоп-кран: `docker stop <контейнер>` мгновенно гасит агента. Проверь, что лимит трат на ключе (шаг s4) активен. Реши заранее: при странном поведении — сначала стоп, потом разбор.",
           "Финальный чек-лист: личные папки НЕ смонтированы; реальные пароли НЕ переданы; ключ отдельный, с лимитом, в env, не в коде; сеть минимальна; стоп-кран и откат проверены; удалённый доступ (если есть) защищён паролем/ключом и IP-ограничением.",
           "Что дальше: пройди маршрут [[node:sys-agent-sandbox|Изолированная среда для агента]] целиком, начинай с простых задач и расширяй доступ постепенно и осознанно.",
@@ -2431,7 +2431,7 @@
     "title": "Prompt caching — рычаг снижения стоимости и задержки",
     "subtitle": "Кэшируй стабильный префикс — плати за повторы по 0.1× и отвечай быстрее",
     "totalTime": "6 шагов",
-    "whatItIs": "Prompt caching — не «фича Claude», а главный рычаг оптимизации стоимости и задержки в production AI-workflows на [[node:pl-api|API]]. Anthropic кэширует стабильный prefix твоего prompt'а (система, инструкции, большой контекст, tool definitions) на 5 минут (или 1 час с extended TTL). Повторные запросы с тем же prefix оплачиваются по сниженной ставке (cache read = 0.1× input) и обрабатываются быстрее.\n\nМеханика: ставишь `cache_control: { type: \"ephemeral\" }` на блок → этот блок и всё до него кэшируется. Минимум: 1024 tokens (Sonnet/Opus) или 2048 (Haiku).",
+    "whatItIs": "Prompt caching — не «фича Claude», а главный рычаг оптимизации стоимости и задержки в production AI-workflows на [[node:pl-api|API]]. Anthropic кэширует стабильный prefix твоего prompt'а (система, инструкции, большой контекст, tool definitions) на 5 минут (или 1 час с extended TTL). Повторные запросы с тем же prefix оплачиваются по сниженной ставке (cache read = 0.1× input) и обрабатываются быстрее.\n\nМеханика: ставишь `cache_control: { type: \"ephemeral\" }` на блок, и этот блок и всё до него кэшируется. Минимум: 1024 tokens (Sonnet/Opus) или 2048 (Haiku).",
     "approach": "Кэшируй только то, что стабильно повторяется ≥10 раз за TTL — система, инструкции, большой контекст. Динамику (user query) держи в самом конце, после cache boundary. Сначала измерь экономию на реальном трафике, потом масштабируй — не угадывай.",
     "outcomes": [
       "Понимаешь, что prompt caching — рычаг для cost и latency, а не магия",
@@ -2678,7 +2678,7 @@
           "Поймите разделение ролей: файлы и [[node:sys-rag-architecture|RAG]] решают, какие документы доступны модели, а Citations — откуда конкретно взят ответ",
           "Свяжите с практикой загрузки документов из шага про [[node:cap-files|файлы]] — это материал для цитирования",
           "В RAG-сценарии цитаты показывают, какой именно найденный фрагмент лёг в основу утверждения",
-          "Соберите цепочку целиком: документы → поиск/доступ (RAG) → ответ с привязкой (Citations) → ручная проверка"
+          "Соберите цепочку целиком: документы, затем поиск/доступ (RAG), затем ответ с привязкой (Citations), затем ручная проверка"
         ],
         "validate": "Можете описать полный путь от загруженного документа до проверяемого утверждения с цитатой.",
         "tip": "Citations отвечают на «откуда это», RAG — на «что вообще доступно»; вместе они дают трассируемость."
@@ -3431,7 +3431,7 @@
           "Вернитесь в обычный режим на чувствительных файлах, чтобы контролировать каждое изменение"
         ],
         "validate": "Вы переключились между обычным режимом и Plan через Shift+Tab и видите смену поведения.",
-        "tip": "Связка работает так: Plan согласовали → переключились в auto-accept для механической части → вернулись в обычный для финальной проверки."
+        "tip": "Связка работает так: Plan согласовали, затем переключились в auto-accept для механической части, затем вернулись в обычный для финальной проверки."
       },
       "s4": {
         "title": "Полезные хоткеи",
@@ -3531,7 +3531,7 @@
         "why": "Без понимания приоритета любая настройка превращается в гадание: правишь один файл, а действует другой. Три уровня нужны, чтобы разделить «моё личное», «общее командное» и «секретное локальное».",
         "instructions": [
           "Запомните три файла: ~/.claude/settings.json (глобальный, для всех ваших проектов), .claude/settings.json (проектный, в репозитории), .claude/settings.local.json (локальный, не коммитится)",
-          "Запомните приоритет от слабого к сильному: глобальный → проектный → локальный. Более сильный уровень перекрывает более слабый",
+          "Запомните приоритет от слабого к сильному: глобальный, затем проектный, затем локальный. Более сильный уровень перекрывает более слабый",
           "Поймите идею: глобальный задаёт ваши общие предпочтения, проектный — командный стандарт, локальный — личные дополнения и секреты под конкретный проект",
           "Подробнее про сам инструмент — см. [[node:claude-code|Claude Code]]"
         ],
@@ -3583,14 +3583,14 @@
         "time": "",
         "why": "Главный практический навык — раскладывать права (permissions) по правильному уровню. От этого зависит, увидит ли их вся команда, только вы, или они утекут в git.",
         "instructions": [
-          "Права, нужные везде и всегда (например безопасные read-команды) → глобальный ~/.claude/settings.json",
-          "Права, общие для проекта и команды (Bash(npm test), Edit(./src/**)) → проектный .claude/settings.json в репозитории",
-          "Личные права и секреты под этот проект → локальный settings.local.json вне git",
+          "Права, нужные везде и всегда (например безопасные read-команды), идут в глобальный ~/.claude/settings.json",
+          "Права, общие для проекта и команды (Bash(npm test), Edit(./src/**)), идут в проектный .claude/settings.json в репозитории",
+          "Личные права и секреты под этот проект идут в локальный settings.local.json вне git",
           "Не дублируйте одно правило на нескольких уровнях — выберите один и держите его там",
           "Как устроены сами разрешения и их синтаксис — см. [[node:cc-cfg-permissions|Permissions]]"
         ],
         "validate": "Для любого правила вы можете однозначно сказать, на каком уровне оно должно жить и почему.",
-        "tip": "Простой тест: «Это нужно всей команде?» → проектный. «Только мне?» → локальный. «На всех моих проектах?» → глобальный."
+        "tip": "Простой тест: «Это нужно всей команде?» — значит проектный. «Только мне?» — значит локальный. «На всех моих проектах?» — значит глобальный."
       },
       "s6": {
         "title": "Типичные ошибки и проверка",
@@ -3824,7 +3824,7 @@
           "Поработайте в сессии до момента, когда ответы стали хуже или модель «забывает» начало.",
           "Выполните [[node:cc-cmd-compact|/compact]] — история сожмётся, ключевые выводы останутся.",
           "Если задача сменилась полностью — выполните /clear, чтобы начать с чистого контекста.",
-          "Правило выбора: задача та же, но контекст раздут → /compact; задача новая → /clear."
+          "Правило выбора: задача та же, но контекст раздут — значит /compact; задача новая — значит /clear."
         ],
         "validate": "После /compact Claude продолжает помнить суть; после /clear — начинает с нуля.",
         "tip": "Не ждите деградации до конца — сжимайте контекст заранее, на логических рубежах задачи."
@@ -4093,7 +4093,7 @@
         "time": "",
         "why": "Главная ценность IDE-версии — визуальные диффы. Умение читать и применять их и есть основной рабочий цикл.",
         "instructions": [
-          "Попроси правку текущего файла (в VS Code — Cmd+Shift+P → Claude: ask in current file)",
+          "Попроси правку текущего файла (в VS Code — Cmd+Shift+P, затем Claude: ask in current file)",
           "Дождись правки — она придёт как inline diff прямо в редакторе",
           "Просмотри изменение в контексте окружающего кода",
           "Прими (accept) или отклони (reject) изменение кнопкой в diff-вью"
@@ -4267,7 +4267,7 @@
     "subtitle": "Разбираем RAG не как идею, а как систему: какие компоненты внутри, как они связаны и какой паттерн (типовое решение) выбрать",
     "totalTime": "6 шагов",
     "whatItIs": "RAG (Retrieval-Augmented Generation, генерация ответа с опорой на найденное) как архитектура — это конвейер из трёх частей: индекс (база с заранее подготовленными документами), ретривер (retriever — компонент, который достаёт релевантные куски на запрос) и генератор (LLM, который собирает ответ из найденного). Этот курс не про «зачем нужен RAG» — он про то, КАК RAG собран внутри и где у него границы.",
-    "approach": "Идём от общей схемы к деталям. Сначала видим конвейер целиком (запрос → поиск → генерация), потом разбираем каждый компонент по отдельности, потом смотрим на паттерны разной сложности — naive (простой) / hybrid (гибридный) / re-rank (с переранжированием) — и решаем, какой нужен под задачу. Заканчиваем сборкой минимальной системы, разбором рисков и чек-листом готовности к продакшену.",
+    "approach": "Идём от общей схемы к деталям. Сначала видим конвейер целиком (запрос, затем поиск, затем генерация), потом разбираем каждый компонент по отдельности, потом смотрим на паттерны разной сложности — naive (простой) / hybrid (гибридный) / re-rank (с переранжированием) — и решаем, какой нужен под задачу. Заканчиваем сборкой минимальной системы, разбором рисков и чек-листом готовности к продакшену.",
     "outcomes": [
       "Понимаешь конвейер RAG как набор компонентов, а не как «магию поиска»",
       "Умеешь назвать и развести роли: индекс, ретривер, генератор",
@@ -4316,7 +4316,7 @@
         "time": "",
         "why": "Прежде чем чинить детали, нужно увидеть систему как поток данных. RAG — это не «умный поиск», а конвейер: запрос проходит через поиск (retrieval) и попадает в генерацию вместе с найденным контекстом. Без этой картины невозможно понять, где что ломается.",
         "instructions": [
-          "Нарисуй три блока в ряд: Индекс → Ретривер → Генератор, и стрелку запроса, который входит в ретривер",
+          "Нарисуй три блока в ряд: Индекс, затем Ретривер, затем Генератор, и стрелку запроса, который входит в ретривер",
           "Проследи путь данных: документы заранее уходят в индекс; запрос идёт в ретривер; ретривер достаёт топ-N кусков; куски + запрос идут в LLM; LLM выдаёт ответ со ссылками",
           "Отметь, что есть два времени работы: офлайн (наполнение индекса) и онлайн (ответ на запрос) — их часто путают",
           "Сравни с вводным узлом [[node:af-rag-basics|RAG basics]]: там RAG как идея «найти и ответить», здесь — как система с границами компонентов",
@@ -4344,10 +4344,10 @@
         "time": "",
         "why": "RAG бывает разной сложности, и брать сразу сложный — ошибка по стоимости и поддержке. Три базовых паттерна покрывают почти все случаи; задача — понять, чем они отличаются и под что нужен каждый.",
         "instructions": [
-          "Naive RAG (простой): один поиск по векторам смысла на запрос → топ-N кусков → в LLM. Просто, дёшево, хватает на малых объёмах и простых запросах",
+          "Naive RAG (простой): один поиск по векторам смысла на запрос, затем топ-N кусков, затем в LLM. Просто, дёшево, хватает на малых объёмах и простых запросах",
           "Hybrid search (гибридный поиск): совмещаешь поиск по смыслу (по векторам) и поиск по точным словам/терминам, результаты объединяешь — спасает там, где важны коды, артикулы, имена ([[node:sys-hybrid-search|Гибридный поиск]])",
           "Re-ranking (переранжирование — уточнение порядка найденного): достаёшь больше кандидатов (например топ-20), потом отдельной моделью пересортировываешь и оставляешь лучшие топ-3-5 — точность верхушки растёт, но добавляется задержка и стоимость",
-          "Сопоставь паттерн с задачей: малый объём → naive; специфичные термины → hybrid; много шумных кандидатов и нужна точность → re-rank",
+          "Сопоставь паттерн с задачей: малый объём — naive; специфичные термины — hybrid; много шумных кандидатов и нужна точность — re-rank",
           "Запомни лестницу качества из узла: naive ~50-60%, с проверкой релевантности 75-85%, с переранжированием (re-ranking) 90%+ хороших ответов"
         ],
         "validate": "Можешь для конкретной задачи обосновать выбор паттерна и назвать, чем платишь за усложнение (задержка, стоимость, поддержка).",
@@ -4358,7 +4358,7 @@
         "time": "",
         "why": "Понимать компоненты мало — нужно увидеть их в сборке. Минимальный рабочий RAG проще, чем кажется: его можно описать в 5 шагах. Это база, поверх которой потом навешивают hybrid и re-rank.",
         "instructions": [
-          "Офлайн-этап: собери документы → нарежь на куски (chunking) → переведи в векторы смысла (embeddings) → положи в индекс/векторное хранилище",
+          "Офлайн-этап: собери документы, затем нарежь на куски (chunking), затем переведи в векторы смысла (embeddings), затем положи в индекс/векторное хранилище",
           "Онлайн-этап, шаг 1: запрос пользователя переводишь в вектор тем же способом, что и документы",
           "Онлайн-этап, шаг 2: ретривер ищет в индексе топ-N ближайших кусков по этому вектору",
           "Онлайн-этап, шаг 3: собираешь промпт = инструкция + найденные куски + запрос; инструкция явно требует «отвечай только из контекста и дай ссылки»",
@@ -4372,7 +4372,7 @@
         "time": "",
         "why": "RAG — не серебряная пуля. У архитектуры есть встроенные слабые места: они предсказуемы, и зная их, ты проектируешь систему устойчивой, а не латаешь по факту жалоб.",
         "instructions": [
-          "Мусор на входе = мусор на выходе: устаревшие, дублирующиеся, черновые документы в индексе → ретривер уверенно находит шум. Заложи процесс удаления устаревшего",
+          "Мусор на входе = мусор на выходе: устаревшие, дублирующиеся, черновые документы в индексе, и ретривер уверенно находит шум. Заложи процесс удаления устаревшего",
           "Поиск (retrieval) — узкое горло: если нужного куска нет в топ-N, генератор его не увидит и либо промолчит, либо придумает; качество ответа ограничено сверху качеством поиска",
           "Выдумки поверх контекста: даже с правильными кусками LLM может додумать — лечится строгой инструкцией и показом источников для проверки",
           "Нарезка рвёт смысл: слишком мелкие куски теряют контекст, слишком крупные разбавляют релевантность — это архитектурный, а не «настроечный» риск ([[node:sys-chunking-strategies|Стратегии чанкинга]])",
@@ -4477,10 +4477,10 @@
         "time": "",
         "why": "Выбор зависит от двух вещей: насколько большой контекст и насколько он меняется от шага к шагу. Эти два вопроса дают готовый ответ.",
         "instructions": [
-          "Шагов 2-3 и контекст небольшой → полный. Не усложняй.",
-          "Контекст большой и динамичный (длинные диалоги, многошаговый ресёрч) → summary, обновляемый по мере роста.",
-          "Точно знаешь, какие поля нужны шагу → структурированный: передавай только их.",
-          "Данные большие и лежат в источнике, к которому у шага есть доступ → ссылочный."
+          "Шагов 2-3 и контекст небольшой — полный. Не усложняй.",
+          "Контекст большой и динамичный (длинные диалоги, многошаговый ресёрч) — summary, обновляемый по мере роста.",
+          "Точно знаешь, какие поля нужны шагу — структурированный: передавай только их.",
+          "Данные большие и лежат в источнике, к которому у шага есть доступ — ссылочный."
         ],
         "validate": "Для каждого перехода в своём workflow ты можешь назвать выбранную стратегию и одну причину выбора.",
         "tip": "Начни с самого простого, что работает. Усложняй стратегию только когда упёрся в цену или лимит."
@@ -4623,11 +4623,11 @@
         "time": "",
         "why": "Все данные собраны — пора пройти по дереву решений. Цель — один обоснованный выбор, а не список «можно и так, и так».",
         "instructions": [
-          "Postgres уже есть + < 5M векторов + < 100 QPS → pgvector (без новой инфраструктуры)",
-          "Нет ops-команды, нужен managed, бюджет ок → Pinecone или Qdrant Cloud",
-          "Сложные фильтры (metadata + вектор) и self-host → Qdrant",
-          "Нужен hybrid search из коробки → Weaviate (или pgvector + BM25 руками)",
-          "PoC на ноутбуке → Chroma, но с планом миграции при выходе в prod"
+          "Postgres уже есть + < 5M векторов + < 100 QPS — pgvector (без новой инфраструктуры)",
+          "Нет ops-команды, нужен managed, бюджет ок — Pinecone или Qdrant Cloud",
+          "Сложные фильтры (metadata + вектор) и self-host — Qdrant",
+          "Нужен hybrid search из коробки — Weaviate (или pgvector + BM25 руками)",
+          "PoC на ноутбуке — Chroma, но с планом миграции при выходе в prod"
         ],
         "validate": "Ты можешь назвать один движок и три причины выбора, привязанные к своим цифрам из шагов 1 и 3.",
         "tip": "Если сомневаешься между pgvector и managed при наличии Postgres — начни с pgvector. Миграция вверх дешевле, чем платить за неиспользуемые возможности с первого дня."
@@ -4638,7 +4638,7 @@
         "why": "Правильный выбор движка не спасает от стратегических ловушек. Lock-in, несовместимость векторов при смене модели и multi-tenant утечки — самые дорогие ошибки, и все они предсказуемы.",
         "instructions": [
           "Lock-in: проприетарный API managed-решения усложняет переезд — держи слой абстракции над клиентом store",
-          "Переиндексация: смена embedding-модели делает старые векторы несовместимыми → нужна полная переиндексация, в идеале параллельные индексы с A/B-роутингом",
+          "Переиндексация: смена embedding-модели делает старые векторы несовместимыми, и нужна полная переиндексация, в идеале параллельные индексы с A/B-роутингом",
           "Multi-tenant: один индекс на всех = утечка данных между клиентами; используй namespaces (Pinecone) / partitions (Qdrant) / WHERE tenant_id (pgvector)",
           "Всегда применяй metadata filtering (tenant_id, product, lang, date_range) ДО vector search, иначе в выдаче мусор из чужих данных",
           "Заложи бюджет времени на переиндексацию заранее — она почти неизбежна при эволюции моделей"
@@ -4666,7 +4666,7 @@
     "title": "Стратегии chunking для RAG",
     "subtitle": "Как нарезка документов определяет качество retrieval",
     "totalTime": "6 шагов",
-    "whatItIs": "Chunking — разбиение документов на куски (чанки) перед эмбеддингом. Это фундаментальный шаг [[node:sys-rag-architecture|RAG-пайплайна]]: качество того, что модель найдёт и процитирует, зависит от нарезки больше, чем от выбора vector store или embedding-модели.\n\nЧетыре базовые стратегии: fixed-size (N токенов с overlap), recursive splitter (по абзацам→предложениям→словам), semantic chunking (граница там, где меняется тема) и document-aware (по структуре: заголовки, code-блоки, таблицы). Этот курс учит выбирать стратегию под тип контента и не ломать retrieval на границах чанков.",
+    "whatItIs": "Chunking — разбиение документов на куски (чанки) перед эмбеддингом. Это фундаментальный шаг [[node:sys-rag-architecture|RAG-пайплайна]]: качество того, что модель найдёт и процитирует, зависит от нарезки больше, чем от выбора vector store или embedding-модели.\n\nЧетыре базовые стратегии: fixed-size (N токенов с overlap), recursive splitter (по абзацам, затем предложениям, затем словам), semantic chunking (граница там, где меняется тема) и document-aware (по структуре: заголовки, code-блоки, таблицы). Этот курс учит выбирать стратегию под тип контента и не ломать retrieval на границах чанков.",
     "approach": "Не заучивай числа — проверь на своих данных. Возьми реальный корпус, прогони 2-3 варианта chunk_size и overlap, измерь recall на eval-сете. Интуиция «правильного» размера приходит только из A/B на собственном контенте.",
     "outcomes": [
       "Понимаешь, почему chunking — главная причина плохого RAG (60-70% диагнозов)",
@@ -4716,8 +4716,8 @@
         "time": "",
         "why": "Плохой chunking ломает всё дальше по пайплайну, а его чинят в последнюю очередь — сначала меняют модель, хотя в 60-70% случаев виноват именно размер чанка.",
         "instructions": [
-          "Запомни механику: слишком крупный чанк → embedding размывается в «вектор среднего смысла», в top-N лезет мусор.",
-          "Слишком мелкий чанк → теряется контекст, модель не понимает, о чём фрагмент.",
+          "Запомни механику: слишком крупный чанк, и embedding размывается в «вектор среднего смысла», в top-N лезет мусор.",
+          "Слишком мелкий чанк, и теряется контекст, модель не понимает, о чём фрагмент.",
           "Свяжи это с [[node:sys-rag-architecture|архитектурой RAG]]: chunking стоит до эмбеддинга и определяет, что вообще можно retrieve.",
           "Прими как правило: при жалобе «RAG плохо отвечает» первым проверяй chunking, а не модель."
         ],
@@ -4730,7 +4730,7 @@
         "why": "Без понимания различий ты по умолчанию возьмёшь fixed-size — самую простую и самую теряющую контекст стратегию.",
         "instructions": [
           "Fixed-size: N токенов (обычно 256-512) с overlap 10-20%. Просто и быстро, но рвёт контекст на границах.",
-          "Recursive splitter (LangChain RecursiveCharacterTextSplitter): делит по абзацам → предложениям → словам, пока кусок не поместится. Лучший дефолт для prose.",
+          "Recursive splitter (LangChain RecursiveCharacterTextSplitter): делит по абзацам, затем предложениям, затем словам, пока кусок не поместится. Лучший дефолт для prose.",
           "Semantic chunking: соседние предложения сравниваются по embedding-similarity, граница — там, где similarity падает (смена темы). Дороже на ingestion, точнее retrieval.",
           "Document-aware: учитывает структуру (markdown-заголовки, HTML-теги, code-блоки). Чанк = логическая секция, а не произвольное окно.",
           "Запомни роль overlap: он сохраняет факт, попавший на границу двух чанков."
@@ -4743,11 +4743,11 @@
         "time": "",
         "why": "Выбор делается по типу контента, а не по моде: неверная стратегия закладывает слабый retrieval, который потом не вылечить настройкой модели.",
         "instructions": [
-          "Prose / статьи / документация → recursive splitter, chunk_size 256-512. Быстро и достаточно.",
-          "Смешанный формат (код + текст) → document-aware с разделением по типу блока.",
-          "Длинные документы со сложной структурой (контракты, research papers) → semantic chunking.",
-          "Tabular / structured data → row-based нарезка, не text-based.",
-          "FAQ-style контент → меньший chunk_size (128-256), технические доки → больший (512-1024)."
+          "Prose / статьи / документация — recursive splitter, chunk_size 256-512. Быстро и достаточно.",
+          "Смешанный формат (код + текст) — document-aware с разделением по типу блока.",
+          "Длинные документы со сложной структурой (контракты, research papers) — semantic chunking.",
+          "Tabular / structured data — row-based нарезка, не text-based.",
+          "FAQ-style контент — меньший chunk_size (128-256), технические доки — больший (512-1024)."
         ],
         "validate": "Для трёх своих типов контента можешь назвать стратегию и приблизительный chunk_size с обоснованием.",
         "tip": "Если сомневаешься между двумя вариантами — это сигнал сделать A/B, а не угадывать. Eval-сет ответит точнее интуиции."
@@ -4833,7 +4833,7 @@
     "exercises": [
       {
         "question": "Возьми 10 реальных запросов к своей базе. Раздели их на «точные» (имена, версии, коды) и «смысловые» (парафразы, вопросы). Какой метод выиграл бы на каждом?",
-        "hint": "Точные термины → sparse (BM25). Парафразы и концепты → dense. Смесь в корпусе → нужен гибрид."
+        "hint": "Точные термины — sparse (BM25). Парафразы и концепты — dense. Смесь в корпусе — нужен гибрид."
       },
       {
         "question": "Объясни на пальцах, почему weighted sum со скорами BM25=12 и cosine=0.7 без нормализации даст плохой результат.",
@@ -4934,7 +4934,7 @@
     "subtitle": "ETL для документов, питающих RAG: от источника до вектора в индексе",
     "totalTime": "6 шагов",
     "whatItIs": "Document ingestion pipeline — это постоянно работающий конвейер, который тянет документы из источников (Notion, Confluence, Drive, GitHub, Zendesk), парсит, нормализует, дедуплицирует, режет на чанки, считает embeddings и пишет в [[node:sys-rag-architecture|vector store]]. Не разовый скрипт, а сервис с incremental sync, обработкой удалений, retry и мониторингом.",
-    "approach": "Идём по реальному жизненному циклу документа: сначала разбираемся, зачем вообще нужен непрерывный pipeline (а не one-shot скрипт), затем проходим все этапы цепочки извлечение → очистка → chunking → embeddings → индекс, добавляем инкрементальное обновление и обработку удалений, собираем минимальную event-driven архитектуру, разбираем границы и риски (мусор на входе, дубликаты, дрейф), и закрываем чек-листом с метриками.",
+    "approach": "Идём по реальному жизненному циклу документа: сначала разбираемся, зачем вообще нужен непрерывный pipeline (а не one-shot скрипт), затем проходим все этапы цепочки извлечение, затем очистка, затем chunking, затем embeddings, затем индекс, добавляем инкрементальное обновление и обработку удалений, собираем минимальную event-driven архитектуру, разбираем границы и риски (мусор на входе, дубликаты, дрейф), и закрываем чек-листом с метриками.",
     "outcomes": [
       "Понимаешь, почему RAG без pipeline деградирует за недели и чем incremental sync отличается от ночного full re-sync",
       "Знаешь все этапы цепочки: extraction, normalization, dedup, chunking, embedding, upsert — и что делает каждый",
@@ -4958,10 +4958,10 @@
     ],
     "pitfalls": [
       "Ночной full re-sync как единственная стратегия: для 100k+ документов это часы compute и устаревший индекс 23 часа в сутки — нужен incremental + weekly full",
-      "Не обрабатывать удаления: документ удалён в источнике, но остался в индексе → ответы со ссылкой на 404 и privacy-проблема",
+      "Не обрабатывать удаления: документ удалён в источнике, но остался в индексе, и получаются ответы со ссылкой на 404 и privacy-проблема",
       "Парсинг без error handling: один битый PDF ломает весь batch — обязательны try/except на документ и dead-letter queue",
       "Отсутствие дедупликации: одна и та же FAQ из 3 источников даёт 3 одинаковых результата и роняет доверие",
-      "Embeddings без version-tracking: после смены модели половина индекса на старых векторах, половина на новых → деградация поиска"
+      "Embeddings без version-tracking: после смены модели половина индекса на старых векторах, половина на новых, и деградация поиска"
     ],
     "exercises": [
       {
@@ -4970,7 +4970,7 @@
       },
       {
         "question": "Документ удалили в источнике. Опиши, что должно произойти в pipeline, чтобы он перестал цитироваться, и в чём разница soft vs hard delete.",
-        "hint": "Сигнал об удалении (webhook или periodic diff) → действие в [[node:sys-rag-architecture|vector store]]. Soft delete = tombstone + фильтр, hard delete = DELETE + audit для compliance."
+        "hint": "Сигнал об удалении (webhook или periodic diff), затем действие в [[node:sys-rag-architecture|vector store]]. Soft delete = tombstone + фильтр, hard delete = DELETE + audit для compliance."
       },
       {
         "question": "Recall у RAG медленно падает уже месяц без явной причины. Какие метрики pipeline проверишь первыми?",
@@ -4992,14 +4992,14 @@
         "tip": "Планируй pipeline сразу при выходе RAG в production — «потом добавим» почти никогда не наступает."
       },
       "s2": {
-        "title": "Этапы цепочки: extraction → очистка → chunking → embeddings → индекс",
+        "title": "Этапы цепочки: extraction, затем очистка, затем chunking, затем embeddings, затем индекс",
         "time": "",
         "why": "Каждый этап решает свою задачу, и ошибка на раннем этапе (мусорный парсинг) отравляет все последующие. Нужно видеть конвейер целиком.",
         "instructions": [
           "Extraction: парсинг по типу — PDF (PyMuPDF, Unstructured), HTML (BeautifulSoup, trafilatura), Office (python-docx), Markdown",
           "Normalization: Unicode NFC, удаление boilerplate (nav, footer), language detection, исправление encoding",
           "Deduplication: hash полного текста + near-dup detection (MinHash / SimHash) для разных версий одного документа",
-          "Chunking → embeddings: режь по стратегии источника (см. [[node:sys-chunking-strategies|стратегии chunking]]), затем считай векторы батчами",
+          "Chunking, затем embeddings: режь по стратегии источника (см. [[node:sys-chunking-strategies|стратегии chunking]]), затем считай векторы батчами",
           "Upsert в индекс: записывай чанки с embeddings в [[node:sys-rag-architecture|vector store]] вместе с метаданными (source, doc_id, версия модели)"
         ],
         "validate": "Можешь для каждого из 5 этапов назвать его вход, выход и одну характерную ошибку этапа.",
@@ -5010,7 +5010,7 @@
         "time": "",
         "why": "Это сердце production-pipeline: именно incremental sync держит индекс свежим без полной переиндексации, а обработка удалений закрывает privacy/compliance.",
         "instructions": [
-          "Webhook-driven (предпочтительно): Notion, Linear, GitHub шлют events → enqueue → process, latency источник→индекс 1-10 минут",
+          "Webhook-driven (предпочтительно): Notion, Linear, GitHub шлют events, затем enqueue, затем process, latency от источника до индекса 1-10 минут",
           "Polling fallback для источников без webhooks: cursor по `updated_at` + diff, интервал 5 мин — 1 ч в зависимости от volume",
           "Full re-sync раз в неделю как catch-up для пропущенных events и борьбы с data drift — дорого, но обязательно",
           "Deletion: soft delete (tombstone + фильтр `is_deleted = false`) для скорости, hard delete (DELETE из индекса) для GDPR с обязательным audit",
@@ -5026,8 +5026,8 @@
         "instructions": [
           "Connectors публикуют события в очередь: `{source, doc_id, action: upsert|delete}` (например через SQS)",
           "Worker на `delete`: удаляет чанки по фильтру `{source, doc_id}` из индекса и пишет audit_log",
-          "Worker на `upsert`: fetch → parse → normalize → сравни sha256 текста с предыдущим хешем, при совпадении skip",
-          "При изменении: chunk по стратегии источника → embed_batch → удалить старые чанки документа → upsert новые → сохранить новый хеш",
+          "Worker на `upsert`: fetch, затем parse, затем normalize, затем сравни sha256 текста с предыдущим хешем, при совпадении skip",
+          "При изменении: chunk по стратегии источника, затем embed_batch, затем удалить старые чанки документа, затем upsert новые, затем сохранить новый хеш",
           "Parse-failures и retry-исчерпание уходят в dead-letter queue с alert при failure rate > 1%"
         ],
         "validate": "У тебя есть рабочий цикл, где повторная обработка неизменённого документа ничего не пишет в индекс (idempotent через hash).",
@@ -5039,7 +5039,7 @@
         "why": "Pipeline ломается тихо: коннектор упал, embeddings разъехались по версиям, дубли копятся. Нужно знать границы и заранее закрыть риски.",
         "instructions": [
           "Мусор на входе: один corrupted PDF не должен ронять batch — try/except на документ + dead-letter queue, alert при >1% failures",
-          "Дубликаты: exact hash match → drop; MinHash similarity > 0.95 → оставить новее, пометить как duplicate (норма dedup rate 5-15%)",
+          "Дубликаты: exact hash match — drop; MinHash similarity > 0.95 — оставить новее, пометить как duplicate (норма dedup rate 5-15%)",
           "Embedding-версии: track `embedding_model_version` в metadata + миграционная стратегия, иначе половина индекса на старой модели",
           "Drift: full re-sync раз в неделю + alert на ingestion lag, чтобы упавший коннектор не заморозил индекс незаметно",
           "Retry на flaky источниках — exponential backoff, чтобы не упереться в rate limits источника"
@@ -5103,7 +5103,7 @@
         "hint": "Подумай, делится ли задача на независимые куски и кто собирает итог. Смотри [[node:sys-parallel-fan-out|параллельный разбор]]."
       },
       {
-        "question": "Команда хочет «AI пишет → AI критикует → переписывает → снова критикует...» без ограничений. Какой риск и как его закрыть?",
+        "question": "Команда хочет «AI пишет, затем AI критикует, затем переписывает, затем снова критикует...» без ограничений. Какой риск и как его закрыть?",
         "hint": "Это паттерн reflection/debate. Что произойдёт без потолка на количество раундов?"
       },
       {
@@ -5132,7 +5132,7 @@
         "instructions": [
           "Supervisor-worker: главный агент делит задачу, помощники-специалисты делают части, главный собирает итог. См. [[node:sys-supervisor-worker|supervisor-worker]]",
           "Parallel (fan-out): одна задача дробится на одинаковые куски, агенты обрабатывают их параллельно, результаты сводятся. См. [[node:sys-parallel-fan-out|параллельный разбор]]",
-          "Pipeline: агенты выстроены в конвейер — выход одного становится входом следующего (классифицировать → обработать → оформить)",
+          "Pipeline: агенты выстроены в конвейер — выход одного становится входом следующего (классифицировать, затем обработать, затем оформить)",
           "Debate/обсуждение: несколько агентов дают разные варианты или критикуют друг друга, отдельный агент выбирает лучшее или сводит сильные стороны",
           "Запиши для каждого паттерна одно слово-назначение: делимость / масштаб / этапы / качество-через-сравнение"
         ],
@@ -5145,8 +5145,8 @@
         "why": "Неправильный паттерн делает систему дорогой, медленной и неотлаживаемой. Правильный — предсказуемой и дешёвой в поддержке. Выбор идёт от сигнала задачи, а не от моды.",
         "instructions": [
           "Возьми сигнал, который ты нашёл на шаге 1, и сопоставь его с паттерном",
-          "Задача делится на разные подзадачи → supervisor-worker; делится на одинаковые куски в масштабе → parallel",
-          "Задача проходит чёткие этапы по очереди → pipeline; нужны разные точки зрения или итеративное качество → debate",
+          "Задача делится на разные подзадачи — supervisor-worker; делится на одинаковые куски в масштабе — parallel",
+          "Задача проходит чёткие этапы по очереди — pipeline; нужны разные точки зрения или итеративное качество — debate",
           "Выбери РОВНО одну основную схему. Если нужно усложнить — добавь вторую как маленький инструмент внутри первой, не как параллельную работу",
           "Сверься с принципами оркестрации: [[node:ai-orchestration|оркестрация агентов]]"
         ],
@@ -5160,7 +5160,7 @@
         "instructions": [
           "Возьми задачу поддержки: входящее обращение нужно классифицировать и направить нужному специалисту — это pipeline + supervisor-worker",
           "Шаг 1: агент-координатор получает сообщение и определяет тип (пароль / счёт / баг / жалоба)",
-          "Шаг 2: маршрутизирует специализированному worker'у — у каждого свои данные и инструкции; сложное и жалобы → человеку",
+          "Шаг 2: маршрутизирует специализированному worker'у — у каждого свои данные и инструкции; сложное и жалобы — человеку",
           "Шаг 3: worker делает свою часть и возвращает ответ; координатор оформляет и отправляет клиенту",
           "Отследи, где передаётся управление между агентами — это и есть протокол передачи. См. [[node:sys-handoff-protocols|протоколы передачи]]"
         ],
@@ -5205,15 +5205,15 @@
     "approach": "Не строй «универсального агента на всё». Начни с supervisor, который ничего не исполняет сам, и 2-3 worker'ов с чёткими границами. Маршрутизация — через [[node:sys-branching-logic|branching logic]], передача задач — через структурный [[node:sys-handoff-protocols|handoff]]. Сначала проверь каждый worker изолированно, потом собери цепочку и измерь узкое место — самого supervisor.",
     "outcomes": [
       "Понимаешь, когда supervisor-worker оправдан, а когда хватит prompt chaining или fan-out",
-      "Спроектировал supervisor: декомпозиция → делегирование → синтез, без исполнения спецзадач",
+      "Спроектировал supervisor: декомпозиция, затем делегирование, затем синтез, без исполнения спецзадач",
       "Описал 2-3 worker'ов с непересекающимися границами и узкими наборами tools",
-      "Собрал цикл: план → последовательные вызовы worker'ов → синтез с audit trail",
+      "Собрал цикл: план, затем последовательные вызовы worker'ов, затем синтез с audit trail",
       "Поставил границы: max-depth, max-workers-per-turn, контроль латентности и cost"
     ],
     "applyIn": [
       {
         "title": "Research-агент",
-        "description": "Supervisor делегирует: web research → анализ данных → написание brief. Каждый этап — отдельный worker со своими tools."
+        "description": "Supervisor делегирует: web research, затем анализ данных, затем написание brief. Каждый этап — отдельный worker со своими tools."
       },
       {
         "title": "Customer ops",
@@ -5253,7 +5253,7 @@
         "instructions": [
           "Запомни суть: supervisor декомпозирует и синтезирует, worker'ы исполняют узкие задачи.",
           "Проверь критерий применимости: задача требует ≥3 разных типа экспертизы И шаги нельзя жёстко зафиксировать заранее.",
-          "Отсей альтернативы: один тип задачи → один агент; жёсткая последовательность → [[node:sys-prompt-chaining|prompt chaining]]; параллельные одинаковые задачи → [[node:sys-parallel-fan-out|fan-out]].",
+          "Отсей альтернативы: один тип задачи — один агент; жёсткая последовательность — [[node:sys-prompt-chaining|prompt chaining]]; параллельные одинаковые задачи — [[node:sys-parallel-fan-out|fan-out]].",
           "Зафиксируй, что supervisor — последовательный диспетчер, а не параллельный."
         ],
         "validate": "Можешь в одном предложении сказать, почему именно supervisor-worker, а не chaining/fan-out/один агент.",
@@ -5270,7 +5270,7 @@
           "Заложи режим синтеза: supervisor агрегирует результаты worker'ов в финальный ответ."
         ],
         "validate": "Промпт supervisor'а не содержит ни одного предметного tool — только делегирование и синтез.",
-        "tip": "Хороший supervisor читается как диспетчер: «дано X → зови worker A и B → собери ответ», без «как именно» делать подзадачу."
+        "tip": "Хороший supervisor читается как диспетчер: «дано X, затем зови worker A и B, затем собери ответ», без «как именно» делать подзадачу."
       },
       "s3": {
         "title": "Роль воркеров",
@@ -5279,7 +5279,7 @@
         "instructions": [
           "Раздели зону ответственности по domain или action так, чтобы границы не пересекались.",
           "Каждому worker'у — свой системный промпт (500-1500 токенов) и 2-5 tools, не больше.",
-          "Подбери модель под задачу: простой lookup → Haiku, рассуждение/анализ → Sonnet.",
+          "Подбери модель под задачу: простой lookup — Haiku, рассуждение/анализ — Sonnet.",
           "Сделай каждому worker'у собственный eval-set, чтобы тестировать изолированно (см. [[node:sys-evals-benchmarks|evals]])."
         ],
         "validate": "Для любой подзадачи однозначно понятно, какой ровно один worker за неё отвечает.",
@@ -5288,7 +5288,7 @@
       "s4": {
         "title": "Как собрать цикл",
         "time": "",
-        "why": "Сборка превращает supervisor и worker'ов в работающую систему: план → вызовы → синтез. Без audit trail невозможно отладить «почему результат слабый».",
+        "why": "Сборка превращает supervisor и worker'ов в работающую систему: план, затем вызовы, затем синтез. Без audit trail невозможно отладить «почему результат слабый».",
         "instructions": [
           "Шаг 1: supervisor по входу возвращает план делегирования (какие worker'ы и с каким входом).",
           "Шаг 2: последовательно вызывай worker'ов из плана, складывая результаты в общий dict.",
@@ -5333,7 +5333,7 @@
     "subtitle": "Разбить задачу на независимые куски, обработать параллельно, собрать результат",
     "totalTime": "6 шагов",
     "whatItIs": "Map-reduce для AI: одна большая задача разбивается на N независимых под-задач (map), каждая обрабатывается параллельно отдельным вызовом модели, затем результаты агрегируются в один ответ (reduce). Канонические сценарии — обработка корпуса документов, multi-source research, multi-judge eval, генерация вариантов. Паттерн живёт внутри [[node:ai-orchestration|оркестрации]] и опирается на дисциплину [[node:systems|production-систем]].",
-    "approach": "Курс ведёт от решения «нужен ли вообще fan-out» к рабочему пайплайну map → reduce с обработкой частичных сбоев. Сначала проверяем независимость под-задач, потом строим map-фазу с ограничителем параллелизма, выбираем стратегию reduce, разбираем боевой пример на 50 диалогах, очерчиваем границы (стоимость, дубли, сборка) и закрываем чек-листом с проверкой покрытия.",
+    "approach": "Курс ведёт от решения «нужен ли вообще fan-out» к рабочему пайплайну map, затем reduce с обработкой частичных сбоев. Сначала проверяем независимость под-задач, потом строим map-фазу с ограничителем параллелизма, выбираем стратегию reduce, разбираем боевой пример на 50 диалогах, очерчиваем границы (стоимость, дубли, сборка) и закрываем чек-листом с проверкой покрытия.",
     "outcomes": [
       "Отличать задачи, где fan-out даёт ускорение, от sequential-цепочек, где он бесполезен или вреден",
       "Строить map-фазу с concurrency limiter (semaphore) и retry с exponential backoff",
@@ -5356,7 +5356,7 @@
       }
     ],
     "pitfalls": [
-      "Запускать map-фазу без ограничителя параллелизма: 100 одновременных вызовов → шторм 429 → retry-amplification → реальный throughput хуже sequential. Semaphore обязателен.",
+      "Запускать map-фазу без ограничителя параллелизма: 100 одновременных вызовов, затем шторм 429, затем retry-amplification, и реальный throughput хуже sequential. Semaphore обязателен.",
       "Делать sequential там, где под-задачи независимы: цепочка из 5 summary за 15с вместо 3с. Анализируй зависимости явно.",
       "Агрегировать через простой concat без synthesis-call: 100 summary, склеенные в документ, — это «сборная солянка», а не insight.",
       "All-or-nothing на сбоях: один упавший worker рушит весь job и теряет работу 99 успешных. Нужен success threshold.",
@@ -5373,7 +5373,7 @@
       },
       {
         "question": "Из 50 map-вызовов 6 упали с ошибкой. Стоит ли валить весь job? Какое правило применить?",
-        "hint": "44/50 = 88% > 80% threshold → continue, missing items пометить в coverage. All-or-nothing потерял бы 44 успешных результата."
+        "hint": "44/50 = 88% > 80% threshold — continue, missing items пометить в coverage. All-or-nothing потерял бы 44 успешных результата."
       }
     ],
     "steps": {
@@ -5388,7 +5388,7 @@
           "Если есть sequential-цепочки (B после A) — вынеси их за пределы fan-out, параллель только независимый слой"
         ],
         "validate": "Ты можешь назвать конкретные под-задачи, ни одна из которых не читает выход другой, и их больше ~10.",
-        "tip": "Тест на независимость: если перемешать порядок выполнения под-задач, изменится ли результат? Нет → можно параллелить."
+        "tip": "Тест на независимость: если перемешать порядок выполнения под-задач, изменится ли результат? Нет — можно параллелить."
       },
       "s2": {
         "title": "Map-фаза: параллельная обработка с лимитером",
@@ -5418,7 +5418,7 @@
         "tip": "Если на выходе нужен текст-инсайт — почти всегда synthesis-call. Если число или список — programmatic merge."
       },
       "s4": {
-        "title": "Сквозной пример: 50 диалогов → темы и боли",
+        "title": "Сквозной пример: 50 диалогов, затем темы и боли",
         "time": "",
         "why": "Связать map и reduce в один рабочий пайплайн с обработкой сбоев — это то, ради чего курс. На реальном примере видно, как куски складываются вместе.",
         "instructions": [
@@ -5443,7 +5443,7 @@
           "Граница применимости: при жёстком cost-бюджете или sequential-зависимостях fan-out не нужен — см. [[node:sys-multi-agent-patterns|мульти-агентные паттерны]] для более сложной координации"
         ],
         "validate": "Ты можешь назвать стоимость прогона, порог сбоев и условие перехода на Batches для своей задачи.",
-        "tip": "Правило: realtime и interactive → обычный параллелизм; всё, что терпит часы → Batches API ради 50% экономии."
+        "tip": "Правило: realtime и interactive — обычный параллелизм; всё, что терпит часы — Batches API ради 50% экономии."
       },
       "s6": {
         "title": "Чек-лист и проверка пайплайна",
@@ -5471,7 +5471,7 @@
       "Понимаешь, зачем формальный протокол передачи и чем он лучше пересылки всего диалога",
       "Знаешь 5 обязательных компонентов handoff-пакета: task, context, state, constraints, success_criteria",
       "Умеешь собрать структурное сообщение передачи, которое получатель прочитает за секунды",
-      "Видишь границы и риски: потеря контекста, бесконечные петли A→B→A, утечка приватных данных в логи",
+      "Видишь границы и риски: потеря контекста, бесконечные петли A, затем B, затем A, утечка приватных данных в логи",
       "Имеешь чек-лист, по которому проверяешь handoff перед запуском в production"
     ],
     "applyIn": [
@@ -5481,11 +5481,11 @@
       },
       {
         "title": "Последовательный конвейер агентов",
-        "description": "research-агент → writer-агент → editor-агент: каждый передаёт компактный пакет со ссылками на артефакты, а не весь свой контекст."
+        "description": "research-агент, затем writer-агент, затем editor-агент: каждый передаёт компактный пакет со ссылками на артефакты, а не весь свой контекст."
       },
       {
         "title": "Human-in-the-loop",
-        "description": "Агент готовит результат → человек проверяет → агент продолжает. Без явного пакета человек не понимает, что уже сделано и где остановиться."
+        "description": "Агент готовит результат, затем человек проверяет, затем агент продолжает. Без явного пакета человек не понимает, что уже сделано и где остановиться."
       }
     ],
     "pitfalls": [
@@ -5493,7 +5493,7 @@
       "Handoff без success_criteria — получатель не знает, когда остановиться, и либо перерабатывает, либо недоделывает.",
       "Терять trace_id при передаче: логи рвутся, отладка handoff-сбоев становится в разы дольше.",
       "Класть PII и секреты прямо в пакет: они попадают в логи каждого агента — передавай ссылки (ID), а значения резолвь внутри доверенной границы.",
-      "Handoff без max-hops: A→B→A→B превращается в бесконечный пинг-понг. Нужен жёсткий лимит переходов (3–5) и эскалация при превышении."
+      "Handoff без max-hops: A, затем B, затем A, затем B превращается в бесконечный пинг-понг. Нужен жёсткий лимит переходов (3–5) и эскалация при превышении."
     ],
     "exercises": [
       {
@@ -5515,7 +5515,7 @@
         "time": "",
         "why": "Пока агент один — handoff не нужен. Но с момента, когда задачу делят ≥2 агента, неявная передача ломается двумя способами: либо отправитель шлёт всё подряд (контекст и стоимость взрываются), либо шлёт «продолжи» без контекста (получатель спрашивает или галлюцинирует). Протокол убирает обе крайности.",
         "instructions": [
-          "Найди в своём сценарии все точки, где один агент передаёт работу другому: supervisor→worker, агент→агент в конвейере, агент→человек→агент.",
+          "Найди в своём сценарии все точки, где один агент передаёт работу другому: supervisor, затем worker, агент, затем агент в конвейере, агент, затем человек, затем агент.",
           "Для каждой точки ответь: что именно сейчас передаётся — весь диалог, короткая фраза или ничего?",
           "Оцени стоимость: умножь объём передаваемого контекста на число передач в типичной задаче.",
           "Зафиксируй проблему словами: «получатель переделывает», «контекст раздувается», «теряются ограничения»."
@@ -5554,7 +5554,7 @@
       "s4": {
         "title": "Как применить на практике",
         "time": "",
-        "why": "Схема бесполезна, пока не вшита в код передачи. Цель шага — собрать реальный handoff в типовом сценарии (например, customer-support: triage→специалист→эскалация) и проверить его на метриках.",
+        "why": "Схема бесполезна, пока не вшита в код передачи. Цель шага — собрать реальный handoff в типовом сценарии (например, customer-support: triage, затем специалист, затем эскалация) и проверить его на метриках.",
         "instructions": [
           "Опиши пакет как структуру данных (dataclass / typed dict) с полями из шага 2–3.",
           "В отправляющем агенте: после работы собери пакет — summary вместо сырого контекста, ID артефактов вместо значений.",
@@ -5577,7 +5577,7 @@
           "Деградация: реши, что делает получатель при неполном пакете — спрашивает, эскалирует или работает с тем, что есть."
         ],
         "validate": "Для каждого из рисков (контекст, петли, приватность, trace_id) у тебя есть конкретный механизм защиты, а не «надеемся, не случится».",
-        "tip": "Петля A→B→A→B — самый частый скрытый сбой. Счётчик переходов в trace плюс жёсткий потолок дешевле любого пост-фактум разбора логов."
+        "tip": "Петля A, затем B, затем A, затем B — самый частый скрытый сбой. Счётчик переходов в trace плюс жёсткий потолок дешевле любого пост-фактум разбора логов."
       },
       "s6": {
         "title": "Чек-лист и проверка",
@@ -5602,7 +5602,7 @@
     "whatItIs": "Оркестрация инструментов — это управление тем, как одна модель работает с набором tools: какой tool вызвать, в каком порядке, что запускать параллельно, как обрабатывать результаты и ошибки. Это слой между [[node:cap-tools|способностью вызывать инструменты]] и реальным агентом, у которого их 3, 10 или 20. Без оркестрации модель путает похожие tools, делает всё последовательно и зацикливается на упавших вызовах.",
     "approach": "Идём от механики к надёжности. Сначала разбираемся, что физически происходит при tool use / function calling (модель просит вызов, код исполняет, результат возвращается). Потом учимся писать описания так, чтобы выбор был однозначным. Дальше — параллель vs последовательность и зависимости между вызовами. Затем обработка результатов и ошибок в structured-формате. После — границы и риски (неверный выбор, циклы, tool budget). В конце — чек-лист и проверка на реальном наборе tools.",
     "outcomes": [
-      "Понимаете цикл tool use: запрос вызова моделью → исполнение в коде → возврат результата → следующий turn",
+      "Понимаете цикл tool use: запрос вызова моделью, затем исполнение в коде, затем возврат результата, затем следующий turn",
       "Пишете описания tools так, что модель выбирает правильный в >95% случаев",
       "Запускаете независимые tools параллельно и снижаете latency в разы",
       "Возвращаете ошибки в structured-виде, чтобы модель решала retry / fallback / skip осознанно",
@@ -5623,11 +5623,11 @@
       }
     ],
     "pitfalls": [
-      "Размытые описания: «search_data» и «query_db» неотличимы → модель выбирает рандомно, до 30% неверных вызовов",
+      "Размытые описания: «search_data» и «query_db» неотличимы, и модель выбирает рандомно, до 30% неверных вызовов",
       "Нет подсказки про параллель: без хинта модель в ~70% случаев идёт последовательно даже на независимых tools",
-      "Зависимые tools без явного порядка: get_user → get_orders без указания приводят к ошибкам порядка",
-      "Нет tool budget: модель в цикле вызывает один tool десятки раз → деньги и задержка",
-      "Raw-ошибки обратно модели: «500 Internal Server Error» вместо structured → непредсказуемый retry или фейл"
+      "Зависимые tools без явного порядка: get_user, затем get_orders без указания приводят к ошибкам порядка",
+      "Нет tool budget: модель в цикле вызывает один tool десятки раз, и растут деньги и задержка",
+      "Raw-ошибки обратно модели: «500 Internal Server Error» вместо structured, и непредсказуемый retry или фейл"
     ],
     "exercises": [
       {
@@ -5649,7 +5649,7 @@
         "time": "",
         "why": "Прежде чем настраивать выбор и параллель, нужно видеть сам цикл: модель не исполняет tools сама — она просит вызов, код исполняет, результат уходит обратно. Оркестрация управляет этим циклом, когда tools много.",
         "instructions": [
-          "Запомните цикл tool use / function calling: модель возвращает tool_use → ваш код исполняет → результат возвращается как tool_result → модель делает следующий turn",
+          "Запомните цикл tool use / function calling: модель возвращает tool_use, затем ваш код исполняет, затем результат возвращается как tool_result, затем модель делает следующий turn",
           "Отличайте оркестрацию от самой способности вызывать tools (см. [[node:cap-tools|использование инструментов]]) — оркестрация про выбор, порядок и устойчивость при наборе из нескольких tools",
           "Свяжите тему с уровнем выше: оркестрация — часть построения [[node:systems|систем из Claude]] и [[node:ai-orchestration|оркестрации AI]]",
           "Выпишите свой текущий набор tools и отметьте, сколько их и какие похожи друг на друга"
@@ -5691,7 +5691,7 @@
           "Возвращайте результаты structured (JSON), а не сырым текстом — модели проще извлечь нужное",
           "Ошибки делайте явными объектами: { error_code, retry_after, should_retry } вместо «500 Internal Server Error»",
           "Опишите в system prompt политику на failure: «If a tool fails twice, skip it and note in response»",
-          "Различайте transient-ошибки (rate limit → retry) и постоянные (нет прав → skip и сообщить)"
+          "Различайте transient-ошибки (rate limit, тогда retry) и постоянные (нет прав, тогда skip и сообщить)"
         ],
         "validate": "При падении tool модель ведёт себя предсказуемо: повторяет, обходит или сообщает — а не зависает.",
         "tip": "should_retry: true|false в ответе ошибки экономит модели «гадание» и лишние вызовы."
@@ -5953,10 +5953,10 @@
           "Собери дашборд из 3 панелей: latency (p50/p95/p99 + RPS + error rate), cost ($/day по фичам compose/summarize/classify + top-10 дорогих юзеров), quality (output length histogram + tool success rate + refusal rate trend)",
           "Настрой алерты на отклонение: «p99 вырос 2× относительно rolling 1h avg», «cost/hour > 2× rolling avg», «refusal rate > 3%»",
           "Избегай абсолютных порогов вроде «p99 > 5s» — они сработают 100 раз/день из-за batch-jobs и их перестанут читать",
-          "Привяжи реакцию к откату: алерт → разбор трассы по prompt_version → откат через feature flag (см. [[node:sys-rollback-strategies|стратегии отката]])",
+          "Привяжи реакцию к откату: алерт, затем разбор трассы по prompt_version, затем откат через feature flag (см. [[node:sys-rollback-strategies|стратегии отката]])",
           "Цель по времени реакции: от алерта до отката — часы, не дни"
         ],
-        "validate": "Любой из 3 ключевых алертов сформулирован как отклонение от rolling baseline, и есть прописанный путь алерт → трасса → откат.",
+        "validate": "Любой из 3 ключевых алертов сформулирован как отклонение от rolling baseline, и есть прописанный путь: алерт, затем трасса, затем откат.",
         "tip": "Если алерт игнорируют — он либо слишком частый (абсолютный порог), либо не ведёт к действию. Каждый алерт должен иметь runbook: что делать при срабатывании."
       },
       "s5": {
@@ -5976,7 +5976,7 @@
       "s6": {
         "title": "Чек-лист и проверка готовности",
         "time": "",
-        "why": "Финальная сборка превращает разрозненные настройки в работающий контур наблюдаемости. Проверка по чек-листу гарантирует, что ни одна из 5 метрик и ни один уровень (метрика → трасса → алерт) не выпал.",
+        "why": "Финальная сборка превращает разрозненные настройки в работающий контур наблюдаемости. Проверка по чек-листу гарантирует, что ни одна из 5 метрик и ни один уровень (метрика, затем трасса, затем алерт) не выпал.",
         "instructions": [
           "Метрики: все 5 сигналов собираются (latency, cost per call, output distribution, tool-call success, refusal rate), у каждого есть target",
           "Трассы: каждый запрос трассируется с model, prompt_version, user_id, tokens, tool_calls, refusal_flag, доступен drill-down",
@@ -6018,7 +6018,7 @@
     ],
     "pitfalls": [
       "Логировать всё в hot storage: 100k запросов × 5k токенов = ~2GB/день только промптов, за год $30k+ в Datadog. Sample полные payload, агрегируй metadata.",
-      "PII в plaintext — самый частый инцидент. Email-AI пишет full body → ловит email клиента → GDPR-нарушение. Redact ДО записи, не пост-фактум.",
+      "PII в plaintext — самый частый инцидент. Email-AI пишет full body, ловит email клиента, и это GDPR-нарушение. Redact ДО записи, не пост-фактум.",
       "Blacklist полей для tool-args: новый секрет в новом инструменте утечёт. Whitelist — логируем только явно разрешённые поля.",
       "Не логировать prompt_version: через 3 месяца не сопоставишь плохой ответ с версией промпта. Привязка к git SHA обязательна (см. [[node:sys-versioning|sys-versioning]]).",
       "Бесконечная retention «на всякий случай»: GDPR требует удаления, storage растёт линейно, ценность падает экспоненциально. 7/30/90 — стандарт."
@@ -6070,7 +6070,7 @@
         "why": "Prompts могут содержать PII пользователя, completions — генерируемый PII, а tool_calls — секреты (db_password, токены). Неправильное логирование = GDPR-инцидент или утечка credentials. Redaction делается на уровне SDK/middleware ДО записи. Детали — в [[node:pl-privacy|приватности]].",
         "instructions": [
           "Составьте список «никогда не логировать»: API keys, OAuth tokens, raw passwords, номера карт, SSN, plaintext PII (email/phone/address)",
-          "Поставьте redactor в middleware ДО записи лога: regex для email/phone + детектор имён (например Claude Haiku) → заменяет на [REDACTED:type]",
+          "Поставьте redactor в middleware ДО записи лога: regex для email/phone + детектор имён (например Claude Haiku), который заменяет на [REDACTED:type]",
           "Для tool_call arguments используйте WHITELIST полей (логируем только явно разрешённые), а не blacklist — новый секрет иначе утечёт",
           "Проверьте, что redaction срабатывает на ОБА направления: и на prompt (ввод пользователя), и на completion (сгенерированный текст)"
         ],
@@ -6084,7 +6084,7 @@
         "instructions": [
           "Разнесите слои: hot 7d (быстрый debug, дорогое хранилище типа Datadog), warm 30d (post-mortem), cold 90d (compliance/audit, дешёвый storage)",
           "Полные prompts храните только sampled и с коротким retention 14-30d max — дольше = GDPR-риск и cost spike",
-          "Включите шифрование at rest для sampled-store с полными payload и lifecycle-политику hot → cold → delete",
+          "Включите шифрование at rest для sampled-store с полными payload и lifecycle-политику: hot, затем cold, затем delete",
           "Привяжите prompt_version к git SHA из CI, чтобы лог однозначно соединялся с [[node:sys-versioning|версией промпта]] в коде"
         ],
         "validate": "У каждого уровня логов есть срок жизни и стоимость, а полные промпты автоматически удаляются по lifecycle — ничего не хранится «вечно».",
@@ -6123,7 +6123,7 @@
     "subtitle": "Промпты — это код: semver, lock-файлы и eval-gate, чтобы «AI вчера работал, сегодня нет» стало дебажимым",
     "totalTime": "6 шагов",
     "whatItIs": "Дисциплина двух слоёв. Layer 1 — версии промптов: они живут в git как файлы (`prompts/*.yaml`), имеют semver, проходят review через PR, и в каждый запрос инжектится `prompt_version`. Layer 2 — версии моделей: snapshot pinning (`claude-sonnet-4-5-20250929`) против alias (`claude-sonnet-4-5`), плюс `models.lock.json` со всеми зафиксированными snapshot ID — аналог `package-lock.json`.",
-    "approach": "Идём от мотива к практике: зачем вообще версионировать → что именно входит в версию (промпт, модель, параметры, датасет evals, tool schema) → как хранить версии и связывать с результатами через логи → как откатываться и сравнивать версии → где границы и риски рассинхрона → финальный чек-лист с проверкой. Опора на узел [[node:sys-versioning|версионирование]] внутри раздела [[node:ai-operations|AI-операции]].",
+    "approach": "Идём от мотива к практике: зачем вообще версионировать, затем что именно входит в версию (промпт, модель, параметры, датасет evals, tool schema), затем как хранить версии и связывать с результатами через логи, затем как откатываться и сравнивать версии, затем где границы и риски рассинхрона, затем финальный чек-лист с проверкой. Опора на узел [[node:sys-versioning|версионирование]] внутри раздела [[node:ai-operations|AI-операции]].",
     "outcomes": [
       "Каждый AI-ответ привязан к паре (prompt_version, model_snapshot) и трассируется до конкретного коммита",
       "Промпты вынесены из кода в git-версионируемые файлы с semver и review через PR",
@@ -6213,7 +6213,7 @@
         "time": "",
         "why": "Версионирование окупается в момент регрессии: нужно быстро вернуться к рабочей версии и понять, что именно изменилось между «работает» и «не работает».",
         "instructions": [
-          "Откат промпта: `git revert` PR → CI redeploy за минуты; либо мгновенно — через [[node:sys-rollback-strategies|feature flag]] на старую версию",
+          "Откат промпта: `git revert` PR, затем CI redeploy за минуты; либо мгновенно — через [[node:sys-rollback-strategies|feature flag]] на старую версию",
           "Сравнение версий: прогоните eval-suite на обеих версиях и сделайте diff-report (где ответы разошлись)",
           "Eval-gate на bump: pass rate новой версии не должен упасть более чем на 2% от baseline — иначе не катите",
           "Для модели: bump snapshot в lock-файле через отдельный PR с eval-suite на новой модели против production",
@@ -6304,7 +6304,7 @@
       "s1": {
         "title": "Зачем нужна стратегия отката",
         "time": "",
-        "why": "Без инфраструктуры путь detect → debug → fix → PR → CI → deploy занимает часы или дни. С feature flags: detect → flip → секунды. Время от обнаружения до отката — это MTTR, и на customer-facing AI он должен измеряться минутами, потому что плохие ответы клиентам бьют по доверию.",
+        "why": "Без инфраструктуры путь detect, затем debug, затем fix, затем PR, затем CI, затем deploy занимает часы или дни. С feature flags: detect, затем flip, и это секунды. Время от обнаружения до отката — это MTTR, и на customer-facing AI он должен измеряться минутами, потому что плохие ответы клиентам бьют по доверию.",
         "instructions": [
           "Выпиши свои AI-фичи и пометь, какие из них customer-facing или revenue-critical.",
           "Для каждой оцени текущий MTTR: сколько времени реально проходит от жалобы до возврата прошлой версии.",
@@ -6339,14 +6339,14 @@
           "Проверь, что прошлая стабильная версия доступна для отката (см. [[node:sys-versioning|версионирование]])."
         ],
         "validate": "Симулированный триггер уводит флаг на прошлую версию автоматически за < 5 минут без ручного вмешательства.",
-        "tip": "Авто-откат критичен: ручной флип теряет 15-30 минут на «человек заметил → решил → переключил». Триггер должен срабатывать сам."
+        "tip": "Авто-откат критичен: ручной флип теряет 15-30 минут на «человек заметил, затем решил, затем переключил». Триггер должен срабатывать сам."
       },
       "s4": {
         "title": "Canary: постепенная выкатка против риска",
         "time": "",
         "why": "Лучший откат — тот, который не понадобился массово. Canary катит новую версию на малый процент трафика и расширяет только если метрики в норме. Так регрессия задевает 1-10% пользователей, а не всех, и авто-откат срабатывает до того, как инцидент станет крупным.",
         "instructions": [
-          "Задай стадии: 1% (24h) → 10% (24h) → 50% (24h) → 100%, отбирая пользователей по стабильному random hash.",
+          "Задай стадии: с 1% (24h) на 10% (24h), затем на 50% (24h), затем на 100%, отбирая пользователей по стабильному random hash.",
           "На каждой стадии держи флаг под наблюдением минимум 24h или до N ≥ 1000 запросов для статистической значимости.",
           "Сравнивай метрики canary-группы с baseline-группой, а не с абсолютными значениями.",
           "Подключи авто-откат тех же триггеров, что и на шаге 3 — на любой стадии флаг уходит на 0%.",
@@ -6372,7 +6372,7 @@
       "s6": {
         "title": "Чек-лист и проверка через game day",
         "time": "",
-        "why": "Сломанный механизм отката обнаруживается ровно в момент инцидента — самое дорогое время. Квартальный game day симулирует регрессию и проверяет, что вся цепочка (обнаружение → триггер → откат → fallback) работает за целевые < 5 минут.",
+        "why": "Сломанный механизм отката обнаруживается ровно в момент инцидента — самое дорогое время. Квартальный game day симулирует регрессию и проверяет, что вся цепочка (обнаружение, затем триггер, затем откат, затем fallback) работает за целевые < 5 минут.",
         "instructions": [
           "Собери чек-лист: у фичи есть flag, canary-стадии, авто-триггеры, kill switch с fallback, сохранённые версии.",
           "Раз в квартал проводи game day: искусственно введи регрессию и засеки время до отката.",
@@ -6441,7 +6441,7 @@
         "instructions": [
           "Разбери три типа ответов: 429 (rate limit — твой трафик превысил tier), 529 (Anthropic перегружен), 5xx (серверная ошибка). Реакция на них разная.",
           "Найди в документации Anthropic свои текущие лимиты RPM/TPM и сопоставь с [[node:pl-rate|tier-лимитами]] своего аккаунта.",
-          "Пойми механику cascade: один runaway-script или вирусный пик упирается в лимит → 429 идёт на весь tier → даже interactive-пользователи получают ошибки.",
+          "Пойми механику cascade: один runaway-script или вирусный пик упирается в лимит, затем 429 идёт на весь tier, и даже interactive-пользователи получают ошибки.",
           "Запиши, какие источники трафика к API у тебя есть (interactive, batch, async jobs) — это основа для будущих очередей."
         ],
         "validate": "Можешь словами объяснить, почему повторить 429-запрос сразу же — ошибка, и чем это отличается от ретрая на 5xx.",
@@ -6492,7 +6492,7 @@
         "why": "Ретрай безопасен только для идемпотентных операций. Слепой retry неидемпотентного вызова (например, с side-эффектом записи или биллинга) при таймауте может выполнить действие дважды. И при долгом outage даже корректный backoff превращается в дорогой retry-storm.",
         "instructions": [
           "Раздели вызовы на идемпотентные (можно ретраить) и неидемпотентные (двойное выполнение опасно) — для вторых ретрай только с дедупликацией.",
-          "Добавь circuit breaker: после 5 ошибок / 30s переходи в open (фейлим быстро) → half-open через 30s → closed после 3 успехов подряд.",
+          "Добавь circuit breaker: после 5 ошибок / 30s переходи в open (фейлим быстро), затем half-open через 30s, затем closed после 3 успехов подряд.",
           "Поставь верхнюю границу затрат: при затяжном outage retry-storm генерирует $1000+ в неудачных вызовах — circuit breaker это обрывает.",
           "Свяжи поведение с общей стратегией ошибок (см. [[node:sys-error-handling|обработка ошибок]]): после исчерпания ретраев — явный fallback, а не тихое зависание."
         ],
@@ -6516,12 +6516,12 @@
   },
   "sys-semantic-cache": {
     "title": "Семантический кэш",
-    "subtitle": "Похожие по смыслу запросы → готовый ответ, без вызова AI",
+    "subtitle": "Похожие по смыслу запросы получают готовый ответ, без вызова AI",
     "totalTime": "6 шагов",
     "whatItIs": "Семантический кэш отвечает на повторяющиеся вопросы, заданные разными словами, не вызывая модель. На входящий запрос считается embedding ([[node:af-embeddings|embeddings]]), в [[node:af-vector-db|vector DB]] ищется похожий прошлый запрос, и если cosine similarity выше порога — возвращается уже готовый ответ за десятки миллисекунд и за $0.\n\nЭто инфраструктурный приём для [[node:ai-operations|эксплуатации AI]]: на FAQ- и классификационных нагрузках 30-40% запросов — переформулировки одного и того же, и обычный кэш их не ловит.",
     "approach": "Не путай с точным кэшем и с [[node:cap-caching|prompt caching]]: они кэшируют текст, семантический кэш — смысл. Начинай с высокого порога (0.95), кэшируй только неперсонализированные ответы и обязательно продумай инвалидацию. Без этих трёх правил кэш быстро начинает врать.",
     "outcomes": [
-      "Понимаешь, как работает семантический кэш: embedding → поиск похожего → готовый ответ",
+      "Понимаешь, как работает семантический кэш: embedding, затем поиск похожего, затем готовый ответ",
       "Различаешь точный кэш, [[node:cap-caching|prompt caching]] и семантический кэш — и комбинируешь их",
       "Можешь оценить, выгоден ли семантический кэш для конкретной нагрузки",
       "Знаешь риски: ложные попадания, утечка персональных данных, устаревание",
@@ -6566,7 +6566,7 @@
       "s1": {
         "title": "Что такое семантический кэш",
         "time": "",
-        "why": "Без чёткой модели «похожий по смыслу запрос → готовый ответ» легко ждать от кэша магии и поставить его не туда.",
+        "why": "Без чёткой модели «похожий по смыслу запрос получает готовый ответ» легко ждать от кэша магии и поставить его не туда.",
         "instructions": [
           "Запомни суть: на входящий запрос считается embedding, в vector DB ищется похожий прошлый запрос, и при сходстве выше порога возвращается готовый ответ — модель не вызывается.",
           "Сформулируй ключевой вопрос кэша: «спрашивал ли кто-то это же по смыслу за последние N дней?»",
@@ -6594,7 +6594,7 @@
         "time": "",
         "why": "Порог сходства — главная ручка кэша: он напрямую задаёт баланс между числом попаданий и риском отдать неверный ответ.",
         "instructions": [
-          "Прогон запроса: текст → embedding ([[node:af-embeddings|embeddings]]) → cosine similarity search в [[node:af-vector-db|vector DB]] → top-1 кандидат.",
+          "Прогон запроса: текст, затем embedding ([[node:af-embeddings|embeddings]]), затем cosine similarity search в [[node:af-vector-db|vector DB]], затем top-1 кандидат.",
           "Сравни similarity кандидата с порогом: типичный диапазон 0.92-0.97.",
           "Запомни смысл порога: 0.97 — strict (мало ложных попаданий, ниже hit rate); 0.92 — risky (получаешь похожий-но-не-тот ответ); 0.95 — рабочий баланс recall/precision.",
           "При попадании проверь свежесть записи (TTL) перед тем как отдать ответ."
@@ -6681,7 +6681,7 @@
     "exercises": [
       {
         "question": "У тебя 4 AI-операции: (1) определить тон письма за 1 сек, (2) собрать квартальный отчёт за 2 минуты, (3) ответить, когда клиент написал в чат, (4) написать длинный email на глазах у пользователя. Какой паттерн под каждую?",
-        "hint": "Длительность + кто инициатор + нужен ли мгновенный ответ. 1 → sync, 2 → async, 3 → webhook, 4 → streaming."
+        "hint": "Длительность + кто инициатор + нужен ли мгновенный ответ. 1 — sync, 2 — async, 3 — webhook, 4 — streaming."
       },
       {
         "question": "Операция в среднем 8 секунд, иногда до 40. Пользователь нажимает кнопку и ждёт. Что не так с синхронным API здесь и как переделать?",
@@ -6724,9 +6724,9 @@
         "time": "",
         "why": "Выбор паттерна — не вкусовщина, а ответ на 3 чётких вопроса. Прогони их — и паттерн определится почти однозначно.",
         "instructions": [
-          "Вопрос 1: кто инициирует? Пользователь → sync/async/streaming. Внешнее событие → webhook.",
-          "Вопрос 2: сколько длится операция? До ~5 секунд → sync. Дольше → async.",
-          "Вопрос 3: нужен ли пользователю видимый прогресс по ходу? Да, и это длинный текст → streaming.",
+          "Вопрос 1: кто инициирует? Пользователь — sync/async/streaming. Внешнее событие — webhook.",
+          "Вопрос 2: сколько длится операция? До ~5 секунд — sync. Дольше — async.",
+          "Вопрос 3: нужен ли пользователю видимый прогресс по ходу? Да, и это длинный текст — streaming.",
           "Сравни «сразу или фоном» как частный случай большого решения realtime vs batch (см. [[node:sys-batch-vs-realtime|Batch vs Realtime]])."
         ],
         "validate": "Берёшь любую свою AI-операцию и за три вопроса называешь паттерн.",
@@ -6739,7 +6739,7 @@
         "instructions": [
           "sync: «классифицируй тип задачи» — 1 секунда, кнопка сразу выдаёт ответ.",
           "async: «сделай полный анализ за квартал» — 2 минуты, пользователь запустил, продолжает работать, получает уведомление «отчёт готов».",
-          "webhook: клиент написал в чат поддержки → внешний webhook поднимает AI → AI готовит черновик ответа оператору.",
+          "webhook: клиент написал в чат поддержки, затем внешний webhook поднимает AI, затем AI готовит черновик ответа оператору.",
           "streaming: «напиши длинный email» — AI печатает по кусочкам, пользователь видит процесс и может прервать."
         ],
         "validate": "Понимаешь, почему каждый кейс взял именно свой паттерн, а не один общий.",
@@ -6764,7 +6764,7 @@
         "why": "Перед внедрением прогони выбранный паттерн по короткому чек-листу — он ловит большинство ошибок до того, как они попадут в прод.",
         "instructions": [
           "Длительность операции измерена (не угадана), и порог 5 секунд учтён при выборе sync vs async.",
-          "Инициатор определён верно: пользователь vs внешнее событие → не перепутан sync с webhook.",
+          "Инициатор определён верно: пользователь vs внешнее событие, и не перепутан sync с webhook.",
           "Для async есть уведомление или опрос статуса; для webhook — подтверждение и повтор; для sync — таймаут в рамках лимита сервера.",
           "Streaming применён только там, где ответ реально длинный; для короткого ответа выбран sync.",
           "Проверено на реальном сценарии: пользователь видит то, что ожидает («быстро» когда быстро, «работаю» когда долго)."
@@ -6779,10 +6779,10 @@
     "subtitle": "Как строить AI-интеграции на событиях, а не на синхронных запросах",
     "totalTime": "6 шагов",
     "whatItIs": "Event-driven AI-архитектура — это подход, где AI-обработку запускают события (webhook от CRM, message в queue, загруженный файл), а не синхронный запрос пользователя. Приём события быстрый и надёжный, а сама AI-обработка развязана (decoupled): может масштабироваться, повторяться и тормозить под нагрузкой, не теряя events. Это фундамент для масштабируемых AI-интеграций, описанный в узле [[node:sys-event-driven|event-driven AI архитектуры]].",
-    "approach": "Идём от идеи к практике: сначала зачем нужна развязка приёма и обработки, затем разбираем путь event → очередь → обработчик-агент, потом — как не обработать одно событие дважды (idempotency) и что делать с порядком. Дальше собираем минимальный pipeline на своём кейсе, обозначаем границы и риски (отладка, дубли, DLQ) и закрываем чек-листом перед запуском в прод.",
+    "approach": "Идём от идеи к практике: сначала зачем нужна развязка приёма и обработки, затем разбираем путь event, затем очередь, затем обработчик-агент, потом — как не обработать одно событие дважды (idempotency) и что делать с порядком. Дальше собираем минимальный pipeline на своём кейсе, обозначаем границы и риски (отладка, дубли, DLQ) и закрываем чек-листом перед запуском в прод.",
     "outcomes": [
-      "Объясняете, почему синхронный webhook → LLM call → 200 ломается на медленных и долгих AI-задачах",
-      "Рисуете путь события: source → ingestion (быстрый 200) → queue → worker-агент",
+      "Объясняете, почему синхронный путь webhook, затем LLM call, затем 200 ломается на медленных и долгих AI-задачах",
+      "Рисуете путь события: source, затем ingestion (быстрый 200), затем queue, затем worker-агент",
       "Делаете обработку идемпотентной через idempotency key и dedup table",
       "Настраиваете retry с exponential backoff и DLQ, чтобы не терять и не дублировать events",
       "Понимаете границы подхода: где event-driven избыточен, а где обязателен"
@@ -6802,11 +6802,11 @@
       }
     ],
     "pitfalls": [
-      "AI-call прямо в webhook handler: LLM на 5s превышает timeout провайдера (3s) → retry → дубли. Webhook ВСЕГДА только enqueue-and-return-200",
-      "Нет idempotency: доставка webhook «at-least-once», один event обрабатывается дважды → дубли AI-вызовов и действий. Нужен idempotency key и проверка dedup table до обработки",
+      "AI-call прямо в webhook handler: LLM на 5s превышает timeout провайдера (3s), затем retry, затем дубли. Webhook ВСЕГДА только enqueue-and-return-200",
+      "Нет idempotency: доставка webhook «at-least-once», один event обрабатывается дважды, затем дубли AI-вызовов и действий. Нужен idempotency key и проверка dedup table до обработки",
       "Игнор DLQ: упавшие events лежат месяцами без alert и без разбора. DLQ-мониторинг и еженедельный review обязательны",
       "Один queue на все приоритеты: batch-задачи выедают capacity, и интерактивная обработка страдает. Разделяйте очереди по priority",
-      "Retry без exponential backoff: transient rate-limit → мгновенный повтор → снова лимит → бесконечный цикл. Backoff (1s, 4s, 16s, 64s) обязателен"
+      "Retry без exponential backoff: transient rate-limit, затем мгновенный повтор, затем снова лимит, затем бесконечный цикл. Backoff (1s, 4s, 16s, 64s) обязателен"
     ],
     "exercises": [
       {
@@ -6829,7 +6829,7 @@
         "why": "Без понимания, почему синхронная схема ломается, легко зашить AI-call прямо в webhook и получить лавину повторов в проде. Сначала фиксируем суть: реакция на события и развязка приёма от обработки.",
         "instructions": [
           "Прочитайте раздел what и why в узле [[node:sys-event-driven|event-driven AI архитектуры]]: что такое event sources, ingestion, workers",
-          "Выпишите 4 сценария, где синхронная схема webhook → LLM call → 200 ломается: медленный LLM, downtime, spike-трафик, долгие AI-задачи",
+          "Выпишите 4 сценария, где синхронная схема webhook, затем LLM call, затем 200 ломается: медленный LLM, downtime, spike-трафик, долгие AI-задачи",
           "Сформулируйте своими словами идею развязки (decoupling): приём события — быстрый и надёжный, AI-обработка — отдельная и масштабируемая",
           "Сравните с синхронным API-подходом из [[node:sys-api-patterns|паттернов API]] — поймите, когда запрос-ответ уместен, а когда нет"
         ],
@@ -6837,11 +6837,11 @@
         "tip": "Ключевая мысль: webhook отвечает за «принял и не потерял», а не за «обработал». Это разные ответственности."
       },
       "s2": {
-        "title": "Путь события: event → очередь → обработчик-агент",
+        "title": "Путь события: event, затем очередь, затем обработчик-агент",
         "time": "",
         "why": "Это базовый скелет любой event-driven системы. Пока не видите три звена — source, ingestion, worker — нельзя проектировать ни масштабирование, ни надёжность.",
         "instructions": [
-          "Нарисуйте цепочку: event source (webhook/queue/CDC) → ingestion endpoint → queue → worker-агент с AI-вызовом",
+          "Нарисуйте цепочку: event source (webhook/queue/CDC), затем ingestion endpoint, затем queue, затем worker-агент с AI-вызовом",
           "Определите контракт ingestion: валидация (включая verify_signature), enqueue, ответ 200 за < 100ms — без AI внутри",
           "Опишите worker как отдельный процесс: забирает message из queue, вызывает AI, пишет результат, удаляет message",
           "Сопоставьте выбор инфраструктуры из узла: Kafka/RabbitMQ (self-hosted) против AWS SQS/Google Pub/Sub (managed)",
@@ -6857,7 +6857,7 @@
         "instructions": [
           "Изучите exactly-once через idempotency key в разделе impact узла: проверка dedup table до обработки",
           "Сформируйте idempotency key из стабильного идентификатора события (например, zendesk_ticket_{id}_{event_id})",
-          "Опишите транзакцию: проверить ключ → вызвать AI → записать результат → вставить ключ в dedup table с TTL",
+          "Опишите транзакцию: проверить ключ, затем вызвать AI, затем записать результат, затем вставить ключ в dedup table с TTL",
           "Решите вопрос порядка: где порядок важен (используйте ordering/partition key), а где события независимы",
           "Свяжите повторы и сбои с [[node:sys-error-handling|обработкой ошибок]]: что считать transient, а что — final"
         ],
@@ -6870,7 +6870,7 @@
         "why": "Теория закрепляется только на своём кейсе. Минимальный pipeline на одном источнике события показывает все звенья в работе и вскрывает реальные решения по приоритетам и retry.",
         "instructions": [
           "Выберите один реальный источник: webhook от Stripe/Linear/Zendesk или message в queue",
-          "Реализуйте ingestion: verify_signature → send_message в queue с idempotency key → return 200",
+          "Реализуйте ingestion: verify_signature, затем send_message в queue с idempotency key, затем return 200",
           "Реализуйте worker: receive с visibility_timeout, проверка dedup, AI-вызов, запись результата, delete",
           "Добавьте retry с exponential backoff (1s, 4s, 16s, 64s, max 5) и отправку в DLQ после исчерпания попыток",
           "Разнесите очереди по приоритетам: critical (interactive) > standard > batch, чтобы batch не выедал capacity"
@@ -6900,7 +6900,7 @@
           "Пройдите чек-лист: ingestion отвечает 200 за < 100ms без AI-вызова внутри",
           "Проверьте: verify_signature на webhook, idempotency key + dedup, retry с exponential backoff, DLQ настроен",
           "Убедитесь, что очереди разделены по приоритетам и worker асинхронный (не блокируется на одном AI-вызове)",
-          "Прогоните тест двойной доставки и тест N сбоев → событие должно уйти в DLQ, а не зациклиться",
+          "Прогоните тест двойной доставки и тест N сбоев: событие должно уйти в DLQ, а не зациклиться",
           "Зафиксируйте мониторинг DLQ и план еженедельного review; свяжите дальнейшее развитие с узлами [[node:ai-integration-systems|систем AI-интеграций]] и [[node:systems|системного слоя]]"
         ],
         "validate": "Все пункты чек-листа отмечены, тесты на дубли и DLQ проходят, мониторинг DLQ включён — pipeline готов к проду.",
@@ -6990,9 +6990,9 @@
         "why": "Anthropic Message Batches API даёт 50% скидку на input+output и отдельный rate-limit pool — это game-changer для cost.",
         "instructions": [
           "Запомни параметры (baseline 2026-05): 50% скидка на input+output, до 100k запросов в batch (jsonl), latency 5min—24h (часто 1-2h), отдельный rate-limit pool",
-          "Изучи поток: messages.batches.create(requests=[...]) → poll/wait → messages.batches.results(batch.id)",
+          "Изучи поток: messages.batches.create(requests=[...]), затем poll/wait, затем messages.batches.results(batch.id)",
           "Посчитай экономию на примере: 10k запросов, 5k input + 1k output, Sonnet — realtime $300 vs batch $150",
-          "Прикинь масштаб: 100k запросов/день → экономия ~$4500/мес",
+          "Прикинь масштаб: 100k запросов/день дают экономию ~$4500/мес",
           "Свяжи это с [[node:sys-cost-management|cost management]] и [[node:sys-rate-limiting|rate limiting]]"
         ],
         "validate": "Можешь назвать 50% discount, лимит 100k/batch, окно latency и посчитать экономию для своих объёмов.",
@@ -7009,7 +7009,7 @@
           "Введи явный routing по признаку (tag/source/priority), а не «по умолчанию realtime»",
           "Добавь SLA-мониторинг batch: алерт, если обработка вышла за обычные 1-2h"
         ],
-        "validate": "У тебя есть схема: какой запрос → какой путь, и cron, который забирает batch-результаты по готовности.",
+        "validate": "У тебя есть схема: какой запрос — какой путь, и cron, который забирает batch-результаты по готовности.",
         "tip": "Опирайся на [[node:sys-api-patterns|API-паттерны]] и [[node:ai-integration-systems|AI integration systems]] — batch/realtime это часть общей интеграционной архитектуры."
       },
       "s5": {
@@ -7213,7 +7213,7 @@
       },
       {
         "question": "Команда хранит OAuth refresh-токены клиентов в обычной таблице БД в открытом виде. Что не так и как починить?",
-        "hint": "Database breach → все токены пригодны к использованию. Нужно encrypted at rest, access logs на retrieval, и ротация refresh-токенов при каждом использовании."
+        "hint": "Database breach делает все токены пригодными к использованию. Нужно encrypted at rest, access logs на retrieval, и ротация refresh-токенов при каждом использовании."
       },
       {
         "question": "Через prompt-injection злоумышленник заставляет агента вызвать инструмент с чужими правами. Какие два барьера ограничивают ущерб?",
@@ -7246,7 +7246,7 @@
           "Для MCP: local-серверы — локальные creds и OS keychain; remote-серверы — обязательный OAuth (см. [[node:mcp|mcp]])"
         ],
         "validate": "Для каждой своей интеграции ты можешь обоснованно назвать выбранный механизм.",
-        "tip": "Эвристика: есть конкретный пользователь и его личные данные → OAuth. Система к системе без пользователя → API key или service account."
+        "tip": "Эвристика: есть конкретный пользователь и его личные данные — OAuth. Система к системе без пользователя — API key или service account."
       },
       "s3": {
         "title": "Хранение секретов: env/vault, не код и не логи",
@@ -7282,7 +7282,7 @@
           "Введи строгую per-tenant credential isolation: креды A недоступны коду, обрабатывающему B",
           "Минимизируй scopes так, чтобы prompt-injection не мог дотянуться до лишних прав",
           "Веди audit trail каждого использования credential (who, what, when, from where, success/fail) — интегрируй с [[node:sys-logging-patterns|logging patterns]]",
-          "Сделай рабочий revocation-процесс: отключение в UI → revoke at provider + удаление из хранилища",
+          "Сделай рабочий revocation-процесс: отключение в UI, затем revoke at provider + удаление из хранилища",
           "Для MCP scope-ай tools и опирайся на OS-level permissions, не давай неограниченный доступ к filesystem"
         ],
         "validate": "Ты можешь показать, как именно ограничен ущерб от утёкшего ключа и от prompt-injection.",
@@ -7313,7 +7313,7 @@
     "outcomes": [
       "Классифицировать ошибки AI-системы по категориям (лимит частоты запросов, ошибки сервера 5xx, перегрузка 529, битый JSON, превышен лимит контекста, отказ модели, сбой инструмента) и назначать каждой свою политику",
       "Отличать повтор той же операции (retry) от перехода на запасной путь (fallback) и применять их в правильном порядке",
-      "Строить цепочку плавной деградации: урезанный контекст → запасная модель → кэш → заранее заготовленный ответ",
+      "Строить цепочку плавной деградации: урезанный контекст, затем запасная модель, затем кэш, затем заранее заготовленный ответ",
       "Формулировать понятные пользователю сообщения о деградации вместо тихого сбоя или общего «что-то пошло не так»",
       "Ставить границы: предохранитель, бюджеты времени ожидания, запись логов и метрик каждого запасного пути"
     ],
@@ -7336,7 +7336,7 @@
       "Бесконечный повтор без предохранителя: недоступность провайдера превращается в шторм повторов, который при восстановлении заново выжигает лимит частоты запросов.",
       "Тихий запасной путь без логов и метрик: ушли на Haiku, качество просело, а ты не знаешь, почему растут жалобы.",
       "Отказ модели обрабатывается как ошибка: модель намеренно отказалась — повтор не поможет, запасной путь нерелевантен, нужен отдельный понятный пользователю путь.",
-      "Слишком большой предел ожидания (таймаут): 30 секунд на интерактивный запрос → пользователь решает «сломалось» уже через 5 секунд и обновляет страницу, создавая 6 параллельных запросов."
+      "Слишком большой предел ожидания (таймаут): 30 секунд на интерактивный запрос — пользователь решает «сломалось» уже через 5 секунд и обновляет страницу, создавая 6 параллельных запросов."
     ],
     "exercises": [
       {
@@ -7363,7 +7363,7 @@
           "Для каждой категории отметь, что сейчас видит пользователь в твоём проекте, если ничего не делать.",
           "Найди в своём коде места AI-вызовов и вызовов инструментов — это точки, где любая из этих ошибок может всплыть."
         ],
-        "validate": "У тебя есть таблица: категория ошибки → группа (временная / формат / намеренная) → текущее поведение. Ни одна категория не помечена просто как «крах».",
+        "validate": "У тебя есть таблица: категория ошибки, затем группа (временная / формат / намеренная), затем текущее поведение. Ни одна категория не помечена просто как «крах».",
         "tip": "Отказ модели — не баг. Это намеренный ответ модели по её политике. Если перепутать его с ошибкой, будешь бесконечно повторять то, что никогда не пройдёт."
       },
       "s2": {
@@ -7371,7 +7371,7 @@
         "time": "",
         "why": "Повтор (retry) и запасной путь (fallback) часто путают. Повтор — это повторение той же операции (помогает при временных сбоях). Запасной путь — переход на другой маршрут (нужен, когда повтор бессмыслен или исчерпан). Неправильный выбор либо усугубляет недоступность, либо зря снижает качество.",
         "instructions": [
-          "Назначь каждой категории из шага 1 политику: 5xx → повтор 2 раза со случайным разбросом пауз, затем запасной путь; 529 → сразу запасной путь (повтор бесполезен); 429 → нарастающая пауза + повтор; битый JSON → повтор 1 раз с корректирующим запросом; отказ модели → без повтора и без запасного пути, отдельный путь.",
+          "Назначь каждой категории из шага 1 политику: 5xx — повтор 2 раза со случайным разбросом пауз, затем запасной путь; 529 — сразу запасной путь (повтор бесполезен); 429 — нарастающая пауза + повтор; битый JSON — повтор 1 раз с корректирующим запросом; отказ модели — без повтора и без запасного пути, отдельный путь.",
           "Сформулируй правило перехода: сколько раз повторять и по какому условию уходить на запасной путь.",
           "Добавь случайный разброс (jitter — небольшую случайную добавку к паузе) в нарастающую паузу перед повтором (backoff), чтобы повторы клиентов не синхронизировались в общий шторм.",
           "Свяжи политику нарастающей паузы и повторов с узлом [[node:sys-rate-limiting|лимит частоты запросов]] — там лимиты и предохранитель, на которые опирается повтор."
@@ -7384,7 +7384,7 @@
         "time": "",
         "why": "Один запасной путь — это лучше, чем ничего, но настоящую устойчивость даёт лестница деградации: каждый следующий уровень дешевле и проще предыдущего, и пользователь почти всегда получает хоть какой-то полезный ответ.",
         "instructions": [
-          "Построй цепочку из узла: основная модель (полный контекст + инструменты) → урезанный контекст (последние N сообщений) → запасная модель Haiku (быстрее, дешевле) → смысловой кэш → заранее заготовленный ответ.",
+          "Построй цепочку из узла: основная модель (полный контекст + инструменты), затем урезанный контекст (последние N сообщений), затем запасная модель Haiku (быстрее, дешевле), затем смысловой кэш, затем заранее заготовленный ответ.",
           "Убедись, что у запасной модели совместимый интерфейс вызова — её можно подставить без переписывания кода (легко заменяемая).",
           "Для агента с инструментами добавь частичный ответ: если упал 1 из N инструментов, верни результат по рабочим + пометку, а не общий провал.",
           "Назначь бюджеты времени ожидания: интерактив — суммарно 10 секунд (основная модель 5 секунд, запасной путь 3 секунды, буфер сети 2 секунды); фоновые задачи — допустимо 60 секунд и больше.",
@@ -7399,7 +7399,7 @@
         "why": "Даже идеальная техническая деградация бесполезна, если пользователь не понимает, что произошло. Тихий сбой рождает недоверие, общее «что-то пошло не так» — бесполезен. Сообщение должно быть честным и подсказывать действие.",
         "instructions": [
           "Для каждого уровня цепочки реши, нужно ли сообщать пользователю: лёгкая деградация (урезанный контекст, Haiku) — обычно молча; частичный ответ — с явной пометкой; полное исчерпание — с понятным сообщением.",
-          "Замени общие тексты на конкретные и подсказывающие действие. Например, вместо примера текста интерфейса «Something went wrong» («Что-то пошло не так») → «AI сейчас работает медленно — попробуйте ещё раз или напишите в поддержку, если срочно».",
+          "Замени общие тексты на конкретные и подсказывающие действие. Например, вместо примера текста интерфейса «Something went wrong» («Что-то пошло не так») — «AI сейчас работает медленно — попробуйте ещё раз или напишите в поддержку, если срочно».",
           "Для отказа модели сделай отдельное понятное пользователю сообщение, объясняющее, что запрос не может быть выполнен, — без технических подробностей сбоя.",
           "Реализуй плавную деградацию интерфейса: при сбое AI-функции ломается только её блок с явным сообщением (пример текста интерфейса: «AI temporarily unavailable» — «AI временно недоступен»), остальная страница живёт."
         ],
@@ -7561,7 +7561,7 @@
           "На длинной сессии вовремя делай /compact; при смене темы — новую сессию",
           "Проверь себя: возобнови вчерашнюю работу, сожми контекст, заведи вторую сессию в другой папке"
         ],
-        "validate": "Ты прошёл весь цикл: --continue → /compact → вторая сессия в другой папке — без потери контекста и токенов.",
+        "validate": "Ты прошёл весь цикл: --continue, затем /compact, затем вторая сессия в другой папке — без потери контекста и токенов.",
         "tip": "Если сомневаешься, что возобновишь правильную сессию — --resume и список снимут вопрос за секунду."
       }
     }
@@ -7804,9 +7804,9 @@
         "why": "Режим — не настройка на всю сессию: его меняют на лету под текущий шаг. Shift+Tab циклически переключает режимы, не прерывая разговор.",
         "instructions": [
           "Нажмите Shift+Tab в сессии и проследите, как меняется индикатор активного режима",
-          "Пройдите цикл: обычный → auto-accept edits → plan mode → обратно",
+          "Пройдите цикл: обычный, затем auto-accept edits, затем plan mode, затем обратно",
           "Перед каждой задачей быстро проверяйте, какой режим сейчас активен",
-          "Выработайте привычку: разведка → plan, рутина → auto-accept, риск → обычный"
+          "Выработайте привычку: разведка, тогда plan, рутина, тогда auto-accept, риск, тогда обычный"
         ],
         "validate": "Переключаете режим за одно нажатие и всегда знаете, в каком находитесь.",
         "tip": "Сначала задача, потом режим: спросите себя «насколько это рискованно?» — и переключитесь под ответ."
@@ -7816,7 +7816,7 @@
         "time": "",
         "why": "Главная ошибка — застрять в одном режиме. Финальный шаг закрепляет выбор режима под задачу и предупреждает о bypass permissions, где агент действует без любых подтверждений.",
         "instructions": [
-          "Соберите правило: незнакомое/рискованное → plan или обычный, рутина в знакомом → auto-accept",
+          "Соберите правило: незнакомое/рискованное, тогда plan или обычный, рутина в знакомом, тогда auto-accept",
           "Поймите опасность bypass permissions: разрешены любые действия, включая команды, без вопросов",
           "Не включайте bypass на проде, в чужом коде или когда не контролируете последствия",
           "После каждого переключения сверяйтесь: правки применяются/не применяются — так, как вы ожидаете",
@@ -8155,10 +8155,10 @@
           "settings.json — общий: коммитится в git и действует для всей команды",
           "settings.local.json — личный: не коммитится, действует только у вас",
           "Поля одинаковые, разница только в области видимости и попадании в репозиторий",
-          "Правило: общее для команды → settings.json; личное для машины → settings.local.json"
+          "Правило: общее для команды, тогда settings.json; личное для машины, тогда settings.local.json"
         ],
         "validate": "Можете для любой настройки сказать, в какой из двух файлов она должна лечь.",
-        "tip": "Если сомневаетесь «общее или личное» — спросите: должны ли это получить коллеги? Да → settings.json."
+        "tip": "Если сомневаетесь «общее или личное» — спросите: должны ли это получить коллеги? Да, тогда settings.json."
       },
       "s3": {
         "title": "Что класть в settings.local.json",
@@ -8251,7 +8251,7 @@
     "exercises": [
       {
         "question": "Вы хотите, чтобы Claude везде отвечал по-русски и не спрашивал подтверждения на git status. Куда это положить?",
-        "hint": "Это правила, не зависящие от проекта → глобальный слой ~/.claude/. Язык/стиль — в CLAUDE.md, разрешение на команду — в settings.json (permissions.allow)."
+        "hint": "Это правила, не зависящие от проекта, поэтому глобальный слой ~/.claude/. Язык/стиль — в CLAUDE.md, разрешение на команду — в settings.json (permissions.allow)."
       },
       {
         "question": "В одном проекте глобальный allow на npm test мешает, потому что там тесты долгие и платные. Как поступить?",
@@ -8338,7 +8338,7 @@
           "Убедитесь, что в глобальном слое нет проектно-специфичного мусора и опасных allow.",
           "Проверьте, что глобальный CLAUDE.md не содержит правил, противоречащих проектным.",
           "Перезапустите сессию Claude Code и убедитесь, что настройки применились ожидаемо.",
-          "Если что-то ведёт себя странно — пройдите слои сверху вниз: локальный → проектный → глобальный."
+          "Если что-то ведёт себя странно — пройдите слои сверху вниз: локальный, затем проектный, затем глобальный."
         ],
         "validate": "settings.json парсится как валидный JSON, глобальный слой чист от проектной специфики, и поведение Claude совпадает с ожиданием.",
         "tip": "Держите глобальный конфиг минимальным: чем меньше в нём правил, тем меньше неожиданных конфликтов с проектами."
@@ -8594,9 +8594,9 @@
         "time": "",
         "why": "Сила команд раскрывается в связках. Финальный шаг закрепляет рабочие комбинации и страхует от типичных ошибок.",
         "instructions": [
-          "Связка для эксперимента: /branch → экспериментируешь → если плохо, основная сессия цела (или /rewind для отката)",
-          "Связка для долгой сессии: /compact при росте контекста → /background перед уходом → /resume на следующий день",
-          "Связка для смены устройства: /export или /desktop → продолжаешь в другом месте",
+          "Связка для эксперимента: /branch, затем экспериментируешь, затем если плохо, основная сессия цела (или /rewind для отката)",
+          "Связка для долгой сессии: /compact при росте контекста, затем /background перед уходом, затем /resume на следующий день",
+          "Связка для смены устройства: /export или /desktop, затем продолжаешь в другом месте",
           "Главная ошибка — /clear вместо /compact: запомни, что /clear удаляет, /compact сжимает",
           "Всегда сверяйся с /help, а не угадывай команды — набор зависит от версии"
         ],
@@ -8673,7 +8673,7 @@
         "why": "Базовая пара: одна команда добавляет нужные папки в контекст, другая показывает, сколько контекста уже занято. С них начинается осознанное управление.",
         "instructions": [
           "/add-dir — добавляет директорию в рабочий контекст Claude. Применяйте, когда нужно, чтобы Claude видел конкретную папку целиком.",
-          "Пример: /add-dir src/components → Claude автоматически читает все компоненты без ссылок на каждый файл.",
+          "Пример: /add-dir src/components, и Claude автоматически читает все компоненты без ссылок на каждый файл.",
           "/context — визуализирует текущее использование контекста в виде сетки. Применяйте в долгих сессиях, чтобы понимать запас.",
           "Добавляйте только нужные папки, а не весь репозиторий — это экономит контекст."
         ],
@@ -8724,7 +8724,7 @@
         "time": "",
         "why": "Команды раскрывают силу в связке. Финальный шаг — собрать рабочий сценарий и закрепить, как избегать типичных ошибок и проверять себя.",
         "instructions": [
-          "Соберите цепочку: /init → /add-dir нужных папок → /context для контроля → /goal на задачу → /diff перед коммитом.",
+          "Соберите цепочку: /init, затем /add-dir нужных папок, затем /context для контроля, затем /goal на задачу, затем /diff перед коммитом.",
           "Избегайте главной ошибки: не добавляйте весь репозиторий через /add-dir, когда нужна одна папка.",
           "В долгой сессии регулярно проверяйте /context, чтобы не упереться в предел неожиданно.",
           "Не выдумывайте команды и флаги — список из семи команд фиксирован, актуальное смотрите через /help.",
@@ -8849,10 +8849,10 @@
         "time": "",
         "why": "Теперь связываем команды в рабочий поток: правильная модель под задачу плюс регулярный контроль. Главная ошибка — никогда не проверять /usage и получить неожиданный счёт в конце месяца.",
         "instructions": [
-          "Постройте маршрут под типичную сессию: /fast для рутины → /model для сложного → обратно на /fast",
+          "Постройте маршрут под типичную сессию: /fast для рутины, затем /model для сложного, затем обратно на /fast",
           "Добавьте /advisor для разовых трудных решений и /effort для тонкой настройки усилий",
           "Закрепите привычку: периодически /usage, при сбоях /status, и только потом /upgrade или /extra-usage если упёрлись в лимит",
-          "Проверьте себя на примере из узла: /fast для написания тестов → /model Opus для сложного алгоритма → обратно на /fast для чистки"
+          "Проверьте себя на примере из узла: /fast для написания тестов, затем /model Opus для сложного алгоритма, затем обратно на /fast для чистки"
         ],
         "validate": "Вы можете без подсказки собрать последовательность команд под смешанную сессию и назвать, чем контролируете расход.",
         "tip": "Самая частая ошибка — не смотреть /usage. Сделайте проверку расхода привычкой, а не реакцией на счёт."
@@ -9062,7 +9062,7 @@
           "Сохрани и запусти разрешённую команду — Claude выполнит её без запроса."
         ],
         "validate": "Разрешённый инструмент выполняется без подтверждения, остальные по-прежнему спрашивают.",
-        "tip": "Пример: /permissions → разрешить 'Bash(npm run *)' → npm-скрипты идут без подтверждения каждый раз."
+        "tip": "Пример: /permissions, затем разрешить 'Bash(npm run *)', и npm-скрипты идут без подтверждения каждый раз."
       },
       "s3": {
         "title": "Горячие клавиши: /keybindings",
@@ -9331,7 +9331,7 @@
           "Сначала вызови /plan — режим планирования, чтобы Claude составил план изменений до их выполнения.",
           "Утверди план: это главное правило безопасности перед параллельным запуском.",
           "Запусти /batch для крупного изменения — он распределяет работу на 5-30 параллельных агентов, каждый открывает свой PR.",
-          "Пример: /batch 'добавить JSDoc ко всем функциям в src/' → 20 агентов, каждый берёт свою группу файлов."
+          "Пример: /batch 'добавить JSDoc ко всем функциям в src/', и 20 агентов, каждый берёт свою группу файлов."
         ],
         "validate": "Ты понимаешь, почему /batch всегда идёт после утверждённого /plan, и можешь описать, что вернут параллельные агенты (по PR на группу файлов).",
         "tip": "Чем чётче план, тем меньше расхождений между параллельными агентами — план экономит время на разборе результатов."
@@ -9346,7 +9346,7 @@
           "Чётко разделяй: /loop — локальный повтор по интервалу, /schedule — удалённый агент по расписанию (cron).",
           "Для /loop держи в голове условие остановки, чтобы цикл не крутился бесконечно."
         ],
-        "validate": "Ты можешь выбрать правильную команду под задачу: «повторять локально» → /loop, «ночью удалённо» → /schedule.",
+        "validate": "Ты можешь выбрать правильную команду под задачу: «повторять локально» — /loop, «ночью удалённо» — /schedule.",
         "tip": "Ночная автоматизация через /schedule — самый недооценённый сценарий: проверки и отчёты делаются, пока ты спишь."
       },
       "s5": {
@@ -9374,7 +9374,7 @@
           "Проверяй результат: открывай /tasks, чтобы убедиться, что фоновые задачи завершились корректно."
         ],
         "validate": "Ты можешь перечислить минимум 3 типичные ошибки автоматизации и для каждой назвать, как её избежать.",
-        "tip": "Дисциплина «план → запуск → проверка через /tasks» делает автоматизацию надёжной, а не рискованной."
+        "tip": "Дисциплина «план, затем запуск, затем проверка через /tasks» делает автоматизацию надёжной, а не рискованной."
       }
     }
   },
@@ -9501,7 +9501,7 @@
         "time": "",
         "why": "Команды дают пользу, только если встроены в постоянный цикл и не превращаются в формальность. Финальный шаг закрепляет привычку и помогает проверить себя.",
         "instructions": [
-          "Зафиксируйте свой цикл: /diff → /review перед мержем, /security-review перед деплоем, /simplify после сессии",
+          "Зафиксируйте свой цикл: /diff, затем /review перед мержем, /security-review перед деплоем, /simplify после сессии",
           "Проверьте, что не используете /review формально: перечитайте Critical-пункты последнего ревью",
           "Убедитесь, что /security-review запускается регулярно, а не раз в релиз",
           "Если сомневаетесь во флагах или составе команд — откройте /help, а не угадывайте",
@@ -9891,9 +9891,9 @@
         "time": "",
         "why": "Финальный алгоритм превращает понимание в быстрое решение, которое можно проверить.",
         "instructions": [
-          "Шаг 1: задача повторяется и укладывается в шаги без внешних инструментов? → [[node:skills|Skill]]",
-          "Шаг 2: задача длинная, нужны инструменты или параллелизм? → Sub-agent ([[node:cc-subagents|Sub-agents]])",
-          "Шаг 3: нужно и то и другое? → Sub-agent + Skill как его процедура",
+          "Шаг 1: задача повторяется и укладывается в шаги без внешних инструментов? — [[node:skills|Skill]]",
+          "Шаг 2: задача длинная, нужны инструменты или параллелизм? — Sub-agent ([[node:cc-subagents|Sub-agents]])",
+          "Шаг 3: нужно и то и другое? — Sub-agent + Skill как его процедура",
           "Проверка: после выбора спроси «не overkill ли это?» и «не упрусь ли в лимит контекста?»",
           "Если оба ответа «нет» — выбор верный"
         ],
@@ -9906,7 +9906,7 @@
     "title": "Rate limits API: TPM, RPM и тиры",
     "subtitle": "Как не превратить прод в каскад 429 при росте нагрузки",
     "totalTime": "6 шагов",
-    "whatItIs": "Anthropic API ограничивает нагрузку тремя метриками: RPM (запросов в минуту), TPM (токенов input+output в минуту) и дневным лимитом токенов. Конкретные числа зависят от tier-а аккаунта (Tier 1 → Tier 4), который растёт автоматически по мере суммарных затрат. При превышении API отвечает 429 Too Many Requests с заголовком retry-after. Курс учит проектировать интеграцию так, чтобы пики и batch-нагрузки не валили сервис. Контекст по API — в [[node:pl-api|Платформа: API]] и [[tutorial:api-basics|Основы API]].",
+    "whatItIs": "Anthropic API ограничивает нагрузку тремя метриками: RPM (запросов в минуту), TPM (токенов input+output в минуту) и дневным лимитом токенов. Конкретные числа зависят от tier-а аккаунта (с Tier 1 до Tier 4), который растёт автоматически по мере суммарных затрат. При превышении API отвечает 429 Too Many Requests с заголовком retry-after. Курс учит проектировать интеграцию так, чтобы пики и batch-нагрузки не валили сервис. Контекст по API — в [[node:pl-api|Платформа: API]] и [[tutorial:api-basics|Основы API]].",
     "approach": "Идём от модели лимитов к практике: сначала разбираем, что именно считают RPM/TPM/daily и как они устроены по тирам, затем учимся читать 429 и retry-after, строим retry с экспоненциальным backoff и джиттером, закладываем buffer 80%, выносим оффлайн-нагрузку в Message Batches API и в конце планируем повышение тира под прогноз трафика. Каждый шаг — рабочий приём, а не теория.",
     "outcomes": [
       "Понимаешь разницу между RPM, TPM и дневным лимитом и какой из них упрётся первым",
@@ -9926,7 +9926,7 @@
       },
       {
         "title": "Планирование роста и бюджета",
-        "description": "Прогноз трафика → нужный tier → заявка на повышение заранее, чтобы вирусный запуск не упёрся в Tier 1."
+        "description": "Прогноз трафика, затем нужный tier, затем заявка на повышение заранее, чтобы вирусный запуск не упёрся в Tier 1."
       }
     ],
     "pitfalls": [
@@ -9947,7 +9947,7 @@
       },
       {
         "question": "Сервис стабильно работает на 95% TPM-лимита. Почему это опасно и что делать?",
-        "hint": "Любой всплеск выбивает за 100% → 429. Нужен buffer ~80% и заявка на следующий tier до того, как упрёшься."
+        "hint": "Любой всплеск выбивает за 100% и даёт 429. Нужен buffer ~80% и заявка на следующий tier до того, как упрёшься."
       }
     ],
     "steps": {
@@ -10038,7 +10038,7 @@
     "whatItIs": "Структурированная модель угроз для AI-агента, которому дан реальный доступ к компьютеру: файловая система, терминал, браузер, сеть. Курс разбирает три класса угроз — ошибку исполнения, неверное понимание задачи и обман через контент (prompt-injection) — и показывает, почему все три сходятся к одному архитектурному ответу: запускать агента в изолированной среде, а не на рабочей машине. Это инженерный, а не «на всякий случай» подход: каждая угроза получает конкретный механизм компенсации и понятную границу blast radius.",
     "approach": "Идём от угроз к контрмере, а не наоборот. Сначала строим модель угроз (актор, поверхность атаки, последствие), затем для каждой угрозы оцениваем, что именно агент с компьютером способен сломать, и только потом выводим изоляцию как единый ответ. Отдельно разбираем prompt-injection как самую недооценённую угрозу — она ломает интуицию «агент же мой, он на моей стороне». Завершаем границами изоляции: что песочница НЕ закрывает, чтобы изоляция не превратилась в ложное чувство безопасности. Изоляция работает в связке с [[node:sas-least-privilege|least privilege]] — одно без другого даёт дыры.",
     "outcomes": [
-      "Сформулировать модель угроз для конкретной агентной задачи в терминах актор → поверхность → последствие",
+      "Сформулировать модель угроз для конкретной агентной задачи в терминах актор, затем поверхность, затем последствие",
       "Различать три класса угроз (ошибка, неверное понимание, prompt-injection) и не сводить всё к «агент ошибётся»",
       "Оценивать blast radius: что именно агент с доступом к терминалу и сети способен повредить за пределами задачи",
       "Объяснять, почему рабочая машина — худшая среда для агента (общие креды, SSH-ключи, доступ к проду, корпоративная сеть)",
@@ -10090,7 +10090,7 @@
           "Отделите 'что агент должен делать' от 'что агент технически способен сделать' — разрыв между ними и есть зона риска",
           "Зафиксируйте, что цель модели — не паранойя, а перевод размытого 'вдруг сломается' в конкретный список"
         ],
-        "validate": "У вас есть список из 3+ пунктов, где каждый сформулирован как актор → поверхность → последствие, а не как абстрактное 'что-то пойдёт не так'.",
+        "validate": "У вас есть список из 3+ пунктов, где каждый сформулирован как актор, затем поверхность, затем последствие, а не как абстрактное 'что-то пойдёт не так'.",
         "tip": "Худший исход считайте не от 'обычного' запуска, а от 'агент сделал максимально разрушительное действие из доступных'. Это и есть blast radius."
       },
       "sas-why-isolation-2": {
@@ -10216,7 +10216,7 @@
         "instructions": [
           "Изучите Dockerfile эталонного образа: найдите установку X-стека (Xvfb), оконного менеджера, VNC-сервера и noVNC",
           "Отметьте процесс agent loop — компонент, который шлёт скриншоты в модель и применяет действия computer use tool",
-          "Поймите цепочку отображения: Xvfb → VNC-сервер → noVNC (WebSocket-мост) → браузер",
+          "Поймите цепочку отображения: Xvfb, затем VNC-сервер, затем noVNC (WebSocket-мост), затем браузер",
           "Зафиксируйте, что весь GUI и весь агент живут внутри контейнера — связь с хостом только через явно проброшенные порты и mount'ы"
         ],
         "validate": "Вы можете на словах описать, какой процесс отвечает за отрисовку, какой за трансляцию экрана в браузер и какой за действия Claude.",
@@ -10225,7 +10225,7 @@
       "sas-docker-computer-use-2": {
         "title": "Запустить контейнер Computer Use",
         "time": "",
-        "why": "Первый запуск даёт работающий цикл «скриншот → действие» и базу, к которой дальше прикручиваются ограничения. Сначала добиваемся, чтобы агент вообще ожил, потом ужесточаем.",
+        "why": "Первый запуск даёт работающий цикл «скриншот, затем действие» и базу, к которой дальше прикручиваются ограничения. Сначала добиваемся, чтобы агент вообще ожил, потом ужесточаем.",
         "instructions": [
           "Передайте Claude API key через переменную окружения при запуске, не вшивая его в образ",
           "Опубликуйте порт noVNC на локальный интерфейс (loopback), а не на все интерфейсы хоста",
@@ -10326,15 +10326,15 @@
     "exercises": [
       {
         "question": "У тебя задача: агент раз в час логинится на сайт через браузер и собирает данные, твой ноут выключен по ночам. Что выбрать — Docker на ноуте, VPS без GUI или VPS с десктопом? Обоснуй по трём осям: аптайм, GUI, изоляция.",
-        "hint": "Ноут выключен → 24/7 отпадает локальный контейнер. Браузерные клики и антибот → нужен реальный desktop. Остаётся VPS с виртуальным рабочим столом в отдельном аккаунте."
+        "hint": "Ноут выключен — 24/7 отпадает локальный контейнер. Браузерные клики и антибот — нужен реальный desktop. Остаётся VPS с виртуальным рабочим столом в отдельном аккаунте."
       },
       {
         "question": "Спроектируй автостоп для VM с почасовой оплатой, которая нужна только под ночные прогоны. Какие два механизма поставишь, чтобы забытая машина не стоила денег?",
-        "hint": "Первый — расписание (старт перед окном задач, stop/destroy после). Второй — бюджетный алерт у провайдера + автоостановка по простою (нет нагрузки N минут → shutdown)."
+        "hint": "Первый — расписание (старт перед окном задач, stop/destroy после). Второй — бюджетный алерт у провайдера + автоостановка по простою (нет нагрузки N минут, затем shutdown)."
       },
       {
         "question": "VM скомпрометирована: агент выполнил подозрительный код. Опиши последовательность действий, если у тебя настроены kill-switch, отдельный аккаунт и snapshot-скрипт.",
-        "hint": "Kill-switch гасит агента/сеть → snapshot для форензики (без секретов!) → destroy машины → ротация секретов в хранилище → пересоздание из cloud-init. Отдельный аккаунт гарантирует, что продакшен не задет."
+        "hint": "Kill-switch гасит агента/сеть, затем snapshot для форензики (без секретов!), затем destroy машины, затем ротация секретов в хранилище, затем пересоздание из cloud-init. Отдельный аккаунт гарантирует, что продакшен не задет."
       }
     ],
     "steps": {
@@ -10350,7 +10350,7 @@
           "Свяжи модель угроз с базовыми правилами песочницы из [[node:sys-agent-sandbox|песочницы для агента]]."
         ],
         "validate": "У тебя есть письменный ответ на 4 вопроса чек-листа и явная причина «VM, потому что ___» либо «контейнера достаточно».",
-        "tip": "Правило большого пальца: «24/7 ИЛИ настоящий desktop» → VM. Всё остальное обычно закрывает Docker."
+        "tip": "Правило большого пальца: «24/7 ИЛИ настоящий desktop» — VM. Всё остальное обычно закрывает Docker."
       },
       "sas-vm-vps-2": {
         "title": "Выбери провайдера и размер",
@@ -10403,7 +10403,7 @@
           "Настрой kill-switch: один механизм, который мгновенно глушит агента и/или его сеть — см. [[node:sas-snapshots-killswitch|снапшоты и аварийная остановка]].",
           "Закрой доступ к VM: SSH/RDP только по ключу, нестандартный порт или доступ через бастион, firewall на вход.",
           "Проверь, что после kill-switch агент действительно не может ходить во внешний мир и тратить ресурсы.",
-          "Опиши runbook инцидента: kill-switch → snapshot для форензики → destroy → ротация секретов."
+          "Опиши runbook инцидента: kill-switch, затем snapshot для форензики, затем destroy, затем ротация секретов."
         ],
         "validate": "Секреты не лежат в образе; kill-switch реально останавливает агента за секунды; вход на VM закрыт по ключу/файрволу.",
         "tip": "Проверь kill-switch до того, как он понадобится. Нажми его на тестовой VM и убедись, что агент мёртв, а не «почти остановлен»."
@@ -10414,7 +10414,7 @@
         "why": "Забытая почасовая VM крутится месяцами вхолостую — это самый частый способ слить бюджет на агентах. Автостоп и алерты делают так, что простаивающая машина либо гаснет сама, либо ты узнаёшь об этом сразу, а не из счёта.",
         "instructions": [
           "Поставь расписание: старт перед окном задач, stop или destroy после — через API провайдера из шага 2.",
-          "Добавь автоостановку по простою: нет нагрузки N минут → shutdown.",
+          "Добавь автоостановку по простою: нет нагрузки N минут, затем shutdown.",
           "Включи бюджетный алерт у провайдера на пороговую сумму в месяц.",
           "Для редких прогонов используй паттерн snapshot+destroy: храни дешёвый снапшот, поднимай машину только на время задачи.",
           "Раз в неделю проверяй, что нет забытых работающих инстансов и зависших снапшотов."
@@ -10509,7 +10509,7 @@
           "Запускайте процесс с no-new-privileges (например, флаг ядра/настройка сервиса), блокируя setuid-эскалацию",
           "Ограничьте доступные setuid-бинарники (ping, sudo, su) — они не нужны агенту"
         ],
-        "validate": "sudo -l -U agent → отказ. Попытка su/sudo из-под агента → Permission denied. Агент не в docker/wheel.",
+        "validate": "sudo -l -U agent, затем отказ. Попытка su/sudo из-под агента, затем Permission denied. Агент не в docker/wheel.",
         "tip": "no-new-privileges — дешёвая и мощная защита: даже setuid-бинарь не поднимет права. В systemd это NoNewPrivileges=yes."
       },
       "sas-least-privilege-4": {
@@ -10522,7 +10522,7 @@
           "Гранулярность по возможности на уровне файла: точечный bind-mount /etc/app/config.yaml вместо всего /etc",
           "Дополните сетевую часть отдельно — см. [[node:sas-network-isolation|сетевая изоляция]]"
         ],
-        "validate": "ls /home других пользователей и cat системных файлов из-под агента → Permission denied. Запись возможна только внутри work.",
+        "validate": "ls /home других пользователей и cat системных файлов из-под агента, затем Permission denied. Запись возможна только внутри work.",
         "tip": "Read-only по умолчанию, read-write только там, где агент обязан писать. Лишний rw-доступ — самый частый источник тихих повреждений."
       },
       "sas-least-privilege-5": {
@@ -10937,7 +10937,7 @@
           "Зафиксируйте границу обратимости письменно: что откат возвращает, а что — внешнее и необратимое",
           "Прогоните полный цикл на учебном инциденте от начала до конца"
         ],
-        "validate": "Единый wrapper отрабатывает сценарий «сбой → автостоп по лимиту → автооткат → чистая среда» без ручного вмешательства.",
+        "validate": "Единый wrapper отрабатывает сценарий «сбой, затем автостоп по лимиту, затем автооткат, затем чистая среда» без ручного вмешательства.",
         "tip": "Сделайте обёртку единственным способом запуска агента в проде: если можно запустить агента в обход протокола — рано или поздно так и запустят, без снимка и лимитов."
       }
     }
