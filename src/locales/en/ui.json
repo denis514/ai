@@ -700,35 +700,35 @@
     },
     "template": {
       "uxAudit": {
-        "start": "Run a UX audit of https://example.com: find accessibility and usability issues, return a prioritized list.",
+        "start": "You're a UX consultant. A client sent a link to their landing page https://example.com and complains that visitors leave without signing up. Review the page, find usability and accessibility issues (contrast, navigation, forms, mobile) and return a prioritized list of findings with short fixes — what to address first.",
         "name": "UX Audit Agent",
         "desc": "Audit UX/accessibility from a screenshot or URL. Main agent + research + UX critic in parallel.",
         "input": "A site URL in the task.",
         "output": "Prioritized list of accessibility & UX issues (on screen)."
       },
       "analytics": {
-        "start": "Analyze the attached monthly sales report: surface the 3 key takeaways and any anomalies.",
+        "start": "You're an analyst at a small company. Your manager shared this month's sales export and wants you to “figure out what's going on”. Explore the data, spot trends and anomalies, compute the key metrics and write a short report: the 3 main takeaways and what to do next.",
         "name": "Analytics Agent",
         "desc": "Data analysis + research patterns. Main → analytics + research → insights report.",
         "input": "A question + a data file (CSV/text) uploaded on the Files node.",
         "output": "Findings and key numbers from your data."
       },
       "content": {
-        "start": "Write a blog post on “how AI helps small business”: ~600 words, friendly tone, with subheadings.",
+        "start": "You run a small-business blog. You need a post on “how AI helps small teams save time”. Gather current examples and write a clear ~600-word article with subheadings and a friendly tone, ending with a short call to try it.",
         "name": "Content Agent",
         "desc": "Content pipeline: brief → SERP research → branded draft → SEO pass → publish-ready.",
         "input": "A topic or brief in the task.",
         "output": "A ready post after research and editing."
       },
       "research": {
-        "start": "Give a short overview of “retrieval-augmented generation (RAG)”: what it is, where it's used, 3–5 sources.",
+        "start": "You're preparing a brief for a team that's never heard of RAG. Figure out what retrieval-augmented generation is, why it matters and where it's used, find 3–5 reliable sources, and write a clear plain-language summary with practical examples.",
         "name": "Research Agent",
         "desc": "Structured research: web + files → analyst → critic → report.",
         "input": "A research question (links allowed).",
         "output": "A summary using every step; can be sent to Telegram."
       },
       "triage": {
-        "start": "Triage an incoming customer message: classify it (question / complaint / sales) and propose a reply.",
+        "start": "You're a support assistant. A message came in: “The login email isn't arriving, I've waited an hour.” Classify it (question / complaint / sales), gauge urgency, and draft a polite reply with a concrete next step for the customer.",
         "name": "Request triage",
         "desc": "A classifier labels the message; two Conditions route it into three actions.",
         "input": "The request text in the task.",
@@ -736,7 +736,7 @@
         "prompt": "Classify the request from the task. Answer with EXACTLY one uppercase word, no period: URGENT, COMPLAINT or NORMAL. Write nothing else."
       },
       "imageReview": {
-        "start": "Look at the attached UI screenshot: find design and accessibility issues and give recommendations.",
+        "start": "You're a design reviewer. A teammate sent a screenshot of an app screen and asks for “a fresh pair of eyes”. Review the image: find layout, readability and accessibility issues, and give 3–5 concrete improvements.",
         "name": "Image review",
         "desc": "An agent with the Vision tool analyzes an attached image.",
         "input": "An image on the Vision node + what to review in the task.",
@@ -744,7 +744,7 @@
         "prompt": "Carefully examine the attached image. Describe what's on it and analyse it for the task: key elements, problems, recommendations. Structure it as bullet points."
       },
       "refineLoop": {
-        "start": "Draft a landing-page headline for an AI course and refine it until it's catchy (up to 3 iterations).",
+        "start": "You're a marketer drafting a headline for an AI-course landing page. Propose a first version, then critique and improve it in a loop (up to 3 rounds) until it's catchy and clear. Show the final headline and briefly explain why it's better.",
         "name": "Draft with self-check",
         "desc": "An author writes, a reviewer improves, the Loop repeats up to 3×.",
         "input": "A writing brief in the task.",
@@ -753,7 +753,7 @@
         "promptReview": "Check the text for errors, clarity and tone. If anything can be improved — rewrite it better. Return the final version."
       },
       "radar": {
-        "start": "Find this week's news about competitor “Acme” and compile a short digest with links.",
+        "start": "You track competitor “Acme”. You need to know what's new this week — launches, news, price changes. Find fresh sources, drop the stale ones and compile a short digest of 3–5 items with links.",
         "name": "Competitor radar",
         "desc": "Opens competitor sites, compares them, and sends a summary to Telegram.",
         "input": "A few site links in the task.",
@@ -762,7 +762,7 @@
         "promptCompare": "Compare the competitors. Give a summary table and 3 takeaways: where they're stronger, where weaker, where our opportunity is."
       },
       "webhookLead": {
-        "start": "Process a new lead from the form: score how qualified it is and suggest the next step.",
+        "start": "A new lead just hit the CRM from a form: “Ivan, clothing store, wants to automate customer replies.” Score how qualified it is, pull out the key details, and suggest the next step for the manager: what to write and when to reach out.",
         "name": "Website lead → Telegram",
         "desc": "Triggered by a webhook on a new website lead: scores the lead and sends a Telegram alert.",
         "input": "Lead data (name, contact, message) — sent by the form via webhook.",
@@ -770,7 +770,7 @@
         "prompt": "This is a new website lead. Briefly assess it: how 'hot' it is (high/medium/low interest), what the client wants and the next step. Be concise, use bullet points."
       },
       "webhookPayment": {
-        "start": "Process a payment notification: craft a short thank-you message for the customer.",
+        "start": "Payment for order #2048 (₽3,500) just went through from a returning customer. Write a short, warm confirmation: thank them, say what's next (timing, tracking) and leave a good impression.",
         "name": "Payment → email to client",
         "desc": "Triggered by a webhook on payment: composes and sends the client a confirmation email.",
         "input": "Payment data (item, amount, client name and e-mail) — sent by the payment service via webhook.",
@@ -778,7 +778,7 @@
         "prompt": "This is a successful payment. Write a warm, short confirmation email to the client: thank them, confirm the item and amount, state the next step. Friendly tone, no fluff."
       },
       "webhookReview": {
-        "start": "Process a new customer review: detect sentiment and prepare a polite reply.",
+        "start": "A new review appeared on a product page: “Delivery was two days late, but the quality is great.” Detect the sentiment (positive / neutral / negative), capture the gist and draft a polite public reply: thank them, gently explain the delay and invite them back.",
         "name": "Review → negative alert",
         "desc": "Triggered by a webhook on a new review: detects tone and pings Telegram if it's negative.",
         "input": "Review text — sent via webhook (site, marketplace, form).",
@@ -786,7 +786,7 @@
         "prompt": "Detect the sentiment of the review in the task. First answer with EXACTLY one uppercase word: POSITIVE, NEGATIVE or NEUTRAL. Then on a new line — one sentence with the gist of the review."
       },
       "clientReplies": {
-        "start": "Reply to a customer asking about the delivery time for order #1024 — polite and to the point.",
+        "start": "You run an online store. A customer writes: “I ordered a coffee grinder 5 days ago (#1024), where is it?” Reply politely and to the point: confirm the order, explain the delivery status and offer help if the parcel is delayed.",
         "name": "Customer replies",
         "desc": "A customer message → a polite ready reply.",
         "input": "Customer message or question",
@@ -794,7 +794,7 @@
         "prompt": "You are a friendly assistant for a small-business owner. Given a customer's message, write a short, warm, clear reply: thank them, answer the point, suggest a next step. No corporate jargon."
       },
       "bookingReminder": {
-        "start": "Create a reminder for a customer about tomorrow's 3:00 PM appointment (haircut), friendly tone.",
+        "start": "You're a salon receptionist. Tomorrow at 3:00 PM, client Anna has a haircut appointment. Write a friendly reminder: confirm the date and time, mention the address and offer to reschedule if it's inconvenient.",
         "name": "Booking reminder",
         "desc": "Name and time → a ready reminder to Telegram.",
         "input": "Client name and appointment time",
@@ -802,7 +802,7 @@
         "prompt": "Write a short, friendly appointment reminder: name, date and time, a gentle ask to confirm or reschedule. Warm tone, no formality."
       },
       "reviewReply": {
-        "start": "Reply to the review: “Delivery took long, but the product is great” — thank them and smooth it over.",
+        "start": "A review came in: “Waited a long time for delivery, but the product is great, thanks.” Write a warm reply: thank them for rating the product, gently apologize for the wait and signal that you're improving delivery speed.",
         "name": "Review reply",
         "desc": "A review → tone read + a ready reply.",
         "input": "Customer review text",
@@ -810,7 +810,7 @@
         "prompt": "Label the review tone (positive / neutral / negative) in one word. Then write a polite reply: thank them; if negative, apologize and offer a fix, no excuses."
       },
       "contentIdeas": {
-        "start": "Suggest 5 blog post ideas for a beauty salon for the coming week, with a one-line pitch each.",
+        "start": "You run a beauty-salon blog and need topics for the week. Suggest 5 ideas that hook your current audience (care, trends, tips, promos), each with a short description and format (post / story / reel).",
         "name": "Blog ideas",
         "desc": "A topic → fresh trends and a post plan.",
         "input": "Your blog topic or niche",
@@ -818,7 +818,7 @@
         "prompt": "Find fresh trends on the topic via web search. Propose 5 post ideas: a catchy title + one line on what the post covers. Plain language, for a general audience."
       },
       "topicDigest": {
-        "start": "Compile a weekly digest on “AI in marketing”: 5 items with links.",
+        "start": "You compile a weekly roundup for your team on “AI in marketing”. Find this week's news and cases, pick the 5 most useful, and add a one-line “why it matters” and a link to each.",
         "name": "Topic digest",
         "desc": "A topic → a short fresh recap to Telegram.",
         "input": "A topic to follow",
