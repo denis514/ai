@@ -1537,7 +1537,7 @@ function BuilderAppInner() {
             <Icon name="terminal" size={15} strokeWidth={1.6} />
             {execStatus === 'running' && <span className="builder-console-dot" aria-hidden="true" />}
           </button>
-          <LanguageSwitcher className="builder-lang" title={t('common.language') || 'Язык'} />
+          <LanguageSwitcher title={t('common.language') || 'Язык'} />
           <button
             type="button"
             className="builder-btn builder-btn--ghost"

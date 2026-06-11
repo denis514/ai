@@ -4,6 +4,7 @@ import { useHashRoute } from '../hooks/useHashRoute.js';
 import Icon from '../components/Icon.jsx';
 import InlineText from '../components/InlineText.jsx';
 import PlanetLogo from '../components/PlanetLogo.jsx';
+import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
 import './StyleGuide.css';
 
 /**
@@ -33,6 +34,7 @@ const SECTIONS = [
   { id: 'chips',     label: 'Чипы и бейджи' },
   { id: 'fab',       label: 'FAB-кнопки' },
   { id: 'controls',  label: 'Чекбоксы и радио' },
+  { id: 'language',  label: 'Переключатель языка' },
   { id: 'links',     label: 'Ссылки' },
   { id: 'inlinks',   label: 'Инлайновые ссылки' },
   { id: 'sphere',    label: 'Сфера-логотип' },
@@ -352,6 +354,14 @@ export default function StyleGuide() {
               <span className="ctrl__box ctrl__box--radio"><span className="ctrl__dot" /></span>
               Выключено
             </label>
+          </div>
+        </Section>
+
+        <Section id="language" title="Переключатель языка"
+          note="Единый компонент <LanguageSwitcher>. Кнопка-глобус — КРУГЛАЯ 44px (стекло + тень), одинаковая ВЕЗДЕ: Atlas, Builder, аккаунт, лендинг, админка. Класс .lang-switcher__btn — единственный источник стиля. НЕ переопределять локально. Меняет язык глобально (один на всю систему) + синхронит профиль у залогиненных.">
+          <div className="sg-langrow">
+            <LanguageSwitcher title="Язык" />
+            <span className="sg-langrow__hint">Клик → выпадашка с языками, галочка слева у активного.</span>
           </div>
         </Section>
 
