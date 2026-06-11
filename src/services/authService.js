@@ -82,6 +82,28 @@ export async function signInWithGoogle() {
 }
 
 /**
+ * Получить URL Google OAuth БЕЗ редиректа (skipBrowserRedirect).
+ * Используется для входа во всплывающем окне: основное окно само открывает
+ * попап и ведёт его на этот URL. redirectTo помечен флагом попапа.
+ *
+ * @param {string} redirectTo
+ * @returns {{ error: string|null, url: string|null }}
+ */
+export async function getGoogleOAuthUrl(redirectTo) {
+  if (!supabase) return { error: 'Supabase not configured', url: null };
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      skipBrowserRedirect: true,
+      redirectTo,
+      queryParams: { access_type: 'offline', prompt: 'select_account' },
+    },
+  });
+  if (error) return { error: error.message, url: null };
+  return { error: null, url: data?.url || null };
+}
+
+/**
  * Войти через Apple OAuth (Sign in with Apple).
  * Тот же механизм, что и Google: Supabase редиректит на Apple и обратно;
  * onAuthStateChange ловит SIGNED_IN. Требует включённого провайдера Apple в

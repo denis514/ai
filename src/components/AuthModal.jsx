@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Icon from './Icon.jsx';
-import { sendMagicLink, signInWithGoogle, signInWithApple } from '../services/authService.js';
+import { sendMagicLink, signInWithGoogle, signInWithApple, getGoogleOAuthUrl } from '../services/authService.js';
 import { useT } from '../i18n/LocaleContext.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 import { useFocusReturn } from '../hooks/useFocusReturn.js';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
+import { openCenteredPopup, popupRedirectTo, OAUTH_DONE_MESSAGE } from '../lib/oauthPopup.js';
 
 // «Войти через Apple» — кнопка и логика готовы, но провайдер Apple ещё не
 // настроен (нужен платный Apple Developer аккаунт + конфиг в Supabase, см.
@@ -24,8 +26,13 @@ const APPLE_SIGNIN_ENABLED = false;
  */
 export default function AuthModal({ onClose }) {
   const t = useT();
+  const { user } = useAuth();
   useFocusReturn();
   useBodyScrollLock();
+
+  // Вход во всплывающем окне завершён → закрываем модалку, как только появился
+  // пользователь (сессия синхронизируется из попапа через localStorage).
+  useEffect(() => { if (user) onClose?.(); }, [user, onClose]);
 
   const [step, setStep] = useState('email'); // 'email' | 'sent'
   const [email, setEmail] = useState('');
@@ -58,10 +65,48 @@ export default function AuthModal({ onClose }) {
     if (!canProceed) { setError(t('auth.errorConsent')); return; }
     setError('');
     setGoogleLoading(true);
-    const { error: err } = await signInWithGoogle();
-    setGoogleLoading(false);
-    if (err) setError(err);
-    // При успехе — браузер уйдёт на Google, onClose не нужен
+
+    // На мобильных попапы ненадёжны (часто открываются вкладкой/блокируются) —
+    // оставляем привычный полноэкранный редирект.
+    const isMobile = typeof window !== 'undefined'
+      && window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) {
+      const { error: err } = await signInWithGoogle();
+      setGoogleLoading(false);
+      if (err) setError(err);
+      return; // редирект уведёт страницу
+    }
+
+    // Десктоп: открываем попап СИНХРОННО (до await), иначе блокировщик зарежет.
+    const popup = openCenteredPopup();
+    const { error: err, url } = await getGoogleOAuthUrl(popupRedirectTo());
+    if (err || !url) {
+      try { popup && popup.close(); } catch { /* noop */ }
+      setGoogleLoading(false);
+      setError(err || t('auth.errorGeneric') || 'Не удалось начать вход');
+      return;
+    }
+    if (!popup || popup.closed) {
+      // Попап заблокирован → откатываемся на обычный редирект на тот же URL.
+      window.location.href = url;
+      return;
+    }
+    try { popup.location.href = url; } catch { window.location.href = url; return; }
+
+    // Если пользователь закрыл попап, не завершив вход — снимаем загрузку.
+    const poll = setInterval(() => {
+      if (popup.closed) { clearInterval(poll); setGoogleLoading(false); }
+    }, 600);
+    // Успех придёт через onAuthStateChange (useEffect выше закроет модалку) +
+    // сообщение из попапа (на случай задержки синхронизации).
+    const onMsg = (e) => {
+      if (e.origin === window.location.origin && e.data === OAUTH_DONE_MESSAGE) {
+        clearInterval(poll);
+        window.removeEventListener('message', onMsg);
+        setGoogleLoading(false);
+      }
+    };
+    window.addEventListener('message', onMsg);
   };
 
   const handleApple = async () => {
