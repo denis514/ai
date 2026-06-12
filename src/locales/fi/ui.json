@@ -866,6 +866,51 @@
         "vars": "[{\"k\":\"topic\",\"v\":\"talven ihonhoito\"},{\"k\":\"audience\",\"v\":\"naiset 25–40, pieni kaupunki\"}]",
         "promptDraft": "Keksi 5 julkaisuideaa aiheesta ”{{topic}}” yleisölle: {{audience}}. Lisää kuhunkin lyhyt kuvaus ja muoto (julkaisu / tarina / reel).",
         "promptReview": "Tässä on lista julkaisuideoita. Tee jokaisesta vahvempi: selkeä koukuttava otsikko ja konkreettinen hyöty yleisölle {{audience}}. Palauta parannettu lista samassa muodossa."
+      },
+      "realtyListing": {
+        "name": "Kohteen kuvaus",
+        "desc": "Valmis houkutteleva ilmoitus asunnon tiedoista.",
+        "input": "Asunnon tiedot",
+        "output": "Valmis ilmoituskuvaus",
+        "start": "Olet kiinteistönvälittäjä. Tarvitset ilmoituksen asunnolle: {{rooms}} huonetta, {{area}} m², alue {{district}}. Kirjoita houkutteleva kuvaus: korosta etuja ja alueen mukavuutta, eloisaan mutta rehelliseen sävyyn.",
+        "vars": "[{\"k\":\"rooms\",\"v\":\"2\"},{\"k\":\"area\",\"v\":\"54\"},{\"k\":\"district\",\"v\":\"keskusta, metron lähellä\"}]",
+        "prompt": "Olet kiinteistönvälittäjä. Kirjoita houkutteleva ilmoitus asunnosta: {{rooms}} huonetta, {{area}} m², alue {{district}}. Korosta etuja ja alueen mukavuutta, eloisasti ja rehellisesti, ilman liioittelua."
+      },
+      "homeworkCheck": {
+        "name": "Tehtävän tarkistus",
+        "desc": "Arvioi oppilaan työn ja kertoo ystävällisesti, mitä parantaa.",
+        "input": "Oppilaan vastaus ja kriteerit",
+        "output": "Arvio ja palaute",
+        "start": "Olet opettaja. Oppilas lähetti työn: ”{{student_answer}}”. Arviointikriteerit: {{criteria}}. Tarkista työ, anna hyväksytty tai hylätty ja selitä ystävällisesti, mikä on hyvää ja mitä parantaa.",
+        "vars": "[{\"k\":\"student_answer\",\"v\":\"Ranskan pääkaupunki on Pariisi, jossa on Eiffel-torni\"},{\"k\":\"criteria\",\"v\":\"vastauksen kattavuus ja oikeellisuus\"}]",
+        "prompt": "Olet ystävällinen opettaja. Tarkista oppilaan työ kriteerien mukaan: {{criteria}}. Ensimmäinen rivi, yksi sana: ЗАЧЁТ (hyväksytty) tai НЕЗАЧЁТ (hylätty). Selitä sitten hellävaraisesti, mikä on hyvää ja mitä parantaa."
+      },
+      "hrScreening": {
+        "name": "Hakemusten seulonta",
+        "desc": "Lyhyt tiivistelmä ansioluettelosta ja arvio vaatimuksiisi nähden.",
+        "input": "Ansioluettelo ja vaatimukset",
+        "output": "Tiivistelmä ja arvio",
+        "start": "Olet rekrytoinnin avustaja. Saapui hakemus: ”{{resume}}”. Tehtävän vaatimukset: {{requirements}}. Kirjoita lyhyt tiivistelmä ja päätä, sopiiko ehdokas.",
+        "vars": "[{\"k\":\"resume\",\"v\":\"3 vuotta myynnissä, englanti B2, CRM-kokemus\"},{\"k\":\"requirements\",\"v\":\"myyntiä 2+ vuotta, englanti, CRM\"}]",
+        "prompt": "Olet rekrytoinnin avustaja. Vertaa ansioluetteloa vaatimuksiin: {{requirements}}. Kirjoita lyhyt tiivistelmä (kokemus, taidot). Ensimmäinen rivi, yksi sana: ПОДХОДИТ (sopii) tai НЕ ПОДХОДИТ (ei sovi). Sitten 1–2 lausetta miksi."
+      },
+      "invoiceReminder": {
+        "name": "Lasku ja maksumuistutus",
+        "desc": "Laskun teksti ja kohtelias muistutus asiakkaalle, ilman rahansiirtoa.",
+        "input": "Asiakas, summa, palvelu",
+        "output": "Laskun teksti ja muistutus",
+        "start": "Olet freelancer. Tarvitset laskun ja kohteliaan muistutuksen asiakkaalle {{client}}: palvelusta {{service}}, summa {{amount}}. Kirjoita lyhyt selkeä laskun teksti ja ystävällinen maksumuistutus.",
+        "vars": "[{\"k\":\"client\",\"v\":\"Romashka Oy\"},{\"k\":\"service\",\"v\":\"laskeutumissivun suunnittelu\"},{\"k\":\"amount\",\"v\":\"300 €\"}]",
+        "prompt": "Olet freelancer. Kirjoita lyhyt selkeä laskun teksti asiakkaalle {{client}}: palvelu {{service}}, summa {{amount}}. Lisää sitten ystävällinen maksumuistutus. Älä siirrä rahaa — vain teksti."
+      },
+      "serviceLead": {
+        "name": "Pyyntö sivustolta",
+        "desc": "Arvioi pyynnön ja laatii ensivastauksen; kuuma liidi ilmoittaa Telegramiin.",
+        "input": "Asiakkaan nimi ja pyyntö",
+        "output": "Ensivastaus; kuuma liidi ilmoittaa Telegramiin",
+        "start": "Käsittelet sivuston pyyntöjä. Saapui pyyntö: {{name}} kirjoittaa ”{{request}}”. Arvioi, kuinka ”kuuma” asiakas on (valmis tilaamaan pian), ja laadi kohtelias ensivastaus.",
+        "vars": "[{\"k\":\"name\",\"v\":\"Ivan\"},{\"k\":\"request\",\"v\":\"Tarvitsen asunnon siivouksen tänä lauantaina, kiireellinen\"}]",
+        "prompt": "Käsittelet pyyntöjä. Arvioi pyyntö asiakkaalta {{name}}: ”{{request}}”. Jos asiakas on selvästi valmis tilaamaan pian (kiireellinen, tietty päivä, budjetti), tee ensimmäisestä rivistä yksi sana: ГОРЯЧИЙ. Laadi sitten lyhyt kohtelias ensivastaus tarkentavalla kysymyksellä."
       }
     },
     "tooltip": {

@@ -866,6 +866,51 @@
         "vars": "[{\"k\":\"topic\",\"v\":\"winter skincare\"},{\"k\":\"audience\",\"v\":\"women 25–40, small town\"}]",
         "promptDraft": "Come up with 5 post ideas on “{{topic}}” for this audience: {{audience}}. For each idea add a short description and a format (post / story / reel).",
         "promptReview": "Here is a list of post ideas. Make each one stronger: a clear catchy headline and a concrete benefit for the audience {{audience}}. Return the improved list in the same format."
+      },
+      "realtyListing": {
+        "name": "Property listing",
+        "desc": "A ready, appealing listing from the flat's parameters.",
+        "input": "Flat parameters",
+        "output": "A ready listing description",
+        "start": "You're a real-estate agent. You need a listing for a flat: {{rooms}} rooms, {{area}} m², district {{district}}. Write an appealing description: highlight the upsides and the area's convenience, in a lively but honest tone.",
+        "vars": "[{\"k\":\"rooms\",\"v\":\"2\"},{\"k\":\"area\",\"v\":\"54\"},{\"k\":\"district\",\"v\":\"city center, near metro\"}]",
+        "prompt": "You're a real-estate agent. Write an appealing listing for a flat: {{rooms}} rooms, {{area}} m², district {{district}}. Highlight the advantages and the area's convenience, lively and honest, no exaggeration."
+      },
+      "homeworkCheck": {
+        "name": "Homework check",
+        "desc": "Grades a student's work and kindly suggests what to improve.",
+        "input": "Student's answer and criteria",
+        "output": "Grade and feedback",
+        "start": "You're a teacher. A student submitted work: “{{student_answer}}”. Grading criteria: {{criteria}}. Check the work, give a pass or fail and kindly explain what's good and what to improve.",
+        "vars": "[{\"k\":\"student_answer\",\"v\":\"The capital of France is Paris, home of the Eiffel Tower\"},{\"k\":\"criteria\",\"v\":\"completeness and correctness\"}]",
+        "prompt": "You're a kind teacher. Check the student's work against the criteria: {{criteria}}. First line, one word: ЗАЧЁТ (pass) or НЕЗАЧЁТ (fail). Then gently explain what's good and what to improve."
+      },
+      "hrScreening": {
+        "name": "Application screening",
+        "desc": "A short résumé summary and a verdict against your requirements.",
+        "input": "Résumé and requirements",
+        "output": "Summary and verdict",
+        "start": "You're a hiring assistant. An application came in: “{{resume}}”. Job requirements: {{requirements}}. Write a short summary and decide whether the candidate is a fit.",
+        "vars": "[{\"k\":\"resume\",\"v\":\"3 years in sales, English B2, CRM experience\"},{\"k\":\"requirements\",\"v\":\"2+ years in sales, English, CRM\"}]",
+        "prompt": "You're a hiring assistant. Compare the résumé with the requirements: {{requirements}}. Write a short summary (experience, skills). First line, one word: ПОДХОДИТ (fit) or НЕ ПОДХОДИТ (not a fit). Then 1–2 sentences why."
+      },
+      "invoiceReminder": {
+        "name": "Invoice and payment reminder",
+        "desc": "Invoice text and a polite reminder for the client, no money movement.",
+        "input": "Client, amount, service",
+        "output": "Invoice text and reminder",
+        "start": "You're a freelancer. You need an invoice and a polite reminder for client {{client}}: for {{service}}, amount {{amount}}. Write a short clear invoice text and a friendly payment reminder.",
+        "vars": "[{\"k\":\"client\",\"v\":\"Romashka LLC\"},{\"k\":\"service\",\"v\":\"landing page design\"},{\"k\":\"amount\",\"v\":\"$300\"}]",
+        "prompt": "You're a freelancer. Write a short clear invoice text for client {{client}}: service {{service}}, amount {{amount}}. Then add a friendly payment reminder. Don't move any money — text only."
+      },
+      "serviceLead": {
+        "name": "Website request",
+        "desc": "Scores the request and drafts a first reply; a hot lead pings Telegram.",
+        "input": "Customer name and request",
+        "output": "First reply; a hot lead pings Telegram",
+        "start": "You handle website requests. A request came in: {{name}} writes “{{request}}”. Judge how “hot” this customer is (ready to book soon) and draft a polite first reply.",
+        "vars": "[{\"k\":\"name\",\"v\":\"Ivan\"},{\"k\":\"request\",\"v\":\"Need a flat cleaning this Saturday, urgent\"}]",
+        "prompt": "You handle requests. Judge the request from {{name}}: “{{request}}”. If the customer is clearly ready to book soon (urgent, a specific date, a budget), make the first line one word: ГОРЯЧИЙ. Then draft a short polite first reply with a clarifying question."
       }
     },
     "tooltip": {

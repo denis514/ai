@@ -507,6 +507,107 @@ export const TEMPLATES = [
       { from: 2, to: 4 },   // проверяющий → итог
     ],
   },
+
+  /* Недвижимость: описание объекта из параметров — 3 переменные */
+  {
+    id: 'realty-listing',
+    nameKey: 'builder.template.realtyListing.name',
+    descKey: 'builder.template.realtyListing.desc',
+    inputKey: 'builder.template.realtyListing.input',
+    outputKey: 'builder.template.realtyListing.output',
+    iconName: 'building', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-content', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.realtyListing.prompt' } },
+      { defId: 'output-text', position: { x: 100, y: 330 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 1, to: 2 }],
+  },
+
+  /* Образование: проверка работы — Условие-агент + 2 переменные */
+  {
+    id: 'homework-check',
+    nameKey: 'builder.template.homeworkCheck.name',
+    descKey: 'builder.template.homeworkCheck.desc',
+    inputKey: 'builder.template.homeworkCheck.input',
+    outputKey: 'builder.template.homeworkCheck.output',
+    iconName: 'graduation', difficulty: 'intermediate', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.homeworkCheck.prompt' } },
+      { defId: 'logic-condition-agent', position: { x: 100, y: 330 }, dataOverride: { question: 'Помечена ли работа словом ЗАЧЁТ?' } },
+      { defId: 'output-text', position: { x: 360, y: 330 } },
+      { defId: 'output-text', position: { x: 100, y: 470 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3, sourceHandle: 'true' },   // зачёт → похвала
+      { from: 2, to: 4, sourceHandle: 'false' },  // незачёт → разбор
+    ],
+  },
+
+  /* HR: скрининг откликов — Условие + 2 переменные */
+  {
+    id: 'hr-screening',
+    nameKey: 'builder.template.hrScreening.name',
+    descKey: 'builder.template.hrScreening.desc',
+    inputKey: 'builder.template.hrScreening.input',
+    outputKey: 'builder.template.hrScreening.output',
+    iconName: 'users', difficulty: 'intermediate', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.hrScreening.prompt' } },
+      { defId: 'logic-condition', position: { x: 100, y: 330 }, dataOverride: { operator: 'contains', condValue: 'ПОДХОДИТ' } },
+      { defId: 'output-text', position: { x: 360, y: 330 } },
+      { defId: 'output-text', position: { x: 100, y: 470 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3, sourceHandle: 'true' },   // подходит → в шортлист
+      { from: 2, to: 4, sourceHandle: 'false' },  // нет → вежливый отказ
+    ],
+  },
+
+  /* Финансы (фриланс): счёт + напоминание — 3 переменные */
+  {
+    id: 'invoice-reminder',
+    nameKey: 'builder.template.invoiceReminder.name',
+    descKey: 'builder.template.invoiceReminder.desc',
+    inputKey: 'builder.template.invoiceReminder.input',
+    outputKey: 'builder.template.invoiceReminder.output',
+    iconName: 'tag', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-content', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.invoiceReminder.prompt' } },
+      { defId: 'output-text', position: { x: 100, y: 330 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 1, to: 2 }],
+  },
+
+  /* Местные услуги: заявка с сайта (вебхук) — Условие + 2 переменные */
+  {
+    id: 'service-lead',
+    nameKey: 'builder.template.serviceLead.name',
+    descKey: 'builder.template.serviceLead.desc',
+    inputKey: 'builder.template.serviceLead.input',
+    outputKey: 'builder.template.serviceLead.output',
+    iconName: 'inbox', difficulty: 'intermediate', category: 'everyday', trigger: 'webhook', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.serviceLead.prompt' } },
+      { defId: 'logic-condition', position: { x: 100, y: 330 }, dataOverride: { operator: 'contains', condValue: 'ГОРЯЧИЙ' } },
+      { defId: 'output-telegram', position: { x: 360, y: 330 } },
+      { defId: 'output-text', position: { x: 100, y: 470 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3, sourceHandle: 'true' },   // горячий лид → сигнал в Telegram
+      { from: 2, to: 4, sourceHandle: 'false' },  // обычный → черновик ответа
+    ],
+  },
 ];
 
 /**
