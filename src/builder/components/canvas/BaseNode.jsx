@@ -67,6 +67,18 @@ function BaseNodeInner({ data, selected }) {
         </span>
       )}
 
+      {/* Итог тестового прогона — кружок в правом верхнем углу:
+          зелёный чек / красный крест / жёлтый «!». */}
+      {(status === 'completed' || status === 'failed' || status === 'warn') && (
+        <span className={`builder-node__statbadge builder-node__statbadge--${status}`} aria-label={status}>
+          <Icon
+            name={status === 'completed' ? 'check' : status === 'failed' ? 'close' : 'warning'}
+            size={11}
+            strokeWidth={3}
+          />
+        </span>
+      )}
+
       {showIn && (
         <Handle
           type="target"
@@ -92,14 +104,9 @@ function BaseNodeInner({ data, selected }) {
         {isCondition && condValue ? (
           <span className="builder-node__cond" title={condValue}>«{condValue}»</span>
         ) : null}
-        {status !== 'idle' && (
-          <span
-            className={`builder-node__status builder-node__status--${status}`}
-            aria-label={status}
-          >
-            {status === 'running' && <span className="builder-node__pulse" />}
-            {status === 'completed' && <Icon name="check" size={10} strokeWidth={2.5} />}
-            {status === 'failed' && <Icon name="close" size={10} strokeWidth={2.5} />}
+        {status === 'running' && (
+          <span className="builder-node__status builder-node__status--running" aria-label="running">
+            <span className="builder-node__pulse" />
           </span>
         )}
       </div>

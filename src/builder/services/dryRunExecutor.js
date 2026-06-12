@@ -8,8 +8,6 @@
  * API зеркалит реальный исполнитель: { onUpdate(nodeId,status), onLog(entry),
  * onComplete(finalStatus) }. Возвращает контроллер со stop().
  */
-import { validateGraph } from './connectionRules.js';
-
 export function createDryRun({ nodes, edges, t, onUpdate, onLog, onComplete }) {
   let stopped = false;
   const timers = [];
@@ -36,6 +34,45 @@ export function createDryRun({ nodes, edges, t, onUpdate, onLog, onComplete }) {
     .filter(n => n.data?.kind !== 'tool')
     .sort((a, b) => (a.data?.orderLevel ?? 99) - (b.data?.orderLevel ?? 99));
 
+  // Какие узлы вообще подключены (для поиска «висящих»).
+  const connected = new Set();
+  edges.forEach(e => { connected.add(e.source); connected.add(e.target); });
+
+  // Узлу нужна доп. информация? (жёлтый)
+  const needsInfo = (n) => {
+    const kind = n.data?.kind, role = n.data?.role;
+    if (kind === 'agent' && n.data?.hasPrompt === false) return true;
+    if (kind === 'trigger' && n.data?.hasInput === false) return true;
+    if (role === 'telegram') {
+      const ok = String(n.data?.chatId || '').trim() ||
+        (Array.isArray(n.data?.targets) && n.data.targets.some(x => String(x?.chatId || '').trim()));
+      if (!ok) return true;
+    }
+    if (role === 'email' && !String(n.data?.toEmail || '').trim()) return true;
+    if (role === 'condition' && !String(n.data?.condValue || '').trim()) return true;
+    return false;
+  };
+
+  // Итоговый статус узла: failed (висит) → warn (нужна инфо) → completed.
+  const statusOf = (n) => {
+    if (nodes.length > 1 && !connected.has(n.id)) return 'failed';
+    if (needsInfo(n)) return 'warn';
+    return 'completed';
+  };
+
+  const statusNote = (n, st) => {
+    if (st === 'failed') return tr('builder.dry.note.isolated', 'не соединён с цепочкой — до него не дойдёт очередь');
+    if (st === 'warn') {
+      const role = n.data?.role, kind = n.data?.kind;
+      if (kind === 'agent') return tr('builder.dry.note.noPrompt', 'нужна инструкция — кликните, чтобы настроить');
+      if (role === 'telegram') return tr('builder.dry.note.noChat', 'укажите, в какой чат Telegram слать');
+      if (role === 'email') return tr('builder.dry.note.noEmail', 'укажите адрес почты');
+      if (role === 'condition') return tr('builder.dry.note.noCond', 'задайте, что проверяем');
+      return tr('builder.dry.note.needsInfo', 'нужна доп. информация');
+    }
+    return null;
+  };
+
   // Что узел «сделает» — простыми словами, по типу/роли.
   const describe = (n) => {
     const kind = n.data?.kind, role = n.data?.role;
@@ -57,18 +94,18 @@ export function createDryRun({ nodes, edges, t, onUpdate, onLog, onComplete }) {
     return tr('builder.dry.step.generic', 'передаст данные дальше по цепочке');
   };
 
+  let nFailed = 0, nWarn = 0;
+
   const finish = () => {
     if (stopped) return;
-    const v = validateGraph(nodes, edges);
-    const reason = (code) => tr(code === 'no-agent' ? 'builder.validation.noAgent' : `builder.validation.${code}`, code);
-    v.warnings.forEach(w => onLog?.({ level: 'warn', message: '⚠ ' + reason(w.type), ts: ts() }));
-    v.errors.forEach(e => onLog?.({ level: 'error', message: '✕ ' + reason(e), ts: ts() }));
-    if (v.errors.length) {
+    if (nFailed) {
       onLog?.({ level: 'error', message: tr('builder.dry.failed', 'Тест выявил проблемы — почините связи и повторите.'), ts: ts() });
       onComplete?.('failed');
+    } else if (nWarn) {
+      onLog?.({ level: 'warn', message: tr('builder.dry.okWarn', 'Цепочка проходит. Некоторым узлам нужна доп. информация (жёлтые).'), ts: ts() });
+      onComplete?.('completed');
     } else {
-      const tail = v.warnings.length ? tr('builder.dry.okWarn', 'Цепочка проходит. Есть замечания — посмотрите выше.') : tr('builder.dry.ok', 'Готово: цепочка проходит без ошибок. Токены не потрачены.');
-      onLog?.({ level: 'info', message: '✓ ' + tail, ts: ts() });
+      onLog?.({ level: 'info', message: tr('builder.dry.ok', 'Готово: цепочка проходит без ошибок. Токены не потрачены.'), ts: ts() });
       onComplete?.('completed');
     }
   };
@@ -81,8 +118,12 @@ export function createDryRun({ nodes, edges, t, onUpdate, onLog, onComplete }) {
     onUpdate?.(n.id, 'running');
     timers.push(setTimeout(() => {
       if (stopped) return;
-      onLog?.({ level: 'info', nodeName: label(n), message: describe(n), ts: ts() });
-      onUpdate?.(n.id, 'completed');
+      const st = statusOf(n);
+      if (st === 'failed') nFailed++; else if (st === 'warn') nWarn++;
+      const note = statusNote(n, st);
+      const level = st === 'failed' ? 'error' : st === 'warn' ? 'warn' : 'info';
+      onLog?.({ level, nodeName: label(n), message: note ? `${describe(n)} — ${note}` : describe(n), ts: ts() });
+      onUpdate?.(n.id, st);
       timers.push(setTimeout(step, 90));
     }, 200));
   };

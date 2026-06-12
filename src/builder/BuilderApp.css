@@ -3998,13 +3998,52 @@
   border-color: #f59e0b !important;
 }
 
+/* Итог тестового прогона — узел заливается целиком, текст и иконка белые. */
 .builder-app .builder-node--status-completed {
-  border-color: #16a34a !important;
+  background: #16a34a !important;
+  border-color: #15803d !important;
+}
+.builder-app .builder-node--status-failed {
+  background: #dc2626 !important;
+  border-color: #b91c1c !important;
+}
+.builder-app .builder-node--status-warn {
+  background: #f59e0b !important;
+  border-color: #d97706 !important;
+}
+.builder-app .builder-node--status-completed .builder-node__label,
+.builder-app .builder-node--status-completed .builder-node__icon .hgi,
+.builder-app .builder-node--status-completed .builder-node__icon svg,
+.builder-app .builder-node--status-completed .builder-node__cond,
+.builder-app .builder-node--status-failed .builder-node__label,
+.builder-app .builder-node--status-failed .builder-node__icon .hgi,
+.builder-app .builder-node--status-failed .builder-node__icon svg,
+.builder-app .builder-node--status-failed .builder-node__cond,
+.builder-app .builder-node--status-warn .builder-node__label,
+.builder-app .builder-node--status-warn .builder-node__icon .hgi,
+.builder-app .builder-node--status-warn .builder-node__icon svg,
+.builder-app .builder-node--status-warn .builder-node__cond {
+  color: #fff !important;
 }
 
-.builder-app .builder-node--status-failed {
-  border-color: #dc2626 !important;
+/* Кружок-итог в правом верхнем углу: белый кружок с цветной иконкой. */
+.builder-app .builder-node__statbadge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(15, 15, 15, 0.28);
 }
+.builder-app .builder-node__statbadge--completed { color: #16a34a; }
+.builder-app .builder-node__statbadge--failed { color: #dc2626; }
+.builder-app .builder-node__statbadge--warn { color: #f59e0b; }
 
 /* ────────────────────────────────────────────────── */
 /* React Flow edges — themed                          */
