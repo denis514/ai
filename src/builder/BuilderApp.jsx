@@ -1506,16 +1506,16 @@ function BuilderAppInner() {
 
   // ── Рельса правых панелей: НЕ перекрываются, стыкуются рядом ──────────────
   // Порядок справа налево (приоритет, не зависит от очереди открытия):
-  //   1) Консоль (запуск/автозапуски) — всегда крайняя справа,
-  //   2) Автозапуск (расписание),
+  //   1) Автозапуск (расписание) — ВСЕГДА крайний справа,
+  //   2) Консоль (запуск/автозапуски),
   //   3) Детали — крайняя слева. Каждая панель толкает левую дальше влево.
   const DOCK_BASE = 16, DOCK_GAP = 12;
   const consoleDocked = consoleOpen && !consoleFloating && !consoleMax;
   const consoleW = consoleDocked ? Math.min(720, Math.max(320, execW || 460)) : 0;
   const schedDockedOpen = scheduleOpen && !!currentWorkflowId;
   let dockAcc = DOCK_BASE;
-  const rightConsole = dockAcc; if (consoleDocked) dockAcc += consoleW + DOCK_GAP;
   const rightSchedule = dockAcc; if (schedDockedOpen) dockAcc += 360 + DOCK_GAP;
+  const rightConsole = dockAcc; if (consoleDocked) dockAcc += consoleW + DOCK_GAP;
   const rightDetails = dockAcc;
 
   return (
@@ -2253,7 +2253,7 @@ function BuilderAppInner() {
             onToggleMax={consoleToggleMax}
             onHeaderPointerDown={consoleHeaderPointerDown}
             onClose={() => setConsoleOpen(false)}
-            wrapperStyle={{ '--exec-w': `${execW}px` }}
+            wrapperStyle={{ '--exec-w': `${execW}px`, right: `${rightConsole}px` }}
             wrapperClass={execResizing ? 'is-resizing' : ''}
             onResizeStart={startExecResize}
             t={t}
