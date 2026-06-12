@@ -29,10 +29,10 @@ export function createDryRun({ nodes, edges, t, onUpdate, onLog, onComplete }) {
     }
   });
 
-  // Порядок потока: по orderLevel (его уже считает раскладка), инструменты — мимо.
-  const flow = nodes
-    .filter(n => n.data?.kind !== 'tool')
-    .sort((a, b) => (a.data?.orderLevel ?? 99) - (b.data?.orderLevel ?? 99));
+  // Порядок прогона: по orderLevel (его считает раскладка). Инструменты идут в
+  // конце (у них нет orderLevel) — они тоже проходят тест и становятся зелёными,
+  // чтобы счётчик совпадал с числом узлов на холсте (а не «3 из 4»).
+  const flow = [...nodes].sort((a, b) => (a.data?.orderLevel ?? 99) - (b.data?.orderLevel ?? 99));
 
   // Какие узлы вообще подключены (для поиска «висящих»).
   const connected = new Set();
@@ -76,6 +76,7 @@ export function createDryRun({ nodes, edges, t, onUpdate, onLog, onComplete }) {
   // Что узел «сделает» — простыми словами, по типу/роли.
   const describe = (n) => {
     const kind = n.data?.kind, role = n.data?.role;
+    if (kind === 'tool') return tr('builder.dry.step.tool', 'подключён к агенту как умение');
     if (kind === 'trigger') return tr('builder.dry.step.start', 'принимает задачу и запускает цепочку');
     if (kind === 'agent') {
       const tools = attachedTo[n.id];
