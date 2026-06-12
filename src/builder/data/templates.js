@@ -432,6 +432,81 @@ export const TEMPLATES = [
     ],
     edges: [{ from: 0, to: 2 }, { from: 1, to: 2 }, { from: 2, to: 3 }],
   },
+
+  /* ════════════════════════════════════════════════════════════ */
+  /*  Батч «по индустриям» — с переменными в «Старт» (≥2) и логикой  */
+  /*  (Условие / Условие-агент / Цикл). См.                         */
+  /*  docs/agent-builder/template-catalog-and-sharing.md            */
+  /* ════════════════════════════════════════════════════════════ */
+
+  /* Магазин: ответы на вопросы о заказе — Условие + 2 переменные */
+  {
+    id: 'order-replies',
+    nameKey: 'builder.template.orderReplies.name',
+    descKey: 'builder.template.orderReplies.desc',
+    inputKey: 'builder.template.orderReplies.input',
+    outputKey: 'builder.template.orderReplies.output',
+    iconName: 'inbox', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.orderReplies.promptMain' } },
+      { defId: 'logic-condition', position: { x: 100, y: 330 }, dataOverride: { operator: 'contains', condValue: 'СРОЧНО' } },
+      { defId: 'output-telegram', position: { x: 360, y: 330 } },
+      { defId: 'output-text', position: { x: 100, y: 470 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3, sourceHandle: 'true' },   // срочно → сигнал в Telegram
+      { from: 2, to: 4, sourceHandle: 'false' },  // иначе → готовый ответ
+    ],
+  },
+
+  /* Отзывы: тон решает агент (Условие-агент) + 2 переменные */
+  {
+    id: 'review-sentiment',
+    nameKey: 'builder.template.reviewSentiment.name',
+    descKey: 'builder.template.reviewSentiment.desc',
+    inputKey: 'builder.template.reviewSentiment.input',
+    outputKey: 'builder.template.reviewSentiment.output',
+    iconName: 'quote', difficulty: 'intermediate', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.reviewSentiment.prompt' } },
+      { defId: 'logic-condition-agent', position: { x: 100, y: 330 }, dataOverride: { question: 'Помечен ли этот текст словом НЕГАТИВ?' } },
+      { defId: 'output-telegram', position: { x: 360, y: 330 } },
+      { defId: 'output-text', position: { x: 100, y: 470 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3, sourceHandle: 'true' },   // негатив → сигнал в Telegram
+      { from: 2, to: 4, sourceHandle: 'false' },  // позитив → просто записать
+    ],
+  },
+
+  /* Контент-план с улучшением — Цикл + 2 переменные */
+  {
+    id: 'content-plan',
+    nameKey: 'builder.template.contentPlan.name',
+    descKey: 'builder.template.contentPlan.desc',
+    inputKey: 'builder.template.contentPlan.input',
+    outputKey: 'builder.template.contentPlan.output',
+    iconName: 'pencil', difficulty: 'intermediate', category: 'everyday', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-content', position: { x: 100, y: 180 }, dataOverride: { promptKey: 'builder.template.contentPlan.promptDraft' } },
+      { defId: 'agent-main', position: { x: 100, y: 320 }, dataOverride: { promptKey: 'builder.template.contentPlan.promptReview' } },
+      { defId: 'logic-loop', position: { x: 100, y: 460 }, dataOverride: { loopBackToIndex: 2, maxLoops: 2 } },
+      { defId: 'output-text', position: { x: 360, y: 320 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3 },   // проверяющий → Цикл (назад к улучшению)
+      { from: 2, to: 4 },   // проверяющий → итог
+    ],
+  },
 ];
 
 /**

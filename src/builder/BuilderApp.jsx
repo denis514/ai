@@ -106,6 +106,12 @@ function syncNodeIdCounter(nodes) {
  * Pure (кроме genNodeId counter). Используется и для загрузки в canvas,
  * и для немедленного persist при создании нового workflow из шаблона.
  */
+// Переменные «Старта» из набора узлов (для инициализации панели запуска).
+function triggerVarsOf(nodes) {
+  const trig = (nodes || []).find(n => n.data?.kind === 'trigger');
+  return Array.isArray(trig?.data?.vars) ? trig.data.vars : [];
+}
+
 function buildTemplateGraph(template, edgeStyle, t) {
   const tr = typeof t === 'function' ? t : (k) => k;
   const tempIdMap = {};
@@ -148,6 +154,27 @@ function buildTemplateGraph(template, edgeStyle, t) {
         trig.data.task = startText;
         trig.data.hasInput = true;
       }
+    }
+  }
+
+  // Переменные «Старта»: i18n builder.template.<ns>.vars — JSON-массив
+  // [{"k":"city","v":"Москва"}, …]. Плейсхолдеры {{k}} стоят в тексте «Старт»,
+  // значения v — примерные (точка отправления, пользователь меняет под себя).
+  if (template.nameKey) {
+    const varsKey = template.nameKey.replace(/\.name$/, '.vars');
+    const varsRaw = tr(varsKey);
+    if (varsRaw && varsRaw !== varsKey) {
+      try {
+        const arr = JSON.parse(varsRaw);
+        if (Array.isArray(arr)) {
+          const trig = nodes.find(n => n.data?.kind === 'trigger');
+          if (trig) {
+            trig.data.vars = arr
+              .map(v => ({ key: String(v.k ?? v.key ?? ''), value: String(v.v ?? v.value ?? '') }))
+              .filter(v => v.key);
+          }
+        }
+      } catch { /* плохой JSON — пропускаем, схема не ломается */ }
     }
   }
 
@@ -519,6 +546,23 @@ function BuilderAppInner() {
     });
   }, [runInput, setNodes]);
 
+  // Синхронизируем переменные «Старта» (runVars) в сам узел (data.vars) — чтобы
+  // правки сохранялись со схемой (сериализатор берёт config из node.data) и
+  // восстанавливались при загрузке (см. handleLoadWorkflow → setRunVars).
+  useEffect(() => {
+    const cur = JSON.stringify(runVars || []);
+    setNodes(nds => {
+      let changed = false;
+      const next = nds.map(n => {
+        if (n.data?.kind !== 'trigger') return n;
+        if (JSON.stringify(n.data.vars || []) === cur) return n;
+        changed = true;
+        return { ...n, data: { ...n.data, vars: runVars } };
+      });
+      return changed ? next : nds;
+    });
+  }, [runVars, setNodes]);
+
   // Номера очерёдности на узлах. Пересчитываем при изменении структуры
   // (набор узлов/связей), не при перетаскивании. Guarded — без лупа.
   const structSig = nodes.map(n => n.id).join(',') + '|' + edges.map(e => `${e.source}>${e.target}`).join(',');
@@ -661,6 +705,7 @@ function BuilderAppInner() {
     skipDirtyRef.current = true;
     setNodes(newNodes);
     setEdges(newEdges);
+    setRunVars(triggerVarsOf(newNodes));
     setSelectedNodeId(null);
     setExecLogs([]);
     setExecStatus('idle');
@@ -782,6 +827,7 @@ function BuilderAppInner() {
       setCurrentWorkflowId(wf.id);
       setWorkflowName(wf.name || '');
       setRunInput(triggerTask);
+      setRunVars(triggerVarsOf(hydrated));
       setSelectedNodeId(null);
       setSwitcherOpen(false);
       isDirtyRef.current = false;
@@ -1170,6 +1216,7 @@ function BuilderAppInner() {
     // Синхронизируем поле «Старта» (runInput) с задачей нового шаблона — иначе
     // панель Старта показывала бы текст предыдущего шаблона до перезагрузки.
     setRunInput(newNodes.find(n => n.data?.kind === 'trigger')?.data?.task || '');
+    setRunVars(triggerVarsOf(newNodes));
     setSelectedNodeId(null);
     setGalleryOpen(false);
     // Имя нового workflow берём из шаблона (localized). Это новый workflow —

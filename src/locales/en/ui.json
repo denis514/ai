@@ -838,6 +838,34 @@
         "input": "A topic to follow",
         "output": "A short recap to Telegram",
         "prompt": "Find the freshest and most important on the topic via web search. Build a short digest: 3–5 plain-language bullets, each one sentence. No fluff."
+      },
+      "orderReplies": {
+        "name": "Order question replies",
+        "desc": "A customer asks about an order — you draft a polite reply; urgent cases ping Telegram.",
+        "input": "Order number and the customer's question",
+        "output": "A ready reply; if urgent, a Telegram alert",
+        "start": "You're an online-store assistant. About order #{{order_id}} the customer writes: “{{question}}”. Sort it out and reply politely and to the point: confirm the order, explain the delivery status, offer help. If the case is urgent (delay, defect, complaint), start the reply with the word СРОЧНО so we loop in a manager right away.",
+        "vars": "[{\"k\":\"order_id\",\"v\":\"1024\"},{\"k\":\"question\",\"v\":\"Ordered 5 days ago, where is my parcel?\"}]",
+        "promptMain": "You're a store assistant. Read the customer's question about order #{{order_id}}. Write a short polite reply: confirm the order, explain the delivery status, offer help. If the case is urgent (delay, defect, complaint), make the very first line a single word: СРОЧНО."
+      },
+      "reviewSentiment": {
+        "name": "Review replies",
+        "desc": "The agent decides the review's tone and drafts a reply; negatives ping Telegram.",
+        "input": "Review text and the venue name",
+        "output": "A ready reply; negatives ping Telegram",
+        "start": "You handle the reputation of “{{venue}}”. A review came in: “{{review_text}}”. Decide the tone and write a polite public reply. If the review is negative, we want to know right away.",
+        "vars": "[{\"k\":\"venue\",\"v\":\"Morning Coffee\"},{\"k\":\"review_text\",\"v\":\"Delivery was two days late, but the coffee is great\"}]",
+        "prompt": "You handle the reputation of “{{venue}}”. Read the review. On the first line state the tone as one word: НЕГАТИВ or ПОЗИТИВ. Then write a short polite public reply: thank them; if negative, gently apologize and offer a fix."
+      },
+      "contentPlan": {
+        "name": "Content plan with polish",
+        "desc": "5 post ideas for your topic, then the agent improves each one (loop).",
+        "input": "Topic and audience",
+        "output": "5 ready ideas with a format",
+        "start": "You run a blog about “{{topic}}” for this audience: {{audience}}. You need a weekly content plan: propose post ideas, then improve each so they hook exactly this audience.",
+        "vars": "[{\"k\":\"topic\",\"v\":\"winter skincare\"},{\"k\":\"audience\",\"v\":\"women 25–40, small town\"}]",
+        "promptDraft": "Come up with 5 post ideas on “{{topic}}” for this audience: {{audience}}. For each idea add a short description and a format (post / story / reel).",
+        "promptReview": "Here is a list of post ideas. Make each one stronger: a clear catchy headline and a concrete benefit for the audience {{audience}}. Return the improved list in the same format."
       }
     },
     "tooltip": {

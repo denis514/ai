@@ -838,6 +838,34 @@
         "input": "Seurattava aihe",
         "output": "Lyhyt kooste Telegramiin",
         "prompt": "Etsi tuorein ja tärkein aiheesta verkkohaulla. Tee lyhyt kooste: 3–5 selkokielistä kohtaa, kukin yksi lause. Ei täytettä."
+      },
+      "orderReplies": {
+        "name": "Vastaukset tilauskysymyksiin",
+        "desc": "Asiakas kysyy tilauksesta — laadit kohteliaan vastauksen; kiireelliset ilmoittavat Telegramiin.",
+        "input": "Tilausnumero ja asiakkaan kysymys",
+        "output": "Valmis vastaus; kiireellisestä ilmoitus Telegramiin",
+        "start": "Olet verkkokaupan avustaja. Tilauksesta #{{order_id}} asiakas kirjoittaa: ”{{question}}”. Selvitä asia ja vastaa kohteliaasti ja ytimekkäästi: vahvista tilaus, selitä toimituksen tila, tarjoa apua. Jos tapaus on kiireellinen (viive, vika, reklamaatio), aloita vastaus sanalla СРОЧНО, niin otamme heti myyjän mukaan.",
+        "vars": "[{\"k\":\"order_id\",\"v\":\"1024\"},{\"k\":\"question\",\"v\":\"Tilasin 5 päivää sitten, missä paketti on?\"}]",
+        "promptMain": "Olet kaupan avustaja. Lue asiakkaan kysymys tilauksesta #{{order_id}}. Kirjoita lyhyt kohtelias vastaus: vahvista tilaus, selitä toimituksen tila, tarjoa apua. Jos tapaus on kiireellinen (viive, vika, reklamaatio), tee ensimmäisestä rivistä yksi sana: СРОЧНО."
+      },
+      "reviewSentiment": {
+        "name": "Vastaukset arvosteluihin",
+        "desc": "Agentti päättää arvostelun sävyn ja laatii vastauksen; negatiiviset ilmoittavat Telegramiin.",
+        "input": "Arvostelun teksti ja toimipaikan nimi",
+        "output": "Valmis vastaus; negatiiviset ilmoittavat Telegramiin",
+        "start": "Vastaat toimipaikan ”{{venue}}” maineesta. Saapui arvostelu: ”{{review_text}}”. Päättele sävy ja kirjoita kohtelias julkinen vastaus. Jos arvostelu on negatiivinen, haluamme tietää siitä heti.",
+        "vars": "[{\"k\":\"venue\",\"v\":\"Aamukahvila\"},{\"k\":\"review_text\",\"v\":\"Toimitus myöhästyi kaksi päivää, mutta kahvi on loistavaa\"}]",
+        "prompt": "Vastaat ”{{venue}}”-paikan maineesta. Lue arvostelu. Ilmoita ensimmäisellä rivillä sävy yhdellä sanalla: НЕГАТИВ tai ПОЗИТИВ. Kirjoita sitten lyhyt kohtelias julkinen vastaus: kiitä; jos negatiivinen, pahoittele hienovaraisesti ja tarjoa ratkaisu."
+      },
+      "contentPlan": {
+        "name": "Sisältösuunnitelma hionnalla",
+        "desc": "5 julkaisuideaa aiheeseesi, sitten agentti parantaa jokaisen (silmukka).",
+        "input": "Aihe ja yleisö",
+        "output": "5 valmista ideaa muodon kanssa",
+        "start": "Pidät blogia aiheesta ”{{topic}}” yleisölle: {{audience}}. Tarvitset viikon sisältösuunnitelman: ehdota julkaisuideoita, sitten paranna jokaista niin että ne koukuttavat juuri tämän yleisön.",
+        "vars": "[{\"k\":\"topic\",\"v\":\"talven ihonhoito\"},{\"k\":\"audience\",\"v\":\"naiset 25–40, pieni kaupunki\"}]",
+        "promptDraft": "Keksi 5 julkaisuideaa aiheesta ”{{topic}}” yleisölle: {{audience}}. Lisää kuhunkin lyhyt kuvaus ja muoto (julkaisu / tarina / reel).",
+        "promptReview": "Tässä on lista julkaisuideoita. Tee jokaisesta vahvempi: selkeä koukuttava otsikko ja konkreettinen hyöty yleisölle {{audience}}. Palauta parannettu lista samassa muodossa."
       }
     },
     "tooltip": {
