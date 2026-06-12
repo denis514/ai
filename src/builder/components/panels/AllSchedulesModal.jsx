@@ -63,11 +63,14 @@ export default function AllSchedulesModal({ onClose, embedded = false }) {
   };
 
   const WD = (t('builder.schedule.weekdays') || 'Вс,Пн,Вт,Ср,Чт,Пт,Сб').split(',');
+  const MN = (t('builder.schedule.months') || 'Янв,Фев,Мар,Апр,Май,Июн,Июл,Авг,Сен,Окт,Ноя,Дек').split(',');
   const pad = (n) => String(n).padStart(2, '0');
   const fmtFreq = (s) => {
     if (s.frequency === 'minutes') return (t('builder.schedule.everyFmt') || 'Каждые {n} мин').replace('{n}', s.minute);
     if (s.frequency === 'hourly') return `${t('builder.schedule.hourly') || 'Ежечасно'} :${pad(s.minute)}`;
     if (s.frequency === 'weekly') return `${WD[s.weekday ?? 1]} ${pad(s.hour)}:${pad(s.minute)} UTC`;
+    if (s.frequency === 'monthly') return `${(t('builder.schedule.monthlyFmt') || '{d} числа').replace('{d}', s.day_of_month ?? 1)} ${pad(s.hour)}:${pad(s.minute)} UTC`;
+    if (s.frequency === 'yearly') return `${s.day_of_month ?? 1} ${MN[(s.month ?? 1) - 1] || ''} ${pad(s.hour)}:${pad(s.minute)} UTC`;
     return `${t('builder.schedule.daily') || 'Ежедневно'} ${pad(s.hour)}:${pad(s.minute)} UTC`;
   };
   const fmtTime = (iso) => {

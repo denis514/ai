@@ -13,7 +13,15 @@ import { supabase } from '../../lib/supabaseClient.js';
 
 // Вычислить ближайший next_run_at (UTC, ISO) — чтобы сервер подхватил вовремя.
 // Сервер пересчитывает дальше сам; здесь — стартовое значение.
-function computeNext(freq, hour, minute, weekday) {
+function lastDayOfMonth(year, monthIndex) {
+  return new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
+}
+function atDate(year, monthIndex, dom, hour, minute) {
+  const day = Math.min(Math.max(dom || 1, 1), lastDayOfMonth(year, monthIndex));
+  return new Date(Date.UTC(year, monthIndex, day, hour, minute, 0, 0));
+}
+
+function computeNext(freq, hour, minute, weekday, dayOfMonth, month) {
   const now = new Date();
   const n = new Date(now);
   n.setUTCSeconds(0, 0);
@@ -34,6 +42,23 @@ function computeNext(freq, hour, minute, weekday) {
     if (add === 0 && n <= now) add = 7;
     n.setUTCDate(n.getUTCDate() + add);
     return n.toISOString();
+  }
+  if (freq === 'monthly') {
+    const dom = dayOfMonth ?? 1;
+    let cand = atDate(now.getUTCFullYear(), now.getUTCMonth(), dom, hour, minute);
+    if (cand <= now) {
+      const y = now.getUTCMonth() === 11 ? now.getUTCFullYear() + 1 : now.getUTCFullYear();
+      const m = (now.getUTCMonth() + 1) % 12;
+      cand = atDate(y, m, dom, hour, minute);
+    }
+    return cand.toISOString();
+  }
+  if (freq === 'yearly') {
+    const mIdx = Math.min(Math.max((month ?? 1) - 1, 0), 11);
+    const dom = dayOfMonth ?? 1;
+    let cand = atDate(now.getUTCFullYear(), mIdx, dom, hour, minute);
+    if (cand <= now) cand = atDate(now.getUTCFullYear() + 1, mIdx, dom, hour, minute);
+    return cand.toISOString();
   }
   n.setUTCHours(hour, minute, 0, 0);
   if (n <= now) n.setUTCDate(n.getUTCDate() + 1);
@@ -150,23 +175,28 @@ export async function listRecentRuns(limit = 20) {
   }));
 }
 
-export async function createSchedule({ workflowId, frequency, hour, minute, weekday, tier, locale }) {
+export async function createSchedule({ workflowId, frequency, hour, minute, weekday, dayOfMonth, month, tier, locale }) {
   if (!supabase) throw new Error('backend_unavailable');
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('not_authenticated');
+  const f = frequency || 'daily';
+  const dom = (f === 'monthly' || f === 'yearly') ? (dayOfMonth ?? 1) : null;
+  const mon = f === 'yearly' ? (month ?? 1) : null;
   const row = {
     workflow_id: workflowId,
     user_id: user.id,
-    frequency: frequency || 'daily',
+    frequency: f,
     hour: hour ?? 9,
     minute: minute ?? 0,
-    weekday: frequency === 'weekly' ? (weekday ?? 1) : null,
+    weekday: f === 'weekly' ? (weekday ?? 1) : null,
+    day_of_month: dom,
+    month: mon,
     // Задачу не храним: при запуске движок берёт её из узла «Старт» схемы.
     input: '',
     tier: tier || 's',
     locale: locale || 'ru',
     enabled: true,
-    next_run_at: computeNext(frequency, hour ?? 9, minute ?? 0, weekday),
+    next_run_at: computeNext(f, hour ?? 9, minute ?? 0, weekday, dom, mon),
   };
   const { data, error } = await supabase.from('builder_schedules').insert(row).select().single();
   if (error) throw error;

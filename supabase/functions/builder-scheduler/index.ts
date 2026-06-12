@@ -26,7 +26,19 @@ const ANON = Deno.env.get('SUPABASE_ANON_KEY') || '';
 const BATCH = 20; // максимум расписаний за один тик (защита от перегрузки)
 
 // Следующий запуск по частоте. Всё в UTC. Возвращает ISO-строку.
-function computeNext(now: Date, freq: string, hour: number, minute: number, weekday: number | null): string {
+// Последний день месяца (UTC) — для безопасного дня (31 в феврале → 28/29).
+function lastDayOfMonth(year: number, monthIndex: number): number {
+  return new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
+}
+function atDate(year: number, monthIndex: number, dom: number, hour: number, minute: number): Date {
+  const day = Math.min(Math.max(dom || 1, 1), lastDayOfMonth(year, monthIndex));
+  return new Date(Date.UTC(year, monthIndex, day, hour, minute, 0, 0));
+}
+
+function computeNext(
+  now: Date, freq: string, hour: number, minute: number,
+  weekday: number | null, dayOfMonth?: number | null, month?: number | null,
+): string {
   const next = new Date(now);
   next.setUTCSeconds(0, 0);
   if (freq === 'minutes') {
@@ -47,6 +59,25 @@ function computeNext(now: Date, freq: string, hour: number, minute: number, week
     if (add === 0 && next <= now) add = 7;
     next.setUTCDate(next.getUTCDate() + add);
     return next.toISOString();
+  }
+  if (freq === 'monthly') {
+    // День месяца в hour:minute, каждый месяц. День > длины месяца → последний день.
+    const dom = dayOfMonth ?? 1;
+    let cand = atDate(now.getUTCFullYear(), now.getUTCMonth(), dom, hour, minute);
+    if (cand <= now) {
+      const y = now.getUTCMonth() === 11 ? now.getUTCFullYear() + 1 : now.getUTCFullYear();
+      const m = (now.getUTCMonth() + 1) % 12;
+      cand = atDate(y, m, dom, hour, minute);
+    }
+    return cand.toISOString();
+  }
+  if (freq === 'yearly') {
+    // Месяц + день в hour:minute, каждый год.
+    const mIdx = Math.min(Math.max((month ?? 1) - 1, 0), 11);
+    const dom = dayOfMonth ?? 1;
+    let cand = atDate(now.getUTCFullYear(), mIdx, dom, hour, minute);
+    if (cand <= now) cand = atDate(now.getUTCFullYear() + 1, mIdx, dom, hour, minute);
+    return cand.toISOString();
   }
   // daily (по умолчанию)
   next.setUTCHours(hour, minute, 0, 0);
@@ -71,7 +102,7 @@ Deno.serve(async (req) => {
 
   const { data: due, error } = await admin
     .from('builder_schedules')
-    .select('id, workflow_id, user_id, frequency, hour, minute, weekday, input, tier, locale')
+    .select('id, workflow_id, user_id, frequency, hour, minute, weekday, day_of_month, month, input, tier, locale')
     .eq('enabled', true)
     .lte('next_run_at', nowIso)
     .order('next_run_at', { ascending: true })
@@ -105,7 +136,7 @@ Deno.serve(async (req) => {
       continue;
     }
     // Сдвигаем next_run_at СРАЗУ (до запуска), чтобы тик не продублировал запуск.
-    const next = computeNext(new Date(), s.frequency, s.hour, s.minute, s.weekday);
+    const next = computeNext(new Date(), s.frequency, s.hour, s.minute, s.weekday, s.day_of_month, s.month);
     await admin.from('builder_schedules')
       .update({ last_run_at: nowIso, next_run_at: next })
       .eq('id', s.id);
