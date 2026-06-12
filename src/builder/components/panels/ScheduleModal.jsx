@@ -59,7 +59,7 @@ function MonthCalendar({ viewY, viewM, onView, sel, onPick, monthsFull, dows, to
  *
  * Время — в UTC (подписано), чтобы совпадало с серверным cron. MVP-просто.
  */
-export default function ScheduleModal({ workflowId, workflowName, locale, shifted = false, onClose }) {
+export default function ScheduleModal({ workflowId, workflowName, locale, dockRight = 16, onClose }) {
   const t = useT();
   const [items, setItems] = useState(null);
   const [freq, setFreq] = useState('daily');
@@ -227,7 +227,8 @@ export default function ScheduleModal({ workflowId, workflowName, locale, shifte
   };
 
   return (
-    <aside className={`builder-sidepanel builder-sidepanel--schedule ${shifted ? 'is-shifted' : ''}`}
+    <aside className="builder-sidepanel builder-sidepanel--schedule"
+      style={{ right: `${dockRight}px` }}
       role="dialog" aria-label={t('builder.schedule.title') || 'Автозапуск по расписанию'}>
       <div className="builder-sidebar__header">
         <span><Icon name="clock" size={15} strokeWidth={1.6} /> {t('builder.schedule.title') || 'Автозапуск по расписанию'}</span>

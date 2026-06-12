@@ -1504,6 +1504,20 @@ function BuilderAppInner() {
     </div>
   );
 
+  // ── Рельса правых панелей: НЕ перекрываются, стыкуются рядом ──────────────
+  // Порядок справа налево (приоритет, не зависит от очереди открытия):
+  //   1) Консоль (запуск/автозапуски) — всегда крайняя справа,
+  //   2) Автозапуск (расписание),
+  //   3) Детали — крайняя слева. Каждая панель толкает левую дальше влево.
+  const DOCK_BASE = 16, DOCK_GAP = 12;
+  const consoleDocked = consoleOpen && !consoleFloating && !consoleMax;
+  const consoleW = consoleDocked ? Math.min(720, Math.max(320, execW || 460)) : 0;
+  const schedDockedOpen = scheduleOpen && !!currentWorkflowId;
+  let dockAcc = DOCK_BASE;
+  const rightConsole = dockAcc; if (consoleDocked) dockAcc += consoleW + DOCK_GAP;
+  const rightSchedule = dockAcc; if (schedDockedOpen) dockAcc += 360 + DOCK_GAP;
+  const rightDetails = dockAcc;
+
   return (
     <div
       className={[
@@ -2178,6 +2192,7 @@ function BuilderAppInner() {
               'builder-sidebar',
               (atlasPreviewId || guideDefId) ? 'builder-sidebar--preview' : '',
             ].join(' ').trim()}
+            style={{ right: `${rightDetails}px` }}
             aria-label={atlasPreviewId
               ? (t('builder.preview.aria') || 'Atlas preview')
               : guideDefId
@@ -2277,7 +2292,7 @@ function BuilderAppInner() {
             workflowId={currentWorkflowId}
             workflowName={workflowName}
             locale={locale}
-            shifted={sidebarOpen}
+            dockRight={rightSchedule}
             onClose={() => setScheduleOpen(false)}
           />
         )}
