@@ -82,6 +82,8 @@ export function createRealExecution({ workflowId, input, tier, locale, variables
             level: row.level || 'info',
             nodeId: row.node_client_id || null,
             message: row.message,
+            // Токены шага (если есть в data) — для счётчика по узлу.
+            tokens: typeof row.data?.tokens === 'number' ? row.data.tokens : undefined,
             ts: row.created_at || new Date().toISOString(),
           });
         }

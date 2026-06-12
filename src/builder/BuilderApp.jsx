@@ -2716,26 +2716,28 @@ function TriggerTaskPopover({ node, t, runMode, task, onTaskChange, tierId, onTi
       />
 
       {runMode === 'real' && (
-        <div className="builder-tier builder-tier--compact" style={{ marginTop: 10 }}>
-          <div className="builder-tier__opts">
-            {Object.values(OUTPUT_TIERS).map(tier => (
+        <div className="builder-tier builder-tier--slider" style={{ marginTop: 10 }}>
+          <input
+            type="range" min="0" max="2" step="1"
+            value={Math.max(0, ['s', 'm', 'l'].indexOf(tierId))}
+            onChange={(e) => onTierChange(['s', 'm', 'l'][+e.target.value])}
+            className="builder-tier__range nodrag nopan"
+            aria-label={t('builder.tier.heading') || 'Размер и качество ответа'}
+          />
+          <div className="builder-tier__ticks">
+            {['s', 'm', 'l'].map(id => (
               <button
-                key={tier.id}
-                type="button"
-                role="radio"
-                aria-checked={tierId === tier.id}
-                className={`builder-tier__opt ${tierId === tier.id ? 'is-active' : ''}`}
-                onClick={() => onTierChange(tier.id)}
-                title={t(tier.descKey) || ''}
+                key={id} type="button"
+                className={`builder-tier__tick ${tierId === id ? 'is-active' : ''}`}
+                onClick={() => onTierChange(id)}
               >
-                <span className="builder-tier__opt-name">{t(tier.labelKey) || tier.id.toUpperCase()}</span>
+                {t(OUTPUT_TIERS[id].labelKey) || id.toUpperCase()}
               </button>
             ))}
           </div>
           {estimate && (
             <span className="builder-exec__setup-est">
-              ≈ {estimate.totalMax.toLocaleString()} {t('builder.runInput.tokens') || 'tokens'}
-              {' · '}≈ ${estimate.costUsd < 0.01 ? '0.01' : estimate.costUsd.toFixed(2)}
+              {t(OUTPUT_TIERS[tierId]?.descKey || 'builder.tier.s.desc')} · ≈ {estimate.totalMax.toLocaleString()} {t('builder.runInput.tokens') || 'токенов'}
             </span>
           )}
         </div>

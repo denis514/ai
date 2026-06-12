@@ -3421,6 +3421,30 @@
   color: var(--accent, #2563eb);
   font-weight: 500;
 }
+/* Токены, потраченные узлом (счётчик по узлу; цену не показываем). */
+.builder-app .builder-log__tokens {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Бегунок «Размер и качество ответа» (S/M/L) — простой и понятный. */
+.builder-app .builder-tier--slider { display: flex; flex-direction: column; gap: 6px; }
+.builder-app .builder-tier__range {
+  width: 100%; margin: 2px 0 0; height: 4px; cursor: pointer;
+  accent-color: var(--accent, #2563eb);
+}
+.builder-app .builder-tier__ticks { display: flex; justify-content: space-between; gap: 6px; }
+.builder-app .builder-tier__tick {
+  flex: 1; padding: 3px 4px; border: 0; background: transparent;
+  color: var(--text-muted); font-size: 12px; font-weight: 500; cursor: pointer;
+  border-radius: 6px; transition: color .12s, background .12s;
+}
+.builder-app .builder-tier__tick:first-child { text-align: left; }
+.builder-app .builder-tier__tick:last-child { text-align: right; }
+.builder-app .builder-tier__tick:nth-child(2) { text-align: center; }
+.builder-app .builder-tier__tick:hover { color: var(--text); }
+.builder-app .builder-tier__tick.is-active { color: var(--accent, #2563eb); font-weight: 700; }
 
 .builder-app .builder-log__msg {
   color: var(--text);

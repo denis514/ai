@@ -145,25 +145,27 @@ export default function ExecutionPanel({
             placeholder={t('builder.runInput.placeholder') || 'Describe the task, paste text, ask a question…'}
             rows={2}
           />
-          <div className="builder-tier builder-tier--compact">
-            <div className="builder-tier__opts">
-              {Object.values(OUTPUT_TIERS).map(tier => (
+          <div className="builder-tier builder-tier--slider">
+            <input
+              type="range" min="0" max="2" step="1"
+              value={Math.max(0, ['s', 'm', 'l'].indexOf(runSetup.tierId))}
+              onChange={(e) => runSetup.onTierChange(['s', 'm', 'l'][+e.target.value])}
+              className="builder-tier__range"
+              aria-label={t('builder.tier.heading') || 'Размер и качество ответа'}
+            />
+            <div className="builder-tier__ticks">
+              {['s', 'm', 'l'].map(id => (
                 <button
-                  key={tier.id}
-                  type="button"
-                  role="radio"
-                  aria-checked={runSetup.tierId === tier.id}
-                  className={`builder-tier__opt ${runSetup.tierId === tier.id ? 'is-active' : ''}`}
-                  onClick={() => runSetup.onTierChange(tier.id)}
-                  title={t(tier.descKey) || ''}
+                  key={id} type="button"
+                  className={`builder-tier__tick ${runSetup.tierId === id ? 'is-active' : ''}`}
+                  onClick={() => runSetup.onTierChange(id)}
                 >
-                  <span className="builder-tier__opt-name">{t(tier.labelKey) || tier.id.toUpperCase()}</span>
+                  {t(OUTPUT_TIERS[id].labelKey) || id.toUpperCase()}
                 </button>
               ))}
             </div>
             <span className="builder-exec__setup-est">
-              ≈ {runSetup.estimate.totalMax.toLocaleString()} {t('builder.runInput.tokens') || 'tokens'}
-              {' · '}≈ ${runSetup.estimate.costUsd < 0.01 ? '0.01' : runSetup.estimate.costUsd.toFixed(2)}
+              {t(OUTPUT_TIERS[runSetup.tierId]?.descKey || 'builder.tier.s.desc')} · ≈ {runSetup.estimate.totalMax.toLocaleString()} {t('builder.runInput.tokens') || 'токенов'}
             </span>
           </div>
 
@@ -258,7 +260,12 @@ export default function ExecutionPanel({
                 {log.nodeName && (
                   <span className="builder-log__node">[{log.nodeName}]</span>
                 )}
-                <span className="builder-log__msg">{log.message}</span>
+                <span className="builder-log__msg">
+                  {log.message}
+                  {log.tokens != null && log.tokens > 0 && (
+                    <span className="builder-log__tokens"> · {log.tokens.toLocaleString()} {t('builder.runInput.tokens') || 'ток.'}</span>
+                  )}
+                </span>
               </li>
             ))}
           </ol>
