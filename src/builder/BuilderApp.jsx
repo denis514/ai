@@ -43,6 +43,7 @@ import { TEMPLATES } from './data/templates.js';
 import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data/outputTiers.js';
 import { templateForRole } from './data/rolePrompts.js';
 import { createRealExecution } from './services/realExecutor.js';
+import { createDryRun } from './services/dryRunExecutor.js';
 import { getKeyStatus, listMcpServers, listKeys } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
@@ -1362,6 +1363,15 @@ function BuilderAppInner() {
     runReal(runInput.trim(), outputTier);
   }, [currentWorkflowId, workflowName, runInput, outputTier, runReal, doSave]);
 
+  // Тестовый прогон (dry-run) — без сервера и токенов: показывает, как проходит
+  // цепочка, и есть ли ошибки связей. Рисуется в той же консоли (вкладка «Запуск»).
+  const handleDryRun = useCallback(() => {
+    if (nodes.length === 0 || execStatus === 'running') return;
+    const stats = beginExecUi();
+    setExecResult(null);
+    execRef.current = createDryRun({ nodes, edges, t, ...makeCallbacks(stats) });
+  }, [nodes, edges, execStatus, beginExecUi, makeCallbacks, t]);
+
   const handleRun = useCallback(() => {
     if (nodes.length === 0 || execStatus === 'running') return;
     if (!keyConnected) { requestRealMode(); return; }
@@ -1654,6 +1664,18 @@ function BuilderAppInner() {
               <Icon name="panel-right" size={14} strokeWidth={1.5} />
             </button>
           )}
+
+          {/* Тестовый прогон — без токенов, проверяет, что цепочка проходит. */}
+          <button
+            type="button"
+            className="builder-btn builder-btn--ghost builder-dry-btn"
+            onClick={handleDryRun}
+            disabled={nodes.length === 0 || execStatus === 'running'}
+            title={t('builder.dry.btnHint') || 'Тестовый прогон без токенов — проверить, что цепочка проходит без ошибок'}
+          >
+            <Icon name="eye" size={14} strokeWidth={1.6} />
+            <span>{t('builder.dry.btn') || 'Тест'}</span>
+          </button>
 
           {/* Сплит-кнопка Запуск + расписание — последний элемент справа. */}
           <div className="builder-run-split builder-run-split--real">
