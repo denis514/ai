@@ -1668,13 +1668,12 @@ function BuilderAppInner() {
           {/* Тестовый прогон — без токенов, проверяет, что цепочка проходит. */}
           <button
             type="button"
-            className="builder-btn builder-btn--ghost builder-dry-btn"
+            className="builder-dry-btn"
             onClick={handleDryRun}
             disabled={nodes.length === 0 || execStatus === 'running'}
             title={t('builder.dry.btnHint') || 'Тестовый прогон без токенов — проверить, что цепочка проходит без ошибок'}
           >
-            <Icon name="eye" size={14} strokeWidth={1.6} />
-            <span>{t('builder.dry.btn') || 'Тест'}</span>
+            {t('builder.dry.btn') || 'Тестовый запуск'}
           </button>
 
           {/* Сплит-кнопка Запуск + расписание — последний элемент справа. */}

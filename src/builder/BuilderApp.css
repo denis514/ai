@@ -5423,5 +5423,28 @@
 .builder-app .builder-code-panel__issues { margin: 6px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
 .builder-app .builder-code-panel__issues li { font-size: 12px; line-height: 1.4; }
 
-/* Кнопка «Тест» (dry-run) — рядом с «Запуск», нейтральная вторичная. */
-.builder-app .builder-dry-btn { gap: 6px; }
+/* Кнопка «Тестовый запуск» (dry-run) — форма как «Запуск», но терракотовая. */
+.builder-app .builder-dry-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent, #c2603f);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent, #c2603f) 32%, transparent);
+  transition: background 0.12s ease;
+}
+.builder-app .builder-dry-btn:hover {
+  background: color-mix(in srgb, var(--accent, #c2603f) 88%, #000);
+}
+.builder-app .builder-dry-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  box-shadow: none;
+}
