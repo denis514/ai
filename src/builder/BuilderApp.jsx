@@ -2842,6 +2842,14 @@ function TelegramConfigPopover({ node, t, telegramConnected, keys = [], onSetCha
               ? (t('builder.telegram.fanHint') || 'Результат уйдёт в каждый адрес из списка.')
               : (t('builder.telegram.chatHint') || 'ID чата или @username, куда бот пришлёт результат.')}
           </p>
+          {/* Объяснение «почему адрес — это получатель, а не бот» + как узнать свой ID */}
+          <div className="builder-tg-help">
+            <p>{t('builder.telegram.explain') || 'Бот — это отправитель. В адрес впишите ПОЛУЧАТЕЛЯ: чтобы пришло вам в личку — ваш числовой ID; в группу — ID группы; в канал — @имя_канала, где бот сделан администратором. Имя бота адресом быть не может.'}</p>
+            <a className="builder-tg-help__link" href="https://t.me/userinfobot" target="_blank" rel="noopener noreferrer">
+              <Icon name="external-link" size={11} strokeWidth={1.75} />
+              <span>{t('builder.telegram.myId') || 'Узнать мой ID (через @userinfobot)'}</span>
+            </a>
+          </div>
           {/* Этап 3 (веер): список адресатов — для каждого свой бот + чат. */}
           {rows.map((r, i) => (
             <div key={i} className="builder-tg-target">
