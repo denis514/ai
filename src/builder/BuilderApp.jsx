@@ -2532,7 +2532,7 @@ function BuilderAppInner() {
                 return (
                   <li key={`w${i}`} className="builder-validation__item builder-validation__item--warn">
                     <Icon name="flash" size={14} strokeWidth={1.75} />
-                    <span>{w.count ? `${text}: ${w.count}` : text}</span>
+                    <span>{w.count > 1 ? `${text} (узлов: ${w.count})` : text}</span>
                   </li>
                 );
               })}
