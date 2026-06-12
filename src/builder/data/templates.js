@@ -608,6 +608,59 @@ export const TEMPLATES = [
       { from: 2, to: 4, sourceHandle: 'false' },  // обычный → черновик ответа
     ],
   },
+
+  /* ════════════════════════════════════════════════════════════ */
+  /*  Витрина возможностей: все инструменты + логика + поток        */
+  /* ════════════════════════════════════════════════════════════ */
+
+  /* ФЛАГМАН: контроль карточки товара. Видение + Файлы + Память,
+     УМНОЕ условие («готово?») + Цикл (исправлять, пока не готово). */
+  {
+    id: 'product-qa',
+    nameKey: 'builder.template.productQa.name',
+    descKey: 'builder.template.productQa.desc',
+    inputKey: 'builder.template.productQa.input',
+    outputKey: 'builder.template.productQa.output',
+    iconName: 'eye', difficulty: 'advanced', category: 'logic', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',         position: { x: 140, y: 40 } },
+      { defId: 'agent-main',            position: { x: 140, y: 180 }, dataOverride: { promptKey: 'builder.template.productQa.promptMain' } },
+      { defId: 'tool-vision',           position: { x: -130, y: 130 } },
+      { defId: 'tool-file',             position: { x: -130, y: 230 } },
+      { defId: 'tool-memory',           position: { x: -130, y: 330 } },
+      { defId: 'logic-condition-agent', position: { x: 140, y: 330 }, dataOverride: { question: 'Карточка готова к публикации: фото чёткое и совпадает с описанием, текст без ошибок, тон в стиле бренда?' } },
+      { defId: 'output-text',           position: { x: 400, y: 330 } },
+      { defId: 'agent-content',         position: { x: 140, y: 480 }, dataOverride: { promptKey: 'builder.template.productQa.promptFix' } },
+      { defId: 'logic-loop',            position: { x: 140, y: 620 }, dataOverride: { loopBackToIndex: 5, maxLoops: 3 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },                          // Старт → контролёр
+      { from: 2, to: 1 },                          // Видение ⇒ умение контролёра
+      { from: 3, to: 1 },                          // Файлы ⇒ умение контролёра
+      { from: 4, to: 1 },                          // Память ⇒ умение контролёра
+      { from: 1, to: 5 },                          // контролёр → умное условие
+      { from: 5, to: 6, sourceHandle: 'true' },    // готово → выход
+      { from: 5, to: 7, sourceHandle: 'false' },   // не готово → исправить
+      { from: 7, to: 8 },                          // исправить → Цикл (назад к условию, до 3 раз)
+    ],
+  },
+
+  /* Память отдельно: письмо в фирменном стиле (тон всегда одинаковый). */
+  {
+    id: 'brand-voice',
+    nameKey: 'builder.template.brandVoice.name',
+    descKey: 'builder.template.brandVoice.desc',
+    inputKey: 'builder.template.brandVoice.input',
+    outputKey: 'builder.template.brandVoice.output',
+    iconName: 'quote', difficulty: 'beginner', category: 'marketing', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 120, y: 50 } },
+      { defId: 'tool-memory',   position: { x: -130, y: 190 } },
+      { defId: 'agent-content', position: { x: 120, y: 190 }, dataOverride: { promptKey: 'builder.template.brandVoice.prompt' } },
+      { defId: 'output-text',   position: { x: 120, y: 340 } },
+    ],
+    edges: [{ from: 0, to: 2 }, { from: 1, to: 2 }, { from: 2, to: 3 }],
+  },
 ];
 
 /**
