@@ -17,9 +17,13 @@ import { listPublicTemplates } from '../../services/publicTemplateService.js';
  * Phase B-1 Day 15-16.
  */
 
+// Порядок индустрий в ряду чипов.
+const INDUSTRY_ORDER = ['store', 'services', 'content', 'marketing', 'support', 'realty', 'education', 'hr', 'finance', 'local', 'personal', 'it'];
+
 export default function TemplateGallery({ onUseTemplate, onUseCommunity, onScratch, onClose }) {
   const t = useT();
   const [community, setCommunity] = React.useState(null); // null=загрузка, []=пусто
+  const [industry, setIndustry] = React.useState(null);   // null = «Все»
 
   React.useEffect(() => {
     const onKey = (e) => {
@@ -42,6 +46,17 @@ export default function TemplateGallery({ onUseTemplate, onUseCommunity, onScrat
     if (e.target === e.currentTarget) onClose?.();
   };
 
+  // Индустрии, у которых есть хотя бы один шаблон (встроенный или сообщества).
+  const present = new Set([
+    ...TEMPLATES.map(t0 => t0.industry).filter(Boolean),
+    ...(community || []).map(c => c.industry).filter(Boolean),
+  ]);
+  const industries = INDUSTRY_ORDER.filter(i => present.has(i));
+
+  const matchInd = (ind) => !industry || ind === industry;
+  const builtins = TEMPLATES.filter(t0 => matchInd(t0.industry));
+  const communityShown = (community || []).filter(c => matchInd(c.industry));
+
   return (
     <div className="builder-modal-backdrop" onClick={handleBackdropClick}>
       <div className="builder-modal" role="dialog" aria-modal="true">
@@ -63,8 +78,30 @@ export default function TemplateGallery({ onUseTemplate, onUseCommunity, onScrat
           {t('builder.gallery.subtitle') || 'Start with a pre-built agent workflow, or build from scratch.'}
         </p>
 
+        {industries.length > 1 && (
+          <div className="builder-gallery__chips" role="tablist" aria-label={t('builder.gallery.industryFilter') || 'Сфера'}>
+            <button
+              type="button"
+              className={`builder-gallery__chip ${!industry ? 'is-active' : ''}`}
+              onClick={() => setIndustry(null)}
+            >
+              {t('builder.gallery.allIndustries') || 'Все'}
+            </button>
+            {industries.map(ind => (
+              <button
+                key={ind}
+                type="button"
+                className={`builder-gallery__chip ${industry === ind ? 'is-active' : ''}`}
+                onClick={() => setIndustry(ind)}
+              >
+                {t(`builder.industry.${ind}`) || ind}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="builder-template-grid">
-          {TEMPLATES.map(template => (
+          {builtins.map(template => (
             <button
               key={template.id}
               type="button"
@@ -97,14 +134,14 @@ export default function TemplateGallery({ onUseTemplate, onUseCommunity, onScrat
           ))}
         </div>
 
-        {community && community.length > 0 && (
+        {communityShown.length > 0 && (
           <>
             <h3 className="builder-gallery__section">
               <Icon name="users" size={15} strokeWidth={1.6} />
               {t('builder.gallery.community') || 'От сообщества'}
             </h3>
             <div className="builder-template-grid">
-              {community.map(item => {
+              {communityShown.map(item => {
                 const count = Array.isArray(item.graph?.nodes) ? item.graph.nodes.length : 0;
                 return (
                   <button
