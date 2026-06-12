@@ -5,7 +5,7 @@ import { TEMPLATES } from '../../data/templates.js';
 import { NODE_DEFS } from '../../data/nodeTypes.js';
 
 // Инструменты, реально работающие сегодня (остальные — «скоро»).
-const REAL_TOOLS = new Set(['web_search', 'memory', 'file_read', 'vision']);
+const REAL_TOOLS = new Set(['web_search', 'memory', 'file_read', 'vision', 'code_exec', 'citations']);
 
 /**
  * TemplatePreview — модальное превью одного шаблона перед использованием.

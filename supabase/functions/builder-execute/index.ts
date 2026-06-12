@@ -167,15 +167,28 @@ type ImageInput = { data: string; mime: string };
 
 type McpServer = { type: 'url'; url: string; name: string; authorization_token?: string };
 
-async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = [], mcpServers: McpServer[] = [], webTools = false, onRateWait?: (sec: number) => Promise<void>) {
-  // Если есть картинки (Vision) — собираем мультимодальное сообщение: блоки
-  // image + текст. Иначе обычная строка.
-  const content = images.length
+type CitationDoc = { title: string; text: string };
+
+async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = [], mcpServers: McpServer[] = [], webTools = false, codeExec = false, citationDocs: CitationDoc[] = [], onRateWait?: (sec: number) => Promise<void>) {
+  // Цитаты (Фаза 4): источники передаём как document-блоки с включённым
+  // цитированием — тогда модель возвращает привязку утверждений к источникам.
+  const docBlocks = citationDocs
+    .filter((d) => d.text && d.text.trim())
+    .map((d) => ({
+      type: 'document',
+      source: { type: 'text', media_type: 'text/plain', data: d.text.slice(0, 8000) },
+      title: d.title,
+      citations: { enabled: true },
+    }));
+  // Если есть картинки (Vision) или документы (Цитаты) — мультимодальное сообщение
+  // из блоков. Иначе обычная строка.
+  const content = (images.length || docBlocks.length)
     ? [
         ...images.map((img) => ({
           type: 'image',
           source: { type: 'base64', media_type: img.mime || 'image/png', data: img.data },
         })),
+        ...docBlocks,
         { type: 'text', text: userContent },
       ]
     : userContent;
@@ -196,17 +209,19 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
     betas.push('mcp-client-2025-04-04');
     payload.mcp_servers = mcpServers;
   }
-  // Родные веб-инструменты: Claude САМ ищет и открывает страницы (рендер + чтение
-  // на стороне Anthropic). web_fetch — открыть конкретный URL; web_search — найти.
-  // web_fetch пока в beta. Серверные tools исполняются внутри одного запроса.
+  // Серверные инструменты (исполняются внутри одного запроса на стороне Anthropic).
+  const tools: Record<string, unknown>[] = [];
+  // Веб-ПОИСК (компактные результаты). web_fetch не включаем — тяжело по токенам.
   if (webTools) {
-    // Только веб-ПОИСК (компактные результаты). Открытие целых страниц (web_fetch)
-    // потребляет слишком много входных токенов и пробивает лимит 30k/мин на
-    // стартовом tier. Для свежих фактов/новостей поиска достаточно.
-    payload.tools = [
-      { type: 'web_search_20250305', name: 'web_search', max_uses: 3 },
-    ];
+    tools.push({ type: 'web_search_20250305', name: 'web_search', max_uses: 3 });
   }
+  // Выполнение кода (Python в управляемой песочнице Anthropic). Для точных
+  // расчётов/разбора таблиц. Тратит доп. токены + плату за исполнение.
+  if (codeExec) {
+    tools.push({ type: 'code_execution_20250825', name: 'code_execution' });
+    betas.push('code-execution-2025-08-25');
+  }
+  if (tools.length) payload.tools = tools;
   if (betas.length) headers['anthropic-beta'] = betas.join(',');
   const body = JSON.stringify(payload);
   // При лимите запросов (429) НЕ падаем сразу: ждём (по retry-after) и повторяем,
@@ -226,7 +241,20 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
     if (!res.ok) {
       throw new Error(data?.error?.message || `claude_http_${res.status}`);
     }
-    const text = (data.content || []).filter((b: any) => b.type === 'text').map((b: any) => b.text).join('\n');
+    const blocks = data.content || [];
+    let text = blocks.filter((b: any) => b.type === 'text').map((b: any) => b.text).join('\n');
+    // Цитаты: модель привязывает утверждения к источникам (document/web). Собираем
+    // уникальные источники и добавляем список «Источники» в конец ответа.
+    const cites: string[] = [];
+    for (const b of blocks) {
+      for (const c of ((b as any).citations || [])) {
+        const label = c.document_title || c.title || c.url || c.source || '';
+        if (label && !cites.includes(label)) cites.push(label);
+      }
+    }
+    if (cites.length) {
+      text += `\n\n**Источники:**\n${cites.map((s) => `• ${s}`).join('\n')}`;
+    }
     const tokens = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
     return { text, tokens };
   }
@@ -787,6 +815,10 @@ Deno.serve(async (req) => {
           ? (node.config?.fileName ? `File ready: ${node.config.fileName}` : 'Files — upload a file on this node')
           : node.role === 'vision'
           ? (node.config?.imageData ? 'Image ready for the connected agent' : 'Vision — upload an image on this node')
+          : node.role === 'code_exec'
+          ? 'Code execution — connected agent can run Python'
+          : node.role === 'citations'
+          ? 'Citations — connected agent will cite sources'
           : 'Capability attached to the connected agent';
         await log(id, 'info', note, { status: 'completed' });
         continue;
@@ -816,15 +848,28 @@ Deno.serve(async (req) => {
       if (wantWeb) {
         await log(id, 'info', 'Web search enabled — Claude will search the web', { status: 'running' });
       }
-      // Файлы (Фаза 4): прикреплённый tool-file с загруженным текстом → в контекст.
+      // Цитаты (Фаза 4): если прикреплён tool-citations — источники-файлы передаём
+      // как document-блоки с цитированием (см. callClaude), а не вплавляем в текст.
+      const wantCitations = attachedToolRoles.includes('citations');
+      const citationDocs: CitationDoc[] = [];
+      // Файлы (Фаза 4): прикреплённый tool-file с загруженным текстом.
       for (const tn of attachedTools.filter(n => n.role === 'file_read')) {
         const ft = typeof tn.config?.fileText === 'string' ? tn.config.fileText : '';
         const fn = typeof tn.config?.fileName === 'string' ? tn.config.fileName : 'file';
         if (ft.trim()) {
-          context += `\n\n[Файл «${fn}», приложен к агенту]:\n${ft}`;
+          if (wantCitations) {
+            citationDocs.push({ title: `Файл «${fn}»`, text: ft });
+          } else {
+            context += `\n\n[Файл «${fn}», приложен к агенту]:\n${ft}`;
+          }
           await log(id, 'info', `File attached: ${fn} (${ft.length} chars)`, { status: 'running' });
         }
       }
+
+      // Код (Фаза 4): прикреплённый tool-code-exec → включаем выполнение Python.
+      const wantCode = attachedToolRoles.includes('code_exec');
+      if (wantCode) await log(id, 'info', 'Code execution enabled — Claude will run Python', { status: 'running' });
+      if (wantCitations) await log(id, 'info', 'Citations enabled — answer will cite sources', { status: 'running' });
 
       // Vision (Фаза 4): прикреплённый tool-vision с картинкой → image-блок Claude.
       const visionImages: ImageInput[] = [];
@@ -862,7 +907,14 @@ Deno.serve(async (req) => {
       const webGround = wantWeb
         ? `\n\n[Исполнение] Сегодня: ${today}. К тебе подключён веб-поиск. Чтобы выполнить инструкцию, ОБЯЗАТЕЛЬНО используй его и бери данные из интернета прямо сейчас. Отвечай ТОЛЬКО на основе реально найденного в вебе в этом запросе — НЕ используй сведения из памяти. Если найти не удалось — честно напиши об этом и не выдумывай.`
         : '';
-      const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix + webGround;
+      // Правила исполнения для Кода и Цитат (как webGround).
+      const codeGround = wantCode
+        ? `\n\n[Исполнение] К тебе подключён инструмент выполнения кода (Python). Для любых расчётов, разбора таблиц и точных чисел РЕАЛЬНО запусти код, а не прикидывай. Покажи результат вычислений.`
+        : '';
+      const citeGround = wantCitations
+        ? `\n\n[Исполнение] Подкрепляй ключевые утверждения ссылками на приложенные источники и веб. Не выдумывай — приводи только проверяемое.`
+        : '';
+      const system = (customPrompt || systemPromptForRole(node.role || 'main')) + langSuffix + webGround + codeGround + citeGround;
       // MCP: если к агенту прикреплён узел «MCP-коннектор» — отдаём Claude серверы,
       // ВЫБРАННЫЕ в этом узле (config.mcpServerIds); если ничего не выбрано — все.
       const mcpNode = attachedTools.find((n) => n.role === 'mcp');
@@ -877,6 +929,7 @@ Deno.serve(async (req) => {
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
       const { text, tokens } = await callClaude(
         apiKey, system, context || 'Proceed.', maxTokens, visionImages, sendMcp, wantWeb,
+        wantCode, (wantCitations ? citationDocs : []),
         async (sec) => { await log(id, 'warn', `Лимит запросов Anthropic — ждём ${sec}с и продолжаем…`, { status: 'running' }); },
       );
       totalTokens += tokens;
