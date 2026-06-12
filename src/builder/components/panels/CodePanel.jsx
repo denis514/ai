@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Icon from '../../../components/Icon.jsx';
-import { serializeForLocal, deserializeFromDb } from '../../services/workflowSerializer.js';
-import { getNodeDef } from '../../data/nodeTypes.js';
+import { serializeForLocal } from '../../services/workflowSerializer.js';
 import { validateGraph } from '../../services/connectionRules.js';
+import { toShareGraph, fromShareGraph } from '../../services/shareGraph.js';
 
 /**
  * CodePanel — прозрачный «код ↔ холст» для Agent Builder.
@@ -32,68 +32,6 @@ function toCode(nodes, edges) {
   };
 }
 
-// Поля config, которые НЕЛЬЗЯ передавать другому пользователю при «Поделиться»:
-// личные контакты и любые ссылки на ключи. Структуру и инструкции (prompt, task,
-// vars, условия) — оставляем.
-const SHARE_STRIP = new Set([
-  // Telegram
-  'chatId', 'chat_id', 'targets',
-  // Почта
-  'to', 'toEmail', 'fromEmail', 'recipients', 'recipient', 'email',
-  // Календарь
-  'calendarId', 'calId',
-  // MCP-серверы (привязаны к подключениям отправителя)
-  'mcpServerIds', 'mcpServers',
-  // Ключи и секреты (на всякий случай — обычно их в config и нет)
-  'apiKeyId', 'keyId', 'key_id', 'token', 'botToken', 'webhookSecret', 'secret',
-]);
-
-/** Холст → код БЕЗ личных данных (для безопасного обмена). */
-function toShareCode(nodes, edges) {
-  const code = toCode(nodes, edges);
-  code.nodes = code.nodes.map(n => {
-    if (!n.config) return n;
-    const clean = {};
-    for (const k of Object.keys(n.config)) if (!SHARE_STRIP.has(k)) clean[k] = n.config[k];
-    return Object.keys(clean).length ? { ...n, config: clean } : (() => { const { config, ...rest } = n; return rest; })();
-  });
-  return code;
-}
-
-/** Объект кода → React Flow nodes/edges (с валидацией). Бросает понятную ошибку. */
-function fromCode(obj, edgeStyle) {
-  if (!obj || typeof obj !== 'object') throw new Error('Нужен объект { nodes: [...], edges: [...] }');
-  if (!Array.isArray(obj.nodes)) throw new Error('Поле "nodes" должно быть массивом');
-  const dbNodes = obj.nodes.map((n, i) => {
-    if (!n || !n.type) throw new Error(`Узел #${i + 1}: нет поля "type"`);
-    if (!getNodeDef(n.type)) throw new Error(`Узел #${i + 1}: неизвестный тип "${n.type}"`);
-    return {
-      client_id: String(n.id || `n${i + 1}`),
-      def_id: n.type,
-      position_x: Number(n.x) || 0,
-      position_y: Number(n.y) || 0,
-      config: n.config || {},
-    };
-  });
-  const ids = new Set(dbNodes.map(n => n.client_id));
-  if (ids.size !== dbNodes.length) throw new Error('Повторяющиеся id узлов — id должны быть уникальны');
-  const edgesArr = Array.isArray(obj.edges) ? obj.edges : [];
-  const dbEdges = edgesArr.map((e, i) => {
-    if (!e || e.from == null || e.to == null) throw new Error(`Связь #${i + 1}: нужны поля "from" и "to"`);
-    if (String(e.from) === String(e.to)) throw new Error(`Связь #${i + 1}: узел не может быть связан сам с собой`);
-    if (!ids.has(String(e.from))) throw new Error(`Связь #${i + 1}: узел "${e.from}" не найден`);
-    if (!ids.has(String(e.to))) throw new Error(`Связь #${i + 1}: узел "${e.to}" не найден`);
-    return {
-      client_id: String(e.id || `e${i + 1}`),
-      source_client_id: String(e.from),
-      target_client_id: String(e.to),
-      label: e.label || null,
-      config: e.config || {},
-    };
-  });
-  return deserializeFromDb(dbNodes, dbEdges, edgeStyle);
-}
-
 export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
   const canvasCode = useMemo(() => JSON.stringify(toCode(nodes, edges), null, 2), [nodes, edges]);
   const [draft, setDraft] = useState(canvasCode);
@@ -116,7 +54,7 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
 
   // «Поделиться»: копируем безопасную версию кода (без личных данных и ключей).
   const share = async () => {
-    const text = JSON.stringify(toShareCode(nodes, edges), null, 2);
+    const text = JSON.stringify(toShareGraph(nodes, edges), null, 2);
     try {
       await navigator.clipboard.writeText(text);
       setShared(true);
@@ -130,7 +68,7 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
     try { obj = JSON.parse(draft); }
     catch (e) { setMsg({ type: 'err', text: t('builder.code.badJson') + ' ' + e.message }); return; }
     let rf;
-    try { rf = fromCode(obj, edgeStyle); }
+    try { rf = fromShareGraph(obj, edgeStyle); }
     catch (e) { setMsg({ type: 'err', text: e.message }); return; }
     onApply(rf.nodes, rf.edges);
     setEdited(false);

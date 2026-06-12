@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 import { TEMPLATES } from '../../data/templates.js';
+import { listPublicTemplates } from '../../services/publicTemplateService.js';
 
 /**
  * TemplateGallery — модалка с template cards.
@@ -16,8 +17,9 @@ import { TEMPLATES } from '../../data/templates.js';
  * Phase B-1 Day 15-16.
  */
 
-export default function TemplateGallery({ onUseTemplate, onScratch, onClose }) {
+export default function TemplateGallery({ onUseTemplate, onUseCommunity, onScratch, onClose }) {
   const t = useT();
+  const [community, setCommunity] = React.useState(null); // null=загрузка, []=пусто
 
   React.useEffect(() => {
     const onKey = (e) => {
@@ -26,6 +28,15 @@ export default function TemplateGallery({ onUseTemplate, onScratch, onClose }) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
+
+  // Шаблоны сообщества (одобренные). Тихо игнорируем ошибку/недоступность бэкенда.
+  React.useEffect(() => {
+    let alive = true;
+    listPublicTemplates({ limit: 60 })
+      .then(rows => { if (alive) setCommunity(rows); })
+      .catch(() => { if (alive) setCommunity([]); });
+    return () => { alive = false; };
+  }, []);
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) onClose?.();
@@ -85,6 +96,53 @@ export default function TemplateGallery({ onUseTemplate, onScratch, onClose }) {
             </button>
           ))}
         </div>
+
+        {community && community.length > 0 && (
+          <>
+            <h3 className="builder-gallery__section">
+              <Icon name="users" size={15} strokeWidth={1.6} />
+              {t('builder.gallery.community') || 'От сообщества'}
+            </h3>
+            <div className="builder-template-grid">
+              {community.map(item => {
+                const count = Array.isArray(item.graph?.nodes) ? item.graph.nodes.length : 0;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className="builder-template-card"
+                    onClick={() => onUseCommunity?.(item)}
+                  >
+                    <div className="builder-template-card__icon">
+                      <Icon name="users" size={22} strokeWidth={1.5} />
+                    </div>
+                    <div className="builder-template-card__body">
+                      <div className="builder-template-card__name">{item.title}</div>
+                      <div className="builder-template-card__desc">
+                        {item.author_name
+                          ? (t('builder.gallery.byAuthor') || 'Автор: {name}').replace('{name}', item.author_name)
+                          : (t('builder.gallery.byCommunity') || 'Из сообщества')}
+                      </div>
+                      <div className="builder-template-card__meta">
+                        {item.difficulty && (
+                          <span className={`builder-difficulty builder-difficulty--${item.difficulty}`}>
+                            {t(`builder.difficulty.${item.difficulty}`) || item.difficulty}
+                          </span>
+                        )}
+                        <span className="builder-template-card__count">
+                          {count} {t(count === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || (count === 1 ? 'node' : 'nodes')}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="builder-template-card__arrow" aria-hidden="true">
+                      <Icon name="arrow-right" size={14} strokeWidth={1.5} />
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
 
         <footer className="builder-modal__footer">
           <button
