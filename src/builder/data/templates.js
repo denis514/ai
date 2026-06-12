@@ -661,6 +661,94 @@ export const TEMPLATES = [
     ],
     edges: [{ from: 0, to: 2 }, { from: 1, to: 2 }, { from: 2, to: 3 }],
   },
+
+  /* Пара «Видение + Файлы»: сверка макета с заданием. */
+  {
+    id: 'design-qa',
+    nameKey: 'builder.template.designQa.name',
+    descKey: 'builder.template.designQa.desc',
+    inputKey: 'builder.template.designQa.input',
+    outputKey: 'builder.template.designQa.output',
+    iconName: 'eye', difficulty: 'intermediate', category: 'design', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 120, y: 50 } },
+      { defId: 'agent-main',    position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.designQa.prompt' } },
+      { defId: 'tool-vision',   position: { x: -130, y: 150 } },
+      { defId: 'tool-file',     position: { x: -130, y: 260 } },
+      { defId: 'output-text',   position: { x: 120, y: 350 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 2, to: 1 }, { from: 3, to: 1 }, { from: 1, to: 4 }],
+  },
+
+  /* Цитаты: ответ с проверяемыми источниками (Поиск + Цитаты). */
+  {
+    id: 'cited-answer',
+    nameKey: 'builder.template.citedAnswer.name',
+    descKey: 'builder.template.citedAnswer.desc',
+    inputKey: 'builder.template.citedAnswer.input',
+    outputKey: 'builder.template.citedAnswer.output',
+    iconName: 'quote', difficulty: 'intermediate', category: 'research', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',   position: { x: 120, y: 50 } },
+      { defId: 'agent-research',  position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.citedAnswer.prompt' } },
+      { defId: 'tool-search',     position: { x: -130, y: 150 } },
+      { defId: 'tool-citations',  position: { x: -130, y: 260 } },
+      { defId: 'output-text',     position: { x: 120, y: 350 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 2, to: 1 }, { from: 3, to: 1 }, { from: 1, to: 4 }],
+  },
+
+  /* Код-вычисления: расчёты по таблице (Файлы + Код). Продвинутое. */
+  {
+    id: 'data-cruncher',
+    nameKey: 'builder.template.dataCruncher.name',
+    descKey: 'builder.template.dataCruncher.desc',
+    inputKey: 'builder.template.dataCruncher.input',
+    outputKey: 'builder.template.dataCruncher.output',
+    iconName: 'chart', difficulty: 'advanced', category: 'data', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',    position: { x: 120, y: 50 } },
+      { defId: 'agent-analytics',  position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.dataCruncher.prompt' } },
+      { defId: 'tool-file',        position: { x: -130, y: 150 } },
+      { defId: 'tool-code-exec',   position: { x: -130, y: 260 } },
+      { defId: 'output-text',      position: { x: 120, y: 350 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 2, to: 1 }, { from: 3, to: 1 }, { from: 1, to: 4 }],
+  },
+
+  /* Компьютер: действие на сайте за пользователя. Продвинутое. */
+  {
+    id: 'web-actions',
+    nameKey: 'builder.template.webActions.name',
+    descKey: 'builder.template.webActions.desc',
+    inputKey: 'builder.template.webActions.input',
+    outputKey: 'builder.template.webActions.output',
+    iconName: 'laptop', difficulty: 'advanced', category: 'logic', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',  position: { x: 120, y: 50 } },
+      { defId: 'agent-main',     position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.webActions.prompt' } },
+      { defId: 'tool-computer',  position: { x: -130, y: 200 } },
+      { defId: 'output-text',    position: { x: 120, y: 350 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 2, to: 1 }, { from: 1, to: 3 }],
+  },
+
+  /* MCP: подключить свой сервис и достать из него данные. Продвинутое. */
+  {
+    id: 'connect-service',
+    nameKey: 'builder.template.connectService.name',
+    descKey: 'builder.template.connectService.desc',
+    inputKey: 'builder.template.connectService.input',
+    outputKey: 'builder.template.connectService.output',
+    iconName: 'plug', difficulty: 'advanced', category: 'logic', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 120, y: 50 } },
+      { defId: 'agent-main',    position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.connectService.prompt' } },
+      { defId: 'tool-mcp',      position: { x: -130, y: 200 } },
+      { defId: 'output-text',   position: { x: 120, y: 350 } },
+    ],
+    edges: [{ from: 0, to: 1 }, { from: 2, to: 1 }, { from: 1, to: 3 }],
+  },
 ];
 
 /**
