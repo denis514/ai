@@ -5651,3 +5651,73 @@
 .builder-app .builder-sched-time__year { width: 74px; }
 .builder-app .builder-sched-time__colon { font-size: 16px; font-weight: 700; color: var(--text); }
 .builder-app .builder-sched-time__utc { font-size: 11px; color: var(--text-muted); }
+
+/* ── Расписание: два режима + календарь месяца + крупные часы/минуты ───────── */
+.builder-app .builder-sched-modes {
+  display: flex; gap: 6px; padding: 4px; border-radius: 12px; background: var(--surface-2);
+}
+.builder-app .builder-sched-mode {
+  flex: 1; padding: 9px 12px; border: 0; border-radius: 9px;
+  background: transparent; color: var(--text-muted);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: background .12s, color .12s, box-shadow .12s;
+}
+.builder-app .builder-sched-mode:hover { color: var(--text); }
+.builder-app .builder-sched-mode.is-active {
+  background: var(--surface); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+.builder-app .builder-sched-mode:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Календарь месяца */
+.builder-app .builder-cal { width: 100%; }
+.builder-app .builder-cal__head {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+}
+.builder-app .builder-cal__title { font-size: 16px; font-weight: 700; color: var(--text); }
+.builder-app .builder-cal__nav { display: flex; gap: 4px; }
+.builder-app .builder-cal__arrow {
+  width: 30px; height: 30px; display: inline-grid; place-items: center;
+  border: 0; border-radius: 8px; background: transparent; color: var(--accent); cursor: pointer;
+  transition: background .12s;
+}
+.builder-app .builder-cal__arrow:hover { background: var(--surface-2); }
+.builder-app .builder-cal__arrow:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.builder-app .builder-cal__dows {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px;
+}
+.builder-app .builder-cal__dow {
+  text-align: center; font-size: 11px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase;
+}
+.builder-app .builder-cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.builder-app .builder-cal__cell {
+  aspect-ratio: 1; display: inline-flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 50%; background: transparent; color: var(--text);
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  transition: background .12s, color .12s, box-shadow .12s;
+}
+.builder-app .builder-cal__cell:hover:not(.is-sel) { background: var(--surface-2); }
+.builder-app .builder-cal__cell--empty { cursor: default; }
+.builder-app .builder-cal__cell.is-today { box-shadow: inset 0 0 0 1.5px var(--accent); color: var(--accent); }
+.builder-app .builder-cal__cell.is-sel {
+  background: var(--accent); color: #fff; font-weight: 700; box-shadow: none;
+}
+.builder-app .builder-cal__cell:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* Крупные часы/минуты */
+.builder-app .builder-sched-clock {
+  display: flex; align-items: flex-end; gap: 10px; margin-top: 4px;
+}
+.builder-app .builder-sched-clock__col {
+  flex: 1; display: flex; flex-direction: column; gap: 5px; align-items: center;
+}
+.builder-app .builder-sched-clock__col label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+.builder-app .builder-sched-clock__col input {
+  width: 100%; padding: 12px; text-align: center;
+  border: 1px solid var(--border); border-radius: 12px;
+  background: var(--surface); color: var(--text);
+  font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.builder-app .builder-sched-clock__col input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.builder-app .builder-sched-clock__unit { font-size: 13px; color: var(--text-dim); }
+.builder-app .builder-sched-clock__utc { font-size: 11px; color: var(--text-muted); padding-bottom: 14px; }
