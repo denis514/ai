@@ -20,7 +20,7 @@ import { toShareGraph } from './shareGraph.js';
  *   authorName — отображаемое имя автора (необязательно)
  * @returns {Promise<object>} созданная строка
  */
-export async function publishTemplate({ nodes, edges, title, industry, difficulty, authorName }) {
+export async function publishTemplate({ nodes, edges, title, industry, difficulty, authorName, autoApprove = false }) {
   if (!supabase) throw new Error('backend_unavailable');
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('not_authenticated');
@@ -35,7 +35,7 @@ export async function publishTemplate({ nodes, edges, title, industry, difficult
     industry: industry || null,
     difficulty: difficulty || null,
     graph,
-    approved: false,
+    approved: false, // вставка всегда не одобрена (RLS); админ авто-одобряет ниже
   };
   const { data, error } = await supabase
     .from('builder_public_templates')
@@ -43,7 +43,50 @@ export async function publishTemplate({ nodes, edges, title, industry, difficult
     .select()
     .single();
   if (error) throw error;
+
+  // Автоодобрение публикаций администратора (RLS-политика "bpt: admin update").
+  // Best-effort: если не админ — UPDATE отклонится RLS, шаблон уйдёт на модерацию.
+  if (autoApprove && data?.id) {
+    const { data: upd } = await supabase
+      .from('builder_public_templates')
+      .update({ approved: true })
+      .eq('id', data.id)
+      .select()
+      .single();
+    if (upd) return upd;
+  }
   return data;
+}
+
+// ── Модерация (для админа; права — миграция 010) ────────────────────────────
+
+/** Очередь на модерацию: все неодобренные (админ видит чужие по RLS). */
+export async function listPendingTemplates() {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('builder_public_templates')
+    .select('id, title, industry, difficulty, graph, author_name, created_at')
+    .eq('approved', false)
+    .order('created_at', { ascending: true });
+  if (error) return [];
+  return data || [];
+}
+
+/** Одобрить шаблон (UPDATE approved=true — разрешено только админу по RLS). */
+export async function approveTemplate(id) {
+  if (!supabase) throw new Error('backend_unavailable');
+  const { error } = await supabase
+    .from('builder_public_templates')
+    .update({ approved: true })
+    .eq('id', id);
+  if (error) throw error;
+}
+
+/** Отклонить (удалить) шаблон — автор или админ по RLS. */
+export async function rejectTemplate(id) {
+  if (!supabase) throw new Error('backend_unavailable');
+  const { error } = await supabase.from('builder_public_templates').delete().eq('id', id);
+  if (error) throw error;
 }
 
 /** Список одобренных публичных шаблонов (для галереи). */

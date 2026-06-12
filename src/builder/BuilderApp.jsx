@@ -1281,14 +1281,17 @@ function BuilderAppInner() {
   const doPublish = useCallback(async () => {
     setPublishBusy(true);
     try {
-      await publishTemplate({
+      const res = await publishTemplate({
         nodes, edges,
         title: publishTitle,
         industry: publishIndustry || null,
         authorName: profile?.display_name || null,
+        autoApprove: !!profile?.is_admin,
       });
       setPublishOpen(false);
-      toast.success(t('builder.publish.sent') || 'Отправлено на модерацию — после проверки шаблон появится в галерее «От сообщества».');
+      toast.success(res?.approved
+        ? (t('builder.publish.approved') || 'Опубликовано и сразу одобрено (вы администратор).')
+        : (t('builder.publish.sent') || 'Отправлено на модерацию — после проверки шаблон появится в галерее «От сообщества».'));
     } catch (e) {
       toast.error((t('builder.publish.err') || 'Не удалось опубликовать') + (e?.message ? ` (${e.message})` : ''));
     } finally { setPublishBusy(false); }

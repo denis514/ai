@@ -12,6 +12,8 @@ import { getNode } from '../i18n/strings.js';
 import { WHATS_NEW } from '../data/whatsNew.js';
 import { nodeIndex } from '../data/mindmapData.js';
 import { useWhatsNew } from '../hooks/useWhatsNew.js';
+import { listPendingTemplates, approveTemplate, rejectTemplate } from '../builder/services/publicTemplateService.js';
+import { useToast } from '../hooks/useToast.js';
 import Skeleton from './Skeleton.jsx';
 import { listWorkflows } from '../builder/services/workflowStorage.js';
 import { listAllSchedules, getTodayUsage } from '../builder/services/scheduleService.js';
@@ -34,6 +36,7 @@ export default function AccountPage({
   onOpenBuilder,
 }) {
   const t = useT();
+  const { toast } = useToast();
   const { locale, setLocale, locales, contentVersion } = useLocale();
   const { user, profile, setProfile, signOut } = useAuth();
 
@@ -287,10 +290,33 @@ export default function AccountPage({
     );
   }
 
+  // ── Модерация шаблонов (только админ) ────────────────────────────────────
+  const [pending, setPending] = useState(null); // null=ещё не грузили
+  const [modBusy, setModBusy] = useState(null);  // id шаблона в процессе
+  const loadPending = async () => {
+    setPending(await listPendingTemplates());
+  };
+  useEffect(() => {
+    if (section === 'moderation' && profile?.is_admin && pending === null) loadPending();
+  }, [section, profile, pending]);
+  const onApprove = async (id) => {
+    setModBusy(id);
+    try { await approveTemplate(id); setPending(p => (p || []).filter(x => x.id !== id)); }
+    catch (e) { toast.error((t('account.moderation.actionErr') || 'Не удалось одобрить') + (e?.message ? ` (${e.message})` : '')); }
+    finally { setModBusy(null); }
+  };
+  const onReject = async (id) => {
+    setModBusy(id);
+    try { await rejectTemplate(id); setPending(p => (p || []).filter(x => x.id !== id)); }
+    catch (e) { toast.error((t('account.moderation.actionErr') || 'Не удалось отклонить') + (e?.message ? ` (${e.message})` : '')); }
+    finally { setModBusy(null); }
+  };
+
   // ── Разделы боковой панели ───────────────────────────────────────────────
   const NAV = [
     { id: 'overview', icon: 'grid',       label: t('account.dash.overview') || 'Обзор' },
     { id: 'learning', icon: 'graduation', label: t('account.dash.learning') || 'Обучение' },
+    ...(profile?.is_admin ? [{ id: 'moderation', icon: 'shield', label: t('account.moderation.nav') || 'Модерация' }] : []),
     { id: 'settings', icon: 'settings',   label: t('account.settings')      || 'Настройки' },
   ];
 
@@ -686,6 +712,53 @@ export default function AccountPage({
                 ))}
               </div>
             </div>
+          </div>
+        );
+
+      // ── Модерация шаблонов (только админ) ──
+      case 'moderation':
+        return (
+          <div className="account-moderation">
+            <section className="account-section">
+              <h2 className="account-section__title">{t('account.moderation.title') || 'Модерация шаблонов'}</h2>
+              <p className="account-section__lead">
+                {t('account.moderation.lead') || 'Публикации сообщества, ожидающие проверки. Одобрённые появляются в галерее «От сообщества».'}
+              </p>
+              {pending === null ? (
+                <div className="account-widget__empty account-widget__empty--sm"><p>{t('common.loading') || 'Загрузка…'}</p></div>
+              ) : pending.length === 0 ? (
+                <div className="account-widget__empty account-widget__empty--sm">
+                  <Icon name="check" size={18} strokeWidth={1.75} />
+                  <p>{t('account.moderation.empty') || 'Очередь пуста — всё проверено.'}</p>
+                </div>
+              ) : (
+                <ul className="account-mod-list">
+                  {pending.map(item => {
+                    const count = Array.isArray(item.graph?.nodes) ? item.graph.nodes.length : 0;
+                    return (
+                      <li key={item.id} className="account-mod-item">
+                        <div className="account-mod-item__main">
+                          <span className="account-mod-item__title">{item.title}</span>
+                          <span className="account-mod-item__meta">
+                            {item.author_name || (t('builder.gallery.byCommunity') || 'Из сообщества')}
+                            {item.industry ? ` · ${t(`builder.industry.${item.industry}`) || item.industry}` : ''}
+                            {` · ${count} ${t(count === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || 'узлов'}`}
+                          </span>
+                        </div>
+                        <div className="account-mod-item__actions">
+                          <button type="button" className="account-btn account-btn--outline" disabled={modBusy === item.id} onClick={() => onReject(item.id)}>
+                            {t('account.moderation.reject') || 'Отклонить'}
+                          </button>
+                          <button type="button" className="account-btn account-btn--primary" disabled={modBusy === item.id} onClick={() => onApprove(item.id)}>
+                            {t('account.moderation.approve') || 'Одобрить'}
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
           </div>
         );
 
