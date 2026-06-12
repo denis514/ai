@@ -1664,15 +1664,8 @@ function BuilderAppInner() {
           >
             <Icon name="lock" size={14} strokeWidth={1.5} />
           </button>
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
-            onClick={() => { setConsoleOpen(true); setConsoleTab('sched'); }}
-            title={t('builder.allsched.openBtn') || 'Все автозапуски'}
-            aria-label={t('builder.allsched.openBtn') || 'Все автозапуски'}
-          >
-            <Icon name="calendar" size={14} strokeWidth={1.5} />
-          </button>
+          {/* Кнопка «Все автозапуски» убрана из шапки — история теперь внизу
+              боковой панели «Автозапуск» (раскрывающийся блок). */}
           {/* Показать панель «Детали» — стоит ПЕРЕД сплитом, чтобы зелёная плашка
               осталась в самом правом краю ряда (требование референса). */}
           {!sidebarOpen && (

@@ -5752,3 +5752,26 @@
   .builder-app .builder-sidepanel,
   .builder-app .builder-sidepanel.is-shifted { right: 16px; left: 16px; width: auto; }
 }
+
+/* ── История автозапусков — раскрывающийся блок внизу панели «Автозапуск» ───── */
+.builder-app .builder-sched-history { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
+.builder-app .builder-sched-history__toggle {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface-2); color: var(--text);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.builder-app .builder-sched-history__toggle:hover { background: var(--surface-3); border-color: var(--border-strong); }
+.builder-app .builder-sched-history__toggle > span { flex: 1; text-align: left; }
+.builder-app .builder-sched-history__toggle .hgi,
+.builder-app .builder-sched-history__toggle svg { color: var(--text-muted); flex: 0 0 auto; }
+/* Раскрытый список — фиксированной большой высоты со своим скроллом. */
+.builder-app .builder-sched-history__body {
+  margin-top: 10px;
+  max-height: 360px;
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  background: var(--surface);
+}
+.builder-app .builder-sched-history__body .builder-allsched--embed { padding: 12px; }

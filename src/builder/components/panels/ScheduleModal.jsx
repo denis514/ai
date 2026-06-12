@@ -5,6 +5,7 @@ import { listSchedules, createSchedule, toggleSchedule, deleteSchedule } from '.
 import { getWebhook, ensureWebhook, toggleWebhook, regenerateWebhook, deleteWebhook, webhookUrl } from '../../services/webhookService.js';
 import { toast } from '../Toast.jsx';
 import Skeleton, { SkeletonList } from '../Skeleton.jsx';
+import AllSchedulesModal from './AllSchedulesModal.jsx';
 
 /**
  * MonthCalendar — мини-календарь месяца (стиль Apple Reminders): шапка с
@@ -75,6 +76,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, dockRi
   const [busy, setBusy] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [pending, setPending] = useState(false); // показать экран подтверждения
+  const [histOpen, setHistOpen] = useState(false); // раскрыть «Все автозапуски + история»
 
   const [hook, setHook] = useState(undefined); // undefined=загрузка, null=нет, obj=есть
   const [hookBusy, setHookBusy] = useState(false);
@@ -440,6 +442,26 @@ export default function ScheduleModal({ workflowId, workflowName, locale, dockRi
                 </button>
               </div>
             </>
+          )}
+        </div>
+
+        {/* История автозапусков — раскрывающийся блок в самом низу панели.
+            Все автозапуски по всем схемам + история прогонов (AllSchedulesModal). */}
+        <div className="builder-sched-history">
+          <button
+            type="button"
+            className="builder-sched-history__toggle"
+            onClick={() => setHistOpen(v => !v)}
+            aria-expanded={histOpen}
+          >
+            <Icon name="clock" size={14} strokeWidth={1.6} />
+            <span>{t('builder.allsched.title') || 'Все автозапуски'}</span>
+            <Icon name={histOpen ? 'arrow-up' : 'arrow-down'} size={13} strokeWidth={1.75} />
+          </button>
+          {histOpen && (
+            <div className="builder-sched-history__body">
+              <AllSchedulesModal embedded />
+            </div>
           )}
         </div>
       </div>
