@@ -49,8 +49,6 @@ import { historyBridge } from './services/historyBridge.js';
 import ToastHost, { toast } from './components/Toast.jsx';
 import { saveDraft, loadDraft, clearDraft, setResumeAfterAuth, hasResumeAfterAuth, clearResumeAfterAuth } from './services/draftBackup.js';
 import { evaluateConnection, validateGraph, denyReasonKey } from './services/connectionRules.js';
-import { fromShareGraph } from './services/shareGraph.js';
-import { publishTemplate } from './services/publicTemplateService.js';
 import './BuilderApp.css';
 
 /**
@@ -333,11 +331,6 @@ function BuilderAppInner() {
   }, [execW]);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [previewTplIndex, setPreviewTplIndex] = useState(null); // превью шаблона из левого списка
-  // Публикация схемы в галерею «От сообщества» (на модерацию)
-  const [publishOpen, setPublishOpen] = useState(false);
-  const [publishTitle, setPublishTitle] = useState('');
-  const [publishIndustry, setPublishIndustry] = useState('');
-  const [publishBusy, setPublishBusy] = useState(false);
   const [tooltipInfo, setTooltipInfo] = useState(null); // { defId, top, left }
   const tooltipHideTimerRef = useRef(null);
 
@@ -432,7 +425,7 @@ function BuilderAppInner() {
   const { zoom } = useViewport();   // живой % масштаба для зум-бара
 
   /* ────────── Persistence state (B-2.1) ────────── */
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const userId = user?.id || null;
   const [currentWorkflowId, setCurrentWorkflowId] = useState(null);
   const [workflowName, setWorkflowName] = useState('');
@@ -1248,54 +1241,11 @@ function BuilderAppInner() {
     setNodes(rfNodes);
     setEdges(rfEdges);
     setRunInput(rfNodes.find(n => n.data?.kind === 'trigger')?.data?.task || '');
-    setRunVars(triggerVarsOf(rfNodes));
     setSelectedNodeId(null);
     setExecLogs([]);
     setExecStatus('idle');
     setTimeout(() => fitView({ padding: 0.25, maxZoom: 1, duration: 400 }), 90);
   }, [nodes.length, pushHistory, setNodes, setEdges, fitView]);
-
-  /* ────────── Загрузка шаблона из галереи «От сообщества» ────────── */
-  const loadCommunityTemplate = useCallback((item) => {
-    try {
-      const rf = fromShareGraph(item.graph, EDGE_STYLE);
-      applyCode(rf.nodes, rf.edges);
-      setWorkflowName(item.title || '');
-      setCurrentWorkflowId(null);
-      setGalleryOpen(false);
-      toast.success(t('builder.gallery.loaded') || 'Шаблон сообщества загружен');
-    } catch {
-      toast.error(t('builder.gallery.loadErr') || 'Не удалось загрузить этот шаблон.');
-    }
-  }, [applyCode, t]);
-
-  /* ────────── Публикация схемы в сообщество (на модерацию) ────────── */
-  const openPublish = useCallback(() => {
-    if (!user) { openAuth(); return; }
-    if (nodes.length === 0) { showHintText(t('builder.publish.empty') || 'Сначала соберите схему.'); return; }
-    setPublishTitle(workflowName.trim() || '');
-    setPublishIndustry('');
-    setPublishOpen(true);
-  }, [user, nodes.length, workflowName, openAuth, showHintText, t]);
-
-  const doPublish = useCallback(async () => {
-    setPublishBusy(true);
-    try {
-      const res = await publishTemplate({
-        nodes, edges,
-        title: publishTitle,
-        industry: publishIndustry || null,
-        authorName: profile?.display_name || null,
-        autoApprove: !!profile?.is_admin,
-      });
-      setPublishOpen(false);
-      toast.success(res?.approved
-        ? (t('builder.publish.approved') || 'Опубликовано и сразу одобрено (вы администратор).')
-        : (t('builder.publish.sent') || 'Отправлено на модерацию — после проверки шаблон появится в галерее «От сообщества».'));
-    } catch (e) {
-      toast.error((t('builder.publish.err') || 'Не удалось опубликовать') + (e?.message ? ` (${e.message})` : ''));
-    } finally { setPublishBusy(false); }
-  }, [nodes, edges, publishTitle, publishIndustry, profile, t]);
 
   /* ────────── Selection ────────── */
   const onNodeClick = useCallback((event, node) => {
@@ -1690,15 +1640,6 @@ function BuilderAppInner() {
             aria-label={t('builder.allsched.openBtn') || 'Все автозапуски'}
           >
             <Icon name="calendar" size={14} strokeWidth={1.5} />
-          </button>
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
-            onClick={openPublish}
-            title={t('builder.publish.openBtn') || 'Опубликовать в сообщество'}
-            aria-label={t('builder.publish.openBtn') || 'Опубликовать в сообщество'}
-          >
-            <Icon name="users" size={14} strokeWidth={1.5} />
           </button>
           {/* Показать панель «Детали» — стоит ПЕРЕД сплитом, чтобы зелёная плашка
               осталась в самом правом краю ряда (требование референса). */}
@@ -2307,60 +2248,9 @@ function BuilderAppInner() {
       {galleryOpen && (
         <TemplateGallery
           onUseTemplate={loadTemplate}
-          onUseCommunity={loadCommunityTemplate}
           onScratch={startFromScratch}
           onClose={() => setGalleryOpen(false)}
         />
-      )}
-
-      {/* Публикация схемы в галерею «От сообщества» (на модерацию) */}
-      {publishOpen && (
-        <div className="builder-modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) setPublishOpen(false); }}>
-          <div className="builder-modal builder-modal--narrow" role="dialog" aria-modal="true">
-            <header className="builder-modal__header">
-              <h2 className="builder-modal__title">{t('builder.publish.title') || 'Опубликовать в сообщество'}</h2>
-              <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => setPublishOpen(false)} aria-label={t('common.close') || 'Закрыть'}>
-                <Icon name="close" size={14} strokeWidth={1.75} />
-              </button>
-            </header>
-            <p className="builder-modal__subtitle">
-              {t('builder.publish.lead') || 'Поделитесь схемой с другими. Личные данные (чат, почта, ключи) НЕ публикуются — только структура и инструкции. Появится в галерее после проверки.'}
-            </p>
-            <label className="builder-publish__field">
-              <span>{t('builder.publish.nameLabel') || 'Название'}</span>
-              <input
-                className="builder-name-modal__input"
-                value={publishTitle}
-                onChange={(e) => setPublishTitle(e.target.value)}
-                maxLength={80}
-                placeholder={t('builder.publish.namePh') || 'Например: Ответы клиентам магазина'}
-                autoFocus
-              />
-            </label>
-            <label className="builder-publish__field">
-              <span>{t('builder.publish.industryLabel') || 'Сфера'}</span>
-              <select className="builder-name-modal__input" value={publishIndustry} onChange={(e) => setPublishIndustry(e.target.value)}>
-                <option value="">{t('builder.publish.industryAny') || 'Не указывать'}</option>
-                {[
-                  ['store', 'Магазин'], ['services', 'Услуги'], ['content', 'Контент'],
-                  ['marketing', 'Маркетинг'], ['support', 'Поддержка'], ['realty', 'Недвижимость'],
-                  ['education', 'Образование'], ['hr', 'HR'], ['finance', 'Финансы'],
-                  ['local', 'Местные услуги'], ['personal', 'Личное'],
-                ].map(([val, lbl]) => (
-                  <option key={val} value={val}>{t(`builder.industry.${val}`) || lbl}</option>
-                ))}
-              </select>
-            </label>
-            <div className="builder-modal__footer">
-              <button type="button" className="builder-btn builder-btn--ghost" onClick={() => setPublishOpen(false)} disabled={publishBusy}>
-                {t('common.cancel') || 'Отмена'}
-              </button>
-              <button type="button" className="builder-btn builder-btn--primary" onClick={doPublish} disabled={publishBusy || !publishTitle.trim()}>
-                {publishBusy ? (t('builder.publish.sending') || 'Отправка…') : (t('builder.publish.submit') || 'Опубликовать')}
-              </button>
-            </div>
-          </div>
-        </div>
       )}
 
       {/* Превью одного шаблона (из левого списка «Шаблоны») с навигацией */}

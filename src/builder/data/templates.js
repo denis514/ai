@@ -19,7 +19,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'ux-audit',
-    industry: 'it',
     nameKey: 'builder.template.uxAudit.name',
     descKey: 'builder.template.uxAudit.desc',
     inputKey: 'builder.template.uxAudit.input',
@@ -51,7 +50,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'analytics',
-    industry: 'it',
     nameKey: 'builder.template.analytics.name',
     descKey: 'builder.template.analytics.desc',
     inputKey: 'builder.template.analytics.input',
@@ -83,7 +81,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'content',
-    industry: 'content',
     nameKey: 'builder.template.content.name',
     descKey: 'builder.template.content.desc',
     inputKey: 'builder.template.content.input',
@@ -117,7 +114,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'research',
-    industry: 'it',
     nameKey: 'builder.template.research.name',
     descKey: 'builder.template.research.desc',
     inputKey: 'builder.template.research.input',
@@ -150,7 +146,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'triage',
-    industry: 'support',
     nameKey: 'builder.template.triage.name',
     descKey: 'builder.template.triage.desc',
     inputKey: 'builder.template.triage.input',
@@ -184,7 +179,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'image-review',
-    industry: 'it',
     nameKey: 'builder.template.imageReview.name',
     descKey: 'builder.template.imageReview.desc',
     inputKey: 'builder.template.imageReview.input',
@@ -212,7 +206,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'refine-loop',
-    industry: 'content',
     nameKey: 'builder.template.refineLoop.name',
     descKey: 'builder.template.refineLoop.desc',
     inputKey: 'builder.template.refineLoop.input',
@@ -244,7 +237,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'competitor-radar',
-    industry: 'marketing',
     nameKey: 'builder.template.radar.name',
     descKey: 'builder.template.radar.desc',
     inputKey: 'builder.template.radar.input',
@@ -277,7 +269,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'webhook-lead',
-    industry: 'services',
     nameKey: 'builder.template.webhookLead.name',
     descKey: 'builder.template.webhookLead.desc',
     inputKey: 'builder.template.webhookLead.input',
@@ -304,7 +295,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'webhook-payment',
-    industry: 'store',
     nameKey: 'builder.template.webhookPayment.name',
     descKey: 'builder.template.webhookPayment.desc',
     inputKey: 'builder.template.webhookPayment.input',
@@ -331,7 +321,6 @@ export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   {
     id: 'webhook-review',
-    industry: 'store',
     nameKey: 'builder.template.webhookReview.name',
     descKey: 'builder.template.webhookReview.desc',
     inputKey: 'builder.template.webhookReview.input',
@@ -365,7 +354,6 @@ export const TEMPLATES = [
   /* Ответы клиентам — черновик вежливого ответа на сообщение */
   {
     id: 'client-replies',
-    industry: 'store',
     nameKey: 'builder.template.clientReplies.name',
     descKey: 'builder.template.clientReplies.desc',
     inputKey: 'builder.template.clientReplies.input',
@@ -382,7 +370,6 @@ export const TEMPLATES = [
   /* Напоминание о записи — текст напоминания → в Telegram */
   {
     id: 'booking-reminder',
-    industry: 'services',
     nameKey: 'builder.template.bookingReminder.name',
     descKey: 'builder.template.bookingReminder.desc',
     inputKey: 'builder.template.bookingReminder.input',
@@ -399,7 +386,6 @@ export const TEMPLATES = [
   /* Ответ на отзыв — тон + черновик ответа */
   {
     id: 'review-reply',
-    industry: 'services',
     nameKey: 'builder.template.reviewReply.name',
     descKey: 'builder.template.reviewReply.desc',
     inputKey: 'builder.template.reviewReply.input',
@@ -416,7 +402,6 @@ export const TEMPLATES = [
   /* Идеи для блога — веб-поиск трендов → план постов */
   {
     id: 'content-ideas',
-    industry: 'content',
     nameKey: 'builder.template.contentIdeas.name',
     descKey: 'builder.template.contentIdeas.desc',
     inputKey: 'builder.template.contentIdeas.input',
@@ -434,7 +419,6 @@ export const TEMPLATES = [
   /* Дайджест по теме — веб-поиск свежего → краткий обзор в Telegram */
   {
     id: 'topic-digest',
-    industry: 'marketing',
     nameKey: 'builder.template.topicDigest.name',
     descKey: 'builder.template.topicDigest.desc',
     inputKey: 'builder.template.topicDigest.input',
@@ -458,7 +442,6 @@ export const TEMPLATES = [
   /* Магазин: ответы на вопросы о заказе — Условие + 2 переменные */
   {
     id: 'order-replies',
-    industry: 'store',
     nameKey: 'builder.template.orderReplies.name',
     descKey: 'builder.template.orderReplies.desc',
     inputKey: 'builder.template.orderReplies.input',
@@ -482,7 +465,6 @@ export const TEMPLATES = [
   /* Отзывы: тон решает агент (Условие-агент) + 2 переменные */
   {
     id: 'review-sentiment',
-    industry: 'services',
     nameKey: 'builder.template.reviewSentiment.name',
     descKey: 'builder.template.reviewSentiment.desc',
     inputKey: 'builder.template.reviewSentiment.input',
@@ -506,7 +488,6 @@ export const TEMPLATES = [
   /* Контент-план с улучшением — Цикл + 2 переменные */
   {
     id: 'content-plan',
-    industry: 'content',
     nameKey: 'builder.template.contentPlan.name',
     descKey: 'builder.template.contentPlan.desc',
     inputKey: 'builder.template.contentPlan.input',
@@ -530,7 +511,6 @@ export const TEMPLATES = [
   /* Недвижимость: описание объекта из параметров — 3 переменные */
   {
     id: 'realty-listing',
-    industry: 'realty',
     nameKey: 'builder.template.realtyListing.name',
     descKey: 'builder.template.realtyListing.desc',
     inputKey: 'builder.template.realtyListing.input',
@@ -547,7 +527,6 @@ export const TEMPLATES = [
   /* Образование: проверка работы — Условие-агент + 2 переменные */
   {
     id: 'homework-check',
-    industry: 'education',
     nameKey: 'builder.template.homeworkCheck.name',
     descKey: 'builder.template.homeworkCheck.desc',
     inputKey: 'builder.template.homeworkCheck.input',
@@ -571,7 +550,6 @@ export const TEMPLATES = [
   /* HR: скрининг откликов — Условие + 2 переменные */
   {
     id: 'hr-screening',
-    industry: 'hr',
     nameKey: 'builder.template.hrScreening.name',
     descKey: 'builder.template.hrScreening.desc',
     inputKey: 'builder.template.hrScreening.input',
@@ -595,7 +573,6 @@ export const TEMPLATES = [
   /* Финансы (фриланс): счёт + напоминание — 3 переменные */
   {
     id: 'invoice-reminder',
-    industry: 'finance',
     nameKey: 'builder.template.invoiceReminder.name',
     descKey: 'builder.template.invoiceReminder.desc',
     inputKey: 'builder.template.invoiceReminder.input',
@@ -612,7 +589,6 @@ export const TEMPLATES = [
   /* Местные услуги: заявка с сайта (вебхук) — Условие + 2 переменные */
   {
     id: 'service-lead',
-    industry: 'local',
     nameKey: 'builder.template.serviceLead.name',
     descKey: 'builder.template.serviceLead.desc',
     inputKey: 'builder.template.serviceLead.input',

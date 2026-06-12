@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Icon from '../../../components/Icon.jsx';
-import { serializeForLocal } from '../../services/workflowSerializer.js';
+import { serializeForLocal, deserializeFromDb } from '../../services/workflowSerializer.js';
+import { getNodeDef } from '../../data/nodeTypes.js';
 import { validateGraph } from '../../services/connectionRules.js';
-import { toShareGraph, fromShareGraph } from '../../services/shareGraph.js';
 
 /**
  * CodePanel — прозрачный «код ↔ холст» для Agent Builder.
@@ -32,13 +32,46 @@ function toCode(nodes, edges) {
   };
 }
 
+/** Объект кода → React Flow nodes/edges (с валидацией). Бросает понятную ошибку. */
+function fromCode(obj, edgeStyle) {
+  if (!obj || typeof obj !== 'object') throw new Error('Нужен объект { nodes: [...], edges: [...] }');
+  if (!Array.isArray(obj.nodes)) throw new Error('Поле "nodes" должно быть массивом');
+  const dbNodes = obj.nodes.map((n, i) => {
+    if (!n || !n.type) throw new Error(`Узел #${i + 1}: нет поля "type"`);
+    if (!getNodeDef(n.type)) throw new Error(`Узел #${i + 1}: неизвестный тип "${n.type}"`);
+    return {
+      client_id: String(n.id || `n${i + 1}`),
+      def_id: n.type,
+      position_x: Number(n.x) || 0,
+      position_y: Number(n.y) || 0,
+      config: n.config || {},
+    };
+  });
+  const ids = new Set(dbNodes.map(n => n.client_id));
+  if (ids.size !== dbNodes.length) throw new Error('Повторяющиеся id узлов — id должны быть уникальны');
+  const edgesArr = Array.isArray(obj.edges) ? obj.edges : [];
+  const dbEdges = edgesArr.map((e, i) => {
+    if (!e || e.from == null || e.to == null) throw new Error(`Связь #${i + 1}: нужны поля "from" и "to"`);
+    if (String(e.from) === String(e.to)) throw new Error(`Связь #${i + 1}: узел не может быть связан сам с собой`);
+    if (!ids.has(String(e.from))) throw new Error(`Связь #${i + 1}: узел "${e.from}" не найден`);
+    if (!ids.has(String(e.to))) throw new Error(`Связь #${i + 1}: узел "${e.to}" не найден`);
+    return {
+      client_id: String(e.id || `e${i + 1}`),
+      source_client_id: String(e.from),
+      target_client_id: String(e.to),
+      label: e.label || null,
+      config: e.config || {},
+    };
+  });
+  return deserializeFromDb(dbNodes, dbEdges, edgeStyle);
+}
+
 export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
   const canvasCode = useMemo(() => JSON.stringify(toCode(nodes, edges), null, 2), [nodes, edges]);
   const [draft, setDraft] = useState(canvasCode);
   const [edited, setEdited] = useState(false);
   const [msg, setMsg] = useState(null); // { type: 'ok'|'err', text }
   const [copied, setCopied] = useState(false);
-  const [shared, setShared] = useState(false);
 
   // Пока пользователь не редактировал — код «живой» (следует за холстом).
   useEffect(() => { if (!edited) setDraft(canvasCode); }, [canvasCode, edited]);
@@ -52,23 +85,12 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
     catch { /* clipboard недоступен — игнорируем */ }
   };
 
-  // «Поделиться»: копируем безопасную версию кода (без личных данных и ключей).
-  const share = async () => {
-    const text = JSON.stringify(toShareGraph(nodes, edges), null, 2);
-    try {
-      await navigator.clipboard.writeText(text);
-      setShared(true);
-      setTimeout(() => setShared(false), 1600);
-      setMsg({ type: 'ok', text: t('builder.code.shareHint') || 'Код скопирован для отправки — личные данные (чат, почта) удалены. Получатель вставит его сюда и нажмёт «Собрать».' });
-    } catch { /* clipboard недоступен */ }
-  };
-
   const apply = () => {
     let obj;
     try { obj = JSON.parse(draft); }
     catch (e) { setMsg({ type: 'err', text: t('builder.code.badJson') + ' ' + e.message }); return; }
     let rf;
-    try { rf = fromShareGraph(obj, edgeStyle); }
+    try { rf = fromCode(obj, edgeStyle); }
     catch (e) { setMsg({ type: 'err', text: e.message }); return; }
     onApply(rf.nodes, rf.edges);
     setEdited(false);
@@ -117,10 +139,6 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
         <button type="button" className="builder-btn builder-btn--ghost" onClick={copy}>
           <Icon name={copied ? 'check' : 'clipboard'} size={14} strokeWidth={1.6} />
           {copied ? (t('builder.code.copied') || 'Скопировано') : (t('builder.code.copy') || 'Копировать')}
-        </button>
-        <button type="button" className="builder-btn builder-btn--ghost" onClick={share} title={t('builder.code.shareTitle') || 'Скопировать схему для другого пользователя (без личных данных)'}>
-          <Icon name={shared ? 'check' : 'send'} size={14} strokeWidth={1.6} />
-          {shared ? (t('builder.code.shared') || 'Скопировано') : (t('builder.code.share') || 'Поделиться')}
         </button>
         {edited && (
           <button type="button" className="builder-btn builder-btn--ghost" onClick={resetToCanvas}>
