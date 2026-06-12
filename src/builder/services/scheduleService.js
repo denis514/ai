@@ -21,10 +21,15 @@ function atDate(year, monthIndex, dom, hour, minute) {
   return new Date(Date.UTC(year, monthIndex, day, hour, minute, 0, 0));
 }
 
-function computeNext(freq, hour, minute, weekday, dayOfMonth, month) {
+function computeNext(freq, hour, minute, weekday, dayOfMonth, month, year) {
   const now = new Date();
   const n = new Date(now);
   n.setUTCSeconds(0, 0);
+  if (freq === 'once') {
+    // Конкретная дата+время. Год берём из year (UI), иначе текущий.
+    const y = year || now.getUTCFullYear();
+    return atDate(y, (month ?? 1) - 1, dayOfMonth ?? 1, hour, minute).toISOString();
+  }
   if (freq === 'minutes') {
     const step = Math.min(Math.max(minute || 1, 1), 59);
     n.setUTCMinutes(n.getUTCMinutes() + step);
@@ -175,13 +180,14 @@ export async function listRecentRuns(limit = 20) {
   }));
 }
 
-export async function createSchedule({ workflowId, frequency, hour, minute, weekday, dayOfMonth, month, tier, locale }) {
+export async function createSchedule({ workflowId, frequency, hour, minute, weekday, dayOfMonth, month, year, tier, locale }) {
   if (!supabase) throw new Error('backend_unavailable');
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('not_authenticated');
   const f = frequency || 'daily';
-  const dom = (f === 'monthly' || f === 'yearly') ? (dayOfMonth ?? 1) : null;
-  const mon = f === 'yearly' ? (month ?? 1) : null;
+  // day_of_month нужен для monthly/yearly И для once (для отображения даты).
+  const dom = (f === 'monthly' || f === 'yearly' || f === 'once') ? (dayOfMonth ?? 1) : null;
+  const mon = (f === 'yearly' || f === 'once') ? (month ?? 1) : null;
   const row = {
     workflow_id: workflowId,
     user_id: user.id,
@@ -196,7 +202,7 @@ export async function createSchedule({ workflowId, frequency, hour, minute, week
     tier: tier || 's',
     locale: locale || 'ru',
     enabled: true,
-    next_run_at: computeNext(f, hour ?? 9, minute ?? 0, weekday, dom, mon),
+    next_run_at: computeNext(f, hour ?? 9, minute ?? 0, weekday, dom, mon, year),
   };
   const { data, error } = await supabase.from('builder_schedules').insert(row).select().single();
   if (error) throw error;

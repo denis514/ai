@@ -135,11 +135,19 @@ Deno.serve(async (req) => {
       disabled++;
       continue;
     }
-    // Сдвигаем next_run_at СРАЗУ (до запуска), чтобы тик не продублировал запуск.
-    const next = computeNext(new Date(), s.frequency, s.hour, s.minute, s.weekday, s.day_of_month, s.month);
-    await admin.from('builder_schedules')
-      .update({ last_run_at: nowIso, next_run_at: next })
-      .eq('id', s.id);
+    // «Один раз»: после срабатывания НЕ двигаем next_run_at, а выключаем —
+    // иначе бы повторилось. Для повторяющихся — сдвигаем слот СРАЗУ (до запуска),
+    // чтобы тик не продублировал запуск.
+    if (s.frequency === 'once') {
+      await admin.from('builder_schedules')
+        .update({ last_run_at: nowIso, enabled: false })
+        .eq('id', s.id);
+    } else {
+      const next = computeNext(new Date(), s.frequency, s.hour, s.minute, s.weekday, s.day_of_month, s.month);
+      await admin.from('builder_schedules')
+        .update({ last_run_at: nowIso, next_run_at: next })
+        .eq('id', s.id);
+    }
 
     try {
       await fetch(EXECUTE_URL, {

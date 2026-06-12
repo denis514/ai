@@ -22,8 +22,9 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   const [hour, setHour] = useState(9);
   const [minute, setMinute] = useState(0);
   const [weekday, setWeekday] = useState(1);
-  const [dayOfMonth, setDayOfMonth] = useState(1); // 1..31 (monthly/yearly)
-  const [month, setMonth] = useState(1);           // 1..12 (yearly)
+  const [dayOfMonth, setDayOfMonth] = useState(1); // 1..31 (monthly/yearly/once)
+  const [month, setMonth] = useState(1);           // 1..12 (yearly/once)
+  const [year, setYear] = useState(new Date().getUTCFullYear()); // once
   const [busy, setBusy] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [pending, setPending] = useState(false); // показать экран подтверждения
@@ -77,7 +78,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   const confirmCreate = async () => {
     setBusy(true);
     try {
-      await createSchedule({ workflowId, frequency: freq, hour, minute, weekday, dayOfMonth, month, tier: 's', locale });
+      await createSchedule({ workflowId, frequency: freq, hour, minute, weekday, dayOfMonth, month, year, tier: 's', locale });
       setPending(false);
       toast.success(t('builder.schedule.created') || 'Автозапуск создан');
       refresh();
@@ -90,7 +91,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   const runsPerDay = () => {
     if (freq === 'minutes') return Math.floor(1440 / Math.max(minute, 1));
     if (freq === 'hourly') return 24;
-    if (freq === 'weekly' || freq === 'monthly' || freq === 'yearly') return null; // редкие
+    if (['weekly', 'monthly', 'yearly', 'once'].includes(freq)) return null; // редкие/разовые
     return 1; // daily
   };
 
@@ -100,7 +101,15 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   const WD = (t('builder.schedule.weekdays') || 'Вс,Пн,Вт,Ср,Чт,Пт,Сб').split(',');
   const MN = (t('builder.schedule.months') || 'Янв,Фев,Мар,Апр,Май,Июн,Июл,Авг,Сен,Окт,Ноя,Дек').split(',');
   const pad = (n) => String(n).padStart(2, '0');
+  // Для «Один раз»: выбранный момент и проверка, что он не в прошлом.
+  const onceDate = new Date(Date.UTC(year, month - 1, dayOfMonth, hour, minute, 0, 0));
+  const oncePast = freq === 'once' && onceDate.getTime() <= Date.now();
   const fmtFreq = (s) => {
+    if (s.frequency === 'once') {
+      const d = s.next_run_at ? new Date(s.next_run_at)
+        : new Date(Date.UTC(s.year || new Date().getUTCFullYear(), (s.month ?? 1) - 1, s.day_of_month ?? 1, s.hour ?? 0, s.minute ?? 0));
+      return `${d.getUTCDate()} ${MN[d.getUTCMonth()] || ''} ${d.getUTCFullYear()} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} UTC`;
+    }
     if (s.frequency === 'minutes') return `${(t('builder.schedule.everyFmt') || 'Каждые {n} мин').replace('{n}', s.minute)}`;
     if (s.frequency === 'hourly') return `${t('builder.schedule.hourly') || 'Ежечасно'} :${pad(s.minute)}`;
     if (s.frequency === 'weekly') return `${WD[s.weekday ?? 1]} ${pad(s.hour)}:${pad(s.minute)} UTC`;
@@ -111,6 +120,12 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
 
   // Конкретное пояснение для выбранной частоты + пример ближайших запусков.
   const helpText = () => {
+    if (freq === 'once') {
+      return (t('builder.schedule.helpOnce')
+        || 'Один запуск в указанную дату и время ({d} {mon} {y} в {h}:{m} UTC). После выполнения автозапуск выключится сам.')
+        .replaceAll('{d}', String(dayOfMonth)).replaceAll('{mon}', MN[month - 1] || '').replaceAll('{y}', String(year))
+        .replaceAll('{h}', pad(hour)).replaceAll('{m}', pad(minute));
+    }
     if (freq === 'minutes') {
       return (t('builder.schedule.helpMinutes')
         || 'Запуск каждые {n} минут (минимум 1). ⚠️ Очень частые запуски быстро тратят токены на вашем ключе — для теста ставьте на паузу.')
@@ -162,6 +177,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
           {/* Частота — плитки */}
           <div className="builder-sched-pills" role="tablist" aria-label={t('builder.schedule.freq') || 'Частота'}>
             {[
+              ['once', t('builder.schedule.once') || 'Один раз'],
               ['minutes', t('builder.schedule.minutes') || 'Минуты'],
               ['hourly', t('builder.schedule.hourly') || 'Час'],
               ['daily', t('builder.schedule.daily') || 'День'],
@@ -191,8 +207,17 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
             </div>
           )}
 
-          {/* Месяцы — чипы (yearly) */}
-          {freq === 'yearly' && (
+          {/* Год — для разового запуска */}
+          {freq === 'once' && (
+            <div className="builder-sched-time">
+              <span>{t('builder.schedule.year') || 'Год'}</span>
+              <input type="number" min={new Date().getUTCFullYear()} max={new Date().getUTCFullYear() + 10} value={year} aria-label={t('builder.schedule.year') || 'Год'}
+                onChange={(e) => setYear(Math.max(2020, Number(e.target.value) || new Date().getUTCFullYear()))} className="builder-sched-time__year" />
+            </div>
+          )}
+
+          {/* Месяцы — чипы (yearly / once) */}
+          {(freq === 'yearly' || freq === 'once') && (
             <div className="builder-sched-months">
               {MN.map((m, i) => (
                 <button
@@ -205,8 +230,8 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
             </div>
           )}
 
-          {/* Число месяца — мини-календарь 1..31 (monthly/yearly) */}
-          {(freq === 'monthly' || freq === 'yearly') && (
+          {/* Число месяца — мини-календарь 1..31 (monthly/yearly/once) */}
+          {(freq === 'monthly' || freq === 'yearly' || freq === 'once') && (
             <div className="builder-sched-grid" role="grid" aria-label={t('builder.schedule.dayOfMonth') || 'Число месяца'}>
               {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
                 <button
@@ -223,23 +248,23 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
           {freq === 'minutes' ? (
             <div className="builder-sched-time">
               <span>{t('builder.schedule.everyLabel') || 'Каждые'}</span>
-              <input type="number" min="1" max="59" value={minute}
+              <input type="number" min="1" max="59" value={minute} aria-label={t('builder.schedule.everyN') || 'Интервал (мин)'}
                 onChange={(e) => setMinute(Math.min(59, Math.max(1, Number(e.target.value) || 1)))} />
               <span>{t('builder.schedule.minUnit') || 'мин'}</span>
             </div>
           ) : freq === 'hourly' ? (
             <div className="builder-sched-time">
               <span>{t('builder.schedule.atMinute') || 'на минуте'}</span>
-              <input type="number" min="0" max="59" value={minute}
+              <input type="number" min="0" max="59" value={minute} aria-label={t('builder.schedule.minute') || 'Минута'}
                 onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
             </div>
           ) : (
             <div className="builder-sched-time">
               <span>{t('builder.schedule.atTime') || 'в'}</span>
-              <input type="number" min="0" max="23" value={hour}
+              <input type="number" min="0" max="23" value={hour} aria-label={t('builder.schedule.hour') || 'Час (UTC)'}
                 onChange={(e) => setHour(Math.min(23, Math.max(0, Number(e.target.value) || 0)))} />
               <span className="builder-sched-time__colon">:</span>
-              <input type="number" min="0" max="59" value={minute}
+              <input type="number" min="0" max="59" value={minute} aria-label={t('builder.schedule.minute') || 'Минута'}
                 onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
               <span className="builder-sched-time__utc">UTC</span>
             </div>
@@ -273,11 +298,18 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
             <div className="builder-schedule__confirm builder-schedule__row--full">
               <div className="builder-schedule__confirm-title">
                 <Icon name="clock" size={14} strokeWidth={1.7} />
-                <span>{(t('builder.schedule.confirmFreq') || 'Запуск: {f}').replace('{f}', fmtFreq({ frequency: freq, hour, minute, weekday, day_of_month: dayOfMonth, month }))}</span>
+                <span>{(t('builder.schedule.confirmFreq') || 'Запуск: {f}').replace('{f}', fmtFreq({ frequency: freq, hour, minute, weekday, day_of_month: dayOfMonth, month, year }))}</span>
               </div>
               <p className="builder-schedule__confirm-warn">
-                {t('builder.schedule.confirmWarn') || 'Схема будет запускаться сама на сервере и тратить токены на вашем ключе при каждом запуске.'}
+                {freq === 'once'
+                  ? (t('builder.schedule.confirmWarnOnce') || 'Запустится один раз в указанное время и потратит токены на вашем ключе, затем автозапуск выключится сам.')
+                  : (t('builder.schedule.confirmWarn') || 'Схема будет запускаться сама на сервере и тратить токены на вашем ключе при каждом запуске.')}
               </p>
+              {oncePast && (
+                <p className="builder-schedule__confirm-runs is-high">
+                  {t('builder.schedule.oncePast') || '⚠️ Эта дата уже прошла — запуск произойдёт сразу же. Выберите будущую дату.'}
+                </p>
+              )}
               {runsPerDay() != null && (
                 <p className={`builder-schedule__confirm-runs ${runsPerDay() >= 48 ? 'is-high' : ''}`}>
                   {(t('builder.schedule.confirmRuns') || '≈ {n} запусков в день').replace('{n}', String(runsPerDay()))}
@@ -285,7 +317,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
                 </p>
               )}
               <div className="builder-schedule__confirm-actions">
-                <button type="button" className="builder-btn builder-btn--primary" onClick={confirmCreate} disabled={busy}>
+                <button type="button" className="builder-btn builder-btn--primary" onClick={confirmCreate} disabled={busy || oncePast}>
                   <Icon name="check" size={14} strokeWidth={1.75} />
                   <span>{t('builder.schedule.confirmYes') || 'Да, включить автозапуск'}</span>
                 </button>

@@ -66,6 +66,11 @@ export default function AllSchedulesModal({ onClose, embedded = false }) {
   const MN = (t('builder.schedule.months') || 'Янв,Фев,Мар,Апр,Май,Июн,Июл,Авг,Сен,Окт,Ноя,Дек').split(',');
   const pad = (n) => String(n).padStart(2, '0');
   const fmtFreq = (s) => {
+    if (s.frequency === 'once') {
+      const d = s.next_run_at ? new Date(s.next_run_at)
+        : new Date(Date.UTC(new Date().getUTCFullYear(), (s.month ?? 1) - 1, s.day_of_month ?? 1, s.hour ?? 0, s.minute ?? 0));
+      return `${d.getUTCDate()} ${MN[d.getUTCMonth()] || ''} ${d.getUTCFullYear()} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} UTC`;
+    }
     if (s.frequency === 'minutes') return (t('builder.schedule.everyFmt') || 'Каждые {n} мин').replace('{n}', s.minute);
     if (s.frequency === 'hourly') return `${t('builder.schedule.hourly') || 'Ежечасно'} :${pad(s.minute)}`;
     if (s.frequency === 'weekly') return `${WD[s.weekday ?? 1]} ${pad(s.hour)}:${pad(s.minute)} UTC`;
