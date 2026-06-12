@@ -59,7 +59,7 @@ function MonthCalendar({ viewY, viewM, onView, sel, onPick, monthsFull, dows, to
  *
  * Время — в UTC (подписано), чтобы совпадало с серверным cron. MVP-просто.
  */
-export default function ScheduleModal({ workflowId, workflowName, locale, onClose }) {
+export default function ScheduleModal({ workflowId, workflowName, locale, shifted = false, onClose }) {
   const t = useT();
   const [items, setItems] = useState(null);
   const [freq, setFreq] = useState('daily');
@@ -227,16 +227,16 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
   };
 
   return (
-    <div className="builder-schedule-pop-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose?.(); }}>
-      <div className="builder-modal builder-schedule builder-schedule--pop" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
-        <header className="builder-modal__header">
-          <h2 className="builder-modal__title">
-            <Icon name="clock" size={16} strokeWidth={1.6} /> {t('builder.schedule.title') || 'Автозапуск по расписанию'}
-          </h2>
-          <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={onClose} aria-label={t('common.close') || 'Закрыть'}>
-            <Icon name="close" size={14} strokeWidth={1.75} />
-          </button>
-        </header>
+    <aside className={`builder-sidepanel builder-sidepanel--schedule ${shifted ? 'is-shifted' : ''}`}
+      role="dialog" aria-label={t('builder.schedule.title') || 'Автозапуск по расписанию'}>
+      <div className="builder-sidebar__header">
+        <span><Icon name="clock" size={15} strokeWidth={1.6} /> {t('builder.schedule.title') || 'Автозапуск по расписанию'}</span>
+        <button type="button" className="builder-panel-collapse" onClick={onClose}
+          title={t('common.close') || 'Закрыть'} aria-label={t('common.close') || 'Закрыть'}>
+          <Icon name="panel-right" size={15} strokeWidth={1.6} />
+        </button>
+      </div>
+      <div className="builder-sidebar__body">
 
         <p className="builder-schedule__lead">
           {(t('builder.schedule.lead') || 'Схема «{name}» будет запускаться сама на сервере — даже когда компьютер выключен.').replace('{name}', workflowName || '—')}
@@ -442,6 +442,6 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
           )}
         </div>
       </div>
-    </div>
+    </aside>
   );
 }

@@ -5562,7 +5562,7 @@
 .builder-app .builder-tg-help__link svg { flex: 0 0 auto; }
 
 /* ── Визуальный пикер расписания (стиль Apple Reminders) ──────────────────── */
-.builder-app .builder-sched { display: flex; flex-direction: column; gap: 12px; }
+.builder-app .builder-sched { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
 
 /* Частота — плитки */
 .builder-app .builder-sched-pills {
@@ -5721,3 +5721,35 @@
 .builder-app .builder-sched-clock__col input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .builder-app .builder-sched-clock__unit { font-size: 13px; color: var(--text-dim); }
 .builder-app .builder-sched-clock__utc { font-size: 11px; color: var(--text-muted); padding-bottom: 14px; }
+
+/* ── Автозапуск как правая стеклянная панель (в стиле .builder-sidebar) ────── */
+.builder-app .builder-sidepanel {
+  position: absolute;
+  top: 76px;
+  right: 16px;
+  bottom: 16px;
+  width: 360px;
+  max-width: calc(100% - 32px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  min-width: 0;
+  box-shadow: 0 20px 60px rgba(15, 15, 15, 0.16), 0 2px 8px rgba(15, 15, 15, 0.04);
+  z-index: 6;
+  animation: builder-sidepanel-in .18s ease;
+}
+@keyframes builder-sidepanel-in {
+  from { opacity: 0; transform: translateX(8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+/* Когда открыты «Детали» (280px @ right:16) — встаём слева от них, не перекрывая. */
+.builder-app .builder-sidepanel.is-shifted {
+  right: calc(16px + 280px + 12px);
+}
+@media (max-width: 760px) {
+  .builder-app .builder-sidepanel,
+  .builder-app .builder-sidepanel.is-shifted { right: 16px; left: 16px; width: auto; }
+}

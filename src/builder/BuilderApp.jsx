@@ -2271,6 +2271,17 @@ function BuilderAppInner() {
           </ConsoleWindow>
         )}
 
+        {/* Автозапуск — правая панель (стыкуется рядом с «Деталями») */}
+        {scheduleOpen && currentWorkflowId && (
+          <ScheduleModal
+            workflowId={currentWorkflowId}
+            workflowName={workflowName}
+            locale={locale}
+            shifted={sidebarOpen}
+            onClose={() => setScheduleOpen(false)}
+          />
+        )}
+
       </div>
 
       {/* Template Gallery modal */}
@@ -2480,15 +2491,6 @@ function BuilderAppInner() {
         />
       )}
 
-      {/* Schedule modal — автозапуск по расписанию (серверный планировщик) */}
-      {scheduleOpen && currentWorkflowId && (
-        <ScheduleModal
-          workflowId={currentWorkflowId}
-          workflowName={workflowName}
-          locale={locale}
-          onClose={() => setScheduleOpen(false)}
-        />
-      )}
 
       {/* Auth modal — Builder рендерится вместо Atlas, поэтому свой инстанс */}
       {authOpen && <AuthModal onClose={() => { setAuthOpen(false); if (!user) clearResumeAfterAuth(); }} />}
