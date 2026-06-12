@@ -808,12 +808,13 @@
         "prompt": "You are a friendly assistant for a small-business owner. Given a customer's message, write a short, warm, clear reply: thank them, answer the point, suggest a next step. No corporate jargon."
       },
       "bookingReminder": {
-        "start": "You're a salon receptionist. Tomorrow at 3:00 PM, client Anna has a haircut appointment. Write a friendly reminder: confirm the date and time, mention the address and offer to reschedule if it's inconvenient.",
+        "start": "You're a salon receptionist. Client {{client_name}} has an appointment {{datetime}} at {{address}}. Write a friendly reminder: confirm the date and time, mention the address and offer to reschedule if it's inconvenient.",
         "name": "Booking reminder",
         "desc": "Name and time, a ready reminder to Telegram.",
         "input": "Client name and appointment time",
         "output": "A reminder to Telegram",
-        "prompt": "Write a short, friendly appointment reminder: name, date and time, a gentle ask to confirm or reschedule. Warm tone, no formality."
+        "prompt": "Write a short friendly appointment reminder for {{client_name}}: date and time {{datetime}}, address {{address}}. Gently ask to confirm or reschedule. Warm tone, no formality.",
+        "vars": "[{\"k\":\"client_name\",\"v\":\"Anna\"},{\"k\":\"datetime\",\"v\":\"tomorrow at 3:00 PM\"},{\"k\":\"address\",\"v\":\"12 Garden St\"}]"
       },
       "reviewReply": {
         "start": "A review came in: “Waited a long time for delivery, but the product is great, thanks.” Write a warm reply: thank them for rating the product, gently apologize for the wait and signal that you're improving delivery speed.",
@@ -832,12 +833,13 @@
         "prompt": "Find fresh trends on the topic via web search. Propose 5 post ideas: a catchy title + one line on what the post covers. Plain language, for a general audience."
       },
       "topicDigest": {
-        "start": "You compile a weekly roundup for your team on “AI in marketing”. Find this week's news and cases, pick the 5 most useful, and add a one-line “why it matters” and a link to each.",
+        "start": "You compile a roundup for your team on “{{topic}}”. Find this week's news and cases, pick the {{count}} most useful, and add a one-line “why it matters” and a link to each.",
         "name": "Topic digest",
         "desc": "A topic, a short fresh recap to Telegram.",
         "input": "A topic to follow",
         "output": "A short recap to Telegram",
-        "prompt": "Find the freshest and most important on the topic via web search. Build a short digest: 3–5 plain-language bullets, each one sentence. No fluff."
+        "prompt": "Find the freshest and most important on “{{topic}}” via web search. Build a short digest: {{count}} plain-language bullets, each one sentence, with a link. No fluff.",
+        "vars": "[{\"k\":\"topic\",\"v\":\"AI in marketing\"},{\"k\":\"count\",\"v\":\"5\"}]"
       },
       "orderReplies": {
         "name": "Order question replies",

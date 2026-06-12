@@ -808,12 +808,13 @@
         "prompt": "Olet pienyrittäjän ystävällinen apuri. Kirjoita asiakkaan viestiin lyhyt, lämmin ja selkeä vastaus: kiitä, vastaa asiaan, ehdota seuraava askel. Ei virkakieltä."
       },
       "bookingReminder": {
-        "start": "Olet salongin vastaanottovirkailija. Huomenna klo 15:00 asiakkaalla Annalla on hiustenleikkuuaika. Kirjoita ystävällinen muistutus: vahvista päivä ja aika, mainitse osoite ja tarjoa ajan siirtoa, jos se ei sovi.",
+        "start": "Olet salongin vastaanottovirkailija. Asiakkaalla {{client_name}} on varaus {{datetime}} osoitteessa {{address}}. Kirjoita ystävällinen muistutus: vahvista päivä ja aika, mainitse osoite ja tarjoa ajan siirtoa, jos se ei sovi.",
         "name": "Varausmuistutus",
         "desc": "Nimi ja aika, valmis muistutus Telegramiin.",
         "input": "Asiakkaan nimi ja varausaika",
         "output": "Muistutus Telegramiin",
-        "prompt": "Kirjoita lyhyt, ystävällinen muistutus varauksesta: nimi, päivä ja aika, lempeä pyyntö vahvistaa tai siirtää. Lämmin sävy, ei muodollisuutta."
+        "prompt": "Kirjoita lyhyt ystävällinen muistutus varauksesta asiakkaalle {{client_name}}: päivä ja aika {{datetime}}, osoite {{address}}. Pyydä lempeästi vahvistamaan tai siirtämään. Lämmin sävy, ei muodollisuutta.",
+        "vars": "[{\"k\":\"client_name\",\"v\":\"Anna\"},{\"k\":\"datetime\",\"v\":\"huomenna klo 15:00\"},{\"k\":\"address\",\"v\":\"Puutarhakatu 12\"}]"
       },
       "reviewReply": {
         "start": "Saapui arvostelu: ”Odotin toimitusta kauan, mutta tuote on loistava, kiitos.” Kirjoita lämmin vastaus: kiitä tuotteen arviosta, pahoittele hienovaraisesti odotusta ja anna ymmärtää, että parannatte toimitusnopeutta.",
@@ -832,12 +833,13 @@
         "prompt": "Etsi tuoreet trendit aiheesta verkkohaulla. Ehdota 5 postausideaa: tarttuva otsikko + yksi rivi siitä, mistä postaus kertoo. Selkokielellä, tavalliselle yleisölle."
       },
       "topicDigest": {
-        "start": "Kokoat tiimille viikoittaisen katsauksen aiheesta ”tekoäly markkinoinnissa”. Etsi viikon uutiset ja caset, valitse 5 hyödyllisintä ja lisää kuhunkin yhden rivin ”miksi tämä on tärkeää” ja linkki.",
+        "start": "Kokoat tiimille katsauksen aiheesta ”{{topic}}”. Etsi viikon uutiset ja caset, valitse {{count}} hyödyllisintä ja lisää kuhunkin yhden rivin ”miksi tämä on tärkeää” ja linkki.",
         "name": "Aihekooste",
         "desc": "Aihe, lyhyt tuore kooste Telegramiin.",
         "input": "Seurattava aihe",
         "output": "Lyhyt kooste Telegramiin",
-        "prompt": "Etsi tuorein ja tärkein aiheesta verkkohaulla. Tee lyhyt kooste: 3–5 selkokielistä kohtaa, kukin yksi lause. Ei täytettä."
+        "prompt": "Etsi tuorein ja tärkein aiheesta ”{{topic}}” verkkohaulla. Tee lyhyt kooste: {{count}} selkokielistä kohtaa, kukin yksi lause, linkin kanssa. Ei täytettä.",
+        "vars": "[{\"k\":\"topic\",\"v\":\"tekoäly markkinoinnissa\"},{\"k\":\"count\",\"v\":\"5\"}]"
       },
       "orderReplies": {
         "name": "Vastaukset tilauskysymyksiin",
