@@ -450,7 +450,7 @@ export const TEMPLATES = [
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.orderReplies.promptMain' } },
-      { defId: 'logic-condition', position: { x: 100, y: 330 }, dataOverride: { operator: 'contains', condValue: 'СРОЧНО' } },
+      { defId: 'logic-condition', position: { x: 100, y: 330 }, dataOverride: { operator: 'contains', condValue: 'URGENT' } },
       { defId: 'output-telegram', position: { x: 360, y: 330 } },
       { defId: 'output-text', position: { x: 100, y: 470 } },
     ],
@@ -473,7 +473,7 @@ export const TEMPLATES = [
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.reviewSentiment.prompt' } },
-      { defId: 'logic-condition-agent', position: { x: 100, y: 330 }, dataOverride: { question: 'Помечен ли этот текст словом НЕГАТИВ?' } },
+      { defId: 'logic-condition-agent', position: { x: 100, y: 330 }, dataOverride: { question: 'Помечен ли этот текст словом NEGATIVE?' } },
       { defId: 'output-telegram', position: { x: 360, y: 330 } },
       { defId: 'output-text', position: { x: 100, y: 470 } },
     ],
@@ -535,7 +535,7 @@ export const TEMPLATES = [
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.homeworkCheck.prompt' } },
-      { defId: 'logic-condition-agent', position: { x: 100, y: 330 }, dataOverride: { question: 'Помечена ли работа словом ЗАЧЁТ?' } },
+      { defId: 'logic-condition-agent', position: { x: 100, y: 330 }, dataOverride: { question: 'Помечена ли работа словом PASS?' } },
       { defId: 'output-text', position: { x: 360, y: 330 } },
       { defId: 'output-text', position: { x: 100, y: 470 } },
     ],
@@ -558,7 +558,7 @@ export const TEMPLATES = [
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.hrScreening.prompt' } },
-      { defId: 'logic-condition', position: { x: 100, y: 330 }, dataOverride: { operator: 'contains', condValue: 'ПОДХОДИТ' } },
+      { defId: 'logic-condition', position: { x: 100, y: 330 }, dataOverride: { operator: 'contains', condValue: 'FIT' } },
       { defId: 'output-text', position: { x: 360, y: 330 } },
       { defId: 'output-text', position: { x: 100, y: 470 } },
     ],
@@ -597,7 +597,7 @@ export const TEMPLATES = [
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.serviceLead.prompt' } },
-      { defId: 'logic-condition', position: { x: 100, y: 330 }, dataOverride: { operator: 'contains', condValue: 'ГОРЯЧИЙ' } },
+      { defId: 'logic-condition', position: { x: 100, y: 330 }, dataOverride: { operator: 'contains', condValue: 'HOT' } },
       { defId: 'output-telegram', position: { x: 360, y: 330 } },
       { defId: 'output-text', position: { x: 100, y: 470 } },
     ],

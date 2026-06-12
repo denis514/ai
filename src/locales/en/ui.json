@@ -791,7 +791,7 @@
         "prompt": "This is a new website lead. Briefly assess it: how 'hot' it is (high/medium/low interest), what the client wants and the next step. Be concise, use bullet points."
       },
       "webhookPayment": {
-        "start": "Payment for order #2048 (₽3,500) just went through from a returning customer. Write a short, warm confirmation: thank them, say what's next (timing, tracking) and leave a good impression.",
+        "start": "Payment for order #2048 (€3,500) just went through from a returning customer. Write a short, warm confirmation: thank them, say what's next (timing, tracking) and leave a good impression.",
         "name": "Payment, email to client",
         "desc": "Triggered by a webhook on payment: composes and sends the client a confirmation email.",
         "input": "Payment data (item, amount, client name and e-mail), sent by the payment service via webhook.",
@@ -853,9 +853,9 @@
         "desc": "A customer asks about an order — you draft a polite reply; urgent cases ping Telegram.",
         "input": "Order number and the customer's question",
         "output": "A ready reply; if urgent, a Telegram alert",
-        "start": "You're an online-store assistant. About order #{{order_id}} the customer writes: “{{question}}”. Sort it out and reply politely and to the point: confirm the order, explain the delivery status, offer help. If the case is urgent (delay, defect, complaint), start the reply with the word СРОЧНО so we loop in a manager right away.",
+        "start": "You're an online-store assistant. About order #{{order_id}} the customer writes: “{{question}}”. Sort it out and reply politely and to the point: confirm the order, explain the delivery status, offer help. If the case is urgent (delay, defect, complaint), start the reply with the word URGENT so we loop in a manager right away.",
         "vars": "[{\"k\":\"order_id\",\"v\":\"1024\"},{\"k\":\"question\",\"v\":\"Ordered 5 days ago, where is my parcel?\"}]",
-        "promptMain": "You're a store assistant. Read the customer's question about order #{{order_id}}. Write a short polite reply: confirm the order, explain the delivery status, offer help. If the case is urgent (delay, defect, complaint), make the very first line a single word: СРОЧНО."
+        "promptMain": "You're a store assistant. Read the customer's question about order #{{order_id}}. Write a short polite reply: confirm the order, explain the delivery status, offer help. If the case is urgent (delay, defect, complaint), make the very first line a single word: URGENT."
       },
       "reviewSentiment": {
         "name": "Review replies",
@@ -864,7 +864,7 @@
         "output": "A ready reply; negatives ping Telegram",
         "start": "You handle the reputation of “{{venue}}”. A review came in: “{{review_text}}”. Decide the tone and write a polite public reply. If the review is negative, we want to know right away.",
         "vars": "[{\"k\":\"venue\",\"v\":\"Morning Coffee\"},{\"k\":\"review_text\",\"v\":\"Delivery was two days late, but the coffee is great\"}]",
-        "prompt": "You handle the reputation of “{{venue}}”. Read the review. On the first line state the tone as one word: НЕГАТИВ or ПОЗИТИВ. Then write a short polite public reply: thank them; if negative, gently apologize and offer a fix."
+        "prompt": "You handle the reputation of “{{venue}}”. Read the review. On the first line state the tone as one word: NEGATIVE or POSITIVE. Then write a short polite public reply: thank them; if negative, gently apologize and offer a fix."
       },
       "contentPlan": {
         "name": "Content plan with polish",
@@ -892,7 +892,7 @@
         "output": "Grade and feedback",
         "start": "You're a teacher. A student submitted work: “{{student_answer}}”. Grading criteria: {{criteria}}. Check the work, give a pass or fail and kindly explain what's good and what to improve.",
         "vars": "[{\"k\":\"student_answer\",\"v\":\"The capital of France is Paris, home of the Eiffel Tower\"},{\"k\":\"criteria\",\"v\":\"completeness and correctness\"}]",
-        "prompt": "You're a kind teacher. Check the student's work against the criteria: {{criteria}}. First line, one word: ЗАЧЁТ (pass) or НЕЗАЧЁТ (fail). Then gently explain what's good and what to improve."
+        "prompt": "You're a kind teacher. Check the student's work against the criteria: {{criteria}}. First line, one word: PASS (pass) or FAIL (fail). Then gently explain what's good and what to improve."
       },
       "hrScreening": {
         "name": "Application screening",
@@ -901,7 +901,7 @@
         "output": "Summary and verdict",
         "start": "You're a hiring assistant. An application came in: “{{resume}}”. Job requirements: {{requirements}}. Write a short summary and decide whether the candidate is a fit.",
         "vars": "[{\"k\":\"resume\",\"v\":\"3 years in sales, English B2, CRM experience\"},{\"k\":\"requirements\",\"v\":\"2+ years in sales, English, CRM\"}]",
-        "prompt": "You're a hiring assistant. Compare the résumé with the requirements: {{requirements}}. Write a short summary (experience, skills). First line, one word: ПОДХОДИТ (fit) or НЕ ПОДХОДИТ (not a fit). Then 1–2 sentences why."
+        "prompt": "You're a hiring assistant. Compare the résumé with the requirements: {{requirements}}. Write a short summary (experience, skills). First line, one word: FIT (fit) or REJECT (not a fit). Then 1–2 sentences why."
       },
       "invoiceReminder": {
         "name": "Invoice and payment reminder",
@@ -919,7 +919,7 @@
         "output": "First reply; a hot lead pings Telegram",
         "start": "You handle website requests. A request came in: {{name}} writes “{{request}}”. Judge how “hot” this customer is (ready to book soon) and draft a polite first reply.",
         "vars": "[{\"k\":\"name\",\"v\":\"Ivan\"},{\"k\":\"request\",\"v\":\"Need a flat cleaning this Saturday, urgent\"}]",
-        "prompt": "You handle requests. Judge the request from {{name}}: “{{request}}”. If the customer is clearly ready to book soon (urgent, a specific date, a budget), make the first line one word: ГОРЯЧИЙ. Then draft a short polite first reply with a clarifying question."
+        "prompt": "You handle requests. Judge the request from {{name}}: “{{request}}”. If the customer is clearly ready to book soon (urgent, a specific date, a budget), make the first line one word: HOT. Then draft a short polite first reply with a clarifying question."
       }
     },
     "tooltip": {

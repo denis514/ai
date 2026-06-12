@@ -791,7 +791,7 @@
         "prompt": "Tämä on uusi sivustoliidi. Arvioi se lyhyesti: kuinka 'kuuma' se on (korkea/keskitaso/matala kiinnostus), mitä asiakas haluaa ja mikä on seuraava askel. Ole tiivis, käytä luettelomerkkejä."
       },
       "webhookPayment": {
-        "start": "Tilauksen #2048 maksu (3 500 ₽) meni juuri läpi vakioasiakkaalta. Kirjoita lyhyt, lämmin vahvistus: kiitä, kerro mitä seuraavaksi (aikataulu, seuranta) ja jätä hyvä vaikutelma.",
+        "start": "Tilauksen #2048 maksu (3 500 €) meni juuri läpi vakioasiakkaalta. Kirjoita lyhyt, lämmin vahvistus: kiitä, kerro mitä seuraavaksi (aikataulu, seuranta) ja jätä hyvä vaikutelma.",
         "name": "Maksu, sähköposti asiakkaalle",
         "desc": "Käynnistyy webhookista maksusta: laatii ja lähettää asiakkaalle vahvistussähköpostin.",
         "input": "Maksun tiedot (tuote, summa, asiakkaan nimi ja sähköposti), maksupalvelu lähettää webhookilla.",
@@ -853,9 +853,9 @@
         "desc": "Asiakas kysyy tilauksesta — laadit kohteliaan vastauksen; kiireelliset ilmoittavat Telegramiin.",
         "input": "Tilausnumero ja asiakkaan kysymys",
         "output": "Valmis vastaus; kiireellisestä ilmoitus Telegramiin",
-        "start": "Olet verkkokaupan avustaja. Tilauksesta #{{order_id}} asiakas kirjoittaa: ”{{question}}”. Selvitä asia ja vastaa kohteliaasti ja ytimekkäästi: vahvista tilaus, selitä toimituksen tila, tarjoa apua. Jos tapaus on kiireellinen (viive, vika, reklamaatio), aloita vastaus sanalla СРОЧНО, niin otamme heti myyjän mukaan.",
+        "start": "Olet verkkokaupan avustaja. Tilauksesta #{{order_id}} asiakas kirjoittaa: ”{{question}}”. Selvitä asia ja vastaa kohteliaasti ja ytimekkäästi: vahvista tilaus, selitä toimituksen tila, tarjoa apua. Jos tapaus on kiireellinen (viive, vika, reklamaatio), aloita vastaus sanalla URGENT, niin otamme heti myyjän mukaan.",
         "vars": "[{\"k\":\"order_id\",\"v\":\"1024\"},{\"k\":\"question\",\"v\":\"Tilasin 5 päivää sitten, missä paketti on?\"}]",
-        "promptMain": "Olet kaupan avustaja. Lue asiakkaan kysymys tilauksesta #{{order_id}}. Kirjoita lyhyt kohtelias vastaus: vahvista tilaus, selitä toimituksen tila, tarjoa apua. Jos tapaus on kiireellinen (viive, vika, reklamaatio), tee ensimmäisestä rivistä yksi sana: СРОЧНО."
+        "promptMain": "Olet kaupan avustaja. Lue asiakkaan kysymys tilauksesta #{{order_id}}. Kirjoita lyhyt kohtelias vastaus: vahvista tilaus, selitä toimituksen tila, tarjoa apua. Jos tapaus on kiireellinen (viive, vika, reklamaatio), tee ensimmäisestä rivistä yksi sana: URGENT."
       },
       "reviewSentiment": {
         "name": "Vastaukset arvosteluihin",
@@ -864,7 +864,7 @@
         "output": "Valmis vastaus; negatiiviset ilmoittavat Telegramiin",
         "start": "Vastaat toimipaikan ”{{venue}}” maineesta. Saapui arvostelu: ”{{review_text}}”. Päättele sävy ja kirjoita kohtelias julkinen vastaus. Jos arvostelu on negatiivinen, haluamme tietää siitä heti.",
         "vars": "[{\"k\":\"venue\",\"v\":\"Aamukahvila\"},{\"k\":\"review_text\",\"v\":\"Toimitus myöhästyi kaksi päivää, mutta kahvi on loistavaa\"}]",
-        "prompt": "Vastaat ”{{venue}}”-paikan maineesta. Lue arvostelu. Ilmoita ensimmäisellä rivillä sävy yhdellä sanalla: НЕГАТИВ tai ПОЗИТИВ. Kirjoita sitten lyhyt kohtelias julkinen vastaus: kiitä; jos negatiivinen, pahoittele hienovaraisesti ja tarjoa ratkaisu."
+        "prompt": "Vastaat ”{{venue}}”-paikan maineesta. Lue arvostelu. Ilmoita ensimmäisellä rivillä sävy yhdellä sanalla: NEGATIVE tai POSITIVE. Kirjoita sitten lyhyt kohtelias julkinen vastaus: kiitä; jos negatiivinen, pahoittele hienovaraisesti ja tarjoa ratkaisu."
       },
       "contentPlan": {
         "name": "Sisältösuunnitelma hionnalla",
@@ -892,7 +892,7 @@
         "output": "Arvio ja palaute",
         "start": "Olet opettaja. Oppilas lähetti työn: ”{{student_answer}}”. Arviointikriteerit: {{criteria}}. Tarkista työ, anna hyväksytty tai hylätty ja selitä ystävällisesti, mikä on hyvää ja mitä parantaa.",
         "vars": "[{\"k\":\"student_answer\",\"v\":\"Ranskan pääkaupunki on Pariisi, jossa on Eiffel-torni\"},{\"k\":\"criteria\",\"v\":\"vastauksen kattavuus ja oikeellisuus\"}]",
-        "prompt": "Olet ystävällinen opettaja. Tarkista oppilaan työ kriteerien mukaan: {{criteria}}. Ensimmäinen rivi, yksi sana: ЗАЧЁТ (hyväksytty) tai НЕЗАЧЁТ (hylätty). Selitä sitten hellävaraisesti, mikä on hyvää ja mitä parantaa."
+        "prompt": "Olet ystävällinen opettaja. Tarkista oppilaan työ kriteerien mukaan: {{criteria}}. Ensimmäinen rivi, yksi sana: PASS (hyväksytty) tai FAIL (hylätty). Selitä sitten hellävaraisesti, mikä on hyvää ja mitä parantaa."
       },
       "hrScreening": {
         "name": "Hakemusten seulonta",
@@ -901,7 +901,7 @@
         "output": "Tiivistelmä ja arvio",
         "start": "Olet rekrytoinnin avustaja. Saapui hakemus: ”{{resume}}”. Tehtävän vaatimukset: {{requirements}}. Kirjoita lyhyt tiivistelmä ja päätä, sopiiko ehdokas.",
         "vars": "[{\"k\":\"resume\",\"v\":\"3 vuotta myynnissä, englanti B2, CRM-kokemus\"},{\"k\":\"requirements\",\"v\":\"myyntiä 2+ vuotta, englanti, CRM\"}]",
-        "prompt": "Olet rekrytoinnin avustaja. Vertaa ansioluetteloa vaatimuksiin: {{requirements}}. Kirjoita lyhyt tiivistelmä (kokemus, taidot). Ensimmäinen rivi, yksi sana: ПОДХОДИТ (sopii) tai НЕ ПОДХОДИТ (ei sovi). Sitten 1–2 lausetta miksi."
+        "prompt": "Olet rekrytoinnin avustaja. Vertaa ansioluetteloa vaatimuksiin: {{requirements}}. Kirjoita lyhyt tiivistelmä (kokemus, taidot). Ensimmäinen rivi, yksi sana: FIT (sopii) tai REJECT (ei sovi). Sitten 1–2 lausetta miksi."
       },
       "invoiceReminder": {
         "name": "Lasku ja maksumuistutus",
@@ -919,7 +919,7 @@
         "output": "Ensivastaus; kuuma liidi ilmoittaa Telegramiin",
         "start": "Käsittelet sivuston pyyntöjä. Saapui pyyntö: {{name}} kirjoittaa ”{{request}}”. Arvioi, kuinka ”kuuma” asiakas on (valmis tilaamaan pian), ja laadi kohtelias ensivastaus.",
         "vars": "[{\"k\":\"name\",\"v\":\"Ivan\"},{\"k\":\"request\",\"v\":\"Tarvitsen asunnon siivouksen tänä lauantaina, kiireellinen\"}]",
-        "prompt": "Käsittelet pyyntöjä. Arvioi pyyntö asiakkaalta {{name}}: ”{{request}}”. Jos asiakas on selvästi valmis tilaamaan pian (kiireellinen, tietty päivä, budjetti), tee ensimmäisestä rivistä yksi sana: ГОРЯЧИЙ. Laadi sitten lyhyt kohtelias ensivastaus tarkentavalla kysymyksellä."
+        "prompt": "Käsittelet pyyntöjä. Arvioi pyyntö asiakkaalta {{name}}: ”{{request}}”. Jos asiakas on selvästi valmis tilaamaan pian (kiireellinen, tietty päivä, budjetti), tee ensimmäisestä rivistä yksi sana: HOT. Laadi sitten lyhyt kohtelias ensivastaus tarkentavalla kysymyksellä."
       }
     },
     "tooltip": {
