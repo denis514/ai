@@ -157,51 +157,93 @@ export default function ScheduleModal({ workflowId, workflowName, locale, onClos
           {(t('builder.schedule.lead') || 'Схема «{name}» будет запускаться сама на сервере — даже когда компьютер выключен.').replace('{name}', workflowName || '—')}
         </p>
 
-        {/* Форма создания */}
-        <div className="builder-schedule__form">
-          <div className="builder-schedule__row">
-            <label>{t('builder.schedule.freq') || 'Частота'}</label>
-            <select value={freq} onChange={(e) => setFreq(e.target.value)}>
-              <option value="minutes">{t('builder.schedule.minutes') || 'Каждые N минут'}</option>
-              <option value="hourly">{t('builder.schedule.hourly') || 'Ежечасно'}</option>
-              <option value="daily">{t('builder.schedule.daily') || 'Ежедневно'}</option>
-              <option value="weekly">{t('builder.schedule.weekly') || 'Еженедельно'}</option>
-              <option value="monthly">{t('builder.schedule.monthly') || 'Ежемесячно'}</option>
-              <option value="yearly">{t('builder.schedule.yearly') || 'Ежегодно'}</option>
-            </select>
+        {/* Форма создания — визуальный пикер в стиле Apple Reminders */}
+        <div className="builder-schedule__form builder-sched">
+          {/* Частота — плитки */}
+          <div className="builder-sched-pills" role="tablist" aria-label={t('builder.schedule.freq') || 'Частота'}>
+            {[
+              ['minutes', t('builder.schedule.minutes') || 'Минуты'],
+              ['hourly', t('builder.schedule.hourly') || 'Час'],
+              ['daily', t('builder.schedule.daily') || 'День'],
+              ['weekly', t('builder.schedule.weekly') || 'Неделя'],
+              ['monthly', t('builder.schedule.monthly') || 'Месяц'],
+              ['yearly', t('builder.schedule.yearly') || 'Год'],
+            ].map(([id, label]) => (
+              <button
+                key={id} type="button" role="tab" aria-selected={freq === id}
+                className={`builder-sched-pill ${freq === id ? 'is-active' : ''}`}
+                onClick={() => setFreq(id)}
+              >{label}</button>
+            ))}
           </div>
+
+          {/* Дни недели — кружочки (weekly) */}
           {freq === 'weekly' && (
-            <div className="builder-schedule__row">
-              <label>{t('builder.schedule.weekday') || 'День недели'}</label>
-              <select value={weekday} onChange={(e) => setWeekday(Number(e.target.value))}>
-                {WD.map((d, i) => <option key={i} value={i}>{d}</option>)}
-              </select>
+            <div className="builder-sched-dows">
+              {WD.map((d, i) => (
+                <button
+                  key={i} type="button"
+                  className={`builder-sched-dow ${weekday === i ? 'is-active' : ''}`}
+                  onClick={() => setWeekday(i)}
+                  aria-pressed={weekday === i}
+                >{d}</button>
+              ))}
             </div>
           )}
+
+          {/* Месяцы — чипы (yearly) */}
           {freq === 'yearly' && (
-            <div className="builder-schedule__row">
-              <label>{t('builder.schedule.month') || 'Месяц'}</label>
-              <select value={month} onChange={(e) => setMonth(Number(e.target.value))}>
-                {MN.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
-              </select>
+            <div className="builder-sched-months">
+              {MN.map((m, i) => (
+                <button
+                  key={i} type="button"
+                  className={`builder-sched-month ${month === i + 1 ? 'is-active' : ''}`}
+                  onClick={() => setMonth(i + 1)}
+                  aria-pressed={month === i + 1}
+                >{m}</button>
+              ))}
             </div>
           )}
+
+          {/* Число месяца — мини-календарь 1..31 (monthly/yearly) */}
           {(freq === 'monthly' || freq === 'yearly') && (
-            <div className="builder-schedule__row">
-              <label>{t('builder.schedule.dayOfMonth') || 'Число месяца'}</label>
-              <input type="number" min="1" max="31" value={dayOfMonth} onChange={(e) => setDayOfMonth(Math.min(31, Math.max(1, Number(e.target.value) || 1)))} />
+            <div className="builder-sched-grid" role="grid" aria-label={t('builder.schedule.dayOfMonth') || 'Число месяца'}>
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                <button
+                  key={d} type="button"
+                  className={`builder-sched-day ${dayOfMonth === d ? 'is-active' : ''}`}
+                  onClick={() => setDayOfMonth(d)}
+                  aria-pressed={dayOfMonth === d}
+                >{d}</button>
+              ))}
             </div>
           )}
-          {(freq === 'daily' || freq === 'weekly' || freq === 'monthly' || freq === 'yearly') && (
-            <div className="builder-schedule__row">
-              <label>{t('builder.schedule.hour') || 'Час (UTC)'}</label>
-              <input type="number" min="0" max="23" value={hour} onChange={(e) => setHour(Math.min(23, Math.max(0, Number(e.target.value) || 0)))} />
+
+          {/* Время / интервал */}
+          {freq === 'minutes' ? (
+            <div className="builder-sched-time">
+              <span>{t('builder.schedule.everyLabel') || 'Каждые'}</span>
+              <input type="number" min="1" max="59" value={minute}
+                onChange={(e) => setMinute(Math.min(59, Math.max(1, Number(e.target.value) || 1)))} />
+              <span>{t('builder.schedule.minUnit') || 'мин'}</span>
+            </div>
+          ) : freq === 'hourly' ? (
+            <div className="builder-sched-time">
+              <span>{t('builder.schedule.atMinute') || 'на минуте'}</span>
+              <input type="number" min="0" max="59" value={minute}
+                onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
+            </div>
+          ) : (
+            <div className="builder-sched-time">
+              <span>{t('builder.schedule.atTime') || 'в'}</span>
+              <input type="number" min="0" max="23" value={hour}
+                onChange={(e) => setHour(Math.min(23, Math.max(0, Number(e.target.value) || 0)))} />
+              <span className="builder-sched-time__colon">:</span>
+              <input type="number" min="0" max="59" value={minute}
+                onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
+              <span className="builder-sched-time__utc">UTC</span>
             </div>
           )}
-          <div className="builder-schedule__row">
-            <label>{freq === 'minutes' ? (t('builder.schedule.everyN') || 'Интервал (мин)') : (t('builder.schedule.minute') || 'Минута')}</label>
-            <input type="number" min="1" max="59" value={minute} onChange={(e) => setMinute(Math.min(59, Math.max(freq === 'minutes' ? 1 : 0, Number(e.target.value) || 0)))} />
-          </div>
           {/* Кнопка «Инструкция» под полями слева — открывает пояснение по частоте */}
           <div className="builder-schedule__row--full">
             <button

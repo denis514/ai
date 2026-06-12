@@ -5560,3 +5560,85 @@
 .builder-app .builder-tg-help__link:hover { text-decoration: underline; }
 .builder-app .builder-tg-help__link .hgi,
 .builder-app .builder-tg-help__link svg { flex: 0 0 auto; }
+
+/* ── Визуальный пикер расписания (стиль Apple Reminders) ──────────────────── */
+.builder-app .builder-sched { display: flex; flex-direction: column; gap: 12px; }
+
+/* Частота — плитки */
+.builder-app .builder-sched-pills {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 4px; border-radius: 12px; background: var(--surface-2);
+}
+.builder-app .builder-sched-pill {
+  flex: 1 1 auto; min-width: 56px;
+  padding: 7px 10px; border: 0; border-radius: 9px;
+  background: transparent; color: var(--text-muted);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background .12s, color .12s, box-shadow .12s;
+}
+.builder-app .builder-sched-pill:hover { color: var(--text); }
+.builder-app .builder-sched-pill.is-active {
+  background: var(--surface); color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+
+/* Дни недели — кружочки */
+.builder-app .builder-sched-dows { display: flex; gap: 6px; justify-content: space-between; }
+.builder-app .builder-sched-dow {
+  flex: 1 1 0; aspect-ratio: 1; min-width: 0; max-width: 46px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); border-radius: 50%;
+  background: var(--surface); color: var(--text);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.builder-app .builder-sched-dow:hover { border-color: var(--border-strong); }
+.builder-app .builder-sched-dow.is-active {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
+
+/* Месяцы — чипы */
+.builder-app .builder-sched-months {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+}
+.builder-app .builder-sched-month {
+  padding: 7px 4px; border: 1px solid var(--border); border-radius: 9px;
+  background: var(--surface); color: var(--text);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.builder-app .builder-sched-month:hover { border-color: var(--border-strong); }
+.builder-app .builder-sched-month.is-active {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
+
+/* Числа месяца — мини-календарь 7 в ряд */
+.builder-app .builder-sched-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px;
+}
+.builder-app .builder-sched-day {
+  aspect-ratio: 1; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); border-radius: 9px;
+  background: var(--surface); color: var(--text);
+  font-size: 12.5px; font-weight: 600; cursor: pointer;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.builder-app .builder-sched-day:hover { border-color: var(--border-strong); }
+.builder-app .builder-sched-day.is-active {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
+
+/* Время / интервал */
+.builder-app .builder-sched-time {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--text-dim);
+}
+.builder-app .builder-sched-time input {
+  width: 58px; padding: 8px 10px; text-align: center;
+  border: 1px solid var(--border); border-radius: 9px;
+  background: var(--surface); color: var(--text);
+  font-size: 15px; font-weight: 600;
+}
+.builder-app .builder-sched-time input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.builder-app .builder-sched-time__colon { font-size: 16px; font-weight: 700; color: var(--text); }
+.builder-app .builder-sched-time__utc { font-size: 11px; color: var(--text-muted); }
