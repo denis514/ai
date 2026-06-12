@@ -60,30 +60,40 @@ export default function TemplatePreview({ index, onIndex, onUse, onClose }) {
         </header>
 
         <div className="builder-tpl-preview__body">
-          <div className="builder-tpl-preview__icon">
-            <Icon name={tpl.iconName} size={30} strokeWidth={1.4} />
-          </div>
-          <div className="builder-tpl-preview__name">{t(tpl.nameKey) || tpl.id}</div>
-          <div className="builder-tpl-preview__meta">
-            <span className={`builder-difficulty builder-difficulty--${tpl.difficulty}`}>
-              {t(`builder.difficulty.${tpl.difficulty}`) || tpl.difficulty}
-            </span>
-            <span className="builder-tpl-preview__count">
-              {tpl.nodes.length} {t(tpl.nodes.length === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || 'узлов'}
-            </span>
-          </div>
-          <p className="builder-tpl-preview__desc">{t(tpl.descKey) || ''}</p>
-
-          {tpl.inputKey && (
-            <div className="builder-tpl-preview__section">
-              <span className="builder-tpl-preview__label">{t('builder.tpl.input') || 'Что нужно на входе'}</span>
-              <p>{t(tpl.inputKey)}</p>
+          {/* Шапка-герой: иконка слева, заголовок и мета справа */}
+          <div className="builder-tpl-preview__hero">
+            <div className="builder-tpl-preview__icon" style={{ '--node-color': flowNodes[0]?.color }}>
+              <Icon name={tpl.iconName} size={28} strokeWidth={1.4} />
             </div>
-          )}
-          {tpl.outputKey && (
-            <div className="builder-tpl-preview__section">
-              <span className="builder-tpl-preview__label">{t('builder.tpl.output') || 'Что на выходе'}</span>
-              <p>{t(tpl.outputKey)}</p>
+            <div className="builder-tpl-preview__heading">
+              <div className="builder-tpl-preview__name">{t(tpl.nameKey) || tpl.id}</div>
+              <div className="builder-tpl-preview__meta">
+                <span className={`builder-difficulty builder-difficulty--${tpl.difficulty}`}>
+                  {t(`builder.difficulty.${tpl.difficulty}`) || tpl.difficulty}
+                </span>
+                <span className="builder-tpl-preview__count">
+                  {tpl.nodes.length} {t(tpl.nodes.length === 1 ? 'builder.counter.node' : 'builder.counter.nodes') || 'узлов'}
+                </span>
+              </div>
+              <p className="builder-tpl-preview__desc">{t(tpl.descKey) || ''}</p>
+            </div>
+          </div>
+
+          {/* Вход и выход — две колонки слева направо */}
+          {(tpl.inputKey || tpl.outputKey) && (
+            <div className="builder-tpl-preview__grid">
+              {tpl.inputKey && (
+                <div className="builder-tpl-preview__section">
+                  <span className="builder-tpl-preview__label">{t('builder.tpl.input') || 'Что нужно на входе'}</span>
+                  <p>{t(tpl.inputKey)}</p>
+                </div>
+              )}
+              {tpl.outputKey && (
+                <div className="builder-tpl-preview__section">
+                  <span className="builder-tpl-preview__label">{t('builder.tpl.output') || 'Что на выходе'}</span>
+                  <p>{t(tpl.outputKey)}</p>
+                </div>
+              )}
             </div>
           )}
 
