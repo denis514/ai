@@ -132,7 +132,16 @@ export function validateGraph(nodes = [], edges = []) {
   if (looseTools.length) warnings.push({ type: 'tool-unattached', count: looseTools.length });
 
   // Telegram-выход без адреса чата — доставки не будет.
-  const tgNoChat = nodes.filter(n => n.data?.role === 'telegram' && !String(n.data?.chatId || '').trim());
+  // Адрес может лежать в data.chatId (legacy, один адресат) ИЛИ в data.targets
+  // (веер: [{connectionId, chatId}]). Проверяем оба, иначе ложно ругаемся, когда
+  // адрес введён через список адресатов.
+  const tgNoChat = nodes.filter(n => {
+    if (n.data?.role !== 'telegram') return false;
+    const hasChat = !!String(n.data?.chatId || '').trim();
+    const hasTarget = Array.isArray(n.data?.targets)
+      && n.data.targets.some(tt => String(tt?.chatId || '').trim());
+    return !hasChat && !hasTarget;
+  });
   if (tgNoChat.length) warnings.push({ type: 'telegram-no-chat', count: tgNoChat.length });
 
   return { errors, warnings };
