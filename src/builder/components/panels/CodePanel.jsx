@@ -32,6 +32,34 @@ function toCode(nodes, edges) {
   };
 }
 
+// Поля config, которые НЕЛЬЗЯ передавать другому пользователю при «Поделиться»:
+// личные контакты и любые ссылки на ключи. Структуру и инструкции (prompt, task,
+// vars, условия) — оставляем.
+const SHARE_STRIP = new Set([
+  // Telegram
+  'chatId', 'chat_id', 'targets',
+  // Почта
+  'to', 'toEmail', 'fromEmail', 'recipients', 'recipient', 'email',
+  // Календарь
+  'calendarId', 'calId',
+  // MCP-серверы (привязаны к подключениям отправителя)
+  'mcpServerIds', 'mcpServers',
+  // Ключи и секреты (на всякий случай — обычно их в config и нет)
+  'apiKeyId', 'keyId', 'key_id', 'token', 'botToken', 'webhookSecret', 'secret',
+]);
+
+/** Холст → код БЕЗ личных данных (для безопасного обмена). */
+function toShareCode(nodes, edges) {
+  const code = toCode(nodes, edges);
+  code.nodes = code.nodes.map(n => {
+    if (!n.config) return n;
+    const clean = {};
+    for (const k of Object.keys(n.config)) if (!SHARE_STRIP.has(k)) clean[k] = n.config[k];
+    return Object.keys(clean).length ? { ...n, config: clean } : (() => { const { config, ...rest } = n; return rest; })();
+  });
+  return code;
+}
+
 /** Объект кода → React Flow nodes/edges (с валидацией). Бросает понятную ошибку. */
 function fromCode(obj, edgeStyle) {
   if (!obj || typeof obj !== 'object') throw new Error('Нужен объект { nodes: [...], edges: [...] }');
@@ -72,6 +100,7 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
   const [edited, setEdited] = useState(false);
   const [msg, setMsg] = useState(null); // { type: 'ok'|'err', text }
   const [copied, setCopied] = useState(false);
+  const [shared, setShared] = useState(false);
 
   // Пока пользователь не редактировал — код «живой» (следует за холстом).
   useEffect(() => { if (!edited) setDraft(canvasCode); }, [canvasCode, edited]);
@@ -83,6 +112,17 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
   const copy = async () => {
     try { await navigator.clipboard.writeText(draft); setCopied(true); setTimeout(() => setCopied(false), 1400); }
     catch { /* clipboard недоступен — игнорируем */ }
+  };
+
+  // «Поделиться»: копируем безопасную версию кода (без личных данных и ключей).
+  const share = async () => {
+    const text = JSON.stringify(toShareCode(nodes, edges), null, 2);
+    try {
+      await navigator.clipboard.writeText(text);
+      setShared(true);
+      setTimeout(() => setShared(false), 1600);
+      setMsg({ type: 'ok', text: t('builder.code.shareHint') || 'Код скопирован для отправки — личные данные (чат, почта) удалены. Получатель вставит его сюда и нажмёт «Собрать».' });
+    } catch { /* clipboard недоступен */ }
   };
 
   const apply = () => {
@@ -139,6 +179,10 @@ export default function CodePanel({ nodes, edges, edgeStyle, onApply, t }) {
         <button type="button" className="builder-btn builder-btn--ghost" onClick={copy}>
           <Icon name={copied ? 'check' : 'clipboard'} size={14} strokeWidth={1.6} />
           {copied ? (t('builder.code.copied') || 'Скопировано') : (t('builder.code.copy') || 'Копировать')}
+        </button>
+        <button type="button" className="builder-btn builder-btn--ghost" onClick={share} title={t('builder.code.shareTitle') || 'Скопировать схему для другого пользователя (без личных данных)'}>
+          <Icon name={shared ? 'check' : 'send'} size={14} strokeWidth={1.6} />
+          {shared ? (t('builder.code.shared') || 'Скопировано') : (t('builder.code.share') || 'Поделиться')}
         </button>
         {edited && (
           <button type="button" className="builder-btn builder-btn--ghost" onClick={resetToCanvas}>
