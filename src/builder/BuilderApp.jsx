@@ -220,8 +220,13 @@ const edgeTypes = { builder: BuilderEdge };
  * уровня выполняются параллельно. Возвращает Map(client_id → level).
  */
 function computeOrderLevels(nodes, edges) {
+  const kindOf = new Map(nodes.map(n => [n.id, n.data?.kind]));
   const incoming = new Map(nodes.map(n => [n.id, []]));
   for (const e of edges) {
+    // Связь «инструмент → агент» — это прикрепление способности, а НЕ шаг потока.
+    // Поэтому она не нумеруется и не сдвигает порядок (иначе Vision получал бы
+    // номер 1, как Старт, хотя он просто умение главного агента).
+    if (kindOf.get(e.source) === 'tool') continue;
     if (incoming.has(e.target)) incoming.get(e.target).push(e.source);
   }
   const level = new Map();
@@ -236,7 +241,10 @@ function computeOrderLevels(nodes, edges) {
     level.set(id, lvl);
     return lvl;
   };
-  for (const n of nodes) compute(n.id);
+  for (const n of nodes) {
+    if (n.data?.kind === 'tool') { level.set(n.id, null); continue; } // инструмент — без номера
+    compute(n.id);
+  }
   return level;
 }
 

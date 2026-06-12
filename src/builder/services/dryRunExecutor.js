@@ -29,10 +29,22 @@ export function createDryRun({ nodes, edges, t, onUpdate, onLog, onComplete }) {
     }
   });
 
-  // Порядок прогона: по orderLevel (его считает раскладка). Инструменты идут в
-  // конце (у них нет orderLevel) — они тоже проходят тест и становятся зелёными,
-  // чтобы счётчик совпадал с числом узлов на холсте (а не «3 из 4»).
-  const flow = [...nodes].sort((a, b) => (a.data?.orderLevel ?? 99) - (b.data?.orderLevel ?? 99));
+  // Порядок прогона: сначала шаги потока по orderLevel; КАЖДЫЙ инструмент
+  // ставим СРАЗУ ПОСЛЕ агента, к которому он прикреплён (он его умение, а не
+  // отдельный шаг до него). Инструменты тоже проходят тест и становятся зелёными,
+  // чтобы счётчик совпадал с числом узлов (а не «3 из 4»).
+  const toolHost = {}; // toolId -> agentId (куда прикреплён)
+  edges.forEach(e => { if (toolIds.has(e.source)) toolHost[e.source] = e.target; });
+  const steps = nodes.filter(n => n.data?.kind !== 'tool')
+    .sort((a, b) => (a.data?.orderLevel ?? 99) - (b.data?.orderLevel ?? 99));
+  const tools = nodes.filter(n => n.data?.kind === 'tool');
+  const flow = [];
+  for (const n of steps) {
+    flow.push(n);
+    tools.filter(tn => toolHost[tn.id] === n.id).forEach(tn => flow.push(tn)); // умения этого агента — следом
+  }
+  // Инструменты без агента-хозяина (висят) — в конец, они станут красными.
+  tools.filter(tn => !steps.some(s => s.id === toolHost[tn.id])).forEach(tn => flow.push(tn));
 
   // Какие узлы вообще подключены (для поиска «висящих»).
   const connected = new Set();
