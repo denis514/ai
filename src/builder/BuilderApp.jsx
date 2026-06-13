@@ -1651,15 +1651,6 @@ function BuilderAppInner() {
           <button
             type="button"
             className="builder-btn builder-btn--ghost"
-            onClick={() => setTourOpen(true)}
-            title={t('builder.tour.openBtn') || 'Take the tour'}
-            aria-label={t('builder.tour.openBtn') || 'Take the tour'}
-          >
-            <Icon name="question" size={14} strokeWidth={1.5} />
-          </button>
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
             onClick={openKeysOrAuth}
             title={t('builder.keys.openBtn') || 'API keys'}
             aria-label={t('builder.keys.openBtn') || 'API keys'}
@@ -1766,6 +1757,17 @@ function BuilderAppInner() {
               >
                 <Icon name="idea" size={18} strokeWidth={1.6} />
                 <span>{t('builder.help.title') || 'Помощь'}</span>
+              </button>
+
+              {/* Тур — действие (открывает обучающий обзор), внизу рейки */}
+              <button
+                type="button"
+                className="builder-toolrail__tab builder-toolrail__tour"
+                onClick={() => setTourOpen(true)}
+                title={t('builder.tour.openBtn') || 'Запустить тур'}
+              >
+                <Icon name="compass" size={18} strokeWidth={1.6} />
+                <span>{t('builder.tour.short') || 'Тур'}</span>
               </button>
             </div>
 
