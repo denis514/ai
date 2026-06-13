@@ -145,7 +145,8 @@ export default function ScheduleModal({ workflowId, workflowName, locale, dockRi
   };
 
   const onToggle = async (s) => { try { await toggleSchedule(s.id, !s.enabled); refresh(); } catch { /* */ } };
-  const onDelete = async (s) => { try { await deleteSchedule(s.id); refresh(); } catch { /* */ } };
+  const [confirmDelId, setConfirmDelId] = useState(null); // id автозапуска на подтверждении удаления
+  const onDelete = async (s) => { try { await deleteSchedule(s.id); setConfirmDelId(null); refresh(); } catch { /* */ } };
 
   const WD = (t('builder.schedule.weekdays') || 'Вс,Пн,Вт,Ср,Чт,Пт,Сб').split(',');
   const MN = (t('builder.schedule.months') || 'Янв,Фев,Мар,Апр,Май,Июн,Июл,Авг,Сен,Окт,Ноя,Дек').split(',');
@@ -396,12 +397,26 @@ export default function ScheduleModal({ workflowId, workflowName, locale, dockRi
                 <span className="builder-schedule__item-name">{workflowName || (t('builder.workflows.untitled') || 'Без названия')}</span>
                 <span className="builder-schedule__item-when">{fmtFreq(s)}</span>
               </div>
-              <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => onToggle(s)}>
-                {s.enabled ? (t('builder.schedule.pause') || 'Пауза') : (t('builder.schedule.resume') || 'Включить')}
-              </button>
-              <button type="button" className="builder-btn builder-btn--ghost builder-btn--small builder-schedule__del" onClick={() => onDelete(s)} aria-label={t('common.delete') || 'Удалить'}>
-                <Icon name="trash" size={13} strokeWidth={1.6} />
-              </button>
+              {confirmDelId === s.id ? (
+                <span className="builder-schedule__delconfirm">
+                  <span className="builder-schedule__delconfirm-q">{t('builder.schedule.delConfirm') || 'Удалить?'}</span>
+                  <button type="button" className="builder-btn builder-btn--danger builder-btn--small" onClick={() => onDelete(s)}>
+                    {t('builder.schedule.delYes') || 'Да'}
+                  </button>
+                  <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => setConfirmDelId(null)}>
+                    {t('common.cancel') || 'Отмена'}
+                  </button>
+                </span>
+              ) : (
+                <>
+                  <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => onToggle(s)}>
+                    {s.enabled ? (t('builder.schedule.pause') || 'Пауза') : (t('builder.schedule.resume') || 'Включить')}
+                  </button>
+                  <button type="button" className="builder-btn builder-btn--ghost builder-btn--small builder-schedule__del" onClick={() => setConfirmDelId(s.id)} aria-label={t('common.delete') || 'Удалить'}>
+                    <Icon name="trash" size={13} strokeWidth={1.6} />
+                  </button>
+                </>
+              )}
             </div>
           ))}
         </div>
