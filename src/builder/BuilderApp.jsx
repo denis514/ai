@@ -841,11 +841,13 @@ function BuilderAppInner() {
       setSwitcherOpen(false);
       isDirtyRef.current = false;
       setSaveStatus('saved');
+      // Центрируем загруженную схему — чтобы не искать узлы при смене workflow.
+      setTimeout(() => fitView({ padding: 0.25, maxZoom: 1, duration: 400 }), 90);
     } catch (e) {
       console.error('[Builder] load failed', e);
       toast.error(t('builder.toast.loadFailed') || 'Не удалось открыть схему.');
     }
-  }, [userId, setNodes, setEdges, t]);
+  }, [userId, setNodes, setEdges, t, fitView]);
 
   // Новый пустой workflow — сразу спрашиваем имя.
   // «Новый workflow» — открываем модалку выбора. Холст НЕ трогаем до того,
