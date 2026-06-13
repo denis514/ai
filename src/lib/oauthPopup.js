@@ -60,6 +60,33 @@ export function finishOAuthPopup(supabase) {
   }).catch(notifyAndClose);
 }
 
+/* ─── Google Calendar OAuth в попапе ──────────────────────────────────────
+ * Колбэк builder-gcal-callback редиректит попап на `${origin}/?gcal=connected`
+ * (или ?gcal=error). Здесь это окно ловится, сообщает основному окну статус и
+ * закрывается — основная страница не перезагружается. */
+export const GCAL_DONE_MESSAGE = 'atlas:gcal-done';
+
+/** Это попап, вернувшийся с подключения Google Calendar? */
+export function isGcalPopup() {
+  try {
+    return (
+      typeof window !== 'undefined' &&
+      window.opener &&
+      window.opener !== window &&
+      new URLSearchParams(window.location.search).has('gcal')
+    );
+  } catch {
+    return false;
+  }
+}
+
+/** Внутри gcal-попапа: сообщить основному окну статус и закрыться. */
+export function finishGcalPopup() {
+  const status = new URLSearchParams(window.location.search).get('gcal') || 'connected';
+  try { window.opener?.postMessage({ type: GCAL_DONE_MESSAGE, status }, window.location.origin); } catch { /* COOP */ }
+  try { window.close(); } catch { /* noop */ }
+}
+
 /**
  * Открыть центрированное попап-окно СИНХРОННО (в обработчике клика — иначе
  * блокировщик попапов его зарежет). Возвращает window или null.

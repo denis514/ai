@@ -94,9 +94,13 @@ export async function setDefaultKey(id, provider) {
  * Запустить OAuth Google Calendar: получаем URL согласия с сервера и редиректим.
  * После согласия Google вернёт на callback → приложение откроется с ?gcal=connected.
  */
-export async function connectGoogleCalendar() {
+export async function connectGoogleCalendar(popup) {
   const out = await callFunction('builder-gcal-connect', {});
-  if (out?.url) window.location.assign(out.url);
+  if (!out?.url) throw new Error('no_url');
+  // Попап (передан синхронно из обработчика клика) → ведём его на согласие Google,
+  // основная страница остаётся на месте. Если попап заблокирован — полный редирект.
+  if (popup && !popup.closed) { popup.location.href = out.url; return; }
+  window.location.assign(out.url);
 }
 
 /* ─── MCP-серверы ─────────────────────────────────────────────────────────── */

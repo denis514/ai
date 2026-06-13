@@ -5,14 +5,20 @@ import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { LocaleProvider } from './i18n/LocaleContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { migrateLegacyHash } from './hooks/useHashRoute.js';
-import { isOAuthPopup, finishOAuthPopup } from './lib/oauthPopup.js';
+import { isOAuthPopup, finishOAuthPopup, isGcalPopup, finishGcalPopup } from './lib/oauthPopup.js';
 import { supabase } from './lib/supabaseClient.js';
 import './index.css';
 import './App.css';
 
-// OAuth-попап: это окно вернулось с Google-редиректа. НЕ монтируем приложение —
+// Попап подключения Google Calendar: сообщаем основному окну и закрываемся.
+if (isGcalPopup()) {
+  document.getElementById('root').innerHTML =
+    '<div style="font-family:system-ui,sans-serif;display:grid;place-items:center;' +
+    'height:100vh;color:#888;font-size:14px">Готово. Окно закроется…</div>';
+  finishGcalPopup();
+// OAuth-попап входа: это окно вернулось с Google-редиректа. НЕ монтируем приложение —
 // дожидаемся сессии, сообщаем основному окну и закрываемся.
-if (isOAuthPopup()) {
+} else if (isOAuthPopup()) {
   document.getElementById('root').innerHTML =
     '<div style="font-family:system-ui,sans-serif;display:grid;place-items:center;' +
     'height:100vh;color:#888;font-size:14px">Вход выполнен. Окно закроется…</div>';

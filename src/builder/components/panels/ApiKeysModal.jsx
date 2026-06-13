@@ -5,6 +5,7 @@ import { useAuth } from '../../../context/AuthContext.jsx';
 import { connectKey, disconnectKey, deleteKeyById, listKeys, setDefaultKey,
   getKeyStatus, connectGoogleCalendar,
   listMcpServers, addMcpServer, deleteMcpServer } from '../../services/apiKeyService.js';
+import { openCenteredPopup, GCAL_DONE_MESSAGE } from '../../../lib/oauthPopup.js';
 
 /**
  * ApiKeysModal — каталог коннекторов в стиле Claude Directory.
@@ -157,8 +158,32 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
 
   const handleGcConnect = useCallback(async () => {
     setGcBusy(true); setGcError(null);
-    try { await connectGoogleCalendar(); }
-    catch { setGcError(t('builder.keys.gcErr') || 'Не удалось начать подключение Google Calendar.'); setGcBusy(false); }
+    // Попап открываем СИНХРОННО (до await) — иначе блокировщик попапов его зарежет.
+    const popup = openCenteredPopup();
+    // Слушаем сигнал от попапа: подключилось → обновляем статус, страница на месте.
+    const onMsg = (e) => {
+      if (e.origin !== window.location.origin || e.data?.type !== GCAL_DONE_MESSAGE) return;
+      window.removeEventListener('message', onMsg);
+      if (poll) clearInterval(poll);
+      getKeyStatus('gcal').then(setGcStatus).catch(() => {});
+      setGcBusy(false);
+    };
+    window.addEventListener('message', onMsg);
+    // Если пользователь закрыл попап сам — снимаем «загрузку».
+    const poll = setInterval(() => {
+      if (popup && popup.closed) {
+        clearInterval(poll);
+        window.removeEventListener('message', onMsg);
+        getKeyStatus('gcal').then(setGcStatus).catch(() => {});
+        setGcBusy(false);
+      }
+    }, 700);
+    try { await connectGoogleCalendar(popup); }
+    catch {
+      window.removeEventListener('message', onMsg); clearInterval(poll);
+      try { popup && popup.close(); } catch { /* noop */ }
+      setGcError(t('builder.keys.gcErr') || 'Не удалось начать подключение Google Calendar.'); setGcBusy(false);
+    }
   }, [t]);
   const handleGcDisconnect = mkDisconnect('gcal', setGcBusy, setGcError);
 
