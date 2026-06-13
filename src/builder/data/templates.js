@@ -274,7 +274,7 @@ export const TEMPLATES = [
     inputKey: 'builder.template.webhookLead.input',
     outputKey: 'builder.template.webhookLead.output',
     iconName: 'inbox',
-    difficulty: 'beginner',
+    difficulty: 'intermediate',
     category: 'logic',
     trigger: 'webhook',
     author: 'builtin',
@@ -282,11 +282,16 @@ export const TEMPLATES = [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: {
         promptKey: 'builder.template.webhookLead.prompt' } },
-      { defId: 'output-telegram', position: { x: 100, y: 340 } },
+      { defId: 'logic-condition-agent', position: { x: 100, y: 330 }, dataOverride: {
+        question: 'Это горячий, целевой лид, готовый к покупке прямо сейчас?' } },
+      { defId: 'output-telegram', position: { x: 360, y: 330 } },
+      { defId: 'output-text', position: { x: 100, y: 470 } },
     ],
     edges: [
       { from: 0, to: 1 },
       { from: 1, to: 2 },
+      { from: 2, to: 3, sourceHandle: 'true' },   // горячий → сигнал продажнику
+      { from: 2, to: 4, sourceHandle: 'false' },  // иначе → просто записать
     ],
   },
 
@@ -748,6 +753,58 @@ export const TEMPLATES = [
       { defId: 'output-text',   position: { x: 120, y: 350 } },
     ],
     edges: [{ from: 0, to: 1 }, { from: 2, to: 1 }, { from: 1, to: 3 }],
+  },
+
+  /* ──────────────────────────────────────────────────────── */
+  /* Вебхук: входящее сообщение клиента → мгновенный автоответ */
+  /* ──────────────────────────────────────────────────────── */
+  {
+    id: 'webhook-autoreply',
+    nameKey: 'builder.template.whAuto.name',
+    descKey: 'builder.template.whAuto.desc',
+    inputKey: 'builder.template.whAuto.input',
+    outputKey: 'builder.template.whAuto.output',
+    iconName: 'inbox', difficulty: 'intermediate', category: 'logic', trigger: 'webhook', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 100, y: 50 } },
+      { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.whAuto.prompt' } },
+      { defId: 'logic-condition-agent', position: { x: 100, y: 330 }, dataOverride: { question: 'Это срочное обращение или жалоба, требующая внимания человека?' } },
+      { defId: 'output-telegram', position: { x: 360, y: 330 } },
+      { defId: 'output-text', position: { x: 100, y: 470 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3, sourceHandle: 'true' },   // срочно/жалоба → сигнал человеку
+      { from: 2, to: 4, sourceHandle: 'false' },  // иначе → готовый автоответ
+    ],
+  },
+
+  /* ──────────────────────────────────────────────────────── */
+  /* Вебхук: обращение в поддержку → сортировка + эскалация    */
+  /* ──────────────────────────────────────────────────────── */
+  {
+    id: 'webhook-support',
+    nameKey: 'builder.template.whSupport.name',
+    descKey: 'builder.template.whSupport.desc',
+    inputKey: 'builder.template.whSupport.input',
+    outputKey: 'builder.template.whSupport.output',
+    iconName: 'inbox', difficulty: 'advanced', category: 'logic', trigger: 'webhook', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input', position: { x: 120, y: 50 } },
+      { defId: 'tool-memory', position: { x: -130, y: 200 } },
+      { defId: 'agent-main', position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.whSupport.prompt' } },
+      { defId: 'logic-condition-agent', position: { x: 120, y: 350 }, dataOverride: { question: 'Можно ли ответить на это обращение готовым черновиком без участия человека?' } },
+      { defId: 'output-text', position: { x: 120, y: 500 } },
+      { defId: 'output-telegram', position: { x: 380, y: 350 } },
+    ],
+    edges: [
+      { from: 0, to: 2 },                         // вход → агент
+      { from: 1, to: 2 },                         // память ⇒ прикреплена к агенту
+      { from: 2, to: 3 },                         // агент → умное условие
+      { from: 3, to: 4, sourceHandle: 'true' },   // можно ответить → черновик
+      { from: 3, to: 5, sourceHandle: 'false' },  // нельзя → эскалация человеку
+    ],
   },
 ];
 
