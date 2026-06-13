@@ -344,9 +344,10 @@ export default function ScheduleModal({ workflowId, workflowName, locale, dockRi
             </div>
           )}
           {!pending ? (
-            <button type="button" className="builder-btn builder-btn--primary builder-schedule__create" onClick={add} disabled={busy}>
-              <Icon name="check" size={14} strokeWidth={1.75} />
-              <span>{t('builder.schedule.add') || 'Создать автозапуск'}</span>
+            <button type="button" className="lg-btn builder-schedule__create" onClick={add} disabled={busy}>
+              <span className="blob blob-r1" /><span className="blob blob-r2" /><span className="blob blob-p" />
+              <span className="blob blob-d" /><span className="blob blob-o" /><span className="blob blob-a" />
+              <span className="lg-btn__l">{t('builder.schedule.add') || 'Создать автозапуск'}</span>
             </button>
           ) : (
             <div className="builder-schedule__confirm builder-schedule__row--full">
