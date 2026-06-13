@@ -4,6 +4,7 @@ import { useHashRoute } from '../hooks/useHashRoute.js';
 import Icon from '../components/Icon.jsx';
 import InlineText from '../components/InlineText.jsx';
 import PlanetLogo from '../components/PlanetLogo.jsx';
+import Loader from '../components/Loader.jsx';
 import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
 import './StyleGuide.css';
 
@@ -285,6 +286,16 @@ export default function StyleGuide() {
             </button>
           </div>
           <p className="sg-hint">Hero Liquid Glass — бренд-CTA с анимацией (как «Войти в Atlas» на лендинге).</p>
+        </Section>
+
+        <Section id="loader" title="Загрузка (3 точки)"
+          note="Единый индикатор для мелких мест (кнопки, модалки, инлайн): компонент Loader, три терракотовые точки «волной». size: sm / md / lg, опц. label. iOS-safe (только transform/opacity), при reduced-motion — статичные точки.">
+          <div className="sg-row" style={{ gap: 36, alignItems: 'flex-end' }}>
+            <Loader size="sm" label="sm" />
+            <Loader size="md" label="md" />
+            <Loader size="lg" label="lg" />
+          </div>
+          <p className="sg-hint">Полноэкранную загрузку рисует LoadingScreen (импульс по ветвям), для списков — класс .skeleton. Этот Loader — для точечных мест.</p>
         </Section>
 
         <Section id="chips" title="Чипы и бейджи"

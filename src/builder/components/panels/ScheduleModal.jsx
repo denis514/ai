@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
+import Loader from '../../../components/Loader.jsx';
 import { listSchedules, createSchedule, toggleSchedule, deleteSchedule } from '../../services/scheduleService.js';
 import { getWebhook, ensureWebhook, toggleWebhook, regenerateWebhook, deleteWebhook, webhookUrl } from '../../services/webhookService.js';
 import { toast } from '../Toast.jsx';
@@ -373,10 +374,14 @@ export default function ScheduleModal({ workflowId, workflowName, locale, dockRi
                 </p>
               )}
               <div className="builder-schedule__confirm-actions">
-                <button type="button" className="builder-btn builder-btn--primary" onClick={confirmCreate} disabled={busy || oncePast}>
+                {busy ? (
+                  <Loader size="sm" label={t('builder.schedule.creating') || 'Создаём автозапуск…'} />
+                ) : (
+                <button type="button" className="builder-btn builder-btn--primary" onClick={confirmCreate} disabled={oncePast}>
                   <Icon name="check" size={14} strokeWidth={1.75} />
                   <span>{t('builder.schedule.confirmYes') || 'Да, включить автозапуск'}</span>
                 </button>
+                )}
                 <button type="button" className="builder-btn builder-btn--ghost" onClick={() => setPending(false)} disabled={busy}>
                   {t('common.cancel') || 'Отмена'}
                 </button>
