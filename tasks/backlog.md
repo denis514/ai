@@ -401,3 +401,33 @@ delete + export.
 - `src/builder/components/panels/AllSchedulesModal.jsx`
 - `src/builder/components/panels/ExecutionPanel.jsx`
 После сверки: `npm run help:watch -- --accept`.
+
+## 📄 docs-watch: документация изменилась — 2026-06-22
+
+> Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
+> Прогон: прочитать дифф ниже → разнести по узлам Atlas → `node scripts/sync-whats-new.mjs`.
+
+### Desktop app (вкладка Code)
+- Источник: https://code.claude.com/docs/en/desktop.md
+- Изменения: **3** добавлено, **3** удалено
+- Затронутые узлы Atlas (черновик): `pl-desktop, pl-code-mode, apps-setup`
+
+```diff
+- * Search or file a bug on [GitHub Issues](https://github.com/anthropics/claude-code/issues)
+- * Visit the [Claude support center](https://support.claude.com/)
++ * Open Help → Get Support in the desktop app, or visit the [Claude support center](https://support.claude.com/) directly
++ * For problems that also reproduce in the standalone `claude` CLI, search or file a bug on [GitHub Issues](https://github.com/anthropics/claude-code/issues)
+- When filing a bug, include your desktop app version, your operating system, the exact error message, and relevant logs. On macOS, check Console.app. On Windows, check Event Viewer → Windows Logs → Application.
++ When reporting a problem, include your desktop app version, your operating system, the exact error message, and relevant logs. On macOS, check Console.app. On Windows, check Event Viewer → Windows Logs → Application.
+```
+
+### Индекс всех страниц документации (llms.txt)
+- Источник: https://code.claude.com/docs/llms.txt
+- Изменения: **3** добавлено, **0** удалено
+- Затронутые узлы Atlas (черновик): `новые/удалённые темы в экосистеме`
+
+```diff
++ - [Share session output as artifacts](https://code.claude.com/docs/en/artifacts.md): Artifacts turn Claude Code's work into live, interactive pages at a private URL you can share inside your organization.
++ - [Week 23 · June 1–5, 2026](https://code.claude.com/docs/en/whats-new/2026-w23.md): Run auto mode on Bedrock, Vertex, and Foundry, prompt before writing files that can run code in acceptEdits mode, list installed plugins with /plugin list, and require an approved version range for managed deployments.
++ - [Week 24 · June 8–12, 2026](https://code.claude.com/docs/en/whats-new/2026-w24.md): Move a session to a new directory with /cd, let subagents spawn their own subagents, and troubleshoot a broken configuration with safe mode.
+```
