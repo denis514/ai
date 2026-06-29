@@ -497,3 +497,13 @@ delete + export.
 + - [Week 25 · June 15–19, 2026](https://code.claude.com/docs/en/whats-new/2026-w25.md): Publish a live, shareable page from your session with Artifacts, match tool parameters in deny and ask rules, and set any setting from the prompt with /config.
 + - [Week 26 · June 22–26, 2026](https://code.claude.com/docs/en/whats-new/2026-w26.md): Authenticate MCP servers from your shell with claude mcp login, get a response to shell mode command output with the ! prefix, and resume a conversation from before /clear with /rewind.
 ```
+
+### [help-watch 2026-06-29] Проверить вкладку «Помощь» (Agent Builder)
+Изменились функциональные файлы билдера — справка могла устареть:
+- `src/builder/data/templates.js`
+- `src/builder/services/connectionRules.js`
+- `src/builder/components/panels/ScheduleModal.jsx`
+- `src/builder/components/panels/ApiKeysModal.jsx`
+- `src/builder/components/panels/AllSchedulesModal.jsx`
+- `src/builder/components/panels/ExecutionPanel.jsx`
+После сверки: `npm run help:watch -- --accept`.
