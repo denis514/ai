@@ -4,6 +4,7 @@
 
 ## Docs
 
+- [Use Claude Code with a screen reader](https://code.claude.com/docs/en/accessibility.md): Set up Claude Code for screen readers such as VoiceOver and NVDA, plus settings for screen magnifiers, reduced motion, and colorblind-friendly themes.
 - [Set up Claude Code for your organization](https://code.claude.com/docs/en/admin-setup.md): A decision map for administrators deploying Claude Code, covering API providers, managed settings, policy enforcement, usage monitoring, and data handling.
 - [Escalate hard decisions with the advisor tool](https://code.claude.com/docs/en/advisor.md): Pair your main model with a stronger advisor model that Claude consults at key moments during a task.
 - [How the agent loop works](https://code.claude.com/docs/en/agent-sdk/agent-loop.md): Understand the message lifecycle, tool execution, context window, and architecture that power your SDK agents.
@@ -41,7 +42,7 @@
 - [Run agents in parallel](https://code.claude.com/docs/en/agents.md): Compare the ways Claude Code can take on multiple tasks at once: subagents, agent view, agent teams, and dynamic workflows.
 - [Claude Code on Amazon Bedrock](https://code.claude.com/docs/en/amazon-bedrock.md): Learn about configuring Claude Code through Amazon Bedrock, including setup, IAM configuration, and troubleshooting.
 - [Track team usage with analytics](https://code.claude.com/docs/en/analytics.md): View Claude Code usage metrics, track adoption, and measure engineering velocity in the analytics dashboard.
-- [Share session output as artifacts](https://code.claude.com/docs/en/artifacts.md): Artifacts turn Claude Code's work into live, interactive pages at a private URL on claude.ai.
+- [Share session output as artifacts](https://code.claude.com/docs/en/artifacts.md): Artifacts turn Claude Code's work into live, interactive pages on claude.ai that you can keep private, share with your organization, or publish to a public link.
 - [Authentication](https://code.claude.com/docs/en/authentication.md): Log in to Claude Code and configure authentication for individuals, teams, and organizations.
 - [Configure auto mode](https://code.claude.com/docs/en/auto-mode-config.md): Tell the auto mode classifier which repos, buckets, and domains your organization trusts. Set environment context, override the default block and allow rules, and inspect your effective config with the auto-mode CLI subcommands.
 - [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices.md): Tips and patterns for getting the most out of Claude Code, from configuring your environment to scaling across parallel sessions.
@@ -66,6 +67,7 @@
 - [Communications kit](https://code.claude.com/docs/en/communications-kit.md): Launch announcements, drip-campaign messages, and FAQ responses for rolling Claude Code out to your engineering organization.
 - [Let Claude use your computer from the CLI](https://code.claude.com/docs/en/computer-use.md): Enable computer use in the Claude Code CLI so Claude can open apps, click, type, and see your screen on macOS. Test native apps, debug visual issues, and automate GUI-only tools without leaving your terminal.
 - [Explore the context window](https://code.claude.com/docs/en/context-window.md): An interactive simulation of how Claude Code's context window fills during a session. See what loads automatically, what each file read costs, and when rules and hooks fire.
+- [Run Claude Code behind a corporate launcher](https://code.claude.com/docs/en/corporate-launcher.md): Route the processes Claude Code starts from its own binary, including the background service and every agent view session, through a required launcher with CLAUDE_CODE_PROCESS_WRAPPER or the processWrapper setting.
 - [Manage costs effectively](https://code.claude.com/docs/en/costs.md): Track token usage, set team spend limits, and reduce Claude Code costs with context management, model selection, extended thinking settings, and preprocessing hooks.
 - [Data usage](https://code.claude.com/docs/en/data-usage.md): Learn about Anthropic's data usage policies for Claude
 - [Debug your configuration](https://code.claude.com/docs/en/debug-your-config.md): Diagnose why CLAUDE.md, settings, hooks, MCP servers, or skills aren't taking effect. Use /context, /doctor, /hooks, and /mcp to see what actually loaded.
@@ -74,6 +76,7 @@
 - [Claude Desktop on Linux (beta)](https://code.claude.com/docs/en/desktop-linux.md): Install and update the Claude desktop app on Ubuntu and Debian
 - [Get started with the desktop app](https://code.claude.com/docs/en/desktop-quickstart.md): Install Claude Code on desktop and start your first coding session
 - [Schedule recurring tasks in Claude Code Desktop](https://code.claude.com/docs/en/desktop-scheduled-tasks.md): Set up scheduled tasks in Claude Code Desktop to run Claude automatically on a recurring basis for daily code reviews, dependency audits, or morning briefings.
+- [Claude Code Desktop in WSL](https://code.claude.com/docs/en/desktop-wsl.md): Run Code sessions inside a WSL 2 distribution on Windows
 - [Development containers](https://code.claude.com/docs/en/devcontainer.md): Run Claude Code inside a dev container for consistent, isolated environments across your team.
 - [Discover and install prebuilt plugins through marketplaces](https://code.claude.com/docs/en/discover-plugins.md): Find and install plugins from marketplaces to extend Claude Code with new skills, agents, and capabilities.
 - [Environment variables](https://code.claude.com/docs/en/env-vars.md): Reference for environment variables that control Claude Code behavior.
@@ -99,7 +102,7 @@
 - [Set up Claude Code in a monorepo or large codebase](https://code.claude.com/docs/en/large-codebases.md): Configure Claude Code for monorepos and large single-tree codebases with nested CLAUDE.md files, sparse worktrees, code intelligence, and per-package skills so Claude stays focused on the code you're working in.
 - [Legal and compliance](https://code.claude.com/docs/en/legal-and-compliance.md): Legal agreements, compliance certifications, and security information for Claude Code.
 - [Other LLM gateways](https://code.claude.com/docs/en/llm-gateway.md): Route Claude Code through an LLM gateway your organization already runs. Covers connecting Claude Code to a gateway, rolling one out for your organization, and what Claude Code sends to a gateway.
-- [Connect Claude Code to an LLM gateway](https://code.claude.com/docs/en/llm-gateway-connect.md): Point Claude Code at your organization's LLM gateway. Check whether your admin already configured it, or set the base URL and credential yourself for the CLI, VS Code, GitHub Actions, and the Agent SDK, then verify the connection and fix gateway errors.
+- [Connect Claude Code to an LLM gateway](https://code.claude.com/docs/en/llm-gateway-connect.md): Point Claude Code at your organization's LLM gateway. Check whether your admin already configured it, or set the base URL and credential yourself, then verify the connection and fix gateway errors.
 - [Gateway protocol reference](https://code.claude.com/docs/en/llm-gateway-protocol.md): The API contract between Claude Code and an LLM gateway: endpoints, headers and body fields to forward, feature degradation when fields are stripped, attribution headers for cost tracking, and model discovery.
 - [Roll out an LLM gateway for your organization](https://code.claude.com/docs/en/llm-gateway-rollout.md): Deploy a gateway product for Claude Code: configure it to forward what Claude Code sends, issue developer credentials, distribute the configuration through managed settings, and verify the rollout.
 - [Control MCP server access for your organization](https://code.claude.com/docs/en/managed-mcp.md): Restrict which MCP servers users can add or connect to with managed configuration files, allowlists, and denylists.
@@ -107,6 +110,7 @@
 - [Connect to MCP servers](https://code.claude.com/docs/en/mcp-quickstart.md): Add an MCP server to Claude Code, verify the connection, and find the configuration on disk.
 - [How Claude remembers your project](https://code.claude.com/docs/en/memory.md): Give Claude persistent instructions with CLAUDE.md files, and let Claude accumulate learnings automatically with auto memory.
 - [Claude Code on Microsoft Foundry](https://code.claude.com/docs/en/microsoft-foundry.md): Learn about configuring Claude Code through Microsoft Foundry, including setup, configuration, and troubleshooting.
+- [Claude Code on mobile](https://code.claude.com/docs/en/mobile.md): Start, monitor, and steer Claude Code tasks from your phone with the Claude app for iOS and Android.
 - [Model configuration](https://code.claude.com/docs/en/model-config.md): Learn about the Claude Code model configuration, including model aliases like `opusplan`
 - [Monitoring](https://code.claude.com/docs/en/monitoring-usage.md): Learn how to enable and configure OpenTelemetry for Claude Code.
 - [Enterprise network configuration](https://code.claude.com/docs/en/network-config.md): Configure Claude Code for enterprise environments with proxy servers, custom Certificate Authorities (CA), and mutual Transport Layer Security (mTLS) authentication.
@@ -115,7 +119,7 @@
 - [Choose a permission mode](https://code.claude.com/docs/en/permission-modes.md): Control whether Claude asks before editing files or running commands. Cycle modes with Shift+Tab in the CLI or use the mode selector in VS Code, Desktop, and claude.ai.
 - [Configure permissions](https://code.claude.com/docs/en/permissions.md): Control what Claude Code can access and do with fine-grained permission rules, modes, and managed policies.
 - [Platforms and integrations](https://code.claude.com/docs/en/platforms.md): Choose where to run Claude Code and what to connect it to. Compare the CLI, Desktop, VS Code, JetBrains, web, mobile, and integrations like Chrome, Slack, and CI/CD.
-- [Constrain plugin dependency versions](https://code.claude.com/docs/en/plugin-dependencies.md): Declare version constraints on plugin dependencies so your plugin keeps working when an upstream plugin ships a breaking change.
+- [Constrain plugin dependency versions](https://code.claude.com/docs/en/plugin-dependencies.md): Declare version constraints on plugin dependencies, and bundle a curated plugin set behind one install.
 - [Recommend your plugin from your CLI](https://code.claude.com/docs/en/plugin-hints.md): Emit a one-line marker from your CLI so Claude Code prompts users to install your official plugin.
 - [Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces.md): Build and host plugin marketplaces to distribute Claude Code extensions across teams and communities.
 - [Recommend plugins for your org](https://code.claude.com/docs/en/plugin-relevance.md): Add a relevance block to marketplace plugin entries so Claude Code suggests them when a user's work matches.
@@ -165,6 +169,7 @@
 - [Week 26 · June 22–26, 2026](https://code.claude.com/docs/en/whats-new/2026-w26.md): Authenticate MCP servers from your shell with claude mcp login, get a response to shell mode command output with the ! prefix, and resume a conversation from before /clear with /rewind.
 - [Week 27 · June 29 – July 3, 2026](https://code.claude.com/docs/en/whats-new/2026-w27.md): Claude Sonnet 5 becomes the default model, Claude in Chrome reaches general availability, subagents run in the background by default, Claude Desktop arrives on Linux in beta, and /radio tunes into Claude FM.
 - [Week 28 · July 6–10, 2026](https://code.claude.com/docs/en/whats-new/2026-w28.md): Browse external sites from the Desktop app's built-in browser, run a full setup checkup with /doctor, and pick up auto mode transcript protections and agent view upgrades.
+- [Week 29 · July 13–17, 2026](https://code.claude.com/docs/en/whats-new/2026-w29.md): Pull live data into published artifacts through MCP connectors, and use Claude Code with a screen reader in the new screen reader mode.
 - [What's new](https://code.claude.com/docs/en/whats-new/index.md): A weekly digest of notable Claude Code features, with code snippets, demos, and context on why they matter.
 - [Orchestrate subagents at scale with dynamic workflows](https://code.claude.com/docs/en/workflows.md): Dynamic workflows orchestrate many subagents from a script Claude writes and you can rerun. Use them for codebase audits, large migrations, and cross-checked research.
 - [Run parallel sessions with worktrees](https://code.claude.com/docs/en/worktrees.md): Isolate parallel Claude Code sessions in separate git worktrees so changes don't collide. Covers the `--worktree` flag, subagent isolation, `.worktreeinclude`, cleanup, and non-git VCS hooks.
