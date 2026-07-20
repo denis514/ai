@@ -1081,3 +1081,13 @@ delete + export.
 + - [Constrain plugin dependency versions](https://code.claude.com/docs/en/plugin-dependencies.md): Declare version constraints on plugin dependencies, and bundle a curated plugin set behind one install.
 + - [Week 29 · July 13–17, 2026](https://code.claude.com/docs/en/whats-new/2026-w29.md): Pull live data into published artifacts through MCP connectors, and use Claude Code with a screen reader in the new screen reader mode.
 ```
+
+### [help-watch 2026-07-20] Проверить вкладку «Помощь» (Agent Builder)
+Изменились функциональные файлы билдера — справка могла устареть:
+- `src/builder/data/templates.js`
+- `src/builder/services/connectionRules.js`
+- `src/builder/components/panels/ScheduleModal.jsx`
+- `src/builder/components/panels/ApiKeysModal.jsx`
+- `src/builder/components/panels/AllSchedulesModal.jsx`
+- `src/builder/components/panels/ExecutionPanel.jsx`
+После сверки: `npm run help:watch -- --accept`.
