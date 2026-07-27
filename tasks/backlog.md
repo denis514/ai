@@ -1504,3 +1504,13 @@ delete + export.
 + - [Scan your codebase for vulnerabilities](https://code.claude.com/docs/en/claude-security.md): Install the Claude Security plugin to scan your codebase for vulnerabilities in a Claude Code session and turn findings into patches you review and apply.
 + - [Test iOS apps in the simulator](https://code.claude.com/docs/en/desktop-ios-simulator.md): Claude Code Desktop opens your app in the iOS Simulator pane when Claude builds, runs, or checks it, with a separate simulator for each session.
 ```
+
+### [help-watch 2026-07-27] Проверить вкладку «Помощь» (Agent Builder)
+Изменились функциональные файлы билдера — справка могла устареть:
+- `src/builder/data/templates.js`
+- `src/builder/services/connectionRules.js`
+- `src/builder/components/panels/ScheduleModal.jsx`
+- `src/builder/components/panels/ApiKeysModal.jsx`
+- `src/builder/components/panels/AllSchedulesModal.jsx`
+- `src/builder/components/panels/ExecutionPanel.jsx`
+После сверки: `npm run help:watch -- --accept`.
