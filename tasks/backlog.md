@@ -1804,3 +1804,13 @@ delete + export.
 + - [Test self-hosted environments end to end](https://code.claude.com/docs/en/self-hosted-environments-testing.md): Verify a self-hosted runner image from CI: dispatch a session with the CLI, read Claude's replies through a Stop hook, and script the full loop.
 - - [Plan in the cloud with ultraplan](https://code.claude.com/docs/en/ultraplan.md): Start a plan from your CLI, draft it on Claude Code on the web, then execute it remotely or back in your terminal
 ```
+
+### [help-watch 2026-08-10] Проверить вкладку «Помощь» (Agent Builder)
+Изменились функциональные файлы билдера — справка могла устареть:
+- `src/builder/data/templates.js`
+- `src/builder/services/connectionRules.js`
+- `src/builder/components/panels/ScheduleModal.jsx`
+- `src/builder/components/panels/ApiKeysModal.jsx`
+- `src/builder/components/panels/AllSchedulesModal.jsx`
+- `src/builder/components/panels/ExecutionPanel.jsx`
+После сверки: `npm run help:watch -- --accept`.
