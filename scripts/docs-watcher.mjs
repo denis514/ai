@@ -9,7 +9,7 @@
  *      в docs/docs-watch/state.json.
  *   3. При изменениях:
  *        - перезаписывает снапшот в docs/docs-watch/snapshots/<slug>.md
- *        - дописывает дифф + черновик предложений по узлам Atlas в tasks/backlog.md
+ *        - дописывает дифф + черновик предложений по узлам Atlas в tasks/docs-watch-archive.md
  *        - шлёт короткий сигнал в Telegram (если заданы секреты)
  *   4. Обновляет state.json.
  *
@@ -73,10 +73,11 @@ const WATCH = [
 const STATE_DIR = join(ROOT, 'docs', 'docs-watch');
 const SNAP_DIR = join(STATE_DIR, 'snapshots');
 const STATE_FILE = join(STATE_DIR, 'state.json');
-const BACKLOG = join(ROOT, 'tasks', 'backlog.md');
+// Машинный поток идёт в отдельный архив, чтобы бэклог оставался человеческим.
+const BACKLOG = join(ROOT, 'tasks', 'docs-watch-archive.md');
 
 const MAX_DIFF_LINES_TG = 0;       // в Telegram дифф не шлём (только сводку)
-const MAX_DIFF_LINES_BACKLOG = 250; // в backlog.md — кап на дифф одной страницы
+const MAX_DIFF_LINES_BACKLOG = 250; // в архиве — кап на дифф одной страницы
 
 const isBaseline = process.argv.includes('--baseline');
 const today = new Date().toISOString().slice(0, 10);
@@ -159,7 +160,7 @@ async function notifyTelegram(changes) {
     lines.push(`• <b>${c.label}</b> — ${c.added}+ / ${c.removed}− строк`);
   }
   lines.push('');
-  lines.push('Черновик правок и дифф — в <code>tasks/backlog.md</code>.');
+  lines.push('Черновик правок и дифф — в <code>tasks/docs-watch-archive.md</code>.');
   lines.push('Скажи Claude: «обнови Atlas под документацию» — он разнесёт изменения по узлам.');
   const text = lines.join('\n');
 
@@ -181,7 +182,7 @@ async function notifyTelegram(changes) {
   }
 }
 
-// ─── backlog.md ──────────────────────────────────────────────────────────────
+// ─── архив сторожей (tasks/docs-watch-archive.md) ────────────────────────────
 async function appendBacklog(changes) {
   const blocks = [];
   blocks.push(`\n## 📄 docs-watch: документация изменилась — ${today}\n`);
@@ -211,7 +212,7 @@ async function appendBacklog(changes) {
   let prev = '';
   if (existsSync(BACKLOG)) prev = await readFile(BACKLOG, 'utf8');
   await writeFile(BACKLOG, prev + addition, 'utf8');
-  console.log('[docs-watcher] backlog.md updated.');
+  console.log('[docs-watcher] tasks/docs-watch-archive.md updated.');
 }
 
 // ─── Главный проход ──────────────────────────────────────────────────────────

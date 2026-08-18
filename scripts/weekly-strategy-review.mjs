@@ -75,12 +75,22 @@ function tasksSnapshot() {
   const content = readSafe('tasks/current.md');
   if (!content) return { open: 0, total: 0, openList: [] };
 
-  // Простая эвристика: считаем рядом «open» / «in-progress» pending tasks
-  const openMatches = (content.match(/^\|.*\|\s*open\s*\|/gim) || []);
-  const inProgressMatches = (content.match(/^\|.*\|\s*in[-_ ]progress\s*\|/gim) || []);
+  // Задачи в current.md живут в двух форматах:
+  //   1. строки таблицы «| … | open |»
+  //   2. чек-листы «- [ ] …» (открыта) и «- [~] …» (в работе)
+  const openRows = (content.match(/^\|.*\|\s*open\s*\|/gim) || []);
+  const inProgressRows = (content.match(/^\|.*\|\s*in[-_ ]progress\s*\|/gim) || []);
+  const openBoxes = (content.match(/^\s*[-*]\s*\[ \]\s+.+$/gim) || []);
+  const inProgressBoxes = (content.match(/^\s*[-*]\s*\[~\]\s+.+$/gim) || []);
 
-  // Берём первые 5 строк с "open" для preview
-  const previewLines = openMatches.slice(0, 5).map(l => l.split('|').map(s => s.trim()).filter(Boolean).slice(0, 2).join(' — '));
+  const openMatches = [...openRows, ...openBoxes];
+  const inProgressMatches = [...inProgressRows, ...inProgressBoxes];
+
+  // Первые 5 открытых задач для preview: у таблиц берём 2 первые колонки,
+  // у чек-листов — текст строки без маркера.
+  const previewLines = openMatches.slice(0, 5).map(l => l.trim().startsWith('|')
+    ? l.split('|').map(s => s.trim()).filter(Boolean).slice(0, 2).join(' — ')
+    : l.replace(/^\s*[-*]\s*\[ \]\s+/, '').replace(/\*\*/g, '').trim().slice(0, 120));
 
   return {
     open: openMatches.length,

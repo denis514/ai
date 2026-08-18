@@ -9,7 +9,7 @@
  *   3. Если что-то изменилось с момента последней сверки справки:
  *        - печатает список изменённых файлов;
  *        - шлёт короткий сигнал в Telegram (если заданы секреты);
- *        - дописывает напоминание в tasks/backlog.md.
+ *        - обновляет напоминание в tasks/docs-watch-archive.md.
  *      Это СИГНАЛ «проверь Помощь», а не авто-правка.
  *   4. После того как справка проверена/обновлена — принять базу:
  *        node scripts/help-watch.mjs --accept
@@ -22,7 +22,7 @@
  *
  * Выходной код всегда 0 — это сигнальный сторож, он не должен валить CI.
  */
-import { readFile, writeFile, mkdir, appendFile } from 'fs/promises';
+import { readFile, writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -96,7 +96,8 @@ async function notifyTelegram(changed) {
 }
 
 async function appendBacklog(changed) {
-  const file = join(ROOT, 'tasks/backlog.md');
+  // Машинный поток идёт в архив сторожей, а не в человеческий бэклог.
+  const file = join(ROOT, 'tasks/docs-watch-archive.md');
   if (!existsSync(file)) return;
   const stamp = new Date().toISOString().slice(0, 10);
   const block =
@@ -104,8 +105,16 @@ async function appendBacklog(changed) {
     `Изменились функциональные файлы билдера — справка могла устареть:\n` +
     changed.map(f => `- \`${f}\``).join('\n') +
     `\nПосле сверки: \`npm run help:watch -- --accept\`.\n`;
-  await appendFile(file, block);
-  console.log('[help-watch] Напоминание добавлено в tasks/backlog.md');
+
+  // Пока сверку не приняли, сигнал повторяется каждую неделю с тем же списком
+  // файлов. Копить одинаковые блоки бессмысленно — заменяем предыдущий.
+  const prev = await readFile(file, 'utf8');
+  const cleaned = prev.replace(
+    /\n### \[help-watch \d{4}-\d{2}-\d{2}\] Проверить вкладку «Помощь»[\s\S]*?npm run help:watch -- --accept`\.\n/g,
+    ''
+  );
+  await writeFile(file, cleaned.replace(/\n+$/, '\n') + block, 'utf8');
+  console.log('[help-watch] Напоминание обновлено в tasks/docs-watch-archive.md');
 }
 
 async function main() {

@@ -25,6 +25,7 @@ import { join } from 'node:path';
 const ROOT = process.cwd();
 const OUT_DIR = join(ROOT, 'docs', 'ux-audit');
 const DRY = process.argv.includes('--dry-run');
+const FORCE = process.argv.includes('--force');
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -84,6 +85,27 @@ ${uniqueChanged.length ? uniqueChanged.map(f => `- \`${f}\``).join('\n') : '- (�
 - Что из прошлых предложений внедрено: _______
 - Что осталось/перенесено: _______
 `;
+
+// ── Предохранители от лавины пустых агенд ──────────────────────────────────
+// 1) Каденция: только 1-й и 3-й понедельник месяца (числа 1-7 и 15-21).
+//    Cron в GitHub Actions выражает это ненадёжно, поэтому решаем здесь.
+// 2) Прошлая агенда не заполнена — новую не создаём, иначе они копятся
+//    десятками и настоящие находки в них теряются.
+// Оба предохранителя снимаются флагом --force.
+const dayOfMonth = new Date().getDate();
+const inCadence = (dayOfMonth >= 1 && dayOfMonth <= 7) || (dayOfMonth >= 15 && dayOfMonth <= 21);
+const prevUnfilled = prev && /^\|\s*1\s*\|\s*\|\s*\|\s*\|\s*\|\s*$/m.test(
+  readFileSync(join(OUT_DIR, prev), 'utf8')
+);
+
+if (!DRY && !FORCE && !inCadence) {
+  console.log(`UX-audit: пропуск — не 1-й и не 3-й понедельник месяца (сегодня ${dayOfMonth}-е). Обойти: --force`);
+  process.exit(0);
+}
+if (!DRY && !FORCE && prevUnfilled) {
+  console.log(`UX-audit: пропуск — прошлая агенда docs/ux-audit/${prev} ещё не заполнена. Заполни её или запусти с --force`);
+  process.exit(0);
+}
 
 if (DRY) {
   console.log(doc);

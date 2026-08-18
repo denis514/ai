@@ -2,7 +2,7 @@ name: Docs Watch
 
 # Сторож официальной документации Claude.
 # Понедельник 08:00 UTC (10:00 EET). Скачивает ключевые страницы docs,
-# сравнивает со слепком, при изменении пишет дифф в tasks/backlog.md,
+# сравнивает со слепком, при изменении пишет дифф в tasks/docs-watch-archive.md,
 # сигналит в Telegram и коммитит обновлённые снапшоты.
 # Можно запустить вручную через workflow_dispatch.
 
@@ -36,7 +36,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/docs-watch/ tasks/backlog.md
+          git add docs/docs-watch/ tasks/docs-watch-archive.md
           if git diff --cached --quiet; then
             echo "No documentation changes detected (nothing to commit)"
             exit 0
