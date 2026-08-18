@@ -18,13 +18,13 @@
 ## Архитектура — 4 уровня
 
 ```
-LEVEL 4 — USE CASES        — именованные пути через узлы (13 UC)
+LEVEL 4 — USE CASES        — именованные пути через узлы (18 узлов)
          ↑ применяет
-LEVEL 3 — TRANSFORMATION   — 5 directions: Ops / Mk / CS / Product / Enterprise
+LEVEL 3 — TRANSFORMATION   — направления перестройки работы (64 узла)
          ↑ применяется через
-LEVEL 2 — SYSTEMS          — 6 sub-разделов: workflows, data, orchestration, ops, etc.
+LEVEL 2 — SYSTEMS          — паттерны систем и оркестрации (51 узел)
          ↑ строится из
-LEVEL 1 — FOUNDATION       — 141 узел: 8 ai-fundamentals + 133 Claude-specific
+LEVEL 1 — FOUNDATION       — основы AI + Claude-specific (156 узлов)
 ```
 
 Пользователь входит с любого уровня и движется вверх или вниз через явные cross-links.
@@ -43,8 +43,12 @@ LEVEL 1 — FOUNDATION       — 141 узел: 8 ai-fundamentals + 133 Claude-sp
 
 1. **Knowledge layer** — `src/data/` (mindmap structure) + `src/locales/<lang>/nodes.json` (контент в 3 локалях)
 2. **UI layer** — `src/components/`, `src/hooks/`, `App.css`
-3. **AI infrastructure layer** — `CLAUDE.md`, `skills/`, `prompts/`, `docs/`, `tasks/`
-4. **Strategy layer** — `docs/strategy/` (10 architect-level документов)
+3. **Product layer #2 — Agent Builder** — `src/builder/` (холст, 24 типа узлов,
+   33 шаблона) + `supabase/functions/` (реальное исполнение, планировщик, вебхук).
+   Изолирован от Atlas: общие только Auth/Locale/Theme-контексты.
+4. **AI infrastructure layer** — `CLAUDE.md`, `skills/`, `prompts/`, `docs/`, `tasks/`
+5. **Strategy layer** — `docs/strategy/` (позиционирование) + `docs/business-strategy/`
+   (модель дохода, монетизация; distribution заморожен — см. `PIVOT-PRODUCT-FIRST.md`)
 
 Слои **не смешиваются**. AI-инфраструктура управляет контентом через skills, а не правит UI или vice-versa.
 
@@ -56,14 +60,14 @@ LEVEL 1 — FOUNDATION       — 141 узел: 8 ai-fundamentals + 133 Claude-sp
 - Supabase (Auth + DB), Vercel (deploy)
 - i18n: ru / en / fi через lazy-loaded chunks per locale
 
-## Контент
+## Контент (проверено 2026-08-18 линтерами)
 
-- **213 узлов** (133 старых Claude-specific + 80 новых)
-- **17 Transformation узлов** в 5 directions
-- **17 Systems узлов** в 6 sub-разделах
-- **13 Use Cases** (cross-layer paths)
+- **299 узлов** в карте (290 в дереве + узлы вне основного обхода)
+- **261 обучающий материал**, **13 маршрутов обучения**
+- **64 промпта** + **42 шаблона** библиотеки промптов
+- **33 шаблона** Agent Builder, **24 типа** узлов конструктора
 - Узлы оформлены по схеме **what / why / when / impact / example / mistakes**
-- ru / en / fi синхронизированы
+- ru / en / fi синхронизированы (`npm run lint:data`, `npm run lint:links`)
 
 ## Принципы
 
@@ -85,8 +89,14 @@ LEVEL 1 — FOUNDATION       — 141 узел: 8 ai-fundamentals + 133 Claude-sp
 - Knowledge structure (узлы) → `docs/knowledge-structure.md`
 - Контент-правила → `docs/content-rules.md`
 
-## Status
+## Status (2026-08-18)
 
-**Architecture migration: IMPLEMENTED (2026-05-22)**
-
-Все 5 фаз стратегии выполнены за одну сессию. Atlas теперь — MVP новой архитектуры с реальным контентом во всех 4 уровнях. Bundle 92.61 KB gzip.
+- **Architecture migration: IMPLEMENTED** (2026-05-22) — все 4 уровня наполнены.
+- **Atlas: в проде**, открыт без пароля с 2026-06-09.
+- **Agent Builder: рабочая бета** — реальный запуск, автозапуск по расписанию и
+  вебхуку, доставка в Telegram / e-mail / календарь, MCP, защита кошелька.
+  Не доделано: `tool-computer` в движке, узлы-триггеры в палитре, платные тарифы.
+- **Пауза в разработке**: с 13 июня по 18 августа 2026 в `main` шли только
+  авто-коммиты сторожей. Текущее состояние и приоритеты — `tasks/current.md`.
+- **Вес первой загрузки за критическим порогом**: JS 185.8 KB gzip, CSS 50.8 KB
+  (`tasks/perf-audit-2026-08-18.md`) — отдельная задача.
