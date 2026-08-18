@@ -1817,8 +1817,8 @@
 ... (дифф обрезан до 250 строк; полный текст — в docs/docs-watch/snapshots/llms-index.md)
 ```
 
-### [help-watch 2026-08-18] Проверить вкладку «Помощь» (Agent Builder)
-Изменились функциональные файлы билдера — справка могла устареть:
+### [help-watch 2026-08-18] Проверить вкладку «Помощь» (Agent Builder) — ОБРАБОТАНО
+Справка сверена и обновлена 2026-08-18, база принята. Список файлов на момент сигнала:
 - `src/builder/data/templates.js`
 - `src/builder/services/connectionRules.js`
 - `src/builder/components/panels/ScheduleModal.jsx`
