@@ -252,6 +252,9 @@ function computeOrderLevels(nodes, edges) {
 const KBD_META = (typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || ''))
   ? '⌘' : 'Ctrl';
 
+// Подсказку про бесплатный тестовый прогон показываем один раз на устройство.
+const ARRIVAL_HINT_KEY = 'atlas.builder.arrivalHint.v1';
+
 function BuilderApp({ initialTemplateId = null }) {
   return (
     <ReactFlowProvider>
@@ -351,6 +354,13 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // Onboarding tour — НЕ показываем при заходе. Запускается только когда
   // пользователь нажал «Старт» / «Templates» / Recent (через engageBuilder ниже).
   const [tourOpen, setTourOpen] = useState(false);
+
+  // Окно-объяснение перед первым запуском. Два случая:
+  //   'arrival' — человек пришёл из узла карты по кнопке «Собрать в конструкторе»;
+  //   'gate'    — нажал «Запуск», но входа/ключа нет.
+  // Раньше во втором случае сразу открывалась форма входа: человек пришёл
+  // посмотреть, а его без объяснений просят зарегистрироваться.
+  const [runIntro, setRunIntro] = useState(null);
 
   /**
    * engageBuilder — пользователь начал работу: раскрываем обе панели и
@@ -1254,6 +1264,14 @@ function BuilderAppInner({ initialTemplateId = null }) {
     if (!tpl) return;                      // шаблон переименован/удалён — тихо игнорируем
     initialTemplateDone.current = true;
     loadTemplate(tpl);
+    // Первый приход из карты: подсказываем бесплатный тест. Показываем один раз —
+    // дальше человек уже знает, где кнопка.
+    try {
+      if (!localStorage.getItem(ARRIVAL_HINT_KEY)) {
+        localStorage.setItem(ARRIVAL_HINT_KEY, '1');
+        setRunIntro('arrival');
+      }
+    } catch { /* приватный режим — просто не показываем */ }
   }, [initialTemplateId, loadTemplate]);
 
   /* ────────── Применить код (панель «Код схемы») ────────── */
@@ -1397,7 +1415,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
 
   const handleRun = useCallback(() => {
     if (nodes.length === 0 || execStatus === 'running') return;
-    if (!keyConnected) { requestRealMode(); return; }
+    if (!keyConnected) { setRunIntro('gate'); return; }
     // Задача пуста — открываем окно у стартового узла, чтобы было видно, куда писать.
     if (!runInput.trim()) {
       const trigger = nodes.find(n => n.data?.kind === 'trigger');
@@ -2519,6 +2537,86 @@ function BuilderAppInner({ initialTemplateId = null }) {
 
       {/* Auth modal — Builder рендерится вместо Atlas, поэтому свой инстанс */}
       {authOpen && <AuthModal onClose={() => { setAuthOpen(false); if (!user) clearResumeAfterAuth(); }} />}
+
+      {/* Объяснение перед запуском: что произойдёт и что бесплатно.
+          Собрано из существующих классов модалки — своего стиля не вводим. */}
+      {runIntro && (
+        <div className="builder-name-modal__overlay" onClick={() => setRunIntro(null)}>
+          <div
+            className="builder-name-modal"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={runIntro === 'arrival'
+              ? (t('builder.runIntro.arrivalTitle') || 'Готовая схема по этой теме')
+              : (t('builder.runIntro.gateTitle') || 'Что нужно для настоящего запуска')}
+          >
+            <h3 className="builder-name-modal__title">
+              {runIntro === 'arrival'
+                ? (t('builder.runIntro.arrivalTitle') || 'Готовая схема по этой теме')
+                : (t('builder.runIntro.gateTitle') || 'Что нужно для настоящего запуска')}
+            </h3>
+
+            <p className="builder-name-modal__hint">
+              {runIntro === 'arrival'
+                ? (t('builder.runIntro.arrivalBody')
+                    || 'Блоки уже соединены, задание заполнено. Нажмите «Тестовый запуск»: пройдём по шагам и покажем, что делает каждый блок. Бесплатно и без входа.')
+                : user
+                  ? (t('builder.runIntro.gateBodyKey')
+                      || 'Нужен ваш ключ Claude: настоящий запуск тратит ваши токены, а не наши. Ключ подключается один раз, хранится в защищённом виде.')
+                  : (t('builder.runIntro.gateBodyAuth')
+                      || 'Понадобятся вход (чтобы схема и ключ сохранились за вами) и ваш ключ Claude: настоящий запуск тратит ваши токены, а не наши.')}
+            </p>
+
+            {runIntro === 'gate' && (
+              <p className="builder-name-modal__hint">
+                {t('builder.runIntro.dryFirst')
+                  || 'Посмотреть, как работает схема, можно прямо сейчас: тестовый запуск проходит по шагам без токенов.'}
+              </p>
+            )}
+
+            <div className="builder-name-modal__actions">
+              {runIntro === 'arrival' ? (
+                <>
+                  <button
+                    type="button"
+                    className="builder-btn builder-btn--ghost"
+                    onClick={() => setRunIntro(null)}
+                  >
+                    {t('builder.runIntro.lookAround') || 'Осмотрюсь сам'}
+                  </button>
+                  <button
+                    type="button"
+                    className="builder-btn builder-btn--primary"
+                    onClick={() => { setRunIntro(null); handleDryRun(); }}
+                  >
+                    {t('builder.dry.btn') || 'Тестовый запуск'}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className="builder-btn builder-btn--ghost"
+                    onClick={() => { setRunIntro(null); handleDryRun(); }}
+                  >
+                    {t('builder.runIntro.tryFree') || 'Сначала бесплатный тест'}
+                  </button>
+                  <button
+                    type="button"
+                    className="builder-btn builder-btn--primary builder-btn--real"
+                    onClick={() => { setRunIntro(null); requestRealMode(); }}
+                  >
+                    {user
+                      ? (t('builder.runIntro.connectKey') || 'Подключить ключ')
+                      : (t('builder.runIntro.signIn') || 'Войти')}
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Real-mode confirm — после входа+ключа, раз юзер жал «Реально» */}
       {validation && (
