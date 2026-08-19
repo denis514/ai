@@ -17,7 +17,7 @@ export const NODE_TEMPLATES = {
                                       // для первого знакомства не годятся: без
                                       // подключённого бота человек не увидит результат.
   'cap-vision':     'image-review',     // агент смотрит картинку
-  'cap-files':      'data-cruncher',    // агент читает файл по ссылке
+  'cap-files':      'doc-answer',      // агент отвечает строго по вашему файлу
   'cap-memory':     'brand-voice',      // память держит тон между шагами
   'cap-code-exec':  'data-cruncher',    // агент считает кодом
   'cap-computer':   'web-actions',      // управление браузером
@@ -25,6 +25,8 @@ export const NODE_TEMPLATES = {
   'mcp':            'connect-service',  // свой сервис через MCP
 
   // ── Роли агентов ──
+  'ag-code':        'code-review',     // агент-программист разбирает код
+  'ag-pm':          'spec-from-wishes',// агент-продакт делает требования из пожеланий
   'ag-research':    'research',
   'ag-ux':          'ux-audit',
   'ag-designer':    'design-qa',
@@ -44,8 +46,11 @@ export const NODE_TEMPLATES = {
   'uc-ai-content-ops-launch':  'content',
   'uc-ai-reporting-launch':    'analytics',
   'uc-ai-process-automation':  'triage',
-  'uc-ai-rag-launch':          'product-qa',
+  'uc-ai-rag-launch':          'doc-answer',
   'uc-ai-multi-agent-system':  'product-qa',
+  'uc-ai-product-search':          'product-pick',
+  'uc-ai-personalization-launch':  'personal-offer',
+  'uc-ai-conversion-optimization': 'conversion-audit',
 };
 
 /** id шаблона для узла карты, либо null если демо для узла нет. */

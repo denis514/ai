@@ -823,6 +823,190 @@ export const TEMPLATES = [
       { from: 3, to: 5, sourceHandle: 'false' },  // нельзя → эскалация человеку
     ],
   },
+
+  /* ════════════════════════════════════════════════════════════ */
+  /*  Батч «покрытие тем карты» (2026-08-19). Схемы под узлы Atlas,  */
+  /*  у которых не было демо. Отбор и критерии —                    */
+  /*  docs/agent-builder/16-node-template-demos.md §2.              */
+  /*  Правило: результат виден НА ЭКРАНЕ (без подключений),          */
+  /*  «Старт» с переменными, у каждой схемы есть логика.             */
+  /* ════════════════════════════════════════════════════════════ */
+
+  /* Ответ по вашему документу — узлы cap-files, uc-ai-rag-launch.
+     Файл и Цитаты как умения; условие ловит «в документе этого нет». */
+  {
+    id: 'doc-answer',
+    nameKey: 'builder.template.docAnswer.name',
+    descKey: 'builder.template.docAnswer.desc',
+    inputKey: 'builder.template.docAnswer.input',
+    outputKey: 'builder.template.docAnswer.output',
+    iconName: 'file', difficulty: 'intermediate', category: 'research', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',  position: { x: 100, y: 40 } },
+      { defId: 'tool-file',      position: { x: -160, y: 130 } },
+      { defId: 'tool-citations', position: { x: -160, y: 230 } },
+      { defId: 'agent-research', position: { x: 100, y: 180 }, dataOverride: {
+        promptKey: 'builder.template.docAnswer.prompt' } },
+      { defId: 'logic-condition', position: { x: 100, y: 320 }, dataOverride: {
+        operator: 'contains', condValue: 'НЕТ В ДОКУМЕНТЕ' } },
+      { defId: 'output-text',    position: { x: 380, y: 320 } },
+      { defId: 'output-text',    position: { x: 100, y: 470 } },
+    ],
+    edges: [
+      { from: 0, to: 3 },
+      { from: 1, to: 3 },
+      { from: 2, to: 3 },
+      { from: 3, to: 4 },
+      { from: 4, to: 5, sourceHandle: 'true' },
+      { from: 4, to: 6, sourceHandle: 'false' },
+    ],
+  },
+
+  /* Разбор кода — узел ag-code. Агент-программист читает файл с кодом
+     и разделяет находки на «чинить сейчас» и «можно потом». */
+  {
+    id: 'code-review',
+    nameKey: 'builder.template.codeReview.name',
+    descKey: 'builder.template.codeReview.desc',
+    inputKey: 'builder.template.codeReview.input',
+    outputKey: 'builder.template.codeReview.output',
+    iconName: 'laptop', difficulty: 'intermediate', category: 'dev', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',   position: { x: 100, y: 40 } },
+      { defId: 'tool-file',       position: { x: -160, y: 170 } },
+      { defId: 'agent-code',      position: { x: 100, y: 180 }, dataOverride: {
+        promptKey: 'builder.template.codeReview.prompt' } },
+      { defId: 'logic-condition', position: { x: 100, y: 320 }, dataOverride: {
+        operator: 'contains', condValue: 'КРИТИЧНО' } },
+      { defId: 'output-text',     position: { x: 380, y: 320 } },
+      { defId: 'output-text',     position: { x: 100, y: 470 } },
+    ],
+    edges: [
+      { from: 0, to: 2 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3 },
+      { from: 3, to: 4, sourceHandle: 'true' },
+      { from: 3, to: 5, sourceHandle: 'false' },
+    ],
+  },
+
+  /* Из пожеланий в требования — узел ag-pm. Умное условие само решает,
+     достаточно ли ясности, и либо выдаёт требования, либо задаёт вопросы. */
+  {
+    id: 'spec-from-wishes',
+    nameKey: 'builder.template.specWishes.name',
+    descKey: 'builder.template.specWishes.desc',
+    inputKey: 'builder.template.specWishes.input',
+    outputKey: 'builder.template.specWishes.output',
+    iconName: 'clipboard', difficulty: 'advanced', category: 'dev', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',         position: { x: 100, y: 40 } },
+      { defId: 'agent-pm',              position: { x: 100, y: 180 }, dataOverride: {
+        promptKey: 'builder.template.specWishes.promptPm' } },
+      { defId: 'logic-condition-agent', position: { x: 100, y: 320 }, dataOverride: {
+        question: 'Требования однозначны: понятно, что именно делаем, для кого и как поймём, что получилось?' } },
+      { defId: 'output-text',           position: { x: 380, y: 320 } },
+      { defId: 'agent-main',            position: { x: 100, y: 470 }, dataOverride: {
+        promptKey: 'builder.template.specWishes.promptAsk' } },
+      { defId: 'output-text',           position: { x: 100, y: 610 } },
+    ],
+    edges: [
+      { from: 0, to: 1 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3, sourceHandle: 'true' },
+      { from: 2, to: 4, sourceHandle: 'false' },
+      { from: 4, to: 5 },
+    ],
+  },
+
+  /* Подбор товара покупателю — узел uc-ai-product-search. Каталог приходит
+     файлом; если подходящего нет, схема не выдумывает, а честно уточняет. */
+  {
+    id: 'product-pick',
+    nameKey: 'builder.template.productPick.name',
+    descKey: 'builder.template.productPick.desc',
+    inputKey: 'builder.template.productPick.input',
+    outputKey: 'builder.template.productPick.output',
+    iconName: 'tag', difficulty: 'intermediate', category: 'sales', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',   position: { x: 100, y: 40 } },
+      { defId: 'tool-file',       position: { x: -160, y: 170 } },
+      { defId: 'agent-main',      position: { x: 100, y: 180 }, dataOverride: {
+        promptKey: 'builder.template.productPick.prompt' } },
+      { defId: 'logic-condition', position: { x: 100, y: 320 }, dataOverride: {
+        operator: 'contains', condValue: 'НЕТ ПОДХОДЯЩЕГО' } },
+      { defId: 'output-text',     position: { x: 380, y: 320 } },
+      { defId: 'output-text',     position: { x: 100, y: 470 } },
+    ],
+    edges: [
+      { from: 0, to: 2 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3 },
+      { from: 3, to: 4, sourceHandle: 'true' },
+      { from: 3, to: 5, sourceHandle: 'false' },
+    ],
+  },
+
+  /* Персональное предложение — узел uc-ai-personalization-launch.
+     Память держит правила обращения к сегменту, цикл дожимает текст. */
+  {
+    id: 'personal-offer',
+    nameKey: 'builder.template.personalOffer.name',
+    descKey: 'builder.template.personalOffer.desc',
+    inputKey: 'builder.template.personalOffer.input',
+    outputKey: 'builder.template.personalOffer.output',
+    iconName: 'star', difficulty: 'advanced', category: 'sales', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',  position: { x: 100, y: 40 } },
+      { defId: 'tool-memory',    position: { x: -160, y: 170 } },
+      { defId: 'agent-content',  position: { x: 100, y: 180 }, dataOverride: {
+        promptKey: 'builder.template.personalOffer.promptWrite' } },
+      { defId: 'agent-main',     position: { x: 100, y: 320 }, dataOverride: {
+        promptKey: 'builder.template.personalOffer.promptCheck' } },
+      { defId: 'logic-loop',     position: { x: 100, y: 460 }, dataOverride: {
+        loopBackToIndex: 3, maxLoops: 2 } },
+      { defId: 'output-text',    position: { x: 100, y: 600 } },
+    ],
+    edges: [
+      { from: 0, to: 2 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3 },
+      { from: 3, to: 4 },
+      { from: 4, to: 5 },
+    ],
+  },
+
+  /* Что мешает покупать — узел uc-ai-conversion-optimization. UX-агент
+     смотрит страницу, аналитик расставляет приоритеты, умное условие
+     отделяет «чинить срочно» от «улучшения на потом». */
+  {
+    id: 'conversion-audit',
+    nameKey: 'builder.template.conversionAudit.name',
+    descKey: 'builder.template.conversionAudit.desc',
+    inputKey: 'builder.template.conversionAudit.input',
+    outputKey: 'builder.template.conversionAudit.output',
+    iconName: 'target', difficulty: 'advanced', category: 'sales', author: 'builtin',
+    nodes: [
+      { defId: 'trigger-input',         position: { x: 100, y: 40 } },
+      { defId: 'tool-vision',           position: { x: -160, y: 170 } },
+      { defId: 'agent-ux',              position: { x: 100, y: 180 }, dataOverride: {
+        promptKey: 'builder.template.conversionAudit.promptUx' } },
+      { defId: 'agent-analytics',       position: { x: 100, y: 320 }, dataOverride: {
+        promptKey: 'builder.template.conversionAudit.promptPriority' } },
+      { defId: 'logic-condition-agent', position: { x: 100, y: 460 }, dataOverride: {
+        question: 'Есть ли препятствие, из-за которого покупку нельзя завершить прямо сейчас?' } },
+      { defId: 'output-text',           position: { x: 380, y: 460 } },
+      { defId: 'output-text',           position: { x: 100, y: 610 } },
+    ],
+    edges: [
+      { from: 0, to: 2 },
+      { from: 1, to: 2 },
+      { from: 2, to: 3 },
+      { from: 3, to: 4 },
+      { from: 4, to: 5, sourceHandle: 'true' },
+      { from: 4, to: 6, sourceHandle: 'false' },
+    ],
+  },
 ];
 
 /**
