@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { LOCALES, DEFAULT_LOCALE, FALLBACK_LOCALE, STORAGE_KEY, isLocale } from './config.js';
+import { LOCALES, DEFAULT_LOCALE, STORAGE_KEY, isLocale } from './config.js';
 import { t as tFn } from './t.js';
 import { loadLocaleContent, loadNodeSection, subscribeToContentChanges } from './strings.js';
 
@@ -115,6 +115,12 @@ function resolveInitialLocale() {
 
 export function LocaleProvider({ children }) {
   const [locale, setLocaleState] = useState(resolveInitialLocale);
+  // Язык определён окончательно? На первом визите (нет ни URL, ни выбора, ни
+  // кеша) он ещё уточняется по IP. Пока уточняется — НЕ грузим тяжёлый контент:
+  // иначе качаем весь английский, а через миг ещё и определившийся язык.
+  const [localeSettled, setLocaleSettled] = useState(
+    () => !!(readLocaleFromHash() || readStoredLocale() || readCachedIPLocale())
+  );
   // contentVersion инкрементируется когда lazy-контент загружен.
   // Это заставляет useT()/useLocale() потребителей перерисоваться и
   // получить актуальные данные из STRINGS (уже мутированного).
@@ -133,27 +139,34 @@ export function LocaleProvider({ children }) {
     if (hasManual || hasURL || hasCache) return;
 
     const mountedAt = Date.now();
+    // Страховка: если ответ по IP не пришёл за 800ms — перестаём ждать и
+    // грузим контент текущего (дефолтного) языка, чтобы карта не висела пустой.
+    const guard = setTimeout(() => setLocaleSettled(true), 800);
 
-    detectIPLocale().then(detected => {
-      if (!detected) return;
-      // Защитный таймер: если прошло больше 800ms — не перерисовываем,
-      // просто кеш уже записан (detectIPLocale делает это сам)
-      const elapsed = Date.now() - mountedAt;
-      if (elapsed > 800) return;
-      // Двойная проверка — вдруг за это время пользователь выбрал язык
-      if (readStoredLocale()) return;
-      setLocaleState(detected);
-    });
+    detectIPLocale()
+      .then(detected => {
+        // Защитный таймер: если прошло больше 800ms — не перерисовываем,
+        // просто кеш уже записан (detectIPLocale делает это сам)
+        const elapsed = Date.now() - mountedAt;
+        if (!detected || elapsed > 800) return;
+        // Двойная проверка — вдруг за это время пользователь выбрал язык
+        if (readStoredLocale()) return;
+        setLocaleState(detected);
+      })
+      .catch(() => {})
+      .finally(() => { clearTimeout(guard); setLocaleSettled(true); });
+
+    return () => clearTimeout(guard);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Lazy-load тяжёлого контента (nodes, tutorials, prompt-library) для
-  // текущей локали + FALLBACK_LOCALE (en) для корректной работы fallback.
-  // Мёржит данные в STRINGS[locale], затем инкрементирует contentVersion →
-  // все useT()/useLocale() потребители перерисовываются с актуальным контентом.
+  // Lazy-load тяжёлого контента (nodes, tutorials, prompt-library) — ТОЛЬКО
+  // для текущей локали. Запасной en раньше грузился здесь же и удваивал вес
+  // первой загрузки; теперь он подтягивается по факту промаха (см.
+  // maybeLoadFallbackFor в strings.js). Мёржит данные в STRINGS[locale],
+  // затем инкрементирует contentVersion → потребители перерисовываются.
   useEffect(() => {
-    const locales = locale === FALLBACK_LOCALE
-      ? [locale]
-      : [locale, FALLBACK_LOCALE];
+    if (!localeSettled) return;   // язык ещё уточняется по IP
+    const locales = [locale];
     Promise.all(locales.map(loadLocaleContent))
       .then(() => {
         setContentVersion(v => v + 1);
@@ -168,7 +181,7 @@ export function LocaleProvider({ children }) {
         }
       })
       .catch(() => {}); // сеть недоступна — работаем с тем что есть
-  }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [locale, localeSettled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Subscribe для lazy-section дозагрузок (sys, commerce). При дозагрузке
   // strings.js notify'ит — бампаем contentVersion, потребители ре-рендерятся.

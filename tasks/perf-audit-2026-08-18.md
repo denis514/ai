@@ -1,15 +1,15 @@
 # Performance Audit — 2026-08-18
 
-<!-- metrics: {"initialJsRaw":615.36,"initialJsGzip":185.81,"cssGzip":50.760000000000005,"vendorTotalGzip":67.11,"nodesLocaleMaxGzip":112.05,"tutorialsLocaleMaxGzip":0} -->
+<!-- metrics: {"initialJsRaw":616.94,"initialJsGzip":186.4,"cssGzip":50.760000000000005,"vendorTotalGzip":67.11,"nodesLocaleMaxGzip":112.05,"tutorialsLocaleMaxGzip":0} -->
 
 ## Bundle Status
 
 | Metric | Size (gzip) | Threshold (OK / Warn) | Status | Δ vs prev |
 |--------|------------|----------------------|--------|-----------|
-| Initial JS | 185.8 KB | 120 / 180 KB | 🔴 Critical | +47.6 KB |
-| CSS total | 50.8 KB | 25 / 40 KB | 🔴 Critical | +12.3 KB |
-| Vendor total | 67.1 KB | 130 / 180 KB | ✅ OK | -53.5 KB |
-| Nodes (max locale) | 112.0 KB | 130 / 180 KB | ✅ OK | +7.0 KB |
+| Initial JS | 186.4 KB | 120 / 180 KB | 🔴 Critical | +0.6 KB |
+| CSS total | 50.8 KB | 25 / 40 KB | 🔴 Critical | unchanged |
+| Vendor total | 67.1 KB | 130 / 180 KB | ✅ OK | unchanged |
+| Nodes (max locale) | 112.0 KB | 130 / 180 KB | ✅ OK | unchanged |
 | Tutorials (max locale) | 0.0 KB | 100 / 150 KB | ✅ OK | unchanged |
 
 ## All chunks (raw / gzip)
@@ -25,8 +25,8 @@
 | business | js | 666.5 | 223.5 | other |
 | business | js | 650.0 | 264.6 | other |
 | business | js | 643.6 | 205.2 | other |
-| index | js | 615.4 | 185.8 | initial |
-| BuilderApp-D4 | js | 380.4 | 114.8 | other |
+| index | js | 616.9 | 186.4 | initial |
+| BuilderApp | js | 380.8 | 115.1 | other |
 | core | js | 244.6 | 94.5 | nodes-locale |
 | core | js | 242.6 | 88.8 | nodes-locale |
 | core | js | 240.6 | 112.0 | nodes-locale |
@@ -47,7 +47,7 @@
 | StyleGuide | js | 17.9 | 6.3 | other |
 | TutorialModal | js | 15.8 | 4.6 | other |
 | StyleGuide | css | 9.0 | 2.5 | css |
-| PromptLibraryModal- | js | 7.3 | 2.5 | other |
+| PromptLibraryModal | js | 7.3 | 2.5 | other |
 | content-en | js | 0.8 | 0.4 | other |
 | content-ru | js | 0.8 | 0.4 | other |
 | content-fi | js | 0.8 | 0.4 | other |
@@ -82,5 +82,5 @@ _None found._
 
 ## References
 
-- Previous audit: `tasks/perf-audit-2026-06-04.md`
+- Previous audit: `tasks/perf-audit-2026-08-18.md`
 - Skill: `skills/performance-auditor/SKILL.md`

@@ -7,6 +7,8 @@
 //
 // При добавлении новой локали — импорт + регистрация в STRINGS + новый content-xx.js.
 
+import { FALLBACK_LOCALE } from './config.js';
+
 import enUI from '../locales/en/ui.json';
 import ruUI from '../locales/ru/ui.json';
 import fiUI from '../locales/fi/ui.json';
@@ -34,6 +36,10 @@ export const STRINGS = {
 // ─── Lazy content loading ─────────────────────────────────────────────────────
 
 const _loaded = new Set();
+// _loaded помечается СРАЗУ (дедуп параллельных вызовов), поэтому для вопроса
+// «контент уже можно спрашивать?» нужен отдельный набор — иначе промах во
+// время загрузки выглядит как настоящая дыра в переводе.
+const _ready = new Set();
 // Per-locale Set of loaded node-sections (sys, commerce).
 // core загружается всегда вместе с loadLocaleContent().
 const _loadedSections = new Map();
@@ -124,9 +130,11 @@ export async function loadLocaleContent(locale) {
       tutorials:        content.tutorials,
       'prompt-library': content.library,
     });
+    _ready.add(locale);   // контент реально в памяти, а не «загрузка начата»
   } catch (e) {
     // При ошибке снимаем флаг — позволяем повторить попытку
     _loaded.delete(locale);
+    _ready.delete(locale);
     throw e;
   }
 }
@@ -134,4 +142,35 @@ export async function loadLocaleContent(locale) {
 /** Проверить, загружен ли контент для локали */
 export function isContentLoaded(locale) {
   return _loaded.has(locale);
+}
+
+// ── Запасной язык (en) по требованию ────────────────────────────────────────
+// Раньше контент en грузился всегда рядом с текущим языком «на случай дыр» —
+// это удваивало вес первой загрузки (туториалы ~800 KB gzip на язык), хотя
+// ru/fi/en заполнены одинаково (261 туториал, 211 узлов core в каждом).
+// Теперь грузим его ТОЛЬКО если запрошенного ключа реально нет в текущем языке.
+let _fallbackKick = null;
+
+function kickFallback() {
+  if (_loaded.has(FALLBACK_LOCALE) || _fallbackKick) return;
+  _fallbackKick = loadLocaleContent(FALLBACK_LOCALE)
+    .then(() => notifyChange())
+    .catch(() => { _fallbackKick = null; });
+}
+
+/**
+ * Промах по тяжёлому ключу (`nodes.*`, `tutorials.*`, `prompt-library.*`).
+ * Поднимаем запасной язык ТОЛЬКО если промах настоящий, то есть нужный кусок
+ * текущего языка уже загружен. Иначе сработает на каждом рендере до загрузки
+ * контента и утянет весь en — ровно то, от чего мы уходим.
+ */
+export function maybeLoadFallbackFor(locale, key) {
+  if (locale === FALLBACK_LOCALE) return;
+  if (!_ready.has(locale)) return;                  // свой контент ещё едет
+  if (key.startsWith('nodes.')) {
+    const id = key.split('.')[1];
+    const section = getNodeSection(id);
+    if (section !== 'core' && !(_loadedSections.get(locale)?.has(section))) return;
+  }
+  kickFallback();
 }

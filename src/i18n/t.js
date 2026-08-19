@@ -1,5 +1,8 @@
-import { STRINGS } from './strings.js';
+import { STRINGS, maybeLoadFallbackFor } from './strings.js';
 import { FALLBACK_LOCALE } from './config.js';
+
+// Ключи тяжёлого лениво-загружаемого контента.
+const HEAVY_KEY = /^(nodes|tutorials|prompt-library)\./;
 
 /**
  * Получить значение по dotted-пути ИЛИ по плоскому ключу с точкой.
@@ -57,6 +60,10 @@ export function t(key, locale, vars) {
   if (locale !== FALLBACK_LOCALE) {
     const fallback = lookup(FALLBACK_LOCALE, key);
     if (fallback !== undefined) return interpolate(fallback, vars);
+    // Тяжёлый контент запасного языка не загружен заранее (экономим первую
+    // загрузку). Промах по такому ключу — единственный повод его подтянуть;
+    // после загрузки подписчики перерисуются и ключ найдётся.
+    if (HEAVY_KEY.test(key)) maybeLoadFallbackFor(locale, key);
   }
   if (typeof window !== 'undefined' && import.meta.env?.DEV) {
     console.warn(`[i18n] missing key: ${key} (locale: ${locale})`);
