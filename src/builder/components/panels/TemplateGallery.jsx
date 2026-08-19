@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
-import { TEMPLATES } from '../../data/templates.js';
+import { TEMPLATES, TEMPLATE_CATEGORIES } from '../../data/templates.js';
 
 /**
  * TemplateGallery — модалка с template cards.
@@ -9,6 +9,9 @@ import { TEMPLATES } from '../../data/templates.js';
  * Опции:
  *  • Использовать template — загружает в canvas (через onUseTemplate callback)
  *  • Empty option — «Start from scratch» (просто закрывает модалку)
+ *  • Фильтр по роду занятий — чипы над сеткой. Человек приходит с задачей
+ *    («мне бы отвечать клиентам»), а не с типом схемы, поэтому категории
+ *    названы по деятельности. Чипы — канонические `.chip` из стайлгайда.
  *
  * Не использует existing Atlas modal components — builder-isolated UI.
  * Closes on Escape, on backdrop click, on close button.
@@ -18,6 +21,20 @@ import { TEMPLATES } from '../../data/templates.js';
 
 export default function TemplateGallery({ onUseTemplate, onScratch, onClose }) {
   const t = useT();
+  const [activeCat, setActiveCat] = useState('all');
+
+  // Категории показываем только те, в которых реально есть шаблоны, — пустой
+  // чип это обещание, за которым ничего нет.
+  const cats = useMemo(
+    () => TEMPLATE_CATEGORIES
+      .map(c => ({ ...c, count: TEMPLATES.filter(x => x.category === c.id).length }))
+      .filter(c => c.count > 0),
+    []
+  );
+  const visible = useMemo(
+    () => activeCat === 'all' ? TEMPLATES : TEMPLATES.filter(x => x.category === activeCat),
+    [activeCat]
+  );
 
   React.useEffect(() => {
     const onKey = (e) => {
@@ -52,8 +69,32 @@ export default function TemplateGallery({ onUseTemplate, onScratch, onClose }) {
           {t('builder.gallery.subtitle') || 'Start with a pre-built agent workflow, or build from scratch.'}
         </p>
 
+        <p className="builder-modal__subtitle">
+          {t('builder.gallery.catHint') || 'Выберите по своей задаче: чем вы занимаетесь, а не как устроена схема.'}
+        </p>
+
+        <div className="builder-gallery-cats" role="group" aria-label={t('builder.gallery.catsAria') || 'Категории шаблонов'}>
+          <button
+            type="button"
+            className={`chip ${activeCat === 'all' ? 'is-active' : ''}`}
+            onClick={() => setActiveCat('all')}
+          >
+            {t('builder.gallery.cat.all') || 'Все'} · {TEMPLATES.length}
+          </button>
+          {cats.map(c => (
+            <button
+              key={c.id}
+              type="button"
+              className={`chip ${activeCat === c.id ? 'is-active' : ''}`}
+              onClick={() => setActiveCat(c.id)}
+            >
+              {t(c.labelKey) || c.id} · {c.count}
+            </button>
+          ))}
+        </div>
+
         <div className="builder-template-grid">
-          {TEMPLATES.map(template => (
+          {visible.map(template => (
             <button
               key={template.id}
               type="button"

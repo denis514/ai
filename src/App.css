@@ -1015,9 +1015,12 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .chip:hover { background: var(--surface); }
 .chip.is-active {
-  background: #1a1a1a;
-  color: white;
-  border-color: #1a1a1a;
+  /* Через токены, а не жёстким #1a1a1a: в тёмной теме залитый чип совпадал
+     с фоном страницы и «активность» держалась только на цвете текста.
+     В светлой теме результат тот же, что и раньше (--text = #1a1a1a). */
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
 }
 .chip__dot {
   width: 8px; height: 8px;

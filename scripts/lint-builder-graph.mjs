@@ -24,7 +24,7 @@ const ROOT = resolve(__dirname, '..');
 const { NODE_DEFS, TOOLBOX_GROUPS } = await import(resolve(ROOT, 'src/builder/data/nodeTypes.js'));
 const { KIND_PORTS } = await import(resolve(ROOT, 'src/builder/data/nodeCapabilities.js'));
 const { evaluateConnection } = await import(resolve(ROOT, 'src/builder/services/connectionRules.js'));
-const { TEMPLATES } = await import(resolve(ROOT, 'src/builder/data/templates.js'));
+const { TEMPLATES, TEMPLATE_CATEGORIES } = await import(resolve(ROOT, 'src/builder/data/templates.js'));
 const { NODE_TEMPLATES } = await import(resolve(ROOT, 'src/data/nodeTemplates.js'));
 const { mindmapData } = await import(resolve(ROOT, 'src/data/mindmapData.js'));
 
@@ -105,6 +105,27 @@ for (const tpl of TEMPLATES) {
       errors.push(`[template ${tpl.id}] недопустимая связь ${tpl.nodes[e.from].defId} → ${tpl.nodes[e.to].defId} (${res.code})`);
     } else {
       acc.push({ source: src, target: tgt });
+    }
+  }
+}
+
+// ── Категории галереи ─────────────────────────────────────────────────────────
+// Категория задаёт, в каком чипе шаблон найдут. Опечатка = шаблон пропадает из
+// галереи молча (виден только в «Все»), поэтому проверяем строго.
+{
+  const known = new Set(TEMPLATE_CATEGORIES.map(c => c.id));
+  for (const tpl of TEMPLATES) {
+    if (!tpl.category) errors.push(`[template ${tpl.id}] нет поля category`);
+    else if (!known.has(tpl.category)) {
+      errors.push(`[template ${tpl.id}] категория "${tpl.category}" не описана в TEMPLATE_CATEGORIES`);
+    }
+  }
+  for (const c of TEMPLATE_CATEGORIES) {
+    for (const loc of LOCALES) {
+      if (!hasKey(dicts[loc], c.labelKey)) errors.push(`[gallery ${c.id}] нет перевода ${c.labelKey} в ${loc}`);
+    }
+    if (!TEMPLATES.some(t => t.category === c.id)) {
+      warnings.push(`[gallery ${c.id}] категория без шаблонов — чип не показывается`);
     }
   }
 }

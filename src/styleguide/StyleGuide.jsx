@@ -299,7 +299,7 @@ export default function StyleGuide() {
         </Section>
 
         <Section id="chips" title="Чипы и бейджи"
-          note="Реальные классы .chip, .chip.is-active, .chip__dot.">
+          note="Реальные классы .chip, .chip.is-active, .chip__dot. Активный чип залит через токены (--text на --bg), поэтому переворачивается вместе с темой. Ряд чипов-фильтров: обычный flex-контейнер с gap 8px и переносом строк — как в галерее шаблонов Builder.">
           <div className="sg-row">
             <span className="chip"><span className="chip__dot" style={{ background: 'var(--accent)' }} />Основы</span>
             <span className="chip is-active">Активный</span>

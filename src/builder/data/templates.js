@@ -13,6 +13,23 @@
  * Расширение templates — Phase B-2+.
  */
 
+/**
+ * Категории галереи — по РОДУ ЗАНЯТИЙ, а не по устройству схемы.
+ * Человек ищет «мне бы отвечать клиентам», а не «мне бы условие и цикл».
+ * Порядок массива = порядок чипов в галерее.
+ * Проверяется `npm run lint:builder` (у каждого шаблона категория из этого списка).
+ */
+export const TEMPLATE_CATEGORIES = [
+  { id: 'support',   labelKey: 'builder.gallery.cat.support' },
+  { id: 'content',   labelKey: 'builder.gallery.cat.content' },
+  { id: 'sales',     labelKey: 'builder.gallery.cat.sales' },
+  { id: 'research',  labelKey: 'builder.gallery.cat.research' },
+  { id: 'design',    labelKey: 'builder.gallery.cat.design' },
+  { id: 'people',    labelKey: 'builder.gallery.cat.people' },
+  { id: 'analytics', labelKey: 'builder.gallery.cat.analytics' },
+  { id: 'dev',       labelKey: 'builder.gallery.cat.dev' },
+];
+
 export const TEMPLATES = [
   /* ──────────────────────────────────────────────────────── */
   /* 1. UX Audit Agent                                        */
@@ -56,7 +73,7 @@ export const TEMPLATES = [
     outputKey: 'builder.template.analytics.output',
     iconName: 'chart',
     difficulty: 'beginner',
-    category: 'data',
+    category: 'analytics',
     author: 'builtin',
     nodes: [
       { defId: 'trigger-input',    position: { x: 100, y: 50 } },
@@ -87,7 +104,7 @@ export const TEMPLATES = [
     outputKey: 'builder.template.content.output',
     iconName: 'pencil',
     difficulty: 'intermediate',
-    category: 'marketing',
+    category: 'content',
     author: 'builtin',
     nodes: [
       { defId: 'trigger-input',   position: { x: 100, y: 50 } },
@@ -152,7 +169,7 @@ export const TEMPLATES = [
     outputKey: 'builder.template.triage.output',
     iconName: 'branch',
     difficulty: 'intermediate',
-    category: 'logic',
+    category: 'support',
     author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 80, y: 40 } },
@@ -212,7 +229,7 @@ export const TEMPLATES = [
     outputKey: 'builder.template.refineLoop.output',
     iconName: 'loop',
     difficulty: 'intermediate',
-    category: 'marketing',
+    category: 'content',
     author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
@@ -275,7 +292,7 @@ export const TEMPLATES = [
     outputKey: 'builder.template.webhookLead.output',
     iconName: 'inbox',
     difficulty: 'intermediate',
-    category: 'logic',
+    category: 'sales',
     trigger: 'webhook',
     author: 'builtin',
     nodes: [
@@ -306,7 +323,7 @@ export const TEMPLATES = [
     outputKey: 'builder.template.webhookPayment.output',
     iconName: 'mail',
     difficulty: 'beginner',
-    category: 'marketing',
+    category: 'sales',
     trigger: 'webhook',
     author: 'builtin',
     nodes: [
@@ -332,7 +349,7 @@ export const TEMPLATES = [
     outputKey: 'builder.template.webhookReview.output',
     iconName: 'star',
     difficulty: 'intermediate',
-    category: 'logic',
+    category: 'support',
     trigger: 'webhook',
     author: 'builtin',
     nodes: [
@@ -363,7 +380,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.clientReplies.desc',
     inputKey: 'builder.template.clientReplies.input',
     outputKey: 'builder.template.clientReplies.output',
-    iconName: 'users', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    iconName: 'users', difficulty: 'beginner', category: 'support', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.clientReplies.prompt' } },
@@ -379,7 +396,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.bookingReminder.desc',
     inputKey: 'builder.template.bookingReminder.input',
     outputKey: 'builder.template.bookingReminder.output',
-    iconName: 'calendar', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    iconName: 'calendar', difficulty: 'beginner', category: 'people', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.bookingReminder.prompt' } },
@@ -395,7 +412,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.reviewReply.desc',
     inputKey: 'builder.template.reviewReply.input',
     outputKey: 'builder.template.reviewReply.output',
-    iconName: 'quote', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    iconName: 'quote', difficulty: 'beginner', category: 'support', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.reviewReply.prompt' } },
@@ -411,7 +428,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.contentIdeas.desc',
     inputKey: 'builder.template.contentIdeas.input',
     outputKey: 'builder.template.contentIdeas.output',
-    iconName: 'paint', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    iconName: 'paint', difficulty: 'beginner', category: 'content', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'tool-search', position: { x: -130, y: 190 } },
@@ -428,7 +445,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.topicDigest.desc',
     inputKey: 'builder.template.topicDigest.input',
     outputKey: 'builder.template.topicDigest.output',
-    iconName: 'globe', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    iconName: 'globe', difficulty: 'beginner', category: 'research', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'tool-search', position: { x: -130, y: 190 } },
@@ -451,7 +468,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.orderReplies.desc',
     inputKey: 'builder.template.orderReplies.input',
     outputKey: 'builder.template.orderReplies.output',
-    iconName: 'inbox', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    iconName: 'inbox', difficulty: 'beginner', category: 'support', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.orderReplies.promptMain' } },
@@ -474,7 +491,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.reviewSentiment.desc',
     inputKey: 'builder.template.reviewSentiment.input',
     outputKey: 'builder.template.reviewSentiment.output',
-    iconName: 'quote', difficulty: 'intermediate', category: 'everyday', author: 'builtin',
+    iconName: 'quote', difficulty: 'intermediate', category: 'support', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.reviewSentiment.prompt' } },
@@ -497,7 +514,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.contentPlan.desc',
     inputKey: 'builder.template.contentPlan.input',
     outputKey: 'builder.template.contentPlan.output',
-    iconName: 'pencil', difficulty: 'intermediate', category: 'everyday', author: 'builtin',
+    iconName: 'pencil', difficulty: 'intermediate', category: 'content', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-content', position: { x: 100, y: 180 }, dataOverride: { promptKey: 'builder.template.contentPlan.promptDraft' } },
@@ -520,7 +537,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.realtyListing.desc',
     inputKey: 'builder.template.realtyListing.input',
     outputKey: 'builder.template.realtyListing.output',
-    iconName: 'building', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    iconName: 'building', difficulty: 'beginner', category: 'content', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-content', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.realtyListing.prompt' } },
@@ -536,7 +553,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.homeworkCheck.desc',
     inputKey: 'builder.template.homeworkCheck.input',
     outputKey: 'builder.template.homeworkCheck.output',
-    iconName: 'graduation', difficulty: 'intermediate', category: 'everyday', author: 'builtin',
+    iconName: 'graduation', difficulty: 'intermediate', category: 'people', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.homeworkCheck.prompt' } },
@@ -559,7 +576,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.hrScreening.desc',
     inputKey: 'builder.template.hrScreening.input',
     outputKey: 'builder.template.hrScreening.output',
-    iconName: 'users', difficulty: 'intermediate', category: 'everyday', author: 'builtin',
+    iconName: 'users', difficulty: 'intermediate', category: 'people', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.hrScreening.prompt' } },
@@ -582,7 +599,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.invoiceReminder.desc',
     inputKey: 'builder.template.invoiceReminder.input',
     outputKey: 'builder.template.invoiceReminder.output',
-    iconName: 'tag', difficulty: 'beginner', category: 'everyday', author: 'builtin',
+    iconName: 'tag', difficulty: 'beginner', category: 'sales', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-content', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.invoiceReminder.prompt' } },
@@ -598,7 +615,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.serviceLead.desc',
     inputKey: 'builder.template.serviceLead.input',
     outputKey: 'builder.template.serviceLead.output',
-    iconName: 'inbox', difficulty: 'intermediate', category: 'everyday', trigger: 'webhook', author: 'builtin',
+    iconName: 'inbox', difficulty: 'intermediate', category: 'sales', trigger: 'webhook', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.serviceLead.prompt' } },
@@ -626,7 +643,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.productQa.desc',
     inputKey: 'builder.template.productQa.input',
     outputKey: 'builder.template.productQa.output',
-    iconName: 'eye', difficulty: 'advanced', category: 'logic', author: 'builtin',
+    iconName: 'eye', difficulty: 'advanced', category: 'sales', author: 'builtin',
     nodes: [
       { defId: 'trigger-input',         position: { x: 140, y: 40 } },
       { defId: 'agent-main',            position: { x: 140, y: 180 }, dataOverride: { promptKey: 'builder.template.productQa.promptMain' } },
@@ -657,7 +674,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.brandVoice.desc',
     inputKey: 'builder.template.brandVoice.input',
     outputKey: 'builder.template.brandVoice.output',
-    iconName: 'quote', difficulty: 'beginner', category: 'marketing', author: 'builtin',
+    iconName: 'quote', difficulty: 'beginner', category: 'content', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 120, y: 50 } },
       { defId: 'tool-memory',   position: { x: -130, y: 190 } },
@@ -710,7 +727,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.dataCruncher.desc',
     inputKey: 'builder.template.dataCruncher.input',
     outputKey: 'builder.template.dataCruncher.output',
-    iconName: 'chart', difficulty: 'advanced', category: 'data', author: 'builtin',
+    iconName: 'chart', difficulty: 'advanced', category: 'analytics', author: 'builtin',
     nodes: [
       { defId: 'trigger-input',    position: { x: 120, y: 50 } },
       { defId: 'agent-analytics',  position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.dataCruncher.prompt' } },
@@ -728,7 +745,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.webActions.desc',
     inputKey: 'builder.template.webActions.input',
     outputKey: 'builder.template.webActions.output',
-    iconName: 'laptop', difficulty: 'advanced', category: 'logic', author: 'builtin',
+    iconName: 'laptop', difficulty: 'advanced', category: 'dev', author: 'builtin',
     nodes: [
       { defId: 'trigger-input',  position: { x: 120, y: 50 } },
       { defId: 'agent-main',     position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.webActions.prompt' } },
@@ -745,7 +762,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.connectService.desc',
     inputKey: 'builder.template.connectService.input',
     outputKey: 'builder.template.connectService.output',
-    iconName: 'plug', difficulty: 'advanced', category: 'logic', author: 'builtin',
+    iconName: 'plug', difficulty: 'advanced', category: 'dev', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 120, y: 50 } },
       { defId: 'agent-main',    position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.connectService.prompt' } },
@@ -764,7 +781,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.whAuto.desc',
     inputKey: 'builder.template.whAuto.input',
     outputKey: 'builder.template.whAuto.output',
-    iconName: 'inbox', difficulty: 'intermediate', category: 'logic', trigger: 'webhook', author: 'builtin',
+    iconName: 'inbox', difficulty: 'intermediate', category: 'support', trigger: 'webhook', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 100, y: 50 } },
       { defId: 'agent-main', position: { x: 100, y: 190 }, dataOverride: { promptKey: 'builder.template.whAuto.prompt' } },
@@ -789,7 +806,7 @@ export const TEMPLATES = [
     descKey: 'builder.template.whSupport.desc',
     inputKey: 'builder.template.whSupport.input',
     outputKey: 'builder.template.whSupport.output',
-    iconName: 'inbox', difficulty: 'advanced', category: 'logic', trigger: 'webhook', author: 'builtin',
+    iconName: 'inbox', difficulty: 'advanced', category: 'support', trigger: 'webhook', author: 'builtin',
     nodes: [
       { defId: 'trigger-input', position: { x: 120, y: 50 } },
       { defId: 'tool-memory', position: { x: -130, y: 200 } },
