@@ -11,7 +11,7 @@ import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { getNode } from '../i18n/strings.js';
 import { WHATS_NEW } from '../data/whatsNew.js';
 import { nodeIndex } from '../data/mindmapData.js';
-import { useWhatsNew } from '../hooks/useWhatsNew.js';
+import { useWhatsNew, isFresh } from '../hooks/useWhatsNew.js';
 import Skeleton from './Skeleton.jsx';
 import { listWorkflows } from '../builder/services/workflowStorage.js';
 import { listAllSchedules, getTodayUsage } from '../builder/services/scheduleService.js';
@@ -69,15 +69,12 @@ export default function AccountPage({
       .slice(0, 6);
   }, [supaStats.reviewIds, locale, contentVersion]);
 
-  // ── Что нового (реестр обновлений, TTL 60 дней) ──────────────────────────
+  // ── Что нового (реестр обновлений; срок жизни записи — общий, см. useWhatsNew) ──
   const { isNew, markSeen } = useWhatsNew();
   const whatsNewItems = useMemo(() => {
-    const TTL = 60;
-    const now = Date.now();
     return Object.entries(WHATS_NEW)
       .filter(([id, e]) => {
-        const age = (now - new Date(e.date).getTime()) / 86400000;
-        if (age > TTL) return false;
+        if (!isFresh(e.date)) return false;
         if (e.kind !== 'tutorial' && !nodeIndex[id]) return false; // узел исчез
         return true;
       })

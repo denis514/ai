@@ -2,17 +2,14 @@ import React from 'react';
 import { WHATS_NEW } from '../data/whatsNew.js';
 import { nodeIndex } from '../data/mindmapData.js';
 import { useT } from '../i18n/LocaleContext.jsx';
-import { useWhatsNew } from '../hooks/useWhatsNew.js';
+import { useWhatsNew, isFresh } from '../hooks/useWhatsNew.js';
 import { useLocale } from '../i18n/LocaleContext.jsx';
 import Icon from './Icon.jsx';
 
-const TTL_DAYS = 60;
 const MAX_SHOWN = 10;
+// Срок жизни записи — общий для меток на узлах, этой панели и виджета в кабинете
+// (см. WHATS_NEW_TTL_DAYS в useWhatsNew.js). Полный список остаётся в архиве.
 
-function isWithinTTL(dateStr) {
-  const age = (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24);
-  return age <= TTL_DAYS;
-}
 
 export default function WhatsNewPanel({ onSelectNode, onOpenTutorial, onClose, onOpenArchive }) {
   const t = useT();
@@ -47,7 +44,7 @@ export default function WhatsNewPanel({ onSelectNode, onOpenTutorial, onClose, o
 
   // Filter by TTL, sort by date desc, cap at MAX_SHOWN
   const allEntries = Object.entries(WHATS_NEW)
-    .filter(([, entry]) => isWithinTTL(entry.date))
+    .filter(([, entry]) => isFresh(entry.date))
     .sort((a, b) => b[1].date.localeCompare(a[1].date));
 
   const entries = allEntries.slice(0, MAX_SHOWN);

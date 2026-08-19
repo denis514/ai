@@ -1050,6 +1050,7 @@ function AppInner() {
       {archiveOpen && (
         <UpdatesArchiveModal
           onSelectNode={(id) => { setRoute({ type: 'node', id }); setArchiveOpen(false); }}
+          onOpenTutorial={(id) => { setArchiveOpen(false); onStartTutorial(id); }}
           onClose={() => setArchiveOpen(false)}
         />
       )}

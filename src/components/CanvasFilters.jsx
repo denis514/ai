@@ -27,11 +27,9 @@ export default function CanvasFilters({ category, onCategory, onSelectNode, onOp
     setUpdatesOpen(false);
   }, [route]);
   const { isNew } = useWhatsNew();
-  const TTL_DAYS = 60;
-  const unseenCount = Object.entries(WHATS_NEW).filter(([id, e]) => {
-    const age = (Date.now() - new Date(e.date).getTime()) / (1000 * 60 * 60 * 24);
-    return age <= TTL_DAYS && isNew(id);
-  }).length;
+  // Срок жизни записи уже учтён в isNew (см. WHATS_NEW_TTL_DAYS в useWhatsNew.js),
+  // поэтому здесь считаем только непросмотренные.
+  const unseenCount = Object.keys(WHATS_NEW).filter(id => isNew(id)).length;
 
   useEffect(() => {
     if (!open && !updatesOpen) return;

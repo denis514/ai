@@ -9,7 +9,7 @@ import Icon from './Icon.jsx';
 
 const PAGE_SIZE = 10;
 
-export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
+export default function UpdatesArchiveModal({ onSelectNode, onOpenTutorial, onClose }) {
   const t = useT();
   const { locale } = useLocale();
   const { isNew, markSeen } = useWhatsNew();
@@ -24,11 +24,13 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
       import(`../locales/${locale}/nodes/core.json`).catch(() => ({ default: {} })),
       import(`../locales/${locale}/nodes/sys.json`).catch(() => ({ default: {} })),
       import(`../locales/${locale}/nodes/commerce.json`).catch(() => ({ default: {} })),
-    ]).then(([coreM, sysM, commerceM]) => {
+      import(`../locales/${locale}/tutorials/titles.json`).catch(() => ({ default: {} })),
+    ]).then(([coreM, sysM, commerceM, titlesM]) => {
       const allNodes = { ...coreM.default, ...sysM.default, ...commerceM.default };
+      const allTuts = titlesM.default || {};
       const map = {};
-      Object.entries(WHATS_NEW).forEach(([id]) => {
-        map[id] = allNodes[id]?.title || id;
+      Object.entries(WHATS_NEW).forEach(([id, entry]) => {
+        map[id] = (entry.kind === 'tutorial' ? allTuts[id]?.title : allNodes[id]?.title) || id;
       });
       setTitles(map);
     }).catch(() => {});
@@ -40,15 +42,20 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
+  // Показываем и узлы, и туториалы. Отсев делаем ДО нарезки на страницы: раньше
+  // запись без узла пропускалась внутри map, поэтому страницы с туториалами
+  // выглядели пустыми, а счётчик обещал 366 записей.
   const allEntries = Object.entries(WHATS_NEW)
+    .filter(([id, entry]) => entry.kind === 'tutorial' ? true : !!nodeIndex[id])
     .sort((a, b) => b[1].date.localeCompare(a[1].date));
 
   const totalPages = Math.max(1, Math.ceil(allEntries.length / PAGE_SIZE));
   const pageEntries = allEntries.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  const handleSelect = (id) => {
+  const handleSelect = (id, entry) => {
     markSeen(id);
-    onSelectNode(id);
+    if (entry.kind === 'tutorial') onOpenTutorial?.(id);
+    else onSelectNode(id);
     onClose();
   };
 
@@ -77,7 +84,7 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
           </div>
           <div className="help-modal__head-text">
             <h2>{t('category.updatesBtn')}</h2>
-            <p>{t('category.updatesPeriod')} · {allEntries.length} {t('category.updatesBtn').toLowerCase()}</p>
+            <p>{t('category.updatesArchivePeriod')} · {allEntries.length} {t('category.updatesBtn').toLowerCase()}</p>
           </div>
           <button
             type="button"
@@ -96,14 +103,13 @@ export default function UpdatesArchiveModal({ onSelectNode, onClose }) {
           ) : (
             <ul className="archive-modal__list">
               {pageEntries.map(([id, entry]) => {
-                if (!nodeIndex[id]) return null;
                 const unseen = isNew(id);
                 return (
                   <li key={id}>
                     <button
                       type="button"
                       className={`archive-modal__item ${unseen ? 'is-unseen' : ''}`}
-                      onClick={() => handleSelect(id)}
+                      onClick={() => handleSelect(id, entry)}
                     >
                       <span className="archive-modal__item-top">
                         <span className={`wn-panel__badge wn-panel__badge--${entry.type}`}>

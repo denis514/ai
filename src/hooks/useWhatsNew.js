@@ -4,6 +4,27 @@ import { WHATS_NEW } from '../data/whatsNew.js';
 const LS_KEY      = 'ca_seen_new';
 const VISITED_KEY = 'ca_first_visited';
 
+/**
+ * Сколько дней материал считается новым.
+ *
+ * Раньше срока не было вообще: метка висела, пока человек не откроет материал.
+ * Из-за этого июньский контент в августе всё ещё показывался как новинка тем,
+ * кто до него не дошёл. Панель «Обновления» и виджет в кабинете при этом резали
+ * список по своим 60 дням — три разных правила в трёх местах.
+ *
+ * Теперь правило одно и живёт здесь.
+ */
+export const WHATS_NEW_TTL_DAYS = 30;
+
+/** Свежая ли запись: не старше срока жизни метки. */
+export function isFresh(dateStr) {
+  if (!dateStr) return false;
+  const ts = new Date(dateStr).getTime();
+  if (!Number.isFinite(ts)) return false;
+  const ageDays = (Date.now() - ts) / 86400000;
+  return ageDays <= WHATS_NEW_TTL_DAYS;
+}
+
 function saveSeen(set) {
   try { localStorage.setItem(LS_KEY, JSON.stringify([...set])); } catch {}
 }
@@ -52,6 +73,7 @@ export function useWhatsNew() {
   const isNew = useCallback((id) => {
     const entry = WHATS_NEW[id];
     if (!entry) return false;
+    if (!isFresh(entry.date)) return false;   // метка гаснет сама через срок
     return !seen.has(`${id}:${entry.date}`);
   }, [seen]);
 
