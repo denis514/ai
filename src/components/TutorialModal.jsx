@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { tutorials } from '../data/tutorials.js';
 import { mindmapData } from '../data/mindmapData.js';
 import Icon from './Icon.jsx';
+import Skeleton from './Skeleton.jsx';
 import { openTryInClaude } from '../utils/tryInClaude.js';
 import InlineText from './InlineText.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
@@ -443,8 +444,19 @@ export default function TutorialModal({
           </nav>
 
           <main className="tut-main" ref={scrollRef}>
+            {/* Тексты курса грузятся по требованию (индекс → тело). Пока тело
+                едет — скелетон вместо пустых заголовков. Название и подзаголовок
+                уже есть из индекса, поэтому шапка выглядит нормально. */}
+            {!tut.bodyReady && (
+              <div className="tut-step" aria-busy="true">
+                <Skeleton width="45%" height="14px" />
+                <Skeleton width="70%" height="22px" style={{ marginTop: 12 }} />
+                <Skeleton.Text lines={6} />
+                <Skeleton width="100%" height="120px" radius="10px" style={{ marginTop: 16 }} />
+              </div>
+            )}
             {/* Контент шага — не рендерим при gate (защита от inspect element) */}
-            {!isGated && <div className="tut-step">
+            {tut.bodyReady && !isGated && <div className="tut-step">
               <div className="tut-step__head">
                 <span className="tut-step__num">{t('tutorial.stepLabel', { n: activeIdx + 1 })}</span>
               </div>

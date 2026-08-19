@@ -6,22 +6,24 @@
   "description": "Интерактивная mindmap-памятка по Claude",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/build-tutorial-index.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "lint:data": "node scripts/lint-data.mjs",
     "lint:links": "node scripts/verify-inline-links.mjs",
     "lint:css": "node scripts/css-var-lint.mjs",
     "lint:builder": "node scripts/lint-builder-graph.mjs",
-    "lint:all": "npm run lint:data && npm run lint:links",
+    "lint:all": "npm run lint:data && npm run lint:links && npm run lint:tutindex",
     "install:hooks": "node scripts/install-hooks.mjs",
     "audit:perf": "node scripts/perf-audit.mjs",
     "release:notes": "node scripts/release-notes.mjs",
-    "sync": "node scripts/sync-whats-new.mjs",
+    "sync": "node scripts/build-tutorial-index.mjs && node scripts/sync-whats-new.mjs",
     "docs:watch": "node scripts/docs-watcher.mjs",
     "help:watch": "node scripts/help-watch.mjs",
     "lint:text": "node scripts/clean-text-lint.mjs",
     "test:smoke": "playwright test tests/smoke.spec.js",
-    "test": "playwright test"
+    "test": "playwright test",
+    "lint:tutindex": "node scripts/build-tutorial-index.mjs --check"
   },
   "dependencies": {
     "@hugeicons/core-free-icons": "^4.1.3",

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { tutorials as structures } from '../data/tutorials.js';
-import { STRINGS } from './strings.js';
+import { STRINGS, loadTutorialAudience, isTutorialAudienceLoaded } from './strings.js';
 import { FALLBACK_LOCALE } from './config.js';
 import { useLocale } from './LocaleContext.jsx';
 
@@ -20,6 +20,8 @@ function buildLocalized(structure, locale) {
 
 function buildById(id, structure, locale) {
   if (!structure) return null;
+  // В памяти может лежать только индекс (title/subtitle/totalTime) — тела
+  // туториалов грузятся по требованию, см. ensureTutorialBody().
   const primary = STRINGS[locale]?.tutorials?.[id];
   const fallback = STRINGS[FALLBACK_LOCALE]?.tutorials?.[id];
   const c = primary || fallback || {};
@@ -47,6 +49,8 @@ function buildById(id, structure, locale) {
   });
   return {
     ...structure,
+    // Есть ли полный текст (шаги), или пока только строка индекса.
+    bodyReady: !!(c && c.steps),
     title: c.title || '',
     subtitle: c.subtitle || '',
     totalTime: c.totalTime || '',
@@ -61,11 +65,24 @@ function buildById(id, structure, locale) {
 }
 
 /**
+ * Подтянуть полный текст туториала (тело шагов) для локали. Идемпотентно.
+ * Вызывать ТОЛЬКО там, где текст действительно показывается — модалка курса
+ * и предпросмотр. Списки и поиск обходятся индексом.
+ */
+export function ensureTutorialBody(tutorialId, locale) {
+  const structure = structures[tutorialId];
+  if (!structure?.audience) return;
+  if (isTutorialAudienceLoaded(locale, structure.audience)) return;
+  loadTutorialAudience(locale, structure.audience).catch(() => {});
+}
+
+/**
  * Хук: получить локализованный tutorial по id.
  * Возвращает enriched-объект с теми же полями, что были в data-файле раньше.
  */
 export function useTutorialContent(tutorialId) {
   const { locale, contentVersion } = useLocale();
+  if (tutorialId) ensureTutorialBody(tutorialId, locale);
   // contentVersion в deps критичен: tutorials грузятся ЛЕНИВО через
   // loadLocaleContent. Без него useMemo не пересчитывается после загрузки —
   // и при deep-link открытии (#/tutorial/X) модалка рендерится с пустыми

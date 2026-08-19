@@ -40,6 +40,8 @@ const _loaded = new Set();
 // «контент уже можно спрашивать?» нужен отдельный набор — иначе промах во
 // время загрузки выглядит как настоящая дыра в переводе.
 const _ready = new Set();
+// Per-locale Set of loaded tutorial audiences (everyone, developers, business).
+const _loadedTutorials = new Map();
 // Per-locale Set of loaded node-sections (sys, commerce).
 // core загружается всегда вместе с loadLocaleContent().
 const _loadedSections = new Map();
@@ -93,6 +95,34 @@ export async function loadNodeSection(locale, section) {
     loaded.delete(section);
     throw e;
   }
+}
+
+/**
+ * Lazy-load текстов туториалов одной аудитории (everyone / developers / business).
+ * Идемпотентно. При входе на сайт в памяти только индекс (заголовки), тела
+ * подтягиваются когда пользователь открывает курс.
+ */
+export async function loadTutorialAudience(locale, audience) {
+  if (!audience) return;
+  const loaded = _loadedTutorials.get(locale) ?? new Set();
+  if (loaded.has(audience)) return;
+  loaded.add(audience); // dedupe параллельных вызовов
+  _loadedTutorials.set(locale, loaded);
+  try {
+    const mod = await CONTENT_LOADERS[locale]();
+    const data = await mod.loadTutorialAudience(audience);
+    // Полные тексты перекрывают записи индекса того же id.
+    STRINGS[locale].tutorials = { ...STRINGS[locale].tutorials, ...data };
+    notifyChange();
+  } catch (e) {
+    loaded.delete(audience);
+    throw e;
+  }
+}
+
+/** Загружены ли полные тексты этой аудитории для локали. */
+export function isTutorialAudienceLoaded(locale, audience) {
+  return !!_loadedTutorials.get(locale)?.has(audience);
 }
 
 /**

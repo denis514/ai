@@ -1,10 +1,11 @@
 import React from 'react';
 import Icon from './Icon.jsx';
+import Skeleton from './Skeleton.jsx';
 import InlineText from './InlineText.jsx';
 import ShareButton from './ShareButton.jsx';
 import { tutorials } from '../data/tutorials.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
-import { getLocalizedTutorial } from '../i18n/useTutorial.js';
+import { getLocalizedTutorial, ensureTutorialBody } from '../i18n/useTutorial.js';
 import {
   getLocalizedLibraryTemplate,
   getLocalizedFeaturedPrompt
@@ -29,8 +30,19 @@ export default function TutorialDetail({
 }) {
   const t = useT();
   const { locale } = useLocale();
+  if (tutId) ensureTutorialBody(tutId, locale);
   const tut = tutId ? getLocalizedTutorial(tutId, locale) : null;
   if (!tut) return null;
+  // Тело курса ещё едет: показываем скелетон, а не пустые секции.
+  if (!tut.bodyReady) {
+    return (
+      <div className="tut-detail" aria-busy="true">
+        <Skeleton width="60%" height="24px" />
+        <Skeleton.Text lines={4} />
+        <Skeleton width="100%" height="90px" radius="10px" style={{ marginTop: 16 }} />
+      </div>
+    );
+  }
 
   const p = progressApi?.getProgress?.(tut.nodeId);
   const done = p?.completedSteps?.length || 0;

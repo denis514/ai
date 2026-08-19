@@ -11,7 +11,7 @@
 
 import { execSync } from 'node:child_process';
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
+import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -44,17 +44,26 @@ try {
 }
 
 // Parse chunk lines like "dist/assets/nodes-XYZ.js  354.65 kB │ gzip: 160.68 kB"
-const CHUNK_RE = /dist\/assets\/([\w-]+)-[\w]+\.(js|css)\s+([\d.]+)\s+kB\s+│\s+gzip:\s+([\d.]+)\s+kB/g;
+const CHUNK_RE = /dist\/assets\/(([\w-]+)-[\w]+\.(js|css))\s+([\d.]+)\s+kB\s+│\s+gzip:\s+([\d.]+)\s+kB/g;
 const chunks = [];
 let m;
 while ((m = CHUNK_RE.exec(buildOutput)) !== null) {
   chunks.push({
-    name: m[1],
-    type: m[2],
-    rawKB: parseFloat(m[3]),
-    gzipKB: parseFloat(m[4]),
+    file: m[1],          // полное имя файла: index-Be6ZBZ6C.js
+    name: m[2],          // имя без хеша: index
+    type: m[3],
+    rawKB: parseFloat(m[4]),
+    gzipKB: parseFloat(m[5]),
   });
 }
+
+// Что браузер грузит сразу — берём из самого dist/index.html.
+const ENTRY_FILES = new Set(
+  (existsSync(join(ROOT, 'dist', 'index.html'))
+    ? [...readFileSync(join(ROOT, 'dist', 'index.html'), 'utf8')
+        .matchAll(/assets\/([\w-]+\.(?:js|css))/g)].map(x => x[1])
+    : [])
+);
 
 if (chunks.length === 0) {
   console.error('✗ No chunks parsed from build output. Vite output format may have changed.');
@@ -64,8 +73,12 @@ if (chunks.length === 0) {
 // Categorize
 const categorize = (c) => {
   if (c.type === 'css') return 'css';
-  if (c.name === 'index') return 'initial';
   if (c.name.startsWith('vendor')) return 'vendor';
+  // Входной чанк приложения определяем по dist/index.html, а не по имени:
+  // чанков с именем index-* может быть несколько (например чанки JSON), и
+  // аудит мерил случайный из них. Vendor-чанки отсекли выше — они считаются
+  // отдельной строкой, как и раньше.
+  if (ENTRY_FILES.has(c.file)) return 'initial';
   // After split-nodes.mjs: nodes.json → core/sys/commerce chunks per locale
   if (['core', 'sys', 'commerce', 'nodes'].includes(c.name)) return 'nodes-locale';
   if (c.name === 'tutorials') return 'tutorials-locale';
