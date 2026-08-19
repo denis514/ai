@@ -953,6 +953,20 @@ function AppInner() {
           onOpenCourses={onOpenCourses}
         />
 
+        {/* Поиск ничего не нашёл. Раньше карта просто тускнела без единого
+            слова, и человек не понимал: сломалось или такой темы нет. */}
+        {active && matched.size === 0 && (
+          <div className="search-empty" role="status">
+            <div className="search-empty__text">
+              <strong>{t('search.emptyTitle')}</strong>
+              <span>{t('search.emptyHint')}</span>
+            </div>
+            <button type="button" className="btn btn--ghost" onClick={() => { setQuery(''); setCategory('all'); }}>
+              {t('search.emptyReset')}
+            </button>
+          </div>
+        )}
+
         <CanvasZoom
           zoomLevel={zoomLevel}
           onZoomIn={onZoomIn}
@@ -1148,6 +1162,18 @@ function AppInner() {
 export default function App() {
   const [consent, setConsent] = useState(() => localStorage.getItem('ca_consent'));
 
+  // Плашка согласия ждёт, пока закроется окно знакомства. Раньше они выходили
+  // одновременно, и на телефоне баннер (z-index 9999) перекрывал кнопки интро
+  // (9000) — первый экран продукта был физически заблокирован. Отложить показ
+  // безопасно: аналитика всё равно грузится только после «Принять».
+  const [introDone, setIntroDone] = useState(() => isIntroSeen());
+  useEffect(() => {
+    if (introDone) return;
+    const onDone = () => setIntroDone(true);
+    window.addEventListener('atlas:intro-done', onDone);
+    return () => window.removeEventListener('atlas:intro-done', onDone);
+  }, [introDone]);
+
   // Если ранее уже принял — загружаем GA сразу при монтировании
   useEffect(() => {
     if (consent === 'yes') loadGA();
@@ -1167,7 +1193,7 @@ export default function App() {
   return (
     <>
       <AppRouter />
-      {consent === null && (
+      {consent === null && introDone && (
         <CookieBanner onAccept={handleAccept} onDecline={handleDecline} />
       )}
     </>
