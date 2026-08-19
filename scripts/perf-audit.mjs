@@ -96,9 +96,15 @@ const vendorChunks = chunks.filter(c => c.category === 'vendor');
 const nodesChunks = chunks.filter(c => c.category === 'nodes-locale');
 const tutChunks = chunks.filter(c => c.category === 'tutorials-locale');
 
+// CSS первой загрузки — только index-*.css. Остальные css-чанки (билдер,
+// стайлгайд) грузятся вместе со своими экранами, и складывать их в одну цифру
+// значит завышать вес карты почти вдвое.
+const cssEntry = cssChunks.filter(c => ENTRY_FILES.has(c.file));
+
 const metrics = {
   initialJsRaw:    initialJs?.rawKB || 0,
   initialJsGzip:   initialJs?.gzipKB || 0,
+  cssEntryGzip:    sum(cssEntry, 'gzipKB'),
   cssGzip:         sum(cssChunks, 'gzipKB'),
   vendorTotalGzip: sum(vendorChunks, 'gzipKB'),
   nodesLocaleMaxGzip: Math.max(...nodesChunks.map(c => c.gzipKB), 0),
@@ -186,7 +192,8 @@ function row(label, curr, t, prev) {
   return `| ${label} | ${curr.toFixed(1)} KB | ${t.ok} / ${t.warn} KB | ${status(curr, t)} | ${delta(curr, prev)} |`;
 }
 lines.push(row('Initial JS', metrics.initialJsGzip, THRESHOLDS.initialJsGzip, prevMetrics?.initialJsGzip));
-lines.push(row('CSS total',  metrics.cssGzip,       THRESHOLDS.cssGzip,       prevMetrics?.cssGzip));
+lines.push(row('CSS первой загрузки', metrics.cssEntryGzip, THRESHOLDS.cssGzip, prevMetrics?.cssEntryGzip));
+lines.push(`| CSS всего (с ленивыми) | ${metrics.cssGzip.toFixed(1)} KB | справочно | — | ${delta(metrics.cssGzip, prevMetrics?.cssGzip)} |`);
 lines.push(row('Vendor total', metrics.vendorTotalGzip, THRESHOLDS.vendorTotalGzip, prevMetrics?.vendorTotalGzip));
 lines.push(row('Nodes (max locale)', metrics.nodesLocaleMaxGzip, THRESHOLDS.nodesLocaleGzip, prevMetrics?.nodesLocaleMaxGzip));
 lines.push(row('Tutorials (max locale)', metrics.tutorialsLocaleMaxGzip, THRESHOLDS.tutorialsGzip, prevMetrics?.tutorialsLocaleMaxGzip));

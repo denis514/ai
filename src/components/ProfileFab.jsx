@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, Suspense } from 'react';
 import Icon from './Icon.jsx';
-import ProfilePanel from './ProfilePanel.jsx';
+import { lazyWithRetry } from '../utils/lazyWithRetry.js';
+// Лениво: панель профиля со статистикой открывается по клику, а весит
+// заметно — держать её в стартовом пакете карты незачем.
+const ProfilePanel = lazyWithRetry(() => import('./ProfilePanel.jsx'), 'ProfilePanel');
 import BottomSheet from './BottomSheet.jsx';
 import { useIsMobile } from '../hooks/useIsMobile.js';
 import { useT } from '../i18n/LocaleContext.jsx';
@@ -129,7 +132,9 @@ export default function ProfileFab(props) {
                 <Icon name="arrow-right" size={12} strokeWidth={1.5} />
               </button>
             )}
-            <ProfilePanel {...props} onShowNodes={onShowNodes} onStartTutorial={onStartTutorial} onClose={close} />
+            <Suspense fallback={null}>
+              <ProfilePanel {...props} onShowNodes={onShowNodes} onStartTutorial={onStartTutorial} onClose={close} />
+            </Suspense>
           </div>
         )}
       </div>
@@ -154,7 +159,9 @@ export default function ProfileFab(props) {
               <Icon name="arrow-right" size={12} strokeWidth={1.5} />
             </button>
           )}
-          <ProfilePanel {...props} onShowNodes={onShowNodes} onClose={null} />
+          <Suspense fallback={null}>
+            <ProfilePanel {...props} onShowNodes={onShowNodes} onClose={null} />
+          </Suspense>
         </BottomSheet>
       )}
     </>

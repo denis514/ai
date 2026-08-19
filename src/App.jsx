@@ -12,7 +12,9 @@ import DetailPanel from './components/DetailPanel.jsx';
 const TutorialModal      = lazyWithRetry(() => import('./components/TutorialModal.jsx'), 'TutorialModal');
 const WorkflowsModal     = lazyWithRetry(() => import('./components/WorkflowsModal.jsx'), 'WorkflowsModal');
 const PromptLibraryModal = lazyWithRetry(() => import('./components/PromptLibraryModal.jsx'), 'PromptLibraryModal');
-import CommandPalette from './components/CommandPalette.jsx';
+// Лениво: палитра команд открывается по Cmd/Ctrl+K. Внутри она и так
+// возвращает null, пока закрыта, поэтому монтируем её только открытой.
+const CommandPalette = lazyWithRetry(() => import('./components/CommandPalette.jsx'), 'CommandPalette');
 import CanvasZoom from './components/CanvasZoom.jsx';
 import CanvasFilters from './components/CanvasFilters.jsx';
 import { useLevelFilter, LEVEL_RANK } from './hooks/useLevelFilter.js';
@@ -28,7 +30,8 @@ import ToastContainer from './components/ToastContainer.jsx';
 import { useToast } from './hooks/useToast.js';
 import ConfirmDialogContainer from './components/ConfirmDialogContainer.jsx';
 import WelcomeCard from './components/WelcomeCard.jsx';
-import HelpModal from './components/HelpModal.jsx';
+// Лениво: справка открывается по кнопке.
+const HelpModal = lazyWithRetry(() => import('./components/HelpModal.jsx'), 'HelpModal');
 import { useTutorialProgress } from './hooks/useTutorialProgress.js';
 import { useTheme } from './hooks/useTheme.js';
 import { useHashRoute, parseHash } from './hooks/useHashRoute.js';
@@ -44,10 +47,13 @@ import { lazyWithRetry } from './utils/lazyWithRetry.js';
 import { FALLBACK_LOCALE } from './i18n/config.js';
 import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
-import AuthModal from './components/AuthModal.jsx';
+// Лениво: окно входа открывается по действию, а не при загрузке карты.
+const AuthModal = lazyWithRetry(() => import('./components/AuthModal.jsx'), 'AuthModal');
 import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
 import IntroModal, { isIntroSeen } from './components/IntroModal.jsx';
-import AccountPage from './components/AccountPage.jsx';
+// Лениво: личный кабинет — отдельный экран. Он же тянул в стартовый пакет
+// сервисы конструктора (список схем, расписания) ради виджета «Мои агенты».
+const AccountPage = lazyWithRetry(() => import('./components/AccountPage.jsx'), 'AccountPage');
 import UpdateBanner from './components/UpdateBanner.jsx';
 import { useVersionCheck } from './hooks/useVersionCheck.js';
 import { syncTutorialProgress, syncBookmarks, syncNodeProgress } from './services/syncService.js';
@@ -994,6 +1000,7 @@ function AppInner() {
       )}
 
       {helpOpen && (
+        <Suspense fallback={null}>
         <HelpModal
           onClose={onCloseAll}
           activeSectionId={activeHelpSection}
@@ -1003,14 +1010,19 @@ function AppInner() {
           onOpenLibrary={onOpenLibrary}
           onOpenCourses={onOpenCourses}
         />
+        </Suspense>
       )}
 
+      {paletteOpen && (
+      <Suspense fallback={null}>
       <CommandPalette
         isOpen={paletteOpen}
         onClose={() => setPaletteOpen(false)}
         onNavigate={(r) => setRoute(r)}
         bookmarksApi={bookmarksApi}
       />
+      </Suspense>
+      )}
 
       <MobileFab
         query={query}
@@ -1043,10 +1055,13 @@ function AppInner() {
       )}
 
       {authOpen && (
-        <AuthModal onClose={handleAuthClose} />
+        <Suspense fallback={null}>
+          <AuthModal onClose={handleAuthClose} />
+        </Suspense>
       )}
 
       {accountOpen && (
+        <Suspense fallback={<div className="modal-loading" role="status"><Loader size="md" /></div>}>
         <AccountPage
           onClose={() => setRoute(null)}
           progressApi={progressApi}
@@ -1061,6 +1076,7 @@ function AppInner() {
             setAuthOpen(true);   // открываем AuthModal поверх
           }}
         />
+        </Suspense>
       )}
 
       {/* Intro — первое знакомство с Atlas (первый визит, до авторизации) */}
