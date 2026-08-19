@@ -835,6 +835,7 @@ function AppInner() {
 
         <DetailPanel
           node={selected}
+          onOpenBuilder={(templateId) => setRoute({ type: 'builder', id: templateId })}
           isOpen={panelOpen}
           onClose={onCloseAll}
           onStartTutorial={onStartTutorial}
@@ -1144,9 +1145,11 @@ function AppRouter() {
   const [route] = useHashRoute();
 
   if (route?.type === 'builder') {
+    // /<lang>/builder/<templateId> — приход из узла карты по кнопке
+    // «Собрать в Agent Builder»: конструктор откроется с этим шаблоном.
     return (
       <Suspense fallback={<BuilderSuspenseFallback />}>
-        <BuilderApp />
+        <BuilderApp initialTemplateId={route.id || null} />
       </Suspense>
     );
   }

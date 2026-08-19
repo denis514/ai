@@ -252,15 +252,15 @@ function computeOrderLevels(nodes, edges) {
 const KBD_META = (typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || ''))
   ? '⌘' : 'Ctrl';
 
-function BuilderApp() {
+function BuilderApp({ initialTemplateId = null }) {
   return (
     <ReactFlowProvider>
-      <BuilderAppInner />
+      <BuilderAppInner initialTemplateId={initialTemplateId} />
     </ReactFlowProvider>
   );
 }
 
-function BuilderAppInner() {
+function BuilderAppInner({ initialTemplateId = null }) {
   const t = useT();
   const { locale } = useLocale();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -1242,6 +1242,19 @@ function BuilderAppInner() {
     // Центрируем загруженный шаблон на холсте (иначе остаётся слева).
     setTimeout(() => fitView({ padding: 0.25, maxZoom: 1, duration: 400 }), 90);
   }, [setNodes, setEdges, t, nodes.length, pushHistory, fitView]);
+
+  /* ────────── Приход из Atlas: /<lang>/builder/<templateId> ────────── */
+  // Кнопка «Собрать в Agent Builder» в узле карты открывает конструктор сразу
+  // с нужным шаблоном. Загружаем один раз за монтирование: дальше пользователь
+  // работает со схемой сам, и повторная загрузка стёрла бы его правки.
+  const initialTemplateDone = useRef(false);
+  useEffect(() => {
+    if (initialTemplateDone.current || !initialTemplateId) return;
+    const tpl = TEMPLATES.find(x => x.id === initialTemplateId);
+    if (!tpl) return;                      // шаблон переименован/удалён — тихо игнорируем
+    initialTemplateDone.current = true;
+    loadTemplate(tpl);
+  }, [initialTemplateId, loadTemplate]);
 
   /* ────────── Применить код (панель «Код схемы») ────────── */
   // Получает готовые React Flow nodes/edges (CodePanel уже распарсил и проверил)

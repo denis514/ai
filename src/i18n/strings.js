@@ -155,11 +155,14 @@ export async function loadLocaleContent(locale) {
     // даёт Vite повод эмиттить отдельные chunks на nodes/{core,sys,commerce},
     // tutorials и library вместо инлайнинга всего в content-<locale>.js.
     const content = await mod.loadContent();
-    Object.assign(STRINGS[locale], {
-      nodes:            content.nodes,
-      tutorials:        content.tutorials,
-      'prompt-library': content.library,
-    });
+    // ВАЖНО: мёржим, а не заменяем. Секции sys/commerce грузятся параллельно
+    // (getNode триггерит их при первом рендере, например при заходе по прямой
+    // ссылке на узел). Если такая секция успевала лечь в STRINGS раньше, старое
+    // присваивание целиком затирало её объектом core — и узел навсегда оставался
+    // с сырым ключом вида `nodes.uc-ai-support-tier1.title`.
+    STRINGS[locale].nodes = { ...content.nodes, ...(STRINGS[locale].nodes || {}) };
+    STRINGS[locale].tutorials = { ...content.tutorials, ...(STRINGS[locale].tutorials || {}) };
+    STRINGS[locale]['prompt-library'] = content.library;
     _ready.add(locale);   // контент реально в памяти, а не «загрузка начата»
   } catch (e) {
     // При ошибке снимаем флаг — позволяем повторить попытку

@@ -25,6 +25,8 @@ const { NODE_DEFS, TOOLBOX_GROUPS } = await import(resolve(ROOT, 'src/builder/da
 const { KIND_PORTS } = await import(resolve(ROOT, 'src/builder/data/nodeCapabilities.js'));
 const { evaluateConnection } = await import(resolve(ROOT, 'src/builder/services/connectionRules.js'));
 const { TEMPLATES } = await import(resolve(ROOT, 'src/builder/data/templates.js'));
+const { NODE_TEMPLATES } = await import(resolve(ROOT, 'src/data/nodeTemplates.js'));
+const { mindmapData } = await import(resolve(ROOT, 'src/data/mindmapData.js'));
 
 const LOCALES = ['ru', 'en', 'fi'];
 const REQUIRED_FIELDS = ['kind', 'icon', 'color', 'labelKey', 'descKey'];
@@ -107,6 +109,28 @@ for (const tpl of TEMPLATES) {
   }
 }
 
+// ── Мост «узел карты → шаблон» ────────────────────────────────────────────────
+// Индекс живёт отдельно от обоих концов, поэтому легко протухает: шаблон
+// переименовали — кнопка в узле ведёт в никуда; узел удалили — запись мусорная.
+{
+  const templateIds = new Set(TEMPLATES.map(t => t.id));
+  const nodeIds = new Set();
+  (function walk(n) {
+    if (!n) return;
+    nodeIds.add(n.id);
+    (n.children || []).forEach(walk);
+  })(mindmapData);
+
+  for (const [nodeId, tplId] of Object.entries(NODE_TEMPLATES)) {
+    if (!templateIds.has(tplId)) {
+      errors.push(`[nodeTemplates] узел "${nodeId}" ссылается на несуществующий шаблон "${tplId}"`);
+    }
+    if (!nodeIds.has(nodeId)) {
+      errors.push(`[nodeTemplates] в карте нет узла "${nodeId}" (запись устарела)`);
+    }
+  }
+}
+
 // ── Отчёт ─────────────────────────────────────────────────────────────────────
 const c = { red: '\x1b[31m', yellow: '\x1b[33m', green: '\x1b[32m', dim: '\x1b[2m', reset: '\x1b[0m', bold: '\x1b[1m' };
 console.log(`${c.bold}\nBuilder graph lint${c.reset}`);
@@ -114,6 +138,7 @@ console.log(`${c.dim}───────────────────�
 console.log(`  Node defs:   ${Object.keys(NODE_DEFS).length}`);
 console.log(`  Groups:      ${TOOLBOX_GROUPS.length}`);
 console.log(`  Templates:   ${TEMPLATES.length}`);
+console.log(`  Демо узел→шаблон: ${Object.keys(NODE_TEMPLATES).length}`);
 
 if (warnings.length) {
   console.log(`${c.yellow}\n⚠ Warnings (${warnings.length})${c.reset}`);

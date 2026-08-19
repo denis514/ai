@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Tooltip from './Tooltip.jsx';
 import Icon from './Icon.jsx';
+import { templateForNode } from '../data/nodeTemplates.js';
 import BottomSheet from './BottomSheet.jsx';
 import InlineText from './InlineText.jsx';
 import ShareButton from './ShareButton.jsx';
@@ -16,6 +17,7 @@ import { openTryInClaude } from '../utils/tryInClaude.js';
 
 export default function DetailPanel({
   node,
+  onOpenBuilder,
   isOpen,
   onClose,
   onStartTutorial,
@@ -131,6 +133,9 @@ export default function DetailPanel({
   const backTitle = backNode ? t(`nodes.${backNode.id}.title`) : '';
 
   // Навигаторы для inline-ссылок [[node:|tutorial:|prompt:]] в тексте узла.
+  // Демо-шаблон конструктора для этого узла (может не быть — тогда кнопки нет).
+  const builderTemplateId = templateForNode(node?.id);
+
   const inlineNav = {
     node: (id) => onSelectRelated?.(id),
     tutorial: (id) => onStartTutorial?.(id),
@@ -201,6 +206,22 @@ export default function DetailPanel({
                   ? t('detail.tutCta.inProgress', { current: (tProgress.lastStepIndex || 0) + 1, total: tStepsTotal, done: tStepsDone })
                   : t('detail.tutCta.start', { steps: tStepsTotal, time: tTotalTime })}
             </span>
+          </span>
+          <Icon name="arrow-right" size={16} strokeWidth={1.5} />
+        </button>
+      )}
+      {builderTemplateId && onOpenBuilder && (
+        <button
+          type="button"
+          className="detail__tutorial-cta"
+          onClick={() => onOpenBuilder(builderTemplateId)}
+        >
+          <span className="detail__tutorial-cta__icon" aria-hidden="true">
+            <Icon name="sparkles" size={20} strokeWidth={1.5} />
+          </span>
+          <span className="detail__tutorial-cta__text">
+            <strong>{t('detail.buildInBuilder.label')}</strong>
+            <span>{t('detail.buildInBuilder.hint')}</span>
           </span>
           <Icon name="arrow-right" size={16} strokeWidth={1.5} />
         </button>
@@ -454,6 +475,22 @@ export default function DetailPanel({
                     ? t('detail.tutCta.inProgress', { current: (tProgress.lastStepIndex || 0) + 1, total: tStepsTotal, done: tStepsDone })
                     : t('detail.tutCta.start', { steps: tStepsTotal, time: tTotalTime })}
               </span>
+            </span>
+            <Icon name="arrow-right" size={16} strokeWidth={1.5} />
+          </button>
+        )}
+        {builderTemplateId && onOpenBuilder && (
+          <button
+            type="button"
+            className="detail__tutorial-cta"
+            onClick={() => onOpenBuilder(builderTemplateId)}
+          >
+            <span className="detail__tutorial-cta__icon" aria-hidden="true">
+              <Icon name="sparkles" size={20} strokeWidth={1.5} />
+            </span>
+            <span className="detail__tutorial-cta__text">
+              <strong>{t('detail.buildInBuilder.label')}</strong>
+              <span>{t('detail.buildInBuilder.hint')}</span>
             </span>
             <Icon name="arrow-right" size={16} strokeWidth={1.5} />
           </button>
