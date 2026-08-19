@@ -25,10 +25,15 @@ function buildById(id, structure, locale) {
   const primary = STRINGS[locale]?.tutorials?.[id];
   const fallback = STRINGS[FALLBACK_LOCALE]?.tutorials?.[id];
   const c = primary || fallback || {};
-  const steps = (structure.steps || []).map(s => {
-    const sc = (c.steps && c.steps[s.id]) || (fallback?.steps?.[s.id]) || {};
+  // Порядок и id шагов берём из тела туториала: там они лежат ключами объекта
+  // steps, в нужном порядке. В структуре (tutorials.js) их больше нет — иначе
+  // список из 261 туториала ехал бы в стартовом пакете ради одного открытого.
+  // Пока тело не загружено, шагов нет — это и показывает bodyReady ниже.
+  const stepIds = Object.keys(c.steps || fallback?.steps || {});
+  const steps = stepIds.map(stepId => {
+    const sc = (c.steps && c.steps[stepId]) || (fallback?.steps?.[stepId]) || {};
     return {
-      ...s,
+      id: stepId,
       title: sc.title,
       time: sc.time,
       why: sc.why,

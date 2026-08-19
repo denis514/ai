@@ -109,9 +109,14 @@ const changedTutorials = [];
 for (const [key, struct] of Object.entries(tutStruct)) {
   const content = tutContent[key] || {};
 
+  // Шаги переехали из tutorials.js в локали (там они ключи объекта steps,
+  // в нужном порядке). Для хеша восстанавливаем прежнюю форму [{id}] —
+  // иначе смена формата хранения пометила бы все 261 туториал как «обновлён».
+  const stepsForHash = Object.keys(content.steps || {}).map(id => ({ id }));
+
   const hash = sha1({
     // Структура (добавили шаг, изменили уровень/аудиторию)
-    steps:    struct.steps,
+    steps:    stepsForHash,
     level:    struct.level,
     audience: struct.audience,
     nodeId:   struct.nodeId,

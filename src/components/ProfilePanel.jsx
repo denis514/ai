@@ -108,7 +108,7 @@ export default function ProfilePanel({
       const isDone = !!p?.completedAt;
       if (!isStarted || isDone) continue;
 
-      const stepCount = tutorials[id]?.steps?.length || 1;
+      const stepCount = tutorials[id]?.stepCount || 1;
       const doneCount = p?.completedSteps?.length || 0;
       const percent = Math.round((doneCount / stepCount) * 100);
       const localized = getLocalizedTutorial(id, locale);

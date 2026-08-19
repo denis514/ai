@@ -104,7 +104,7 @@ export default function WorkflowsModal({
     const node = findNodeById(mindmapData, struct.nodeId);
     const p = progressApi.getProgress(struct.nodeId);
     const done = p.completedSteps?.length || 0;
-    const total = struct.steps.length;
+    const total = struct.stepCount || 0;
     const isDone = !!p.completedAt;
     const isStarted = done > 0 || (p.lastStepIndex || 0) > 0;
     const cat = node ? CATEGORIES[node.category] : null;

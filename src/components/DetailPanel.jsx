@@ -123,7 +123,7 @@ export default function DetailPanel({
   const tProgress = tutKey && progressApi ? progressApi.getProgress(tutKey) : null;
   const tDone = !!tProgress?.completedAt;
   const tStarted = !!tProgress && (tProgress.completedSteps?.length > 0 || tProgress.lastStepIndex > 0);
-  const tStepsTotal = tutorial ? tutorial.steps.length : 0;
+  const tStepsTotal = tutorial ? (tutorial.stepCount || 0) : 0;
   const tStepsDone = tProgress ? (tProgress.completedSteps?.length || 0) : 0;
   const tTotalTime = tutorialLocalized?.totalTime || '';
 

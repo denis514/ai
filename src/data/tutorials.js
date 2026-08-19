@@ -1,4 +1,10 @@
-// Структура tutorials: nodeId, icon, level, prerequisites, relatedPrompts, next, steps:[{id}].
+// Структура tutorials: nodeId, icon, level, prerequisites, relatedPrompts, next, stepCount.
+//
+// Идентификаторы и порядок шагов ЖИВУТ В ЛОКАЛЯХ (src/locales/<lang>/tutorials/*.json,
+// ключи объекта steps) — там же, где их тексты. Раньше они дублировались здесь
+// массивом steps:[{id}] и ехали в стартовом пакете всем, кто просто открыл карту.
+// Здесь остаётся только число шагов: его показывают карточки курсов до того,
+// как загрузится текст.
 // Текстовый контент (title, subtitle, whatItIs, approach, outcomes, applyIn,
 // pitfalls, exercises, totalTime, steps[].*) — в src/locales/<lang>/tutorials.json.
 // Резолвинг через useTutorialContent() из src/i18n/.
@@ -11,7 +17,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'b-anthropic-1' }, { id: 'b-anthropic-2' }, { id: 'b-anthropic-3' }, { id: 'b-anthropic-4' }, { id: 'b-anthropic-5' }, { id: 'b-anthropic-6' }],
+    stepCount: 6,
   },
   'course-b-models': {
     nodeId: 'b-models',
@@ -20,7 +26,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'b-models-1' }, { id: 'b-models-2' }, { id: 'b-models-3' }, { id: 'b-models-4' }, { id: 'b-models-5' }, { id: 'b-models-6' }],
+    stepCount: 6,
   },
   'course-b-context': {
     nodeId: 'b-context',
@@ -29,7 +35,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'b-context-1' }, { id: 'b-context-2' }, { id: 'b-context-3' }, { id: 'b-context-4' }, { id: 'b-context-5' }, { id: 'b-context-6' }],
+    stepCount: 6,
   },
   'course-b-system': {
     nodeId: 'b-system',
@@ -38,7 +44,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'b-system-1' }, { id: 'b-system-2' }, { id: 'b-system-3' }, { id: 'b-system-4' }, { id: 'b-system-5' }, { id: 'b-system-6' }],
+    stepCount: 6,
   },
   'course-b-safety': {
     nodeId: 'b-safety',
@@ -47,7 +53,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'b-safety-1' }, { id: 'b-safety-2' }, { id: 'b-safety-3' }, { id: 'b-safety-4' }, { id: 'b-safety-5' }, { id: 'b-safety-6' }],
+    stepCount: 6,
   },
   'course-b-prompt-injection': {
     nodeId: 'b-prompt-injection',
@@ -56,7 +62,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'b-prompt-injection-1' }, { id: 'b-prompt-injection-2' }, { id: 'b-prompt-injection-3' }, { id: 'b-prompt-injection-4' }, { id: 'b-prompt-injection-5' }, { id: 'b-prompt-injection-6' }],
+    stepCount: 6,
   },
   'course-b-knowledge': {
     nodeId: 'b-knowledge',
@@ -65,7 +71,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'b-knowledge-1' }, { id: 'b-knowledge-2' }, { id: 'b-knowledge-3' }, { id: 'b-knowledge-4' }, { id: 'b-knowledge-5' }, { id: 'b-knowledge-6' }],
+    stepCount: 6,
   },
   'course-b-help': {
     nodeId: 'b-help',
@@ -74,7 +80,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'b-help-1' }, { id: 'b-help-2' }, { id: 'b-help-3' }, { id: 'b-help-4' }, { id: 'b-help-5' }, { id: 'b-help-6' }],
+    stepCount: 6,
   },
   'course-fs-what-is-project': {
     nodeId: 'fs-what-is-project',
@@ -83,7 +89,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'fs-what-is-project-1' }, { id: 'fs-what-is-project-2' }, { id: 'fs-what-is-project-3' }, { id: 'fs-what-is-project-4' }, { id: 'fs-what-is-project-5' }, { id: 'fs-what-is-project-6' }],
+    stepCount: 6,
   },
   'course-fs-organize-disk': {
     nodeId: 'fs-organize-disk',
@@ -92,7 +98,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'fs-organize-disk-1' }, { id: 'fs-organize-disk-2' }, { id: 'fs-organize-disk-3' }, { id: 'fs-organize-disk-4' }, { id: 'fs-organize-disk-5' }, { id: 'fs-organize-disk-6' }],
+    stepCount: 6,
   },
   'course-fs-navigate': {
     nodeId: 'fs-navigate',
@@ -101,7 +107,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'fs-navigate-1' }, { id: 'fs-navigate-2' }, { id: 'fs-navigate-3' }, { id: 'fs-navigate-4' }, { id: 'fs-navigate-5' }, { id: 'fs-navigate-6' }],
+    stepCount: 6,
   },
   'course-fs-install-node': {
     nodeId: 'fs-install-node',
@@ -110,7 +116,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["basics"],
-    steps: [{ id: 'fs-install-node-1' }, { id: 'fs-install-node-2' }, { id: 'fs-install-node-3' }, { id: 'fs-install-node-4' }, { id: 'fs-install-node-5' }, { id: 'fs-install-node-6' }],
+    stepCount: 6,
   },
   'course-pl-plans': {
     nodeId: 'pl-plans',
@@ -119,7 +125,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["pl-platforms"],
-    steps: [{ id: 'pl-plans-1' }, { id: 'pl-plans-2' }, { id: 'pl-plans-3' }, { id: 'pl-plans-4' }, { id: 'pl-plans-5' }, { id: 'pl-plans-6' }],
+    stepCount: 6,
   },
   'course-pl-limits': {
     nodeId: 'pl-limits',
@@ -128,7 +134,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["pl-platforms"],
-    steps: [{ id: 'pl-limits-1' }, { id: 'pl-limits-2' }, { id: 'pl-limits-3' }, { id: 'pl-limits-4' }, { id: 'pl-limits-5' }, { id: 'pl-limits-6' }],
+    stepCount: 6,
   },
   'course-pl-models': {
     nodeId: 'pl-models',
@@ -137,7 +143,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["pl-platforms"],
-    steps: [{ id: 'pl-models-1' }, { id: 'pl-models-2' }, { id: 'pl-models-3' }, { id: 'pl-models-4' }, { id: 'pl-models-5' }, { id: 'pl-models-6' }],
+    stepCount: 6,
   },
   'course-pl-platforms': {
     nodeId: 'pl-platforms',
@@ -146,7 +152,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["pl-platforms"],
-    steps: [{ id: 'pl-platforms-1' }, { id: 'pl-platforms-2' }, { id: 'pl-platforms-3' }, { id: 'pl-platforms-4' }, { id: 'pl-platforms-5' }, { id: 'pl-platforms-6' }],
+    stepCount: 6,
   },
   'course-pl-rate': {
     nodeId: 'pl-rate',
@@ -155,7 +161,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["pl-platforms"],
-    steps: [{ id: 'pl-rate-1' }, { id: 'pl-rate-2' }, { id: 'pl-rate-3' }, { id: 'pl-rate-4' }, { id: 'pl-rate-5' }, { id: 'pl-rate-6' }],
+    stepCount: 6,
   },
   'course-pl-compare': {
     nodeId: 'pl-compare',
@@ -164,7 +170,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["pl-platforms"],
-    steps: [{ id: 'pl-compare-1' }, { id: 'pl-compare-2' }, { id: 'pl-compare-3' }, { id: 'pl-compare-4' }, { id: 'pl-compare-5' }, { id: 'pl-compare-6' }],
+    stepCount: 6,
   },
   'course-pl-web-setup': {
     nodeId: 'pl-web-setup',
@@ -173,7 +179,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["pl-platforms"],
-    steps: [{ id: 'pl-web-setup-1' }, { id: 'pl-web-setup-2' }, { id: 'pl-web-setup-3' }, { id: 'pl-web-setup-4' }, { id: 'pl-web-setup-5' }, { id: 'pl-web-setup-6' }],
+    stepCount: 6,
   },
   'course-pl-integrations': {
     nodeId: 'pl-integrations',
@@ -182,7 +188,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["pl-platforms"],
-    steps: [{ id: 'pl-integrations-1' }, { id: 'pl-integrations-2' }, { id: 'pl-integrations-3' }, { id: 'pl-integrations-4' }, { id: 'pl-integrations-5' }, { id: 'pl-integrations-6' }],
+    stepCount: 6,
   },
   'course-pl-privacy': {
     nodeId: 'pl-privacy',
@@ -191,7 +197,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["pl-platforms"],
-    steps: [{ id: 'pl-privacy-1' }, { id: 'pl-privacy-2' }, { id: 'pl-privacy-3' }, { id: 'pl-privacy-4' }, { id: 'pl-privacy-5' }, { id: 'pl-privacy-6' }],
+    stepCount: 6,
   },
   'course-a-types': {
     nodeId: 'a-types',
@@ -200,7 +206,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["artifacts"],
-    steps: [{ id: 'a-types-1' }, { id: 'a-types-2' }, { id: 'a-types-3' }, { id: 'a-types-4' }, { id: 'a-types-5' }, { id: 'a-types-6' }],
+    stepCount: 6,
   },
   'course-a-trigger': {
     nodeId: 'a-trigger',
@@ -209,7 +215,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["artifacts"],
-    steps: [{ id: 'a-trigger-1' }, { id: 'a-trigger-2' }, { id: 'a-trigger-3' }, { id: 'a-trigger-4' }, { id: 'a-trigger-5' }, { id: 'a-trigger-6' }],
+    stepCount: 6,
   },
   'course-a-iterate': {
     nodeId: 'a-iterate',
@@ -218,7 +224,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["artifacts"],
-    steps: [{ id: 'a-iterate-1' }, { id: 'a-iterate-2' }, { id: 'a-iterate-3' }, { id: 'a-iterate-4' }, { id: 'a-iterate-5' }, { id: 'a-iterate-6' }],
+    stepCount: 6,
   },
   'course-a-edit': {
     nodeId: 'a-edit',
@@ -227,7 +233,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["artifacts"],
-    steps: [{ id: 'a-edit-1' }, { id: 'a-edit-2' }, { id: 'a-edit-3' }, { id: 'a-edit-4' }, { id: 'a-edit-5' }, { id: 'a-edit-6' }],
+    stepCount: 6,
   },
   'course-sc-coding': {
     nodeId: 'sc-coding',
@@ -236,7 +242,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["scenarios"],
-    steps: [{ id: 'sc-coding-1' }, { id: 'sc-coding-2' }, { id: 'sc-coding-3' }, { id: 'sc-coding-4' }, { id: 'sc-coding-5' }, { id: 'sc-coding-6' }],
+    stepCount: 6,
   },
   'course-sc-design': {
     nodeId: 'sc-design',
@@ -245,7 +251,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["scenarios"],
-    steps: [{ id: 'sc-design-1' }, { id: 'sc-design-2' }, { id: 'sc-design-3' }, { id: 'sc-design-4' }, { id: 'sc-design-5' }, { id: 'sc-design-6' }],
+    stepCount: 6,
   },
   'course-sc-research': {
     nodeId: 'sc-research',
@@ -254,7 +260,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["scenarios"],
-    steps: [{ id: 'sc-research-1' }, { id: 'sc-research-2' }, { id: 'sc-research-3' }, { id: 'sc-research-4' }, { id: 'sc-research-5' }, { id: 'sc-research-6' }],
+    stepCount: 6,
   },
   'course-sc-data': {
     nodeId: 'sc-data',
@@ -263,7 +269,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["scenarios"],
-    steps: [{ id: 'sc-data-1' }, { id: 'sc-data-2' }, { id: 'sc-data-3' }, { id: 'sc-data-4' }, { id: 'sc-data-5' }, { id: 'sc-data-6' }],
+    stepCount: 6,
   },
   'course-rp-project': {
     nodeId: 'rp-project',
@@ -272,7 +278,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["ready-prompts"],
-    steps: [{ id: 'rp-project-1' }, { id: 'rp-project-2' }, { id: 'rp-project-3' }, { id: 'rp-project-4' }, { id: 'rp-project-5' }, { id: 'rp-project-6' }],
+    stepCount: 6,
   },
   'course-rp-artifact': {
     nodeId: 'rp-artifact',
@@ -281,7 +287,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["ready-prompts"],
-    steps: [{ id: 'rp-artifact-1' }, { id: 'rp-artifact-2' }, { id: 'rp-artifact-3' }, { id: 'rp-artifact-4' }, { id: 'rp-artifact-5' }, { id: 'rp-artifact-6' }],
+    stepCount: 6,
   },
   'course-rp-skill': {
     nodeId: 'rp-skill',
@@ -290,7 +296,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["ready-prompts"],
-    steps: [{ id: 'rp-skill-1' }, { id: 'rp-skill-2' }, { id: 'rp-skill-3' }, { id: 'rp-skill-4' }, { id: 'rp-skill-5' }, { id: 'rp-skill-6' }],
+    stepCount: 6,
   },
   'course-rp-claudemd': {
     nodeId: 'rp-claudemd',
@@ -299,7 +305,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["ready-prompts"],
-    steps: [{ id: 'rp-claudemd-1' }, { id: 'rp-claudemd-2' }, { id: 'rp-claudemd-3' }, { id: 'rp-claudemd-4' }, { id: 'rp-claudemd-5' }, { id: 'rp-claudemd-6' }],
+    stepCount: 6,
   },
   'course-rp-audit': {
     nodeId: 'rp-audit',
@@ -308,7 +314,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["ready-prompts"],
-    steps: [{ id: 'rp-audit-1' }, { id: 'rp-audit-2' }, { id: 'rp-audit-3' }, { id: 'rp-audit-4' }, { id: 'rp-audit-5' }, { id: 'rp-audit-6' }],
+    stepCount: 6,
   },
   'course-sas-why-isolation': {
     nodeId: 'sas-why-isolation',
@@ -317,7 +323,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["sys-agent-sandbox"],
-    steps: [{ id: 'sas-why-isolation-1' }, { id: 'sas-why-isolation-2' }, { id: 'sas-why-isolation-3' }, { id: 'sas-why-isolation-4' }, { id: 'sas-why-isolation-5' }, { id: 'sas-why-isolation-6' }],
+    stepCount: 6,
   },
   'course-sas-docker-computer-use': {
     nodeId: 'sas-docker-computer-use',
@@ -326,7 +332,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["sys-agent-sandbox"],
-    steps: [{ id: 'sas-docker-computer-use-1' }, { id: 'sas-docker-computer-use-2' }, { id: 'sas-docker-computer-use-3' }, { id: 'sas-docker-computer-use-4' }, { id: 'sas-docker-computer-use-5' }, { id: 'sas-docker-computer-use-6' }],
+    stepCount: 6,
   },
   'course-sas-vm-vps': {
     nodeId: 'sas-vm-vps',
@@ -335,7 +341,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["sys-agent-sandbox"],
-    steps: [{ id: 'sas-vm-vps-1' }, { id: 'sas-vm-vps-2' }, { id: 'sas-vm-vps-3' }, { id: 'sas-vm-vps-4' }, { id: 'sas-vm-vps-5' }, { id: 'sas-vm-vps-6' }],
+    stepCount: 6,
   },
   'course-sas-least-privilege': {
     nodeId: 'sas-least-privilege',
@@ -344,7 +350,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["sys-agent-sandbox"],
-    steps: [{ id: 'sas-least-privilege-1' }, { id: 'sas-least-privilege-2' }, { id: 'sas-least-privilege-3' }, { id: 'sas-least-privilege-4' }, { id: 'sas-least-privilege-5' }, { id: 'sas-least-privilege-6' }],
+    stepCount: 6,
   },
   'course-sas-network-isolation': {
     nodeId: 'sas-network-isolation',
@@ -353,7 +359,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["sys-agent-sandbox"],
-    steps: [{ id: 'sas-network-isolation-1' }, { id: 'sas-network-isolation-2' }, { id: 'sas-network-isolation-3' }, { id: 'sas-network-isolation-4' }, { id: 'sas-network-isolation-5' }, { id: 'sas-network-isolation-6' }],
+    stepCount: 6,
   },
   'course-sas-secrets': {
     nodeId: 'sas-secrets',
@@ -362,7 +368,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["sys-agent-sandbox"],
-    steps: [{ id: 'sas-secrets-1' }, { id: 'sas-secrets-2' }, { id: 'sas-secrets-3' }, { id: 'sas-secrets-4' }, { id: 'sas-secrets-5' }, { id: 'sas-secrets-6' }],
+    stepCount: 6,
   },
   'course-sas-snapshots-killswitch': {
     nodeId: 'sas-snapshots-killswitch',
@@ -371,7 +377,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["sys-agent-sandbox"],
-    steps: [{ id: 'sas-snapshots-killswitch-1' }, { id: 'sas-snapshots-killswitch-2' }, { id: 'sas-snapshots-killswitch-3' }, { id: 'sas-snapshots-killswitch-4' }, { id: 'sas-snapshots-killswitch-5' }, { id: 'sas-snapshots-killswitch-6' }],
+    stepCount: 6,
   },
   'course-sas-remote-access': {
     nodeId: 'sas-remote-access',
@@ -380,7 +386,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["sys-agent-sandbox"],
-    steps: [{ id: 'sas-remote-access-1' }, { id: 'sas-remote-access-2' }, { id: 'sas-remote-access-3' }, { id: 'sas-remote-access-4' }, { id: 'sas-remote-access-5' }, { id: 'sas-remote-access-6' }],
+    stepCount: 6,
   },
   'skill-md': {
     nodeId: 's-md',
@@ -389,7 +395,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["s-trigger","s-files","skills"],
-    steps: [{ id: 'smd-1' }, { id: 'smd-2' }, { id: 'smd-3' }, { id: 'smd-4' }, { id: 'smd-5' }, { id: 'smd-6' }],
+    stepCount: 6,
   },
   'skill-trigger': {
     nodeId: 's-trigger',
@@ -398,7 +404,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["s-md","s-ready","skills"],
-    steps: [{ id: 'strg-1' }, { id: 'strg-2' }, { id: 'strg-3' }, { id: 'strg-4' }, { id: 'strg-5' }, { id: 'strg-6' }],
+    stepCount: 6,
   },
   'skill-files': {
     nodeId: 's-files',
@@ -407,7 +413,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["s-md","s-create","skills"],
-    steps: [{ id: 'sfl-1' }, { id: 'sfl-2' }, { id: 'sfl-3' }, { id: 'sfl-4' }, { id: 'sfl-5' }, { id: 'sfl-6' }],
+    stepCount: 6,
   },
   'skill-ready': {
     nodeId: 's-ready',
@@ -416,7 +422,7 @@ export const tutorials = {
     audience: 'everyone',
     prerequisites: [], relatedPrompts: [],
     next: ["s-create","skills"],
-    steps: [{ id: 'srd-1' }, { id: 'srd-2' }, { id: 'srd-3' }, { id: 'srd-4' }, { id: 'srd-5' }, { id: 'srd-6' }],
+    stepCount: 6,
   },
   'skill-create': {
     nodeId: 's-create',
@@ -425,7 +431,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["s-md","s-files","s-trigger","skills"],
-    steps: [{ id: 'scr-1' }, { id: 'scr-2' }, { id: 'scr-3' }, { id: 'scr-4' }, { id: 'scr-5' }, { id: 'scr-6' }],
+    stepCount: 6,
   },
   'skill-vs-subagents': {
     nodeId: 's-vs-subagents',
@@ -434,7 +440,7 @@ export const tutorials = {
     audience: 'developers',
     prerequisites: [], relatedPrompts: [],
     next: ["cc-subagents","s-create","skills"],
-    steps: [{ id: 'svs-1' }, { id: 'svs-2' }, { id: 'svs-3' }, { id: 'svs-4' }, { id: 'svs-5' }, { id: 'svs-6' }],
+    stepCount: 6,
   },
   "api-basics": {
     "nodeId": "pl-api",
@@ -451,26 +457,7 @@ export const tutorials = {
       "uc-ai-vendor-selection",
       "uc-ai-multi-agent-system"
     ],
-    "steps": [
-      {
-        "id": "ab-1"
-      },
-      {
-        "id": "ab-2"
-      },
-      {
-        "id": "ab-3"
-      },
-      {
-        "id": "ab-4"
-      },
-      {
-        "id": "ab-5"
-      },
-      {
-        "id": "ab-6"
-      }
-    ]
+    "stepCount": 6
   },
   "ai-limitations": {
     "nodeId": "cap-limitations",
@@ -486,26 +473,7 @@ export const tutorials = {
       "claude-setup",
       "uc-ai-pilot-to-production"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "claude-cowork": {
     "nodeId": "pl-cowork",
@@ -521,26 +489,7 @@ export const tutorials = {
       "subagents",
       "uc-ai-reporting-launch"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "claude-setup": {
     "nodeId": "platform",
@@ -557,26 +506,7 @@ export const tutorials = {
       "basics",
       "uc-ai-vendor-selection"
     ],
-    "steps": [
-      {
-        "id": "cs-1"
-      },
-      {
-        "id": "cs-2"
-      },
-      {
-        "id": "cs-3"
-      },
-      {
-        "id": "cs-4"
-      },
-      {
-        "id": "cs-5"
-      },
-      {
-        "id": "cs-6"
-      }
-    ]
+    "stepCount": 6
   },
   "claude-workspace": {
     "nodeId": "pl-desktop",
@@ -593,26 +523,7 @@ export const tutorials = {
       "mcp",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "project-files": {
     "nodeId": "p-files",
@@ -628,26 +539,7 @@ export const tutorials = {
       "p-instructions",
       "instructions"
     ],
-    "steps": [
-      {
-        "id": "pf-1"
-      },
-      {
-        "id": "pf-2"
-      },
-      {
-        "id": "pf-3"
-      },
-      {
-        "id": "pf-4"
-      },
-      {
-        "id": "pf-5"
-      },
-      {
-        "id": "pf-6"
-      }
-    ]
+    "stepCount": 6
   },
   "basics": {
     "nodeId": "basics",
@@ -665,26 +557,7 @@ export const tutorials = {
       "projects",
       "uc-ai-reporting-launch"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "projects": {
     "nodeId": "projects",
@@ -705,26 +578,7 @@ export const tutorials = {
       "uc-ai-content-ops-launch",
       "uc-ai-reporting-launch"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "artifacts": {
     "nodeId": "artifacts",
@@ -744,26 +598,7 @@ export const tutorials = {
       "scenarios",
       "uc-ai-content-ops-launch"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "skills": {
     "nodeId": "skills",
@@ -785,26 +620,7 @@ export const tutorials = {
       "uc-ai-process-automation",
       "uc-ai-multi-agent-system"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "claude-code": {
     "nodeId": "claude-code",
@@ -824,26 +640,7 @@ export const tutorials = {
       "agents",
       "uc-ai-process-automation"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "mcp": {
     "nodeId": "mcp",
@@ -865,26 +662,7 @@ export const tutorials = {
       "uc-ai-multi-agent-system",
       "uc-ai-vendor-selection"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "instructions": {
     "nodeId": "instructions",
@@ -904,26 +682,7 @@ export const tutorials = {
       "prompting",
       "uc-ai-content-ops-launch"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompting": {
     "nodeId": "prompting",
@@ -944,26 +703,7 @@ export const tutorials = {
       "scenarios",
       "uc-ai-rag-launch"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "scenarios": {
     "nodeId": "scenarios",
@@ -984,26 +724,7 @@ export const tutorials = {
       "agents",
       "uc-ai-process-automation"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "agents": {
     "nodeId": "agents",
@@ -1025,26 +746,7 @@ export const tutorials = {
       "skills",
       "uc-ai-multi-agent-system"
     ],
-    "steps": [
-      {
-        "id": "ag-1"
-      },
-      {
-        "id": "ag-2"
-      },
-      {
-        "id": "ag-3"
-      },
-      {
-        "id": "ag-4"
-      },
-      {
-        "id": "ag-5"
-      },
-      {
-        "id": "ag-6"
-      }
-    ]
+    "stepCount": 6
   },
   "ready-prompts": {
     "nodeId": "ready-prompts",
@@ -1063,26 +765,7 @@ export const tutorials = {
       "uc-ai-content-ops-launch",
       "uc-ai-process-automation"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "intro": {
     "nodeId": "b-claude",
@@ -1099,26 +782,7 @@ export const tutorials = {
       "basics",
       "platform"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "platform": {
     "nodeId": "platform",
@@ -1137,26 +801,7 @@ export const tutorials = {
       "basics",
       "uc-ai-vendor-selection"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "capabilities": {
     "nodeId": "capabilities",
@@ -1176,26 +821,7 @@ export const tutorials = {
       "projects",
       "uc-ai-rag-launch"
     ],
-    "steps": [
-      {
-        "id": "cap-1"
-      },
-      {
-        "id": "cap-2"
-      },
-      {
-        "id": "cap-3"
-      },
-      {
-        "id": "cap-4"
-      },
-      {
-        "id": "cap-5"
-      },
-      {
-        "id": "cap-6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompting-techniques": {
     "nodeId": "prompting",
@@ -1217,26 +843,7 @@ export const tutorials = {
       "uc-ai-rag-launch",
       "uc-ai-decision-support"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "subagents": {
     "nodeId": "cc-subagents",
@@ -1254,26 +861,7 @@ export const tutorials = {
       "s-vs-subagents",
       "uc-ai-multi-agent-system"
     ],
-    "steps": [
-      {
-        "id": "sa-1"
-      },
-      {
-        "id": "sa-2"
-      },
-      {
-        "id": "sa-3"
-      },
-      {
-        "id": "sa-4"
-      },
-      {
-        "id": "sa-5"
-      },
-      {
-        "id": "sa-6"
-      }
-    ]
+    "stepCount": 6
   },
   "tool-use": {
     "nodeId": "cap-tools",
@@ -1294,26 +882,7 @@ export const tutorials = {
       "agents",
       "uc-ai-multi-agent-system"
     ],
-    "steps": [
-      {
-        "id": "tu-1"
-      },
-      {
-        "id": "tu-2"
-      },
-      {
-        "id": "tu-3"
-      },
-      {
-        "id": "tu-4"
-      },
-      {
-        "id": "tu-5"
-      },
-      {
-        "id": "tu-6"
-      }
-    ]
+    "stepCount": 6
   },
   "hooks": {
     "nodeId": "cc-hooks",
@@ -1331,26 +900,7 @@ export const tutorials = {
       "cc-cfg-permissions",
       "uc-ai-process-automation"
     ],
-    "steps": [
-      {
-        "id": "hk-1"
-      },
-      {
-        "id": "hk-2"
-      },
-      {
-        "id": "hk-3"
-      },
-      {
-        "id": "hk-4"
-      },
-      {
-        "id": "hk-5"
-      },
-      {
-        "id": "hk-6"
-      }
-    ]
+    "stepCount": 6
   },
   "first-project": {
     "nodeId": "b-first-steps",
@@ -1366,26 +916,7 @@ export const tutorials = {
       "claude-code",
       "uc-ai-content-ops-launch"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "terminal-tour": {
     "nodeId": "fs-terminal",
@@ -1398,26 +929,7 @@ export const tutorials = {
       "folders-workshop",
       "first-project"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "folders-workshop": {
     "nodeId": "fs-folder-create",
@@ -1431,26 +943,7 @@ export const tutorials = {
     "next": [
       "first-project"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "welcome": {
     "nodeId": "b-claude",
@@ -1464,26 +957,7 @@ export const tutorials = {
       "projects",
       "first-project"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "claude-project-architecture": {
     "nodeId": "i-claudemd",
@@ -1505,26 +979,7 @@ export const tutorials = {
       "uc-ai-reporting-launch",
       "uc-ai-process-automation"
     ],
-    "steps": [
-      {
-        "id": "cpa-1"
-      },
-      {
-        "id": "cpa-2"
-      },
-      {
-        "id": "cpa-3"
-      },
-      {
-        "id": "cpa-4"
-      },
-      {
-        "id": "cpa-5"
-      },
-      {
-        "id": "cpa-6"
-      }
-    ]
+    "stepCount": 6
   },
   "claude-for-business": {
     "nodeId": "scenarios",
@@ -1547,26 +1002,7 @@ export const tutorials = {
       "uc-ai-decision-support",
       "uc-ai-roi-estimation"
     ],
-    "steps": [
-      {
-        "id": "cb-1"
-      },
-      {
-        "id": "cb-2"
-      },
-      {
-        "id": "cb-3"
-      },
-      {
-        "id": "cb-4"
-      },
-      {
-        "id": "cb-5"
-      },
-      {
-        "id": "cb-6"
-      }
-    ]
+    "stepCount": 6
   },
   "claude-for-educators": {
     "nodeId": "b-educators",
@@ -1586,26 +1022,7 @@ export const tutorials = {
       "claude-for-business",
       "uc-ai-content-ops-launch"
     ],
-    "steps": [
-      {
-        "id": "ce-1"
-      },
-      {
-        "id": "ce-2"
-      },
-      {
-        "id": "ce-3"
-      },
-      {
-        "id": "ce-4"
-      },
-      {
-        "id": "ce-5"
-      },
-      {
-        "id": "ce-6"
-      }
-    ]
+    "stepCount": 6
   },
   "ai-fluency": {
     "nodeId": "b-claude",
@@ -1623,26 +1040,7 @@ export const tutorials = {
       "claude-for-educators",
       "uc-ai-rag-launch"
     ],
-    "steps": [
-      {
-        "id": "af-1"
-      },
-      {
-        "id": "af-2"
-      },
-      {
-        "id": "af-3"
-      },
-      {
-        "id": "af-4"
-      },
-      {
-        "id": "af-5"
-      },
-      {
-        "id": "af-6"
-      }
-    ]
+    "stepCount": 6
   },
   "workflow-automation": {
     "nodeId": "sc-analysis",
@@ -1664,26 +1062,7 @@ export const tutorials = {
       "uc-ai-process-automation",
       "uc-ai-pilot-to-production"
     ],
-    "steps": [
-      {
-        "id": "wa-1"
-      },
-      {
-        "id": "wa-2"
-      },
-      {
-        "id": "wa-3"
-      },
-      {
-        "id": "wa-4"
-      },
-      {
-        "id": "wa-5"
-      },
-      {
-        "id": "wa-6"
-      }
-    ]
+    "stepCount": 6
   },
   "role-use-cases": {
     "nodeId": "sc-content",
@@ -1706,26 +1085,7 @@ export const tutorials = {
       "uc-ai-support-tier1",
       "uc-ai-discovery-launch"
     ],
-    "steps": [
-      {
-        "id": "ruc-1"
-      },
-      {
-        "id": "ruc-2"
-      },
-      {
-        "id": "ruc-3"
-      },
-      {
-        "id": "ruc-4"
-      },
-      {
-        "id": "ruc-5"
-      },
-      {
-        "id": "ruc-6"
-      }
-    ]
+    "stepCount": 6
   },
   "mcp-advanced": {
     "nodeId": "mcp",
@@ -1741,26 +1101,7 @@ export const tutorials = {
       "agents",
       "subagents"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "claude-code-project": {
     "nodeId": "claude-code",
@@ -1777,26 +1118,7 @@ export const tutorials = {
       "subagents",
       "hooks"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "building-evaluations": {
     "nodeId": "sys-evals-benchmarks",
@@ -1812,26 +1134,7 @@ export const tutorials = {
       "agents",
       "mcp-advanced"
     ],
-    "steps": [
-      {
-        "id": "be-1"
-      },
-      {
-        "id": "be-2"
-      },
-      {
-        "id": "be-3"
-      },
-      {
-        "id": "be-4"
-      },
-      {
-        "id": "be-5"
-      },
-      {
-        "id": "be-6"
-      }
-    ]
+    "stepCount": 6
   },
   "remote-computer-for-claude": {
     "nodeId": "sys-agent-sandbox",
@@ -1846,26 +1149,7 @@ export const tutorials = {
       "agents",
       "mcp"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "project-instructions": {
     "nodeId": "p-instructions",
@@ -1881,26 +1165,7 @@ export const tutorials = {
       "instructions",
       "projects"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "project-team": {
     "nodeId": "p-team",
@@ -1915,26 +1180,7 @@ export const tutorials = {
       "project-instructions",
       "projects"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "project-when": {
     "nodeId": "p-when",
@@ -1950,26 +1196,7 @@ export const tutorials = {
       "project-files",
       "project-instructions"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompt-4d": {
     "nodeId": "pr-4d",
@@ -1985,26 +1212,7 @@ export const tutorials = {
       "prompt-role",
       "prompting"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompt-principles": {
     "nodeId": "pr-principles",
@@ -2020,26 +1228,7 @@ export const tutorials = {
       "prompt-xml",
       "prompting"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompt-xml": {
     "nodeId": "pr-xml",
@@ -2055,26 +1244,7 @@ export const tutorials = {
       "prompt-structured",
       "prompting"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompt-fewshot": {
     "nodeId": "pr-fewshot",
@@ -2090,26 +1260,7 @@ export const tutorials = {
       "prompt-xml",
       "prompting"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompt-cot": {
     "nodeId": "pr-cot",
@@ -2125,26 +1276,7 @@ export const tutorials = {
       "prompting",
       "cap-thinking"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompt-role": {
     "nodeId": "pr-role",
@@ -2160,26 +1292,7 @@ export const tutorials = {
       "instructions",
       "prompting"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompt-prefill": {
     "nodeId": "pr-prefill",
@@ -2194,26 +1307,7 @@ export const tutorials = {
       "prompt-structured",
       "prompting"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompt-structured": {
     "nodeId": "pr-structured",
@@ -2229,26 +1323,7 @@ export const tutorials = {
       "prompt-xml",
       "prompting"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "prompt-iterate": {
     "nodeId": "pr-iterate",
@@ -2264,26 +1339,7 @@ export const tutorials = {
       "ready-prompts",
       "prompting"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "agent-principles": {
     "nodeId": "ag-principles",
@@ -2299,26 +1355,7 @@ export const tutorials = {
       "agent-code-reviewer",
       "agent-researcher"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "agent-code-reviewer": {
     "nodeId": "ag-code",
@@ -2334,26 +1371,7 @@ export const tutorials = {
       "claude-code",
       "agents"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "agent-audit": {
     "nodeId": "ag-ux",
@@ -2368,26 +1386,7 @@ export const tutorials = {
       "agent-principles",
       "agents"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "agent-researcher": {
     "nodeId": "ag-research",
@@ -2402,26 +1401,7 @@ export const tutorials = {
       "agent-principles",
       "agents"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "agent-designer": {
     "nodeId": "ag-designer",
@@ -2436,26 +1416,7 @@ export const tutorials = {
       "agent-principles",
       "agents"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "agent-pm": {
     "nodeId": "ag-pm",
@@ -2470,26 +1431,7 @@ export const tutorials = {
       "agent-principles",
       "agents"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "agent-managed": {
     "nodeId": "ag-managed",
@@ -2505,26 +1447,7 @@ export const tutorials = {
       "pl-api",
       "agents"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-input-modalities": {
     "nodeId": "cap-input-modalities",
@@ -2540,26 +1463,7 @@ export const tutorials = {
       "cap-files",
       "capabilities"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-vision": {
     "nodeId": "cap-vision",
@@ -2575,26 +1479,7 @@ export const tutorials = {
       "cap-files",
       "capabilities"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-files": {
     "nodeId": "cap-files",
@@ -2610,26 +1495,7 @@ export const tutorials = {
       "cap-input-modalities",
       "capabilities"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-search": {
     "nodeId": "cap-search",
@@ -2644,26 +1510,7 @@ export const tutorials = {
       "capabilities",
       "agent-researcher"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-memory": {
     "nodeId": "cap-memory",
@@ -2679,26 +1526,7 @@ export const tutorials = {
       "projects",
       "instructions"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-computer": {
     "nodeId": "cap-computer",
@@ -2714,26 +1542,7 @@ export const tutorials = {
       "sys-agent-sandbox",
       "capabilities"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-caching": {
     "nodeId": "cap-caching",
@@ -2749,26 +1558,7 @@ export const tutorials = {
       "sys-cost-management",
       "capabilities"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-citations": {
     "nodeId": "cap-citations",
@@ -2784,26 +1574,7 @@ export const tutorials = {
       "sys-rag-architecture",
       "capabilities"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-code-exec": {
     "nodeId": "cap-code-exec",
@@ -2818,26 +1589,7 @@ export const tutorials = {
       "cap-files",
       "capabilities"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cap-thinking": {
     "nodeId": "cap-thinking",
@@ -2852,26 +1604,7 @@ export const tutorials = {
       "prompt-cot",
       "capabilities"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "i-global": {
     "nodeId": "i-global",
@@ -2887,26 +1620,7 @@ export const tutorials = {
       "i-project",
       "i-style"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "i-project": {
     "nodeId": "i-project",
@@ -2922,26 +1636,7 @@ export const tutorials = {
       "projects",
       "p-instructions"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "i-style": {
     "nodeId": "i-style",
@@ -2956,26 +1651,7 @@ export const tutorials = {
       "i-global",
       "instructions"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "i-templates": {
     "nodeId": "i-templates",
@@ -2991,26 +1667,7 @@ export const tutorials = {
       "i-project",
       "instructions"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "m-what": {
     "nodeId": "m-what",
@@ -3026,26 +1683,7 @@ export const tutorials = {
       "m-ready",
       "m-custom"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "m-ready": {
     "nodeId": "m-ready",
@@ -3061,26 +1699,7 @@ export const tutorials = {
       "m-security",
       "mcp"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "m-custom": {
     "nodeId": "m-custom",
@@ -3096,26 +1715,7 @@ export const tutorials = {
       "m-patterns",
       "m-security"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "m-security": {
     "nodeId": "m-security",
@@ -3131,26 +1731,7 @@ export const tutorials = {
       "sys-agent-sandbox",
       "mcp"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "m-patterns": {
     "nodeId": "m-patterns",
@@ -3166,26 +1747,7 @@ export const tutorials = {
       "m-security",
       "m-debug"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "m-debug": {
     "nodeId": "m-debug",
@@ -3201,26 +1763,7 @@ export const tutorials = {
       "m-patterns",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-install": {
     "nodeId": "cc-install",
@@ -3236,26 +1779,7 @@ export const tutorials = {
       "cc-config",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-terminal": {
     "nodeId": "cc-terminal",
@@ -3271,26 +1795,7 @@ export const tutorials = {
       "cc-slash",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-config": {
     "nodeId": "cc-config",
@@ -3306,26 +1811,7 @@ export const tutorials = {
       "cc-md",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-cfg-permissions": {
     "nodeId": "cc-cfg-permissions",
@@ -3341,26 +1827,7 @@ export const tutorials = {
       "sys-agent-sandbox",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-slash": {
     "nodeId": "cc-slash",
@@ -3376,26 +1843,7 @@ export const tutorials = {
       "cc-subagents",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-plan-mode": {
     "nodeId": "cc-plan-mode",
@@ -3411,26 +1859,7 @@ export const tutorials = {
       "cc-cfg-permissions",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-ide": {
     "nodeId": "cc-ide",
@@ -3446,26 +1875,7 @@ export const tutorials = {
       "cc-terminal",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "af-llm-basics": {
     "nodeId": "af-llm-basics",
@@ -3481,26 +1891,7 @@ export const tutorials = {
       "cap-limitations",
       "ai-fundamentals"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "af-embeddings": {
     "nodeId": "af-embeddings",
@@ -3516,26 +1907,7 @@ export const tutorials = {
       "af-rag-basics",
       "ai-fundamentals"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "af-vector-db": {
     "nodeId": "af-vector-db",
@@ -3551,26 +1923,7 @@ export const tutorials = {
       "af-embeddings",
       "ai-fundamentals"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "af-rag-basics": {
     "nodeId": "af-rag-basics",
@@ -3586,26 +1939,7 @@ export const tutorials = {
       "sys-rag-architecture",
       "cap-files"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "af-memory-systems": {
     "nodeId": "af-memory-systems",
@@ -3621,26 +1955,7 @@ export const tutorials = {
       "af-rag-basics",
       "ai-fundamentals"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "af-multimodal": {
     "nodeId": "af-multimodal",
@@ -3656,26 +1971,7 @@ export const tutorials = {
       "cap-input-modalities",
       "ai-fundamentals"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "af-fine-tuning": {
     "nodeId": "af-fine-tuning",
@@ -3691,26 +1987,7 @@ export const tutorials = {
       "af-rag-basics",
       "ai-fundamentals"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-md": {
     "nodeId": "cc-md",
@@ -3726,26 +2003,7 @@ export const tutorials = {
       "cc-install",
       "claude-code"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-reporting-launch": {
     "nodeId": "uc-ai-reporting-launch",
@@ -3759,26 +2017,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-process-automation": {
     "nodeId": "uc-ai-process-automation",
@@ -3792,26 +2031,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-decision-support": {
     "nodeId": "uc-ai-decision-support",
@@ -3825,26 +2045,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-content-ops-launch": {
     "nodeId": "uc-ai-content-ops-launch",
@@ -3858,26 +2059,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-support-tier1": {
     "nodeId": "uc-ai-support-tier1",
@@ -3891,26 +2073,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-discovery-launch": {
     "nodeId": "uc-ai-discovery-launch",
@@ -3924,26 +2087,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-transformation-roadmap": {
     "nodeId": "uc-ai-transformation-roadmap",
@@ -3957,26 +2101,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-rag-launch": {
     "nodeId": "uc-ai-rag-launch",
@@ -3990,26 +2115,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-pilot-to-production": {
     "nodeId": "uc-ai-pilot-to-production",
@@ -4023,26 +2129,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-roi-estimation": {
     "nodeId": "uc-ai-roi-estimation",
@@ -4056,26 +2143,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-vendor-selection": {
     "nodeId": "uc-ai-vendor-selection",
@@ -4089,26 +2157,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-multi-agent-system": {
     "nodeId": "uc-ai-multi-agent-system",
@@ -4122,26 +2171,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-design-research-launch": {
     "nodeId": "uc-ai-design-research-launch",
@@ -4155,26 +2185,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-personalization-launch": {
     "nodeId": "uc-ai-personalization-launch",
@@ -4188,26 +2199,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-product-search": {
     "nodeId": "uc-ai-product-search",
@@ -4221,26 +2213,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "uc-ai-conversion-optimization": {
     "nodeId": "uc-ai-conversion-optimization",
@@ -4254,26 +2227,7 @@ export const tutorials = {
     "next": [
       "use-cases"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-workflows-basics": {
     "nodeId": "sys-workflows-basics",
@@ -4285,26 +2239,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-linear-chain": {
     "nodeId": "sys-linear-chain",
@@ -4316,26 +2251,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-quality-gates": {
     "nodeId": "sys-quality-gates",
@@ -4347,26 +2263,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-branching-logic": {
     "nodeId": "sys-branching-logic",
@@ -4378,26 +2275,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-loop-patterns": {
     "nodeId": "sys-loop-patterns",
@@ -4409,26 +2287,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-prompt-chaining": {
     "nodeId": "sys-prompt-chaining",
@@ -4440,26 +2299,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-rag-architecture": {
     "nodeId": "sys-rag-architecture",
@@ -4471,26 +2311,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-context-passing": {
     "nodeId": "sys-context-passing",
@@ -4502,26 +2323,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-vector-stores": {
     "nodeId": "sys-vector-stores",
@@ -4533,26 +2335,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-chunking-strategies": {
     "nodeId": "sys-chunking-strategies",
@@ -4564,26 +2347,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-hybrid-search": {
     "nodeId": "sys-hybrid-search",
@@ -4595,26 +2359,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-document-pipelines": {
     "nodeId": "sys-document-pipelines",
@@ -4626,26 +2371,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-multi-agent-patterns": {
     "nodeId": "sys-multi-agent-patterns",
@@ -4657,26 +2383,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-supervisor-worker": {
     "nodeId": "sys-supervisor-worker",
@@ -4688,26 +2395,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-parallel-fan-out": {
     "nodeId": "sys-parallel-fan-out",
@@ -4719,26 +2407,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-handoff-protocols": {
     "nodeId": "sys-handoff-protocols",
@@ -4750,26 +2419,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-tool-orchestration": {
     "nodeId": "sys-tool-orchestration",
@@ -4781,26 +2431,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-escalation-paths": {
     "nodeId": "sys-escalation-paths",
@@ -4812,26 +2443,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-approval-flows": {
     "nodeId": "sys-approval-flows",
@@ -4843,26 +2455,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-feedback-collection": {
     "nodeId": "sys-feedback-collection",
@@ -4874,26 +2467,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-confidence-thresholds": {
     "nodeId": "sys-confidence-thresholds",
@@ -4905,26 +2479,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-cost-management": {
     "nodeId": "sys-cost-management",
@@ -4936,26 +2491,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-monitoring": {
     "nodeId": "sys-monitoring",
@@ -4967,26 +2503,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-logging-patterns": {
     "nodeId": "sys-logging-patterns",
@@ -4998,26 +2515,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-versioning": {
     "nodeId": "sys-versioning",
@@ -5029,26 +2527,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-rollback-strategies": {
     "nodeId": "sys-rollback-strategies",
@@ -5060,26 +2539,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-rate-limiting": {
     "nodeId": "sys-rate-limiting",
@@ -5091,26 +2551,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-semantic-cache": {
     "nodeId": "sys-semantic-cache",
@@ -5122,26 +2563,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-api-patterns": {
     "nodeId": "sys-api-patterns",
@@ -5153,26 +2575,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-event-driven": {
     "nodeId": "sys-event-driven",
@@ -5184,26 +2587,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-batch-vs-realtime": {
     "nodeId": "sys-batch-vs-realtime",
@@ -5215,26 +2599,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-data-sync": {
     "nodeId": "sys-data-sync",
@@ -5246,26 +2611,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-auth-patterns": {
     "nodeId": "sys-auth-patterns",
@@ -5277,26 +2623,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "sys-error-handling": {
     "nodeId": "sys-error-handling",
@@ -5308,26 +2635,7 @@ export const tutorials = {
     "next": [
       "systems"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ops-process-automation": {
     "nodeId": "ops-process-automation",
@@ -5339,26 +2647,7 @@ export const tutorials = {
     "next": [
       "ai-native-operations"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ops-decision-intelligence": {
     "nodeId": "ops-decision-intelligence",
@@ -5370,26 +2659,7 @@ export const tutorials = {
     "next": [
       "ai-native-operations"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ops-reporting-automation": {
     "nodeId": "ops-reporting-automation",
@@ -5401,26 +2671,7 @@ export const tutorials = {
     "next": [
       "ai-native-operations"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ops-resource-optimization": {
     "nodeId": "ops-resource-optimization",
@@ -5432,26 +2683,7 @@ export const tutorials = {
     "next": [
       "ai-native-operations"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ops-team-workflow": {
     "nodeId": "ops-team-workflow",
@@ -5463,26 +2695,7 @@ export const tutorials = {
     "next": [
       "ai-native-operations"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "mk-content-ops": {
     "nodeId": "mk-content-ops",
@@ -5494,26 +2707,7 @@ export const tutorials = {
     "next": [
       "ai-native-marketing"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "mk-campaign-intel": {
     "nodeId": "mk-campaign-intel",
@@ -5525,26 +2719,7 @@ export const tutorials = {
     "next": [
       "ai-native-marketing"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "mk-brand-voice": {
     "nodeId": "mk-brand-voice",
@@ -5556,26 +2731,7 @@ export const tutorials = {
     "next": [
       "ai-native-marketing"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "mk-seo-optimization": {
     "nodeId": "mk-seo-optimization",
@@ -5587,26 +2743,7 @@ export const tutorials = {
     "next": [
       "ai-native-marketing"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "mk-performance-analytics": {
     "nodeId": "mk-performance-analytics",
@@ -5618,26 +2755,7 @@ export const tutorials = {
     "next": [
       "ai-native-marketing"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "mk-team-workflow": {
     "nodeId": "mk-team-workflow",
@@ -5649,26 +2767,7 @@ export const tutorials = {
     "next": [
       "ai-native-marketing"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cs-tier1": {
     "nodeId": "cs-tier1",
@@ -5680,26 +2779,7 @@ export const tutorials = {
     "next": [
       "ai-native-customer-support"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cs-agent-assist": {
     "nodeId": "cs-agent-assist",
@@ -5711,26 +2791,7 @@ export const tutorials = {
     "next": [
       "ai-native-customer-support"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cs-knowledge-base": {
     "nodeId": "cs-knowledge-base",
@@ -5742,26 +2803,7 @@ export const tutorials = {
     "next": [
       "ai-native-customer-support"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cs-escalation": {
     "nodeId": "cs-escalation",
@@ -5773,26 +2815,7 @@ export const tutorials = {
     "next": [
       "ai-native-customer-support"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cs-quality-monitoring": {
     "nodeId": "cs-quality-monitoring",
@@ -5804,26 +2827,7 @@ export const tutorials = {
     "next": [
       "ai-native-customer-support"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cs-support-analytics": {
     "nodeId": "cs-support-analytics",
@@ -5835,26 +2839,7 @@ export const tutorials = {
     "next": [
       "ai-native-customer-support"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cs-team-workflow": {
     "nodeId": "cs-team-workflow",
@@ -5866,26 +2851,7 @@ export const tutorials = {
     "next": [
       "ai-native-customer-support"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "pd-discovery-research": {
     "nodeId": "pd-discovery-research",
@@ -5897,26 +2863,7 @@ export const tutorials = {
     "next": [
       "ai-native-product"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "pd-spec-generation": {
     "nodeId": "pd-spec-generation",
@@ -5928,26 +2875,7 @@ export const tutorials = {
     "next": [
       "ai-native-product"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "pd-roadmap-intelligence": {
     "nodeId": "pd-roadmap-intelligence",
@@ -5959,26 +2887,7 @@ export const tutorials = {
     "next": [
       "ai-native-product"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "pd-experimentation": {
     "nodeId": "pd-experimentation",
@@ -5990,26 +2899,7 @@ export const tutorials = {
     "next": [
       "ai-native-product"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "pd-feedback-synthesis": {
     "nodeId": "pd-feedback-synthesis",
@@ -6021,26 +2911,7 @@ export const tutorials = {
     "next": [
       "ai-native-product"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "pd-product-analytics": {
     "nodeId": "pd-product-analytics",
@@ -6052,26 +2923,7 @@ export const tutorials = {
     "next": [
       "ai-native-product"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "pd-team-workflow": {
     "nodeId": "pd-team-workflow",
@@ -6083,26 +2935,7 @@ export const tutorials = {
     "next": [
       "ai-native-product"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "en-transformation-strategy": {
     "nodeId": "en-transformation-strategy",
@@ -6114,26 +2947,7 @@ export const tutorials = {
     "next": [
       "ai-native-enterprise"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "en-change-management": {
     "nodeId": "en-change-management",
@@ -6145,26 +2959,7 @@ export const tutorials = {
     "next": [
       "ai-native-enterprise"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "en-governance": {
     "nodeId": "en-governance",
@@ -6176,26 +2971,7 @@ export const tutorials = {
     "next": [
       "ai-native-enterprise"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "en-coe": {
     "nodeId": "en-coe",
@@ -6207,26 +2983,7 @@ export const tutorials = {
     "next": [
       "ai-native-enterprise"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "en-roi-measurement": {
     "nodeId": "en-roi-measurement",
@@ -6238,26 +2995,7 @@ export const tutorials = {
     "next": [
       "ai-native-enterprise"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "en-risk-management": {
     "nodeId": "en-risk-management",
@@ -6269,26 +3007,7 @@ export const tutorials = {
     "next": [
       "ai-native-enterprise"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "en-talent-strategy": {
     "nodeId": "en-talent-strategy",
@@ -6300,26 +3019,7 @@ export const tutorials = {
     "next": [
       "ai-native-enterprise"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ds-design-research": {
     "nodeId": "ds-design-research",
@@ -6331,26 +3031,7 @@ export const tutorials = {
     "next": [
       "ai-native-design"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ds-prototype-generation": {
     "nodeId": "ds-prototype-generation",
@@ -6362,26 +3043,7 @@ export const tutorials = {
     "next": [
       "ai-native-design"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ds-design-ops": {
     "nodeId": "ds-design-ops",
@@ -6393,26 +3055,7 @@ export const tutorials = {
     "next": [
       "ai-native-design"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ds-accessibility": {
     "nodeId": "ds-accessibility",
@@ -6424,26 +3067,7 @@ export const tutorials = {
     "next": [
       "ai-native-design"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ds-design-system": {
     "nodeId": "ds-design-system",
@@ -6455,26 +3079,7 @@ export const tutorials = {
     "next": [
       "ai-native-design"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ds-content-design": {
     "nodeId": "ds-content-design",
@@ -6486,26 +3091,7 @@ export const tutorials = {
     "next": [
       "ai-native-design"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ds-team-workflow": {
     "nodeId": "ds-team-workflow",
@@ -6517,26 +3103,7 @@ export const tutorials = {
     "next": [
       "ai-native-design"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-pdp-gen": {
     "nodeId": "ec-pdp-gen",
@@ -6548,26 +3115,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-search-opt": {
     "nodeId": "ec-search-opt",
@@ -6579,26 +3127,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-personalization": {
     "nodeId": "ec-personalization",
@@ -6610,26 +3139,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-merchandising": {
     "nodeId": "ec-merchandising",
@@ -6641,26 +3151,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-cro": {
     "nodeId": "ec-cro",
@@ -6672,26 +3163,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-experimentation": {
     "nodeId": "ec-experimentation",
@@ -6703,26 +3175,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-checkout-opt": {
     "nodeId": "ec-checkout-opt",
@@ -6734,26 +3187,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-recommendations": {
     "nodeId": "ec-recommendations",
@@ -6765,26 +3199,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-support": {
     "nodeId": "ec-support",
@@ -6796,26 +3211,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-loyalty": {
     "nodeId": "ec-loyalty",
@@ -6827,26 +3223,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-analytics": {
     "nodeId": "ec-analytics",
@@ -6858,26 +3235,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-pricing": {
     "nodeId": "ec-pricing",
@@ -6889,26 +3247,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-inventory": {
     "nodeId": "ec-inventory",
@@ -6920,26 +3259,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-segmentation": {
     "nodeId": "ec-segmentation",
@@ -6951,26 +3271,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "ec-team-workflow": {
     "nodeId": "ec-team-workflow",
@@ -6982,26 +3283,7 @@ export const tutorials = {
     "next": [
       "ai-native-ecommerce"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-tty-sessions": {
     "nodeId": "cc-tty-sessions",
@@ -7013,26 +3295,7 @@ export const tutorials = {
     "next": [
       "cc-terminal"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-tty-files": {
     "nodeId": "cc-tty-files",
@@ -7044,26 +3307,7 @@ export const tutorials = {
     "next": [
       "cc-terminal"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-tty-modes": {
     "nodeId": "cc-tty-modes",
@@ -7075,26 +3319,7 @@ export const tutorials = {
     "next": [
       "cc-terminal"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-tty-keys": {
     "nodeId": "cc-tty-keys",
@@ -7106,26 +3331,7 @@ export const tutorials = {
     "next": [
       "cc-terminal"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-cfg-settings": {
     "nodeId": "cc-cfg-settings",
@@ -7137,26 +3343,7 @@ export const tutorials = {
     "next": [
       "cc-config"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-cfg-local": {
     "nodeId": "cc-cfg-local",
@@ -7168,26 +3355,7 @@ export const tutorials = {
     "next": [
       "cc-config"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-cfg-global": {
     "nodeId": "cc-cfg-global",
@@ -7199,26 +3367,7 @@ export const tutorials = {
     "next": [
       "cc-config"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-cfg-statusline": {
     "nodeId": "cc-cfg-statusline",
@@ -7230,26 +3379,7 @@ export const tutorials = {
     "next": [
       "cc-config"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-grp-session": {
     "nodeId": "cc-grp-session",
@@ -7261,26 +3391,7 @@ export const tutorials = {
     "next": [
       "cc-slash"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-grp-context": {
     "nodeId": "cc-grp-context",
@@ -7292,26 +3403,7 @@ export const tutorials = {
     "next": [
       "cc-slash"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-grp-model": {
     "nodeId": "cc-grp-model",
@@ -7323,26 +3415,7 @@ export const tutorials = {
     "next": [
       "cc-slash"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-grp-ui": {
     "nodeId": "cc-grp-ui",
@@ -7354,26 +3427,7 @@ export const tutorials = {
     "next": [
       "cc-slash"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-grp-config": {
     "nodeId": "cc-grp-config",
@@ -7385,26 +3439,7 @@ export const tutorials = {
     "next": [
       "cc-slash"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-grp-integrations": {
     "nodeId": "cc-grp-integrations",
@@ -7416,26 +3451,7 @@ export const tutorials = {
     "next": [
       "cc-slash"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-grp-automation": {
     "nodeId": "cc-grp-automation",
@@ -7447,26 +3463,7 @@ export const tutorials = {
     "next": [
       "cc-slash"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-grp-quality": {
     "nodeId": "cc-grp-quality",
@@ -7478,26 +3475,7 @@ export const tutorials = {
     "next": [
       "cc-slash"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   },
   "cc-grp-help": {
     "nodeId": "cc-grp-help",
@@ -7509,26 +3487,7 @@ export const tutorials = {
     "next": [
       "cc-slash"
     ],
-    "steps": [
-      {
-        "id": "s1"
-      },
-      {
-        "id": "s2"
-      },
-      {
-        "id": "s3"
-      },
-      {
-        "id": "s4"
-      },
-      {
-        "id": "s5"
-      },
-      {
-        "id": "s6"
-      }
-    ]
+    "stepCount": 6
   }
 };
 

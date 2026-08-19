@@ -71,7 +71,7 @@ export default function WelcomeCard({
 
   if (candidate) {
     const tut = getLocalizedTutorial(candidate.id, locale);
-    const total = tutorials[candidate.id]?.steps?.length || 0;
+    const total = tutorials[candidate.id]?.stepCount || 0;
     const current = Math.min((candidate.lastStepIndex || 0) + 1, total);
     return (
       <div className="welcome-card welcome-card--continue" role="region" aria-label="Welcome">
