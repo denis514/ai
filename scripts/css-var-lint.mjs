@@ -43,6 +43,9 @@ const DYNAMIC = new Set([
   '--header-h', '--radius', '--radius-lg', '--radius-pill', '--radius-sm',
   // inline-set (через style={{}}), не объявляются в :root:
   '--avatar-color', '--canvas-tint', '--accent-rgb',
+  // выставляются из JS в рантайме, в CSS всегда с запасным значением:
+  '--bsheet-max',   // BottomSheet сжимает лист под клавиатуру (visualViewport)
+  '--side-top',     // TutorialModal считает высоту шапки
   // semantic color tokens (Atlas хардкодит, но конвенция допустима везде):
   '--success', '--danger', '--warning', '--info',
 ]);
