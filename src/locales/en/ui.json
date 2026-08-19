@@ -764,15 +764,6 @@
         "vars": "[{\"k\":\"what_to_compute\",\"v\":\"total sales, average order, top-5 products\"},{\"k\":\"period\",\"v\":\"last month\"}]",
         "prompt": "You are an analyst. Read the spreadsheet with the Files skill, compute what is needed with the Code skill (exact math). Do not invent numbers: compute everything from the data. Return a short clear takeaway and the figures."
       },
-      "webActions": {
-        "name": "Action on a website",
-        "desc": "The assistant performs actions on a website, e.g. fills a form. Advanced.",
-        "input": "What to do and on which site.",
-        "output": "The action result.",
-        "start": "Help perform an action on the site {{site}}: {{task}}. Act step by step and carefully, and describe what happened at the end. This is an advanced feature and needs a safe mode.",
-        "vars": "[{\"k\":\"site\",\"v\":\"the internal company panel\"},{\"k\":\"task\",\"v\":\"fill the request form with data from the task\"}]",
-        "prompt": "You are an assistant that can operate a computer. Use the Computer skill to do the task on the site step by step. Act carefully, do not click anything unnecessary, never buy or send money. Briefly describe what you did at the end."
-      },
       "connectService": {
         "name": "Connect your service",
         "desc": "Pulls data from your service via an MCP connection. Advanced.",
@@ -1447,7 +1438,7 @@
       "tool_vision": "Vision: to have the agent look at an image, paste a link to the image into the task and attach the Vision node to the agent.",
       "tool_memory": "Memory: helps the agent keep the same thing (tone, rules) within a run and across chain steps. Just attach it to the agent.",
       "tool_mcp": "MCP (your service): first, in the lock section at the top, the MCP tab, click Add and enter a name, the server link and a token (if needed). Then attach the MCP node to the agent and pick the server. It is a remote server by link, not a local container.",
-      "tool_advanced": "Code and Citations now work: Code really runs Python, Citations back the answer with source links. Computer does not perform the action in a real run yet — it needs a separate safe environment.",
+      "tool_advanced": "Code and Citations already work: Code really runs Python, Citations back the answer with source links. Computer use was taken out of the set until it actually runs: it needs a separate sandboxed environment.",
       "s_start": "Getting started",
       "s_connect": "Connecting nodes",
       "s_links": "What connects to what",

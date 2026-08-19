@@ -143,9 +143,17 @@ export const NODE_DEFS = {
     descKey: 'builder.node.tool_code_exec_desc',
     atlasAnchor: 'cap-code-exec',
   },
+  // СКРЫТ ИЗ ПАЛИТРЫ (2026-08-19). Узел обещал «управлять экраном и браузером»,
+  // но движок (supabase/functions/builder-execute) его не обрабатывает вообще:
+  // человек мог его поставить, запустить по-настоящему, потратить свой ключ — и
+  // помощник просто не получал эту способность, молча. Определение оставлено,
+  // чтобы уже сохранённые схемы продолжали открываться; `hidden: true` держит
+  // его вне палитры и вне предупреждений линта. Вернуть в палитру можно только
+  // вместе с реальным исполнением (нужна отдельная безопасная среда).
   'tool-computer': {
     kind: 'tool',
     role: 'computer',
+    hidden: true,
     icon: 'laptop',
     color: '#0ea5e9',
     labelKey: 'builder.node.tool_computer',
@@ -261,7 +269,7 @@ export const TOOLBOX_GROUPS = [
   {
     id: 'tools',
     labelKey: 'builder.toolbox.tools',
-    items: ['tool-search', 'tool-file', 'tool-vision', 'tool-memory', 'tool-code-exec', 'tool-computer', 'tool-citations', 'tool-mcp'],
+    items: ['tool-search', 'tool-file', 'tool-vision', 'tool-memory', 'tool-code-exec', 'tool-citations', 'tool-mcp'],
   },
   {
     id: 'logic',

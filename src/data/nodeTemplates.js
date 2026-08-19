@@ -20,7 +20,9 @@ export const NODE_TEMPLATES = {
   'cap-files':      'doc-answer',      // агент отвечает строго по вашему файлу
   'cap-memory':     'brand-voice',      // память держит тон между шагами
   'cap-code-exec':  'data-cruncher',    // агент считает кодом
-  'cap-computer':   'web-actions',      // управление браузером
+  // 'cap-computer' — демо нет намеренно: узел «Управление компьютером» скрыт из
+  // палитры, пока движок его не исполняет. Кнопка вела бы к схеме, которая
+  // по-настоящему не работает.
   'cap-citations':  'cited-answer',     // ответ со ссылками на источники
   'mcp':            'connect-service',  // свой сервис через MCP
 

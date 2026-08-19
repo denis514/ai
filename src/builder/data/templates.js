@@ -738,23 +738,6 @@ export const TEMPLATES = [
     edges: [{ from: 0, to: 1 }, { from: 2, to: 1 }, { from: 3, to: 1 }, { from: 1, to: 4 }],
   },
 
-  /* Компьютер: действие на сайте за пользователя. Продвинутое. */
-  {
-    id: 'web-actions',
-    nameKey: 'builder.template.webActions.name',
-    descKey: 'builder.template.webActions.desc',
-    inputKey: 'builder.template.webActions.input',
-    outputKey: 'builder.template.webActions.output',
-    iconName: 'laptop', difficulty: 'advanced', category: 'dev', author: 'builtin',
-    nodes: [
-      { defId: 'trigger-input',  position: { x: 120, y: 50 } },
-      { defId: 'agent-main',     position: { x: 120, y: 200 }, dataOverride: { promptKey: 'builder.template.webActions.prompt' } },
-      { defId: 'tool-computer',  position: { x: -130, y: 200 } },
-      { defId: 'output-text',    position: { x: 120, y: 350 } },
-    ],
-    edges: [{ from: 0, to: 1 }, { from: 2, to: 1 }, { from: 1, to: 3 }],
-  },
-
   /* MCP: подключить свой сервис и достать из него данные. Продвинутое. */
   {
     id: 'connect-service',

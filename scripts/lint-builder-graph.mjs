@@ -79,7 +79,10 @@ for (const group of TOOLBOX_GROUPS) {
     else grouped.add(id);
   }
 }
-for (const defId of Object.keys(NODE_DEFS)) {
+for (const [defId, def] of Object.entries(NODE_DEFS)) {
+  // hidden: true — узел убран из палитры осознанно (например, движок его пока
+  // не исполняет), но определение нужно, чтобы старые схемы открывались.
+  if (def.hidden) continue;
   if (!grouped.has(defId)) warnings.push(`[def ${defId}] не входит ни в одну группу палитры (не виден пользователю)`);
 }
 
