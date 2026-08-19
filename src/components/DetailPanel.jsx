@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Tooltip from './Tooltip.jsx';
 import Icon from './Icon.jsx';
 import { templateForNode } from '../data/nodeTemplates.js';
+import { track } from '../services/analytics.js';
 import BottomSheet from './BottomSheet.jsx';
 import InlineText from './InlineText.jsx';
 import ShareButton from './ShareButton.jsx';
@@ -212,7 +213,7 @@ export default function DetailPanel({
         <button
           type="button"
           className="detail__tutorial-cta"
-          onClick={() => onOpenBuilder(builderTemplateId)}
+          onClick={() => { track('build_in_builder', { node_id: node.id, template_id: builderTemplateId }); onOpenBuilder(builderTemplateId); }}
         >
           <span className="detail__tutorial-cta__icon" aria-hidden="true">
             <Icon name="sparkles" size={20} strokeWidth={1.5} />
@@ -462,7 +463,7 @@ export default function DetailPanel({
           <button
             type="button"
             className="detail__tutorial-cta"
-            onClick={() => onOpenBuilder(builderTemplateId)}
+            onClick={() => { track('build_in_builder', { node_id: node.id, template_id: builderTemplateId }); onOpenBuilder(builderTemplateId); }}
           >
             <span className="detail__tutorial-cta__icon" aria-hidden="true">
               <Icon name="sparkles" size={20} strokeWidth={1.5} />

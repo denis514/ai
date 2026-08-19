@@ -45,6 +45,7 @@ import { useAuth } from './context/AuthContext.jsx';
 import { STRINGS } from './i18n/strings.js';
 import { lazyWithRetry } from './utils/lazyWithRetry.js';
 import { nudgeSignIn } from './services/signInNudge.js';
+import { track, trackPageView } from './services/analytics.js';
 import { FALLBACK_LOCALE } from './i18n/config.js';
 import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
@@ -313,6 +314,35 @@ function AppInner() {
     }
   }, [route, selected, setRoute]);
   const coursesOpen   = route?.type === 'courses' || route?.type === 'path';
+
+  // ─── Аналитика: что именно открывают ─────────────────────────────────────
+  // Вешаемся на маршрут, а не на клик по карте: так считаются ВСЕ способы
+  // попасть в узел — карта, поиск, Cmd+K, перекрёстные ссылки, прямая ссылка
+  // извне. Молчит без согласия на аналитику (см. services/analytics.js).
+  const lastTrackedRef = useRef('');
+  useEffect(() => {
+    const key = route ? `${route.type}:${route.id || ''}` : 'map';
+    if (key === lastTrackedRef.current) return;   // тот же экран — не дублируем
+    lastTrackedRef.current = key;
+
+    trackPageView(window.location.pathname, document.title);
+
+    if (!route) return;
+    if (route.type === 'node' && route.id) {
+      const node = findNodeById(mindmapData, route.id);
+      track('node_open', {
+        node_id: route.id,
+        node_category: node?.category,
+        locale,
+      });
+    } else if (route.type === 'tutorial' && route.id) {
+      track('tutorial_open', { tutorial_id: route.id, locale });
+    } else if (route.type === 'prompt' && route.id) {
+      track('prompt_open', { prompt_id: route.id, locale });
+    }
+    // 'builder' здесь не считаем: при переходе в конструктор этот компонент
+    // размонтируется. Событие builder_open шлёт сам BuilderApp при монтировании.
+  }, [route, locale]);
   const libraryOpen   = route?.type === 'library' || route?.type === 'prompt';
   const helpOpen      = route?.type === 'help';
   const accountOpen   = route?.type === 'account';
@@ -556,6 +586,17 @@ function AppInner() {
     [query, category, searchableById]
   );
 
+  // Поиск без результата — сигнал, что в карте не хватает темы. Отправляем
+  // ТОЛЬКО факт и длину запроса: сам текст ввёл человек, он может содержать
+  // что угодно, включая личное.
+  useEffect(() => {
+    if (!active || matched.size > 0) return;
+    const q = (query || '').trim();
+    if (q.length < 3) return;                  // случайные одиночные буквы не считаем
+    const t = setTimeout(() => track('search_no_results', { query_length: q.length, locale }), 1200);
+    return () => clearTimeout(t);
+  }, [active, matched.size, query, locale]);
+
   // Pinned узлы — список id, которые пользователь хочет «увидеть на карте»
   // (например, кликнул на «Закладки: 5» в профиле → подсвечиваются именно они).
   //
@@ -746,6 +787,7 @@ function AppInner() {
     completedCountRef.current = tutorialsCompleted;
     // Первый рендер только запоминает: показывать нечего, ничего не произошло.
     if (prev === null || tutorialsCompleted <= prev) return;
+    track('tutorial_done', { total_done: tutorialsCompleted, locale });
     nudgeSignIn('course', nudgeRef.current);
   }, [tutorialsCompleted]);
 
@@ -755,6 +797,7 @@ function AppInner() {
     const count = bookmarksApi.count;
     bookmarksCountRef.current = count;
     if (prev === null || count <= prev) return;
+    track('bookmark_add', { total: count, locale });
     // Третья закладка: одна-две могут быть случайными, третья — уже привычка.
     if (count >= 3) nudgeSignIn('bookmarks', nudgeRef.current);
   }, [bookmarksApi.count]);

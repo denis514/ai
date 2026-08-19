@@ -44,6 +44,7 @@ import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data
 import { templateForRole } from './data/rolePrompts.js';
 import { createRealExecution } from './services/realExecutor.js';
 import { createDryRun } from './services/dryRunExecutor.js';
+import { track } from '../services/analytics.js';
 import { getKeyStatus, listMcpServers, listKeys } from './services/apiKeyService.js';
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
@@ -1257,6 +1258,11 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // Кнопка «Собрать в Agent Builder» в узле карты открывает конструктор сразу
   // с нужным шаблоном. Загружаем один раз за монтирование: дальше пользователь
   // работает со схемой сам, и повторная загрузка стёрла бы его правки.
+  // Открытие конструктора считаем здесь: App при переходе сюда размонтируется.
+  useEffect(() => {
+    track('builder_open', { template_id: initialTemplateId || '(с нуля)' });
+  }, [initialTemplateId]);
+
   const initialTemplateDone = useRef(false);
   useEffect(() => {
     if (initialTemplateDone.current || !initialTemplateId) return;
@@ -1408,6 +1414,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // цепочка, и есть ли ошибки связей. Рисуется в той же консоли (вкладка «Запуск»).
   const handleDryRun = useCallback(() => {
     if (nodes.length === 0 || execStatus === 'running') return;
+    track('builder_dry_run', { nodes: nodes.length });
     const stats = beginExecUi();
     setExecResult(null);
     execRef.current = createDryRun({ nodes, edges, t, ...makeCallbacks(stats) });
@@ -1415,7 +1422,13 @@ function BuilderAppInner({ initialTemplateId = null }) {
 
   const handleRun = useCallback(() => {
     if (nodes.length === 0 || execStatus === 'running') return;
-    if (!keyConnected) { setRunIntro('gate'); return; }
+    if (!keyConnected) {
+      // Упёрся во вход/ключ — это и есть главная точка отвала воронки.
+      track('builder_run_blocked', { reason: user ? 'нет ключа' : 'нет входа' });
+      setRunIntro('gate');
+      return;
+    }
+    track('builder_run', { nodes: nodes.length });
     // Задача пуста — открываем окно у стартового узла, чтобы было видно, куда писать.
     if (!runInput.trim()) {
       const trigger = nodes.find(n => n.data?.kind === 'trigger');
