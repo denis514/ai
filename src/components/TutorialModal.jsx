@@ -170,12 +170,11 @@ export default function TutorialModal({
   const scrollRef = useRef(null);
 
   // Восстанавливаем шаг при смене туториала ИЛИ при смене статуса авторизации.
-  // Важно: если пользователь вернулся из OAuth-редиректа (isLoggedIn изменился
-  // false→true), эффект должен сработать и восстановить сохранённый lastStepIndex.
-  // При выходе из аккаунта — сбрасываем на шаг 0 (гость увидит gate на шаге 2+).
+  // Гость теперь тоже продолжает с того места, где остановился: его прогресс
+  // лежит в браузере (при входе синхронизируется). Раньше здесь стоял сброс на
+  // шаг 0, потому что дальше первого шага гостя не пускали.
   useEffect(() => {
     if (!tut) return;
-    if (!isLoggedIn) { setActiveIdx(0); return; }
     const p = getProgress(tutorialId);
     setActiveIdx(Math.max(0, Math.min(p.lastStepIndex || 0, tut.steps.length - 1)));
   }, [tutorialId, isLoggedIn]); // eslint-disable-line
@@ -225,8 +224,8 @@ export default function TutorialModal({
       if (e.key === 'Escape') { onClose(); }
       else if (e.key === 'ArrowLeft') { onPrev(); }
       // Gate: запрещаем переход вперёд без авторизации
-      else if (e.key === 'ArrowRight' && !isGated) { onNext(); }
-      else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && !isGated) {
+      else if (e.key === 'ArrowRight') { onNext(); }
+      else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         onMarkAndNext();
       }
@@ -272,9 +271,6 @@ export default function TutorialModal({
   const safeIdx = Math.min(Math.max(0, activeIdx), tut.steps.length - 1);
   const step = tut.steps[safeIdx];
   const isStepDone = stepsList[safeIdx]?.isDone;
-
-  // Gate: гость пытается открыть шаг 2+
-  const isGated = !isLoggedIn && activeIdx > 0;
 
   const openAuth = () => onRequestAuth
     ? onRequestAuth()
@@ -371,42 +367,22 @@ export default function TutorialModal({
           {showAllSteps ? t('tutorial.hideSteps') : t('tutorial.showSteps')}
         </button>
 
-        <div className={`tut-body ${isGated ? 'tut-body--gated' : ''}`}>
-
-          {/* Gate-оверлей: перекрывает всё tut-body, не скроллится */}
-          {isGated && (
-            <div className="tut-gate tut-gate--overlay" aria-modal="true">
-              <div className="tut-gate__icon"><Icon name="lock" size={32} strokeWidth={1.25} /></div>
-              <h3>{t('auth.gateTutorial')}</h3>
-              <p>{t('tutorial.gateDesc')}</p>
-              <button
-                type="button"
-                className="tut-gate__btn"
-                onClick={openAuth}
-              >
-                {t('auth.signIn')} →
-              </button>
-            </div>
-          )}
+        <div className="tut-body">
 
           <nav className={`tut-side ${showAllSteps ? 'is-open' : ''}`} aria-label={t('tutorial.stepsAria')}>
             <ol className="tut-side__list">
               {stepsList.map(s => {
-                // Для гостей шаги 2+ показываем с замком
-                const isLocked = !isLoggedIn && s.idx > 0;
                 return (
                   <li key={s.id}>
                     <button
                       type="button"
-                      className={`tut-side__item ${s.isActive ? 'is-active' : ''} ${s.isDone ? 'is-done' : ''} ${isLocked ? 'is-locked' : ''}`}
+                      className={`tut-side__item ${s.isActive ? 'is-active' : ''} ${s.isDone ? 'is-done' : ''}`}
                       onClick={() => { setActiveIdx(s.idx); setShowAllSteps(false); }}
                     >
                       <span className="tut-side__num">
-                        {isLocked
-                          ? <Icon name="lock" size={12} strokeWidth={2} />
-                          : s.isDone
-                            ? <Icon name="check" size={14} strokeWidth={1.75} />
-                            : s.idx + 1}
+                        {s.isDone
+                          ? <Icon name="check" size={14} strokeWidth={1.75} />
+                          : s.idx + 1}
                       </span>
                       <span className="tut-side__title">{s.title}</span>
                     </button>
@@ -456,7 +432,7 @@ export default function TutorialModal({
               </div>
             )}
             {/* Контент шага — не рендерим при gate (защита от inspect element) */}
-            {tut.bodyReady && !isGated && <div className="tut-step">
+            {tut.bodyReady && <div className="tut-step">
               <div className="tut-step__head">
                 <span className="tut-step__num">{t('tutorial.stepLabel', { n: activeIdx + 1 })}</span>
               </div>
@@ -676,17 +652,14 @@ export default function TutorialModal({
         </div>
 
         <footer className="tut-footer">
-          {/* Gate: скрываем чекбокс, нельзя отмечать гостям */}
-          {!isGated && (
-            <label className="tut-check">
-              <input
-                type="checkbox"
-                checked={!!isStepDone}
-                onChange={onToggleCurrent}
-              />
-              {t('tutorial.stepDone')}
-            </label>
-          )}
+          <label className="tut-check">
+            <input
+              type="checkbox"
+              checked={!!isStepDone}
+              onChange={onToggleCurrent}
+            />
+            {t('tutorial.stepDone')}
+          </label>
 
           <div className="tut-footer__nav">
             <button
@@ -698,17 +671,7 @@ export default function TutorialModal({
               <Icon name="arrow-left" size={14} strokeWidth={1.5} /> {t('common.back')}
             </button>
 
-            {/* Gate: кнопка входа вместо «Далее» */}
-            {isGated ? (
-              <button
-                type="button"
-                className="btn btn--primary"
-                onClick={openAuth}
-              >
-                <Icon name="lock" size={14} strokeWidth={1.75} />
-                {t('auth.signIn')} →
-              </button>
-            ) : activeIdx < tut.steps.length - 1 ? (
+            {activeIdx < tut.steps.length - 1 ? (
               <button
                 type="button"
                 className="btn btn--primary"
@@ -738,21 +701,18 @@ export default function TutorialModal({
             На десктопе скрыт (там шаги в боковой панели). Экономит пространство. */}
         <div className="tut-stepbar" role="tablist" aria-label={t('tutorial.stepsAria')}>
           {stepsList.map(s => {
-            const isLocked = !isLoggedIn && s.idx > 0;
             return (
               <button
                 key={s.id}
                 type="button"
-                className={`tut-stepbar__item ${s.isActive ? 'is-active' : ''} ${s.isDone ? 'is-done' : ''} ${isLocked ? 'is-locked' : ''}`}
-                onClick={() => { if (!isLocked) setActiveIdx(s.idx); }}
+                className={`tut-stepbar__item ${s.isActive ? 'is-active' : ''} ${s.isDone ? 'is-done' : ''}`}
+                onClick={() => setActiveIdx(s.idx)}
                 aria-current={s.isActive ? 'step' : undefined}
               >
                 <span className="tut-stepbar__num">
-                  {isLocked
-                    ? <Icon name="lock" size={11} strokeWidth={2} />
-                    : s.isDone
-                      ? <Icon name="check" size={12} strokeWidth={2.25} />
-                      : s.idx + 1}
+                  {s.isDone
+                    ? <Icon name="check" size={12} strokeWidth={2.25} />
+                    : s.idx + 1}
                 </span>
                 <span className="tut-stepbar__title">{s.title}</span>
               </button>

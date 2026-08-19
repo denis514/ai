@@ -30,6 +30,7 @@ export default function ProfilePanel({
   identityApi,
   onShowNodes,
   onStartTutorial,
+  onOpenAuth,
   onClose
 }) {
   const t = useT();
@@ -276,6 +277,26 @@ export default function ProfilePanel({
           </button>
         )}
       </header>
+
+      {/* ── Гостю: мягкое предложение войти, НЕ стена ──
+          Читать карту, проходить курсы и копировать промпты можно без входа —
+          прогресс живёт в этом браузере. Вход нужен, только чтобы он не пропал
+          при смене устройства. Поэтому предложение стоит внутри панели профиля,
+          а не поперёк содержимого. */}
+      {!isLoggedIn && (
+        <section className="profile-panel__pro">
+          <strong>{t('profile.guest.title')}</strong>
+          <p>{t('profile.guest.desc')}</p>
+          <button
+            type="button"
+            className="btn btn--primary"
+            style={{ marginTop: 8, alignSelf: 'flex-start' }}
+            onClick={() => (onOpenAuth ? onOpenAuth() : document.dispatchEvent(new CustomEvent('atlas:open-auth')))}
+          >
+            {t('auth.signIn')}
+          </button>
+        </section>
+      )}
 
       {/* ── PRO TEASER ── */}
       <section className="profile-panel__pro">

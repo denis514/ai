@@ -11,7 +11,6 @@ import { tutorials, tutorialByNodeId } from '../data/tutorials.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getNodeContent } from '../i18n/useNode.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
-import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../hooks/useToast.js';
 import { openTryInClaude } from '../utils/tryInClaude.js';
 
@@ -32,7 +31,6 @@ export default function DetailPanel({
 }) {
   const t = useT();
   const { locale } = useLocale();
-  const { isLoggedIn } = useAuth();
   const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const isMobile = useIsMobile();
@@ -258,52 +256,33 @@ export default function DetailPanel({
             {t('detail.sections.example')}
             <Tooltip label={t('detail.tooltips.example')} />
           </h3>
-          {isLoggedIn ? (
-            <div className="detail__example">
-              <InlineText
-                as="div"
-                className="detail__example-text"
-                text={d.example}
-                onNavigate={inlineNav}
-              />
-              <div className="detail__example-actions">
-                <button
-                  type="button"
-                  className={`copy-btn ${copied ? 'is-copied' : ''}`}
-                  onClick={copy}
-                >
-                  {copied ? (
-                    <><Icon name="check" size={14} strokeWidth={1.75} /> {t('common.copied')}</>
-                  ) : t('common.copy')}
-                </button>
-                <button
-                  type="button"
-                  className="detail__try-btn"
-                  onClick={tryInClaude}
-                >
-                  <Icon name="sparkles" size={14} strokeWidth={1.6} />
-                  {t('detail.tryInClaude.label') || 'Попробовать в Claude'}
-                </button>
-              </div>
+          <div className="detail__example">
+            <InlineText
+              as="div"
+              className="detail__example-text"
+              text={d.example}
+              onNavigate={inlineNav}
+            />
+            <div className="detail__example-actions">
+              <button
+                type="button"
+                className={`copy-btn ${copied ? 'is-copied' : ''}`}
+                onClick={copy}
+              >
+                {copied ? (
+                  <><Icon name="check" size={14} strokeWidth={1.75} /> {t('common.copied')}</>
+                ) : t('common.copy')}
+              </button>
+              <button
+                type="button"
+                className="detail__try-btn"
+                onClick={tryInClaude}
+              >
+                <Icon name="sparkles" size={14} strokeWidth={1.6} />
+                {t('detail.tryInClaude.label') || 'Попробовать в Claude'}
+              </button>
             </div>
-          ) : (
-            <div className="detail__example-gate">
-              <div className="detail__example-blur" aria-hidden="true">
-                <pre>{stripInlineLinks(d.example)}</pre>
-              </div>
-              <div className="detail__example-cta">
-                <Icon name="lock" size={18} strokeWidth={1.5} />
-                <span>{t('auth.gateExample')}</span>
-                <button
-                  type="button"
-                  className="detail__example-cta-btn"
-                  onClick={() => document.dispatchEvent(new CustomEvent('atlas:open-auth'))}
-                >
-                  {t('auth.signIn')}
-                </button>
-              </div>
-            </div>
-          )}
+          </div>
         </section>
       )}
 

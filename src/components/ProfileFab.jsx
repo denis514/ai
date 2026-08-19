@@ -85,15 +85,11 @@ export default function ProfileFab(props) {
     requestAnimationFrame(() => close());
   };
 
-  // Если Supabase не сконфигурирован или пользователь не вошёл —
-  // показываем кнопку «Войти» вместо открытия профиля
-  const handleClick = () => {
-    if (!isLoggedIn && onOpenAuth) {
-      onOpenAuth();
-    } else {
-      setOpen((o) => !o);
-    }
-  };
+  // Панель профиля открывается всем: у гостя тоже есть имя и прогресс — они
+  // лежат в браузере. Раньше гостя отсюда сразу отправляли ко входу, из-за чего
+  // он не мог посмотреть даже собственную статистику. Вход предлагается ВНУТРИ
+  // панели — как способ сохранить прогресс, а не как условие входа в неё.
+  const handleClick = () => setOpen((o) => !o);
 
   const hasAvatar = isLoggedIn ? !!displayName : isSet;
   const avatarInitial = isLoggedIn ? displayInitial : initial;
@@ -106,8 +102,8 @@ export default function ProfileFab(props) {
           type="button"
           className={`profile-fab__btn ${open ? 'is-open' : ''} ${hasAvatar ? 'has-identity' : ''} ${isLoggedIn ? 'is-auth' : ''}`}
           onClick={handleClick}
-          aria-label={isLoggedIn ? t('profile.fabAria') : t('auth.signIn')}
-          aria-expanded={isLoggedIn ? open : undefined}
+          aria-label={t('profile.fabAria')}
+          aria-expanded={open}
           style={hasAvatar ? { '--avatar-color': avatarColor } : undefined}
         >
           {hasAvatar ? (
