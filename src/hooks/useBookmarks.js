@@ -52,13 +52,17 @@ function saveToStorage(map) {
 export function useBookmarks() {
   const [bookmarks, setBookmarks] = useState(loadFromStorage);
 
-  // Синхронизация с localStorage между вкладками
+  // Синхронизация между вкладками + перечитывание после слияния с облаком
+  // ('storage' в своей вкладке не срабатывает, см. syncService.js).
   useEffect(() => {
-    const onStorage = (e) => {
-      if (e.key === STORAGE_KEY) setBookmarks(loadFromStorage());
-    };
+    const reread = () => setBookmarks(loadFromStorage());
+    const onStorage = (e) => { if (e.key === STORAGE_KEY) reread(); };
     window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    window.addEventListener('atlas:local-hydrated', reread);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('atlas:local-hydrated', reread);
+    };
   }, []);
 
   const isBookmarked = useCallback(

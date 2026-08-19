@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 import { getProfile, createProfile } from '../services/profileService.js';
-import { syncLocalToSupabase } from '../services/syncService.js';
+import { syncLocalToSupabase, pullRemoteToLocal } from '../services/syncService.js';
 
 const AuthContext = createContext(null);
 
@@ -47,8 +47,12 @@ export function AuthProvider({ children }) {
 
   // ─── Синк localStorage → Supabase ─────────────────────────────────────────
 
-  const runSync = useCallback(async (userId) => {
-    await syncLocalToSupabase(userId);
+  // Порядок обязателен: сначала забрать облако и слить с браузером, только
+  // потом писать. Если сделать наоборот, браузер без данных (новое устройство)
+  // затрёт то, что накоплено на старом. См. комментарий в syncService.js.
+  const runSync = useCallback(async (userId, { push }) => {
+    await pullRemoteToLocal(userId);
+    if (push) await syncLocalToSupabase(userId);
   }, []);
 
   // ─── Основной auth-эффект ──────────────────────────────────────────────────
@@ -106,7 +110,13 @@ export function AuthProvider({ children }) {
       // а не при тихом восстановлении сессии (INITIAL_SESSION / TOKEN_REFRESHED)
       if (event === 'SIGNED_IN') {
         setIsNewUser(isNew);
-        runSync(user.id);
+        // Свежий вход: слить облако с накопленным гостем и записать результат.
+        runSync(user.id, { push: true });
+      } else {
+        // Восстановление сессии (перезапуск вкладки, другое устройство):
+        // подтянуть облако в браузер. Без этого человек видел бы пустую карту,
+        // а первая же правка стёрла бы его данные в облаке.
+        runSync(user.id, { push: false });
       }
     });
   }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps

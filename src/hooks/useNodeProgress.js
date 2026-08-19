@@ -46,13 +46,17 @@ function save(state) {
 export function useNodeProgress() {
   const [state, setState] = useState(load);
 
-  // Sync между вкладками
+  // Sync между вкладками + перечитывание после слияния с облаком
+  // ('storage' в своей вкладке не срабатывает, см. syncService.js).
   useEffect(() => {
-    const onStorage = (e) => {
-      if (e.key === STORAGE_KEY) setState(load());
-    };
+    const reread = () => setState(load());
+    const onStorage = (e) => { if (e.key === STORAGE_KEY) reread(); };
     window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    window.addEventListener('atlas:local-hydrated', reread);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('atlas:local-hydrated', reread);
+    };
   }, []);
 
   const getStatus = useCallback(

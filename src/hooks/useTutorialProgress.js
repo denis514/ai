@@ -25,13 +25,18 @@ function writeStorage(data) {
 export function useTutorialProgress() {
   const [progress, setProgress] = useState(readStorage);
 
-  // Синхронизация между вкладками
+  // Синхронизация между вкладками + перечитывание после слияния с облаком.
+  // Событие 'storage' в своей же вкладке не срабатывает, поэтому syncService
+  // отдельно стреляет 'atlas:local-hydrated' после того, как подтянул облако.
   useEffect(() => {
-    const onStorage = (e) => {
-      if (e.key === STORAGE_KEY) setProgress(readStorage());
-    };
+    const reread = () => setProgress(readStorage());
+    const onStorage = (e) => { if (e.key === STORAGE_KEY) reread(); };
     window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    window.addEventListener('atlas:local-hydrated', reread);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('atlas:local-hydrated', reread);
+    };
   }, []);
 
   const update = useCallback((tutorialId, updater) => {

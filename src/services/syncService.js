@@ -1,14 +1,28 @@
 /**
- * syncService.js — миграция localStorage прогресса → Supabase при первом логине.
+ * syncService.js — перенос прогресса между браузером и облаком.
  *
- * Стратегия: при входе один раз читаем localStorage, пишем в Supabase,
- * не удаляем из localStorage (он остаётся как offline fallback).
+ * Порядок обязателен и важен:
+ *   1. pullRemoteToLocal(userId) — забрать из Supabase и СЛИТЬ с тем, что уже
+ *      есть в браузере (объединение, не замена). Только после этого локальные
+ *      данные можно считать полными.
+ *   2. syncLocalToSupabase(userId) — записать слитый результат обратно.
+ *   3. Дальше — точечные syncTutorialProgress / syncNodeProgress / syncBookmarks
+ *      после каждого изменения.
  *
- * Вызывается из AuthContext при событии SIGNED_IN.
- * Идемпотентен: повторный вызов не дублирует данные (upsert).
+ * Почему порядок критичен: точечные функции считают браузер источником правды и
+ * УДАЛЯЮТ из облака то, чего нет локально. Пока не подтянули облако, локальный
+ * список неполон — и такая запись стирала данные, добавленные на другом
+ * устройстве. Поэтому все три записи молчат, пока для этого пользователя не
+ * прошёл pull (см. hydrated ниже).
+ *
+ * Ограничение, о котором надо знать: слияние происходит в момент входа и при
+ * восстановлении сессии. Если два устройства работают ОДНОВРЕМЕННО, второе
+ * узнает о правках первого только при следующем запуске. Полное решение — метки
+ * времени на каждую запись, это отдельная задача.
  */
 
 import { supabase } from '../lib/supabaseClient.js';
+import { mergeTutorials, mergeNodes, mergeBookmarks } from './progressMerge.js';
 
 const KEYS = {
   tutorials:   'claude-mindmap.tutorial-progress.v1',
@@ -18,6 +32,22 @@ const KEYS = {
   locale:      'claude-mindmap:locale:v1',
 };
 
+// Для каких пользователей уже подтянули облако в этом сеансе страницы.
+// Пока пользователя здесь нет — писать в облако нельзя (см. комментарий выше).
+const hydrated = new Set();
+
+/** Подтянуто ли облако для этого пользователя в текущем сеансе. */
+export function isHydrated(userId) {
+  return !!userId && hydrated.has(userId);
+}
+
+/** Событие «локальные данные заменены» — хуки перечитывают localStorage. */
+export const LOCAL_HYDRATED_EVENT = 'atlas:local-hydrated';
+
+function writeLocal(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* приватный режим */ }
+}
+
 function readLocal(key) {
   try {
     const raw = localStorage.getItem(key);
@@ -25,6 +55,72 @@ function readLocal(key) {
   } catch {
     return null;
   }
+}
+
+/**
+ * Забрать данные из Supabase и слить с локальными.
+ *
+ * Правила слияния (везде — объединение, никто никого не затирает):
+ *   • курсы: пройденные шаги объединяем, номер текущего шага берём больший,
+ *     дату завершения — ту, что есть (облачная в приоритете: она уже подтверждена);
+ *   • темы: объединяем; если статусы разные, «на повторение» сильнее «просмотрено»
+ *     — это осознанная отметка пользователя, её терять обиднее;
+ *   • закладки: объединяем по паре тип+id, дату добавления берём раннюю.
+ *
+ * После успешного слияния помечает пользователя как hydrated (разрешает запись)
+ * и стреляет событием, по которому хуки перечитывают localStorage.
+ */
+export async function pullRemoteToLocal(userId) {
+  if (!supabase || !userId) return { pulled: 0, errors: ['Not available'] };
+
+  const errors = [];
+  let pulled = 0;
+
+  try {
+    const [tutRes, nodeRes, favRes] = await Promise.all([
+      supabase.from('learning_progress')
+        .select('tutorial_id, completed_steps, last_step_index, completed_at')
+        .eq('user_id', userId),
+      supabase.from('node_progress').select('node_id, status').eq('user_id', userId),
+      supabase.from('favorites').select('item_type, item_id, added_at').eq('user_id', userId),
+    ]);
+
+    // ── Курсы ──
+    if (tutRes.error) errors.push(`tutorials: ${tutRes.error.message}`);
+    else {
+      const rows = tutRes.data || [];
+      writeLocal(KEYS.tutorials, mergeTutorials(readLocal(KEYS.tutorials) || {}, rows));
+      pulled += rows.length;
+    }
+
+    // ── Темы ──
+    if (nodeRes.error) errors.push(`nodes: ${nodeRes.error.message}`);
+    else {
+      const rows = nodeRes.data || [];
+      writeLocal(KEYS.nodeProgress, mergeNodes(readLocal(KEYS.nodeProgress) || {}, rows));
+      pulled += rows.length;
+    }
+
+    // ── Закладки ──
+    if (favRes.error) errors.push(`bookmarks: ${favRes.error.message}`);
+    else {
+      const rows = favRes.data || [];
+      writeLocal(KEYS.bookmarks, mergeBookmarks(readLocal(KEYS.bookmarks), rows));
+      pulled += rows.length;
+    }
+  } catch (e) {
+    errors.push(e?.message || String(e));
+  }
+
+  // Разрешаем запись в облако, даже если часть таблиц не ответила: иначе
+  // пользователь вообще потеряет синхронизацию. Но если не ответило ВСЁ —
+  // не разрешаем, чтобы пустой браузер не затёр облако.
+  if (errors.length < 3) {
+    hydrated.add(userId);
+    try { window.dispatchEvent(new Event(LOCAL_HYDRATED_EVENT)); } catch { /* SSR */ }
+  }
+
+  return { pulled, errors };
 }
 
 /**
@@ -116,6 +212,7 @@ const SYNC_DONE_KEY = 'claude-mindmap:sync-done:v1';
  */
 export async function syncTutorialProgress(userId, progressMap) {
   if (!supabase || !userId || !progressMap) return;
+  if (!hydrated.has(userId)) return;   // облако ещё не подтянуто — писать опасно
   const rows = Object.entries(progressMap).map(([tutorial_id, p]) => ({
     user_id:         userId,
     tutorial_id,
@@ -137,6 +234,7 @@ export async function syncTutorialProgress(userId, progressMap) {
  */
 export async function syncNodeProgress(userId, nodeProgressMap) {
   if (!supabase || !userId || !nodeProgressMap) return;
+  if (!hydrated.has(userId)) return;   // иначе удалим из облака то, чего нет в этом браузере
 
   const { data: existing } = await supabase
     .from('node_progress')
@@ -174,6 +272,7 @@ export async function syncNodeProgress(userId, nodeProgressMap) {
  */
 export async function syncBookmarks(userId, bookmarksMap) {
   if (!supabase || !userId || !bookmarksMap) return;
+  if (!hydrated.has(userId)) return;   // иначе удалим из облака то, чего нет в этом браузере
 
   // Получаем текущие закладки из Supabase чтобы найти удалённые
   const { data: existing } = await supabase
