@@ -44,6 +44,7 @@ import { getLocalizedFeaturedPrompt } from './i18n/usePrompt.js';
 import { useAuth } from './context/AuthContext.jsx';
 import { STRINGS } from './i18n/strings.js';
 import { lazyWithRetry } from './utils/lazyWithRetry.js';
+import { nudgeSignIn } from './services/signInNudge.js';
 import { FALLBACK_LOCALE } from './i18n/config.js';
 import CookieBanner from './components/CookieBanner.jsx';
 import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
@@ -730,6 +731,33 @@ function AppInner() {
 
   // Сводка для тулбара
   const tutorialsCompleted = tutorialIds.filter(id => progressApi.isCompleted(id)).length;
+
+  // ─── Предложение войти в подходящий момент ───────────────────────────────
+  // Не стена и не баннер при входе на сайт: зовём только когда человеку уже
+  // есть что терять — прошёл курс или набрал закладки. Правила (один повод —
+  // один раз, одно предложение за сеанс, гостю) живут в signInNudge.js.
+  const nudgeDeps = { isLoggedIn, toast, t, onSignIn: () => openAuth() };
+  const nudgeRef = useRef(nudgeDeps);
+  nudgeRef.current = nudgeDeps;
+
+  const completedCountRef = useRef(null);
+  useEffect(() => {
+    const prev = completedCountRef.current;
+    completedCountRef.current = tutorialsCompleted;
+    // Первый рендер только запоминает: показывать нечего, ничего не произошло.
+    if (prev === null || tutorialsCompleted <= prev) return;
+    nudgeSignIn('course', nudgeRef.current);
+  }, [tutorialsCompleted]);
+
+  const bookmarksCountRef = useRef(null);
+  useEffect(() => {
+    const prev = bookmarksCountRef.current;
+    const count = bookmarksApi.count;
+    bookmarksCountRef.current = count;
+    if (prev === null || count <= prev) return;
+    // Третья закладка: одна-две могут быть случайными, третья — уже привычка.
+    if (count >= 3) nudgeSignIn('bookmarks', nudgeRef.current);
+  }, [bookmarksApi.count]);
 
   // Принимает tutorial KEY (не nodeId). Используется из DetailPanel, WorkflowsModal, WelcomeCard.
   const onStartTutorial = useCallback((tutorialKey) => {
