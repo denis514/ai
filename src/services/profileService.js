@@ -76,21 +76,42 @@ export async function updateProfile(userId, updates) {
 }
 
 /**
- * Удалить все данные пользователя (GDPR right to erasure).
- * Каскадное удаление через ON DELETE CASCADE в SQL.
- * После вызова — выход из аккаунта.
+ * Удалить учётную запись и все данные пользователя (GDPR, право на забвение).
  *
- * @param {string} userId
+ * Идёт через серверную функцию `account-delete`: только она может удалить
+ * запись из auth.users, а все таблицы проекта каскадом привязаны именно к ней.
+ * Удаление строки profiles из браузера (как было раньше) данные не трогало —
+ * прогресс, схемы и сама учётка оставались, и повторный вход всё возвращал.
+ *
+ * После успешного ответа вызывающий код делает signOut — обработчик SIGNED_OUT
+ * в AuthContext чистит локальный прогресс.
+ *
+ * @param {string} userId — только для проверки; сервер берёт id из токена
+ * @returns {{ error: string|null }}
  */
 export async function deleteProfile(userId) {
-  if (!supabase || !userId) return { error: 'Not available' };
+  const fnBase = import.meta.env.VITE_SUPABASE_URL
+    ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`
+    : null;
+  if (!supabase || !userId || !fnBase) return { error: 'Not available' };
 
-  // Удаляем профиль — каскад подчистит learning_progress, favorites и др.
-  const { error } = await supabase
-    .from('profiles')
-    .delete()
-    .eq('id', userId);
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session || session.user?.id !== userId) return { error: 'not_authenticated' };
 
-  if (error) return { error: error.message };
-  return { error: null };
+  try {
+    const res = await fetch(`${fnBase}/account-delete`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${session.access_token}`,
+        'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: '{}',
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok) return { error: out.error || `http_${res.status}` };
+    return { error: null };
+  } catch (e) {
+    return { error: e?.message || 'network_error' };
+  }
 }

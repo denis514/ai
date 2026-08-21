@@ -203,6 +203,8 @@ export default function AccountPage({
 
   // Delete account
   const [deleteStep, setDeleteStep] = useState('idle'); // idle | confirm | deleting | done
+  const [deleteError, setDeleteError] = useState(false); // ошибка показывается в самом блоке:
+  // тосты лежат ниже полноэкранного кабинета и здесь не видны
   const [deleteInput, setDeleteInput] = useState('');
 
   // Export
@@ -282,12 +284,17 @@ export default function AccountPage({
     if (!user) return;
     if (deleteInput.trim().toLowerCase() !== 'delete') return;
     setDeleteStep('deleting');
+    setDeleteError(false);
     const { error } = await deleteProfile(user.id);
     if (error) {
+      console.error('[account] delete failed', error);
+      setDeleteError(true);
       setDeleteStep('confirm');
       return;
     }
-    await signOut();
+    // Учётки больше нет — серверу нечего завершать, закрываем сессию локально
+    // (обработчик выхода почистит прогресс в браузере).
+    await signOut({ scope: 'local' });
     setDeleteStep('done');
     setTimeout(() => onClose?.(), 1500);
   };
@@ -902,6 +909,12 @@ export default function AccountPage({
                   <Icon name="warning" size={16} strokeWidth={1.75} />
                   {t('account.deleteWarning')}
                 </p>
+                {deleteError && (
+                  <p className="account-delete-confirm__warning" role="alert">
+                    <Icon name="warning" size={16} strokeWidth={1.75} />
+                    {t('account.deleteFailed')}
+                  </p>
+                )}
                 <label className="account-label">{t('account.deleteConfirmLabel')}</label>
                 <div className="account-input-row">
                   <input
@@ -924,7 +937,7 @@ export default function AccountPage({
                 <button
                   type="button"
                   className="account-btn account-btn--ghost"
-                  onClick={() => { setDeleteStep('idle'); setDeleteInput(''); }}
+                  onClick={() => { setDeleteStep('idle'); setDeleteInput(''); setDeleteError(false); }}
                 >
                   {t('common.cancel')}
                 </button>

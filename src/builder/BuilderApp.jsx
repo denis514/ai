@@ -445,8 +445,10 @@ function BuilderAppInner({ initialTemplateId = null }) {
   const { zoom } = useViewport();   // живой % масштаба для зум-бара
 
   /* ────────── Persistence state (B-2.1) ────────── */
-  const { user } = useAuth();
+  const { user, registerBeforeSignOut } = useAuth();
   const userId = user?.id || null;
+  const userIdRef = useRef(userId);
+  userIdRef.current = userId;
   const [currentWorkflowId, setCurrentWorkflowId] = useState(null);
   const [workflowName, setWorkflowName] = useState('');
   const [saveStatus, setSaveStatus] = useState('idle'); // 'idle' | 'saving' | 'saved' | 'error'
@@ -624,6 +626,9 @@ function BuilderAppInner({ initialTemplateId = null }) {
         },
         userId
       );
+      // Пока сохраняли, человек вышел (или вошёл): холст уже не тот, и
+      // привязывать к нему облачный id нельзя — иначе схема раздвоится.
+      if (userIdRef.current !== userId) return;
       setCurrentWorkflowId(id);
       setWorkflowName(name);
       isDirtyRef.current = false;
@@ -636,6 +641,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
       clearDraft(); // сохранили в облако → черновик-страховка больше не нужен
       setWfVersion(v => v + 1); // список изменился → обновить «Недавние»/dropdown
     } catch (e) {
+      if (userIdRef.current !== userId) return; // выход во время сохранения — не шумим
       console.error('[Builder] save failed', e);
       setSaveStatus('error');
       toast.error(t('builder.toast.saveFailed') || 'Не удалось сохранить схему. Попробуйте ещё раз.');
@@ -668,6 +674,43 @@ function BuilderAppInner({ initialTemplateId = null }) {
     // облачная копия под текущим пользователем; при успехе чистит черновик.
     persist(name, d.nodes, d.edges || [], null);
   }, [user, persist, setNodes, setEdges, t]);
+
+  // Перед выходом по кнопке досохраняем несохранённое: у названной схемы —
+  // последние правки, у безымянного холста — копию «Без названия» в аккаунт.
+  // Регистрируется в AuthContext и ждётся до разрыва сессии.
+  const flushRef = useRef(null);
+  flushRef.current = async () => {
+    if (!userIdRef.current || nodes.length === 0 || !isDirtyRef.current) return;
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    const name = workflowName.trim() || t('builder.workflows.defaultName') || 'Без названия';
+    await persist(name);
+  };
+  useEffect(() => registerBeforeSignOut(() => flushRef.current?.()), [registerBeforeSignOut]);
+
+  // Выход из аккаунта при открытой ОБЛАЧНОЙ схеме: её id не найдётся в
+  // локальном списке, и следующее автосохранение создало бы новую локальную
+  // копию — схема молча раздваивалась. Схема уже в облаке, поэтому при выходе
+  // холст очищаем: гость начинает с чистого листа.
+  const prevUserIdRef = useRef(userId);
+  useEffect(() => {
+    const hadUser = !!prevUserIdRef.current;
+    prevUserIdRef.current = userId;
+    if (!hadUser || userId) return; // интересует только переход «вошёл → вышел»
+    setCurrentWorkflowId(null);
+    setSaveStatus('idle');
+    setWfVersion(v => v + 1);
+    // Сессия оборвалась сама (истекла, выход из другой вкладки), а на холсте
+    // есть несохранённое — это единственная копия, её не трогаем: холст
+    // остаётся и живёт дальше как новая локальная схема гостя.
+    if (isDirtyRef.current && nodes.length > 0) return;
+    skipDirtyRef.current = true;
+    setNodes([]);
+    setEdges([]);
+    setSelectedNodeId(null);
+    setWorkflowName('');
+    isDirtyRef.current = false;
+    clearDraft();
+  }, [userId, setNodes, setEdges]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Сохранение (manual + auto). Если имени нет — запрашиваем через модалку.
   // Сохраняем даже пустой холст, если имя задано (это валидный черновик).

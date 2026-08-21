@@ -1,7 +1,12 @@
 import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 import { supabase } from '../lib/supabaseClient.js';
 import { getProfile, createProfile } from '../services/profileService.js';
-import { syncLocalToSupabase, pullRemoteToLocal } from '../services/syncService.js';
+import {
+  syncLocalToSupabase, pullRemoteToLocal, resetHydration, isHydrated,
+} from '../services/syncService.js';
+import {
+  setLocalOwner, isForeignOwner, clearLocalProgress, GUEST_OWNER,
+} from '../services/localData.js';
 
 const AuthContext = createContext(null);
 
@@ -15,6 +20,22 @@ export function AuthProvider({ children }) {
   // первый вход (SIGNED_IN) от восстановления сессии (INITIAL_SESSION/TOKEN_REFRESHED).
   // Влияет на runSync и isNewUser — они нужны только при реальном входе.
   const lastEvent = useRef(null);
+
+  // Кто сейчас вошёл — для проверок после ожидания сети (см. runSync) и для
+  // отзыва права на запись при выходе, каким бы путём он ни случился.
+  const currentUserId = useRef(null);
+
+  // Выход, который нажал сам человек (в отличие от истёкшей сессии). Только в
+  // этом случае чистим браузер: при невольном разрыве сессии в нём могут лежать
+  // правки, не дошедшие до облака, и стирать их молча нельзя.
+  const explicitSignOut = useRef(false);
+
+  // Что сделать ПЕРЕД выходом (например, конструктор досохраняет холст).
+  const beforeSignOut = useRef(new Set());
+  const registerBeforeSignOut = useCallback((fn) => {
+    beforeSignOut.current.add(fn);
+    return () => beforeSignOut.current.delete(fn);
+  }, []);
 
   // ─── Загрузка / создание профиля ──────────────────────────────────────────
 
@@ -39,10 +60,32 @@ export function AuthProvider({ children }) {
 
   // ─── Signout ──────────────────────────────────────────────────────────────
 
-  const handleSignOut = useCallback(async () => {
+  // Порядок: досохранить всё, что ещё не в облаке → разорвать сессию.
+  // Очистка браузера и сброс user/profile — в обработчике SIGNED_OUT ниже.
+  // scope 'local' — после удаления аккаунта: серверу уже нечего завершать.
+  const handleSignOut = useCallback(async ({ scope = 'global' } = {}) => {
     if (!supabase) return;
-    await supabase.auth.signOut();
-    // setUser / setProfile / setIsNewUser будут сброшены через SIGNED_OUT в onAuthStateChange
+    const uid = currentUserId.current;
+    explicitSignOut.current = true;
+    try {
+      // После удаления аккаунта (scope 'local') досохранять уже некуда.
+      if (scope !== 'local') {
+        for (const fn of beforeSignOut.current) {
+          try { await fn(); } catch (e) { console.error('[auth] before-signout hook failed', e); }
+        }
+        if (uid && isHydrated(uid)) await syncLocalToSupabase(uid);
+      }
+      const { error } = await supabase.auth.signOut({ scope });
+      if (error) {
+        // Сервер не ответил — сессию локально всё равно закрываем, иначе
+        // человек остаётся «вошедшим» с чужими для следующего данными.
+        await supabase.auth.signOut({ scope: 'local' });
+      }
+    } catch (e) {
+      console.error('[auth] sign-out failed', e);
+    } finally {
+      explicitSignOut.current = false; // иначе следующий невольный разрыв сессии стёр бы данные
+    }
   }, []);
 
   // ─── Синк localStorage → Supabase ─────────────────────────────────────────
@@ -50,9 +93,33 @@ export function AuthProvider({ children }) {
   // Порядок обязателен: сначала забрать облако и слить с браузером, только
   // потом писать. Если сделать наоборот, браузер без данных (новое устройство)
   // затрёт то, что накоплено на старом. См. комментарий в syncService.js.
+  //
+  // Владелец локальных данных (localData.js): если в браузере лежит прогресс
+  // ДРУГОГО пользователя — его нельзя сливать в этот аккаунт. Сперва чистим,
+  // и только потом подтягиваем облако. После pull владелец — текущий пользователь.
+  //
+  // Пока ждём сеть, человек может выйти — тогда ничего не пишем (isStale) и не
+  // ставим владельца. Владелец ставится только после УСПЕШНОГО pull: иначе
+  // браузер помечался бы как «данные в облаке», хотя облако их не получило,
+  // и следующий выход стёр бы их безвозвратно.
   const runSync = useCallback(async (userId, { push }) => {
-    await pullRemoteToLocal(userId);
-    if (push) await syncLocalToSupabase(userId);
+    const isStale = () => currentUserId.current !== userId;
+    let doPush = push;
+    if (isForeignOwner(userId)) {
+      clearLocalProgress({ owner: userId, keepBuilderDraft: true });
+      doPush = false; // сливать нечего — в браузере теперь пусто
+    }
+    try {
+      await pullRemoteToLocal(userId, { isStale });
+      if (isStale() || !isHydrated(userId)) return;
+      setLocalOwner(userId);
+      if (doPush) {
+        const { errors } = await syncLocalToSupabase(userId);
+        if (errors.length) console.error('[auth] push after sign-in incomplete', errors);
+      }
+    } catch (e) {
+      console.error('[auth] sync failed', e);
+    }
   }, []);
 
   // ─── Основной auth-эффект ──────────────────────────────────────────────────
@@ -75,6 +142,8 @@ export function AuthProvider({ children }) {
       (event, session) => {
         lastEvent.current = event;
         const u = session?.user ?? null;
+        const prevUserId = currentUserId.current;
+        currentUserId.current = u?.id ?? null;
 
         // Синхронные обновления состояния — ТОЛЬКО здесь
         setUser(u);
@@ -82,6 +151,18 @@ export function AuthProvider({ children }) {
         if (!u) {
           setProfile(null);
           setIsNewUser(false);
+        }
+
+        if (event === 'SIGNED_OUT') {
+          // Право писать в облако отзываем всегда и первым делом: опустевший
+          // браузер не должен затереть аккаунт, из которого вышли (это же
+          // ловит выход из соседней вкладки — там storage-события уже идут).
+          resetHydration(prevUserId);
+          // Чистим браузер только при выходе по кнопке: прогресс досохранён, и
+          // оставлять его следующему человеку за компьютером нельзя. При
+          // истёкшей сессии данные остаются — в них могут быть правки, не
+          // дошедшие до облака; они сольются при следующем входе того же человека.
+          if (explicitSignOut.current) clearLocalProgress({ owner: GUEST_OWNER });
         }
 
         // loading снимается после первого подтверждённого состояния
@@ -131,6 +212,7 @@ export function AuthProvider({ children }) {
     isNewUser,
     dismissOnboarding: () => setIsNewUser(false),
     signOut: handleSignOut,
+    registerBeforeSignOut,
     refreshProfile,
     setProfile,
   };

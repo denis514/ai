@@ -32,6 +32,7 @@ supabase secrets set BUILDER_KEY_ENCRYPTION_SECRET="<вставить_сгене
 supabase functions deploy builder-connect-key
 supabase functions deploy builder-disconnect-key
 supabase functions deploy builder-execute
+supabase functions deploy account-delete   # удаление аккаунта (GDPR, право на забвение)
 ```
 
 ## Перед этим — миграции

@@ -77,6 +77,20 @@ export function useActivityLog() {
     });
   }, []);
 
+  // После выхода ключ очищен — перечитать, чтобы не показывать серию
+  // вышедшего человека и не записать её обратно. Сегодняшний день гостю
+  // заново не ставим: он появится при следующей загрузке.
+  useEffect(() => {
+    const reread = () => setDates(load());
+    const onStorage = (e) => { if (e.key === STORAGE_KEY) reread(); };
+    window.addEventListener('storage', onStorage);
+    window.addEventListener('atlas:local-hydrated', reread);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('atlas:local-hydrated', reread);
+    };
+  }, []);
+
   const clear = useCallback(() => {
     setDates([]);
     save([]);

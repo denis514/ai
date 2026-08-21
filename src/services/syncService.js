@@ -41,6 +41,15 @@ export function isHydrated(userId) {
   return !!userId && hydrated.has(userId);
 }
 
+/**
+ * Отозвать разрешение на запись (выход, удаление аккаунта). После этого ни одна
+ * точечная запись не пройдёт, пока для пользователя заново не сделан pull —
+ * страховка от того, чтобы опустевший после выхода браузер стёр облако.
+ */
+export function resetHydration(userId) {
+  if (userId) hydrated.delete(userId);
+}
+
 /** Событие «локальные данные заменены» — хуки перечитывают localStorage. */
 export const LOCAL_HYDRATED_EVENT = 'atlas:local-hydrated';
 
@@ -69,8 +78,9 @@ function readLocal(key) {
  *
  * После успешного слияния помечает пользователя как hydrated (разрешает запись)
  * и стреляет событием, по которому хуки перечитывают localStorage.
+ * `isStale()` — проверка «этот пользователь всё ещё текущий» после ожидания сети.
  */
-export async function pullRemoteToLocal(userId) {
+export async function pullRemoteToLocal(userId, { isStale = () => false } = {}) {
   if (!supabase || !userId) return { pulled: 0, errors: ['Not available'] };
 
   const errors = [];
@@ -84,6 +94,10 @@ export async function pullRemoteToLocal(userId) {
       supabase.from('node_progress').select('node_id, status').eq('user_id', userId),
       supabase.from('favorites').select('item_type, item_id, added_at').eq('user_id', userId),
     ]);
+
+    // Пока ждали сеть, человек мог выйти или смениться. Тогда писать его
+    // данные в браузер уже нельзя — иначе гость увидит чужой прогресс.
+    if (isStale()) return { pulled: 0, errors: ['stale'] };
 
     // ── Курсы ──
     if (tutRes.error) errors.push(`tutorials: ${tutRes.error.message}`);
@@ -161,7 +175,7 @@ export async function syncLocalToSupabase(userId) {
     const rows = Object.entries(nodeProgress)
       .filter(([, status]) => status === 'viewed' || status === 'review')
       .map(([node_id, status]) => ({
-        user_id,
+        user_id: userId,
         node_id,
         status,
         updated_at: new Date().toISOString(),
@@ -198,11 +212,6 @@ export async function syncLocalToSupabase(userId) {
   return { synced, errors };
 }
 
-/**
- * Пометить что sync уже был сделан для этого userId.
- * Храним в localStorage чтобы не синкать повторно при каждом входе.
- */
-const SYNC_DONE_KEY = 'claude-mindmap:sync-done:v1';
 
 /**
  * Точечный реал-тайм синк прогресса туториалов → Supabase.
@@ -314,19 +323,3 @@ export async function syncBookmarks(userId, bookmarksMap) {
   }
 }
 
-export function isSyncDone(userId) {
-  try {
-    const done = JSON.parse(localStorage.getItem(SYNC_DONE_KEY) || '{}');
-    return !!done[userId];
-  } catch {
-    return false;
-  }
-}
-
-export function markSyncDone(userId) {
-  try {
-    const done = JSON.parse(localStorage.getItem(SYNC_DONE_KEY) || '{}');
-    done[userId] = new Date().toISOString();
-    localStorage.setItem(SYNC_DONE_KEY, JSON.stringify(done));
-  } catch {}
-}

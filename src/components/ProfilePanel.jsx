@@ -9,16 +9,12 @@ import { updateProfile } from '../services/profileService.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { useConfirm } from '../hooks/useConfirm.js';
 import { useToast } from '../hooks/useToast.js';
+import { PROGRESS_KEYS, LOCAL_HYDRATED_EVENT } from '../services/localData.js';
 
 
-const STORAGE_KEYS = [
-  'claude-mindmap:bookmarks:v1',
-  'claude-mindmap:node-progress:v1',
-  'claude-mindmap.tutorial-progress.v1',
-  'claude-mindmap:activity-log:v1',
-  'claude-mindmap:user-identity:v1',
-  'claude-mindmap:locale:v1'
-];
+// Единый список ключей прогресса — в localData.js (им же пользуется выход из
+// аккаунта). Здесь к нему добавлен язык: экспорт/сброс гостя переносит и его.
+const STORAGE_KEYS = [...PROGRESS_KEYS, 'claude-mindmap:locale:v1'];
 
 export default function ProfilePanel({
   level,
@@ -188,6 +184,8 @@ export default function ProfilePanel({
       for (const key of STORAGE_KEYS) {
         if (data[key] != null) { localStorage.setItem(key, data[key]); restored++; }
       }
+      // Хуки держат состояние в памяти — оповестить, чтобы экран обновился сразу.
+      if (restored) window.dispatchEvent(new Event(LOCAL_HYDRATED_EVENT));
       setImportMsg(t('profile.data.importRestored', { n: restored }));
     } catch {
       setImportMsg(t('profile.data.importError'));

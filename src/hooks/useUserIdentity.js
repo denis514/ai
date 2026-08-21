@@ -62,13 +62,17 @@ export function initialFromName(name) {
 export function useUserIdentity() {
   const [identity, setIdentityState] = useState(load);
 
-  // Sync между вкладками
+  // Sync между вкладками + перечитывание после очистки при выходе
+  // ('atlas:local-hydrated', см. localData.js / syncService.js).
   useEffect(() => {
-    const onStorage = (e) => {
-      if (e.key === STORAGE_KEY) setIdentityState(load());
-    };
+    const reread = () => setIdentityState(load());
+    const onStorage = (e) => { if (e.key === STORAGE_KEY) reread(); };
     window.addEventListener('storage', onStorage);
-    return () => window.removeEventListener('storage', onStorage);
+    window.addEventListener('atlas:local-hydrated', reread);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('atlas:local-hydrated', reread);
+    };
   }, []);
 
   const setName = useCallback((rawName) => {
