@@ -9,12 +9,9 @@ import { updateProfile } from '../services/profileService.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { useConfirm } from '../hooks/useConfirm.js';
 import { useToast } from '../hooks/useToast.js';
-import { PROGRESS_KEYS, LOCAL_HYDRATED_EVENT } from '../services/localData.js';
+import { exportUserData, importLocalDump, resetLocalData } from '../services/dataExport.js';
 
 
-// Единый список ключей прогресса — в localData.js (им же пользуется выход из
-// аккаунта). Здесь к нему добавлен язык: экспорт/сброс гостя переносит и его.
-const STORAGE_KEYS = [...PROGRESS_KEYS, 'claude-mindmap:locale:v1'];
 
 export default function ProfilePanel({
   level,
@@ -157,35 +154,14 @@ export default function ProfilePanel({
   const fileInputRef = useRef(null);
   const [importMsg, setImportMsg] = useState('');
 
-  const exportData = () => {
-    const dump = {};
-    for (const key of STORAGE_KEYS) {
-      try { const v = localStorage.getItem(key); if (v != null) dump[key] = v; } catch {}
-    }
-    const blob = new Blob(
-      [JSON.stringify({ exportedAt: new Date().toISOString(), data: dump }, null, 2)],
-      { type: 'application/json' }
-    );
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = `105-atlas-progress-${new Date().toISOString().slice(0,10)}.json`;
-    document.body.appendChild(a); a.click();
-    document.body.removeChild(a); URL.revokeObjectURL(url);
-  };
+  // Выгрузка / импорт / сброс — общий модуль services/dataExport.js.
+  const exportData = () => exportUserData({ user: null });
 
   const importData = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     try {
-      const text = await file.text();
-      const parsed = JSON.parse(text);
-      const data = parsed?.data || parsed;
-      let restored = 0;
-      for (const key of STORAGE_KEYS) {
-        if (data[key] != null) { localStorage.setItem(key, data[key]); restored++; }
-      }
-      // Хуки держат состояние в памяти — оповестить, чтобы экран обновился сразу.
-      if (restored) window.dispatchEvent(new Event(LOCAL_HYDRATED_EVENT));
+      const restored = importLocalDump(JSON.parse(await file.text()));
       setImportMsg(t('profile.data.importRestored', { n: restored }));
     } catch {
       setImportMsg(t('profile.data.importError'));
@@ -202,7 +178,7 @@ export default function ProfilePanel({
       danger: true,
     });
     if (!ok) return;
-    for (const key of STORAGE_KEYS) { try { localStorage.removeItem(key); } catch {} }
+    resetLocalData();
     toast.success(t('profile.data.resetDone') || 'Данные сброшены');
     setTimeout(() => window.location.reload(), 600);
   };

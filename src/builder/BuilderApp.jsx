@@ -2389,7 +2389,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
               />
             )}
             {consoleTab === 'sched' && (
-              <AllSchedulesModal embedded />
+              <AllSchedulesModal embedded guest={!userId} onRequestAuth={openAuth} />
             )}
           </ConsoleWindow>
         )}

@@ -49,7 +49,7 @@ export default function AuthModal({ onClose }) {
 
   // Закрыть по Escape. AuthModal — topmost layer когда открыт; перехватываем
   // ESC через capture+stopImmediatePropagation, чтобы он НЕ доходил до
-  // TutorialModal (который под ним с suspended=true) или другого parent-модала.
+  // модала под ним (туториал, интро), который тоже слушает Escape.
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape') {

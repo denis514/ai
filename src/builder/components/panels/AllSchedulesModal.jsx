@@ -15,7 +15,7 @@ import { SkeletonList } from '../Skeleton.jsx';
  *
  * Только чтение + выключение/удаление. Создание — в ScheduleModal (по схеме).
  */
-export default function AllSchedulesModal({ onClose, embedded = false }) {
+export default function AllSchedulesModal({ onClose, embedded = false, guest = false, onRequestAuth }) {
   const t = useT();
   const [items, setItems] = useState(null);
   const [confirmStopAll, setConfirmStopAll] = useState(false);
@@ -26,10 +26,11 @@ export default function AllSchedulesModal({ onClose, embedded = false }) {
   const [clearing, setClearing] = useState(false);
 
   const refresh = useCallback(() => {
+    if (guest) { setItems([]); setUsage(null); setRuns([]); return; } // у гостя в облаке ничего нет
     listAllSchedules().then(setItems).catch(() => setItems([]));
     getTodayUsage().then(setUsage).catch(() => setUsage(null));
     listRecentRuns(20).then(setRuns).catch(() => setRuns([]));
-  }, []);
+  }, [guest]);
   useEffect(() => { refresh(); }, [refresh]);
 
   const activeCount = (items || []).filter(s => s.enabled).length;
@@ -130,7 +131,20 @@ export default function AllSchedulesModal({ onClose, embedded = false }) {
         <div className="builder-schedule__list">
           {items === null && <SkeletonList rows={3} />}
           {items !== null && items.length === 0 && (
-            <div className="builder-schedule__empty">{t('builder.allsched.empty') || 'Автозапусков пока нет.'}</div>
+            guest ? (
+              // Гостю список всегда пуст: автозапуски живут в аккаунте. Без
+              // подсказки это выглядело как «ничего нет» без объяснения.
+              <div className="builder-schedule__empty">
+                <p>{t('builder.allsched.guestHint')}</p>
+                {onRequestAuth && (
+                  <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={onRequestAuth}>
+                    {t('auth.signIn') || 'Войти'}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="builder-schedule__empty">{t('builder.allsched.empty') || 'Автозапусков пока нет.'}</div>
+            )
           )}
           {items !== null && items.map(s => (
             <div key={s.id} className={`builder-schedule__item builder-allsched__item ${s.enabled ? '' : 'is-off'}`}>

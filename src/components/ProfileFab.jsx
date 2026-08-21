@@ -117,17 +117,16 @@ export default function ProfileFab(props) {
         {/* Desktop dropdown */}
         {open && !isMobile && (
           <div className="profile-fab__dropdown" role="dialog" aria-label={t('profile.fabAria')}>
-            {isLoggedIn && (
-              <button
-                type="button"
-                className="profile-fab__account-link"
-                onClick={openAccount}
-              >
-                <Icon name="user" size={14} strokeWidth={1.5} />
-                {t('account.title')}
-                <Icon name="arrow-right" size={12} strokeWidth={1.5} />
-              </button>
-            )}
+            {/* Кабинет открыт и гостю — там его прогресс из этого браузера */}
+            <button
+              type="button"
+              className="profile-fab__account-link"
+              onClick={openAccount}
+            >
+              <Icon name="user" size={14} strokeWidth={1.5} />
+              {t('account.title')}
+              <Icon name="arrow-right" size={12} strokeWidth={1.5} />
+            </button>
             <Suspense fallback={null}>
               <ProfilePanel {...props} onShowNodes={onShowNodes} onStartTutorial={onStartTutorial} onClose={close} />
             </Suspense>
@@ -144,17 +143,15 @@ export default function ProfileFab(props) {
           icon="user"
           className="bsheet--profile"
         >
-          {isLoggedIn && (
-            <button
-              type="button"
-              className="profile-fab__account-link"
-              onClick={openAccount}
-            >
-              <Icon name="user" size={14} strokeWidth={1.5} />
-              {t('account.title')}
-              <Icon name="arrow-right" size={12} strokeWidth={1.5} />
-            </button>
-          )}
+          <button
+            type="button"
+            className="profile-fab__account-link"
+            onClick={openAccount}
+          >
+            <Icon name="user" size={14} strokeWidth={1.5} />
+            {t('account.title')}
+            <Icon name="arrow-right" size={12} strokeWidth={1.5} />
+          </button>
           <Suspense fallback={null}>
             <ProfilePanel {...props} onShowNodes={onShowNodes} onClose={null} />
           </Suspense>

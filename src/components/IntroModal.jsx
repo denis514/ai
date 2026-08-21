@@ -27,6 +27,12 @@ export function isIntroSeen() {
   try { return !!localStorage.getItem(INTRO_SEEN_KEY); } catch { return false; }
 }
 
+/** Отметить знакомство пройденным и сообщить приложению (плашка согласия ждёт этого). */
+export function markIntroSeen() {
+  try { localStorage.setItem(INTRO_SEEN_KEY, '1'); } catch { /* приватный режим */ }
+  try { window.dispatchEvent(new Event('atlas:intro-done')); } catch { /* SSR */ }
+}
+
 const FEATURES = [
   { icon: 'compass', key: 'intro.feature.map' },
   { icon: 'rocket', key: 'intro.feature.courses' },
@@ -42,10 +48,9 @@ export default function IntroModal({ onDone, onRequestAuth }) {
 
   const handleDone = useCallback(() => {
     if (leaving) return;
-    try { localStorage.setItem(INTRO_SEEN_KEY, '1'); } catch { /* приватный режим */ }
     // Сообщаем приложению: знакомство закрыто, можно показывать плашку согласия
     // (одновременно они перекрывали друг друга на телефоне).
-    try { window.dispatchEvent(new Event('atlas:intro-done')); } catch { /* SSR */ }
+    markIntroSeen();
     setLeaving(true);
     setTimeout(() => onDone(), 480);
   }, [leaving, onDone]);

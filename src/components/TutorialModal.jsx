@@ -7,7 +7,6 @@ import { openTryInClaude } from '../utils/tryInClaude.js';
 import InlineText from './InlineText.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useTutorialContent, getLocalizedTutorial } from '../i18n/useTutorial.js';
-import { useAuth } from '../context/AuthContext.jsx';
 import { useFocusReturn } from '../hooks/useFocusReturn.js';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock.js';
 import { useConfirm } from '../hooks/useConfirm.js';
@@ -115,18 +114,14 @@ export default function TutorialModal({
   onOpenCourses,
   onMinimize,          // (state) => void — свернуть в пилюлю
   progressApi,
-  suspended = false,   // true когда перекрыт AuthModal — игнорируем ESC и клик-вне
-  onRequestAuth,       // вызвать вместо dispatch atlas:open-auth (из gate)
 }) {
   const t = useT();
   const { locale } = useLocale();
-  const { isLoggedIn } = useAuth();
   const { confirm } = useConfirm();
   const { toast } = useToast();
   // Focus возврат на trigger + body-scroll lock когда модал открыт
-  // (но не когда suspended — AuthModal сверху сам делает свой lock).
-  useFocusReturn(!suspended);
-  useBodyScrollLock(!suspended);
+  useFocusReturn(true);
+  useBodyScrollLock(true);
   // Локализованный туториал — структура из tutorials.js + текст из локали.
   const tut = useTutorialContent(tutorialId);
 
@@ -169,15 +164,14 @@ export default function TutorialModal({
   const [showAllSteps, setShowAllSteps] = useState(false);
   const scrollRef = useRef(null);
 
-  // Восстанавливаем шаг при смене туториала ИЛИ при смене статуса авторизации.
-  // Гость теперь тоже продолжает с того места, где остановился: его прогресс
-  // лежит в браузере (при входе синхронизируется). Раньше здесь стоял сброс на
-  // шаг 0, потому что дальше первого шага гостя не пускали.
+  // Восстанавливаем шаг при смене туториала. Гость тоже продолжает с того
+  // места, где остановился: прогресс лежит в браузере, при входе сливается
+  // с облаком (хук перечитает его по событию, см. useTutorialProgress).
   useEffect(() => {
     if (!tut) return;
     const p = getProgress(tutorialId);
     setActiveIdx(Math.max(0, Math.min(p.lastStepIndex || 0, tut.steps.length - 1)));
-  }, [tutorialId, isLoggedIn]); // eslint-disable-line
+  }, [tutorialId]); // eslint-disable-line
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
@@ -219,11 +213,9 @@ export default function TutorialModal({
   useEffect(() => {
     if (!tut) return;
     const onKey = (e) => {
-      if (suspended) return; // скрыты за AuthModal — не реагируем
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
       if (e.key === 'Escape') { onClose(); }
       else if (e.key === 'ArrowLeft') { onPrev(); }
-      // Gate: запрещаем переход вперёд без авторизации
       else if (e.key === 'ArrowRight') { onNext(); }
       else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -232,7 +224,7 @@ export default function TutorialModal({
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [tut, onClose, onPrev, onNext, onMarkAndNext, suspended]);
+  }, [tut, onClose, onPrev, onNext, onMarkAndNext]);
 
   const stepsList = useMemo(() => {
     if (!tut) return [];
@@ -271,10 +263,6 @@ export default function TutorialModal({
   const safeIdx = Math.min(Math.max(0, activeIdx), tut.steps.length - 1);
   const step = tut.steps[safeIdx];
   const isStepDone = stepsList[safeIdx]?.isDone;
-
-  const openAuth = () => onRequestAuth
-    ? onRequestAuth()
-    : document.dispatchEvent(new CustomEvent('atlas:open-auth'));
 
   // tut.next содержит МИКС из tutorial-id и node-id (например, uc-* use-cases).
   // Резолвим каждый: сначала пробуем как туториал, затем как узел.
@@ -315,7 +303,7 @@ export default function TutorialModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="tut-title"
-      onClick={(e) => { if (!suspended && e.target === e.currentTarget) onClose(); }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div className={`tut-modal ${isFullscreen ? 'is-fullscreen' : ''}`}>
         <header className="tut-header">
@@ -431,7 +419,6 @@ export default function TutorialModal({
                 <Skeleton width="100%" height="120px" radius="10px" style={{ marginTop: 16 }} />
               </div>
             )}
-            {/* Контент шага — не рендерим при gate (защита от inspect element) */}
             {tut.bodyReady && <div className="tut-step">
               <div className="tut-step__head">
                 <span className="tut-step__num">{t('tutorial.stepLabel', { n: activeIdx + 1 })}</span>

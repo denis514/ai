@@ -44,7 +44,7 @@ export default function TutorialDetail({
     );
   }
 
-  const p = progressApi?.getProgress?.(tut.nodeId);
+  const p = progressApi?.getProgress?.(tut.id); // прогресс хранится по id курса, не узла
   const done = p?.completedSteps?.length || 0;
   const total = tut.steps.length;
 

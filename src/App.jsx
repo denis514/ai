@@ -52,7 +52,7 @@ import UpdatesArchiveModal from './components/UpdatesArchiveModal.jsx';
 // Лениво: окно входа открывается по действию, а не при загрузке карты.
 const AuthModal = lazyWithRetry(() => import('./components/AuthModal.jsx'), 'AuthModal');
 import WelcomeOnboarding from './components/WelcomeOnboarding.jsx';
-import IntroModal, { isIntroSeen } from './components/IntroModal.jsx';
+import IntroModal, { isIntroSeen, markIntroSeen } from './components/IntroModal.jsx';
 // Лениво: личный кабинет — отдельный экран. Он же тянул в стартовый пакет
 // сервисы конструктора (список схем, расписания) ради виджета «Мои агенты».
 const AccountPage = lazyWithRetry(() => import('./components/AccountPage.jsx'), 'AccountPage');
@@ -400,8 +400,6 @@ function AppInner() {
   const [minimizedWorkflow, setMinimizedWorkflow] = useState(null);
   const [archiveOpen, setArchiveOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  // true когда AuthModal открыт из tutorial gate — туториал скрывается, но не размонтируется
-  const [tutorialAwaitingAuth, setTutorialAwaitingAuth] = useState(false);
   // Возврат «назад» из входа: что показать, если пользователь ОТМЕНИЛ вход
   // (передумал). Заполняется при открытии входа из конкретного окна; на отмене
   // выполняется, на успешном входе — обнуляется (возвращать gate-экран не нужно).
@@ -435,21 +433,13 @@ function AppInner() {
   useEffect(() => {
     if (isLoggedIn && authOpen) {
       setAuthOpen(false);
-      setTutorialAwaitingAuth(false);
-      authCancelReturnRef.current = null; // вошёл — возврат к gate-экрану не нужен
+      authCancelReturnRef.current = null; // вошёл — возврат к предыдущему окну не нужен
     }
+    // Вошёл прямо из интро: знакомство считаем пройденным, иначе оно
+    // возвращалось при следующей загрузке, а плашка согласия в этой сессии
+    // так и не показывалась (она ждёт события «интро закрыто»).
+    if (isLoggedIn && !isIntroSeen()) { markIntroSeen(); setIntroOpen(false); }
   }, [isLoggedIn]); // eslint-disable-line
-
-  // Safety net: если AuthModal закрыт (authOpen=false) — tutorialAwaitingAuth
-  // ВСЕГДА должен быть false. Без этой гарантии TutorialModal может остаться
-  // в suspended состоянии (ESC не работает, klik-out отключён). handleAuthClose
-  // делает это явно, но любой неучтённый путь закрытия AuthModal (внешнее
-  // событие, OAuth-редирект, race condition) может оставить state stuck.
-  useEffect(() => {
-    if (!authOpen && tutorialAwaitingAuth) {
-      setTutorialAwaitingAuth(false);
-    }
-  }, [authOpen, tutorialAwaitingAuth]);
 
   // Восстанавливаем маршрут после OAuth-редиректа (Google) или Magic Link.
   //
@@ -508,18 +498,11 @@ function AppInner() {
     return () => clearTimeout(t);
   }, [nodeProgressApi.counts]); // eslint-disable-line
 
-  // Открыть AuthModal из gate туториала: скрыть туториал, показать форму входа
-  const handleTutorialRequestAuth = useCallback(() => {
-    setTutorialAwaitingAuth(true);
-    setAuthOpen(true);
-  }, []);
-
   // Закрыть AuthModal (ОТМЕНА — пользователь передумал входить).
-  // Если открыт из туториала — вернуть туториал; если задан возврат
-  // (например, интро) — выполнить его, чтобы вернуть на предыдущее окно.
+  // Если задан возврат (например, интро) — выполнить его, чтобы вернуть
+  // на предыдущее окно.
   const handleAuthClose = useCallback(() => {
     setAuthOpen(false);
-    setTutorialAwaitingAuth(false);
     const ret = authCancelReturnRef.current;
     authCancelReturnRef.current = null;
     if (ret) ret();
@@ -1050,8 +1033,7 @@ function AppInner() {
       )}
 
       {activeTutorial && (
-        /* Скрываем туториал пока открыт AuthModal из gate (display:none сохраняет состояние) */
-        <div style={tutorialAwaitingAuth ? { display: 'none' } : undefined}>
+        <div>
           <Suspense fallback={<div className="modal-loading" role="status"><Loader size="md" /></div>}>
             <TutorialModal
               tutorialId={activeTutorial}
@@ -1066,8 +1048,6 @@ function AppInner() {
               }}
               onOpenCourses={onOpenCourses}
               progressApi={progressApi}
-              suspended={tutorialAwaitingAuth}
-              onRequestAuth={handleTutorialRequestAuth}
             />
           </Suspense>
         </div>

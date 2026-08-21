@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 /**
  * Прогресс пользователя по узлам mindmap.
@@ -96,12 +96,13 @@ export function useNodeProgress() {
     save({});
   }, []);
 
-  // Аггрегаты
+  // Аггрегаты. useMemo — на counts подписан синк в облако (App.jsx); новый
+  // объект на каждый рендер заставлял бы его ходить в сеть без изменений.
   const values = Object.values(state);
-  const counts = {
+  const counts = useMemo(() => ({
     viewed: values.filter(v => v === 'viewed').length,
     review: values.filter(v => v === 'review').length
-  };
+  }), [state]); // eslint-disable-line react-hooks/exhaustive-deps
   const total = values.length;
 
   // Списки id по статусу — нужны для «нажми на цифру → подсветить ноды».

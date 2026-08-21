@@ -4,7 +4,8 @@ import PlanetLogo from './PlanetLogo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { updateProfile, deleteProfile } from '../services/profileService.js';
-import { supabase } from '../lib/supabaseClient.js';
+import { exportUserData, resetLocalData } from '../services/dataExport.js';
+import { useConfirm } from '../hooks/useConfirm.js';
 import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
 import { tutorials, tutorialIds } from '../data/tutorials.js';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
@@ -39,6 +40,7 @@ export default function AccountPage({
   const t = useT();
   const { locale, setLocale, locales, contentVersion } = useLocale();
   const { user, profile, setProfile, signOut } = useAuth();
+  const { confirm } = useConfirm();
 
   // Статистика активности из Supabase — только для вошедшего.
   const cloudStats = useSupabaseStats(user?.id || null);
@@ -228,56 +230,26 @@ export default function AccountPage({
   };
 
   // ── Экспорт данных (GDPR Art. 20) ────────────────────────────────────────
-  const downloadJson = (dump) => {
-    const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `atlas-data-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  // Одна выгрузка для гостя и вошедшего — services/dataExport.js
+  // (браузер + облако, включая схемы конструктора и журнал активности).
+  const exportData = async () => {
+    setExporting(true);
+    try { await exportUserData({ user, profile }); }
+    finally { setExporting(false); }
   };
 
-  const exportData = async () => {
-    // Гость тоже вправе забрать свои данные — просто они лежат в браузере,
-    // а не в облаке. Раньше кнопка для него молча ничего не делала.
-    if (!user || !supabase) {
-      const dump = {
-        exported_at: new Date().toISOString(),
-        gdpr_note:   'This is your personal data export as required by GDPR Art. 20.',
-        source:      'browser-local-storage',
-        note:        'Вы не вошли в аккаунт — это данные, сохранённые в этом браузере.',
-        learning_progress: progressApi?.progress || {},
-        node_progress:     nodeProgressApi?.state || {},
-        favorites:         bookmarksApi ? [...bookmarksApi.bookmarks.values()] : [],
-        activity_days:     activityApi?.dates || [],
-      };
-      downloadJson(dump);
-      return;
-    }
-    setExporting(true);
-    try {
-      const [progressRes, nodeRes, favRes] = await Promise.all([
-        supabase.from('learning_progress').select('*').eq('user_id', user.id),
-        supabase.from('node_progress').select('*').eq('user_id', user.id),
-        supabase.from('favorites').select('*').eq('user_id', user.id),
-      ]);
-
-      const dump = {
-        exported_at:      new Date().toISOString(),
-        gdpr_note:        'This is your personal data export as required by GDPR Art. 20.',
-        profile:          profile,
-        learning_progress: progressRes.data || [],
-        node_progress:    nodeRes.data || [],
-        favorites:        favRes.data || [],
-      };
-
-      downloadJson(dump);
-    } finally {
-      setExporting(false);
-    }
+  // ── Гость: стереть всё своё из этого браузера (аккаунта нет — удалять нечего) ──
+  const resetGuestData = async () => {
+    const ok = await confirm({
+      title: t('profile.data.reset'),
+      description: t('profile.data.resetConfirm'),
+      confirmLabel: t('profile.data.reset'),
+      cancelLabel: t('common.cancel'),
+      danger: true,
+    });
+    if (!ok) return;
+    resetLocalData();
+    window.location.reload();
   };
 
   // ── Удалить аккаунт (GDPR Art. 17) ───────────────────────────────────────
@@ -885,9 +857,22 @@ export default function AccountPage({
           </section>
           )}
 
-          {/* Удаление аккаунта — только тому, у кого он есть. Гостю показывать
-              «удалить аккаунт» бессмысленно: удалять нечего, а кнопка пугает.
-              Свои местные данные он чистит кнопкой «сбросить прогресс». */}
+          {/* Удаление аккаунта — только тому, у кого он есть. Гостю вместо
+              этого — сброс всего своего из этого браузера. */}
+          {!user && (
+          <section className="account-section account-section--danger">
+            <h2>{t('account.dangerZone')}</h2>
+            <p className="account-section__desc">{t('profile.data.resetConfirm')}</p>
+            <button
+              type="button"
+              className="account-btn account-btn--danger"
+              onClick={resetGuestData}
+            >
+              <Icon name="close" size={16} strokeWidth={1.75} />
+              {t('profile.data.reset')}
+            </button>
+          </section>
+          )}
           {user && (
           <section className="account-section account-section--danger">
             <h2>{t('account.dangerZone')}</h2>
