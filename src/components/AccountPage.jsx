@@ -28,6 +28,9 @@ export default function AccountPage({
   onClose,
   onRequestAuth,
   progressApi,
+  nodeProgressApi,
+  bookmarksApi,
+  activityApi,
   onStartTutorial,
   onShowNodes,
   onOpenCourses,
@@ -37,8 +40,40 @@ export default function AccountPage({
   const { locale, setLocale, locales, contentVersion } = useLocale();
   const { user, profile, setProfile, signOut } = useAuth();
 
-  // Статистика активности из Supabase
-  const supaStats = useSupabaseStats(user?.id || null);
+  // Статистика активности из Supabase — только для вошедшего.
+  const cloudStats = useSupabaseStats(user?.id || null);
+
+  // ── Откуда берём числа ────────────────────────────────────────────────────
+  // Вошёл — из облака. Гость — из этого браузера: у него есть ровно те же
+  // данные (пройденные шаги, отметки тем, закладки, дни посещений), просто
+  // лежат локально. Раньше кабинет умел читать только облако, поэтому гостю
+  // показывалась стена «Вы не вошли» — при том что панель профиля его же
+  // статистику прекрасно показывала.
+  const localStats = useMemo(() => {
+    const completedTutorialIds = progressApi
+      ? tutorialIds.filter(id => !!progressApi.getProgress(id)?.completedAt)
+      : [];
+    const counts = nodeProgressApi?.counts || { viewed: 0, review: 0 };
+    const bookmarkNodeIds = bookmarksApi
+      ? [...bookmarksApi.bookmarks.values()].filter(b => b.type === 'node').map(b => b.id)
+      : [];
+    return {
+      tutorialsDone:        completedTutorialIds.length,
+      tutorialsStarted:     progressApi ? tutorialIds.filter(id => !!progressApi.getProgress(id)?.startedAt).length : 0,
+      completedTutorialIds,
+      nodesViewed:          counts.viewed,
+      nodesReview:          counts.review,
+      bookmarksCount:       bookmarksApi?.count || 0,
+      viewedIds:            nodeProgressApi?.idsBy ? nodeProgressApi.idsBy('viewed') : [],
+      reviewIds:            nodeProgressApi?.idsBy ? nodeProgressApi.idsBy('review') : [],
+      bookmarkNodeIds,
+      streak:               activityApi?.streak || 0,
+      totalDays:            activityApi?.totalDays || 0,
+      loading:              false,
+    };
+  }, [progressApi, nodeProgressApi, bookmarksApi, activityApi]);
+
+  const supaStats = user ? cloudStats : localStats;
 
   // Активный раздел боковой панели (дефолт — дашборд «Обзор»)
   const [section, setSection] = useState('overview');
@@ -190,8 +225,35 @@ export default function AccountPage({
   };
 
   // ── Экспорт данных (GDPR Art. 20) ────────────────────────────────────────
+  const downloadJson = (dump) => {
+    const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `atlas-data-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const exportData = async () => {
-    if (!user || !supabase) return;
+    // Гость тоже вправе забрать свои данные — просто они лежат в браузере,
+    // а не в облаке. Раньше кнопка для него молча ничего не делала.
+    if (!user || !supabase) {
+      const dump = {
+        exported_at: new Date().toISOString(),
+        gdpr_note:   'This is your personal data export as required by GDPR Art. 20.',
+        source:      'browser-local-storage',
+        note:        'Вы не вошли в аккаунт — это данные, сохранённые в этом браузере.',
+        learning_progress: progressApi?.progress || {},
+        node_progress:     nodeProgressApi?.state || {},
+        favorites:         bookmarksApi ? [...bookmarksApi.bookmarks.values()] : [],
+        activity_days:     activityApi?.dates || [],
+      };
+      downloadJson(dump);
+      return;
+    }
     setExporting(true);
     try {
       const [progressRes, nodeRes, favRes] = await Promise.all([
@@ -209,18 +271,7 @@ export default function AccountPage({
         favorites:        favRes.data || [],
       };
 
-      const blob = new Blob(
-        [JSON.stringify(dump, null, 2)],
-        { type: 'application/json' }
-      );
-      const url = URL.createObjectURL(blob);
-      const a   = document.createElement('a');
-      a.href     = url;
-      a.download = `atlas-data-${new Date().toISOString().slice(0, 10)}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      downloadJson(dump);
     } finally {
       setExporting(false);
     }
@@ -262,28 +313,6 @@ export default function AccountPage({
     </header>
   );
 
-  if (!user) {
-    return (
-      <div className="account-page">
-        {header}
-        <div className="account-page__empty">
-          <Icon name="user" size={32} strokeWidth={1.25} />
-          <p>{t('account.notLoggedIn')}</p>
-          <button
-            type="button"
-            className="account-btn account-btn--primary"
-            onClick={() => onRequestAuth
-              ? onRequestAuth()
-              : document.dispatchEvent(new CustomEvent('atlas:open-auth'))
-            }
-          >
-            {t('auth.signIn')}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   // ── Разделы боковой панели ───────────────────────────────────────────────
   const NAV = [
     { id: 'overview', icon: 'grid',       label: t('account.dash.overview') || 'Обзор' },
@@ -291,7 +320,7 @@ export default function AccountPage({
     { id: 'settings', icon: 'settings',   label: t('account.settings')      || 'Настройки' },
   ];
 
-  const greetName = profile?.display_name || (user.email || '').split('@')[0];
+  const greetName = user ? (profile?.display_name || (user.email || '').split('@')[0]) : '';
   const coursesDone = supaStats.tutorialsDone || 0;
   const coursesTotal = tutorialIds.length;
   // Hero-метрика: % карты знаний, изученный пользователем (узлы / все узлы карты).
@@ -307,11 +336,33 @@ export default function AccountPage({
       case 'overview':
         return (
           <div className="account-dash">
+            {/* Гостю — одна честная строка о том, где живут его данные.
+                Не стена: всё ниже работает и без входа. */}
+            {!user && (
+              <div className="account-widget account-widget--wide account-guest-note">
+                <div>
+                  <strong>{t('account.guest.title')}</strong>
+                  <p className="account-hint" style={{ margin: '4px 0 0' }}>{t('account.guest.desc')}</p>
+                </div>
+                <button
+                  type="button"
+                  className="account-btn account-btn--primary"
+                  onClick={() => (onRequestAuth ? onRequestAuth() : document.dispatchEvent(new CustomEvent('atlas:open-auth')))}
+                >
+                  {t('auth.signIn')}
+                </button>
+              </div>
+            )}
+
             {/* Шапка: приветствие + серия + «к повторению»; справа — главная метрика «% карты изучено» */}
             <div className="account-dash__hero">
               <div className="account-dash__hero-main">
                 <h2 className="account-dash__hello">
-                  {(t('account.dash.greeting') || 'С возвращением, {name}').replace('{name}', greetName)}
+                  {/* У гостя нет имени — здороваемся без него, иначе выходит
+                      «С возвращением, Привет». */}
+                  {user
+                    ? (t('account.dash.greeting') || 'С возвращением, {name}').replace('{name}', greetName)
+                    : (t('account.guest.greeting') || 'С возвращением')}
                 </h2>
                 {!supaStats.loading && (
                   <p className="account-dash__streak">
@@ -528,7 +579,11 @@ export default function AccountPage({
               ) : builder.workflows.length === 0 ? (
                 <button type="button" className="account-widget--wide account-agents-hint" onClick={() => onOpenBuilder?.()}>
                   <Icon name="robot" size={16} strokeWidth={1.5} />
-                  <span>{t('account.dash.agentsHint') || 'Собери первого агента в конструкторе'}</span>
+                  <span>
+                    {user
+                      ? (t('account.dash.agentsHint') || 'Собери первого агента в конструкторе')
+                      : t('account.guest.agentsHint')}
+                  </span>
                   <Icon name="arrow-right" size={14} strokeWidth={1.75} />
                 </button>
               ) : (
@@ -694,15 +749,18 @@ export default function AccountPage({
           <section className="account-section">
             <h2>{t('account.profile')}</h2>
 
-            <div className="account-field">
-              <label className="account-label">{t('account.email')}</label>
-              <div className="account-value account-value--readonly">
-                <Icon name="mail" size={14} strokeWidth={1.5} />
-                {user.email}
+            {user && (
+              <div className="account-field">
+                <label className="account-label">{t('account.email')}</label>
+                <div className="account-value account-value--readonly">
+                  <Icon name="mail" size={14} strokeWidth={1.5} />
+                  {user.email}
+                </div>
+                <span className="account-hint">{t('account.emailHint')}</span>
               </div>
-              <span className="account-hint">{t('account.emailHint')}</span>
-            </div>
+            )}
 
+            {user && (
             <div className="account-field">
               <label className="account-label">{t('account.displayName')}</label>
               <div className="account-value account-value--readonly">
@@ -711,6 +769,7 @@ export default function AccountPage({
               </div>
               <span className="account-hint">{t('account.nameHint')}</span>
             </div>
+            )}
 
             <div className="account-field">
               <label className="account-label">{t('account.language')}</label>
@@ -785,6 +844,7 @@ export default function AccountPage({
             </a>
           </section>
 
+          {user ? (
           <section className="account-section">
             <h2>{t('account.session')}</h2>
             <div className="account-value account-value--readonly" style={{ marginBottom: 12 }}>
@@ -800,7 +860,27 @@ export default function AccountPage({
               {t('auth.signOut')}
             </button>
           </section>
+          ) : (
+          <section className="account-section">
+            <h2>{t('account.session')}</h2>
+            <p className="account-hint" style={{ marginBottom: 12 }}>
+              {t('account.guest.settingsHint')}
+            </p>
+            <button
+              type="button"
+              className="account-btn account-btn--primary"
+              onClick={() => (onRequestAuth ? onRequestAuth() : document.dispatchEvent(new CustomEvent('atlas:open-auth')))}
+            >
+              <Icon name="login" size={16} strokeWidth={1.5} />
+              {t('auth.signIn')}
+            </button>
+          </section>
+          )}
 
+          {/* Удаление аккаунта — только тому, у кого он есть. Гостю показывать
+              «удалить аккаунт» бессмысленно: удалять нечего, а кнопка пугает.
+              Свои местные данные он чистит кнопкой «сбросить прогресс». */}
+          {user && (
           <section className="account-section account-section--danger">
             <h2>{t('account.dangerZone')}</h2>
             <p className="account-section__desc">{t('account.deleteDesc')}</p>
@@ -865,6 +945,7 @@ export default function AccountPage({
               </div>
             )}
           </section>
+          )}
           </div>
         );
 

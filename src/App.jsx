@@ -1153,6 +1153,7 @@ function AppInner() {
           progressApi={progressApi}
           nodeProgressApi={nodeProgressApi}
           bookmarksApi={bookmarksApi}
+          activityApi={activityApi}
           onStartTutorial={onStartTutorial}
           onShowNodes={(ids, label) => { setRoute(null); onShowNodes(ids, label); }}
           onOpenCourses={onOpenCourses}
