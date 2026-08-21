@@ -183,12 +183,13 @@ export default function AccountPage({
   // ── Сводка конструктора (мои агенты + автозапуски) ────────────────────────
   const [builder, setBuilder] = useState({ loading: true, workflows: [], activeRuns: 0, todayRuns: 0 });
   useEffect(() => {
-    if (!user?.id) { setBuilder(b => ({ ...b, loading: false })); return; }
     let alive = true;
+    // Гостю — его местные схемы (они есть: конструктор сохраняет без входа);
+    // автозапуски и расход — только у аккаунта.
     Promise.all([
-      listWorkflows(user.id).catch(() => []),
-      listAllSchedules().catch(() => []),
-      getTodayUsage().catch(() => null),
+      listWorkflows(user?.id || null).catch(() => []),
+      user?.id ? listAllSchedules().catch(() => []) : [],
+      user?.id ? getTodayUsage().catch(() => null) : null,
     ]).then(([wfs, scheds, usage]) => {
       if (!alive) return;
       setBuilder({

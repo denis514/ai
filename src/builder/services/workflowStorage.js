@@ -12,7 +12,7 @@
  *   saveWorkflow(payload, userId)    → { id }   (create или update)
  *   deleteWorkflow(id, userId)       → boolean  (soft-delete для Supabase)
  *   countWorkflows(userId)           → number
- *   migrateLocalToCloud(userId)      → { migrated: number }  (при first signup)
+ *   migrateLocalToCloud(userId)      → { migrated, idMap }   (AuthContext, при входе)
  *
  * payload для saveWorkflow:
  *   { id?, name, description?, templateId?, rfNodes, rfEdges }
@@ -171,8 +171,9 @@ export async function saveWorkflow(payload, userId) {
   // Cloud path.
   const { nodes, edges } = serializeForDb(rfNodes, rfEdges);
 
-  // 1. Upsert workflow row.
-  let workflowId = id;
+  // 1. Upsert workflow row. Локальный id (гость вошёл, не перезагружая
+  //    страницу) в облаке не существует — создаём новую запись.
+  let workflowId = id && !String(id).startsWith('local-') ? id : null;
   if (workflowId) {
     const { error } = await supabase
       .from('builder_workflows')
@@ -191,20 +192,30 @@ export async function saveWorkflow(payload, userId) {
 
   // 2. Replace nodes/edges (delete-then-insert — простая стратегия для B-2.1).
   //    Транзакционность пока не критична: одиночный пользователь, single-save.
-  await supabase.from('builder_workflow_nodes').delete().eq('workflow_id', workflowId);
-  await supabase.from('builder_workflow_edges').delete().eq('workflow_id', workflowId);
+  const isFresh = !id || workflowId !== id;
+  try {
+    await supabase.from('builder_workflow_nodes').delete().eq('workflow_id', workflowId);
+    await supabase.from('builder_workflow_edges').delete().eq('workflow_id', workflowId);
 
-  if (nodes.length > 0) {
-    const { error: nErr } = await supabase
-      .from('builder_workflow_nodes')
-      .insert(nodes.map(n => ({ ...n, workflow_id: workflowId })));
-    if (nErr) throw nErr;
-  }
-  if (edges.length > 0) {
-    const { error: eErr } = await supabase
-      .from('builder_workflow_edges')
-      .insert(edges.map(e => ({ ...e, workflow_id: workflowId })));
-    if (eErr) throw eErr;
+    if (nodes.length > 0) {
+      const { error: nErr } = await supabase
+        .from('builder_workflow_nodes')
+        .insert(nodes.map(n => ({ ...n, workflow_id: workflowId })));
+      if (nErr) throw nErr;
+    }
+    if (edges.length > 0) {
+      const { error: eErr } = await supabase
+        .from('builder_workflow_edges')
+        .insert(edges.map(e => ({ ...e, workflow_id: workflowId })));
+      if (eErr) throw eErr;
+    }
+  } catch (e) {
+    // Строка схемы уже создана, а содержимое не легло — не оставляем пустую
+    // «болванку» в списке (при переезде гостя она бы ещё и задвоилась).
+    if (isFresh) {
+      await supabase.from('builder_workflows').delete().eq('id', workflowId);
+    }
+    throw e;
   }
 
   return { id: workflowId };
@@ -267,32 +278,65 @@ export async function countWorkflows(userId) {
   return count || 0;
 }
 
+/** Событие «схемы гостя переехали в аккаунт» — списки в конструкторе обновляются. */
+export const WORKFLOWS_MIGRATED_EVENT = 'atlas:builder:workflows-migrated';
+// Соответствие «локальный id → облачный id» после переезда. Нужно потоку
+// «возврат после входа»: черновик, который гость понёс на вход, должен лечь
+// поверх уже переехавшей схемы, а не стать второй копией.
+const MIGRATED_IDS_KEY = 'atlas:builder:migrated-ids';
+
+// В localStorage, а не sessionStorage: переезд выполняет одна вкладка (замок),
+// а черновик может ждать восстановления в соседней. Карту не стираем при
+// чтении — она маленькая и перезаписывается следующим переездом.
+export function takeMigratedIdMap() {
+  try {
+    const raw = localStorage.getItem(MIGRATED_IDS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch { return {}; }
+}
+
 /**
- * Миграция локальных workflow в облако при первом входе.
- * Вызывается из UI после signup с подтверждением пользователя.
- * @returns {{ migrated: number }}
+ * Переезд схем гостя в аккаунт при входе. Вызывается из AuthContext после
+ * успешного слияния прогресса (см. runSync). Архивные не переносим.
+ * @returns {{ migrated: number, idMap: Record<string,string> }}
  */
 export async function migrateLocalToCloud(userId) {
-  if (!useCloud(userId)) return { migrated: 0 };
-  const local = readLocalAll().filter(w => !w.isArchived);
-  if (local.length === 0) return { migrated: 0 };
+  if (!useCloud(userId)) return { migrated: 0, idMap: {} };
+  // Вход приходит во все открытые вкладки сразу; без замка каждая вставила бы
+  // схемы ещё раз. Внутри замка список перечитывается — во второй вкладке он
+  // уже пуст. Где Web Locks нет — работаем без замка (старые браузеры).
+  if (typeof navigator !== 'undefined' && navigator.locks?.request) {
+    return navigator.locks.request('atlas:builder:migrate', () => migrateLocalToCloudUnlocked(userId));
+  }
+  return migrateLocalToCloudUnlocked(userId);
+}
 
-  let migrated = 0;
+async function migrateLocalToCloudUnlocked(userId) {
+  const local = readLocalAll().filter(w => !w.isArchived);
+  if (local.length === 0) return { migrated: 0, idMap: {} };
+
+  const idMap = {};
   for (const w of local) {
     const { nodes, edges } = deserializeFromLocal(w.snapshot || {});
     try {
-      await saveWorkflow(
+      const { id } = await saveWorkflow(
         { name: w.name, description: w.description, templateId: w.templateId, rfNodes: nodes, rfEdges: edges },
         userId
       );
-      migrated++;
+      idMap[w.id] = id;
     } catch {
-      // Пропускаем сбойный, продолжаем остальные.
+      // сбойную оставляем локально, остальные переносим
     }
   }
-  // После успешной миграции очищаем локальные, чтобы не дублировать.
-  if (migrated > 0) writeLocalAll([]);
-  return { migrated };
+  // Локально остаются только те, что не переехали: иначе после выхода они
+  // всплыли бы второй копией.
+  const migrated = Object.keys(idMap).length;
+  if (migrated > 0) {
+    writeLocalAll(readLocalAll().filter(w => w.isArchived || !idMap[w.id]));
+    try { localStorage.setItem(MIGRATED_IDS_KEY, JSON.stringify(idMap)); } catch { /* noop */ }
+    try { window.dispatchEvent(new CustomEvent(WORKFLOWS_MIGRATED_EVENT, { detail: { idMap } })); } catch { /* SSR */ }
+  }
+  return { migrated, idMap };
 }
 
 /** Есть ли локальные workflow (для предложения миграции). */

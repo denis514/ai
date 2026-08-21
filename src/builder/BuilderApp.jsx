@@ -46,7 +46,7 @@ import { createRealExecution } from './services/realExecutor.js';
 import { createDryRun } from './services/dryRunExecutor.js';
 import { track } from '../services/analytics.js';
 import { getKeyStatus, listMcpServers, listKeys } from './services/apiKeyService.js';
-import { saveWorkflow as storageSave, loadWorkflow as storageLoad } from './services/workflowStorage.js';
+import { saveWorkflow as storageSave, loadWorkflow as storageLoad, takeMigratedIdMap, WORKFLOWS_MIGRATED_EVENT } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
 import ToastHost, { toast } from './components/Toast.jsx';
 import { saveDraft, loadDraft, clearDraft, setResumeAfterAuth, hasResumeAfterAuth, clearResumeAfterAuth } from './services/draftBackup.js';
@@ -445,11 +445,13 @@ function BuilderAppInner({ initialTemplateId = null }) {
   const { zoom } = useViewport();   // живой % масштаба для зум-бара
 
   /* ────────── Persistence state (B-2.1) ────────── */
-  const { user, registerBeforeSignOut } = useAuth();
+  const { user, syncReady, registerBeforeSignOut } = useAuth();
   const userId = user?.id || null;
   const userIdRef = useRef(userId);
   userIdRef.current = userId;
   const [currentWorkflowId, setCurrentWorkflowId] = useState(null);
+  const currentWorkflowIdRef = useRef(null); // для слушателей событий без пересоздания
+  currentWorkflowIdRef.current = currentWorkflowId;
   const [workflowName, setWorkflowName] = useState('');
   const [saveStatus, setSaveStatus] = useState('idle'); // 'idle' | 'saving' | 'saved' | 'error'
   const [switcherOpen, setSwitcherOpen] = useState(false);
@@ -655,6 +657,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
   useEffect(() => {
     if (!hasResumeAfterAuth() || resumedRef.current) return;
     if (!user) return; // ждём, пока сессия после редиректа подтянется
+    if (!syncReady) return; // …и пока схемы гостя переедут в аккаунт (AuthContext.runSync)
     const d = loadDraft();
     // Восстанавливаем ЛЮБОЙ непустой черновик — и безымянный, и уже названный
     // шаблон (у анонима workflowId мог быть локальным; после входа всё равно
@@ -670,17 +673,34 @@ function BuilderAppInner({ initialTemplateId = null }) {
     setNodes(d.nodes);
     setEdges(d.edges || []);
     const name = (d.name && d.name.trim()) || t('builder.workflows.defaultName') || 'Без названия';
-    // persist берёт явные узлы (state ещё не обновился), overrideId=null → свежая
-    // облачная копия под текущим пользователем; при успехе чистит черновик.
-    persist(name, d.nodes, d.edges || [], null);
-  }, [user, persist, setNodes, setEdges, t]);
+    // persist берёт явные узлы (state ещё не обновился). Если схема черновика
+    // уже переехала в аккаунт — кладём поверх неё (по карте id), иначе
+    // overrideId=null → свежая облачная копия. При успехе чистит черновик.
+    const migratedId = d.workflowId ? takeMigratedIdMap()[d.workflowId] : null;
+    const cur = currentWorkflowIdRef.current;
+    const cloudCur = cur && !String(cur).startsWith('local-') ? cur : null;
+    persist(name, d.nodes, d.edges || [], migratedId || cloudCur || null);
+  }, [user, syncReady, persist, setNodes, setEdges, t]);
+
+  // Схемы гостя переехали в аккаунт → обновить списки; если открыта одна из
+  // них (вход без перезагрузки) — перевести холст на её облачный id, иначе
+  // следующее сохранение создало бы вторую копию.
+  useEffect(() => {
+    const onMigrated = (e) => {
+      const mapped = e?.detail?.idMap?.[currentWorkflowIdRef.current];
+      if (mapped) setCurrentWorkflowId(mapped);
+      setWfVersion(v => v + 1);
+    };
+    window.addEventListener(WORKFLOWS_MIGRATED_EVENT, onMigrated);
+    return () => window.removeEventListener(WORKFLOWS_MIGRATED_EVENT, onMigrated);
+  }, []);
 
   // Перед выходом по кнопке досохраняем несохранённое: у названной схемы —
   // последние правки, у безымянного холста — копию «Без названия» в аккаунт.
   // Регистрируется в AuthContext и ждётся до разрыва сессии.
   const flushRef = useRef(null);
   flushRef.current = async () => {
-    if (!userIdRef.current || nodes.length === 0 || !isDirtyRef.current) return;
+    if (!userIdRef.current || !syncReady || nodes.length === 0 || !isDirtyRef.current) return;
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     const name = workflowName.trim() || t('builder.workflows.defaultName') || 'Без названия';
     await persist(name);
@@ -801,12 +821,16 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // Каждое изменение сбрасывает таймер → сохраняем, когда пользователь замер.
   useEffect(() => {
     if (!workflowName.trim() || nodes.length === 0 || !isDirtyRef.current) return;
+    // Только что вошли: пока схемы гостя не переехали (syncReady), в облако не
+    // пишем — иначе автосохранение создаст копию раньше переезда, и схема
+    // окажется в аккаунте дважды. Черновик-страховка при этом пишется.
+    if (userId && !syncReady) return;
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     saveTimerRef.current = setTimeout(() => {
       if (isDirtyRef.current) persist(workflowName.trim());
     }, 2500);
     return () => { if (saveTimerRef.current) clearTimeout(saveTimerRef.current); };
-  }, [nodes, edges, workflowName, persist]);
+  }, [nodes, edges, workflowName, persist, userId, syncReady]);
 
   // Открыть вход ИЗ билдера: перед редиректом на OAuth флэшим черновик и ставим
   // флаг «возобновить после входа» — чтобы собранная до входа схема не потерялась.

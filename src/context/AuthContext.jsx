@@ -10,11 +10,24 @@ import {
 
 const AuthContext = createContext(null);
 
+// Есть ли у гостя сохранённые схемы конструктора (без импорта модуля билдера).
+function hasGuestWorkflows() {
+  try {
+    const raw = localStorage.getItem('atlas:builder:workflows:v1');
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) && list.some(w => w && !w.isArchived);
+  } catch { return false; }
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser]       = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isNewUser, setIsNewUser] = useState(false);
+  // Слияние с облаком (и переезд схем гостя) для текущего пользователя
+  // завершено. Конструктор ждёт этот флаг, прежде чем восстанавливать
+  // черновик после входа — иначе схема легла бы в аккаунт дважды.
+  const [syncReady, setSyncReady] = useState(false);
 
   // Ref для отслеживания последнего события — нужен чтобы отличить
   // первый вход (SIGNED_IN) от восстановления сессии (INITIAL_SESSION/TOKEN_REFRESHED).
@@ -105,7 +118,8 @@ export function AuthProvider({ children }) {
   const runSync = useCallback(async (userId, { push }) => {
     const isStale = () => currentUserId.current !== userId;
     let doPush = push;
-    if (isForeignOwner(userId)) {
+    const foreign = isForeignOwner(userId);
+    if (foreign) {
       clearLocalProgress({ owner: userId, keepBuilderDraft: true });
       doPush = false; // сливать нечего — в браузере теперь пусто
     }
@@ -117,8 +131,18 @@ export function AuthProvider({ children }) {
         const { errors } = await syncLocalToSupabase(userId);
         if (errors.length) console.error('[auth] push after sign-in incomplete', errors);
       }
+      // Схемы, собранные гостем, переезжают в аккаунт. Делаем при любом
+      // входе, не только «свежем»: локально их пишет только гость, а после
+      // редиректа (magic link) событие может прийти как восстановление сессии.
+      // Модуль конструктора грузим только если есть что переносить.
+      if (!foreign && hasGuestWorkflows()) {
+        const { migrateLocalToCloud } = await import('../builder/services/workflowStorage.js');
+        if (!isStale()) await migrateLocalToCloud(userId);
+      }
     } catch (e) {
       console.error('[auth] sync failed', e);
+    } finally {
+      if (!isStale()) setSyncReady(true);
     }
   }, []);
 
@@ -147,6 +171,7 @@ export function AuthProvider({ children }) {
 
         // Синхронные обновления состояния — ТОЛЬКО здесь
         setUser(u);
+        if (u?.id !== prevUserId) setSyncReady(false);
 
         if (!u) {
           setProfile(null);
@@ -186,7 +211,9 @@ export function AuthProvider({ children }) {
     const event = lastEvent.current;
 
     // loadProfile всегда при наличии пользователя
-    loadProfile(user.id, user.email).then((isNew) => {
+    // Профиль мог не загрузиться (сеть, RLS) — слияние всё равно должно
+    // пройти, иначе syncReady навсегда false и конструктор не восстановит черновик.
+    loadProfile(user.id, user.email).catch(() => false).then((isNew) => {
       // isNewUser и runSync — только при реальном входе (SIGNED_IN),
       // а не при тихом восстановлении сессии (INITIAL_SESSION / TOKEN_REFRESHED)
       if (event === 'SIGNED_IN') {
@@ -210,6 +237,7 @@ export function AuthProvider({ children }) {
     loading,
     isLoggedIn: !!user,
     isNewUser,
+    syncReady,
     dismissOnboarding: () => setIsNewUser(false),
     signOut: handleSignOut,
     registerBeforeSignOut,

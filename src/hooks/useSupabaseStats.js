@@ -92,7 +92,7 @@ export function useSupabaseStats(userId) {
       // node_progress теперь возвращает node_id + status (для ID-списков).
       // favorites возвращает item_id + item_type (для bookmarkNodeIds).
       const [progressRes, nodeRes, favRes, dates] = await Promise.all([
-        supabase.from('learning_progress').select('tutorial_id,completed_at,completed_steps,last_step_index').eq('user_id', userId),
+        supabase.from('learning_progress').select('tutorial_id,completed_at,completed_steps,last_step_index,started_at').eq('user_id', userId),
         supabase.from('node_progress').select('node_id,status').eq('user_id', userId),
         supabase.from('favorites').select('item_id,item_type').eq('user_id', userId),
         fetchActivityDates(userId),
@@ -105,7 +105,7 @@ export function useSupabaseStats(userId) {
       const doneProg         = progress.filter(p => !!p.completed_at);
       const tutorialsDone    = doneProg.length;
       const tutorialsStarted = progress.filter(p =>
-        !p.completed_at && ((p.completed_steps?.length || 0) > 0 || (p.last_step_index || 0) > 0)
+        !p.completed_at && (p.started_at || (p.completed_steps?.length || 0) > 0 || (p.last_step_index || 0) > 0)
       ).length;
       // ID завершённых туториалов — для списка в ProfilePanel
       const completedTutorialIds = doneProg

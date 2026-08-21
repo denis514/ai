@@ -22,23 +22,27 @@
  */
 
 import { supabase } from '../lib/supabaseClient.js';
-import { mergeTutorials, mergeNodes, mergeBookmarks } from './progressMerge.js';
+import { mergeTutorials, mergeNodes, mergeBookmarks, mergeActivity } from './progressMerge.js';
 
 const KEYS = {
   tutorials:   'claude-mindmap.tutorial-progress.v1',
   nodeProgress:'claude-mindmap:node-progress:v1',
   bookmarks:   'claude-mindmap:bookmarks:v1',
-  level:       'claude-mindmap:user-level:v1',
-  locale:      'claude-mindmap:locale:v1',
+  activity:    'claude-mindmap:activity-log:v1',
 };
 
 // Для каких пользователей уже подтянули облако в этом сеансе страницы.
 // Пока пользователя здесь нет — писать в облако нельзя (см. комментарий выше).
-const hydrated = new Set();
+// Значение — какие именно таблицы прочитались: если не ответили курсы, писать
+// курсы нельзя (точечная запись перезаписала бы облачное «завершено» локальным
+// пустым), а темы и закладки — можно.
+const hydrated = new Map(); // userId → Set<'tutorials'|'nodes'|'bookmarks'|'activity'>
 
-/** Подтянуто ли облако для этого пользователя в текущем сеансе. */
-export function isHydrated(userId) {
-  return !!userId && hydrated.has(userId);
+/** Подтянуто ли облако для этого пользователя в текущем сеансе (хоть одна таблица). */
+export function isHydrated(userId, table) {
+  const set = userId ? hydrated.get(userId) : null;
+  if (!set) return false;
+  return table ? set.has(table) : set.size > 0;
 }
 
 /**
@@ -84,15 +88,17 @@ export async function pullRemoteToLocal(userId, { isStale = () => false } = {}) 
   if (!supabase || !userId) return { pulled: 0, errors: ['Not available'] };
 
   const errors = [];
+  const ok = new Set();
   let pulled = 0;
 
   try {
-    const [tutRes, nodeRes, favRes] = await Promise.all([
+    const [tutRes, nodeRes, favRes, actRes] = await Promise.all([
       supabase.from('learning_progress')
-        .select('tutorial_id, completed_steps, last_step_index, completed_at')
+        .select('tutorial_id, completed_steps, last_step_index, completed_at, started_at')
         .eq('user_id', userId),
       supabase.from('node_progress').select('node_id, status').eq('user_id', userId),
       supabase.from('favorites').select('item_type, item_id, added_at').eq('user_id', userId),
+      supabase.from('activity_log').select('date').eq('user_id', userId),
     ]);
 
     // Пока ждали сеть, человек мог выйти или смениться. Тогда писать его
@@ -102,6 +108,7 @@ export async function pullRemoteToLocal(userId, { isStale = () => false } = {}) 
     // ── Курсы ──
     if (tutRes.error) errors.push(`tutorials: ${tutRes.error.message}`);
     else {
+      ok.add('tutorials');
       const rows = tutRes.data || [];
       writeLocal(KEYS.tutorials, mergeTutorials(readLocal(KEYS.tutorials) || {}, rows));
       pulled += rows.length;
@@ -110,6 +117,7 @@ export async function pullRemoteToLocal(userId, { isStale = () => false } = {}) 
     // ── Темы ──
     if (nodeRes.error) errors.push(`nodes: ${nodeRes.error.message}`);
     else {
+      ok.add('nodes');
       const rows = nodeRes.data || [];
       writeLocal(KEYS.nodeProgress, mergeNodes(readLocal(KEYS.nodeProgress) || {}, rows));
       pulled += rows.length;
@@ -118,19 +126,31 @@ export async function pullRemoteToLocal(userId, { isStale = () => false } = {}) 
     // ── Закладки ──
     if (favRes.error) errors.push(`bookmarks: ${favRes.error.message}`);
     else {
+      ok.add('bookmarks');
       const rows = favRes.data || [];
       writeLocal(KEYS.bookmarks, mergeBookmarks(readLocal(KEYS.bookmarks), rows));
       pulled += rows.length;
+    }
+
+    // ── Дни активности (серия) ──
+    // Раньше у гостя и у аккаунта были два несвязанных журнала: серия в 30 дней
+    // после входа превращалась в «1 день». Теперь объединяем.
+    if (actRes.error) errors.push(`activity: ${actRes.error.message}`);
+    else {
+      ok.add('activity');
+      const dates = (actRes.data || []).map(r => r.date);
+      writeLocal(KEYS.activity, mergeActivity(readLocal(KEYS.activity) || [], dates));
+      pulled += dates.length;
     }
   } catch (e) {
     errors.push(e?.message || String(e));
   }
 
-  // Разрешаем запись в облако, даже если часть таблиц не ответила: иначе
-  // пользователь вообще потеряет синхронизацию. Но если не ответило ВСЁ —
-  // не разрешаем, чтобы пустой браузер не затёр облако.
-  if (errors.length < 3) {
-    hydrated.add(userId);
+  // Разрешаем запись только в те таблицы, которые прочитались: иначе пустой
+  // (или неполный) браузер затёр бы облако. Если не ответило ничего —
+  // не разрешаем вовсе.
+  if (ok.size > 0) {
+    hydrated.set(userId, ok);
     try { window.dispatchEvent(new Event(LOCAL_HYDRATED_EVENT)); } catch { /* SSR */ }
   }
 
@@ -148,15 +168,20 @@ export async function syncLocalToSupabase(userId) {
   const errors = [];
   let synced = 0;
 
+  // Каждую таблицу пишем только если её удалось прочитать при pull: иначе
+  // локальная (неслитая) копия перезаписала бы облако.
+  const can = (table) => isHydrated(userId, table);
+
   // ── 1. Tutorial progress ──────────────────────────────────────────────────
   const tutorials = readLocal(KEYS.tutorials);
-  if (tutorials && typeof tutorials === 'object') {
+  if (can('tutorials') && tutorials && typeof tutorials === 'object') {
     const rows = Object.entries(tutorials).map(([tutorial_id, p]) => ({
       user_id:         userId,
       tutorial_id,
       completed_steps: p.completedSteps || [],
       last_step_index: p.lastStepIndex  || 0,
       completed_at:    p.completedAt    || null,
+      started_at:      p.startedAt      || null,
       updated_at:      new Date().toISOString(),
     }));
 
@@ -171,7 +196,7 @@ export async function syncLocalToSupabase(userId) {
 
   // ── 2. Node progress ──────────────────────────────────────────────────────
   const nodeProgress = readLocal(KEYS.nodeProgress);
-  if (nodeProgress && typeof nodeProgress === 'object') {
+  if (can('nodes') && nodeProgress && typeof nodeProgress === 'object') {
     const rows = Object.entries(nodeProgress)
       .filter(([, status]) => status === 'viewed' || status === 'review')
       .map(([node_id, status]) => ({
@@ -192,7 +217,7 @@ export async function syncLocalToSupabase(userId) {
 
   // ── 3. Bookmarks ──────────────────────────────────────────────────────────
   const bookmarks = readLocal(KEYS.bookmarks);
-  if (Array.isArray(bookmarks)) {
+  if (can('bookmarks') && Array.isArray(bookmarks)) {
     const rows = bookmarks.map(b => ({
       user_id:   userId,
       item_type: b.type,
@@ -209,6 +234,17 @@ export async function syncLocalToSupabase(userId) {
     }
   }
 
+  // ── 4. Дни активности ─────────────────────────────────────────────────────
+  const activity = readLocal(KEYS.activity);
+  if (can('activity') && Array.isArray(activity) && activity.length > 0) {
+    const rows = mergeActivity(activity, []).map(date => ({ user_id: userId, date }));
+    const { error } = await supabase
+      .from('activity_log')
+      .upsert(rows, { onConflict: 'user_id,date', ignoreDuplicates: true });
+    if (error) errors.push(`activity: ${error.message}`);
+    else synced += rows.length;
+  }
+
   return { synced, errors };
 }
 
@@ -221,13 +257,14 @@ export async function syncLocalToSupabase(userId) {
  */
 export async function syncTutorialProgress(userId, progressMap) {
   if (!supabase || !userId || !progressMap) return;
-  if (!hydrated.has(userId)) return;   // облако ещё не подтянуто — писать опасно
+  if (!isHydrated(userId, 'tutorials')) return;   // облако ещё не подтянуто — писать опасно
   const rows = Object.entries(progressMap).map(([tutorial_id, p]) => ({
     user_id:         userId,
     tutorial_id,
     completed_steps: p.completedSteps || [],
     last_step_index: p.lastStepIndex  || 0,
     completed_at:    p.completedAt    || null,
+    started_at:      p.startedAt      || null,
     updated_at:      new Date().toISOString(),
   }));
   if (!rows.length) return;
@@ -243,7 +280,7 @@ export async function syncTutorialProgress(userId, progressMap) {
  */
 export async function syncNodeProgress(userId, nodeProgressMap) {
   if (!supabase || !userId || !nodeProgressMap) return;
-  if (!hydrated.has(userId)) return;   // иначе удалим из облака то, чего нет в этом браузере
+  if (!isHydrated(userId, 'nodes')) return;   // иначе удалим из облака то, чего нет в этом браузере
 
   const { data: existing } = await supabase
     .from('node_progress')
@@ -281,7 +318,7 @@ export async function syncNodeProgress(userId, nodeProgressMap) {
  */
 export async function syncBookmarks(userId, bookmarksMap) {
   if (!supabase || !userId || !bookmarksMap) return;
-  if (!hydrated.has(userId)) return;   // иначе удалим из облака то, чего нет в этом браузере
+  if (!isHydrated(userId, 'bookmarks')) return;   // иначе удалим из облака то, чего нет в этом браузере
 
   // Получаем текущие закладки из Supabase чтобы найти удалённые
   const { data: existing } = await supabase
