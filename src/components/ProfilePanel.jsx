@@ -87,6 +87,16 @@ export default function ProfilePanel({
   const tutsTotal   = tutorialIds.length;
   const tutPercent  = Math.round((tutsDone / tutsTotal) * 100);
 
+  // Есть ли у гостя что экспортировать/сбрасывать: любой прогресс, закладки,
+  // имя или начатые разборы. Пустому гостю эти кнопки — шум.
+  const guestHasData = !isLoggedIn && (
+    localTutsDone > 0 ||
+    nodeProgressApi.total > 0 ||
+    bookmarksApi.count > 0 ||
+    !!identityApi?.isSet ||
+    tutorialIds.some(id => !!progressApi.getProgress(id)?.startedAt)
+  );
+
   const nodesViewed  = isLoggedIn ? supaStats.nodesViewed  : nodeProgressApi.counts.viewed;
   const nodesReview  = isLoggedIn ? supaStats.nodesReview  : nodeProgressApi.counts.review;
   const bmCount      = isLoggedIn ? supaStats.bookmarksCount : bookmarksApi.count;
@@ -446,25 +456,31 @@ export default function ProfilePanel({
       )}
 
       {/* ── DATA / SETTINGS — только для гостей ── */}
-      {/* Залогиненные используют AccountPage: там Supabase-экспорт (GDPR Art.20) */}
+      {/* Залогиненные используют AccountPage: там Supabase-экспорт (GDPR Art.20).
+          Пока гость ничего не накопил, экспортировать и сбрасывать нечего —
+          показываем только «Импорт» (вернуть прогресс из файла). */}
       {!isLoggedIn && (
         <section className="profile-panel__section">
           <h4>{t('profile.data')}</h4>
           <div className="profile-panel__settings">
-            <button type="button" className="profile-panel__setting-btn" onClick={exportData}>
-              <Icon name="external-link" size={14} strokeWidth={1.5} />
-              <span>{t('profile.data.export')}</span>
-            </button>
+            {guestHasData && (
+              <button type="button" className="profile-panel__setting-btn" onClick={exportData}>
+                <Icon name="external-link" size={14} strokeWidth={1.5} />
+                <span>{t('profile.data.export')}</span>
+              </button>
+            )}
             <button type="button" className="profile-panel__setting-btn" onClick={() => fileInputRef.current?.click()}>
               <Icon name="inbox" size={14} strokeWidth={1.5} />
               <span>{t('profile.data.import')}</span>
             </button>
             <input ref={fileInputRef} type="file" accept="application/json,.json" style={{ display: 'none' }} onChange={importData} />
             {importMsg && <div className="profile-panel__msg">{importMsg}</div>}
-            <button type="button" className="profile-panel__setting-btn profile-panel__setting-btn--danger" onClick={resetAll}>
-              <Icon name="close" size={14} strokeWidth={1.75} />
-              <span>{t('profile.data.reset')}</span>
-            </button>
+            {guestHasData && (
+              <button type="button" className="profile-panel__setting-btn profile-panel__setting-btn--danger" onClick={resetAll}>
+                <Icon name="close" size={14} strokeWidth={1.75} />
+                <span>{t('profile.data.reset')}</span>
+              </button>
+            )}
           </div>
         </section>
       )}
