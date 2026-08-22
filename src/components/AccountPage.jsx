@@ -213,8 +213,11 @@ export default function AccountPage({
   const [nameDraft, setNameDraft] = useState('');
   const [nameSaving, setNameSaving] = useState(false);
   const [nameSaved, setNameSaved] = useState(false);
+  // Предзаполняем тем же именем, что показывает плашка профиля: сохранённое →
+  // имя из Google-профиля → пусто. Иначе поле выглядит пустым, хотя имя есть.
   useEffect(() => {
-    setNameDraft(user ? (profile?.display_name || '') : (identityApi?.name || ''));
+    const sessionName = user?.user_metadata?.full_name || user?.user_metadata?.name || '';
+    setNameDraft(user ? (profile?.display_name || sessionName) : (identityApi?.name || ''));
   }, [user?.id, profile?.display_name, identityApi?.name]); // eslint-disable-line
 
   const saveName = async () => {
