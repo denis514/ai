@@ -3,7 +3,7 @@ import Icon from './Icon.jsx';
 import PlanetLogo from './PlanetLogo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
-import { updateProfile, deleteProfile } from '../services/profileService.js';
+import { deleteProfile } from '../services/profileService.js';
 import { exportUserData, resetLocalData } from '../services/dataExport.js';
 import { useConfirm } from '../hooks/useConfirm.js';
 import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
@@ -14,6 +14,7 @@ import { WHATS_NEW } from '../data/whatsNew.js';
 import { nodeIndex } from '../data/mindmapData.js';
 import { useWhatsNew, isFresh } from '../hooks/useWhatsNew.js';
 import Skeleton from './Skeleton.jsx';
+import LanguageSwitcher from './LanguageSwitcher.jsx';
 import { listWorkflows } from '../builder/services/workflowStorage.js';
 import { listAllSchedules, getTodayUsage } from '../builder/services/scheduleService.js';
 
@@ -38,7 +39,7 @@ export default function AccountPage({
   onOpenBuilder,
 }) {
   const t = useT();
-  const { locale, setLocale, locales, contentVersion } = useLocale();
+  const { locale, contentVersion } = useLocale();
   const { user, profile, setProfile, signOut } = useAuth();
   const { confirm } = useConfirm();
 
@@ -219,15 +220,6 @@ export default function AccountPage({
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
-
-  // ── Сохранить язык ────────────────────────────────────────────────────────
-  const saveLocale = async (code) => {
-    setLocale(code);
-    if (user) {
-      await updateProfile(user.id, { locale: code });
-      setProfile(p => ({ ...p, locale: code }));
-    }
-  };
 
   // ── Экспорт данных (GDPR Art. 20) ────────────────────────────────────────
   // Одна выгрузка для гостя и вошедшего — services/dataExport.js
@@ -740,31 +732,11 @@ export default function AccountPage({
               </div>
             )}
 
-            {user && (
-            <div className="account-field">
-              <label className="account-label">{t('account.displayName')}</label>
-              <div className="account-value account-value--readonly">
-                <Icon name="user" size={14} strokeWidth={1.5} />
-                {profile?.display_name || <span style={{ opacity: 0.45 }}>{t('profile.namePlaceholder')}</span>}
-              </div>
-              <span className="account-hint">{t('account.nameHint')}</span>
-            </div>
-            )}
-
             <div className="account-field">
               <label className="account-label">{t('account.language')}</label>
-              <div className="account-lang-row">
-                {locales.map(code => (
-                  <button
-                    key={code}
-                    type="button"
-                    className={`account-lang-btn ${locale === code ? 'is-active' : ''}`}
-                    onClick={() => saveLocale(code)}
-                  >
-                    {code === 'en' ? 'EN' : code === 'ru' ? 'RU' : 'FI'}
-                  </button>
-                ))}
-              </div>
+              {/* Единый переключатель из стайлгайда — тот же, что в шапке карты.
+                  Сам сохраняет выбор (и в профиль у вошедшего). */}
+              <LanguageSwitcher align="left" title={t('account.language')} />
             </div>
           </section>
 
