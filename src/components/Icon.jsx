@@ -94,6 +94,7 @@ import {
   CircleArrowReload01Icon,
   // auth icons
   Login01Icon,
+  Logout01Icon,
   Mail01Icon,
   MailSend01Icon,
   Alert01Icon,
@@ -205,6 +206,8 @@ const REGISTRY = {
   more:        MoreHorizontalIcon,
   // auth
   login:       Login01Icon,
+  logout:      Logout01Icon,
+  Logout01Icon,
   mail:        Mail01Icon,
   send:        MailSend01Icon,
   warning:     Alert01Icon,

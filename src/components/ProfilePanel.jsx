@@ -30,7 +30,7 @@ export default function ProfilePanel({
   const { confirm } = useConfirm();
   const { toast } = useToast();
   const { locale } = useLocale();
-  const { user, profile, setProfile, isLoggedIn } = useAuth();
+  const { user, profile, setProfile, isLoggedIn, signOut } = useAuth();
   const [completedOpen, setCompletedOpen] = useState(false);
 
   // Supabase stats (только когда залогинен)
@@ -464,6 +464,22 @@ export default function ProfilePanel({
             <button type="button" className="profile-panel__setting-btn profile-panel__setting-btn--danger" onClick={resetAll}>
               <Icon name="close" size={14} strokeWidth={1.75} />
               <span>{t('profile.data.reset')}</span>
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* ── Выйти — прямо из панели, не только из кабинета ── */}
+      {isLoggedIn && (
+        <section className="profile-panel__section">
+          <div className="profile-panel__settings">
+            <button
+              type="button"
+              className="profile-panel__setting-btn"
+              onClick={async () => { await signOut(); onClose?.(); }}
+            >
+              <Icon name="logout" size={14} strokeWidth={1.5} />
+              <span>{t('auth.signOut')}</span>
             </button>
           </div>
         </section>
