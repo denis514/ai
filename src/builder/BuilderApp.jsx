@@ -783,7 +783,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // Шаг 2 «Из шаблона»: строим граф шаблона, имя берём из введённого
   // пользователем (а не из шаблона), сразу создаём запись.
   const pickTemplateForNew = useCallback(async (template) => {
-    const name = nameDraft.trim() || (template.nameKey ? t(template.nameKey) : '') || 'Workflow';
+    const name = nameDraft.trim() || (template.nameKey ? t(template.nameKey) : '') || t('builder.workflows.defaultName') || 'Схема';
     const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE, t);
     skipDirtyRef.current = true;
     setNodes(newNodes);
@@ -1696,7 +1696,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
           <LanguageSwitcher title={t('common.language') || 'Язык'} />
         </div>
 
-        {/* Центр: переключатель «Мои workflow» (имя текущей схемы + список) */}
+        {/* Центр: переключатель «Мои схемы» (имя текущей схемы + список) */}
         <div className="builder-header__center">
           <div className="builder-header__switcher-wrap">
             <button
