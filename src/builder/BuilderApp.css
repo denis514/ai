@@ -2662,18 +2662,16 @@
 /* Empty canvas state                                 */
 /* ────────────────────────────────────────────────── */
 
-/* ── Автосборка: строка «опиши задачу» на пустом холсте ─────────────────── */
+/* ── Автосборка: строка «опиши задачу», кнопка-молния ВНУТРИ строки ──────── */
 .builder-app .builder-gen-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  position: relative;
   margin-top: 18px;
-  width: min(560px, 92%);
+  width: min(640px, 94%);
 }
 .builder-app .builder-gen-input {
-  flex: 1;
-  height: 46px;
-  padding: 0 18px;
+  width: 100%;
+  height: 48px;
+  padding: 0 56px 0 18px; /* справа место под круглую кнопку */
   border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--surface);
@@ -2683,8 +2681,27 @@
 }
 .builder-app .builder-gen-input:focus { border-color: var(--accent); }
 .builder-app .builder-gen-input::placeholder { color: var(--text-muted); }
-.builder-app .builder-gen-cta { flex: 0 0 auto; }
-.builder-app .builder-gen-cta:disabled { opacity: 0.55; cursor: default; }
+/* Круглая кнопка внутри строки: тот же живой градиент, но 38×38 без подписи */
+.builder-app .builder-gen-row .builder-gen-cta {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  padding: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.builder-app .builder-gen-row .builder-gen-cta .builder-start-cta__label {
+  padding: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+.builder-app .builder-gen-row .builder-gen-cta:disabled { opacity: 0.55; cursor: default; }
 .builder-app .builder-gen-note {
   margin-top: 8px;
   font-size: 12px;
@@ -2704,11 +2721,6 @@
   padding: 6px;
 }
 .builder-app .builder-gen-blank:hover { color: var(--text); }
-@media (max-width: 640px) {
-  .builder-app .builder-gen-row { flex-direction: column; }
-  .builder-app .builder-gen-input { width: 100%; }
-}
-
 .builder-app .builder-empty-canvas {
   position: absolute;
   inset: 0;

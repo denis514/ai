@@ -62,6 +62,8 @@ export default function GenerateHero({ t, busy, remaining, error, ownKey = false
 
   return (
     <>
+      {/* Кнопка-«молния» живёт ВНУТРИ строки (решение основателя): круглая,
+          без подписи; имя действия остаётся для незрячих в aria-label. */}
       <div className="builder-gen-row" style={{ pointerEvents: 'auto' }}>
         <input
           ref={inputRef}
@@ -82,7 +84,8 @@ export default function GenerateHero({ t, busy, remaining, error, ownKey = false
           className="builder-start-cta builder-gen-cta"
           onClick={submit}
           disabled={busy || value.trim().length < 8}
-          aria-label={t('builder.gen.build')}
+          aria-label={busy ? t('builder.gen.building') : t('builder.gen.build')}
+          title={busy ? t('builder.gen.building') : t('builder.gen.build')}
         >
           <span className="builder-cta-blob-r1" aria-hidden="true" />
           <span className="builder-cta-blob-r2" aria-hidden="true" />
@@ -92,9 +95,8 @@ export default function GenerateHero({ t, busy, remaining, error, ownKey = false
           <span className="builder-cta-blob-a"  aria-hidden="true" />
           <span className="builder-start-cta__label">
             {busy
-              ? <Icon name="refresh-circle" size={15} strokeWidth={1.6} />
-              : <Icon name="flash" size={15} strokeWidth={1.6} />}
-            <span>{busy ? t('builder.gen.building') : t('builder.gen.build')}</span>
+              ? <Icon name="refresh-circle" size={16} strokeWidth={1.6} />
+              : <Icon name="flash" size={16} strokeWidth={1.6} />}
           </span>
         </button>
       </div>
