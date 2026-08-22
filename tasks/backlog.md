@@ -128,7 +128,7 @@ workflow/playbook:
 
 ---
 
-### №5 — Deprecate-watch sweep (7 узлов)
+### №5 — Deprecate-watch sweep (7 узлов) — ✅ ЗАКРЫТО 2026-08-22
 
 **Проблема.** Узлы Foundation, стратегически чувствительные к фактам Anthropic,
 не ревизовались с миграции стратегии:
@@ -140,10 +140,12 @@ m-ready
 b-knowledge
 ```
 
-**Подход:** запустить `news-watcher` (skill готов, не использовался) →
-получить дельты Anthropic → пройтись по 7 узлам → актуализировать.
-
-**Эффорт:** 1 день на all 7, при условии что news-watcher даст хороший дайджест.
+**Закрыто 2026-08-22:** news-watcher прогнан (3 исследователя по официальным
+источникам), все 7 узлов актуализированы в трёх локалях: домены → claude.com /
+platform.claude.com, планы Max 5x/20x + usage credits, именованные API-tier-ы
+(Evaluation→Custom) + spend limits, память на Free и по-проектная, computer use
+GA (`computer_toolset_20260801`) + Claude in Chrome, MCP Registry + каталог
+коннекторов + Agentic AI Foundation, cutoff-ы семейства Claude 5.
 
 ---
 

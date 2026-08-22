@@ -105,6 +105,25 @@
 
 ---
 
+## 📚 Deprecate-watch: 7 узлов актуализированы (2026-08-22)
+
+Бэклог №5 закрыт. news-watcher (3 исследователя по claude.com / platform.claude.com /
+support.claude.com / MCP-блогу) → все 7 узлов переписаны под август-2026 в ru/en/fi:
+`pl-plans` (Max 5x/20x, usage credits, Team от 2 мест), `pl-limits` (общая квота
+на все поверхности, effort, Settings→Usage), `pl-rate` (именованные tier-ы,
+spend limits, ITPM/OTPM, кэш не тратит ITPM), `cap-memory` (Free, по-проектная,
+Settings→Memory, инкогнито), `cap-computer` (GA, toolset 2026-08, Claude in
+Chrome), `m-ready` (MCP Registry, каталог коннекторов, Agentic AI Foundation),
+`b-knowledge` (cutoff-ы Claude 5: Opus 5 май-2026, Fable/Sonnet 5 янв-2026,
+Haiku 4.5 фев-2025). Лейблы «обновлено» проставлены скриптом.
+
+Попутно замечен старый долг отображения: панель узла рендерит `[[node:…]]`,
+но не markdown (`**`, списки, `[текст](url)`) — внешние md-ссылки из этих узлов
+убраны, остальная разметка как во всём файле. В бэклог: либо markdown-рендер
+в InlineText, либо чистка разметки по всем узлам.
+
+---
+
 ## 🔐 Цикл данных: вход / выход / удаление (2026-08-21)
 
 Ревизия путей «гость» и «вошедший» (оба пути пройдены по коду, отчёт в чате
