@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import PlanetLogo from './PlanetLogo.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
-import { useTheme } from '../hooks/useTheme.js';
 import LanguageSwitcher from './LanguageSwitcher.jsx';
+import ThemeSwitcher from './ThemeSwitcher.jsx';
 
 
 /**
@@ -28,7 +28,6 @@ export default function CanvasHeader({
   route
 }) {
   const t = useT();
-  const { mode, setThemeMode } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [bar, setBar] = useState(null); // 'theme' | 'lang' | null — независимые кнопки справа
   const [searchOpen, setSearchOpen] = useState(false);
@@ -40,12 +39,6 @@ export default function CanvasHeader({
     setMenuOpen(false);
     setBar(null);
   }, [route]);
-
-  const THEME_OPTS = [
-    { m: 'light', icon: 'sun',    label: t('profile.theme.light') || 'Светлая тема' },
-    { m: 'dark',  icon: 'moon',   label: t('profile.theme.dark')  || 'Тёмная тема' },
-    { m: 'auto',  icon: 'laptop', label: t('profile.theme.auto')  || 'Как в системе' },
-  ];
 
   // Click-outside закрывает меню «Atlas» и независимые попапы (тема/язык)
   useEffect(() => {
@@ -148,40 +141,11 @@ export default function CanvasHeader({
 
       {/* Независимые кнопки справа от плашки «Atlas»: тема и язык */}
       <div className="canvas-header__tools">
-        <div className="canvas-header__tool">
-          <button
-            type="button"
-            className={`canvas-header__tool-btn ${bar === 'theme' ? 'is-open' : ''}`}
-            onClick={() => setBar(b => (b === 'theme' ? null : 'theme'))}
-            aria-haspopup="listbox"
-            aria-expanded={bar === 'theme'}
-            title={t('profile.theme.cycle') || 'Тема'}
-          >
-            <Icon
-              name={mode === 'auto' ? 'laptop' : mode === 'dark' ? 'moon' : 'sun'}
-              size={16}
-              strokeWidth={1.5}
-            />
-          </button>
-          {bar === 'theme' && (
-            <div className="canvas-header__pop" role="listbox">
-              {THEME_OPTS.map(({ m, icon, label }) => (
-                <button
-                  key={m}
-                  type="button"
-                  className={`canvas-header__menu-item ${mode === m ? 'is-active' : ''}`}
-                  onClick={() => { setThemeMode(m); setBar(null); }}
-                  role="option"
-                  aria-selected={mode === m}
-                >
-                  <Icon name={icon} size={16} strokeWidth={1.5} />
-                  <span>{label}</span>
-                  {mode === m && <Icon name="check" size={14} strokeWidth={2} />}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Стандарт шапки: тема + язык одним рядом, общие компоненты */}
+        <ThemeSwitcher
+          open={bar === 'theme'}
+          onOpenChange={(v) => setBar(v ? 'theme' : null)}
+        />
 
         <LanguageSwitcher
           title={t('common.language') || 'Язык'}

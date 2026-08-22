@@ -16,6 +16,7 @@ import 'reactflow/dist/style.css';
 import Icon from '../components/Icon.jsx';
 import PlanetLogo from '../components/PlanetLogo.jsx';
 import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
+import ThemeSwitcher from '../components/ThemeSwitcher.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { NODE_DEFS, TOOLBOX_GROUPS, getNodeDef, KIND_TO_NODE_TYPE, canAddNode, hasConfigPanel } from './data/nodeTypes.js';
@@ -1692,7 +1693,8 @@ function BuilderAppInner({ initialTemplateId = null }) {
             </button>
           )}
 
-          {/* Переключатель языка — ВСЕГДА в левой части (как в Atlas) */}
+          {/* Стандарт шапки: тема + язык одним рядом (как в Atlas и кабинете) */}
+          <ThemeSwitcher />
           <LanguageSwitcher title={t('common.language') || 'Язык'} />
         </div>
 

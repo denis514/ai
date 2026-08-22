@@ -323,6 +323,11 @@ export default function AccountPage({
           <strong>{t('account.title') || 'Аккаунт'}</strong>
         </span>
       </div>
+      {/* Стандарт шапки: справа тема + язык, те же компоненты, что везде */}
+      <div className="account-page__topactions">
+        <ThemeSwitcher />
+        <LanguageSwitcher title={t('account.language')} />
+      </div>
     </header>
   );
 
@@ -794,15 +799,6 @@ export default function AccountPage({
                 >
                   {nameSaved ? <Icon name="check" size={16} strokeWidth={2} /> : t('common.save')}
                 </button>
-              </div>
-            </div>
-
-            <div className="account-field">
-              <label className="account-label">{t('account.appearance')}</label>
-              {/* Единые переключатели из стайлгайда — те же, что в шапке карты. */}
-              <div className="account-switchers">
-                <LanguageSwitcher align="left" title={t('account.language')} />
-                <ThemeSwitcher align="left" />
               </div>
             </div>
 
