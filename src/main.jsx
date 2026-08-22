@@ -7,6 +7,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import { migrateLegacyHash } from './hooks/useHashRoute.js';
 import { isOAuthPopup, finishOAuthPopup, isGcalPopup, finishGcalPopup } from './lib/oauthPopup.js';
 import { supabase } from './lib/supabaseClient.js';
+import { inject as injectVercelAnalytics } from '@vercel/analytics';
 import './index.css';
 import './App.css';
 
@@ -28,6 +29,12 @@ if (isGcalPopup()) {
 }
 
 function bootstrap() {
+
+// Счётчик посещений Vercel Web Analytics: без cookies, не профилирует людей —
+// только агрегированные просмотры страниц. Работает лишь на vercel.app-домене
+// (локально скрипт не грузится — это нормально). Переходы внутри приложения
+// (history.pushState) скрипт отслеживает сам.
+injectVercelAnalytics();
 
 // Обратная совместимость: старые ссылки '#/<lang>/<type>/<id>' → новый путь.
 // Делаем ДО первого рендера, чтобы роутер сразу читал корректный pathname.
