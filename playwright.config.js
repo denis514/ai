@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Playwright smoke-тесты для 105 Atlas.
- * Запускаются против продакшна: https://105-atlas.vercel.app
+ * Запускаются против продакшна: https://www.105-atlas.app
  *
  * Запуск локально:
  *   npm run test:smoke
@@ -16,7 +16,7 @@ export default defineConfig({
   workers: 1,            // последовательно — тесты на одном сайте
 
   use: {
-    baseURL: 'https://105-atlas.vercel.app',
+    baseURL: 'https://www.105-atlas.app',
     headless: true,
     screenshot: 'only-on-failure',
     video: 'off',

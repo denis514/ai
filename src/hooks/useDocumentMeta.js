@@ -21,7 +21,7 @@ const SITE = '105 Atlas';
 // Строка-фолбэк — только для SSR/без window.
 function siteOrigin() {
   if (typeof window !== 'undefined' && window.location?.origin) return window.location.origin;
-  return 'https://105-atlas.vercel.app';
+  return 'https://www.105-atlas.app';
 }
 
 const DEFAULTS = {

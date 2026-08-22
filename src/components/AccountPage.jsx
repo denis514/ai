@@ -815,12 +815,12 @@ export default function AccountPage({
             <h2>{t('account.gdprContact')}</h2>
             <p className="account-section__desc">{t('account.gdprContactDesc')}</p>
             <a
-              href="mailto:privacy@105-atlas.vercel.app"
+              href="mailto:privacy@105-atlas.app"
               className="account-btn account-btn--ghost"
               style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
             >
               <Icon name="mail" size={16} strokeWidth={1.5} />
-              privacy@105-atlas.vercel.app
+              privacy@105-atlas.app
             </a>
           </section>
 

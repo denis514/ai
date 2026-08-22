@@ -2,12 +2,12 @@
  * shareUrl.js — построение абсолютной ссылки на обучающую сущность для «Поделиться».
  *
  * URL совпадает с path-роутингом приложения (ADR-0008):
- *   <origin>/<lang>/<type>/<id>   напр. https://105-atlas.vercel.app/ru/node/cap-tools
+ *   <origin>/<lang>/<type>/<id>   напр. https://www.105-atlas.app/ru/node/cap-tools
  * Превью-карточку (title/og) страница отдаёт сама (см. useDocumentMeta).
  */
 import { isLocale } from '../i18n/config.js';
 
-const FALLBACK_ORIGIN = 'https://105-atlas.vercel.app';
+const FALLBACK_ORIGIN = 'https://www.105-atlas.app';
 
 function currentLocale() {
   if (typeof window === 'undefined') return 'ru';
