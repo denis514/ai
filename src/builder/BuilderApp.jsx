@@ -39,6 +39,8 @@ import RecentWorkflows from './components/panels/RecentWorkflows.jsx';
 import ApiKeysModal from './components/panels/ApiKeysModal.jsx';
 import ScheduleModal from './components/panels/ScheduleModal.jsx';
 import AllSchedulesModal from './components/panels/AllSchedulesModal.jsx';
+import GenerateHero from './components/GenerateHero.jsx';
+import { generateScheme, schemeToTemplate } from './services/generateService.js';
 import AuthModal from '../components/AuthModal.jsx';
 import { TEMPLATES } from './data/templates.js';
 import { OUTPUT_TIERS, DEFAULT_TIER, estimateRun, countAgentNodes } from './data/outputTiers.js';
@@ -800,6 +802,55 @@ function BuilderAppInner({ initialTemplateId = null }) {
     setTimeout(() => fitView({ padding: 0.25, maxZoom: 1, duration: 400 }), 90);
     await persist(name, newNodes, newEdges, null);
   }, [nameDraft, t, persist, setNodes, setEdges, fitView]);
+
+  // ── Автосборка «опиши задачу → схема» (решение основателя 2026-08-23) ────
+  const [genBusy, setGenBusy] = useState(false);
+  const [genRemaining, setGenRemaining] = useState(null);
+  const [genError, setGenError] = useState('');
+  const handleGenerate = useCallback(async (queryText) => {
+    if (genBusy) return;
+    setGenBusy(true);
+    setGenError('');
+    try {
+      const { scheme, remaining } = await generateScheme(queryText, locale);
+      if (remaining != null) setGenRemaining(remaining);
+      const template = schemeToTemplate(scheme);
+      const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE, t);
+      if (template.start) {
+        const trig = newNodes.find(n => n.data?.kind === 'trigger');
+        if (trig) { trig.data.task = template.start; trig.data.hasInput = true; }
+      }
+      skipDirtyRef.current = true;
+      setNodes(newNodes);
+      setEdges(newEdges);
+      setRunInput(template.start || '');
+      setRunVars(triggerVarsOf(newNodes));
+      setSelectedNodeId(null);
+      setExecLogs([]);
+      setExecStatus('idle');
+      setTimeout(() => fitView({ padding: 0.25, maxZoom: 1, duration: 400 }), 90);
+      track('builder_generate', { ok: 1 });
+      await persist(template.name || t('builder.workflows.defaultName') || 'Схема', newNodes, newEdges, null);
+      engageBuilder();
+    } catch (e) {
+      track('builder_generate', { ok: 0, code: e?.code || 'unknown' });
+      if (e?.code === 'daily_limit') {
+        setGenRemaining(0);
+        setGenError(t('builder.gen.counterOut'));
+      } else if (e?.code === 'monthly_cap') {
+        setGenRemaining(0);
+        setGenError(t('builder.gen.errMonthly'));
+      } else if (e?.code === 'not_a_task') {
+        setGenError(t('builder.gen.errNotTask'));
+      } else if (e?.code === 'query_too_short') {
+        setGenError(t('builder.gen.errShort'));
+      } else {
+        setGenError(t('builder.gen.errFailed'));
+      }
+    } finally {
+      setGenBusy(false);
+    }
+  }, [genBusy, locale, t, persist, setNodes, setEdges, fitView]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Закрытие модалки (cancel) — сброс на шаг имени.
   const closeNameModal = useCallback(() => {
@@ -2220,26 +2271,16 @@ function BuilderAppInner({ initialTemplateId = null }) {
               <h2>{t('builder.canvas.emptyTitle') || 'Build your first agent'}</h2>
               <p>{t('builder.canvas.emptyDesc') || 'Drag a node from the left panel, or pick a template.'}</p>
 
-              {/* Главный CTA — «Старт»: сразу добавляет узел trigger-input на холст.
-                  Pill-форма с живым градиентом (Figma эталон, вариант A). */}
-              <button
-                type="button"
-                className="builder-start-cta"
-                onClick={() => { addNodeAtCenter('trigger-input'); engageBuilder(); }}
-                style={{ pointerEvents: 'auto', marginTop: 18 }}
-                aria-label={t('builder.node.trigger_input') || 'Старт'}
-              >
-                <span className="builder-cta-blob-r1" aria-hidden="true" />
-                <span className="builder-cta-blob-r2" aria-hidden="true" />
-                <span className="builder-cta-blob-p"  aria-hidden="true" />
-                <span className="builder-cta-blob-d"  aria-hidden="true" />
-                <span className="builder-cta-blob-o"  aria-hidden="true" />
-                <span className="builder-cta-blob-a"  aria-hidden="true" />
-                <span className="builder-start-cta__label">
-                  <Icon name="flash" size={15} strokeWidth={1.6} />
-                  <span>{t('builder.node.trigger_input') || 'Старт'}</span>
-                </span>
-              </button>
+              {/* Первый экран (решение основателя 2026-08-23): строка «опиши
+                  задачу» с самопечатающимися примерами вместо кнопки «Старт». */}
+              <GenerateHero
+                t={t}
+                busy={genBusy}
+                remaining={genRemaining}
+                error={genError}
+                ownKey={keyConnected}
+                onGenerate={handleGenerate}
+              />
 
               <button
                 type="button"
@@ -2249,6 +2290,15 @@ function BuilderAppInner({ initialTemplateId = null }) {
               >
                 <Icon name="books" size={14} strokeWidth={1.5} />
                 <span>{t('builder.canvas.browseTemplates') || 'Browse templates'}</span>
+              </button>
+
+              <button
+                type="button"
+                className="builder-gen-blank"
+                onClick={() => { addNodeAtCenter('trigger-input'); engageBuilder(); }}
+                style={{ pointerEvents: 'auto' }}
+              >
+                {t('builder.gen.blank')}
               </button>
 
               <RecentWorkflows

@@ -33,6 +33,7 @@ supabase functions deploy builder-connect-key
 supabase functions deploy builder-disconnect-key
 supabase functions deploy builder-execute
 supabase functions deploy account-delete   # удаление аккаунта (GDPR, право на забвение)
+supabase functions deploy builder-generate # автосборка «текст → схема» (спонсорские лимиты)
 ```
 
 ## Перед этим — миграции
