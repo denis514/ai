@@ -6,6 +6,7 @@ import InlineText from '../components/InlineText.jsx';
 import PlanetLogo from '../components/PlanetLogo.jsx';
 import Loader from '../components/Loader.jsx';
 import LanguageSwitcher from '../components/LanguageSwitcher.jsx';
+import ThemeSwitcher from '../components/ThemeSwitcher.jsx';
 import './StyleGuide.css';
 
 /**
@@ -373,6 +374,14 @@ export default function StyleGuide() {
           <div className="sg-langrow">
             <LanguageSwitcher title="Язык" />
             <span className="sg-langrow__hint">Клик → выпадашка с языками, галочка слева у активного.</span>
+          </div>
+        </Section>
+
+        <Section id="theme-switcher" title="Переключатель темы"
+          note="Единый компонент <ThemeSwitcher>, парный к LanguageSwitcher: та же круглая кнопка и попап (классы .lang-switcher__* переиспользуются как единственный источник стиля — своих стилей у компонента нет). Иконка кнопки = текущий режим (солнце/луна/ноутбук). Использовать ВЕЗДЕ, где нужна смена темы; шапка Atlas мигрирует на него при следующей правке.">
+          <div className="sg-langrow">
+            <ThemeSwitcher title="Тема" />
+            <span className="sg-langrow__hint">Светлая / тёмная / как в системе. Выбор сохраняется на устройстве.</span>
           </div>
         </Section>
 

@@ -3,7 +3,7 @@ import Icon from './Icon.jsx';
 import PlanetLogo from './PlanetLogo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
-import { deleteProfile } from '../services/profileService.js';
+import { deleteProfile, updateProfile } from '../services/profileService.js';
 import { exportUserData, resetLocalData } from '../services/dataExport.js';
 import { useConfirm } from '../hooks/useConfirm.js';
 import { useSupabaseStats } from '../hooks/useSupabaseStats.js';
@@ -15,6 +15,8 @@ import { nodeIndex } from '../data/mindmapData.js';
 import { useWhatsNew, isFresh } from '../hooks/useWhatsNew.js';
 import Skeleton from './Skeleton.jsx';
 import LanguageSwitcher from './LanguageSwitcher.jsx';
+import ThemeSwitcher from './ThemeSwitcher.jsx';
+import { importLocalDump } from '../services/dataExport.js';
 import { listWorkflows } from '../builder/services/workflowStorage.js';
 import { listAllSchedules, getTodayUsage } from '../builder/services/scheduleService.js';
 
@@ -33,6 +35,7 @@ export default function AccountPage({
   nodeProgressApi,
   bookmarksApi,
   activityApi,
+  identityApi,
   onStartTutorial,
   onShowNodes,
   onOpenCourses,
@@ -206,6 +209,44 @@ export default function AccountPage({
   }, [user?.id]);
 
   // Delete account
+  // Имя: единственное место редактирования (панель профиля только показывает).
+  const [nameDraft, setNameDraft] = useState('');
+  const [nameSaving, setNameSaving] = useState(false);
+  const [nameSaved, setNameSaved] = useState(false);
+  useEffect(() => {
+    setNameDraft(user ? (profile?.display_name || '') : (identityApi?.name || ''));
+  }, [user?.id, profile?.display_name, identityApi?.name]); // eslint-disable-line
+
+  const saveName = async () => {
+    const trimmed = nameDraft.trim();
+    if (!trimmed) return;
+    setNameSaving(true);
+    if (user) {
+      const { error } = await updateProfile(user.id, { display_name: trimmed });
+      if (!error) setProfile(p => ({ ...p, display_name: trimmed }));
+    } else {
+      identityApi?.setName(trimmed);
+    }
+    setNameSaving(false);
+    setNameSaved(true);
+    setTimeout(() => setNameSaved(false), 2000);
+  };
+
+  // Импорт выгрузки (гость): восстановить прогресс из файла
+  const importInputRef = React.useRef(null);
+  const [importMsg, setImportMsg] = useState('');
+  const importData = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const restored = importLocalDump(JSON.parse(await file.text()));
+      setImportMsg(t('profile.data.importRestored', { n: restored }));
+    } catch {
+      setImportMsg(t('profile.data.importError'));
+    }
+    e.target.value = '';
+  };
+
   const [deleteStep, setDeleteStep] = useState('idle'); // idle | confirm | deleting | done
   const [deleteError, setDeleteError] = useState(false); // ошибка показывается в самом блоке:
   // тосты лежат ниже полноэкранного кабинета и здесь не видны
@@ -733,67 +774,41 @@ export default function AccountPage({
             )}
 
             <div className="account-field">
-              <label className="account-label">{t('account.language')}</label>
-              {/* Единый переключатель из стайлгайда — тот же, что в шапке карты.
-                  Сам сохраняет выбор (и в профиль у вошедшего). */}
-              <LanguageSwitcher align="left" title={t('account.language')} />
+              <label className="account-label">{t('account.displayName')}</label>
+              <div className="account-input-row">
+                <input
+                  type="text"
+                  className="account-input"
+                  value={nameDraft}
+                  onChange={e => setNameDraft(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') saveName(); }}
+                  placeholder={t('profile.namePlaceholder')}
+                  maxLength={30}
+                  disabled={nameSaving}
+                />
+                <button
+                  type="button"
+                  className="account-btn account-btn--outline"
+                  onClick={saveName}
+                  disabled={!nameDraft.trim() || nameSaving}
+                >
+                  {nameSaved ? <Icon name="check" size={16} strokeWidth={2} /> : t('common.save')}
+                </button>
+              </div>
             </div>
-          </section>
 
-          <section className="account-section">
-            <h2>{t('account.dataPrivacy')}</h2>
-            <p className="account-section__desc">{t('account.gdprNote')}</p>
-            <div className="account-actions">
-              <button
-                type="button"
-                className="account-btn account-btn--outline"
-                onClick={exportData}
-                disabled={exporting}
-              >
-                <Icon name="download" size={16} strokeWidth={1.5} />
-                {exporting ? t('account.exporting') : t('account.export')}
-              </button>
-              <a
-                href="/privacy-policy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="account-btn account-btn--ghost"
-              >
-                <Icon name="external-link" size={16} strokeWidth={1.5} />
-                {t('account.privacyPolicy')}
-              </a>
+            <div className="account-field">
+              <label className="account-label">{t('account.appearance')}</label>
+              {/* Единые переключатели из стайлгайда — те же, что в шапке карты. */}
+              <div className="account-switchers">
+                <LanguageSwitcher align="left" title={t('account.language')} />
+                <ThemeSwitcher align="left" />
+              </div>
             </div>
-          </section>
 
-          <section className="account-section">
-            <h2>{t('account.cookieTitle')}</h2>
-            <p className="account-section__desc">{t('account.cookieDesc')}</p>
-            <div className="account-actions">
-              <button
-                type="button"
-                className="account-btn account-btn--outline"
-                onClick={() => {
-                  localStorage.removeItem('ca_consent');
-                  window.location.reload();
-                }}
-              >
-                <Icon name="refresh-circle" size={16} strokeWidth={1.5} />
-                {t('account.cookieReset')}
-              </button>
-            </div>
-          </section>
-
-          <section className="account-section">
-            <h2>{t('account.gdprContact')}</h2>
-            <p className="account-section__desc">{t('account.gdprContactDesc')}</p>
-            <a
-              href="mailto:privacy@105-atlas.app"
-              className="account-btn account-btn--ghost"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
-            >
-              <Icon name="mail" size={16} strokeWidth={1.5} />
-              privacy@105-atlas.app
-            </a>
+            <p className="account-hint">
+              {t('common.soon')} · <strong>{t('profile.pro.title')}</strong> — {t('profile.pro.desc')}
+            </p>
           </section>
 
           {user ? (
@@ -828,6 +843,75 @@ export default function AccountPage({
             </button>
           </section>
           )}
+
+          <section className="account-section">
+            <h2>{t('account.dataPrivacy')}</h2>
+            <p className="account-section__desc">{t('account.gdprNote')}</p>
+            <div className="account-actions">
+              <button
+                type="button"
+                className="account-btn account-btn--outline"
+                onClick={exportData}
+                disabled={exporting}
+              >
+                <Icon name="download" size={16} strokeWidth={1.5} />
+                {exporting ? t('account.exporting') : t('account.export')}
+              </button>
+              {!user && (
+                <button
+                  type="button"
+                  className="account-btn account-btn--outline"
+                  onClick={() => importInputRef.current?.click()}
+                >
+                  <Icon name="inbox" size={16} strokeWidth={1.5} />
+                  {t('profile.data.import')}
+                </button>
+              )}
+              <a
+                href="/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="account-btn account-btn--ghost"
+              >
+                <Icon name="external-link" size={16} strokeWidth={1.5} />
+                {t('account.privacyPolicy')}
+              </a>
+            </div>
+            <input ref={importInputRef} type="file" accept="application/json,.json" style={{ display: 'none' }} onChange={importData} />
+            {importMsg && <p className="account-hint">{importMsg}</p>}
+          </section>
+
+          <section className="account-section">
+            <h2>{t('account.cookieTitle')}</h2>
+            <p className="account-section__desc">{t('account.cookieDesc')}</p>
+            <div className="account-actions">
+              <button
+                type="button"
+                className="account-btn account-btn--outline"
+                onClick={() => {
+                  localStorage.removeItem('ca_consent');
+                  window.location.reload();
+                }}
+              >
+                <Icon name="refresh-circle" size={16} strokeWidth={1.5} />
+                {t('account.cookieReset')}
+              </button>
+            </div>
+          </section>
+
+          <section className="account-section">
+            <h2>{t('account.gdprContact')}</h2>
+            <p className="account-section__desc">{t('account.gdprContactDesc')}</p>
+            <a
+              href="mailto:privacy@105-atlas.app"
+              className="account-btn account-btn--ghost"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
+            >
+              <Icon name="mail" size={16} strokeWidth={1.5} />
+              privacy@105-atlas.app
+            </a>
+          </section>
+
 
           {/* Удаление аккаунта — только тому, у кого он есть. Гостю вместо
               этого — сброс всего своего из этого браузера. */}

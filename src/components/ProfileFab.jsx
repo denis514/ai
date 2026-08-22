@@ -128,7 +128,7 @@ export default function ProfileFab(props) {
               <Icon name="arrow-right" size={12} strokeWidth={1.5} />
             </button>
             <Suspense fallback={null}>
-              <ProfilePanel {...props} onShowNodes={onShowNodes} onStartTutorial={onStartTutorial} onClose={close} />
+              <ProfilePanel {...props} onOpenAccount={openAccount} onShowNodes={onShowNodes} onStartTutorial={onStartTutorial} onClose={close} />
             </Suspense>
           </div>
         )}
@@ -153,7 +153,7 @@ export default function ProfileFab(props) {
             <Icon name="arrow-right" size={12} strokeWidth={1.5} />
           </button>
           <Suspense fallback={null}>
-            <ProfilePanel {...props} onShowNodes={onShowNodes} onClose={null} />
+            <ProfilePanel {...props} onOpenAccount={openAccount} onShowNodes={onShowNodes} onClose={null} />
           </Suspense>
         </BottomSheet>
       )}

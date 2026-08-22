@@ -1131,6 +1131,7 @@ function AppInner() {
         <AccountPage
           onClose={() => setRoute(null)}
           progressApi={progressApi}
+          identityApi={identityApi}
           nodeProgressApi={nodeProgressApi}
           bookmarksApi={bookmarksApi}
           activityApi={activityApi}
