@@ -346,6 +346,34 @@ function AppInner() {
   const libraryOpen   = route?.type === 'library' || route?.type === 'prompt';
   const helpOpen      = route?.type === 'help';
   const accountOpen   = route?.type === 'account';
+
+  // ── Кабинет и пропавшая сессия ────────────────────────────────────────────
+  // 1) Сессия исчезла, пока кабинет открыт (выход из другой вкладки, истечение,
+  //    стирание данных сайта) — закрываем кабинет на главную: экран вошедшего
+  //    не должен оставаться перед человеком, который уже не вошёл.
+  const wasLoggedInRef = useRef(false);
+  useEffect(() => {
+    if (isLoggedIn) { wasLoggedInRef.current = true; return; }
+    if (wasLoggedInRef.current) {
+      wasLoggedInRef.current = false;
+      if (route?.type === 'account') setRoute(null);
+    }
+  }, [isLoggedIn]); // eslint-disable-line
+  // 2) Холодная загрузка /account в полностью чистом браузере (после «удалить
+  //    куки и данные сайтов» ничего не осталось) — на главную. Гость с реальным
+  //    локальным прогрессом свой кабинет видит, как задумано.
+  useEffect(() => {
+    if (!accountOpen || authLoading || isLoggedIn) return;
+    const hasAnything = [
+      'claude-mindmap:node-progress:v1',
+      'claude-mindmap.tutorial-progress.v1',
+      'claude-mindmap:bookmarks:v1',
+      'claude-mindmap:user-identity:v1',
+      'atlas:builder:workflows:v1',
+      'atlas:intro-seen:v1',
+    ].some(k => { try { return !!localStorage.getItem(k); } catch { return false; } });
+    if (!hasAnything) setRoute(null);
+  }, [accountOpen, authLoading, isLoggedIn]); // eslint-disable-line
   const activeHelpSection = route?.type === 'help' ? route.id : null;
   const activePromptId = route?.type === 'prompt' ? route.id : null;
 
