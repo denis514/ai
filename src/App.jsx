@@ -156,7 +156,7 @@ function findAncestorPath(root, targetId, path = []) {
   return null;
 }
 
-function searchTree(root, query, category, searchableById) {
+function searchTree(root, query, category, matchedIds) {
   const q = (query || '').trim().toLowerCase();
   const hasQuery = q.length > 0;
   const hasCat = category && category !== 'all';
@@ -166,8 +166,7 @@ function searchTree(root, query, category, searchableById) {
   const ancestors = new Set();
 
   function visit(node, path) {
-    const text = searchableById?.[node.id] || '';
-    const inText = !hasQuery || text.includes(q);
+    const inText = !hasQuery || matchedIds.has(node.id);
     const inCat = !hasCat || node.category === category;
 
     if (inText && inCat && !node.isRoot) {
@@ -233,25 +232,55 @@ function AppInner() {
   // Global user level — определяет дефолтный набор раскрытых веток
   const { level, setLevel } = useLevelFilter();
 
-  // Поисковый индекс: id узла → searchable-строка (title + все details).
-  // Пересобирается при смене локали.
-  const searchableById = useMemo(() => {
-    // STRINGS[locale].nodes появляется после lazy-load (contentVersion > 0).
-    // До загрузки поиск возвращает пустой индекс — это ок, карта уже видна.
-    const bag = STRINGS[locale]?.nodes || STRINGS[FALLBACK_LOCALE]?.nodes;
-    if (!bag) return {};
-    const out = {};
-    for (const [id, c] of Object.entries(bag)) {
-      out[id] = `${c.title} ${c.what} ${c.why} ${c.when} ${c.impact} ${c.example} ${c.mistakes}`.toLowerCase();
-    }
-    return out;
-  }, [locale, contentVersion]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // По умолчанию на первой загрузке — только root, всё остальное свёрнуто.
   // Раскрытие по уровню происходит только при ЯВНОМ изменении уровня в Profile
   // (см. handleLevelChange ниже). Так первый экран = минимум шума.
   const [expandedIds, setExpandedIds] = useState(() => new Set([mindmapData.id]));
   const [query, setQuery] = useState('');
+  // Умный поиск (этап 1, docs/smart-search-plan.md): MiniSearch со стеммерами
+  // и синонимами. Модуль тяжёлый для первого экрана (~9 KB gzip) — грузится
+  // ЛЕНИВО при первом вводе запроса; до загрузки работает простой фолбэк
+  // по подстроке, чтобы поиск отвечал мгновенно с первой буквы.
+  const [searchEngine, setSearchEngine] = useState(null);
+  useEffect(() => {
+    if (searchEngine || !(query || '').trim()) return;
+    let live = true;
+    import('./services/searchEngine.js').then(m => { if (live) setSearchEngine(m); });
+    return () => { live = false; };
+  }, [query, searchEngine]);
+
+  const searchIndex = useMemo(() => {
+    if (!searchEngine) return null;
+    const bag = STRINGS[locale]?.nodes || STRINGS[FALLBACK_LOCALE]?.nodes;
+    if (!bag) return null;
+    return searchEngine.getIndex('map', locale, contentVersion, () =>
+      Object.entries(bag).map(([id, c]) => ({
+        id,
+        type: 'node',
+        title: c.title || '',
+        subtitle: c.what || '',
+        body: `${c.why || ''} ${c.when || ''} ${c.impact || ''} ${c.example || ''} ${c.mistakes || ''}`,
+      }))
+    );
+  }, [searchEngine, locale, contentVersion]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Совпавшие узлы для фильтра карты (ранжирование карте не нужно — только набор).
+  const searchMatchedIds = useMemo(() => {
+    const q = (query || '').trim();
+    if (!q) return new Set();
+    if (searchIndex && searchEngine) {
+      return new Set(searchEngine.smartSearch(searchIndex, q, locale, { limit: 500 }).map(r => r.id));
+    }
+    // Фолбэк до загрузки движка: подстрока по title+what (мгновенно, без чанка)
+    const bag = STRINGS[locale]?.nodes || STRINGS[FALLBACK_LOCALE]?.nodes || {};
+    const ql = q.toLowerCase();
+    const out = new Set();
+    for (const [id, c] of Object.entries(bag)) {
+      if (`${c.title} ${c.what}`.toLowerCase().includes(ql)) out.add(id);
+    }
+    return out;
+  }, [query, searchIndex, searchEngine, locale]);
+
   const [category, setCategory] = useState('all');
   const [zoomLevel, setZoomLevel] = useState(1);
 
@@ -593,8 +622,8 @@ function AppInner() {
   }, [panelOpen, prevNode, nextNode, navigateToNode]);
 
   const { matched, ancestors, active } = useMemo(
-    () => searchTree(mindmapData, query, category, searchableById),
-    [query, category, searchableById]
+    () => searchTree(mindmapData, query, category, searchMatchedIds),
+    [query, category, searchMatchedIds]
   );
 
   // Поиск без результата — сигнал, что в карте не хватает темы. Отправляем

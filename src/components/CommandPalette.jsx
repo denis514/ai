@@ -8,6 +8,9 @@ import { tutorials } from '../data/tutorials.js';
 import { useT, useLocale } from '../i18n/LocaleContext.jsx';
 import { getLocalizedTutorial } from '../i18n/useTutorial.js';
 import { getLocalizedLibraryTemplate, getLibraryCategory } from '../i18n/usePrompt.js';
+import { getIndex, smartSearch } from '../services/searchEngine.js';
+import { STRINGS } from '../i18n/strings.js';
+import { FALLBACK_LOCALE } from '../i18n/config.js';
 
 /**
  * Cmd+K command palette — единый поиск по mindmap, tutorials, library.
@@ -33,7 +36,7 @@ function flattenNodes(root, tFn, acc = []) {
 
 export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksApi }) {
   const t = useT();
-  const { locale } = useLocale();
+  const { locale, contentVersion } = useLocale();
   const KIND_LABEL = {
     node:     t('palette.kind.node'),
     prompt:   t('palette.kind.prompt'),
@@ -85,7 +88,7 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksA
     };
     return [builderItem, ...nodes, ...prompts, ...tuts];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locale]);
+  }, [locale, contentVersion]);
 
   // Закладки, разрешённые против полного индекса
   const bookmarkedItems = useMemo(() => {
@@ -113,20 +116,37 @@ export default function CommandPalette({ isOpen, onClose, onNavigate, bookmarksA
       return [...bookmarkedItems, ...rest];
     }
 
-    const scored = [];
-    for (const item of fullIndex) {
-      const t = item.title.toLowerCase();
-      const s = (item.subtitle || '').toLowerCase();
-      let score = 0;
-      if (t === q) score += 100;
-      else if (t.startsWith(q)) score += 50;
-      else if (t.includes(q)) score += 20;
-      if (s.includes(q)) score += 5;
-      if (score > 0) scored.push({ item, score });
+    // Умный поиск (этап 1): тот же индекс, что у карты, плюс курсы и промпты.
+    // Узлы ищутся по всему телу темы; спецэлемент Builder — по-старому.
+    const bag = STRINGS[locale]?.nodes || STRINGS[FALLBACK_LOCALE]?.nodes;
+    const byKey = new Map(fullIndex.map(it => [`${it.type}:${it.id}`, it]));
+    const mini = getIndex('palette', locale, contentVersion, () => {
+      const docs = [];
+      for (const it of fullIndex) {
+        if (it.type === 'builder') continue;
+        const node = it.type === 'node' ? bag?.[it.id] : null;
+        docs.push({
+          id: `${it.type}:${it.id}`,
+          type: it.type,
+          title: it.title || '',
+          subtitle: it.subtitle || (node?.what || ''),
+          body: node
+            ? `${node.why || ''} ${node.when || ''} ${node.impact || ''} ${node.example || ''} ${node.mistakes || ''}`
+            : '',
+        });
+      }
+      return docs;
+    });
+    const out = smartSearch(mini, q, locale, { limit: 40 })
+      .map(r => byKey.get(r.id))
+      .filter(Boolean);
+    // Builder-элемент — простым совпадением, как раньше
+    const b = fullIndex[0];
+    if (b?.type === 'builder' && (b.title.toLowerCase().includes(q) || 'builder агент конструктор'.includes(q))) {
+      out.unshift(b);
     }
-    scored.sort((a, b) => b.score - a.score);
-    return scored.slice(0, 40).map(x => x.item);
-  }, [query, fullIndex, bookmarkedItems]);
+    return out;
+  }, [query, fullIndex, bookmarkedItems, locale, contentVersion]);
 
   const showBookmarksSection = !query.trim() && bookmarkedItems.length > 0;
 

@@ -259,3 +259,13 @@ SPA-переходы отслеживаются автоматически (па
 грузится только на vercel.app-домене; локально запрос /_vercel/insights/…
 не выполняется. Дополняет GA4 (тот — события; пауза на выводы по данным
 до настоящего домена действует и здесь: цифры копятся, решения не строим).
+
+## 2026-08-22 — Умный поиск, этап 1 (minisearch + @orama/stemmers)
+
+Две новые runtime-зависимости: `minisearch` (~6 KB gz) и `@orama/stemmers`
+(Snowball ru/en/fi, ~4 KB gz на локаль). Живут в ленивом чанке
+`src/services/searchEngine.js` — грузится при первом вводе запроса, входной
+пакет не растёт (замер: 177.3 KB gz после выделения чанка против 179.2 до).
+Архитектура и решения — `docs/smart-search-plan.md`; синонимы —
+`src/data/searchSynonyms.js`; золотой набор — `tests/search-golden.json`,
+прогон: `node scripts/search-eval.mjs [--baseline]`.
