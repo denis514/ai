@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
 import { useTheme } from '../hooks/useTheme.js';
+import { announcePopover, onOtherPopover } from '../utils/popoverBus.js';
 
 /**
  * ThemeSwitcher — единый переключатель темы для всех поверхностей,
@@ -26,12 +27,22 @@ export default function ThemeSwitcher({
   const controlled = openProp !== undefined;
   const [openState, setOpenState] = useState(false);
   const open = controlled ? openProp : openState;
+  const popId = useId();
   const setOpen = (v) => {
     const next = typeof v === 'function' ? v(open) : v;
+    if (next) announcePopover(popId); // в шапке открыт только один попап
     if (controlled) onOpenChange?.(next);
     else setOpenState(next);
   };
   const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    return onOtherPopover(popId, () => {
+      if (controlled) onOpenChange?.(false);
+      else setOpenState(false);
+    });
+  }, [open, controlled]); // eslint-disable-line
 
   useEffect(() => {
     if (controlled || !open) return;
@@ -65,22 +76,22 @@ export default function ThemeSwitcher({
       >
         <Icon name={mode === 'auto' ? 'laptop' : mode === 'dark' ? 'moon' : 'sun'} size={18} strokeWidth={1.5} />
       </button>
+      {/* Компактный столбик: только иконки, ширина как у круглой кнопки;
+          активный режим отмечен серым кружком-плашкой. Подпись — в title/aria. */}
       {open && (
-        <div className={`lang-switcher__pop lang-switcher__pop--${align}`} role="listbox">
+        <div className={`lang-switcher__pop theme-switcher__pop lang-switcher__pop--${align}`} role="listbox">
           {OPTS.map(({ m, icon, label }) => (
             <button
               key={m}
               type="button"
               role="option"
               aria-selected={mode === m}
-              className={`lang-switcher__opt ${mode === m ? 'is-active' : ''}`}
+              className={`theme-switcher__opt ${mode === m ? 'is-active' : ''}`}
               onClick={() => { setThemeMode(m); setOpen(false); }}
+              title={label}
+              aria-label={label}
             >
-              <span className="lang-switcher__check" aria-hidden="true">
-                {mode === m && <Icon name="check" size={14} strokeWidth={2} />}
-              </span>
-              <Icon name={icon} size={15} strokeWidth={1.5} />
-              <span>{label}</span>
+              <Icon name={icon} size={17} strokeWidth={1.5} />
             </button>
           ))}
         </div>

@@ -1473,6 +1473,32 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 }
 .lang-switcher__pop--right { right: 0; transform-origin: top right; }
 .lang-switcher__pop--left  { left: 0;  transform-origin: top left; }
+/* Компактный попап темы: столбик из трёх иконок шириной с круглую кнопку.
+   Активный режим — серый кружок-плашка под иконкой. */
+.theme-switcher__pop {
+  min-width: 0;
+  width: 44px;
+  padding: 5px 0;
+  align-items: center;
+  gap: 4px;
+}
+.theme-switcher__opt {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.theme-switcher__opt:hover { color: var(--text); }
+.theme-switcher__opt.is-active {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
 .lang-switcher__opt {
   display: flex;
   align-items: center;

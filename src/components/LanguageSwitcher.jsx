@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import { useLocale } from '../i18n/LocaleContext.jsx';
 import { LOCALE_LABEL } from '../i18n/config.js';
 import { useAuth } from '../context/AuthContext.jsx';
 import { updateProfile } from '../services/profileService.js';
+import { announcePopover, onOtherPopover } from '../utils/popoverBus.js';
 
 /**
  * LanguageSwitcher — единый переключатель языка для всех поверхностей
@@ -32,12 +33,23 @@ export default function LanguageSwitcher({
   const controlled = openProp !== undefined;
   const [openState, setOpenState] = useState(false);
   const open = controlled ? openProp : openState;
+  const popId = useId();
   const setOpen = (v) => {
     const next = typeof v === 'function' ? v(open) : v;
+    if (next) announcePopover(popId); // в шапке открыт только один попап
     if (controlled) onOpenChange?.(next);
     else setOpenState(next);
   };
   const ref = useRef(null);
+
+  // Кто-то другой открылся — закрываемся (и в controlled-режиме тоже).
+  useEffect(() => {
+    if (!open) return;
+    return onOtherPopover(popId, () => {
+      if (controlled) onOpenChange?.(false);
+      else setOpenState(false);
+    });
+  }, [open, controlled]); // eslint-disable-line
 
   // Самостоятельный режим: сами закрываемся по клику вне и Escape.
   // В controlled-режиме закрытием управляет хост (свой click-outside).

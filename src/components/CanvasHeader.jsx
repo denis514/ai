@@ -4,6 +4,7 @@ import PlanetLogo from './PlanetLogo.jsx';
 import { useT } from '../i18n/LocaleContext.jsx';
 import LanguageSwitcher from './LanguageSwitcher.jsx';
 import ThemeSwitcher from './ThemeSwitcher.jsx';
+import { announcePopover, onOtherPopover } from '../utils/popoverBus.js';
 
 
 /**
@@ -29,6 +30,11 @@ export default function CanvasHeader({
 }) {
   const t = useT();
   const [menuOpen, setMenuOpen] = useState(false);
+  // Шина попапов: меню «Atlas» — один из попапов шапки, открыт только кто-то один
+  useEffect(() => {
+    if (!menuOpen) return;
+    return onOtherPopover('canvas-menu', () => setMenuOpen(false));
+  }, [menuOpen]);
   const [bar, setBar] = useState(null); // 'theme' | 'lang' | null — независимые кнопки справа
   const [searchOpen, setSearchOpen] = useState(false);
   const containerRef = useRef(null);
@@ -86,7 +92,7 @@ export default function CanvasHeader({
         <button
           type="button"
           className={`canvas-header__brand ${menuOpen ? 'is-open' : ''}`}
-          onClick={() => setMenuOpen((o) => !o)}
+          onClick={() => setMenuOpen((o) => { if (!o) announcePopover('canvas-menu'); return !o; })}
           aria-expanded={menuOpen}
           aria-haspopup="menu"
           title={t('header.menu.title')}

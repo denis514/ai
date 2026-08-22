@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, Suspense } from 'react';
 import Icon from './Icon.jsx';
+import { announcePopover, onOtherPopover } from '../utils/popoverBus.js';
 import { lazyWithRetry } from '../utils/lazyWithRetry.js';
 // Лениво: панель профиля со статистикой открывается по клику, а весит
 // заметно — держать её в стартовом пакете карты незачем.
@@ -24,6 +25,11 @@ export default function ProfileFab(props) {
   const { isLoggedIn, user, profile } = useAuth();
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
+  // Шина попапов шапки: плашка профиля закрывается, когда открылись тема/язык/меню
+  useEffect(() => {
+    if (!open) return;
+    return onOtherPopover('profile-fab', () => setOpen(false));
+  }, [open]);
   const containerRef = useRef(null);
 
   const { identityApi, onOpenAuth } = props;
@@ -89,7 +95,7 @@ export default function ProfileFab(props) {
   // лежат в браузере. Раньше гостя отсюда сразу отправляли ко входу, из-за чего
   // он не мог посмотреть даже собственную статистику. Вход предлагается ВНУТРИ
   // панели — как способ сохранить прогресс, а не как условие входа в неё.
-  const handleClick = () => setOpen((o) => !o);
+  const handleClick = () => setOpen((o) => { if (!o) announcePopover('profile-fab'); return !o; });
 
   const hasAvatar = isLoggedIn ? !!displayName : isSet;
   const avatarInitial = isLoggedIn ? displayInitial : initial;
