@@ -313,7 +313,7 @@
       <span class="hero__meta-dot">·</span>
       <span>Version 1.0</span>
       <span class="hero__meta-dot">·</span>
-      <span>Last updated: 17 May 2026</span>
+      <span>Last updated: 22 August 2026</span>
     </div>
   </div>
 
@@ -328,7 +328,7 @@
 
     <h2 data-n="01">Who We Are</h2>
     <p>105 Atlas ("we", "our", "the service") is an interactive learning platform about Claude AI. This Privacy Policy explains what personal data we collect, why, how long we keep it, and what rights you have under the General Data Protection Regulation (GDPR) and Finnish data protection law.</p>
-    <p>Data controller: 105 Atlas (individual operator). Contact: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
+    <p>Data controller: 105 Atlas (individual operator). Contact: <a href="mailto:privacy@105-atlas.app">privacy@105-atlas.app</a></p>
 
     <h2 data-n="02">What Data We Collect</h2>
     <p>We follow <strong>privacy by design and data minimisation</strong>. We collect only what is necessary to provide the service.</p>
@@ -378,6 +378,8 @@
         <tr><td><code>sb-*</code> (Supabase)</td><td>Authentication session — strictly necessary</td><td>Art. 6(1)(b)</td><td>Session / 1 year</td></tr>
         <tr><td><code>ca_consent</code></td><td>Stores your cookie preference</td><td>Art. 6(1)(c)</td><td>1 year</td></tr>
         <tr><td>Google Analytics (_ga, _gid)</td><td>Anonymous usage statistics — only with consent</td><td>Art. 6(1)(a)</td><td>14 months</td></tr>
+        <tr><td>Vercel Web Analytics</td><td>Aggregated page-view counts — <strong>no cookies</strong>, no cross-site tracking, no persistent identifier</td><td>Art. 6(1)(f)</td><td>—</td></tr>
+        <tr><td>Browser localStorage</td><td>Guest progress, bookmarks and settings stay in your browser; sent to our database only after you sign in</td><td>Art. 6(1)(b)/(f)</td><td>Until you clear it</td></tr>
       </tbody>
     </table></div>
     <div class="info-card">We implement <strong>GA4 Consent Mode v2</strong>: analytics storage is denied by default and only enabled after your explicit consent. GA4 is configured with <code>anonymize_ip: true</code> and advertising signals disabled. Withdraw consent anytime via <strong>Settings → Cookie Preferences → Reset</strong>.</div>
@@ -388,8 +390,18 @@
       <li><strong>Google OAuth</strong> — we receive your email from Google. No password or payment data is accessed. Data from Google is governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. You must confirm consent before being redirected to Google.</li>
     </ul>
 
+    <h2 data-n="3b">Agent Builder</h2>
+    <p>If you use the Agent Builder with your own Anthropic API key:</p>
+    <ul>
+      <li>Your schemes, schedules and run history are stored in Supabase (EU, Frankfurt) and deleted with your account.</li>
+      <li>Your API key is encrypted on our server and never stored or exposed in the browser; you can disconnect it at any time.</li>
+      <li>When an agent runs, the task text and its results are sent to <strong>Anthropic PBC (USA)</strong> under your own key. This transfer is covered by Anthropic's Data Processing Addendum with Standard Contractual Clauses; Anthropic does not train on API data by default.</li>
+      <li>Optional integration credentials (Telegram bot token, Resend key, Google Calendar access) are stored encrypted and used only to deliver your agent's results.</li>
+    </ul>
+
     <h2 data-n="04">Data Storage &amp; Transfers</h2>
-    <p>Your data is stored in Supabase (PostgreSQL) in the <strong>EU Central region (Frankfurt, Germany)</strong>. No personal data is transferred outside the EEA.</p>
+    <p>Your data is stored in Supabase (PostgreSQL) in the <strong>EU Central region (Frankfurt, Germany)</strong>. Personal data leaves the EEA only in two cases: Agent Builder runs go to Anthropic (USA) under your own API key (SCCs apply), and Google Analytics processes consent-based, anonymised analytics under Google's DPA.</p>
+    <p>To pick your interface language on first visit we send one request to the geolocation service country.is, which sees your IP address and returns only your country code; we store neither (legitimate interest, Art. 6(1)(f)).</p>
     <p>Google Analytics uses EU-based data processing with IP anonymisation. Standard Contractual Clauses (SCCs) apply per Google's DPA.</p>
     <p>Vercel (CDN/hosting) is EU-preferred. Static assets may be cached globally.</p>
 
@@ -401,6 +413,8 @@
         <tr><td>Learning progress, bookmarks</td><td>Until you delete your account</td></tr>
         <tr><td>Auth logs (Supabase internal)</td><td>30 days</td></tr>
         <tr><td>Analytics (GA4)</td><td>14 months (consent-based)</td></tr>
+        <tr><td>Agent Builder schemes, schedules, run history</td><td>Until you delete them or your account</td></tr>
+        <tr><td>Encrypted API keys and integration credentials</td><td>Until you disconnect them or delete your account</td></tr>
         <tr><td>Inactive accounts</td><td>Deleted after 2 years of inactivity</td></tr>
       </tbody>
     </table></div>
@@ -416,7 +430,7 @@
       <li><strong>Right to object</strong> — object to processing based on legitimate interest.</li>
       <li><strong>Right to withdraw consent</strong> — withdraw cookie consent or delete your account at any time.</li>
     </ul>
-    <p>To exercise your rights: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a><br>
+    <p>To exercise your rights: <a href="mailto:privacy@105-atlas.app">privacy@105-atlas.app</a><br>
     Complaints: Finnish Data Protection Ombudsman — <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></p>
 
     <h2 data-n="07">Data Security</h2>
@@ -435,11 +449,14 @@
         <tr><td>Supabase Inc.</td><td>Database, authentication</td><td>EU (Frankfurt)</td><td><a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a></td></tr>
         <tr><td>Vercel Inc.</td><td>Hosting, CDN</td><td>EU preferred</td><td><a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">vercel.com/legal</a></td></tr>
         <tr><td>Google LLC (GA4)</td><td>Anonymous analytics (consent-based)</td><td>EU (anonymised)</td><td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com</a></td></tr>
+        <tr><td>Anthropic PBC</td><td>Agent Builder runs (your own API key)</td><td>USA (SCCs)</td><td><a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">anthropic.com/legal</a></td></tr>
+        <tr><td>ImprovMX</td><td>Forwarding of privacy@ email</td><td>EU (France)</td><td><a href="https://improvmx.com/privacy" target="_blank" rel="noopener">improvmx.com/privacy</a></td></tr>
+        <tr><td>country.is</td><td>One-time IP → country lookup for language</td><td>—</td><td><a href="https://country.is" target="_blank" rel="noopener">country.is</a></td></tr>
       </tbody>
     </table></div>
 
     <h2 data-n="09">Children (GDPR Art. 8)</h2>
-    <p>105 Atlas is not directed at children under 16. We require age confirmation at registration. If you believe a child has provided data, contact us at <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a> — we will delete it within 72 hours.</p>
+    <p>105 Atlas is not directed at children under 16. We require age confirmation at registration. If you believe a child has provided data, contact us at <a href="mailto:privacy@105-atlas.app">privacy@105-atlas.app</a> — we will delete it within 72 hours.</p>
 
     <h2 data-n="10">Changes to This Policy</h2>
     <p>We may update this policy. Registered users will be notified by email of material changes.</p>
@@ -448,7 +465,7 @@
       <div class="doc-footer__links">
         <a href="/">← Back to 105 Atlas</a>
         <a href="/terms-of-service">Terms of Service</a>
-        <a href="mailto:denisantropov@gmail.com">Contact</a>
+        <a href="mailto:privacy@105-atlas.app">Contact</a>
       </div>
       <span class="doc-footer__copy">© 2026 105 Atlas</span>
     </div>
@@ -459,7 +476,7 @@
 
     <h2 data-n="01">Кто мы</h2>
     <p>105 Atlas («мы», «наш сервис») — интерактивная обучающая платформа о Claude AI. Эта Политика конфиденциальности объясняет, какие персональные данные мы собираем, зачем, как долго храним и какие права у вас есть согласно GDPR и законодательству Финляндии.</p>
-    <p>Оператор данных: 105 Atlas (индивидуальный оператор). Контакт: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
+    <p>Оператор данных: 105 Atlas (индивидуальный оператор). Контакт: <a href="mailto:privacy@105-atlas.app">privacy@105-atlas.app</a></p>
 
     <h2 data-n="02">Какие данные мы собираем</h2>
     <p>Мы следуем принципу <strong>privacy by design и минимизации данных</strong>.</p>
@@ -503,10 +520,21 @@
     </ul>
 
     <h2 data-n="03">Cookies и аналитика</h2>
-    <div class="info-card">Мы используем <strong>Google Analytics 4</strong> только после явного согласия через баннер cookies. Реализован <strong>GA4 Consent Mode v2</strong>: аналитическое хранилище запрещено по умолчанию, <code>anonymize_ip: true</code>. Отозвать согласие: <strong>Настройки → Управление куки → Сброс</strong>.</div>
+    <div class="info-card">Мы используем <strong>Google Analytics 4</strong> только после явного согласия через баннер cookies. Реализован <strong>GA4 Consent Mode v2</strong>: аналитическое хранилище запрещено по умолчанию, <code>anonymize_ip: true</code>. Отозвать согласие: <strong>Настройки → Управление куки → Сброс</strong>.<br><br>
+    Дополнительно работает <strong>Vercel Web Analytics</strong> — счётчик просмотров <strong>без cookies</strong> и без сквозного отслеживания (законный интерес, ст. 6(1)(f)). Прогресс гостя (курсы, закладки, отметки) хранится в вашем браузере (localStorage) и попадает в нашу базу только после входа.</div>
+
+    <h2 data-n="3b">Agent Builder (конструктор помощников)</h2>
+    <p>Если вы пользуетесь конструктором со своим ключом Anthropic:</p>
+    <ul>
+      <li>Ваши схемы, расписания и история запусков хранятся в Supabase (ЕС, Франкфурт) и удаляются вместе с аккаунтом.</li>
+      <li>Ваш API-ключ шифруется на нашем сервере и никогда не хранится и не показывается в браузере; его можно отключить в любой момент.</li>
+      <li>При запуске помощника текст задачи и результаты отправляются в <strong>Anthropic PBC (США)</strong> под вашим собственным ключом. Передача покрыта соглашением об обработке данных Anthropic со стандартными договорными условиями (SCC); Anthropic по умолчанию не обучает модели на данных API.</li>
+      <li>Данные подключённых интеграций (токен Telegram-бота, ключ Resend, доступ к Google Calendar) хранятся в зашифрованном виде и используются только для доставки результатов вашего помощника.</li>
+    </ul>
 
     <h2 data-n="04">Хранение данных и передачи</h2>
-    <p>Данные хранятся в Supabase (PostgreSQL) в регионе <strong>EU Central (Франкфурт, Германия)</strong>. Данные не передаются за пределы ЕЭЗ.</p>
+    <p>Данные хранятся в Supabase (PostgreSQL) в регионе <strong>EU Central (Франкфурт, Германия)</strong>. За пределы ЕЭЗ персональные данные уходят только в двух случаях: запуски конструктора идут в Anthropic (США) под вашим собственным ключом (действуют SCC), а Google Analytics обрабатывает анонимизированную аналитику с вашего согласия по DPA Google.</p>
+    <p>Чтобы выбрать язык интерфейса при первом визите, мы делаем один запрос к сервису геолокации country.is: он видит ваш IP-адрес и возвращает только код страны; мы не храним ни то, ни другое (законный интерес, ст. 6(1)(f)).</p>
 
     <h2 data-n="05">Сроки хранения</h2>
     <div class="table-wrap"><table>
@@ -516,6 +544,8 @@
         <tr><td>Прогресс, закладки</td><td>До удаления аккаунта</td></tr>
         <tr><td>Журналы Auth (Supabase)</td><td>30 дней</td></tr>
         <tr><td>Аналитика GA4</td><td>14 месяцев (с согласия)</td></tr>
+        <tr><td>Схемы, расписания и история запусков конструктора</td><td>До удаления вами или вместе с аккаунтом</td></tr>
+        <tr><td>Зашифрованные API-ключи и данные интеграций</td><td>До отключения или удаления аккаунта</td></tr>
         <tr><td>Неактивные аккаунты</td><td>Удаляются через 2 года</td></tr>
       </tbody>
     </table></div>
@@ -531,7 +561,7 @@
       <li><strong>Право на возражение</strong> — возражать против обработки на основе законного интереса.</li>
       <li><strong>Право отозвать согласие</strong> — в любой момент.</li>
     </ul>
-    <p>Для реализации прав: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a><br>
+    <p>Для реализации прав: <a href="mailto:privacy@105-atlas.app">privacy@105-atlas.app</a><br>
     Жалобы: Финский уполномоченный по защите данных — <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></p>
 
     <h2 data-n="07">Безопасность данных</h2>
@@ -550,6 +580,10 @@
         <tr><td>Supabase Inc.</td><td>База данных, аутентификация</td><td>ЕС (Франкфурт)</td></tr>
         <tr><td>Vercel Inc.</td><td>Хостинг, CDN</td><td>Приоритетно ЕС</td></tr>
         <tr><td>Google LLC (GA4)</td><td>Анонимная аналитика (с согласия)</td><td>ЕС (анонимизировано)</td></tr>
+        <tr><td>Anthropic PBC</td><td>Запуски конструктора (ваш собственный ключ)</td><td>США (SCC)</td></tr>
+        <tr><td>Vercel Web Analytics</td><td>Обезличенный счётчик просмотров, без cookies</td><td>—</td></tr>
+        <tr><td>ImprovMX</td><td>Пересылка почты privacy@</td><td>ЕС (Франция)</td></tr>
+        <tr><td>country.is</td><td>Разовое определение страны по IP для языка</td><td>—</td></tr>
       </tbody>
     </table></div>
 
@@ -563,7 +597,7 @@
       <div class="doc-footer__links">
         <a href="/">← Вернуться в 105 Atlas</a>
         <a href="/terms-of-service">Условия использования</a>
-        <a href="mailto:denisantropov@gmail.com">Контакт</a>
+        <a href="mailto:privacy@105-atlas.app">Контакт</a>
       </div>
       <span class="doc-footer__copy">© 2026 105 Atlas</span>
     </div>
@@ -574,7 +608,7 @@
 
     <h2 data-n="01">Keitä olemme</h2>
     <p>105 Atlas ("me", "palvelumme") on interaktiivinen oppimisalusta Claude AI:sta. Tämä tietosuojakäytäntö selittää, mitä henkilötietoja keräämme, miksi, kuinka kauan säilytämme niitä ja mitkä ovat oikeutesi GDPR:n ja Suomen tietosuojalain nojalla.</p>
-    <p>Rekisterinpitäjä: 105 Atlas (yksityinen toimija). Yhteystiedot: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a></p>
+    <p>Rekisterinpitäjä: 105 Atlas (yksityinen toimija). Yhteystiedot: <a href="mailto:privacy@105-atlas.app">privacy@105-atlas.app</a></p>
 
     <h2 data-n="02">Mitä tietoja keräämme</h2>
     <p>Noudatamme <strong>sisäänrakennetun tietosuojan ja tietojen minimoinnin periaatteita</strong>.</p>
@@ -618,10 +652,21 @@
     </ul>
 
     <h2 data-n="03">Evästeet ja analytiikka</h2>
-    <div class="info-card">Käytämme <strong>Google Analytics 4:ää</strong> vain suostumuksesi jälkeen. Toteutamme <strong>GA4 Consent Mode v2:n</strong>: analytiikka on oletuksena estetty, <code>anonymize_ip: true</code>. Peruuta suostumus: <strong>Asetukset → Evästeasetukset → Nollaa</strong>.</div>
+    <div class="info-card">Käytämme <strong>Google Analytics 4:ää</strong> vain suostumuksesi jälkeen. Toteutamme <strong>GA4 Consent Mode v2:n</strong>: analytiikka on oletuksena estetty, <code>anonymize_ip: true</code>. Peruuta suostumus: <strong>Asetukset → Evästeasetukset → Nollaa</strong>.<br><br>
+    Lisäksi käytössä on <strong>Vercel Web Analytics</strong> — kävijälaskuri <strong>ilman evästeitä</strong> ja ilman seurantaa (oikeutettu etu, 6(1)(f) art.). Vieraan edistyminen (oppaat, kirjanmerkit) säilyy selaimessasi (localStorage) ja siirtyy tietokantaamme vasta kirjautumisen jälkeen.</div>
+
+    <h2 data-n="3b">Agent Builder</h2>
+    <p>Jos käytät rakentajaa omalla Anthropic-avaimellasi:</p>
+    <ul>
+      <li>Kaaviosi, ajastuksesi ja ajohistoriasi tallennetaan Supabaseen (EU, Frankfurt) ja poistetaan tilisi mukana.</li>
+      <li>API-avaimesi salataan palvelimellamme eikä sitä koskaan tallenneta tai näytetä selaimessa; voit irrottaa sen milloin tahansa.</li>
+      <li>Kun agentti ajetaan, tehtäväteksti ja tulokset lähetetään <strong>Anthropic PBC:lle (USA)</strong> omalla avaimellasi. Siirto on katettu Anthropicin tietojenkäsittelysopimuksella ja vakiosopimuslausekkeilla (SCC); Anthropic ei oletuksena kouluta malleja API-datalla.</li>
+      <li>Integraatioiden tunnisteet (Telegram-botin token, Resend-avain, Google Calendar -pääsy) säilytetään salattuina ja niitä käytetään vain agenttisi tulosten toimittamiseen.</li>
+    </ul>
 
     <h2 data-n="04">Tietojen säilytys ja siirrot</h2>
-    <p>Tietosi säilytetään Supabasessa (PostgreSQL) <strong>EU:n keskisessä alueella (Frankfurt, Saksa)</strong>. Tietoja ei siirretä ETA-alueen ulkopuolelle.</p>
+    <p>Tietosi säilytetään Supabasessa (PostgreSQL) <strong>EU:n keskisessä alueella (Frankfurt, Saksa)</strong>. Henkilötiedot poistuvat ETA-alueelta vain kahdessa tapauksessa: rakentajan ajot menevät Anthropicille (USA) omalla avaimellasi (SCC), ja Google Analytics käsittelee suostumukseen perustuvaa, anonymisoitua analytiikkaa Googlen DPA:n mukaisesti.</p>
+    <p>Kielen valintaa varten teemme ensikäynnillä yhden pyynnön geolokaatiopalveluun country.is: se näkee IP-osoitteesi ja palauttaa vain maakoodin; emme tallenna kumpaakaan (oikeutettu etu, 6(1)(f) art.).</p>
 
     <h2 data-n="05">Säilytysajat</h2>
     <div class="table-wrap"><table>
@@ -631,6 +676,8 @@
         <tr><td>Oppimisedistyminen, kirjanmerkit</td><td>Kunnes poistat tilisi</td></tr>
         <tr><td>Auth-lokit (Supabase sisäiset)</td><td>30 päivää</td></tr>
         <tr><td>Analytiikka (GA4)</td><td>14 kuukautta (suostumuksen perusteella)</td></tr>
+        <tr><td>Rakentajan kaaviot, ajastukset, ajohistoria</td><td>Kunnes poistat ne tai tilisi</td></tr>
+        <tr><td>Salatut API-avaimet ja integraatiotunnisteet</td><td>Kunnes irrotat ne tai poistat tilisi</td></tr>
         <tr><td>Passiiviset tilit</td><td>Poistetaan 2 vuoden toimettomuuden jälkeen</td></tr>
       </tbody>
     </table></div>
@@ -646,7 +693,7 @@
       <li><strong>Vastustamisoikeus</strong> — vastustaa oikeutettuun etuun perustuvaa käsittelyä.</li>
       <li><strong>Oikeus peruuttaa suostumus</strong> — milloin tahansa.</li>
     </ul>
-    <p>Oikeuksien käyttämiseksi: <a href="mailto:denisantropov@gmail.com">denisantropov@gmail.com</a><br>
+    <p>Oikeuksien käyttämiseksi: <a href="mailto:privacy@105-atlas.app">privacy@105-atlas.app</a><br>
     Valitukset: <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></p>
 
     <h2 data-n="07">Tietoturva</h2>
@@ -665,6 +712,10 @@
         <tr><td>Supabase Inc.</td><td>Tietokanta, todennus</td><td>EU (Frankfurt)</td></tr>
         <tr><td>Vercel Inc.</td><td>Hosting, CDN</td><td>EU ensisijaisesti</td></tr>
         <tr><td>Google LLC (GA4)</td><td>Anonyymi analytiikka (suostumuksen perusteella)</td><td>EU (anonymisoitu)</td></tr>
+        <tr><td>Anthropic PBC</td><td>Rakentajan ajot (oma API-avaimesi)</td><td>USA (SCC)</td></tr>
+        <tr><td>Vercel Web Analytics</td><td>Evästeetön kävijälaskuri</td><td>—</td></tr>
+        <tr><td>ImprovMX</td><td>privacy@-sähköpostin edelleenohjaus</td><td>EU (Ranska)</td></tr>
+        <tr><td>country.is</td><td>Kertaluontoinen IP → maa -haku kielivalintaan</td><td>—</td></tr>
       </tbody>
     </table></div>
 
@@ -678,7 +729,7 @@
       <div class="doc-footer__links">
         <a href="/">← Takaisin Claude Atlakseen</a>
         <a href="/terms-of-service">Käyttöehdot</a>
-        <a href="mailto:denisantropov@gmail.com">Yhteystiedot</a>
+        <a href="mailto:privacy@105-atlas.app">Yhteystiedot</a>
       </div>
       <span class="doc-footer__copy">© 2026 105 Atlas</span>
     </div>
