@@ -323,7 +323,7 @@ export default function AccountPage({
           <strong>{t('account.title') || 'Аккаунт'}</strong>
         </span>
       </div>
-      {/* Стандарт шапки: справа тема + язык, те же компоненты, что везде */}
+      {/* Стандарт шапки: тема + язык сразу за плашкой раздела, как на карте */}
       <div className="account-page__topactions">
         <ThemeSwitcher />
         <LanguageSwitcher title={t('account.language')} />
