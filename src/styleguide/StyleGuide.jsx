@@ -369,6 +369,17 @@ export default function StyleGuide() {
           </div>
         </Section>
 
+        <Section id="resize-handle" title="Рукоятка изменения размера"
+          note="Единый вид для любого края панели, который можно тянуть: класс .builder-resize (+ --left для правых панелей) с .builder-resize__grip и .builder-resize__label. На наведении — серая «палочка» по центру и тёмная подпись «Изменить размер» на языке интерфейса. Сейчас — палитра и консоль Builder; любая новая изменяемая панель берёт этот же вид.">
+          <div style={{ position: 'relative', height: 140, border: '1px solid var(--border)', borderRadius: 12, width: 240 }}>
+            <div className="builder-resize" style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 10, cursor: 'col-resize' }} role="separator" aria-orientation="vertical" aria-label="Изменить размер">
+              <span className="builder-resize__grip" aria-hidden="true" />
+              <span className="builder-resize__label" aria-hidden="true">Изменить размер</span>
+            </div>
+            <div style={{ padding: 12, fontSize: 12, color: 'var(--text-muted)' }}>Наведите на правый край</div>
+          </div>
+        </Section>
+
         <Section id="language" title="Переключатель языка"
           note="Единый компонент <LanguageSwitcher>. Кнопка-глобус — КРУГЛАЯ 44px (стекло + тень), одинаковая ВЕЗДЕ: Atlas, Builder, аккаунт, лендинг, админка. Класс .lang-switcher__btn — единственный источник стиля. НЕ переопределять локально. Меняет язык глобально (один на всю систему) + синхронит профиль у залогиненных.">
           <div className="sg-langrow">

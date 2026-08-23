@@ -1,7 +1,6 @@
 import React from 'react';
 import { Handle, Position } from 'reactflow';
 import Icon from '../../../components/Icon.jsx';
-import { EXPENSIVE_DEFS } from '../../data/nodeCost.js';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 
 /**
@@ -28,8 +27,7 @@ import { useT } from '../../../i18n/LocaleContext.jsx';
 
 function BaseNodeInner({ data, selected }) {
   const t = useT();
-  const { icon, color, labelKey, kind, role, status = 'idle', orderLevel, hasPrompt, hasInput, unlinkedOut, unlinkedIn, condValue, defId } = data || {};
-  const expensive = EXPENSIVE_DEFS.has(defId);
+  const { icon, color, labelKey, kind, role, status = 'idle', orderLevel, hasPrompt, hasInput, unlinkedOut, unlinkedIn, condValue } = data || {};
 
   // «Заполнен» → плашка заливается цветом узла (инверсия): агент с инструкцией
   // или User Input с введённой задачей. Сразу видно, какие узлы готовы.
@@ -66,13 +64,6 @@ function BaseNodeInner({ data, selected }) {
       {kind === 'agent' && !hasPrompt && (
         <span className="builder-node__needsetup" title={t('builder.node.needsSetup') || 'Нужна инструкция — кликните, чтобы настроить'}>
           <Icon name="edit" size={9} strokeWidth={2.5} />
-        </span>
-      )}
-
-      {/* Дорогой шаг (веб-поиск, код): монетка слева сверху, подсказка с ценой. */}
-      {expensive && (
-        <span className="builder-node__cost" title={t('builder.cost.nodeHint')}>
-          <Icon name="coins" size={9} strokeWidth={2.5} />
         </span>
       )}
 

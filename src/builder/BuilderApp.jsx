@@ -30,7 +30,6 @@ import BuilderEdge from './components/canvas/BuilderEdge.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
 import AtlasNodePreview from './components/education/AtlasNodePreview.jsx';
 import NodeGuidePanel from './components/education/NodeGuidePanel.jsx';
-import BuilderTour, { isTourSeen } from './components/education/BuilderTour.jsx';
 import TemplateGallery from './components/panels/TemplateGallery.jsx';
 import TemplatePreview from './components/panels/TemplatePreview.jsx';
 import ExecutionPanel from './components/panels/ExecutionPanel.jsx';
@@ -52,7 +51,8 @@ import { getKeyStatus, listMcpServers, listKeys } from './services/apiKeyService
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad, takeMigratedIdMap, WORKFLOWS_MIGRATED_EVENT } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
 import ToastHost, { toast } from './components/Toast.jsx';
-import { estimateRun as estimateRunCost, formatEstimate } from './data/nodeCost.js';
+import { estimateRun as estimateRunCost, formatEstimate, EXPENSIVE_DEFS } from './data/nodeCost.js';
+import CostGlyph from './components/CostGlyph.jsx';
 import { saveDraft, loadDraft, clearDraft, setResumeAfterAuth, hasResumeAfterAuth, clearResumeAfterAuth } from './services/draftBackup.js';
 import { evaluateConnection, validateGraph, denyReasonKey } from './services/connectionRules.js';
 import './BuilderApp.css';
@@ -279,7 +279,8 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // Открываются только когда пользователь нажмёт «Старт» / «Templates» / Recent
   // (или вручную через хедер). Тогда же запускается обучающий тур.
   const [toolboxOpen, setToolboxOpen] = useState(false);
-  const [toolboxTab, setToolboxTab] = useState('nodes'); // 'nodes' | 'templates'
+  // Сначала всегда шаблоны, потом узлы (решение основателя 2026-08-23).
+  const [toolboxTab, setToolboxTab] = useState('templates'); // 'templates' | 'nodes' | 'help'
   // Ширина левой панели (px) — тянется за правый край, сохраняется в браузере.
   const [toolboxW, setToolboxW] = useState(() => {
     const v = parseInt(localStorage.getItem('atlas:builder:toolbox-w') || '', 10);
@@ -356,10 +357,6 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // Гайд «Как использовать узел» — defId типа узла; тоже заменяет NodeDetails.
   const [guideDefId, setGuideDefId] = useState(null);
 
-  // Onboarding tour — НЕ показываем при заходе. Запускается только когда
-  // пользователь нажал «Старт» / «Templates» / Recent (через engageBuilder ниже).
-  const [tourOpen, setTourOpen] = useState(false);
-
   // Окно-объяснение перед первым запуском. Два случая:
   //   'arrival' — человек пришёл из узла карты по кнопке «Собрать в конструкторе»;
   //   'gate'    — нажал «Запуск», но входа/ключа нет.
@@ -368,14 +365,13 @@ function BuilderAppInner({ initialTemplateId = null }) {
   const [runIntro, setRunIntro] = useState(null);
 
   /**
-   * engageBuilder — пользователь начал работу: раскрываем обе панели и
-   * (если первая встреча) запускаем обучающий тур. Подвешен на 3 CTA на
-   * пустом холсте: «Старт», «Открыть templates», карточки Recent.
+   * engageBuilder — пользователь начал работу: раскрываем обе панели.
+   * Тур удалён (решение основателя 2026-08-23) — его место заняла «Помощь»
+   * внизу рейки. Подвешен на CTA пустого холста и автосборку.
    */
   const engageBuilder = useCallback(() => {
     setToolboxOpen(true);
     setSidebarOpen(true);
-    if (!isTourSeen()) setTourOpen(true);
   }, []);
 
   const openAtlasPreview = useCallback((atlasId) => {
@@ -1921,17 +1917,6 @@ function BuilderAppInner({ initialTemplateId = null }) {
               <button
                 type="button"
                 role="tab"
-                aria-selected={toolboxTab === 'nodes'}
-                className={`builder-toolrail__tab ${toolboxTab === 'nodes' ? 'is-active' : ''}`}
-                onClick={() => setToolboxTab('nodes')}
-                title={t('builder.toolbox.title') || 'Узлы'}
-              >
-                <Icon name="grid" size={18} strokeWidth={1.6} />
-                <span>{t('builder.toolbox.title') || 'Узлы'}</span>
-              </button>
-              <button
-                type="button"
-                role="tab"
                 aria-selected={toolboxTab === 'templates'}
                 className={`builder-toolrail__tab ${toolboxTab === 'templates' ? 'is-active' : ''}`}
                 onClick={() => setToolboxTab('templates')}
@@ -1943,24 +1928,26 @@ function BuilderAppInner({ initialTemplateId = null }) {
               <button
                 type="button"
                 role="tab"
+                aria-selected={toolboxTab === 'nodes'}
+                className={`builder-toolrail__tab ${toolboxTab === 'nodes' ? 'is-active' : ''}`}
+                onClick={() => setToolboxTab('nodes')}
+                title={t('builder.toolbox.title') || 'Узлы'}
+              >
+                <Icon name="grid" size={18} strokeWidth={1.6} />
+                <span>{t('builder.toolbox.title') || 'Узлы'}</span>
+              </button>
+
+              {/* Помощь — внизу рейки, на месте бывшего тура (тур удалён 2026-08-23) */}
+              <button
+                type="button"
+                role="tab"
                 aria-selected={toolboxTab === 'help'}
-                className={`builder-toolrail__tab ${toolboxTab === 'help' ? 'is-active' : ''}`}
+                className={`builder-toolrail__tab builder-toolrail__bottom ${toolboxTab === 'help' ? 'is-active' : ''}`}
                 onClick={() => setToolboxTab('help')}
                 title={t('builder.help.title') || 'Помощь'}
               >
                 <Icon name="idea" size={18} strokeWidth={1.6} />
                 <span>{t('builder.help.title') || 'Помощь'}</span>
-              </button>
-
-              {/* Тур — действие (открывает обучающий обзор), внизу рейки */}
-              <button
-                type="button"
-                className="builder-toolrail__tab builder-toolrail__tour"
-                onClick={() => setTourOpen(true)}
-                title={t('builder.tour.openBtn') || 'Запустить тур'}
-              >
-                <Icon name="compass" size={18} strokeWidth={1.6} />
-                <span>{t('builder.tour.short') || 'Тур'}</span>
               </button>
             </div>
 
@@ -2017,12 +2004,15 @@ function BuilderAppInner({ initialTemplateId = null }) {
             </div>
             {/* Ручка изменения ширины — тянуть за правый край */}
             <div
-              className="builder-toolbox__resize"
+              className="builder-toolbox__resize builder-resize"
               onMouseDown={startToolboxResize}
               role="separator"
               aria-orientation="vertical"
-              title={t('builder.toolbox.resize') || 'Потяните, чтобы изменить ширину'}
-            />
+              aria-label={t('builder.toolbox.resize') || 'Изменить размер'}
+            >
+              <span className="builder-resize__grip" aria-hidden="true" />
+              <span className="builder-resize__label" aria-hidden="true">{t('builder.toolbox.resize') || 'Изменить размер'}</span>
+            </div>
           </aside>
         )}
 
@@ -2420,7 +2410,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
                 </div>
                 <div className="builder-sidebar__body">
                   {selectedNode ? (
-                    <NodeDetails node={selectedNode} t={t} onAtlasLink={openAtlasPreview} onGuide={openNodeGuide} />
+                    <NodeDetails node={selectedNode} t={t} locale={locale} onAtlasLink={openAtlasPreview} onGuide={openNodeGuide} />
                   ) : (
                     <div className="builder-empty-state">
                       <Icon name="idea" size={24} strokeWidth={1.5} />
@@ -2522,17 +2512,6 @@ function BuilderAppInner({ initialTemplateId = null }) {
           onHide={handleTooltipHide}
           onOpenAtlas={openAtlasPreview}
           onOpenGuide={openNodeGuide}
-        />
-      )}
-
-      {/* Onboarding tour — first-time visitors + replay через ? button */}
-      {tourOpen && (
-        <BuilderTour
-          nodes={nodes}
-          edges={edges}
-          execStatus={execStatus}
-          onClose={() => setTourOpen(false)}
-          onOpenTemplates={() => setGalleryOpen(true)}
         />
       )}
 
@@ -2801,7 +2780,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
             {/* Ориентир стоимости запуска — ДО траты (решение основателя 2026-08-23) */}
             {(() => { const est = estimateRunCost(nodes, edges); return (
               <p className={`builder-validation__cost ${est.expensive ? 'is-expensive' : ''}`}>
-                <Icon name="coins" size={13} strokeWidth={2} />
+                <CostGlyph locale={locale} size={13} />
                 <span>{t('builder.cost.runLead')} {formatEstimate(est, t)}{est.expensive ? ` · ${t('builder.cost.expensiveNote')}` : ''}</span>
               </p>
             ); })()}
@@ -3613,7 +3592,7 @@ function LoopConfigPopover({ node, nodes, t, onSet, onClose }) {
   );
 }
 
-function NodeDetails({ node, t, onAtlasLink, onGuide }) {
+function NodeDetails({ node, t, locale = 'en', onAtlasLink, onGuide }) {
   const { icon, color, labelKey, descKey, kind, role, status, atlasAnchor, defId } = node.data;
   return (
     <div className="builder-node-details">
@@ -3630,6 +3609,12 @@ function NodeDetails({ node, t, onAtlasLink, onGuide }) {
       {descKey && (
         <p className="builder-node-details__desc">
           {t(descKey) || ''}
+        </p>
+      )}
+      {EXPENSIVE_DEFS.has(node.data?.defId) && (
+        <p className="builder-node-details__cost">
+          <CostGlyph locale={locale} size={13} />
+          <span>{t('builder.cost.tooltip')}</span>
         </p>
       )}
 

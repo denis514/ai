@@ -4,6 +4,8 @@ import {
   // mindmap node icons
   BrainIcon,
   Coins01Icon,
+  DollarCircleIcon,
+  EuroCircleIcon,
   SlidersHorizontalIcon,
   MixerIcon,
   Setting07Icon,
@@ -121,6 +123,8 @@ const REGISTRY = {
   keyboard:     KeyboardIcon,             // ⌨️
   flash:        FlashIcon,                // ⚡
   coins:        Coins01Icon,              // 💰 стоимость шага
+  'cost-usd':   DollarCircleIcon,         // $ стоимость (en)
+  'cost-eur':   EuroCircleIcon,           // € стоимость (fi)
   link:         Link01Icon,               // ⛓️ chain
   unlink:       Unlink01Icon,             // ⛓️‍💥 разорванная цепь
   edit:         Edit01Icon,               // ✍️

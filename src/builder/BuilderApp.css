@@ -1202,20 +1202,21 @@
 
 /* Ручка изменения ширины левой панели (правый край) */
 .builder-app .builder-toolbox { position: relative; }
+/* ── Разделители панелей: «палочка» + подпись «Изменить размер» на наведении ──
+   Общий вид для всех ручек (палитра, консоль); сама геометрия ручки — ниже. */
+/* Вид рукоятки изменения размера — общий .builder-resize в App.css (стайлгайд) */
+
 .builder-app .builder-toolbox__resize {
   position: absolute;
   top: 0;
-  right: -3px;
-  width: 6px;
+  right: 0;
+  width: 10px;
   height: 100%;
   cursor: col-resize;
-  z-index: 6;
+  z-index: 40; /* над списком шаблонов/узлов, иначе ловится 1px у края */
   background: transparent;
 }
-.builder-app .builder-toolbox__resize:hover,
-.builder-app .builder-toolbox__resize.is-dragging {
-  background: color-mix(in srgb, var(--accent, #2563eb) 35%, transparent);
-}
+/* Вид на наведении — палочка и подпись .builder-resize (выше) */
 
 .builder-app.no-toolbox.no-sidebar .builder-grid {
   grid-template-columns: 0 1fr 0;
@@ -2018,10 +2019,7 @@
   background: transparent;
   transition: background .12s ease;
 }
-.builder-app .builder-console-window__resize-handle:hover,
-.builder-app .builder-console-window.is-resizing .builder-console-window__resize-handle {
-  background: color-mix(in srgb, var(--accent, #c2603f) 22%, transparent);
-}
+/* Вид на наведении — палочка и подпись .builder-resize */
 /* Плавающее окно: поверх холста, перетаскиваемое, изменяемого размера. */
 .builder-app .builder-console-window.is-floating {
   position: fixed;
@@ -2425,15 +2423,19 @@
   color: #fff;
 }
 /* Агент без инструкции — мягко зовёт настроить (янтарный пульс) */
-.builder-app .builder-node__cost {
-  position: absolute; top: -6px; left: -6px;
-  width: 16px; height: 16px; border-radius: 50%;
-  display: grid; place-items: center;
-  background: #E79B48; color: #1a1a1a;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+.builder-app .builder-cost-glyph {
+  display: inline-grid; place-items: center; border-radius: 50%;
+  border: 1.6px solid currentColor; font-weight: 700; line-height: 1;
 }
 .builder-app .builder-toolbox__cost {
   margin-left: auto; color: #D44F29; display: inline-flex; align-items: center;
+}
+.builder-app .builder-tooltip__cost,
+.builder-app .builder-node-details__cost {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin: 8px 0 0; padding: 8px 10px; border-radius: 8px;
+  font-size: 12.5px; line-height: 1.35; color: #b3431f;
+  background: rgba(212,79,41,0.08);
 }
 .builder-app .builder-validation__cost {
   display: flex; align-items: center; gap: 8px;
@@ -3943,196 +3945,28 @@
 /* ────────────────────────────────────────────────── */
 
 /* Welcome / Done backdrop — full-screen modal */
-.builder-tour-backdrop {
-  position: fixed;
-  inset: 0;
-  background: color-mix(in srgb, #000 55%, transparent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 200;
-  backdrop-filter: blur(4px);
-  animation: builder-fade-in 200ms ease;
-}
 
-.builder-tour-welcome {
-  position: relative;
-  background: var(--surface);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  width: 100%;
-  max-width: 440px;
-  padding: 28px;
-  text-align: center;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
-  animation: builder-modal-pop 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
-}
 
-.builder-tour-welcome__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--accent, #2563eb) 14%, transparent);
-  color: var(--accent, #2563eb);
-  margin-bottom: 16px;
-}
 
-.builder-tour-welcome__icon--success {
-  background: color-mix(in srgb, #16a34a 14%, transparent);
-  color: #16a34a;
-}
 
-.builder-tour-welcome__title {
-  margin: 0 0 8px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text);
-}
 
-.builder-tour-welcome__subtitle {
-  margin: 0 0 24px 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-muted);
-}
 
-.builder-tour-welcome__actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
 
-.builder-tour-welcome__close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 120ms ease, color 120ms ease;
-}
 
-.builder-tour-welcome__close:hover {
-  background: var(--surface-3);
-  color: var(--text);
-}
 
 /* Spotlight steps — dim panels around target */
-.builder-tour-dim {
-  position: fixed;
-  background: color-mix(in srgb, #000 55%, transparent);
-  z-index: 180;
-  pointer-events: none;
-  transition: all 200ms ease;
-}
 
-.builder-tour-dim--top {
-  top: 0;
-  left: 0;
-  right: 0;
-}
 
-.builder-tour-dim--bottom {
-  left: 0;
-  right: 0;
-  bottom: auto;
-}
 
 /* Highlight ring around target */
-.builder-tour-highlight {
-  position: fixed;
-  z-index: 181;
-  pointer-events: none;
-  border-radius: 8px;
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--accent, #2563eb) 70%, transparent),
-    0 0 20px color-mix(in srgb, var(--accent, #2563eb) 50%, transparent);
-  transition: all 200ms ease;
-  animation: builder-tour-pulse 2s ease-in-out infinite;
-}
 
-@keyframes builder-tour-pulse {
-  0%, 100% {
-    box-shadow:
-      0 0 0 3px color-mix(in srgb, var(--accent, #2563eb) 70%, transparent),
-      0 0 16px color-mix(in srgb, var(--accent, #2563eb) 40%, transparent);
-  }
-  50% {
-    box-shadow:
-      0 0 0 4px color-mix(in srgb, var(--accent, #2563eb) 80%, transparent),
-      0 0 28px color-mix(in srgb, var(--accent, #2563eb) 60%, transparent);
-  }
-}
 
 /* Step bubble */
-.builder-tour-bubble {
-  position: fixed;
-  z-index: 190;
-  width: 320px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-  animation: builder-tooltip-in 220ms ease;
-}
 
-.builder-tour-bubble__progress {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent, #2563eb);
-  margin-bottom: 6px;
-}
 
-.builder-tour-bubble__title {
-  margin: 0 0 6px 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  line-height: 1.3;
-}
 
-.builder-tour-bubble__body {
-  margin: 0 0 14px 0;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--text-muted);
-}
 
-.builder-tour-bubble__actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
 
-.builder-tour-bubble__nav {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Mobile — show только welcome + done, skip spotlight steps */
-@media (max-width: 768px) {
-  .builder-tour-dim,
-  .builder-tour-highlight,
-  .builder-tour-bubble {
-    display: none;
-  }
-}
 
 /* ────────────────────────────────────────────────── */
 /* Status badge transitions — smooth color changes    */
@@ -4304,11 +4138,6 @@
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
 }
 
-:root[data-theme="dark"] .builder-app .builder-tour-bubble,
-:root[data-theme="dark"] .builder-app .builder-tour-welcome {
-  background: color-mix(in srgb, var(--surface) 96%, #fff);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-}
 
 :root[data-theme="dark"] .builder-app .builder-template-card {
   background: color-mix(in srgb, var(--surface) 94%, #fff);
@@ -4318,13 +4147,7 @@
   background: color-mix(in srgb, var(--surface) 90%, #fff);
 }
 
-:root[data-theme="dark"] .builder-app .builder-tour-dim {
-  background: color-mix(in srgb, #000 70%, transparent);
-}
 
-:root[data-theme="dark"] .builder-app .builder-tour-backdrop {
-  background: color-mix(in srgb, #000 70%, transparent);
-}
 
 /* Dark theme — edges стиль из inline JS работает в обоих темах */
 
@@ -4409,10 +4232,7 @@
   }
 
   /* Hide tooltips и tour spotlight on mobile (Day 87 будет proper) */
-  .builder-app .builder-tooltip,
-  .builder-app .builder-tour-dim,
-  .builder-app .builder-tour-highlight,
-  .builder-app .builder-tour-bubble {
+  .builder-app .builder-tooltip {
     display: none;
   }
 }
@@ -5888,13 +5708,13 @@
 .builder-app .builder-sched-history__body .builder-allsched--embed { padding: 12px; }
 
 /* Кнопка «Тур» — внизу левой рейки, отделена от вкладок-разделов */
-.builder-app .builder-toolrail__tour {
+.builder-app .builder-toolrail__bottom {
   margin-top: auto;
   border-top: 1px solid var(--border);
   padding-top: 10px;
   color: var(--text-muted);
 }
-.builder-app .builder-toolrail__tour:hover { color: var(--accent); }
+.builder-app .builder-toolrail__bottom:hover { color: var(--accent); }
 
 /* ── Hero «Liquid Glass» кнопка (копия из стайлгайда) ──────────────────────
    Бегущие тёплые пятна под стеклянным слоем (SVG #liquid-displace в index.html)

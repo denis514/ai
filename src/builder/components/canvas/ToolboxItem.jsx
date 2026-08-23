@@ -2,6 +2,8 @@ import React, { useRef, useCallback, useEffect } from 'react';
 import Icon from '../../../components/Icon.jsx';
 import { useT } from '../../../i18n/LocaleContext.jsx';
 import { EXPENSIVE_DEFS } from '../../data/nodeCost.js';
+import CostGlyph from '../CostGlyph.jsx';
+import { useLocale } from '../../../i18n/LocaleContext.jsx';
 
 /**
  * ToolboxItem — draggable item в палитре + hover trigger for tooltip.
@@ -22,6 +24,7 @@ const HOVER_DELAY_MS = 400;
 
 export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant = 'row', disabled = false }) {
   const t = useT();
+  const { locale } = useLocale();
   const buttonRef = useRef(null);
   const hoverTimerRef = useRef(null);
 
@@ -98,7 +101,7 @@ export default function ToolboxItem({ defId, def, onShow, onHide, onAdd, variant
       <span>{t(def.labelKey) || defId}</span>
       {EXPENSIVE_DEFS.has(defId) && (
         <span className="builder-toolbox__cost" title={t('builder.cost.nodeHint')} aria-label={t('builder.cost.nodeHint')}>
-          <Icon name="coins" size={11} strokeWidth={2} />
+          <CostGlyph locale={locale} size={12} />
         </span>
       )}
     </button>

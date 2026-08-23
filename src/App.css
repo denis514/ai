@@ -9556,3 +9556,26 @@ body, .mm-node, .mm-canvas, .courses-modal, .tut-modal, .detail,
 @media (prefers-reduced-motion: reduce) {
   .ls__logo { animation: none; opacity: 1; transform: none; }
 }
+
+
+/* ── Рукоятка изменения размера (общая, стайлгайд) ───────────────────────────
+   .builder-resize на тянущемся крае панели (+ --left для правых панелей).
+   На наведении: серая «палочка» по центру и тёмная подпись «Изменить размер»
+   на языке интерфейса. Подпись рисуется ВНУТРИ панели — панели режут всё,
+   что выходит за край (overflow: hidden). */
+.builder-resize { display: flex; align-items: center; justify-content: center; }
+.builder-resize__grip {
+  width: 4px; height: 44px; border-radius: 999px;
+  background: var(--text-dim, #9a9a9a); opacity: 0;
+  transition: opacity .15s ease;
+}
+.builder-resize__label {
+  position: absolute; top: 50%; right: 12px; transform: translateY(-50%);
+  padding: 6px 10px; border-radius: 8px; white-space: nowrap;
+  background: #1f1f1f; color: #fff; font-size: 12px; font-weight: 500;
+  opacity: 0; pointer-events: none; transition: opacity .15s ease; z-index: 30;
+}
+.builder-resize--left .builder-resize__label { right: auto; left: 12px; }
+.builder-resize:hover .builder-resize__grip,
+.builder-resize.is-dragging .builder-resize__grip { opacity: 1; }
+.builder-resize:hover .builder-resize__label { opacity: 1; }

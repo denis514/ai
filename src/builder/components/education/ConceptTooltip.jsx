@@ -1,6 +1,8 @@
+import { EXPENSIVE_DEFS } from '../../data/nodeCost.js';
+import CostGlyph from '../CostGlyph.jsx';
 import React from 'react';
 import Icon from '../../../components/Icon.jsx';
-import { useT } from '../../../i18n/LocaleContext.jsx';
+import { useT, useLocale } from '../../../i18n/LocaleContext.jsx';
 import { getNodeDef } from '../../data/nodeTypes.js';
 
 /**
@@ -19,6 +21,7 @@ import { getNodeDef } from '../../data/nodeTypes.js';
 
 export default function ConceptTooltip({ defId, top, left, onShow, onHide, onOpenAtlas, onOpenGuide }) {
   const t = useT();
+  const { locale } = useLocale();
   const def = getNodeDef(defId);
   if (!def) return null;
 
@@ -65,6 +68,12 @@ export default function ConceptTooltip({ defId, top, left, onShow, onHide, onOpe
 
       {descKey && (
         <p className="builder-tooltip__desc">{t(descKey) || ''}</p>
+      )}
+      {EXPENSIVE_DEFS.has(defId) && (
+        <p className="builder-tooltip__cost">
+          <CostGlyph locale={locale} size={13} />
+          <span>{t('builder.cost.tooltip')}</span>
+        </p>
       )}
 
       <div className="builder-tooltip__actions">

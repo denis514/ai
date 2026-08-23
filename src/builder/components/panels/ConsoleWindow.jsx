@@ -53,12 +53,15 @@ export default function ConsoleWindow({
       {/* Ресайз левой кромкой — только в доке (как у прежней панели запуска). */}
       {!floating && onResizeStart && (
         <div
-          className="builder-console-window__resize-handle"
+          className="builder-console-window__resize-handle builder-resize builder-resize--left"
           onMouseDown={onResizeStart}
           role="separator"
           aria-orientation="vertical"
-          aria-label={tr('builder.exec.resize') || 'Изменить ширину'}
-        />
+          aria-label={tr('builder.exec.resize') || 'Изменить размер'}
+        >
+          <span className="builder-resize__grip" aria-hidden="true" />
+          <span className="builder-resize__label" aria-hidden="true">{tr('builder.exec.resize') || 'Изменить размер'}</span>
+        </div>
       )}
 
       <div
