@@ -27,6 +27,9 @@ const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
 // не ранее 2026-09-29) — переведено на Sonnet 5 (2026-08-23). Переопределяется
 // секретом BUILDER_MODEL без передеплоя.
 const MODEL = Deno.env.get('BUILDER_MODEL') || 'claude-sonnet-5';
+// Сколько ждать один вызов модели (мс). Функция живёт ~150 с; оставляем запас
+// на запись итога и доставку. Переопределяется секретом BUILDER_CLAUDE_TIMEOUT_MS.
+const CLAUDE_TIMEOUT_MS = parseInt(Deno.env.get('BUILDER_CLAUDE_TIMEOUT_MS') || '100000', 10);
 const MAX_NODES = 25; // защита от runaway: не больше 25 узлов за запуск
 
 // Размер результата → max_tokens на агент-вызов (см. outputTiers.js на клиенте).
@@ -104,6 +107,16 @@ const MSG: Record<string, Record<string, string>> = {
     ru: 'Шаг не выполнен',
     en: 'Step failed',
     fi: 'Vaihe epäonnistui',
+  },
+  step_timeout: {
+    ru: 'Шаг не уложился во время (модель отвечала слишком долго). Попробуйте короче задачу или размер ответа «Коротко»; веб-поиск замедляет шаг.',
+    en: 'The step ran out of time (the model took too long). Try a shorter task or the “Brief” answer size; web search slows a step down.',
+    fi: 'Vaihe ei ehtinyt ajoissa (malli vastasi liian kauan). Kokeile lyhyempää tehtävää tai ”Lyhyt”-vastauskokoa; verkkohaku hidastaa vaihetta.',
+  },
+  run_timed_out: {
+    ru: 'Запуск не завершился вовремя и был остановлен',
+    en: 'The run did not finish in time and was stopped',
+    fi: 'Ajo ei valmistunut ajoissa ja pysäytettiin',
   },
   run_failed: {
     ru: 'Запуск завершился с ошибкой',
@@ -309,7 +322,8 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
   const tools: Record<string, unknown>[] = [];
   // Веб-ПОИСК (компактные результаты). web_fetch не включаем — тяжело по токенам.
   if (webTools) {
-    tools.push({ type: 'web_search_20250305', name: 'web_search', max_uses: 3 });
+    // Версия инструмента, рекомендованная для Claude 5 (прежняя web_search_20250305).
+    tools.push({ type: 'web_search_20260209', name: 'web_search', max_uses: 3 });
   }
   // Выполнение кода (Python в управляемой песочнице Anthropic). Для точных
   // расчётов/разбора таблиц. Тратит доп. токены + плату за исполнение.
@@ -321,14 +335,29 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
   if (betas.length) headers['anthropic-beta'] = betas.join(',');
   const body = JSON.stringify(payload);
   // При лимите запросов (429) НЕ падаем сразу: ждём (по retry-after) и повторяем,
-  // чтобы шаг всё-таки выполнился. Один повтор ≈ одно «минутное окно» лимита.
+  // чтобы шаг всё-таки выполнился. Ожидание ограничено 20 с: функция живёт
+  // ~150 с, и минутная пауза + повторный долгий вызов её убивали молча.
   const MAX_ATTEMPTS = 2;
   for (let attempt = 1; ; attempt++) {
-    const res = await fetch(CLAUDE_URL, { method: 'POST', headers, body });
+    // Лимит времени на ОДИН вызов модели: иначе долгий веб-поиск переживал
+    // саму функцию, запуск оставался «выполняется» навсегда и блокировал
+    // следующие 10 минут (поймано живым прогоном 2026-08-23).
+    const ac = new AbortController();
+    const timer = setTimeout(() => ac.abort(), CLAUDE_TIMEOUT_MS);
+    let res: Response;
+    try {
+      res = await fetch(CLAUDE_URL, { method: 'POST', headers, body, signal: ac.signal });
+    } catch (e) {
+      clearTimeout(timer);
+      if ((e as Error).name === 'AbortError') throw new Error('step_timeout');
+      throw e;
+    } finally {
+      clearTimeout(timer);
+    }
     if (res.status === 429 && attempt < MAX_ATTEMPTS) {
       let waitSec = parseInt(res.headers.get('retry-after') || '', 10);
-      if (!Number.isFinite(waitSec) || waitSec <= 0) waitSec = 60;
-      waitSec = Math.min(waitSec, 60);
+      if (!Number.isFinite(waitSec) || waitSec <= 0) waitSec = 20;
+      waitSec = Math.min(waitSec, 20);
       if (onRateWait) await onRateWait(waitSec);
       await new Promise((r) => setTimeout(r, waitSec * 1000));
       continue;
@@ -543,11 +572,17 @@ Deno.serve(async (req) => {
   // ─── Защита кошелька ────────────────────────────────────────────────────
   // (1) Анти-наложение: не запускаем новый прогон поверх уже идущего по этой же
   // схеме — иначе расписание/повторные клики множат траты и бьют в лимит.
-  const tenMinAgoIso = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+  // Сначала — «жнец»: прогон, который «выполняется» дольше 4 минут, физически
+  // мёртв (функция живёт ~150 с). Помечаем его сбоем, чтобы он не висел в
+  // истории и не блокировал следующие запуски (раньше блокировал 10 минут).
+  const staleIso = new Date(Date.now() - 4 * 60 * 1000).toISOString();
+  await admin.from('builder_executions')
+    .update({ status: 'failed', error_message: msg(locale, 'run_timed_out'), completed_at: new Date().toISOString() })
+    .eq('user_id', userId).eq('status', 'running').lt('started_at', staleIso);
   {
     const { data: running } = await admin.from('builder_executions')
       .select('id').eq('workflow_id', workflowId).eq('status', 'running')
-      .gte('started_at', tenMinAgoIso).limit(1);
+      .gte('started_at', staleIso).limit(1);
     if (running && running.length) {
       return json({ error: 'already_running' }, 409);
     }
@@ -1035,7 +1070,8 @@ Deno.serve(async (req) => {
       await log(id, 'info', text.slice(0, 4000), { status: 'completed', tokens });
     } catch (e) {
       failed = true;
-      await log(id, 'error', (e as Error).message || msg(locale, 'node_failed'), { status: 'failed' });
+      const em = (e as Error).message;
+      await log(id, 'error', em === 'step_timeout' ? msg(locale, 'step_timeout') : (em || msg(locale, 'node_failed')), { status: 'failed' });
       break; // останавливаем на первой ошибке
     }
   }
