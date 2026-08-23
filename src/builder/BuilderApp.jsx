@@ -53,6 +53,7 @@ import { historyBridge } from './services/historyBridge.js';
 import ToastHost, { toast } from './components/Toast.jsx';
 import { estimateRun as estimateRunCost, formatEstimate, EXPENSIVE_DEFS } from './data/nodeCost.js';
 import CostGlyph from './components/CostGlyph.jsx';
+import Markdown from './components/panels/Markdown.jsx';
 import { listSchedules } from './services/scheduleService.js';
 import { saveDraft, loadDraft, clearDraft, setResumeAfterAuth, hasResumeAfterAuth, clearResumeAfterAuth } from './services/draftBackup.js';
 import { evaluateConnection, validateGraph, denyReasonKey } from './services/connectionRules.js';
@@ -1529,7 +1530,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
       locale,
       variables,
       ...makeCallbacks(stats),
-      onResult: ({ output, tokensUsed }) => setExecResult({ output, tokensUsed }),
+      onResult: ({ output, tokensUsed }) => { setExecResult({ output, tokensUsed }); setSelectedNodeId(null); setSelectedEdgeId(null); setSidebarOpen(true); },
     });
   }, [currentWorkflowId, outputTier, locale, runVars, beginExecUi, makeCallbacks]);
 
@@ -1593,6 +1594,15 @@ function BuilderAppInner({ initialTemplateId = null }) {
 
   // Меню «⋯» в шапке — редкие действия (подключения, журнал, автозапуски, код, очистить)
   const [moreOpen, setMoreOpen] = useState(false);
+  // Подсказки клавиш показываются по «?» (или из меню «⋯»), не всегда.
+  const [kbdOpen, setKbdOpen] = useState(false);
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === '?' && !['INPUT', 'TEXTAREA'].includes(e.target?.tagName)) setKbdOpen(v => !v);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   // ── Полоса «Следующий шаг» (заход 2, 2026-08-23) ──────────────────────────
   // Ведёт новичка: 1 проверить блоки → 2 подключить доставку → 3 запустить →
@@ -1889,6 +1899,12 @@ function BuilderAppInner({ initialTemplateId = null }) {
                 <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setConsoleTab('code'); setConsoleOpen(true); }}>
                   <Icon name="code-block" size={14} strokeWidth={1.5} /><span>{t('builder.more.code') || 'Код схемы'}</span>
                 </button>
+                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setMiniMapOpen(v => !v); }}>
+                  <Icon name="grid" size={14} strokeWidth={1.5} /><span>{t(miniMapOpen ? 'builder.minimap.hide' : 'builder.minimap.show') || 'Мини-карта'}</span>
+                </button>
+                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setKbdOpen(v => !v); }}>
+                  <Icon name="keyboard" size={14} strokeWidth={1.5} /><span>{t('builder.more.shortcuts') || 'Горячие клавиши'}</span>
+                </button>
                 <div className="builder-more__sep" role="separator" />
                 <button type="button" role="menuitem" className="builder-more__item builder-more__item--danger" onClick={() => { setMoreOpen(false); handleClearCanvas(); }}>
                   <Icon name="close" size={14} strokeWidth={1.75} /><span>{t('builder.clearLabel') || 'Очистить холст'}</span>
@@ -2116,30 +2132,17 @@ function BuilderAppInner({ initialTemplateId = null }) {
             {/* Зум-бар в стиле Atlas — плавающая pill по центру снизу */}
             <Panel position="bottom-center">
               <div className="builder-zoom">
-                <button type="button" className="builder-zoom__btn" onClick={() => zoomOut()}
-                  title={t('builder.zoom.out') || 'Уменьшить'} aria-label={t('builder.zoom.out') || 'Zoom out'}>
-                  <Icon name="minus" size={15} strokeWidth={1.9} />
-                </button>
+                {/* Заход 3: только проценты и «вписать». Масштаб — колёсиком/жестами;
+                    кнопки ±, мини-карта и подсказки клавиш убраны с холста
+                    (мини-карта и горячие клавиши — в меню «⋯»). */}
                 <button type="button" className="builder-zoom__value" onClick={() => fitView({ padding: 0.2, duration: 300 })}
                   title={t('builder.zoom.reset') || 'Вписать в экран'}>
                   {Math.round((zoom || 1) * 100)}%
-                </button>
-                <button type="button" className="builder-zoom__btn" onClick={() => zoomIn()}
-                  title={t('builder.zoom.in') || 'Увеличить'} aria-label={t('builder.zoom.in') || 'Zoom in'}>
-                  <Icon name="plus" size={15} strokeWidth={1.9} />
                 </button>
                 <span className="builder-zoom__divider" />
                 <button type="button" className="builder-zoom__btn" onClick={() => fitView({ padding: 0.2, duration: 300 })}
                   title={t('builder.zoom.fit') || 'Вписать в экран'} aria-label={t('builder.zoom.fit') || 'Fit view'}>
                   <Icon name="fullscreen" size={15} strokeWidth={1.75} />
-                </button>
-                <button type="button"
-                  className={`builder-zoom__btn ${miniMapOpen ? 'is-active' : ''}`}
-                  onClick={() => setMiniMapOpen(v => !v)}
-                  title={t(miniMapOpen ? 'builder.minimap.hide' : 'builder.minimap.show') || (miniMapOpen ? 'Скрыть мини-карту' : 'Мини-карта')}
-                  aria-label={t('builder.minimap.toggle') || 'Toggle minimap'}
-                  aria-pressed={miniMapOpen}>
-                  <Icon name="grid" size={14} strokeWidth={1.75} />
                 </button>
               </div>
             </Panel>
@@ -2401,8 +2404,8 @@ function BuilderAppInner({ initialTemplateId = null }) {
             </div>
           )}
 
-          {/* Легенда горячих клавиш — keycap-чипы в стиле Atlas */}
-          {nodes.length > 0 && !(nodes.length >= 2 && edges.length === 0) && execStatus !== 'running' && (
+          {/* Легенда горячих клавиш — по «?» или из меню «⋯» (по умолчанию скрыта) */}
+          {kbdOpen && nodes.length > 0 && (
             <div className="builder-keyhint" aria-label={t('builder.kbd.aria') || 'Keyboard shortcuts'}>
               {[
                 { keys: ['Del'], label: t('builder.kbd.delete') || 'удалить', when: !!selectedNodeId || !!selectedEdgeId },
@@ -2472,9 +2475,40 @@ function BuilderAppInner({ initialTemplateId = null }) {
                   </button>
                 </div>
                 <div className="builder-sidebar__body">
+                  {/* Результат последнего запуска — в правой карточке, с кнопкой
+                      расписания прямо под ним (заход 3): «работа приходит сама»
+                      предлагается в момент, когда человек увидел результат. */}
+                  {execResult && execStatus !== 'running' && !selectedNode && (
+                    <div className="builder-result-card">
+                      <div className="builder-result-card__head">
+                        <Icon name="check" size={14} strokeWidth={2.5} />
+                        <strong>{t('builder.result.title') || 'Готово'}</strong>
+                        {execResult.tokensUsed > 0 && (
+                          <span className="builder-result-card__meta">≈ {execResult.tokensUsed.toLocaleString()} {t('builder.runInput.tokens') || 'токенов'}</span>
+                        )}
+                      </div>
+                      <Markdown text={execResult.output || ''} className="builder-result-card__text" />
+                      <div className="builder-result-card__actions">
+                        <button
+                          type="button"
+                          className="builder-btn builder-btn--primary builder-btn--small"
+                          onClick={() => onStepClick('schedule')}
+                        >
+                          <Icon name="clock" size={13} strokeWidth={1.6} />
+                          <span>{t('builder.result.repeat') || 'Повторять по расписанию'}</span>
+                        </button>
+                        <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => { setConsoleTab('run'); setConsoleOpen(true); }}>
+                          {t('builder.result.log') || 'Показать ход работы'}
+                        </button>
+                        <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => { try { navigator.clipboard.writeText(execResult.output || ''); toast.success(t('builder.exec.copied') || 'Скопировано'); } catch { /* noop */ } }}>
+                          {t('common.copy') || 'Копировать'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
                   {selectedNode ? (
                     <NodeDetails node={selectedNode} t={t} locale={locale} onAtlasLink={openAtlasPreview} onGuide={openNodeGuide} />
-                  ) : (
+                  ) : execResult && execStatus !== 'running' ? null : (
                     <div className="builder-empty-state">
                       <Icon name="idea" size={24} strokeWidth={1.5} />
                       <p>{t('builder.sidebar.empty') || 'Select a node to see details and education tips.'}</p>
