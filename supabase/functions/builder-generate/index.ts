@@ -191,6 +191,16 @@ Deno.serve(async (req) => {
   // «запросы в полёте» в счётчиках (закрывает гонку TOCTOU). Любая ошибка
   // БД в счётчиках или вставке = ОТКАЗ (fail-closed): без работающего
   // журнала спонсорский ключ не тратим.
+  // Режим разработчика: адреса из секрета GEN_UNLIMITED_EMAILS (через запятую)
+  // собирают на спонсорском ключе без дневных и месячного лимитов. Адрес
+  // подтверждён входом (Google / ссылка из письма), из браузера не подделать.
+  // Такие сборки журналируются как НЕспонсорские, чтобы не съедать общий
+  // месячный потолок гостей.
+  const UNLIMITED = new Set((Deno.env.get('GEN_UNLIMITED_EMAILS') || '')
+    .split(',').map(e => e.trim().toLowerCase()).filter(Boolean));
+  const unlimited = sponsored && !!user?.email && UNLIMITED.has(String(user.email).toLowerCase());
+  if (unlimited) sponsored = false; // ключ спонсорский, но лимиты и журнал — как у своего ключа
+
   let reservationId: string | null = null;
   if (sponsored) {
     const dayStart = new Date(); dayStart.setUTCHours(0, 0, 0, 0);
@@ -277,5 +287,5 @@ Deno.serve(async (req) => {
     remaining = error ? null : Math.max(0, DAILY_PER_CLIENT - (count ?? 0));
   }
 
-  return json({ ok: true, scheme, sponsored, remaining });
+  return json({ ok: true, scheme, sponsored, remaining, unlimited });
 });

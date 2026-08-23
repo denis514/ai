@@ -10,7 +10,7 @@ import Icon from '../../components/Icon.jsx';
  * ВАЖНО (тексты): лимитируются только АВТОсборки — сборка руками безлимитна,
  * счётчик обязан это проговаривать.
  */
-export default function GenerateHero({ t, busy, remaining, error, ownKey = false, onGenerate }) {
+export default function GenerateHero({ t, busy, remaining, error, ownKey = false, unlimited = false, onGenerate }) {
   const [value, setValue] = useState('');
   const [demo, setDemo] = useState('');
   const [focused, setFocused] = useState(false);
@@ -54,7 +54,9 @@ export default function GenerateHero({ t, busy, remaining, error, ownKey = false
 
   // Подпись под строкой: до первого использования — общая; дальше — остаток.
   // Формулировка отделяет автосборки от безлимитной ручной сборки.
-  const counterText = ownKey
+  const counterText = unlimited
+    ? t('builder.gen.hintUnlimited') // режим разработчика (адрес в GEN_UNLIMITED_EMAILS)
+    : ownKey
     ? t('builder.gen.hintOwnKey')
     : remaining === null
       ? t('builder.gen.hint')

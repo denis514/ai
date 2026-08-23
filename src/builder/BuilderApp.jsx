@@ -806,14 +806,16 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // ── Автосборка «опиши задачу → схема» (решение основателя 2026-08-23) ────
   const [genBusy, setGenBusy] = useState(false);
   const [genRemaining, setGenRemaining] = useState(null);
+  const [genUnlimited, setGenUnlimited] = useState(false);
   const [genError, setGenError] = useState('');
   const handleGenerate = useCallback(async (queryText) => {
     if (genBusy) return;
     setGenBusy(true);
     setGenError('');
     try {
-      const { scheme, remaining } = await generateScheme(queryText, locale);
+      const { scheme, remaining, unlimited } = await generateScheme(queryText, locale);
       if (remaining != null) setGenRemaining(remaining);
+      if (unlimited) setGenUnlimited(true);
       const template = schemeToTemplate(scheme);
       const { nodes: newNodes, edges: newEdges } = buildTemplateGraph(template, EDGE_STYLE, t);
       if (template.start) {
@@ -2296,6 +2298,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
                 remaining={genRemaining}
                 error={genError}
                 ownKey={keyConnected}
+                unlimited={genUnlimited}
                 onGenerate={handleGenerate}
               />
 
