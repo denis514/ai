@@ -222,6 +222,10 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
       short: t('builder.keys.shortClaude') || 'Запуск схем на реальном Claude',
       desc: t('builder.keys.desc') || 'Нужен для реального запуска схем. Ключ шифруется на сервере и никогда не хранится в браузере.',
       placeholder: t('builder.keys.placeholder') || 'sk-ant-...',
+      howto: { key: 'builder.keys.howClaude', links: [
+        { href: 'https://platform.claude.com/settings/keys', label: t('builder.keys.linkClaudeKeys') || 'Ключи в консоли Claude' },
+        { href: 'https://platform.claude.com/settings/billing', label: t('builder.keys.linkClaudeBilling') || 'Пополнить баланс' },
+      ] },
       status, draft, setDraft, busy, error,
       onConnect: mkConnect('anthropic', draft, setDraft, setBusy, setError, { key_rejected: t('builder.keys.errRejected') || 'Claude отклонил этот ключ. Проверьте и попробуйте снова.', invalid_key_format: t('builder.keys.errFormat') || 'Это не похоже на верный ключ.' }),
       onDisconnect: mkDisconnect('anthropic', setBusy, setError),
@@ -231,6 +235,10 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
       short: t('builder.keys.shortTg') || 'Доставка результата в чат',
       desc: t('builder.keys.tgDesc') || 'Подключите токен бота, чтобы узел «Telegram» слал результат в чат. Токен шифруется на сервере.',
       placeholder: t('builder.keys.tgPlaceholder') || '123456:ABC-DEF...',
+      howto: { key: 'builder.keys.howTg', links: [
+        { href: 'https://t.me/BotFather', label: '@BotFather' },
+        { href: 'https://core.telegram.org/bots/tutorial', label: t('builder.keys.linkTgDocs') || 'Официальная инструкция Telegram' },
+      ] },
       status: tgStatus, draft: tgDraft, setDraft: setTgDraft, busy: tgBusy, error: tgError,
       onConnect: mkConnect('telegram', tgDraft, setTgDraft, setTgBusy, setTgError, { key_rejected: t('builder.keys.tgErrRejected') || 'Telegram отклонил этот токен. Проверьте и попробуйте снова.' }),
       onDisconnect: mkDisconnect('telegram', setTgBusy, setTgError),
@@ -240,6 +248,10 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
       short: t('builder.keys.shortRs') || 'Доставка результата на почту',
       desc: t('builder.keys.rsDesc') || 'Подключите ключ Resend, чтобы узел «Email» отправлял результат на почту. Ключ шифруется на сервере.',
       placeholder: t('builder.keys.rsPlaceholder') || 're_...',
+      howto: { key: 'builder.keys.howRs', links: [
+        { href: 'https://resend.com/api-keys', label: t('builder.keys.linkRsKeys') || 'Ключи в Resend' },
+        { href: 'https://resend.com/docs/dashboard/domains/introduction', label: t('builder.keys.linkRsDomain') || 'Подтвердить свой домен' },
+      ] },
       status: rsStatus, draft: rsDraft, setDraft: setRsDraft, busy: rsBusy, error: rsError,
       onConnect: mkConnect('resend', rsDraft, setRsDraft, setRsBusy, setRsError, { key_rejected: t('builder.keys.rsErrRejected') || 'Resend отклонил этот ключ. Проверьте и попробуйте снова.' }),
       onDisconnect: mkDisconnect('resend', setRsBusy, setRsError),
@@ -369,6 +381,23 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
               </div>
             </div>
             <p className="builder-directory__detail-desc">{open.desc}</p>
+            {/* Мини-инструкция по шагам + ссылки на официальные страницы
+                (решение основателя 2026-08-23): человек не гуглит, где взять ключ. */}
+            {open.howto && (
+              <div className="builder-howto">
+                <ol className="builder-howto__steps">
+                  {(() => { try { const arr = JSON.parse(t(open.howto.key)); return Array.isArray(arr) ? arr : []; } catch { return []; } })()
+                    .map((step, i) => <li key={i}>{step}</li>)}
+                </ol>
+                <div className="builder-howto__links">
+                  {open.howto.links.map(l => (
+                    <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="builder-howto__link">
+                      {l.label} <Icon name="external-link" size={11} strokeWidth={1.75} />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {open.type === 'oauth' ? (
               open.status === null ? (

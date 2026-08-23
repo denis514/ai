@@ -124,11 +124,31 @@ export default function ScheduleModal({ workflowId, workflowName, locale, runEst
     setPending(true);
   };
 
+  // Человек задаёт время по СВОИМ часам (раньше — в UTC с подсказкой «Москва = +3»,
+  // неверной для Финляндии полгода). В UTC переводим здесь, сервер не меняется.
+  const TZ = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'; } catch { return 'UTC'; } })();
+  const localToUtc = () => {
+    const now = new Date();
+    let d;
+    if (freq === 'once' || freq === 'monthly' || freq === 'yearly') d = new Date(year, month - 1, dayOfMonth, hour, minute, 0, 0);
+    else if (freq === 'weekly') {
+      d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0, 0);
+      const shift = (weekday - d.getDay() + 7) % 7; d.setDate(d.getDate() + shift);
+    } else d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0, 0);
+    return { hour: d.getUTCHours(), minute: d.getUTCMinutes(), weekday: d.getUTCDay(), dayOfMonth: d.getUTCDate(), month: d.getUTCMonth() + 1, year: d.getUTCFullYear() };
+  };
+  const utcToLocal = (s) => {
+    const base = new Date();
+    const d = new Date(Date.UTC(s.year || base.getUTCFullYear(), (s.month ?? base.getUTCMonth() + 1) - 1, s.day_of_month ?? base.getUTCDate(), s.hour ?? 0, s.minute ?? 0));
+    return { h: d.getHours(), m: d.getMinutes(), wd: d.getDay(), d: d.getDate(), mon: d.getMonth(), y: d.getFullYear() };
+  };
+
   // Шаг 2: реальное создание после подтверждения.
   const confirmCreate = async () => {
     setBusy(true);
     try {
-      await createSchedule({ workflowId, frequency: freq, hour, minute, weekday, dayOfMonth, month, year, tier: 's', locale });
+      const u = (freq === 'minutes' || freq === 'hourly') ? { hour, minute, weekday, dayOfMonth, month, year } : localToUtc();
+      await createSchedule({ workflowId, frequency: freq, hour: u.hour, minute: u.minute, weekday: u.weekday, dayOfMonth: u.dayOfMonth, month: u.month, year: u.year, tier: 's', locale });
       setPending(false);
       toast.success(t('builder.schedule.created') || 'Автозапуск создан');
       refresh();
@@ -153,7 +173,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, runEst
   const MN = (t('builder.schedule.months') || 'Янв,Фев,Мар,Апр,Май,Июн,Июл,Авг,Сен,Окт,Ноя,Дек').split(',');
   const pad = (n) => String(n).padStart(2, '0');
   // Для «Один раз»: выбранный момент и проверка, что он не в прошлом.
-  const onceDate = new Date(Date.UTC(year, month - 1, dayOfMonth, hour, minute, 0, 0));
+  const onceDate = new Date(year, month - 1, dayOfMonth, hour, minute, 0, 0);
   const oncePast = freq === 'once' && onceDate.getTime() <= Date.now();
 
   // Режим: однократно / многократно. Внутри «многократно» — частоты.
@@ -182,14 +202,15 @@ export default function ScheduleModal({ workflowId, workflowName, locale, runEst
     if (s.frequency === 'once') {
       const d = s.next_run_at ? new Date(s.next_run_at)
         : new Date(Date.UTC(s.year || new Date().getUTCFullYear(), (s.month ?? 1) - 1, s.day_of_month ?? 1, s.hour ?? 0, s.minute ?? 0));
-      return `${d.getUTCDate()} ${MN[d.getUTCMonth()] || ''} ${d.getUTCFullYear()} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} UTC`;
+      return `${d.getDate()} ${MN[d.getMonth()] || ''} ${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
     if (s.frequency === 'minutes') return `${(t('builder.schedule.everyFmt') || 'Каждые {n} мин').replace('{n}', s.minute)}`;
     if (s.frequency === 'hourly') return `${t('builder.schedule.hourly') || 'Ежечасно'} :${pad(s.minute)}`;
-    if (s.frequency === 'weekly') return `${WD[s.weekday ?? 1]} ${pad(s.hour)}:${pad(s.minute)} UTC`;
-    if (s.frequency === 'monthly') return `${(t('builder.schedule.monthlyFmt') || '{d} числа').replace('{d}', s.day_of_month ?? 1)} ${pad(s.hour)}:${pad(s.minute)} UTC`;
-    if (s.frequency === 'yearly') return `${s.day_of_month ?? 1} ${MN[(s.month ?? 1) - 1] || ''} ${pad(s.hour)}:${pad(s.minute)} UTC`;
-    return `${t('builder.schedule.daily') || 'Ежедневно'} ${pad(s.hour)}:${pad(s.minute)} UTC`;
+    const L = utcToLocal(s);
+    if (s.frequency === 'weekly') return `${WD[L.wd]} ${pad(L.h)}:${pad(L.m)}`;
+    if (s.frequency === 'monthly') return `${(t('builder.schedule.monthlyFmt') || '{d} числа').replace('{d}', L.d)} ${pad(L.h)}:${pad(L.m)}`;
+    if (s.frequency === 'yearly') return `${L.d} ${MN[L.mon] || ''} ${pad(L.h)}:${pad(L.m)}`;
+    return `${t('builder.schedule.daily') || 'Ежедневно'} ${pad(L.h)}:${pad(L.m)}`;
   };
 
   // Конкретное пояснение для выбранной частоты + пример ближайших запусков.
@@ -322,7 +343,7 @@ export default function ScheduleModal({ workflowId, workflowName, locale, runEst
                 <input type="number" min="0" max="59" value={minute} aria-label={t('builder.schedule.minute') || 'Минута'}
                   onChange={(e) => setMinute(Math.min(59, Math.max(0, Number(e.target.value) || 0)))} />
               </div>
-              <span className="builder-sched-clock__utc">UTC</span>
+              <span className="builder-sched-clock__utc" title={TZ}>{t('builder.schedule.localTime') || 'ваше время'}</span>
             </div>
           )}
           {/* Кнопка «Инструкция» под полями слева — открывает пояснение по частоте */}

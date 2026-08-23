@@ -68,21 +68,27 @@ export default function AllSchedulesModal({ onClose, embedded = false, guest = f
   const MN = (t('builder.schedule.months') || 'Янв,Фев,Мар,Апр,Май,Июн,Июл,Авг,Сен,Окт,Ноя,Дек').split(',');
   const pad = (n) => String(n).padStart(2, '0');
   const fmtFreq = (s) => {
+    // Показываем по местному времени человека (в базе — UTC).
+    const base = new Date();
+    const L = (() => { const d = new Date(Date.UTC(s.year || base.getUTCFullYear(), (s.month ?? base.getUTCMonth() + 1) - 1, s.day_of_month ?? base.getUTCDate(), s.hour ?? 0, s.minute ?? 0)); return { h: d.getHours(), m: d.getMinutes(), wd: d.getDay(), d: d.getDate(), mon: d.getMonth(), y: d.getFullYear() }; })();
     if (s.frequency === 'once') {
-      const d = s.next_run_at ? new Date(s.next_run_at)
-        : new Date(Date.UTC(new Date().getUTCFullYear(), (s.month ?? 1) - 1, s.day_of_month ?? 1, s.hour ?? 0, s.minute ?? 0));
-      return `${d.getUTCDate()} ${MN[d.getUTCMonth()] || ''} ${d.getUTCFullYear()} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} UTC`;
+      const d = s.next_run_at ? new Date(s.next_run_at) : null;
+      return d ? `${d.getDate()} ${MN[d.getMonth()] || ''} ${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`
+               : `${L.d} ${MN[L.mon] || ''} ${L.y} ${pad(L.h)}:${pad(L.m)}`;
     }
-    if (s.frequency === 'minutes') return (t('builder.schedule.everyFmt') || 'Каждые {n} мин').replace('{n}', s.minute);
+    if (s.frequency === 'minutes') return `${(t('builder.schedule.everyFmt') || 'Каждые {n} мин').replace('{n}', s.minute)}`;
     if (s.frequency === 'hourly') return `${t('builder.schedule.hourly') || 'Ежечасно'} :${pad(s.minute)}`;
-    if (s.frequency === 'weekly') return `${WD[s.weekday ?? 1]} ${pad(s.hour)}:${pad(s.minute)} UTC`;
-    if (s.frequency === 'monthly') return `${(t('builder.schedule.monthlyFmt') || '{d} числа').replace('{d}', s.day_of_month ?? 1)} ${pad(s.hour)}:${pad(s.minute)} UTC`;
-    if (s.frequency === 'yearly') return `${s.day_of_month ?? 1} ${MN[(s.month ?? 1) - 1] || ''} ${pad(s.hour)}:${pad(s.minute)} UTC`;
-    return `${t('builder.schedule.daily') || 'Ежедневно'} ${pad(s.hour)}:${pad(s.minute)} UTC`;
+    if (s.frequency === 'weekly') return `${WD[L.wd]} ${pad(L.h)}:${pad(L.m)}`;
+    if (s.frequency === 'monthly') return `${(t('builder.schedule.monthlyFmt') || '{d} числа').replace('{d}', L.d)} ${pad(L.h)}:${pad(L.m)}`;
+    if (s.frequency === 'yearly') return `${L.d} ${MN[L.mon] || ''} ${pad(L.h)}:${pad(L.m)}`;
+    return `${t('builder.schedule.daily') || 'Ежедневно'} ${pad(L.h)}:${pad(L.m)}`;
   };
   const fmtTime = (iso) => {
     if (!iso) return '—';
-    return String(iso).slice(0, 16).replace('T', ' ') + ' UTC';
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return String(iso);
+    // По местному времени человека (раньше — сырой UTC)
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
   };
 
   const body = (
