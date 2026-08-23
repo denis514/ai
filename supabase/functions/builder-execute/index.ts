@@ -466,7 +466,13 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
           const b = ev.content_block || {};
           blockType.set(ev.index, b.type);
           if (b.type === 'text') { if (text) text += '\n'; if (b.text) text += b.text; for (const c of (b.citations || [])) addCite(c); }
-          if (b.type === 'server_tool_use') { searches++; partialJson.set(ev.index, ''); }
+          if (b.type === 'server_tool_use') {
+            searches++;
+            // Вход инструмента может прийти целиком в start (input) или
+            // кусочками через input_json_delta — поддерживаем оба варианта.
+            const startInput = b.input && typeof b.input === 'object' ? JSON.stringify(b.input) : '';
+            partialJson.set(ev.index, startInput && startInput !== '{}' ? startInput : '');
+          }
           if (b.type === 'web_search_tool_result') {
             const c = b.content;
             if (c && !Array.isArray(c) && c.type === 'web_search_tool_result_error') toolErrors.push(String(c.error_code || 'unknown'));
@@ -483,7 +489,10 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
         case 'content_block_stop': {
           if (blockType.get(ev.index) === 'server_tool_use') {
             let q = '';
-            try { q = String(JSON.parse(partialJson.get(ev.index) || '{}').query || ''); } catch { /* частичный JSON */ }
+            try {
+              const inp = JSON.parse(partialJson.get(ev.index) || '{}');
+              q = String(inp.query || inp.q || inp.search_query || (typeof inp === 'string' ? inp : '') || '');
+            } catch { /* частичный JSON */ }
             await emit(true, q.slice(0, 80) || undefined);
           }
           break;
