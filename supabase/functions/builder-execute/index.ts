@@ -108,6 +108,21 @@ const MSG: Record<string, Record<string, string>> = {
     en: 'Step failed',
     fi: 'Vaihe epäonnistui',
   },
+  rate_wait: {
+    ru: 'Лимит запросов к модели — ждём {sec} с и продолжаем…',
+    en: 'Model rate limit — waiting {sec} s and continuing…',
+    fi: 'Mallin pyyntöraja — odotetaan {sec} s ja jatketaan…',
+  },
+  web_search_error: {
+    ru: 'Веб-поиск вернул ошибку ({code}) — ответ ниже составлен без результатов поиска',
+    en: 'Web search returned an error ({code}) — the answer below was written without search results',
+    fi: 'Verkkohaku palautti virheen ({code}) — alla oleva vastaus on kirjoitettu ilman hakutuloksia',
+  },
+  web_search_done: {
+    ru: 'Веб-поиск: выполнено запросов — {n}',
+    en: 'Web search: {n} request(s) made',
+    fi: 'Verkkohaku: {n} hakua tehty',
+  },
   step_timeout: {
     ru: 'Шаг не уложился во время (модель отвечала слишком долго). Попробуйте короче задачу или размер ответа «Коротко»; веб-поиск замедляет шаг.',
     en: 'The step ran out of time (the model took too long). Try a shorter task or the “Brief” answer size; web search slows a step down.',
@@ -381,7 +396,19 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
       text += `\n\n**Источники:**\n${cites.map((s) => `• ${s}`).join('\n')}`;
     }
     const tokens = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
-    return { text, tokens };
+    // Диагностика серверных инструментов: если веб-поиск вернул ошибку, модель
+    // молча крутится и дожигает токены (живой прогон 2026-08-23: 50k токенов
+    // без единого результата). Собираем коды ошибок и число поисков — наружу.
+    const toolErrors: string[] = [];
+    let searches = 0;
+    for (const b of blocks) {
+      if (b.type === 'server_tool_use') searches++;
+      const c = (b as any).content;
+      if (b.type === 'web_search_tool_result' && c && !Array.isArray(c) && c.type === 'web_search_tool_result_error') {
+        toolErrors.push(String(c.error_code || 'unknown'));
+      }
+    }
+    return { text, tokens, toolErrors, searches, webRequests: data.usage?.server_tool_use?.web_search_requests || 0 };
   }
 }
 
@@ -1058,12 +1085,20 @@ Deno.serve(async (req) => {
       const sendMcp: McpServer[] = pickedMcp.map(({ _id, ...s }) => { void _id; return s; });
       if (sendMcp.length) await log(id, 'info', `MCP: ${sendMcp.length} server(s) provided`, { status: 'running' });
       await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
-      const { text, tokens } = await callClaude(
+      const { text, tokens, toolErrors, searches, webRequests } = await callClaude(
         apiKey, system, context || 'Proceed.', maxTokens, visionImages, sendMcp, wantWeb,
         wantCode, (wantCitations ? citationDocs : []),
-        async (sec) => { await log(id, 'warn', `Лимит запросов Anthropic — ждём ${sec}с и продолжаем…`, { status: 'running' }); },
+        async (sec) => { await log(id, 'warn', msg(locale, 'rate_wait', { sec }), { status: 'running' }); },
       );
       totalTokens += tokens;
+      // Веб-поиск: показываем, что реально произошло, а не только текст модели.
+      if (wantWeb) {
+        if (toolErrors.length) {
+          await log(id, 'warn', msg(locale, 'web_search_error', { code: [...new Set(toolErrors)].join(', ') }), { status: 'running' });
+        } else if (searches || webRequests) {
+          await log(id, 'info', msg(locale, 'web_search_done', { n: Math.max(searches, webRequests) }), { status: 'running' });
+        }
+      }
       outputs.set(id, text);
       transcript.push(`${roleLabel(node.role || 'main')}: ${text.slice(0, 1200)}`);
       lastText = text;
