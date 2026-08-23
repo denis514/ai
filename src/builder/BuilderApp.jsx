@@ -2275,7 +2275,10 @@ function BuilderAppInner({ initialTemplateId = null }) {
 
           {/* Onboarding empty state — только когда НЕТ активного workflow.
               После «Создать» (currentWorkflowId задан) показываем чистый холст. */}
-          {nodes.length === 0 && !currentWorkflowId && (
+          {/* Пустой холст — всегда первый экран (строка «опиши задачу» + шаблоны),
+              в том числе после «Очистить»: раньше очищенная схема с id оставляла
+              пустоту, и начать заново было неоткуда (замечание основателя). */}
+          {nodes.length === 0 && (
             <div className="builder-empty-canvas">
               {/* Живая планета — как корневой узел карты (32px × 2.05 ≈ 66px) */}
               <PlanetLogo size={66} className="builder-empty-canvas__planet" />
