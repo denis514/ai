@@ -3108,6 +3108,25 @@
 
 /* Единая кнопка «Консоль» в шапке + индикатор выполнения */
 .builder-app .builder-console-btn { position: relative; }
+
+/* ── Меню «⋯» в шапке: редкие действия одним списком (заход 1, 2026-08-23) ── */
+.builder-app .builder-more { position: relative; }
+.builder-app .builder-more__btn { position: relative; }
+.builder-app .builder-more__menu {
+  position: absolute; top: calc(100% + 8px); right: 0; min-width: 200px;
+  padding: 6px; border-radius: 12px; z-index: 60;
+  background: var(--surface); border: 1px solid var(--border);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.builder-app .builder-more__item {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 8px 10px; border: 0; border-radius: 8px; background: transparent;
+  color: var(--text); font-size: 13px; text-align: left; cursor: pointer;
+}
+.builder-app .builder-more__item:hover { background: var(--surface-2, rgba(0,0,0,0.05)); }
+.builder-app .builder-more__item--danger { color: #c2603f; }
+.builder-app .builder-more__sep { height: 1px; margin: 4px 6px; background: var(--border); }
 .builder-app .builder-console-btn.is-active {
   background: var(--surface-3);
   border-color: var(--border-strong);

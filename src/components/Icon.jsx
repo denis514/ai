@@ -4,6 +4,7 @@ import {
   // mindmap node icons
   BrainIcon,
   Coins01Icon,
+  SourceCodeIcon,
   DollarCircleIcon,
   EuroCircleIcon,
   SlidersHorizontalIcon,
@@ -210,6 +211,7 @@ const REGISTRY = {
   user:        UserCircleIcon,
   star:        StarIcon,
   more:        MoreHorizontalIcon,
+  'code-block': SourceCodeIcon,               // </> код схемы
   // auth
   login:       Login01Icon,
   logout:      Logout01Icon,

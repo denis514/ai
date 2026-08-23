@@ -1582,9 +1582,14 @@ function BuilderAppInner({ initialTemplateId = null }) {
     if (emailNoTo) deliveryIssues.push({ type: 'email-no-to', count: emailNoTo });
     if (has('calendar') && !gcalConnected) deliveryIssues.push({ type: 'calendar-not-connected', count: 1 });
     if (deliveryIssues.length) v.warnings = [...deliveryIssues, ...v.warnings];
-    if (v.errors.length || v.warnings.length) { setValidation(v); return; }
-    proceedRealRun();
+    // Окно перед запуском показываем ВСЕГДА: в нём цена, предупреждения и
+    // второй путь «сначала бесплатный тест» (отдельная кнопка теста убрана из
+    // шапки — один экран, одно действие; решение основателя 2026-08-23).
+    setValidation(v);
   }, [nodes, edges, execStatus, keyConnected, telegramConnected, resendConnected, gcalConnected, runInput, requestRealMode, proceedRealRun]);
+
+  // Меню «⋯» в шапке — редкие действия (подключения, журнал, автозапуски, код, очистить)
+  const [moreOpen, setMoreOpen] = useState(false);
 
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
@@ -1757,7 +1762,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
 
           {/* Свёрнута левая панель → независимая круглая кнопка справа от плашки
               (в стиле кнопок правой части). */}
-          {!toolboxOpen && (
+          {!toolboxOpen && nodes.length > 0 && (
             <button
               type="button"
               className="builder-header__sidebtn"
@@ -1775,6 +1780,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
         </div>
 
         {/* Центр: переключатель «Мои схемы» (имя текущей схемы + список) */}
+        {nodes.length > 0 && (
         <div className="builder-header__center">
           <div className="builder-header__switcher-wrap">
             <button
@@ -1813,81 +1819,63 @@ function BuilderAppInner({ initialTemplateId = null }) {
             )}
           </div>
         </div>
+        )}
 
+        {/* Шапка справа (заход 1 упрощения, 2026-08-23): на пустом холсте — ничего;
+            со схемой — меню «⋯» (редкое) и ОДНА кнопка «Запустить». Тестовый
+            запуск живёт внутри окна перед запуском. */}
+        {nodes.length > 0 && (
         <div className="builder-header__actions">
-          {/* «Очистить» — отдельная плашка слева, появляется только при наличии узлов */}
-          {nodes.length > 0 && (
+          <div className="builder-more">
             <button
               type="button"
-              className="builder-clear-pill"
-              onClick={handleClearCanvas}
-              title={t('builder.clear') || 'Clear canvas'}
+              className={`builder-btn builder-btn--ghost builder-more__btn ${moreOpen ? 'is-active' : ''}`}
+              onClick={() => setMoreOpen(v => !v)}
+              aria-haspopup="menu"
+              aria-expanded={moreOpen}
+              title={t('builder.more.title') || 'Ещё'}
+              aria-label={t('builder.more.title') || 'Ещё'}
             >
-              <span>{t('builder.clearLabel') || 'Очистить'}</span>
+              <Icon name="more" size={16} strokeWidth={1.75} />
+              {execStatus === 'running' && <span className="builder-console-dot" aria-hidden="true" />}
             </button>
-          )}
-          <button
-            type="button"
-            className={`builder-btn builder-btn--ghost builder-console-btn ${consoleOpen ? 'is-active' : ''}`}
-            onClick={() => setConsoleOpen(o => !o)}
-            title={t('builder.console.openBtn') || 'Консоль'}
-            aria-label={t('builder.console.openBtn') || 'Консоль'}
-            aria-pressed={consoleOpen}
-          >
-            <Icon name="terminal" size={15} strokeWidth={1.6} />
-            {execStatus === 'running' && <span className="builder-console-dot" aria-hidden="true" />}
-          </button>
-          <button
-            type="button"
-            className="builder-btn builder-btn--ghost"
-            onClick={openKeysOrAuth}
-            title={t('builder.keys.openBtn') || 'API keys'}
-            aria-label={t('builder.keys.openBtn') || 'API keys'}
-          >
-            <Icon name="lock" size={14} strokeWidth={1.5} />
-          </button>
-          {/* Кнопка «Все автозапуски» убрана из шапки — история теперь внизу
-              боковой панели «Автозапуск» (раскрывающийся блок). */}
-          {/* Показать панель «Детали» — стоит ПЕРЕД сплитом, чтобы зелёная плашка
-              осталась в самом правом краю ряда (требование референса). */}
-          {!sidebarOpen && (
-            <button
-              type="button"
-              className="builder-btn builder-btn--ghost"
-              onClick={() => setSidebarOpen(true)}
-              title={t('builder.header.toggleSidebar') || 'Показать детали'}
-              aria-label={t('builder.header.toggleSidebar') || 'Показать детали'}
-            >
-              <Icon name="panel-right" size={14} strokeWidth={1.5} />
-            </button>
-          )}
+            {moreOpen && (
+              <div className="builder-more__menu" role="menu" onMouseLeave={() => setMoreOpen(false)}>
+                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); openKeysOrAuth(); }}>
+                  <Icon name="lock" size={14} strokeWidth={1.5} /><span>{t('builder.more.connections') || 'Подключения'}</span>
+                </button>
+                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setConsoleTab('run'); setConsoleOpen(true); }}>
+                  <Icon name="terminal" size={14} strokeWidth={1.5} /><span>{t('builder.more.journal') || 'Журнал запуска'}</span>
+                </button>
+                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setConsoleTab('sched'); setConsoleOpen(true); }}>
+                  <Icon name="clock" size={14} strokeWidth={1.5} /><span>{t('builder.allsched.openBtn') || 'Автозапуски'}</span>
+                </button>
+                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setConsoleTab('code'); setConsoleOpen(true); }}>
+                  <Icon name="code-block" size={14} strokeWidth={1.5} /><span>{t('builder.more.code') || 'Код схемы'}</span>
+                </button>
+                <div className="builder-more__sep" role="separator" />
+                <button type="button" role="menuitem" className="builder-more__item builder-more__item--danger" onClick={() => { setMoreOpen(false); handleClearCanvas(); }}>
+                  <Icon name="close" size={14} strokeWidth={1.75} /><span>{t('builder.clearLabel') || 'Очистить холст'}</span>
+                </button>
+              </div>
+            )}
+          </div>
 
-          {/* Тестовый прогон — без токенов, проверяет, что цепочка проходит. */}
-          <button
-            type="button"
-            className="builder-dry-btn"
-            onClick={handleDryRun}
-            disabled={nodes.length === 0 || execStatus === 'running'}
-            title={t('builder.dry.btnHint') || 'Тестовый прогон без токенов — проверить, что цепочка проходит без ошибок'}
-          >
-            {t('builder.dry.btn') || 'Тестовый запуск'}
-          </button>
-
-          {/* Сплит-кнопка Запуск + расписание — последний элемент справа. */}
+          {/* Сплит-кнопка Запустить + расписание — последний элемент справа. */}
           <div className="builder-run-split builder-run-split--real">
             <button
               type="button"
               className="builder-run-split__main"
               onClick={handleRun}
-              disabled={nodes.length === 0 || execStatus === 'running'}
+              disabled={execStatus === 'running'}
               title={t('builder.runmode.realHint') || 'Запуск на реальном Claude — тратит токены'}
             >
-              {execStatus === 'running' && <Icon name="refresh" size={15} strokeWidth={1.6} />}
+              {execStatus === 'running' && <Icon name="refresh-circle" size={15} strokeWidth={1.6} />}
               <span>{execStatus === 'running'
                 ? (t('builder.running') || 'Выполняется…')
-                : (t('builder.run') || 'Запуск')}</span>
+                : (t('builder.run') || 'Запустить')}</span>
             </button>
-            {userId && nodes.length > 0 && (
+            {userId && (
               <button
                 type="button"
                 className="builder-run-split__clock"
@@ -1904,6 +1892,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
             )}
           </div>
         </div>
+        )}
       </header>
 
       {/* ── Main layout grid ───────────────────────────────────── */}
@@ -2774,7 +2763,9 @@ function BuilderAppInner({ initialTemplateId = null }) {
             <h3 className="builder-name-modal__title">
               {validation.errors.length
                 ? (t('builder.validation.blockTitle') || 'Схему пока нельзя запустить')
-                : (t('builder.validation.warnTitle') || 'Проверьте схему перед запуском')}
+                : validation.warnings.length
+                ? (t('builder.validation.warnTitle') || 'Проверьте схему перед запуском')
+                : (t('builder.validation.readyTitle') || 'Запустить схему?')}
             </h3>
 
             {/* Ориентир стоимости запуска — ДО траты (решение основателя 2026-08-23) */}
@@ -2828,13 +2819,23 @@ function BuilderAppInner({ initialTemplateId = null }) {
                   ? (t('builder.validation.fix') || 'Исправить')
                   : (t('common.cancel') || 'Отмена')}
               </button>
+              <button
+                type="button"
+                className="builder-btn builder-btn--ghost"
+                onClick={() => { setValidation(null); handleDryRun(); }}
+                title={t('builder.dry.btnHint') || 'Тестовый прогон без токенов'}
+              >
+                {t('builder.dry.btn') || 'Бесплатный тест'}
+              </button>
               {validation.errors.length === 0 && (
                 <button
                   type="button"
                   className="builder-btn builder-btn--primary builder-btn--real"
                   onClick={() => { setValidation(null); proceedRealRun(); }}
                 >
-                  {t('builder.validation.runAnyway') || 'Запустить всё равно'}
+                  {validation.warnings.length
+                    ? (t('builder.validation.runAnyway') || 'Запустить всё равно')
+                    : (t('builder.run') || 'Запустить')}
                 </button>
               )}
             </div>
