@@ -108,6 +108,36 @@ const MSG: Record<string, Record<string, string>> = {
     en: 'Step failed',
     fi: 'Vaihe epäonnistui',
   },
+  // ── Ход выполнения (info) ──
+  run_start: { ru: 'Запуск. Задача: «{input}»', en: 'Run started. Task: “{input}”', fi: 'Ajo alkoi. Tehtävä: ”{input}”' },
+  run_start_empty: { ru: 'Запуск', en: 'Run started', fi: 'Ajo alkoi' },
+  input_received: { ru: 'Задача принята', en: 'Task received', fi: 'Tehtävä vastaanotettu' },
+  result_collected: { ru: 'Результат собран', en: 'Result collected', fi: 'Tulos koottu' },
+  tg_sent: { ru: 'Отправлено в Telegram ✓ (адрес {chat})', en: 'Sent to Telegram ✓ (chat {chat})', fi: 'Lähetetty Telegramiin ✓ (chat {chat})' },
+  email_sent: { ru: 'Письмо отправлено ✓ ({to})', en: 'Email sent ✓ ({to})', fi: 'Sähköposti lähetetty ✓ ({to})' },
+  gcal_created: { ru: 'Событие создано ✓ ({title}, {when})', en: 'Event created ✓ ({title}, {when})', fi: 'Tapahtuma luotu ✓ ({title}, {when})' },
+  cap_web: { ru: 'Интернет: подключён к агенту', en: 'Web: available to the connected agent', fi: 'Verkko: yhdistetty agenttiin' },
+  cap_memory: { ru: 'Память: агент видит все предыдущие шаги этого запуска', en: 'Memory: the agent sees all prior steps of this run', fi: 'Muisti: agentti näkee tämän ajon kaikki aiemmat vaiheet' },
+  cap_file_ready: { ru: 'Файл готов: {name}', en: 'File ready: {name}', fi: 'Tiedosto valmis: {name}' },
+  cap_file_missing: { ru: 'Файл не загружен — откройте блок и добавьте файл', en: 'No file uploaded — open the block and add a file', fi: 'Tiedostoa ei ladattu — avaa lohko ja lisää tiedosto' },
+  cap_image_ready: { ru: 'Картинка готова для агента', en: 'Image ready for the connected agent', fi: 'Kuva valmis agentille' },
+  cap_image_missing: { ru: 'Картинка не загружена — откройте блок и добавьте изображение', en: 'No image uploaded — open the block and add an image', fi: 'Kuvaa ei ladattu — avaa lohko ja lisää kuva' },
+  cap_code: { ru: 'Код: агент может выполнять Python', en: 'Code: the agent can run Python', fi: 'Koodi: agentti voi suorittaa Pythonia' },
+  cap_citations: { ru: 'Цитаты: агент укажет источники', en: 'Citations: the agent will cite sources', fi: 'Lähteet: agentti viittaa lähteisiin' },
+  cap_generic: { ru: 'Способность подключена к агенту', en: 'Capability attached to the connected agent', fi: 'Kyky liitetty agenttiin' },
+  web_on: { ru: 'Веб-поиск включён — агент будет искать в интернете', en: 'Web search on — the agent will search the web', fi: 'Verkkohaku päällä — agentti hakee verkosta' },
+  file_attached: { ru: 'Файл приложен: {name} ({n} знаков)', en: 'File attached: {name} ({n} chars)', fi: 'Tiedosto liitetty: {name} ({n} merkkiä)' },
+  code_on: { ru: 'Выполнение кода включено — агент может запускать Python', en: 'Code execution on — the agent may run Python', fi: 'Koodin suoritus päällä — agentti voi ajaa Pythonia' },
+  cites_on: { ru: 'Цитаты включены — ответ укажет источники', en: 'Citations on — the answer will cite sources', fi: 'Lähdeviitteet päällä — vastaus viittaa lähteisiin' },
+  image_attached: { ru: 'Картинка приложена ({name})', en: 'Image attached ({name})', fi: 'Kuva liitetty ({name})' },
+  memory_recalled: { ru: 'Память: учтено предыдущих шагов — {n}', en: 'Memory: recalled {n} prior step(s)', fi: 'Muisti: huomioitu {n} aiempaa vaihetta' },
+  mcp_provided: { ru: 'Подключения MCP: {n}', en: 'MCP: {n} server(s) provided', fi: 'MCP-yhteydet: {n}' },
+  thinking: { ru: '{role} думает…', en: '{role} is thinking…', fi: '{role} miettii…' },
+  branch_skipped: { ru: 'Пропущено — ветка не выбрана', en: 'Skipped — branch not taken', fi: 'Ohitettu — haaraa ei valittu' },
+  loop_no_target: { ru: 'Цикл без цели — повторы пропущены', en: 'Loop without a target — repeats skipped', fi: 'Silmukalla ei kohdetta — toistot ohitettu' },
+  loop_iter: { ru: 'Повтор {i} из {n}', en: 'Repeat {i} of {n}', fi: 'Toisto {i}/{n}' },
+  loop_done: { ru: 'Цикл завершён ({n} прогон(ов))', en: 'Loop finished ({n} pass(es))', fi: 'Silmukka valmis ({n} kierrosta)' },
+  cond_agent_fallback: { ru: 'Агент-условие не ответил, идём по «Да»: {err}', en: 'Condition agent did not answer, taking “Yes”: {err}', fi: 'Ehtoagentti ei vastannut, valitaan ”Kyllä”: {err}' },
   rate_wait: {
     ru: 'Лимит запросов к модели — ждём {sec} с и продолжаем…',
     en: 'Model rate limit — waiting {sec} s and continuing…',
@@ -149,6 +179,20 @@ const MSG: Record<string, Record<string, string>> = {
     fi: '⚠️ Ajastettu ajo ”{name}” epäonnistui.\n{reason}\n\nLisätiedot: rakentaja → Konsoli → Automaattiajot.',
   },
 };
+const ROLE_LABEL: Record<string, Record<string, string>> = {
+  main:      { ru: 'Главный агент', en: 'Lead agent', fi: 'Pääagentti' },
+  research:  { ru: 'Research-агент', en: 'Research agent', fi: 'Tutkimusagentti' },
+  ux:        { ru: 'UX-критик', en: 'UX critic', fi: 'UX-kriitikko' },
+  analytics: { ru: 'Агент-аналитик', en: 'Analytics agent', fi: 'Analytiikka-agentti' },
+  code:      { ru: 'Код-агент', en: 'Code agent', fi: 'Koodiagentti' },
+  designer:  { ru: 'Дизайн-агент', en: 'Design agent', fi: 'Suunnitteluagentti' },
+  pm:        { ru: 'Агент-планировщик', en: 'Planning agent', fi: 'Suunnittelija-agentti' },
+  content:   { ru: 'Контент-агент', en: 'Content agent', fi: 'Sisältöagentti' },
+};
+function roleName(locale: string, role: string): string {
+  const r = ROLE_LABEL[role] || null;
+  return r ? (r[locale] || r.en) : (locale === 'ru' ? 'Агент' : locale === 'fi' ? 'Agentti' : 'Agent');
+}
 function msg(locale: string, key: string, vars: Record<string, unknown> = {}): string {
   const tpl = (MSG[key] && (MSG[key][locale] || MSG[key].en)) || key;
   return tpl.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ''));
@@ -690,7 +734,7 @@ Deno.serve(async (req) => {
     return text;
   };
 
-  await log(null, 'info', input ? `Starting run with input: "${input.slice(0, 80)}"` : 'Starting run');
+  await log(null, 'info', input ? msg(locale, 'run_start', { input: input.slice(0, 80) }) : msg(locale, 'run_start_empty'));
 
   for (const id of order) {
     const node = byId.get(id);
@@ -703,7 +747,7 @@ Deno.serve(async (req) => {
       if (din.length > 0) {
         const active = din.some(e => outputs.has(e.source_client_id) && !blocked.has(edgeKey(e)));
         if (!active) {
-          await log(id, 'info', 'Пропущено — ветка не выбрана', { status: 'skipped' });
+          await log(id, 'info', msg(locale, 'branch_skipped'), { status: 'skipped' });
           continue;
         }
       }
@@ -714,7 +758,7 @@ Deno.serve(async (req) => {
     try {
       if (node.node_type === 'trigger') {
         outputs.set(id, input || '(no input)');
-        await log(id, 'info', 'Input received', { status: 'completed' });
+        await log(id, 'info', msg(locale, 'input_received'), { status: 'completed' });
         continue;
       }
       if (node.node_type === 'logic') {
@@ -732,7 +776,7 @@ Deno.serve(async (req) => {
           let result = inText;
 
           if (!loopBackTo || !byId.get(loopBackTo) || !loopSrc) {
-            await log(id, 'warn', 'Цикл без цели — пропускаем повторы', { status: 'completed' });
+            await log(id, 'warn', msg(locale, 'loop_no_target'), { status: 'completed' });
           } else {
             // Тело цикла = узлы, что одновременно потомки loopBackTo и предки источника.
             const desc = reach(loopBackTo, true);
@@ -752,12 +796,12 @@ Deno.serve(async (req) => {
                 else iterOut.set(bid, ctx);
               }
               result = iterOut.get(loopSrc) ?? result;
-              await log(id, 'info', `Повтор ${i + 1} из ${maxLoops}`, { status: 'running' });
+              await log(id, 'info', msg(locale, 'loop_iter', { i: i + 1, n: maxLoops }), { status: 'running' });
             }
           }
           outputs.set(id, result);
           lastText = result;
-          await log(id, 'info', `Цикл завершён (${maxLoops} прогон(ов))`, { status: 'completed' });
+          await log(id, 'info', msg(locale, 'loop_done', { n: maxLoops }), { status: 'completed' });
           continue;
         }
 
@@ -777,7 +821,7 @@ Deno.serve(async (req) => {
             result = ans.startsWith('да') || ans.startsWith('yes') || ans.startsWith('true');
             detail = ` (агент: «${question}» → ${text.trim().slice(0, 20)})`;
           } catch (err) {
-            await log(id, 'warn', `Агент-условие не ответил, идём по «Да»: ${(err as Error).message}`, {});
+            await log(id, 'warn', msg(locale, 'cond_agent_fallback', { err: (err as Error).message }), {});
             result = true;
           }
         } else {
@@ -860,7 +904,7 @@ Deno.serve(async (req) => {
               }
               if (tgRes.ok && tgData?.ok) {
                 okCount++;
-                await log(id, 'info', `Sent to Telegram ✓ (chat ${r.chatId})`, {});
+                await log(id, 'info', msg(locale, 'tg_sent', { chat: r.chatId }), {});
               } else {
                 failed = true;
                 const desc = tgData?.description || `http_${tgRes.status}`;
@@ -903,7 +947,7 @@ Deno.serve(async (req) => {
               });
               const rsData = await rsRes.json().catch(() => ({}));
               if (rsRes.ok && rsData?.id) {
-                await log(id, 'info', `Sent email ✓ (to ${toEmail})`, { status: 'completed' });
+                await log(id, 'info', msg(locale, 'email_sent', { to: toEmail }), { status: 'completed' });
               } else {
                 failed = true;
                 const rsMsg = rsData?.message || rsData?.error?.message || `http_${rsRes.status}`;
@@ -947,7 +991,7 @@ Deno.serve(async (req) => {
                 );
                 const gData = await gRes.json().catch(() => ({}));
                 if (gRes.ok && gData?.id) {
-                  await log(id, 'info', `Event created ✓ (${ev.title}, ${ev.start.slice(0, 16).replace('T', ' ')})`, { status: 'completed' });
+                  await log(id, 'info', msg(locale, 'gcal_created', { title: ev.title, when: ev.start.slice(0, 16).replace('T', ' ') }), { status: 'completed' });
                 } else {
                   failed = true;
                   const gMsg = gData?.error?.message || `http_${gRes.status}`;
@@ -962,25 +1006,25 @@ Deno.serve(async (req) => {
           continue;
         }
 
-        await log(id, 'info', 'Result collected', { status: 'completed' });
+        await log(id, 'info', msg(locale, 'result_collected'), { status: 'completed' });
         continue;
       }
       if (node.node_type === 'tool') {
         // Инструменты — это СПОСОБНОСТИ (ATTACH): исполняются в рамках агента,
         // к которому прикреплены. Сам узел-инструмент только помечаем.
         const note = node.role === 'web_search'
-          ? 'Web access — provided to the connected agent'
+          ? msg(locale, 'cap_web')
           : node.role === 'memory'
-          ? 'Memory — connected agent recalls all prior steps'
+          ? msg(locale, 'cap_memory')
           : node.role === 'file_read'
-          ? (node.config?.fileName ? `File ready: ${node.config.fileName}` : 'Files — upload a file on this node')
+          ? (node.config?.fileName ? msg(locale, 'cap_file_ready', { name: node.config.fileName }) : msg(locale, 'cap_file_missing'))
           : node.role === 'vision'
-          ? (node.config?.imageData ? 'Image ready for the connected agent' : 'Vision — upload an image on this node')
+          ? (node.config?.imageData ? msg(locale, 'cap_image_ready') : msg(locale, 'cap_image_missing'))
           : node.role === 'code_exec'
-          ? 'Code execution — connected agent can run Python'
+          ? msg(locale, 'cap_code')
           : node.role === 'citations'
-          ? 'Citations — connected agent will cite sources'
-          : 'Capability attached to the connected agent';
+          ? msg(locale, 'cap_citations')
+          : msg(locale, 'cap_generic');
         await log(id, 'info', note, { status: 'completed' });
         continue;
       }
@@ -1007,7 +1051,7 @@ Deno.serve(async (req) => {
       // (которое не видит контент SPA вроде новостных сайтов).
       const wantWeb = attachedToolRoles.includes('web_search');
       if (wantWeb) {
-        await log(id, 'info', 'Web search enabled — Claude will search the web', { status: 'running' });
+        await log(id, 'info', msg(locale, 'web_on'), { status: 'running' });
       }
       // Цитаты (Фаза 4): если прикреплён tool-citations — источники-файлы передаём
       // как document-блоки с цитированием (см. callClaude), а не вплавляем в текст.
@@ -1023,14 +1067,14 @@ Deno.serve(async (req) => {
           } else {
             context += `\n\n[Файл «${fn}», приложен к агенту]:\n${ft}`;
           }
-          await log(id, 'info', `File attached: ${fn} (${ft.length} chars)`, { status: 'running' });
+          await log(id, 'info', msg(locale, 'file_attached', { name: fn, n: ft.length }), { status: 'running' });
         }
       }
 
       // Код (Фаза 4): прикреплённый tool-code-exec → включаем выполнение Python.
       const wantCode = attachedToolRoles.includes('code_exec');
-      if (wantCode) await log(id, 'info', 'Code execution enabled — Claude will run Python', { status: 'running' });
-      if (wantCitations) await log(id, 'info', 'Citations enabled — answer will cite sources', { status: 'running' });
+      if (wantCode) await log(id, 'info', msg(locale, 'code_on'), { status: 'running' });
+      if (wantCitations) await log(id, 'info', msg(locale, 'cites_on'), { status: 'running' });
 
       // Vision (Фаза 4): прикреплённый tool-vision с картинкой → image-блок Claude.
       const visionImages: ImageInput[] = [];
@@ -1039,7 +1083,7 @@ Deno.serve(async (req) => {
         const mime = typeof tn.config?.imageMime === 'string' ? tn.config.imageMime : 'image/png';
         if (data) {
           visionImages.push({ data, mime });
-          await log(id, 'info', `Image attached (${tn.config?.imageName || 'image'})`, { status: 'running' });
+          await log(id, 'info', msg(locale, 'image_attached', { name: tn.config?.imageName || 'image' }), { status: 'running' });
         }
       }
 
@@ -1047,7 +1091,7 @@ Deno.serve(async (req) => {
       // прогона (все прошлые шаги), а не только прямых предшественников.
       if (attachedToolRoles.includes('memory') && transcript.length) {
         context += `\n\n[Память прогона — что уже было сделано на предыдущих шагах]:\n${transcript.join('\n\n')}`;
-        await log(id, 'info', `Memory: recalled ${transcript.length} prior step(s)`, { status: 'running' });
+        await log(id, 'info', msg(locale, 'memory_recalled', { n: transcript.length }), { status: 'running' });
       }
 
       // Если у узла задана своя инструкция (config.prompt) — используем её,
@@ -1086,8 +1130,8 @@ Deno.serve(async (req) => {
       }
       // Убираем внутренний _id перед отправкой в Anthropic API.
       const sendMcp: McpServer[] = pickedMcp.map(({ _id, ...s }) => { void _id; return s; });
-      if (sendMcp.length) await log(id, 'info', `MCP: ${sendMcp.length} server(s) provided`, { status: 'running' });
-      await log(id, 'info', `${roleLabel(node.role || 'main')} is thinking…`, { status: 'running' });
+      if (sendMcp.length) await log(id, 'info', msg(locale, 'mcp_provided', { n: sendMcp.length }), { status: 'running' });
+      await log(id, 'info', msg(locale, 'thinking', { role: roleName(locale, node.role || 'main') }), { status: 'running' });
       const { text, tokens, toolErrors, searches, webRequests } = await callClaude(
         apiKey, system, context || 'Proceed.', maxTokens, visionImages, sendMcp, wantWeb,
         wantCode, (wantCitations ? citationDocs : []),
