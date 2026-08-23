@@ -46,7 +46,7 @@ function ConnectorLogo({ id, size = 36 }) {
   );
 }
 
-export default function ApiKeysModal({ onClose, onSignIn }) {
+export default function ApiKeysModal({ onClose, onSignIn, embedded = false }) {
   const t = useT();
   const { isLoggedIn } = useAuth();
   const [tab, setTab] = useState('keys'); // 'keys' | 'mcp'
@@ -268,21 +268,26 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
 
   const open = connectors.find(c => c.id === openId) || null;
 
-  return (
-    <div className="builder-name-modal__overlay" onClick={onClose}>
-      <div
-        className="builder-name-modal builder-directory"
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-        aria-label={t('builder.keys.title') || 'Коннекторы'}
-      >
-        <div className="builder-directory__head">
-          <h3 className="builder-directory__title">{t('builder.keys.directory') || 'Коннекторы'}</h3>
-          <button type="button" className="builder-prompt-pop__close" onClick={onClose} aria-label={t('builder.keys.close') || 'Close'}>
-            <Icon name="close" size={14} strokeWidth={1.75} />
-          </button>
+  // embedded — вкладка «Подключения» правой панели (заход A): без оверлея и
+  // собственной шапки; окно-модалка остаётся для обратной совместимости.
+  const Shell = ({ children }) => embedded
+    ? <div className="builder-directory builder-directory--embedded">{children}</div>
+    : (
+      <div className="builder-name-modal__overlay" onClick={onClose}>
+        <div className="builder-name-modal builder-directory" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label={t('builder.keys.title') || 'Подключения'}>
+          <div className="builder-directory__head">
+            <h3 className="builder-directory__title">{t('builder.keys.directory') || 'Подключения'}</h3>
+            <button type="button" className="builder-prompt-pop__close" onClick={onClose} aria-label={t('builder.keys.close') || 'Close'}>
+              <Icon name="close" size={14} strokeWidth={1.75} />
+            </button>
+          </div>
+          {children}
         </div>
+      </div>
+    );
+
+  return (
+    <Shell>
 
         {/* Табы: API-ключи / MCP-серверы */}
         {isLoggedIn && (
@@ -498,7 +503,6 @@ export default function ApiKeysModal({ onClose, onSignIn }) {
             })}
           </div>
         )}
-      </div>
-    </div>
+    </Shell>
   );
 }

@@ -1229,6 +1229,26 @@
 .builder-app .builder-howto__links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
 .builder-app .builder-howto__link { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; color: var(--accent, #D44F29); text-decoration: underline; }
 
+/* ── Правая панель: сегментированный переключатель вкладок (заход A) ── */
+.builder-app .builder-side-tabs {
+  display: flex; gap: 2px; padding: 3px; border-radius: 10px;
+  background: var(--surface-2, rgba(0,0,0,0.05)); overflow-x: auto; max-width: calc(100% - 36px);
+}
+.builder-app .builder-side-tab {
+  position: relative; display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 9px; border: 0; border-radius: 8px; background: transparent;
+  color: var(--text-muted); font-size: 12px; font-weight: 500; white-space: nowrap; cursor: pointer;
+}
+.builder-app .builder-side-tab.is-active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+.builder-app .builder-side-tab__badge {
+  min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; display: grid; place-items: center;
+  font-size: 10px; font-weight: 700; background: var(--accent, #D44F29); color: #fff;
+}
+.builder-app .builder-side-log { display: flex; flex-direction: column; gap: 8px; min-height: 0; height: 100%; }
+.builder-app .builder-side-log .builder-exec { flex: 1 1 auto; min-height: 0; }
+.builder-app .builder-side-log__expand { align-self: flex-start; }
+.builder-app .builder-directory--embedded { padding: 0; }
+
 .builder-app .builder-grid {
   flex: 1 1 auto;
   display: grid;

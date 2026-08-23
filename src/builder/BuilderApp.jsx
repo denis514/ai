@@ -305,6 +305,12 @@ function BuilderAppInner({ initialTemplateId = null }) {
     document.body.style.cursor = 'col-resize';
   }, []);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  // ── Правая панель с вкладками (заход A, 2026-08-23) ────────────────────────
+  // Детали · Журнал · Автозапуски · Подключения — одна панель вместо трёх
+  // сущностей (боковая панель, плавающая консоль, модалка ключей).
+  // Автопереключение: выбрали блок → Детали; запуск → Журнал; готово → Детали.
+  const [sideTab, setSideTab] = useState('details'); // 'details' | 'log' | 'sched' | 'keys'
+  const openSide = useCallback((tab) => { setSideTab(tab); setSidebarOpen(true); }, []);
   const [consoleOpen, setConsoleOpen] = useState(false); // объединённая «Консоль»
   const [consoleTab, setConsoleTab] = useState('code');  // 'code' | 'run'
   // Общий режим окна Консоли — поднят сюда, чтобы плавающее/перетаскиваемое окно
@@ -906,8 +912,8 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // Если не авторизован — сразу окно входа; иначе окно ключей.
   const openKeysOrAuth = useCallback(() => {
     if (!user) openAuth();
-    else setKeysModalOpen(true);
-  }, [user, openAuth]);
+    else openSide('keys'); // вкладка «Подключения» правой панели
+  }, [user, openAuth, openSide]);
 
   // Нет ключа/входа для запуска — ведём ко входу или подключению ключа.
   const requestRealMode = useCallback(() => {
@@ -1594,6 +1600,19 @@ function BuilderAppInner({ initialTemplateId = null }) {
 
   // Меню «⋯» в шапке — редкие действия (подключения, журнал, автозапуски, код, очистить)
   const [moreOpen, setMoreOpen] = useState(false);
+
+  useEffect(() => { if (selectedNodeId) setSideTab('details'); }, [selectedNodeId]);
+  // Панель открыта по умолчанию, когда на холсте есть схема (в ней чек-лист
+  // и результат); пустой холст — без панели.
+  const hasNodes = nodes.length > 0;
+  useEffect(() => { if (hasNodes) setSidebarOpen(true); }, [hasNodes, currentWorkflowId]);
+  useEffect(() => {
+    if (execStatus === 'running') openSide('log');
+    else if (execStatus === 'completed') openSide('details');
+  }, [execStatus, openSide]);
+  // Эффекты перечитывания ключей завязаны на keysModalOpen — держим его в
+  // синхроне с вкладкой «Подключения».
+  useEffect(() => { setKeysModalOpen(sidebarOpen && sideTab === 'keys'); }, [sidebarOpen, sideTab]);
   // Подсказки клавиш показываются по «?» (или из меню «⋯»), не всегда.
   const [kbdOpen, setKbdOpen] = useState(false);
   useEffect(() => {
@@ -1887,15 +1906,6 @@ function BuilderAppInner({ initialTemplateId = null }) {
             </button>
             {moreOpen && (
               <div className="builder-more__menu" role="menu" onMouseLeave={() => setMoreOpen(false)}>
-                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); openKeysOrAuth(); }}>
-                  <Icon name="lock" size={14} strokeWidth={1.5} /><span>{t('builder.more.connections') || 'Подключения'}</span>
-                </button>
-                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setConsoleTab('run'); setConsoleOpen(true); }}>
-                  <Icon name="terminal" size={14} strokeWidth={1.5} /><span>{t('builder.more.journal') || 'Журнал запуска'}</span>
-                </button>
-                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setConsoleTab('sched'); setConsoleOpen(true); }}>
-                  <Icon name="clock" size={14} strokeWidth={1.5} /><span>{t('builder.allsched.openBtn') || 'Автозапуски'}</span>
-                </button>
                 <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setConsoleTab('code'); setConsoleOpen(true); }}>
                   <Icon name="code-block" size={14} strokeWidth={1.5} /><span>{t('builder.more.code') || 'Код схемы'}</span>
                 </button>
@@ -2252,7 +2262,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
                   node={selectedMcpNode}
                   t={t}
                   onSet={handleSetToolData}
-                  onManage={() => setKeysModalOpen(true)}
+                  onManage={() => openSide('keys')}
                   onClose={() => setSelectedNodeId(null)}
                 />
               </NodeToolbar>
@@ -2463,7 +2473,27 @@ function BuilderAppInner({ initialTemplateId = null }) {
             ) : (
               <>
                 <div className="builder-sidebar__header">
-                  <span>{t('builder.sidebar.title') || 'Details'}</span>
+                  <div className="builder-side-tabs" role="tablist">
+                    {[
+                      { id: 'details', label: t('builder.side.details') || 'Детали', badge: currentStep ? String(steps.findIndex(s => s.id === currentStep) + 1) : null },
+                      { id: 'log',     label: t('builder.side.log') || 'Журнал', dot: execStatus === 'running' },
+                      { id: 'sched',   label: t('builder.side.sched') || 'Автозапуски' },
+                      { id: 'keys',    label: t('builder.side.keys') || 'Подключения', badge: !keyConnected ? '!' : null },
+                    ].map(tb => (
+                      <button
+                        key={tb.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={sideTab === tb.id}
+                        className={`builder-side-tab ${sideTab === tb.id ? 'is-active' : ''}`}
+                        onClick={() => setSideTab(tb.id)}
+                      >
+                        <span>{tb.label}</span>
+                        {tb.badge && <span className="builder-side-tab__badge">{tb.badge}</span>}
+                        {tb.dot && <span className="builder-console-dot" aria-hidden="true" />}
+                      </button>
+                    ))}
+                  </div>
                   <button
                     type="button"
                     className="builder-panel-collapse"
@@ -2475,6 +2505,40 @@ function BuilderAppInner({ initialTemplateId = null }) {
                   </button>
                 </div>
                 <div className="builder-sidebar__body">
+                  {sideTab === 'log' && (
+                    <div className="builder-side-log">
+                      <ExecutionPanel
+                        logs={execLogs}
+                        status={execStatus}
+                        nodesTotal={execStats.total}
+                        nodesDone={execStats.done}
+                        nodesFailed={execStats.failed}
+                        result={null}
+                        runSetup={null}
+                        onStop={handleStopExec}
+                        onClear={() => { setExecResult(null); handleClearLogs(); }}
+                      />
+                      <button type="button" className="builder-btn builder-btn--ghost builder-btn--small builder-side-log__expand" onClick={() => { setConsoleTab('run'); setConsoleOpen(true); }}>
+                        <Icon name="fullscreen" size={13} strokeWidth={1.6} />
+                        <span>{t('builder.console.expand') || 'Развернуть журнал'}</span>
+                      </button>
+                    </div>
+                  )}
+                  {sideTab === 'sched' && (
+                    <AllSchedulesModal embedded guest={!userId} onRequestAuth={openAuth} />
+                  )}
+                  {sideTab === 'keys' && (
+                    user
+                      ? <ApiKeysModal embedded onClose={() => setSideTab('details')} onSignIn={openAuth} />
+                      : (
+                        <div className="builder-empty-state">
+                          <Icon name="lock" size={24} strokeWidth={1.5} />
+                          <p>{t('builder.keys.signInFirst') || 'Войдите в аккаунт, чтобы подключить ключ.'}</p>
+                          <button type="button" className="builder-btn builder-btn--primary builder-btn--small" onClick={openAuth}>{t('auth.signIn') || 'Войти'}</button>
+                        </div>
+                      )
+                  )}
+                  {sideTab === 'details' && (<>
                   {/* Результат последнего запуска — в правой карточке, с кнопкой
                       расписания прямо под ним (заход 3): «работа приходит сама»
                       предлагается в момент, когда человек увидел результат. */}
@@ -2497,7 +2561,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
                           <Icon name="clock" size={13} strokeWidth={1.6} />
                           <span>{t('builder.result.repeat') || 'Повторять по расписанию'}</span>
                         </button>
-                        <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => { setConsoleTab('run'); setConsoleOpen(true); }}>
+                        <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => openSide('log')}>
                           {t('builder.result.log') || 'Показать ход работы'}
                         </button>
                         <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => { try { navigator.clipboard.writeText(execResult.output || ''); toast.success(t('builder.exec.copied') || 'Скопировано'); } catch { /* noop */ } }}>
@@ -2514,6 +2578,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
                       <p>{t('builder.sidebar.empty') || 'Select a node to see details and education tips.'}</p>
                     </div>
                   )}
+                  </>)}
                 </div>
               </>
             )}
@@ -2766,13 +2831,6 @@ function BuilderAppInner({ initialTemplateId = null }) {
         </div>
       )}
 
-      {/* API keys modal */}
-      {keysModalOpen && (
-        <ApiKeysModal
-          onClose={() => setKeysModalOpen(false)}
-          onSignIn={openAuth}
-        />
-      )}
 
 
       {/* Auth modal — Builder рендерится вместо Atlas, поэтому свой инстанс */}
