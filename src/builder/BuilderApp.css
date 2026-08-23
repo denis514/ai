@@ -2708,14 +2708,17 @@
   height: 100%;
 }
 .builder-app .builder-gen-row .builder-gen-cta:disabled { cursor: default; } /* яркость не гасим: кнопка всегда видна */
-.builder-app .builder-gen-note {
+.builder-app .builder-empty-canvas .builder-gen-note {
   margin-top: 8px;
   font-size: 12px;
   color: var(--text-muted);
   text-align: center;
-  max-width: min(560px, 92%);
+  max-width: min(640px, 94%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.builder-app .builder-gen-note.is-error { color: var(--danger, #dc2626); }
+.builder-app .builder-empty-canvas .builder-gen-note.is-error { color: var(--danger, #dc2626); }
 .builder-app .builder-gen-blank {
   margin-top: 6px;
   border: none;
@@ -2752,6 +2755,13 @@
   margin: 0;
   font-size: 13px;
   max-width: 280px;
+}
+/* Подводка над строкой ввода — одной строкой, во всю ширину поля (решение основателя) */
+.builder-app .builder-empty-canvas > p:first-of-type {
+  max-width: min(640px, 94%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Recent workflows strip — "Continue where you left off" */
