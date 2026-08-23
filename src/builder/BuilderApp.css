@@ -2425,6 +2425,23 @@
   color: #fff;
 }
 /* Агент без инструкции — мягко зовёт настроить (янтарный пульс) */
+.builder-app .builder-node__cost {
+  position: absolute; top: -6px; left: -6px;
+  width: 16px; height: 16px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: #E79B48; color: #1a1a1a;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+.builder-app .builder-toolbox__cost {
+  margin-left: auto; color: #D44F29; display: inline-flex; align-items: center;
+}
+.builder-app .builder-validation__cost {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 0 12px; padding: 8px 10px; border-radius: 10px;
+  font-size: 13px; color: var(--text-muted);
+  background: var(--surface-2, rgba(0,0,0,0.04));
+}
+.builder-app .builder-validation__cost.is-expensive { color: #D44F29; background: rgba(212,79,41,0.08); }
 .builder-app .builder-node__needsetup {
   position: absolute;
   top: -6px;
@@ -3486,6 +3503,15 @@
   align-items: center;
   gap: 4px;
 }
+
+.builder-app .builder-log__pulse {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent, #D44F29); margin-right: 7px; vertical-align: middle;
+  animation: builder-pulse 1.1s ease-in-out infinite;
+}
+.builder-app .builder-log__live { color: var(--text-muted); }
+@keyframes builder-pulse { 0%, 100% { opacity: 0.25; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+@media (prefers-reduced-motion: reduce) { .builder-app .builder-log__pulse { animation: none; opacity: 1; } }
 
 .builder-app .builder-exec__log {
   list-style: none;

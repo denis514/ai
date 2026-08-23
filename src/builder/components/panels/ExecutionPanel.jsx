@@ -33,6 +33,14 @@ export default function ExecutionPanel({
 }) {
   const t = useT();
   const bodyRef = useRef(null);
+  // Тик раз в секунду, пока идёт запуск — чтобы бежали секунды у строки «думает…».
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    if (status !== 'running') return;
+    const id = setInterval(() => setTick(v => v + 1), 1000);
+    return () => clearInterval(id);
+  }, [status]);
+  const elapsedSec = (ts) => Math.max(0, Math.round((Date.now() - new Date(ts).getTime()) / 1000));
   const [copied, setCopied] = useState(false);
   const [copiedAll, setCopiedAll] = useState(false);
 
@@ -251,23 +259,36 @@ export default function ExecutionPanel({
           </div>
         ) : (
           <ol className="builder-exec__log">
-            {logs.map((log, i) => (
+            {logs.map((log, i) => {
+              // Последняя строка при идущем запуске — «живая»: мигающая точка,
+              // секунды и токены по ходу (приходят потоком с сервера).
+              const live = status === 'running' && i === logs.length - 1 && (log.progress || /…$/.test(log.message || ''));
+              return (
               <li
                 key={i}
-                className={`builder-log builder-log--${log.level}`}
+                className={`builder-log builder-log--${log.level} ${live ? 'is-live' : ''}`}
               >
                 <span className="builder-log__ts">{formatTs(log.ts)}</span>
                 {log.nodeName && (
                   <span className="builder-log__node">[{log.nodeName}]</span>
                 )}
                 <span className="builder-log__msg">
+                  {live && <span className="builder-log__pulse" aria-hidden="true" />}
                   {log.message}
-                  {log.tokens != null && log.tokens > 0 && (
+                  {live && (
+                    <span className="builder-log__live">
+                      {' · '}{elapsedSec(log.startedTs || log.ts)} {t('builder.exec.sec') || 'с'}
+                      {log.liveTokens > 0 && <> · ≈ {log.liveTokens.toLocaleString()} {t('builder.runInput.tokens') || 'ток.'}</>}
+                      {log.liveSearch && <> · {t('builder.exec.searching') || 'ищу:'} «{log.liveSearch}»</>}
+                    </span>
+                  )}
+                  {!live && log.tokens != null && log.tokens > 0 && (
                     <span className="builder-log__tokens"> · {log.tokens.toLocaleString()} {t('builder.runInput.tokens') || 'ток.'}</span>
                   )}
                 </span>
               </li>
-            ))}
+              );
+            })}
           </ol>
         )}
       </div>

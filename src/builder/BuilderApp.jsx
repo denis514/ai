@@ -52,6 +52,7 @@ import { getKeyStatus, listMcpServers, listKeys } from './services/apiKeyService
 import { saveWorkflow as storageSave, loadWorkflow as storageLoad, takeMigratedIdMap, WORKFLOWS_MIGRATED_EVENT } from './services/workflowStorage.js';
 import { historyBridge } from './services/historyBridge.js';
 import ToastHost, { toast } from './components/Toast.jsx';
+import { estimateRun as estimateRunCost, formatEstimate } from './data/nodeCost.js';
 import { saveDraft, loadDraft, clearDraft, setResumeAfterAuth, hasResumeAfterAuth, clearResumeAfterAuth } from './services/draftBackup.js';
 import { evaluateConnection, validateGraph, denyReasonKey } from './services/connectionRules.js';
 import './BuilderApp.css';
@@ -1488,7 +1489,17 @@ function BuilderAppInner({ initialTemplateId = null }) {
       if (status === 'completed') { stats.done += 1; setExecStats({ ...stats }); }
       else if (status === 'failed') { stats.failed += 1; setExecStats({ ...stats }); }
     },
-    onLog: (entry) => setExecLogs(prev => [...prev, entry]),
+    onLog: (entry) => setExecLogs(prev => {
+      // Прогресс «думает… N токенов» обновляет живую строку узла на месте —
+      // иначе консоль заливало бы новой строкой каждые пару секунд.
+      if (entry.progress && prev.length) {
+        const last = prev[prev.length - 1];
+        if (last.nodeId === entry.nodeId && (last.progress || /…$/.test(last.message || ''))) {
+          return [...prev.slice(0, -1), { ...last, liveTokens: entry.liveTokens, liveSearch: entry.liveSearch, startedTs: last.startedTs || last.ts }];
+        }
+      }
+      return [...prev, entry];
+    }),
     onComplete: (finalStatus) => {
       setExecStatus(prev => {
         if (prev === 'stopped') return 'stopped';
@@ -2471,6 +2482,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
           <ScheduleModal
             workflowId={currentWorkflowId}
             workflowName={workflowName}
+            runEstimate={estimateRunCost(nodes, edges)}
             locale={locale}
             dockRight={rightSchedule}
             onClose={() => setScheduleOpen(false)}
@@ -2785,6 +2797,14 @@ function BuilderAppInner({ initialTemplateId = null }) {
                 ? (t('builder.validation.blockTitle') || 'Схему пока нельзя запустить')
                 : (t('builder.validation.warnTitle') || 'Проверьте схему перед запуском')}
             </h3>
+
+            {/* Ориентир стоимости запуска — ДО траты (решение основателя 2026-08-23) */}
+            {(() => { const est = estimateRunCost(nodes, edges); return (
+              <p className={`builder-validation__cost ${est.expensive ? 'is-expensive' : ''}`}>
+                <Icon name="coins" size={13} strokeWidth={2} />
+                <span>{t('builder.cost.runLead')} {formatEstimate(est, t)}{est.expensive ? ` · ${t('builder.cost.expensiveNote')}` : ''}</span>
+              </p>
+            ); })()}
 
             <ul className="builder-validation__list">
               {validation.errors.map((code) => (

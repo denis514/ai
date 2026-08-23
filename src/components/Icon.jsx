@@ -3,6 +3,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import {
   // mindmap node icons
   BrainIcon,
+  Coins01Icon,
   SlidersHorizontalIcon,
   MixerIcon,
   Setting07Icon,
@@ -119,6 +120,7 @@ const REGISTRY = {
   settings:     Setting07Icon,            // ⚙️
   keyboard:     KeyboardIcon,             // ⌨️
   flash:        FlashIcon,                // ⚡
+  coins:        Coins01Icon,              // 💰 стоимость шага
   link:         Link01Icon,               // ⛓️ chain
   unlink:       Unlink01Icon,             // ⛓️‍💥 разорванная цепь
   edit:         Edit01Icon,               // ✍️

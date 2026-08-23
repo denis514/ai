@@ -84,6 +84,11 @@ export function createRealExecution({ workflowId, input, tier, locale, variables
             message: row.message,
             // Токены шага (если есть в data) — для счётчика по узлу.
             tokens: typeof row.data?.tokens === 'number' ? row.data.tokens : undefined,
+            // Живой прогресс шага (поток с сервера): заменяет предыдущую строку
+            // того же узла, а не добавляется новой (см. BuilderApp.onLog).
+            progress: !!row.data?.progress,
+            liveTokens: typeof row.data?.liveTokens === 'number' ? row.data.liveTokens : undefined,
+            liveSearch: typeof row.data?.liveSearch === 'string' ? row.data.liveSearch : undefined,
             ts: row.created_at || new Date().toISOString(),
           });
         }

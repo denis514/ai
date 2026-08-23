@@ -133,6 +133,8 @@ const MSG: Record<string, Record<string, string>> = {
   memory_recalled: { ru: 'Память: учтено предыдущих шагов — {n}', en: 'Memory: recalled {n} prior step(s)', fi: 'Muisti: huomioitu {n} aiempaa vaihetta' },
   mcp_provided: { ru: 'Подключения MCP: {n}', en: 'MCP: {n} server(s) provided', fi: 'MCP-yhteydet: {n}' },
   thinking: { ru: '{role} думает…', en: '{role} is thinking…', fi: '{role} miettii…' },
+  thinking_tokens: { ru: 'Думает… ≈ {tokens} токенов', en: 'Thinking… ≈ {tokens} tokens', fi: 'Miettii… ≈ {tokens} tokenia' },
+  thinking_search: { ru: 'Ищу в интернете: «{q}»', en: 'Searching the web: “{q}”', fi: 'Haen verkosta: ”{q}”' },
   branch_skipped: { ru: 'Пропущено — ветка не выбрана', en: 'Skipped — branch not taken', fi: 'Ohitettu — haaraa ei valittu' },
   loop_no_target: { ru: 'Цикл без цели — повторы пропущены', en: 'Loop without a target — repeats skipped', fi: 'Silmukalla ei kohdetta — toistot ohitettu' },
   loop_iter: { ru: 'Повтор {i} из {n}', en: 'Repeat {i} of {n}', fi: 'Toisto {i}/{n}' },
@@ -333,7 +335,7 @@ type McpServer = { type: 'url'; url: string; name: string; authorization_token?:
 
 type CitationDoc = { title: string; text: string };
 
-async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = [], mcpServers: McpServer[] = [], webTools = false, codeExec = false, citationDocs: CitationDoc[] = [], onRateWait?: (sec: number) => Promise<void>) {
+async function callClaude(apiKey: string, system: string, userContent: string, maxTokens: number, images: ImageInput[] = [], mcpServers: McpServer[] = [], webTools = false, codeExec = false, citationDocs: CitationDoc[] = [], onRateWait?: (sec: number) => Promise<void>, onProgress?: (p: { tokens: number; liveSearch?: string }) => Promise<void>) {
   // Цитаты (Фаза 4): источники передаём как document-блоки с включённым
   // цитированием — тогда модель возвращает привязку утверждений к источникам.
   const docBlocks = citationDocs
@@ -370,6 +372,9 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
     thinking: { type: 'disabled' },
     system,
     messages: [{ role: 'user', content }],
+    // Потоковый режим: ответ приходит кусочками вместе с числом токенов и
+    // событиями «начат поиск: …» — экран показывает ход дела, а не чёрный ящик.
+    stream: true,
   };
   const betas: string[] = [];
   // MCP-коннектор Anthropic (beta): Claude сам вызывает инструменты сервера.
@@ -413,10 +418,10 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
       clearTimeout(timer);
       if ((e as Error).name === 'AbortError') throw new Error('step_timeout');
       throw e;
-    } finally {
-      clearTimeout(timer);
     }
+    // Таймер снимаем только после полного чтения потока (ниже).
     if (res.status === 429 && attempt < MAX_ATTEMPTS) {
+      clearTimeout(timer);
       let waitSec = parseInt(res.headers.get('retry-after') || '', 10);
       if (!Number.isFinite(waitSec) || waitSec <= 0) waitSec = 20;
       waitSec = Math.min(waitSec, 20);
@@ -424,38 +429,108 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
       await new Promise((r) => setTimeout(r, waitSec * 1000));
       continue;
     }
-    const data = await res.json();
     if (!res.ok) {
+      clearTimeout(timer);
+      const data = await res.json().catch(() => ({}));
       throw new Error(data?.error?.message || `claude_http_${res.status}`);
     }
-    const blocks = data.content || [];
-    let text = blocks.filter((b: any) => b.type === 'text').map((b: any) => b.text).join('\n');
-    // Цитаты: модель привязывает утверждения к источникам (document/web). Собираем
-    // уникальные источники и добавляем список «Источники» в конец ответа.
+
+    // ── Чтение потока (SSE). Собираем текст, цитаты, поиски, токены. ──
+    let text = '';
     const cites: string[] = [];
-    for (const b of blocks) {
-      for (const c of ((b as any).citations || [])) {
-        const label = c.document_title || c.title || c.url || c.source || '';
-        if (label && !cites.includes(label)) cites.push(label);
+    const toolErrors: string[] = [];
+    let searches = 0;
+    let webRequests = 0;
+    let inputTokens = 0;
+    let outputTokens = 0;
+    const partialJson = new Map<number, string>();   // index → JSON-вход server_tool_use
+    const blockType = new Map<number, string>();
+    let lastEmit = 0;
+    const emit = async (force = false, liveSearch?: string) => {
+      if (!onProgress) return;
+      const now = Date.now();
+      if (!force && now - lastEmit < 3000) return;
+      lastEmit = now;
+      try { await onProgress({ tokens: inputTokens + outputTokens, liveSearch }); } catch { /* не мешаем шагу */ }
+    };
+    const addCite = (c: any) => {
+      const label = c?.document_title || c?.title || c?.url || c?.source || '';
+      if (label && !cites.includes(label)) cites.push(label);
+    };
+    const handle = async (ev: any) => {
+      switch (ev?.type) {
+        case 'message_start':
+          inputTokens = ev.message?.usage?.input_tokens || 0;
+          break;
+        case 'content_block_start': {
+          const b = ev.content_block || {};
+          blockType.set(ev.index, b.type);
+          if (b.type === 'text') { if (text) text += '\n'; if (b.text) text += b.text; for (const c of (b.citations || [])) addCite(c); }
+          if (b.type === 'server_tool_use') { searches++; partialJson.set(ev.index, ''); }
+          if (b.type === 'web_search_tool_result') {
+            const c = b.content;
+            if (c && !Array.isArray(c) && c.type === 'web_search_tool_result_error') toolErrors.push(String(c.error_code || 'unknown'));
+          }
+          break;
+        }
+        case 'content_block_delta': {
+          const d = ev.delta || {};
+          if (d.type === 'text_delta') { text += d.text || ''; await emit(); }
+          else if (d.type === 'input_json_delta') partialJson.set(ev.index, (partialJson.get(ev.index) || '') + (d.partial_json || ''));
+          else if (d.type === 'citations_delta') addCite(d.citation);
+          break;
+        }
+        case 'content_block_stop': {
+          if (blockType.get(ev.index) === 'server_tool_use') {
+            let q = '';
+            try { q = String(JSON.parse(partialJson.get(ev.index) || '{}').query || ''); } catch { /* частичный JSON */ }
+            await emit(true, q.slice(0, 80) || undefined);
+          }
+          break;
+        }
+        case 'message_delta':
+          if (typeof ev.usage?.output_tokens === 'number') outputTokens = ev.usage.output_tokens;
+          if (typeof ev.usage?.input_tokens === 'number') inputTokens = ev.usage.input_tokens;
+          webRequests = ev.usage?.server_tool_use?.web_search_requests ?? webRequests;
+          await emit();
+          break;
+        case 'error':
+          throw new Error(ev.error?.message || 'claude_stream_error');
       }
+    };
+
+    try {
+      const reader = res.body!.getReader();
+      const dec = new TextDecoder();
+      let buf = '';
+      for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        let nl: number;
+        while ((nl = buf.indexOf('\n\n')) >= 0) {
+          const chunk = buf.slice(0, nl); buf = buf.slice(nl + 2);
+          for (const line of chunk.split('\n')) {
+            if (!line.startsWith('data:')) continue;
+            const raw = line.slice(5).trim();
+            if (!raw || raw === '[DONE]') continue;
+            let ev: any; try { ev = JSON.parse(raw); } catch { continue; }
+            await handle(ev);
+          }
+        }
+      }
+    } catch (e) {
+      if ((e as Error).name === 'AbortError') throw new Error('step_timeout');
+      throw e;
+    } finally {
+      clearTimeout(timer);
     }
+
     if (cites.length) {
       text += `\n\n**Источники:**\n${cites.map((s) => `• ${s}`).join('\n')}`;
     }
-    const tokens = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
-    // Диагностика серверных инструментов: если веб-поиск вернул ошибку, модель
-    // молча крутится и дожигает токены (живой прогон 2026-08-23: 50k токенов
-    // без единого результата). Собираем коды ошибок и число поисков — наружу.
-    const toolErrors: string[] = [];
-    let searches = 0;
-    for (const b of blocks) {
-      if (b.type === 'server_tool_use') searches++;
-      const c = (b as any).content;
-      if (b.type === 'web_search_tool_result' && c && !Array.isArray(c) && c.type === 'web_search_tool_result_error') {
-        toolErrors.push(String(c.error_code || 'unknown'));
-      }
-    }
-    return { text, tokens, toolErrors, searches, webRequests: data.usage?.server_tool_use?.web_search_requests || 0 };
+    const tokens = inputTokens + outputTokens;
+    return { text, tokens, toolErrors, searches, webRequests };
   }
 }
 
@@ -1136,6 +1211,13 @@ Deno.serve(async (req) => {
         apiKey, system, context || 'Proceed.', maxTokens, visionImages, sendMcp, wantWeb,
         wantCode, (wantCitations ? citationDocs : []),
         async (sec) => { await log(id, 'warn', msg(locale, 'rate_wait', { sec }), { status: 'running' }); },
+        // Живой прогресс (поток): экран обновляет строку «думает…» на месте —
+        // токены по ходу и текущий поисковый запрос. Не чаще раза в 3 с.
+        async (p) => {
+          await log(id, 'info',
+            p.liveSearch ? msg(locale, 'thinking_search', { q: p.liveSearch }) : msg(locale, 'thinking_tokens', { tokens: p.tokens }),
+            { status: 'running', progress: true, liveTokens: p.tokens, ...(p.liveSearch ? { liveSearch: p.liveSearch } : {}) });
+        },
       );
       totalTokens += tokens;
       // Веб-поиск: показываем, что реально произошло, а не только текст модели.

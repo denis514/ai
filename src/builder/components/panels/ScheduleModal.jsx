@@ -61,7 +61,7 @@ function MonthCalendar({ viewY, viewM, onView, sel, onPick, monthsFull, dows, to
  *
  * Время — в UTC (подписано), чтобы совпадало с серверным cron. MVP-просто.
  */
-export default function ScheduleModal({ workflowId, workflowName, locale, dockRight = 16, onClose }) {
+export default function ScheduleModal({ workflowId, workflowName, locale, runEstimate = null, dockRight = 16, onClose }) {
   const t = useT();
   const [items, setItems] = useState(null);
   const [freq, setFreq] = useState('daily');
@@ -373,6 +373,15 @@ export default function ScheduleModal({ workflowId, workflowName, locale, dockRi
                   {runsPerDay() >= 48 && ' · ' + (t('builder.schedule.confirmHigh') || '⚠️ очень часто — расход будет быстрым')}
                 </p>
               )}
+              {/* Ориентир расходов в месяц: запусков в день × 30 × оценка одного запуска */}
+              {runsPerDay() != null && runEstimate && runEstimate.tokens > 0 && (() => {
+                const monthly = runEstimate.usd * runsPerDay() * 30;
+                return (
+                  <p className={`builder-schedule__confirm-runs ${monthly >= 10 ? 'is-high' : ''}`}>
+                    {t('builder.cost.monthLead')} ≈ ${monthly < 0.01 ? '0.01' : monthly.toFixed(2)} {t('builder.cost.monthTail')}
+                  </p>
+                );
+              })()}
               <div className="builder-schedule__confirm-actions">
                 {busy ? (
                   <Loader size="sm" label={t('builder.schedule.creating') || 'Создаём автозапуск…'} />
