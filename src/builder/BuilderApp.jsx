@@ -910,10 +910,26 @@ function BuilderAppInner({ initialTemplateId = null }) {
   }, [nodes, edges, currentWorkflowId, workflowName]);
 
   // Если не авторизован — сразу окно входа; иначе окно ключей.
+  // Обратный билет: из карточки блока ушли в «Подключения» — после подключения
+  // (или по кнопке «← К блоку») возвращаемся к тому же блоку.
+  const [keysReturnTo, setKeysReturnTo] = useState(null); // nodeId | null
   const openKeysOrAuth = useCallback(() => {
-    if (!user) openAuth();
-    else openSide('keys'); // вкладка «Подключения» правой панели
-  }, [user, openAuth, openSide]);
+    if (!user) { openAuth(); return; }
+    setKeysReturnTo(selectedNodeId || null);
+    openSide('keys'); // вкладка «Подключения» правой панели
+  }, [user, openAuth, openSide, selectedNodeId]);
+  const returnFromKeys = useCallback(() => {
+    const id = keysReturnTo; setKeysReturnTo(null);
+    if (id) { setSelectedNodeId(id); setSelectedEdgeId(null); }
+    setSideTab('details');
+  }, [keysReturnTo]);
+  // Подключили бота/почту/календарь, пока ждал блок — возвращаемся сами.
+  const connFlags = `${telegramConnected}|${resendConnected}|${gcalConnected}|${keyConnected}`;
+  const prevConnFlags = useRef(connFlags);
+  useEffect(() => {
+    const changed = prevConnFlags.current !== connFlags; prevConnFlags.current = connFlags;
+    if (changed && keysReturnTo && sideTab === 'keys' && connFlags.includes('true')) returnFromKeys();
+  }, [connFlags, keysReturnTo, sideTab, returnFromKeys]);
 
   // Нет ключа/входа для запуска — ведём ко входу или подключению ключа.
   const requestRealMode = useCallback(() => {
@@ -1957,31 +1973,6 @@ function BuilderAppInner({ initialTemplateId = null }) {
         )}
       </header>
 
-      {/* ── Полоса «Следующий шаг» — обучение по месту вместо тура ── */}
-      {nodes.length > 0 && !stepsDismissed && (
-        <nav className={`builder-steps ${currentStep ? '' : 'is-done'}`} aria-label={t('builder.steps.aria') || 'Следующий шаг'}>
-          {steps.map((st, i) => (
-            <button
-              key={st.id}
-              type="button"
-              className={`builder-steps__item ${st.done ? 'is-done' : ''} ${currentStep === st.id ? 'is-current' : ''}`}
-              onClick={() => onStepClick(st.id)}
-              aria-current={currentStep === st.id ? 'step' : undefined}
-            >
-              <span className="builder-steps__num" aria-hidden="true">
-                {st.done ? <Icon name="check" size={11} strokeWidth={3} /> : i + 1}
-              </span>
-              <span>{t(`builder.steps.${st.id}${st.skipped && st.done ? 'Skipped' : ''}`)}</span>
-            </button>
-          ))}
-          {!currentStep && (
-            <button type="button" className="builder-steps__close" onClick={() => setStepsDismissed(true)} aria-label={t('common.close') || 'Закрыть'}>
-              <Icon name="close" size={13} strokeWidth={2} />
-            </button>
-          )}
-        </nav>
-      )}
-
       {/* ── Main layout grid ───────────────────────────────────── */}
       <div className="builder-grid">
 
@@ -2527,6 +2518,12 @@ function BuilderAppInner({ initialTemplateId = null }) {
                   {sideTab === 'sched' && (
                     <AllSchedulesModal embedded guest={!userId} onRequestAuth={openAuth} />
                   )}
+                  {sideTab === 'keys' && keysReturnTo && (
+                    <button type="button" className="builder-side-back" onClick={returnFromKeys}>
+                      <Icon name="arrow-left" size={13} strokeWidth={1.75} />
+                      <span>{t('builder.side.backToBlock') || 'К блоку'}</span>
+                    </button>
+                  )}
                   {sideTab === 'keys' && (
                     user
                       ? <ApiKeysModal embedded onClose={() => setSideTab('details')} onSignIn={openAuth} />
@@ -2539,6 +2536,29 @@ function BuilderAppInner({ initialTemplateId = null }) {
                       )
                   )}
                   {sideTab === 'details' && (<>
+                  {/* Чек-лист «Следующий шаг» — внутри «Деталей» (заход B), когда
+                      блок не выбран. Текущий шаг — с кнопкой действия. */}
+                  {!selectedNode && !stepsDismissed && (
+                    <div className={`builder-checklist ${currentStep ? '' : 'is-done'}`}>
+                      <div className="builder-checklist__title">{currentStep ? (t('builder.steps.aria') || 'Следующий шаг') : (t('builder.steps.allDone') || 'Всё готово — схема работает сама')}</div>
+                      <ol className="builder-checklist__list">
+                        {steps.map((st, i) => (
+                          <li key={st.id} className={`builder-checklist__item ${st.done ? 'is-done' : ''} ${currentStep === st.id ? 'is-current' : ''}`}>
+                            <span className="builder-steps__num" aria-hidden="true">{st.done ? <Icon name="check" size={11} strokeWidth={3} /> : i + 1}</span>
+                            <span className="builder-checklist__label">{t(`builder.steps.${st.id}${st.skipped && st.done ? 'Skipped' : ''}`)}</span>
+                            {currentStep === st.id && (
+                              <button type="button" className="builder-btn builder-btn--primary builder-btn--small" onClick={() => onStepClick(st.id)}>
+                                {t(`builder.steps.action.${st.id}`) || t('builder.steps.go') || 'Перейти'}
+                              </button>
+                            )}
+                          </li>
+                        ))}
+                      </ol>
+                      {!currentStep && (
+                        <button type="button" className="builder-btn builder-btn--ghost builder-btn--small" onClick={() => setStepsDismissed(true)}>{t('common.close') || 'Закрыть'}</button>
+                      )}
+                    </div>
+                  )}
                   {/* Результат последнего запуска — в правой карточке, с кнопкой
                       расписания прямо под ним (заход 3): «работа приходит сама»
                       предлагается в момент, когда человек увидел результат. */}
@@ -2572,7 +2592,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
                   )}
                   {selectedNode ? (
                     <NodeDetails node={selectedNode} t={t} locale={locale} onAtlasLink={openAtlasPreview} onGuide={openNodeGuide} />
-                  ) : execResult && execStatus !== 'running' ? null : (
+                  ) : (execResult && execStatus !== 'running') || !stepsDismissed ? null : (
                     <div className="builder-empty-state">
                       <Icon name="idea" size={24} strokeWidth={1.5} />
                       <p>{t('builder.sidebar.empty') || 'Select a node to see details and education tips.'}</p>
