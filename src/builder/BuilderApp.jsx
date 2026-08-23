@@ -2267,7 +2267,8 @@ function BuilderAppInner({ initialTemplateId = null }) {
               После «Создать» (currentWorkflowId задан) показываем чистый холст. */}
           {nodes.length === 0 && !currentWorkflowId && (
             <div className="builder-empty-canvas">
-              <Icon name="sparkles" size={32} strokeWidth={1.25} />
+              {/* Живая планета — как корневой узел карты (32px × 2.05 ≈ 66px) */}
+              <PlanetLogo size={66} className="builder-empty-canvas__planet" />
               <h2>{t('builder.canvas.emptyTitle') || 'Build your first agent'}</h2>
               <p>{t('builder.canvas.emptyDesc') || 'Drag a node from the left panel, or pick a template.'}</p>
 
