@@ -1261,6 +1261,30 @@
 .builder-app .builder-side-back { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 10px; padding: 4px 8px; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); font-size: 12.5px; cursor: pointer; }
 .builder-app .builder-side-back:hover { background: var(--surface-2, rgba(0,0,0,0.05)); color: var(--text); }
 
+.builder-app .builder-sidebar.is-wide { width: min(60vw, 900px); }
+.builder-app .builder-side-tab > span { max-width: 110px; overflow: hidden; text-overflow: ellipsis; }
+.builder-app .builder-side-code { display: flex; flex-direction: column; gap: 8px; height: 100%; min-height: 0; }
+.builder-app .builder-side-code .builder-code { flex: 1 1 auto; min-height: 0; }
+
+/* ── Журнал как вертикальный таймлайн ── */
+.builder-app .builder-tl { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; list-style: none; margin: 0; padding: 4px 0 4px 2px; display: flex; flex-direction: column; }
+.builder-app .builder-tl__item { position: relative; display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 0 0 10px; font-family: inherit; }
+.builder-app .builder-tl__rail { position: relative; display: flex; justify-content: center; }
+.builder-app .builder-tl__rail::before { content: ''; position: absolute; top: 18px; bottom: -10px; left: 50%; width: 2px; margin-left: -1px; background: var(--border); }
+.builder-app .builder-tl__item:last-child .builder-tl__rail::before { display: none; }
+.builder-app .builder-tl__dot { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; margin-top: 1px; background: var(--surface-2, rgba(0,0,0,0.08)); color: #fff; box-shadow: 0 0 0 2px var(--surface); }
+.builder-app .builder-tl__item--done .builder-tl__dot { background: #22a06b; }
+.builder-app .builder-tl__item--error .builder-tl__dot { background: #d64b3a; }
+.builder-app .builder-tl__item--info .builder-tl__dot { width: 10px; height: 10px; margin: 5px 0 0; background: var(--text-dim, #9a9a9a); }
+.builder-app .builder-tl__item--live .builder-tl__dot { background: var(--accent, #D44F29); animation: builder-pulse 1.1s ease-in-out infinite; }
+.builder-app .builder-tl__card { min-width: 0; padding: 8px 10px; border-radius: 10px; background: var(--surface-2, rgba(0,0,0,0.035)); font-size: 12.5px; line-height: 1.4; color: var(--text); }
+.builder-app .builder-tl__item--error .builder-tl__card { background: rgba(214,75,58,0.08); color: #b3431f; }
+.builder-app .builder-tl__head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 2px; }
+.builder-app .builder-tl__name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.builder-app .builder-tl__name--sys { font-weight: 500; color: var(--text-muted); }
+.builder-app .builder-tl__ts { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; flex: 0 0 auto; font-size: 11px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.builder-app .builder-tl__msg { overflow-wrap: anywhere; white-space: pre-wrap; }
+
 .builder-app .builder-grid {
   flex: 1 1 auto;
   display: grid;

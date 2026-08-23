@@ -15,6 +15,9 @@ export function createDryRun({ nodes, edges, t, onUpdate, onLog, onComplete }) {
   const tr = (k, fb) => { const v = t?.(k); return v && v !== k ? v : fb; };
   const ts = () => Date.now() - t0;
   const label = (n) => {
+    const lk = n?.data?.labelKey;           // человеческое имя блока из палитры
+    const byKey = lk ? tr(lk, '') : '';
+    if (byKey && byKey !== lk) return byKey;
     const l = n?.data?.label;
     const tx = l ? tr(l, l) : null;
     return tx || n?.data?.role || n?.data?.kind || 'узел';

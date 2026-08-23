@@ -24,7 +24,6 @@ import { nodeTypes } from './components/canvas/index.js';
 import NodePalette from './components/canvas/NodePalette.jsx';
 import HelpPanel from './components/panels/HelpPanel.jsx';
 import CodePanel from './components/panels/CodePanel.jsx';
-import ConsoleWindow from './components/panels/ConsoleWindow.jsx';
 import ConnectionLine from './components/canvas/ConnectionLine.jsx';
 import BuilderEdge from './components/canvas/BuilderEdge.jsx';
 import ConceptTooltip from './components/education/ConceptTooltip.jsx';
@@ -311,50 +310,16 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // Автопереключение: выбрали блок → Детали; запуск → Журнал; готово → Детали.
   const [sideTab, setSideTab] = useState('details'); // 'details' | 'log' | 'sched' | 'keys'
   const openSide = useCallback((tab) => { setSideTab(tab); setSidebarOpen(true); }, []);
-  const [consoleOpen, setConsoleOpen] = useState(false); // объединённая «Консоль»
-  const [consoleTab, setConsoleTab] = useState('code');  // 'code' | 'run'
+  // Окно консоли удалено (2026-08-23): одна поверхность — правая панель.
+  // sideWide — панель растянута для чтения журнала; sideCode — экран «Код» внутри панели.
+  const [sideWide, setSideWide] = useState(false);
+  const [sideCode, setSideCode] = useState(false);
   // Общий режим окна Консоли — поднят сюда, чтобы плавающее/перетаскиваемое окно
   // вело себя одинаково в обеих вкладках (Код/Запуск) и сохранялось при переключении.
-  const [consoleFloating, setConsoleFloating] = useState(false);
-  const [consoleMax, setConsoleMax] = useState(false);
-  const [consolePos, setConsolePos] = useState({ x: 0, y: 0 });
   // Мини-карта холста — скрыта по умолчанию, открывается отдельной
   // кнопкой в ряду Controls (правый нижний угол).
   const [miniMapOpen, setMiniMapOpen] = useState(false);
   // Ширина консоли (правая боковая панель), сохраняется в браузере.
-  const [execW, setExecW] = useState(() => {
-    const v = parseInt(localStorage.getItem('atlas:builder:exec-w') || '', 10);
-    return v >= 320 && v <= 720 ? v : 460;
-  });
-  const [execResizing, setExecResizing] = useState(false);
-  const startExecResize = useCallback((e) => {
-    // Старт ресайза: запоминаем pointer X и начальную ширину; листенеры
-    // на window — onMove тянет ширину, onUp снимает листенеры и сохраняет.
-    e.preventDefault();
-    const startX = e.clientX;
-    const startW = execW;
-    setExecResizing(true);
-    document.body.style.cursor = 'col-resize';
-    const onMove = (ev) => {
-      // Тянем за ЛЕВУЮ кромку → движение влево увеличивает ширину
-      const dx = startX - ev.clientX;
-      const next = Math.max(320, Math.min(720, startW + dx));
-      setExecW(next);
-    };
-    const onUp = () => {
-      setExecResizing(false);
-      document.body.style.cursor = '';
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mouseup', onUp);
-      try { localStorage.setItem('atlas:builder:exec-w', String(execW)); } catch { /* noop */ }
-    };
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mouseup', onUp);
-  }, [execW]);
-  // Сохраняем ширину при изменении (если пользователь резает несколько раз).
-  useEffect(() => {
-    try { localStorage.setItem('atlas:builder:exec-w', String(execW)); } catch { /* noop */ }
-  }, [execW]);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [previewTplIndex, setPreviewTplIndex] = useState(null); // превью шаблона из левого списка
   const [tooltipInfo, setTooltipInfo] = useState(null); // { defId, top, left }
@@ -1497,9 +1462,8 @@ function BuilderAppInner({ initialTemplateId = null }) {
     setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, status: 'idle' } })));
     setExecLogs([]);
     setExecStatus('running');
-    // Открываем консоль на вкладке «Запуск» — видно ход выполнения сразу.
-    setConsoleOpen(true);
-    setConsoleTab('run');
+    // Вкладка «Журнал» панели — видно ход выполнения сразу.
+    openSide('log');
     const stats = { total: nodes.length, done: 0, failed: 0 };
     setExecStats(stats);
     return stats;
@@ -1624,8 +1588,10 @@ function BuilderAppInner({ initialTemplateId = null }) {
   useEffect(() => { if (hasNodes) setSidebarOpen(true); }, [hasNodes, currentWorkflowId]);
   useEffect(() => {
     if (execStatus === 'running') openSide('log');
-    else if (execStatus === 'completed') openSide('details');
-  }, [execStatus, openSide]);
+    // Возврат в «Детали» — только когда есть результат (настоящий запуск);
+    // после тестового прогона остаёмся в «Журнале»: там его итог.
+    else if (execStatus === 'completed' && execResult) openSide('details');
+  }, [execStatus, execResult, openSide]);
   // Эффекты перечитывания ключей завязаны на keysModalOpen — держим его в
   // синхроне с вкладкой «Подключения».
   useEffect(() => { setKeysModalOpen(sidebarOpen && sideTab === 'keys'); }, [sidebarOpen, sideTab]);
@@ -1751,44 +1717,6 @@ function BuilderAppInner({ initialTemplateId = null }) {
 
   // Переключатель вкладок объединённой «Консоли» (Код ↔ Запуск).
   // Перетаскивание плавающего окна Консоли за шапку (но не за кнопки).
-  const consoleHeaderPointerDown = useCallback((e) => {
-    if (!consoleFloating || consoleMax) return;
-    if (e.target.closest('button')) return;
-    const start = { mx: e.clientX, my: e.clientY, px: consolePos.x, py: consolePos.y };
-    const move = (ev) => setConsolePos({ x: start.px + (ev.clientX - start.mx), y: start.py + (ev.clientY - start.my) });
-    const up = () => {
-      window.removeEventListener('pointermove', move);
-      window.removeEventListener('pointerup', up);
-    };
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', up);
-  }, [consoleFloating, consoleMax, consolePos]);
-
-  const consoleToggleFloat = () => { setConsoleFloating(f => !f); setConsoleMax(false); };
-  const consoleToggleMax = () => setConsoleMax(m => !m);
-
-  const consoleTabs = (
-    <div className="builder-console-tabs" role="tablist">
-      <button
-        type="button" role="tab" aria-selected={consoleTab === 'code'}
-        className={`builder-console-tab ${consoleTab === 'code' ? 'is-active' : ''}`}
-        onClick={() => setConsoleTab('code')}
-      >{t('builder.console.tabCode') || 'Код'}</button>
-      <button
-        type="button" role="tab" aria-selected={consoleTab === 'run'}
-        className={`builder-console-tab ${consoleTab === 'run' ? 'is-active' : ''}`}
-        onClick={() => setConsoleTab('run')}
-      >
-        {t('builder.console.tabRun') || 'Запуск'}
-        {execStatus === 'running' && <span className="builder-console-tab__dot" aria-hidden="true" />}
-      </button>
-      <button
-        type="button" role="tab" aria-selected={consoleTab === 'sched'}
-        className={`builder-console-tab ${consoleTab === 'sched' ? 'is-active' : ''}`}
-        onClick={() => setConsoleTab('sched')}
-      >{t('builder.console.tabSched') || 'Автозапуски'}</button>
-    </div>
-  );
 
   // ── Рельса правых панелей: НЕ перекрываются, стыкуются рядом ──────────────
   // Порядок справа налево (приоритет, не зависит от очереди открытия):
@@ -1796,12 +1724,9 @@ function BuilderAppInner({ initialTemplateId = null }) {
   //   2) Консоль (запуск/автозапуски),
   //   3) Детали — крайняя слева. Каждая панель толкает левую дальше влево.
   const DOCK_BASE = 16, DOCK_GAP = 12;
-  const consoleDocked = consoleOpen && !consoleFloating && !consoleMax;
-  const consoleW = consoleDocked ? Math.min(720, Math.max(320, execW || 460)) : 0;
   const schedDockedOpen = scheduleOpen && !!currentWorkflowId;
   let dockAcc = DOCK_BASE;
   const rightSchedule = dockAcc; if (schedDockedOpen) dockAcc += 360 + DOCK_GAP;
-  const rightConsole = dockAcc; if (consoleDocked) dockAcc += consoleW + DOCK_GAP;
   const rightDetails = dockAcc;
 
   return (
@@ -1810,7 +1735,6 @@ function BuilderAppInner({ initialTemplateId = null }) {
         'builder-app',
         toolboxOpen ? 'has-toolbox' : 'no-toolbox',
         sidebarOpen ? 'has-sidebar' : 'no-sidebar',
-        consoleOpen ? 'has-exec' : 'no-exec',
       ].join(' ')}
       style={{ '--toolbox-w': `${toolboxW}px` }}
     >
@@ -1922,7 +1846,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
             </button>
             {moreOpen && (
               <div className="builder-more__menu" role="menu" onMouseLeave={() => setMoreOpen(false)}>
-                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setConsoleTab('code'); setConsoleOpen(true); }}>
+                <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setSideCode(true); setSidebarOpen(true); }}>
                   <Icon name="code-block" size={14} strokeWidth={1.5} /><span>{t('builder.more.code') || 'Код схемы'}</span>
                 </button>
                 <button type="button" role="menuitem" className="builder-more__item" onClick={() => { setMoreOpen(false); setMiniMapOpen(v => !v); }}>
@@ -2439,6 +2363,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
             className={[
               'builder-sidebar',
               (atlasPreviewId || guideDefId) ? 'builder-sidebar--preview' : '',
+              sideWide ? 'is-wide' : '',
             ].join(' ').trim()}
             style={{ right: `${rightDetails}px` }}
             aria-label={atlasPreviewId
@@ -2466,10 +2391,10 @@ function BuilderAppInner({ initialTemplateId = null }) {
                 <div className="builder-sidebar__header">
                   <div className="builder-side-tabs" role="tablist">
                     {[
-                      { id: 'details', label: t('builder.side.details') || 'Детали', badge: currentStep ? String(steps.findIndex(s => s.id === currentStep) + 1) : null },
-                      { id: 'log',     label: t('builder.side.log') || 'Журнал', dot: execStatus === 'running' },
-                      { id: 'sched',   label: t('builder.side.sched') || 'Автозапуски' },
-                      { id: 'keys',    label: t('builder.side.keys') || 'Подключения', badge: !keyConnected ? '!' : null },
+                      { id: 'details', icon: 'sliders',  label: t('builder.side.details') || 'Детали', badge: currentStep ? String(steps.findIndex(s => s.id === currentStep) + 1) : null },
+                      { id: 'log',     icon: 'terminal', label: t('builder.side.log') || 'Журнал', dot: execStatus === 'running' },
+                      { id: 'sched',   icon: 'clock',    label: t('builder.side.sched') || 'Автозапуски' },
+                      { id: 'keys',    icon: 'plug',     label: t('builder.side.keys') || 'Подключения', badge: !keyConnected ? '!' : null },
                     ].map(tb => (
                       <button
                         key={tb.id}
@@ -2477,14 +2402,27 @@ function BuilderAppInner({ initialTemplateId = null }) {
                         role="tab"
                         aria-selected={sideTab === tb.id}
                         className={`builder-side-tab ${sideTab === tb.id ? 'is-active' : ''}`}
-                        onClick={() => setSideTab(tb.id)}
+                        onClick={() => { setSideCode(false); setSideTab(tb.id); }}
+                        title={tb.label}
+                        aria-label={tb.label}
                       >
-                        <span>{tb.label}</span>
+                        <Icon name={tb.icon} size={14} strokeWidth={1.6} />
+                        {sideTab === tb.id && <span>{tb.label}</span>}
                         {tb.badge && <span className="builder-side-tab__badge">{tb.badge}</span>}
                         {tb.dot && <span className="builder-console-dot" aria-hidden="true" />}
                       </button>
                     ))}
                   </div>
+                  <button
+                    type="button"
+                    className="builder-panel-collapse"
+                    onClick={() => setSideWide(w => !w)}
+                    title={t(sideWide ? 'builder.side.narrow' : 'builder.side.wide') || 'Развернуть'}
+                    aria-label={t(sideWide ? 'builder.side.narrow' : 'builder.side.wide') || 'Развернуть'}
+                    aria-pressed={sideWide}
+                  >
+                    <Icon name={sideWide ? 'minimize' : 'fullscreen'} size={15} strokeWidth={1.6} />
+                  </button>
                   <button
                     type="button"
                     className="builder-panel-collapse"
@@ -2496,9 +2434,19 @@ function BuilderAppInner({ initialTemplateId = null }) {
                   </button>
                 </div>
                 <div className="builder-sidebar__body">
-                  {sideTab === 'log' && (
+                  {sideCode && (
+                    <div className="builder-side-code">
+                      <button type="button" className="builder-side-back" onClick={() => setSideCode(false)}>
+                        <Icon name="arrow-left" size={13} strokeWidth={1.75} />
+                        <span>{t('builder.side.back') || 'Назад'}</span>
+                      </button>
+                      <CodePanel nodes={nodes} edges={edges} edgeStyle={EDGE_STYLE} onApply={applyCode} t={t} />
+                    </div>
+                  )}
+                  {!sideCode && sideTab === 'log' && (
                     <div className="builder-side-log">
                       <ExecutionPanel
+                        nodeLabels={Object.fromEntries(nodes.map(n => [n.id, t(n.data?.labelKey) || n.data?.role || '']))}
                         logs={execLogs}
                         status={execStatus}
                         nodesTotal={execStats.total}
@@ -2509,22 +2457,19 @@ function BuilderAppInner({ initialTemplateId = null }) {
                         onStop={handleStopExec}
                         onClear={() => { setExecResult(null); handleClearLogs(); }}
                       />
-                      <button type="button" className="builder-btn builder-btn--ghost builder-btn--small builder-side-log__expand" onClick={() => { setConsoleTab('run'); setConsoleOpen(true); }}>
-                        <Icon name="fullscreen" size={13} strokeWidth={1.6} />
-                        <span>{t('builder.console.expand') || 'Развернуть журнал'}</span>
-                      </button>
+
                     </div>
                   )}
-                  {sideTab === 'sched' && (
+                  {!sideCode && sideTab === 'sched' && (
                     <AllSchedulesModal embedded guest={!userId} onRequestAuth={openAuth} />
                   )}
-                  {sideTab === 'keys' && keysReturnTo && (
+                  {!sideCode && sideTab === 'keys' && keysReturnTo && (
                     <button type="button" className="builder-side-back" onClick={returnFromKeys}>
                       <Icon name="arrow-left" size={13} strokeWidth={1.75} />
                       <span>{t('builder.side.backToBlock') || 'К блоку'}</span>
                     </button>
                   )}
-                  {sideTab === 'keys' && (
+                  {!sideCode && sideTab === 'keys' && (
                     user
                       ? <ApiKeysModal embedded onClose={() => setSideTab('details')} onSignIn={openAuth} />
                       : (
@@ -2535,7 +2480,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
                         </div>
                       )
                   )}
-                  {sideTab === 'details' && (<>
+                  {!sideCode && sideTab === 'details' && (<>
                   {/* Чек-лист «Следующий шаг» — внутри «Деталей» (заход B), когда
                       блок не выбран. Текущий шаг — с кнопкой действия. */}
                   {!selectedNode && !stepsDismissed && (
@@ -2603,50 +2548,6 @@ function BuilderAppInner({ initialTemplateId = null }) {
               </>
             )}
           </aside>
-        )}
-
-        {/* Единое окно «Консоль» — одна рамка, внутри переключаются вкладки. */}
-        {consoleOpen && (
-          <ConsoleWindow
-            tabs={consoleTabs}
-            floating={consoleFloating}
-            maximized={consoleMax}
-            pos={consolePos}
-            onToggleFloat={consoleToggleFloat}
-            onToggleMax={consoleToggleMax}
-            onHeaderPointerDown={consoleHeaderPointerDown}
-            onClose={() => setConsoleOpen(false)}
-            wrapperStyle={{ '--exec-w': `${execW}px`, right: `${rightConsole}px` }}
-            wrapperClass={execResizing ? 'is-resizing' : ''}
-            onResizeStart={startExecResize}
-            t={t}
-          >
-            {consoleTab === 'run' && (
-              <ExecutionPanel
-                logs={execLogs}
-                status={execStatus}
-                nodesTotal={execStats.total}
-                nodesDone={execStats.done}
-                nodesFailed={execStats.failed}
-                result={execResult}
-                runSetup={null}
-                onStop={handleStopExec}
-                onClear={() => { setExecResult(null); handleClearLogs(); }}
-              />
-            )}
-            {consoleTab === 'code' && (
-              <CodePanel
-                nodes={nodes}
-                edges={edges}
-                edgeStyle={EDGE_STYLE}
-                onApply={applyCode}
-                t={t}
-              />
-            )}
-            {consoleTab === 'sched' && (
-              <AllSchedulesModal embedded guest={!userId} onRequestAuth={openAuth} />
-            )}
-          </ConsoleWindow>
         )}
 
         {/* Автозапуск — правая панель (стыкуется рядом с «Деталями») */}

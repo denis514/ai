@@ -21,6 +21,7 @@ import Markdown from './Markdown.jsx';
  */
 
 export default function ExecutionPanel({
+  nodeLabels = {},
   logs,
   status,
   nodesTotal,
@@ -252,40 +253,48 @@ export default function ExecutionPanel({
       )}
 
       <div className="builder-exec__body" ref={bodyRef}>
+        {/* Вертикальный таймлайн (решение основателя 2026-08-23): карточка на
+            шаг — имя блока + что произошло, слева линия с галочкой/точкой.
+            Три колонки моноширинного текста в узкой панели разваливались. */}
         {logs.length === 0 ? (
           <div className="builder-empty-state builder-empty-state--small">
             <Icon name="terminal" size={20} strokeWidth={1.5} />
             <p>{t('builder.exec.empty') || 'Press Run to see mock execution logs.'}</p>
           </div>
         ) : (
-          <ol className="builder-exec__log">
+          <ol className="builder-exec__log builder-tl">
             {logs.map((log, i) => {
-              // Последняя строка при идущем запуске — «живая»: мигающая точка,
-              // секунды и токены по ходу (приходят потоком с сервера).
               const live = status === 'running' && i === logs.length - 1 && (log.progress || /…$/.test(log.message || ''));
+              const name = log.nodeName || (log.nodeId && nodeLabels[log.nodeId]) || null;
+              const kind = log.level === 'error' ? 'error' : live ? 'live' : name ? 'done' : 'info';
               return (
-              <li
-                key={i}
-                className={`builder-log builder-log--${log.level} ${live ? 'is-live' : ''}`}
-              >
-                <span className="builder-log__ts">{formatTs(log.ts)}</span>
-                {log.nodeName && (
-                  <span className="builder-log__node">[{log.nodeName}]</span>
-                )}
-                <span className="builder-log__msg">
-                  {live && <span className="builder-log__pulse" aria-hidden="true" />}
-                  {log.message}
-                  {live && (
-                    <span className="builder-log__live">
-                      {' · '}{elapsedSec(log.startedTs || log.ts)} {t('builder.exec.sec') || 'с'}
-                      {log.liveTokens > 0 && <> · ≈ {log.liveTokens.toLocaleString()} {t('builder.runInput.tokens') || 'ток.'}</>}
-                      {log.liveSearch && <> · {t('builder.exec.searching') || 'ищу:'} «{log.liveSearch}»</>}
-                    </span>
-                  )}
-                  {!live && log.tokens != null && log.tokens > 0 && (
-                    <span className="builder-log__tokens"> · {log.tokens.toLocaleString()} {t('builder.runInput.tokens') || 'ток.'}</span>
-                  )}
+              <li key={i} className={`builder-tl__item builder-tl__item--${kind} builder-log--${log.level}`}>
+                <span className="builder-tl__rail" aria-hidden="true">
+                  <span className="builder-tl__dot">
+                    {kind === 'error' ? <Icon name="close" size={10} strokeWidth={3} />
+                      : kind === 'done' ? <Icon name="check" size={10} strokeWidth={3} />
+                      : null}
+                  </span>
                 </span>
+                <div className="builder-tl__card">
+                  <div className="builder-tl__head">
+                    {name ? <strong className="builder-tl__name">{name}</strong> : <span className="builder-tl__name builder-tl__name--sys">{t('builder.exec.system') || 'Система'}</span>}
+                    <span className="builder-tl__ts">{formatTs(log.ts)}</span>
+                  </div>
+                  <div className="builder-tl__msg">
+                    {log.message}
+                    {live && (
+                      <span className="builder-log__live">
+                        {' · '}{elapsedSec(log.startedTs || log.ts)} {t('builder.exec.sec') || 'с'}
+                        {log.liveTokens > 0 && <> · ≈ {log.liveTokens.toLocaleString()} {t('builder.runInput.tokens') || 'ток.'}</>}
+                        {log.liveSearch && <> · {t('builder.exec.searching') || 'ищу:'} «{log.liveSearch}»</>}
+                      </span>
+                    )}
+                    {!live && log.tokens != null && log.tokens > 0 && (
+                      <span className="builder-log__tokens"> · {log.tokens.toLocaleString()} {t('builder.runInput.tokens') || 'ток.'}</span>
+                    )}
+                  </div>
+                </div>
               </li>
               );
             })}
