@@ -23,7 +23,10 @@ import { decrypt } from '../_shared/crypto.ts';
 import { systemPromptForRole, roleLabel } from '../_shared/rolePrompts.ts';
 
 const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-sonnet-4-5';
+// Модель исполнения. claude-sonnet-4-5 снят с производства (вывод намечен
+// не ранее 2026-09-29) — переведено на Sonnet 5 (2026-08-23). Переопределяется
+// секретом BUILDER_MODEL без передеплоя.
+const MODEL = Deno.env.get('BUILDER_MODEL') || 'claude-sonnet-5';
 const MAX_NODES = 25; // защита от runaway: не больше 25 узлов за запуск
 
 // Размер результата → max_tokens на агент-вызов (см. outputTiers.js на клиенте).
@@ -33,6 +36,95 @@ const DEFAULT_TIER = 's';
 // Локаль → язык ответа. Добавляется директивой в system, чтобы результат был
 // на языке пользователя независимо от языка инструкции.
 const LANG_NAME: Record<string, string> = { ru: 'Russian', en: 'English', fi: 'Finnish' };
+
+// Сообщения об ошибках доставки — на языке интерфейса, простым языком
+// (правило docs/plain-language-ui.md; раньше все 15 были по-английски с жаргоном).
+const MSG: Record<string, Record<string, string>> = {
+  tg_no_chat: {
+    ru: 'В блоке Telegram не указан адрес получателя. Откройте блок и впишите числовой ID чата.',
+    en: 'This Telegram block has no recipient. Open it and enter a numeric chat ID.',
+    fi: 'Telegram-lohkossa ei ole vastaanottajaa. Avaa lohko ja kirjoita numeerinen chat-ID.',
+  },
+  tg_no_bot: {
+    ru: 'Бот Telegram не подключён (адрес {chat}). Подключите токен бота в окне «Ключи».',
+    en: 'Telegram bot is not connected (chat {chat}). Connect a bot token in “Keys”.',
+    fi: 'Telegram-bottia ei ole yhdistetty (chat {chat}). Yhdistä botin tunnus kohdassa ”Avaimet”.',
+  },
+  tg_not_delivered: {
+    ru: 'Telegram не доставил сообщение на {chat}: {desc}. Проверьте: ID должен быть числом, а бот — уже получал от вас /start (или быть администратором канала).',
+    en: 'Telegram did not deliver to {chat}: {desc}. Check: the ID must be numeric and the bot must have received /start from you (or be a channel admin).',
+    fi: 'Telegram ei toimittanut viestiä vastaanottajalle {chat}: {desc}. Tarkista: ID:n pitää olla numero ja botin on täytynyt saada sinulta /start (tai olla kanavan ylläpitäjä).',
+  },
+  tg_failed: {
+    ru: 'Не удалось отправить в Telegram ({chat}): {err}',
+    en: 'Telegram send failed ({chat}): {err}',
+    fi: 'Lähetys Telegramiin epäonnistui ({chat}): {err}',
+  },
+  email_no_key: {
+    ru: 'Почта не подключена. Добавьте ключ Resend в окне «Ключи».',
+    en: 'Email is not connected. Add a Resend key in “Keys”.',
+    fi: 'Sähköpostia ei ole yhdistetty. Lisää Resend-avain kohdassa ”Avaimet”.',
+  },
+  email_no_to: {
+    ru: 'В блоке «Письмо» не указан адрес получателя. Откройте блок и впишите адрес.',
+    en: 'This Email block has no recipient. Open it and enter an address.',
+    fi: 'Sähköposti-lohkossa ei ole vastaanottajaa. Avaa lohko ja kirjoita osoite.',
+  },
+  email_not_delivered: {
+    ru: 'Письмо не доставлено: {msg}. Важно: с тестовым отправителем Resend письма доходят только на адрес вашего аккаунта Resend. Чтобы писать кому угодно — подтвердите свой домен в Resend.',
+    en: 'Email not delivered: {msg}. Note: with the Resend test sender, mail only reaches your own Resend account address. Verify your domain in Resend to email anyone.',
+    fi: 'Sähköpostia ei toimitettu: {msg}. Huom: Resendin testilähettäjällä viestit menevät vain oman Resend-tilisi osoitteeseen. Vahvista oma verkkotunnuksesi Resendissä lähettääksesi kenelle tahansa.',
+  },
+  email_failed: {
+    ru: 'Не удалось отправить письмо: {err}',
+    en: 'Email send failed: {err}',
+    fi: 'Sähköpostin lähetys epäonnistui: {err}',
+  },
+  gcal_no_conn: {
+    ru: 'Google Calendar не подключён. Подключите его в окне «Ключи».',
+    en: 'Google Calendar is not connected. Connect it in “Keys”.',
+    fi: 'Google-kalenteria ei ole yhdistetty. Yhdistä se kohdassa ”Avaimet”.',
+  },
+  gcal_token: {
+    ru: 'Доступ к Google Calendar истёк. Подключите календарь заново в окне «Ключи».',
+    en: 'Google Calendar access expired. Reconnect the calendar in “Keys”.',
+    fi: 'Google-kalenterin käyttöoikeus vanheni. Yhdistä kalenteri uudelleen kohdassa ”Avaimet”.',
+  },
+  gcal_not_created: {
+    ru: 'Событие в календаре не создано: {msg}',
+    en: 'Calendar event not created: {msg}',
+    fi: 'Kalenteritapahtumaa ei luotu: {msg}',
+  },
+  gcal_failed: {
+    ru: 'Календарь: ошибка — {err}',
+    en: 'Calendar failed: {err}',
+    fi: 'Kalenteri: virhe — {err}',
+  },
+  node_failed: {
+    ru: 'Шаг не выполнен',
+    en: 'Step failed',
+    fi: 'Vaihe epäonnistui',
+  },
+  run_failed: {
+    ru: 'Запуск завершился с ошибкой',
+    en: 'Run failed',
+    fi: 'Ajo epäonnistui',
+  },
+  run_finished: {
+    ru: 'Готово · использовано токенов: {tokens}',
+    en: 'Done · tokens used: {tokens}',
+    fi: 'Valmis · käytetyt tokenit: {tokens}',
+  },
+  autorun_failed_notice: {
+    ru: '⚠️ Автозапуск «{name}» не сработал.\n{reason}\n\nПодробности — в конструкторе: Консоль → Автозапуски.',
+    en: '⚠️ Scheduled run “{name}” failed.\n{reason}\n\nDetails: builder → Console → Autoruns.',
+    fi: '⚠️ Ajastettu ajo ”{name}” epäonnistui.\n{reason}\n\nLisätiedot: rakentaja → Konsoli → Automaattiajot.',
+  },
+};
+function msg(locale: string, key: string, vars: Record<string, unknown> = {}): string {
+  const tpl = (MSG[key] && (MSG[key][locale] || MSG[key].en)) || key;
+  return tpl.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ''));
+}
 function langDirective(locale: string): string {
   const lang = LANG_NAME[locale] || 'English';
   return `\n\nAlways write your response in ${lang}.`;
@@ -200,6 +292,10 @@ async function callClaude(apiKey: string, system: string, userContent: string, m
   const payload: Record<string, unknown> = {
     model: MODEL,
     max_tokens: maxTokens,
+    // Sonnet 5 включает «размышление» по умолчанию, и оно расходует max_tokens.
+    // Держим прежнюю семантику тарифов S/M/L и узла «условие-агент» (8 токенов):
+    // размышление выключено. Включать — отдельной задачей с пересмотром лимитов.
+    thinking: { type: 'disabled' },
     system,
     messages: [{ role: 'user', content }],
   };
@@ -350,7 +446,7 @@ Deno.serve(async (req) => {
 
   // Проверка владения workflow (admin обходит RLS — проверяем сами).
   const { data: wf, error: wfErr } = await admin
-    .from('builder_workflows').select('id, user_id').eq('id', workflowId).single();
+    .from('builder_workflows').select('id, user_id, name').eq('id', workflowId).single();
   if (wfErr || !wf) return json({ error: 'workflow_not_found' }, 404);
   if (wf.user_id !== userId) return json({ error: 'forbidden' }, 403);
 
@@ -667,7 +763,7 @@ Deno.serve(async (req) => {
 
           if (recipients.length === 0) {
             failed = true;
-            await log(id, 'error', 'No chat ID set on this Telegram node — open it and enter a numeric chat ID.', { status: 'failed' });
+            await log(id, 'error', msg(locale, 'tg_no_chat'), { status: 'failed' });
             continue;
           }
 
@@ -676,7 +772,7 @@ Deno.serve(async (req) => {
             const token = await resolveKey(r.connectionId, 'telegram', telegramToken);
             if (!token) {
               failed = true;
-              await log(id, 'error', `Telegram bot not connected for chat ${r.chatId} — connect a bot token in “My keys”.`, {});
+              await log(id, 'error', msg(locale, 'tg_no_bot', { chat: r.chatId }), {});
               continue;
             }
             try {
@@ -703,11 +799,11 @@ Deno.serve(async (req) => {
               } else {
                 failed = true;
                 const desc = tgData?.description || `http_${tgRes.status}`;
-                await log(id, 'error', `Telegram did not deliver to ${r.chatId}: ${desc}. Tip: chat_id must be a numeric ID or a @channel where the bot is admin.`, {});
+                await log(id, 'error', msg(locale, 'tg_not_delivered', { chat: r.chatId, desc }), {});
               }
             } catch (err) {
               failed = true;
-              await log(id, 'error', `Telegram send failed for ${r.chatId}: ${(err as Error).message}`, {});
+              await log(id, 'error', msg(locale, 'tg_failed', { chat: r.chatId, err: (err as Error).message }), {});
             }
           }
           // Финальный статус узла: completed только если ВСЕ доставлены.
@@ -729,10 +825,10 @@ Deno.serve(async (req) => {
           const rsKey = await resolveKey(node.config?.connectionId, 'resend', resendKey);
           if (!rsKey) {
             failed = true;
-            await log(id, 'error', 'Email not connected — add a Resend API key in “My keys”.', { status: 'failed' });
+            await log(id, 'error', msg(locale, 'email_no_key'), { status: 'failed' });
           } else if (!toEmail) {
             failed = true;
-            await log(id, 'error', 'No recipient set on this Email node — open it and enter an address.', { status: 'failed' });
+            await log(id, 'error', msg(locale, 'email_no_to'), { status: 'failed' });
           } else {
             try {
               const rsRes = await fetch('https://api.resend.com/emails', {
@@ -745,12 +841,12 @@ Deno.serve(async (req) => {
                 await log(id, 'info', `Sent email ✓ (to ${toEmail})`, { status: 'completed' });
               } else {
                 failed = true;
-                const msg = rsData?.message || rsData?.error?.message || `http_${rsRes.status}`;
-                await log(id, 'error', `Email not delivered: ${msg}. Tip: with the test sender (onboarding@resend.dev) you can only email your own Resend account address; verify a domain to send anywhere.`, { status: 'failed' });
+                const rsMsg = rsData?.message || rsData?.error?.message || `http_${rsRes.status}`;
+                await log(id, 'error', msg(locale, 'email_not_delivered', { msg: rsMsg }), { status: 'failed' });
               }
             } catch (err) {
               failed = true;
-              await log(id, 'error', `Email send failed: ${(err as Error).message}`, { status: 'failed' });
+              await log(id, 'error', msg(locale, 'email_failed', { err: (err as Error).message }), { status: 'failed' });
             }
           }
           continue;
@@ -760,13 +856,13 @@ Deno.serve(async (req) => {
         if (node.role === 'calendar') {
           if (!gcalRefresh) {
             failed = true;
-            await log(id, 'error', 'Google Calendar not connected — connect it in “My keys”.', { status: 'failed' });
+            await log(id, 'error', msg(locale, 'gcal_no_conn'), { status: 'failed' });
           } else {
             try {
               const accessToken = await gcalAccessToken(gcalRefresh);
               if (!accessToken) {
                 failed = true;
-                await log(id, 'error', 'Could not refresh Google access token — reconnect Google Calendar.', { status: 'failed' });
+                await log(id, 'error', msg(locale, 'gcal_token'), { status: 'failed' });
               } else {
                 const calId = typeof node.config?.calendarId === 'string' && node.config.calendarId.trim()
                   ? node.config.calendarId.trim() : 'primary';
@@ -789,13 +885,13 @@ Deno.serve(async (req) => {
                   await log(id, 'info', `Event created ✓ (${ev.title}, ${ev.start.slice(0, 16).replace('T', ' ')})`, { status: 'completed' });
                 } else {
                   failed = true;
-                  const msg = gData?.error?.message || `http_${gRes.status}`;
-                  await log(id, 'error', `Calendar event not created: ${msg}`, { status: 'failed' });
+                  const gMsg = gData?.error?.message || `http_${gRes.status}`;
+                  await log(id, 'error', msg(locale, 'gcal_not_created', { msg: gMsg }), { status: 'failed' });
                 }
               }
             } catch (err) {
               failed = true;
-              await log(id, 'error', `Calendar failed: ${(err as Error).message}`, { status: 'failed' });
+              await log(id, 'error', msg(locale, 'gcal_failed', { err: (err as Error).message }), { status: 'failed' });
             }
           }
           continue;
@@ -939,7 +1035,7 @@ Deno.serve(async (req) => {
       await log(id, 'info', text.slice(0, 4000), { status: 'completed', tokens });
     } catch (e) {
       failed = true;
-      await log(id, 'error', (e as Error).message || 'Node failed', { status: 'failed' });
+      await log(id, 'error', (e as Error).message || msg(locale, 'node_failed'), { status: 'failed' });
       break; // останавливаем на первой ошибке
     }
   }
@@ -950,16 +1046,40 @@ Deno.serve(async (req) => {
     .eq('user_id', userId).eq('provider', 'anthropic');
 
   const finalStatus = failed ? 'failed' : 'completed';
+
+  // Сбой фонового запуска (расписание/вебхук) раньше был немым: человек узнавал
+  // о нём, только открыв консоль. Теперь, если в схеме есть блок Telegram с
+  // адресом и подключённым ботом, туда уходит короткое предупреждение
+  // (без токенов — это не вызов модели). Ошибка уведомления прогон не меняет.
+  if (failed && isService) {
+    try {
+      const tgNode = (nodes as Node[]).find(n => n.role === 'telegram');
+      const rawT = Array.isArray(tgNode?.config?.targets) ? (tgNode!.config!.targets as Array<{connectionId?: string; chatId?: string}>) : [];
+      const first = rawT.find(t => t?.chatId) || { connectionId: tgNode?.config?.connectionId as string | undefined, chatId: tgNode?.config?.chatId as string | undefined };
+      const chatId = typeof first?.chatId === 'string' ? first.chatId.trim() : '';
+      if (tgNode && chatId) {
+        const token = await resolveKey(first.connectionId, 'telegram', telegramToken);
+        if (token) {
+          const text = msg(locale, 'autorun_failed_notice', { name: wf.name || '—', reason: lastError || msg(locale, 'run_failed') });
+          await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: text.slice(0, 3900), disable_web_page_preview: true }),
+          });
+        }
+      }
+    } catch (e) { console.error('[execute] failure notice skipped', (e as Error).message); }
+  }
+
   await admin.from('builder_executions').update({
     status: finalStatus,
     output_data: { text: lastText },
     tokens_used: totalTokens,
-    error_message: failed ? (lastError || 'Run failed') : null,
+    error_message: failed ? (lastError || msg(locale, 'run_failed')) : null,
     completed_at: new Date().toISOString(),
   }).eq('id', executionId);
 
   await log(null, failed ? 'error' : 'info',
-    failed ? 'Run failed' : `Run finished · ${totalTokens} tokens used`,
+    failed ? msg(locale, 'run_failed') : msg(locale, 'run_finished', { tokens: totalTokens }),
     { status: finalStatus, tokens: totalTokens });
 
   return json({ ok: !failed, executionId, status: finalStatus, tokensUsed: totalTokens, output: lastText });

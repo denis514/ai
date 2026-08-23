@@ -832,6 +832,9 @@ function BuilderAppInner({ initialTemplateId = null }) {
       track('builder_generate', { ok: 1 });
       await persist(template.name || t('builder.workflows.defaultName') || 'Схема', newNodes, newEdges, null);
       engageBuilder();
+      // Схема собрана, но часть просьбы движок не умеет — говорим сразу, а не
+      // даём человеку обнаружить это после запуска.
+      if (scheme?.note) toast.info(`${t('builder.gen.noteLead')} ${scheme.note}`, { duration: 9000 });
     } catch (e) {
       track('builder_generate', { ok: 0, code: e?.code || 'unknown' });
       if (e?.code === 'daily_limit') {
@@ -842,6 +845,9 @@ function BuilderAppInner({ initialTemplateId = null }) {
         setGenError(t('builder.gen.errMonthly'));
       } else if (e?.code === 'not_a_task') {
         setGenError(t('builder.gen.errNotTask'));
+      } else if (e?.code === 'unsupported') {
+        // Честный отказ: движок этого не умеет — причина словами от сборщика.
+        setGenError(e.why ? `${t('builder.gen.errUnsupported')} ${e.why}` : t('builder.gen.errUnsupported'));
       } else if (e?.code === 'query_too_short') {
         setGenError(t('builder.gen.errShort'));
       } else {
@@ -1557,9 +1563,19 @@ function BuilderAppInner({ initialTemplateId = null }) {
     // C1: проверка схемы перед тратой токенов. Ошибки блокируют, предупреждения
     // дают «запустить всё равно». Чисто → запускаем сразу.
     const v = validateGraph(nodes, edges);
+    // Доставка проверяется ДО траты токенов: раньше агенты отрабатывали (деньги
+    // списаны), и лишь потом узел доставки падал «бот не подключён».
+    const deliveryIssues = [];
+    const has = (role) => nodes.some(n => n.data?.role === role);
+    if (has('telegram') && !telegramConnected) deliveryIssues.push({ type: 'telegram-no-bot', count: 1 });
+    if (has('email') && !resendConnected) deliveryIssues.push({ type: 'email-no-key', count: 1 });
+    const emailNoTo = nodes.filter(n => n.data?.role === 'email' && !(n.data?.toEmail || '').trim()).length;
+    if (emailNoTo) deliveryIssues.push({ type: 'email-no-to', count: emailNoTo });
+    if (has('calendar') && !gcalConnected) deliveryIssues.push({ type: 'calendar-not-connected', count: 1 });
+    if (deliveryIssues.length) v.warnings = [...deliveryIssues, ...v.warnings];
     if (v.errors.length || v.warnings.length) { setValidation(v); return; }
     proceedRealRun();
-  }, [nodes, edges, execStatus, keyConnected, runInput, requestRealMode, proceedRealRun]);
+  }, [nodes, edges, execStatus, keyConnected, telegramConnected, resendConnected, gcalConnected, runInput, requestRealMode, proceedRealRun]);
 
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
@@ -2785,6 +2801,10 @@ function BuilderAppInner({ initialTemplateId = null }) {
                   'output-empty': 'Узел-выход ни с чем не соединён — результата не будет',
                   'tool-unattached': 'Инструмент не прикреплён к агенту — он не задействован',
                   'telegram-no-chat': 'У узла Telegram не указан адрес чата — доставки не будет',
+                  'telegram-no-bot': 'Бот Telegram не подключён — сообщение не уйдёт, а токены будут потрачены',
+                  'email-no-key': 'Почта не подключена (ключ Resend) — письмо не уйдёт',
+                  'email-no-to': 'В блоке «Письмо» не указан адрес получателя',
+                  'calendar-not-connected': 'Google Calendar не подключён — событие не создастся',
                 };
                 const text = t(`builder.validation.${w.type}`) || fallback[w.type] || w.type;
                 return (

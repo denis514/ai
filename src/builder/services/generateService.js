@@ -55,6 +55,7 @@ export async function generateScheme(query, locale) {
     const e = new Error(out.error || `http_${res.status}`);
     e.code = out.error || `http_${res.status}`;
     e.remaining = out.remaining;
+    e.why = typeof out.why === 'string' ? out.why : ''; // честный отказ: причина словами
     throw e;
   }
   return out;

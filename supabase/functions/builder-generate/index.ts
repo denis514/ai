@@ -54,11 +54,28 @@ function systemPrompt(locale: string): string {
   туда; иначе output-text.
 - "start" и "prompt" пиши на ${LANG[locale] || LANG.ru} языке, просто и конкретно,
   без жаргона. "prompt" агенту — 1-3 предложения, что именно делать.
-- Если просьба не про автоматизацию/агента — верни {"error": "not_a_task"}.`;
+- Если просьба не про автоматизацию/агента — верни {"error": "not_a_task"}.
+
+ЧЕСТНОСТЬ — важнее красивой схемы. Конструктор сейчас НЕ умеет:
+  • получать что-то само: читать входящую почту, сообщения Telegram, отзывы с
+    Google Maps и других сайтов, строки Google-таблиц, формы, RSS — внутрь
+    попадает только текст из блока Старт (руками, по расписанию или вебхуку);
+  • помнить что-то между запусками («только новое», «если цена снизилась»);
+  • публиковать в соцсети, писать в Google-таблицы, Notion, CRM;
+  • создавать картинки;
+  • спрашивать подтверждения у человека посреди работы;
+  • открывать страницу по ссылке (только поиск в интернете).
+Если СУТЬ задачи держится на одном из этих пунктов — схему не собирай,
+верни {"error": "unsupported", "why": "одно-два предложения на ${LANG[locale] || LANG.ru} языке:
+что именно не умеет и что можно вместо этого (например, вставить текст
+отзыва в Старт)"}.
+Если пункт второстепенный (например «и опубликуй») — собери схему без него и
+добавь поле "note": одно предложение на ${LANG[locale] || LANG.ru} языке, чего
+схема делать не будет.`;
 }
 
 type GenNode = { defId: string; prompt?: string };
-type GenScheme = { name?: string; start?: string; nodes: GenNode[]; edges: { from: number; to: number }[] };
+type GenScheme = { name?: string; start?: string; note?: string; nodes: GenNode[]; edges: { from: number; to: number }[] };
 
 function validate(s: unknown): { ok: true; scheme: GenScheme } | { ok: false; why: string } {
   const o = s as GenScheme;
@@ -76,6 +93,7 @@ function validate(s: unknown): { ok: true; scheme: GenScheme } | { ok: false; wh
       return { ok: false, why: 'edge index out of range or self-loop' };
     }
   }
+  if (o.note != null) o.note = String(o.note).slice(0, 200);
   return { ok: true, scheme: o };
 }
 
@@ -206,6 +224,11 @@ Deno.serve(async (req) => {
       const parsed = extractJson(text);
       if (parsed && (parsed as { error?: string }).error === 'not_a_task') {
         return json({ error: 'not_a_task' }, 422);
+      }
+      // Честный отказ: задача держится на том, чего движок не умеет.
+      if (parsed && (parsed as { error?: string }).error === 'unsupported') {
+        const why = String((parsed as { why?: string }).why || '').slice(0, 300);
+        return json({ error: 'unsupported', why }, 422);
       }
       const v = validate(parsed);
       if (v.ok) scheme = v.scheme;

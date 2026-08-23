@@ -116,14 +116,35 @@ export function createRealExecution({ workflowId, input, tier, locale, variables
         });
         const out = await res.json().catch(() => ({}));
         if (!res.ok) {
-          // Понятные сообщения для «защиты кошелька» и частых случаев.
-          const FRIENDLY = {
-            already_running: 'Предыдущий запуск ещё идёт — дождитесь его окончания.',
-            daily_limit: 'Достигнут дневной лимит запусков — автозапуски поставлены на паузу до завтра, чтобы не тратить лишнее.',
-            no_api_key: 'Не подключён ключ Anthropic — добавьте его в «Ключи».',
-            empty_workflow: 'Схема пустая — добавьте узлы.',
+          // Понятные сообщения на языке интерфейса (раньше — только по-русски,
+          // а неизвестные коды вроде http_500 показывались как есть).
+          // daily_limit — говорим правду: расписания ВЫКЛЮЧЕНЫ, сами не включатся.
+          const F = {
+            ru: {
+              already_running: 'Предыдущий запуск ещё идёт — дождитесь его окончания.',
+              daily_limit: 'Достигнут дневной лимит запусков. Все автозапуски выключены, чтобы не тратить лишнее. Лимит обновляется в 00:00 UTC — после этого включите нужные заново в окне «Все автозапуски».',
+              no_api_key: 'Не подключён ключ Claude — добавьте его в окне «Ключи».',
+              empty_workflow: 'Схема пустая — добавьте блоки.',
+              _default: 'Запуск не удался. Попробуйте ещё раз; если повторится — напишите нам.',
+            },
+            en: {
+              already_running: 'The previous run is still going — wait for it to finish.',
+              daily_limit: 'Daily run limit reached. All autoruns are switched off to avoid extra spend. The limit resets at 00:00 UTC — re-enable the ones you need in “All autoruns” after that.',
+              no_api_key: 'Claude key is not connected — add it in “Keys”.',
+              empty_workflow: 'The scheme is empty — add blocks.',
+              _default: 'The run failed. Try again; if it repeats, contact us.',
+            },
+            fi: {
+              already_running: 'Edellinen ajo on vielä kesken — odota sen päättymistä.',
+              daily_limit: 'Päivän ajoraja täynnä. Kaikki automaattiajot on kytketty pois ylimääräisen kulutuksen välttämiseksi. Raja nollautuu klo 00:00 UTC — kytke tarvittavat uudelleen päälle kohdassa ”Kaikki automaattiajot”.',
+              no_api_key: 'Claude-avainta ei ole yhdistetty — lisää se kohdassa ”Avaimet”.',
+              empty_workflow: 'Kaavio on tyhjä — lisää lohkoja.',
+              _default: 'Ajo epäonnistui. Yritä uudelleen; jos toistuu, ota yhteyttä.',
+            },
           };
-          const msg = FRIENDLY[out.error] || out.error || `http_${res.status}`;
+          const dict = F[locale] || F.en;
+          const msg = dict[out.error] || dict._default;
+          console.error('[builder] run rejected', out.error || res.status);
           onLog?.({ level: 'error', message: msg, ts: new Date().toISOString() });
           return finish('failed');
         }
