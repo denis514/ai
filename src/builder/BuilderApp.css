@@ -2685,14 +2685,18 @@
 .builder-app .builder-gen-row .builder-gen-cta {
   position: absolute;
   right: 5px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 5px;            /* (48 − 38) / 2 — без transform: hover базовой пилюли его подменяет */
   width: 38px;
   height: 38px;
   min-width: 38px;
   padding: 0;
   border-radius: 50%;
   overflow: hidden;
+}
+/* Внутри строки кнопка не «подпрыгивает» на hover — иначе выезжает из поля */
+.builder-app .builder-gen-row .builder-gen-cta:hover,
+.builder-app .builder-gen-row .builder-gen-cta:active {
+  transform: none;
 }
 .builder-app .builder-gen-row .builder-gen-cta .builder-start-cta__label {
   padding: 0;
@@ -2701,7 +2705,7 @@
   width: 100%;
   height: 100%;
 }
-.builder-app .builder-gen-row .builder-gen-cta:disabled { opacity: 0.55; cursor: default; }
+.builder-app .builder-gen-row .builder-gen-cta:disabled { cursor: default; } /* яркость не гасим: кнопка всегда видна */
 .builder-app .builder-gen-note {
   margin-top: 8px;
   font-size: 12px;

@@ -47,7 +47,9 @@ export default function GenerateHero({ t, busy, remaining, error, ownKey = false
 
   const submit = () => {
     const q = value.trim();
-    if (q.length >= 8 && !busy) onGenerate(q);
+    if (busy) return;
+    if (q.length >= 8) onGenerate(q);
+    else inputRef.current?.focus(); // пусто или коротко — подсказываем курсором, кнопку не гасим
   };
 
   // Подпись под строкой: до первого использования — общая; дальше — остаток.
@@ -83,7 +85,7 @@ export default function GenerateHero({ t, busy, remaining, error, ownKey = false
           type="button"
           className="builder-start-cta builder-gen-cta"
           onClick={submit}
-          disabled={busy || value.trim().length < 8}
+          disabled={busy}
           aria-label={busy ? t('builder.gen.building') : t('builder.gen.build')}
           title={busy ? t('builder.gen.building') : t('builder.gen.build')}
         >
