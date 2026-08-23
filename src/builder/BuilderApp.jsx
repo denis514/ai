@@ -53,6 +53,7 @@ import { historyBridge } from './services/historyBridge.js';
 import ToastHost, { toast } from './components/Toast.jsx';
 import { estimateRun as estimateRunCost, formatEstimate, EXPENSIVE_DEFS } from './data/nodeCost.js';
 import CostGlyph from './components/CostGlyph.jsx';
+import { listSchedules } from './services/scheduleService.js';
 import { saveDraft, loadDraft, clearDraft, setResumeAfterAuth, hasResumeAfterAuth, clearResumeAfterAuth } from './services/draftBackup.js';
 import { evaluateConnection, validateGraph, denyReasonKey } from './services/connectionRules.js';
 import './BuilderApp.css';
@@ -370,7 +371,9 @@ function BuilderAppInner({ initialTemplateId = null }) {
    * внизу рейки. Подвешен на CTA пустого холста и автосборку.
    */
   const engageBuilder = useCallback(() => {
-    setToolboxOpen(true);
+    // Палитра больше не открывается сама (заход 2): собранную схему не
+    // заваливаем 23 плитками; добавить блок можно кнопкой «+» на холсте.
+    setToolboxOpen(false);
     setSidebarOpen(true);
   }, []);
 
@@ -1591,6 +1594,49 @@ function BuilderAppInner({ initialTemplateId = null }) {
   // Меню «⋯» в шапке — редкие действия (подключения, журнал, автозапуски, код, очистить)
   const [moreOpen, setMoreOpen] = useState(false);
 
+  // ── Полоса «Следующий шаг» (заход 2, 2026-08-23) ──────────────────────────
+  // Ведёт новичка: 1 проверить блоки → 2 подключить доставку → 3 запустить →
+  // 4 поставить расписание. Заменяет удалённый тур: обучение по месту.
+  const [ranOk, setRanOk] = useState(false);          // был ли успешный запуск этой схемы
+  const [hasSchedule, setHasSchedule] = useState(false);
+  const [stepsDismissed, setStepsDismissed] = useState(false);
+  useEffect(() => { if (execStatus === 'completed') setRanOk(true); }, [execStatus]);
+  useEffect(() => { setRanOk(false); setStepsDismissed(false); }, [currentWorkflowId]);
+  const refreshSchedules = useCallback(() => {
+    if (!userId || !currentWorkflowId) { setHasSchedule(false); return; }
+    listSchedules(currentWorkflowId).then(list => setHasSchedule((list || []).some(s => s.enabled))).catch(() => {});
+  }, [userId, currentWorkflowId]);
+  useEffect(() => { refreshSchedules(); }, [refreshSchedules]);
+  const isDelivery = (n) => ['telegram', 'email', 'calendar'].includes(n.data?.role);
+  const deliveryReady = (n) => {
+    const r = n.data?.role; const d = n.data || {};
+    const targets = Array.isArray(d.targets) ? d.targets.filter(x => x?.chatId) : [];
+    if (r === 'telegram') return telegramConnected && (targets.length > 0 || !!(d.chatId || '').trim());
+    if (r === 'email') return resendConnected && !!(d.toEmail || '').trim();
+    if (r === 'calendar') return gcalConnected;
+    return true;
+  };
+  const unconfiguredNode = nodes.find(n => (n.data?.kind === 'agent' && !n.data?.hasPrompt) || (n.data?.kind === 'trigger' && !n.data?.hasInput));
+  const unreadyDelivery = nodes.find(n => isDelivery(n) && !deliveryReady(n));
+  const steps = [
+    { id: 'blocks',   done: !unconfiguredNode },
+    { id: 'delivery', done: !unreadyDelivery, skipped: !nodes.some(isDelivery) },
+    { id: 'run',      done: ranOk },
+    { id: 'schedule', done: hasSchedule },
+  ];
+  const currentStep = steps.find(s => !s.done)?.id || null;
+  const onStepClick = (id) => {
+    if (id === 'blocks') { const n = unconfiguredNode || nodes.find(x => x.data?.kind === 'agent'); if (n) { setSelectedNodeId(n.id); setSelectedEdgeId(null); setSidebarOpen(true); } return; }
+    if (id === 'delivery') { const n = unreadyDelivery || nodes.find(isDelivery); if (n) { setSelectedNodeId(n.id); setSelectedEdgeId(null); setSidebarOpen(true); } else { setToolboxOpen(true); setToolboxTab('nodes'); } return; }
+    if (id === 'run') { handleRun(); return; }
+    if (id === 'schedule') {
+      if (!userId) { setRunIntro('gate'); return; }
+      if (currentWorkflowId) { setScheduleOpen(true); return; }
+      toast.info(t('builder.schedule.saveFirst') || 'Сначала сохраните схему — потом нажмите часики ещё раз.');
+      doSave();
+    }
+  };
+
   const handleStopExec = useCallback(() => {
     if (execRef.current) {
       execRef.current.stop();
@@ -1762,17 +1808,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
 
           {/* Свёрнута левая панель → независимая круглая кнопка справа от плашки
               (в стиле кнопок правой части). */}
-          {!toolboxOpen && nodes.length > 0 && (
-            <button
-              type="button"
-              className="builder-header__sidebtn"
-              onClick={() => setToolboxOpen(true)}
-              title={t('builder.header.toggleToolbox') || 'Показать узлы'}
-              aria-label={t('builder.header.toggleToolbox') || 'Показать узлы'}
-            >
-              <Icon name="panel-left" size={16} strokeWidth={1.6} />
-            </button>
-          )}
+
 
           {/* Стандарт шапки: тема + язык одним рядом (как в Atlas и кабинете) */}
           <ThemeSwitcher />
@@ -1894,6 +1930,31 @@ function BuilderAppInner({ initialTemplateId = null }) {
         </div>
         )}
       </header>
+
+      {/* ── Полоса «Следующий шаг» — обучение по месту вместо тура ── */}
+      {nodes.length > 0 && !stepsDismissed && (
+        <nav className={`builder-steps ${currentStep ? '' : 'is-done'}`} aria-label={t('builder.steps.aria') || 'Следующий шаг'}>
+          {steps.map((st, i) => (
+            <button
+              key={st.id}
+              type="button"
+              className={`builder-steps__item ${st.done ? 'is-done' : ''} ${currentStep === st.id ? 'is-current' : ''}`}
+              onClick={() => onStepClick(st.id)}
+              aria-current={currentStep === st.id ? 'step' : undefined}
+            >
+              <span className="builder-steps__num" aria-hidden="true">
+                {st.done ? <Icon name="check" size={11} strokeWidth={3} /> : i + 1}
+              </span>
+              <span>{t(`builder.steps.${st.id}${st.skipped && st.done ? 'Skipped' : ''}`)}</span>
+            </button>
+          ))}
+          {!currentStep && (
+            <button type="button" className="builder-steps__close" onClick={() => setStepsDismissed(true)} aria-label={t('common.close') || 'Закрыть'}>
+              <Icon name="close" size={13} strokeWidth={2} />
+            </button>
+          )}
+        </nav>
+      )}
 
       {/* ── Main layout grid ───────────────────────────────────── */}
       <div className="builder-grid">
@@ -2271,6 +2332,19 @@ function BuilderAppInner({ initialTemplateId = null }) {
             )}
           </ReactFlow>
 
+          {/* «+ Добавить блок» — вход в палитру с холста (палитра сама не открывается) */}
+          {nodes.length > 0 && !toolboxOpen && (
+            <button
+              type="button"
+              className="builder-add-block"
+              onClick={() => { setToolboxOpen(true); setToolboxTab('nodes'); }}
+              title={t('builder.addBlock') || 'Добавить блок'}
+            >
+              <Icon name="plus" size={15} strokeWidth={2} />
+              <span>{t('builder.addBlock') || 'Добавить блок'}</span>
+            </button>
+          )}
+
           {/* Onboarding empty state — только когда НЕТ активного workflow.
               После «Создать» (currentWorkflowId задан) показываем чистый холст. */}
           {nodes.length === 0 && !currentWorkflowId && (
@@ -2464,7 +2538,7 @@ function BuilderAppInner({ initialTemplateId = null }) {
             runEstimate={estimateRunCost(nodes, edges)}
             locale={locale}
             dockRight={rightSchedule}
-            onClose={() => setScheduleOpen(false)}
+            onClose={() => { setScheduleOpen(false); refreshSchedules(); }}
           />
         )}
 

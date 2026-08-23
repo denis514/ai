@@ -1178,6 +1178,42 @@
 /* Main grid layout                                   */
 /* ────────────────────────────────────────────────── */
 
+/* ── Полоса «Следующий шаг» под шапкой (заход 2) ── */
+.builder-app .builder-steps {
+  /* Шапка парит поверх холста (absolute, высота ≈ 72px) — полоса висит под ней
+     по центру, как плашка, не занимая места в сетке. */
+  position: absolute; top: 76px; left: 50%; transform: translateX(-50%);
+  z-index: 9; max-width: calc(100% - 32px);
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 6px; border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface); font-size: 12.5px; overflow-x: auto;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+.builder-app .builder-steps__item {
+  display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px;
+  border: 1px solid transparent; border-radius: 999px; background: transparent;
+  color: var(--text-muted); cursor: pointer; white-space: nowrap;
+}
+.builder-app .builder-steps__item:hover { background: var(--surface-2, rgba(0,0,0,0.04)); }
+.builder-app .builder-steps__item.is-current { color: var(--text); border-color: var(--accent, #D44F29); font-weight: 600; }
+.builder-app .builder-steps__item.is-done { color: var(--text-muted); }
+.builder-app .builder-steps__num {
+  width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 11px; font-weight: 700; background: var(--surface-2, rgba(0,0,0,0.06)); color: var(--text-muted);
+}
+.builder-app .builder-steps__item.is-current .builder-steps__num { background: var(--accent, #D44F29); color: #fff; }
+.builder-app .builder-steps__item.is-done .builder-steps__num { background: #22a06b; color: #fff; }
+.builder-app .builder-steps__close { margin-left: auto; border: 0; background: transparent; color: var(--text-muted); cursor: pointer; padding: 4px; }
+
+/* «+ Добавить блок» — плашка на холсте слева снизу */
+.builder-app .builder-add-block {
+  position: absolute; left: 16px; bottom: 16px; z-index: 8;
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px;
+  border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+  color: var(--text); font-size: 13px; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+.builder-app .builder-add-block:hover { border-color: var(--accent, #D44F29); }
+
 .builder-app .builder-grid {
   flex: 1 1 auto;
   display: grid;
