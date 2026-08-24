@@ -1817,16 +1817,6 @@
 ... (дифф обрезан до 250 строк; полный текст — в docs/docs-watch/snapshots/llms-index.md)
 ```
 
-### [help-watch 2026-08-18] Проверить вкладку «Помощь» (Agent Builder) — ОБРАБОТАНО
-Справка сверена и обновлена 2026-08-18, база принята. Список файлов на момент сигнала:
-- `src/builder/data/templates.js`
-- `src/builder/services/connectionRules.js`
-- `src/builder/components/panels/ScheduleModal.jsx`
-- `src/builder/components/panels/ApiKeysModal.jsx`
-- `src/builder/components/panels/AllSchedulesModal.jsx`
-- `src/builder/components/panels/ExecutionPanel.jsx`
-После сверки: `npm run help:watch -- --accept`.
-
 ## 📄 docs-watch: документация изменилась — 2026-08-24
 
 > Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
@@ -1940,3 +1930,13 @@
 + - [Week 34 · August 17–21, 2026](https://code.claude.com/docs/en/whats-new/2026-w34.md): Draft editable UI artboards with the /design skill, set the Concise output style, and start a Claude Code session on your machine from your phone.
 + - [Week 33 · August 10–14, 2026](https://code.claude.com/docs/en/whats-new/2026-w33.md): Claude Code Desktop auto-continues after a usage limit resets, fork mode turns on by default, and GitLab merge requests and marketplaces join GitHub.
 ```
+
+### [help-watch 2026-08-24] Проверить вкладку «Помощь» (Agent Builder)
+Изменились функциональные файлы билдера — справка могла устареть:
+- `src/builder/data/nodeTypes.js`
+- `src/builder/data/templates.js`
+- `src/builder/components/panels/ScheduleModal.jsx`
+- `src/builder/components/panels/ApiKeysModal.jsx`
+- `src/builder/components/panels/AllSchedulesModal.jsx`
+- `src/builder/components/panels/ExecutionPanel.jsx`
+После сверки: `npm run help:watch -- --accept`.
