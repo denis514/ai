@@ -2360,8 +2360,9 @@ function BuilderAppInner({ initialTemplateId = null }) {
           )}
         </main>
 
-        {/* Sidebar (right) */}
-        {sidebarOpen && (
+        {/* Sidebar (right) — только при непустом холсте: на первом экране
+            (строка «опиши задачу») чек-листу и панели нечего показывать. */}
+        {hasNodes && sidebarOpen && (
           <aside
             className={[
               'builder-sidebar',
