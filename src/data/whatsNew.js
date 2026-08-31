@@ -187,6 +187,9 @@ export const WHATS_NEW = {
   'claude-for-educators': { date: '2026-05-20', type: 'updated', kind: 'tutorial' },
 
   // ─── Узлы карты ─────────────────────────────────────────────────────────────
+  'cc-ide': { date: '2026-08-31', type: 'updated' },
+  'cc-scheduled-runs': { date: '2026-08-31', type: 'updated' },
+  'pl-desktop': { date: '2026-08-31', type: 'updated' },
   'cap-computer': { date: '2026-08-22', type: 'updated' },
   'cap-memory': { date: '2026-08-22', type: 'updated' },
   'm-ready': { date: '2026-08-22', type: 'updated' },
@@ -206,7 +209,6 @@ export const WHATS_NEW = {
   'm-debug': { date: '2026-06-11', type: 'updated' },
   'cc-terminal': { date: '2026-06-11', type: 'updated' },
   'cc-slash': { date: '2026-06-11', type: 'updated' },
-  'cc-ide': { date: '2026-06-11', type: 'updated' },
   'cc-install': { date: '2026-06-11', type: 'updated' },
   'af-llm-basics': { date: '2026-06-11', type: 'updated' },
   'af-embeddings': { date: '2026-06-11', type: 'updated' },
@@ -329,7 +331,6 @@ export const WHATS_NEW = {
   'pr-constraints': { date: '2026-06-10', type: 'new' },
   'pr-antipatterns': { date: '2026-06-10', type: 'new' },
   'cc-background-tasks': { date: '2026-06-10', type: 'new' },
-  'cc-scheduled-runs': { date: '2026-06-10', type: 'new' },
   'cc-hooks-blocking': { date: '2026-06-10', type: 'new' },
   'ag-context-handoff': { date: '2026-06-10', type: 'new' },
   'auto-human-in-loop': { date: '2026-06-10', type: 'new' },
@@ -339,7 +340,6 @@ export const WHATS_NEW = {
   'en-readiness-assessment': { date: '2026-06-10', type: 'new' },
   'en-adoption-roadmap': { date: '2026-06-10', type: 'new' },
   'uc-ai-customer-assistant': { date: '2026-06-10', type: 'new' },
-  'pl-desktop': { date: '2026-06-04', type: 'updated' },
   'sys-agent-sandbox': { date: '2026-06-03', type: 'new' },
   'sas-why-isolation': { date: '2026-06-03', type: 'updated' },
   'sas-docker-computer-use': { date: '2026-06-03', type: 'new' },
