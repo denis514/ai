@@ -2177,3 +2177,36 @@
 - `src/builder/components/panels/AllSchedulesModal.jsx`
 - `src/builder/components/panels/ExecutionPanel.jsx`
 После сверки: `npm run help:watch -- --accept`.
+
+## 📄 docs-watch: документация изменилась — 2026-09-07
+
+> Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
+> Прогон: прочитать дифф ниже → разнести по узлам Atlas → `node scripts/sync-whats-new.mjs`.
+
+### Desktop app (вкладка Code)
+- Источник: https://code.claude.com/docs/en/desktop.md
+- Изменения: **3** добавлено, **3** удалено
+- Затронутые узлы Atlas (черновик): `pl-desktop, pl-code-mode, apps-setup`
+
+```diff
+- Auto mode is available to all users on the Anthropic API and requires Claude Opus 4.6 or later, Sonnet 4.6 or later, or Fable 5. Organization administrators can turn auto mode off with the `disableAutoMode` key in [managed settings](#managed-settings).
++ Auto mode is available to all users on the Anthropic API and requires Claude Opus 4.6 or later, Sonnet 4.6 or later, or a Fable model. Organization administrators can turn auto mode off with the `disableAutoMode` key in [managed settings](#managed-settings).
+- [Extended thinking](/docs/en/model-config#extended-thinking) is enabled by default, which improves performance on complex reasoning tasks but uses additional tokens. On the Anthropic API, set `MAX_THINKING_TOKENS` to `0` in the local environment editor to turn thinking off; this has no effect on Fable 5, which always uses extended thinking. With thinking turned off on the Anthropic API, Claude Code sends effort `high` instead of a higher level to models it knows [don't accept that combination](/docs/en/errors#effort-isnt-available-with-thinking-turned-off), such as Opus 5.
++ [Extended thinking](/docs/en/model-config#extended-thinking) is enabled by default, which improves performance on complex reasoning tasks but uses additional tokens. On the Anthropic API, set `MAX_THINKING_TOKENS` to `0` in the local environment editor to turn thinking off; this has no effect on Fable models, which always use extended thinking. With thinking turned off on the Anthropic API, Claude Code sends effort `high` instead of a higher level to models it knows [don't accept that combination](/docs/en/errors#effort-isnt-available-with-thinking-turned-off), such as Opus 5.
+- On models with [adaptive reasoning](/docs/en/model-config#adjust-effort-level), `MAX_THINKING_TOKENS` values other than `0` are ignored because adaptive reasoning controls thinking depth instead. On Opus 4.6 and Sonnet 4.6, set `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` to `1` to use a fixed thinking budget; Fable 5, Sonnet 5, and Opus 4.7 and later always use adaptive reasoning and have no fixed-budget mode.
++ On models with [adaptive reasoning](/docs/en/model-config#adjust-effort-level), `MAX_THINKING_TOKENS` values other than `0` are ignored because adaptive reasoning controls thinking depth instead. On Opus 4.6 and Sonnet 4.6, set `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING` to `1` to use a fixed thinking budget; Fable models, Sonnet 5, and Opus 4.7 and later always use adaptive reasoning and have no fixed-budget mode.
+```
+
+### Индекс всех страниц документации (llms.txt)
+- Источник: https://code.claude.com/docs/llms.txt
+- Изменения: **3** добавлено, **3** удалено
+- Затронутые узлы Atlas (черновик): `новые/удалённые темы в экосистеме`
+
+```diff
+- - [Gateway protocol reference](https://code.claude.com/docs/en/llm-gateway-protocol.md): The API contract between Claude Code and an LLM gateway: endpoints, headers and body fields to forward, feature degradation when fields are stripped, attribution headers for cost tracking, and model discovery.
++ - [Claude Code gateway compatibility guide](https://code.claude.com/docs/en/llm-gateway-protocol.md): Keep an LLM gateway compatible with Claude Code: the endpoints it calls, the headers and body fields to forward, and what breaks when they're stripped.
+- - [Troubleshooting](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors by the exact message you see, with the cause and fix for each error in the TypeScript and Python SDKs.
++ - [Migrate to Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/migration-guide.md): Guide for migrating the Claude Code TypeScript and Python SDKs to the Claude Agent SDK
++ - [Troubleshoot the Agent SDK](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors by the exact message you see, with the cause and fix for each error in the TypeScript and Python SDKs.
+- - [Migrate to Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/migration-guide.md): Guide for migrating the Claude Code TypeScript and Python SDKs to the Claude Agent SDK
+```
