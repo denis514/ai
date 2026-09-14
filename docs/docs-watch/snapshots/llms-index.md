@@ -89,6 +89,7 @@
 
 - [Discover and install prebuilt plugins through marketplaces](https://code.claude.com/docs/en/discover-plugins.md): Find and install plugins from marketplaces to extend Claude Code with new skills, agents, and capabilities.
 - [Create plugins](https://code.claude.com/docs/en/plugins.md): Create custom plugins to extend Claude Code with skills, agents, hooks, and MCP servers.
+- [Test plugins with evals](https://code.claude.com/docs/en/plugin-evals.md): Write eval cases for your Claude Code plugin, run them with claude plugin eval, grade the results, compare against a no-plugin baseline, and gate CI on the score.
 
 ### Artifacts
 
@@ -123,7 +124,7 @@
 - [Authentication](https://code.claude.com/docs/en/authentication.md): Log in to Claude Code and configure authentication for individuals, teams, and organizations.
 - [Deploy managed settings](https://code.claude.com/docs/en/managed-settings.md): Deploy managed settings to every developer's machine: delivery mechanisms per OS, how Claude Code combines managed sources, and how to verify enforcement.
 - [Configure server-managed settings](https://code.claude.com/docs/en/server-managed-settings.md): Centrally configure Claude Code for your organization through server-delivered settings, without requiring device management infrastructure.
-- [Control MCP server access for your organization](https://code.claude.com/docs/en/managed-mcp.md): Restrict which MCP servers users can add or connect to with managed configuration files, allowlists, and denylists.
+- [Control MCP server access for your organization](https://code.claude.com/docs/en/managed-mcp.md): Restrict which MCP servers users can add or connect to, or provide servers to every user, with managed configuration files, managed settings, allowlists, and denylists.
 - [Configure auto mode](https://code.claude.com/docs/en/auto-mode-config.md): Tell the auto mode classifier which repos, buckets, and domains your organization trusts. Set environment context, override the default block and allow rules, and inspect your effective config with the auto-mode CLI subcommands.
 
 ### Deployment
@@ -186,8 +187,8 @@
 
 ### Settings
 
-- [Claude Code settings](https://code.claude.com/docs/en/settings.md): Change Claude Code settings, pick the scope a key belongs in, verify the change, and learn which value Claude Code uses when a key is set in several places.
-- [Claude Code settings reference](https://code.claude.com/docs/en/settings-reference.md): Complete reference for every Claude Code settings.json key: where each one goes, its type and default, and a paste-ready example, with an index of every key.
+- [Settings files and precedence](https://code.claude.com/docs/en/settings.md): Change Claude Code settings, pick the scope a key belongs in, verify the change, and learn which value Claude Code uses when a key is set in several places.
+- [All settings](https://code.claude.com/docs/en/settings-reference.md): Complete reference for every Claude Code settings.json key: where each one goes, its type and default, and a paste-ready example, with an index of every key.
 - [Example settings files](https://code.claude.com/docs/en/settings-example.md): Realistic settings.json files for a developer, a team, and an organization: copy one, keep the keys you want, and change the values.
 
 ### Permissions and sandboxing
@@ -342,14 +343,14 @@
 
 ## Indexes
 
-- [French (166 pages)](https://code.claude.com/docs/_llms/fr.md): Documentation for French.
-- [German (166 pages)](https://code.claude.com/docs/_llms/de.md): Documentation for German.
-- [Italian (166 pages)](https://code.claude.com/docs/_llms/it.md): Documentation for Italian.
-- [Japanese (166 pages)](https://code.claude.com/docs/_llms/jp.md): Documentation for Japanese.
-- [Spanish (166 pages)](https://code.claude.com/docs/_llms/es.md): Documentation for Spanish.
-- [Korean (166 pages)](https://code.claude.com/docs/_llms/ko.md): Documentation for Korean.
-- [Chinese (166 pages)](https://code.claude.com/docs/_llms/cn.md): Documentation for Chinese.
-- [Traditional Chinese (166 pages)](https://code.claude.com/docs/_llms/zh-hant.md): Documentation for Traditional Chinese.
-- [Russian (166 pages)](https://code.claude.com/docs/_llms/ru.md): Documentation for Russian.
-- [Indonesian (166 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
-- [Brazilian Portuguese (166 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
+- [French (192 pages)](https://code.claude.com/docs/_llms/fr.md): Documentation for French.
+- [German (192 pages)](https://code.claude.com/docs/_llms/de.md): Documentation for German.
+- [Italian (192 pages)](https://code.claude.com/docs/_llms/it.md): Documentation for Italian.
+- [Japanese (191 pages)](https://code.claude.com/docs/_llms/jp.md): Documentation for Japanese.
+- [Spanish (192 pages)](https://code.claude.com/docs/_llms/es.md): Documentation for Spanish.
+- [Korean (191 pages)](https://code.claude.com/docs/_llms/ko.md): Documentation for Korean.
+- [Chinese (192 pages)](https://code.claude.com/docs/_llms/cn.md): Documentation for Chinese.
+- [Traditional Chinese (192 pages)](https://code.claude.com/docs/_llms/zh-hant.md): Documentation for Traditional Chinese.
+- [Russian (192 pages)](https://code.claude.com/docs/_llms/ru.md): Documentation for Russian.
+- [Indonesian (191 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
+- [Brazilian Portuguese (192 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
