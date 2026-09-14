@@ -2201,16 +2201,6 @@
 - - [Migrate to Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/migration-guide.md): Guide for migrating the Claude Code TypeScript and Python SDKs to the Claude Agent SDK
 ```
 
-### [help-watch 2026-09-07] Проверить вкладку «Помощь» (Agent Builder)
-Изменились функциональные файлы билдера — справка могла устареть:
-- `src/builder/data/nodeTypes.js`
-- `src/builder/data/templates.js`
-- `src/builder/components/panels/ScheduleModal.jsx`
-- `src/builder/components/panels/ApiKeysModal.jsx`
-- `src/builder/components/panels/AllSchedulesModal.jsx`
-- `src/builder/components/panels/ExecutionPanel.jsx`
-После сверки: `npm run help:watch -- --accept`.
-
 ## 📄 docs-watch: документация изменилась — 2026-09-14
 
 > Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
@@ -2356,3 +2346,13 @@
 + - [Indonesian (191 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
 + - [Brazilian Portuguese (192 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
 ```
+
+### [help-watch 2026-09-14] Проверить вкладку «Помощь» (Agent Builder)
+Изменились функциональные файлы билдера — справка могла устареть:
+- `src/builder/data/nodeTypes.js`
+- `src/builder/data/templates.js`
+- `src/builder/components/panels/ScheduleModal.jsx`
+- `src/builder/components/panels/ApiKeysModal.jsx`
+- `src/builder/components/panels/AllSchedulesModal.jsx`
+- `src/builder/components/panels/ExecutionPanel.jsx`
+После сверки: `npm run help:watch -- --accept`.
