@@ -2356,3 +2356,142 @@
 - `src/builder/components/panels/AllSchedulesModal.jsx`
 - `src/builder/components/panels/ExecutionPanel.jsx`
 После сверки: `npm run help:watch -- --accept`.
+
+## 📄 docs-watch: документация изменилась — 2026-09-21
+
+> Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
+> Прогон: прочитать дифф ниже → разнести по узлам Atlas → `node scripts/sync-whats-new.mjs`.
+
+### Desktop app (вкладка Code)
+- Источник: https://code.claude.com/docs/en/desktop.md
+- Изменения: **31** добавлено, **21** удалено
+- Затронутые узлы Atlas (черновик): `pl-desktop, pl-code-mode, apps-setup`
+
+```diff
+- * Run on your machine, in the [cloud](#run-long-running-tasks-remotely), or over [SSH](#ssh-sessions)
++ * Run on your machine, in the [cloud](#run-long-running-tasks-in-the-cloud), or over [SSH](#ssh-sessions)
+- * **Project folder**: select the folder or repository Claude works in. For cloud sessions, you can add [multiple repositories](#run-long-running-tasks-remotely).
++ * **Project folder**: select the folder or repository Claude works in. For cloud sessions, you can add [multiple repositories](#run-long-running-tasks-in-the-cloud).
+- The Browser follows the same [site allowlist and blocklist controls](https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls) as the Claude in Chrome extension. If your organization already configured those lists for the extension, the Browser respects them automatically. Administrators can also turn off Claude's tools on external pages with the [`browserExternalPageTools` managed setting](#managed-settings). With tools disabled, users can still navigate to external sites; Claude's tools can't read or act on them.
++ The Browser follows the same [site allowlist and blocklist controls](https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls) as the Claude in Chrome extension. If your organization already configured those lists for the extension, the Browser respects them automatically. Administrators can also turn off Claude's tools on external pages with the [`browserExternalPageTools` managed setting](#managed-settings). With tools disabled, users can still visit external sites; Claude's tools can't read or act on them.
++ To work across screens, pop a pane such as the diff or terminal out into its own window, and dock it back when you're done. Claude keeps working in the main window.
++ 
+- View modes control how much detail appears in the chat transcript. Switch modes from the **Transcript view** dropdown next to the send button, or press **Ctrl+O** on macOS or Windows to cycle through them.
++ View modes control how much detail appears in the chat transcript. Switch modes from the **Transcript view** dropdown next to the send button, or press **Ctrl+O** on macOS or Windows to cycle through them. The Thinking mode appears in the dropdown only after Claude has produced thinking in the session you're viewing.
+- | Mode        | What it shows                                                  |
+- | ----------- | -------------------------------------------------------------- |
+- | **Normal**  | Tool calls collapsed into summaries, with full text responses  |
+- | **Verbose** | Every tool call, file read, and intermediate step Claude takes |
+- | **Summary** | Only Claude's final responses and the changes it made          |
++ | Mode         | What it shows                                                                          |
++ | ------------ | -------------------------------------------------------------------------------------- |
++ | **Normal**   | Tool calls collapsed into summaries, with full text responses                          |
++ | **Thinking** | Tool calls collapsed into summaries, plus Claude's thinking                            |
++ | **Verbose**  | Every tool call, file read, and intermediate step Claude takes, plus Claude's thinking |
+- Use Verbose when debugging why Claude took a particular action. Use Summary when you're running multiple sessions and want to scan results quickly.
++ Use Thinking to follow Claude's reasoning with tool calls still collapsed. Use Verbose when debugging why Claude took a particular action. Claude Desktop versions before 1.46388.1 also list a Summary mode, and a session still set to Summary opens in Normal once you update.
++ On macOS, computer use can also run in the background: Claude works in the apps you've approved while you keep working.
++ 
+- * **Unhide apps when Claude finishes**: while Claude is working, your other windows are hidden so it interacts with only the approved app. When Claude finishes, hidden windows are restored unless you turn this setting off.
++ * **Unhide apps when Claude finishes**: when computer use isn't running in the background, Claude hides your other windows while it works so it interacts with only the approved app. When Claude finishes, hidden windows are restored unless you turn this setting off.
+- The desktop app sends an OS notification when a Code session finishes a task and you aren't currently viewing that session.
++ The desktop app sends an OS notification when a Code session finishes a task and you aren't currently viewing that session. For sessions that belong to a [project](/docs/en/claude-projects#see-what-needs-you-in-overview), you get the project's notifications instead.
+- ### Run long-running tasks remotely
++ ### Run long-running tasks in the cloud
+- See [Claude Code on the web](/docs/en/claude-code-on-the-web) for more on how cloud sessions work.
++ See [Use Claude Code in the cloud](/docs/en/claude-code-on-the-web) for more on how cloud sessions work. When one body of work needs many cloud sessions, select **Projects** in the sidebar to create a [project](/docs/en/claude-projects), where Claude starts and tracks the sessions for you from one conversation.
+- * **Claude Code on the Web**: sends your local session to continue running remotely. Desktop pushes your branch, generates a summary of the conversation, and creates a new cloud session with the full context. You can then choose to archive the local session or keep it. This requires a clean working tree, and is not available for SSH sessions.
++ * **Claude Code on the Web**: sends your local session to continue running in the cloud. Desktop pushes your branch, generates a summary of the conversation, and creates a new cloud session with the full context. You can then choose to archive the local session or keep it. This requires a clean working tree, and is not available for SSH sessions.
++ Claude Code also loads the skills and plugins enabled for your claude.ai account in terminal sessions where you sign in with the same account. See [Skills synced from claude.ai](/docs/en/skills#how-synced-skills-behave) and [Plugins synced from claude.ai](/docs/en/plugins-reference#synced-plugins).
++ 
+- Personal skills in `~/.claude/skills/` apply to local sessions; an [SSH](#ssh-sessions) session reads `~/.claude/skills/` from the remote host's home directory, not from your machine. Cloud sessions load the skills enabled for your claude.ai account instead. See [Skills in Cowork and cloud sessions](/docs/en/skills#skills-in-cowork-and-cloud-sessions).
++ Local sessions load your personal skills from `~/.claude/skills/`. An [SSH](#ssh-sessions) session reads `~/.claude/skills/` from the remote host's home directory, not from your machine.
++ Local and cloud sessions also load the skills enabled for your claude.ai account. Cloud sessions load them instead of `~/.claude/skills/`, as [Skills in Cowork and cloud sessions](/docs/en/skills#skills-in-cowork-and-cloud-sessions) describes.
++ 
+- | `autoPort`          | boolean   | How to handle port conflicts. See below                                                                                                                                                                                                                                  |
++ | `autoPort`          | boolean   | How to handle port conflicts. See [Port conflicts](#port-conflicts)                                                                                                                                                                                                      |
+- Localhost addresses open directly, exactly like the default port address. This includes `localhost`, any `*.localhost` subdomain, `127.0.0.1`, and `::1`. For security, a localhost `url` must be just your server's origin — no path or query, and the port must match the entry's port. To show a specific page, ask Claude to navigate there after the preview opens. A localhost `url` with a path, query, or mismatched port is reported as a configuration error that names the url and shows the fix.
++ Localhost addresses open directly, exactly like the default port address. This includes `localhost`, any `*.localhost` subdomain, `127.0.0.1`, and `::1`. For security, a localhost `url` must be your server's origin alone, with no path or query. Its port must match the entry's port. To show a specific page, ask Claude to navigate there after the preview opens. A localhost `url` with a path, query, or mismatched port is reported as a configuration error that names the url and shows the fix.
+- * **Code in the web**: enable or disable [web sessions](/docs/en/claude-code-on-the-web) for your organization
++ * **Code in the web**: enable or disable [cloud sessions](/docs/en/claude-code-on-the-web) for your organization
+- If you already use the Claude Code CLI, Desktop runs the same underlying engine with a graphical interface. You can run both simultaneously on the same machine, even on the same project. Each maintains separate session history, but they share configuration and project memory via CLAUDE.md files.
++ If you already use the Claude Code CLI, Desktop runs the same underlying engine with a graphical interface. You can run both simultaneously on the same machine, even on the same project. Each keeps its own session list, and you can bring a CLI session into Desktop. They share configuration and project memory via CLAUDE.md files.
++ To pick up a CLI session from inside Desktop instead, type `/resume` in the prompt box. Desktop lists the sessions you started from the CLI, and you can search them by title, folder, or branch and preview where each one left off. Select a session and it continues in the app with its full conversation and context.
++ 
+- | `--resume`, `--continue`              | Click a session in the sidebar                                                                                                                                                      |
++ | `--resume`, `--continue`              | Click a session in the sidebar, or type `/resume` in the prompt box to pick up a session you started from the CLI                                                                   |
+```
+
+### Desktop quickstart
+- Источник: https://code.claude.com/docs/en/desktop-quickstart.md
+- Изменения: **2** добавлено, **2** удалено
+- Затронутые узлы Atlas (черновик): `apps-setup, pl-app-modes`
+
+```diff
+-     * **Cloud**: Run sessions in the cloud that continue even if you close the app. Cloud sessions use the same infrastructure as [Claude Code on the web](/docs/en/claude-code-on-the-web).
++     * **Cloud**: Run sessions in the cloud that continue even if you close the app. See [Use Claude Code in the cloud](/docs/en/claude-code-on-the-web) for how cloud sessions work.
+- **Scale up when you're ready.** Open [parallel sessions](/docs/en/desktop#work-in-parallel-with-sessions) from the sidebar to work on multiple tasks at once, optionally each in its own Git worktree, and open the [tasks pane](/docs/en/desktop#watch-background-tasks) to watch the subagents and background commands a session has running. Open a [side chat](/docs/en/desktop#ask-a-side-question-without-derailing-the-session) to ask a question without derailing the main thread. Send [long-running work to the cloud](/docs/en/desktop#run-long-running-tasks-remotely) so it continues even if you close the app, or [continue a session on the web or in your IDE](/docs/en/desktop#continue-in-another-surface) if a task takes longer than expected. [Connect external tools](/docs/en/desktop#extend-claude-code) like GitHub, Slack, and Linear to bring your workflow together.
++ **Scale up when you're ready.** Open [parallel sessions](/docs/en/desktop#work-in-parallel-with-sessions) from the sidebar to work on multiple tasks at once, optionally each in its own Git worktree, and open the [tasks pane](/docs/en/desktop#watch-background-tasks) to watch the subagents and background commands a session has running. Open a [side chat](/docs/en/desktop#ask-a-side-question-without-derailing-the-session) to ask a question without derailing the main thread. Send [long-running work to the cloud](/docs/en/desktop#run-long-running-tasks-in-the-cloud) so it continues even if you close the app, or [continue a session on the web or in your IDE](/docs/en/desktop#continue-in-another-surface) if a task takes longer than expected. [Connect external tools](/docs/en/desktop#extend-claude-code) like GitHub, Slack, and Linear to bring your workflow together.
+```
+
+### Platforms and integrations
+- Источник: https://code.claude.com/docs/en/platforms.md
+- Изменения: **2** добавлено, **1** удалено
+- Затронутые узлы Atlas (черновик): `pl-platforms, pl-compare`
+
+```diff
+- * [Claude Code on the web](/docs/en/claude-code-on-the-web): cloud sessions that keep running when you disconnect
++ * [Web](/docs/en/claude-code-on-the-web): cloud sessions from your browser at claude.ai/code that keep running when you disconnect
++ * [Projects](/docs/en/claude-projects): one conversation where Claude coordinates many cloud sessions for a body of work and reports back
+```
+
+### Индекс всех страниц документации (llms.txt)
+- Источник: https://code.claude.com/docs/llms.txt
+- Изменения: **24** добавлено, **19** удалено
+- Затронутые узлы Atlas (черновик): `новые/удалённые темы в экосистеме`
+
+```diff
+- - [How Claude remembers your project](https://code.claude.com/docs/en/memory.md): Give Claude persistent instructions with CLAUDE.md files, and let Claude accumulate learnings automatically with auto memory.
++ - [How Claude remembers your project](https://code.claude.com/docs/en/memory.md): Give Claude persistent instructions with CLAUDE.md or AGENTS.md files, and let Claude accumulate learnings automatically with auto memory.
++ - [Let Claude coordinate ongoing work with Projects](https://code.claude.com/docs/en/claude-projects.md): Give Claude a body of related work in one conversation and let it coordinate parallel cloud sessions that share repositories, instructions, and memory.
+- #### Claude Code on the web
++ #### Claude Code in the cloud
+- - [Get started with Claude Code on the web](https://code.claude.com/docs/en/web-quickstart.md): Run Claude Code in the cloud from your browser or phone. Connect a GitHub repository, submit a task, and review the PR without local setup.
+- - [Use Claude Code on the web](https://code.claude.com/docs/en/claude-code-on-the-web.md): Move sessions between web and terminal with `--cloud` and `--teleport`, manage and share sessions, and auto-fix pull requests from the cloud.
++ - [Get started with Claude Code in the cloud](https://code.claude.com/docs/en/web-quickstart.md): Run Claude Code in the cloud from your browser or phone. Connect a GitHub repository, submit a task, and review the PR without local setup.
++ - [Use Claude Code in the cloud](https://code.claude.com/docs/en/claude-code-on-the-web.md): Run Claude Code sessions in the cloud from your browser, phone, desktop app, or terminal, move them with --cloud and --teleport, and auto-fix pull requests.
+- - [Claude Code with GitHub Enterprise Server](https://code.claude.com/docs/en/github-enterprise-server.md): Connect Claude Code to your self-hosted GitHub Enterprise Server instance for web sessions, code review, and plugin marketplaces.
++ - [Claude Code with GitHub Enterprise Server](https://code.claude.com/docs/en/github-enterprise-server.md): Connect Claude Code to your self-hosted GitHub Enterprise Server instance for cloud sessions, code review, and plugin marketplaces.
+- - [Run agents in parallel](https://code.claude.com/docs/en/agents.md): Compare the ways Claude Code can take on multiple tasks at once: subagents, agent view, agent teams, and dynamic workflows.
++ - [Run agents in parallel](https://code.claude.com/docs/en/agents.md): Compare the ways Claude Code can take on multiple tasks at once: subagents, agent view, agent teams, dynamic workflows, and projects.
+- - [Message your other Claude Code sessions](https://code.claude.com/docs/en/cross-session-messaging.md): Let Claude list and message your other Claude Code sessions on this machine, and reach your sessions on other machines or on the web.
++ - [Message your other Claude Code sessions](https://code.claude.com/docs/en/cross-session-messaging.md): Let Claude list and message your other Claude Code sessions on this machine, and reach your sessions on other machines or in the cloud.
++ - [Configure your agent](https://code.claude.com/docs/en/agent-sdk/configuration.md): Configure Agent SDK sessions: compose the options object, set the model, environment, and limits, and find each feature option's page.
+- - [Persist sessions to external storage](https://code.claude.com/docs/en/agent-sdk/session-storage.md): Mirror session transcripts to S3, Redis, or your own backend so other hosts can resume your sessions.
++ - [Persist sessions to external storage](https://code.claude.com/docs/en/agent-sdk/session-storage.md): Mirror Agent SDK session transcripts to your own object store, key-value store, or database so other hosts can resume your sessions.
++ - [Week 37 · September 7–11, 2026](https://code.claude.com/docs/en/whats-new/2026-w37.md): Test your plugins with claude plugin eval and pop Claude Code Desktop panes out into their own windows.
++ - [Week 36 · August 31 – September 4, 2026](https://code.claude.com/docs/en/whats-new/2026-w36.md): Switch to Claude Fable 5.1, let computer use run in the background on Desktop, and watch Claude's edits in a live /diff panel.
++ - [Week 35 · August 24–28, 2026](https://code.claude.com/docs/en/whats-new/2026-w35.md): Resume terminal sessions in the Claude Code Desktop app, review feedback reports that Claude drafts for you, and start a session in restricted mode.
+- - [French (192 pages)](https://code.claude.com/docs/_llms/fr.md): Documentation for French.
+- - [German (192 pages)](https://code.claude.com/docs/_llms/de.md): Documentation for German.
+- - [Italian (192 pages)](https://code.claude.com/docs/_llms/it.md): Documentation for Italian.
+- - [Japanese (191 pages)](https://code.claude.com/docs/_llms/jp.md): Documentation for Japanese.
+- - [Spanish (192 pages)](https://code.claude.com/docs/_llms/es.md): Documentation for Spanish.
+- - [Korean (191 pages)](https://code.claude.com/docs/_llms/ko.md): Documentation for Korean.
+- - [Chinese (192 pages)](https://code.claude.com/docs/_llms/cn.md): Documentation for Chinese.
+- - [Traditional Chinese (192 pages)](https://code.claude.com/docs/_llms/zh-hant.md): Documentation for Traditional Chinese.
+- - [Russian (192 pages)](https://code.claude.com/docs/_llms/ru.md): Documentation for Russian.
+- - [Indonesian (191 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
+- - [Brazilian Portuguese (192 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
++ - [French (197 pages)](https://code.claude.com/docs/_llms/fr.md): Documentation for French.
++ - [German (197 pages)](https://code.claude.com/docs/_llms/de.md): Documentation for German.
++ - [Italian (197 pages)](https://code.claude.com/docs/_llms/it.md): Documentation for Italian.
++ - [Japanese (196 pages)](https://code.claude.com/docs/_llms/jp.md): Documentation for Japanese.
++ - [Spanish (197 pages)](https://code.claude.com/docs/_llms/es.md): Documentation for Spanish.
++ - [Korean (197 pages)](https://code.claude.com/docs/_llms/ko.md): Documentation for Korean.
++ - [Chinese (197 pages)](https://code.claude.com/docs/_llms/cn.md): Documentation for Chinese.
++ - [Traditional Chinese (197 pages)](https://code.claude.com/docs/_llms/zh-hant.md): Documentation for Traditional Chinese.
++ - [Russian (197 pages)](https://code.claude.com/docs/_llms/ru.md): Documentation for Russian.
++ - [Indonesian (197 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
++ - [Brazilian Portuguese (197 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
+```
