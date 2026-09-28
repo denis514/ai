@@ -2486,16 +2486,6 @@
 + - [Brazilian Portuguese (197 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
 ```
 
-### [help-watch 2026-09-21] Проверить вкладку «Помощь» (Agent Builder)
-Изменились функциональные файлы билдера — справка могла устареть:
-- `src/builder/data/nodeTypes.js`
-- `src/builder/data/templates.js`
-- `src/builder/components/panels/ScheduleModal.jsx`
-- `src/builder/components/panels/ApiKeysModal.jsx`
-- `src/builder/components/panels/AllSchedulesModal.jsx`
-- `src/builder/components/panels/ExecutionPanel.jsx`
-После сверки: `npm run help:watch -- --accept`.
-
 ## 📄 docs-watch: документация изменилась — 2026-09-28
 
 > Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
@@ -2679,3 +2669,13 @@
 + - [Indonesian (209 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
 + - [Brazilian Portuguese (208 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
 ```
+
+### [help-watch 2026-09-28] Проверить вкладку «Помощь» (Agent Builder)
+Изменились функциональные файлы билдера — справка могла устареть:
+- `src/builder/data/nodeTypes.js`
+- `src/builder/data/templates.js`
+- `src/builder/components/panels/ScheduleModal.jsx`
+- `src/builder/components/panels/ApiKeysModal.jsx`
+- `src/builder/components/panels/AllSchedulesModal.jsx`
+- `src/builder/components/panels/ExecutionPanel.jsx`
+После сверки: `npm run help:watch -- --accept`.
