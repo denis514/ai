@@ -48,7 +48,7 @@
 
 #### Claude Code on desktop
 
-- [Get started with the desktop app](https://code.claude.com/docs/en/desktop-quickstart.md): Install Claude Code on desktop and start your first coding session
+- [Get started with the desktop app](https://code.claude.com/docs/en/desktop-quickstart.md): Install the Claude desktop app, open the Code tab, and start your first Claude Code session on a project folder on your computer.
 - [Desktop application](https://code.claude.com/docs/en/desktop.md): Get more out of Claude Code Desktop: parallel sessions with Git isolation, drag-and-drop pane layout, integrated terminal and file editor, side chats, computer use, Dispatch sessions from your phone, visual diff review, app previews, PR monitoring, connectors, and enterprise configuration.
 - [Claude Desktop on Linux (beta)](https://code.claude.com/docs/en/desktop-linux.md): Install and update the Claude desktop app on Ubuntu and Debian
 - [Claude Code Desktop in WSL](https://code.claude.com/docs/en/desktop-wsl.md): Run Code sessions inside a WSL 2 distribution on Windows
@@ -86,12 +86,6 @@
 
 - [Extend Claude with skills](https://code.claude.com/docs/en/skills.md): Create, manage, and share skills to extend Claude's capabilities in Claude Code. Includes custom commands and bundled skills.
 
-### Plugins
-
-- [Discover and install prebuilt plugins through marketplaces](https://code.claude.com/docs/en/discover-plugins.md): Find and install plugins from marketplaces to extend Claude Code with new skills, agents, and capabilities.
-- [Create plugins](https://code.claude.com/docs/en/plugins.md): Create custom plugins to extend Claude Code with skills, agents, hooks, and MCP servers.
-- [Test plugins with evals](https://code.claude.com/docs/en/plugin-evals.md): Write eval cases for your Claude Code plugin, run them with claude plugin eval, grade the results, compare against a no-plugin baseline, and gate CI on the score.
-
 ### Artifacts
 
 - [Share session output as artifacts](https://code.claude.com/docs/en/artifacts.md): Artifacts turn Claude Code's work into live, interactive pages on claude.ai that you can keep private, share with your organization, or publish to a public link.
@@ -115,6 +109,50 @@
 - [Troubleshooting](https://code.claude.com/docs/en/troubleshooting.md): Fix high CPU or memory usage, hangs, auto-compact thrashing, and search problems in Claude Code, and find the right page for other issues.
 - [Debug your configuration](https://code.claude.com/docs/en/debug-your-config.md): Diagnose why CLAUDE.md, settings, hooks, MCP servers, or skills aren't taking effect. Use /context, /doctor, /hooks, and /mcp to see what actually loaded.
 - [Error reference](https://code.claude.com/docs/en/errors.md): Look up Claude Code runtime error messages with what each one means and how to fix it.
+
+## Plugins
+
+### Plugins
+
+- [Plugins overview](https://code.claude.com/docs/en/plugins/overview.md): Understand what a Claude Code plugin is, when you need one instead of a standalone skill or MCP server, and which page to read to install or create one.
+
+### Use plugins
+
+- [Install and manage plugins](https://code.claude.com/docs/en/plugins/install.md): Install Claude Code plugins from a marketplace on any surface you use, choose an install scope, and update or remove them later.
+- [Anthropic's marketplaces](https://code.claude.com/docs/en/plugins/anthropic-marketplaces.md): Anthropic's official, community, and demo plugin marketplaces for Claude Code: their names, repositories, how you add each, and where to browse their plugins.
+- [Code intelligence plugins](https://code.claude.com/docs/en/plugins/code-intelligence.md): Install a language server plugin so Claude sees type errors after edits and navigates code by symbol, and answer the LSP plugin recommendation dialog.
+- [Plugin security and trust](https://code.claude.com/docs/en/plugins/security.md): Decide whether to trust a plugin before you install it, from what a plugin can do on your machine to how to review one and remove it.
+
+### Create plugins
+
+- [Create a Claude Code plugin](https://code.claude.com/docs/en/plugins/create.md): Build your first Claude Code plugin from an empty directory, test it without a marketplace, and convert an existing .claude/ setup.
+- [Add components to a plugin](https://code.claude.com/docs/en/plugins/components.md): Add skills, hooks, MCP servers, and every other component type to a Claude Code plugin, with an example that validates for each.
+- [Plugin dependencies](https://code.claude.com/docs/en/plugins/dependencies.md): Declare the plugins your plugin depends on, with version ranges such as ^1.2, and see how Claude Code installs, resolves, and prunes them.
+- [Test plugins with evals](https://code.claude.com/docs/en/plugin-evals.md): Write eval cases for your Claude Code plugin, run them with claude plugin eval, grade the results, compare against a no-plugin baseline, and gate CI on the score.
+- [Publish and distribute a plugin](https://code.claude.com/docs/en/plugins/publish.md): Publish a Claude Code plugin through your own marketplace or Anthropic's directory, with a pre-release checklist and how users get updates.
+- [Measure plugin cost and usage](https://code.claude.com/docs/en/plugins/measure.md): Measure a Claude Code plugin's token cost, find out whether people still use it, and pick the telemetry events for organization-wide plugin questions.
+- [Recommend your plugin from your CLI](https://code.claude.com/docs/en/plugins/cli-hints.md): Prompt Claude Code users to install your official-marketplace plugin by emitting a claude-code-hint tag from your CLI or SDK.
+
+### Run a marketplace
+
+- [Create a marketplace](https://code.claude.com/docs/en/plugins/create-marketplace.md): Build a plugin marketplace from a marketplace.json file and test it locally before you host it.
+- [Host and maintain a marketplace](https://code.claude.com/docs/en/plugins/host-marketplace.md): Publish a plugin marketplace where users can reach it, grant access to a private one, and release updates and renames without breaking installs.
+- [Recommend plugins for your org](https://code.claude.com/docs/en/plugins/relevance.md): Add a relevance block to marketplace plugin entries so Claude Code suggests them when a user's work matches, and allowlist the marketplace in managed settings.
+
+### Manage plugins for your organization
+
+- [Manage Claude Code plugins for your organization](https://code.claude.com/docs/en/plugins/org.md): Control which plugins Claude Code installs and allows across your organization through managed settings.
+
+### Troubleshooting
+
+- [Troubleshoot plugins](https://code.claude.com/docs/en/plugins/troubleshooting.md): Fix plugin errors in Claude Code. Find the exact message you saw, grouped by stage from where /plugin runs through install and org policy.
+- [Plugin loading reference](https://code.claude.com/docs/en/plugins/loading.md): Trace where Claude Code loads each plugin from, which settings file decides whether it loads, and why an update changed nothing.
+
+### Reference
+
+- [Plugin manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference.md): Complete reference for plugin.json: every field with its type and default, accepted path forms, and the userConfig and environment variable schemas.
+- [Marketplace reference](https://code.claude.com/docs/en/plugins/marketplace-reference.md): Complete reference for marketplace.json fields, plugin entries, and the plugin and marketplace source objects, with where each is valid.
+- [Plugin commands reference](https://code.claude.com/docs/en/plugins/cli-reference.md): Complete reference for the claude plugin shell commands, /plugin and /reload-plugins in a session, and the flags that load a plugin for one session.
 
 ## Administration
 
@@ -166,13 +204,6 @@
 - [Manage costs effectively](https://code.claude.com/docs/en/costs.md): Track token usage, set team spend limits, and reduce Claude Code costs with context management, model selection, extended thinking settings, and preprocessing hooks.
 - [Track team usage with analytics](https://code.claude.com/docs/en/analytics.md): View Claude Code usage metrics, track adoption, and measure engineering velocity in the analytics dashboard.
 
-### Plugin distribution
-
-- [Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces.md): Build and host plugin marketplaces to distribute Claude Code extensions across teams and communities.
-- [Constrain plugin dependency versions](https://code.claude.com/docs/en/plugin-dependencies.md): Declare version constraints on plugin dependencies, and bundle a curated plugin set behind one install.
-- [Recommend your plugin from your CLI](https://code.claude.com/docs/en/plugin-hints.md): Emit a one-line marker from your CLI so Claude Code prompts users to install your official plugin.
-- [Recommend plugins for your org](https://code.claude.com/docs/en/plugin-relevance.md): Add a relevance block to marketplace plugin entries so Claude Code suggests them when a user's work matches.
-
 ### Security and data
 
 - [Security](https://code.claude.com/docs/en/security.md): Learn about Claude Code's security safeguards and best practices for safe usage.
@@ -218,7 +249,7 @@
 - [Model configuration](https://code.claude.com/docs/en/model-config.md): Configure which model Claude Code uses, effort levels, extended context, and the auto-compact window
 - [Speed up responses with fast mode](https://code.claude.com/docs/en/fast-mode.md): Get faster Opus responses in Claude Code by toggling fast mode.
 - [Escalate hard decisions with the advisor tool](https://code.claude.com/docs/en/advisor.md): Pair your main model with a stronger advisor model that Claude consults at key moments during a task.
-- [Output styles](https://code.claude.com/docs/en/output-styles.md): Adapt Claude Code for uses beyond software engineering
+- [Output styles](https://code.claude.com/docs/en/output-styles.md): Change Claude Code's role, tone, and response format with a built-in output style such as Concise or Explanatory, or write a custom style.
 
 ### Interface
 
@@ -240,7 +271,6 @@
 - [Interactive mode](https://code.claude.com/docs/en/interactive-mode.md): Complete reference for keyboard shortcuts, input modes, and interactive features in Claude Code sessions.
 - [Checkpointing](https://code.claude.com/docs/en/checkpointing.md): Track, rewind, and summarize Claude's edits and conversation to manage session state.
 - [Hooks reference](https://code.claude.com/docs/en/hooks.md): Reference for Claude Code hook events, configuration schema, JSON input/output formats, exit codes, async hooks, HTTP hooks, prompt hooks, and MCP tool hooks.
-- [Plugins reference](https://code.claude.com/docs/en/plugins-reference.md): Complete technical reference for Claude Code plugin system, including schemas, CLI commands, and component specifications.
 - [Channels reference](https://code.claude.com/docs/en/channels-reference.md): Build an MCP server that pushes webhooks, alerts, and chat messages into a Claude Code session. Reference for the channel contract: capability declaration, notification events, reply tools, sender gating, and permission relay.
 
 ### Glossary
@@ -254,7 +284,7 @@
 - [Agent SDK overview](https://code.claude.com/docs/en/agent-sdk/overview.md): Build production AI agents with Claude Code as a library
 - [Quickstart](https://code.claude.com/docs/en/agent-sdk/quickstart.md): Get started with the Python or TypeScript Agent SDK to build AI agents that work autonomously
 - [Migrate to Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/migration-guide.md): Guide for migrating the Claude Code TypeScript and Python SDKs to the Claude Agent SDK
-- [Troubleshoot the Agent SDK](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors by the exact message you see, with the cause and fix for each error in the TypeScript and Python SDKs.
+- [Troubleshoot the Agent SDK](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors when the Claude Code CLI fails to start, the CLI process exits, or a successful result arrives without structured output.
 
 ### Build agents
 
@@ -348,14 +378,14 @@
 
 ## Indexes
 
-- [French (197 pages)](https://code.claude.com/docs/_llms/fr.md): Documentation for French.
-- [German (197 pages)](https://code.claude.com/docs/_llms/de.md): Documentation for German.
-- [Italian (197 pages)](https://code.claude.com/docs/_llms/it.md): Documentation for Italian.
-- [Japanese (196 pages)](https://code.claude.com/docs/_llms/jp.md): Documentation for Japanese.
-- [Spanish (197 pages)](https://code.claude.com/docs/_llms/es.md): Documentation for Spanish.
-- [Korean (197 pages)](https://code.claude.com/docs/_llms/ko.md): Documentation for Korean.
-- [Chinese (197 pages)](https://code.claude.com/docs/_llms/cn.md): Documentation for Chinese.
-- [Traditional Chinese (197 pages)](https://code.claude.com/docs/_llms/zh-hant.md): Documentation for Traditional Chinese.
-- [Russian (197 pages)](https://code.claude.com/docs/_llms/ru.md): Documentation for Russian.
-- [Indonesian (197 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
-- [Brazilian Portuguese (197 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
+- [French (209 pages)](https://code.claude.com/docs/_llms/fr.md): Documentation for French.
+- [German (207 pages)](https://code.claude.com/docs/_llms/de.md): Documentation for German.
+- [Italian (209 pages)](https://code.claude.com/docs/_llms/it.md): Documentation for Italian.
+- [Japanese (209 pages)](https://code.claude.com/docs/_llms/jp.md): Documentation for Japanese.
+- [Spanish (209 pages)](https://code.claude.com/docs/_llms/es.md): Documentation for Spanish.
+- [Korean (209 pages)](https://code.claude.com/docs/_llms/ko.md): Documentation for Korean.
+- [Simplified Chinese (210 pages)](https://code.claude.com/docs/_llms/zh-cn.md): Documentation for Simplified Chinese.
+- [Traditional Chinese (209 pages)](https://code.claude.com/docs/_llms/zh-tw.md): Documentation for Traditional Chinese.
+- [Russian (209 pages)](https://code.claude.com/docs/_llms/ru.md): Documentation for Russian.
+- [Indonesian (209 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
+- [Brazilian Portuguese (208 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.

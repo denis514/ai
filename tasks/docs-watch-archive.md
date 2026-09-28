@@ -2495,3 +2495,187 @@
 - `src/builder/components/panels/AllSchedulesModal.jsx`
 - `src/builder/components/panels/ExecutionPanel.jsx`
 После сверки: `npm run help:watch -- --accept`.
+
+## 📄 docs-watch: документация изменилась — 2026-09-28
+
+> Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
+> Прогон: прочитать дифф ниже → разнести по узлам Atlas → `node scripts/sync-whats-new.mjs`.
+
+### Desktop app (вкладка Code)
+- Источник: https://code.claude.com/docs/en/desktop.md
+- Изменения: **8** добавлено, **8** удалено
+- Затронутые узлы Atlas (черновик): `pl-desktop, pl-code-mode, apps-setup`
+
+```diff
+- Claude Code also loads the skills and plugins enabled for your claude.ai account in terminal sessions where you sign in with the same account. See [Skills synced from claude.ai](/docs/en/skills#how-synced-skills-behave) and [Plugins synced from claude.ai](/docs/en/plugins-reference#synced-plugins).
++ Claude Code also loads the skills and plugins enabled for your claude.ai account in terminal sessions where you sign in with the same account. See [Skills synced from claude.ai](/docs/en/skills#how-synced-skills-behave) and [Plugins synced from claude.ai](/docs/en/plugins/loading#synced-plugins).
+- [Skills](/docs/en/skills) extend what Claude can do. Claude loads them automatically when relevant, or you can invoke one directly: type `/` in the prompt box or click the **+** button and select **Slash commands** to browse what's available. This includes [built-in commands](/docs/en/commands), your [custom skills](/docs/en/skills#create-your-first-skill), project skills from your codebase, and skills from any [installed plugins](/docs/en/plugins). Select one and it appears highlighted in the input field. Type your task after it and send as usual.
++ [Skills](/docs/en/skills) extend what Claude can do. Claude loads them automatically when relevant, or you can invoke one directly: type `/` in the prompt box or click the **+** button and select **Slash commands** to browse what's available. This includes [built-in commands](/docs/en/commands), your [custom skills](/docs/en/skills#create-your-first-skill), project skills from your codebase, and skills from any [installed plugins](/docs/en/plugins/install). Select one and it appears highlighted in the input field. Type your task after it and send as usual.
+- [Plugins](/docs/en/plugins) are reusable packages that add skills, agents, hooks, MCP servers, and LSP configurations to Claude Code. You can install plugins from the desktop app without using the terminal.
++ [Plugins](/docs/en/plugins/overview) are reusable packages that add skills, agents, hooks, MCP servers, and LSP configurations to Claude Code. You can install plugins from the desktop app without using the terminal.
+- For local and [SSH](#ssh-sessions) sessions, click the **+** button next to the prompt box and select **Plugins** to see your installed plugins and their skills. To add a plugin, select **Add plugin** from the submenu to open the plugin browser, which shows available plugins from your configured [marketplaces](/docs/en/plugin-marketplaces) including the official Anthropic marketplace. Select **Manage plugins** to enable, disable, or uninstall plugins.
++ For local and [SSH](#ssh-sessions) sessions, click the **+** button next to the prompt box and select **Plugins** to see your installed plugins and their skills. To add a plugin, select **Add plugin** from the submenu to open the plugin browser, which shows available plugins from your configured [marketplaces](/docs/en/plugins/overview) including the official Anthropic marketplace. Select **Manage plugins** to enable, disable, or uninstall plugins.
+- The plugin browser is not available in cloud sessions, and plugins you install from the desktop app aren't available for cloud sessions. To use a plugin in a cloud session, either declare it in the repository's `.claude/settings.json` under [`enabledPlugins`](/docs/en/settings-reference#enabledplugins) so Claude Code [installs it at session start](/docs/en/cloud-environments#what-carries-over-from-your-setup), or enable it for your claude.ai account so Claude Code loads it as a [synced plugin](/docs/en/plugins-reference#synced-plugins). Plugins aren't available in WSL sessions. For the full plugin reference including creating your own plugins, see [plugins](/docs/en/plugins).
++ The plugin browser is not available in cloud sessions, and plugins you install from the desktop app aren't available for cloud sessions. A cloud session also doesn't install plugins that the repository's `.claude/settings.json` declares, as [What carries over from your setup](/docs/en/cloud-environments#what-carries-over-from-your-setup) explains. Plugins aren't available in WSL sessions. For the full plugin reference including creating your own plugins, see [plugins](/docs/en/plugins/overview).
+- [Extended thinking](/docs/en/model-config#extended-thinking) is enabled by default, which improves performance on complex reasoning tasks but uses additional tokens. On the Anthropic API, set `MAX_THINKING_TOKENS` to `0` in the local environment editor to turn thinking off; this has no effect on Fable models, which always use extended thinking. With thinking turned off on the Anthropic API, Claude Code sends effort `high` instead of a higher level to models it knows [don't accept that combination](/docs/en/errors#effort-isnt-available-with-thinking-turned-off), such as Opus 5.
++ [Extended thinking](/docs/en/model-config#extended-thinking) is enabled by default, which improves performance on complex reasoning tasks but uses additional tokens. On the Anthropic API, set `MAX_THINKING_TOKENS` to `0` in the local environment editor to turn thinking off; this has no effect on Opus 5.5 or the Fable models, which always use extended thinking. With thinking turned off on the Anthropic API, Claude Code sends effort `high` instead of a higher level to models it knows [don't accept that combination](/docs/en/errors#effort-isnt-available-with-thinking-turned-off), such as Opus 5.
+- Artifacts can also load JavaScript libraries, such as React or a charting package, from `cdnjs.cloudflare.com`, `cdn.jsdelivr.net`, `cdn.tailwindcss.com`, and `code.jquery.com`, and from no other external host. If you block those hosts, the parts of an artifact that depend on a library don't work, and unlike a blocked font, a blocked library has no fallback. Block with a fast rejection here too, so a blocked library request fails at once rather than hanging until it times out.
++ Artifacts can also load JavaScript libraries, such as React or a charting package, from `cdnjs.cloudflare.com`, `cdn.jsdelivr.net`, `cdn.tailwindcss.com`, `code.jquery.com`, and `unpkg.com`, and from no other external host. If you block those hosts, the parts of an artifact that depend on a library don't work, and unlike a blocked font, a blocked library has no fallback. Block with a fast rejection here too, so a blocked library request fails at once rather than hanging until it times out.
+- | [Plugins](/docs/en/plugins)                                | `/plugin` command                                                              | Plugin manager UI                                                                                                                                                                                                                                                                                                                                 |
++ | [Plugins](/docs/en/plugins/overview)                       | `/plugin` command                                                              | Plugin manager UI                                                                                                                                                                                                                                                                                                                                 |
+```
+
+### Desktop quickstart
+- Источник: https://code.claude.com/docs/en/desktop-quickstart.md
+- Изменения: **8** добавлено, **7** удалено
+- Затронутые узлы Atlas (черновик): `apps-setup, pl-app-modes`
+
+```diff
+- > Install Claude Code on desktop and start your first coding session
++ > Install the Claude desktop app, open the Code tab, and start your first Claude Code session on a project folder on your computer.
+- The desktop app gives you Claude Code with a graphical interface built for running multiple sessions side by side: a sidebar for managing parallel work, a drag-and-drop layout with an integrated terminal and file editor, visual diff review, live app preview, GitHub PR monitoring with auto-merge, and scheduled tasks. No terminal required.
++ The desktop app gives you Claude Code with a graphical interface, so you can ask Claude to work on the code in a folder on your computer and review its changes without using a terminal. This page walks through installing the app and starting your first session in the **Code** tab. Claude Code requires a [Pro, Max, Team, or Enterprise subscription](https://claude.com/pricing?utm_source=claude_code\&utm_medium=docs\&utm_content=desktop_quickstart_pricing).
+-   Claude Code requires a [Pro, Max, Team, or Enterprise subscription](https://claude.com/pricing?utm_source=claude_code\&utm_medium=docs\&utm_content=desktop_quickstart_pricing).
+- </Note>
++   These cases are covered on other pages:
+- This page walks through installing the app and starting your first session. If you're already set up, see [Use Claude Code Desktop](/docs/en/desktop) for the full reference.
++   * **Already set up**: see [Use Claude Code Desktop](/docs/en/desktop) for everything the Code tab can do
++   * **Want `claude` in your terminal**: [install the CLI](/docs/en/quickstart) separately
++ </Note>
+- * **Cowork**: An autonomous background agent that works on tasks in a sandboxed virtual machine with its own environment, running independently while you do other work. On-device Cowork sessions run the VM on your computer; remote Cowork sessions run on an Anthropic-managed VM instead.
++ * **Cowork**: An autonomous background agent that works on tasks independently while you do other work.
+- The desktop app includes Claude Code. You don't need to install Node.js or the CLI separately. To use `claude` from the terminal, install the CLI separately. See [Get started with the CLI](/docs/en/quickstart).
++ The desktop app includes Claude Code, so you don't need to install Node.js or the CLI to use the Code tab.
+```
+
+### Desktop scheduled tasks
+- Источник: https://code.claude.com/docs/en/desktop-scheduled-tasks.md
+- Изменения: **1** добавлено, **1** удалено
+- Затронутые узлы Atlas (черновик): `pl-cowork, автоматизация`
+
+```diff
+- * **Daily**: shows a time picker, defaults to 9:00 AM local time
++ * **Daily**: runs every day at the local time you pick
+```
+
+### Platforms and integrations
+- Источник: https://code.claude.com/docs/en/platforms.md
+- Изменения: **10** добавлено, **10** удалено
+- Затронутые узлы Atlas (черновик): `pl-platforms, pl-compare`
+
+```diff
+- | Integration                          | What it does                                                                       | Use it for                                                                          |
+- | :----------------------------------- | :--------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
+- | [Chrome](/docs/en/chrome)                 | Controls your browser with your logged-in sessions                                 | Testing web apps, filling forms, automating sites without an API                    |
+- | [GitHub Actions](/docs/en/github-actions) | Runs Claude in your CI pipeline                                                    | Automated PR reviews, issue triage, scheduled maintenance                           |
+- | [GitLab CI/CD](/docs/en/gitlab-ci-cd)     | Same as GitHub Actions for GitLab                                                  | CI-driven automation on GitLab                                                      |
+- | [Code Review](/docs/en/code-review)       | Reviews every PR automatically                                                     | Catching bugs before human review                                                   |
+- | [Slack](/docs/en/slack)                   | Responds to `@Claude` mentions in your channels                                    | Turning bug reports into pull requests from team chat                               |
+- | [Claude Tag](/docs/en/claude-tag)         | Runs `@Claude` as your organization's shared identity with admin-configured access | Shared team access on Team and Enterprise plans, instead of per-user Slack sessions |
++ | Integration                                      | What it does                                                                       | Use it for                                                                          |
++ | :----------------------------------------------- | :--------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
++ | [Chrome](/docs/en/chrome)                             | Controls your browser with your logged-in sessions                                 | Testing web apps, filling forms, automating sites without an API                    |
++ | [GitHub Actions](/docs/en/github-actions)             | Runs Claude in your CI pipeline                                                    | Automated PR reviews, issue triage, scheduled maintenance                           |
++ | [GitLab CI/CD](/docs/en/gitlab-ci-cd)                 | Same as GitHub Actions for GitLab                                                  | CI-driven automation on GitLab                                                      |
++ | [Code Review](/docs/en/code-review)                   | Reviews every PR automatically                                                     | Catching bugs before human review                                                   |
++ | [Slack](/docs/en/slack)                               | Responds to `@Claude` mentions in your channels                                    | Turning bug reports into pull requests from team chat                               |
++ | [Claude Tag](https://claude.com/docs/claude-tag) | Runs `@Claude` as your organization's shared identity with admin-configured access | Shared team access on Team and Enterprise plans, instead of per-user Slack sessions |
+- | [Remote Control](/docs/en/remote-control)                     | Drive a running session from [claude.ai/code](https://claude.ai/code) or the Claude mobile app | Your machine (CLI or VS Code)                                                                | Run `claude remote-control`                                                                                                          | Steering in-progress work from another device                 |
++ | [Remote Control](/docs/en/remote-control)                     | Drive a running session from [claude.ai/code](https://claude.ai/code) or the Claude mobile app | Your machine (CLI, Desktop, or VS Code)                                                      | Run [`claude remote-control` or `/remote-control`](/docs/en/remote-control#start-a-remote-control-session)                                | Steering in-progress work from another device                 |
+- * [Claude Tag](/docs/en/claude-tag): run `@Claude` as your organization's shared identity on Team and Enterprise plans
++ * [Claude Tag](https://claude.com/docs/claude-tag): run `@Claude` as your organization's shared identity on Team and Enterprise plans
+```
+
+### Индекс всех страниц документации (llms.txt)
+- Источник: https://code.claude.com/docs/llms.txt
+- Изменения: **58** добавлено, **28** удалено
+- Затронутые узлы Atlas (черновик): `новые/удалённые темы в экосистеме`
+
+```diff
+- - [Get started with the desktop app](https://code.claude.com/docs/en/desktop-quickstart.md): Install Claude Code on desktop and start your first coding session
++ - [Get started with the desktop app](https://code.claude.com/docs/en/desktop-quickstart.md): Install the Claude desktop app, open the Code tab, and start your first Claude Code session on a project folder on your computer.
+- ### Plugins
+- 
+- - [Discover and install prebuilt plugins through marketplaces](https://code.claude.com/docs/en/discover-plugins.md): Find and install plugins from marketplaces to extend Claude Code with new skills, agents, and capabilities.
+- - [Create plugins](https://code.claude.com/docs/en/plugins.md): Create custom plugins to extend Claude Code with skills, agents, hooks, and MCP servers.
+- - [Test plugins with evals](https://code.claude.com/docs/en/plugin-evals.md): Write eval cases for your Claude Code plugin, run them with claude plugin eval, grade the results, compare against a no-plugin baseline, and gate CI on the score.
+- 
++ ## Plugins
++ 
++ ### Plugins
++ 
++ - [Plugins overview](https://code.claude.com/docs/en/plugins/overview.md): Understand what a Claude Code plugin is, when you need one instead of a standalone skill or MCP server, and which page to read to install or create one.
++ 
++ ### Use plugins
++ 
++ - [Install and manage plugins](https://code.claude.com/docs/en/plugins/install.md): Install Claude Code plugins from a marketplace on any surface you use, choose an install scope, and update or remove them later.
++ - [Anthropic's marketplaces](https://code.claude.com/docs/en/plugins/anthropic-marketplaces.md): Anthropic's official, community, and demo plugin marketplaces for Claude Code: their names, repositories, how you add each, and where to browse their plugins.
++ - [Code intelligence plugins](https://code.claude.com/docs/en/plugins/code-intelligence.md): Install a language server plugin so Claude sees type errors after edits and navigates code by symbol, and answer the LSP plugin recommendation dialog.
++ - [Plugin security and trust](https://code.claude.com/docs/en/plugins/security.md): Decide whether to trust a plugin before you install it, from what a plugin can do on your machine to how to review one and remove it.
++ 
++ ### Create plugins
++ 
++ - [Create a Claude Code plugin](https://code.claude.com/docs/en/plugins/create.md): Build your first Claude Code plugin from an empty directory, test it without a marketplace, and convert an existing .claude/ setup.
++ - [Add components to a plugin](https://code.claude.com/docs/en/plugins/components.md): Add skills, hooks, MCP servers, and every other component type to a Claude Code plugin, with an example that validates for each.
++ - [Plugin dependencies](https://code.claude.com/docs/en/plugins/dependencies.md): Declare the plugins your plugin depends on, with version ranges such as ^1.2, and see how Claude Code installs, resolves, and prunes them.
++ - [Test plugins with evals](https://code.claude.com/docs/en/plugin-evals.md): Write eval cases for your Claude Code plugin, run them with claude plugin eval, grade the results, compare against a no-plugin baseline, and gate CI on the score.
++ - [Publish and distribute a plugin](https://code.claude.com/docs/en/plugins/publish.md): Publish a Claude Code plugin through your own marketplace or Anthropic's directory, with a pre-release checklist and how users get updates.
++ - [Measure plugin cost and usage](https://code.claude.com/docs/en/plugins/measure.md): Measure a Claude Code plugin's token cost, find out whether people still use it, and pick the telemetry events for organization-wide plugin questions.
++ - [Recommend your plugin from your CLI](https://code.claude.com/docs/en/plugins/cli-hints.md): Prompt Claude Code users to install your official-marketplace plugin by emitting a claude-code-hint tag from your CLI or SDK.
++ 
++ ### Run a marketplace
++ 
++ - [Create a marketplace](https://code.claude.com/docs/en/plugins/create-marketplace.md): Build a plugin marketplace from a marketplace.json file and test it locally before you host it.
++ - [Host and maintain a marketplace](https://code.claude.com/docs/en/plugins/host-marketplace.md): Publish a plugin marketplace where users can reach it, grant access to a private one, and release updates and renames without breaking installs.
++ - [Recommend plugins for your org](https://code.claude.com/docs/en/plugins/relevance.md): Add a relevance block to marketplace plugin entries so Claude Code suggests them when a user's work matches, and allowlist the marketplace in managed settings.
++ 
++ ### Manage plugins for your organization
++ 
++ - [Manage Claude Code plugins for your organization](https://code.claude.com/docs/en/plugins/org.md): Control which plugins Claude Code installs and allows across your organization through managed settings.
++ 
++ ### Troubleshooting
++ 
++ - [Troubleshoot plugins](https://code.claude.com/docs/en/plugins/troubleshooting.md): Fix plugin errors in Claude Code. Find the exact message you saw, grouped by stage from where /plugin runs through install and org policy.
++ - [Plugin loading reference](https://code.claude.com/docs/en/plugins/loading.md): Trace where Claude Code loads each plugin from, which settings file decides whether it loads, and why an update changed nothing.
++ 
++ ### Reference
++ 
++ - [Plugin manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference.md): Complete reference for plugin.json: every field with its type and default, accepted path forms, and the userConfig and environment variable schemas.
++ - [Marketplace reference](https://code.claude.com/docs/en/plugins/marketplace-reference.md): Complete reference for marketplace.json fields, plugin entries, and the plugin and marketplace source objects, with where each is valid.
++ - [Plugin commands reference](https://code.claude.com/docs/en/plugins/cli-reference.md): Complete reference for the claude plugin shell commands, /plugin and /reload-plugins in a session, and the flags that load a plugin for one session.
++ 
+- ### Plugin distribution
+- 
+- - [Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces.md): Build and host plugin marketplaces to distribute Claude Code extensions across teams and communities.
+- - [Constrain plugin dependency versions](https://code.claude.com/docs/en/plugin-dependencies.md): Declare version constraints on plugin dependencies, and bundle a curated plugin set behind one install.
+- - [Recommend your plugin from your CLI](https://code.claude.com/docs/en/plugin-hints.md): Emit a one-line marker from your CLI so Claude Code prompts users to install your official plugin.
+- - [Recommend plugins for your org](https://code.claude.com/docs/en/plugin-relevance.md): Add a relevance block to marketplace plugin entries so Claude Code suggests them when a user's work matches.
+- 
+- - [Output styles](https://code.claude.com/docs/en/output-styles.md): Adapt Claude Code for uses beyond software engineering
++ - [Output styles](https://code.claude.com/docs/en/output-styles.md): Change Claude Code's role, tone, and response format with a built-in output style such as Concise or Explanatory, or write a custom style.
+- - [Plugins reference](https://code.claude.com/docs/en/plugins-reference.md): Complete technical reference for Claude Code plugin system, including schemas, CLI commands, and component specifications.
+- - [Troubleshoot the Agent SDK](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors by the exact message you see, with the cause and fix for each error in the TypeScript and Python SDKs.
++ - [Troubleshoot the Agent SDK](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors when the Claude Code CLI fails to start, the CLI process exits, or a successful result arrives without structured output.
+- - [French (197 pages)](https://code.claude.com/docs/_llms/fr.md): Documentation for French.
+- - [German (197 pages)](https://code.claude.com/docs/_llms/de.md): Documentation for German.
+- - [Italian (197 pages)](https://code.claude.com/docs/_llms/it.md): Documentation for Italian.
+- - [Japanese (196 pages)](https://code.claude.com/docs/_llms/jp.md): Documentation for Japanese.
+- - [Spanish (197 pages)](https://code.claude.com/docs/_llms/es.md): Documentation for Spanish.
+- - [Korean (197 pages)](https://code.claude.com/docs/_llms/ko.md): Documentation for Korean.
+- - [Chinese (197 pages)](https://code.claude.com/docs/_llms/cn.md): Documentation for Chinese.
+- - [Traditional Chinese (197 pages)](https://code.claude.com/docs/_llms/zh-hant.md): Documentation for Traditional Chinese.
+- - [Russian (197 pages)](https://code.claude.com/docs/_llms/ru.md): Documentation for Russian.
+- - [Indonesian (197 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
+- - [Brazilian Portuguese (197 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
++ - [French (209 pages)](https://code.claude.com/docs/_llms/fr.md): Documentation for French.
++ - [German (207 pages)](https://code.claude.com/docs/_llms/de.md): Documentation for German.
++ - [Italian (209 pages)](https://code.claude.com/docs/_llms/it.md): Documentation for Italian.
++ - [Japanese (209 pages)](https://code.claude.com/docs/_llms/jp.md): Documentation for Japanese.
++ - [Spanish (209 pages)](https://code.claude.com/docs/_llms/es.md): Documentation for Spanish.
++ - [Korean (209 pages)](https://code.claude.com/docs/_llms/ko.md): Documentation for Korean.
++ - [Simplified Chinese (210 pages)](https://code.claude.com/docs/_llms/zh-cn.md): Documentation for Simplified Chinese.
++ - [Traditional Chinese (209 pages)](https://code.claude.com/docs/_llms/zh-tw.md): Documentation for Traditional Chinese.
++ - [Russian (209 pages)](https://code.claude.com/docs/_llms/ru.md): Documentation for Russian.
++ - [Indonesian (209 pages)](https://code.claude.com/docs/_llms/id.md): Documentation for Indonesian.
++ - [Brazilian Portuguese (208 pages)](https://code.claude.com/docs/_llms/pt-br.md): Documentation for Brazilian Portuguese.
+```
