@@ -3635,7 +3635,7 @@
 ... (дифф обрезан до 250 строк; полный текст — в docs/docs-watch/snapshots/llms-index.md)
 ```
 
-### [help-watch 2026-10-12] Проверить вкладку «Помощь» (Agent Builder)
+### [help-watch 2026-10-19] Проверить вкладку «Помощь» (Agent Builder)
 Изменились функциональные файлы билдера — справка могла устареть:
 - `src/builder/data/nodeTypes.js`
 - `src/builder/data/templates.js`
