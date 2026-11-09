@@ -4695,16 +4695,6 @@
 + - [Anthropic's marketplaces](https://code.claude.com/docs/en/plugins/anthropic-marketplaces.md): Anthropic's official and community plugin marketplaces for Claude Code: their names, repositories, how you add each, and where to browse their plugins.
 ```
 
-### [help-watch 2026-11-02] Проверить вкладку «Помощь» (Agent Builder)
-Изменились функциональные файлы билдера — справка могла устареть:
-- `src/builder/data/nodeTypes.js`
-- `src/builder/data/templates.js`
-- `src/builder/components/panels/ScheduleModal.jsx`
-- `src/builder/components/panels/ApiKeysModal.jsx`
-- `src/builder/components/panels/AllSchedulesModal.jsx`
-- `src/builder/components/panels/ExecutionPanel.jsx`
-После сверки: `npm run help:watch -- --accept`.
-
 ## 📄 docs-watch: документация изменилась — 2026-11-09
 
 > Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
@@ -4914,3 +4904,13 @@
 - - [Test iOS apps in the simulator](https://code.claude.com/docs/en/desktop-ios-simulator.md): Claude Code Desktop opens your app in the iOS Simulator pane when Claude builds, runs, or checks it, with a separate simulator for each session.
 + - [Test iOS apps in the simulator](https://code.claude.com/docs/en/desktop-ios-simulator.md): Claude Code Desktop opens your app in the iOS Simulator pane when Claude builds, runs, or checks it.
 ```
+
+### [help-watch 2026-11-09] Проверить вкладку «Помощь» (Agent Builder)
+Изменились функциональные файлы билдера — справка могла устареть:
+- `src/builder/data/nodeTypes.js`
+- `src/builder/data/templates.js`
+- `src/builder/components/panels/ScheduleModal.jsx`
+- `src/builder/components/panels/ApiKeysModal.jsx`
+- `src/builder/components/panels/AllSchedulesModal.jsx`
+- `src/builder/components/panels/ExecutionPanel.jsx`
+После сверки: `npm run help:watch -- --accept`.
