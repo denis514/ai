@@ -4914,3 +4914,155 @@
 - `src/builder/components/panels/AllSchedulesModal.jsx`
 - `src/builder/components/panels/ExecutionPanel.jsx`
 После сверки: `npm run help:watch -- --accept`.
+
+## 📄 docs-watch: документация изменилась — 2026-11-16
+
+> Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
+> Прогон: прочитать дифф ниже → разнести по узлам Atlas → `node scripts/sync-whats-new.mjs`.
+
+### Desktop app (вкладка Code)
+- Источник: https://code.claude.com/docs/en/desktop.md
+- Изменения: **30** добавлено, **12** удалено
+- Затронутые узлы Atlas (черновик): `pl-desktop, pl-code-mode, apps-setup`
+
+```diff
+- To keep [HTML previews in SSH and WSL sessions](#preview-html-files-in-ssh-and-wsl-sessions) from running scripts, set the [`disableBrowserExternalNavigation` managed setting](#managed-settings) to `true`. With this setting, users also can't [browse external sites](#restrict-external-browsing-for-your-organization) in the Browser pane.
++ To keep [HTML previews in SSH and WSL sessions](#preview-html-files-in-ssh-and-wsl-sessions) from running scripts, set the [`disableRemotePreviewScripts` managed setting](#managed-settings) to `true`. Users can still browse external sites. Requires Claude Desktop v5.1231.0 or later.
+- Set it in your [server-managed settings](https://code.claude.com/docs/en/server-managed-settings.md), or in a [Claude Code MDM policy or managed settings file](https://code.claude.com/docs/en/managed-settings.md#where-each-mechanism-stores-the-policy) on the computer that runs Desktop. Desktop doesn't read it from the remote machine or the WSL distribution. With a [third-party provider](https://code.claude.com/docs/en/third-party-integrations.md), use the MDM policy or the file.
++ > [!NOTE]
++ >
++ > Earlier versions ignore `disableRemotePreviewScripts`. To stop the scripts there, update Desktop, or also set `disableBrowserExternalNavigation` to `true`. Users then [can't browse external sites](#restrict-external-browsing-for-your-organization) on any computer that receives `disableBrowserExternalNavigation`.
++ Set each key in your [server-managed settings](https://code.claude.com/docs/en/server-managed-settings.md), or in a [Claude Code MDM policy or managed settings file](https://code.claude.com/docs/en/managed-settings.md#where-each-mechanism-stores-the-policy) on the computer that runs Desktop. Desktop doesn't read these keys from the remote machine, the WSL distribution, a [`policyHelper`](https://code.claude.com/docs/en/settings-reference#policyhelper), or [Desktop's own policies](#device-management-policies). With a [third-party provider](https://code.claude.com/docs/en/third-party-integrations.md), use the MDM policy or the file.
++ 
+- * **Files they open**: the preview doesn't run scripts, so charts and tables that scripts draw stay empty
++ * **Files they open**: the preview doesn't run scripts, so charts and tables that scripts draw stay empty. Its notice starts with `This preview doesn't run scripts`.
++ ##### Check a computer for scripts that still run
++ 
++ After the restart, open an HTML file from an SSH or WSL session on that computer. If the notice above the preview starts with `This preview doesn't load anything from the web`, scripts still run there. Check [Desktop's version](#check-your-version), where you put the key, and that its value is the JSON Boolean `true`.
++ 
+- To keep the Terminal, Browser, or [iOS Simulator](https://code.claude.com/docs/en/desktop-ios-simulator.md) in view at a small size, click **Minimize** in the pane's header. The button requires Claude Desktop v4.0.0 or later and a Claude account rather than a [third-party provider](https://code.claude.com/docs/en/third-party-integrations.md). The Browser pane has it only in local sessions.
++ To keep the Terminal, Browser, [iOS Simulator](https://code.claude.com/docs/en/desktop-ios-simulator.md), or a [side chat](#ask-a-side-question-without-derailing-the-session) in view at a small size, click **Minimize** in the pane's header. The button requires Claude Desktop v4.0.0 or later. With a [third-party provider](https://code.claude.com/docs/en/third-party-integrations.md) it requires v5.11492.0 or later, so [check your version](#check-your-version). The Browser pane has the button only in local sessions.
+- > On a Linux or macOS remote machine, the check doesn't go through Desktop, so edits inside the worktree keep working while Desktop is disconnected. Before Claude Desktop v2.37337.0, this holds on a Linux remote machine only.
++ > On a Linux or macOS remote machine, edits inside the worktree can keep working while Desktop is disconnected, because the check on each edit can run without Desktop. Before [Claude Desktop v2.37337.0](#check-your-version), this works on a Linux remote machine only.
++ | `disableRemotePreviewScripts` | set to `true` to [turn off only the scripts in HTML previews](#turn-off-scripts-in-ssh-and-wsl-previews-for-your-organization) in SSH and WSL sessions. Desktop doesn't read it from the remote machine or the WSL distribution. The value must be the JSON boolean `true`; the string `"true"` is ignored. Requires Claude Desktop v5.1231.0 or later. |
+- If you turn a feature off with `browserExternalPageTools`, `disableMobileSimulatorTools`, or `disableBrowserExternalNavigation` in a computer's [highest-ranked MDM policy or managed settings file](https://code.claude.com/docs/en/managed-settings.md#how-claude-code-combines-managed-sources), the feature stays off there. It stays off even when your [server-managed settings](https://code.claude.com/docs/en/server-managed-settings.md) leave that key unset or allow the feature. Don't use a user-level `HKCU` registry value for this. To turn the feature back on, remove the value wherever you set it. Requires Claude Desktop v4.4212.0 or later.
++ If you turn a feature off with one of these four keys in a computer's [highest-ranked MDM policy or managed settings file](https://code.claude.com/docs/en/managed-settings.md#how-claude-code-combines-managed-sources), the feature stays off there:
++ * **`browserExternalPageTools`, `disableMobileSimulatorTools`, `disableBrowserExternalNavigation`**: requires Claude Desktop v4.4212.0 or later
++ * **`disableRemotePreviewScripts`**: requires Claude Desktop v5.1231.0 or later
++ 
++ It stays off even when your [server-managed settings](https://code.claude.com/docs/en/server-managed-settings.md) leave that key unset or allow the feature. Don't use a user-level `HKCU` registry value for this. To turn the feature back on, remove the value wherever you set it.
++ 
+- * **[SSH sessions](#ssh-sessions)**: the session reads the managed settings file from the remote host. Desktop itself reads `sshConfigs`, `sshHostAllowlist`, `disableSshSavedPasswords`, and `disableDesktopLocalSessions` on the local machine. If you deliver more than one managed source, it reads them from [one by default](https://code.claude.com/docs/en/managed-settings.md#how-claude-code-combines-managed-sources).
++ * **[SSH sessions](#ssh-sessions)**: the session reads the managed settings file from the remote host. Desktop itself reads `sshConfigs`, `sshHostAllowlist`, `disableSshSavedPasswords`, and `disableDesktopLocalSessions` on the local machine. If you deliver more than one managed source, it reads them from [one by default](https://code.claude.com/docs/en/managed-settings.md#how-claude-code-combines-managed-sources). If you set `permissions.disableBypassPermissionsMode` or `disableAutoMode` in the managed settings in force on the local machine, an SSH session's mode selector doesn't offer that mode, whatever the remote host sets.
+- If you set `forceLoginMethod` and `forceLoginOrgUUID` in Claude Code's [managed settings](https://code.claude.com/docs/en/managed-settings.md), you don't change the Claude Desktop sign-in screen.
++ If you set `forceLoginMethod` and `forceLoginOrgUUID` in Claude Code's [managed settings](https://code.claude.com/docs/en/managed-settings.md), you don't change the Claude Desktop sign-in screen. A person can still use Claude Desktop with their own Claude API key or [Claude Console account](https://claude.com/docs/third-party/claude-desktop/claude-api#which-devices-offer-the-claude-api-account-sign-in), and run Code tab sessions that way.
++ To stop that, also deploy `forceLoginOrgUUID` in the Claude Desktop policy (in `HKLM` on Windows), with your claude.ai organization ID. Unless the policy itself [selects the Claude API](https://claude.com/docs/third-party/claude-desktop/claude-api#choose-an-authentication-approach), Claude Desktop stops using a person's own API key or Console account at the app's next launch.
++ 
++ Check three cases before you deploy it:
++ 
++ * **Claude Console organizations**: don't deploy `forceLoginOrgUUID` on its own with a Claude Console organization's ID, or you'd lock your people out of Claude Desktop. See [Which devices offer the Claude API account sign-in](https://claude.com/docs/third-party/claude-desktop/claude-api#which-devices-offer-the-claude-api-account-sign-in) instead.
++ * **Enterprise Admin Console**: if it delivers your computers' Claude Desktop configuration, update them to Claude Desktop v2.37337.0 or later first, because earlier versions ignore it once this key is set. See [Keep a device on its managed profile](https://claude.com/docs/third-party/claude-desktop/admin-console#keep-a-device-on-its-managed-profile).
++ * **Third-party providers**: if people set up their own [third-party inference configuration](https://claude.com/docs/third-party/claude-desktop/in-app-configuration) in the app, Claude Desktop ignores that configuration from the next launch after you deploy this key. To keep people on Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry, or an LLM gateway, [deploy a configuration](https://claude.com/docs/third-party/claude-desktop/configuration) to their computers in the same Claude Desktop policy.
++ 
+- If you define the same server name in `claude_desktop_config.json` and in `~/.claude.json` or `.mcp.json`, the Code tab in local sessions connects once and uses the `claude_desktop_config.json` definition.
+- 
+- The app also re-delivers stdio servers from `~/.claude.json` to the embedded CLI in local sessions. When the top level of `~/.claude.json` (user scope) and `.mcp.json` define the same stdio server name, the Code tab uses the `~/.claude.json` definition, departing from the CLI [scope hierarchy](https://code.claude.com/docs/en/mcp.md#scope-hierarchy-and-precedence).
+- 
+```
+
+### Desktop scheduled tasks
+- Источник: https://code.claude.com/docs/en/desktop-scheduled-tasks.md
+- Изменения: **10** добавлено, **5** удалено
+- Затронутые узлы Atlas (черновик): `pl-cowork, автоматизация`
+
+```diff
+- In the instructions box's toolbar, select a [permission mode](#permissions-for-scheduled-tasks) and model. If you leave them unchanged, runs use your Claude Code settings and the default model.
++ In the instructions box's toolbar, select a [permission mode](#permissions-for-scheduled-tasks) and model.
++ * **Permission mode**: if you leave it unchanged, runs use your Claude Code settings.
++ * **Model**: if the model menu reads **Default · Set by admin** and you don't pick another model, runs use the model your organization set in [managed settings](https://code.claude.com/docs/en/managed-settings.md). A [catch-up run](#missed-runs) that starts as the app opens can use the [runtime default for your account](https://code.claude.com/docs/en/model-config.md#default-model-setting) instead.
++ 
++ To see which model **Default · Set by admin** stands for, click **Run now** on the detail page to run the task at once. Then [open the run's session](#find-a-runs-session), where the row under the prompt box shows the model's name.
++ 
+- You can also list, create, edit, and pause tasks by asking Claude in any Desktop session. For example, "pause my dependency-audit task" or "show me my scheduled tasks." To delete a task, use the **Delete** button on its detail page.
+- 
+- To let a task change its own schedule or prompt with the `update_scheduled_task` MCP tool, click **Run now** and approve the call each time.
++ You can also manage tasks by asking Claude, letting a task update itself, or editing a task's prompt on disk:
+- To edit a task's prompt on disk, open `~/.claude/scheduled-tasks/<task-name>/SKILL.md` (or under [`CLAUDE_CONFIG_DIR`](https://code.claude.com/docs/en/env-vars) if set). The file uses YAML frontmatter for `name` and `description`, with the prompt as the body. Changes take effect on the next run. Schedule, folder, model, and enabled state are not in this file: change them through the Edit form or ask Claude.
++ * **Ask Claude**: list, create, edit, and pause tasks by asking Claude in any Desktop session. For example, "pause my dependency-audit task" or "show me my scheduled tasks." To delete a task, use the **Delete** button on its detail page.
++ * **Let a task update itself**: for a task to change its own schedule or prompt with the `update_scheduled_task` MCP tool, click **Run now** and approve the call each time
++ * **Edit the prompt on disk**: open `~/.claude/scheduled-tasks/<task-name>/SKILL.md`, or `scheduled-tasks/<task-name>/SKILL.md` under [`CLAUDE_CONFIG_DIR`](https://code.claude.com/docs/en/env-vars) if you set that variable. The file uses YAML frontmatter for `name` and `description`, with the prompt as the body. Changes take effect on the next run. Schedule, folder, and enabled state are not in this file: change them through the Edit form or ask Claude.
+```
+
+### Индекс всех страниц документации (llms.txt)
+- Источник: https://code.claude.com/docs/llms.txt
+- Изменения: **19** добавлено, **47** удалено
+- Затронутые узлы Atlas (черновик): `новые/удалённые темы в экосистеме`
+
+```diff
+- - [Add components to a plugin](https://code.claude.com/docs/en/plugins/components.md): Add skills, hooks, MCP servers, and every other component type to a Claude Code plugin, with an example that validates for each.
++ - [Add components to a plugin](https://code.claude.com/docs/en/plugins/components.md): Add skills, hooks, MCP servers, and other component types to a Claude Code plugin, with an example that validates for each.
+- - [Plugin manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference.md): Complete reference for plugin.json: every field with its type and default, accepted path forms, and the userConfig and environment variable schemas.
++ - [Plugin manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference.md): Complete reference for plugin.json: fields with types and defaults, accepted path forms, and the userConfig and environment variable schemas.
+- - [Plugin manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference.md): Complete reference for plugin.json: every field with its type and default, accepted path forms, and the userConfig and environment variable schemas.
++ - [Plugin manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference.md): Complete reference for plugin.json: fields with types and defaults, accepted path forms, and the userConfig and environment variable schemas.
+- - [Feature availability](https://code.claude.com/docs/en/feature-availability.md): Compare which Claude Code features are available across Anthropic subscription plans, the Anthropic Console, Amazon Bedrock, Claude Platform on AWS, Google Cloud's Agent Platform, and Microsoft Foundry.
++ - [Feature availability](https://code.claude.com/docs/en/feature-availability.md): Compare which Claude Code features work on each Anthropic subscription plan, the Anthropic Console, and cloud providers such as Amazon Bedrock and Google Cloud.
++ - [Claude Code with Claude Models on Google Cloud (Anthropic managed)](https://code.claude.com/docs/en/claude-models-on-google-cloud-anthropic-managed.md): Configure Claude Code to use the Claude API that Anthropic runs through your Google Cloud project, with Google Cloud credentials, IAM, and Marketplace billing.
+- - [Speed up responses with fast mode](https://code.claude.com/docs/en/fast-mode.md): Get faster Opus responses in Claude Code by toggling fast mode.
++ - [Speed up responses with fast mode](https://code.claude.com/docs/en/fast-mode.md): Get faster Opus and Fable responses in Claude Code by toggling fast mode with `/fast`.
++ - [Run tool calls from code with Code Mode](https://code.claude.com/docs/en/code-mode.md): Try Code Mode, an experimental feature in which Claude writes JavaScript that makes several tool calls in one step.
+- - [Troubleshoot the Agent SDK](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors when the Claude Code CLI fails to start, the CLI process exits, or a successful result arrives without structured output.
++ - [Troubleshoot the Agent SDK](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors: the Claude Code CLI fails to start or exits, a tool message is too large, or a result arrives without structured output.
+- ## What's New
+- 
+- ### What's New
+- 
+- - [What's new](https://code.claude.com/docs/en/whats-new/index.md): A weekly digest of notable Claude Code features, with code snippets, demos, and context on why they matter.
+- - [Week 37 · September 7–11, 2026](https://code.claude.com/docs/en/whats-new/2026-w37.md): Test your plugins with claude plugin eval and pop Claude Code Desktop panes out into their own windows.
+- - [Week 36 · August 31 – September 4, 2026](https://code.claude.com/docs/en/whats-new/2026-w36.md): Switch to Claude Fable 5.1, let computer use run in the background on Desktop, and watch Claude's edits in a live /diff panel.
+- - [Week 35 · August 24–28, 2026](https://code.claude.com/docs/en/whats-new/2026-w35.md): Resume terminal sessions in the Claude Code Desktop app, review feedback reports that Claude drafts for you, and start a session in restricted mode.
+- - [Week 34 · August 17–21, 2026](https://code.claude.com/docs/en/whats-new/2026-w34.md): Draft editable UI artboards with the /design skill, set the Concise output style, and start a Claude Code session on your machine from your phone.
+- - [Week 33 · August 10–14, 2026](https://code.claude.com/docs/en/whats-new/2026-w33.md): Claude Code Desktop auto-continues after a usage limit resets, fork mode turns on by default, and GitLab merge requests and marketplaces join GitHub.
+- - [Week 32 · August 3–7, 2026](https://code.claude.com/docs/en/whats-new/2026-w32.md): Claude Code sessions message each other, self-hosted environments run cloud sessions on your infrastructure, and auto mode becomes the default permission mode.
+- - [Week 30 · July 20–24, 2026](https://code.claude.com/docs/en/whats-new/2026-w30.md): Opus 5 becomes the default Opus model, Claude Code Desktop adds an iOS Simulator pane, and the Claude Security plugin scans your code for vulnerabilities.
+- - [Week 29 · July 13–17, 2026](https://code.claude.com/docs/en/whats-new/2026-w29.md): Pull live data into published artifacts through MCP connectors, and use Claude Code with a screen reader in the new screen reader mode.
+- - [Week 28 · July 6–10, 2026](https://code.claude.com/docs/en/whats-new/2026-w28.md): Browse external sites from the Desktop app's built-in browser, run a full setup checkup with /doctor, and pick up auto mode transcript protections and agent view upgrades.
+- - [Week 27 · June 29 – July 3, 2026](https://code.claude.com/docs/en/whats-new/2026-w27.md): Claude Sonnet 5 becomes the default model, Claude in Chrome reaches general availability, subagents run in the background by default, Claude Desktop arrives on Linux in beta, and /radio tunes into Claude FM.
+- - [Week 26 · June 22–26, 2026](https://code.claude.com/docs/en/whats-new/2026-w26.md): Authenticate MCP servers from your shell with claude mcp login, get a response to shell mode command output with the ! prefix, and resume a conversation from before /clear with /rewind.
+- - [Week 25 · June 15–19, 2026](https://code.claude.com/docs/en/whats-new/2026-w25.md): Publish a live, shareable page from your session with Artifacts, match tool parameters in deny and ask rules, and set any setting from the prompt with /config.
+- - [Week 24 · June 8–12, 2026](https://code.claude.com/docs/en/whats-new/2026-w24.md): Move a session to a new directory with /cd, let subagents spawn their own subagents, and troubleshoot a broken configuration with safe mode.
+- - [Week 23 · June 1–5, 2026](https://code.claude.com/docs/en/whats-new/2026-w23.md): Run auto mode on Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, prompt before writing files that can run code in acceptEdits mode, list installed plugins with /plugin list, and require an approved version range for managed deployments.
+- - [Week 22 · May 25–29, 2026](https://code.claude.com/docs/en/whats-new/2026-w22.md): Run Claude Code on Claude Opus 4.8, orchestrate large tasks with dynamic workflows, catch security issues with the security-guidance plugin, and use fast mode on Opus 4.8 at a lower price.
+- - [Week 21 · May 18–22, 2026](https://code.claude.com/docs/en/whats-new/2026-w21.md): Use auto mode on the Pro plan and with Sonnet 4.6, see which skills, subagents, and MCP servers drive your plan limits in /usage, and review diffs with the new /code-review command.
+- - [Week 20 · May 11–15, 2026](https://code.claude.com/docs/en/whats-new/2026-w20.md): Manage every Claude Code session from one screen with agent view, keep Claude working toward a goal until a condition holds, and run fast mode on Opus 4.7 by default.
+- - [Week 19 · May 4–8, 2026](https://code.claude.com/docs/en/whats-new/2026-w19.md): Load plugins from .zip archives and URLs, search command history across every project with Ctrl+R, branch new worktrees from local HEAD or the remote default, and block actions unconditionally with auto mode hard deny rules.
+- - [Week 18 · April 27 – May 1, 2026](https://code.claude.com/docs/en/whats-new/2026-w18.md): Claude Code on Windows runs without Git Bash, claude auth login accepts a pasted OAuth code when the browser callback can't reach localhost, claude project purge cleans up local state per project, and pasting a PR URL into /resume finds the session that created it.
+- - [Week 17 · April 20–24, 2026](https://code.claude.com/docs/en/whats-new/2026-w17.md): /ultrareview opens as a research preview, automatic session recaps when you return to a terminal, custom color themes you can build and ship in plugins, and a redesigned Claude Code on the web.
+- - [Week 16 · April 13–17, 2026](https://code.claude.com/docs/en/whats-new/2026-w16.md): Claude Opus 4.7 with the new xhigh effort level, Routines on Claude Code on the web, mobile push notifications that ping your phone when Claude needs you, a /usage breakdown that shows what's driving your limits, and native binaries replacing the bundled JavaScript.
+- - [Week 15 · April 6–10, 2026](https://code.claude.com/docs/en/whats-new/2026-w15.md): Ultraplan cloud planning, the Monitor tool with self-pacing /loop, /team-onboarding for packaging your setup, and /autofix-pr from your terminal.
+- - [Week 14 · March 30 – April 3, 2026](https://code.claude.com/docs/en/whats-new/2026-w14.md): Computer use in the CLI, interactive in-product lessons, flicker-free rendering, per-tool MCP result-size overrides, and plugin executables on PATH.
+- - [Week 13 · March 23–27, 2026](https://code.claude.com/docs/en/whats-new/2026-w13.md): Auto mode for hands-off permissions, computer use built in, PR auto-fix in the cloud, transcript search, and a PowerShell tool for Windows.
+- 
+- - [French (228 pages)](https://code.claude.com/docs/_llms/fr.txt): Documentation for French.
+- - [German (228 pages)](https://code.claude.com/docs/_llms/de.txt): Documentation for German.
+- - [Italian (228 pages)](https://code.claude.com/docs/_llms/it.txt): Documentation for Italian.
+- - [Japanese (228 pages)](https://code.claude.com/docs/_llms/jp.txt): Documentation for Japanese.
+- - [Spanish (228 pages)](https://code.claude.com/docs/_llms/es.txt): Documentation for Spanish.
+- - [Korean (228 pages)](https://code.claude.com/docs/_llms/ko.txt): Documentation for Korean.
+- - [Simplified Chinese (228 pages)](https://code.claude.com/docs/_llms/zh-cn.txt): Documentation for Simplified Chinese.
+- - [Traditional Chinese (228 pages)](https://code.claude.com/docs/_llms/zh-tw.txt): Documentation for Traditional Chinese.
+- - [Russian (228 pages)](https://code.claude.com/docs/_llms/ru.txt): Documentation for Russian.
+- - [Indonesian (228 pages)](https://code.claude.com/docs/_llms/id.txt): Documentation for Indonesian.
+- - [Brazilian Portuguese (228 pages)](https://code.claude.com/docs/_llms/pt-br.txt): Documentation for Brazilian Portuguese.
++ - [French (205 pages)](https://code.claude.com/docs/_llms/fr.txt): Premiers pas, Développer avec Claude Code, Plugins, Administration, Configuration, Référence, SDK Agent, Ressources.
++ - [German (205 pages)](https://code.claude.com/docs/_llms/de.txt): Erste Schritte, Mit Claude Code entwickeln, Plugins, Administration, Konfiguration, Referenz, Agent SDK, Ressourcen.
++ - [Italian (205 pages)](https://code.claude.com/docs/_llms/it.txt): Per iniziare, Crea con Claude Code, Plugin, Amministrazione, Configurazione, Riferimento, Agent SDK, Risorse.
++ - [Japanese (205 pages)](https://code.claude.com/docs/_llms/jp.txt): はじめに, Claude Code で構築, プラグイン, 管理, 設定, リファレンス, Agent SDK, リソース.
++ - [Spanish (205 pages)](https://code.claude.com/docs/_llms/es.txt): Primeros pasos, Crea con Claude Code, Plugins, Administración, Configuración, Referencia, Agent SDK, Recursos.
++ - [Korean (205 pages)](https://code.claude.com/docs/_llms/ko.txt): 시작하기, Claude Code로 만들기, 플러그인, 관리, 구성, 레퍼런스, Agent SDK, 리소스.
++ - [Simplified Chinese (205 pages)](https://code.claude.com/docs/_llms/zh-cn.txt): 快速入门, 使用 Claude Code 构建, 插件, 管理, 配置, 参考, Agent SDK, 资源.
++ - [Traditional Chinese (205 pages)](https://code.claude.com/docs/_llms/zh-tw.txt): 快速入門, 使用 Claude Code 打造, 外掛, 管理, 設定, 參考資料, Agent SDK, 資源.
++ - [Russian (205 pages)](https://code.claude.com/docs/_llms/ru.txt): Начало работы, Разработка с Claude Code, Плагины, Администрирование, Конфигурация, Справочник, Agent SDK, Ресурсы.
++ - [Indonesian (205 pages)](https://code.claude.com/docs/_llms/id.txt): Memulai, Membangun dengan Claude Code, Plugin, Administrasi, Konfigurasi, Referensi, Agent SDK, Sumber Daya.
++ - [Brazilian Portuguese (205 pages)](https://code.claude.com/docs/_llms/pt-br.txt): Primeiros passos, Desenvolva com Claude Code, Plugins, Administração, Configuração, Referência, Agent SDK, Recursos.
+```
