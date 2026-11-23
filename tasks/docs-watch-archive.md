@@ -5066,3 +5066,337 @@
 - `src/builder/components/panels/AllSchedulesModal.jsx`
 - `src/builder/components/panels/ExecutionPanel.jsx`
 После сверки: `npm run help:watch -- --accept`.
+
+## 📄 docs-watch: документация изменилась — 2026-11-23
+
+> Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
+> Прогон: прочитать дифф ниже → разнести по узлам Atlas → `node scripts/sync-whats-new.mjs`.
+
+### Desktop app (вкладка Code)
+- Источник: https://code.claude.com/docs/en/desktop.md
+- Изменения: **70** добавлено, **38** удалено
+- Затронутые узлы Atlas (черновик): `pl-desktop, pl-code-mode, apps-setup`
+
+```diff
+- To keep [HTML previews in SSH and WSL sessions](#preview-html-files-in-ssh-and-wsl-sessions) from running scripts, set the [`disableRemotePreviewScripts` managed setting](#managed-settings) to `true`. Users can still browse external sites. Requires Claude Desktop v5.1231.0 or later.
++ To keep the Browser pane's [HTML previews in SSH and WSL sessions](#preview-html-files-in-ssh-and-wsl-sessions) from running scripts, set the [`disableRemotePreviewScripts` managed setting](#managed-settings) to `true`. Users can still browse external sites. Requires Claude Desktop v5.1231.0 or later.
+- * **Files they open**: the preview doesn't run scripts, so charts and tables that scripts draw stay empty. Its notice starts with `This preview doesn't run scripts`.
++ * **SSH and WSL files they open in the Browser pane**: the preview doesn't run scripts, so charts and tables that scripts draw stay empty
+- The Browser pane is a tabbed browser, so you can open documentation, issue trackers, or any other site next to your running app. To open the Browser, press **Cmd+Shift+B** on macOS or **Ctrl+Shift+B** on Windows, or click **Browser** in the session's title bar. You can sign in to sites in the pane, including popup sign-in flows such as Google OAuth.
++ The Browser pane is a tabbed browser, so you can open documentation, issue trackers, or any other site next to your running app. To open the Browser, press **Cmd+Shift+B** on macOS or **Ctrl+Shift+B** on Windows, or [select **Browser**](#arrange-your-workspace). You can sign in to sites in the pane, including popup sign-in flows such as Google OAuth.
+- The first time you click an external link in the chat, a dialog asks whether links open in the Browser pane or in your default browser. To change your choice later, use **Open links in built-in browser** in the Browser pane's **⋮** menu. **Cmd**-click on macOS or **Ctrl**-click on Windows opens a link in your default browser directly.
++ The first time you click an external link in the chat, a dialog asks whether links open in the Browser pane or in your default browser. To change your choice later, use **Open links in built-in browser** in the Browser pane's **⋮** menu. If it isn't there, open **More settings** in that menu. **Cmd**-click on macOS or **Ctrl**-click on Windows opens a link in your default browser directly.
+- * Safety classifiers review Claude's write actions on external pages, such as clicking and typing, in every permission mode. These are the same classifiers [auto mode](#choose-a-permission-mode) uses, and when they flag an action, you get a permission prompt regardless of mode.
++ * When [auto mode is available](#auto-mode-availability) for the session, its safety classifiers review Claude's write actions on external pages, such as typing, in every permission mode. A flagged action is blocked, or prompts you after [repeated blocks](https://code.claude.com/docs/en/permission-modes.md#when-auto-mode-falls-back).
+- The first time Claude acts on an external site, a permission card appears and Claude waits for your choice: **Allow once**, **Always allow**, or **Deny**. **Allow once** approves the action without saving anything. **Always allow** saves the approval for that site on your device, and you can revoke it in Settings. Each site needs its own approval, including subdomains. Your local dev servers and project files don't need approval, so [auto-verify](#auto-verify-changes) keeps working without prompts.
++ Outside Auto and Bypass permissions modes, a permission card appears before Claude uses an external site you haven't approved. Choose **Allow once**, **Always allow**, or **Deny**. **Allow once** approves the action without saving anything. **Always allow** saves the approval for that site on your device, and you can revoke it in Settings. Each site needs its own approval. Your local dev servers and project files don't need approval.
+- After Claude makes changes to your code, the diff view lets you review modifications file by file before creating a pull request. To open the diff view, click the line counts, such as `+12 -1`, in the **Changes** card of the [session details panel](#see-session-details). You can also click **Changes** in the session's title bar. A cloud session's diff against the base branch can [leave out changes that aren't pushed yet](https://code.claude.com/docs/en/claude-code-on-the-web.md#troubleshoot-a-missing-file-in-the-diff-view).
++ After Claude makes changes to your code, the diff view lets you review modifications file by file before creating a pull request. To open the diff view, click the line counts, such as `+12 -1`, in the **Changes** card of the [session details panel](#see-session-details), or [select **Changes**](#arrange-your-workspace). A cloud session's diff against the base branch can [leave out changes that aren't pushed yet](https://code.claude.com/docs/en/claude-code-on-the-web.md#troubleshoot-a-missing-file-in-the-diff-view).
+- * Click **Walk through in diff** to open the diff view and step through the findings one at a time. A finding in the current diff appears at its line, where you can click **Fix this one** or dismiss it.
++ * Click **Walk through in changes** to open the diff view and step through the findings one at a time. A finding in the current diff appears at its line, where you can click **Fix this one** or dismiss it.
+- The Code tab is built around panes you can arrange in any layout: chat, diff, browser, terminal, file, plan, tasks, and subagent, along with the [iOS Simulator](https://code.claude.com/docs/en/desktop-ios-simulator.md) on macOS. Drag a pane by its header to reposition it, or drag a pane edge to resize it. Press **Cmd+\\** on macOS or **Ctrl+\\** on Windows to close the focused pane.
++ The Code tab is built around panes you can arrange in any layout: chat, diff, browser, terminal, file, plan, tasks, and subagent, along with the [iOS Simulator](https://code.claude.com/docs/en/desktop-ios-simulator.md) on macOS. Drag a pane by its tab or the handle at its top to reposition it, or drag a pane edge to resize it. Press **Cmd+\\** on macOS or **Ctrl+\\** on Windows to close the focused pane.
+- To open another pane, click its icon button in the session's title bar. Hover to see each button's name, such as **Terminal**, **Changes** for the diff view, **Browser**, and **Files**. If the pane you want has no button in the title bar, select it from the **⋮** menu beside the buttons:
++ To open another pane, hover over the icons at the top of the session to see each button's name, such as **Terminal** or **Show side panel**. Then follow the steps for the buttons you have:
+- * **When the window is narrow**: buttons that don't fit move into the menu
+- * **For panes with no button**: panes such as **Background tasks** and **Plan** are listed once the session has something to show in those panes
++ * **Show side panel** or **Hide side panel**: show the panel if it's hidden, then pick a pane from the panel's list or **+** menu.
++ * **Terminal**, **Changes** for the diff view, **Browser**, and **Files**: click the pane's button. If the pane has no button, select it from the **⋮** menu beside the buttons.
++ To open **Background tasks** or **Plan**, select it from the side panel or the **⋮** menu once the session has something to show in it.
++ 
+- To hide or show the panel, click **Hide session rail** or **Show session rail** in the session's title bar, or in the bar's **⋮** menu. If you still don't see the panel, [check which Code tab layout you have](#check-which-layout-you-have).
++ To hide or show the panel, click **Hide session rail** or **Show session rail** in the session's title bar, or in the bar's **⋮** menu. If you see neither name, click **Activity panel** in the title bar. If you still don't see the panel, [check which Code tab layout you have](#check-which-layout-you-have).
++ If the panel disappears when a mod's [backdrop](https://code.claude.com/docs/en/plugins/mods/interface.md#put-a-backdrop-behind-the-conversation) shows, click **Show session rail** or **Activity panel** to bring it back.
++ 
+- The integrated terminal lets you run commands alongside your session without switching to another app. Click **Terminal** in the session's title bar or press **Ctrl+\`** on macOS or Windows. The terminal opens in your session's working directory and shares the same environment as Claude, so commands like `npm test` or `git status` see the same files Claude is editing. To open a second terminal tab, click **+** in the terminal pane header or right-click a folder in the chat to choose **Open in terminal**.
++ The integrated terminal lets you run commands alongside your session without switching to another app. To open it, [select **Terminal**](#arrange-your-workspace) or press **Ctrl+\`** on macOS or Windows. The terminal opens in your session's working directory and shares the same environment as Claude, so commands like `npm test` or `git status` see the same files Claude is editing.
++ To open a second terminal tab, click **+** above the terminal, then select **Terminal** if a menu opens.
++ 
+- > Computer use is a research preview on macOS and Windows that requires a Pro, Max, or Ultra plan. It is not available on Team or Enterprise plans. The Claude Desktop app must be running. On macOS, computer use requires macOS 14 or later.
++ > Computer use in the Code tab is available on macOS and Windows and requires a Pro, Max, or Ultra plan. It is not available on Team or Enterprise plans. The Claude Desktop app must be running. On macOS, computer use requires macOS 14 or later.
+- Computer use is off by default. [Enable it in Settings](#enable-computer-use) before Claude can control your screen. On macOS, you also need to grant Accessibility and Screen Recording permissions.
++ Check that computer use is [on in Settings](#enable-computer-use) before you ask Claude to control your screen. On macOS, you also need to grant Accessibility and Screen Recording permissions.
+- Computer use is off by default. If you ask Claude to do something that needs it while it's off, Claude tells you it could do the task if you enable computer use in Settings.
+- 
+- The Settings page shows the current status of each permission. If either is denied, click the badge to open the relevant System Settings pane.
++ The Settings page shows the current status of each permission. If either is denied, click **Open System Settings** next to it.
+- | Full control | Click, type, drag, and use keyboard shortcuts | Everything else |
++ | Full access | Click, type, drag, and use keyboard shortcuts | Most other apps |
+- In Settings, the **Computer use** section where you [turned computer use on](#enable-computer-use) includes these options:
++ In Settings, the **Computer use** section where you [turn computer use on](#enable-computer-use) includes these options:
+- A side chat lets you ask Claude a question that uses your session's context but doesn't add anything back to the main conversation. Use it when you want to understand a piece of code, check an assumption, or explore an idea without steering the session off course.
++ A side chat lets you ask Claude a question about your session. Claude's answers in a side chat aren't added to the main conversation automatically. Use a side chat to understand a piece of code, check an assumption, or explore an idea.
+- Press **Cmd+;** on macOS or **Ctrl+;** on Windows to open a side chat, or type `/btw` in the prompt box. The side chat can read everything in the main thread up to that point. When you're done, close the side chat and continue the main session where you left off.
++ Press **Cmd+;** on macOS or **Ctrl+;** on Windows to open a side chat, or type `/btw` in the prompt box. The side chat can read everything in the main thread up to that point. When you're done, close the side chat and return to the main session.
+- Side chats are available in local, SSH, and WSL sessions. The desktop app doesn't save side chats to disk, so you can't return to one after you close the app.
++ Side chats are available in local, SSH, and WSL sessions.
+- The tasks pane shows the background work running inside the current session: subagents, background shell commands, and [dynamic workflows](https://code.claude.com/docs/en/workflows.md). Once the session has background work, open the pane with **Background tasks** in the title bar's **⋮** menu.
++ The tasks pane shows the background work running inside the current session: subagents, background shell commands, and [dynamic workflows](https://code.claude.com/docs/en/workflows.md). Once the session has background work, [open the **Background tasks** pane](#arrange-your-workspace).
++ > [!NOTE]
++ >
++ > Dispatch isn't available to new users. If it doesn't appear in your Claude app, see [other ways to work away from your terminal](https://code.claude.com/docs/en/platforms.md#work-when-you-are-away-from-your-terminal).
++ 
+- Connect external services, add reusable workflows, customize Claude's behavior, and configure preview servers. To manage connectors, skills, and plugins in one place, click **Customize** in the sidebar. [Cowork](https://claude.com/product/cowork) in the Desktop app sources its skills, plugins, and connectors from this Customize configuration, which syncs through your claude.ai account, not from the CLI's `~/.claude` directory.
++ Connect external services, add reusable workflows, customize Claude's behavior, and configure preview servers. To manage connectors, skills, and plugins in one place, click **Customize** or **Plugins** in the sidebar. [Cowork](https://claude.com/product/cowork) in the Desktop app sources its skills, plugins, and connectors from this configuration, which syncs through your claude.ai account, not from the CLI's `~/.claude` directory.
+- Click **+** next to the prompt box, before or during the session, to add connectors in a local or [SSH](#ssh-sessions) session with a Claude account. Select **Add connectors** to open the connector directory. If the menu shows **Connectors** instead, select it, then **Browse connectors**.
++ Click **+** next to the prompt box, before or during the session, to add connectors in a local or [SSH](#ssh-sessions) session with a Claude account. Open the connector directory from the entry the menu shows:
++ * **Add connectors**: select it
++ * **Connectors**: select it, then **Browse connectors**
++ * **Neither entry**: click **Plugins** in the sidebar, where the directory lists connectors and plugins together
++ 
+- Once connected, Claude can read your calendar, send messages, create issues, and interact with your tools directly. You can ask Claude what connectors are configured in your session. To manage or disconnect connectors, click **Customize** in the sidebar and open **Connectors**.
++ Once connected, Claude can read your calendar, send messages, create issues, and interact with your tools directly. You can ask Claude what connectors are configured in your session. To manage or disconnect connectors, click **Customize** in the sidebar and open **Connectors**. If the sidebar shows **Plugins** instead, click it and look under **Your plugins**.
+- For integrations not listed in Connectors, add MCP servers manually via [settings files](https://code.claude.com/docs/en/mcp.md#installing-mcp-servers). You can also [create custom connectors](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp).
++ For integrations not in the connector directory, add MCP servers manually via [settings files](https://code.claude.com/docs/en/mcp.md#installing-mcp-servers). You can also [create custom connectors](https://support.claude.com/en/articles/11175166-getting-started-with-custom-connectors-using-remote-mcp).
+- In a local session or an [SSH session](#ssh-sessions), click **+** next to the prompt box and select **Add plugins** to open the plugin browser. If the menu shows **Plugins** instead, select it, then **Browse plugins**, or **Manage plugins** to enable, disable, or uninstall plugins.
++ In a local session or an [SSH session](#ssh-sessions), click **+** next to the prompt box. Open the plugin browser from the entry the menu shows:
++ * **Add plugins**: select it
++ * **Plugins**: select it, then **Browse plugins**. If that's missing, select **Manage plugins**.
++ 
++ To enable, disable, or uninstall plugins when the **+** menu shows **Plugins**, select **Plugins > Manage plugins**. In a local session, you can also click **Customize** or **Plugins** in the sidebar.
++ 
+- The plugin browser is not available in cloud sessions, and plugins you install from the desktop app aren't available for cloud sessions. A cloud session also doesn't install plugins that the repository's `.claude/settings.json` declares, as [What carries over from your setup](https://code.claude.com/docs/en/cloud-environments.md#what-carries-over-from-your-setup) explains. Plugins aren't available in WSL sessions. For the full plugin reference including creating your own plugins, see [plugins](https://code.claude.com/docs/en/plugins/overview.md).
++ > [!NOTE]
++ >
++ > Plugins you install on your computer at user or local scope aren't available in cloud sessions. See [What carries over from your setup](https://code.claude.com/docs/en/cloud-environments.md#what-carries-over-from-your-setup). Plugins aren't available in WSL sessions.
++ For the full plugin reference including creating your own plugins, see [plugins](https://code.claude.com/docs/en/plugins/overview.md).
++ 
+- Auto-verify is on by default. Disable it per-project by adding `"autoVerify": false` to `.claude/launch.json`, or turn off **Auto-verify changes** in the Browser pane's **⋮** menu.
++ Auto-verify is on by default. Disable it per-project by adding `"autoVerify": false` to `.claude/launch.json`, or turn off **Auto-verify changes** in the Browser pane's **⋮** menu. If it isn't there, open **More settings** in that menu.
+- For any other address, Desktop asks for your permission the first time the preview opens it, the same as when you browse to a new site in the preview. External addresses may include paths. Choose **Always allow** to skip the prompt for that site in the future. Organization policies that restrict external sites in the preview still apply.
++ Any other address goes through the same [site approval](#browse-external-sites) as a new site Claude opens in the preview. External addresses may include paths. Choose **Always allow** to skip the prompt for that site in the future. Organization policies that restrict external sites in the preview still apply.
+- On the **SSH** tab of the **New environment** dialog, open the **Host** list, select **Add SSH connection…**, and fill in the connection details:
++ In the **New environment** dialog, select the **SSH** tab, then open the form for a new connection from **Host**:
+- * **Name**: a friendly label for this connection.
++ * **Host shows a button**: select **Add SSH connection…**
++ * **Host shows a list**: open the list and select **Add SSH connection…** at the bottom
++ 
++ Fill in the connection details:
++ 
++ * **Name (optional)**: a friendly label for this connection. Leave empty to use the **SSH host** value as the name.
+- | `disableBrowserExternalNavigation` | set to `true` to turn off external browsing in the [Browser pane](#browse-external-sites) entirely. Neither users nor Claude can navigate to external sites, and localhost dev server previews are unaffected. HTML previews in SSH and WSL sessions [don't run scripts](#turn-off-scripts-in-ssh-and-wsl-previews-for-your-organization). The value must be the JSON boolean `true`; the string `"true"` is ignored. |
+- | `disableRemotePreviewScripts` | set to `true` to [turn off only the scripts in HTML previews](#turn-off-scripts-in-ssh-and-wsl-previews-for-your-organization) in SSH and WSL sessions. Desktop doesn't read it from the remote machine or the WSL distribution. The value must be the JSON boolean `true`; the string `"true"` is ignored. Requires Claude Desktop v5.1231.0 or later. |
++ | `disableBrowserExternalNavigation` | set to `true` to turn off external browsing in the [Browser pane](#browse-external-sites) entirely. Neither users nor Claude can go to external sites, and localhost dev server previews are unaffected. The Browser pane's HTML previews in SSH and WSL sessions [don't run scripts](#turn-off-scripts-in-ssh-and-wsl-previews-for-your-organization). The value must be the JSON boolean `true`; the string `"true"` is ignored. |
++ | `disableRemotePreviewScripts` | set to `true` to [turn off scripts in the Browser pane's HTML previews](#turn-off-scripts-in-ssh-and-wsl-previews-for-your-organization) in SSH and WSL sessions, without turning off external browsing. Desktop doesn't read it from the remote machine or the WSL distribution. The value must be the JSON boolean `true`; the string `"true"` is ignored. Requires Claude Desktop v5.1231.0 or later. |
+- The Desktop app loads MCP servers from `claude_desktop_config.json` into local Code tab sessions, alongside servers from `~/.claude.json` and `.mcp.json`. A server you define in `claude_desktop_config.json` is available in both the Desktop chat surface and local Code tab sessions.
++ The Desktop app loads MCP servers from `claude_desktop_config.json` into local Code tab sessions, alongside servers from `~/.claude.json` and `.mcp.json`. The servers from `claude_desktop_config.json` also load in a [WSL session](https://code.claude.com/docs/en/desktop-wsl.md), unless the session [lacks connectors](https://code.claude.com/docs/en/desktop-wsl.md#check-for-the-terminal-and-connectors). In a WSL session, those servers run on Windows.
++ To get new versions sooner on Claude Desktop v4.29.0 or later, set **Release channel** to **Latest**. Go to **Settings > This computer > System**, or to **Settings > Desktop app** if the menu doesn't list **This computer**. For where the setting is available and what to expect when you switch back to **Stable**, see [Choose a release channel](https://support.claude.com/en/articles/10065433-install-claude-desktop#h_ac219b3bde).
++ 
++ ### Claude Code is "newer than the maximum version allowed by your organization"
++ 
++ When the desktop app's [own copy of Claude Code](#claude-code-version-in-the-code-tab) is newer than the limit your organization sets with [`requiredMaximumVersion`](https://code.claude.com/docs/en/settings-reference#requiredmaximumversion), local sessions fail with an error whose details show this message. Ask your administrator to raise the limit to at least the Claude Code version in the message, or to remove it.
++ 
+```
+
+### Desktop quickstart
+- Источник: https://code.claude.com/docs/en/desktop-quickstart.md
+- Изменения: **1** добавлено, **1** удалено
+- Затронутые узлы Atlas (черновик): `apps-setup, pl-app-modes`
+
+```diff
+- **Interrupt and steer.** You can redirect Claude at any point. Click the stop button to interrupt immediately, or type a correction and press **Enter** to send it without stopping the running action. Either way, you don't have to wait for it to finish or start over.
++ **Interrupt and steer.** You can redirect Claude at any point. Click the stop button to interrupt immediately, or type a correction and press **Enter** to send it without stopping the running action.
+```
+
+### Desktop scheduled tasks
+- Источник: https://code.claude.com/docs/en/desktop-scheduled-tasks.md
+- Изменения: **3** добавлено, **1** удалено
+- Затронутые узлы Atlas (черновик): `pl-cowork, автоматизация`
+
+```diff
+- * **Current layout**: open the [**Group and sort** menu](https://code.claude.com/docs/en/desktop.md#organize-and-find-sessions), select **Show**, then select **Scheduled**. The group starts collapsed, so click its heading to expand it. **Show** lists **Scheduled** when at least one of your tasks is **Active**, the **Status** a task's detail page shows. If it isn't listed, use the **History** list, which works whether or not the group shows.
++ * **Current layout**: open the [**Group and sort** menu](https://code.claude.com/docs/en/desktop.md#organize-and-find-sessions), select **Show**, then select **Scheduled**. The group starts collapsed, so click its heading to expand it.
++ If a local one-time task that has already run isn't on the **Scheduled tasks** page, click the sort icon above the list and select **Include completed**.
++ 
+```
+
+### Platforms and integrations
+- Источник: https://code.claude.com/docs/en/platforms.md
+- Изменения: **3** добавлено, **3** удалено
+- Затронутые узлы Atlas (черновик): `pl-platforms, pl-compare`
+
+```diff
+- | [Desktop](https://code.claude.com/docs/en/desktop.md) | Visual review, parallel sessions, managed setup | Diff viewer, app preview, [computer use](https://code.claude.com/docs/en/desktop.md#let-claude-use-your-computer) and [Dispatch](https://code.claude.com/docs/en/desktop.md#sessions-from-dispatch) on Pro, Max, and Ultra |
++ | [Desktop](https://code.claude.com/docs/en/desktop.md) | Visual review, parallel sessions, managed setup | Diff viewer, app preview, [computer use](https://code.claude.com/docs/en/desktop.md#let-claude-use-your-computer) on Pro, Max, and Ultra |
+- | [Mobile](https://code.claude.com/docs/en/mobile.md) | Starting and monitoring tasks while away from your computer | Cloud sessions from the Claude app for iOS and Android, [Remote Control](https://code.claude.com/docs/en/remote-control.md) for local sessions, [Dispatch](https://code.claude.com/docs/en/desktop.md#sessions-from-dispatch) to Desktop on Pro, Max, and Ultra |
++ | [Mobile](https://code.claude.com/docs/en/mobile.md) | Starting and monitoring tasks while away from your computer | Cloud sessions from the Claude app for iOS and Android, [Remote Control](https://code.claude.com/docs/en/remote-control.md) for local sessions |
+- Claude Code offers several ways to work when you're not at your terminal. They differ in what triggers the work, where Claude runs, and how much you need to set up.
++ Claude Code offers several ways to work when you're not at your terminal. They differ in what triggers the work, where Claude runs, and how much you need to set up. [Dispatch](https://code.claude.com/docs/en/desktop.md#sessions-from-dispatch) isn't available to new users.
+```
+
+### Индекс всех страниц документации (llms.txt)
+- Источник: https://code.claude.com/docs/llms.txt
+- Изменения: **13** добавлено, **156** удалено
+- Затронутые узлы Atlas (черновик): `новые/удалённые темы в экосистеме`
+
+```diff
+- - [How Claude Code uses prompt caching](https://code.claude.com/docs/en/prompt-caching.md): Claude Code manages prompt caching automatically. See why a model switch triggers a slow uncached turn, what `/compact` costs, why CLAUDE.md edits don't apply mid-session, and how to check your cache hit rate.
++ - [How Claude Code uses prompt caching](https://code.claude.com/docs/en/prompt-caching.md): See why a model switch triggers a slow uncached turn in Claude Code, what `/compact` costs, and how to check your prompt cache hit rate.
++ - [Share a cloud or Remote Control session](https://code.claude.com/docs/en/share-sessions.md): Check what recipients of a shared Claude Code session can read, choose who can open the link, and stop sharing.
+- ### Quickstart
+- 
+- - [Quickstart](https://code.claude.com/docs/en/quickstart.md): Install Claude Code in your terminal, sign in, and use the CLI to explore your codebase and make your first code change.
+- 
+- ### Core concepts
+- 
+- - [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works.md): Understand the agentic loop, built-in tools, and how Claude Code interacts with your project.
+- 
+- ### Use Claude Code
+- 
+- - [How Claude remembers your project](https://code.claude.com/docs/en/memory.md): Give Claude persistent instructions with CLAUDE.md or AGENTS.md files, and let Claude accumulate learnings automatically with auto memory.
+- 
+- ### Platforms and integrations
+- 
+- - [Platforms and integrations](https://code.claude.com/docs/en/platforms.md): Choose where to run Claude Code and what to connect it to. Compare the CLI, Desktop, VS Code, JetBrains, web, mobile, and integrations like Chrome, Slack, and CI/CD.
+- 
+- ### Code review and pull requests
+- 
+- - [Code Review](https://code.claude.com/docs/en/code-review.md): Catch bugs in GitHub pull requests with Code Review: Claude reviews each change, verifies its findings, and comments inline. For Team and Enterprise plans
+- 
+- ### MCP
+- 
+- - [Connect to MCP servers](https://code.claude.com/docs/en/mcp-quickstart.md): Add an MCP server to Claude Code, verify the connection, and find the configuration on disk.
+- 
+- ### Skills
+- 
+- - [Extend Claude with skills](https://code.claude.com/docs/en/skills.md): Create, manage, and share skills to extend Claude's capabilities in Claude Code. Includes custom commands and bundled skills.
+- 
+- ### Artifacts
+- 
+- - [Share session output as artifacts](https://code.claude.com/docs/en/artifacts.md): Artifacts turn Claude Code's work into live, interactive pages on claude.ai that you can keep private, share with your organization, or publish to a public link.
+- 
+- ### Automation
+- 
+- - [Automate actions with hooks](https://code.claude.com/docs/en/hooks-guide.md): Run shell commands automatically when Claude Code edits files, finishes tasks, or needs input. Format code, send notifications, validate commands, and enforce project rules.
+- 
+- ### Guides
+- 
+- - [Set up Claude Code in a monorepo or large codebase](https://code.claude.com/docs/en/large-codebases.md): Configure Claude Code for monorepos and large single-tree codebases with nested CLAUDE.md files, sparse worktrees, code intelligence, and per-package skills so Claude stays focused on the code you're working in.
+- 
+- ### Troubleshooting
+- 
+- - [Troubleshoot installation and login](https://code.claude.com/docs/en/troubleshoot-install.md): Fix command not found, PATH, permission, network, and authentication errors when installing or signing in to Claude Code.
+- 
+- - [Plugin manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference.md): Complete reference for plugin.json: fields with types and defaults, accepted path forms, and the userConfig and environment variable schemas.
+- - [Marketplace reference](https://code.claude.com/docs/en/plugins/marketplace-reference.md): Complete reference for marketplace.json fields, plugin entries, and the plugin and marketplace source objects, with where each is valid.
++ - [Plugin manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference.md): Reference for plugin.json: fields with types and defaults, accepted path forms, and the userConfig and environment variable schemas.
++ - [Marketplace reference](https://code.claude.com/docs/en/plugins/marketplace-reference.md): Reference for marketplace.json fields, plugin entries, and the plugin and marketplace source objects, with where each is valid.
+- ### Use plugins
+- 
+- - [Install and manage plugins](https://code.claude.com/docs/en/plugins/install.md): Install Claude Code plugins from a marketplace on any surface you use, choose an install scope, and update or remove them later.
+- 
+- ### Create plugins
+- 
+- - [Create a Claude Code plugin](https://code.claude.com/docs/en/plugins/create.md): Build your first Claude Code plugin from an empty directory, test it without a marketplace, and convert an existing .claude/ setup.
+- 
+- ### Mods
+- 
+- - [Mods overview](https://code.claude.com/docs/en/plugins/mods/overview.md): Add panes, commands, and tool call rules to Claude Code with a mod. See what a mod can do, how to make or install one, and where mods run.
+- 
+- ### Run a marketplace
+- 
+- - [Create a marketplace](https://code.claude.com/docs/en/plugins/create-marketplace.md): Build a plugin marketplace from a marketplace.json file and test it locally before you host it.
+- 
+- ### Manage plugins for your organization
+- 
+- - [Manage Claude Code plugins for your organization](https://code.claude.com/docs/en/plugins/org.md): Control which plugins Claude Code installs and allows across your organization through managed settings.
+- 
+- ### Troubleshooting
+- 
+- - [Troubleshoot plugins](https://code.claude.com/docs/en/plugins/troubleshooting.md): Fix plugin errors in Claude Code. Find the exact message you saw, grouped by stage from where /plugin runs through install and org policy.
+- 
+- ### Reference
+- 
+- - [Plugin manifest reference](https://code.claude.com/docs/en/plugins/manifest-reference.md): Complete reference for plugin.json: fields with types and defaults, accepted path forms, and the userConfig and environment variable schemas.
+- 
+- - [Configure auto mode](https://code.claude.com/docs/en/auto-mode-config.md): Tell the auto mode classifier which repos, buckets, and domains your organization trusts. Set environment context, override the default block and allow rules, and inspect your effective config with the auto-mode CLI subcommands.
++ - [Configure auto mode](https://code.claude.com/docs/en/auto-mode-config.md): Tell the auto mode classifier which repos, buckets, and domains your organization trusts, set your own block and allow rules, and inspect your config.
+- ### Deployment
+- 
+- - [Enterprise deployment overview](https://code.claude.com/docs/en/third-party-integrations.md): Learn how Claude Code can integrate with various third-party services and infrastructure to meet enterprise deployment requirements.
+- 
+- ### Gateways
+- 
+- - [Run Claude Code through a gateway](https://code.claude.com/docs/en/gateways.md): Route Claude Code through a self-hosted gateway for centralized credentials, usage tracking, and cost controls. Covers the architecture, Anthropic's Claude apps gateway, and using other gateway products.
+- 
+- ### Usage and costs
+- 
+- - [Monitoring](https://code.claude.com/docs/en/monitoring-usage.md): Learn how to enable and configure OpenTelemetry for Claude Code.
+- 
+- ### Security and data
+- 
+- - [Security](https://code.claude.com/docs/en/security.md): Learn about Claude Code's security safeguards and best practices for safe usage.
+- 
+- ### Adoption
+- 
+- - [Communications kit](https://code.claude.com/docs/en/communications-kit.md): Launch announcements, drip-campaign messages, and FAQ responses for rolling Claude Code out to your engineering organization.
+- 
+- - [All settings](https://code.claude.com/docs/en/settings-reference.md): Complete reference for every Claude Code settings.json key: where each one goes, its type and default, and a paste-ready example, with an index of every key.
++ - [All settings](https://code.claude.com/docs/en/settings-reference.md): Reference for Claude Code settings.json keys: where each one goes, its type and default, and a paste-ready example, with an index of keys.
+- - [Self-hosted environments reference](https://code.claude.com/docs/en/self-hosted-environments-reference.md): Complete reference for the self-hosted runner and orchestrator: CLI flags, environment variables, and Prometheus metrics.
++ - [Self-hosted environments reference](https://code.claude.com/docs/en/self-hosted-environments-reference.md): Reference for the self-hosted runner and orchestrator: CLI flags, environment variables, and Prometheus metrics.
+- ### Permissions and sandboxing
+- 
+- - [Configure permissions](https://code.claude.com/docs/en/permissions.md): Control what Claude Code can access and do with fine-grained permission rules, modes, and managed policies.
+- 
+- ### Environments
+- 
+- - [Configure cloud environments](https://code.claude.com/docs/en/cloud-environments.md): Configure cloud environments for Claude Code cloud sessions: network access levels, environment variables, setup scripts, and environment caching.
+- 
+- ### Model and responses
+- 
+- - [Model configuration](https://code.claude.com/docs/en/model-config.md): Configure which model Claude Code uses, effort levels, extended context, and the auto-compact window
+- 
+- ### Interface
+- 
+- - [Configure your terminal for Claude Code](https://code.claude.com/docs/en/terminal-config.md): Fix Shift+Enter for newlines, get a terminal bell when Claude finishes, configure tmux, match the color theme, and enable Vim mode in the Claude Code CLI.
+- 
+- - [CLI reference](https://code.claude.com/docs/en/cli-reference.md): Complete reference for Claude Code command-line interface, including commands and flags.
+- - [Commands](https://code.claude.com/docs/en/commands.md): Complete reference for commands available in Claude Code, including built-in commands and bundled skills.
++ - [CLI reference](https://code.claude.com/docs/en/cli-reference.md): Reference for the Claude Code command-line interface, including commands and flags.
++ - [Commands](https://code.claude.com/docs/en/commands.md): Reference for commands available in Claude Code, including built-in commands and bundled skills.
+- - [Tools reference](https://code.claude.com/docs/en/tools-reference.md): Complete reference for the tools Claude Code can use, including permission requirements and per-tool behavior.
+- - [Interactive mode](https://code.claude.com/docs/en/interactive-mode.md): Complete reference for keyboard shortcuts, input modes, and interactive features in Claude Code sessions.
++ - [Tools reference](https://code.claude.com/docs/en/tools-reference.md): Reference for the tools Claude Code can use, including permission requirements and per-tool behavior.
++ - [Interactive mode](https://code.claude.com/docs/en/interactive-mode.md): Reference for keyboard shortcuts, input modes, and interactive features in Claude Code sessions.
+- ### Glossary
+- 
+- - [Glossary](https://code.claude.com/docs/en/glossary.md): Definitions for Claude Code terminology. Learn what agentic loop, compaction, CLAUDE.md, hooks, subagents, MCP, and other core concepts mean.
+- 
+- - [Troubleshoot the Agent SDK](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors: the Claude Code CLI fails to start or exits, a tool message is too large, or a result arrives without structured output.
++ - [Troubleshoot the Agent SDK](https://code.claude.com/docs/en/agent-sdk/troubleshooting.md): Fix Agent SDK errors: the Claude Code CLI fails to start or exits, your prompt generator throws, a tool message is too large, or structured output is missing.
+- - [Streaming Input](https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md): Understanding the two input modes for Claude Agent SDK and when to use each
++ - [Send messages to a running agent](https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md): Send follow-up messages and images to one Agent SDK session with streaming input, read each response, and interrupt a response to redirect Claude.
+- ### Build agents
+- 
+- - [Configure your agent](https://code.claude.com/docs/en/agent-sdk/configuration.md): Configure Agent SDK sessions: compose the options object, set the model, environment, and limits, and find each feature option's page.
+- 
+- ### Core concepts
+- 
+- - [How the agent loop works](https://code.claude.com/docs/en/agent-sdk/agent-loop.md): Understand the message lifecycle, tool execution, context window, and architecture that power your SDK agents.
+- 
+- ### Input and output
+- 
+- - [Streaming Input](https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode.md): Understanding the two input modes for Claude Agent SDK and when to use each
+- 
+- ### Extend with tools
+- 
+- - [Give Claude custom tools](https://code.claude.com/docs/en/agent-sdk/custom-tools.md): Define custom tools with the Claude Agent SDK's in-process MCP server so Claude can call your functions, hit your APIs, and perform domain-specific operations.
+- 
+- ### Customize behavior
+- 
+- - [Modifying system prompts](https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts.md): Choose between the `claude_code` preset and a custom system prompt, and customize behavior with CLAUDE.md, output styles, append, or a fully custom prompt.
+- 
+- ### Control and observability
+- 
+- - [Configure permissions](https://code.claude.com/docs/en/agent-sdk/permissions.md): Control how your agent uses tools with permission modes, hooks, and declarative allow/deny rules.
+- 
+- ### Deployment
+- 
+- - [Hosting the Agent SDK](https://code.claude.com/docs/en/agent-sdk/hosting.md): Deploy the Agent SDK in production: subprocess architecture, session persistence, scaling, observability, and multi-tenant isolation for Docker, Kubernetes, and sandbox providers.
+- 
+- ### SDK references
+- 
+- - [Agent SDK reference - TypeScript](https://code.claude.com/docs/en/agent-sdk/typescript.md): Complete API reference for the TypeScript Agent SDK, including all functions, types, and interfaces.
+- 
+```
