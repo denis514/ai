@@ -5057,16 +5057,6 @@
 + - [Brazilian Portuguese (205 pages)](https://code.claude.com/docs/_llms/pt-br.txt): Primeiros passos, Desenvolva com Claude Code, Plugins, Administração, Configuração, Referência, Agent SDK, Recursos.
 ```
 
-### [help-watch 2026-11-16] Проверить вкладку «Помощь» (Agent Builder)
-Изменились функциональные файлы билдера — справка могла устареть:
-- `src/builder/data/nodeTypes.js`
-- `src/builder/data/templates.js`
-- `src/builder/components/panels/ScheduleModal.jsx`
-- `src/builder/components/panels/ApiKeysModal.jsx`
-- `src/builder/components/panels/AllSchedulesModal.jsx`
-- `src/builder/components/panels/ExecutionPanel.jsx`
-После сверки: `npm run help:watch -- --accept`.
-
 ## 📄 docs-watch: документация изменилась — 2026-11-23
 
 > Авто-сигнал от `scripts/docs-watcher.mjs`. Реакция: «сигнал + черновик правок».
@@ -5400,3 +5390,13 @@
 - - [Agent SDK reference - TypeScript](https://code.claude.com/docs/en/agent-sdk/typescript.md): Complete API reference for the TypeScript Agent SDK, including all functions, types, and interfaces.
 - 
 ```
+
+### [help-watch 2026-11-23] Проверить вкладку «Помощь» (Agent Builder)
+Изменились функциональные файлы билдера — справка могла устареть:
+- `src/builder/data/nodeTypes.js`
+- `src/builder/data/templates.js`
+- `src/builder/components/panels/ScheduleModal.jsx`
+- `src/builder/components/panels/ApiKeysModal.jsx`
+- `src/builder/components/panels/AllSchedulesModal.jsx`
+- `src/builder/components/panels/ExecutionPanel.jsx`
+После сверки: `npm run help:watch -- --accept`.
